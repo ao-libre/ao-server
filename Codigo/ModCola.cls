@@ -1,0 +1,182 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
+END
+Attribute VB_Name = "cCola"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+'Argentum Online 0.9.0.2
+'Copyright (C) 2002 Márquez Pablo Ignacio
+'
+'This program is free software; you can redistribute it and/or modify
+'it under the terms of the GNU General Public License as published by
+'the Free Software Foundation; either version 2 of the License, or
+'any later version.
+'
+'This program is distributed in the hope that it will be useful,
+'but WITHOUT ANY WARRANTY; without even the implied warranty of
+'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'GNU General Public License for more details.
+'
+'You should have received a copy of the GNU General Public License
+'along with this program; if not, write to the Free Software
+'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'
+'Argentum Online is based on Baronsoft's VB6 Online RPG
+'You can contact the original creator of ORE at aaron@baronsoft.com
+'for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'You can contact me at:
+'morgolock@speedy.com.ar
+'www.geocities.com/gmorgolock
+'Calle 3 número 983 piso 7 dto A
+'La Plata - Pcia, Buenos Aires - Republica Argentina
+'Código Postal 1900
+'Pablo Ignacio Márquez
+
+Option Explicit
+'                    Metodos publicos
+'
+' Public sub Push(byval i as variant) mete el elemento i
+' al final de la cola.
+'
+' Public Function Pop As Variant: quita de la cola el primer elem
+' y lo devuelve
+'
+' Public Function VerElemento(ByVal Index As Integer) As Variant
+' muestra el elemento numero Index de la cola sin quitarlo
+'
+' Public Function PopByVal() As Variant: muestra el primer
+' elemento de la cola sin quitarlo
+'
+' Public Property Get Longitud() As Integer: devuelve la
+' cantidad de elementos que tiene la cola.
+
+Private Const FRENTE = 1
+
+Private Cola As Collection
+
+Public Sub Reset()
+On Error Resume Next
+
+Dim i As Integer
+For i = 1 To Me.Longitud
+    Cola.Remove FRENTE
+Next i
+
+End Sub
+
+Public Property Get Longitud() As Integer
+Longitud = Cola.Count
+End Property
+
+Private Function IndexValido(ByVal i As Integer) As Boolean
+IndexValido = i >= 1 And i <= Me.Longitud
+End Function
+
+Private Sub Class_Initialize()
+Set Cola = New Collection
+End Sub
+
+Public Function VerElemento(ByVal Index As Integer) As Variant
+On Error Resume Next
+
+
+
+If IndexValido(Index) Then
+    VerElemento = Cola(Index)
+Else
+    VerElemento = 0
+End If
+
+End Function
+
+
+Public Sub Push(ByVal Info As String, ByVal Nombre As String)
+On Error Resume Next
+'Mete elemento en la cola
+Call Cola.Add(UCase$(Nombre))
+End Sub
+
+Public Function Pop() As Variant
+On Error Resume Next
+'Quita elemento de la cola
+If Cola.Count > 0 Then
+    Pop = Cola(FRENTE)
+    Call Cola.Remove(FRENTE)
+Else
+    Pop = 0
+End If
+End Function
+
+Public Function PopByVal() As Variant
+On Error Resume Next
+'Call LogTarea("PopByVal SOS")
+
+'Quita elemento de la cola
+If Cola.Count > 0 Then
+    PopByVal = Cola.Item(1)
+Else
+    PopByVal = 0
+End If
+
+End Function
+
+Public Function Existe(ByVal Nombre As String) As Boolean
+On Error Resume Next
+  
+ Dim f As Boolean
+ Dim V As Variant
+ Dim i As Integer
+ Dim NombreEnMayusculas As String
+ NombreEnMayusculas = UCase$(Nombre)
+ 
+ i = 1
+ f = False
+ 
+ For i = 1 To Me.Longitud
+        V = Me.VerElemento(i)
+        If V = NombreEnMayusculas Then
+            Existe = True
+            Exit Function
+        End If
+ Next
+
+
+End Function
+
+Public Sub Quitar(ByVal Nombre As String)
+On Error Resume Next
+Dim V As Variant
+Dim i As Integer
+Dim NombreEnMayusculas As String
+ 
+NombreEnMayusculas = UCase$(Nombre)
+ 
+For i = 1 To Me.Longitud
+    V = Me.VerElemento(i)
+    If V = NombreEnMayusculas Then
+        Call Cola.Remove(i)
+        Exit Sub
+    End If
+Next i
+ 
+End Sub
+
+Public Sub QuitarIndex(ByVal Index As Integer)
+On Error Resume Next
+If IndexValido(Index) Then Call Cola.Remove(Index)
+End Sub
+
+
+Private Sub Class_Terminate()
+'Destruimos el objeto Cola
+Set Cola = Nothing
+End Sub
