@@ -226,7 +226,7 @@ Minutos = Format(Now, "Short Time")
 
 
 
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 ReDim Parties(1 To MAX_PARTIES) As clsParty
 ReDim Guilds(1 To MAX_GUILDS) As clsClan
@@ -360,8 +360,6 @@ frmCargando.Show
 'Call PlayWaveAPI(App.Path & "\wav\harp3.wav")
 
 frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
-ENDL = Chr(13) & Chr(10)
-ENDC = Chr(1)
 IniPath = App.Path & "\"
 CharPath = App.Path & "\Charfile\"
 
@@ -931,7 +929,7 @@ Next LoopC
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini

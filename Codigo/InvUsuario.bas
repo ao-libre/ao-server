@@ -838,8 +838,6 @@ Select Case Obj.OBJType
         Call EnviarHambreYsed(UserIndex)
         'Sonido
         
-        'SendData ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_COMIDA
-        
         If ObjIndex = e_ObjetosCriticos.Manzana Or ObjIndex = e_ObjetosCriticos.Manzana2 Or ObjIndex = e_ObjetosCriticos.ManzanaNewbie Then
             Call SonidosMapas.ReproducirSonido(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, e_SoundIndex.MORFAR_MANZANA)
         Else

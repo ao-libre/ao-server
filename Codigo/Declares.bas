@@ -1028,7 +1028,9 @@ Type User
     
     KeyCrypt As Integer
     
-    
+        
+    AreasInfo As AreaInfo
+
     
 End Type
 
@@ -1139,7 +1141,7 @@ End Type
 '<--------- New type for holding the pathfinding info ------>
 
 
-Type npc
+Type Npc
     Name As String
     Char As Char 'Define como se vera
     Desc As String
@@ -1196,9 +1198,7 @@ Type npc
     
     '<---------New!! Needed for pathfindig----------->
     PFINFO As NpcPathFindingInfo
-'    AreasInfo As AreaInfo
-
-    
+    AreasInfo As AreaInfo
 End Type
 
 '**********************************************************
@@ -1247,8 +1247,8 @@ Public SkillsNames() As String
 Public ListaClases() As String
 
 
-Public ENDL As String
-Public ENDC As String
+Public Const ENDL As String * 2 = vbCrLf
+Public Const ENDC As String * 1 = vbNullChar
 
 Public recordusuarios As Long
 
@@ -1302,7 +1302,7 @@ Public EncriptarProtocolosCriticos As Boolean
 
 '*****************ARRAYS PUBLICOS*************************
 Public UserList() As User 'USUARIOS
-Public Npclist() As npc 'NPCS
+Public Npclist() As Npc 'NPCS
 Public MapData() As MapBlock
 Public MapInfo() As MapInfo
 Public Hechizos() As tHechizo
@@ -1342,8 +1342,6 @@ Public Declare Function GetTickCount Lib "kernel32" () As Long
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
 Public Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
-'Public Declare Function GenCrC Lib "crc" Alias "GenCrc" (ByVal CrcKey As Long, ByVal CrcString As String) As Long
-
 
 
 Public Enum e_ObjetosCriticos
