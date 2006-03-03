@@ -1254,7 +1254,7 @@ End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
 
-Dim t As eTrigger6
+Dim T As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
     SendData ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
@@ -1262,12 +1262,12 @@ If UserList(VictimIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-t = TriggerZonaPelea(AttackerIndex, VictimIndex)
+T = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If t = TRIGGER6_PERMITE Then
+If T = TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf t = TRIGGER6_PROHIBE Then
+ElseIf T = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
 End If
@@ -1279,7 +1279,8 @@ If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
     Exit Function
 End If
 
-If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = TRIGGER_ZONASEGURA Then
+If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = TRIGGER_ZONASEGURA Or _
+    MapData(UserList(AttackerIndex).Pos.Map, UserList(AttackerIndex).Pos.X, UserList(AttackerIndex).Pos.Y).trigger = TRIGGER_ZONASEGURA Then
     Call SendData(ToIndex, AttackerIndex, 0, "||No podes pelear aqui." & FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
