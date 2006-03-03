@@ -215,7 +215,7 @@ Sub ResetNpcCharInfo(ByVal NpcIndex As Integer)
 
 Npclist(NpcIndex).Char.Body = 0
 Npclist(NpcIndex).Char.CascoAnim = 0
-Npclist(NpcIndex).Char.charindex = 0
+Npclist(NpcIndex).Char.CharIndex = 0
 Npclist(NpcIndex).Char.FX = 0
 Npclist(NpcIndex).Char.Head = 0
 Npclist(NpcIndex).Char.Heading = 0
@@ -450,22 +450,22 @@ Dim Y As Integer
 End Sub
 
 Sub MakeNPCChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
-Dim charindex As Integer
+Dim CharIndex As Integer
 
-    If Npclist(NpcIndex).Char.charindex = 0 Then
-        charindex = NextOpenCharIndex
-        Npclist(NpcIndex).Char.charindex = charindex
-        CharList(charindex) = NpcIndex
+    If Npclist(NpcIndex).Char.CharIndex = 0 Then
+        CharIndex = NextOpenCharIndex
+        Npclist(NpcIndex).Char.CharIndex = CharIndex
+        CharList(CharIndex) = NpcIndex
     End If
     
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
-    'If sndRoute = ToMap Then
-    '    Call ArgegarNpc(NpcIndex)
-    '    Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
-    'Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CC" & Npclist(NpcIndex).Char.Body & "," & Npclist(NpcIndex).Char.Head & "," & Npclist(NpcIndex).Char.Heading & "," & Npclist(NpcIndex).Char.charindex & "," & X & "," & Y)
-    'End If
+    If sndRoute = ToMap Then
+        Call ArgegarNpc(NpcIndex)
+        Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
+    Else
+        Call SendData(sndRoute, sndIndex, sndMap, "CC" & Npclist(NpcIndex).Char.Body & "," & Npclist(NpcIndex).Char.Head & "," & Npclist(NpcIndex).Char.Heading & "," & Npclist(NpcIndex).Char.CharIndex & "," & X & "," & Y)
+    End If
 
 End Sub
 
@@ -475,20 +475,20 @@ If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.Body = Body
     Npclist(NpcIndex).Char.Head = Head
     Npclist(NpcIndex).Char.Heading = Heading
-    'If sndRoute = ToMap Then
-    '    Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.charindex & "," & Body & "," & Head & "," & Heading)
-    'Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.charindex & "," & Body & "," & Head & "," & Heading)
-    'End If
+    If sndRoute = ToMap Then
+        Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
+    Else
+        Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
+    End If
 End If
 
 End Sub
 
 Sub EraseNPCChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, ByVal NpcIndex As Integer)
 
-If Npclist(NpcIndex).Char.charindex <> 0 Then CharList(Npclist(NpcIndex).Char.charindex) = 0
+If Npclist(NpcIndex).Char.CharIndex <> 0 Then CharList(Npclist(NpcIndex).Char.CharIndex) = 0
 
-If Npclist(NpcIndex).Char.charindex = LastChar Then
+If Npclist(NpcIndex).Char.CharIndex = LastChar Then
     Do Until CharList(LastChar) > 0
         LastChar = LastChar - 1
         If LastChar <= 1 Then Exit Do
@@ -499,14 +499,14 @@ End If
 MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
 
 'Actualizamos los cliente
-'If sndRoute = ToMap Then
-'    Call SendToNpcArea(NpcIndex, "BP" & Npclist(NpcIndex).Char.charindex)
-'Else
-    Call SendData(sndRoute, sndIndex, sndMap, "BP" & Npclist(NpcIndex).Char.charindex)
-'End If
+If sndRoute = ToMap Then
+    Call SendToNpcArea(NpcIndex, "BP" & Npclist(NpcIndex).Char.CharIndex)
+Else
+    Call SendData(sndRoute, sndIndex, sndMap, "BP" & Npclist(NpcIndex).Char.CharIndex)
+End If
 
 'Update la lista npc
-Npclist(NpcIndex).Char.charindex = 0
+Npclist(NpcIndex).Char.CharIndex = 0
 
 
 'update NumChars
@@ -531,9 +531,9 @@ On Error GoTo errh
                 If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
                 
 #If SeguridadAlkon Then
-                Call SendData(ToMap, 0, nPos.Map, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
+                Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y), True)
 #Else
-                Call SendData(ToMap, 0, nPos.Map, "*" & Npclist(NpcIndex).Char.charindex & "," & nPos.X & "," & nPos.Y)
+                Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
             
                 'Update map and user pos
@@ -553,11 +553,10 @@ On Error GoTo errh
                 
                 '[Alejo-18-5]
                 'server
-                'Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.x, nPos.y), False)
 #If SeguridadAlkon Then
-                Call SendData(ToMap, 0, nPos.Map, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
+                Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y), True)
 #Else
-                Call SendData(ToMap, 0, nPos.Map, "*" & Npclist(NpcIndex).Char.charindex & "," & nPos.X & "," & nPos.Y)
+                Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
                 
                 'Update map and user pos
@@ -618,7 +617,6 @@ End Sub
 
 Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolean, ByVal Respawn As Boolean) As Integer
 'Crea un NPC del tipo Npcindex
-'Call LogTarea("Sub SpawnNpc")
 
 Dim newpos As WorldPos
 Dim nIndex As Integer
@@ -674,7 +672,7 @@ Call MakeNPCChar(ToMap, 0, Map, nIndex, Map, X, Y)
 
 If FX Then
     Call SendData(ToNPCArea, nIndex, Map, "TW" & SND_WARP)
-    Call SendData(ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.charindex & "," & FXWARP & "," & 0)
+    Call SendData(ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.CharIndex & "," & FXWARP & "," & 0)
 End If
 
 SpawnNpc = nIndex
@@ -751,10 +749,6 @@ Else
         'NpcFile = DatPath & "NPCs.dat"
         Set Leer = LeerNPCs
 End If
-
-'Leer.Abrir NpcFile
-'j = Val(Leer.DarValor(
-
 
 NpcIndex = NextOpenNPC
 

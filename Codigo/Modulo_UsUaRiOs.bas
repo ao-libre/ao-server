@@ -106,11 +106,11 @@ UserList(UserIndex).Char.Heading = Heading
 UserList(UserIndex).Char.WeaponAnim = Arma
 UserList(UserIndex).Char.ShieldAnim = Escudo
 UserList(UserIndex).Char.CascoAnim = Casco
-'    If sndRoute = ToMap Then
-'        Call SendToUserArea(UserIndex, "CP" & UserList(UserIndex).Char.charindex & "," & Body & "," & Head & "," & Heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & Casco)
-'    Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CP" & UserList(UserIndex).Char.charindex & "," & Body & "," & Head & "," & Heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & Casco)
-'    End If
+    If sndRoute = ToMap Then
+        Call SendToUserArea(UserIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & Casco)
+    Else
+        Call SendData(sndRoute, sndIndex, sndMap, "CP" & UserList(UserIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & Casco)
+    End If
 
 End Sub
 
@@ -177,9 +177,9 @@ Sub EraseUserChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, User
 
 On Error GoTo ErrorHandler
    
-    CharList(UserList(UserIndex).Char.charindex) = 0
+    CharList(UserList(UserIndex).Char.CharIndex) = 0
     
-    If UserList(UserIndex).Char.charindex = LastChar Then
+    If UserList(UserIndex).Char.CharIndex = LastChar Then
         Do Until CharList(LastChar) > 0
             LastChar = LastChar - 1
             If LastChar <= 1 Then Exit Do
@@ -187,15 +187,15 @@ On Error GoTo ErrorHandler
     End If
     
     'Le mandamos el mensaje para que borre el personaje a los clientes que este en el mismo mapa
-'    If sndRoute = ToMap Then
-'        Call SendToUserArea(UserIndex, "BP" & UserList(UserIndex).Char.charindex)
-'        Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
-'    Else
-        Call SendData(ToMap, UserIndex, UserList(UserIndex).Pos.Map, "BP" & UserList(UserIndex).Char.charindex)
-'    End If
+    If sndRoute = ToMap Then
+        Call SendToUserArea(UserIndex, "BP" & UserList(UserIndex).Char.CharIndex)
+        Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
+    Else
+       Call SendData(sndRoute, sndIndex, sndMap, "BP" & UserList(UserIndex).Char.CharIndex)
+    End If
     
     MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
-    UserList(UserIndex).Char.charindex = 0
+    UserList(UserIndex).Char.CharIndex = 0
     
     NumChars = NumChars - 1
     
@@ -209,15 +209,15 @@ End Sub
 Sub MakeUserChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Local Error GoTo hayerror
 
-Dim charindex As Integer
+Dim CharIndex As Integer
 
 If InMapBounds(Map, X, Y) Then
 
        'If needed make a new character in list
-       If UserList(UserIndex).Char.charindex = 0 Then
-           charindex = NextOpenCharIndex
-           UserList(UserIndex).Char.charindex = charindex
-           CharList(charindex) = UserIndex
+       If UserList(UserIndex).Char.CharIndex = 0 Then
+           CharIndex = NextOpenCharIndex
+           UserList(UserIndex).Char.CharIndex = CharIndex
+           CharList(CharIndex) = UserIndex
        End If
        
        'Place character on map
@@ -241,82 +241,47 @@ If InMapBounds(Map, X, Y) Then
 #If SeguridadAlkon Then
                 If EncriptarProtocolosCriticos Then
                     If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                     End If
                 Else
 #End If
                     If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                        Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                     End If
 #If SeguridadAlkon Then
                 End If
 #End If
             ElseIf sndRoute = ToMap Then
-#If SeguridadAlkon Then
-                If EncriptarProtocolosCriticos Then
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendCryptedData(ToMapButIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
-                        Call SendData(ToIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))   'porque no le di todavia el charindeX!!!
-                    Else
-                        Call SendCryptedData(ToMapButIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
-                        Call SendData(ToIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))) 'porque no le di todavia el charindeX!!!
-                    End If
-                Else
-#End If
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendData(ToMap, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    Else
-                        Call SendData(ToMap, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
-                    End If
-#If SeguridadAlkon Then
-                End If
-#End If
+                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
+                Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
         Else 'if tiene clan
             If sndRoute = ToIndex Then
 #If SeguridadAlkon Then
                 If EncriptarProtocolosCriticos Then
                     If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                        Call SendCryptedData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                     End If
                 Else
 #End If
                     If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call SendData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call SendData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                        Call SendData(ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                     End If
 #If SeguridadAlkon Then
                 End If
 #End If
             ElseIf sndRoute = ToMap Then
-#If SeguridadAlkon Then
-                If EncriptarProtocolosCriticos Then
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendCryptedData(ToMapButIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
-                        Call SendData(ToIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    Else
-                        Call SendCryptedData(ToMapButIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
-                        Call SendData(ToIndex, UserIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
-                    End If
-                Else
-#End If
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendData(ToMap, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    Else
-                        Call SendData(ToMap, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.charindex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).Name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
-                    End If
-#If SeguridadAlkon Then
-                End If
-#End If
+                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
+                Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
-            
        End If   'if clan
 
 End If
@@ -791,14 +756,12 @@ Dim nPos As WorldPos
     
     If LegalPos(UserList(UserIndex).Pos.Map, nPos.X, nPos.Y, PuedeAtravesarAgua(UserIndex)) Then
         
-        'Call SendToUserAreaButindex(UserIndex, "+" & Chr((UserList(UserIndex).Char.CharIndex And &H3FC0&) / 64) & Chr(((UserList(UserIndex).Char.CharIndex And &H3F&) * 4) + 2) & Chr(nPos.X) & Chr(nPos.Y))
-        'Call SendToUserAreaButindex(UserIndex, nPos.X, nPos.Y)
         If MapInfo(UserList(UserIndex).Pos.Map).NumUsers > 1 Then
             'si no estoy solo en el mapa...
 #If SeguridadAlkon Then
             Call SendCryptedMoveChar(nPos.Map, UserIndex, nPos.X, nPos.Y)
 #Else
-            Call SendData(ToMap, UserIndex, nPos.Map, "+" & UserList(UserIndex).Char.charindex & "," & nPos.X & "," & nPos.Y)
+            Call SendToUserArea(UserIndex, "+" & UserList(UserIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
         End If
         
@@ -808,9 +771,6 @@ Dim nPos As WorldPos
         UserList(UserIndex).Pos = nPos
         UserList(UserIndex).Char.Heading = nHeading
         MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
-        
-        'Call CheckUpdateNeededUser(UserIndex, nHeading)
-    
     
     Else
         Call SendData(ToIndex, UserIndex, 0, "PU" & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y)
@@ -1167,7 +1127,7 @@ On Error GoTo ErrorHandler
     End If
     
     'Quitar el dialogo del user muerto
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "QDL" & UserList(UserIndex).Char.charindex)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "QDL" & UserList(UserIndex).Char.CharIndex)
     
     UserList(UserIndex).Stats.MinHP = 0
     UserList(UserIndex).Stats.MinSta = 0
@@ -1216,7 +1176,7 @@ On Error GoTo ErrorHandler
         UserList(UserIndex).flags.Oculto = 0
         UserList(UserIndex).flags.Invisible = 0
         'no hace falta encriptar este NOVER
-        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
     End If
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
@@ -1417,77 +1377,57 @@ Dim hayobj As Boolean
 End Sub
 
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal FX As Boolean = False)
+
 Dim OldMap As Integer
 Dim OldX As Integer
 Dim OldY As Integer
 
-'Quitar el dialogo
-Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "QDL" & UserList(UserIndex).Char.charindex)
-
-Call SendData(ToIndex, UserIndex, UserList(UserIndex).Pos.Map, "QTDL")
-
-
-OldMap = UserList(UserIndex).Pos.Map
-OldX = UserList(UserIndex).Pos.X
-OldY = UserList(UserIndex).Pos.Y
-
-Call EraseUserChar(ToMap, 0, OldMap, UserIndex)
-
-UserList(UserIndex).Pos.X = X
-UserList(UserIndex).Pos.Y = Y
-UserList(UserIndex).Pos.Map = Map
-
-If OldMap <> Map Then
-    Call SendData(ToIndex, UserIndex, 0, "CM" & Map & "," & MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
-    Call SendData(ToIndex, UserIndex, 0, "TM" & MapInfo(Map).Music)
-'    Call EnviarNoche(UserIndex)
+    'Quitar el dialogo
+    Call SendToUserArea(UserIndex, "QDL" & UserList(UserIndex).Char.CharIndex)
+    Call SendData(ToIndex, UserIndex, UserList(UserIndex).Pos.Map, "QTDL")
     
+    OldMap = UserList(UserIndex).Pos.Map
+    OldX = UserList(UserIndex).Pos.X
+    OldY = UserList(UserIndex).Pos.Y
     
-    Call MakeUserChar(ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-    Call SendData(ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.charindex)
-
-
-    'Update new Map Users
-    MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
-
-    'Update old Map Users
-    MapInfo(OldMap).NumUsers = MapInfo(OldMap).NumUsers - 1
-    If MapInfo(OldMap).NumUsers < 0 Then
-        MapInfo(OldMap).NumUsers = 0
-    End If
-Else
-    Call MakeUserChar(ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-    Call SendData(ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.charindex)
-  
-
-
-End If
-
-
-Call UpdateUserMap(UserIndex)
-
-        'Seguis invisible al pasar de mapa
-        If (UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then
-#If SeguridadAlkon Then
-            If EncriptarProtocolosCriticos Then
-                Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",1")
-            Else
-#End If
-                Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",1")
-#If SeguridadAlkon Then
-            End If
-#End If
+    Call EraseUserChar(ToMap, 0, OldMap, UserIndex)
+        
+    If OldMap <> Map Then
+        Call SendData(ToIndex, UserIndex, 0, "CM" & Map & "," & MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
+        Call SendData(ToIndex, UserIndex, 0, "TM" & MapInfo(Map).Music)
+        
+        'Update new Map Users
+        MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
+    
+        'Update old Map Users
+        MapInfo(OldMap).NumUsers = MapInfo(OldMap).NumUsers - 1
+        If MapInfo(OldMap).NumUsers < 0 Then
+            MapInfo(OldMap).NumUsers = 0
         End If
-
-If FX And UserList(UserIndex).flags.AdminInvisible = 0 Then 'FX
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_WARP)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & FXWARP & "," & 0)
-End If
-
-
-Call WarpMascotas(UserIndex)
+    End If
+    
+    UserList(UserIndex).Pos.X = X
+    UserList(UserIndex).Pos.Y = Y
+    UserList(UserIndex).Pos.Map = Map
+    
+    Call MakeUserChar(ToMap, 0, Map, UserIndex, Map, X, Y)
+    Call SendData(ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.CharIndex)
+    
+    'Seguis invisible al pasar de mapa
+    If (UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then
+            Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos)
+    End If
+    
+    If FX And UserList(UserIndex).flags.AdminInvisible = 0 Then 'FX
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_WARP)
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXWARP & ",0")
+    End If
+    
+    
+    Call WarpMascotas(UserIndex)
 
 End Sub
+
 
 Sub UpdateUserMap(ByVal UserIndex As Integer)
 
@@ -1507,10 +1447,10 @@ For Y = YMinMapSize To YMaxMapSize
             Call MakeUserChar(ToIndex, UserIndex, 0, MapData(Map, X, Y).UserIndex, Map, X, Y)
 #If SeguridadAlkon Then
             If EncriptarProtocolosCriticos Then
-                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendCryptedData(ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.charindex & ",1")
+                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendCryptedData(ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
             Else
 #End If
-                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendData(ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.charindex & ",1")
+                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendData(ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
             End If
 #End If
