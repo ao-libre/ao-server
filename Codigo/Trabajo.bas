@@ -867,6 +867,11 @@ End If
 
 If TriggerZonaPelea(LadrOnIndex, VictimaIndex) <> TRIGGER6_AUSENTE Then Exit Sub
 
+If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And UserList(LadrOnIndex).Faccion.FuerzasCaos = 1 Then
+    Call SendData(ToIndex, LadrOnIndex, 0, "||No puedes robar a otros miembros de las fuerzas del caos" & FONTTYPE_FIGHT)
+    Exit Sub
+End If
+
 If UserList(VictimaIndex).flags.Privilegios = 0 Then
     Dim Suerte As Integer
     Dim res As Integer
