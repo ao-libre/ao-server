@@ -327,11 +327,11 @@ If MapData(Map, X, Y).OBJInfo.Amount <= 0 Then
     MapData(Map, X, Y).OBJInfo.ObjIndex = 0
     MapData(Map, X, Y).OBJInfo.Amount = 0
     
-'    If sndRoute = ToMap Then
-'        Call SendToAreaByPos(Map, X, Y, "BO" & X & "," & Y)
- '   Else
+    If sndRoute = ToMap Then
+        Call SendToAreaByPos(Map, X, Y, "BO" & X & "," & Y)
+   Else
         Call SendData(sndRoute, sndIndex, sndMap, "BO" & X & "," & Y)
-'    End If
+    End If
 End If
 
 End Sub
@@ -341,7 +341,12 @@ Sub MakeObj(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As I
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
         MapData(Map, X, Y).OBJInfo = Obj
-        Call SendData(sndRoute, sndIndex, sndMap, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
+        
+        If sndRoute = ToMap Then
+            Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
+        Else
+            Call SendData(sndRoute, sndIndex, sndMap, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
+        End If
 End If
 
 End Sub
