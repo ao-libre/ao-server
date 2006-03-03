@@ -697,8 +697,9 @@ Procesado = True 'ver al final del sub
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
                 If AuxInd <> OBJTYPE_CAÑA And AuxInd <> RED_PESCA Then
-                        Call Cerrar_Usuario(UserIndex)
-                        Exit Sub
+                    'Call Cerrar_Usuario(UserIndex)
+                    ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
+                    Exit Sub
                 End If
                 
                 'Basado en la idea de Barrin
@@ -779,8 +780,9 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 If UserList(UserIndex).Invent.HerramientaEqpObjIndex <> HACHA_LEÑADOR Then
-                        Call CloseSocket(UserIndex)
-                        Exit Sub
+                    ' Call Cerrar_Usuario(UserIndex)
+                    ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
+                    Exit Sub
                 End If
                 
                 AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex
@@ -815,9 +817,9 @@ Procesado = True 'ver al final del sub
                 If UserList(UserIndex).Invent.HerramientaEqpObjIndex = 0 Then Exit Sub
                 
                 If UserList(UserIndex).Invent.HerramientaEqpObjIndex <> PIQUETE_MINERO Then
-                        Call CloseSocketSL(UserIndex)
-                        Call Cerrar_Usuario(UserIndex)
-                        Exit Sub
+                    ' Call Cerrar_Usuario(UserIndex)
+                    ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
+                    Exit Sub
                 End If
                 
                 Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)

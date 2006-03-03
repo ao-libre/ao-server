@@ -864,7 +864,7 @@ End Sub
 
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
-If MapInfo(UserList(VictimaIndex).Pos.Map).Pk = 1 Then Exit Sub
+If MapInfo(UserList(VictimaIndex).Pos.Map).Pk = True Then Exit Sub
 If UserList(LadrOnIndex).flags.Seguro Then
     Call SendData(ToIndex, LadrOnIndex, 0, "||Debes quitar el seguro para robar" & FONTTYPE_FIGHT)
     Exit Sub
