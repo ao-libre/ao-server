@@ -649,7 +649,12 @@ Dim Obj As Obj
 
 If Not LegalPos(Map, X, Y) Then Exit Sub
 
-If MapData(Map, X, Y).trigger = 4 Or MapInfo(Map).Pk = False Then
+If UserList(UserIndex).flags.Muerto = 1 Then
+    Call SendData(ToIndex, UserIndex, 0, "||No puedes hacer fogatas estando muerto." & FONTTYPE_INFO)
+    Exit Sub
+End If
+
+If MapData(Map, X, Y).trigger = TRIGGER_ZONASEGURA Or MapInfo(Map).Pk = False Then
     Call SendData(ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
     Exit Sub
 End If
@@ -661,11 +666,11 @@ End If
 
 
 If UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 0 And UserList(UserIndex).Stats.UserSkills(Supervivencia) < 6 Then
-            Suerte = 3
+    Suerte = 3
 ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 34 Then
-            Suerte = 2
+    Suerte = 2
 ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 35 Then
-            Suerte = 1
+    Suerte = 1
 End If
 
 exito = RandomNumber(1, Suerte)
