@@ -460,14 +460,15 @@ Dim AreaY As Integer
         If TempInt Then  'Esta en el area?
             TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY
             If TempInt Then
-                'El ConnId es valido?
-                'If UserList(TempIndex).ConnID Then
-                    If Encriptar Then
-                        Call EnviarDatosASlot(TempIndex, ProtoCrypt(sdData, TempIndex) & ENDC)
-                    Else
-                        Call EnviarDatosASlot(TempIndex, sdData)
-                    End If
-                'End If
+#If SeguridadAlkon Then
+                If Encriptar Then
+                    Call EnviarDatosASlot(TempIndex, ProtoCrypt(sdData, TempIndex) & ENDC)
+                Else
+#End If
+                    Call EnviarDatosASlot(TempIndex, sdData)
+#If SeguridadAlkon Then
+                End If
+#End If
             End If
         End If
     Next

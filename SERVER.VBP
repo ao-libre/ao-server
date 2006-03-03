@@ -62,6 +62,7 @@ Class=clsClan; Codigo\clsClan.cls
 Module=modGuilds; Codigo\modGuilds.bas
 Module=SecurityIp; Codigo\SecurityIp.bas
 Class=diccionario; Codigo\clsdicc.cls
+Module=ModAreas; Codigo\ModAreas.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
