@@ -78,7 +78,7 @@ If res > 9 Then
    UserList(UserIndex).flags.Oculto = 0
    UserList(UserIndex).flags.Invisible = 0
    'no hace falta encriptar este (se jode el gil que bypassea esto)
-   Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+   Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
    Call SendData(ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
 End If
 
@@ -138,10 +138,10 @@ If res <= 5 Then
    UserList(UserIndex).flags.Invisible = 1
 #If SeguridadAlkon Then
    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",1")
+        Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
    Else
 #End If
-        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",1")
+        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
    End If
 #End If
@@ -619,6 +619,17 @@ End Sub
 Sub DoAdminInvisible(ByVal UserIndex As Integer)
     
     If UserList(UserIndex).flags.AdminInvisible = 0 Then
+        
+        ' Sacamos el mimetizmo
+        If UserList(UserIndex).flags.Mimetizado = 1 Then
+            UserList(UserIndex).Char.Body = UserList(UserIndex).CharMimetizado.Body
+            UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
+            UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
+            UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
+            UserList(UserIndex).Char.WeaponAnim = UserList(UserIndex).CharMimetizado.WeaponAnim
+            UserList(UserIndex).Counters.Mimetismo = 0
+            UserList(UserIndex).flags.Mimetizado = 0
+        End If
         
         UserList(UserIndex).flags.AdminInvisible = 1
         UserList(UserIndex).flags.Invisible = 1
@@ -1345,7 +1356,7 @@ If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     UserList(UserIndex).flags.Meditando = False
     UserList(UserIndex).Char.FX = 0
     UserList(UserIndex).Char.loops = 0
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & 0 & "," & 0)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
     Exit Sub
 End If
 

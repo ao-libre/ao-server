@@ -46,7 +46,7 @@ If Hechizos(Spell).SubeHP = 1 Then
 
     daño = RandomNumber(Hechizos(Spell).MinHP, Hechizos(Spell).MaxHP)
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
 
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + daño
     If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
@@ -71,7 +71,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
         If daño < 0 Then daño = 0
         
         Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
-        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
     
         UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
         
@@ -100,7 +100,7 @@ End If
 If Hechizos(Spell).Paraliza = 1 Then
      If UserList(UserIndex).flags.Paralizado = 0 Then
           Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
-          Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
+          Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
           
             If UserList(UserIndex).Invent.HerramientaEqpObjIndex = SUPERANILLO Then
                 Call SendData(ToIndex, UserIndex, 0, "|| Tu anillo rechaza los efectos del hechizo." & FONTTYPE_FIGHT)
@@ -139,7 +139,7 @@ If Hechizos(Spell).SubeHP = 2 Then
     
         daño = RandomNumber(Hechizos(Spell).MinHP, Hechizos(Spell).MaxHP)
         Call SendData(ToNPCArea, TargetNPC, Npclist(TargetNPC).Pos.Map, "TW" & Hechizos(Spell).WAV)
-        Call SendData(ToNPCArea, TargetNPC, Npclist(TargetNPC).Pos.Map, "CFX" & Npclist(TargetNPC).Char.charindex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
+        Call SendData(ToNPCArea, TargetNPC, Npclist(TargetNPC).Pos.Map, "CFX" & Npclist(TargetNPC).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
         
         Npclist(TargetNPC).Stats.MinHP = Npclist(TargetNPC).Stats.MinHP - daño
         
@@ -205,7 +205,7 @@ Sub DecirPalabrasMagicas(ByVal s As String, ByVal UserIndex As Integer)
 On Error Resume Next
 
     Dim ind As String
-    ind = UserList(UserIndex).Char.charindex
+    ind = UserList(UserIndex).Char.CharIndex
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & s & "°" & ind)
     Exit Sub
 End Sub
@@ -282,7 +282,7 @@ Dim TempY As Integer
                     If MapData(PosCasteadaM, TempX, TempY).UserIndex > 0 Then
                         'hay un user
                         If UserList(MapData(PosCasteadaM, TempX, TempY).UserIndex).flags.Invisible = 1 And UserList(MapData(PosCasteadaM, TempX, TempY).UserIndex).flags.AdminInvisible = 0 Then
-                            Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(MapData(PosCasteadaM, TempX, TempY).UserIndex).Char.charindex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
+                            Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(MapData(PosCasteadaM, TempX, TempY).UserIndex).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
                         End If
                     End If
                 End If
@@ -487,10 +487,10 @@ If Hechizos(H).Invisibilidad = 1 Then
    UserList(TU).flags.Invisible = 1
 #If SeguridadAlkon Then
    If EncriptarProtocolosCriticos Then
-      Call SendCryptedData(ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.charindex & ",1")
+      Call SendCryptedData(ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
    Else
 #End If
-    Call SendData(ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.charindex & ",1")
+    Call SendData(ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
    End If
 #End If
@@ -500,6 +500,13 @@ End If
 
 If Hechizos(H).Mimetiza = 1 Then
     If UserList(TU).flags.Muerto = 1 Then
+        Exit Sub
+    End If
+    
+    If UserList(TU).flags.Navegando = 1 Then
+        Exit Sub
+    End If
+    If UserList(UserIndex).flags.Navegando = 1 Then
         Exit Sub
     End If
     
@@ -666,21 +673,9 @@ If Hechizos(H).Revivir = 1 Then
         End If
         
         'Pablo Toxic waste
-        'If Not Criminal(TU) Then
-        '    If TU <> UserIndex Then
-        '        UserList(TU).Stats.MinAGU = UserList(TU).Stats.MinAGU - 25
-        '        UserList(TU).Stats.MinHam = UserList(TU).Stats.MinHam - 25
-        '        If UserList(TU).Stats.MinAGU < 0 Then UserList(TU).Stats.MinAGU = 0
-        '        If UserList(TU).Stats.MinHam < 0 Then UserList(TU).Stats.MinHam = 0
-        '        Call AddtoVar(UserList(UserIndex).Reputacion.NobleRep, 500, MAXREP)
-        '        Call SendData(ToIndex, UserIndex, 0, "||¡Los Dioses te sonrien, has ganado 500 puntos de nobleza!." & FONTTYPE_INFO)
-        '    End If
-        'End If
-        'UserList(TU).Stats.MinAGU = UserList(TU).Stats.MinAGU * 0.7
-        'UserList(TU).Stats.MinHam = UserList(TU).Stats.MinHam * 0.7
-        'UserList(TU).Stats.MinMAN = 0
         UserList(TU).Stats.MinAGU = UserList(TU).Stats.MinAGU - 25
         UserList(TU).Stats.MinHam = UserList(TU).Stats.MinHam - 25
+        'Juan Maraxus
         If UserList(TU).Stats.MinAGU <= 0 Then
                 UserList(TU).Stats.MinAGU = 0
                 UserList(TU).flags.Sed = 1
@@ -689,6 +684,7 @@ If Hechizos(H).Revivir = 1 Then
                 UserList(TU).Stats.MinHam = 0
                 UserList(TU).flags.Hambre = 1
         End If
+        '/Juan Maraxus
         If Not Criminal(TU) Then
             If TU <> UserIndex Then
                 Call AddtoVar(UserList(UserIndex).Reputacion.NobleRep, 500, MAXREP)
@@ -910,10 +906,10 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
     Call DecirPalabrasMagicas(Hechizos(H).PalabrasMagicas, UserIndex)
     
     If UserList(UserIndex).flags.TargetUser > 0 Then
-        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserList(UserIndex).flags.TargetUser).Char.charindex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserList(UserIndex).flags.TargetUser).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
         Call SendData(ToPCArea, UserList(UserIndex).flags.TargetUser, UserList(UserIndex).Pos.Map, "TW" & Hechizos(H).WAV)
     ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
-        Call SendData(ToNPCArea, UserList(UserIndex).flags.TargetNPC, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Map, "CFX" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
+        Call SendData(ToNPCArea, UserList(UserIndex).flags.TargetNPC, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Map, "CFX" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
         Call SendData(ToNPCArea, UserList(UserIndex).flags.TargetNPC, UserList(UserIndex).Pos.Map, "TW" & Hechizos(H).WAV)
     End If
     

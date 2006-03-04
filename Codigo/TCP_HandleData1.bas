@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim T() As String
+Dim t() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -77,13 +77,13 @@ Procesado = True 'ver al final del sub
                 Call LogGM(UserList(UserIndex).Name, "Dijo: " & rData, True)
             End If
             
-            ind = UserList(UserIndex).Char.charindex
+            ind = UserList(UserIndex).Char.CharIndex
             
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
                 UserList(UserIndex).flags.Invisible = 0
-                Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+                Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                 Call SendData(ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
             End If
             
@@ -111,12 +111,12 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
                 UserList(UserIndex).flags.Invisible = 0
-                Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+                Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                 Call SendData(ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
             End If
     
     
-            ind = UserList(UserIndex).Char.charindex
+            ind = UserList(UserIndex).Char.CharIndex
             Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & rData & "°" & str(ind))
             Exit Sub
         Case "\" 'Susurrar al oido
@@ -141,7 +141,7 @@ Procesado = True 'ver al final del sub
                     Call SendData(ToIndex, UserIndex, 0, "||Estas muy lejos del usuario." & FONTTYPE_INFO)
                     Exit Sub
                 End If
-                ind = UserList(UserIndex).Char.charindex
+                ind = UserList(UserIndex).Char.CharIndex
                 If InStr(tMessage, "°") Then
                     Exit Sub
                 End If
@@ -211,7 +211,7 @@ Procesado = True 'ver al final del sub
                   Call SendData(ToIndex, UserIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
                   UserList(UserIndex).Char.FX = 0
                   UserList(UserIndex).Char.loops = 0
-                  Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & 0 & "," & 0)
+                  Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
                   
                   'retirado en el parche de setiembre 2004
                   'Call MoveUserChar(UserIndex, val(rdata))
@@ -227,15 +227,15 @@ Procesado = True 'ver al final del sub
             End If
             
             If UserList(UserIndex).flags.Oculto = 1 Then
-                
                 If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then
-                    Call SendData(ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
                     UserList(UserIndex).flags.Oculto = 0
-                    UserList(UserIndex).flags.Invisible = 0
-                    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+                    If UserList(UserIndex).flags.Invisible = 0 Then
+                        Call SendData(ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
+                        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                    End If
                 End If
-                
             End If
+            
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call Empollando(UserIndex)
             Else
@@ -274,7 +274,7 @@ Procesado = True 'ver al final del sub
                 If UserList(UserIndex).flags.Oculto > 0 Then
                     UserList(UserIndex).flags.Oculto = 0
                     UserList(UserIndex).flags.Invisible = 0
-                    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+                    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
                 
@@ -1032,7 +1032,7 @@ Procesado = True 'ver al final del sub
                         End If
                 End If
             Else
-                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No puedo traer mas criaturas, mata las existentes!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex))
+                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No puedo traer mas criaturas, mata las existentes!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
             End If
             
             Exit Sub
@@ -1047,7 +1047,7 @@ Procesado = True 'ver al final del sub
              If UserList(UserIndex).flags.TargetNPC > 0 Then
                    '¿El NPC puede comerciar?
                    If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                       Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex))
+                       Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                        Exit Sub
                    End If
              Else
@@ -1097,7 +1097,7 @@ Procesado = True 'ver al final del sub
              If UserList(UserIndex).flags.TargetNPC > 0 Then
                    '¿El NPC puede comerciar?
                    If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                       Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex))
+                       Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                        Exit Sub
                    End If
                    If (Not Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SR" And Not Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SC") And (ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Real = 1 Or ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Caos = 1) Then
