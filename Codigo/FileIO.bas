@@ -1114,7 +1114,7 @@ Dim npcfile As String
 On Error GoTo man
     
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
-'    Call InitAreas
+    Call InitAreas
     
     frmCargando.cargar.Min = 0
     frmCargando.cargar.max = NumMaps
@@ -1161,7 +1161,7 @@ Dim npcfile As String
 On Error GoTo man
     
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
-'    Call InitAreas
+    Call InitAreas
     
     frmCargando.cargar.Min = 0
     frmCargando.cargar.max = NumMaps
