@@ -43,6 +43,9 @@ Public Const ELEMENTALFUEGO = 93
 Public Const ELEMENTALTIERRA = 94
 Public Const ELEMENTALAGUA = 92
 
+'Damos a los NPCs el mismo rango de visión que un PJ
+Private Const RANGO_VISION_X As Byte = 8
+Private Const RANGO_VISION_Y As Byte = 6
 
 Public Enum e_Alineacion
     ninguna = 0
@@ -381,8 +384,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             SignoNS = 0
     End Select
     
-    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * 10 Step IIf(SignoNS = 0, 1, SignoNS)
-        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * 10 Step IIf(SignoEO = 0, 1, SignoEO)
+    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
+        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
             
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                    UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
@@ -398,8 +401,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     Next Y
     
 Else
-    For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
-        For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
+    For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
+        For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                    UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                    If UI > 0 Then
@@ -446,8 +449,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             SignoNS = 0
     End Select
     
-    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * 10 Step IIf(SignoNS = 0, 1, SignoNS)
-        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * 10 Step IIf(SignoEO = 0, 1, SignoEO)
+    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
+        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
 
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                 UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
@@ -473,8 +476,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
         Next X
     Next Y
 Else
-    For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
-        For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
+    For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
+        For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                 UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
@@ -522,8 +525,8 @@ Dim headingloop As Byte
 Dim tHeading As Byte
 Dim Y As Integer
 Dim X As Integer
-For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
-    For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
+For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
+    For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
         If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
            UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
            If UI > 0 Then
@@ -575,8 +578,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             SignoNS = 0
     End Select
     
-    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * 10 Step IIf(SignoNS = 0, 1, SignoNS)
-        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * 10 Step IIf(SignoEO = 0, 1, SignoEO)
+    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
+        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
 
 
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
@@ -599,8 +602,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
         Next X
     Next Y
 Else
-    For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
-        For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
+    For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
+        For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
@@ -685,8 +688,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             SignoNS = 0
     End Select
     
-    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * 10 Step IIf(SignoNS = 0, 1, SignoNS)
-        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * 10 Step IIf(SignoEO = 0, 1, SignoEO)
+    For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
+        For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                NI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex
                If NI > 0 Then
@@ -711,8 +714,8 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
         Next X
     Next Y
 Else
-    For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
-        For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
+    For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
+        For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_Y To Npclist(NpcIndex).Pos.X + RANGO_VISION_Y
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                NI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex
                If NI > 0 Then

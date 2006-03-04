@@ -32,7 +32,7 @@ Attribute VB_Name = "TCP_HandleData2"
 
 Option Explicit
 
-Public Sub HandleData_2(ByVal UserIndex As Integer, rdata As String, ByRef Procesado As Boolean)
+Public Sub HandleData_2(ByVal UserIndex As Integer, rData As String, ByRef Procesado As Boolean)
 
 
 Dim LoopC As Integer
@@ -70,17 +70,17 @@ Procesado = True 'ver al final del sub
     
         Case "/ONLINE"
             N = 0
-            tStr = ""
+            tstr = ""
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).Name <> "") And UserList(LoopC).flags.Privilegios <= 1 Then
                     N = N + 1
-                    tStr = tStr & UserList(LoopC).Name & ", "
+                    tstr = tstr & UserList(LoopC).Name & ", "
                 End If
             Next LoopC
-            If Len(tStr) > 2 Then
-                tStr = Left(tStr, Len(tStr) - 2)
+            If Len(tstr) > 2 Then
+                tstr = Left(tstr, Len(tstr) - 2)
             End If
-            Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_INFO)
+            Call SendData(ToIndex, UserIndex, 0, "||" & tstr & FONTTYPE_INFO)
             Call SendData(ToIndex, UserIndex, 0, "||Número de usuarios: " & N & FONTTYPE_INFO)
             Exit Sub
         Case "/SALIR"
@@ -546,24 +546,24 @@ Procesado = True 'ver al final del sub
             
         Case "/UPTIME"
             tLong = Int(((GetTickCount() And &H7FFFFFFF) - tInicioServer) / 1000)
-            tStr = (tLong Mod 60) & " segundos."
+            tstr = (tLong Mod 60) & " segundos."
             tLong = Int(tLong / 60)
-            tStr = (tLong Mod 60) & " minutos, " & tStr
+            tstr = (tLong Mod 60) & " minutos, " & tstr
             tLong = Int(tLong / 60)
-            tStr = (tLong Mod 24) & " horas, " & tStr
+            tstr = (tLong Mod 24) & " horas, " & tstr
             tLong = Int(tLong / 24)
-            tStr = (tLong) & " dias, " & tStr
-            Call SendData(ToIndex, UserIndex, 0, "||Uptime: " & tStr & FONTTYPE_INFO)
+            tstr = (tLong) & " dias, " & tstr
+            Call SendData(ToIndex, UserIndex, 0, "||Uptime: " & tstr & FONTTYPE_INFO)
             
             tLong = IntervaloAutoReiniciar
-            tStr = (tLong Mod 60) & " segundos."
+            tstr = (tLong Mod 60) & " segundos."
             tLong = Int(tLong / 60)
-            tStr = (tLong Mod 60) & " minutos, " & tStr
+            tstr = (tLong Mod 60) & " minutos, " & tstr
             tLong = Int(tLong / 60)
-            tStr = (tLong Mod 24) & " horas, " & tStr
+            tstr = (tLong Mod 24) & " horas, " & tstr
             tLong = Int(tLong / 24)
-            tStr = (tLong) & " dias, " & tStr
-            Call SendData(ToIndex, UserIndex, 0, "||Próximo mantenimiento automático: " & tStr & FONTTYPE_INFO)
+            tstr = (tLong) & " dias, " & tstr
+            Call SendData(ToIndex, UserIndex, 0, "||Próximo mantenimiento automático: " & tstr & FONTTYPE_INFO)
             
             Exit Sub
         
@@ -632,79 +632,79 @@ Procesado = True 'ver al final del sub
 '            Call SendData(ToIndex, UserIndex, 0, "||Miembros de tu grupo: " & sRet & FONTTYPE_INFO)
     End Select
 
-    If UCase$(Left$(rdata, 6)) = "/CMSG " Then
+    If UCase$(Left$(rData, 6)) = "/CMSG " Then
         'clanesnuevo
-        rdata = Right$(rdata, Len(rdata) - 6)
+        rData = Right$(rData, Len(rData) - 6)
         'If rdata <> "" And UserList(UserIndex).GuildInfo.GuildName <> "" Then
         '    Call SendData(ToDiosesYclan, UserIndex, 0, "|+" & UserList(UserIndex).Name & "> " & rdata & FONTTYPE_GUILDMSG)
         '    Call SendData(ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rdata & " >°" & str(UserList(UserIndex).Char.charindex))
         'End If
         If UserList(UserIndex).GuildIndex > 0 Then
-            Call SendData(ToDiosesYclan, UserList(UserIndex).GuildIndex, 0, "|+" & UserList(UserIndex).Name & "> " & rdata & FONTTYPE_GUILDMSG)
-            Call SendData(ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rdata & " >°" & str(UserList(UserIndex).Char.charindex))
+            Call SendData(ToDiosesYclan, UserList(UserIndex).GuildIndex, 0, "|+" & UserList(UserIndex).Name & "> " & rData & FONTTYPE_GUILDMSG)
+            Call SendData(ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & str(UserList(UserIndex).Char.charindex))
         End If
         
         Exit Sub
     End If
 
-    If UCase$(Left$(rdata, 6)) = "/PMSG " Then
-        Call mdParty.BroadCastParty(UserIndex, Mid$(rdata, 7))
+    If UCase$(Left$(rData, 6)) = "/PMSG " Then
+        Call mdParty.BroadCastParty(UserIndex, Mid$(rData, 7))
         Exit Sub
     End If
 
-    If UCase$(rdata) = "/ONLINECLAN" Then
-        tStr = modGuilds.m_ListaDeMiembrosOnline(UserList(UserIndex).GuildIndex)
-        If tStr <> vbNullString Then
-            Call SendData(ToIndex, UserIndex, 0, "||Compañeros de tu clan conectados: " & tStr & FONTTYPE_GUILDMSG)
+    If UCase$(rData) = "/ONLINECLAN" Then
+        tstr = modGuilds.m_ListaDeMiembrosOnline(UserList(UserIndex).GuildIndex)
+        If tstr <> vbNullString Then
+            Call SendData(ToIndex, UserIndex, 0, "||Compañeros de tu clan conectados: " & tstr & FONTTYPE_GUILDMSG)
         Else
             Call SendData(ToIndex, UserIndex, 0, "||No pertences a ningún clan." & FONTTYPE_GUILDMSG)
         End If
         Exit Sub
     End If
     
-    If UCase$(rdata) = "/ONLINEPARTY" Then
+    If UCase$(rData) = "/ONLINEPARTY" Then
         Call mdParty.OnlineParty(UserIndex)
         Exit Sub
     End If
     
     '[yb]
-    If UCase$(Left$(rdata, 6)) = "/BMSG " Then
-        rdata = Right$(rdata, Len(rdata) - 6)
+    If UCase$(Left$(rData, 6)) = "/BMSG " Then
+        rData = Right$(rData, Len(rData) - 6)
         If UserList(UserIndex).flags.PertAlCons = 1 Then
-            Call SendData(ToConsejo, UserIndex, 0, "|| (Consejero) " & UserList(UserIndex).Name & "> " & rdata & FONTTYPE_CONSEJO)
+            Call SendData(ToConsejo, UserIndex, 0, "|| (Consejero) " & UserList(UserIndex).Name & "> " & rData & FONTTYPE_CONSEJO)
         End If
         If UserList(UserIndex).flags.PertAlConsCaos = 1 Then
-            Call SendData(ToConsejoCaos, UserIndex, 0, "|| (Consejero) " & UserList(UserIndex).Name & "> " & rdata & FONTTYPE_CONSEJOCAOS)
+            Call SendData(ToConsejoCaos, UserIndex, 0, "|| (Consejero) " & UserList(UserIndex).Name & "> " & rData & FONTTYPE_CONSEJOCAOS)
         End If
         Exit Sub
     End If
     '[/yb]
     
-    If UCase$(Left$(rdata, 5)) = "/ROL " Then
-        rdata = Right$(rdata, Len(rdata) - 5)
-        Call SendData(ToRolesMasters, 0, 0, "|| " & LCase$(UserList(UserIndex).Name) & " PREGUNTA ROL: " & rdata & FONTTYPE_GUILDMSG)
+    If UCase$(Left$(rData, 5)) = "/ROL " Then
+        rData = Right$(rData, Len(rData) - 5)
+        Call SendData(ToRolesMasters, 0, 0, "|| " & LCase$(UserList(UserIndex).Name) & " PREGUNTA ROL: " & rData & FONTTYPE_GUILDMSG)
         Exit Sub
     End If
     
     
     'Mensaje del servidor a GMs - Lo ubico aqui para que no se confunda con /GM [Gonzalo]
-    If UCase$(Left$(rdata, 6)) = "/GMSG " And UserList(UserIndex).flags.Privilegios > 0 Then
-        rdata = Right$(rdata, Len(rdata) - 6)
-        Call LogGM(UserList(UserIndex).Name, "Mensaje a Gms:" & rdata, (UserList(UserIndex).flags.Privilegios = 1))
-        If rdata <> "" Then
-            Call SendData(ToAdmins, 0, 0, "||" & UserList(UserIndex).Name & "> " & rdata & "~255~255~255~0~1")
+    If UCase$(Left$(rData, 6)) = "/GMSG " And UserList(UserIndex).flags.Privilegios > 0 Then
+        rData = Right$(rData, Len(rData) - 6)
+        Call LogGM(UserList(UserIndex).Name, "Mensaje a Gms:" & rData, (UserList(UserIndex).flags.Privilegios = 1))
+        If rData <> "" Then
+            Call SendData(ToAdmins, 0, 0, "||" & UserList(UserIndex).Name & "> " & rData & "~255~255~255~0~1")
         End If
         Exit Sub
     End If
     
-    Select Case UCase$(Left$(rdata, 3))
+    Select Case UCase$(Left$(rData, 3))
         Case "/GM"
             If Not Ayuda.Existe(UserList(UserIndex).Name) Then
                 Call SendData(ToIndex, UserIndex, 0, "||El mensaje ha sido entregado, ahora solo debes esperar que se desocupe algun GM." & FONTTYPE_INFO)
-                Call Ayuda.Push(rdata, UserList(UserIndex).Name)
+                Call Ayuda.Push(rData, UserList(UserIndex).Name)
             Else
                 Call Ayuda.Quitar(UserList(UserIndex).Name)
-                Call Ayuda.Push(rdata, UserList(UserIndex).Name)
+                Call Ayuda.Push(rData, UserList(UserIndex).Name)
                 Call SendData(ToIndex, UserIndex, 0, "||Ya habias mandado un mensaje, tu mensaje ha sido movido al final de la cola de mensajes." & FONTTYPE_INFO)
             End If
             Exit Sub
@@ -712,7 +712,7 @@ Procesado = True 'ver al final del sub
     
     
     
-    Select Case UCase(Left(rdata, 5))
+    Select Case UCase(Left(rData, 5))
         Case "/_BUG "
             N = FreeFile
             Open App.Path & "\LOGS\BUGs.log" For Append Shared As N
@@ -723,7 +723,7 @@ Procesado = True 'ver al final del sub
             Print #N, "Usuario:" & UserList(UserIndex).Name & "  Fecha:" & Date & "    Hora:" & Time
             Print #N, "########################################################################"
             Print #N, "BUG:"
-            Print #N, Right$(rdata, Len(rdata) - 5)
+            Print #N, Right$(rData, Len(rData) - 5)
             Print #N, "########################################################################"
             Print #N, "########################################################################"
             Print #N,
@@ -733,32 +733,32 @@ Procesado = True 'ver al final del sub
     
     End Select
     
-    Select Case UCase$(Left$(rdata, 6))
+    Select Case UCase$(Left$(rData, 6))
         Case "/DESC "
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call SendData(ToIndex, UserIndex, 0, "||No puedes cambiar la descripción estando muerto." & FONTTYPE_INFO)
                 Exit Sub
             End If
-            rdata = Right$(rdata, Len(rdata) - 6)
-            If Not AsciiValidos(rdata) Then
+            rData = Right$(rData, Len(rData) - 6)
+            If Not AsciiValidos(rData) Then
                 Call SendData(ToIndex, UserIndex, 0, "||La descripcion tiene caracteres invalidos." & FONTTYPE_INFO)
                 Exit Sub
             End If
-            UserList(UserIndex).Desc = rdata
+            UserList(UserIndex).Desc = rData
             Call SendData(ToIndex, UserIndex, 0, "||La descripcion a cambiado." & FONTTYPE_INFO)
             Exit Sub
         Case "/VOTO "
-                rdata = Right$(rdata, Len(rdata) - 6)
-                If Not modGuilds.v_UsuarioVota(UserIndex, rdata, tStr) Then
-                    Call SendData(ToIndex, UserIndex, 0, "||Voto NO contabilizado: " & tStr & FONTTYPE_GUILD)
+                rData = Right$(rData, Len(rData) - 6)
+                If Not modGuilds.v_UsuarioVota(UserIndex, rData, tstr) Then
+                    Call SendData(ToIndex, UserIndex, 0, "||Voto NO contabilizado: " & tstr & FONTTYPE_GUILD)
                 Else
                     Call SendData(ToIndex, UserIndex, 0, "||Voto contabilizado." & FONTTYPE_GUILD)
                 End If
                 Exit Sub
     End Select
     
-    If UCase$(Left$(rdata, 7)) = "/PENAS " Then
-        Name = Right$(rdata, Len(rdata) - 7)
+    If UCase$(Left$(rData, 7)) = "/PENAS " Then
+        Name = Right$(rData, Len(rData) - 7)
         If Name = "" Then Exit Sub
         
         Name = Replace(Name, "\", "")
@@ -784,24 +784,24 @@ Procesado = True 'ver al final del sub
     
     
     
-    Select Case UCase$(Left$(rdata, 8))
+    Select Case UCase$(Left$(rData, 8))
         Case "/PASSWD "
-            rdata = Right$(rdata, Len(rdata) - 8)
-            If Len(rdata) < 6 Then
+            rData = Right$(rData, Len(rData) - 8)
+            If Len(rData) < 6 Then
                  Call SendData(ToIndex, UserIndex, 0, "||El password debe tener al menos 6 caracteres." & FONTTYPE_INFO)
             Else
                  Call SendData(ToIndex, UserIndex, 0, "||El password ha sido cambiado." & FONTTYPE_INFO)
-                 UserList(UserIndex).Password = rdata
+                 UserList(UserIndex).Password = rData
             End If
             Exit Sub
     End Select
     
-    Select Case UCase$(Left$(rdata, 9))
+    Select Case UCase$(Left$(rData, 9))
             'Comando /APOSTAR basado en la idea de DarkLight,
             'pero con distinta probabilidad de exito.
         Case "/APOSTAR "
-            rdata = Right(rdata, Len(rdata) - 9)
-            tLong = CLng(val(rdata))
+            rData = Right(rData, Len(rData) - 9)
+            tLong = CLng(val(rData))
             If tLong > 32000 Then tLong = 32000
             N = tLong
             If UserList(UserIndex).flags.Muerto = 1 Then
@@ -841,21 +841,21 @@ Procesado = True 'ver al final del sub
             Exit Sub
     End Select
     
-    Select Case UCase$(Left$(rdata, 10))
+    Select Case UCase$(Left$(rData, 10))
             'consultas populares muchacho'
         Case "/ENCUESTA "
-            rdata = Right(rdata, Len(rdata) - 10)
-            If Len(rdata) = 0 Then
+            rData = Right(rData, Len(rData) - 10)
+            If Len(rData) = 0 Then
                 Call SendData(ToIndex, UserIndex, 0, "|| Aca va la info de la encuesta" & FONTTYPE_GUILD)
                 Exit Sub
             End If
-            DummyInt = CLng(val(rdata))
+            DummyInt = CLng(val(rData))
             Call SendData(ToIndex, UserIndex, 0, "|| " & ConsultaPopular.doVotar(UserIndex, DummyInt) & FONTTYPE_GUILD)
             Exit Sub
     End Select
     
     
-    Select Case UCase$(Left$(rdata, 8))
+    Select Case UCase$(Left$(rData, 8))
         Case "/RETIRAR" 'RETIRA ORO EN EL BANCO o te saca de la armada
              '¿Esta el user muerto? Si es asi no puede comerciar
              If UserList(UserIndex).flags.Muerto = 1 Then
@@ -893,12 +893,12 @@ Procesado = True 'ver al final del sub
              
              End If
              
-             If Len(rdata) = 8 Then
+             If Len(rData) = 8 Then
                 Call SendData(ToIndex, UserIndex, 0, "||Debes indicar el monto de cuanto quieres retirar" & FONTTYPE_INFO)
                 Exit Sub
              End If
              
-             rdata = Right$(rdata, Len(rdata) - 9)
+             rData = Right$(rData, Len(rData) - 9)
              If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_BANQUERO _
              Or UserList(UserIndex).flags.Muerto = 1 Then Exit Sub
              If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
@@ -910,9 +910,9 @@ Procesado = True 'ver al final del sub
                   CloseSocket (UserIndex)
                   Exit Sub
              End If
-             If val(rdata) > 0 And val(rdata) <= UserList(UserIndex).Stats.Banco Then
-                  UserList(UserIndex).Stats.Banco = UserList(UserIndex).Stats.Banco - val(rdata)
-                  UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + val(rdata)
+             If val(rData) > 0 And val(rData) <= UserList(UserIndex).Stats.Banco Then
+                  UserList(UserIndex).Stats.Banco = UserList(UserIndex).Stats.Banco - val(rData)
+                  UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + val(rData)
                   Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Tenes " & UserList(UserIndex).Stats.Banco & " monedas de oro en tu cuenta." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex & FONTTYPE_INFO)
              Else
                   Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & " No tenes esa cantidad." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex & FONTTYPE_INFO)
@@ -921,7 +921,7 @@ Procesado = True 'ver al final del sub
              Exit Sub
     End Select
     
-    Select Case UCase$(Left$(rdata, 11))
+    Select Case UCase$(Left$(rData, 11))
         Case "/DEPOSITAR " 'DEPOSITAR ORO EN EL BANCO
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
@@ -937,16 +937,16 @@ Procesado = True 'ver al final del sub
                       Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
                       Exit Sub
             End If
-            rdata = Right$(rdata, Len(rdata) - 11)
+            rData = Right$(rData, Len(rData) - 11)
             If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_BANQUERO _
             Or UserList(UserIndex).flags.Muerto = 1 Then Exit Sub
             If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
                   Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
                   Exit Sub
             End If
-            If CLng(val(rdata)) > 0 And CLng(val(rdata)) <= UserList(UserIndex).Stats.GLD Then
-                  UserList(UserIndex).Stats.Banco = UserList(UserIndex).Stats.Banco + val(rdata)
-                  UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - val(rdata)
+            If CLng(val(rData)) > 0 And CLng(val(rData)) <= UserList(UserIndex).Stats.GLD Then
+                  UserList(UserIndex).Stats.Banco = UserList(UserIndex).Stats.Banco + val(rData)
+                  UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - val(rData)
                   Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Tenes " & UserList(UserIndex).Stats.Banco & " monedas de oro en tu cuenta." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex & FONTTYPE_INFO)
             Else
                   Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & " No tenes esa cantidad." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex & FONTTYPE_INFO)
@@ -957,20 +957,19 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Silenciado = 1 Then
                 Exit Sub
             End If
-            rdata = Right$(rdata, Len(rdata) - 11)
-            Call SendData(ToAdmins, 0, 0, "|| " & LCase$(UserList(UserIndex).Name) & " DENUNCIA: " & rdata & FONTTYPE_GUILDMSG)
+            rData = Right$(rData, Len(rData) - 11)
+            Call SendData(ToAdmins, 0, 0, "|| " & LCase$(UserList(UserIndex).Name) & " DENUNCIA: " & rData & FONTTYPE_GUILDMSG)
             Call SendData(ToIndex, UserIndex, 0, "|| Denuncia enviada, espere.." & FONTTYPE_INFO)
             Exit Sub
         Case "/FUNDARCLAN"
         
-            rdata = Right$(rdata, Len(rdata) - 11)
-            If Trim$(rdata) = vbNullString Then
-                Exit Sub
+            rData = Right$(rData, Len(rData) - 11)
+            If Trim$(rData) = vbNullString Then
                 Call SendData(ToIndex, UserIndex, 0, "|| Para fundar un clan debes especificar la alineación del mismo." & FONTTYPE_GUILD)
                 Call SendData(ToIndex, UserIndex, 0, "|| Atención, que la misma no podrá cambiar luego, te aconsejamos leer las reglas sobre clanes antes de fundar." & FONTTYPE_GUILD)
                 Exit Sub
             Else
-                Select Case UCase$(Trim(rdata))
+                Select Case UCase$(Trim(rData))
                     Case "ARMADA"
                         UserList(UserIndex).FundandoGuildAlineacion = ALINEACION_ARMADA
                     Case "MAL"
@@ -989,21 +988,21 @@ Procesado = True 'ver al final del sub
                 End Select
             End If
 
-            If modGuilds.PuedeFundarUnClan(UserIndex, UserList(UserIndex).FundandoGuildAlineacion, tStr) Then
+            If modGuilds.PuedeFundarUnClan(UserIndex, UserList(UserIndex).FundandoGuildAlineacion, tstr) Then
                 Call SendData(ToIndex, UserIndex, 0, "SHOWFUN")
             Else
                 UserList(UserIndex).FundandoGuildAlineacion = 0
-                Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
+                Call SendData(ToIndex, UserIndex, 0, "||" & tstr & FONTTYPE_GUILD)
             End If
             
             Exit Sub
     
     End Select
 
-    Select Case UCase$(Left$(rdata, 12))
+    Select Case UCase$(Left$(rData, 12))
         Case "/ECHARPARTY "
-            rdata = Right$(rdata, Len(rdata) - 12)
-            tInt = NameIndex(rdata)
+            rData = Right$(rData, Len(rData) - 12)
+            tInt = NameIndex(rData)
             If tInt > 0 Then
                 Call mdParty.ExpulsarDeParty(UserIndex, tInt)
             Else
@@ -1011,8 +1010,8 @@ Procesado = True 'ver al final del sub
             End If
             Exit Sub
         Case "/PARTYLIDER "
-            rdata = Right$(rdata, Len(rdata) - 12)
-            tInt = NameIndex(rdata)
+            rData = Right$(rData, Len(rData) - 12)
+            tInt = NameIndex(rData)
             If tInt > 0 Then
                 Call mdParty.TransformarEnLider(UserIndex, tInt)
             Else
@@ -1022,10 +1021,10 @@ Procesado = True 'ver al final del sub
     
     End Select
 
-    Select Case UCase$(Left$(rdata, 13))
+    Select Case UCase$(Left$(rData, 13))
         Case "/ACCEPTPARTY "
-            rdata = Right$(rdata, Len(rdata) - 13)
-            tInt = NameIndex(rdata)
+            rData = Right$(rData, Len(rData) - 13)
+            tInt = NameIndex(rData)
             If tInt > 0 Then
                 Call mdParty.AprobarIngresoAParty(UserIndex, tInt)
             Else
@@ -1036,23 +1035,23 @@ Procesado = True 'ver al final del sub
     End Select
     
 
-    Select Case UCase$(Left$(rdata, 14))
+    Select Case UCase$(Left$(rData, 14))
         Case "/MIEMBROSCLAN "
-            rdata = Trim(Right(rdata, Len(rdata) - 14))
-            Name = Replace(rdata, "\", "")
-            Name = Replace(rdata, "/", "")
+            rData = Trim(Right(rData, Len(rData) - 14))
+            Name = Replace(rData, "\", "")
+            Name = Replace(rData, "/", "")
     
-            If Not FileExist(App.Path & "\guilds\" & rdata & "-members.mem") Then
-                Call SendData(ToIndex, UserIndex, 0, "|| No existe el clan: " & rdata & FONTTYPE_INFO)
+            If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
+                Call SendData(ToIndex, UserIndex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)
                 Exit Sub
             End If
             
-            tInt = val(GetVar(App.Path & "\Guilds\" & rdata & "-Members" & ".mem", "INIT", "NroMembers"))
+            tInt = val(GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "INIT", "NroMembers"))
             
             For i = 1 To tInt
-                tStr = GetVar(App.Path & "\Guilds\" & rdata & "-Members" & ".mem", "Members", "Member" & i)
+                tstr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & i)
                 'tstr es la victima
-                Call SendData(ToIndex, UserIndex, 0, "||" & tStr & "<" & rdata & ">." & FONTTYPE_INFO)
+                Call SendData(ToIndex, UserIndex, 0, "||" & tstr & "<" & rData & ">." & FONTTYPE_INFO)
             Next i
         
             Exit Sub
