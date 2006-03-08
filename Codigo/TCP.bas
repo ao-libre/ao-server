@@ -58,6 +58,8 @@ Public Const ToClanArea  As Byte = 15
 Public Const ToConsejoCaos  As Byte = 16
 Public Const ToRolesMasters  As Byte = 17
 Public Const ToDeadArea  As Byte = 18
+Public Const ToCiudadanos  As Byte = 19
+Public Const ToCriminales  As Byte = 20
 
 
 #If UsarQueSocket = 0 Then
@@ -1103,7 +1105,27 @@ Select Case sndRoute
             End If
         Next LoopC
         Exit Sub
-    End Select
+    
+    Case ToCiudadanos
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If Not Criminal(LoopC) Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case ToCriminales
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If Criminal(LoopC) Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+End Select
 
 End Sub
 
@@ -3439,6 +3461,52 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Exit Sub
 End If
 
+Select Case UCase$(Left$(rData, 8))
+    Case "/REALMSG"
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            tStr = Right$(rData, Len(rData) - 9)
+            
+            Call SendData(ToConsejo, 0, 0, tStr)
+        End If
+        Exit Sub
+    
+    Case "/CAOSMSG"
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            tStr = Right$(rData, Len(rData) - 9)
+            
+            Call SendData(ToConsejoCaos, 0, 0, tStr)
+        End If
+        Exit Sub
+    
+    Case "/CIUMSG "
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            tStr = Right$(rData, Len(rData) - 8)
+            
+            Call SendData(ToCiudadanos, 0, 0, tStr)
+        End If
+        Exit Sub
+    
+    Case "/CIUMSG "
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            tStr = Right$(rData, Len(rData) - 8)
+            
+            Call SendData(ToCiudadanos, 0, 0, tStr)
+        End If
+        Exit Sub
+    
+    Case "/CRIMSG "
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            tStr = Right$(rData, Len(rData) - 8)
+            
+            Call SendData(ToCriminales, 0, 0, tStr)
+        End If
+        Exit Sub
+End Select
 
 
 
