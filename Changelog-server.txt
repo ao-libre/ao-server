@@ -1,0 +1,9 @@
+---------------------------------------
+ARGENTUM ONLINE - CHANGELOG DEL SERVER
+---------------------------------------
+
+
+- 0.11.5
+
+ * 05/03/2206: Implementación de los comandos /CIUMSG, /CAOSMSG, /CRIMS y /REALMSG pedidos por Pol'Thalas (Maraxus).
+ * 06/03/2006: Corrección de todos los bugs reportados y cerrados en el bug tracker de SF (Maraxus).
