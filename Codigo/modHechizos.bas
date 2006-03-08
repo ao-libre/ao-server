@@ -1389,6 +1389,9 @@ End Sub
 Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts As Long)
 'disminuye la nobleza NoblePts puntos y aumenta el bandido BandidoPts puntos
 
+    'Si estamos en la arena no hacemos nada
+    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+    
     'pierdo nobleza...
     UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep - NoblePts
     If UserList(UserIndex).Reputacion.NobleRep < 0 Then
