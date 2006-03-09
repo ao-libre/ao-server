@@ -3469,6 +3469,23 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Exit Sub
 End If
 
+If UCase$(Left$(rData, 14)) = "/FORCEMIDIMAP " Then
+    rData = Right$(rData, Len(rData) - 14)
+    'Solo dioses, admins y RMS
+    If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+    
+    If IsNumeric(rData) Then
+        If rData = "0" Then
+            'Ponemos el default del mapa
+            Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "TM" & CStr(MapInfo(UserList(UserIndex).Pos.Map).Music))
+        Else
+            'Ponemos el pedido por el GM
+            Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "TM" & rData)
+        End If
+    End If
+    Exit Sub
+End If
+
 Select Case UCase$(Left$(rData, 8))
     Case "/REALMSG"
         'Solo dioses, admins y RMS
