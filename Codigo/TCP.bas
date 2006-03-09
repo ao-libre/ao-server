@@ -3321,8 +3321,6 @@ End If
 
 'MODIFICA CARACTER
 If UCase$(Left$(rData, 5)) = "/MOD " Then
-    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < 3 Then Exit Sub
-    Call LogGM(UserList(UserIndex).Name, rData, False)
     rData = Right$(rData, Len(rData) - 5)
     tStr = ReadField(1, rData, 32)
     tIndex = NameIndex(tStr)
@@ -3330,6 +3328,16 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Arg2 = ReadField(3, rData, 32)
     Arg3 = ReadField(4, rData, 32)
     Arg4 = ReadField(5, rData, 32)
+    
+    If UserList(UserIndex).flags.EsRolesMaster Then
+        'Sólo se puede modificar su propio cuerpo o cabeza!!
+        If NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
+        If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
+    ElseIf UserList(UserIndex).flags.Privilegios < 3 Then
+        Exit Sub
+    End If
+    
+    Call LogGM(UserList(UserIndex).Name, rData, False)
     
     Select Case UCase$(Arg1)
         Case "ORO" '/mod yo oro 95000
