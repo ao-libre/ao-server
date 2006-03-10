@@ -2194,7 +2194,7 @@ On Error GoTo ErrorHandler:
     Dim X As Integer
     Dim Y As Integer
     Dim DummyInt As Integer
-    Dim T() As String
+    Dim t() As String
     Dim i As Integer
     
     Dim sndData As String
@@ -3464,22 +3464,68 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Exit Sub
 End If
 
-If UCase$(Left$(rData, 14)) = "/FORCEMIDIMAP " Then
-    rData = Right$(rData, Len(rData) - 14)
-    'Solo dioses, admins y RMS
-    If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
-    
-    If IsNumeric(rData) Then
-        If rData = "0" Then
-            'Ponemos el default del mapa
-            Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "TM" & CStr(MapInfo(UserList(UserIndex).Pos.Map).Music))
+Select Case UCase$(Left$(rData, 13))
+    Case "/FORCEMIDMAP"
+        rData = Right$(rData, Len(rData) - 14)
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        
+        'Obtenemos el número de midi
+        Arg1 = ReadField(1, rData, vbKeySpace)
+        ' y el de mapa
+        Arg2 = ReadField(2, rData, vbKeySpace)
+        
+        'Si el mapa no fue enviado tomo el actual
+        If IsNumeric(Arg2) Then
+            tInt = CInt(Arg2)
         Else
-            'Ponemos el pedido por el GM
-            Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "TM" & rData)
+            tInt = UserList(UserIndex).Pos.Map
         End If
-    End If
-    Exit Sub
-End If
+        
+        If IsNumeric(Arg1) Then
+            If Arg1 = "0" Then
+                'Ponemos el default del mapa
+                Call SendData(ToMap, 0, tInt, "TM" & CStr(MapInfo(UserList(UserIndex).Pos.Map).Music))
+            Else
+                'Ponemos el pedido por el GM
+                Call SendData(ToMap, 0, tInt, "TM" & Arg1)
+            End If
+        Else
+            Call SendData(ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDIMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
+        End If
+        Exit Sub
+    
+    Case "/FORCEWAVMAP "
+        rData = Right$(rData, Len(rData) - 13)
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        
+        'Obtenemos el número de wav
+        Arg1 = ReadField(1, rData, vbKeySpace)
+        ' el de mapa
+        Arg2 = ReadField(2, rData, vbKeySpace)
+        ' el de X
+        Arg3 = ReadField(3, rData, vbKeySpace)
+        ' y el de Y (las coords X-Y sólo tendrán sentido al implementarse el panning en la 11.6)
+        Arg4 = ReadField(4, rData, vbKeySpace)
+        
+        'Si el mapa no fue enviado tomo el actual
+        If IsNumeric(Arg2) And IsNumeric(Arg3) And IsNumeric(Arg4) Then
+            tInt = CInt(Arg2)
+        Else
+            tInt = UserList(UserIndex).Pos.Map
+            Arg3 = CStr(UserList(UserIndex).Pos.X)
+            Arg4 = CStr(UserList(UserIndex).Pos.Y)
+        End If
+        
+        If IsNumeric(Arg1) Then
+            'Ponemos el pedido por el GM
+            Call SendData(ToMap, 0, tInt, "TW" & Arg1)
+        Else
+            Call SendData(ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEWAVMAP WAV MAPA X Y, siendo la posición opcional" & FONTTYPE_INFO)
+        End If
+        Exit Sub
+End Select
 
 Select Case UCase$(Left$(rData, 8))
     Case "/REALMSG"
@@ -4062,16 +4108,16 @@ If UCase(Left(rData, 5)) = "ZMOTD" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).Name, rData, False)
     rData = Right(rData, Len(rData) - 5)
-    T = Split(rData, vbCrLf)
+    t = Split(rData, vbCrLf)
     
-    MaxLines = UBound(T) - LBound(T) + 1
+    MaxLines = UBound(t) - LBound(t) + 1
     ReDim MOTD(1 To MaxLines)
     Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(MaxLines))
     
-    N = LBound(T)
+    N = LBound(t)
     For LoopC = 1 To MaxLines
-        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, T(N))
-        MOTD(LoopC).texto = T(N)
+        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, t(N))
+        MOTD(LoopC).texto = t(N)
         N = N + 1
     Next LoopC
     
