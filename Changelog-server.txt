@@ -8,3 +8,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 05/03/2206: Implementación de los comandos /CIUMSG, /CAOSMSG, /CRIMS y /REALMSG pedidos por Pol'Thalas (Maraxus).
  * 06/03/2006: Corrección de todos los bugs reportados y cerrados en el bug tracker de SF (Maraxus).
  * 09/03/2006: Implementación de los comandos /MOD de HEAD y BODY y /FORCEMIDIMAP para RMs y dioses pedidos por Pol'Thalas (Maraxus).
+ * 10/03/2006: Implementación del comando /TALKAS para RMs y dioses pedido por Pol'Thalas (Maraxus).
+ * 10/03/2006: Eliminé todo lo relativo a padrinos y anticuelgue que quedaba así como grandes porciones de código comentadas que ofuscaban. (Maraxus).
