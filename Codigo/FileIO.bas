@@ -304,15 +304,15 @@ Dim i As Integer
 
 
 
-
+' Lo saco porque elimina elementales y mascotas - Maraxus
 ''''''''''''''lo pongo aca x sugernecia del yind
-For i = 1 To LastNPC
-    If Npclist(i).flags.NPCActive Then
-        If Npclist(i).Contadores.TiempoExistencia > 0 Then
-            Call MuereNpc(i, 0)
-        End If
-    End If
-Next i
+'For i = 1 To LastNPC
+'    If Npclist(i).flags.NPCActive Then
+'        If Npclist(i).Contadores.TiempoExistencia > 0 Then
+'            Call MuereNpc(i, 0)
+'        End If
+'    End If
+'Next i
 '''''''''''/'lo pongo aca x sugernecia del yind
 
 
