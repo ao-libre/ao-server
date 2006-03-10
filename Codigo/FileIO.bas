@@ -769,8 +769,6 @@ For Object = 1 To NumObjDatas
     ObjData(Object).MinDef = val(Leer.DarValor("OBJ" & Object, "MINDEF"))
     ObjData(Object).MaxDef = val(Leer.DarValor("OBJ" & Object, "MAXDEF"))
     
-    ObjData(Object).Respawn = val(Leer.DarValor("OBJ" & Object, "ReSpawn"))
-    
     ObjData(Object).RazaEnana = val(Leer.DarValor("OBJ" & Object, "RazaEnana"))
     
     ObjData(Object).Valor = val(Leer.DarValor("OBJ" & Object, "Valor"))
@@ -805,8 +803,7 @@ For Object = 1 To NumObjDatas
     For i = 1 To NUMCLASES
         ObjData(Object).ClaseProhibida(i) = Leer.DarValor("OBJ" & Object, "CP" & i)
     Next
-            
-    ObjData(Object).Resistencia = val(Leer.DarValor("OBJ" & Object, "Resistencia"))
+    
     ObjData(Object).DefensaMagicaMax = val(Leer.DarValor("OBJ" & Object, "DefensaMagicaMax"))
     ObjData(Object).DefensaMagicaMin = val(Leer.DarValor("OBJ" & Object, "DefensaMagicaMin"))
     

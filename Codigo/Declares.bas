@@ -599,8 +599,6 @@ Public Type ObjData
     GrhIndex As Integer ' Indice del grafico que representa el obj
     GrhSecundario As Integer
     
-    Respawn As Byte
-    
     'Solo contenedores
     MaxItems As Integer
     Conte As Inventario
@@ -668,7 +666,6 @@ Public Type ObjData
     Envenena As Byte
     Paraliza As Byte
     
-    Resistencia As Long
     Agarrable As Byte
     
     
