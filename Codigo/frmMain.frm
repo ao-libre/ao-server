@@ -358,13 +358,6 @@ End Sub
 Private Sub Auditoria_Timer()
 On Error GoTo errhand
 
-'Dim k As Integer
-'For k = 1 To LastUser
-'    If UserList(k).ConnID <> -1 Then
-'        DayStats.Segundos = DayStats.Segundos + 1
-'    End If
-'Next k
-
 Call PasarSegundo 'sistema de desconexion de 10 segs
 
 Call ActualizaEstadisticasWeb
@@ -564,9 +557,6 @@ Private Sub Command2_Click()
 Call SendData(ToAll, 0, 0, "||Servidor> " & BroadMsg.Text & FONTTYPE_SERVER)
 End Sub
 
-
-
-
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 On Error Resume Next
    
@@ -586,15 +576,6 @@ On Error Resume Next
         End Select
    End If
    
-End Sub
-
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-'Cancel = 1
-'Me.Hide
-End Sub
-
-Private Sub Form_Resize()
-'If WindowState = vbMinimized Then Command2_Click
 End Sub
 
 Private Sub QuitarIconoSystray()
@@ -642,68 +623,14 @@ Close #N
 
 End
 
-
 Set SonidosMapas = Nothing
 
 End Sub
-
-
-
 
 Private Sub FX_Timer()
 On Error GoTo hayerror
 
 Call SonidosMapas.ReproducirSonidosDeMapas
-
-
-
-'Dim MapIndex As Integer
-'Dim N As Integer
-'For MapIndex = 1 To NumMaps
-'    Randomize
-'    If RandomNumber(1, 150) < 12 Then
-'        If MapInfo(MapIndex).NumUsers > 0 Then''
-
-'                Select Case MapInfo(MapIndex).Terreno
-'                   'Bosque
-'                   Case Bosque
-'                        N = RandomNumber(1, 100)
-'                        Select Case MapInfo(MapIndex).Zona
-'                            Case Campo
-'                              If Not Lloviendo Then
-'                                If N < 30 And N >= 15 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE)
-'                                ElseIf N < 30 And N < 15 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE2)
-'                                ElseIf N >= 30 And N <= 35 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO)
-'                                ElseIf N >= 35 And N <= 40 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO2)
-'                                ElseIf N >= 40 And N <= 45 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE3)
-'                                End If
-'                               End If
-'                            Case Ciudad
-'                               If Not Lloviendo Then
-'                                If N < 30 And N >= 15 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE)
-'                                ElseIf N < 30 And N < 15 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE2)
-'                                ElseIf N >= 30 And N <= 35 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO)
-'                                ElseIf N >= 35 And N <= 40 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_GRILLO2)
-'                                ElseIf N >= 40 And N <= 45 Then
-'                                  Call SendData(ToMap, 0, MapIndex, "TW" & SND_AVE3)
-'                                End If
-'                               End If
-'                        End Select''
-
-'                End Select
-
-'        End If
-'    End If
-'Next
 
 Exit Sub
 hayerror:
@@ -925,11 +852,6 @@ Visible = False
 
 End Sub
 
-
-
-
-
-
 Private Sub npcataca_Timer()
 
 On Error Resume Next
@@ -940,457 +862,7 @@ For npc = 1 To LastNPC
     Npclist(npc).CanAttack = 1
 Next npc
 
-
 End Sub
-
-
-
-
-'#If UsarQueSocket = 2 Then
-'
-'
-'Private Sub Serv_Close(ByVal ID As Long)
-'#If UsarQueSocket = 2 Then
-'
-'Dim UserIndex As Integer
-'
-'UserIndex = CInt(Serv.GetDato(ID))
-'
-'If UserIndex > 0 Then
-'    If UserList(UserIndex).flags.UserLogged Then
-'        Call CloseSocketSL(UserIndex)
-'        Call Cerrar_Usuario(UserIndex)
-'    Else
-'        Call CloseSocket(UserIndex)
-'    End If
-'End If
-'
-'#End If
-'End Sub
-'
-'Private Sub Serv_Eror(ByVal Numero As Long, ByVal Descripcion As String)
-'#If UsarQueSocket = 2 Then
-'Call LogCriticEvent("Serv_Eror " & Numero & ": " & Descripcion)
-'#End If
-'End Sub
-'
-'Private Sub Serv_NuevaConn(ByVal ID As Long)
-'#If UsarQueSocket = 2 Then
-''==========================================================
-'
-'If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Pedido de conexion SocketID:" & ID & vbCrLf
-'
-'On Error Resume Next
-'
-'    Dim NewIndex As Integer
-'    Dim Ret As Long
-'    Dim i As Long
-'    Dim tStr As String
-'
-'    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "NextOpenUser" & vbCrLf
-'
-'    NewIndex = NextOpenUser ' Nuevo indice
-'    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "UserIndex asignado " & NewIndex & vbCrLf
-'
-'    If NewIndex <= MaxUsers Then
-'        If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Cargando Socket " & NewIndex & vbCrLf
-'
-'
-'        UserList(NewIndex).ip = Serv.GetIP(ID)
-'
-'        'Busca si esta banneada la ip
-'        For i = 1 To BanIps.Count
-'            If BanIps.Item(i) = UserList(NewIndex).ip Then
-'                Call Serv.CerrarSocket(ID)
-'                Exit Sub
-'            End If
-'        Next i
-'
-'
-'        '=============================================
-'        If aDos.MaxConexiones(UserList(NewIndex).ip) Then
-'            UserList(NewIndex).ConnID = -1
-'            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "User slot reseteado " & NewIndex & vbCrLf
-'            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Socket unloaded" & NewIndex & vbCrLf
-'            'Call LogCriticEvent(UserList(NewIndex).ip & " intento crear mas de 3 conexiones.")
-'            Call aDos.RestarConexion(UserList(NewIndex).ip)
-'            Call Serv.CerrarSocket(ID)
-'            'Exit Sub
-'        End If
-'
-'        Call Serv.SetDato(ID, NewIndex)
-'
-'        UserList(NewIndex).SockPuedoEnviar = True
-'        UserList(NewIndex).ConnID = ID
-'        UserList(NewIndex).ConnIDValida = True
-'        Set UserList(NewIndex).CommandsBuffer = New CColaArray
-'        Set UserList(NewIndex).ColaSalida = New Collection
-'
-'        If NewIndex > LastUser Then LastUser = NewIndex
-'
-''        Debug.Print "Conexion desde " & UserList(NewIndex).ip
-'
-'        If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & UserList(NewIndex).ip & " logged." & vbCrLf
-'    Else
-'        Call LogCriticEvent("No acepte conexion porque no tenia slots")
-'
-'        tStr = "ERRServer lleno" & ENDC
-'        Call Serv.Enviar(ID, tStr, Len(tStr))
-'        Call Serv.CerrarSocket(ID)
-'    End If
-'
-'#End If
-'End Sub
-'
-'Private Sub Serv_Read(ByVal ID As Long, ByVal Datos As String, ByVal Cantidad As Long)
-'#If UsarQueSocket = 2 Then
-'
-'Dim t() As String
-'Dim LoopC As Long
-'Dim UserIndex As Integer
-'
-'UserIndex = CInt(Serv.GetDato(ID))
-'
-'If UserIndex > 0 Then
-'    TCPESStats.BytesRecibidos = TCPESStats.BytesRecibidos + Len(Datos)
-'
-'    UserList(UserIndex).RDBuffer = UserList(UserIndex).RDBuffer & Datos
-'
-'    'If InStr(1, UserList(Slot).RDBuffer, Chr(2)) > 0 Then
-'    '    UserList(Slot).RDBuffer = "CLIENTEVIEJO" & ENDC
-'    '    Debug.Print "CLIENTEVIEJO"
-'    'End If
-'
-'    t = Split(UserList(UserIndex).RDBuffer, ENDC)
-'    If UBound(t) > 0 Then
-'        UserList(UserIndex).RDBuffer = t(UBound(t))
-'
-'        For LoopC = 0 To UBound(t) - 1
-'            '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-'            '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
-'            '%%% EL PROBLEMA DEL SPEEDHACK          %%%
-'            '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-'            If ClientsCommandsQueue = 1 Then
-'                If t(LoopC) <> "" Then If Not UserList(UserIndex).CommandsBuffer.Push(t(LoopC)) Then Call Cerrar_Usuario(UserIndex)
-'
-'            Else ' SH tiebe efecto
-'                  If UserList(UserIndex).ConnID <> -1 Then
-'                    Call HandleData(UserIndex, t(LoopC))
-'                  Else
-'                    Exit Sub
-'                  End If
-'            End If
-'        Next LoopC
-'    End If
-'End If
-'
-'#End If
-'End Sub
-'
-'Private Sub Serv_Write(ByVal ID As Long)
-'#If UsarQueSocket = 2 Then
-'
-'#End If
-'End Sub
-'
-'#End If
-'
-'Private Sub Socket1_Accept(SocketId As Integer)
-'#If UsarQueSocket = 0 Then
-'
-''=========================================================
-''USO DEL CONTROL SOCKET WRENCH
-''=============================
-'
-'If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Pedido de conexion SocketID:" & SocketId & vbCrLf
-'
-'On Error Resume Next
-'
-'    Dim NewIndex As Integer
-'
-'
-'    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "NextOpenUser" & vbCrLf
-'
-'    NewIndex = NextOpenUser ' Nuevo indice
-'    If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "UserIndex asignado " & NewIndex & vbCrLf
-'
-'    If NewIndex >= 1 And NewIndex <= MaxUsers Then
-'            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Cargando Socket " & NewIndex & vbCrLf
-'
-'            Unload Socket2(NewIndex)
-'            Load Socket2(NewIndex)
-'
-'            Socket2(NewIndex).AddressFamily = AF_INET
-'            Socket2(NewIndex).protocol = IPPROTO_IP
-'            Socket2(NewIndex).SocketType = SOCK_STREAM
-'            Socket2(NewIndex).Binary = False
-'            Socket2(NewIndex).BufferSize = SOCKET_BUFFER_SIZE
-'            Socket2(NewIndex).Blocking = False
-'            Socket2(NewIndex).Linger = 1
-'
-'            Socket2(NewIndex).accept = SocketId
-'
-'            UserList(NewIndex).ip = Socket2(NewIndex).PeerAddress
-'            If BanIpBuscar(UserList(NewIndex).ip) > 0 Then
-'                Call CloseSocket(NewIndex)
-'                Exit Sub
-'            End If
-'
-'
-'            If aDos.MaxConexiones(Socket2(NewIndex).PeerAddress) Then
-'
-'                UserList(NewIndex).ConnID = -1
-'                If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "User slot reseteado " & NewIndex & vbCrLf
-'
-'
-'
-'                If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Socket unloaded" & NewIndex & vbCrLf
-'
-'                'Call LogCriticEvent(Socket2(NewIndex).PeerAddress & " intento crear mas de 3 conexiones.")
-'                Call aDos.RestarConexion(Socket2(NewIndex).PeerAddress)
-'                'Socket2(NewIndex).Disconnect
-'                Unload frmMain.Socket2(NewIndex)
-'
-'                Exit Sub
-'            End If
-'
-'            Set UserList(NewIndex).CommandsBuffer = New CColaArray
-'            Set UserList(NewIndex).ColaSalida = New Collection
-'            UserList(NewIndex).ConnIDValida = True
-'            UserList(NewIndex).ConnID = SocketId
-'            UserList(NewIndex).SockPuedoEnviar = True
-'
-'            If NewIndex > LastUser Then
-'                LastUser = NewIndex
-'                If LastUser > MaxUsers Then
-'                    LastUser = MaxUsers
-'                    Call CloseSocket(NewIndex)
-'                End If
-'            End If
-'
-'            If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & Socket2(NewIndex).PeerAddress & " logged." & vbCrLf
-'    Else
-'        Call LogCriticEvent("No acepte conexion porque no tenia slots")
-'    End If
-'
-'Exit Sub
-'
-'#End If
-'End Sub
-'
-'Private Sub Socket1_Blocking(Status As Integer, Cancel As Integer)
-'Cancel = True
-'End Sub
-'
-'Private Sub Socket1_LastError(ErrorCode As Integer, ErrorString As String, Response As Integer)
-'
-'If DebugSocket Then frmDebugSocket.Text2.Text = frmDebugSocket.Text2.Text & Time & " " & ErrorString & vbCrLf
-'
-'frmDebugSocket.Label3.Caption = Socket1.State
-'End Sub
-'
-'Private Sub Socket1_Write()
-''
-'
-'End Sub
-'
-'Private Sub Socket2_Blocking(Index As Integer, Status As Integer, Cancel As Integer)
-''Cancel = True
-'End Sub
-'
-'Private Sub Socket2_Connect(Index As Integer)
-''If DebugSocket Then frmDebugSocket.Text1.Text = frmDebugSocket.Text1.Text & "Conectado" & vbCrLf
-'
-'On Error Resume Next
-'
-'If Index >= LBound(UserList) And Index <= UBound(UserList) Then
-'    Set UserList(Index).CommandsBuffer = New CColaArray
-'End If
-'
-'End Sub
-'
-'Private Sub Socket2_Disconnect(Index As Integer)
-'On Error GoTo hayerror
-'
-'    If UserList(Index).flags.UserLogged And _
-'        UserList(Index).Counters.Saliendo = False Then
-'        Call Cerrar_Usuario(Index)
-'    ElseIf Not UserList(Index).flags.UserLogged Then
-'        Call CloseSocket(Index)
-'    Else
-'        Call CloseSocketSL(Index)
-'    End If
-'
-'Exit Sub
-'hayerror:
-'
-'End Sub
-'
-''Private Sub Socket2_LastError(Index As Integer, ErrorCode As Integer, ErrorString As String, Response As Integer)
-'''24004   WSAEINTR    Blocking function was canceled
-'''24009   WSAEBADF    Invalid socket descriptor passed to function
-'''24013   WSAEACCES   Access denied
-'''24014   WSAEFAULT   Invalid address passed to function
-'''24022   WSAEINVAL   Invalid socket function call
-'''24024   WSAEMFILE   No socket descriptors are available
-'''24035   WSAEWOULDBLOCK  Socket would block on this operation
-'''24036   WSAEINPROGRESS  Blocking function in progress
-'''24037   WSAEALREADY Function being canceled has already completed
-'''24038   WSAENOTSOCK Invalid socket descriptor passed to function
-'''24039   WSAEDESTADDRREQ Destination address is required
-'''24040   WSAEMSGSIZE Datagram was too large to fit in specified buffer
-'''24041   WSAEPROTOTYPE   Specified protocol is the wrong type for this socket
-'''24042   WSAENOPROTOOPT  Socket option is unknown or unsupported
-'''24043   WSAEPROTONOSUPPORT  Specified protocol is not supported
-'''24044   WSAESOCKTNOSUPPORT  Specified socket type is not supported in this address family
-'''24045   WSAEOPNOTSUPP   Socket operation is not supported
-'''24046   WSAEPFNOSUPPORT Specified protocol family is not supported
-'''24047   WSAEAFNOSUPPORT Specified address family is not supported by this protocol
-'''24048   WSAEADDRINUSE   Specified address is already in use
-'''24049   WSAEADDRNOTAVAIL    Specified address is not available
-'''24050   WSAENETDOWN Network subsystem has failed
-'''24051   WSAENETUNREACH  Network cannot be reached from this host
-'''24052   WSAENETRESET    Network dropped connection on reset
-'''24053   WSAECONNABORTED Connection was aborted due to timeout or other failure
-'''24054   WSAECONNRESET   Connection was reset by remote network
-'''24055   WSAENOBUFS  No buffer space is available
-'''24056   WSAEISCONN  Socket is already connected
-'''24057   WSAENOTCONN Socket Is Not Connected
-'''24058   WSAESHUTDOWN    Socket connection has been shut down
-'''24060   WSAETIMEDOUT    Operation timed out before completion
-'''24061   WSAECONNREFUSED Connection refused by remote network
-'''24064   WSAEHOSTDOWN    Remote host is down
-'''24065   WSAEHOSTUNREACH Remote host is unreachable
-'''24091   WSASYSNOTREADY  Network subsystem is not ready for communication
-'''24092   WSAVERNOTSUPPORTED  Requested version is not available
-'''24093   WSANOTINITIALIZED   Windows sockets library not initialized
-'''25001   WSAHOST_NOT_FOUND   Authoritative Answer Host not found
-'''25002   WSATRY_AGAIN    Non-authoritative Answer Host not found
-'''25003   WSANO_RECOVERY  Non-recoverable error
-'''25004   WSANO_DATA  No data record of requested type
-'''Response = SOCKET_ERRIGNORE
-''If ErrorCode = 24053 Then Call CloseSocket(Index)
-''End Sub
-'
-'Private Sub Socket2_Read(Index As Integer, DataLength As Integer, IsUrgent As Integer)
-'#If UsarQueSocket = 0 Then
-'
-'On Error GoTo ErrorHandler
-'
-''*********************************************
-''Separamos las lineas con ENDC y las enviamos a HandleData()
-''*********************************************
-'Dim LoopC As Integer
-'Dim RD As String
-'Dim rBuffer(1 To COMMAND_BUFFER_SIZE) As String
-'Dim CR As Integer
-'Dim tChar As String
-'Dim sChar As Integer
-'Dim eChar As Integer
-'Dim aux$
-'Dim OrigCad As String
-'
-'Dim LenRD As Long
-'
-''<<<<<<<<<<<<<<<<<< Evitamos DoS >>>>>>>>>>>>>>>>>>>>>>>>>>>
-''Call AddtoVar(UserList(Index).NumeroPaquetesPorMiliSec, 1, 1000)
-''
-''If UserList(Index).NumeroPaquetesPorMiliSec > 700 Then
-''   'UserList(Index).Flags.AdministrativeBan = 1
-''   Call LogCriticalHackAttemp(UserList(Index).Name & " " & frmMain.Socket2(Index).PeerAddress & " alcanzo el max paquetes por iteracion.")
-''   Call SendData(ToIndex, Index, 0, "ERRSe ha perdido la conexion, por favor vuelva a conectarse.")
-''   Call CloseSocket(Index)
-''   Exit Sub
-''End If
-'
-'Call Socket2(Index).Read(RD, DataLength)
-'
-'OrigCad = RD
-'LenRD = Len(RD)
-'
-''Call AddtoVar(UserList(Index).BytesTransmitidosUser, LenB(RD), 100000)
-'
-''[¡¡BUCLE INFINITO!!]'
-'If LenRD = 0 Then
-'    UserList(Index).AntiCuelgue = UserList(Index).AntiCuelgue + 1
-'    If UserList(Index).AntiCuelgue >= 150 Then
-'        UserList(Index).AntiCuelgue = 0
-'        Call LogError("!!!! Detectado bucle infinito de eventos socket2_read. cerrando indice " & Index)
-'        Unload Socket2(Index)
-'        Call CloseSocket(Index)
-'        Exit Sub
-'    End If
-'Else
-'    UserList(Index).AntiCuelgue = 0
-'End If
-''[¡¡BUCLE INFINITO!!]'
-'
-''Verificamos por una comando roto y le agregamos el resto
-'If UserList(Index).RDBuffer <> "" Then
-'    RD = UserList(Index).RDBuffer & RD
-'    UserList(Index).RDBuffer = ""
-'End If
-'
-''Verifica por mas de una linea
-'sChar = 1
-'For LoopC = 1 To LenRD
-'
-'    tChar = Mid$(RD, LoopC, 1)
-'
-'    If tChar = ENDC Then
-'        CR = CR + 1
-'        eChar = LoopC - sChar
-'        rBuffer(CR) = Mid$(RD, sChar, eChar)
-'        sChar = LoopC + 1
-'    End If
-'
-'Next LoopC
-'
-''Verifica una linea rota y guarda
-'If Len(RD) - (sChar - 1) <> 0 Then
-'    UserList(Index).RDBuffer = Mid$(RD, sChar, Len(RD))
-'End If
-'
-''Enviamos el buffer al manejador
-'For LoopC = 1 To CR
-'
-'    '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-'    '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
-'    '%%% EL PROBLEMA DEL SPEEDHACK          %%%
-'    '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-'    If ClientsCommandsQueue = 1 Then
-'        If rBuffer(LoopC) <> "" Then If Not UserList(Index).CommandsBuffer.Push(rBuffer(LoopC)) Then Call Cerrar_Usuario(Index)
-'
-'    Else ' SH tiebe efecto
-'          If UserList(Index).ConnID <> -1 Then
-'            Call HandleData(Index, rBuffer(LoopC))
-'          Else
-'            Exit Sub
-'          End If
-'    End If
-'
-'Next LoopC
-'
-'Exit Sub
-'
-'
-'ErrorHandler:
-'    Call LogError("Error en Socket read." & Err.Description & " Numero paquetes:" & UserList(Index).NumeroPaquetesPorMiliSec & " . Rdata:" & OrigCad)
-'
-'#End If
-'End Sub
-'
-'
-'
-'Private Sub Socket2_Write(Index As Integer)
-''On Error Resume Next
-''
-''If Index >= LBound(UserList) And Index <= UBound(UserList) Then
-''    UserList(Index).SockPuedoEnviar = True
-''End If
-''
-'End Sub
-
 
 Private Sub TIMER_AI_Timer()
 
@@ -1721,14 +1193,8 @@ Call LogError("Error socket read: " & MiDato & " dato:" & RD & " userlogged: " &
 
 End Sub
 
-
-
-
-
 #End If
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''FIN  USO DEL CONTROL TCPSERV'''''''''''''''''''''''''
 '''''''''''''Compilar con UsarQueSocket = 3''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-

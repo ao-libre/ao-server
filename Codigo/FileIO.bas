@@ -964,9 +964,6 @@ UserList(UserIndex).Counters.Pena = val(GetVar(UserFile, "COUNTERS", "Pena"))
 
 UserList(UserIndex).email = GetVar(UserFile, "CONTACTO", "Email")
 
-'Barrin 2/10/03
-UserList(UserIndex).Apadrinados = val(GetVar(UserFile, "CONTACTO", "Apadrinados"))
-
 UserList(UserIndex).Genero = GetVar(UserFile, "INIT", "Genero")
 UserList(UserIndex).Clase = GetVar(UserFile, "INIT", "Clase")
 UserList(UserIndex).Raza = GetVar(UserFile, "INIT", "Raza")
@@ -1626,10 +1623,6 @@ Next
 
 
 Call WriteVar(UserFile, "CONTACTO", "Email", UserList(UserIndex).email)
-
-'Barrin 3/10/03
-'escribimos los valores del char... ¿apadrinó ya? ¿cuántos?
-Call WriteVar(UserFile, "CONTACTO", "Apadrinados", str(UserList(UserIndex).Apadrinados))
 
 Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).Genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).Raza)

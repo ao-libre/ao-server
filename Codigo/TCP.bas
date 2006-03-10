@@ -1849,9 +1849,6 @@ UserList(UserIndex).Genero = ""
 UserList(UserIndex).Hogar = ""
 UserList(UserIndex).Raza = ""
 
-'Barrin 3/03/03
-UserList(UserIndex).Apadrinados = 0
-
 UserList(UserIndex).RandKey = 0
 UserList(UserIndex).PrevCRC = 0
 UserList(UserIndex).PacketNumber = 0
@@ -2008,8 +2005,6 @@ Set UserList(UserIndex).ColaSalida = Nothing
 UserList(UserIndex).SockPuedoEnviar = False
 UserList(UserIndex).ConnIDValida = False
 UserList(UserIndex).ConnID = -1
-
-UserList(UserIndex).AntiCuelgue = 0
 
 Call LimpiarComercioSeguro(UserIndex)
 Call ResetFacciones(UserIndex)
@@ -3492,7 +3487,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            Call SendData(ToConsejo, 0, 0, tStr)
+            Call SendData(ToConsejo, 0, 0, "||" & tStr)
         End If
         Exit Sub
     
@@ -3501,7 +3496,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            Call SendData(ToConsejoCaos, 0, 0, tStr)
+            Call SendData(ToConsejoCaos, 0, 0, "||" & tStr)
         End If
         Exit Sub
     
@@ -3510,7 +3505,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            Call SendData(ToCiudadanos, 0, 0, tStr)
+            Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
         End If
         Exit Sub
     
@@ -3519,7 +3514,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            Call SendData(ToCiudadanos, 0, 0, tStr)
+            Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
         End If
         Exit Sub
     
@@ -3528,7 +3523,21 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            Call SendData(ToCriminales, 0, 0, tStr)
+            Call SendData(ToCriminales, 0, 0, "||" & tStr)
+        End If
+        Exit Sub
+    
+    Case "/TALKAS "
+        'Solo dioses, admins y RMS
+        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+            'Asegurarse haya un NPC seleccionado
+            If UserList(UserIndex).flags.TargetNPC > 0 Then
+                tStr = Right$(rData, Len(rData) - 8)
+                
+                Call SendData(ToPCArea, 0, 0, "||" & vbWhite & "°" & tStr & "°" & CStr(UserList(UserIndex).flags.TargetNPC))
+            Else
+                Call SendData(ToIndex, UserIndex, 0, "||Debes seleccionar el NPC por el que quieres hablar antes de usar este comando" & FONTTYPE_INFO)
+            End If
         End If
         Exit Sub
 End Select

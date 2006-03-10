@@ -574,7 +574,7 @@ End Type
 
 'Datos de user o npc
 Type Char
-    charindex As Integer
+    CharIndex As Integer
     Head As Integer
     Body As Integer
     
@@ -1009,12 +1009,6 @@ Type User
     ComUsu As tCOmercioUsuario
     '[/Alejo]
     
-    AntiCuelgue As Long
-
-    'Barrin 2/10/03
-    Apadrinados As Integer
-    '[Ybarra]
-    
     EmpoCont As Byte
     
     GuildIndex As Integer   'puntero al array global de guilds
@@ -1141,7 +1135,7 @@ End Type
 '<--------- New type for holding the pathfinding info ------>
 
 
-Type Npc
+Type npc
     Name As String
     Char As Char 'Define como se vera
     Desc As String
@@ -1302,7 +1296,7 @@ Public EncriptarProtocolosCriticos As Boolean
 
 '*****************ARRAYS PUBLICOS*************************
 Public UserList() As User 'USUARIOS
-Public Npclist() As Npc 'NPCS
+Public Npclist() As npc 'NPCS
 Public MapData() As MapBlock
 Public MapInfo() As MapInfo
 Public Hechizos() As tHechizo
