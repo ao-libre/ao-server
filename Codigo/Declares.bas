@@ -74,7 +74,7 @@ Public Type tLlamadaGM
     Desc As String * 255
 End Type
 
-Public Const LimiteNewbie = 12
+Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
     Desc As String * 255
@@ -85,26 +85,27 @@ End Type
 Public MiCabecera As tCabecera
 
 'Barrin 3/10/03
-Public Const TIEMPO_INICIOMEDITAR = 3
+Public Const TIEMPO_INICIOMEDITAR As Byte = 3
 
-Public Const NingunEscudo = 2
-Public Const NingunCasco = 2
+Public Const NingunEscudo As Integer = 2
+Public Const NingunCasco As Integer = 2
 
-Public Const EspadaMataDragonesIndex = 402
-Public Const LAUDMAGICO = 696
+Public Const EspadaMataDragonesIndex As Integer = 402
+Public Const LAUDMAGICO As Integer = 696
 
-Public Const MAXMASCOTASENTRENADOR = 7
+Public Const MAXMASCOTASENTRENADOR As Byte = 7
 
+'TODO : Reemplazar por un enum
 Public Const FXWARP = 1
 Public Const FXCURAR = 2
-
 Public Const FXMEDITARCHICO = 4
 Public Const FXMEDITARMEDIANO = 5
 Public Const FXMEDITARGRANDE = 6
 Public Const FXMEDITARXGRANDE = 16
 
-Public Const TIEMPO_CARCEL_PIQUETE = 10
+Public Const TIEMPO_CARCEL_PIQUETE As Byte = 10
 
+'TODO : Reemplazar por un enum
 'TRIGGERS
 Public Const TRIGGER_NADA = 0
 Public Const TRIGGER_BAJOTECHO = 1
@@ -120,44 +121,49 @@ Public Enum eTrigger6
     TRIGGER6_AUSENTE = 3
 End Enum
 
+'TODO : Reemplazar por un enum
 Public Const Bosque = "BOSQUE"
 Public Const Nieve = "NIEVE"
 Public Const Desierto = "DESIERTO"
-
 Public Const Ciudad = "CIUDAD"
 Public Const Campo = "CAMPO"
 Public Const Dungeon = "DUNGEON"
 
+'TODO : Reemplazar por un enum
 ' <<<<<< Targets >>>>>>
 Public Const uUsuarios = 1
 Public Const uNPC = 2
 Public Const uUsuariosYnpc = 3
 Public Const uTerreno = 4
 
+'TODO : Reemplazar por un enum
 ' <<<<<< Acciona sobre >>>>>>
 Public Const uPropiedades = 1
 Public Const uEstado = 2
 Public Const uInvocacion = 4
 Public Const uMaterializa = 3
 
-Public Const DRAGON = 6
-Public Const MATADRAGONES = 1
+Public Const DRAGON As Integer = 6
+Public Const MATADRAGONES As Byte = 1
 
-Public Const MAX_MENSAJES_FORO = 35
+Public Const MAX_MENSAJES_FORO As Byte = 35
 
-Public Const MAXUSERHECHIZOS = 35
-
-
-Public Const EsfuerzoTalarGeneral = 4
-Public Const EsfuerzoTalarLeñador = 2
-
-Public Const EsfuerzoPescarPescador = 1
-Public Const EsfuerzoPescarGeneral = 3
-
-Public Const EsfuerzoExcavarMinero = 2
-Public Const EsfuerzoExcavarGeneral = 5
+Public Const MAXUSERHECHIZOS As Byte = 35
 
 
+Public Const EsfuerzoTalarGeneral As Byte = 4
+Public Const EsfuerzoTalarLeñador As Byte = 2
+
+Public Const EsfuerzoPescarPescador As Byte = 1
+Public Const EsfuerzoPescarGeneral As Byte = 3
+
+Public Const EsfuerzoExcavarMinero As Byte = 2
+Public Const EsfuerzoExcavarGeneral As Byte = 5
+
+Public Const FX_TELEPORT_INDEX As Integer = 1
+
+
+'TODO : Reemplazar por un enum
 Public Const bCabeza = 1
 Public Const bPiernaIzquierda = 2
 Public Const bPiernaDerecha = 3
@@ -165,39 +171,39 @@ Public Const bBrazoDerecho = 4
 Public Const bBrazoIzquierdo = 5
 Public Const bTorso = 6
 
-Public Const Guardias = 6
+Public Const Guardias As Integer = 6
 
-Public Const MAXREP = 6000000
-Public Const MAXORO = 90000000
-Public Const MAXEXP = 99999999
+Public Const MAXREP As Long = 6000000
+Public Const MAXORO As Long = 90000000
+Public Const MAXEXP As Long = 99999999
 
-Public Const MAXATRIBUTOS = 38
-Public Const MINATRIBUTOS = 6
+Public Const MAXATRIBUTOS As Byte = 38
+Public Const MINATRIBUTOS As Byte = 6
 
-Public Const LingoteHierro = 386
-Public Const LingotePlata = 387
-Public Const LingoteOro = 388
-Public Const Leña = 58
-
-
-Public Const MAXNPCS = 10000
-Public Const MAXCHARS = 10000
-
-Public Const HACHA_LEÑADOR = 127
-Public Const PIQUETE_MINERO = 187
-
-Public Const DAGA = 15
-Public Const FOGATA_APAG = 136
-Public Const FOGATA = 63
-Public Const ORO_MINA = 194
-Public Const PLATA_MINA = 193
-Public Const HIERRO_MINA = 192
-Public Const MARTILLO_HERRERO = 389
-Public Const SERRUCHO_CARPINTERO = 198
-Public Const ObjArboles = 4
-Public Const RED_PESCA = 543
+Public Const LingoteHierro As Integer = 386
+Public Const LingotePlata As Integer = 387
+Public Const LingoteOro As Integer = 388
+Public Const Leña As Integer = 58
 
 
+Public Const MAXNPCS As Integer = 10000
+Public Const MAXCHARS As Integer = 10000
+
+Public Const HACHA_LEÑADOR As Integer = 127
+Public Const PIQUETE_MINERO As Integer = 187
+
+Public Const DAGA As Integer = 15
+Public Const FOGATA_APAG As Integer = 136
+Public Const FOGATA As Integer = 63
+Public Const ORO_MINA As Integer = 194
+Public Const PLATA_MINA As Integer = 193
+Public Const HIERRO_MINA As Integer = 192
+Public Const MARTILLO_HERRERO As Integer = 389
+Public Const SERRUCHO_CARPINTERO As Integer = 198
+Public Const ObjArboles As Integer = 4
+Public Const RED_PESCA As Integer = 543
+
+'TODO : Reemplazar por un enum
 Public Const NPCTYPE_COMUN = 0
 Public Const NPCTYPE_REVIVIR = 1
 Public Const NPCTYPE_GUARDIAS = 2
@@ -207,47 +213,41 @@ Public Const NPCTYPE_TIMBERO = 7
 Public Const NPCTYPE_GUARDIASCAOS = 8
 
 
-
-Public Const FX_TELEPORT_INDEX = 1
-
-
-Public Const MIN_APUÑALAR = 10
+Public Const MIN_APUÑALAR As Byte = 10
 
 '********** CONSTANTANTES ***********
-Public Const NUMSKILLS = 21
-Public Const NUMATRIBUTOS = 5
-Public Const NUMCLASES = 17
-Public Const NUMRAZAS = 5
+Public Const NUMSKILLS As Byte = 21
+Public Const NUMATRIBUTOS As Byte = 5
+Public Const NUMCLASES As Byte = 17
+Public Const NUMRAZAS As Byte = 5
 
-Public Const MAXSKILLPOINTS = 100
+Public Const MAXSKILLPOINTS As Byte = 100
 
-Public Const FLAGORO = 777
+Public Const FLAGORO As Integer = 777
 
+'TODO : Reemplazar por un enum
 Public Const NORTH = 1
 Public Const EAST = 2
 Public Const SOUTH = 3
 Public Const WEST = 4
 
-
-Public Const MAXMASCOTAS = 3
-
-'%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
-Public Const vlASALTO = 100
-Public Const vlASESINO = 1000
-Public Const vlCAZADOR = 5
-Public Const vlNoble = 5
-Public Const vlLadron = 25
-Public Const vlProleta = 2
-
-
+Public Const MAXMASCOTAS As Byte = 3
 
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
-Public Const iCuerpoMuerto = 8
-Public Const iCabezaMuerto = 500
+Public Const vlASALTO As Integer = 100
+Public Const vlASESINO As Integer = 1000
+Public Const vlCAZADOR As Integer = 5
+Public Const vlNoble As Integer = 5
+Public Const vlLadron As Integer = 25
+Public Const vlProleta As Integer = 2
+
+'%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
+Public Const iCuerpoMuerto As Integer = 8
+Public Const iCabezaMuerto As Integer = 500
 
 
-Public Const iORO = 12
-Public Const Pescado = 139
+Public Const iORO As Byte = 12
+Public Const Pescado As Byte = 139
 
 Public Enum PECES_POSIBLES
     PESCADO1 = 139
@@ -256,6 +256,7 @@ Public Enum PECES_POSIBLES
     PESCADO4 = 546
 End Enum
 
+'TODO : Reemplazar por un enum
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
 Public Const Suerte = 1
 Public Const Magia = 2
@@ -281,10 +282,7 @@ Public Const Navegacion = 21
 
 Public Const FundirMetal = 88
 
-Public Const XA = 40
-Public Const XD = 10
-Public Const Balance = 9
-
+'TODO : Reemplazar por un enum
 Public Const Fuerza = 1
 Public Const Agilidad = 2
 Public Const Inteligencia = 3
@@ -292,58 +290,58 @@ Public Const Carisma = 4
 Public Const Constitucion = 5
 
 
-Public Const AdicionalHPGuerrero = 2 'HP adicionales cuando sube de nivel
-Public Const AdicionalHPCazador = 1 'HP adicionales cuando sube de nivel
-Public Const AdicionalSTLadron = 3
+Public Const AdicionalHPGuerrero As Byte = 2 'HP adicionales cuando sube de nivel
+Public Const AdicionalHPCazador As Byte = 1 'HP adicionales cuando sube de nivel
+Public Const AdicionalSTLadron As Byte = 3
 
-Public Const AdicionalSTLeñador = 23
-Public Const AdicionalSTPescador = 20
-Public Const AdicionalSTMinero = 25
+Public Const AdicionalSTLeñador As Byte = 23
+Public Const AdicionalSTPescador As Byte = 20
+Public Const AdicionalSTMinero As Byte = 25
 
 'Tamaño del mapa
-Public Const XMaxMapSize = 100
-Public Const XMinMapSize = 1
-Public Const YMaxMapSize = 100
-Public Const YMinMapSize = 1
+Public Const XMaxMapSize As Byte = 100
+Public Const XMinMapSize As Byte = 1
+Public Const YMaxMapSize As Byte = 100
+Public Const YMinMapSize As Byte = 1
 
 'Tamaño del tileset
-Public Const TileSizeX = 32
-Public Const TileSizeY = 32
+Public Const TileSizeX As Byte = 32
+Public Const TileSizeY As Byte = 32
 
 'Tamaño en Tiles de la pantalla de visualizacion
-Public Const XWindow = 17
-Public Const YWindow = 13
+Public Const XWindow As Byte = 17
+Public Const YWindow As Byte = 13
 
 'Sonidos
-Public Const SOUND_BUMP = 1
-Public Const SOUND_SWING = 2
-Public Const SOUND_TALAR = 13
-Public Const SOUND_PESCAR = 14
-Public Const SOUND_MINERO = 15
-Public Const SND_WARP = 3
-Public Const SND_PUERTA = 5
-Public Const SOUND_NIVEL = 6
+Public Const SND_SWING As Byte = 2
+Public Const SND_TALAR As Byte = 13
+Public Const SND_PESCAR As Byte = 14
+Public Const SND_MINERO As Byte = 15
+Public Const SND_WARP As Byte = 3
+Public Const SND_PUERTA As Byte = 5
+Public Const SND_NIVEL As Byte = 6
 
-Public Const SND_USERMUERTE = 11
-Public Const SND_IMPACTO = 10
-Public Const SND_IMPACTO2 = 12
-Public Const SND_LEÑADOR = 13
-Public Const SND_FOGATA = 14
-Public Const SND_AVE = 21
-Public Const SND_AVE2 = 22
-Public Const SND_AVE3 = 34
-Public Const SND_GRILLO = 28
-Public Const SND_GRILLO2 = 29
-Public Const SOUND_SACARARMA = 25
-Public Const SND_ESCUDO = 37
-Public Const MARTILLOHERRERO = 41
-Public Const LABUROCARPINTERO = 42
-Public Const SND_BEBER = 46
+Public Const SND_USERMUERTE As Byte = 11
+Public Const SND_IMPACTO As Byte = 10
+Public Const SND_IMPACTO2 As Byte = 12
+Public Const SND_LEÑADOR As Byte = 13
+Public Const SND_FOGATA As Byte = 14
+Public Const SND_AVE As Byte = 21
+Public Const SND_AVE2 As Byte = 22
+Public Const SND_AVE3 As Byte = 34
+Public Const SND_GRILLO As Byte = 28
+Public Const SND_GRILLO2 As Byte = 29
+Public Const SND_SACARARMA As Byte = 25
+Public Const SND_ESCUDO As Byte = 37
+Public Const MARTILLOHERRERO As Byte = 41
+Public Const LABUROCARPINTERO As Byte = 42
+Public Const SND_BEBER As Byte = 46
 
 'Objetos
-Public Const MAX_INVENTORY_OBJS = 10000
-Public Const MAX_INVENTORY_SLOTS = 20
+Public Const MAX_INVENTORY_OBJS As Integer = 10000
+Public Const MAX_INVENTORY_SLOTS As Byte = 20
 
+'TODO : Reemplazar por un enum
 '<------------------CATEGORIAS PRINCIPALES--------->
 Public Const OBJTYPE_USEONCE = 1
 Public Const OBJTYPE_WEAPON = 2
@@ -360,20 +358,21 @@ Public Const OBJTYPE_BEBIDA = 13
 Public Const OBJTYPE_LEÑA = 14
 Public Const OBJTYPE_FOGATA = 15
 Public Const OBJTYPE_HERRAMIENTAS = 18
-Public Const OBJTYPE_YACIMIENTO = 22
-Public Const OBJTYPE_PERGAMINOS = 24
 Public Const OBJTYPE_TELEPORT = 19
+Public Const OBJTYPE_YACIMIENTO = 22
+Public Const OBJTYPE_MINERALES = 23
+Public Const OBJTYPE_PERGAMINOS = 24
+Public Const OBJTYPE_INSTRUMENTOS = 26
 Public Const OBJTYPE_YUNQUE = 27
 Public Const OBJTYPE_FRAGUA = 28
-Public Const OBJTYPE_MINERALES = 23
-Public Const OBJTYPE_CUALQUIERA = 1000
-Public Const OBJTYPE_INSTRUMENTOS = 26
 Public Const OBJTYPE_BARCOS = 31
 Public Const OBJTYPE_FLECHAS = 32
 Public Const OBJTYPE_BOTELLAVACIA = 33
 Public Const OBJTYPE_BOTELLALLENA = 34
 Public Const OBJTYPE_MANCHAS = 35
+Public Const OBJTYPE_CUALQUIERA = 1000
 
+'TODO : deberían de tener tipos aparte muchos de ellos
 '<------------------SUB-CATEGORIAS----------------->
 Public Const OBJTYPE_ARMADURA = 0
 Public Const OBJTYPE_CASCO = 1
@@ -381,48 +380,30 @@ Public Const OBJTYPE_ESCUDO = 2
 Public Const OBJTYPE_CAÑA = 138
 
 
-
-'Tipo de posicones
-'1 Modifica la Agilidad
-'2 Modifica la Fuerza
-'3 Repone HP
-'4 Repone Mana
-
 'Texto
-Public Const FONTTYPE_TALK = "~255~255~255~0~0"
-Public Const FONTTYPE_FIGHT = "~255~0~0~1~0"
-Public Const FONTTYPE_WARNING = "~32~51~223~1~1"
-Public Const FONTTYPE_INFO = "~65~190~156~0~0"
-Public Const FONTTYPE_INFOBOLD = "~65~190~156~1~0"
-Public Const FONTTYPE_EJECUCION = "~130~130~130~1~0"
-Public Const FONTTYPE_PARTY = "~255~180~255~0~0"
-Public Const FONTTYPE_VENENO = "~0~255~0~0~0"
-Public Const FONTTYPE_GUILD = "~255~255~255~1~0"
+Public Const FONTTYPE_TALK As String = "~255~255~255~0~0"
+Public Const FONTTYPE_FIGHT As String = "~255~0~0~1~0"
+Public Const FONTTYPE_WARNING As String = "~32~51~223~1~1"
+Public Const FONTTYPE_INFO As String = "~65~190~156~0~0"
+Public Const FONTTYPE_INFOBOLD As String = "~65~190~156~1~0"
+Public Const FONTTYPE_EJECUCION As String = "~130~130~130~1~0"
+Public Const FONTTYPE_PARTY As String = "~255~180~255~0~0"
+Public Const FONTTYPE_VENENO As String = "~0~255~0~0~0"
+Public Const FONTTYPE_GUILD As String = "~255~255~255~1~0"
+Public Const FONTTYPE_SERVER As String = "~0~185~0~0~0"
+Public Const FONTTYPE_GUILDMSG As String = "~228~199~27~0~0"
+Public Const FONTTYPE_CONSEJO As String = "~130~130~255~1~0"
+Public Const FONTTYPE_CONSEJOCAOS As String = "~255~60~00~1~0"
+Public Const FONTTYPE_CONSEJOVesA As String = "~0~200~255~1~0"
+Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
 
-
-'Mejoramos los mensajes del servidor
-Public Const FONTTYPE_SERVER = "~0~185~0~0~0"
-Public Const FONTTYPE_GUILDMSG = "~228~199~27~0~0"
-
-Public Const FONTTYPE_CONSEJO = "~130~130~255~1~0"
-Public Const FONTTYPE_CONSEJOCAOS = "~255~60~00~1~0"
-Public Const FONTTYPE_CONSEJOVesA = "~0~200~255~1~0"
-Public Const FONTTYPE_CONSEJOCAOSVesA = "~255~50~0~1~0"
 'Estadisticas
-Public Const STAT_MAXELV = 99
-Public Const STAT_MAXHP = 999
-Public Const STAT_MAXSTA = 999
-Public Const STAT_MAXMAN = 2000
-Public Const STAT_MAXHIT = 99
-Public Const STAT_MAXDEF = 99
-
-Public Const SND_SYNC = &H0
-Public Const SND_ASYNC = &H1
-
-Public Const SND_NODEFAULT = &H2
-
-Public Const SND_LOOP = &H8
-Public Const SND_NOSTOP = &H10
+Public Const STAT_MAXELV As Byte = 99
+Public Const STAT_MAXHP As Integer = 999
+Public Const STAT_MAXSTA As Integer = 999
+Public Const STAT_MAXMAN As Integer = 2000
+Public Const STAT_MAXHIT As Byte = 99
+Public Const STAT_MAXDEF As Byte = 99
 
 
 
@@ -432,7 +413,7 @@ Public Const SND_NOSTOP = &H10
 '**************************************************************
 '**************************************************************
 
-Type tHechizo
+Public Type tHechizo
     Nombre As String
     Desc As String
     PalabrasMagicas As String
@@ -497,7 +478,6 @@ Type tHechizo
     Mimetiza As Byte
     RemueveInvisibilidadParcial As Byte
     
-    
     Invoca As Byte
     NumNpc As Integer
     Cant As Integer
@@ -515,22 +495,19 @@ Type tHechizo
     
     NeedStaff As Integer
     StaffAffected As Boolean
-    
 End Type
 
-Type LevelSkill
-
-LevelValue As Integer
-
+Public Type LevelSkill
+    LevelValue As Integer
 End Type
 
-Type UserOBJ
+Public Type UserOBJ
     ObjIndex As Integer
     Amount As Integer
     Equipped As Byte
 End Type
 
-Type Inventario
+Public Type Inventario
     Object(1 To MAX_INVENTORY_SLOTS) As UserOBJ
     WeaponEqpObjIndex As Integer
     WeaponEqpSlot As Byte
@@ -549,13 +526,13 @@ Type Inventario
     NroItems As Integer
 End Type
 
-Type tPartyData
+Public Type tPartyData
     PIndex As Integer
     RemXP As Double 'La exp. en el server se cuenta con Doubles
     TargetUser As Integer 'Para las invitaciones
 End Type
 
-Type Position
+Public Type Position
     X As Integer
     Y As Integer
 End Type
@@ -566,14 +543,14 @@ Public Type WorldPos
     Y As Integer
 End Type
 
-Type FXdata
+Public Type FXdata
     Nombre As String
     GrhIndex As Integer
     Delay As Integer
 End Type
 
 'Datos de user o npc
-Type Char
+Public Type Char
     CharIndex As Integer
     Head As Integer
     Body As Integer
@@ -590,7 +567,6 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    
     Name As String 'Nombre del obj
     
     OBJType As Integer 'Tipo enum que determina cuales son las caract del obj
@@ -668,7 +644,6 @@ Public Type ObjData
     
     Agarrable As Byte
     
-    
     LingH As Integer
     LingO As Integer
     LingP As Integer
@@ -697,8 +672,6 @@ Public Type ObjData
     DefensaMagicaMax As Integer
     DefensaMagicaMin As Integer
     Refuerzo As Byte
-    
-    
 End Type
 
 Public Type Obj
@@ -708,11 +681,11 @@ End Type
 
 '[KEVIN]
 'Banco Objs
-Public Const MAX_BANCOINVENTORY_SLOTS = 40
+Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 40
 '[/KEVIN]
 
 '[KEVIN]
-Type BancoInventario
+Public Type BancoInventario
     Object(1 To MAX_BANCOINVENTORY_SLOTS) As UserOBJ
     NroItems As Integer
 End Type
@@ -729,7 +702,7 @@ End Type
 '*********************************************************
 '*********************************************************
 
-Type tReputacion 'Fama del usuario
+Public Type tReputacion 'Fama del usuario
     NobleRep As Double
     BurguesRep As Double
     PlebeRep As Double
@@ -739,10 +712,8 @@ Type tReputacion 'Fama del usuario
     Promedio As Double
 End Type
 
-
-
 'Estadisticas de los usuarios
-Type UserStats
+Public Type UserStats
     GLD As Long 'Dinero
     Banco As Long
     MET As Integer
@@ -781,7 +752,7 @@ Type UserStats
 End Type
 
 'Flags
-Type UserFlags
+Public Type UserFlags
     EstaEmpo As Byte    '<-Empollando (by yb)
     Muerto As Byte '¿Esta muerto?
     Escondido As Byte '¿Esta escondido?
@@ -873,13 +844,9 @@ Type UserFlags
     Silenciado As Byte
     
     Mimetizado As Byte
-    
-    
-
-    
 End Type
 
-Type UserCounters
+Public Type UserCounters
     IdleCount As Long
     AttackCounter As Integer
     HPCounter As Integer
@@ -913,7 +880,7 @@ Type UserCounters
     TimerUsar As Long
 End Type
 
-Type tFacciones
+Public Type tFacciones
     ArmadaReal As Byte
     FuerzasCaos As Byte
     CriminalesMatados As Double
@@ -927,23 +894,8 @@ Type tFacciones
     Reenlistadas As Byte
 End Type
 
-'Type tGuild
-'    GuildName As String
-'    Solicitudes As Long
-'    SolicitudesRechazadas As Long
-'   Echadas As Long
-'    VecesFueGuildLeader As Long
-'    YaVoto As Byte
-'    EsGuildLeader As Byte
-'    FundoClan As Byte
-'    ClanFundado As String
-'    ClanesParticipo As Long
-'    GuildPoints As Double
-'End Type
-
 'Tipo de los Usuarios
-Type User
-    
+Public Type User
     Name As String
     ID As Long
     
@@ -979,7 +931,6 @@ Type User
     BancoInvent As BancoInventario
     '[/KEVIN]
     
-    
     Counters As UserCounters
     
     MascotasIndex(1 To MAXMASCOTAS) As Integer
@@ -1012,17 +963,12 @@ Type User
     FundandoGuildAlineacion As ALINEACION_GUILD     'esto esta aca hasta que se parchee el cliente y se pongan cadenas de datos distintas para cada alineacion
     EscucheClan As Integer
     
-'    AreasInfo As AreaInfo
-    
     PartyIndex As Integer   'index a la party q es miembro
     PartySolicitud As Integer   'index a la party q solicito
     
     KeyCrypt As Integer
     
-        
     AreasInfo As AreaInfo
-
-    
 End Type
 
 
@@ -1036,7 +982,7 @@ End Type
 '*********************************************************
 '*********************************************************
 
-Type NPCStats
+Public Type NPCStats
     Alineacion As Integer
     MaxHP As Long
     MinHP As Long
@@ -1047,13 +993,12 @@ Type NPCStats
     ImpactRate As Integer
 End Type
 
-Type NpcCounters
+Public Type NpcCounters
     Paralisis As Integer
     TiempoExistencia As Long
-    
 End Type
 
-Type NPCFlags
+Public Type NPCFlags
     AfectaParalisis As Byte
     GolpeExacto As Byte
     Domable As Integer
@@ -1104,17 +1049,16 @@ Type NPCFlags
     AtacaANPC As Integer
     AIAlineacion As e_Alineacion
     AIPersonalidad As e_Personalidad
-    
 End Type
 
-Type tCriaturasEntrenador
+Public Type tCriaturasEntrenador
     NpcIndex As Integer
     NpcName As String
     tmpIndex As Integer
 End Type
 
 '<--------- New type for holding the pathfinding info ------>
-Type NpcPathFindingInfo
+Public Type NpcPathFindingInfo
     Path() As tVertice      ' This array holds the path
     Target As Position      ' The location where the NPC has to go
     PathLenght As Integer   ' Number of steps *
@@ -1132,7 +1076,7 @@ End Type
 '<--------- New type for holding the pathfinding info ------>
 
 
-Type npc
+Public Type npc
     Name As String
     Char As Char 'Define como se vera
     Desc As String
@@ -1198,7 +1142,7 @@ End Type
 '**********************************************************
 '**********************************************************
 'Tile
-Type MapBlock
+Public Type MapBlock
     Blocked As Byte
     Graphic(1 To 4) As Integer
     UserIndex As Integer
@@ -1225,18 +1169,15 @@ Type MapInfo
     BackUp As Byte
 End Type
 
-
-
 '********** V A R I A B L E S     P U B L I C A S ***********
 
 Public SERVERONLINE As Boolean
 Public ULTIMAVERSION As String
 Public BackUp As Boolean
 
-Public ListaRazas() As String
-Public SkillsNames() As String
-Public ListaClases() As String
-
+Public ListaRazas(1 To NUMRAZAS) As String
+Public SkillsNames(1 To NUMSKILLS) As String
+Public ListaClases(1 To NUMCLASES) As String
 
 Public Const ENDL As String * 2 = vbCrLf
 Public Const ENDC As String * 1 = vbNullChar
@@ -1316,38 +1257,20 @@ Public Ullathorpe As WorldPos
 Public Banderbill As WorldPos
 Public Lindos As WorldPos
 
-
-
 Public Prision As WorldPos
 Public Libertad As WorldPos
-
 
 Public Ayuda As New cCola
 Public ConsultaPopular As New ConsultasPopulares
 Public SonidosMapas As New SoundMapInfo
 
-
 Public Declare Function GetTickCount Lib "kernel32" () As Long
-
 
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
-Public Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
-
 
 Public Enum e_ObjetosCriticos
     Manzana = 1
     Manzana2 = 2
     ManzanaNewbie = 467
 End Enum
-
-
-Sub PlayWaveAPI(file As String)
-
-On Error Resume Next
-Dim rc As Integer
-
-rc = sndPlaySound(file, SND_ASYNC)
-
-End Sub
-

@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -710,7 +710,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 If HayAgua(UserList(UserIndex).Pos.Map, X, Y) Then
-                    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_PESCAR)
+                    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PESCAR)
                     
                     Select Case AuxInd
                     Case OBJTYPE_CAÑA
@@ -803,7 +803,7 @@ Procesado = True 'ver al final del sub
                     
                     '¿Hay un arbol donde clickeo?
                     If ObjData(AuxInd).OBJType = OBJTYPE_ARBOLES Then
-                        Call SendData(ToPCArea, CInt(UserIndex), UserList(UserIndex).Pos.Map, "TW" & SOUND_TALAR)
+                        Call SendData(ToPCArea, CInt(UserIndex), UserList(UserIndex).Pos.Map, "TW" & SND_TALAR)
                         Call DoTalar(UserIndex)
                     End If
                 Else
@@ -835,7 +835,7 @@ Procesado = True 'ver al final del sub
                     End If
                     '¿Hay un yacimiento donde clickeo?
                     If ObjData(AuxInd).OBJType = OBJTYPE_YACIMIENTO Then
-                        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_MINERO)
+                        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_MINERO)
                         Call DoMineria(UserIndex)
                     Else
                         Call SendData(ToIndex, UserIndex, 0, "||Ahi no hay ningun yacimiento." & FONTTYPE_INFO)

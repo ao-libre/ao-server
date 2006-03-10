@@ -226,7 +226,7 @@ Minutos = Format(Now, "Short Time")
 
 
 
-ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 ReDim Parties(1 To MAX_PARTIES) As clsParty
 ReDim Guilds(1 To MAX_GUILDS) As clsClan
@@ -290,14 +290,11 @@ LevelSkill(49).LevelValue = 100
 LevelSkill(50).LevelValue = 100
 
 
-ReDim ListaRazas(1 To NUMRAZAS) As String
 ListaRazas(1) = "Humano"
 ListaRazas(2) = "Elfo"
 ListaRazas(3) = "Elfo Oscuro"
 ListaRazas(4) = "Gnomo"
 ListaRazas(5) = "Enano"
-
-ReDim ListaClases(1 To NUMCLASES) As String
 
 ListaClases(1) = "Mago"
 ListaClases(2) = "Clerigo"
@@ -316,8 +313,6 @@ ListaClases(14) = "Minero"
 ListaClases(15) = "Carpintero"
 ListaClases(16) = "Sastre"
 ListaClases(17) = "Pirata"
-
-ReDim SkillsNames(1 To NUMSKILLS) As String
 
 SkillsNames(1) = "Suerte"
 SkillsNames(2) = "Magia"
@@ -342,20 +337,7 @@ SkillsNames(20) = "Wresterling"
 SkillsNames(21) = "Navegacion"
 
 
-ReDim UserSkills(1 To NUMSKILLS) As Integer
-
-ReDim UserAtributos(1 To NUMATRIBUTOS) As Integer
-ReDim AtributosNames(1 To NUMATRIBUTOS) As String
-AtributosNames(1) = "Fuerza"
-AtributosNames(2) = "Agilidad"
-AtributosNames(3) = "Inteligencia"
-AtributosNames(4) = "Carisma"
-AtributosNames(5) = "Constitucion"
-
-
 frmCargando.Show
-
-
 
 'Call PlayWaveAPI(App.Path & "\wav\harp3.wav")
 
@@ -929,7 +911,7 @@ Next LoopC
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As Npc 'NPCS
+ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
 ReDim CharList(1 To MAXCHARS) As Integer
 
 Call LoadSini
@@ -1109,7 +1091,7 @@ Else
 '  If EncriptarProtocolosCriticos Then
 '    Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
 '  Else
-    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 '  End If
     
 End If

@@ -316,7 +316,7 @@ WasNewbie = EsNewbie(UserIndex)
 'If UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU Then
 Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_NIVEL)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_NIVEL)
     Call SendData(ToIndex, UserIndex, 0, "||¡Has subido de nivel!" & FONTTYPE_INFO)
     
     If UserList(UserIndex).Stats.ELV = 1 Then

@@ -591,7 +591,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).Invent.WeaponEqpSlot = Slot
                 
                 'Sonido
-                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_SACARARMA)
+                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SACARARMA)
         
                 If UserList(UserIndex).flags.Mimetizado = 1 Then
                     UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim

@@ -12,3 +12,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/03/2006: Implementación del comando /TALKAS para RMs y dioses pedido por Pol'Thalas (Maraxus).
  * 10/03/2006: Eliminé todo lo relativo a padrinos y anticuelgue que quedaba así como grandes porciones de código comentadas que ofuscaban. (Maraxus).
  * 10/03/2006: Eliminé variables de objetos que no se usaban nunca (Maraxus).
+ * 10/03/2006: Comencé a tipar constantes, puse TODOs en futuros enums, hice constantes algunos arrays, puse modificadores de acceso y eliminé arrays implícitos de Main que sólo ocupaban memoria (Maraxus).

@@ -753,7 +753,7 @@ If NpcImpacto(NpcIndex, UserIndex) Then
     Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_IMPACTO)
     
     If UserList(UserIndex).flags.Meditando = False Then
-        If UserList(UserIndex).flags.Navegando = 0 Then Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & FXSANGRE & "," & 0)
+        If UserList(UserIndex).flags.Navegando = 0 Then Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
     End If
     
     Call NpcDaño(NpcIndex, UserIndex)
@@ -844,9 +844,9 @@ If NpcImpactoNpc(Atacante, Victima) Then
     
 Else
     If Npclist(Atacante).MaestroUser > 0 Then
-        Call SendData(ToNPCArea, Atacante, Npclist(Atacante).Pos.Map, "TW" & SOUND_SWING)
+        Call SendData(ToNPCArea, Atacante, Npclist(Atacante).Pos.Map, "TW" & SND_SWING)
     Else
-        Call SendData(ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & SOUND_SWING)
+        Call SendData(ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & SND_SWING)
     End If
 End If
 
@@ -895,7 +895,7 @@ If UserImpactoNpc(UserIndex, NpcIndex) Then
     Call UserDañoNpc(UserIndex, NpcIndex)
    
 Else
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_SWING)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
     Call SendData(ToIndex, UserIndex, 0, "U1")
 End If
 
@@ -922,7 +922,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     
     'Exit if not legal
     If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
-        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_SWING)
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
         Exit Sub
     End If
     
@@ -960,7 +960,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     End If
     
     
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SOUND_SWING)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
     Call SendUserStatsBox(UserIndex)
 End If
 
@@ -1068,11 +1068,11 @@ Call UsuarioAtacadoPorUsuario(AtacanteIndex, VictimaIndex)
 If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
     Call SendData(ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SND_IMPACTO)
     
-    If UserList(VictimaIndex).flags.Navegando = 0 Then Call SendData(ToPCArea, VictimaIndex, UserList(VictimaIndex).Pos.Map, "CFX" & UserList(VictimaIndex).Char.charindex & "," & FXSANGRE & "," & 0)
+    If UserList(VictimaIndex).flags.Navegando = 0 Then Call SendData(ToPCArea, VictimaIndex, UserList(VictimaIndex).Pos.Map, "CFX" & UserList(VictimaIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
     
     Call UserDañoUser(AtacanteIndex, VictimaIndex)
 Else
-    Call SendData(ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SOUND_SWING)
+    Call SendData(ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SND_SWING)
     Call SendData(ToIndex, AtacanteIndex, 0, "U1")
     Call SendData(ToIndex, VictimaIndex, 0, "U3" & UserList(AtacanteIndex).Name)
 End If
