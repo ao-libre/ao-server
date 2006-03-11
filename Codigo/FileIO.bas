@@ -43,7 +43,7 @@ Public Sub CargarSpawnList()
 
 End Sub
 
-Function EsAdmin(ByVal Name As String) As Boolean
+Function EsAdmin(ByVal name As String) As Boolean
 Dim NumWizs As Integer
 Dim WizNum As Integer
 Dim NomB As String
@@ -51,7 +51,7 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Admines"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Admines", "Admin" & WizNum))
     If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
-    If UCase$(Name) = NomB Then
+    If UCase$(name) = NomB Then
         EsAdmin = True
         Exit Function
     End If
@@ -59,7 +59,7 @@ Next WizNum
 EsAdmin = False
 End Function
 
-Function EsDios(ByVal Name As String) As Boolean
+Function EsDios(ByVal name As String) As Boolean
 Dim NumWizs As Integer
 Dim WizNum As Integer
 Dim NomB As String
@@ -67,7 +67,7 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Dioses"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Dioses", "Dios" & WizNum))
     If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
-    If UCase$(Name) = NomB Then
+    If UCase$(name) = NomB Then
         EsDios = True
         Exit Function
     End If
@@ -75,7 +75,7 @@ Next WizNum
 EsDios = False
 End Function
 
-Function EsSemiDios(ByVal Name As String) As Boolean
+Function EsSemiDios(ByVal name As String) As Boolean
 Dim NumWizs As Integer
 Dim WizNum As Integer
 Dim NomB As String
@@ -83,7 +83,7 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "SemiDioses"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "SemiDioses", "SemiDios" & WizNum))
     If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
-    If UCase$(Name) = NomB Then
+    If UCase$(name) = NomB Then
         EsSemiDios = True
         Exit Function
     End If
@@ -91,7 +91,7 @@ Next WizNum
 EsSemiDios = False
 End Function
 
-Function EsConsejero(ByVal Name As String) As Boolean
+Function EsConsejero(ByVal name As String) As Boolean
 Dim NumWizs As Integer
 Dim WizNum As Integer
 Dim NomB As String
@@ -99,7 +99,7 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Consejeros"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Consejeros", "Consejero" & WizNum))
     If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
-    If UCase$(Name) = NomB Then
+    If UCase$(name) = NomB Then
         EsConsejero = True
         Exit Function
     End If
@@ -107,7 +107,7 @@ Next WizNum
 EsConsejero = False
 End Function
 
-Function EsRolesMaster(ByVal Name As String) As Boolean
+Function EsRolesMaster(ByVal name As String) As Boolean
 Dim NumWizs As Integer
 Dim WizNum As Integer
 Dim NomB As String
@@ -115,7 +115,7 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "RolesMasters"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "RolesMasters", "RM" & WizNum))
     If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
-    If UCase$(Name) = NomB Then
+    If UCase$(name) = NomB Then
         EsRolesMaster = True
         Exit Function
     End If
@@ -124,10 +124,10 @@ EsRolesMaster = False
 End Function
 
 
-Public Function TxtDimension(ByVal Name As String) As Long
+Public Function TxtDimension(ByVal name As String) As Long
 Dim N As Integer, cad As String, Tam As Long
 N = FreeFile(1)
-Open Name For Input As #N
+Open name For Input As #N
 Tam = 0
 Do While Not EOF(N)
     Tam = Tam + 1
@@ -323,6 +323,7 @@ Call SendData(ToAll, 0, 0, "BKW")
 Call LimpiarMundo
 Call WorldSave
 Call modGuilds.v_RutinaElecciones
+Call ResetCentinelaInfo     'Reseteamos al centinela
 
 
 Call SendData(ToAll, 0, 0, "BKW")
@@ -568,7 +569,7 @@ Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
     Close FreeFileInf
 
     'write .dat file
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", MapInfo(Map).Name)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", MapInfo(Map).name)
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "MusicNum", MapInfo(Map).Music)
     Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "MagiaSinefecto", MapInfo(Map).MagiaSinEfecto)
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "StartPos", MapInfo(Map).StartPos.Map & "-" & MapInfo(Map).StartPos.X & "-" & MapInfo(Map).StartPos.Y)
@@ -674,7 +675,7 @@ ReDim Preserve ObjData(1 To NumObjDatas) As ObjData
 'Llena la lista
 For Object = 1 To NumObjDatas
         
-    ObjData(Object).Name = Leer.DarValor("OBJ" & Object, "Name")
+    ObjData(Object).name = Leer.DarValor("OBJ" & Object, "Name")
     
     ObjData(Object).GrhIndex = val(Leer.DarValor("OBJ" & Object, "GrhIndex"))
     If ObjData(Object).GrhIndex = 0 Then
@@ -778,7 +779,7 @@ For Object = 1 To NumObjDatas
     ObjData(Object).Cerrada = val(Leer.DarValor("OBJ" & Object, "abierta"))
     If ObjData(Object).Cerrada = 1 Then
             ObjData(Object).Llave = val(Leer.DarValor("OBJ" & Object, "Llave"))
-            ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
+            ObjData(Object).Clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
     End If
     
     
@@ -790,7 +791,7 @@ For Object = 1 To NumObjDatas
     
     
     'Puertas y llaves
-    ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
+    ObjData(Object).Clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
     
     ObjData(Object).texto = Leer.DarValor("OBJ" & Object, "Texto")
     ObjData(Object).GrhSecundario = val(Leer.DarValor("OBJ" & Object, "VGrande"))
@@ -1298,7 +1299,7 @@ On Error GoTo errh
     Close FreeFileMap
     Close FreeFileInf
     
-    MapInfo(Map).Name = GetVar(MAPFl & ".dat", "Mapa" & Map, "Name")
+    MapInfo(Map).name = GetVar(MAPFl & ".dat", "Mapa" & Map, "Name")
     MapInfo(Map).Music = GetVar(MAPFl & ".dat", "Mapa" & Map, "MusicNum")
     MapInfo(Map).StartPos.Map = val(ReadField(1, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
     MapInfo(Map).StartPos.X = val(ReadField(2, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
@@ -1545,7 +1546,7 @@ Dim OldUserHead As Long
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
 If UserList(UserIndex).Clase = "" Or UserList(UserIndex).Stats.ELV = 0 Then
-    Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).Name)
+    Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
     Exit Sub
 End If
 
@@ -1797,7 +1798,7 @@ Else
 End If
 
 'General
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).Name)
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).Desc)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(Npclist(NpcIndex).Char.Head))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.Body))
@@ -1860,7 +1861,7 @@ Else
 End If
 
 Npclist(NpcIndex).Numero = NpcNumber
-Npclist(NpcIndex).Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
+Npclist(NpcIndex).name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
 Npclist(NpcIndex).Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
 Npclist(NpcIndex).Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
@@ -1923,14 +1924,14 @@ End Sub
 
 Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motivo As String)
 
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).Name, "BannedBy", UserList(UserIndex).Name)
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).Name, "Reason", motivo)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).name, "BannedBy", UserList(UserIndex).name)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).name, "Reason", motivo)
 
 'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
 Dim mifile As Integer
 mifile = FreeFile
 Open App.Path & "\logs\GenteBanned.log" For Append Shared As #mifile
-Print #mifile, UserList(BannedIndex).Name
+Print #mifile, UserList(BannedIndex).name
 Close #mifile
 
 End Sub
@@ -1938,7 +1939,7 @@ End Sub
 
 Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal motivo As String)
 
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).Name)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).name)
 Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", motivo)
 
 'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned

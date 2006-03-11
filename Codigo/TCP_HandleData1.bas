@@ -52,7 +52,7 @@ Dim Ver As String
 Dim encpass As String
 Dim Pass As String
 Dim mapa As Integer
-Dim Name As String
+Dim name As String
 Dim ind
 Dim N As Integer
 Dim wpaux As WorldPos
@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim T() As String
+Dim t() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -74,7 +74,7 @@ Procesado = True 'ver al final del sub
         
             '[Consejeros]
             If UserList(UserIndex).flags.Privilegios = 1 Then
-                Call LogGM(UserList(UserIndex).Name, "Dijo: " & rData, True)
+                Call LogGM(UserList(UserIndex).name, "Dijo: " & rData, True)
             End If
             
             ind = UserList(UserIndex).Char.CharIndex
@@ -104,7 +104,7 @@ Procesado = True 'ver al final del sub
             End If
             '[Consejeros]
             If UserList(UserIndex).flags.Privilegios = 1 Then
-                Call LogGM(UserList(UserIndex).Name, "Grito: " & rData, True)
+                Call LogGM(UserList(UserIndex).name, "Grito: " & rData, True)
             End If
     
             'piedra libre para todos los compas!
@@ -148,14 +148,14 @@ Procesado = True 'ver al final del sub
                 
                 '[Consejeros]
                 If UserList(UserIndex).flags.Privilegios = 1 Then
-                    Call LogGM(UserList(UserIndex).Name, "Le dijo a '" & UserList(tIndex).Name & "' " & tMessage, True)
+                    Call LogGM(UserList(UserIndex).name, "Le dijo a '" & UserList(tIndex).name & "' " & tMessage, True)
                 End If
     
                 Call SendData(ToIndex, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbBlue & "°" & tMessage & "°" & str(ind))
                 Call SendData(ToIndex, tIndex, UserList(UserIndex).Pos.Map, "||" & vbBlue & "°" & tMessage & "°" & str(ind))
                 '[CDT 17-02-2004]
                 If UserList(UserIndex).flags.Privilegios < 2 Then
-                    Call SendData(ToAdminsAreaButConsejeros, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°" & "a " & UserList(tIndex).Name & "> " & tMessage & "°" & str(ind))
+                    Call SendData(ToAdminsAreaButConsejeros, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°" & "a " & UserList(tIndex).name & "> " & tMessage & "°" & str(ind))
                 End If
                 '[/CDT]
                 Exit Sub
@@ -174,8 +174,8 @@ Procesado = True 'ver al final del sub
                     End If
                     If Not UserList(UserIndex).flags.CountSH = 0 Then
                         dummy = 126000 / dummy
-                        Call LogHackAttemp("Tramposo SH: " & UserList(UserIndex).Name & " , " & dummy)
-                        Call SendData(ToAdmins, 0, 0, "||Servidor> " & UserList(UserIndex).Name & " ha sido echado por el servidor por posible uso de SH." & FONTTYPE_SERVER)
+                        Call LogHackAttemp("Tramposo SH: " & UserList(UserIndex).name & " , " & dummy)
+                        Call SendData(ToAdmins, 0, 0, "||Servidor> " & UserList(UserIndex).name & " ha sido echado por el servidor por posible uso de SH." & FONTTYPE_SERVER)
                         Call CloseSocket(UserIndex)
                         Exit Sub
                     Else
@@ -348,7 +348,7 @@ Procesado = True 'ver al final del sub
             'Sale modo comercio Usuario
             If UserList(UserIndex).ComUsu.DestUsu > 0 And _
                 UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu = UserIndex Then
-                Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).Name & " ha dejado de comerciar con vos." & FONTTYPE_TALK)
+                Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).name & " ha dejado de comerciar con vos." & FONTTYPE_TALK)
                 Call FinComerciarUsu(UserList(UserIndex).ComUsu.DestUsu)
             End If
             
@@ -371,7 +371,7 @@ Procesado = True 'ver al final del sub
             'Rechazar el cambio
             If UserList(UserIndex).ComUsu.DestUsu > 0 Then
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                    Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).Name & " ha rechazado tu oferta." & FONTTYPE_TALK)
+                    Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).name & " ha rechazado tu oferta." & FONTTYPE_TALK)
                     Call FinComerciarUsu(UserList(UserIndex).ComUsu.DestUsu)
                 End If
             End If
@@ -499,7 +499,7 @@ Procesado = True 'ver al final del sub
     
     Select Case UCase$(Left$(rData, 3))
          Case "UMH" ' Usa macro de hechizos
-            Call SendData(ToAdmins, UserIndex, 0, "||" & UserList(UserIndex).Name & " fue expulsado por Anti-macro de hechizos " & FONTTYPE_VENENO)
+            Call SendData(ToAdmins, UserIndex, 0, "||" & UserList(UserIndex).name & " fue expulsado por Anti-macro de hechizos " & FONTTYPE_VENENO)
             Call SendData(ToIndex, UserIndex, 0, "ERR Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros" & FONTTYPE_INFO)
             Call CloseSocket(UserIndex)
             Exit Sub
@@ -672,14 +672,14 @@ Procesado = True 'ver al final del sub
                 'If Distancia(UserList(UserIndex).Pos, wp2) > 10 Then
                 If (Abs(UserList(UserIndex).Pos.X - wp2.X) > 9 Or Abs(UserList(UserIndex).Pos.Y - wp2.Y) > 8) Then
                     Dim txt As String
-                    txt = "Ataque fuera de rango de " & UserList(UserIndex).Name & "(" & UserList(UserIndex).Pos.Map & "/" & UserList(UserIndex).Pos.X & "/" & UserList(UserIndex).Pos.Y & ") ip: " & UserList(UserIndex).ip & " a la posicion (" & wp2.Map & "/" & wp2.X & "/" & wp2.Y & ") "
+                    txt = "Ataque fuera de rango de " & UserList(UserIndex).name & "(" & UserList(UserIndex).Pos.Map & "/" & UserList(UserIndex).Pos.X & "/" & UserList(UserIndex).Pos.Y & ") ip: " & UserList(UserIndex).ip & " a la posicion (" & wp2.Map & "/" & wp2.X & "/" & wp2.Y & ") "
                     If UserList(UserIndex).flags.Hechizo > 0 Then
                         txt = txt & ". Hechizo: " & Hechizos(UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)).Nombre
                     End If
                     If MapData(wp2.Map, wp2.X, wp2.Y).UserIndex > 0 Then
-                        txt = txt & " hacia el usuario: " & UserList(MapData(wp2.Map, wp2.X, wp2.Y).UserIndex).Name
+                        txt = txt & " hacia el usuario: " & UserList(MapData(wp2.Map, wp2.X, wp2.Y).UserIndex).name
                     ElseIf MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex > 0 Then
-                        txt = txt & " hacia el NPC: " & Npclist(MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex).Name
+                        txt = txt & " hacia el NPC: " & Npclist(MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex).name
                     End If
                     
                     Call LogCheating(txt)
@@ -926,7 +926,7 @@ Procesado = True 'ver al final del sub
             rData = Right$(rData, Len(rData) - 3)
             
             If modGuilds.CrearNuevoClan(rData, UserIndex, UserList(UserIndex).FundandoGuildAlineacion, tStr) Then
-                Call SendData(ToAll, 0, 0, "||" & UserList(UserIndex).Name & " fundó el clan " & Guilds(UserList(UserIndex).GuildIndex).GuildName & " de alineación " & Alineacion2String(Guilds(UserList(UserIndex).GuildIndex).Alineacion) & "." & FONTTYPE_GUILD)
+                Call SendData(ToAll, 0, 0, "||" & UserList(UserIndex).name & " fundó el clan " & Guilds(UserList(UserIndex).GuildIndex).GuildName & " de alineación " & Alineacion2String(Guilds(UserList(UserIndex).GuildIndex).Alineacion) & "." & FONTTYPE_GUILD)
             Else
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             End If
@@ -989,7 +989,7 @@ Procesado = True 'ver al final del sub
                 
                 If incremento < 0 Then
                     'Call SendData(ToAll, 0, 0, "||Los Dioses han desterrado a " & UserList(UserIndex).Name & FONTTYPE_INFO)
-                    Call LogHackAttemp(UserList(UserIndex).Name & " IP:" & UserList(UserIndex).ip & " trato de hackear los skills.")
+                    Call LogHackAttemp(UserList(UserIndex).name & " IP:" & UserList(UserIndex).ip & " trato de hackear los skills.")
                     UserList(UserIndex).Stats.SkillPts = 0
                     Call CloseSocket(UserIndex)
                     Exit Sub
@@ -1001,7 +1001,7 @@ Procesado = True 'ver al final del sub
             If sumatoria > UserList(UserIndex).Stats.SkillPts Then
                 'UserList(UserIndex).Flags.AdministrativeBan = 1
                 'Call SendData(ToAll, 0, 0, "||Los Dioses han desterrado a " & UserList(UserIndex).Name & FONTTYPE_INFO)
-                Call LogHackAttemp(UserList(UserIndex).Name & " IP:" & UserList(UserIndex).ip & " trato de hackear los skills.")
+                Call LogHackAttemp(UserList(UserIndex).name & " IP:" & UserList(UserIndex).ip & " trato de hackear los skills.")
                 Call CloseSocket(UserIndex)
                 Exit Sub
             End If
@@ -1100,7 +1100,7 @@ Procesado = True 'ver al final del sub
                        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                        Exit Sub
                    End If
-                   If (Not Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SR" And Not Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SC") And (ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Real = 1 Or ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Caos = 1) Then
+                   If (Not Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" And Not Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC") And (ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Real = 1 Or ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Caos = 1) Then
                        Call SendData(ToIndex, UserIndex, 0, "||Es ilegal el comercio de este ítem en esta zona." & FONTTYPE_WARNING)
                        Exit Sub
                    End If
@@ -1238,7 +1238,7 @@ Procesado = True 'ver al final del sub
                     If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.Acepto = True Then
                         'NO NO NO vos te estas pasando de listo...
                         UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.Acepto = False
-                        Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).Name & " ha cambiado su oferta." & FONTTYPE_TALK)
+                        Call SendData(ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||" & UserList(UserIndex).name & " ha cambiado su oferta." & FONTTYPE_TALK)
                     End If
                     '[/CORREGIDO]
                     'Es la ofrenda de respuesta :)
@@ -1258,7 +1258,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
                 Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan ha firmado la paz con " & rData & FONTTYPE_GUILD)
-                Call SendData(ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).Name & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "RECPALIA" 'rechazar alianza
@@ -1268,7 +1268,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
                 Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan rechazado la propuesta de alianza de " & rData & FONTTYPE_GUILD)
-                Call SendData(ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).Name & " ha rechazado nuestra propuesta de alianza con su clan." & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).name & " ha rechazado nuestra propuesta de alianza con su clan." & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "RECPPEAT" 'rechazar propuesta de paz
@@ -1278,7 +1278,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
                 Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan rechazado la propuesta de paz de " & rData & FONTTYPE_GUILD)
-                Call SendData(ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).Name & " ha rechazado nuestra propuesta de paz con su clan." & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).name & " ha rechazado nuestra propuesta de paz con su clan." & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "ACEPALIA" 'aceptar alianza
@@ -1288,7 +1288,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
                 Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan ha firmado la alianza con " & rData & FONTTYPE_GUILD)
-                Call SendData(ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).Name & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "PEACEOFF"
@@ -1366,7 +1366,7 @@ Procesado = True 'ver al final del sub
             Else
                 'WAR shall be!
                 Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "|| TU CLAN HA ENTRADO EN GUERRA CON " & rData & FONTTYPE_GUILD)
-                Call SendData(ToGuildMembers, tInt, 0, "|| " & UserList(UserIndex).Name & " LE DECLARA LA GUERRA A TU CLAN" & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, tInt, 0, "|| " & UserList(UserIndex).name & " LE DECLARA LA GUERRA A TU CLAN" & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "NEWWEBSI"
@@ -1430,7 +1430,7 @@ Procesado = True 'ver al final del sub
             If Not modGuilds.v_AbrirElecciones(UserIndex, tStr) Then
                 Call SendData(ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & UserList(UserIndex).Name & FONTTYPE_GUILD)
+                Call SendData(ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
     End Select
@@ -1450,10 +1450,15 @@ Procesado = True 'ver al final del sub
     End Select
     
     Select Case UCase$(Left$(rData, 11))
-      Case "CLANDETAILS"
+        Case "CLANDETAILS"
             rData = Right$(rData, Len(rData) - 11)
             If Trim$(rData) = vbNullString Then Exit Sub
             Call SendData(ToIndex, UserIndex, 0, "CLANDET" & modGuilds.SendGuildDetails(rData))
+            Exit Sub
+        
+        Case "/CENTINELA "
+            tInt = val(Right$(rData, Len(rData) - 11))
+            Call CentinelaCheckClave(tInt)
             Exit Sub
     End Select
     

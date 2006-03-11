@@ -405,8 +405,11 @@ End If
 Minutos = Minutos + 1
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-Call AreasOptimizacion
+Call ModAreas.AreasOptimizacion
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+
+'Actualizamos el centinela
+Call modCentinela.PasarMinutoCentinela
 
 #If UsarQueSocket = 1 Then
 ' ok la cosa es asi, este cacho de codigo es para
@@ -455,6 +458,7 @@ End If
 If Minutos >= MinutosWs Then
     Call DoBackUp
     Call aClon.VaciarColeccion
+    Call modCentinela.ResetCentinelaInfo
     Minutos = 0
 End If
 
@@ -493,7 +497,7 @@ On Error Resume Next
 
 Dim i As Integer
 For i = 1 To MaxUsers
-    Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & " UserLogged: " & UserList(i).flags.UserLogged)
+    Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).name & " UserLogged: " & UserList(i).flags.UserLogged)
 Next i
 
 Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
@@ -925,7 +929,7 @@ End If
 Exit Sub
 
 ErrorHandler:
- Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).Name & " mapa:" & Npclist(NpcIndex).Pos.Map)
+ Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
  Call MuereNpc(NpcIndex, 0)
 
 End Sub
@@ -1146,7 +1150,7 @@ eh:
 End Sub
 
 Private Sub TCPServ_Read(ByVal ID As Long, Datos As Variant, ByVal Cantidad As Long, ByVal MiDato As Long)
-Dim T() As String
+Dim t() As String
 Dim LoopC As Long
 Dim RD As String
 On Error GoTo errorh
@@ -1161,25 +1165,25 @@ RD = StrConv(Datos, vbUnicode)
 
 UserList(MiDato).RDBuffer = UserList(MiDato).RDBuffer & RD
 
-T = Split(UserList(MiDato).RDBuffer, ENDC)
-If UBound(T) > 0 Then
-    UserList(MiDato).RDBuffer = T(UBound(T))
+t = Split(UserList(MiDato).RDBuffer, ENDC)
+If UBound(t) > 0 Then
+    UserList(MiDato).RDBuffer = t(UBound(t))
     
-    For LoopC = 0 To UBound(T) - 1
+    For LoopC = 0 To UBound(t) - 1
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If T(LoopC) <> "" Then
-                If Not UserList(MiDato).CommandsBuffer.Push(T(LoopC)) Then
+            If t(LoopC) <> "" Then
+                If Not UserList(MiDato).CommandsBuffer.Push(t(LoopC)) Then
                     Call LogError("Cerramos por no encolar. Userindex:" & MiDato)
                     Call CloseSocket(MiDato)
                 End If
             End If
         Else ' no encolamos los comandos (MUY VIEJO)
               If UserList(MiDato).ConnID <> -1 Then
-                Call HandleData(MiDato, T(LoopC))
+                Call HandleData(MiDato, t(LoopC))
               Else
                 Exit Sub
               End If

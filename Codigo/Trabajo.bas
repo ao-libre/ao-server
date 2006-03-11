@@ -932,7 +932,7 @@ If UserList(VictimaIndex).flags.Privilegios = 0 Then
             If TieneObjetosRobables(VictimaIndex) Then
                 Call RobarObjeto(LadrOnIndex, VictimaIndex)
             Else
-                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).Name & " no tiene objetos." & FONTTYPE_INFO)
+                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene objetos." & FONTTYPE_INFO)
             End If
         Else 'Roba oro
             If UserList(VictimaIndex).Stats.GLD > 0 Then
@@ -948,15 +948,15 @@ If UserList(VictimaIndex).flags.Privilegios = 0 Then
                 
                 Call AddtoVar(UserList(LadrOnIndex).Stats.GLD, N, MAXORO)
                 
-                Call SendData(ToIndex, LadrOnIndex, 0, "||Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).Name & FONTTYPE_INFO)
+                Call SendData(ToIndex, LadrOnIndex, 0, "||Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name & FONTTYPE_INFO)
             Else
-                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).Name & " no tiene oro." & FONTTYPE_INFO)
+                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene oro." & FONTTYPE_INFO)
             End If
         End If
     Else
         Call SendData(ToIndex, LadrOnIndex, 0, "||¡No has logrado robar nada!" & FONTTYPE_INFO)
-        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).Name & " ha intentado robarte!" & FONTTYPE_INFO)
-        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).Name & " es un criminal!" & FONTTYPE_INFO)
+        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " ha intentado robarte!" & FONTTYPE_INFO)
+        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " es un criminal!" & FONTTYPE_INFO)
     End If
 
     If Not Criminal(LadrOnIndex) Then
@@ -1046,7 +1046,7 @@ If flag Then
         Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
     End If
     
-    Call SendData(ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & FONTTYPE_INFO)
+    Call SendData(ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & FONTTYPE_INFO)
 Else
     Call SendData(ToIndex, LadrOnIndex, 0, "||No has logrado robar un objetos." & FONTTYPE_INFO)
 End If
@@ -1101,8 +1101,8 @@ End If
 If res < 15 Then
     If VictimUserIndex <> 0 Then
         UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - Int(daño * 1.5)
-        Call SendData(ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).Name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
-        Call SendData(ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).Name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
+        Call SendData(ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
+        Call SendData(ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
     Else
         Npclist(VictimNpcIndex).Stats.MinHP = Npclist(VictimNpcIndex).Stats.MinHP - Int(daño * 2)
         Call SendData(ToIndex, UserIndex, 0, "||Has apuñalado la criatura por " & Int(daño * 2) & FONTTYPE_FIGHT)

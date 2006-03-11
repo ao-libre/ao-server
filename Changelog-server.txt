@@ -17,3 +17,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/03/2006: Corrección de bugs menores en /FORCEMIDIMAP y agregado de mensaje de error con instrucciones de uso. (Maraxus).
  * 11/03/2006: A pedido de Pol'Thalas hice que los comandos de mensajes a ciudas, crimis, caos y real pudiese o no llevar un fonttype. (Maraxus).
  * 11/03/2006: Declaré nuevas constantes eliminando así cálculos y expresiones innecesarias. (Maraxus).
+ * 11/03/2006: Implementé el centinela de IAO con algunos cambios. (Maraxus).

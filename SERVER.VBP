@@ -63,6 +63,7 @@ Module=modGuilds; Codigo\modGuilds.bas
 Module=SecurityIp; Codigo\SecurityIp.bas
 Class=diccionario; Codigo\clsdicc.cls
 Module=ModAreas; Codigo\ModAreas.bas
+Module=modCentinela; Codigo\modCentinela.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
