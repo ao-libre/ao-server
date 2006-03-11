@@ -15,3 +15,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/03/2006: Comencé a tipar constantes, puse TODOs en futuros enums, hice constantes algunos arrays, puse modificadores de acceso y eliminé arrays implícitos de Main que sólo ocupaban memoria (Maraxus).
  * 10/03/2006: Implementación del comando /FORCEWAVMAP pedido por Pol'Thalas - las coords x e y tendrán sentido con el panning de sonido en la 11.6 (Maraxus).
  * 10/03/2006: Corrección de bugs menores en /FORCEMIDIMAP y agregado de mensaje de error con instrucciones de uso. (Maraxus).
+ * 11/03/2006: A pedido de Pol'Thalas hice que los comandos de mensajes a ciudas, crimis, caos y real pudiese o no llevar un fonttype. (Maraxus).

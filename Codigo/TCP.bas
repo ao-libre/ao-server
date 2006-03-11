@@ -3533,7 +3533,11 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            Call SendData(ToConsejo, 0, 0, "||" & tStr)
+            If InStr(1, tsrt, "~") = 0 Then
+                Call SendData(ToConsejo, 0, 0, "||" & tStr & FONTTYPE_INFO)
+            Else
+                Call SendData(ToConsejo, 0, 0, "||" & tStr)
+            End If
         End If
         Exit Sub
     
@@ -3542,7 +3546,11 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            Call SendData(ToConsejoCaos, 0, 0, "||" & tStr)
+            If InStr(1, tsrt, "~") = 0 Then
+                Call SendData(ToConsejoCaos, 0, 0, "||" & tStr & FONTTYPE_INFO)
+            Else
+                Call SendData(ToConsejoCaos, 0, 0, "||" & tStr)
+            End If
         End If
         Exit Sub
     
@@ -3551,16 +3559,11 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
-        End If
-        Exit Sub
-    
-    Case "/CIUMSG "
-        'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
-            tStr = Right$(rData, Len(rData) - 8)
-            
-            Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
+            If InStr(1, tsrt, "~") = 0 Then
+                Call SendData(ToCiudadanos, 0, 0, "||" & tStr & FONTTYPE_INFO)
+            Else
+                Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
+            End If
         End If
         Exit Sub
     
@@ -3569,7 +3572,11 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            Call SendData(ToCriminales, 0, 0, "||" & tStr)
+            If InStr(1, tsrt, "~") = 0 Then
+                Call SendData(ToCriminales, 0, 0, "||" & tStr & FONTTYPE_INFO)
+            Else
+                Call SendData(ToCriminales, 0, 0, "||" & tStr)
+            End If
         End If
         Exit Sub
     

@@ -432,7 +432,7 @@ Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 If Npclist(NpcIndex).NroExpresiones > 0 Then
     Dim randomi
     randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.charindex & FONTTYPE_INFO)
+    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
 End If
                     
 End Sub
@@ -626,7 +626,7 @@ If InMapBounds(Map, X, Y) Then
             End If
             
             If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.charindex & FONTTYPE_INFO)
+                Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
             Else
                 
                 If Npclist(TempCharIndex).MaestroUser > 0 Then
