@@ -3533,7 +3533,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            If InStr(1, tsrt, "~") = 0 Then
+            If InStr(1, tStr, "~") = 0 Then
                 Call SendData(ToConsejo, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
                 Call SendData(ToConsejo, 0, 0, "||" & tStr)
@@ -3546,7 +3546,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
-            If InStr(1, tsrt, "~") = 0 Then
+            If InStr(1, tStr, "~") = 0 Then
                 Call SendData(ToConsejoCaos, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
                 Call SendData(ToConsejoCaos, 0, 0, "||" & tStr)
@@ -3559,7 +3559,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            If InStr(1, tsrt, "~") = 0 Then
+            If InStr(1, tStr, "~") = 0 Then
                 Call SendData(ToCiudadanos, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
                 Call SendData(ToCiudadanos, 0, 0, "||" & tStr)
@@ -3572,7 +3572,7 @@ Select Case UCase$(Left$(rData, 8))
         If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
-            If InStr(1, tsrt, "~") = 0 Then
+            If InStr(1, tStr, "~") = 0 Then
                 Call SendData(ToCriminales, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
                 Call SendData(ToCriminales, 0, 0, "||" & tStr)

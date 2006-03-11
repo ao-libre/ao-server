@@ -292,11 +292,13 @@ Public Const Constitucion = 5
 
 Public Const AdicionalHPGuerrero As Byte = 2 'HP adicionales cuando sube de nivel
 Public Const AdicionalHPCazador As Byte = 1 'HP adicionales cuando sube de nivel
-Public Const AdicionalSTLadron As Byte = 3
 
-Public Const AdicionalSTLeñador As Byte = 23
-Public Const AdicionalSTPescador As Byte = 20
-Public Const AdicionalSTMinero As Byte = 25
+Public Const AumentoST As Byte = 15
+Public Const AumentoSTLadron As Byte = AumentoST + 3
+Public Const AumentoSTMago As Byte = AumentoST - 1
+Public Const AumentoSTLeñador As Byte = AumentoST + 23
+Public Const AumentoSTPescador As Byte = AumentoST + 20
+Public Const AumentoSTMinero As Byte = AumentoST + 25
 
 'Tamaño del mapa
 Public Const XMaxMapSize As Byte = 100

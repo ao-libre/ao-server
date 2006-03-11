@@ -299,7 +299,6 @@ On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim AumentoHIT As Integer
-Dim AumentoST As Integer
 Dim AumentoMANA As Integer
 Dim WasNewbie As Boolean
 
@@ -365,7 +364,6 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(6, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) + AdicionalHPGuerrero
             End Select
             
-            AumentoST = 15
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             
             '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
@@ -390,7 +388,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(6, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
-            AumentoST = 15
+
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             
             '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
@@ -416,9 +414,6 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) + AdicionalHPGuerrero
             End Select
             
-            
-
-            AumentoST = 15
             AumentoHIT = 3
             
             '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
@@ -443,7 +438,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) + AdicionalHPCazador
             End Select
-            AumentoST = 15
+            
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(Inteligencia)
             
@@ -473,14 +468,12 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
             
-
-            AumentoST = 15 + AdicionalSTLadron
             AumentoHIT = 1
             
             'HP
             AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
             'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
+            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTLadron, STAT_MAXSTA
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
@@ -497,15 +490,14 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(5, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) - AdicionalHPCazador
             End Select
             If AumentoHP < 1 Then AumentoHP = 4
-            AumentoST = 15 - AdicionalSTLadron / 2
-            If AumentoST < 1 Then AumentoST = 5
+            
             AumentoHIT = 1
             AumentoMANA = 3 * UserList(UserIndex).Stats.UserAtributos(Inteligencia)
             
             'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
+            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
             'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
+            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoSTMago, STAT_MAXSTA)
             'Mana
             Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
             'Golpe
@@ -524,15 +516,12 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(5, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) - AdicionalHPCazador
             End Select
             
-        
-
-            AumentoST = 15 + AdicionalSTLeñador
             AumentoHIT = 2
             
             'HP
             AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
             'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
+            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTLeñador, STAT_MAXSTA
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
@@ -549,16 +538,12 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(5, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) - AdicionalHPCazador
             End Select
             
-            
-            
-
-            AumentoST = 15 + AdicionalSTMinero
             AumentoHIT = 2
             
             'HP
             AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
             'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
+            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTMinero, STAT_MAXSTA
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
@@ -575,18 +560,16 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(5, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) - AdicionalHPCazador
             End Select
             
-            
-            AumentoST = 15 + AdicionalSTPescador
             AumentoHIT = 1
             
             'HP
             AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
             'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
+            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTPescador, STAT_MAXSTA
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
-                   
+        
         Case "Clerigo"
             Select Case UserList(UserIndex).Stats.UserAtributos(Constitucion)
                 Case 21
@@ -598,7 +581,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
-            AumentoST = 15
+            
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(Inteligencia)
                 
@@ -611,6 +594,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+        
         Case "Druida"
             Select Case UserList(UserIndex).Stats.UserAtributos(Constitucion)
                 Case 21
@@ -622,7 +606,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
-            AumentoST = 15
+            
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(Inteligencia)
                 
@@ -635,6 +619,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+        
         Case "Asesino"
             
             Select Case UserList(UserIndex).Stats.UserAtributos(Constitucion)
@@ -647,7 +632,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
-            AumentoST = 15
+            
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(Inteligencia)
                 
@@ -672,7 +657,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(4, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2)
             End Select
-            AumentoST = 15
+            
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(Inteligencia)
             'HP
@@ -684,8 +669,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             'Golpe
             AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
             AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+        
         Case Else
-
             Select Case UserList(UserIndex).Stats.UserAtributos(Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -697,7 +682,6 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(5, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 2) - AdicionalHPCazador
             End Select
 
-            AumentoST = 15
             AumentoHIT = 2
             'HP
             AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
