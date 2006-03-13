@@ -993,7 +993,6 @@ Public Type NPCStats
     MinHIT As Integer
     def As Integer
     UsuariosMatados As Integer
-    ImpactRate As Integer
 End Type
 
 Public Type NpcCounters
@@ -1046,7 +1045,6 @@ Public Type NPCFlags
     Snd1 As Integer
     Snd2 As Integer
     Snd3 As Integer
-    Snd4 As Integer
     
     AtacaAPJ As Integer
     AtacaANPC As Integer

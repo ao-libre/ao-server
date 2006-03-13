@@ -4460,8 +4460,7 @@ End If
 If UCase$(Left$(rData, 10)) = "/SHOWCMSG " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Right$(rData, Len(rData) - 10)
-    UserList(UserIndex).EscucheClan = rData
-    Call SendData(ToIndex, UserIndex, 0, "||Escuchando al clan: " & UCase$(rData) & FONTTYPE_GUILD)
+    Call modGuilds.GMEscuchaClan(UserIndex, rData)
     Exit Sub
 End If
 If UCase$(Left$(rData, 11)) = "/GUARDAMAPA" Then

@@ -104,14 +104,14 @@ On Error GoTo errhandler
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then
-                Dim T As Integer
-                For T = 1 To MAXMASCOTAS
-                      If UserList(UserIndex).MascotasIndex(T) > 0 Then
-                          If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
-                                  Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
+                Dim t As Integer
+                For t = 1 To MAXMASCOTAS
+                      If UserList(UserIndex).MascotasIndex(t) > 0 Then
+                          If Npclist(UserList(UserIndex).MascotasIndex(t)).TargetNPC = NpcIndex Then
+                                  Call FollowAmo(UserList(UserIndex).MascotasIndex(t))
                           End If
                       End If
-                Next T
+                Next t
         End If
         
         '[KEVIN]
@@ -194,7 +194,6 @@ Npclist(NpcIndex).flags.RespawnOrigPos = 0
 Npclist(NpcIndex).flags.Snd1 = 0
 Npclist(NpcIndex).flags.Snd2 = 0
 Npclist(NpcIndex).flags.Snd3 = 0
-Npclist(NpcIndex).flags.Snd4 = 0
 Npclist(NpcIndex).flags.TierraInvalida = 0
 Npclist(NpcIndex).flags.UseAINow = False
 Npclist(NpcIndex).flags.AtacaAPJ = 0
@@ -803,7 +802,6 @@ Npclist(NpcIndex).Stats.MaxHIT = val(Leer.DarValor("NPC" & NpcNumber, "MaxHIT"))
 Npclist(NpcIndex).Stats.MinHIT = val(Leer.DarValor("NPC" & NpcNumber, "MinHIT"))
 Npclist(NpcIndex).Stats.def = val(Leer.DarValor("NPC" & NpcNumber, "DEF"))
 Npclist(NpcIndex).Stats.Alineacion = val(Leer.DarValor("NPC" & NpcNumber, "Alineacion"))
-Npclist(NpcIndex).Stats.ImpactRate = val(Leer.DarValor("NPC" & NpcNumber, "ImpactRate"))
 
 
 Dim LoopC As Integer
@@ -852,7 +850,6 @@ Npclist(NpcIndex).flags.GolpeExacto = val(Leer.DarValor("NPC" & NpcNumber, "Golp
 Npclist(NpcIndex).flags.Snd1 = val(Leer.DarValor("NPC" & NpcNumber, "Snd1"))
 Npclist(NpcIndex).flags.Snd2 = val(Leer.DarValor("NPC" & NpcNumber, "Snd2"))
 Npclist(NpcIndex).flags.Snd3 = val(Leer.DarValor("NPC" & NpcNumber, "Snd3"))
-Npclist(NpcIndex).flags.Snd4 = val(Leer.DarValor("NPC" & NpcNumber, "Snd4"))
 
 '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
