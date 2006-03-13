@@ -569,7 +569,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    name As String 'Nombre del obj
+    Name As String 'Nombre del obj
     
     OBJType As Integer 'Tipo enum que determina cuales son las caract del obj
     SubTipo As Integer 'Tipo enum que determina cuales son las caract del obj
@@ -631,7 +631,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    Clave As Long 'si clave=llave la puerta se abre o cierra
+    clave As Long 'si clave=llave la puerta se abre o cierra
     
     IndexAbierta As Integer
     IndexCerrada As Integer
@@ -662,7 +662,6 @@ Public Type ObjData
     Snd1 As Integer
     Snd2 As Integer
     Snd3 As Integer
-    MinInt As Integer
     
     Real As Integer
     Caos As Integer
@@ -900,7 +899,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    name As String
+    Name As String
     ID As Long
     
     modName As String
@@ -1081,7 +1080,7 @@ End Type
 
 
 Public Type npc
-    name As String
+    Name As String
     Char As Char 'Define como se vera
     Desc As String
     DescExtra As String
@@ -1160,7 +1159,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    name As String
+    Name As String
     StartPos As WorldPos
     MapVersion As Integer
     Pk As Boolean

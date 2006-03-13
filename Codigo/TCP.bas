@@ -2785,7 +2785,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             
             Case 3
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "CIU" And Arg1 <> "CRI" And Arg1 <> "CLASE" And Arg1 <> "SKILLS" Then Exit Sub
-        End If
+        End Select
     ElseIf UserList(UserIndex).flags.Privilegios < 3 Then   'Si no es RM debe ser dios para poder usar este comando
         Exit Sub
     End If
