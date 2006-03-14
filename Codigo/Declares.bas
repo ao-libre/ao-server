@@ -89,6 +89,7 @@ Public Const TIEMPO_INICIOMEDITAR As Byte = 3
 
 Public Const NingunEscudo As Integer = 2
 Public Const NingunCasco As Integer = 2
+Public Const NingunArma As Integer = 2
 
 Public Const EspadaMataDragonesIndex As Integer = 402
 Public Const LAUDMAGICO As Integer = 696
@@ -569,7 +570,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    Name As String 'Nombre del obj
+    name As String 'Nombre del obj
     
     OBJType As Integer 'Tipo enum que determina cuales son las caract del obj
     SubTipo As Integer 'Tipo enum que determina cuales son las caract del obj
@@ -631,7 +632,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    clave As Long 'si clave=llave la puerta se abre o cierra
+    Clave As Long 'si clave=llave la puerta se abre o cierra
     
     IndexAbierta As Integer
     IndexCerrada As Integer
@@ -899,7 +900,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    Name As String
+    name As String
     ID As Long
     
     modName As String
@@ -1078,7 +1079,7 @@ End Type
 
 
 Public Type npc
-    Name As String
+    name As String
     Char As Char 'Define como se vera
     Desc As String
     DescExtra As String
@@ -1157,7 +1158,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    Name As String
+    name As String
     StartPos As WorldPos
     MapVersion As Integer
     Pk As Boolean
