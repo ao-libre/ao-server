@@ -50,7 +50,7 @@ Public Sub GoToNextWorkingChar()
     Dim LoopC As Long
     
     For LoopC = 1 To LastUser
-        If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Trabajando Then
+        If (UserList(LoopC).name <> "") And UserList(LoopC).Counters.Trabajando > 0 Then
             If Not UserList(LoopC).flags.CentinelaOK Then
                 Call WarpCentinela(LoopC)
                 Exit Sub

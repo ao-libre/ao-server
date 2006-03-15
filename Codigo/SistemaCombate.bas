@@ -964,9 +964,8 @@ If IntervaloPermiteAtacar(UserIndex) Then
     Call SendUserStatsBox(UserIndex)
 End If
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = False
-'[/Barrin 30-11-03]
+If UserList(UserIndex).Counters.Trabajando Then _
+    UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
 
 End Sub
 

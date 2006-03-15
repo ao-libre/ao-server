@@ -1768,113 +1768,155 @@ Close #N
 End Sub
 
 Sub SendMOTD(ByVal UserIndex As Integer)
-Dim j As Integer
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+Mensajes de entrada:" & FONTTYPE_INFO)
-For j = 1 To MaxLines
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+" & Chr(3) & MOTD(j).texto)
-Next j
+    Dim j As Long
+    
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+Mensajes de entrada:" & FONTTYPE_INFO)
+    
+    For j = 1 To MaxLines
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+" & Chr$(3) & MOTD(j).texto)
+    Next j
 End Sub
 
 Sub ResetFacciones(ByVal UserIndex As Integer)
-
-UserList(UserIndex).Faccion.ArmadaReal = 0
-UserList(UserIndex).Faccion.FuerzasCaos = 0
-UserList(UserIndex).Faccion.CiudadanosMatados = 0
-UserList(UserIndex).Faccion.CriminalesMatados = 0
-UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0
-UserList(UserIndex).Faccion.RecibioArmaduraReal = 0
-UserList(UserIndex).Faccion.RecibioExpInicialCaos = 0
-UserList(UserIndex).Faccion.RecibioExpInicialReal = 0
-UserList(UserIndex).Faccion.RecompensasCaos = 0
-UserList(UserIndex).Faccion.RecompensasReal = 0
-UserList(UserIndex).Faccion.Reenlistadas = 0
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex).Faccion
+        .ArmadaReal = 0
+        .FuerzasCaos = 0
+        .CiudadanosMatados = 0
+        .CriminalesMatados = 0
+        .RecibioArmaduraCaos = 0
+        .RecibioArmaduraReal = 0
+        .RecibioExpInicialCaos = 0
+        .RecibioExpInicialReal = 0
+        .RecompensasCaos = 0
+        .RecompensasReal = 0
+        .Reenlistadas = 0
+    End With
 End Sub
 
 Sub ResetContadores(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex).Counters
+        .AGUACounter = 0
+        .AttackCounter = 0
+        .Ceguera = 0
+        .COMCounter = 0
+        .Estupidez = 0
+        .Frio = 0
+        .HPCounter = 0
+        .IdleCount = 0
+        .Invisibilidad = 0
+        .Paralisis = 0
+        .Pasos = 0
+        .Pena = 0
+        .PiqueteC = 0
+        .STACounter = 0
+        .Veneno = 0
+        .Trabajando = 0
 
-UserList(UserIndex).Counters.AGUACounter = 0
-UserList(UserIndex).Counters.AttackCounter = 0
-UserList(UserIndex).Counters.Ceguera = 0
-UserList(UserIndex).Counters.COMCounter = 0
-UserList(UserIndex).Counters.Estupidez = 0
-UserList(UserIndex).Counters.Frio = 0
-UserList(UserIndex).Counters.HPCounter = 0
-UserList(UserIndex).Counters.IdleCount = 0
-UserList(UserIndex).Counters.Invisibilidad = 0
-UserList(UserIndex).Counters.Paralisis = 0
-UserList(UserIndex).Counters.Pasos = 0
-UserList(UserIndex).Counters.Pena = 0
-UserList(UserIndex).Counters.PiqueteC = 0
-UserList(UserIndex).Counters.STACounter = 0
-UserList(UserIndex).Counters.Veneno = 0
-
-UserList(UserIndex).Counters.TimerLanzarSpell = 0
-UserList(UserIndex).Counters.TimerPuedeAtacar = 0
-UserList(UserIndex).Counters.TimerPuedeTrabajar = 0
-UserList(UserIndex).Counters.TimerUsar = 0
-
+        .TimerLanzarSpell = 0
+        .TimerPuedeAtacar = 0
+        .TimerPuedeTrabajar = 0
+        .TimerUsar = 0
+    End With
 End Sub
 
 Sub ResetCharInfo(ByVal UserIndex As Integer)
-
-UserList(UserIndex).Char.Body = 0
-UserList(UserIndex).Char.CascoAnim = 0
-UserList(UserIndex).Char.CharIndex = 0
-UserList(UserIndex).Char.FX = 0
-UserList(UserIndex).Char.Head = 0
-UserList(UserIndex).Char.loops = 0
-UserList(UserIndex).Char.Heading = 0
-UserList(UserIndex).Char.loops = 0
-UserList(UserIndex).Char.ShieldAnim = 0
-UserList(UserIndex).Char.WeaponAnim = 0
-
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex).Char
+        .Body = 0
+        .CascoAnim = 0
+        .CharIndex = 0
+        .FX = 0
+        .Head = 0
+        .loops = 0
+        .Heading = 0
+        .loops = 0
+        .ShieldAnim = 0
+        .WeaponAnim = 0
+    End With
 End Sub
 
 Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex)
+        .name = ""
+        .modName = ""
+        .Password = ""
+        .Desc = ""
+        .DescRM = ""
+        .Pos.Map = 0
+        .Pos.X = 0
+        .Pos.Y = 0
+        .ip = ""
+        .RDBuffer = ""
+        .Clase = ""
+        .email = ""
+        .Genero = ""
+        .Hogar = ""
+        .Raza = ""
 
-UserList(UserIndex).name = ""
-UserList(UserIndex).modName = ""
-UserList(UserIndex).Password = ""
-UserList(UserIndex).Desc = ""
-UserList(UserIndex).DescRM = ""
-UserList(UserIndex).Pos.Map = 0
-UserList(UserIndex).Pos.X = 0
-UserList(UserIndex).Pos.Y = 0
-UserList(UserIndex).ip = ""
-UserList(UserIndex).RDBuffer = ""
-UserList(UserIndex).Clase = ""
-UserList(UserIndex).email = ""
-UserList(UserIndex).Genero = ""
-UserList(UserIndex).Hogar = ""
-UserList(UserIndex).Raza = ""
+        .RandKey = 0
+        .PrevCRC = 0
+        .PacketNumber = 0
 
-UserList(UserIndex).RandKey = 0
-UserList(UserIndex).PrevCRC = 0
-UserList(UserIndex).PacketNumber = 0
-
-UserList(UserIndex).Stats.Banco = 0
-UserList(UserIndex).Stats.ELV = 0
-UserList(UserIndex).Stats.ELU = 0
-UserList(UserIndex).Stats.Exp = 0
-UserList(UserIndex).Stats.def = 0
-UserList(UserIndex).Stats.CriminalesMatados = 0
-UserList(UserIndex).Stats.NPCsMuertos = 0
-UserList(UserIndex).Stats.UsuariosMatados = 0
-UserList(UserIndex).Stats.FIT = 0
-
+        .EmpoCont = 0
+        .EscucheClan = 0
+        .PartyIndex = 0
+        .PartySolicitud = 0
+        
+        With .Stats
+            .Banco = 0
+            .ELV = 0
+            .ELU = 0
+            .Exp = 0
+            .def = 0
+            .CriminalesMatados = 0
+            .NPCsMuertos = 0
+            .UsuariosMatados = 0
+            .FIT = 0
+            .SkillPts = 0
+        End With
+    End With
 End Sub
 
 Sub ResetReputacion(ByVal UserIndex As Integer)
-
-UserList(UserIndex).Reputacion.AsesinoRep = 0
-UserList(UserIndex).Reputacion.BandidoRep = 0
-UserList(UserIndex).Reputacion.BurguesRep = 0
-UserList(UserIndex).Reputacion.LadronesRep = 0
-UserList(UserIndex).Reputacion.NobleRep = 0
-UserList(UserIndex).Reputacion.PlebeRep = 0
-UserList(UserIndex).Reputacion.NobleRep = 0
-UserList(UserIndex).Reputacion.Promedio = 0
-
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex).Reputacion
+        .AsesinoRep = 0
+        .BandidoRep = 0
+        .BurguesRep = 0
+        .LadronesRep = 0
+        .NobleRep = 0
+        .PlebeRep = 0
+        .NobleRep = 0
+        .Promedio = 0
+    End With
 End Sub
 
 Sub ResetGuildInfo(ByVal UserIndex As Integer)
@@ -1888,109 +1930,96 @@ Sub ResetGuildInfo(ByVal UserIndex As Integer)
 End Sub
 
 Sub ResetUserFlags(ByVal UserIndex As Integer)
-
-UserList(UserIndex).flags.Comerciando = False
-UserList(UserIndex).flags.Ban = 0
-UserList(UserIndex).flags.Escondido = 0
-UserList(UserIndex).flags.DuracionEfecto = 0
-UserList(UserIndex).flags.NpcInv = 0
-UserList(UserIndex).flags.StatsChanged = 0
-UserList(UserIndex).flags.TargetNPC = 0
-UserList(UserIndex).flags.TargetNpcTipo = 0
-UserList(UserIndex).flags.TargetObj = 0
-UserList(UserIndex).flags.TargetObjMap = 0
-UserList(UserIndex).flags.TargetObjX = 0
-UserList(UserIndex).flags.TargetObjY = 0
-UserList(UserIndex).flags.TargetUser = 0
-UserList(UserIndex).flags.TipoPocion = 0
-UserList(UserIndex).flags.TomoPocion = False
-UserList(UserIndex).flags.Descuento = ""
-UserList(UserIndex).flags.Hambre = 0
-UserList(UserIndex).flags.Sed = 0
-UserList(UserIndex).flags.Descansar = False
-UserList(UserIndex).flags.ModoCombate = False
-UserList(UserIndex).flags.Vuela = 0
-UserList(UserIndex).flags.Navegando = 0
-UserList(UserIndex).flags.Oculto = 0
-UserList(UserIndex).flags.Envenenado = 0
-UserList(UserIndex).flags.Invisible = 0
-UserList(UserIndex).flags.Paralizado = 0
-UserList(UserIndex).flags.Maldicion = 0
-UserList(UserIndex).flags.Bendicion = 0
-UserList(UserIndex).flags.Meditando = 0
-UserList(UserIndex).flags.Privilegios = 0
-UserList(UserIndex).flags.PuedeMoverse = 0
-UserList(UserIndex).Stats.SkillPts = 0
-UserList(UserIndex).flags.OldBody = 0
-UserList(UserIndex).flags.OldHead = 0
-UserList(UserIndex).flags.AdminInvisible = 0
-UserList(UserIndex).flags.ValCoDe = 0
-UserList(UserIndex).flags.Hechizo = 0
-
-UserList(UserIndex).flags.TimesWalk = 0
-UserList(UserIndex).flags.StartWalk = 0
-UserList(UserIndex).flags.CountSH = 0
-UserList(UserIndex).flags.Trabajando = False
-
-
-UserList(UserIndex).EmpoCont = 0
-UserList(UserIndex).flags.EstaEmpo = 0
-UserList(UserIndex).EscucheClan = 0
-UserList(UserIndex).flags.PertAlCons = 0
-UserList(UserIndex).flags.PertAlConsCaos = 0
-
-
-UserList(UserIndex).flags.Silenciado = 0
-
-
-
-UserList(UserIndex).PartyIndex = 0
-UserList(UserIndex).PartySolicitud = 0
-
-
-
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Resetea todos los valores generales y las stats
+'03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'*************************************************
+    With UserList(UserIndex).flags
+        .Comerciando = False
+        .Ban = 0
+        .Escondido = 0
+        .DuracionEfecto = 0
+        .NpcInv = 0
+        .StatsChanged = 0
+        .TargetNPC = 0
+        .TargetNpcTipo = 0
+        .TargetObj = 0
+        .TargetObjMap = 0
+        .TargetObjX = 0
+        .TargetObjY = 0
+        .TargetUser = 0
+        .TipoPocion = 0
+        .TomoPocion = False
+        .Descuento = ""
+        .Hambre = 0
+        .Sed = 0
+        .Descansar = False
+        .ModoCombate = False
+        .Vuela = 0
+        .Navegando = 0
+        .Oculto = 0
+        .Envenenado = 0
+        .Invisible = 0
+        .Paralizado = 0
+        .Maldicion = 0
+        .Bendicion = 0
+        .Meditando = 0
+        .Privilegios = 0
+        .PuedeMoverse = 0
+        .OldBody = 0
+        .OldHead = 0
+        .AdminInvisible = 0
+        .ValCoDe = 0
+        .Hechizo = 0
+        .TimesWalk = 0
+        .StartWalk = 0
+        .CountSH = 0
+        .EstaEmpo = 0
+        .PertAlCons = 0
+        .PertAlConsCaos = 0
+        .Silenciado = 0
+    End With
 End Sub
 
 Sub ResetUserSpells(ByVal UserIndex As Integer)
-
-Dim LoopC As Integer
-For LoopC = 1 To MAXUSERHECHIZOS
-    UserList(UserIndex).Stats.UserHechizos(LoopC) = 0
-Next
-
+    Dim LoopC As Long
+    For LoopC = 1 To MAXUSERHECHIZOS
+        UserList(UserIndex).Stats.UserHechizos(LoopC) = 0
+    Next LoopC
 End Sub
 
 Sub ResetUserPets(ByVal UserIndex As Integer)
-
-Dim LoopC As Integer
-
-UserList(UserIndex).NroMacotas = 0
+    Dim LoopC As Long
     
-For LoopC = 1 To MAXMASCOTAS
-    UserList(UserIndex).MascotasIndex(LoopC) = 0
-    UserList(UserIndex).MascotasType(LoopC) = 0
-Next LoopC
-
+    UserList(UserIndex).NroMacotas = 0
+        
+    For LoopC = 1 To MAXMASCOTAS
+        UserList(UserIndex).MascotasIndex(LoopC) = 0
+        UserList(UserIndex).MascotasType(LoopC) = 0
+    Next LoopC
 End Sub
 
 Sub ResetUserBanco(ByVal UserIndex As Integer)
-Dim LoopC As Integer
-For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
-      UserList(UserIndex).BancoInvent.Object(LoopC).Amount = 0
-      UserList(UserIndex).BancoInvent.Object(LoopC).Equipped = 0
-      UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = 0
-Next
-UserList(UserIndex).BancoInvent.NroItems = 0
+    Dim LoopC As Long
+    
+    For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
+          UserList(UserIndex).BancoInvent.Object(LoopC).Amount = 0
+          UserList(UserIndex).BancoInvent.Object(LoopC).Equipped = 0
+          UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = 0
+    Next LoopC
+    
+    UserList(UserIndex).BancoInvent.NroItems = 0
 End Sub
 
 Public Sub LimpiarComercioSeguro(ByVal UserIndex As Integer)
-With UserList(UserIndex).ComUsu
-    If .DestUsu > 0 Then
-        Call FinComerciarUsu(.DestUsu)
-        Call FinComerciarUsu(UserIndex)
-    End If
-End With
-
+    With UserList(UserIndex).ComUsu
+        If .DestUsu > 0 Then
+            Call FinComerciarUsu(.DestUsu)
+            Call FinComerciarUsu(UserIndex)
+        End If
+    End With
 End Sub
 
 Sub ResetUserSlot(ByVal UserIndex As Integer)
@@ -2671,7 +2700,7 @@ End If
 If UCase$(rData) = "/TRABAJANDO" Then
         If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
         For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Trabajando = True Then
+            If (UserList(LoopC).name <> "") And UserList(LoopC).Counters.Trabajando > 0 Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC

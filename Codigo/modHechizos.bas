@@ -453,11 +453,11 @@ If PuedeLanzar(UserIndex, uh) Then
     
 End If
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = False
-'[/Barrin 30-11-03]
+If UserList(UserIndex).Counters.Trabajando Then _
+    UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
 
 End Sub
+
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 
 

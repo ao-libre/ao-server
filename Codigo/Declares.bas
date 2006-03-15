@@ -832,7 +832,6 @@ Public Type UserFlags
     TimesWalk As Long
     StartWalk As Long
     CountSH As Long
-    Trabajando As Boolean
     '[/Barrin 30-11-03]
     
     '[CDT 17-02-04]
@@ -882,6 +881,8 @@ Public Type UserCounters
     TimerPuedeAtacar As Long
     TimerPuedeTrabajar As Long
     TimerUsar As Long
+    
+    Trabajando As Long  ' Para el centinela
 End Type
 
 Public Type tFacciones

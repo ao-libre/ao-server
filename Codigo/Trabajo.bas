@@ -157,7 +157,7 @@ Else
 End If
 
 '[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 '[/Barrin 30-11-03]
 
 Exit Sub
@@ -391,9 +391,7 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     
 End If
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 End Sub
 
@@ -433,9 +431,7 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & LABUROCARPINTERO)
 End If
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 End Sub
 
@@ -485,9 +481,7 @@ Dim obji As Integer
     
 
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 End Sub
 
@@ -788,9 +782,7 @@ End If
 
 Call SubirSkill(UserIndex, Pesca)
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 Exit Sub
 
@@ -1199,9 +1191,7 @@ End If
 
 Call SubirSkill(UserIndex, Talar)
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 Exit Sub
 
@@ -1316,9 +1306,7 @@ End If
 
 Call SubirSkill(UserIndex, Mineria)
 
-'[Barrin 30-11-03]
-UserList(UserIndex).flags.Trabajando = True
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 Exit Sub
 

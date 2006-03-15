@@ -760,7 +760,8 @@ Dim nPos As WorldPos
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "PU" & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y)
     End If
     
-    UserList(UserIndex).flags.Trabajando = False
+    If UserList(UserIndex).Counters.Trabajando Then _
+        UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
 
 End Sub
 
