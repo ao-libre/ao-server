@@ -176,7 +176,7 @@ On Error Resume Next
 Dim loopX As Integer
 Dim Porc As Long
 
-Call SendData(ToAll, 0, 0, "||Servidor> Iniciando WorldSave" & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Iniciando WorldSave" & FONTTYPE_SERVER)
 
 #If SeguridadAlkon Then
     Encriptacion.StringValidacion = Encriptacion.ArmarStringValidacion
@@ -216,7 +216,7 @@ For loopX = 1 To LastNPC
     End If
 Next
 
-Call SendData(ToAll, 0, 0, "||Servidor> WorldSave ha concluído" & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> WorldSave ha concluído" & FONTTYPE_SERVER)
 
 End Sub
 
@@ -232,7 +232,7 @@ For i = 1 To LastUser
                 If UserList(i).Counters.Pena < 1 Then
                     UserList(i).Counters.Pena = 0
                     Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
-                    Call SendData(ToIndex, i, 0, "||Has sido liberado!" & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, i, 0, "||Has sido liberado!" & FONTTYPE_INFO)
                 End If
                 
         End If
@@ -250,9 +250,9 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
         Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
         
         If GmName = "" Then
-            Call SendData(ToIndex, UserIndex, 0, "||Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
         Else
-            Call SendData(ToIndex, UserIndex, 0, "||" & GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
         End If
         
 End Sub
@@ -265,26 +265,26 @@ If FileExist(CharPath & UCase$(UserName) & ".chr", vbNormal) Then
 End If
 End Sub
 
-Public Function BANCheck(ByVal Name As String) As Boolean
+Public Function BANCheck(ByVal name As String) As Boolean
 
-BANCheck = (val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban")) = 1) 'Or _
+BANCheck = (val(GetVar(App.Path & "\charfile\" & name & ".chr", "FLAGS", "Ban")) = 1) 'Or _
 (val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "AdminBan")) = 1)
 
 End Function
 
-Public Function PersonajeExiste(ByVal Name As String) As Boolean
+Public Function PersonajeExiste(ByVal name As String) As Boolean
 
-PersonajeExiste = FileExist(CharPath & UCase$(Name) & ".chr", vbNormal)
+PersonajeExiste = FileExist(CharPath & UCase$(name) & ".chr", vbNormal)
 
 End Function
 
-Public Function UnBan(ByVal Name As String) As Boolean
+Public Function UnBan(ByVal name As String) As Boolean
 'Unban the character
-Call WriteVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban", "0")
+Call WriteVar(App.Path & "\charfile\" & name & ".chr", "FLAGS", "Ban", "0")
 
 'Remove it from the banned people database
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "BannedBy", "NOBODY")
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Reason", "NO REASON")
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", name, "BannedBy", "NOBODY")
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", name, "Reason", "NO REASON")
 End Function
 
 Public Function MD5ok(ByVal md5formateado As String) As Boolean
@@ -456,12 +456,12 @@ End If
 End Sub
 
 
-Public Function UserDarPrivilegioLevel(ByVal Name As String) As Long
-If EsDios(Name) Then
+Public Function UserDarPrivilegioLevel(ByVal name As String) As Long
+If EsDios(name) Then
     UserDarPrivilegioLevel = 3
-ElseIf EsSemiDios(Name) Then
+ElseIf EsSemiDios(name) Then
     UserDarPrivilegioLevel = 2
-ElseIf EsConsejero(Name) Then
+ElseIf EsConsejero(name) Then
     UserDarPrivilegioLevel = 1
 Else
     UserDarPrivilegioLevel = 0

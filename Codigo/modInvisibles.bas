@@ -15,10 +15,10 @@ UserList(UserIndex).flags.Oculto = IIf(estado, 1, 0)
 UserList(UserIndex).Counters.Invisibilidad = 0
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & "," & IIf(estado, 1, 0))
+        Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
     Else
 #End If
-        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & "," & IIf(estado, 1, 0))
+        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
 #If SeguridadAlkon Then
     End If
 #End If
@@ -35,8 +35,8 @@ EstadoActual = (UserList(UserIndex).flags.Invisible = 1)
         ' Cuando se hace INVISIBLE se les envia a los
         ' clientes un Borrar Char
         UserList(UserIndex).flags.Invisible = 1
-'        'Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
-        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "BP" & UserList(UserIndex).Char.charindex)
+'        'Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
+        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "BP" & UserList(UserIndex).Char.CharIndex)
     Else
         
     End If

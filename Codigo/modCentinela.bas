@@ -75,7 +75,7 @@ On Error GoTo Error_Handler
         name = UserList(Centinela.RevisandoUserIndex).name
         
         'Avisamos a los admins
-        Call SendData(ToAdmins, 0, 0, "||Servidor> El centinela ha baneado a " & name & FONTTYPE_SERVER)
+        Call SendData(SendTarget.ToAdmins, 0, 0, "||Servidor> El centinela ha baneado a " & name & FONTTYPE_SERVER)
         
         'ponemos el flag de ban a 1
         Call WriteVar(CharPath & name & ".chr", "FLAGS", "Ban", "1")
@@ -107,9 +107,9 @@ Public Sub CentinelaCheckClave(ByVal Clave As Integer)
 '############################################################
     If Clave = Centinela.Clave Then
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
-        Call SendData(ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbWhite & "°" & "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+        Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbWhite & "°" & "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
     Else
-        Call SendData(ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbWhite & "°" & "¡La clave que te he dicho no es esa, " & "escríbe /CENTINELA " & Centinela.Clave & " rápido!" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+        Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbWhite & "°" & "¡La clave que te he dicho no es esa, " & "escríbe /CENTINELA " & Centinela.Clave & " rápido!" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
     End If
 End Sub
 
@@ -132,12 +132,12 @@ Public Sub CentinelaSendClave(ByVal UserIndex As Integer)
 '############################################################
     If UserIndex = Centinela.RevisandoUserIndex Then
         If Not UserList(UserIndex).flags.CentinelaOK Then
-            Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "¡La clave que te he dicho es " & "/CENTINELA " & Centinela.Clave & " escríbelo rápido!" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "¡La clave que te he dicho es " & "/CENTINELA " & Centinela.Clave & " escríbelo rápido!" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
         Else
-            Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Te agradezco, pero ya me has respondido. Me retiraré pronto." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Te agradezco, pero ya me has respondido. Me retiraré pronto." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
         End If
     Else
-        Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No es a ti a quien estoy revisando, ¿no ves?" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No es a ti a quien estoy revisando, ¿no ves?" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
     End If
 End Sub
 
@@ -155,7 +155,7 @@ Public Sub PasarMinutoCentinela()
             Call GoToNextWorkingChar
         Else
             'Recordamos al user que debe escribir
-            Call SendData(ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbRed & "°¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.Clave & "." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+            Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbRed & "°¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.Clave & "." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
         End If
     End If
 End Sub
@@ -174,7 +174,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
         CentinelaCharIndex = SpawnNpc(NPC_CENTINELA_TIERRA, UserList(UserIndex).Pos, True, False)
     End If
     
-    Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Saludos " & UserList(UserIndex).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.Clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Saludos " & UserList(UserIndex).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.Clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
 End Sub
 
 Public Sub CentinelaUserLogout()

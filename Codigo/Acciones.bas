@@ -62,7 +62,7 @@ If InMapBounds(Map, X, Y) Then
     '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
     ElseIf MapData(Map, X + 1, Y).OBJInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).OBJInfo.ObjIndex
-        Call SendData(ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).Name & "," & "OBJ")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).name & "," & "OBJ")
         Select Case ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
@@ -71,7 +71,7 @@ If InMapBounds(Map, X, Y) Then
         End Select
     ElseIf MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex
-        Call SendData(ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).Name & "," & "OBJ")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).name & "," & "OBJ")
         Select Case ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
@@ -80,7 +80,7 @@ If InMapBounds(Map, X, Y) Then
         End Select
     ElseIf MapData(Map, X, Y + 1).OBJInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y + 1).OBJInfo.ObjIndex
-        Call SendData(ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).Name & "," & "OBJ")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).name & "," & "OBJ")
         Select Case ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
@@ -91,21 +91,21 @@ If InMapBounds(Map, X, Y) Then
     ElseIf MapData(Map, X, Y).NpcIndex > 0 Then
         If Npclist(MapData(Map, X, Y).NpcIndex).Comercia = 1 Then
               If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
-                  Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
+                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
                   Exit Sub
               End If
               
         '[DnG!]
-        If Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SR" Then
+        If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
             If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex))
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                 Exit Sub
             End If
         End If
         
-        If Npclist(UserList(UserIndex).flags.TargetNPC).Name = "SC" Then
+        If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
             If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
-                Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.charindex))
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                 Exit Sub
             End If
         End If
@@ -120,7 +120,7 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetNpcTipo = 0
         UserList(UserIndex).flags.TargetUser = 0
         UserList(UserIndex).flags.TargetObj = 0
-        Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
     
 End If
@@ -141,7 +141,7 @@ Pos.X = X
 Pos.Y = Y
 
 If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
-    Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -161,17 +161,17 @@ If exito = 1 Then
         Obj.ObjIndex = FOGATA
         Obj.Amount = 1
         
-        Call SendData(ToIndex, UserIndex, 0, "||Has prendido la fogata." & FONTTYPE_INFO)
-        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "FO")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has prendido la fogata." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "FO")
         
-        Call MakeObj(ToMap, 0, Map, Obj, Map, X, Y)
+        Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
     Else
-        Call SendData(ToIndex, UserIndex, 0, "||La ley impide realizar fogatas en las ciudades." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ley impide realizar fogatas en las ciudades." & FONTTYPE_INFO)
     End If
     
     
 Else
-    Call SendData(ToIndex, UserIndex, 0, "||No has podido hacer fuego." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has podido hacer fuego." & FONTTYPE_INFO)
 End If
 
 'Sino tiene hambre o sed quizas suba el skill supervivencia
@@ -190,7 +190,7 @@ Pos.X = X
 Pos.Y = Y
 
 If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
-    Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -215,11 +215,11 @@ If FileExist(f, vbNormal) Then
             men = men & vbCrLf & auxcad
         Loop
         Close #N
-        Call SendData(ToIndex, UserIndex, 0, "FMSG" & tit & Chr(176) & men)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "FMSG" & tit & Chr(176) & men)
         
     Next
 End If
-Call SendData(ToIndex, UserIndex, 0, "MFOR")
+Call SendData(SendTarget.ToIndex, UserIndex, 0, "MFOR")
 End Sub
 
 
@@ -237,46 +237,46 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                           
                      MapData(Map, X, Y).OBJInfo.ObjIndex = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).IndexAbierta
                                   
-                     Call MakeObj(ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
+                     Call MakeObj(SendTarget.ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
                      
                      'Desbloquea
                      MapData(Map, X, Y).Blocked = 0
                      MapData(Map, X - 1, Y).Blocked = 0
                      
                      'Bloquea todos los mapas
-                     Call Bloquear(ToMap, 0, Map, Map, X, Y, 0)
-                     Call Bloquear(ToMap, 0, Map, Map, X - 1, Y, 0)
+                     Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 0)
+                     Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 0)
                      
                        
                      'Sonido
-                     SendData ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
+                     SendData SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
                     
                 Else
-                     Call SendData(ToIndex, UserIndex, 0, "||La puerta esta cerrada con llave." & FONTTYPE_INFO)
+                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La puerta esta cerrada con llave." & FONTTYPE_INFO)
                 End If
         Else
                 'Cierra puerta
                 MapData(Map, X, Y).OBJInfo.ObjIndex = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).IndexCerrada
                 
-                Call MakeObj(ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
+                Call MakeObj(SendTarget.ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
                 
                 
                 MapData(Map, X, Y).Blocked = 1
                 MapData(Map, X - 1, Y).Blocked = 1
                 
                 
-                Call Bloquear(ToMap, 0, Map, Map, X - 1, Y, 1)
-                Call Bloquear(ToMap, 0, Map, Map, X, Y, 1)
+                Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 1)
+                Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 1)
                 
-                SendData ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
+                SendData SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
         End If
         
         UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).OBJInfo.ObjIndex
     Else
-        Call SendData(ToIndex, UserIndex, 0, "||La puerta esta cerrada con llave." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La puerta esta cerrada con llave." & FONTTYPE_INFO)
     End If
 Else
-    Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
 End If
 
 End Sub
@@ -290,7 +290,7 @@ Dim MiObj As Obj
 If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = 8 Then
   
   If Len(ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).texto) > 0 Then
-       Call SendData(ToIndex, UserIndex, 0, "MCAR" & _
+       Call SendData(SendTarget.ToIndex, UserIndex, 0, "MCAR" & _
         ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).texto & _
         Chr(176) & ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).GrhSecundario)
   End If

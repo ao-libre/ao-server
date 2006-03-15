@@ -334,12 +334,12 @@ For iUserIndex = 1 To MaxUsers
         'Actualiza el contador de inactividad
         UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
         If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
-            Call SendData(ToIndex, iUserIndex, 0, "!!Demasiado tiempo inactivo. Has sido desconectado..")
+            Call SendData(SendTarget.ToIndex, iUserIndex, 0, "!!Demasiado tiempo inactivo. Has sido desconectado..")
             'mato los comercios seguros
             If UserList(iUserIndex).ComUsu.DestUsu > 0 Then
                 If UserList(UserList(iUserIndex).ComUsu.DestUsu).flags.UserLogged Then
                     If UserList(UserList(iUserIndex).ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
-                        Call SendData(ToIndex, UserList(iUserIndex).ComUsu.DestUsu, 0, "||Comercio cancelado por el otro usuario" & FONTTYPE_TALK)
+                        Call SendData(SendTarget.ToIndex, UserList(iUserIndex).ComUsu.DestUsu, 0, "||Comercio cancelado por el otro usuario" & FONTTYPE_TALK)
                         Call FinComerciarUsu(UserList(iUserIndex).ComUsu.DestUsu)
                     End If
                 End If
@@ -446,13 +446,13 @@ If MinutosNumUsersCheck >= 2 Then
     Next i
     If num <> NumUsers Then
         NumUsers = num
-        'Call SendData(ToAdmins, 0, 0, "Servidor> Error en NumUsers. Contactar a algun Programador." & FONTTYPE_SERVER)
+        'Call SendData(SendTarget.ToAdmins, 0, 0, "Servidor> Error en NumUsers. Contactar a algun Programador." & FONTTYPE_SERVER)
         Call LogCriticEvent("Num <> NumUsers")
     End If
 End If
 
 If Minutos = MinutosWs - 1 Then
-    Call SendData(ToAll, 0, 0, "||Worldsave en 1 minuto ..." & FONTTYPE_VENENO)
+    Call SendData(SendTarget.ToAll, 0, 0, "||Worldsave en 1 minuto ..." & FONTTYPE_VENENO)
 End If
 
 If Minutos >= MinutosWs Then
@@ -544,7 +544,7 @@ hayerror:
 End Sub
 
 Private Sub Command1_Click()
-Call SendData(ToAll, 0, 0, "!!" & BroadMsg.Text & ENDC)
+Call SendData(SendTarget.ToAll, 0, 0, "!!" & BroadMsg.Text & ENDC)
 End Sub
 
 Public Sub InitMain(ByVal f As Byte)
@@ -558,7 +558,7 @@ End If
 End Sub
 
 Private Sub Command2_Click()
-Call SendData(ToAll, 0, 0, "||Servidor> " & BroadMsg.Text & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> " & BroadMsg.Text & FONTTYPE_SERVER)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -712,22 +712,22 @@ On Error GoTo hayerror
                         'No esta descansando
                             
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                            If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                            If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
+                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
                             
                         ElseIf UserList(iUserIndex).flags.Descansar Then
                         'esta descansando
                             
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                            If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                            If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
+                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
                                  'termina de descansar automaticamente
                             If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
                                 UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                    Call SendData(ToIndex, iUserIndex, 0, "DOK")
-                                    Call SendData(ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
+                                    Call SendData(SendTarget.ToIndex, iUserIndex, 0, "DOK")
+                                    Call SendData(SendTarget.ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
                                     UserList(iUserIndex).flags.Descansar = False
                             End If
                             
@@ -738,22 +738,22 @@ On Error GoTo hayerror
                     'No esta descansando
                         
                         Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                        If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
                         Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                        If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
+                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
                         
                     ElseIf UserList(iUserIndex).flags.Descansar Then
                     'esta descansando
                         
                         Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                        If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
                         Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                        If bEnviarStats Then Call SendData(ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
+                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
                              'termina de descansar automaticamente
                         If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
                             UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                Call SendData(ToIndex, iUserIndex, 0, "DOK")
-                                Call SendData(ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
+                                Call SendData(SendTarget.ToIndex, iUserIndex, 0, "DOK")
+                                Call SendData(SendTarget.ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
                                 UserList(iUserIndex).flags.Descansar = False
                         End If
                         
@@ -976,24 +976,24 @@ If Not Lloviendo Then
             If RandomNumber(1, 100) <= 10 Then
                 Lloviendo = True
                 MinutosSinLluvia = 0
-                Call SendData(ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
             End If
     ElseIf MinutosSinLluvia >= 1440 Then
                 Lloviendo = True
                 MinutosSinLluvia = 0
-                Call SendData(ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
     End If
 Else
     MinutosLloviendo = MinutosLloviendo + 1
     If MinutosLloviendo >= 5 Then
             Lloviendo = False
-            Call SendData(ToAll, 0, 0, "LLU")
+            Call SendData(SendTarget.ToAll, 0, 0, "LLU")
             MinutosLloviendo = 0
     Else
             If RandomNumber(1, 100) <= 7 Then
                 Lloviendo = False
                 MinutosLloviendo = 0
-                Call SendData(ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
             End If
     End If
 End If
@@ -1025,7 +1025,7 @@ For i = 1 To LastUser
             
             If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = TRIGGER_ANTIPIQUETE Then
                     UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-                    Call SendData(ToIndex, i, 0, "||Estas obstruyendo la via publica, muévete o seras encarcelado!!!" & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, i, 0, "||Estas obstruyendo la via publica, muévete o seras encarcelado!!!" & FONTTYPE_INFO)
                     If UserList(i).Counters.PiqueteC > 23 Then
                             UserList(i).Counters.PiqueteC = 0
                             Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
@@ -1044,14 +1044,14 @@ For i = 1 To LastUser
                 NuevaA = False
                 NuevoL = False
                 If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
-                    Call SendData(ToIndex, i, 0, "||Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!" & FONTTYPE_GUILD)
+                    Call SendData(SendTarget.ToIndex, i, 0, "||Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!" & FONTTYPE_GUILD)
                 End If
                 If NuevaA Then
-                    Call SendData(ToGuildMembers, GI, 0, "||¡El clan ha pasado a tener alineación neutral!" & FONTTYPE_GUILD)
+                    Call SendData(SendTarget.ToGuildMembers, GI, 0, "||¡El clan ha pasado a tener alineación neutral!" & FONTTYPE_GUILD)
                     Call LogClanes("El clan cambio de alineacion!")
                 End If
                 If NuevoL Then
-                    Call SendData(ToGuildMembers, GI, 0, "||¡El clan tiene un nuevo líder!" & FONTTYPE_GUILD)
+                    Call SendData(SendTarget.ToGuildMembers, GI, 0, "||¡El clan tiene un nuevo líder!" & FONTTYPE_GUILD)
                     Call LogClanes("El clan tiene nuevo lider!")
                 End If
             End If

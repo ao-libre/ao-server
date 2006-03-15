@@ -98,7 +98,7 @@ On Error GoTo errhandler
    
     
    If UserIndex > 0 Then ' Lo mato un usuario?
-        If MiNPC.flags.Snd3 > 0 Then Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MiNPC.flags.Snd3)
+        If MiNPC.flags.Snd3 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MiNPC.flags.Snd3)
         UserList(UserIndex).flags.TargetNPC = 0
         UserList(UserIndex).flags.TargetNpcTipo = 0
         
@@ -120,15 +120,15 @@ On Error GoTo errhandler
                 Call mdParty.ObtenerExito(UserIndex, MiNPC.flags.ExpCount, MiNPC.Pos.Map, MiNPC.Pos.X, MiNPC.Pos.Y)
             Else
                 Call AddtoVar(UserList(UserIndex).Stats.Exp, MiNPC.flags.ExpCount, MAXEXP)
-                Call SendData(ToIndex, UserIndex, 0, "||Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia." & FONTTYPE_FIGHT)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia." & FONTTYPE_FIGHT)
             End If
             MiNPC.flags.ExpCount = 0
         Else
-            Call SendData(ToIndex, UserIndex, 0, "||No has ganado experiencia al matar la criatura." & FONTTYPE_FIGHT)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has ganado experiencia al matar la criatura." & FONTTYPE_FIGHT)
         End If
         
         '[/KEVIN]
-        Call SendData(ToIndex, UserIndex, 0, "||Has matado a la criatura!" & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has matado a la criatura!" & FONTTYPE_FIGHT)
         Call AddtoVar(UserList(UserIndex).Stats.NPCsMuertos, 1, 32000)
         
         If MiNPC.Stats.Alineacion = 0 Then
@@ -269,7 +269,7 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     
     Npclist(NpcIndex).Mascotas = 0
     Npclist(NpcIndex).Movement = 0
-    Npclist(NpcIndex).Name = "NPC SIN INICIAR"
+    Npclist(NpcIndex).name = "NPC SIN INICIAR"
     Npclist(NpcIndex).NPCtype = 0
     Npclist(NpcIndex).Numero = 0
     Npclist(NpcIndex).Orig.Map = 0
@@ -306,7 +306,7 @@ On Error GoTo errhandler
     Npclist(NpcIndex).flags.NPCActive = False
     
     If InMapBounds(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
-        Call EraseNPCChar(ToMap, 0, Npclist(NpcIndex).Pos.Map, NpcIndex)
+        Call EraseNPCChar(SendTarget.ToMap, 0, Npclist(NpcIndex).Pos.Map, NpcIndex)
     End If
     
     'Nos aseguramos de que el inventario sea removido...
@@ -416,7 +416,7 @@ Dim Y As Integer
                     Npclist(nIndex).Pos.Map = Map
                     Npclist(nIndex).Pos.X = X
                     Npclist(nIndex).Pos.Y = Y
-                    Call MakeNPCChar(ToMap, 0, Map, nIndex, Map, X, Y)
+                    Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
                     Exit Sub
                 Else
                     altpos.X = 50
@@ -426,7 +426,7 @@ Dim Y As Integer
                         Npclist(nIndex).Pos.Map = newpos.Map
                         Npclist(nIndex).Pos.X = newpos.X
                         Npclist(nIndex).Pos.Y = newpos.Y
-                        Call MakeNPCChar(ToMap, 0, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
+                        Call MakeNPCChar(SendTarget.ToMap, 0, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
                         Exit Sub
                     Else
                         Call QuitarNPC(nIndex)
@@ -444,7 +444,7 @@ Dim Y As Integer
     End If
     
     'Crea el NPC
-    Call MakeNPCChar(ToMap, 0, Map, nIndex, Map, X, Y)
+    Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
 
 End Sub
 
@@ -459,7 +459,7 @@ Dim CharIndex As Integer
     
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
-    If sndRoute = ToMap Then
+    If sndRoute = SendTarget.ToMap Then
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
@@ -474,7 +474,7 @@ If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.Body = Body
     Npclist(NpcIndex).Char.Head = Head
     Npclist(NpcIndex).Char.Heading = Heading
-    If sndRoute = ToMap Then
+    If sndRoute = SendTarget.ToMap Then
         Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
     Else
         Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
@@ -498,7 +498,7 @@ End If
 MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
 
 'Actualizamos los cliente
-If sndRoute = ToMap Then
+If sndRoute = SendTarget.ToMap Then
     Call SendToNpcArea(NpcIndex, "BP" & Npclist(NpcIndex).Char.CharIndex)
 Else
     Call SendData(sndRoute, sndIndex, sndMap, "BP" & Npclist(NpcIndex).Char.CharIndex)
@@ -609,7 +609,7 @@ Dim N As Integer
 N = RandomNumber(1, 100)
 If N < 30 Then
     UserList(UserIndex).flags.Envenenado = 1
-    Call SendData(ToIndex, UserIndex, 0, "||¡¡La criatura te ha envenenado!!" & FONTTYPE_FIGHT)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡La criatura te ha envenenado!!" & FONTTYPE_FIGHT)
 End If
 
 End Sub
@@ -667,11 +667,11 @@ X = Npclist(nIndex).Pos.X
 Y = Npclist(nIndex).Pos.Y
 
 'Crea el NPC
-Call MakeNPCChar(ToMap, 0, Map, nIndex, Map, X, Y)
+Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
 
 If FX Then
-    Call SendData(ToNPCArea, nIndex, Map, "TW" & SND_WARP)
-    Call SendData(ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.CharIndex & "," & FXWARP & "," & 0)
+    Call SendData(SendTarget.ToNPCArea, nIndex, Map, "TW" & SND_WARP)
+    Call SendData(SendTarget.ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.CharIndex & "," & FXWARP & "," & 0)
 End If
 
 SpawnNpc = nIndex
@@ -757,7 +757,7 @@ If NpcIndex > MAXNPCS Then 'Limite de npcs
 End If
 
 Npclist(NpcIndex).Numero = NpcNumber
-Npclist(NpcIndex).Name = Leer.DarValor("NPC" & NpcNumber, "Name")
+Npclist(NpcIndex).name = Leer.DarValor("NPC" & NpcNumber, "Name")
 Npclist(NpcIndex).Desc = Leer.DarValor("NPC" & NpcNumber, "Desc")
 
 Npclist(NpcIndex).Movement = val(Leer.DarValor("NPC" & NpcNumber, "Movement"))
@@ -889,7 +889,7 @@ Sub EnviarListaCriaturas(ByVal UserIndex As Integer, ByVal NpcIndex)
         SD = SD & Npclist(NpcIndex).Criaturas(k).NpcName & ","
   Next k
   SD = "LSTCRI" & SD
-  Call SendData(ToIndex, UserIndex, 0, SD)
+  Call SendData(SendTarget.ToIndex, UserIndex, 0, SD)
 End Sub
 
 

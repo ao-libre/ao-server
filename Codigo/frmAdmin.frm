@@ -91,7 +91,7 @@ Dim tIndex As Long
 
 tIndex = NameIndex(cboPjs.Text)
 If tIndex > 0 Then
-    Call SendData(ToAll, 0, 0, "||Servidor> " & UserList(tIndex).Name & " ha sido hechado. " & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> " & UserList(tIndex).name & " ha sido hechado. " & FONTTYPE_SERVER)
     Call CloseSocket(tIndex)
 End If
 
@@ -106,7 +106,7 @@ With cboPjs
     For LoopC = 1 To LastUser
         If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
             If UserList(LoopC).flags.Privilegios < 1 Then
-                .AddItem UserList(LoopC).Name
+                .AddItem UserList(LoopC).name
                 .ItemData(.NewIndex) = LoopC
             End If
         End If

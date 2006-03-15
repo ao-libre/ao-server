@@ -78,8 +78,8 @@ If res > 9 Then
    UserList(UserIndex).flags.Oculto = 0
    UserList(UserIndex).flags.Invisible = 0
    'no hace falta encriptar este (se jode el gil que bypassea esto)
-   Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-   Call SendData(ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+   Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
 End If
 
 
@@ -138,19 +138,19 @@ If res <= 5 Then
    UserList(UserIndex).flags.Invisible = 1
 #If SeguridadAlkon Then
    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
+        Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
    Else
 #End If
-        Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
+        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
    End If
 #End If
-   Call SendData(ToIndex, UserIndex, 0, "||¡Te has escondido entre las sombras!" & FONTTYPE_INFO)
+   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Te has escondido entre las sombras!" & FONTTYPE_INFO)
    Call SubirSkill(UserIndex, Ocultarse)
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 4 Then
-      Call SendData(ToIndex, UserIndex, 0, "||¡No has logrado esconderte!" & FONTTYPE_INFO)
+      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has logrado esconderte!" & FONTTYPE_INFO)
       UserList(UserIndex).flags.UltimoMensaje = 4
     End If
     '[/CDT]
@@ -174,8 +174,8 @@ Dim ModNave As Long
 ModNave = ModNavegacion(UserList(UserIndex).Clase)
 
 If UserList(UserIndex).Stats.UserSkills(Navegacion) / ModNave < Barco.MinSkill Then
-    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficientes conocimientos para usar este barco." & FONTTYPE_INFO)
-    Call SendData(ToIndex, UserIndex, 0, "||Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes conocimientos para usar este barco." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -226,8 +226,8 @@ Else
 
 End If
 
-Call ChangeUserChar(ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-Call SendData(ToIndex, UserIndex, 0, "NAVEG")
+Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call SendData(SendTarget.ToIndex, UserIndex, 0, "NAVEG")
 
 End Sub
 
@@ -239,7 +239,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = OBJTYPE_MINERALES And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
         Call DoLingotes(UserIndex)
    Else
-        Call SendData(ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
    End If
 
 End If
@@ -306,7 +306,7 @@ Function CarpinteroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex A
     
     If ObjData(ItemIndex).Madera > 0 Then
             If Not TieneObjetos(Leña, ObjData(ItemIndex).Madera, UserIndex) Then
-                    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficientes madera." & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes madera." & FONTTYPE_INFO)
                     CarpinteroTieneMateriales = False
                     Exit Function
             End If
@@ -319,21 +319,21 @@ End Function
 Function HerreroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer) As Boolean
     If ObjData(ItemIndex).LingH > 0 Then
             If Not TieneObjetos(LingoteHierro, ObjData(ItemIndex).LingH, UserIndex) Then
-                    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de hierro." & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de hierro." & FONTTYPE_INFO)
                     HerreroTieneMateriales = False
                     Exit Function
             End If
     End If
     If ObjData(ItemIndex).LingP > 0 Then
             If Not TieneObjetos(LingotePlata, ObjData(ItemIndex).LingP, UserIndex) Then
-                    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de plata." & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de plata." & FONTTYPE_INFO)
                     HerreroTieneMateriales = False
                     Exit Function
             End If
     End If
     If ObjData(ItemIndex).LingO > 0 Then
             If Not TieneObjetos(LingoteOro, ObjData(ItemIndex).LingO, UserIndex) Then
-                    Call SendData(ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de oro." & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes lingotes de oro." & FONTTYPE_INFO)
                     HerreroTieneMateriales = False
                     Exit Function
             End If
@@ -371,13 +371,13 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
     ' AGREGAR FX
     If ObjData(ItemIndex).OBJType = OBJTYPE_WEAPON Then
-        Call SendData(ToIndex, UserIndex, 0, "||Has construido el arma!." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el arma!." & FONTTYPE_INFO)
     ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_ESCUDO Then
-        Call SendData(ToIndex, UserIndex, 0, "||Has construido el escudo!." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el escudo!." & FONTTYPE_INFO)
     ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_CASCO Then
-        Call SendData(ToIndex, UserIndex, 0, "||Has construido el casco!." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el casco!." & FONTTYPE_INFO)
     ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_ARMOUR Then
-        Call SendData(ToIndex, UserIndex, 0, "||Has construido la armadura!." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido la armadura!." & FONTTYPE_INFO)
     End If
     Dim MiObj As Obj
     MiObj.Amount = 1
@@ -387,7 +387,7 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     End If
     Call SubirSkill(UserIndex, Herreria)
     Call UpdateUserInv(True, UserIndex, 0)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MARTILLOHERRERO)
+    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MARTILLOHERRERO)
     
 End If
 
@@ -419,7 +419,7 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    UserList(UserIndex).Invent.HerramientaEqpObjIndex = SERRUCHO_CARPINTERO Then
 
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
-    Call SendData(ToIndex, UserIndex, 0, "||Has construido el objeto!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el objeto!" & FONTTYPE_INFO)
     
     Dim MiObj As Obj
     MiObj.Amount = 1
@@ -430,7 +430,7 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
     
     Call SubirSkill(UserIndex, Carpinteria)
     Call UpdateUserInv(True, UserIndex, 0)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & LABUROCARPINTERO)
+    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & LABUROCARPINTERO)
 End If
 
 '[Barrin 30-11-03]
@@ -463,7 +463,7 @@ Dim obji As Integer
     
     If UserList(UserIndex).Invent.Object(Slot).Amount < MineralesParaLingote(obji) Or _
         ObjData(obji).OBJType <> OBJTYPE_MINERALES Then
-            Call SendData(ToIndex, UserIndex, 0, "||No tienes suficientes minerales para hacer un lingote." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes suficientes minerales para hacer un lingote." & FONTTYPE_INFO)
             Exit Sub
     End If
     
@@ -472,7 +472,7 @@ Dim obji As Integer
         UserList(UserIndex).Invent.Object(Slot).Amount = 0
         UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
     End If
-    Call SendData(ToIndex, UserIndex, 0, "||Has obtenido un lingote!!!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has obtenido un lingote!!!" & FONTTYPE_INFO)
     Dim nPos As WorldPos
     Dim MiObj As Obj
     MiObj.Amount = 1
@@ -481,7 +481,7 @@ Dim obji As Integer
         Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
     End If
     Call UpdateUserInv(False, UserIndex, Slot)
-    Call SendData(ToIndex, UserIndex, 0, "||¡Has obtenido un lingote!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has obtenido un lingote!" & FONTTYPE_INFO)
     
 
 
@@ -579,12 +579,12 @@ Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     
     If Npclist(NpcIndex).MaestroUser = UserIndex Then
-        Call SendData(ToIndex, UserIndex, 0, "||La criatura ya te ha aceptado como su amo." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La criatura ya te ha aceptado como su amo." & FONTTYPE_INFO)
         Exit Sub
     End If
     
     If Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
-        Call SendData(ToIndex, UserIndex, 0, "||La criatura ya tiene amo." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La criatura ya tiene amo." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -599,20 +599,20 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         
         Call FollowAmo(NpcIndex)
         
-        Call SendData(ToIndex, UserIndex, 0, "||La criatura te ha aceptado como su amo." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La criatura te ha aceptado como su amo." & FONTTYPE_INFO)
         Call SubirSkill(UserIndex, Domar)
         
     Else
           '[CDT 17-02-2004]
           If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
-            Call SendData(ToIndex, UserIndex, 0, "||No has logrado domar la criatura." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has logrado domar la criatura." & FONTTYPE_INFO)
             UserList(UserIndex).flags.UltimoMensaje = 5
           End If
           '[/CDT]
         
     End If
 Else
-    Call SendData(ToIndex, UserIndex, 0, "||No podes controlar mas criaturas." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes controlar mas criaturas." & FONTTYPE_INFO)
 End If
 End Sub
 
@@ -648,7 +648,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     End If
     
     
-    Call ChangeUserChar(ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
     
 End Sub
 Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
@@ -661,17 +661,17 @@ Dim Obj As Obj
 If Not LegalPos(Map, X, Y) Then Exit Sub
 
 If UserList(UserIndex).flags.Muerto = 1 Then
-    Call SendData(ToIndex, UserIndex, 0, "||No puedes hacer fogatas estando muerto." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes hacer fogatas estando muerto." & FONTTYPE_INFO)
     Exit Sub
 End If
 
 If MapData(Map, X, Y).trigger = TRIGGER_ZONASEGURA Or MapInfo(Map).Pk = False Then
-    Call SendData(ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
     Exit Sub
 End If
 
 If MapData(Map, X, Y).OBJInfo.Amount < 3 Then
-    Call SendData(ToIndex, UserIndex, 0, "||Necesitas por lo menos tres troncos para hacer una fogata." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Necesitas por lo menos tres troncos para hacer una fogata." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -691,12 +691,12 @@ If exito = 1 Then
     Obj.Amount = MapData(Map, X, Y).OBJInfo.Amount / 3
     
     If Obj.Amount > 1 Then
-        Call SendData(ToIndex, UserIndex, 0, "||Has hecho " & Obj.Amount & " fogatas." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho " & Obj.Amount & " fogatas." & FONTTYPE_INFO)
     Else
-        Call SendData(ToIndex, UserIndex, 0, "||Has hecho una fogata." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho una fogata." & FONTTYPE_INFO)
     End If
     
-    Call MakeObj(ToMap, 0, Map, Obj, Map, X, Y)
+    Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
     
     Dim Fogatita As New cGarbage
     Fogatita.Map = Map
@@ -707,7 +707,7 @@ If exito = 1 Then
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 10 Then
-        Call SendData(ToIndex, UserIndex, 0, "||No has podido hacer la fogata." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has podido hacer la fogata." & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 10
     End If
     '[/CDT]
@@ -775,12 +775,12 @@ If res < 6 Then
         Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
     End If
     
-    Call SendData(ToIndex, UserIndex, 0, "||¡Has pescado un lindo pez!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has pescado un lindo pez!" & FONTTYPE_INFO)
     
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 6 Then
-      Call SendData(ToIndex, UserIndex, 0, "||¡No has pescado nada!" & FONTTYPE_INFO)
+      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has pescado nada!" & FONTTYPE_INFO)
       UserList(UserIndex).flags.UltimoMensaje = 6
     End If
     '[/CDT]
@@ -858,10 +858,10 @@ If Suerte > 0 Then
             Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
         End If
         
-        Call SendData(ToIndex, UserIndex, 0, "||¡Has pescado algunos peces!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has pescado algunos peces!" & FONTTYPE_INFO)
         
     Else
-        Call SendData(ToIndex, UserIndex, 0, "||¡No has pescado nada!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has pescado nada!" & FONTTYPE_INFO)
     End If
     
     Call SubirSkill(UserIndex, Pesca)
@@ -877,14 +877,14 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
 If MapInfo(UserList(VictimaIndex).Pos.Map).Pk = True Then Exit Sub
 If UserList(LadrOnIndex).flags.Seguro Then
-    Call SendData(ToIndex, LadrOnIndex, 0, "||Debes quitar el seguro para robar" & FONTTYPE_FIGHT)
+    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Debes quitar el seguro para robar" & FONTTYPE_FIGHT)
     Exit Sub
 End If
 
 If TriggerZonaPelea(LadrOnIndex, VictimaIndex) <> TRIGGER6_AUSENTE Then Exit Sub
 
 If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And UserList(LadrOnIndex).Faccion.FuerzasCaos = 1 Then
-    Call SendData(ToIndex, LadrOnIndex, 0, "||No puedes robar a otros miembros de las fuerzas del caos" & FONTTYPE_FIGHT)
+    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||No puedes robar a otros miembros de las fuerzas del caos" & FONTTYPE_FIGHT)
     Exit Sub
 End If
 
@@ -932,7 +932,7 @@ If UserList(VictimaIndex).flags.Privilegios = 0 Then
             If TieneObjetosRobables(VictimaIndex) Then
                 Call RobarObjeto(LadrOnIndex, VictimaIndex)
             Else
-                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene objetos." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene objetos." & FONTTYPE_INFO)
             End If
         Else 'Roba oro
             If UserList(VictimaIndex).Stats.GLD > 0 Then
@@ -948,15 +948,15 @@ If UserList(VictimaIndex).flags.Privilegios = 0 Then
                 
                 Call AddtoVar(UserList(LadrOnIndex).Stats.GLD, N, MAXORO)
                 
-                Call SendData(ToIndex, LadrOnIndex, 0, "||Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name & FONTTYPE_INFO)
             Else
-                Call SendData(ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene oro." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||" & UserList(VictimaIndex).name & " no tiene oro." & FONTTYPE_INFO)
             End If
         End If
     Else
-        Call SendData(ToIndex, LadrOnIndex, 0, "||¡No has logrado robar nada!" & FONTTYPE_INFO)
-        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " ha intentado robarte!" & FONTTYPE_INFO)
-        Call SendData(ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " es un criminal!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||¡No has logrado robar nada!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " ha intentado robarte!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " es un criminal!" & FONTTYPE_INFO)
     End If
 
     If Not Criminal(LadrOnIndex) Then
@@ -1046,9 +1046,9 @@ If flag Then
         Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
     End If
     
-    Call SendData(ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & FONTTYPE_INFO)
 Else
-    Call SendData(ToIndex, LadrOnIndex, 0, "||No has logrado robar un objetos." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||No has logrado robar un objetos." & FONTTYPE_INFO)
 End If
 
 End Sub
@@ -1101,17 +1101,17 @@ End If
 If res < 15 Then
     If VictimUserIndex <> 0 Then
         UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - Int(daño * 1.5)
-        Call SendData(ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
-        Call SendData(ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
     Else
         Npclist(VictimNpcIndex).Stats.MinHP = Npclist(VictimNpcIndex).Stats.MinHP - Int(daño * 2)
-        Call SendData(ToIndex, UserIndex, 0, "||Has apuñalado la criatura por " & Int(daño * 2) & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has apuñalado la criatura por " & Int(daño * 2) & FONTTYPE_FIGHT)
         Call SubirSkill(UserIndex, Apuñalar)
         '[Alejo]
         Call CalcularDarExp(UserIndex, VictimNpcIndex, Int(daño * 2))
     End If
 Else
-    Call SendData(ToIndex, UserIndex, 0, "||¡No has logrado apuñalar a tu enemigo!" & FONTTYPE_FIGHT)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has logrado apuñalar a tu enemigo!" & FONTTYPE_FIGHT)
 End If
 
 End Sub
@@ -1186,12 +1186,12 @@ If res < 6 Then
         
     End If
     
-    Call SendData(ToIndex, UserIndex, 0, "||¡Has conseguido algo de leña!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has conseguido algo de leña!" & FONTTYPE_INFO)
     
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 8 Then
-        Call SendData(ToIndex, UserIndex, 0, "||¡No has obtenido leña!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has obtenido leña!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 8
     End If
     '[/CDT]
@@ -1303,12 +1303,12 @@ If res <= 5 Then
     If Not MeterItemEnInventario(UserIndex, MiObj) Then _
         Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
     
-    Call SendData(ToIndex, UserIndex, 0, "||¡Has extraido algunos minerales!" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has extraido algunos minerales!" & FONTTYPE_INFO)
     
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 9 Then
-        Call SendData(ToIndex, UserIndex, 0, "||¡No has conseguido nada!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has conseguido nada!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 9
     End If
     '[/CDT]
@@ -1351,12 +1351,12 @@ End If
 If UserList(UserIndex).Counters.bPuedeMeditar = False Then Exit Sub
 
 If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
-    Call SendData(ToIndex, UserIndex, 0, "||Has terminado de meditar." & FONTTYPE_INFO)
-    Call SendData(ToIndex, UserIndex, 0, "MEDOK")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has terminado de meditar." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "MEDOK")
     UserList(UserIndex).flags.Meditando = False
     UserList(UserIndex).Char.FX = 0
     UserList(UserIndex).Char.loops = 0
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
+    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
     Exit Sub
 End If
 
@@ -1398,11 +1398,11 @@ If res = 1 Then
     Call AddtoVar(UserList(UserIndex).Stats.MinMAN, Cant, UserList(UserIndex).Stats.MaxMAN)
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call SendData(ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     
-    Call SendData(ToIndex, UserIndex, 0, "ASM" & UserList(UserIndex).Stats.MinMAN)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASM" & UserList(UserIndex).Stats.MinMAN)
     Call SubirSkill(UserIndex, Meditar)
 End If
 
@@ -1450,8 +1450,8 @@ res = RandomNumber(1, Suerte)
 
 If res <= 2 Then
         Call Desequipar(VictimIndex, UserList(VictimIndex).Invent.WeaponEqpSlot)
-        Call SendData(ToIndex, UserIndex, 0, "||Has logrado desarmar a tu oponente!" & FONTTYPE_FIGHT)
-        If UserList(VictimIndex).Stats.ELV < 20 Then Call SendData(ToIndex, VictimIndex, 0, "||Tu oponente te ha desarmado!" & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has logrado desarmar a tu oponente!" & FONTTYPE_FIGHT)
+        If UserList(VictimIndex).Stats.ELV < 20 Then Call SendData(SendTarget.ToIndex, VictimIndex, 0, "||Tu oponente te ha desarmado!" & FONTTYPE_FIGHT)
     End If
 End Sub
 

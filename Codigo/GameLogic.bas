@@ -73,7 +73,7 @@ If InMapBounds(Map, X, Y) Then
                     End If
                 End If
             Else 'No es newbie
-                Call SendData(ToIndex, UserIndex, 0, "||Mapa exclusivo para newbies." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Mapa exclusivo para newbies." & FONTTYPE_INFO)
                 Dim veces As Byte
                 veces = 0
                 Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
@@ -236,19 +236,19 @@ End If
 
 End Sub
 
-Function NameIndex(ByRef Name As String) As Integer
+Function NameIndex(ByRef name As String) As Integer
 
 Dim UserIndex As Integer
 '¿Nombre valido?
-If Name = "" Then
+If name = "" Then
     NameIndex = 0
     Exit Function
 End If
 
-Name = UCase$(Replace(Name, "+", " "))
+name = UCase$(Replace(name, "+", " "))
 
 UserIndex = 1
-Do Until UCase$(UserList(UserIndex).Name) = Name
+Do Until UCase$(UserList(UserIndex).name) = name
     
     UserIndex = UserIndex + 1
     
@@ -306,7 +306,7 @@ Next LoopC
 CheckForSameIP = False
 End Function
 
-Function CheckForSameName(ByVal UserIndex As Integer, ByVal Name As String) As Boolean
+Function CheckForSameName(ByVal UserIndex As Integer, ByVal name As String) As Boolean
 'Controlo que no existan usuarios con el mismo nombre
 Dim LoopC As Integer
 For LoopC = 1 To MaxUsers
@@ -318,7 +318,7 @@ For LoopC = 1 To MaxUsers
         'ESE EVENTO NO DISPARA UN SAVE USER, LO QUE PUEDE SER UTILIZADO PARA DUPLICAR ITEMS
         'ESTE BUG EN ALKON PRODUJO QUE EL SERVIDOR ESTE CAIDO DURANTE 3 DIAS. ATENTOS.
         
-        If UCase$(UserList(LoopC).Name) = UCase$(Name) Then
+        If UCase$(UserList(LoopC).name) = UCase$(name) Then
             CheckForSameName = True
             Exit Function
         End If
@@ -424,7 +424,7 @@ Dim LoopC As Integer
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call SendData(ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
 Next LoopC
 End Sub
 Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
@@ -432,7 +432,7 @@ Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 If Npclist(NpcIndex).NroExpresiones > 0 Then
     Dim randomi
     randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-    Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
 End If
                     
 End Sub
@@ -485,9 +485,9 @@ If InMapBounds(Map, X, Y) Then
     If FoundSomething = 1 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.ObjIndex
         If MostrarCantidad(UserList(UserIndex).flags.TargetObj) Then
-            Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).Name & " - " & MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.Amount & "" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).name & " - " & MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.Amount & "" & FONTTYPE_INFO)
         Else
-            Call SendData(ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).Name & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).name & FONTTYPE_INFO)
         End If
     
     End If
@@ -537,10 +537,10 @@ If InMapBounds(Map, X, Y) Then
                 'End If
                 
                 If Len(UserList(TempCharIndex).Desc) > 1 Then
-                    Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat & " - " & UserList(TempCharIndex).Desc
+                    Stat = "||Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
                 Else
-                    'Call SendData(ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
-                    Stat = "||Ves a " & UserList(TempCharIndex).Name & Stat
+                    'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
+                    Stat = "||Ves a " & UserList(TempCharIndex).name & Stat
                 End If
 
                 If UserList(TempCharIndex).flags.PertAlCons > 0 Then
@@ -560,7 +560,7 @@ If InMapBounds(Map, X, Y) Then
                 Stat = "||" & UserList(TempCharIndex).DescRM & " " & FONTTYPE_INFOBOLD
             End If
 
-            Call SendData(ToIndex, UserIndex, 0, Stat)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, Stat)
 
             FoundSomething = 1
             UserList(UserIndex).flags.TargetUser = TempCharIndex
@@ -626,13 +626,13 @@ If InMapBounds(Map, X, Y) Then
             End If
             
             If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call SendData(ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
             Else
                 
                 If Npclist(TempCharIndex).MaestroUser > 0 Then
-                    Call SendData(ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & FONTTYPE_INFO)
                 Else
-                    Call SendData(ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).Name & "." & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).name & "." & FONTTYPE_INFO)
                 End If
                 
             End If
@@ -659,7 +659,7 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 
 Else
@@ -671,7 +671,7 @@ Else
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
 End If
 

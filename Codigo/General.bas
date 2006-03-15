@@ -161,7 +161,7 @@ Dim i As Integer
 For i = 1 To TrashCollector.Count
     Dim d As cGarbage
     Set d = TrashCollector(1)
-    Call EraseObj(ToMap, 0, d.Map, 1, d.Map, d.X, d.Y)
+    Call EraseObj(SendTarget.ToMap, 0, d.Map, 1, d.Map, d.X, d.Y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
 Next i
@@ -180,7 +180,7 @@ For k = 1 To UBound(SpawnList)
     SD = SD & SpawnList(k).NpcName & ","
 Next k
 
-Call SendData(ToIndex, UserIndex, 0, SD)
+Call SendData(SendTarget.ToIndex, UserIndex, 0, SD)
 End Sub
 
 Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)
@@ -989,7 +989,7 @@ If UserList(UserIndex).flags.UserLogged Then
                 Dim modifi As Long
                 modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 3)
                 Call QuitarSta(UserIndex, modifi)
-'                Call SendData(ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, busca pronto refugio de la lluvia!!." & FONTTYPE_INFO)
+'                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, busca pronto refugio de la lluvia!!." & FONTTYPE_INFO)
                 Call SendUserStatsBox(UserIndex)
     End If
 End If
@@ -1021,20 +1021,20 @@ If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
   UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
 Else
   If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
-    Call SendData(ToIndex, UserIndex, 0, "||¡¡Estas muriendo de frio, abrigate o moriras!!." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muriendo de frio, abrigate o moriras!!." & FONTTYPE_INFO)
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
     If UserList(UserIndex).Stats.MinHP < 1 Then
-            Call SendData(ToIndex, UserIndex, 0, "||¡¡Has muerto de frio!!." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has muerto de frio!!." & FONTTYPE_INFO)
             UserList(UserIndex).Stats.MinHP = 0
             Call UserDie(UserIndex)
     End If
-    Call SendData(ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
   Else
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
     Call QuitarSta(UserIndex, modifi)
-    Call SendData(ToIndex, UserIndex, 0, "ASS" & UserList(UserIndex).Stats.MinSta)
-    'Call SendData(ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASS" & UserList(UserIndex).Stats.MinSta)
+    'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
   End If
   
   UserList(UserIndex).Counters.Frio = 0
@@ -1050,7 +1050,7 @@ If UserList(UserIndex).Counters.Mimetismo < IntervaloInvisible Then
     UserList(UserIndex).Counters.Mimetismo = UserList(UserIndex).Counters.Mimetismo + 1
 Else
     'restore old char
-    Call SendData(ToIndex, UserIndex, 0, "||Recuperas tu apariencia normal." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Recuperas tu apariencia normal." & FONTTYPE_INFO)
     
     UserList(UserIndex).Char.Body = UserList(UserIndex).CharMimetizado.Body
     UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
@@ -1061,7 +1061,7 @@ Else
     
     UserList(UserIndex).Counters.Mimetismo = 0
     UserList(UserIndex).flags.Mimetizado = 0
-    Call ChangeUserChar(ToMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 End If
             
 End Sub
@@ -1083,15 +1083,15 @@ If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
   
   UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
 Else
-  Call SendData(ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
+  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
   UserList(UserIndex).Counters.Invisibilidad = 0
   UserList(UserIndex).flags.Invisible = 0
   UserList(UserIndex).flags.Oculto = 0
 '   no ecripto los noverx,0
 '  If EncriptarProtocolosCriticos Then
-'    Call SendCryptedData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
+'    Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
 '  Else
-    Call SendData(ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 '  End If
     
 End If
@@ -1117,11 +1117,11 @@ If UserList(UserIndex).Counters.Ceguera > 0 Then
 Else
     If UserList(UserIndex).flags.Ceguera = 1 Then
         UserList(UserIndex).flags.Ceguera = 0
-        Call SendData(ToIndex, UserIndex, 0, "NSEGUE")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "NSEGUE")
     End If
     If UserList(UserIndex).flags.Estupidez = 1 Then
         UserList(UserIndex).flags.Estupidez = 0
-        Call SendData(ToIndex, UserIndex, 0, "NESTUP")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "NESTUP")
     End If
 
 End If
@@ -1137,7 +1137,7 @@ If UserList(UserIndex).Counters.Paralisis > 0 Then
 Else
     UserList(UserIndex).flags.Paralizado = 0
     'UserList(UserIndex).Flags.AdministrativeParalisis = 0
-    Call SendData(ToIndex, UserIndex, 0, "PARADOK")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
 End If
 
 End Sub
@@ -1172,12 +1172,12 @@ Dim N As Integer
 If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
   UserList(UserIndex).Counters.Veneno = UserList(UserIndex).Counters.Veneno + 1
 Else
-  Call SendData(ToIndex, UserIndex, 0, "||Estas envenenado, si no te curas moriras." & FONTTYPE_VENENO)
+  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas envenenado, si no te curas moriras." & FONTTYPE_VENENO)
   UserList(UserIndex).Counters.Veneno = 0
   N = RandomNumber(1, 5)
   UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - N
   If UserList(UserIndex).Stats.MinHP < 1 Then Call UserDie(UserIndex)
-  Call SendData(ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
+  Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
 End If
 
 End Sub
@@ -1254,7 +1254,7 @@ If UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP Then
       UserList(UserIndex).Counters.HPCounter = 0
       UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit
       If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-      Call SendData(ToIndex, UserIndex, 0, "||Has sanado." & FONTTYPE_INFO)
+      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sanado." & FONTTYPE_INFO)
       EnviarStats = True
     End If
 End If
@@ -1297,8 +1297,8 @@ Sub PasarSegundo()
             If UserList(i).Counters.Salir <= 0 Then
                 'If NumUsers <> 0 Then NumUsers = NumUsers - 1
 
-                Call SendData(ToIndex, i, 0, "||Gracias por jugar Argentum Online" & FONTTYPE_INFO)
-                Call SendData(ToIndex, i, 0, "FINOK")
+                Call SendData(SendTarget.ToIndex, i, 0, "||Gracias por jugar Argentum Online" & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, i, 0, "FINOK")
                 
                 Call CloseSocket(i)
                 Exit Sub
@@ -1309,7 +1309,7 @@ Sub PasarSegundo()
 '                'Unload frmMain.Socket2(i)
 '                Call ResetUserSlot(i)
 '            Else
-'                Call SendData(ToIndex, i, 0, "||En " & UserList(i).Counters.Salir & " segundos se cerrará el juego..." & FONTTYPE_INFO)
+'                Call SendData(SendTarget.ToIndex, i, 0, "||En " & UserList(i).Counters.Salir & " segundos se cerrará el juego..." & FONTTYPE_INFO)
             End If
         
         'ANTIEMPOLLOS
@@ -1325,13 +1325,13 @@ Sub PasarSegundo()
                  'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
 
                  'Call Encarcelar(Z, 30, "El sistema anti empollo")
-                 Call SendData(ToIndex, i, 0, "!! Fuiste expulsado por permanecer muerto sobre un item")
-                 'Call SendData(ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
+                 Call SendData(SendTarget.ToIndex, i, 0, "!! Fuiste expulsado por permanecer muerto sobre un item")
+                 'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
                  UserList(i).EmpoCont = 0
                  Call CloseSocket(i)
                  Exit Sub
              ElseIf UserList(i).EmpoCont = 15 Then
-                 Call SendData(ToIndex, i, 0, "|| LLevas 15 segundos bloqueando el item, muévete o serás desconectado." & FONTTYPE_WARNING)
+                 Call SendData(SendTarget.ToIndex, i, 0, "|| LLevas 15 segundos bloqueando el item, muévete o serás desconectado." & FONTTYPE_WARNING)
              End If
          End If
     Next i
@@ -1344,11 +1344,11 @@ Sub PasarSegundo()
 '            Select Case IntervaloAutoReiniciar
 '
 '                Case 1200, 600, 240, 120, 180, 60, 30
-'                    Call SendData(ToAll, 0, 0, "|| Servidor> El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones" & FONTTYPE_SERVER)
+'                    Call SendData(SendTarget.ToAll, 0, 0, "|| Servidor> El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones" & FONTTYPE_SERVER)
 '                Case 300
-'                    Call SendData(ToAll, 0, 0, "!! El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones")
+'                    Call SendData(SendTarget.ToAll, 0, 0, "!! El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones")
 '                Case Is < 30
-'                    Call SendData(ToAll, 0, 0, "|| Servidor> El servidor se reiniciará en " & IntervaloAutoReiniciar & " segundos." & FONTTYPE_TALK)
+'                    Call SendData(SendTarget.ToAll, 0, 0, "|| Servidor> El servidor se reiniciará en " & IntervaloAutoReiniciar & " segundos." & FONTTYPE_TALK)
 '            End Select
 '
 '            If IntervaloAutoReiniciar = 0 Then
@@ -1385,18 +1385,18 @@ End Sub
 Sub GuardarUsuarios()
     haciendoBK = True
     
-    Call SendData(ToAll, 0, 0, "BKW")
-    Call SendData(ToAll, 0, 0, "||Servidor> Grabando Personajes" & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Grabando Personajes" & FONTTYPE_SERVER)
     
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharPath & UCase$(UserList(i).Name) & ".chr")
+            Call SaveUser(i, CharPath & UCase$(UserList(i).name) & ".chr")
         End If
     Next i
     
-    Call SendData(ToAll, 0, 0, "||Servidor> Personajes Grabados" & FONTTYPE_SERVER)
-    Call SendData(ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Personajes Grabados" & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
 
     haciendoBK = False
 End Sub

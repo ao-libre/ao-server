@@ -81,7 +81,7 @@ Dim sufragio As Integer
         Exit Function
     End If
 
-    CharFile = CharPath & UserList(UserIndex).Name & ".chr"
+    CharFile = CharPath & UserList(UserIndex).name & ".chr"
     
     
     
@@ -121,18 +121,18 @@ End Function
 
 Public Function SendInfoEncuesta(ByVal UserIndex As Integer) As String
 Dim i As Integer
-    Call SendData(ToIndex, UserIndex, 0, "||CONSULTA POPULAR NUMERO " & pEncuestaActualNum & FONTTYPE_GUILD)
-    Call SendData(ToIndex, UserIndex, 0, "||" & pEncuestaActualTex & FONTTYPE_GUILD)
-    Call SendData(ToIndex, UserIndex, 0, "|| Opciones de voto: " & FONTTYPE_GUILDMSG)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||CONSULTA POPULAR NUMERO " & pEncuestaActualNum & FONTTYPE_GUILD)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & pEncuestaActualTex & FONTTYPE_GUILD)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Opciones de voto: " & FONTTYPE_GUILDMSG)
     For i = 1 To UBound(pOpciones)
-        Call SendData(ToIndex, UserIndex, 0, "||(Opcion " & i & "): " & GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & i) & FONTTYPE_GUILDMSG)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||(Opcion " & i & "): " & GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & i) & FONTTYPE_GUILDMSG)
     Next i
-    Call SendData(ToIndex, UserIndex, 0, "|| Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1. Tu voto no podra ser cambiado." & FONTTYPE_VENENO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1. Tu voto no podra ser cambiado." & FONTTYPE_VENENO)
 End Function
 
 
 Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer)
-    Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "CONSULTAS", "Voto", str(pEncuestaActualNum))
+    Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "CONSULTAS", "Voto", str(pEncuestaActualNum))
 End Sub
 
 

@@ -92,7 +92,7 @@ Dim i As Integer
 
 For i = 1 To PARTY_MAXMEMBERS
     If p_members(i).UserIndex > 0 Then
-        Call SendData(ToIndex, p_members(i).UserIndex, 0, "|| [" & Sender & "] " & texto & FONTTYPE_PARTY)
+        Call SendData(SendTarget.ToIndex, p_members(i).UserIndex, 0, "|| [" & Sender & "] " & texto & FONTTYPE_PARTY)
     End If
 Next i
 
@@ -136,16 +136,16 @@ If i = 1 Then
     Call MandarMensajeAConsola("El lider disuelve la party.", "Servidor")
     For j = PARTY_MAXMEMBERS To 1 Step -1
         If p_members(j).UserIndex > 0 Then
-            Call SendData(ToIndex, p_members(j).UserIndex, 0, "|| Abandonas la party liderada por " & UserList(p_members(1).UserIndex).Name & FONTTYPE_PARTY)
+            Call SendData(SendTarget.ToIndex, p_members(j).UserIndex, 0, "|| Abandonas la party liderada por " & UserList(p_members(1).UserIndex).name & FONTTYPE_PARTY)
     
-            Call SendData(ToIndex, p_members(j).UserIndex, 0, "|| Durante la misma has conseguido " & p_members(j).Experiencia & " puntos de experiencia!" & FONTTYPE_PARTY)
+            Call SendData(SendTarget.ToIndex, p_members(j).UserIndex, 0, "|| Durante la misma has conseguido " & p_members(j).Experiencia & " puntos de experiencia!" & FONTTYPE_PARTY)
     
             If Not PARTY_EXPERIENCIAPORGOLPE Then
                 Call AddtoVar(UserList(p_members(j).UserIndex).Stats.Exp, p_members(j).Experiencia, MAXEXP)
                 Call CheckUserLevel(p_members(j).UserIndex)
                 Call SendUserStatsBox(p_members(j).UserIndex)
             End If
-            Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).Name & " abandona la party." & FONTTYPE_PARTY, "Servidor")
+            Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party." & FONTTYPE_PARTY, "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
             p_CantMiembros = p_CantMiembros - 1
             p_members(j).UserIndex = 0
@@ -159,8 +159,8 @@ Else
             Call CheckUserLevel(p_members(i).UserIndex)
             Call SendUserStatsBox(p_members(i).UserIndex)
         End If
-        Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).Name & " abandona la party." & FONTTYPE_PARTY, "Servidor")
-        Call SendData(ToIndex, p_members(i).UserIndex, 0, "|| Durante la misma has conseguido " & p_members(i).Experiencia & " puntos de experiencia!" & FONTTYPE_PARTY)
+        Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).name & " abandona la party." & FONTTYPE_PARTY, "Servidor")
+        Call SendData(SendTarget.ToIndex, p_members(i).UserIndex, 0, "|| Durante la misma has conseguido " & p_members(i).Experiencia & " puntos de experiencia!" & FONTTYPE_PARTY)
         p_CantMiembros = p_CantMiembros - 1
         p_members(i).UserIndex = 0
         p_members(i).Experiencia = 0
@@ -187,7 +187,7 @@ For i = 1 To PARTY_MAXMEMBERS
         End If
         'chequeo la dif entre levels
         If Abs(UserList(UserIndex).Stats.ELV - UserList(p_members(i).UserIndex).Stats.ELV) > MAXPARTYDELTALEVEL Then
-            Call SendData(ToIndex, p_members(i).UserIndex, 0, "|| No se puede hacer líder a " & UserList(UserIndex).Name & " pues la diferencia entre niveles de los miembros de la party sería mayor a " & MAXPARTYDELTALEVEL & FONTTYPE_PARTY)
+            Call SendData(SendTarget.ToIndex, p_members(i).UserIndex, 0, "|| No se puede hacer líder a " & UserList(UserIndex).name & " pues la diferencia entre niveles de los miembros de la party sería mayor a " & MAXPARTYDELTALEVEL & FONTTYPE_PARTY)
             HacerLeader = False
         End If
     End If
@@ -198,7 +198,7 @@ If Not HacerLeader Then Exit Function
 If UserIndexIndex = 0 Then
     'catastrofe! esto no deberia pasar nunca! pero como es AO.... :p
     Call LogError("INCONSISTENCIA DE PARTIES")
-    Call SendData(ToAdmins, 0, 0, "|| Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!")
+    Call SendData(SendTarget.ToAdmins, 0, 0, "|| Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!")
     HacerLeader = False
     Exit Function
 End If
@@ -227,7 +227,7 @@ Dim i As Integer
 MemberList = "Nombre(Exp): "
 For i = 1 To PARTY_MAXMEMBERS
     If p_members(i).UserIndex > 0 Then
-        MemberList = MemberList & " - " & UserList(p_members(i).UserIndex).Name & " (" & p_members(i).Experiencia & ")"
+        MemberList = MemberList & " - " & UserList(p_members(i).UserIndex).name & " (" & p_members(i).Experiencia & ")"
     End If
 Next i
 
@@ -280,7 +280,7 @@ If rv Then
                 End If
                 'diferencia entre niveles
                 If Abs(UserList(UI).Stats.ELV - UserList(UserIndex).Stats.ELV) > MAXPARTYDELTALEVEL Then
-                    razon = "La diferencia con " & UserList(UI).Name & " es mayor a " & MAXPARTYDELTALEVEL & " niveles."
+                    razon = "La diferencia con " & UserList(UI).name & " es mayor a " & MAXPARTYDELTALEVEL & " niveles."
                     rv = False
                 End If
             

@@ -208,7 +208,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         Map = UserList(UserIndex).Pos.Map
         
         'Esto es para ke el cliente elimine lo "fuera de area..."
-        Call SendData(ToIndex, UserIndex, 0, "CA" & Chr$(.Pos.X) & Chr$(.Pos.Y))
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "CA" & Chr$(.Pos.X) & Chr$(.Pos.Y))
         
         Dim tempa As Integer
         
@@ -223,28 +223,28 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     TempInt = MapData(Map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
-                        Call MakeUserChar(ToIndex, UserIndex, 0, CInt(TempInt), Map, X, Y)
-                        Call MakeUserChar(ToIndex, CInt(TempInt), 0, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, CInt(TempInt), Map, X, Y)
+                        Call MakeUserChar(SendTarget.ToIndex, CInt(TempInt), 0, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                     ElseIf Head = USER_NUEVO Then
-                        Call MakeUserChar(ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
+                        Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
                     End If
                 
                 End If
                 
                 '<<< Npc >>>
                 If MapData(Map, X, Y).NpcIndex Then
-                    Call MakeNPCChar(ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                    Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
                  End If
                  
                 '<<< Item >>>
                 If MapData(Map, X, Y).OBJInfo.ObjIndex Then
                     TempInt = MapData(Map, X, Y).OBJInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
-                        Call MakeObj(ToIndex, UserIndex, 0, MapData(Map, X, Y).OBJInfo, CInt(Map), X, Y)
+                        Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).OBJInfo, CInt(Map), X, Y)
                         
                         If ObjData(TempInt).OBJType = OBJTYPE_PUERTAS Then
-                            Call Bloquear(ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
-                            Call Bloquear(ToIndex, UserIndex, 0, CInt(Map), X - 1, Y, MapData(Map, X - 1, Y).Blocked)
+                            Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
+                            Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                         End If
                     End If
                 End If
@@ -334,7 +334,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
             For X = MinX To MaxX
                 For Y = MinY To MaxY
                     If MapData(.Pos.Map, X, Y).UserIndex Then _
-                        Call MakeNPCChar(ToIndex, MapData(.Pos.Map, X, Y).UserIndex, 0, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeNPCChar(SendTarget.ToIndex, MapData(.Pos.Map, X, Y).UserIndex, 0, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
                 Next 'X
             Next 'Y
         End If

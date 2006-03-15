@@ -50,7 +50,7 @@ On Error GoTo errhandler
     NuevaPos.Y = 0
     Call Tilelibre(Pos, NuevaPos)
     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-          Call MakeObj(ToMap, 0, Pos.Map, _
+          Call MakeObj(SendTarget.ToMap, 0, Pos.Map, _
           Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
           TirarItemAlPiso = NuevaPos
     End If
@@ -60,21 +60,21 @@ errhandler:
 
 End Function
 
-Public Sub NPC_TIRAR_ITEMS(ByRef Npc As Npc)
+Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc)
 'TIRA TODOS LOS ITEMS DEL NPC
 On Error Resume Next
 
-If Npc.Invent.NroItems > 0 Then
+If npc.Invent.NroItems > 0 Then
     
     Dim i As Byte
     Dim MiObj As Obj
     
     For i = 1 To MAX_INVENTORY_SLOTS
     
-        If Npc.Invent.Object(i).objIndex > 0 Then
-              MiObj.Amount = Npc.Invent.Object(i).Amount
-              MiObj.objIndex = Npc.Invent.Object(i).objIndex
-              Call TirarItemAlPiso(Npc.Pos, MiObj)
+        If npc.Invent.Object(i).ObjIndex > 0 Then
+              MiObj.Amount = npc.Invent.Object(i).Amount
+              MiObj.ObjIndex = npc.Invent.Object(i).ObjIndex
+              Call TirarItemAlPiso(npc.Pos, MiObj)
         End If
       
     Next i
@@ -83,14 +83,14 @@ End If
 
 End Sub
 
-Function QuedanItems(ByVal NpcIndex As Integer, ByVal objIndex As Integer) As Boolean
+Function QuedanItems(ByVal NpcIndex As Integer, ByVal ObjIndex As Integer) As Boolean
 On Error Resume Next
 'Call LogTarea("Function QuedanItems npcindex:" & NpcIndex & " objindex:" & ObjIndex)
 
 Dim i As Integer
 If Npclist(NpcIndex).Invent.NroItems > 0 Then
     For i = 1 To MAX_INVENTORY_SLOTS
-        If Npclist(NpcIndex).Invent.Object(i).objIndex = objIndex Then
+        If Npclist(NpcIndex).Invent.Object(i).ObjIndex = ObjIndex Then
             QuedanItems = True
             Exit Function
         End If
@@ -99,7 +99,7 @@ End If
 QuedanItems = False
 End Function
 
-Function EncontrarCant(ByVal NpcIndex As Integer, ByVal objIndex As Integer) As Integer
+Function EncontrarCant(ByVal NpcIndex As Integer, ByVal ObjIndex As Integer) As Integer
 On Error Resume Next
 'Devuelve la cantidad original del obj de un npc
 
@@ -113,7 +113,7 @@ End If
  
 For i = 1 To MAX_INVENTORY_SLOTS
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
-    If objIndex = val(ReadField(1, ln, 45)) Then
+    If ObjIndex = val(ReadField(1, ln, 45)) Then
         EncontrarCant = val(ReadField(2, ln, 45))
         Exit Function
     End If
@@ -131,7 +131,7 @@ Dim i As Integer
 Npclist(NpcIndex).Invent.NroItems = 0
 
 For i = 1 To MAX_INVENTORY_SLOTS
-   Npclist(NpcIndex).Invent.Object(i).objIndex = 0
+   Npclist(NpcIndex).Invent.Object(i).ObjIndex = 0
    Npclist(NpcIndex).Invent.Object(i).Amount = 0
 Next i
 
@@ -143,16 +143,16 @@ Sub QuitarNpcInvItem(ByVal NpcIndex As Integer, ByVal Slot As Byte, ByVal Cantid
 
 
 
-Dim objIndex As Integer
-objIndex = Npclist(NpcIndex).Invent.Object(Slot).objIndex
+Dim ObjIndex As Integer
+ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
 
     'Quita un Obj
-    If ObjData(Npclist(NpcIndex).Invent.Object(Slot).objIndex).Crucial = 0 Then
+    If ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Crucial = 0 Then
         Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
         
         If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
             Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
-            Npclist(NpcIndex).Invent.Object(Slot).objIndex = 0
+            Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
             Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
             If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
                Call CargarInvent(NpcIndex) 'Reponemos el inventario
@@ -163,13 +163,13 @@ objIndex = Npclist(NpcIndex).Invent.Object(Slot).objIndex
         
         If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
             Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
-            Npclist(NpcIndex).Invent.Object(Slot).objIndex = 0
+            Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
             Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
             
-            If Not QuedanItems(NpcIndex, objIndex) Then
+            If Not QuedanItems(NpcIndex, ObjIndex) Then
                    
-                   Npclist(NpcIndex).Invent.Object(Slot).objIndex = objIndex
-                   Npclist(NpcIndex).Invent.Object(Slot).Amount = EncontrarCant(NpcIndex, objIndex)
+                   Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = ObjIndex
+                   Npclist(NpcIndex).Invent.Object(Slot).Amount = EncontrarCant(NpcIndex, ObjIndex)
                    Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
             
             End If
@@ -202,7 +202,7 @@ Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex
 
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & LoopC)
-    Npclist(NpcIndex).Invent.Object(LoopC).objIndex = val(ReadField(1, ln, 45))
+    Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
     Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
     
 Next LoopC

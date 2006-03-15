@@ -668,11 +668,11 @@ Private Sub Command21_Click()
 
 If EnPausa = False Then
     EnPausa = True
-    Call SendData(ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
     Command21.Caption = "Reanudar el servidor"
 Else
     EnPausa = False
-    Call SendData(ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
     Command21.Caption = "Pausar el servidor"
 End If
 
@@ -795,14 +795,14 @@ SockListen = ListenForConnect(Puerto, hWndMsg, "")
 
 #ElseIf UsarQueSocket = 0 Then
 frmMain.Socket1.AddressFamily = AF_INET
-frmMain.Socket1.protocol = IPPROTO_IP
+frmMain.Socket1.Protocol = IPPROTO_IP
 frmMain.Socket1.SocketType = SOCK_STREAM
 frmMain.Socket1.Binary = False
 frmMain.Socket1.Blocking = False
 frmMain.Socket1.BufferSize = 1024
 
 frmMain.Socket2(0).AddressFamily = AF_INET
-frmMain.Socket2(0).protocol = IPPROTO_IP
+frmMain.Socket2(0).Protocol = IPPROTO_IP
 frmMain.Socket2(0).SocketType = SOCK_STREAM
 frmMain.Socket2(0).Blocking = False
 frmMain.Socket2(0).BufferSize = 2048
