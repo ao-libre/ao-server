@@ -21,3 +21,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 11/03/2006: Corregí el como funciona el comando /MOD para RMs... aparentemente debería existir una tercer categoría que no existe... (Maraxus).
  * 13/03/2006: Corregí el bug 1449113 ( el/SHOWCMSG cierra el cliente ). (Maraxus).
  * 14/03/2006: Reacomodé constantes, eliminé cosas de más. (Maraxus).
+ * 14/03/2006: Se implementó el comando /IRCERCA (hecho por Patenke). (Maraxus).

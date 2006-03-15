@@ -2449,6 +2449,40 @@ End If
 
 '<<<<<<<<<<<<<<<<<<<< Consejeros <<<<<<<<<<<<<<<<<<<<
 
+'/IRCERCA
+'este comando sirve para teletrasportarse cerca del usuario
+If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
+    Dim U As Integer, indiceUserDestino As Integer
+    rData = Right$(rData, Len(rData) - 9) 'obtiene el nombre del usuario
+    tIndex = NameIndex(rData)
+
+    If tIndex <= 0 Then 'existe el usuario destino?
+        Call SendData(ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Exit Sub
+    End If
+
+    For tInt = 2 To 5 'esto for sirve ir cambiando la distancia destino
+        For i = UserList(tIndex).Pos.X - tInt To UserList(tIndex).Pos.X + tInt
+            For DummyInt = UserList(tIndex).Pos.Y - tInt To serList(tIndex).Pos.Y + tInt
+                If (i >= UserList(tIndex).Pos.X - Distancia And i <= UserList(tIndex).Pos.X + Distancia) And (U = UserList(tIndex).Pos.Y - Distancia Or U = UserList(tIndex).Pos.Y + Distancia) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
+                        Exit Sub
+                    End If
+                ElseIf (U >= UserList(tIndex).Pos.Y - Distancia And U <= UserList(tIndex).Pos.Y + Distancia) And (i = UserList(tIndex).Pos.X - Distancia Or i = UserList(tIndex).Pos.X + Distancia) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
+                        Exit Sub
+                    End If
+                End If
+            Next DummyInt
+        Next i
+    Next tInt
+    
+    Call SendData(ToIndex, UserIndex, 0, "||Todos los lugares estan ocupados." & FONTTYPE_INFO)
+    Exit Sub
+End If
+
 '/rem comentario
 If UCase$(Left$(rData, 4)) = "/REM" Then
     rData = Right$(rData, Len(rData) - 5)
