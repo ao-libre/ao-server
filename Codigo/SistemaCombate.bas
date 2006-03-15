@@ -437,6 +437,12 @@ End If
 End Function
 
 Public Function NpcImpacto(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
+'*************************************************
+'Author: Unknown
+'Last modified: 03/15/2006
+'Revisa si un NPC logra impactar a un user o no
+'03/15/2006 Maraxus - Evité una división por cero que eliminaba NPCs
+'*************************************************
 Dim Rechazo As Boolean
 Dim ProbRechazo As Long
 Dim ProbExito As Long
@@ -462,18 +468,19 @@ NpcImpacto = (RandomNumber(1, 100) <= ProbExito)
 
 ' el usuario esta usando un escudo ???
 If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
-   If NpcImpacto = False Then
-      ProbRechazo = Maximo(10, Minimo(90, 100 * (SkillDefensa / (SkillDefensa + SkillTacticas))))
-      Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
-      If Rechazo = True Then
-      'Se rechazo el ataque con el escudo
-         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_ESCUDO)
-         Call SendData(SendTarget.ToIndex, UserIndex, 0, "7")
-         Call SubirSkill(UserIndex, Defensa)
-      End If
-   End If
+    If Not NpcImpacto Then
+        If SkillDefensa + SkillTacticas > 0 Then  'Evitamos división por cero
+            ProbRechazo = Maximo(10, Minimo(90, 100 * (SkillDefensa / (SkillDefensa + SkillTacticas))))
+            Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
+            If Rechazo = True Then
+                'Se rechazo el ataque con el escudo
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_ESCUDO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "7")
+                Call SubirSkill(UserIndex, Defensa)
+            End If
+        End If
+    End If
 End If
-
 End Function
 
 

@@ -25,3 +25,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 14/03/2006: Cambié los sendroutes por un enum. (Maraxus).
  * 14/03/2006: Puse la AI como enum y tipé más de 50 constantes. (Maraxus).
  * 15/03/2006: Arreglé el counter de trabajando para el Centinela y puse With en los métodos ResetUser* (Maraxus).
+ * 15/03/2006: Puse los logs en el Centinela para eventos "anormales", y poder revisar aciones sospechosas (Maraxus).
+ * 15/03/2006: Corregí el bug que eliminaba NPCs cuandobloqueabas con las skills de uso e escudos y tácticas de combate en 0 (Maraxus).

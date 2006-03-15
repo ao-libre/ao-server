@@ -586,6 +586,8 @@ On Error GoTo errhandler
     End If
 
     'Es el mismo user al que está revisando el centinela??
+    'IMPORTANTE!!! hacerlo antes de resetear así todavía sabemos el nombre del user
+    ' y lo podemos loguear
     If Centinela.RevisandoUserIndex = UserIndex Then _
         Call modCentinela.CentinelaUserLogout
 
