@@ -32,10 +32,10 @@ Attribute VB_Name = "General"
 'Global ANpc As Long
 'Global Anpc_host As Long
 
+Option Explicit
+
 Global LeerNPCs As New clsLeerInis
 Global LeerNPCsHostiles As New clsLeerInis
-
-Option Explicit
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 

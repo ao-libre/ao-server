@@ -28,11 +28,12 @@ Attribute VB_Name = "modHechizos"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-Public Const HELEMENTAL_FUEGO = 26
-Public Const HELEMENTAL_TIERRA = 28
-Public Const SUPERANILLO = 700
 
 Option Explicit
+
+Public Const HELEMENTAL_FUEGO As Integer = 26
+Public Const HELEMENTAL_TIERRA As Integer = 28
+Public Const SUPERANILLO As Integer = 700
 
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
 

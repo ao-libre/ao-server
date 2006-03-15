@@ -28,6 +28,7 @@ Attribute VB_Name = "ES"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
 Option Explicit
 
 Public Sub CargarSpawnList()
@@ -778,7 +779,7 @@ For Object = 1 To NumObjDatas
     ObjData(Object).Cerrada = val(Leer.DarValor("OBJ" & Object, "abierta"))
     If ObjData(Object).Cerrada = 1 Then
             ObjData(Object).Llave = val(Leer.DarValor("OBJ" & Object, "Llave"))
-            ObjData(Object).Clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
+            ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
     End If
     
     
@@ -790,7 +791,7 @@ For Object = 1 To NumObjDatas
     
     
     'Puertas y llaves
-    ObjData(Object).Clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
+    ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
     
     ObjData(Object).texto = Leer.DarValor("OBJ" & Object, "Texto")
     ObjData(Object).GrhSecundario = val(Leer.DarValor("OBJ" & Object, "VGrande"))

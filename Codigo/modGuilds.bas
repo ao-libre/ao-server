@@ -22,16 +22,16 @@ Public CANTIDADDECLANES As Integer
 Public Guilds()         As clsClan
 'array global de guilds, se indexa por userlist().guildindex
 
-Public Const MAX_GUILDS = 1000
+Public Const MAX_GUILDS As Integer = 1000
 'cantidad maxima de guilds en el servidor
 
-Public Const CANTIDADMAXIMACODEX = 8
+Public Const CANTIDADMAXIMACODEX As Byte = 8
 'cantidad maxima de codecs que se pueden definir
 
-Public Const MAXASPIRANTES = 10
+Public Const MAXASPIRANTES As Byte = 10
 'cantidad maxima de aspirantes que puede tener un clan acumulados a la vez
 
-Public Const MAXANTIFACCION = 5
+Public Const MAXANTIFACCION As Byte = 5
 'puntos maximos de antifaccion que un clan tolera antes de ser cambiada su alineacion
 
 Public GMsEscuchando As New Collection

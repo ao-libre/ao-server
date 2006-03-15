@@ -28,6 +28,7 @@ Attribute VB_Name = "InvUsuario"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
 Option Explicit
 
 Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
@@ -1006,7 +1007,7 @@ Select Case Obj.OBJType
             If TargObj.Cerrada = 1 Then
                   '¿Cerrada con llave?
                   If TargObj.Llave > 0 Then
-                     If TargObj.Clave = Obj.Clave Then
+                     If TargObj.clave = Obj.clave Then
          
                         MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.ObjIndex _
                         = ObjData(MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.ObjIndex).IndexCerrada
@@ -1018,7 +1019,7 @@ Select Case Obj.OBJType
                         Exit Sub
                      End If
                   Else
-                     If TargObj.Clave = Obj.Clave Then
+                     If TargObj.clave = Obj.clave Then
                         MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.ObjIndex _
                         = ObjData(MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).OBJInfo.ObjIndex).IndexCerradaLlave
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has cerrado con llave la puerta." & FONTTYPE_INFO)

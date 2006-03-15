@@ -81,10 +81,10 @@ Attribute VB_Name = "PathFinding"
 
 Option Explicit
 
-Private Const ROWS = 100
-Private Const COLUMS = 100
-Private Const MAXINT = 1000
-Private Const Walkable = 0
+Private Const ROWS As Integer = 100
+Private Const COLUMS As Integer = 100
+Private Const MAXINT As Integer = 1000
+Private Const Walkable As Integer = 0
 
 Private Type tIntermidiateWork
     Known As Boolean

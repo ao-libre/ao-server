@@ -7,11 +7,11 @@ Option Explicit
 '' los NPCs pretorianos en el NPC-HOSTILES.DAT
 '' Son FIJAS, pero se podria hacer una rutina que
 '' las lea desde el npcshostiles.dat
-Public Const PRCLER_NPC = 900   ''"Sacerdote Pretoriano"
-Public Const PRGUER_NPC = 901   ''"Guerrero  Pretoriano"
-Public Const PRMAGO_NPC = 902   ''"Mago Pretoriano"
-Public Const PRCAZA_NPC = 903   ''"Cazador Pretoriano"
-Public Const PRKING_NPC = 904   ''"Rey Pretoriano"
+Public Const PRCLER_NPC As Integer = 900   ''"Sacerdote Pretoriano"
+Public Const PRGUER_NPC As Integer = 901   ''"Guerrero  Pretoriano"
+Public Const PRMAGO_NPC As Integer = 902   ''"Mago Pretoriano"
+Public Const PRCAZA_NPC As Integer = 903   ''"Cazador Pretoriano"
+Public Const PRKING_NPC As Integer = 904   ''"Rey Pretoriano"
 ''''''''''''''''''''''''''''''''''''''''''''''
 ''Esta constante identifica en que mapa esta
 ''la fortaleza pretoriana (no es lo mismo de
@@ -21,17 +21,17 @@ Public MAPA_PRETORIANO As Integer
 ''''''''''''''''''''''''''''''''''''''''''''''
 ''Estos numeros son necesarios por cuestiones de
 ''sonido. Son los numeros de los wavs del cliente.
-Private Const SONIDO_DRAGON_VIVO = 30
-Private Const SONIDO_DRAGON_MUERTO = 32
+Private Const SONIDO_DRAGON_VIVO As Integer = 30
+Private Const SONIDO_DRAGON_MUERTO As Integer = 32
 ''ALCOBAS REALES
 ''OJO LOS BICHOS TAN HARDCODEADOS, NO CAMBIAR EL MAPA DONDE
 ''ESTÁN UBICADOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ''MUCHO MENOS LA COORDENADA Y DE LAS ALCOBAS YA QUE DEBE SER LA MISMA!!!
 ''(HAY FUNCIONES Q CUENTAN CON QUE ES LA MISMA!)
-Public Const ALCOBA1_X = 35
-Public Const ALCOBA1_Y = 25
-Public Const ALCOBA2_X = 67
-Public Const ALCOBA2_Y = 25
+Public Const ALCOBA1_X As Integer = 35
+Public Const ALCOBA1_Y As Integer = 25
+Public Const ALCOBA2_X As Integer = 67
+Public Const ALCOBA2_Y As Integer = 25
 
 
 

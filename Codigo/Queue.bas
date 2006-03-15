@@ -34,7 +34,7 @@ Public Type tVertice
     Y As Integer
 End Type
 
-Private Const MAXELEM = 1000
+Private Const MAXELEM As Integer = 1000
 
 Private m_array() As tVertice
 Private m_lastelem As Integer

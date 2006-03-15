@@ -1,30 +1,30 @@
 Attribute VB_Name = "mdParty"
 Option Explicit
 
-Public Const MAX_PARTIES = 300
+Public Const MAX_PARTIES As Integer = 300
 'cantidad maxima de parties en el servidor
 
-Public Const MINPARTYLEVEL = 15
+Public Const MINPARTYLEVEL As Byte = 15
 'nivel minimo para crear party
 
-Public Const PARTY_MAXMEMBERS = 5
+Public Const PARTY_MAXMEMBERS As Byte = 5
 'Cantidad maxima de gente en la party
 
-Public Const PARTY_EXPERIENCIAPORGOLPE = False
+Public Const PARTY_EXPERIENCIAPORGOLPE As Boolean = False
 'Si esto esta en True, la exp sale por cada golpe que le da
 'Si no, la exp la recibe al salirse de la party (pq las partys, floodean)
 
-Public Const MAXPARTYDELTALEVEL = 7
+Public Const MAXPARTYDELTALEVEL As Byte = 7
 'maxima diferencia de niveles permitida en una party
 
-Public Const MAXDISTANCIAINGRESOPARTY = 2
+Public Const MAXDISTANCIAINGRESOPARTY As Byte = 2
 'distancia al leader para que este acepte el ingreso
 
-Public Const PARTY_MAXDISTANCIA = 18
+Public Const PARTY_MAXDISTANCIA As Byte = 18
 'maxima distancia a un exito para obtener su experiencia
 
 'restan las muertes de los miembros?
-Public Const CASTIGOS = False
+Public Const CASTIGOS As Boolean = False
 
 Public Type tPartyMember
     UserIndex As Integer

@@ -29,7 +29,6 @@ Attribute VB_Name = "Extra"
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-
 Option Explicit
 
 Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean

@@ -4,8 +4,9 @@ Attribute VB_Name = "mdlCOmercioConUsuario"
 '
 '
 '[Alejo]
-Private Const MAX_ORO_LOGUEABLE = 90000
 Option Explicit
+
+Private Const MAX_ORO_LOGUEABLE As Integer = 90000
 
 Public Type tCOmercioUsuario
     DestUsu As Integer 'El otro Usuario

@@ -54,19 +54,14 @@ Public TunicaEgregiaHumano As Integer
 Public TunicaEgregiaEnano As Integer
 Public SacerdoteDemoniaco As Integer
 
-
-
-
-
-
 Public ArmaduraCaos1 As Integer
 Public TunicaMagoCaos As Integer
 Public TunicaMagoCaosEnanos As Integer
 Public ArmaduraCaos2 As Integer
 Public ArmaduraCaos3 As Integer
 
-Public Const ExpAlUnirse = 50000
-Public Const ExpX100 = 5000
+Public Const ExpAlUnirse As Integer = 50000
+Public Const ExpX100 As Integer = 5000
 
 
 Public Sub EnlistarArmadaReal(ByVal UserIndex As Integer)
