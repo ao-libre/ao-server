@@ -912,7 +912,7 @@ If Not haciendoBK And Not EnPausa Then
                      mapa = Npclist(NpcIndex).Pos.Map
                      If mapa > 0 Then
                           If MapInfo(mapa).NumUsers > 0 Then
-                                  If Npclist(NpcIndex).Movement <> ESTATICO Then
+                                  If Npclist(NpcIndex).Movement <> TipoAI.ESTATICO Then
                                         Call NPCAI(NpcIndex)
                                   End If
                           End If

@@ -30,8 +30,6 @@ Attribute VB_Name = "Acciones"
 'Pablo Ignacio Márquez
 Option Explicit
 
-
-
 Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Error Resume Next
 

@@ -23,3 +23,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 14/03/2006: Reacomodé constantes, eliminé cosas de más. (Maraxus).
  * 14/03/2006: Se implementó el comando /IRCERCA (hecho por Patenke). (Maraxus).
  * 14/03/2006: Cambié los sendroutes por un enum. (Maraxus).
+ * 14/03/2006: Puse la AI como enum y tipé más de 50 constantes. (Maraxus).

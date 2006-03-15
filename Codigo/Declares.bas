@@ -1018,7 +1018,7 @@ Public Type NPCFlags
     ExpCount As Long '[ALEJO]
     '[/KEVIN]
     
-    OldMovement As Byte
+    OldMovement As TipoAI
     OldHostil As Byte
     
     AguaValida As Byte
@@ -1102,7 +1102,7 @@ Public Type npc
     Orig As WorldPos
     SkillDomar As Integer
 
-    Movement As Integer
+    Movement As TipoAI
     Attackable As Byte
     Hostile As Byte
     PoderAtaque As Long

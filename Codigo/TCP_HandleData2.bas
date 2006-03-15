@@ -189,7 +189,7 @@ Procesado = True 'ver al final del sub
              End If
              If Npclist(UserList(UserIndex).flags.TargetNPC).MaestroUser <> _
                 UserIndex Then Exit Sub
-             Npclist(UserList(UserIndex).flags.TargetNPC).Movement = ESTATICO
+             Npclist(UserList(UserIndex).flags.TargetNPC).Movement = TipoAI.ESTATICO
              Call Expresar(UserList(UserIndex).flags.TargetNPC, UserIndex)
              Exit Sub
         Case "/ACOMPAÑAR"

@@ -30,18 +30,20 @@ Attribute VB_Name = "AI"
 'Pablo Ignacio Márquez
 Option Explicit
 
-Public Const ESTATICO = 1
-Public Const MUEVE_AL_AZAR = 2
-Public Const NPC_MALO_ATACA_USUARIOS_BUENOS = 3
-Public Const NPCDEFENSA = 4
-Public Const GUARDIAS_ATACAN_CRIMINALES = 5
-Public Const SIGUE_AMO = 8
-Public Const NPC_ATACA_NPC = 9
-Public Const NPC_PATHFINDING = 10
+Public Enum TipoAI
+    ESTATICO = 1
+    MueveAlAzar = 2
+    NpcMaloAtacaUsersBuenos = 3
+    NPCDEFENSA = 4
+    GuardiasAtacanCriminales = 5
+    SigueAmo = 8
+    NpcAtacaNpc = 9
+    NpcPathfinding = 10
+End Enum
 
-Public Const ELEMENTALFUEGO = 93
-Public Const ELEMENTALTIERRA = 94
-Public Const ELEMENTALAGUA = 92
+Public Const ELEMENTALFUEGO As Integer = 93
+Public Const ELEMENTALTIERRA As Integer = 94
+Public Const ELEMENTALAGUA As Integer = 92
 
 'Damos a los NPCs el mismo rango de visión que un PJ
 Private Const RANGO_VISION_X As Byte = 8
@@ -309,7 +311,7 @@ For headingloop = NORTH To WEST
             ElseIf NPCI > 0 Then
                     If Npclist(NPCI).MaestroUser > 0 And Npclist(NPCI).flags.Paralizado = 0 Then
                         Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.Body, Npclist(NpcIndex).Char.Head, headingloop)
-                        Call NpcAtacaNpc(NpcIndex, NPCI, False)
+                        Call SistemaCombate.NpcAtacaNpc(NpcIndex, NPCI, False)
                         Exit Sub
                     End If
             End If
@@ -704,7 +706,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                          Else
                             'aca verificamosss la distancia de ataque
                             If Distancia(Npclist(NpcIndex).Pos, Npclist(NI).Pos) <= 1 Then
-                                Call NpcAtacaNpc(NpcIndex, NI)
+                                Call SistemaCombate.NpcAtacaNpc(NpcIndex, NI)
                             End If
                          End If
                          Exit Sub
@@ -730,7 +732,7 @@ Else
                          Else
                             'aca verificamosss la distancia de ataque
                             If Distancia(Npclist(NpcIndex).Pos, Npclist(NI).Pos) <= 1 Then
-                                Call NpcAtacaNpc(NpcIndex, NI)
+                                Call SistemaCombate.NpcAtacaNpc(NpcIndex, NI)
                             End If
                          End If
                          If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Sub
@@ -782,7 +784,7 @@ On Error GoTo ErrorHandler
         
         '<<<<<<<<<<<Movimiento>>>>>>>>>>>>>>>>
         Select Case Npclist(NpcIndex).Movement
-            Case MUEVE_AL_AZAR
+            Case TipoAI.MueveAlAzar
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
                 If Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIAS Then
                     If Int(RandomNumber(1, 12)) = 3 Then
@@ -800,23 +802,23 @@ On Error GoTo ErrorHandler
                     End If
                 End If
             'Va hacia el usuario cercano
-            Case NPC_MALO_ATACA_USUARIOS_BUENOS
+            Case TipoAI.NpcMaloAtacaUsersBuenos
                 Call IrUsuarioCercano(NpcIndex)
             'Va hacia el usuario que lo ataco(FOLLOW)
-            Case NPCDEFENSA
+            Case TipoAI.NPCDEFENSA
                 Call SeguirAgresor(NpcIndex)
             'Persigue criminales
-            Case GUARDIAS_ATACAN_CRIMINALES
+            Case TipoAI.GuardiasAtacanCriminales
                 Call PersigueCriminal(NpcIndex)
-            Case SIGUE_AMO
+            Case TipoAI.SigueAmo
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
                 Call SeguirAmo(NpcIndex)
                 If Int(RandomNumber(1, 12)) = 3 Then
                         Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
                 End If
-            Case NPC_ATACA_NPC
+            Case TipoAI.NpcAtacaNpc
                 Call AiNpcAtacaNpc(NpcIndex)
-            Case NPC_PATHFINDING
+            Case TipoAI.NpcPathfinding
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
                 If ReCalculatePath(NpcIndex) Then
                     Call PathFindingAI(NpcIndex)

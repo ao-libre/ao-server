@@ -606,7 +606,7 @@ If Npclist(NpcIndex).Stats.MinHP <= 0 Then
           For j = 1 To MAXMASCOTAS
                 If UserList(UserIndex).MascotasIndex(j) > 0 Then
                     If Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = NpcIndex Then Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = 0
-                    Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = SIGUE_AMO
+                    Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = TipoAI.SigueAmo
                 End If
           Next j
   
@@ -713,7 +713,7 @@ For j = 1 To MAXMASCOTAS
         If CheckElementales Or (Npclist(UserList(UserIndex).MascotasIndex(j)).Numero <> ELEMENTALFUEGO And Npclist(UserList(UserIndex).MascotasIndex(j)).Numero <> ELEMENTALTIERRA) Then
             If Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = 0 Then Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = NpcIndex
             'Npclist(UserList(UserIndex).MascotasIndex(j)).Flags.OldMovement = Npclist(UserList(UserIndex).MascotasIndex(j)).Movement
-            Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = NPC_ATACA_NPC
+            Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = TipoAI.NpcAtacaNpc
         End If
        End If
     End If
@@ -819,7 +819,7 @@ If Npclist(Atacante).CanAttack = 1 Then
        Npclist(Atacante).CanAttack = 0
         If cambiarMOvimiento Then
             Npclist(Victima).TargetNPC = Atacante
-            Npclist(Victima).Movement = NPC_ATACA_NPC
+            Npclist(Victima).Movement = TipoAI.NpcAtacaNpc
         End If
 Else
     Exit Sub
@@ -1245,7 +1245,7 @@ Dim iCount As Integer
 For iCount = 1 To MAXMASCOTAS
     If UserList(Maestro).MascotasIndex(iCount) > 0 Then
             Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(Victim).name
-            Npclist(UserList(Maestro).MascotasIndex(iCount)).Movement = NPCDEFENSA
+            Npclist(UserList(Maestro).MascotasIndex(iCount)).Movement = TipoAI.NPCDEFENSA
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Hostile = 1
     End If
 Next iCount

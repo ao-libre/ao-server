@@ -567,7 +567,7 @@ On Error GoTo errh
                 'Call CheckUpdateNeededNpc(NpcIndex, nHeading)
             
             Else
-                If Npclist(NpcIndex).Movement = NPC_PATHFINDING Then
+                If Npclist(NpcIndex).Movement = TipoAI.NpcPathfinding Then
                     'Someone has blocked the npc's way, we must to seek a new path!
                     Npclist(NpcIndex).PFINFO.PathLenght = 0
                 End If
@@ -912,7 +912,7 @@ End Sub
 Sub FollowAmo(ByVal NpcIndex As Integer)
 
   Npclist(NpcIndex).flags.Follow = True
-  Npclist(NpcIndex).Movement = SIGUE_AMO 'follow
+  Npclist(NpcIndex).Movement = TipoAI.SigueAmo 'follow
   Npclist(NpcIndex).Hostile = 0
   Npclist(NpcIndex).Target = 0
   Npclist(NpcIndex).TargetNPC = 0

@@ -1021,7 +1021,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, 
 
 If EsMascotaCiudadano(NpcIndex, UserIndex) Then
             Call VolverCriminal(UserIndex)
-            Npclist(NpcIndex).Movement = NPCDEFENSA
+            Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
             Npclist(NpcIndex).Hostile = 1
 Else
     'Reputacion
@@ -1038,7 +1038,7 @@ Else
     End If
     
     'hacemos que el npc se defienda
-    Npclist(NpcIndex).Movement = NPCDEFENSA
+    Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
     Npclist(NpcIndex).Hostile = 1
     
 End If
@@ -1515,7 +1515,7 @@ InvocadosMatados = 0
                     Exit Sub
             End If
             Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
-            Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = SIGUE_AMO
+            Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
             Npclist(UserList(UserIndex).MascotasIndex(i)).Target = 0
             Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = 0
             Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia = PetTiempoDeVida(i)
