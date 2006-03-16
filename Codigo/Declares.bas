@@ -483,7 +483,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    Cant As Integer
+    cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -554,7 +554,7 @@ End Type
 
 'Datos de user o npc
 Public Type Char
-    CharIndex As Integer
+    charindex As Integer
     Head As Integer
     Body As Integer
     
@@ -632,7 +632,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    Clave As Long 'si clave=llave la puerta se abre o cierra
+    clave As Long 'si clave=llave la puerta se abre o cierra
     
     IndexAbierta As Integer
     IndexCerrada As Integer
@@ -952,7 +952,7 @@ Public Type User
     
     Faccion As tFacciones
     
-    PrevCRC As Long
+    PrevCheckSum As Long
     PacketNumber As Long
     RandKey As Long
     
