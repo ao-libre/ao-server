@@ -117,7 +117,7 @@ If UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OB
     'tal vez suba el skill comerciar ;-)
     Call SubirSkill(UserIndex, Comerciar)
     
-    If ObjData(obji).OBJType = OBJTYPE_LLAVES Then Call logVentaCasa(UserList(UserIndex).name & " compro " & ObjData(obji).name)
+    If ObjData(obji).OBJType = eOBJType.otLlaves Then Call logVentaCasa(UserList(UserIndex).name & " compro " & ObjData(obji).name)
 
 '    If UserList(UserIndex).Stats.GLD < 0 Then UserList(UserIndex).Stats.GLD = 0
     
@@ -152,7 +152,7 @@ If ObjData(obji).Newbie = 1 Then
     Exit Sub
 End If
 
-If Npclist(NpcIndex).TipoItems <> OBJTYPE_CUALQUIERA Then
+If Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera Then
     '¿Son los items con los que comercia el npc?
     If Npclist(NpcIndex).TipoItems <> ObjData(obji).OBJType Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
@@ -358,7 +358,7 @@ End Sub
 
 Function Descuento(ByVal UserIndex As Integer) As Single
    'Calcula el descuento al comerciar
-  Descuento = 1 + UserList(UserIndex).Stats.UserSkills(Comerciar) / 100
+  Descuento = 1 + UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) / 100
   UserList(UserIndex).flags.Descuento = Descuento
 
 End Function
@@ -368,7 +368,7 @@ End Function
 'Function Descuento(ByVal UserIndex As Integer) As String
 'Establece el descuento en funcion del skill comercio
 'Dim PtsComercio As Integer
-'PtsComercio = UserList(UserIndex).Stats.UserSkills(Comerciar)
+'PtsComercio = UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar)
 
 'If PtsComercio <= 10 And PtsComercio > 5 Then
 '    UserList(UserIndex).flags.Descuento = 1.1

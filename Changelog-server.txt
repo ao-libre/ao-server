@@ -28,3 +28,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/03/2006: Puse los logs en el Centinela para eventos "anormales", y poder revisar aciones sospechosas (Maraxus).
  * 15/03/2006: Corregí el bug que eliminaba NPCs cuandobloqueabas con las skills de uso e escudos y tácticas de combate en 0 (Maraxus).
  * 15/03/2006: Eliminé módulos innecesarios, tipé constantes, moví algunas cosas de lugar (Maraxus).
+ * 16/03/2006: Eliminé un módulo innecesario, creé nuevos enums para reempazar constantes y los implementé en el resto del código (Maraxus).

@@ -435,8 +435,8 @@ On Error GoTo errorh
         Call NpcLanzaSpellSobreUser2(npcind, BestTarget, Npclist(npcind).Spells(DAT_APOCALIPSIS)) ''SPELL 1 de Mago: Apocalipsis
     Case 3
     
-        Call SendData(SendTarget.ToMap, npcind, Npclist(npcind).Pos.Map, "CFX" & Npclist(npcind).Char.CharIndex & "," & FXMEDITARGRANDE & "," & LoopAdEternum)
-        ''UserList(UserIndex).Char.FX = FXMEDITARGRANDE
+        Call SendData(SendTarget.ToMap, npcind, Npclist(npcind).Pos.Map, "CFX" & Npclist(npcind).Char.CharIndex & "," & FXIDs.FXMEDITARGRANDE & "," & LoopAdEternum)
+        ''UserList(UserIndex).Char.FX = FXIDs.FXMEDITARGRANDE
     
         If Npclist(npcind).CanAttack = 1 Then
             Npclist(npcind).CanAttack = 0
@@ -629,7 +629,7 @@ On Error GoTo errorh
             
             ''heading loop de ataque
             ''teclavolaespada
-            For headingloop = NORTH To WEST
+            For headingloop = eHeading.NORTH To eHeading.WEST
                 nPos = Npclist(npcind).Pos
                 Call HeadtoPos(headingloop, nPos)
                 If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
@@ -727,7 +727,7 @@ On Error GoTo errorh
     End If
 
 ''teclavolaespada
-For headingloop = NORTH To WEST
+For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(npcind).Pos
     Call HeadtoPos(headingloop, nPos)
     If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
@@ -1629,7 +1629,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy + 1
-    Npclist(npcorig).Char.Heading = SOUTH
+    Npclist(npcorig).Char.Heading = eHeading.SOUTH
     MapData(mapa, NPCx, NPCy + 1).NpcIndex = npcorig
 Exit Sub
 
@@ -1652,7 +1652,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy - 1
-    Npclist(npcorig).Char.Heading = NORTH
+    Npclist(npcorig).Char.Heading = eHeading.NORTH
     MapData(mapa, NPCx, NPCy - 1).NpcIndex = npcorig
 Exit Sub
 
@@ -1674,7 +1674,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx - 1
-    Npclist(npcorig).Char.Heading = WEST
+    Npclist(npcorig).Char.Heading = eHeading.WEST
     MapData(mapa, NPCx - 1, NPCy).NpcIndex = npcorig
 
 Exit Sub
@@ -1698,7 +1698,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx + 1
-    Npclist(npcorig).Char.Heading = EAST
+    Npclist(npcorig).Char.Heading = eHeading.EAST
     MapData(mapa, NPCx + 1, NPCy).NpcIndex = npcorig
 Exit Sub
 
@@ -1931,7 +1931,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY + 1
         Npclist(npcind).Pos.X = NPCPosX + 1
-        Npclist(npcind).Char.Heading = SOUTH
+        Npclist(npcind).Char.Heading = eHeading.SOUTH
         MapData(NPCPosM, NPCPosX + 1, NPCPosY + 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1943,7 +1943,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY - 1
         Npclist(npcind).Pos.X = NPCPosX - 1
-        Npclist(npcind).Char.Heading = NORTH
+        Npclist(npcind).Char.Heading = eHeading.NORTH
         MapData(NPCPosM, NPCPosX - 1, NPCPosY - 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1955,7 +1955,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY - 1
         Npclist(npcind).Pos.X = NPCPosX + 1
-        Npclist(npcind).Char.Heading = EAST
+        Npclist(npcind).Char.Heading = eHeading.EAST
         MapData(NPCPosM, NPCPosX + 1, NPCPosY - 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1967,7 +1967,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY + 1
         Npclist(npcind).Pos.X = NPCPosX - 1
-        Npclist(npcind).Char.Heading = WEST
+        Npclist(npcind).Char.Heading = eHeading.WEST
         MapData(NPCPosM, NPCPosX - 1, NPCPosY + 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub

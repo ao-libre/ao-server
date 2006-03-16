@@ -50,7 +50,7 @@ End Function
 Public Function PuedeCrearParty(ByVal UserIndex As Integer) As Boolean
     PuedeCrearParty = True
 '    If UserList(UserIndex).Stats.ELV < MINPARTYLEVEL Then
-    If UserList(UserIndex).Stats.UserAtributos(Carisma) * UserList(UserIndex).Stats.UserSkills(Liderazgo) < 100 Then
+    If UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) < 100 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Tu carisma y liderazgo no son suficientes para liderar una party." & FONTTYPE_PARTY)
         PuedeCrearParty = False
     ElseIf UserList(UserIndex).flags.Muerto = 1 Then
@@ -63,7 +63,7 @@ Public Sub CrearParty(ByVal UserIndex As Integer)
 Dim tInt As Integer
 If UserList(UserIndex).PartyIndex = 0 Then
     If UserList(UserIndex).flags.Muerto = 0 Then
-        If UserList(UserIndex).Stats.UserSkills(Liderazgo) >= 5 Then
+        If UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) >= 5 Then
             tInt = mdParty.NextParty
             If tInt = -1 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Por el momento no se pueden crear mas parties" & FONTTYPE_PARTY)

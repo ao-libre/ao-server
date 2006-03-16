@@ -468,7 +468,7 @@ Dim CharIndex As Integer
 
 End Sub
 
-Sub ChangeNPCChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, NpcIndex As Integer, Body As Integer, Head As Integer, Heading As Byte)
+Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal NpcIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As eHeading)
 
 If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.Body = Body
@@ -671,7 +671,7 @@ Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
 
 If FX Then
     Call SendData(SendTarget.ToNPCArea, nIndex, Map, "TW" & SND_WARP)
-    Call SendData(SendTarget.ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.CharIndex & "," & FXWARP & "," & 0)
+    Call SendData(SendTarget.ToNPCArea, nIndex, Map, "CFX" & Npclist(nIndex).Char.CharIndex & "," & FXIDs.FXWARP & "," & 0)
 End If
 
 SpawnNpc = nIndex
@@ -820,7 +820,7 @@ For LoopC = 1 To Npclist(NpcIndex).flags.LanzaSpells
 Next LoopC
 
 
-If Npclist(NpcIndex).NPCtype = NPCTYPE_ENTRENADOR Then
+If Npclist(NpcIndex).NPCtype = eNPCType.Entrenador Then
     Npclist(NpcIndex).NroCriaturas = val(Leer.DarValor("NPC" & NpcNumber, "NroCriaturas"))
     ReDim Npclist(NpcIndex).Criaturas(1 To Npclist(NpcIndex).NroCriaturas) As tCriaturasEntrenador
     For LoopC = 1 To Npclist(NpcIndex).NroCriaturas

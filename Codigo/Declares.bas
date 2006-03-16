@@ -96,25 +96,26 @@ Public Const LAUDMAGICO As Integer = 696
 
 Public Const MAXMASCOTASENTRENADOR As Byte = 7
 
-'TODO : Reemplazar por un enum
-Public Const FXWARP = 1
-Public Const FXCURAR = 2
-Public Const FXMEDITARCHICO = 4
-Public Const FXMEDITARMEDIANO = 5
-Public Const FXMEDITARGRANDE = 6
-Public Const FXMEDITARXGRANDE = 16
+Public Enum FXIDs
+    FXWARP = 1
+    FXMEDITARCHICO = 4
+    FXMEDITARMEDIANO = 5
+    FXMEDITARGRANDE = 6
+    FXMEDITARXGRANDE = 16
+End Enum
 
 Public Const TIEMPO_CARCEL_PIQUETE As Byte = 10
 
-'TODO : Reemplazar por un enum
 'TRIGGERS
-Public Const TRIGGER_NADA = 0
-Public Const TRIGGER_BAJOTECHO = 1
-Public Const TRIGGER_2 = 2
-Public Const TRIGGER_POSINVALIDA = 3 'los npcs no pueden pisar tiles con este trigger
-Public Const TRIGGER_ZONASEGURA = 4 'no se puede robar o pelear desde este trigger
-Public Const TRIGGER_ANTIPIQUETE = 5
-Public Const TRIGGER_ZONAPELEA = 6 'al pelear en este trigger no se caen las cosas y no cambia el estado de ciuda o crimi
+Public Enum eTrigger
+    NADA = 0
+    BAJOTECHO = 1
+    trigger_2 = 2
+    POSINVALIDA = 3 'los npcs no pueden pisar tiles con este trigger
+    ZONASEGURA = 4 'no se puede robar o pelear desde este trigger
+    ANTIPIQUETE = 5
+    ZONAPELEA = 6 'al pelear en este trigger no se caen las cosas y no cambia el estado de ciuda o crimi
+End Enum
 
 Public Enum eTrigger6
     TRIGGER6_PERMITE = 1
@@ -130,19 +131,21 @@ Public Const Ciudad = "CIUDAD"
 Public Const Campo = "CAMPO"
 Public Const Dungeon = "DUNGEON"
 
-'TODO : Reemplazar por un enum
 ' <<<<<< Targets >>>>>>
-Public Const uUsuarios = 1
-Public Const uNPC = 2
-Public Const uUsuariosYnpc = 3
-Public Const uTerreno = 4
+Public Enum TargetType
+    uUsuarios = 1
+    uNPC = 2
+    uUsuariosYnpc = 3
+    uTerreno = 4
+End Enum
 
-'TODO : Reemplazar por un enum
 ' <<<<<< Acciona sobre >>>>>>
-Public Const uPropiedades = 1
-Public Const uEstado = 2
-Public Const uInvocacion = 4
-Public Const uMaterializa = 3
+Public Enum TipoHechizo
+    uPropiedades = 1
+    uEstado = 2
+    uMaterializa = 3    'Nose usa
+    uInvocacion = 4
+End Enum
 
 Public Const DRAGON As Integer = 6
 Public Const MATADRAGONES As Byte = 1
@@ -163,14 +166,15 @@ Public Const EsfuerzoExcavarGeneral As Byte = 5
 
 Public Const FX_TELEPORT_INDEX As Integer = 1
 
-
-'TODO : Reemplazar por un enum
-Public Const bCabeza = 1
-Public Const bPiernaIzquierda = 2
-Public Const bPiernaDerecha = 3
-Public Const bBrazoDerecho = 4
-Public Const bBrazoIzquierdo = 5
-Public Const bTorso = 6
+' La utilidad de esto es casi nula, sólo se revisa si fue a la cabeza...
+Public Enum PartesCuerpo
+    bCabeza = 1
+    bPiernaIzquierda = 2
+    bPiernaDerecha = 3
+    bBrazoDerecho = 4
+    bBrazoIzquierdo = 5
+    bTorso = 6
+End Enum
 
 Public Const Guardias As Integer = 6
 
@@ -203,16 +207,17 @@ Public Const MARTILLO_HERRERO As Integer = 389
 Public Const SERRUCHO_CARPINTERO As Integer = 198
 Public Const ObjArboles As Integer = 4
 Public Const RED_PESCA As Integer = 543
+Public Const CAÑA_PESCA As Integer = 138
 
-'TODO : Reemplazar por un enum
-Public Const NPCTYPE_COMUN = 0
-Public Const NPCTYPE_REVIVIR = 1
-Public Const NPCTYPE_GUARDIAS = 2
-Public Const NPCTYPE_ENTRENADOR = 3
-Public Const NPCTYPE_BANQUERO = 4
-Public Const NPCTYPE_TIMBERO = 7
-Public Const NPCTYPE_GUARDIASCAOS = 8
-
+Public Enum eNPCType
+    Comun = 0
+    Revividor = 1
+    GuardiaReal = 2
+    Entrenador = 3
+    Banquero = 4
+    Timbero = 7
+    Guardiascaos = 8
+End Enum
 
 Public Const MIN_APUÑALAR As Byte = 10
 
@@ -226,11 +231,12 @@ Public Const MAXSKILLPOINTS As Byte = 100
 
 Public Const FLAGORO As Integer = 777
 
-'TODO : Reemplazar por un enum
-Public Const NORTH = 1
-Public Const EAST = 2
-Public Const SOUTH = 3
-Public Const WEST = 4
+Public Enum eHeading
+    NORTH = 1
+    EAST = 2
+    SOUTH = 3
+    WEST = 4
+End Enum
 
 Public Const MAXMASCOTAS As Byte = 3
 
@@ -257,39 +263,40 @@ Public Enum PECES_POSIBLES
     PESCADO4 = 546
 End Enum
 
-'TODO : Reemplazar por un enum
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
-Public Const Suerte = 1
-Public Const Magia = 2
-Public Const Robar = 3
-Public Const Tacticas = 4
-Public Const Armas = 5
-Public Const Meditar = 6
-Public Const Apuñalar = 7
-Public Const Ocultarse = 8
-Public Const Supervivencia = 9
-Public Const Talar = 10
-Public Const Comerciar = 11
-Public Const Defensa = 12
-Public Const Pesca = 13
-Public Const Mineria = 14
-Public Const Carpinteria = 15
-Public Const Herreria = 16
-Public Const Liderazgo = 17
-Public Const Domar = 18
-Public Const Proyectiles = 19
-Public Const Wresterling = 20
-Public Const Navegacion = 21
+Public Enum eSkill
+    Suerte = 1
+    Magia = 2
+    Robar = 3
+    Tacticas = 4
+    Armas = 5
+    Meditar = 6
+    Apuñalar = 7
+    Ocultarse = 8
+    Supervivencia = 9
+    Talar = 10
+    Comerciar = 11
+    Defensa = 12
+    Pesca = 13
+    Mineria = 14
+    Carpinteria = 15
+    Herreria = 16
+    Liderazgo = 17
+    Domar = 18
+    Proyectiles = 19
+    Wresterling = 20
+    Navegacion = 21
+End Enum
 
 Public Const FundirMetal = 88
 
-'TODO : Reemplazar por un enum
-Public Const Fuerza = 1
-Public Const Agilidad = 2
-Public Const Inteligencia = 3
-Public Const Carisma = 4
-Public Const Constitucion = 5
-
+Public Enum eAtributos
+    Fuerza = 1
+    Agilidad = 2
+    Inteligencia = 3
+    Carisma = 4
+    Constitucion = 5
+End Enum
 
 Public Const AdicionalHPGuerrero As Byte = 2 'HP adicionales cuando sube de nivel
 Public Const AdicionalHPCazador As Byte = 1 'HP adicionales cuando sube de nivel
@@ -344,44 +351,39 @@ Public Const SND_BEBER As Byte = 46
 Public Const MAX_INVENTORY_OBJS As Integer = 10000
 Public Const MAX_INVENTORY_SLOTS As Byte = 20
 
-'TODO : Reemplazar por un enum
 '<------------------CATEGORIAS PRINCIPALES--------->
-Public Const OBJTYPE_USEONCE = 1
-Public Const OBJTYPE_WEAPON = 2
-Public Const OBJTYPE_ARMOUR = 3
-Public Const OBJTYPE_ARBOLES = 4
-Public Const OBJTYPE_GUITA = 5
-Public Const OBJTYPE_PUERTAS = 6
-Public Const OBJTYPE_CONTENEDORES = 7
-Public Const OBJTYPE_CARTELES = 8
-Public Const OBJTYPE_LLAVES = 9
-Public Const OBJTYPE_FOROS = 10
-Public Const OBJTYPE_POCIONES = 11
-Public Const OBJTYPE_BEBIDA = 13
-Public Const OBJTYPE_LEÑA = 14
-Public Const OBJTYPE_FOGATA = 15
-Public Const OBJTYPE_HERRAMIENTAS = 18
-Public Const OBJTYPE_TELEPORT = 19
-Public Const OBJTYPE_YACIMIENTO = 22
-Public Const OBJTYPE_MINERALES = 23
-Public Const OBJTYPE_PERGAMINOS = 24
-Public Const OBJTYPE_INSTRUMENTOS = 26
-Public Const OBJTYPE_YUNQUE = 27
-Public Const OBJTYPE_FRAGUA = 28
-Public Const OBJTYPE_BARCOS = 31
-Public Const OBJTYPE_FLECHAS = 32
-Public Const OBJTYPE_BOTELLAVACIA = 33
-Public Const OBJTYPE_BOTELLALLENA = 34
-Public Const OBJTYPE_MANCHAS = 35
-Public Const OBJTYPE_CUALQUIERA = 1000
-
-'TODO : deberían de tener tipos aparte muchos de ellos
-'<------------------SUB-CATEGORIAS----------------->
-Public Const OBJTYPE_ARMADURA = 0
-Public Const OBJTYPE_CASCO = 1
-Public Const OBJTYPE_ESCUDO = 2
-Public Const OBJTYPE_CAÑA = 138
-
+Public Enum eOBJType
+    otUseOnce = 1
+    otWeapon = 2
+    otArmadura = 3
+    otArboles = 4
+    otGuita = 5
+    otPuertas = 6
+    otContenedores = 7
+    otCarteles = 8
+    otLlaves = 9
+    otForos = 10
+    otPociones = 11
+    otBebidas = 13
+    otLeña = 14
+    otFogata = 15
+    otHerramientas = 18
+    otTeleport = 19
+    otYacimiento = 22
+    otMinerales = 23
+    otPergaminos = 24
+    otInstrumentos = 26
+    otYunque = 27
+    otFragua = 28
+    otBarcos = 31
+    otFlechas = 32
+    otBotellaVacia = 33
+    otBotellaLlena = 34
+    otManchas = 35          'No se usa
+    otCASCO = 36
+    otESCUDO = 37
+    otCualquiera = 1000
+End Enum
 
 'Texto
 Public Const FONTTYPE_TALK As String = "~255~255~255~0~0"
@@ -427,7 +429,8 @@ Public Type tHechizo
     
     Resis As Byte
     
-    Tipo As Byte
+    Tipo As TipoHechizo
+    
     WAV As Integer
     FXgrh As Integer
     loops As Byte
@@ -483,7 +486,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -494,7 +497,7 @@ Public Type tHechizo
     'Barrin 29/9/03
     StaRequerido As Integer
 
-    Target As Byte
+    Target As TargetType
     
     NeedStaff As Integer
     StaffAffected As Boolean
@@ -554,7 +557,7 @@ End Type
 
 'Datos de user o npc
 Public Type Char
-    charindex As Integer
+    CharIndex As Integer
     Head As Integer
     Body As Integer
     
@@ -565,15 +568,15 @@ Public Type Char
     FX As Integer
     loops As Integer
     
-    Heading As Byte
+    Heading As eHeading
 End Type
 
 'Tipos de objetos
 Public Type ObjData
     name As String 'Nombre del obj
     
-    OBJType As Integer 'Tipo enum que determina cuales son las caract del obj
-    SubTipo As Integer 'Tipo enum que determina cuales son las caract del obj
+    OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
+    SubTipo As Integer  'Tipo enum que determina cuales son las caract del obj
     
     GrhIndex As Integer ' Indice del grafico que representa el obj
     GrhSecundario As Integer
@@ -1085,7 +1088,7 @@ Public Type npc
     Desc As String
     DescExtra As String
 
-    NPCtype As Integer
+    NPCtype As eNPCType
     Numero As Integer
 
     level As Integer
@@ -1152,7 +1155,7 @@ Public Type MapBlock
     NpcIndex As Integer
     OBJInfo As Obj
     TileExit As WorldPos
-    trigger As Integer
+    trigger As eTrigger
 End Type
 
 'Info del mapa

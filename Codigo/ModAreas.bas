@@ -147,7 +147,6 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 'Es la función clave del sistema de areas... Es llamada al mover un user
 '**************************************************************
-    
     If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
@@ -158,21 +157,21 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         MinX = .AreasInfo.MinX
         MinY = .AreasInfo.MinY
         
-        If Head = NORTH Then
+        If Head = eHeading.NORTH Then
             MaxY = MinY - 1
             MinY = MinY - 9
             MaxX = MinX + 26
             .AreasInfo.MinX = CInt(MinX)
             .AreasInfo.MinY = CInt(MinY)
         
-        ElseIf Head = SOUTH Then
+        ElseIf Head = eHeading.SOUTH Then
             MaxY = MinY + 35
             MinY = MinY + 27
             MaxX = MinX + 26
             .AreasInfo.MinX = CInt(MinX)
             .AreasInfo.MinY = CInt(MinY - 18)
         
-        ElseIf Head = WEST Then
+        ElseIf Head = eHeading.WEST Then
             MaxX = MinX - 1
             MinX = MinX - 9
             MaxY = MinY + 26
@@ -180,7 +179,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
             .AreasInfo.MinY = CInt(MinY)
         
         
-        ElseIf Head = EAST Then
+        ElseIf Head = eHeading.EAST Then
             MaxX = MinX + 35
             MinX = MinX + 27
             MaxY = MinY + 26
@@ -242,7 +241,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
                         Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).OBJInfo, CInt(Map), X, Y)
                         
-                        If ObjData(TempInt).OBJType = OBJTYPE_PUERTAS Then
+                        If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
                             Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
                             Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                         End If
@@ -281,21 +280,21 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
         MinX = .AreasInfo.MinX
         MinY = .AreasInfo.MinY
         
-        If Head = NORTH Then
+        If Head = eHeading.NORTH Then
             MaxY = MinY - 1
             MinY = MinY - 9
             MaxX = MinX + 26
             .AreasInfo.MinX = CInt(MinX)
             .AreasInfo.MinY = CInt(MinY)
         
-        ElseIf Head = SOUTH Then
+        ElseIf Head = eHeading.SOUTH Then
             MaxY = MinY + 35
             MinY = MinY + 27
             MaxX = MinX + 26
             .AreasInfo.MinX = CInt(MinX)
             .AreasInfo.MinY = CInt(MinY - 18)
         
-        ElseIf Head = WEST Then
+        ElseIf Head = eHeading.WEST Then
             MaxX = MinX - 1
             MinX = MinX - 9
             MaxY = MinY + 26
@@ -303,7 +302,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
             .AreasInfo.MinY = CInt(MinY)
         
         
-        ElseIf Head = EAST Then
+        ElseIf Head = eHeading.EAST Then
             MaxX = MinX + 35
             MinX = MinX + 27
             MaxY = MinY + 26

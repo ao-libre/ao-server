@@ -572,7 +572,7 @@ Procesado = True 'ver al final del sub
                     DummyInt = 1
                 ElseIf ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).proyectil <> 1 Then
                     DummyInt = 2
-                ElseIf ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).OBJType <> OBJTYPE_FLECHAS Then
+                ElseIf ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).OBJType <> eOBJType.otFlechas Then
                     DummyInt = 1
                 ElseIf UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).Amount < 1 Then
                     DummyInt = 1
@@ -696,7 +696,7 @@ Procesado = True 'ver al final del sub
                 'If UserList(UserIndex).flags.PuedeTrabajar = 0 Then Exit Sub
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
-                If AuxInd <> OBJTYPE_CAÑA And AuxInd <> RED_PESCA Then
+                If AuxInd <> CAÑA_PESCA And AuxInd <> RED_PESCA Then
                     'Call Cerrar_Usuario(UserIndex)
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
@@ -713,7 +713,7 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PESCAR)
                     
                     Select Case AuxInd
-                    Case OBJTYPE_CAÑA
+                    Case CAÑA_PESCA
                         Call DoPescar(UserIndex)
                     Case RED_PESCA
                         With UserList(UserIndex)
@@ -752,11 +752,11 @@ Procesado = True 'ver al final del sub
                             End If
                             '17/09/02
                             'No aseguramos que el trigger le permite robar
-                            If MapData(UserList(UserList(UserIndex).flags.TargetUser).Pos.Map, UserList(UserList(UserIndex).flags.TargetUser).Pos.X, UserList(UserList(UserIndex).flags.TargetUser).Pos.Y).trigger = TRIGGER_ZONASEGURA Then
+                            If MapData(UserList(UserList(UserIndex).flags.TargetUser).Pos.Map, UserList(UserList(UserIndex).flags.TargetUser).Pos.X, UserList(UserList(UserIndex).flags.TargetUser).Pos.Y).trigger = eTrigger.ZONASEGURA Then
                                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
                                 Exit Sub
                             End If
-                            If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = TRIGGER_ZONASEGURA Then
+                            If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
                                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
                                 Exit Sub
                             End If
@@ -802,7 +802,7 @@ Procesado = True 'ver al final del sub
                     End If
                     
                     '¿Hay un arbol donde clickeo?
-                    If ObjData(AuxInd).OBJType = OBJTYPE_ARBOLES Then
+                    If ObjData(AuxInd).OBJType = eOBJType.otArboles Then
                         Call SendData(SendTarget.ToPCArea, CInt(UserIndex), UserList(UserIndex).Pos.Map, "TW" & SND_TALAR)
                         Call DoTalar(UserIndex)
                     End If
@@ -834,7 +834,7 @@ Procesado = True 'ver al final del sub
                         Exit Sub
                     End If
                     '¿Hay un yacimiento donde clickeo?
-                    If ObjData(AuxInd).OBJType = OBJTYPE_YACIMIENTO Then
+                    If ObjData(AuxInd).OBJType = eOBJType.otYacimiento Then
                         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_MINERO)
                         Call DoMineria(UserIndex)
                     Else
@@ -878,7 +878,7 @@ Procesado = True 'ver al final del sub
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
                 If UserList(UserIndex).flags.TargetObj > 0 Then
-                    If ObjData(UserList(UserIndex).flags.TargetObj).OBJType = OBJTYPE_FRAGUA Then
+                    If ObjData(UserList(UserIndex).flags.TargetObj).OBJType = eOBJType.otFragua Then
                         ''chequeamos que no se zarpe duplicando oro
                         If UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).ObjIndex <> UserList(UserIndex).flags.TargetObjInvIndex Then
                             If UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).ObjIndex = 0 Or UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).Amount = 0 Then
@@ -907,7 +907,7 @@ Procesado = True 'ver al final del sub
                 Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
                 
                 If UserList(UserIndex).flags.TargetObj > 0 Then
-                    If ObjData(UserList(UserIndex).flags.TargetObj).OBJType = OBJTYPE_YUNQUE Then
+                    If ObjData(UserList(UserIndex).flags.TargetObj).OBJType = eOBJType.otYunque Then
                         Call EnivarArmasConstruibles(UserIndex)
                         Call EnivarArmadurasConstruibles(UserIndex)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "SFH")

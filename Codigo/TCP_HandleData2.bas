@@ -151,14 +151,14 @@ Procesado = True 'ver al final del sub
                       Exit Sub
             End If
             Select Case Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype
-            Case NPCTYPE_BANQUERO
+            Case eNPCType.Banquero
                 If FileExist(CharPath & UCase$(UserList(UserIndex).name) & ".chr", vbNormal) = False Then
                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "!!El personaje no existe, cree uno nuevo.")
                       CloseSocket (UserIndex)
                       Exit Sub
                 End If
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Tenes " & UserList(UserIndex).Stats.Banco & " monedas de oro en tu cuenta." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex & FONTTYPE_INFO)
-            Case NPCTYPE_TIMBERO
+            Case eNPCType.Timbero
                 If UserList(UserIndex).flags.Privilegios > 0 Then
                     tLong = Apuestas.Ganancias - Apuestas.Perdidas
                     N = 0
@@ -227,7 +227,7 @@ Procesado = True 'ver al final del sub
                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
                       Exit Sub
             End If
-            If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_ENTRENADOR Then Exit Sub
+            If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Entrenador Then Exit Sub
             Call EnviarListaCriaturas(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         Case "/DESCANSAR"
@@ -283,17 +283,17 @@ Procesado = True 'ver al final del sub
                 
                 UserList(UserIndex).Char.loops = LoopAdEternum
                 If UserList(UserIndex).Stats.ELV < 15 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXMEDITARCHICO & "," & LoopAdEternum)
-                    UserList(UserIndex).Char.FX = FXMEDITARCHICO
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXMEDITARCHICO & "," & LoopAdEternum)
+                    UserList(UserIndex).Char.FX = FXIDs.FXMEDITARCHICO
                 ElseIf UserList(UserIndex).Stats.ELV < 30 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXMEDITARMEDIANO & "," & LoopAdEternum)
-                    UserList(UserIndex).Char.FX = FXMEDITARMEDIANO
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXMEDITARMEDIANO & "," & LoopAdEternum)
+                    UserList(UserIndex).Char.FX = FXIDs.FXMEDITARMEDIANO
                 ElseIf UserList(UserIndex).Stats.ELV < 45 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXMEDITARGRANDE & "," & LoopAdEternum)
-                    UserList(UserIndex).Char.FX = FXMEDITARGRANDE
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXMEDITARGRANDE & "," & LoopAdEternum)
+                    UserList(UserIndex).Char.FX = FXIDs.FXMEDITARGRANDE
                 Else
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXMEDITARXGRANDE & "," & LoopAdEternum)
-                    UserList(UserIndex).Char.FX = FXMEDITARXGRANDE
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXMEDITARXGRANDE & "," & LoopAdEternum)
+                    UserList(UserIndex).Char.FX = FXIDs.FXMEDITARXGRANDE
                 End If
             Else
                 UserList(UserIndex).Counters.bPuedeMeditar = False
@@ -811,7 +811,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Primero tenes que seleccionar un personaje, hace click izquierdo sobre el." & FONTTYPE_INFO)
             ElseIf Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 10 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
-            ElseIf Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_TIMBERO Then
+            ElseIf Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Timbero Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No tengo ningun interes en apostar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
             ElseIf N < 1 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "El minimo de apuesta es 1 moneda." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
@@ -899,7 +899,7 @@ Procesado = True 'ver al final del sub
              End If
              
              rData = Right$(rData, Len(rData) - 9)
-             If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_BANQUERO _
+             If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Banquero _
              Or UserList(UserIndex).flags.Muerto = 1 Then Exit Sub
              If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
                   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
@@ -938,7 +938,7 @@ Procesado = True 'ver al final del sub
                       Exit Sub
             End If
             rData = Right$(rData, Len(rData) - 11)
-            If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> NPCTYPE_BANQUERO _
+            If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Banquero _
             Or UserList(UserIndex).flags.Muerto = 1 Then Exit Sub
             If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
                   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)

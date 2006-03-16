@@ -35,35 +35,35 @@ On Error GoTo errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
-If UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 91 Then
                     Exit Sub
 End If
 
@@ -97,35 +97,35 @@ On Error GoTo errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
-If UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(Ocultarse) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Ocultarse) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 91 Then
                     Suerte = 7
 End If
 
@@ -173,7 +173,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 Dim ModNave As Long
 ModNave = ModNavegacion(UserList(UserIndex).Clase)
 
-If UserList(UserIndex).Stats.UserSkills(Navegacion) / ModNave < Barco.MinSkill Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes conocimientos para usar este barco." & FONTTYPE_INFO)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion." & FONTTYPE_INFO)
     Exit Sub
@@ -236,7 +236,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
-   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = OBJTYPE_MINERALES And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
+   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
         Call DoLingotes(UserIndex)
    Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
@@ -342,7 +342,7 @@ Function HerreroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As I
 End Function
 
 Public Function PuedeConstruir(ByVal UserIndex As Integer, ByVal ItemIndex As Integer) As Boolean
-PuedeConstruir = HerreroTieneMateriales(UserIndex, ItemIndex) And UserList(UserIndex).Stats.UserSkills(Herreria) >= _
+PuedeConstruir = HerreroTieneMateriales(UserIndex, ItemIndex) And UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) >= _
  ObjData(ItemIndex).SkHerreria
 End Function
 
@@ -370,13 +370,13 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
 If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Then
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
     ' AGREGAR FX
-    If ObjData(ItemIndex).OBJType = OBJTYPE_WEAPON Then
+    If ObjData(ItemIndex).OBJType = eOBJType.otWeapon Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el arma!." & FONTTYPE_INFO)
-    ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_ESCUDO Then
+    ElseIf ObjData(ItemIndex).OBJType = eOBJType.otESCUDO Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el escudo!." & FONTTYPE_INFO)
-    ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_CASCO Then
+    ElseIf ObjData(ItemIndex).OBJType = eOBJType.otCASCO Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el casco!." & FONTTYPE_INFO)
-    ElseIf ObjData(ItemIndex).OBJType = OBJTYPE_ARMOUR Then
+    ElseIf ObjData(ItemIndex).OBJType = eOBJType.otArmadura Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido la armadura!." & FONTTYPE_INFO)
     End If
     Dim MiObj As Obj
@@ -411,7 +411,7 @@ End Function
 Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 
 If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
-   UserList(UserIndex).Stats.UserSkills(Carpinteria) >= _
+   UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) >= _
    ObjData(ItemIndex).SkCarpinteria And _
    PuedeConstruirCarpintero(ItemIndex) And _
    UserList(UserIndex).Invent.HerramientaEqpObjIndex = SERRUCHO_CARPINTERO Then
@@ -458,7 +458,7 @@ Dim obji As Integer
     obji = UserList(UserIndex).Invent.Object(Slot).ObjIndex
     
     If UserList(UserIndex).Invent.Object(Slot).Amount < MineralesParaLingote(obji) Or _
-        ObjData(obji).OBJType <> OBJTYPE_MINERALES Then
+        ObjData(obji).OBJType <> eOBJType.otMinerales Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes suficientes minerales para hacer un lingote." & FONTTYPE_INFO)
             Exit Sub
     End If
@@ -551,11 +551,11 @@ End Function
 
 Function CalcularPoderDomador(ByVal UserIndex As Integer) As Long
 CalcularPoderDomador = _
-UserList(UserIndex).Stats.UserAtributos(Carisma) * _
-(UserList(UserIndex).Stats.UserSkills(Domar) / ModDomar(UserList(UserIndex).Clase)) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Carisma) / 3) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Carisma) / 3) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Carisma) / 3)
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * _
+(UserList(UserIndex).Stats.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).Clase)) _
++ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3) _
++ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3) _
++ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3)
 End Function
 Function FreeMascotaIndex(ByVal UserIndex As Integer) As Integer
 'Call LogTarea("Sub FreeMascotaIndex")
@@ -659,7 +659,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(Map, X, Y).trigger = TRIGGER_ZONASEGURA Or MapInfo(Map).Pk = False Then
+If MapData(Map, X, Y).trigger = eTrigger.ZONASEGURA Or MapInfo(Map).Pk = False Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
     Exit Sub
 End If
@@ -670,11 +670,11 @@ If MapData(Map, X, Y).OBJInfo.Amount < 3 Then
 End If
 
 
-If UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 0 And UserList(UserIndex).Stats.UserSkills(Supervivencia) < 6 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) < 6 Then
     Suerte = 3
-ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 34 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 34 Then
     Suerte = 2
-ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 35 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 35 Then
     Suerte = 1
 End If
 
@@ -725,35 +725,35 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(Pesca) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 81 Then
                     Suerte = 13
-ElseIf UserList(UserIndex).Stats.UserSkills(Pesca) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Pesca) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 91 Then
                     Suerte = 7
 End If
 res = RandomNumber(1, Suerte)
@@ -806,7 +806,7 @@ Else
     EsPescador = False
 End If
 
-iSkill = UserList(UserIndex).Stats.UserSkills(Pesca)
+iSkill = UserList(UserIndex).Stats.UserSkills(eSkill.Pesca)
 
 ' m = (60-11)/(1-10)
 ' y = mx - m*10 + 11
@@ -885,35 +885,35 @@ If UserList(VictimaIndex).flags.Privilegios = 0 Then
     Dim res As Integer
     
        
-    If UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 10 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= -1 Then
+    If UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 10 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= -1 Then
                         Suerte = 35
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 20 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 11 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 20 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 11 Then
                         Suerte = 30
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 30 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 21 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 30 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 21 Then
                         Suerte = 28
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 40 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 31 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 40 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 31 Then
                         Suerte = 24
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 50 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 41 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 50 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 41 Then
                         Suerte = 22
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 60 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 51 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 60 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 51 Then
                         Suerte = 20
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 70 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 61 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 70 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 61 Then
                         Suerte = 18
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 80 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 71 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 80 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 71 Then
                         Suerte = 15
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 90 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 81 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 90 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 81 Then
                         Suerte = 10
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(Robar) <= 100 _
-       And UserList(LadrOnIndex).Stats.UserSkills(Robar) >= 91 Then
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 100 _
+       And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 91 Then
                         Suerte = 5
     End If
     res = RandomNumber(1, Suerte)
@@ -975,11 +975,11 @@ Dim OI As Integer
 OI = UserList(VictimaIndex).Invent.Object(Slot).ObjIndex
 
 ObjEsRobable = _
-ObjData(OI).OBJType <> OBJTYPE_LLAVES And _
+ObjData(OI).OBJType <> eOBJType.otLlaves And _
 UserList(VictimaIndex).Invent.Object(Slot).Equipped = 0 And _
 ObjData(OI).Real = 0 And _
 ObjData(OI).Caos = 0 And _
-ObjData(OI).OBJType <> OBJTYPE_BARCOS
+ObjData(OI).OBJType <> eOBJType.otBarcos
 
 End Function
 
@@ -1049,37 +1049,37 @@ Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Intege
 Dim Suerte As Integer
 Dim res As Integer
 
-If UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= -1 Then
                     Suerte = 200
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 11 Then
                     Suerte = 190
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 21 Then
                     Suerte = 180
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 31 Then
                     Suerte = 170
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 41 Then
                     Suerte = 160
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 51 Then
                     Suerte = 150
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 61 Then
                     Suerte = 140
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 71 Then
                     Suerte = 130
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 81 Then
                     Suerte = 120
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) < 100 _
-   And UserList(UserIndex).Stats.UserSkills(Apuñalar) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) < 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= 91 Then
                     Suerte = 110
-ElseIf UserList(UserIndex).Stats.UserSkills(Apuñalar) = 100 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = 100 Then
                     Suerte = 100
 End If
 
@@ -1126,35 +1126,35 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoTalarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(Talar) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 81 Then
                     Suerte = 13
-ElseIf UserList(UserIndex).Stats.UserSkills(Talar) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Talar) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 91 Then
                     Suerte = 7
 End If
 res = RandomNumber(1, Suerte)
@@ -1243,35 +1243,35 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoExcavarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(Mineria) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(Mineria) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Mineria) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 91 Then
                     Suerte = 7
 End If
 res = RandomNumber(1, Suerte)
@@ -1348,35 +1348,35 @@ If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     Exit Sub
 End If
 
-If UserList(UserIndex).Stats.UserSkills(Meditar) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(Meditar) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Meditar) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 91 Then
                     Suerte = 5
 End If
 res = RandomNumber(1, Suerte)
@@ -1403,35 +1403,35 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
 Dim Suerte As Integer
 Dim res As Integer
 
-If UserList(UserIndex).Stats.UserSkills(Wresterling) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(Wresterling) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(Wresterling) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 91 Then
                     Suerte = 5
 End If
 res = RandomNumber(1, Suerte)

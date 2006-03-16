@@ -456,7 +456,7 @@ Public Function PuedeFundarUnClan(ByVal UserIndex As Integer, ByVal Alineacion A
         Exit Function
     End If
     
-    If UserList(UserIndex).Stats.ELV < 25 Or UserList(UserIndex).Stats.UserSkills(Liderazgo) < 90 Then
+    If UserList(UserIndex).Stats.ELV < 25 Or UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) < 90 Then
         refError = "Para fundar un clan debes ser nivel 25 y tener 90 en liderazgo."
         Exit Function
     End If

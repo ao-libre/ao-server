@@ -1075,7 +1075,7 @@ If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
   'cazador con armadura de cazador oculto no se hace visible
   'mersada de inmediata direccion pero no me importa pq esta
   'version ya fue :D
-  If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).Stats.UserSkills(Ocultarse) > 90 Then
+  If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
     If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
         Exit Sub
     End If

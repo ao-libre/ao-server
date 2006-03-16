@@ -82,7 +82,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
         'Muere
         If UserList(UserIndex).Stats.MinHP < 1 Then
             UserList(UserIndex).Stats.MinHP = 0
-            If Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIAS Then
+            If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
                 RestarCriminalidad (UserIndex)
             End If
             Call UserDie(UserIndex)
@@ -237,7 +237,7 @@ If UserList(UserIndex).flags.Muerto = 0 Then
     End If
         
     If UserList(UserIndex).Stats.MinMAN >= Hechizos(HechizoIndex).ManaRequerido Then
-        If UserList(UserIndex).Stats.UserSkills(Magia) >= Hechizos(HechizoIndex).MinSkill Then
+        If UserList(UserIndex).Stats.UserSkills(eSkill.Magia) >= Hechizos(HechizoIndex).MinSkill Then
             If UserList(UserIndex).Stats.MinSta >= Hechizos(HechizoIndex).StaRequerido Then
                 PuedeLanzar = True
             Else
@@ -348,9 +348,9 @@ Sub HandleHechizoTerreno(ByVal UserIndex As Integer, ByVal uh As Integer)
 Dim b As Boolean
 
 Select Case Hechizos(uh).Tipo
-    Case uInvocacion '
+    Case TipoHechizo.uInvocacion '
         Call HechizoInvocacion(UserIndex, b)
-    Case uEstado
+    Case TipoHechizo.uEstado
         Call HechizoTerrenoEstado(UserIndex, b)
     
 End Select
@@ -372,9 +372,9 @@ Sub HandleHechizoUsuario(ByVal UserIndex As Integer, ByVal uh As Integer)
 
 Dim b As Boolean
 Select Case Hechizos(uh).Tipo
-    Case uEstado ' Afectan estados (por ejem : Envenenamiento)
+    Case TipoHechizo.uEstado ' Afectan estados (por ejem : Envenenamiento)
        Call HechizoEstadoUsuario(UserIndex, b)
-    Case uPropiedades ' Afectan HP,MANA,STAMINA,ETC
+    Case TipoHechizo.uPropiedades ' Afectan HP,MANA,STAMINA,ETC
        Call HechizoPropUsuario(UserIndex, b)
 End Select
 
@@ -399,9 +399,9 @@ Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
 Dim b As Boolean
 
 Select Case Hechizos(uh).Tipo
-    Case uEstado ' Afectan estados (por ejem : Envenenamiento)
+    Case TipoHechizo.uEstado ' Afectan estados (por ejem : Envenenamiento)
        Call HechizoEstadoNPC(UserList(UserIndex).flags.TargetNPC, uh, b, UserIndex)
-    Case uPropiedades ' Afectan HP,MANA,STAMINA,ETC
+    Case TipoHechizo.uPropiedades ' Afectan HP,MANA,STAMINA,ETC
        Call HechizoPropNPC(uh, UserList(UserIndex).flags.TargetNPC, UserIndex, b)
 End Select
 
@@ -428,19 +428,19 @@ uh = UserList(UserIndex).Stats.UserHechizos(Index)
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
         
-        Case uUsuarios
+        Case TargetType.uUsuarios
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 Call HandleHechizoUsuario(UserIndex, uh)
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Este hechizo actua solo sobre usuarios." & FONTTYPE_INFO)
             End If
-        Case uNPC
+        Case TargetType.uNPC
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 Call HandleHechizoNPC(UserIndex, uh)
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Este hechizo solo afecta a los npcs." & FONTTYPE_INFO)
             End If
-        Case uUsuariosYnpc
+        Case TargetType.uUsuariosYnpc
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 Call HandleHechizoUsuario(UserIndex, uh)
             ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
@@ -448,7 +448,7 @@ If PuedeLanzar(UserIndex, uh) Then
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Target invalido." & FONTTYPE_INFO)
             End If
-        Case uTerreno
+        Case TargetType.uTerreno
             Call HandleHechizoTerreno(UserIndex, uh)
     End Select
     
@@ -1056,7 +1056,7 @@ If Hechizos(H).SubeAgilidad = 1 Then
     daño = RandomNumber(Hechizos(H).MinAgilidad, Hechizos(H).MaxAgilidad)
     
     UserList(tempChr).flags.DuracionEfecto = 1200
-    Call AddtoVar(UserList(tempChr).Stats.UserAtributos(Agilidad), daño, MinimoInt(MAXATRIBUTOS, UserList(tempChr).Stats.UserAtributosBackUP(Agilidad) * 2))
+    Call AddtoVar(UserList(tempChr).Stats.UserAtributos(eAtributos.Agilidad), daño, MinimoInt(MAXATRIBUTOS, UserList(tempChr).Stats.UserAtributosBackUP(Agilidad) * 2))
     UserList(tempChr).flags.TomoPocion = True
     b = True
     
@@ -1073,8 +1073,8 @@ ElseIf Hechizos(H).SubeAgilidad = 2 Then
     UserList(tempChr).flags.TomoPocion = True
     daño = RandomNumber(Hechizos(H).MinAgilidad, Hechizos(H).MaxAgilidad)
     UserList(tempChr).flags.DuracionEfecto = 700
-    UserList(tempChr).Stats.UserAtributos(Agilidad) = UserList(tempChr).Stats.UserAtributos(Agilidad) - daño
-    If UserList(tempChr).Stats.UserAtributos(Agilidad) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(Agilidad) = MINATRIBUTOS
+    UserList(tempChr).Stats.UserAtributos(eAtributos.Agilidad) = UserList(tempChr).Stats.UserAtributos(eAtributos.Agilidad) - daño
+    If UserList(tempChr).Stats.UserAtributos(eAtributos.Agilidad) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(eAtributos.Agilidad) = MINATRIBUTOS
     b = True
     
 End If
@@ -1095,7 +1095,7 @@ If Hechizos(H).SubeFuerza = 1 Then
     
     UserList(tempChr).flags.DuracionEfecto = 1200
 
-    Call AddtoVar(UserList(tempChr).Stats.UserAtributos(Fuerza), daño, MinimoInt(MAXATRIBUTOS, UserList(tempChr).Stats.UserAtributosBackUP(Fuerza) * 2))
+    Call AddtoVar(UserList(tempChr).Stats.UserAtributos(eAtributos.Fuerza), daño, MinimoInt(MAXATRIBUTOS, UserList(tempChr).Stats.UserAtributosBackUP(Fuerza) * 2))
     
     UserList(tempChr).flags.TomoPocion = True
     b = True
@@ -1114,8 +1114,8 @@ ElseIf Hechizos(H).SubeFuerza = 2 Then
     
     daño = RandomNumber(Hechizos(H).MinFuerza, Hechizos(H).MaxFuerza)
     UserList(tempChr).flags.DuracionEfecto = 700
-    UserList(tempChr).Stats.UserAtributos(Fuerza) = UserList(tempChr).Stats.UserAtributos(Fuerza) - daño
-    If UserList(tempChr).Stats.UserAtributos(Fuerza) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(Fuerza) = MINATRIBUTOS
+    UserList(tempChr).Stats.UserAtributos(eAtributos.Fuerza) = UserList(tempChr).Stats.UserAtributos(eAtributos.Fuerza) - daño
+    If UserList(tempChr).Stats.UserAtributos(eAtributos.Fuerza) < MINATRIBUTOS Then UserList(tempChr).Stats.UserAtributos(eAtributos.Fuerza) = MINATRIBUTOS
     b = True
     
 End If

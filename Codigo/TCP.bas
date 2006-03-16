@@ -242,19 +242,19 @@ End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
 Dim car As Byte
-Dim I As Integer
+Dim i As Integer
 
 cad = LCase$(cad)
 
-For I = 1 To Len(cad)
-    car = Asc(Mid$(cad, I, 1))
+For i = 1 To Len(cad)
+    car = Asc(Mid$(cad, i, 1))
     
     If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
         AsciiValidos = False
         Exit Function
     End If
     
-Next I
+Next i
 
 AsciiValidos = True
 
@@ -262,19 +262,19 @@ End Function
 
 Function Numeric(ByVal cad As String) As Boolean
 Dim car As Byte
-Dim I As Integer
+Dim i As Integer
 
 cad = LCase$(cad)
 
-For I = 1 To Len(cad)
-    car = Asc(Mid$(cad, I, 1))
+For i = 1 To Len(cad)
+    car = Asc(Mid$(cad, i, 1))
     
     If (car < 48 Or car > 57) Then
         Numeric = False
         Exit Function
     End If
     
-Next I
+Next i
 
 Numeric = True
 
@@ -282,14 +282,14 @@ End Function
 
 
 Function NombrePermitido(ByVal Nombre As String) As Boolean
-Dim I As Integer
+Dim i As Integer
 
-For I = 1 To UBound(ForbidenNames)
-    If InStr(Nombre, ForbidenNames(I)) Then
+For i = 1 To UBound(ForbidenNames)
+    If InStr(Nombre, ForbidenNames(i)) Then
             NombrePermitido = False
             Exit Function
     End If
-Next I
+Next i
 
 NombrePermitido = True
 
@@ -385,29 +385,29 @@ End If
 
 Select Case UCase$(UserRaza)
     Case "HUMANO"
-        UserList(UserIndex).Stats.UserAtributos(Fuerza) = UserList(UserIndex).Stats.UserAtributos(Fuerza) + 1
-        UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributos(Agilidad) + 1
-        UserList(UserIndex).Stats.UserAtributos(Constitucion) = UserList(UserIndex).Stats.UserAtributos(Constitucion) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 1
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 1
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 2
     Case "ELFO"
-        UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributos(Agilidad) + 4
-        UserList(UserIndex).Stats.UserAtributos(Inteligencia) = UserList(UserIndex).Stats.UserAtributos(Inteligencia) + 2
-        UserList(UserIndex).Stats.UserAtributos(Carisma) = UserList(UserIndex).Stats.UserAtributos(Carisma) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 4
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 2
     Case "ELFO OSCURO"
-        UserList(UserIndex).Stats.UserAtributos(Fuerza) = UserList(UserIndex).Stats.UserAtributos(Fuerza) + 2
-        UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributos(Agilidad) + 2
-        UserList(UserIndex).Stats.UserAtributos(Inteligencia) = UserList(UserIndex).Stats.UserAtributos(Inteligencia) + 2
-        UserList(UserIndex).Stats.UserAtributos(Carisma) = UserList(UserIndex).Stats.UserAtributos(Carisma) - 3
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 3
     Case "ENANO"
-        UserList(UserIndex).Stats.UserAtributos(Fuerza) = UserList(UserIndex).Stats.UserAtributos(Fuerza) + 3
-        UserList(UserIndex).Stats.UserAtributos(Constitucion) = UserList(UserIndex).Stats.UserAtributos(Constitucion) + 3
-        UserList(UserIndex).Stats.UserAtributos(Inteligencia) = UserList(UserIndex).Stats.UserAtributos(Inteligencia) - 6
-        UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributos(Agilidad) - 1
-        UserList(UserIndex).Stats.UserAtributos(Carisma) = UserList(UserIndex).Stats.UserAtributos(Carisma) - 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 3
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 3
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 6
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) - 1
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 2
     Case "GNOMO"
-        UserList(UserIndex).Stats.UserAtributos(Fuerza) = UserList(UserIndex).Stats.UserAtributos(Fuerza) - 4
-        UserList(UserIndex).Stats.UserAtributos(Inteligencia) = UserList(UserIndex).Stats.UserAtributos(Inteligencia) + 3
-        UserList(UserIndex).Stats.UserAtributos(Agilidad) = UserList(UserIndex).Stats.UserAtributos(Agilidad) + 3
-        UserList(UserIndex).Stats.UserAtributos(Carisma) = UserList(UserIndex).Stats.UserAtributos(Carisma) + 1
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) - 4
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 3
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 3
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 1
 End Select
 
 
@@ -452,7 +452,7 @@ End If
 '%%%%%%%%%%%%% PREVENIR HACKEO DE LOS SKILLS %%%%%%%%%%%%%
 
 UserList(UserIndex).Password = Password
-UserList(UserIndex).Char.Heading = SOUTH
+UserList(UserIndex).Char.Heading = eHeading.SOUTH
 
 Call Randomize(Timer)
 Call DarCuerpoYCabeza(UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Raza, UserList(UserIndex).Genero)
@@ -465,7 +465,7 @@ UserList(UserIndex).Char.CascoAnim = NingunCasco
 
 UserList(UserIndex).Stats.MET = 1
 Dim MiInt
-MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Constitucion) \ 3)
+MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) \ 3)
 
 UserList(UserIndex).Stats.MaxHP = 15 + MiInt
 UserList(UserIndex).Stats.MinHP = 15 + MiInt
@@ -473,7 +473,7 @@ UserList(UserIndex).Stats.MinHP = 15 + MiInt
 UserList(UserIndex).Stats.FIT = 1
 
 
-MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Agilidad) \ 6)
+MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) \ 6)
 If MiInt = 1 Then MiInt = 2
 
 UserList(UserIndex).Stats.MaxSta = 20 * MiInt
@@ -489,12 +489,12 @@ UserList(UserIndex).Stats.MinHam = 100
 
 '<-----------------MANA----------------------->
 If UserClase = "Mago" Then
-    MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Inteligencia)) / 3
+    MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 3
     UserList(UserIndex).Stats.MaxMAN = 100 + MiInt
     UserList(UserIndex).Stats.MinMAN = 100 + MiInt
 ElseIf UserClase = "Clerigo" Or UserClase = "Druida" _
     Or UserClase = "Bardo" Or UserClase = "Asesino" Then
-        MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(Inteligencia)) / 4
+        MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 4
         UserList(UserIndex).Stats.MaxMAN = 50
         UserList(UserIndex).Stats.MinMAN = 50
 Else
@@ -1139,7 +1139,7 @@ Dim LoopC As Integer
         If UserList(LoopC).Pos.Map = Map Then
             If LoopC <> UserIndex Then
                 If (UserList(LoopC).ConnID <> -1) Then
-                    Call EnviarDatosASlot(LoopC, "+" & Encriptacion.MoveCharCrypt(LoopC, UserList(UserIndex).Char.charindex, X, Y) & ENDC)
+                    Call EnviarDatosASlot(LoopC, "+" & Encriptacion.MoveCharCrypt(LoopC, UserList(UserIndex).Char.CharIndex, X, Y) & ENDC)
                 End If
             End If
         End If
@@ -1623,7 +1623,7 @@ Call SendData(SendTarget.ToIndex, UserIndex, 0, "TM" & MapInfo(UserList(UserInde
 UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
 Call MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.charindex)
+Call SendData(SendTarget.ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.CharIndex)
 ''[/el oso]
 
 'Call UpdateUserMap(UserIndex)
@@ -1694,19 +1694,19 @@ Else
 End If
 
 If UserList(UserIndex).NroMacotas > 0 Then
-    Dim I As Integer
-    For I = 1 To MAXMASCOTAS
-        If UserList(UserIndex).MascotasType(I) > 0 Then
-            UserList(UserIndex).MascotasIndex(I) = SpawnNpc(UserList(UserIndex).MascotasType(I), UserList(UserIndex).Pos, True, True)
+    Dim i As Integer
+    For i = 1 To MAXMASCOTAS
+        If UserList(UserIndex).MascotasType(i) > 0 Then
+            UserList(UserIndex).MascotasIndex(i) = SpawnNpc(UserList(UserIndex).MascotasType(i), UserList(UserIndex).Pos, True, True)
             
-            If UserList(UserIndex).MascotasIndex(I) <= MAXNPCS Then
-                  Npclist(UserList(UserIndex).MascotasIndex(I)).MaestroUser = UserIndex
-                  Call FollowAmo(UserList(UserIndex).MascotasIndex(I))
+            If UserList(UserIndex).MascotasIndex(i) <= MAXNPCS Then
+                  Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
+                  Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
             Else
-                  UserList(UserIndex).MascotasIndex(I) = 0
+                  UserList(UserIndex).MascotasIndex(i) = 0
             End If
         End If
-    Next I
+    Next i
 End If
 
 
@@ -1736,7 +1736,7 @@ If UserList(UserIndex).GuildIndex > 0 Then
     End If
 End If
 
-Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & FXWARP & "," & 0)
+Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXWARP & "," & 0)
 
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "LOGGED")
 
@@ -1843,7 +1843,7 @@ Sub ResetCharInfo(ByVal UserIndex As Integer)
     With UserList(UserIndex).Char
         .Body = 0
         .CascoAnim = 0
-        .charindex = 0
+        .CharIndex = 0
         .FX = 0
         .Head = 0
         .loops = 0
@@ -2067,7 +2067,7 @@ Dim Map As Integer
 Dim name As String
 Dim Raza As String
 Dim Clase As String
-Dim I As Integer
+Dim i As Integer
 
 Dim aN As Integer
 
@@ -2088,7 +2088,7 @@ Clase = UserList(UserIndex).Clase
 
 UserList(UserIndex).Char.FX = 0
 UserList(UserIndex).Char.loops = 0
-Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.charindex & "," & 0 & "," & 0)
+Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
    
 
 UserList(UserIndex).flags.UserLogged = False
@@ -2113,23 +2113,23 @@ Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Logged", "0
 'End If
 
 If MapInfo(Map).NumUsers > 0 Then
-    Call SendData(SendTarget.ToMapButIndex, UserIndex, Map, "QDL" & UserList(UserIndex).Char.charindex)
+    Call SendData(SendTarget.ToMapButIndex, UserIndex, Map, "QDL" & UserList(UserIndex).Char.CharIndex)
 End If
 
 
 
 'Borrar el personaje
-If UserList(UserIndex).Char.charindex > 0 Then
+If UserList(UserIndex).Char.CharIndex > 0 Then
     Call EraseUserChar(SendTarget.ToMap, UserIndex, Map, UserIndex)
 End If
 
 'Borrar mascotas
-For I = 1 To MAXMASCOTAS
-    If UserList(UserIndex).MascotasIndex(I) > 0 Then
-        If Npclist(UserList(UserIndex).MascotasIndex(I)).flags.NPCActive Then _
-                Call QuitarNPC(UserList(UserIndex).MascotasIndex(I))
+For i = 1 To MAXMASCOTAS
+    If UserList(UserIndex).MascotasIndex(i) > 0 Then
+        If Npclist(UserList(UserIndex).MascotasIndex(i)).flags.NPCActive Then _
+                Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
     End If
-Next I
+Next i
 
 'If UserIndex = LastUser Then
 '    Do Until UserList(LastUser).flags.UserLogged
@@ -2225,7 +2225,7 @@ On Error GoTo ErrorHandler:
     Dim Y As Integer
     Dim DummyInt As Integer
     Dim t() As String
-    Dim I As Integer
+    Dim i As Integer
     
     Dim sndData As String
     Dim cliMD5 As String
@@ -2495,21 +2495,21 @@ If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
     End If
 
     For tInt = 2 To 5 'esto for sirve ir cambiando la distancia destino
-        For I = UserList(tIndex).Pos.X - tInt To UserList(tIndex).Pos.X + tInt
+        For i = UserList(tIndex).Pos.X - tInt To UserList(tIndex).Pos.X + tInt
             For DummyInt = UserList(tIndex).Pos.Y - tInt To UserList(tIndex).Pos.Y + tInt
-                If (I >= UserList(tIndex).Pos.X - tInt And I <= UserList(tIndex).Pos.X + tInt) And (DummyInt = UserList(tIndex).Pos.Y - tInt Or DummyInt = UserList(tIndex).Pos.Y + tInt) Then
-                    If MapData(UserList(tIndex).Pos.Map, I, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, I, U) Then
-                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, I, DummyInt, True)
+                If (i >= UserList(tIndex).Pos.X - tInt And i <= UserList(tIndex).Pos.X + tInt) And (DummyInt = UserList(tIndex).Pos.Y - tInt Or DummyInt = UserList(tIndex).Pos.Y + tInt) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
                         Exit Sub
                     End If
-                ElseIf (DummyInt >= UserList(tIndex).Pos.Y - tInt And DummyInt <= UserList(tIndex).Pos.Y + tInt) And (I = UserList(tIndex).Pos.X - tInt Or I = UserList(tIndex).Pos.X + tInt) Then
-                    If MapData(UserList(tIndex).Pos.Map, I, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, I, U) Then
-                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, I, DummyInt, True)
+                ElseIf (DummyInt >= UserList(tIndex).Pos.Y - tInt And DummyInt <= UserList(tIndex).Pos.Y + tInt) And (i = UserList(tIndex).Pos.X - tInt Or i = UserList(tIndex).Pos.X + tInt) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
                         Exit Sub
                     End If
                 End If
             Next DummyInt
-        Next I
+        Next i
     Next tInt
     
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Todos los lugares estan ocupados." & FONTTYPE_INFO)
@@ -2725,7 +2725,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Utilice /carcel nick@motivo@tiempo" & FONTTYPE_INFO)
         Exit Sub
     End If
-    I = val(ReadField(3, rData, Asc("@")))
+    i = val(ReadField(3, rData, Asc("@")))
     
     tIndex = NameIndex(name)
     
@@ -2741,7 +2741,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
         Exit Sub
     End If
     
-    If I > 60 Then
+    If i > 60 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes encarcelar por mas de 60 minutos." & FONTTYPE_INFO)
         Exit Sub
     End If
@@ -2752,10 +2752,10 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     If FileExist(CharPath & name & ".chr", vbNormal) Then
         tInt = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
         Call WriteVar(CharPath & name & ".chr", "PENAS", "Cant", tInt + 1)
-        Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & tInt + 1, LCase$(UserList(UserIndex).name) & ": CARCEL " & I & "m, MOTIVO: " & LCase$(tStr) & " " & Date & " " & Time)
+        Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & tInt + 1, LCase$(UserList(UserIndex).name) & ": CARCEL " & i & "m, MOTIVO: " & LCase$(tStr) & " " & Date & " " & Time)
     End If
     
-    Call Encarcelar(tIndex, I, UserList(UserIndex).name)
+    Call Encarcelar(tIndex, i, UserList(UserIndex).name)
     Call LogGM(UserList(UserIndex).name, " encarcelo a " & name, UserList(UserIndex).flags.Privilegios = 1)
     Exit Sub
 End If
@@ -3308,9 +3308,9 @@ If UCase$(Left$(rData, 7)) = "/UNBAN " Then
     Call UnBan(rData)
     
     'penas
-    I = val(GetVar(CharPath & rData & ".chr", "PENAS", "Cant"))
-    Call WriteVar(CharPath & rData & ".chr", "PENAS", "Cant", I + 1)
-    Call WriteVar(CharPath & rData & ".chr", "PENAS", "P" & I + 1, LCase$(UserList(UserIndex).name) & ": UNBAN. " & Date & " " & Time)
+    i = val(GetVar(CharPath & rData & ".chr", "PENAS", "Cant"))
+    Call WriteVar(CharPath & rData & ".chr", "PENAS", "Cant", i + 1)
+    Call WriteVar(CharPath & rData & ".chr", "PENAS", "P" & i + 1, LCase$(UserList(UserIndex).name) & ": UNBAN. " & Date & " " & Time)
     
     Call LogGM(UserList(UserIndex).name, "/UNBAN a " & rData, False)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & rData & " unbanned." & FONTTYPE_INFO)
@@ -3502,7 +3502,7 @@ If UCase(Left(rData, 3)) = "/DT" Then
     X = UserList(UserIndex).flags.TargetX
     Y = UserList(UserIndex).flags.TargetY
     
-    If ObjData(MapData(mapa, X, Y).OBJInfo.ObjIndex).OBJType = OBJTYPE_TELEPORT And _
+    If ObjData(MapData(mapa, X, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otTeleport And _
         MapData(mapa, X, Y).TileExit.Map > 0 Then
         Call EraseObj(SendTarget.ToMap, 0, mapa, MapData(mapa, X, Y).OBJInfo.Amount, mapa, X, Y)
         Call EraseObj(SendTarget.ToMap, 0, MapData(mapa, X, Y).TileExit.Map, 1, MapData(mapa, X, Y).TileExit.Map, MapData(mapa, X, Y).TileExit.X, MapData(mapa, X, Y).TileExit.Y)
@@ -3744,11 +3744,11 @@ If UCase$(Left$(rData, 10)) = "/ESTUPIDO " Then
     If UserList(UserIndex).flags.EsRolesMaster = 1 Then Exit Sub
     'para deteccion de aoice
     rData = UCase$(Right$(rData, Len(rData) - 10))
-    I = NameIndex(rData)
-    If I <= 0 Then
+    i = NameIndex(rData)
+    If i <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Offline" & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, I, 0, "DUMB")
+        Call SendData(SendTarget.ToIndex, i, 0, "DUMB")
     End If
     Exit Sub
 End If
@@ -3757,11 +3757,11 @@ If UCase$(Left$(rData, 12)) = "/NOESTUPIDO " Then
     If UserList(UserIndex).flags.EsRolesMaster = 1 Then Exit Sub
     'para deteccion de aoice
     rData = UCase$(Right$(rData, Len(rData) - 12))
-    I = NameIndex(rData)
-    If I <= 0 Then
+    i = NameIndex(rData)
+    If i <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Offline" & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, I, 0, "NESTUP")
+        Call SendData(SendTarget.ToIndex, i, 0, "NESTUP")
     End If
     Exit Sub
 End If
@@ -3804,7 +3804,7 @@ End If
 
 
 
-If UCase(Left(rData, 8)) = "/TRIGGER" Then
+If UCase(Left(rData, 8)) = "/trigger" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     
@@ -3854,11 +3854,11 @@ If UCase(Left(rData, 14)) = "/MIEMBROSCLAN " Then
 
     tInt = val(GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "INIT", "NroMembers"))
     
-    For I = 1 To tInt
-        tStr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & I)
+    For i = 1 To tInt
+        tStr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & i)
         'tstr es la victima
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & "<" & rData & ">." & FONTTYPE_INFO)
-    Next I
+    Next i
 
     Exit Sub
 End If
@@ -3880,8 +3880,8 @@ If UCase(Left(rData, 9)) = "/BANCLAN " Then
 
     tInt = val(GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "INIT", "NroMembers"))
     
-    For I = 1 To tInt
-        tStr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & I)
+    For i = 1 To tInt
+        tStr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & i)
         'tstr es la victima
         Call Ban(tStr, "Administracion del servidor", "Clan Banned")
         tIndex = NameIndex(tStr)
@@ -3901,7 +3901,7 @@ If UCase(Left(rData, 9)) = "/BANCLAN " Then
         Call WriteVar(CharPath & tStr & ".chr", "PENAS", "Cant", N + 1)
         Call WriteVar(CharPath & tStr & ".chr", "PENAS", "P" & N + 1, LCase$(UserList(UserIndex).name) & ": BAN AL CLAN: " & rData & " " & Date & " " & Time)
 
-    Next I
+    Next i
 
     Exit Sub
 End If

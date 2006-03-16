@@ -47,7 +47,7 @@ Dim FxFlag As Boolean
 If InMapBounds(Map, X, Y) Then
     
     If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-        FxFlag = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = OBJTYPE_TELEPORT
+        FxFlag = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otTeleport
     End If
     
     If MapData(Map, X, Y).TileExit.Map > 0 Then
@@ -326,7 +326,7 @@ Next LoopC
 CheckForSameName = False
 End Function
 
-Sub HeadtoPos(Head As Byte, ByRef Pos As WorldPos)
+Sub HeadtoPos(ByVal Head As eHeading, ByRef Pos As WorldPos)
 '*****************************************************************
 'Toma una posicion y se mueve hacia donde esta perfilado
 '*****************************************************************
@@ -339,22 +339,22 @@ Dim nY As Integer
 X = Pos.X
 Y = Pos.Y
 
-If Head = NORTH Then
+If Head = eHeading.NORTH Then
     nX = X
     nY = Y - 1
 End If
 
-If Head = SOUTH Then
+If Head = eHeading.SOUTH Then
     nX = X
     nY = Y + 1
 End If
 
-If Head = EAST Then
+If Head = eHeading.EAST Then
     nX = X + 1
     nY = Y
 End If
 
-If Head = WEST Then
+If Head = eHeading.WEST Then
     nX = X - 1
     nY = Y
 End If
@@ -402,13 +402,13 @@ Else
    LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
      (MapData(Map, X, Y).UserIndex = 0) And _
      (MapData(Map, X, Y).NpcIndex = 0) And _
-     (MapData(Map, X, Y).trigger <> TRIGGER_POSINVALIDA) _
+     (MapData(Map, X, Y).trigger <> eTrigger.POSINVALIDA) _
      And Not HayAgua(Map, X, Y)
  Else
    LegalPosNPC = (MapData(Map, X, Y).Blocked <> 1) And _
      (MapData(Map, X, Y).UserIndex = 0) And _
      (MapData(Map, X, Y).NpcIndex = 0) And _
-     (MapData(Map, X, Y).trigger <> TRIGGER_POSINVALIDA)
+     (MapData(Map, X, Y).trigger <> eTrigger.POSINVALIDA)
  End If
  
 End If
@@ -457,14 +457,14 @@ If InMapBounds(Map, X, Y) Then
         FoundSomething = 1
     ElseIf MapData(Map, X + 1, Y).OBJInfo.ObjIndex > 0 Then
         'Informa el nombre
-        If ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).OBJType = OBJTYPE_PUERTAS Then
+        If ObjData(MapData(Map, X + 1, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X + 1
             UserList(UserIndex).flags.TargetObjY = Y
             FoundSomething = 1
         End If
     ElseIf MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex > 0 Then
-        If ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).OBJType = OBJTYPE_PUERTAS Then
+        If ObjData(MapData(Map, X + 1, Y + 1).OBJInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
             'Informa el nombre
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X + 1
@@ -472,7 +472,7 @@ If InMapBounds(Map, X, Y) Then
             FoundSomething = 1
         End If
     ElseIf MapData(Map, X, Y + 1).OBJInfo.ObjIndex > 0 Then
-        If ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).OBJType = OBJTYPE_PUERTAS Then
+        If ObjData(MapData(Map, X, Y + 1).OBJInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
             'Informa el nombre
             UserList(UserIndex).flags.TargetObjMap = Map
             UserList(UserIndex).flags.TargetObjX = X
@@ -572,15 +572,15 @@ If InMapBounds(Map, X, Y) Then
     If FoundChar = 2 Then '¿Encontro un NPC?
             Dim estatus As String
             
-            If UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 0 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 10 Then
+            If UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 10 Then
                 estatus = "(Dudoso) "
-            ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) > 10 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 20 Then
+            ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 10 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 20 Then
                 If Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP / 2) Then
                     estatus = "(Herido) "
                 Else
                     estatus = "(Sano) "
                 End If
-            ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) > 20 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 30 Then
+            ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 20 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 30 Then
                 If Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.5) Then
                     estatus = "(Malherido) "
                 ElseIf Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.75) Then
@@ -588,7 +588,7 @@ If InMapBounds(Map, X, Y) Then
                 Else
                     estatus = "(Sano) "
                 End If
-            ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) > 30 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 40 Then
+            ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 30 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 40 Then
                 If Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.25) Then
                     estatus = "(Muy malherido) "
                 ElseIf Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.5) Then
@@ -598,7 +598,7 @@ If InMapBounds(Map, X, Y) Then
                 Else
                     estatus = "(Sano) "
                 End If
-            ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) > 40 And UserList(UserIndex).Stats.UserSkills(Supervivencia) < 60 Then
+            ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 40 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) < 60 Then
                 If Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.05) Then
                     estatus = "(Agonizando) "
                 ElseIf Npclist(TempCharIndex).Stats.MinHP < (Npclist(TempCharIndex).Stats.MaxHP * 0.1) Then
@@ -614,7 +614,7 @@ If InMapBounds(Map, X, Y) Then
                 Else
                     estatus = "(Intacto) "
                 End If
-            ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 60 Then
+            ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 60 Then
                 estatus = "(" & Npclist(TempCharIndex).Stats.MinHP & "/" & Npclist(TempCharIndex).Stats.MaxHP & ") "
             Else
                 estatus = "!error!"
@@ -677,7 +677,7 @@ End If
 
 End Sub
 
-Function FindDirection(Pos As WorldPos, Target As WorldPos) As Byte
+Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
 '*****************************************************************
 'Devuelve la direccion en la cual el target se encuentra
 'desde pos, 0 si la direc es igual
@@ -690,49 +690,49 @@ Y = Pos.Y - Target.Y
 
 'NE
 If Sgn(X) = -1 And Sgn(Y) = 1 Then
-    FindDirection = NORTH
+    FindDirection = eHeading.NORTH
     Exit Function
 End If
 
 'NW
 If Sgn(X) = 1 And Sgn(Y) = 1 Then
-    FindDirection = WEST
+    FindDirection = eHeading.WEST
     Exit Function
 End If
 
 'SW
 If Sgn(X) = 1 And Sgn(Y) = -1 Then
-    FindDirection = WEST
+    FindDirection = eHeading.WEST
     Exit Function
 End If
 
 'SE
 If Sgn(X) = -1 And Sgn(Y) = -1 Then
-    FindDirection = SOUTH
+    FindDirection = eHeading.SOUTH
     Exit Function
 End If
 
 'Sur
 If Sgn(X) = 0 And Sgn(Y) = -1 Then
-    FindDirection = SOUTH
+    FindDirection = eHeading.SOUTH
     Exit Function
 End If
 
 'norte
 If Sgn(X) = 0 And Sgn(Y) = 1 Then
-    FindDirection = NORTH
+    FindDirection = eHeading.NORTH
     Exit Function
 End If
 
 'oeste
 If Sgn(X) = 1 And Sgn(Y) = 0 Then
-    FindDirection = WEST
+    FindDirection = eHeading.WEST
     Exit Function
 End If
 
 'este
 If Sgn(X) = -1 And Sgn(Y) = 0 Then
-    FindDirection = EAST
+    FindDirection = eHeading.EAST
     Exit Function
 End If
 
@@ -747,29 +747,29 @@ End Function
 '[Barrin 30-11-03]
 Public Function ItemNoEsDeMapa(ByVal Index As Integer) As Boolean
 
-ItemNoEsDeMapa = ObjData(Index).OBJType <> OBJTYPE_PUERTAS And _
-            ObjData(Index).OBJType <> OBJTYPE_FOROS And _
-            ObjData(Index).OBJType <> OBJTYPE_CARTELES And _
-            ObjData(Index).OBJType <> OBJTYPE_ARBOLES And _
-            ObjData(Index).OBJType <> OBJTYPE_YACIMIENTO And _
-            ObjData(Index).OBJType <> OBJTYPE_TELEPORT
+ItemNoEsDeMapa = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 '[/Barrin 30-11-03]
 
 Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
-MostrarCantidad = ObjData(Index).OBJType <> OBJTYPE_PUERTAS And _
-            ObjData(Index).OBJType <> OBJTYPE_FOROS And _
-            ObjData(Index).OBJType <> OBJTYPE_CARTELES And _
-            ObjData(Index).OBJType <> OBJTYPE_ARBOLES And _
-            ObjData(Index).OBJType <> OBJTYPE_YACIMIENTO And _
-            ObjData(Index).OBJType <> OBJTYPE_TELEPORT
+MostrarCantidad = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 
-Public Function EsObjetoFijo(ByVal OBJType As Integer) As Boolean
+Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean
 
-EsObjetoFijo = OBJType = OBJTYPE_FOROS Or _
-               OBJType = OBJTYPE_CARTELES Or _
-               OBJType = OBJTYPE_ARBOLES Or _
-               OBJType = OBJTYPE_YACIMIENTO
+EsObjetoFijo = OBJType = eOBJType.otForos Or _
+               OBJType = eOBJType.otCarteles Or _
+               OBJType = eOBJType.otArboles Or _
+               OBJType = eOBJType.otYacimiento
 
 End Function

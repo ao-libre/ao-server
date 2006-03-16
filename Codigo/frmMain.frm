@@ -1023,7 +1023,7 @@ Dim i As Integer
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
             
-            If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = TRIGGER_ANTIPIQUETE Then
+            If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
                     UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
                     Call SendData(SendTarget.ToIndex, i, 0, "||Estas obstruyendo la via publica, muévete o seras encarcelado!!!" & FONTTYPE_INFO)
                     If UserList(i).Counters.PiqueteC > 23 Then

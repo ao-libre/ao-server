@@ -228,7 +228,7 @@ Dim Y As Integer
 Dim X As Integer
 Dim UI As Integer
 
-For headingloop = NORTH To WEST
+For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or headingloop = Npclist(NpcIndex).Char.Heading Then
         Call HeadtoPos(headingloop, nPos)
@@ -289,7 +289,7 @@ Dim atacoPJ As Boolean
 
 atacoPJ = False
 
-For headingloop = NORTH To WEST
+For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or Npclist(NpcIndex).Char.Heading = headingloop Then
         Call HeadtoPos(headingloop, nPos)
@@ -327,12 +327,12 @@ End Sub
 
 Private Sub HostilBuenoAI(ByVal NpcIndex As Integer)
 Dim nPos As WorldPos
-Dim headingloop As Byte
+Dim headingloop As eHeading
 Dim tHeading As Byte
 Dim Y As Integer
 Dim X As Integer
 Dim UI As Integer
-For headingloop = NORTH To WEST
+For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or Npclist(NpcIndex).Char.Heading = headingloop Then
         Call HeadtoPos(headingloop, nPos)
@@ -373,16 +373,16 @@ Dim SignoEO As Integer
 
 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     Select Case Npclist(NpcIndex).Char.Heading
-        Case NORTH
+        Case eHeading.NORTH
             SignoNS = -1
             SignoEO = 0
-        Case EAST
+        Case eHeading.EAST
             SignoNS = 0
             SignoEO = 1
-        Case SOUTH
+        Case eHeading.SOUTH
             SignoNS = 1
             SignoEO = 0
-        Case WEST
+        Case eHeading.WEST
             SignoEO = -1
             SignoNS = 0
     End Select
@@ -438,16 +438,16 @@ Dim SignoEO As Integer
 
 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     Select Case Npclist(NpcIndex).Char.Heading
-        Case NORTH
+        Case eHeading.NORTH
             SignoNS = -1
             SignoEO = 0
-        Case EAST
+        Case eHeading.EAST
             SignoNS = 0
             SignoEO = 1
-        Case SOUTH
+        Case eHeading.SOUTH
             SignoNS = 1
             SignoEO = 0
-        Case WEST
+        Case eHeading.WEST
             SignoEO = -1
             SignoNS = 0
     End Select
@@ -567,16 +567,16 @@ Dim SignoEO As Integer
 
 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     Select Case Npclist(NpcIndex).Char.Heading
-        Case NORTH
+        Case eHeading.NORTH
             SignoNS = -1
             SignoEO = 0
-        Case EAST
+        Case eHeading.EAST
             SignoNS = 0
             SignoEO = 1
-        Case SOUTH
+        Case eHeading.SOUTH
             SignoNS = 1
             SignoEO = 0
-        Case WEST
+        Case eHeading.WEST
             SignoEO = -1
             SignoNS = 0
     End Select
@@ -677,16 +677,16 @@ Dim SignoEO As Integer
 
 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     Select Case Npclist(NpcIndex).Char.Heading
-        Case NORTH
+        Case eHeading.NORTH
             SignoNS = -1
             SignoEO = 0
-        Case EAST
+        Case eHeading.EAST
             SignoNS = 0
             SignoEO = 1
-        Case SOUTH
+        Case eHeading.SOUTH
             SignoNS = 1
             SignoEO = 0
-        Case WEST
+        Case eHeading.WEST
             SignoEO = -1
             SignoNS = 0
     End Select
@@ -764,9 +764,9 @@ On Error GoTo ErrorHandler
         If Npclist(NpcIndex).MaestroUser = 0 Then
             'Busca a alguien para atacar
             '¿Es un guardia?
-            If Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIAS Then
+            If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
                     Call GuardiasAI(NpcIndex)
-            ElseIf Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIASCAOS Then
+            ElseIf Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
                     Call GuardiasAI(NpcIndex, True)
             ElseIf Npclist(NpcIndex).Hostile And Npclist(NpcIndex).Stats.Alineacion <> 0 Then
                     Call HostilMalvadoAI(NpcIndex)
@@ -787,12 +787,12 @@ On Error GoTo ErrorHandler
         Select Case Npclist(NpcIndex).Movement
             Case TipoAI.MueveAlAzar
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
-                If Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIAS Then
+                If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
                     If Int(RandomNumber(1, 12)) = 3 Then
                         Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
                     End If
                     Call PersigueCriminal(NpcIndex)
-                ElseIf Npclist(NpcIndex).NPCtype = NPCTYPE_GUARDIASCAOS Then
+                ElseIf Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
                     If Int(RandomNumber(1, 12)) = 3 Then
                         Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
                     End If

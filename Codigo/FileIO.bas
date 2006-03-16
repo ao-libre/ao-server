@@ -342,129 +342,6 @@ Print #nfile, Date & " " & Time
 Close #nfile
 End Sub
 
-
-'Public Sub GrabarMapa(ByVal Map As Long, ByVal MAPFILE As String)
-'On Error Resume Next
-'Dim FreeFileMap As Long, FreeFileInf As Long, Y As Long, X As Long
-'Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
-    
-'    If FileExist(MAPFILE & ".map", vbNormal) Then
-'        Kill MAPFILE & ".map"
-'    End If
-'
-'    If FileExist(MAPFILE & ".inf", vbNormal) Then
-'        Kill MAPFILE & ".inf"
-'    End If
-'
-'
-'    'Open .map file
-'    FreeFileMap = FreeFile
-'    Open MAPFILE & ".Map" For Binary As FreeFileMap
-'    Seek FreeFileMap, 1
-'
-'    'Open .inf file
-'    FreeFileInf = FreeFile
-'    Open MAPFILE & ".Inf" For Binary As FreeFileInf
-'    Seek FreeFileInf, 1
-'    'map Header
-'
-'    Put FreeFileMap, , MapInfo(Map).MapVersion
-'    Put FreeFileMap, , MiCabecera
-'    Put FreeFileMap, , TempInt
-'    Put FreeFileMap, , TempInt
-'    Put FreeFileMap, , TempInt
-'    Put FreeFileMap, , TempInt
-'
-'    'inf Header
-'    Put FreeFileInf, , TempInt
-'    Put FreeFileInf, , TempInt
-'    Put FreeFileInf, , TempInt
-'    Put FreeFileInf, , TempInt
-'    Put FreeFileInf, , TempInt
-'
-'    'Write .map file
-'    For Y = YMinMapSize To YMaxMapSize
-'        For X = XMinMapSize To XMaxMapSize
-'
-'                ByFlags = 0
-'
-'                If MapData(Map, X, Y).Blocked Then ByFlags = ByFlags Or 1
-'                If MapData(Map, X, Y).Graphic(2) Then ByFlags = ByFlags Or 2
-'                If MapData(Map, X, Y).Graphic(3) Then ByFlags = ByFlags Or 4
-'                If MapData(Map, X, Y).Graphic(4) Then ByFlags = ByFlags Or 8
-'                If MapData(Map, X, Y).trigger Then ByFlags = ByFlags Or 16
-'
-'                Put FreeFileMap, , ByFlags
-'
-'                Put FreeFileMap, , MapData(Map, X, Y).Graphic(1)
-'
-'                For LoopC = 2 To 4
-'                    If MapData(Map, X, Y).Graphic(LoopC) Then _
-'                        Put FreeFileMap, , MapData(Map, X, Y).Graphic(LoopC)
-'                Next LoopC
-'
-'                If MapData(Map, X, Y).trigger Then _
-'                    Put FreeFileMap, , MapData(Map, X, Y).trigger
-'
-'                '.inf file
-'
-'                ByFlags = 0
-'
-'                If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-'                   If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = OBJTYPE_FOGATA Then
-'                        MapData(Map, X, Y).OBJInfo.ObjIndex = 0
-'                        MapData(Map, X, Y).OBJInfo.Amount = 0
-'                    End If
-'                End If
-'
-'                If MapData(Map, X, Y).TileExit.Map Then ByFlags = ByFlags Or 1
-'                If MapData(Map, X, Y).NpcIndex Then ByFlags = ByFlags Or 2
-'                If MapData(Map, X, Y).OBJInfo.ObjIndex Then ByFlags = ByFlags Or 4
-'
-'                Put FreeFileInf, , ByFlags
-'
-'                If MapData(Map, X, Y).TileExit.Map Then
-'                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.Map
-'                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.X
-'                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.Y
-'                End If
-'
-'                If MapData(Map, X, Y).NpcIndex Then _
-'                    Put FreeFileInf, , MapData(Map, X, Y).NpcIndex
-'
-'                If MapData(Map, X, Y).OBJInfo.ObjIndex Then
-'                    Put FreeFileInf, , MapData(Map, X, Y).OBJInfo.ObjIndex
-'                    Put FreeFileInf, , MapData(Map, X, Y).OBJInfo.Amount
-'                End If
-'
-'
-'        Next X
-'    Next Y
-'
-'    'Close .map file
- '   Close FreeFileMap
- '
-' '   'Close .inf file
- '   Close FreeFileInf
-    '    'write .dat file
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", MapInfo(Map).Name)
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "MusicNum", MapInfo(Map).Music)
-'    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "MagiaSinefecto", MapInfo(Map).MagiaSinEfecto)
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "StartPos", MapInfo(Map).StartPos.Map & "-" & MapInfo(Map).StartPos.X & "-" & MapInfo(Map).StartPos.Y)
-'
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Terreno", MapInfo(Map).Terreno)
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Zona", MapInfo(Map).Zona)
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Restringir", MapInfo(Map).Restringir)
-'    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "BackUp", str(MapInfo(Map).BackUp))
-'
-'    If MapInfo(Map).Pk Then
-'        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "0")
-'    Else
-'        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "1")
-'    End If
-'
-'End Sub
-
 Public Sub GrabarMapa(ByVal Map As Long, ByVal MAPFILE As String)
 On Error Resume Next
 Dim FreeFileMap As Long, FreeFileInf As Long, Y As Long, X As Long
@@ -533,7 +410,7 @@ Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
                 ByFlags = 0
                 
                 If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-                   If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = OBJTYPE_FOGATA Then
+                   If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otFogata Then
                         MapData(Map, X, Y).OBJInfo.ObjIndex = 0
                         MapData(Map, X, Y).OBJInfo.Amount = 0
                     End If
@@ -684,88 +561,109 @@ For Object = 1 To NumObjDatas
     End If
     
     ObjData(Object).OBJType = val(Leer.DarValor("OBJ" & Object, "ObjType"))
-    ObjData(Object).SubTipo = val(Leer.DarValor("OBJ" & Object, "Subtipo"))
     
     ObjData(Object).Newbie = val(Leer.DarValor("OBJ" & Object, "Newbie"))
     
-    If ObjData(Object).SubTipo = OBJTYPE_ESCUDO Then
-        ObjData(Object).ShieldAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
-        ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
-        ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
-        ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
-        ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-    End If
-    
-    If ObjData(Object).SubTipo = OBJTYPE_CASCO Then
-        ObjData(Object).CascoAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
-        ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
-        ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
-        ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
-        ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-    End If
-    
-    ObjData(Object).Ropaje = val(Leer.DarValor("OBJ" & Object, "NumRopaje"))
-    ObjData(Object).HechizoIndex = val(Leer.DarValor("OBJ" & Object, "HechizoIndex"))
-    
-    If ObjData(Object).OBJType = OBJTYPE_WEAPON Then
+    Select Case ObjData(Object).OBJType
+        Case eOBJType.otESCUDO
+            ObjData(Object).ShieldAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
+            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
+            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
+            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
+            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
+            
+            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
+            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
+            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
+            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
+            ObjData(Object).Real = val(Leer.DarValor("OBJ" & Object, "Real"))
+            ObjData(Object).Caos = val(Leer.DarValor("OBJ" & Object, "Caos"))
+        
+        Case eOBJType.otCASCO
+            ObjData(Object).CascoAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
+            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
+            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
+            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
+            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
+            
+            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
+            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
+            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
+            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
+            ObjData(Object).Real = val(Leer.DarValor("OBJ" & Object, "Real"))
+            ObjData(Object).Caos = val(Leer.DarValor("OBJ" & Object, "Caos"))
+        
+        Case eOBJType.otWeapon
             ObjData(Object).WeaponAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
             ObjData(Object).Apuñala = val(Leer.DarValor("OBJ" & Object, "Apuñala"))
             ObjData(Object).Envenena = val(Leer.DarValor("OBJ" & Object, "Envenena"))
             ObjData(Object).MaxHIT = val(Leer.DarValor("OBJ" & Object, "MaxHIT"))
             ObjData(Object).MinHIT = val(Leer.DarValor("OBJ" & Object, "MinHIT"))
-            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
-            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
-            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
-            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-            ObjData(Object).Real = val(Leer.DarValor("OBJ" & Object, "Real"))
-            ObjData(Object).Caos = val(Leer.DarValor("OBJ" & Object, "Caos"))
             ObjData(Object).proyectil = val(Leer.DarValor("OBJ" & Object, "Proyectil"))
             ObjData(Object).Municion = val(Leer.DarValor("OBJ" & Object, "Municiones"))
             ObjData(Object).StaffPower = val(Leer.DarValor("OBJ" & Object, "StaffPower"))
             ObjData(Object).StaffDamageBonus = val(Leer.DarValor("OBJ" & Object, "StaffDamageBonus"))
             ObjData(Object).Refuerzo = val(Leer.DarValor("OBJ" & Object, "Refuerzo"))
-    End If
-    
-    If ObjData(Object).OBJType = OBJTYPE_ARMOUR Then
+            
             ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
             ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
             ObjData(Object).Real = val(Leer.DarValor("OBJ" & Object, "Real"))
             ObjData(Object).Caos = val(Leer.DarValor("OBJ" & Object, "Caos"))
-    End If
-    
-    If ObjData(Object).OBJType = OBJTYPE_HERRAMIENTAS Then
+        
+        Case eOBJType.otHerramientas
             ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
             ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-    End If
+        
+        Case eOBJType.otInstrumentos
+            ObjData(Object).Snd1 = val(Leer.DarValor("OBJ" & Object, "SND1"))
+            ObjData(Object).Snd2 = val(Leer.DarValor("OBJ" & Object, "SND2"))
+            ObjData(Object).Snd3 = val(Leer.DarValor("OBJ" & Object, "SND3"))
+        
+        Case eOBJType.otMinerales
+            ObjData(Object).MinSkill = val(Leer.DarValor("OBJ" & Object, "MinSkill"))
+        
+        Case eOBJType.otPuertas, eOBJType.otBotellaVacia, eOBJType.otBotellaLlena
+            ObjData(Object).IndexAbierta = val(Leer.DarValor("OBJ" & Object, "IndexAbierta"))
+            ObjData(Object).IndexCerrada = val(Leer.DarValor("OBJ" & Object, "IndexCerrada"))
+            ObjData(Object).IndexCerradaLlave = val(Leer.DarValor("OBJ" & Object, "IndexCerradaLlave"))
+        
+        Case otPociones
+            ObjData(Object).TipoPocion = val(Leer.DarValor("OBJ" & Object, "TipoPocion"))
+            ObjData(Object).MaxModificador = val(Leer.DarValor("OBJ" & Object, "MaxModificador"))
+            ObjData(Object).MinModificador = val(Leer.DarValor("OBJ" & Object, "MinModificador"))
+            ObjData(Object).DuracionEfecto = val(Leer.DarValor("OBJ" & Object, "DuracionEfecto"))
+        
+        Case eOBJType.otBarcos
+            ObjData(Object).MinSkill = val(Leer.DarValor("OBJ" & Object, "MinSkill"))
+            ObjData(Object).MaxHIT = val(Leer.DarValor("OBJ" & Object, "MaxHIT"))
+            ObjData(Object).MinHIT = val(Leer.DarValor("OBJ" & Object, "MinHIT"))
+        
+        Case eOBJType.otFlechas
+            ObjData(Object).MaxHIT = val(Leer.DarValor("OBJ" & Object, "MaxHIT"))
+            ObjData(Object).MinHIT = val(Leer.DarValor("OBJ" & Object, "MinHIT"))
+            ObjData(Object).Envenena = val(Leer.DarValor("OBJ" & Object, "Envenena"))
+            ObjData(Object).Paraliza = val(Leer.DarValor("OBJ" & Object, "Paraliza"))
+    End Select
     
-    If ObjData(Object).OBJType = OBJTYPE_INSTRUMENTOS Then
-        ObjData(Object).Snd1 = val(Leer.DarValor("OBJ" & Object, "SND1"))
-        ObjData(Object).Snd2 = val(Leer.DarValor("OBJ" & Object, "SND2"))
-        ObjData(Object).Snd3 = val(Leer.DarValor("OBJ" & Object, "SND3"))
-    End If
+    ObjData(Object).Ropaje = val(Leer.DarValor("OBJ" & Object, "NumRopaje"))
+    ObjData(Object).HechizoIndex = val(Leer.DarValor("OBJ" & Object, "HechizoIndex"))
     
     ObjData(Object).LingoteIndex = val(Leer.DarValor("OBJ" & Object, "LingoteIndex"))
-    
-    If ObjData(Object).OBJType = 31 Or ObjData(Object).OBJType = 23 Then
-        ObjData(Object).MinSkill = val(Leer.DarValor("OBJ" & Object, "MinSkill"))
-    End If
     
     ObjData(Object).MineralIndex = val(Leer.DarValor("OBJ" & Object, "MineralIndex"))
     
     ObjData(Object).MaxHP = val(Leer.DarValor("OBJ" & Object, "MaxHP"))
     ObjData(Object).MinHP = val(Leer.DarValor("OBJ" & Object, "MinHP"))
-  
     
     ObjData(Object).Mujer = val(Leer.DarValor("OBJ" & Object, "Mujer"))
     ObjData(Object).Hombre = val(Leer.DarValor("OBJ" & Object, "Hombre"))
     
     ObjData(Object).MinHam = val(Leer.DarValor("OBJ" & Object, "MinHam"))
     ObjData(Object).MinSed = val(Leer.DarValor("OBJ" & Object, "MinAgu"))
-    
     
     ObjData(Object).MinDef = val(Leer.DarValor("OBJ" & Object, "MINDEF"))
     ObjData(Object).MaxDef = val(Leer.DarValor("OBJ" & Object, "MAXDEF"))
@@ -778,17 +676,9 @@ For Object = 1 To NumObjDatas
     
     ObjData(Object).Cerrada = val(Leer.DarValor("OBJ" & Object, "abierta"))
     If ObjData(Object).Cerrada = 1 Then
-            ObjData(Object).Llave = val(Leer.DarValor("OBJ" & Object, "Llave"))
-            ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
+        ObjData(Object).Llave = val(Leer.DarValor("OBJ" & Object, "Llave"))
+        ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
     End If
-    
-    
-    If ObjData(Object).OBJType = OBJTYPE_PUERTAS Or ObjData(Object).OBJType = OBJTYPE_BOTELLAVACIA Or ObjData(Object).OBJType = OBJTYPE_BOTELLALLENA Then
-        ObjData(Object).IndexAbierta = val(Leer.DarValor("OBJ" & Object, "IndexAbierta"))
-        ObjData(Object).IndexCerrada = val(Leer.DarValor("OBJ" & Object, "IndexCerrada"))
-        ObjData(Object).IndexCerradaLlave = val(Leer.DarValor("OBJ" & Object, "IndexCerradaLlave"))
-    End If
-    
     
     'Puertas y llaves
     ObjData(Object).clave = val(Leer.DarValor("OBJ" & Object, "Clave"))
@@ -799,39 +689,18 @@ For Object = 1 To NumObjDatas
     ObjData(Object).Agarrable = val(Leer.DarValor("OBJ" & Object, "Agarrable"))
     ObjData(Object).ForoID = Leer.DarValor("OBJ" & Object, "ID")
     
-    
     Dim i As Integer
     For i = 1 To NUMCLASES
         ObjData(Object).ClaseProhibida(i) = Leer.DarValor("OBJ" & Object, "CP" & i)
-    Next
+    Next i
     
     ObjData(Object).DefensaMagicaMax = val(Leer.DarValor("OBJ" & Object, "DefensaMagicaMax"))
     ObjData(Object).DefensaMagicaMin = val(Leer.DarValor("OBJ" & Object, "DefensaMagicaMin"))
     
-    'Pociones
-    If ObjData(Object).OBJType = 11 Then
-        ObjData(Object).TipoPocion = val(Leer.DarValor("OBJ" & Object, "TipoPocion"))
-        ObjData(Object).MaxModificador = val(Leer.DarValor("OBJ" & Object, "MaxModificador"))
-        ObjData(Object).MinModificador = val(Leer.DarValor("OBJ" & Object, "MinModificador"))
-        ObjData(Object).DuracionEfecto = val(Leer.DarValor("OBJ" & Object, "DuracionEfecto"))
-    End If
-
     ObjData(Object).SkCarpinteria = val(Leer.DarValor("OBJ" & Object, "SkCarpinteria"))
     
     If ObjData(Object).SkCarpinteria > 0 Then _
         ObjData(Object).Madera = val(Leer.DarValor("OBJ" & Object, "Madera"))
-    
-    If ObjData(Object).OBJType = OBJTYPE_BARCOS Then
-            ObjData(Object).MaxHIT = val(Leer.DarValor("OBJ" & Object, "MaxHIT"))
-            ObjData(Object).MinHIT = val(Leer.DarValor("OBJ" & Object, "MinHIT"))
-    End If
-    
-    If ObjData(Object).OBJType = OBJTYPE_FLECHAS Then
-            ObjData(Object).MaxHIT = val(Leer.DarValor("OBJ" & Object, "MaxHIT"))
-            ObjData(Object).MinHIT = val(Leer.DarValor("OBJ" & Object, "MinHIT"))
-            ObjData(Object).Envenena = val(Leer.DarValor("OBJ" & Object, "Envenena"))
-            ObjData(Object).Paraliza = val(Leer.DarValor("OBJ" & Object, "Paraliza"))
-    End If
     
     'Bebidas
     ObjData(Object).MinSta = val(Leer.DarValor("OBJ" & Object, "MinST"))
@@ -839,9 +708,6 @@ For Object = 1 To NumObjDatas
     ObjData(Object).NoSeCae = val(Leer.DarValor("OBJ" & Object, "NoSeCae"))
     
     frmCargando.cargar.Value = frmCargando.cargar.Value + 1
-    'frmCargando.cargar.
-    
-    'DoEvents
 Next Object
 
 Exit Sub
@@ -974,7 +840,7 @@ UserList(UserIndex).OrigChar.Body = val(GetVar(UserFile, "INIT", "Body"))
 UserList(UserIndex).OrigChar.WeaponAnim = val(GetVar(UserFile, "INIT", "Arma"))
 UserList(UserIndex).OrigChar.ShieldAnim = val(GetVar(UserFile, "INIT", "Escudo"))
 UserList(UserIndex).OrigChar.CascoAnim = val(GetVar(UserFile, "INIT", "Casco"))
-UserList(UserIndex).OrigChar.Heading = SOUTH
+UserList(UserIndex).OrigChar.Heading = eHeading.SOUTH
 
 If UserList(UserIndex).flags.Muerto = 0 Then
         UserList(UserIndex).Char = UserList(UserIndex).OrigChar

@@ -46,13 +46,13 @@ If InMapBounds(Map, X, Y) Then
         
         Select Case ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType
             
-            Case OBJTYPE_PUERTAS 'Es una puerta
+            Case eOBJType.otPuertas 'Es una puerta
                 Call AccionParaPuerta(Map, X, Y, UserIndex)
-            Case OBJTYPE_CARTELES 'Es un cartel
+            Case eOBJType.otCarteles 'Es un cartel
                 Call AccionParaCartel(Map, X, Y, UserIndex)
-            Case OBJTYPE_FOROS 'Foro
+            Case eOBJType.otForos 'Foro
                 Call AccionParaForo(Map, X, Y, UserIndex)
-            Case OBJTYPE_LEÑA 'Leña
+            Case eOBJType.otLeña 'Leña
                 If MapData(Map, X, Y).OBJInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
                     Call AccionParaRamita(Map, X, Y, UserIndex)
                 End If
@@ -144,11 +144,11 @@ If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
 End If
 
 
-If UserList(UserIndex).Stats.UserSkills(Supervivencia) > 1 And UserList(UserIndex).Stats.UserSkills(Supervivencia) < 6 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 1 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) < 6 Then
             Suerte = 3
-ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 10 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 10 Then
             Suerte = 2
-ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 10 And UserList(UserIndex).Stats.UserSkills(Supervivencia) Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 10 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) Then
             Suerte = 1
 End If
 
