@@ -2493,7 +2493,7 @@ If UCase$(rData) = "/ONLINEREAL" Then
     Next tLong
     
     If Len(tStr) > 0 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Armadas conectados: " & Left$(tsrt, Len(tStr) - 2) & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Armadas conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Armadas conectados" & FONTTYPE_INFO)
     End If
@@ -2510,7 +2510,7 @@ If UCase$(rData) = "/ONLINECAOS" Then
     Next tLong
     
     If Len(tStr) > 0 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Caos conectados: " & Left$(tsrt, Len(tStr) - 2) & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Caos conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Caos conectados" & FONTTYPE_INFO)
     End If
