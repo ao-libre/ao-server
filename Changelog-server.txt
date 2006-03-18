@@ -33,3 +33,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/03/2006: Ya no te deja comerciar tu barco con otro usuario mientras lo tengas equipado (Maraxus).
  * 18/03/2006: Corregido el bug que hacía el mimetismo no tuviese efecto (Maraxus).
  * 18/03/2006: Implemente mensajes de party overhead y los comandos /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 18/03/2006: Corregí un bug en la validación del cliente al crear personajes (Maraxus).

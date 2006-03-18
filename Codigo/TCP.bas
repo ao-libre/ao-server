@@ -2373,15 +2373,15 @@ On Error GoTo ErrorHandler:
                 
                 Ver = ReadField(5, rData, 44)
                 If VersionOK(Ver) Then
-                     Dim miinteger As Integer
-                    miinteger = CInt(val(ReadField(44, rData, 44)))
+                    Dim miinteger As Integer
+                    miinteger = CInt(Left$(ReadField(44, rData, 44), Len(ReadField(44, rData, 44)) - 16))
                         
-                     If (UserList(UserIndex).flags.ValCoDe = 0) Or (ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> miinteger) Then
-                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPara poder continuar con la creación del personaje, debe utilizar el cliente proporcionado en ao.alkon.com.ar")
-                         'Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
-                         Call CloseSocket(UserIndex)
-                         Exit Sub
-                     End If
+                    If (UserList(UserIndex).flags.ValCoDe = 0) Or (ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> miinteger) Then
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPara poder continuar con la creación del personaje, debe utilizar el cliente proporcionado en ao.alkon.com.ar")
+                        'Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
+                        Call CloseSocket(UserIndex)
+                        Exit Sub
+                    End If
                      
                      
                     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(37, rData, 44)), val(ReadField(38, rData, 44)), val(ReadField(39, rData, 44)), val(ReadField(40, rData, 44)), val(ReadField(41, rData, 44)), val(ReadField(42, rData, 44)), val(ReadField(43, rData, 44)))
