@@ -61,7 +61,6 @@ Module=SecurityIp; Codigo\SecurityIp.bas
 Class=diccionario; Codigo\clsdicc.cls
 Module=ModAreas; Codigo\ModAreas.bas
 Module=modCentinela; Codigo\modCentinela.bas
-Class=clsMD5; Codigo\Critico\clsMD5.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

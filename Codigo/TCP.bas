@@ -2241,35 +2241,29 @@ On Error GoTo ErrorHandler:
         Exit Sub
     End If
     
-#If SeguridadAlkon Then
     If Left$(rData, 13) = "gIvEmEvAlcOde" Then
+#If SeguridadAlkon Then
         '<<<<<<<<<<< MODULO PRIVADO DE CADA IMPLEMENTACION >>>>>>
         UserList(UserIndex).flags.ValCoDe = CInt(RandomNumber(20000, 32000))
         UserList(UserIndex).RandKey = CLng(RandomNumber(0, 99999))
         UserList(UserIndex).PrevCheckSum = UserList(UserIndex).RandKey
         UserList(UserIndex).PacketNumber = 100
         UserList(UserIndex).KeyCrypt = (UserList(UserIndex).RandKey And 17320) Xor (UserList(UserIndex).flags.ValCoDe Xor 4232)
-        Debug.Print "Seteada key:" & UserList(UserIndex).KeyCrypt
         '<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "VAL" & UserList(UserIndex).RandKey & "," & UserList(UserIndex).flags.ValCoDe & "," & Encriptacion.StringValidacion)
-        Call EnviarConfigServer(UserIndex) 'padrinos, creacion pjs,
         Exit Sub
     Else
         '<<<<<<<<<<< MODULO PRIVADO DE CADA IMPLEMENTACION >>>>>>
         ClientChecksum = Right$(rData, Len(rData) - InStrRev(rData, Chr$(126)))
         tStr = Left$(rData, Len(rData) - Len(ClientChecksum) - 1)
         ServerSideChecksum = CheckSum(UserList(UserIndex).PrevCheckSum, tStr)
-        If CLng(ClientChecksum) <> ServerSideChecksum Then
-'       Call LogError("CRC error userindex: " & UserIndex & " rdata: " & rdata)
-'       Call CloseSocket(UserIndex, True)
-'       Debug.Print "ERR CRC " & tStr
-    End If
-    UserList(UserIndex).PrevCheckSum = ServerSideChecksum
-    rData = tStr
-    tStr = ""
-    '<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    End If
+        UserList(UserIndex).PrevCheckSum = ServerSideChecksum
+#Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "VAL" & UserList(UserIndex).RandKey & "," & UserList(UserIndex).flags.ValCoDe)
+        Exit Sub
 #End If
+    End If
+    '<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     IdleCountBackup = UserList(UserIndex).Counters.IdleCount
     UserList(UserIndex).Counters.IdleCount = 0
@@ -2279,7 +2273,7 @@ On Error GoTo ErrorHandler:
         Select Case Left$(rData, 6)
             Case "OLOGIN"
                 rData = Right$(rData, Len(rData) - 6)
-                cliMD5 = Right$(ReadField(4, rData, Asc(",")), 16)
+                cliMD5 = Right$(ReadField(4, rData, 44), 16)
                 If Not MD5ok(cliMD5) Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
                     Exit Sub
@@ -2301,20 +2295,13 @@ On Error GoTo ErrorHandler:
                     End If
 
                     If Not BANCheck(tName) Then
-
-                        If (UserList(UserIndex).flags.ValCoDe = 0) Or (ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> CInt(val(ReadField(4, rData, 44)))) Then
-                              Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
-                              Call CloseSocket(UserIndex)
-                              Exit Sub
+                        If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> CInt(Left$(ReadField(4, rData, 44), Len(ReadField(4, rData, 44)) - 16)) Then
+                            Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
+                            Call CloseSocket(UserIndex)
+                            Exit Sub
                         End If
 
                         UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(5, rData, 44)), val(ReadField(6, rData, 44)), val(ReadField(7, rData, 44)), val(ReadField(8, rData, 44)), val(ReadField(9, rData, 44)), val(ReadField(10, rData, 44)), val(ReadField(11, rData, 44)))
-                        
-
-                        If False Then
-                            Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRExisten actualizaciones pendientes. Ejecute el programa AutoUpdateClient.exe ubicado en la carpeta del AO para actualizar el juego")
-                            Call CloseSocket(UserIndex)
-                        End If
                         
                         Dim Pass11 As String
                         Pass11 = ReadField(2, rData, 44)
@@ -2322,7 +2309,6 @@ On Error GoTo ErrorHandler:
                     Else
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRSe te ha prohibido la entrada a Argentum debido a tu mal comportamiento. Consulta en aocp.alkon.com.ar/est para ver el motivo de la prohibición.")
                     End If
-                    
                 Else
                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREsta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
                      'Call CloseSocket(UserIndex)
@@ -4719,11 +4705,6 @@ On Error GoTo errhandler
 Exit Sub
 errhandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.Description)
-
-End Sub
-
-'Sistema de padrinos, creacion de personajes,
-Public Sub EnviarConfigServer(ByVal UserIndex As Integer)
 
 End Sub
 

@@ -208,42 +208,38 @@ End Sub
 
 Sub MakeUserChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Local Error GoTo hayerror
+    Dim CharIndex As Integer
 
-Dim CharIndex As Integer
-
-If InMapBounds(Map, X, Y) Then
-
-       'If needed make a new character in list
-       If UserList(UserIndex).Char.CharIndex = 0 Then
-           CharIndex = NextOpenCharIndex
-           UserList(UserIndex).Char.CharIndex = CharIndex
-           CharList(CharIndex) = UserIndex
-       End If
-       
-       'Place character on map
-       MapData(Map, X, Y).UserIndex = UserIndex
-       
-       'Send make character command to clients
-       Dim klan$
-       If UserList(UserIndex).GuildIndex > 0 Then
-            klan$ = Guilds(UserList(UserIndex).GuildIndex).GuildName
-       End If
-       
-       Dim bCr As Byte
-       Dim SendPrivilegios As Byte
-       
-       
+    If InMapBounds(Map, X, Y) Then
+        'If needed make a new character in list
+        If UserList(UserIndex).Char.CharIndex = 0 Then
+            CharIndex = NextOpenCharIndex
+            UserList(UserIndex).Char.CharIndex = CharIndex
+            CharList(CharIndex) = UserIndex
+        End If
+        
+        'Place character on map
+        MapData(Map, X, Y).UserIndex = UserIndex
+        
+        'Send make character command to clients
+        Dim klan As String
+        If UserList(UserIndex).GuildIndex > 0 Then
+            klan = Guilds(UserList(UserIndex).GuildIndex).GuildName
+        End If
+        
+        Dim bCr As Byte
+        Dim SendPrivilegios As Byte
        
         bCr = Criminal(UserIndex)
 
-        If klan$ <> "" Then
+        If klan <> "" Then
             If sndRoute = SendTarget.ToIndex Then
 #If SeguridadAlkon Then
                 If EncriptarProtocolosCriticos Then
                     If UserList(UserIndex).flags.Privilegios > 0 Then
-                        Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan$ & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                        Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                     End If
                 Else
 #End If
@@ -283,14 +279,13 @@ If InMapBounds(Map, X, Y) Then
                 Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
        End If   'if clan
-
-End If
-
+    End If
 Exit Sub
+
 hayerror:
-LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.Description)
-'Resume Next
-Call CloseSocket(UserIndex)
+    LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.Description)
+    'Resume Next
+    Call CloseSocket(UserIndex)
 End Sub
 
 Sub CheckUserLevel(ByVal UserIndex As Integer)

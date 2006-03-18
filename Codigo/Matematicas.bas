@@ -53,45 +53,22 @@ End Function
 Public Function SD(ByVal N As Integer) As Integer
 'Call LogTarea("Function SD n:" & n)
 'Suma digitos
-Dim auxint As Integer
-Dim digit As Integer
-Dim suma As Integer
-
-auxint = N
 
 Do
-    
-    digit = (auxint Mod 10)
-    suma = suma + digit
-    auxint = auxint \ 10
-    
-Loop While (auxint > 0)
-
-SD = suma
+    SD = SD + (N Mod 10)
+    N = N \ 10
+Loop While (N > 0)
 
 End Function
 
 Public Function SDM(ByVal N As Integer) As Integer
 'Call LogTarea("Function SDM n:" & n)
 'Suma digitos cada digito menos dos
-Dim auxint As Integer
-Dim digit As Integer
-Dim suma As Integer
-
-auxint = N
-'If auxint < 0 Then auxint = Abs(auxint)
 
 Do
-    
-    digit = (auxint Mod 10)
-    digit = digit - 1
-    suma = suma + digit
-    auxint = auxint \ 10
-    
-   
-Loop While (auxint > 0)
-
-SDM = suma
+    SDM = SDM + (N Mod 10) - 1
+    N = N \ 10
+Loop While (N > 0)
 
 End Function
 
