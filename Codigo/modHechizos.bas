@@ -210,9 +210,8 @@ On Error Resume Next
     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & s & "°" & ind)
     Exit Sub
 End Sub
+
 Function PuedeLanzar(ByVal UserIndex As Integer, ByVal HechizoIndex As Integer) As Boolean
-
-
 
 If UserList(UserIndex).flags.Muerto = 0 Then
     Dim wp2 As WorldPos
@@ -394,8 +393,6 @@ End Sub
 
 Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
 
-
-
 Dim b As Boolean
 
 Select Case Hechizos(uh).Tipo
@@ -514,35 +511,35 @@ If Hechizos(H).Mimetiza = 1 Then
     If UserList(TU).flags.Privilegios >= 1 Then
         Exit Sub
     End If
-       
-   If UserList(UserIndex).flags.Mimetizado = 1 Then
+    
+    If UserList(UserIndex).flags.Mimetizado = 1 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ya te encuentras transformado. El hechizo no ha tenido efecto" & FONTTYPE_INFO)
         Exit Sub
-   End If
+    End If
     
     'copio el char original al mimetizado
     
-    UserList(UserIndex).CharMimetizado.Body = UserList(UserIndex).Char.Body
-    UserList(UserIndex).CharMimetizado.Head = UserList(UserIndex).Char.Head
-    UserList(UserIndex).CharMimetizado.CascoAnim = UserList(UserIndex).Char.CascoAnim
-    UserList(UserIndex).CharMimetizado.ShieldAnim = UserList(UserIndex).Char.ShieldAnim
-    UserList(UserIndex).CharMimetizado.WeaponAnim = UserList(UserIndex).Char.WeaponAnim
+    With UserList(UserIndex)
+        .CharMimetizado.Body = .Char.Body
+        .CharMimetizado.Head = .Char.Head
+        .CharMimetizado.CascoAnim = .Char.CascoAnim
+        .CharMimetizado.ShieldAnim = .Char.ShieldAnim
+        .CharMimetizado.WeaponAnim = .Char.WeaponAnim
+        
+        .flags.Mimetizado = 1
+        
+        'ahora pongo local el del enemigo
+        .Char.Body = UserList(TU).Char.Body
+        .Char.Head = UserList(TU).Char.Head
+        .Char.CascoAnim = UserList(TU).Char.CascoAnim
+        .Char.ShieldAnim = UserList(TU).Char.ShieldAnim
+        .Char.WeaponAnim = UserList(TU).Char.WeaponAnim
     
-   UserList(UserIndex).flags.Mimetizado = 1
-   
-    'ahora pongo local el del enemigo
-    UserList(UserIndex).Char.Body = UserList(TU).Char.Body
-    UserList(UserIndex).Char.Head = UserList(TU).Char.Head
-    UserList(UserIndex).Char.CascoAnim = UserList(TU).Char.CascoAnim
-    UserList(UserIndex).Char.ShieldAnim = UserList(TU).Char.ShieldAnim
-    UserList(UserIndex).Char.WeaponAnim = UserList(TU).Char.WeaponAnim
-    
-    Call ChangeUserChar(SendTarget.ToMap, 0, 0, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-'    Call SendData("CFX" & UserList(UserIndex).Char.charindex & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops)
+        Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, UserIndex, .Char.Body, .Char.Head, .Char.Heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+    End With
    
    Call InfoHechizo(UserIndex)
    b = True
-
 End If
 
 

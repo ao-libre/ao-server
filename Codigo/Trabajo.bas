@@ -537,36 +537,38 @@ End Select
 End Function
 
 Function ModDomar(ByVal Clase As String) As Integer
-Select Case UCase$(Clase)
-    Case "DRUIDA"
-        ModDomar = 6
-    Case "CAZADOR"
-        ModDomar = 6
-    Case "CLERIGO"
-        ModDomar = 7
-    Case Else
-        ModDomar = 10
-End Select
+    Select Case UCase$(Clase)
+        Case "DRUIDA"
+            ModDomar = 6
+        Case "CAZADOR"
+            ModDomar = 6
+        Case "CLERIGO"
+            ModDomar = 7
+        Case Else
+            ModDomar = 10
+    End Select
 End Function
 
 Function CalcularPoderDomador(ByVal UserIndex As Integer) As Long
-CalcularPoderDomador = _
-UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * _
-(UserList(UserIndex).Stats.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).Clase)) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3) _
-+ RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) / 3)
+    With UserList(UserIndex).Stats
+        CalcularPoderDomador = .UserAtributos(eAtributos.Carisma) _
+            * (.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).Clase)) _
+            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
+            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
+            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3)
+    End With
 End Function
+
 Function FreeMascotaIndex(ByVal UserIndex As Integer) As Integer
-'Call LogTarea("Sub FreeMascotaIndex")
-Dim j As Integer
-For j = 1 To MAXMASCOTAS
-    If UserList(UserIndex).MascotasIndex(j) = 0 Then
-        FreeMascotaIndex = j
-        Exit Function
-    End If
-Next j
+    Dim j As Integer
+    For j = 1 To MAXMASCOTAS
+        If UserList(UserIndex).MascotasIndex(j) = 0 Then
+            FreeMascotaIndex = j
+            Exit Function
+        End If
+    Next j
 End Function
+
 Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 'Call LogTarea("Sub DoDomar")
 
@@ -595,15 +597,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La criatura te ha aceptado como su amo." & FONTTYPE_INFO)
         Call SubirSkill(UserIndex, Domar)
-        
     Else
-          '[CDT 17-02-2004]
-          If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
+        If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has logrado domar la criatura." & FONTTYPE_INFO)
             UserList(UserIndex).flags.UltimoMensaje = 5
-          End If
-          '[/CDT]
-        
+        End If
     End If
 Else
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes controlar mas criaturas." & FONTTYPE_INFO)
