@@ -1223,11 +1223,16 @@ Procesado = True 'ver al final del sub
                         Exit Sub
                     End If
                 End If
-                '[Consejeros]
                 If UserList(UserIndex).ComUsu.Objeto > 0 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes cambiar tu oferta." & FONTTYPE_TALK)
                     Exit Sub
                 End If
+                'No permitimos vender barcos mientras están equipados (no podés desequiparlos y causa errores)
+                If UserList(UserIndex).Invent.BarcoSlot = val(Arg1) Then
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés vender tu barco mientras lo estés usando." & FONTTYPE_TALK)
+                    Exit Sub
+                End If
+                
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
                 UserList(UserIndex).ComUsu.Cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
