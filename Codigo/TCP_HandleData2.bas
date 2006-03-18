@@ -360,13 +360,13 @@ Procesado = True 'ver al final del sub
         Case "/COMERCIAR"
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
-                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
-                      Exit Sub
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
+                Exit Sub
             End If
             
             If UserList(UserIndex).flags.Comerciando Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ya estás comerciando" & FONTTYPE_INFO)
-                    Exit Sub
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ya estás comerciando" & FONTTYPE_INFO)
+                Exit Sub
             End If
             
             If UserList(UserIndex).flags.Privilegios = 1 Then
@@ -374,34 +374,31 @@ Procesado = True 'ver al final del sub
             End If
             '¿El target es un NPC valido?
             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                  '¿El NPC puede comerciar?
-                  If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                     If Len(Npclist(UserList(UserIndex).flags.TargetNPC).Desc) > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                     Exit Sub
-                  End If
-                  If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
-                     If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
+                '¿El NPC puede comerciar?
+                If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
+                    If Len(Npclist(UserList(UserIndex).flags.TargetNPC).Desc) > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No tengo ningun interes en comerciar." & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    Exit Sub
+                End If
+                If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
+                    If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
                         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                         Exit Sub
-                     End If
-                  End If
-                  If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
-                     If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
+                    End If
+                End If
+                If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
+                    If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
                         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                         Exit Sub
-                     End If
-                  End If
-                  If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
-                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
-                      Exit Sub
-                  End If
-                  'Iniciamos la rutina pa' comerciar.
-                  Call IniciarCOmercioNPC(UserIndex)
-             '[Alejo]
+                    End If
+                End If
+                If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
+                    Exit Sub
+                End If
+                'Iniciamos la rutina pa' comerciar.
+                Call IniciarCOmercioNPC(UserIndex)
+            '[Alejo]
             ElseIf UserList(UserIndex).flags.TargetUser > 0 Then
-            
-                'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||COMERCIO SEGURO ENTRE USUARIOS TEMPORALMENTE DESHABILITADO" & FONTTYPE_INFO)
-                'Exit Sub
                 'Comercio con otro usuario
                 'Puede comerciar ?
                 If UserList(UserList(UserIndex).flags.TargetUser).flags.Muerto = 1 Then
@@ -635,13 +632,9 @@ Procesado = True 'ver al final del sub
     If UCase$(Left$(rData, 6)) = "/CMSG " Then
         'clanesnuevo
         rData = Right$(rData, Len(rData) - 6)
-        'If rdata <> "" And UserList(UserIndex).GuildInfo.GuildName <> "" Then
-        '    Call SendData(SendTarget.ToDiosesYclan, UserIndex, 0, "|+" & UserList(UserIndex).Name & "> " & rdata & FONTTYPE_GUILDMSG)
-        '    Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rdata & " >°" & str(UserList(UserIndex).Char.charindex))
-        'End If
         If UserList(UserIndex).GuildIndex > 0 Then
             Call SendData(SendTarget.ToDiosesYclan, UserList(UserIndex).GuildIndex, 0, "|+" & UserList(UserIndex).name & "> " & rData & FONTTYPE_GUILDMSG)
-            Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & str(UserList(UserIndex).Char.CharIndex))
+            Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
         End If
         
         Exit Sub
@@ -649,6 +642,7 @@ Procesado = True 'ver al final del sub
 
     If UCase$(Left$(rData, 6)) = "/PMSG " Then
         Call mdParty.BroadCastParty(UserIndex, Mid$(rData, 7))
+        Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
         Exit Sub
     End If
 

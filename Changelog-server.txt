@@ -32,3 +32,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/03/2006: Corregí algunos bugs que impedían que uno se loguease. Para hacerlo sin seguridad deben desactivar el chqueo de MD5 en el server.ini!! (Maraxus).
  * 18/03/2006: Ya no te deja comerciar tu barco con otro usuario mientras lo tengas equipado (Maraxus).
  * 18/03/2006: Corregido el bug que hacía el mimetismo no tuviese efecto (Maraxus).
+ * 18/03/2006: Implemente mensajes de party overhead y los comandos /ONLINEREAL y /ONLINECAOS (Maraxus).

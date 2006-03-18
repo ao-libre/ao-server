@@ -576,7 +576,6 @@ Public Type ObjData
     name As String 'Nombre del obj
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
-    SubTipo As Integer  'Tipo enum que determina cuales son las caract del obj
     
     GrhIndex As Integer ' Indice del grafico que representa el obj
     GrhSecundario As Integer

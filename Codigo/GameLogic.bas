@@ -426,15 +426,15 @@ For LoopC = 1 To NumHelpLines
     Call SendData(SendTarget.ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
 Next LoopC
 End Sub
-Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
-If Npclist(NpcIndex).NroExpresiones > 0 Then
-    Dim randomi
-    randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
-End If
-                    
+Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+    If Npclist(NpcIndex).NroExpresiones > 0 Then
+        Dim randomi
+        randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
+        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
+    End If
 End Sub
+
 Sub LookatTile(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 'Responde al click del usuario sobre el mapa

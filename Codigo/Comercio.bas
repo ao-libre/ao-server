@@ -226,19 +226,16 @@ End Sub
 
 Sub IniciarCOmercioNPC(ByVal UserIndex As Integer)
 On Error GoTo errhandler
-
-'Mandamos el Inventario
-Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
-'Hacemos un Update del inventario del usuario
-Call UpdateUserInv(True, UserIndex, 0)
-'Atcualizamos el dinero
-Call SendUserStatsBox(UserIndex)
-'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
-UserList(UserIndex).flags.Comerciando = True
-SendData SendTarget.ToIndex, UserIndex, 0, "INITCOM"
-
+    'Mandamos el Inventario
+    Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+    'Hacemos un Update del inventario del usuario
+    Call UpdateUserInv(True, UserIndex, 0)
+    'Atcualizamos el dinero
+    Call SendUserStatsBox(UserIndex)
+    'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
+    UserList(UserIndex).flags.Comerciando = True
+    SendData SendTarget.ToIndex, UserIndex, 0, "INITCOM"
 Exit Sub
-
 
 errhandler:
     Dim str As String

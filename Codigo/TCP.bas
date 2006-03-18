@@ -54,6 +54,7 @@ Public Enum SendTarget
     ToDeadArea = 18
     ToCiudadanos = 19
     ToCriminales = 20
+    ToPartyArea = 21
 End Enum
 
 
@@ -1002,7 +1003,6 @@ Select Case sndRoute
         Exit Sub
        
     Case SendTarget.ToClanArea
-        
         For Y = UserList(sndIndex).Pos.Y - MinYBorder + 1 To UserList(sndIndex).Pos.Y + MinYBorder - 1
             For X = UserList(sndIndex).Pos.X - MinXBorder + 1 To UserList(sndIndex).Pos.X + MinXBorder - 1
                If InMapBounds(sndMap, X, Y) Then
@@ -1020,6 +1020,22 @@ Select Case sndRoute
 
 
 
+    Case SendTarget.ToPartyArea
+        For Y = UserList(sndIndex).Pos.Y - MinYBorder + 1 To UserList(sndIndex).Pos.Y + MinYBorder - 1
+            For X = UserList(sndIndex).Pos.X - MinXBorder + 1 To UserList(sndIndex).Pos.X + MinXBorder - 1
+               If InMapBounds(sndMap, X, Y) Then
+                    If (MapData(sndMap, X, Y).UserIndex > 0) Then
+                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
+                            If UserList(sndIndex).PartyIndex > 0 And UserList(MapData(sndMap, X, Y).UserIndex).PartyIndex = UserList(sndIndex).PartyIndex Then
+                                Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
+                            End If
+                        End If
+                    End If
+               End If
+            Next X
+        Next Y
+        Exit Sub
+        
     '[CDT 17-02-2004]
     Case SendTarget.ToAdminsAreaButConsejeros
         For Y = UserList(sndIndex).Pos.Y - MinYBorder + 1 To UserList(sndIndex).Pos.Y + MinYBorder - 1
@@ -2465,8 +2481,41 @@ End If
  If UserList(UserIndex).flags.Privilegios = 0 Then Exit Sub
 '>>>>>>>>>>>>>>>>>>>>>> SOLO ADMINISTRADORES <<<<<<<<<<<<<<<<<<<
 
-
 '<<<<<<<<<<<<<<<<<<<< Consejeros <<<<<<<<<<<<<<<<<<<<
+
+If UCase$(rData) = "/ONLINEREAL" Then
+    For tLong = 1 To LastUser
+        If UserList(UserIndex).ConnID <> -1 Then
+            If UserList(UserIndex).Faccion.ArmadaReal Then
+                tStr = tStr & UserList(UserIndex).name & ", "
+            End If
+        End If
+    Next tLong
+    
+    If Len(tStr) > 0 Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Armadas conectados: " & Left$(tsrt, Len(tStr) - 2) & FONTTYPE_INFO)
+    Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Armadas conectados" & FONTTYPE_INFO)
+    End If
+    Exit Sub
+End If
+
+If UCase$(rData) = "/ONLINECAOS" Then
+    For tLong = 1 To LastUser
+        If UserList(UserIndex).ConnID <> -1 Then
+            If UserList(UserIndex).Faccion.FuerzasCaos Then
+                tStr = tStr & UserList(UserIndex).name & ", "
+            End If
+        End If
+    Next tLong
+    
+    If Len(tStr) > 0 Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Caos conectados: " & Left$(tsrt, Len(tStr) - 2) & FONTTYPE_INFO)
+    Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Caos conectados" & FONTTYPE_INFO)
+    End If
+    Exit Sub
+End If
 
 '/IRCERCA
 'este comando sirve para teletrasportarse cerca del usuario

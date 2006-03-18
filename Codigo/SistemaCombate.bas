@@ -502,7 +502,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     If NpcIndex > 0 Then
         
         'Usa la mata dragones?
-        If Arma.SubTipo = MATADRAGONES Then ' Usa la matadragones?
+        If UserList(UserIndex).Invent.WeaponEqpObjIndex = MATADRAGONES Then ' Usa la matadragones?
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
                 If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca dragon?
                 DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
@@ -530,7 +530,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
         End If
     
     Else ' Ataca usuario
-        If Arma.SubTipo = MATADRAGONES Then
+        If UserList(UserIndex).Invent.WeaponEqpObjIndex = MATADRAGONES Then
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
                 DañoArma = 1 ' Si usa la espada matadragones daño es 1
             DañoMaxArma = 1
