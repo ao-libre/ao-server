@@ -72,7 +72,7 @@ Procesado = True 'ver al final del sub
             N = 0
             tStr = ""
             For LoopC = 1 To LastUser
-                If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <= 1 Then
+                If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <= PlayerType.Consejero Then
                     N = N + 1
                     tStr = tStr & UserList(LoopC).name & ", "
                 End If
@@ -159,7 +159,7 @@ Procesado = True 'ver al final del sub
                 End If
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Tenes " & UserList(UserIndex).Stats.Banco & " monedas de oro en tu cuenta." & "°" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex & FONTTYPE_INFO)
             Case eNPCType.Timbero
-                If UserList(UserIndex).flags.Privilegios > 0 Then
+                If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                     tLong = Apuestas.Ganancias - Apuestas.Perdidas
                     N = 0
                     If tLong >= 0 And Apuestas.Ganancias <> 0 Then
@@ -263,7 +263,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Solo las clases mágicas conocen el arte de la meditación" & FONTTYPE_INFO)
                 Exit Sub
             End If
-            If UserList(UserIndex).flags.Privilegios > 0 Then
+            If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                 UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Mana restaurado" & FONTTYPE_VENENO)
                 Call SendUserStatsBox(val(UserIndex))
@@ -369,7 +369,7 @@ Procesado = True 'ver al final del sub
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.Privilegios = 1 Then
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
                 Exit Sub
             End If
             '¿El target es un NPC valido?
@@ -561,57 +561,12 @@ Procesado = True 'ver al final del sub
             tLong = Int(tLong / 24)
             tStr = (tLong) & " dias, " & tStr
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Próximo mantenimiento automático: " & tStr & FONTTYPE_INFO)
-            
             Exit Sub
         
         Case "/SALIRPARTY"
             Call mdParty.SalirDeParty(UserIndex)
             Exit Sub
         
-'        Case "/PARTY"
-'            Dim iRet As Integer, NewMember As Integer
-
-'            UserList(UserIndex).PartyData.TargetUser = UserList(UserIndex).flags.TargetUser
-'            NewMember = UserList(UserIndex).PartyData.TargetUser
-
-'            If UserList(NewMember).flags.TargetUser = UserIndex Then _
-'                iRet = NewUserInParty(UserIndex, NewMember)
-
-'            Select Case iRet
-                
-'                Case 1
-                    'Éxito!
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has añadido un nuevo miembro a tu grupo" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||Has ingresado al grupo" & FONTTYPE_INFO)
-
-'                Case PartyERR.NoEsLider
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Solo el líder puede invitar gente a unirse al grupo" & FONTTYPE_INFO)
-
-'                Case PartyERR.ArmadaProhibe
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Un soldado de las filas reales no puede aliarse con criminales" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||Un soldado de las filas reales no puede aliarse con criminales" & FONTTYPE_INFO)
-
-'                Case PartyERR.LegionProhibe
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Un legionario oscuro no puede aliarse con ciudadanos" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||Un legionario oscuro no puede aliarse con ciudadanos" & FONTTYPE_INFO)
-
-'                Case PartyERR.NivelProhibe
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Hay demasiada diferencia de experiencia" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||Hay demasiada diferencia de experiencia" & FONTTYPE_INFO)
-                
-'                Case PartyERR.PrivilegiosProhiben
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes aliarte con administradores del juego" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||No puedes aliarte con administradores del juego" & FONTTYPE_INFO)
-            
-'                Case PartyERR.DemasiadoLejos
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes acercarte a esa persona para concretar la alianza" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||Debes acercarte a esa persona para concretar la alianza" & FONTTYPE_INFO)
-
-'                Case PartyERR.ESTAMUERTO
-'                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes aliarte con los muertos!" & FONTTYPE_INFO)
-'                    Call SendData(SendTarget.ToIndex, NewMember, 0, "||No puedes aliarte con los muertos!" & FONTTYPE_INFO)
-'            End Select
-'            Exit Sub
         Case "/CREARPARTY"
             If Not mdParty.PuedeCrearParty(UserIndex) Then Exit Sub
             Call mdParty.CrearParty(UserIndex)
@@ -621,12 +576,6 @@ Procesado = True 'ver al final del sub
             Exit Sub
         Case "/ENCUESTA"
             ConsultaPopular.SendInfoEncuesta (UserIndex)
-        
-'        Case "/ONLINEPARTY"
-'            Dim sRet As String
-
-'            sRet = GetPartyList(UserList(UserIndex).PartyData.PIndex)
-'            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Miembros de tu grupo: " & sRet & FONTTYPE_INFO)
     End Select
 
     If UCase$(Left$(rData, 6)) = "/CMSG " Then
@@ -682,9 +631,9 @@ Procesado = True 'ver al final del sub
     
     
     'Mensaje del servidor a GMs - Lo ubico aqui para que no se confunda con /GM [Gonzalo]
-    If UCase$(Left$(rData, 6)) = "/GMSG " And UserList(UserIndex).flags.Privilegios > 0 Then
+    If UCase$(Left$(rData, 6)) = "/GMSG " And UserList(UserIndex).flags.Privilegios > PlayerType.User Then
         rData = Right$(rData, Len(rData) - 6)
-        Call LogGM(UserList(UserIndex).name, "Mensaje a Gms:" & rData, (UserList(UserIndex).flags.Privilegios = 1))
+        Call LogGM(UserList(UserIndex).name, "Mensaje a Gms:" & rData, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
         If rData <> "" Then
             Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & "> " & rData & "~255~255~255~0~1")
         End If

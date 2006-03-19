@@ -1220,7 +1220,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Hechizos(Spell).WAV)
     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & Hechizos(Spell).FXgrh & "," & Hechizos(Spell).loops)
 
-    If UserList(UserIndex).flags.Privilegios = 0 Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
+    If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
     
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida." & FONTTYPE_FIGHT)
     
@@ -1310,7 +1310,7 @@ On Error GoTo errorh
                         danio = 880 / (dist ^ (3 / 7))
                         danioI = Abs(Int(danio))
                         ''efectiviza el danio
-                        If UserList(PJInd).flags.Privilegios = 0 Then UserList(PJInd).Stats.MinHP = UserList(PJInd).Stats.MinHP - danioI
+                        If UserList(PJInd).flags.Privilegios = PlayerType.User Then UserList(PJInd).Stats.MinHP = UserList(PJInd).Stats.MinHP - danioI
                         
                         Call SendData(SendTarget.ToIndex, PJInd, 0, "||" & Npclist(npcind).name & " te ha quitado " & danioI & " puntos de vida al romper su vara." & FONTTYPE_FIGHT)
                         Call SendData(SendTarget.ToPCArea, PJInd, UserList(PJInd).Pos.Map, "TW" & Hechizos(indireccion).WAV)
@@ -1328,10 +1328,8 @@ On Error GoTo errorh
                             danio = 880 / (dist ^ (3 / 7))
                             danioI = Abs(Int(danio))
                             ''efectiviza el danio
-                            'If UserList(PJInd).Flags.Privilegios = 0 Then UserList(PJInd).Stats.MinHP = UserList(PJInd).Stats.MinHP - danioI
                             Npclist(MascotaInd).Stats.MinHP = Npclist(MascotaInd).Stats.MinHP - danioI
                             
-                            'Call SendData(SendTarget.ToIndex, PJInd, 0, "||" & Npclist(npcind).Name & " te ha quitado " & danioI & " puntos de vida al romper su vara." & FONTTYPE_FIGHT)
                             Call SendData(SendTarget.ToNPCArea, MascotaInd, Npclist(MascotaInd).Pos.Map, "TW" & Hechizos(indireccion).WAV)
                             Call SendData(SendTarget.ToNPCArea, MascotaInd, Npclist(MascotaInd).Pos.Map, "CFX" & Npclist(MascotaInd).Char.CharIndex & "," & Hechizos(indireccion).FXgrh & "," & Hechizos(indireccion).loops)
                             

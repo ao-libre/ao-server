@@ -74,6 +74,14 @@ Public Type tLlamadaGM
     Desc As String * 255
 End Type
 
+Public Enum PlayerType
+    User = 0
+    Consejero = 1
+    SemiDios = 2
+    Dios = 3
+    Admin = 4
+End Enum
+
 Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
@@ -813,7 +821,7 @@ Public Type UserFlags
     AtacadoPorUser As Integer
     
     StatsChanged As Byte
-    Privilegios As Byte
+    Privilegios As PlayerType
     EsRolesMaster As Boolean
     
     ValCoDe As Integer

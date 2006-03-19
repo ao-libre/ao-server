@@ -57,7 +57,7 @@ If Hechizos(Spell).SubeHP = 1 Then
 
 ElseIf Hechizos(Spell).SubeHP = 2 Then
     
-    If UserList(UserIndex).flags.Privilegios = 0 Then
+    If UserList(UserIndex).flags.Privilegios = PlayerType.User Then
     
         daño = RandomNumber(Hechizos(Spell).MinHP, Hechizos(Spell).MaxHP)
         
@@ -508,7 +508,7 @@ If Hechizos(H).Mimetiza = 1 Then
         Exit Sub
     End If
     
-    If UserList(TU).flags.Privilegios >= 1 Then
+    If UserList(TU).flags.Privilegios >= PlayerType.Consejero Then
         Exit Sub
     End If
     

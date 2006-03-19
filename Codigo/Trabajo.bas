@@ -28,6 +28,7 @@ Attribute VB_Name = "Trabajo"
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
+
 Option Explicit
 
 Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
@@ -878,7 +879,7 @@ If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And UserList(LadrOnIndex).Facc
     Exit Sub
 End If
 
-If UserList(VictimaIndex).flags.Privilegios = 0 Then
+If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     Dim Suerte As Integer
     Dim res As Integer
     
@@ -1202,7 +1203,7 @@ Sub VolverCriminal(ByVal UserIndex As Integer)
 
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
-If UserList(UserIndex).flags.Privilegios < 2 Then
+If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
     UserList(UserIndex).Reputacion.BurguesRep = 0
     UserList(UserIndex).Reputacion.NobleRep = 0
     UserList(UserIndex).Reputacion.PlebeRep = 0

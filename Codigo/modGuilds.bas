@@ -436,7 +436,7 @@ Public Function m_PuedeSalirDeClan(ByRef Nombre As String, ByVal GuildIndex As I
 
     'cuando UI no puede echar a nombre?
     'si no es gm Y no es lider del clan del pj Y no es el mismo que se va voluntariamente
-    If UserList(QuienLoEchaUI).flags.Privilegios = 0 Then
+    If UserList(QuienLoEchaUI).flags.Privilegios = PlayerType.User Then
         If Not m_EsGuildLeader(UCase$(UserList(QuienLoEchaUI).name), GuildIndex) Then
             If UCase$(UserList(QuienLoEchaUI).name) <> UCase$(Nombre) Then      'si no sale voluntariamente...
                 Exit Function
@@ -483,7 +483,7 @@ Public Function PuedeFundarUnClan(ByVal UserIndex As Integer, ByVal Alineacion A
                 Exit Function
             End If
         Case ALINEACION_GUILD.ALINEACION_MASTER
-            If UserList(UserIndex).flags.Privilegios < 3 Then
+            If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
                 refError = "Para fundar un clan sin alineación debes ser un dios."
                 Exit Function
             End If

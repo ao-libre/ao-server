@@ -29,6 +29,8 @@ Attribute VB_Name = "Queue"
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
+Option Explicit
+
 Public Type tVertice
     X As Integer
     Y As Integer

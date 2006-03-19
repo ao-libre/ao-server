@@ -83,6 +83,7 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
+Option Explicit
 
 Private Sub Command1_Click()
 Unload Me

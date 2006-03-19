@@ -271,12 +271,10 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-Public ESCUCHADAS As Long
-
-
-
 
 Option Explicit
+
+Public ESCUCHADAS As Long
 
 Private Type NOTIFYICONDATA
     cbSize As Long
@@ -696,9 +694,9 @@ On Error GoTo hayerror
          If UserList(iUserIndex).flags.Muerto = 0 Then
                
                '[Consejeros]
-               If UserList(iUserIndex).flags.Desnudo And UserList(iUserIndex).flags.Privilegios = 0 Then Call EfectoFrio(iUserIndex)
+               If UserList(iUserIndex).flags.Desnudo And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoFrio(iUserIndex)
                If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
-               If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = 0 Then Call EfectoVeneno(iUserIndex, bEnviarStats)
+               If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoVeneno(iUserIndex, bEnviarStats)
                If UserList(iUserIndex).flags.AdminInvisible <> 1 And UserList(iUserIndex).flags.Invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                If UserList(iUserIndex).flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
                 

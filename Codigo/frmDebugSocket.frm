@@ -128,7 +128,7 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-
+Option Explicit
 
 Private Sub Command1_Click()
 Me.Visible = False
@@ -145,4 +145,3 @@ End Sub
 Private Sub Command4_Click()
 Call ReloadSokcet
 End Sub
-

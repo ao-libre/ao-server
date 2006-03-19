@@ -1694,19 +1694,19 @@ End If
 
 UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)
 If EsAdmin(name) Then
-    UserList(UserIndex).flags.Privilegios = 4
+    UserList(UserIndex).flags.Privilegios = PlayerType.Admin
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsDios(name) Then
-    UserList(UserIndex).flags.Privilegios = 3
+    UserList(UserIndex).flags.Privilegios = PlayerType.Dios
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsSemiDios(name) Then
-    UserList(UserIndex).flags.Privilegios = 2
+    UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsConsejero(name) Then
-    UserList(UserIndex).flags.Privilegios = 1
+    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
 Else
-    UserList(UserIndex).flags.Privilegios = 0
+    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
 End If
 
 If UserList(UserIndex).NroMacotas > 0 Then
@@ -1984,7 +1984,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .Maldicion = 0
         .Bendicion = 0
         .Meditando = 0
-        .Privilegios = 0
+        .Privilegios = PlayerType.User
         .PuedeMoverse = 0
         .OldBody = 0
         .OldHead = 0
@@ -2472,12 +2472,12 @@ End If ' "/"
 #End If
 
 
-If UserList(UserIndex).flags.Privilegios = 0 Then
+If UserList(UserIndex).flags.Privilegios = PlayerType.User Then
     UserList(UserIndex).Counters.IdleCount = IdleCountBackup
 End If
 
 '>>>>>>>>>>>>>>>>>>>>>> SOLO ADMINISTRADORES <<<<<<<<<<<<<<<<<<<
- If UserList(UserIndex).flags.Privilegios = 0 Then Exit Sub
+ If UserList(UserIndex).flags.Privilegios = PlayerType.User Then Exit Sub
 '>>>>>>>>>>>>>>>>>>>>>> SOLO ADMINISTRADORES <<<<<<<<<<<<<<<<<<<
 
 '<<<<<<<<<<<<<<<<<<<< Consejeros <<<<<<<<<<<<<<<<<<<<
@@ -2553,14 +2553,14 @@ End If
 '/rem comentario
 If UCase$(Left$(rData, 4)) = "/REM" Then
     rData = Right$(rData, Len(rData) - 5)
-    Call LogGM(UserList(UserIndex).name, "Comentario: " & rData, (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "Comentario: " & rData, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Comentario salvado..." & FONTTYPE_INFO)
     Exit Sub
 End If
 
 'HORA
 If UCase$(Left$(rData, 5)) = "/HORA" Then
-    Call LogGM(UserList(UserIndex).name, "Hora.", (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "Hora.", (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     rData = Right$(rData, Len(rData) - 5)
     Call SendData(SendTarget.ToAll, 0, 0, "||Hora: " & Time & " " & Date & FONTTYPE_INFO)
     Exit Sub
@@ -2574,9 +2574,9 @@ If UCase$(Left$(rData, 7)) = "/DONDE " Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
-    If UserList(tIndex).flags.Privilegios = 3 Then Exit Sub
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ubicacion  " & UserList(tIndex).name & ": " & UserList(tIndex).Pos.Map & ", " & UserList(tIndex).Pos.X & ", " & UserList(tIndex).Pos.Y & "." & FONTTYPE_INFO)
-    Call LogGM(UserList(UserIndex).name, "/Donde " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = 1))
+    If UserList(tIndex).flags.Privilegios = PlayerType.Dios Then Exit Sub
+    Call LogGM(UserList(UserIndex).name, "/Donde " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 
@@ -2607,7 +2607,7 @@ If UCase$(Left$(rData, 6)) = "/NENE " Then
                     ContS = "No hay NPCS"
                 End If
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Npcs en mapa: " & ContS & FONTTYPE_INFO)
-                Call LogGM(UserList(UserIndex).name, "Numero enemigos en mapa " & rData, (UserList(UserIndex).flags.Privilegios = 1))
+                Call LogGM(UserList(UserIndex).name, "Numero enemigos en mapa " & rData, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     End If
     Exit Sub
 End If
@@ -2616,7 +2616,7 @@ End If
 
 If UCase$(rData) = "/TELEPLOC" Then
     Call WarpUserChar(UserIndex, UserList(UserIndex).flags.TargetMap, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY, True)
-    Call LogGM(UserList(UserIndex).name, "/TELEPLOC a x:" & UserList(UserIndex).flags.TargetX & " Y:" & UserList(UserIndex).flags.TargetY & " Map:" & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "/TELEPLOC a x:" & UserList(UserIndex).flags.TargetX & " Y:" & UserList(UserIndex).flags.TargetY & " Map:" & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 
@@ -2628,7 +2628,7 @@ If UCase$(Left$(rData, 7)) = "/TELEP " Then
     name = ReadField(1, rData, 32)
     If name = "" Then Exit Sub
     If UCase$(name) <> "YO" Then
-        If UserList(UserIndex).flags.Privilegios = 1 Then
+        If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
             Exit Sub
         End If
         tIndex = NameIndex(name)
@@ -2644,7 +2644,7 @@ If UCase$(Left$(rData, 7)) = "/TELEP " Then
     End If
     Call WarpUserChar(tIndex, mapa, X, Y, True)
     Call SendData(SendTarget.ToIndex, tIndex, 0, "||" & UserList(UserIndex).name & " transportado." & FONTTYPE_INFO)
-    Call LogGM(UserList(UserIndex).name, "Transporto a " & UserList(tIndex).name & " hacia " & "Mapa" & mapa & " X:" & X & " Y:" & Y, (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "Transporto a " & UserList(tIndex).name & " hacia " & "Mapa" & mapa & " X:" & X & " Y:" & Y, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 
@@ -2659,11 +2659,11 @@ If UCase$(Left$(rData, 11)) = "/SILENCIAR " Then
         UserList(tIndex).flags.Silenciado = 1
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario silenciado." & FONTTYPE_INFO)
         Call SendData(SendTarget.ToIndex, tIndex, 0, "!!ESTIMADO USUARIO, ud ha sido silenciado por los administradores. Sus denuncias serán ignoradas por el servidor de aquí en mas. utilice /GM AYUDA para contactar un administrador.")
-        Call LogGM(UserList(UserIndex).name, "/silenciar " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = 1))
+        Call LogGM(UserList(UserIndex).name, "/silenciar " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Else
         UserList(tIndex).flags.Silenciado = 0
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario des silenciado." & FONTTYPE_INFO)
-        Call LogGM(UserList(UserIndex).name, "/DESsilenciar " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = 1))
+        Call LogGM(UserList(UserIndex).name, "/DESsilenciar " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     End If
     Exit Sub
 End If
@@ -2700,14 +2700,14 @@ If UCase$(Left$(rData, 5)) = "/IRA " Then
     Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, UserList(tIndex).Pos.X, UserList(tIndex).Pos.Y + 1, True)
     
     If UserList(UserIndex).flags.AdminInvisible = 0 Then Call SendData(SendTarget.ToIndex, tIndex, 0, "||" & UserList(UserIndex).name & " se ha trasportado hacia donde te encontras." & FONTTYPE_INFO)
-    Call LogGM(UserList(UserIndex).name, "/IRA " & UserList(tIndex).name & " Mapa:" & UserList(tIndex).Pos.Map & " X:" & UserList(tIndex).Pos.X & " Y:" & UserList(tIndex).Pos.Y, (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "/IRA " & UserList(tIndex).name & " Mapa:" & UserList(tIndex).Pos.Map & " X:" & UserList(tIndex).Pos.X & " Y:" & UserList(tIndex).Pos.Y, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 
 'Haceme invisible vieja!
 If UCase$(rData) = "/INVISIBLE" Then
     Call DoAdminInvisible(UserIndex)
-    Call LogGM(UserList(UserIndex).name, "/INVISIBLE", (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "/INVISIBLE", (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 
@@ -2721,7 +2721,7 @@ If UCase$(rData) = "LISTUSU" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     tStr = "LISTUSU"
     For LoopC = 1 To LastUser
-        If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios = 0 Then
+        If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios = PlayerType.User Then
             tStr = tStr & UserList(LoopC).name & ","
         End If
     Next LoopC
@@ -2770,7 +2770,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
         Exit Sub
     End If
     
-    If UserList(tIndex).flags.Privilegios > 0 Then
+    If UserList(tIndex).flags.Privilegios > PlayerType.User Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes encarcelar a administradores." & FONTTYPE_INFO)
         Exit Sub
     End If
@@ -2790,7 +2790,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     End If
     
     Call Encarcelar(tIndex, i, UserList(UserIndex).name)
-    Call LogGM(UserList(UserIndex).name, " encarcelo a " & name, UserList(UserIndex).flags.Privilegios = 1)
+    Call LogGM(UserList(UserIndex).name, " encarcelo a " & name, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
     Exit Sub
 End If
 
@@ -2837,7 +2837,7 @@ If UCase$(Left$(rData, 13)) = "/ADVERTENCIA " Then
         Exit Sub
     End If
     
-    If UserList(tIndex).flags.Privilegios > 0 Then
+    If UserList(tIndex).flags.Privilegios > PlayerType.User Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes advertir a administradores." & FONTTYPE_INFO)
         Exit Sub
     End If
@@ -2851,7 +2851,7 @@ If UCase$(Left$(rData, 13)) = "/ADVERTENCIA " Then
         Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & tInt + 1, LCase$(UserList(UserIndex).name) & ": ADVERTENCIA por: " & LCase$(tStr) & " " & Date & " " & Time)
     End If
     
-    Call LogGM(UserList(UserIndex).name, " advirtio a " & name, UserList(UserIndex).flags.Privilegios = 1)
+    Call LogGM(UserList(UserIndex).name, " advirtio a " & name, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
     Exit Sub
 End If
 
@@ -2870,17 +2870,17 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     If UserList(UserIndex).flags.EsRolesMaster Then
         ' Los RMs consejeros sólo se pueden editar su head y body, el resto tieneplenos poderes
         Select Case UserList(UserIndex).flags.Privilegios
-            Case 1
+            Case PlayerType.Consejero
                 If NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
             
-            Case 2
+            Case PlayerType.SemiDios
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
             
-            Case 3
+            Case PlayerType.Dios
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "CIU" And Arg1 <> "CRI" And Arg1 <> "CLASE" And Arg1 <> "SKILLS" Then Exit Sub
         End Select
-    ElseIf UserList(UserIndex).flags.Privilegios < 3 Then   'Si no es RM debe ser dios para poder usar este comando
+    ElseIf UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
         Exit Sub
     End If
     
@@ -3020,7 +3020,7 @@ End If
 '<<<<<<<<<<<<<<<<<< SemiDioses <<<<<<<<<<<<<<<<<<<<<<<<
 '<<<<<<<<<<<<<<<<<< SemiDioses <<<<<<<<<<<<<<<<<<<<<<<<
 '<<<<<<<<<<<<<<<<<< SemiDioses <<<<<<<<<<<<<<<<<<<<<<<<
-If UserList(UserIndex).flags.Privilegios < 2 Then
+If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
     Exit Sub
 End If
 
@@ -3034,10 +3034,7 @@ If UCase$(Left$(rData, 6)) = "/INFO " Then
     If tIndex <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline, Buscando en Charfile." & FONTTYPE_INFO)
         SendUserStatsTxtOFF UserIndex, rData
-        'muy dificil :p
-        'SendUserStatsTxtFromChar UserIndex, tIndex
     Else
-        If UserList(tIndex).flags.Privilegios = 3 Then Exit Sub
         SendUserStatsTxt UserIndex, tIndex
     End If
 
@@ -3159,7 +3156,7 @@ End If
 
 If UCase$(rData) = "/ONLINEGM" Then
         For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <> 0 Then
+            If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <> PlayerType.User Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC
@@ -3228,7 +3225,7 @@ If UCase$(Left$(rData, 10)) = "/EJECUTAR " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Right$(rData, Len(rData) - 10)
     tIndex = NameIndex(rData)
-    If UserList(tIndex).flags.Privilegios > 0 Then
+    If UserList(tIndex).flags.Privilegios > PlayerType.User Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estás loco?? como vas a piñatear un gm!!!! :@" & FONTTYPE_INFO)
         Exit Sub
     End If
@@ -3306,10 +3303,10 @@ If UCase$(Left$(rData, 5)) = "/BAN " Then
         'Ponemos el flag de ban a 1
         UserList(tIndex).flags.Ban = 1
         
-        If UserList(tIndex).flags.Privilegios > 0 Then
-                UserList(UserIndex).flags.Ban = 1
-                Call CloseSocket(UserIndex)
-                Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " banned by the server por bannear un Administrador." & FONTTYPE_FIGHT)
+        If UserList(tIndex).flags.Privilegios > PlayerType.User Then
+            UserList(UserIndex).flags.Ban = 1
+            Call CloseSocket(UserIndex)
+            Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " banned by the server por bannear un Administrador." & FONTTYPE_FIGHT)
         End If
         
         Call LogGM(UserList(UserIndex).name, "BAN a " & UserList(tIndex).name, False)
@@ -3429,9 +3426,9 @@ If UCase$(Left$(rData, 9)) = "/NICK2IP " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Right$(rData, Len(rData) - 9)
     tIndex = NameIndex(UCase$(rData))
-    Call LogGM(UserList(UserIndex).name, "NICK2IP Solicito la IP de " & rData, UserList(UserIndex).flags.Privilegios = 1)
+    Call LogGM(UserList(UserIndex).name, "NICK2IP Solicito la IP de " & rData, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
     If tIndex > 0 Then
-        If (UserList(UserIndex).flags.Privilegios > 0 And UserList(tIndex).flags.Privilegios = 0) Or (UserList(UserIndex).flags.Privilegios = 3) Then
+        If (UserList(UserIndex).flags.Privilegios > PlayerType.User And UserList(tIndex).flags.Privilegios = PlayerType.User) Or (UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El ip de " & rData & " es " & UserList(tIndex).ip & FONTTYPE_INFO)
         Else
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes los privilegios necesarios" & FONTTYPE_INFO)
@@ -3456,10 +3453,10 @@ If UCase$(Left$(rData, 9)) = "/IP2NICK " Then
         rData = UserList(tInt).ip
     End If
     tStr = vbNullString
-    Call LogGM(UserList(UserIndex).name, "IP2NICK Solicito los Nicks de IP " & rData, UserList(UserIndex).flags.Privilegios = 1)
+    Call LogGM(UserList(UserIndex).name, "IP2NICK Solicito los Nicks de IP " & rData, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
     For LoopC = 1 To LastUser
         If UserList(LoopC).ip = rData And UserList(LoopC).name <> "" And UserList(LoopC).flags.UserLogged Then
-            If (UserList(UserIndex).flags.Privilegios > 0 And UserList(LoopC).flags.Privilegios = 0) Or (UserList(UserIndex).flags.Privilegios = 3) Then
+            If (UserList(UserIndex).flags.Privilegios > PlayerType.User And UserList(LoopC).flags.Privilegios = PlayerType.User) Or (UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         End If
@@ -3484,7 +3481,7 @@ End If
 
 'Crear Teleport
 If UCase(Left(rData, 4)) = "/CT " Then
-    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < 3 Then Exit Sub
+    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
     '/ct mapa_dest x_dest y_dest
     rData = Right(rData, Len(rData) - 4)
     Call LogGM(UserList(UserIndex).name, "/CT: " & rData, False)
@@ -3529,7 +3526,7 @@ End If
 'toma el ultimo click
 If UCase(Left(rData, 3)) = "/DT" Then
     '/dt
-    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < 3 Then Exit Sub
+    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
     Call LogGM(UserList(UserIndex).name, "/DT", False)
     
     mapa = UserList(UserIndex).flags.TargetMap
@@ -3558,7 +3555,7 @@ End If
 
 
 If UCase$(Left$(rData, 9)) = "/SETDESC " Then
-    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < 3 Then Exit Sub
+    If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
     rData = Right$(rData, Len(rData) - 9)
     DummyInt = UserList(UserIndex).flags.TargetUser
     If DummyInt > 0 Then
@@ -3577,7 +3574,7 @@ Select Case UCase$(Left$(rData, 13))
     Case "/FORCEMIDMAP"
         rData = Right$(rData, Len(rData) - 14)
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
         
         'Obtenemos el número de midi
         Arg1 = ReadField(1, rData, vbKeySpace)
@@ -3607,7 +3604,7 @@ Select Case UCase$(Left$(rData, 13))
     Case "/FORCEWAVMAP "
         rData = Right$(rData, Len(rData) - 13)
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios < 3 Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
         
         'Obtenemos el número de wav
         Arg1 = ReadField(1, rData, vbKeySpace)
@@ -3639,7 +3636,7 @@ End Select
 Select Case UCase$(Left$(rData, 8))
     Case "/REALMSG"
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+        If UserList(UserIndex).flags.Privilegios > PlayerType.SemiDios Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
@@ -3652,7 +3649,7 @@ Select Case UCase$(Left$(rData, 8))
     
     Case "/CAOSMSG"
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+        If UserList(UserIndex).flags.Privilegios > PlayerType.SemiDios Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
@@ -3665,7 +3662,7 @@ Select Case UCase$(Left$(rData, 8))
     
     Case "/CIUMSG "
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+        If UserList(UserIndex).flags.Privilegios > PlayerType.SemiDios Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
@@ -3678,7 +3675,7 @@ Select Case UCase$(Left$(rData, 8))
     
     Case "/CRIMSG "
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+        If UserList(UserIndex).flags.Privilegios > PlayerType.SemiDios Or UserList(UserIndex).flags.EsRolesMaster Then
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
@@ -3691,7 +3688,7 @@ Select Case UCase$(Left$(rData, 8))
     
     Case "/TALKAS "
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios > 2 Or UserList(UserIndex).flags.EsRolesMaster Then
+        If UserList(UserIndex).flags.Privilegios > PlayerType.SemiDios Or UserList(UserIndex).flags.EsRolesMaster Then
             'Asegurarse haya un NPC seleccionado
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 tStr = Right$(rData, Len(rData) - 8)
@@ -3710,7 +3707,7 @@ End Select
 '<<<<<<<<<<<<<<<<<<<<< Dioses >>>>>>>>>>>>>>>>>>>>>>>>
 '<<<<<<<<<<<<<<<<<<<<< Dioses >>>>>>>>>>>>>>>>>>>>>>>>
 '<<<<<<<<<<<<<<<<<<<<< Dioses >>>>>>>>>>>>>>>>>>>>>>>>
-If UserList(UserIndex).flags.Privilegios < 3 Then
+If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
     Exit Sub
 End If
 
@@ -3725,7 +3722,7 @@ If UCase$(rData) = "/MASSDEST" Then
                     If ItemNoEsDeMapa(MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex) Then Call EraseObj(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, 10000, UserList(UserIndex).Pos.Map, X, Y)
             Next X
     Next Y
-    Call LogGM(UserList(UserIndex).name, "/MASSDEST", (UserList(UserIndex).flags.Privilegios = 1))
+    Call LogGM(UserList(UserIndex).name, "/MASSDEST", (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
 '[/Barrin 30-11-03]
@@ -4142,7 +4139,7 @@ If UCase$(Left$(rData, 12)) = "/BORRARPENA " Then
         Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & val(tStr), LCase$(UserList(UserIndex).name) & ": <Pena borrada> " & Date & " " & Time)
     End If
     
-    Call LogGM(UserList(UserIndex).name, " borro la pena: " & tStr & "-" & rData & " de " & name, UserList(UserIndex).flags.Privilegios = 1)
+    Call LogGM(UserList(UserIndex).name, " borro la pena: " & tStr & "-" & rData & " de " & name, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
     Exit Sub
 End If
 
@@ -4259,7 +4256,7 @@ End If
 'Crear criatura, toma directamente el indice
 If UCase$(Left$(rData, 5)) = "/ACC " Then
    rData = Right$(rData, Len(rData) - 5)
-   Call LogGM(UserList(UserIndex).name, "Sumoneo a " & Npclist(val(rData)).name & " en mapa " & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = 1))
+   Call LogGM(UserList(UserIndex).name, "Sumoneo a " & Npclist(val(rData)).name & " en mapa " & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
    Call SpawnNpc(val(rData), UserList(UserIndex).Pos, True, False)
    Exit Sub
 End If
@@ -4268,7 +4265,7 @@ End If
 If UCase$(Left$(rData, 6)) = "/RACC " Then
  
    rData = Right$(rData, Len(rData) - 6)
-   Call LogGM(UserList(UserIndex).name, "Sumoneo con respawn " & Npclist(val(rData)).name & " en mapa " & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = 1))
+   Call LogGM(UserList(UserIndex).name, "Sumoneo con respawn " & Npclist(val(rData)).name & " en mapa " & UserList(UserIndex).Pos.Map, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
    Call SpawnNpc(val(rData), UserList(UserIndex).Pos, True, True)
    Exit Sub
 End If
@@ -4768,7 +4765,7 @@ Dim LoopC As Long
 
 For LoopC = 1 To LastUser
     If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-        If UserList(LoopC).flags.Privilegios < 1 Then
+        If UserList(LoopC).flags.Privilegios < PlayerType.Consejero Then
             Call CloseSocket(LoopC)
         End If
     End If

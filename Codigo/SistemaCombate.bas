@@ -35,8 +35,8 @@ Attribute VB_Name = "SistemaCombate"
 
 Option Explicit
 
-Public Const MAXDISTANCIAARCO = 18
-Public Const MAXDISTANCIAMAGIA = 18
+Public Const MAXDISTANCIAARCO As Byte = 18
+Public Const MAXDISTANCIAMAGIA As Byte = 18
 
 Function ModificadorEvasion(ByVal Clase As String) As Single
 
@@ -666,7 +666,7 @@ End Select
 
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "N2" & Lugar & "," & daño)
 
-If UserList(UserIndex).flags.Privilegios = 0 Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
+If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
 
 'Muere el usuario
 If UserList(UserIndex).Stats.MinHP <= 0 Then
@@ -1306,13 +1306,13 @@ If (UserList(VictimIndex).Faccion.FuerzasCaos = 1) And (UserList(AttackerIndex).
 End If
 '[/Barrin]
 
-If UserList(AttackerIndex).flags.Privilegios = 1 Then
+If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
     PuedeAtacar = False
     Exit Function
 End If
 
 'Se asegura que la victima no es un GM
-If UserList(VictimIndex).flags.Privilegios >= 1 Then
+If UserList(VictimIndex).flags.Privilegios >= PlayerType.Consejero Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||¡¡No podes atacar a los administradores del juego!! " & FONTTYPE_WARNING
     PuedeAtacar = False
     Exit Function
@@ -1355,7 +1355,7 @@ If UserList(AttackerIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-If UserList(AttackerIndex).flags.Privilegios = 1 Then
+If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
     PuedeAtacarNPC = False
     Exit Function
 End If

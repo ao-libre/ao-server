@@ -77,7 +77,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
 Private Sub cboPjs_Change()
 Call ActualizaPjInfo
 End Sub
@@ -105,7 +104,7 @@ With cboPjs
     
     For LoopC = 1 To LastUser
         If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-            If UserList(LoopC).flags.Privilegios < 1 Then
+            If UserList(LoopC).flags.Privilegios = PlayerType.User Then
                 .AddItem UserList(LoopC).name
                 .ItemData(.NewIndex) = LoopC
             End If

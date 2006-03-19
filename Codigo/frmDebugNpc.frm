@@ -93,13 +93,13 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-
+Option Explicit
 
 Private Sub Command1_Click()
 Dim i As Integer, k As Integer
 
 For i = 1 To LastNPC
-    If Npclist(i).Flags.NPCActive Then k = k + 1
+    If Npclist(i).flags.NPCActive Then k = k + 1
 Next i
 
 Label1.Caption = "Npcs Activos:" & k

@@ -73,7 +73,7 @@ Procesado = True 'ver al final del sub
             End If
         
             '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = 1 Then
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
                 Call LogGM(UserList(UserIndex).name, "Dijo: " & rData, True)
             End If
             
@@ -103,7 +103,7 @@ Procesado = True 'ver al final del sub
                 Exit Sub
             End If
             '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = 1 Then
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
                 Call LogGM(UserList(UserIndex).name, "Grito: " & rData, True)
             End If
     
@@ -128,7 +128,7 @@ Procesado = True 'ver al final del sub
             tName = ReadField(1, rData, 32)
             tIndex = NameIndex(tName)
             If tIndex <> 0 Then
-                If UserList(tIndex).flags.Privilegios > 0 And UserList(UserIndex).flags.Privilegios = 0 Then
+                If UserList(tIndex).flags.Privilegios > PlayerType.User And UserList(UserIndex).flags.Privilegios = PlayerType.User Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los Gms" & FONTTYPE_INFO)
                     Exit Sub
                 End If
@@ -147,14 +147,14 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 '[Consejeros]
-                If UserList(UserIndex).flags.Privilegios = 1 Then
+                If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
                     Call LogGM(UserList(UserIndex).name, "Le dijo a '" & UserList(tIndex).name & "' " & tMessage, True)
                 End If
     
                 Call SendData(SendTarget.ToIndex, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbBlue & "°" & tMessage & "°" & str(ind))
                 Call SendData(SendTarget.ToIndex, tIndex, UserList(UserIndex).Pos.Map, "||" & vbBlue & "°" & tMessage & "°" & str(ind))
                 '[CDT 17-02-2004]
-                If UserList(UserIndex).flags.Privilegios < 2 Then
+                If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
                     Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°" & "a " & UserList(tIndex).name & "> " & tMessage & "°" & str(ind))
                 End If
                 '[/CDT]
@@ -254,11 +254,6 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡No podes atacar a nadie porque estas muerto!!. " & FONTTYPE_INFO)
                 Exit Sub
             End If
-            '[Consejeros]
-'            If UserList(UserIndex).flags.Privilegios = 1 Then
-'                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes atacar a nadie. " & FONTTYPE_INFO)
-'                Exit Sub
-'            End If
             If Not UserList(UserIndex).flags.ModoCombate Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No estas en modo de combate, presiona la tecla ""C"" para pasar al modo combate. " & FONTTYPE_INFO)
             Else
@@ -286,9 +281,9 @@ Procesado = True 'ver al final del sub
                     Exit Sub
             End If
             '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = 1 Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes tomar ningun objeto. " & FONTTYPE_INFO)
-                    Exit Sub
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes tomar ningun objeto. " & FONTTYPE_INFO)
+                Exit Sub
             End If
             Call GetObj(UserIndex)
             Exit Sub
@@ -406,7 +401,7 @@ Procesado = True 'ver al final del sub
         Case "TI" 'Tirar item
                 If UserList(UserIndex).flags.Navegando = 1 Or _
                    UserList(UserIndex).flags.Muerto = 1 Or _
-                   UserList(UserIndex).flags.Privilegios = 1 Then Exit Sub
+                   UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then Exit Sub
                    '[Consejeros]
                 
                 rData = Right$(rData, Len(rData) - 2)
@@ -643,10 +638,6 @@ Procesado = True 'ver al final del sub
                 End If
                 
             Case Magia
-'                If UserList(UserIndex).flags.PuedeLanzarSpell = 0 Then Exit Sub
-                '[Consejeros]
-'                If UserList(UserIndex).flags.Privilegios = 1 Then Exit Sub
-                
                 If MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto > 0 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Una fuerza oscura te impide canalizar tu energía" & FONTTYPE_FIGHT)
                     Exit Sub
