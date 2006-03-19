@@ -811,9 +811,7 @@ If Obj.OBJType = eOBJType.otWeapon Then
         If Not IntervaloPermiteUsar(UserIndex) Then Exit Sub
     End If
 Else
-    If Not IntervaloPermiteUsar(UserIndex) Then
-        Exit Sub
-    End If
+    If Not IntervaloPermiteUsar(UserIndex) Then Exit Sub
 End If
 
 ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
@@ -863,8 +861,7 @@ Select Case Obj.OBJType
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
                 Exit Sub
         End If
-
-    
+        
         If ObjData(ObjIndex).proyectil = 1 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Proyectiles)
         Else
@@ -881,13 +878,11 @@ Select Case Obj.OBJType
         End If
     
     Case eOBJType.otPociones
-    
         If UserList(UserIndex).flags.Muerto = 1 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
             Exit Sub
         End If
         
-'        If UserList(UserIndex).flags.PuedeAtacar = 0 Then
         If Not IntervaloPermiteAtacar(UserIndex, False) Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Debes esperar unos momentos para tomar otra pocion!!" & FONTTYPE_INFO)
             Exit Sub
