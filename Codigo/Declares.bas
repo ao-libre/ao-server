@@ -148,7 +148,6 @@ Public Enum TipoHechizo
 End Enum
 
 Public Const DRAGON As Integer = 6
-Public Const MATADRAGONES As Byte = 1
 
 Public Const MAX_MENSAJES_FORO As Byte = 35
 
