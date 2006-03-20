@@ -2519,7 +2519,7 @@ End If
 '/IRCERCA
 'este comando sirve para teletrasportarse cerca del usuario
 If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
-    Dim U As Integer, indiceUserDestino As Integer
+    Dim indiceUserDestino As Integer
     rData = Right$(rData, Len(rData) - 9) 'obtiene el nombre del usuario
     tIndex = NameIndex(rData)
 
@@ -2532,12 +2532,12 @@ If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
         For i = UserList(tIndex).Pos.X - tInt To UserList(tIndex).Pos.X + tInt
             For DummyInt = UserList(tIndex).Pos.Y - tInt To UserList(tIndex).Pos.Y + tInt
                 If (i >= UserList(tIndex).Pos.X - tInt And i <= UserList(tIndex).Pos.X + tInt) And (DummyInt = UserList(tIndex).Pos.Y - tInt Or DummyInt = UserList(tIndex).Pos.Y + tInt) Then
-                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, DummyInt).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, DummyInt) Then
                         Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
                         Exit Sub
                     End If
                 ElseIf (DummyInt >= UserList(tIndex).Pos.Y - tInt And DummyInt <= UserList(tIndex).Pos.Y + tInt) And (i = UserList(tIndex).Pos.X - tInt Or i = UserList(tIndex).Pos.X + tInt) Then
-                    If MapData(UserList(tIndex).Pos.Map, i, U).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, U) Then
+                    If MapData(UserList(tIndex).Pos.Map, i, DummyInt).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, i, DummyInt) Then
                         Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, i, DummyInt, True)
                         Exit Sub
                     End If

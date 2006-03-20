@@ -467,23 +467,23 @@ Procesado = True 'ver al final del sub
                 Case Ocultarse
                     
                     If UserList(UserIndex).flags.Navegando = 1 Then
-                              '[CDT 17-02-2004]
-                              If Not UserList(UserIndex).flags.UltimoMensaje = 3 Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes ocultarte si estas navegando." & FONTTYPE_INFO)
-                                UserList(UserIndex).flags.UltimoMensaje = 3
-                              End If
-                              '[/CDT]
-                          Exit Sub
+                        '[CDT 17-02-2004]
+                        If Not UserList(UserIndex).flags.UltimoMensaje = 3 Then
+                            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes ocultarte si estas navegando." & FONTTYPE_INFO)
+                            UserList(UserIndex).flags.UltimoMensaje = 3
+                        End If
+                        '[/CDT]
+                        Exit Sub
                     End If
                     
                     If UserList(UserIndex).flags.Oculto = 1 Then
-                              '[CDT 17-02-2004]
-                              If Not UserList(UserIndex).flags.UltimoMensaje = 2 Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ya estas oculto." & FONTTYPE_INFO)
-                                UserList(UserIndex).flags.UltimoMensaje = 2
-                              End If
-                              '[/CDT]
-                          Exit Sub
+                        '[CDT 17-02-2004]
+                        If Not UserList(UserIndex).flags.UltimoMensaje = 2 Then
+                            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ya estas oculto." & FONTTYPE_INFO)
+                            UserList(UserIndex).flags.UltimoMensaje = 2
+                        End If
+                        '[/CDT]
+                        Exit Sub
                     End If
                     
                     Call DoOcultarse(UserIndex)

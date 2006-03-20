@@ -67,22 +67,20 @@ Procesado = True 'ver al final del sub
 
 
     Select Case UCase$(rData)
-    
         Case "/ONLINE"
             N = 0
             tStr = ""
             For LoopC = 1 To LastUser
-                If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <= PlayerType.Consejero Then
+                If UserList(LoopC).name <> "" And UserList(LoopC).flags.Privilegios <= PlayerType.Consejero Then
                     N = N + 1
                     tStr = tStr & UserList(LoopC).name & ", "
                 End If
             Next LoopC
-            If Len(tStr) > 2 Then
-                tStr = Left(tStr, Len(tStr) - 2)
-            End If
+            If Len(tStr) Then tStr = Left$(tStr, Len(tStr) - 2)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_INFO)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Número de usuarios: " & N & FONTTYPE_INFO)
             Exit Sub
+        
         Case "/SALIR"
             If UserList(UserIndex).flags.Paralizado = 1 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes salir estando paralizado." & FONTTYPE_WARNING)
@@ -998,12 +996,7 @@ Procesado = True 'ver al final del sub
             Next i
         
             Exit Sub
-        End Select
-
-
-
-Procesado = False
-
+    End Select
+    
+    Procesado = False
 End Sub
-
-

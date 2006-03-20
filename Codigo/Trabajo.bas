@@ -135,24 +135,24 @@ If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then Suerte = Suerte + 50
 res = RandomNumber(1, Suerte)
 
 If res <= 5 Then
-   UserList(UserIndex).flags.Oculto = 1
-   UserList(UserIndex).flags.Invisible = 1
+    UserList(UserIndex).flags.Oculto = 1
+    UserList(UserIndex).flags.Invisible = 1
 #If SeguridadAlkon Then
-   If EncriptarProtocolosCriticos Then
+    If EncriptarProtocolosCriticos Then
         Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
-   Else
+    Else
 #End If
         Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
-   End If
+    End If
 #End If
-   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Te has escondido entre las sombras!" & FONTTYPE_INFO)
-   Call SubirSkill(UserIndex, Ocultarse)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Te has escondido entre las sombras!" & FONTTYPE_INFO)
+    Call SubirSkill(UserIndex, Ocultarse)
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 4 Then
-      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has logrado esconderte!" & FONTTYPE_INFO)
-      UserList(UserIndex).flags.UltimoMensaje = 4
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No has logrado esconderte!" & FONTTYPE_INFO)
+        UserList(UserIndex).flags.UltimoMensaje = 4
     End If
     '[/CDT]
 End If

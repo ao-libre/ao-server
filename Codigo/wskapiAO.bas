@@ -569,7 +569,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     'Mariano: Baje la busqueda de slot abajo de CondicionSocket y limite x ip
     NewIndex = NextOpenUser ' Nuevo indice
     
-   
     If NewIndex <= MaxUsers Then
         
         UserList(NewIndex).ip = GetAscIP(sa.sin_addr)
@@ -608,25 +607,25 @@ End Sub
 Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
 #If UsarQueSocket = 1 Then
 
-Dim T() As String
+Dim t() As String
 Dim LoopC As Long
 
 UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & Datos
 
-T = Split(UserList(Slot).RDBuffer, ENDC)
-If UBound(T) > 0 Then
-    UserList(Slot).RDBuffer = T(UBound(T))
+t = Split(UserList(Slot).RDBuffer, ENDC)
+If UBound(t) > 0 Then
+    UserList(Slot).RDBuffer = t(UBound(t))
     
-    For LoopC = 0 To UBound(T) - 1
+    For LoopC = 0 To UBound(t) - 1
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If T(LoopC) <> "" Then If Not UserList(Slot).CommandsBuffer.Push(T(LoopC)) Then Call CloseSocket(Slot)
+            If t(LoopC) <> "" Then If Not UserList(Slot).CommandsBuffer.Push(t(LoopC)) Then Call CloseSocket(Slot)
         Else ' no encolamos los comandos (MUY VIEJO)
               If UserList(Slot).ConnID <> -1 Then
-                Call HandleData(Slot, T(LoopC))
+                Call HandleData(Slot, t(LoopC))
               Else
                 Exit Sub
               End If
