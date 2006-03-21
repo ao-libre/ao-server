@@ -37,3 +37,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 19/03/2006: Corregí un bug al crear personajes. Ahroa esto ya funciona nuevamente (Maraxus).
  * 19/03/2006: Puse Option Explicit en todos los módulos, tipé un par de constantes que encontré perdidas y convertí los privilegios en un Enum (Maraxus).
  * 20/03/2006: Corregí un bug en /IRCERCA (gracias a Patenke por el code) (Maraxus).
+ * 21/03/2006: Corregí bugs varios al vender items a un NPC. Limpié un poco el código de comercio. (Maraxus).
+
+http://video.google.com/videoplay?docid=15634280078951609&q=genre%3Aad_promo
