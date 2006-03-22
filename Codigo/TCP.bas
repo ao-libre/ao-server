@@ -33,15 +33,15 @@ Option Explicit
 
 'RUTAS DE ENVIO DE DATOS
 Public Enum SendTarget
-    ToIndex = 0 'Envia a un solo User
-    ToAll = 1 'A todos los Users
-    ToMap = 2   'Todos los Usuarios en el mapa
-    ToPCArea = 3      'Todos los Users en el area de un user determinado
-    ToNone = 4  'Ninguno
-    ToAllButIndex = 5  'Todos menos el index
-    ToMapButIndex = 6  'Todos en el mapa menos el indice
+    ToIndex = 0         'Envia a un solo User
+    ToAll = 1           'A todos los Users
+    ToMap = 2           'Todos los Usuarios en el mapa
+    ToPCArea = 3        'Todos los Users en el area de un user determinado
+    ToNone = 4          'Ninguno
+    ToAllButIndex = 5   'Todos menos el index
+    ToMapButIndex = 6   'Todos en el mapa menos el indice
     ToGM = 7
-    ToNPCArea = 8  'Todos los Users en el area de un user determinado
+    ToNPCArea = 8       'Todos los Users en el area de un user determinado
     ToGuildMembers = 9
     ToAdmins = 10
     ToPCAreaButIndex = 11
@@ -515,8 +515,6 @@ UserList(UserIndex).Stats.GLD = 0
 UserList(UserIndex).Stats.Exp = 0
 UserList(UserIndex).Stats.ELU = 300
 UserList(UserIndex).Stats.ELV = 1
-
-UserList(UserIndex).flags.Privilegios = PlayerType.User
 
 '???????????????? INVENTARIO 真真真真真真真真真真
 UserList(UserIndex).Invent.NroItems = 4
@@ -1702,7 +1700,7 @@ ElseIf EsConsejero(name) Then
     UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
 Else
-    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
+    UserList(UserIndex).flags.Privilegios = PlayerType.User
 End If
 
 If UserList(UserIndex).NroMacotas > 0 Then
