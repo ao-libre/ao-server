@@ -749,7 +749,9 @@ Dim nPos As WorldPos
         UserList(UserIndex).Pos = nPos
         UserList(UserIndex).Char.Heading = nHeading
         MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
-    
+        
+        'Actualizamos las áreas de ser necesario
+        Call ModAreas.CheckUpdateNeededUser(UserIndex, nHeading)
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "PU" & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y)
     End If

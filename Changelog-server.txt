@@ -39,3 +39,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 20/03/2006: Corregí un bug en /IRCERCA (gracias a Patenke por el code) (Maraxus).
  * 21/03/2006: Corregí bugs varios al vender items a un NPC. Limpié un poco el código de comercio. (Maraxus).
  * 22/03/2006: Corregí un bug alcargar y grabar mapas en el server. (Maraxus).
+ * 22/03/2006: Hice que actualice las áreas al moverse el user (evita las desapariciones del PJ y los saltos feos). (Maraxus).
