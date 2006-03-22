@@ -389,7 +389,6 @@ If BootDelBackUp Then
 Else
     frmCargando.Label1(2).Caption = "Cargando Mapas"
     Call LoadMapData
-    'Call LoadMapData_Nuevo
 End If
 
 

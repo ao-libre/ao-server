@@ -735,7 +735,6 @@ Dim nPos As WorldPos
     Call HeadtoPos(nHeading, nPos)
     
     If LegalPos(UserList(UserIndex).Pos.Map, nPos.X, nPos.Y, PuedeAtravesarAgua(UserIndex)) Then
-        
         If MapInfo(UserList(UserIndex).Pos.Map).NumUsers > 1 Then
             'si no estoy solo en el mapa...
 #If SeguridadAlkon Then
@@ -745,7 +744,6 @@ Dim nPos As WorldPos
 #End If
         End If
         
-    
         'Update map and user pos
         MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
         UserList(UserIndex).Pos = nPos

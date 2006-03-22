@@ -344,8 +344,13 @@ End Sub
 
 Public Sub GrabarMapa(ByVal Map As Long, ByVal MAPFILE As String)
 On Error Resume Next
-Dim FreeFileMap As Long, FreeFileInf As Long, Y As Long, X As Long
-Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
+    Dim FreeFileMap As Long
+    Dim FreeFileInf As Long
+    Dim Y As Long
+    Dim X As Long
+    Dim ByFlags As Byte
+    Dim TempInt As Integer
+    Dim LoopC As Long
     
     If FileExist(MAPFILE & ".map", vbNormal) Then
         Kill MAPFILE & ".map"
@@ -354,7 +359,6 @@ Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
     If FileExist(MAPFILE & ".inf", vbNormal) Then
         Kill MAPFILE & ".inf"
     End If
-    
     
     'Open .map file
     FreeFileMap = FreeFile
@@ -403,7 +407,7 @@ Dim ByFlags As Byte, TempInt As Integer, LoopC As Long
                 Next LoopC
                 
                 If MapData(Map, X, Y).trigger Then _
-                    Put FreeFileMap, , MapData(Map, X, Y).trigger
+                    Put FreeFileMap, , CInt(MapData(Map, X, Y).trigger)
                 
                 '.inf file
                 
@@ -1052,10 +1056,15 @@ man:
 End Sub
 
 Public Sub CargarMapa(ByVal Map As Long, ByVal MAPFl As String)
-Dim FreeFileMap As Long, FreeFileInf As Long, Y As Long, X As Long
-Dim ByFlags As Byte, npcfile As String, TempInt As Integer
 On Error GoTo errh
-
+    Dim FreeFileMap As Long
+    Dim FreeFileInf As Long
+    Dim Y As Long
+    Dim X As Long
+    Dim ByFlags As Byte
+    Dim npcfile As String
+    Dim TempInt As Integer
+    
     FreeFileMap = FreeFile
     
     Open MAPFl & ".map" For Binary As #FreeFileMap
@@ -1093,21 +1102,25 @@ On Error GoTo errh
             End If
             
             Get FreeFileMap, , MapData(Map, X, Y).Graphic(1)
-                
+            
             'Layer 2 used?
             If ByFlags And 2 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(2)
-                    
+            
             'Layer 3 used?
             If ByFlags And 4 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(3)
-                    
+            
             'Layer 4 used?
             If ByFlags And 8 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(4)
-                
+            
             'Trigger used?
-            If ByFlags And 16 Then Get FreeFileMap, , MapData(Map, X, Y).trigger
-
+            If ByFlags And 16 Then
+                'Enums are 4 byte long in VB, so we make sure we only read 2
+                Get FreeFileMap, , TempInt
+                MapData(Map, X, Y).trigger = TempInt
+            End If
+            
             Get FreeFileInf, , ByFlags
-
+            
             If ByFlags And 1 Then
                 Get FreeFileInf, , MapData(Map, X, Y).TileExit.Map
                 Get FreeFileInf, , MapData(Map, X, Y).TileExit.X
@@ -1143,25 +1156,16 @@ On Error GoTo errh
                     Call MakeNPCChar(SendTarget.ToMap, 0, 0, MapData(Map, X, Y).NpcIndex, 1, 1, 1)
                 End If
             End If
-    
+            
             If ByFlags And 4 Then
                 'Get and make Object
                 Get FreeFileInf, , MapData(Map, X, Y).OBJInfo.ObjIndex
                 Get FreeFileInf, , MapData(Map, X, Y).OBJInfo.Amount
-
-                '[MARIANO] PARA QUE CARAJO ESTA ESTA VALIDACION ??? HAY COMO 900 OBJETOS!!!!
-                'If MapData(Map, X, Y).OBJInfo.ObjIndex > 700 Then
-                '    Debug.Print "Error en mapas!"
-                '    MapData(Map, X, Y).OBJInfo.ObjIndex = 0
-                '    MapData(Map, X, Y).OBJInfo.Amount = 0
-                'End If
-            
             End If
-            
         Next X
     Next Y
     
-       
+    
     Close FreeFileMap
     Close FreeFileInf
     
@@ -1178,16 +1182,16 @@ On Error GoTo errh
     Else
         MapInfo(Map).Pk = False
     End If
-        
-        
+    
+    
     MapInfo(Map).Terreno = GetVar(MAPFl & ".dat", "Mapa" & Map, "Terreno")
     MapInfo(Map).Zona = GetVar(MAPFl & ".dat", "Mapa" & Map, "Zona")
     MapInfo(Map).Restringir = GetVar(MAPFl & ".dat", "Mapa" & Map, "Restringir")
     MapInfo(Map).BackUp = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "BACKUP"))
 Exit Sub
+
 errh:
     Call LogError("Error cargando mapa: " & Map & "." & Err.Description)
-
 End Sub
 
 Sub LoadSini()

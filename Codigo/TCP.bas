@@ -328,17 +328,12 @@ End Function
 'Barrin 3/3/03
 'Agregué PadrinoName y Padrino password como opcionales, que se les da un valor siempre y cuando el servidor esté usando el sistema
 Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, Body As Integer, Head As Integer, UserRaza As String, UserSexo As String, UserClase As String, _
-UA1 As String, UA2 As String, UA3 As String, UA4 As String, UA5 As String, _
-US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
-US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
-US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
-US16 As String, US17 As String, US18 As String, US19 As String, US20 As String, _
-US21 As String, UserEmail As String, Hogar As String, Optional PadrinoName As String, Optional PadrinoPassword As String)
-
-If Not NombrePermitido(name) Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRLos nombres de los personajes deben pertencer a la fantasia, el nombre indicado es invalido.")
-    Exit Sub
-End If
+                    UA1 As String, UA2 As String, UA3 As String, UA4 As String, UA5 As String, _
+                    US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
+                    US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
+                    US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
+                    US16 As String, US17 As String, US18 As String, US19 As String, US20 As String, _
+                    US21 As String, UserEmail As String, Hogar As String)
 
 If Not AsciiValidos(name) Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRNombre invalido.")
@@ -379,8 +374,8 @@ UserList(UserIndex).Hogar = Hogar
 
 '%%%%%%%%%%%%% PREVENIR HACKEO DE LOS ATRIBUTOS %%%%%%%%%%%%%
 If Not ValidateAtrib(UserIndex) Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRAtributos invalidos.")
-        Exit Sub
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRAtributos invalidos.")
+    Exit Sub
 End If
 '%%%%%%%%%%%%% PREVENIR HACKEO DE LOS ATRIBUTOS %%%%%%%%%%%%%
 
@@ -521,6 +516,7 @@ UserList(UserIndex).Stats.Exp = 0
 UserList(UserIndex).Stats.ELU = 300
 UserList(UserIndex).Stats.ELV = 1
 
+UserList(UserIndex).flags.Privilegios = PlayerType.User
 
 '???????????????? INVENTARIO ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
 UserList(UserIndex).Invent.NroItems = 4
@@ -2373,7 +2369,6 @@ On Error GoTo ErrorHandler:
                 Ver = ReadField(5, rData, 44)
                 If VersionOK(Ver) Then
                     Dim miinteger As Integer
-                    Debug.Print rData
                     miinteger = CInt(ReadField(44, rData, 44))
                     
                     If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> miinteger Then
