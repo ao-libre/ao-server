@@ -180,8 +180,10 @@ Public Const WSANO_DATA As Integer = 25004
 Public Const WSANO_ADDRESS As Integer = 2500
 #End If
 
-Sub DarCuerpoYCabeza(UserBody As Integer, UserHead As Integer, Raza As String, Gen As String)
-
+Sub DarCuerpoYCabeza(ByRef UserBody As Integer, ByRef UserHead As Integer, ByVal Raza As String, ByVal Gen As String)
+'TODO: Poner las heads en arrays, así se acceden por índices
+'y no hay problemas de discontinuidad de los índices.
+'También se debe usar enums para raza y sexo
 Select Case Gen
    Case "Hombre"
         Select Case Raza
@@ -190,11 +192,12 @@ Select Case Gen
                     If UserHead > 30 Then UserHead = 22
                     UserBody = 1
                 Case "Elfo"
-                    UserHead = CInt(RandomNumber(1, 12)) + 100
-                    If UserHead > 112 Then UserHead = 104
+                    UserHead = CInt(RandomNumber(1, 13)) + 100
+                    If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
+                    ElseIf UserHead > 112 Then UserHead = 104
                     UserBody = 2
                 Case "Elfo Oscuro"
-                    UserHead = CInt(RandomNumber(1, 9)) + 200
+                    UserHead = CInt(RandomNumber(1, 8)) + 201
                     If UserHead > 209 Then UserHead = 203
                     UserBody = 3
                 Case "Enano"
@@ -216,8 +219,8 @@ Select Case Gen
                     If UserHead > 76 Then UserHead = 74
                     UserBody = 1
                 Case "Elfo"
-                    UserHead = CInt(RandomNumber(1, 7)) + 166
-                    If UserHead > 177 Then UserHead = 172
+                    UserHead = CInt(RandomNumber(1, 7)) + 169
+                    If UserHead > 176 Then UserHead = 172
                     UserBody = 2
                 Case "Elfo Oscuro"
                     UserHead = CInt(RandomNumber(1, 11)) + 269
@@ -235,10 +238,8 @@ Select Case Gen
                     UserHead = 70
                     UserBody = 1
         End Select
-
 End Select
 
-   
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
@@ -607,11 +608,11 @@ errhandler:
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
     
-    #If UsarQueSocket = 1 Then
+#If UsarQueSocket = 1 Then
     If UserList(UserIndex).ConnID <> -1 Then
         Call CloseSocketSL(UserIndex)
     End If
-    #End If
+#End If
 
 End Sub
 
@@ -1710,10 +1711,10 @@ If UserList(UserIndex).NroMacotas > 0 Then
             UserList(UserIndex).MascotasIndex(i) = SpawnNpc(UserList(UserIndex).MascotasType(i), UserList(UserIndex).Pos, True, True)
             
             If UserList(UserIndex).MascotasIndex(i) <= MAXNPCS Then
-                  Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
-                  Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
+                Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
+                Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
             Else
-                  UserList(UserIndex).MascotasIndex(i) = 0
+                UserList(UserIndex).MascotasIndex(i) = 0
             End If
         End If
     Next i
@@ -2140,17 +2141,6 @@ For i = 1 To MAXMASCOTAS
                 Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
     End If
 Next i
-
-'If UserIndex = LastUser Then
-'    Do Until UserList(LastUser).flags.UserLogged
-'        LastUser = LastUser - 1
-'        If LastUser < 1 Then Exit Do
-'    Loop
-'End If
-  
-'If NumUsers <> 0 Then
-'    NumUsers = NumUsers - 1
-'End If
 
 'Update Map Users
 MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1

@@ -41,3 +41,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 22/03/2006: Corregí un bug alcargar y grabar mapas en el server. (Maraxus).
  * 22/03/2006: Hice que actualice las áreas al moverse el user (evita las desapariciones del PJ y los saltos feos). (Maraxus).
  * 22/03/2006: Corregí el bug de que los PJs nuevos fuesen GMs. (Maraxus).
+ * 23/03/2006: Corregí los índices de los heads para evitar la gente que nacía sin cabeza. (Maraxus).
