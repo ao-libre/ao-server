@@ -2937,7 +2937,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, val(Arg2), UserList(tIndex).Char.Head, UserList(tIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, val(Arg2), UserList(tIndex).Char.Head, UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
             Exit Sub
         Case "HEAD"
             If tIndex <= 0 Then
@@ -2946,7 +2946,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, UserList(tIndex).Char.Body, val(Arg2), UserList(tIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, UserList(tIndex).Char.Body, val(Arg2), UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
             Exit Sub
         Case "CRI"
             If tIndex <= 0 Then
