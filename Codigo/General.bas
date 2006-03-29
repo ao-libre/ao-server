@@ -1301,14 +1301,6 @@ Sub PasarSegundo()
                 
                 Call CloseSocket(i)
                 Exit Sub
-'                Call CloseUser(i)
-'                UserList(i).ConnID = -1: UserList(i).NumeroPaquetesPorMiliSec = 0
-'                frmMain.Socket2(i).Disconnect
-'                frmMain.Socket2(i).Cleanup
-'                'Unload frmMain.Socket2(i)
-'                Call ResetUserSlot(i)
-'            Else
-'                Call SendData(SendTarget.ToIndex, i, 0, "||En " & UserList(i).Counters.Salir & " segundos se cerrará el juego..." & FONTTYPE_INFO)
             End If
         
         'ANTIEMPOLLOS

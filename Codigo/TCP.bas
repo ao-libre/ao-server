@@ -589,7 +589,17 @@ On Error GoTo errhandler
     ' y lo podemos loguear
     If Centinela.RevisandoUserIndex = UserIndex Then _
         Call modCentinela.CentinelaUserLogout
-
+    
+    ''mato los comercios seguros
+    If UserList(UserIndex).ComUsu.DestUsu > 0 Then
+        If UserList(UserList(UserIndex).ComUsu.DestUsu).flags.UserLogged Then
+            If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu = UserIndex Then
+                Call SendData(SendTarget.ToIndex, UserList(UserIndex).ComUsu.DestUsu, 0, "||Comercio cancelado por el otro usuario" & FONTTYPE_TALK)
+                Call FinComerciarUsu(UserList(UserIndex).ComUsu.DestUsu)
+            End If
+        End If
+    End If
+    
     If UserList(UserIndex).flags.UserLogged Then
         If NumUsers > 0 Then NumUsers = NumUsers - 1
         Call CloseUser(UserIndex)
@@ -2064,6 +2074,14 @@ Call LimpiarInventario(UserIndex)
 Call ResetUserSpells(UserIndex)
 Call ResetUserPets(UserIndex)
 Call ResetUserBanco(UserIndex)
+
+With UserList(UserIndex).ComUsu
+    .Acepto = False
+    .Cant = 0
+    .DestNick = ""
+    .DestUsu = 0
+    .Objeto = 0
+End With
 
 UserList(UserIndex) = UsrTMP
 

@@ -97,28 +97,9 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Comercio cancelado. " & FONTTYPE_TALK)
                 Call FinComerciarUsu(UserIndex)
             End If
-            Cerrar_Usuario (UserIndex)
+            Call Cerrar_Usuario(UserIndex)
             Exit Sub
         Case "/SALIRCLAN"
-            'clanesnuevo
-            
-            'If UserList(UserIndex).GuildInfo.EsGuildLeader = 1 Then
-            '          Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Eres líder de un clan, no puedes salir del mismo." & FONTTYPE_INFO)
-            '          Exit Sub
-            'ElseIf UserList(UserIndex).GuildInfo.GuildName = "" Then
-            '          Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No perteneces a ningún clan." & FONTTYPE_INFO)
-            '          Exit Sub
-            'Else
-            '    Call SendData(SendTarget.ToGuildMembers, UserIndex, 0, "||" & UserList(UserIndex).Name & " decidió dejar al clan." & FONTTYPE_GUILD)
-            '    Dim oGuild As cGuild
-            '    Set oGuild = FetchGuild(UserList(UserIndex).GuildInfo.GuildName)
-            '    Call oGuild.RemoveMember(UserList(UserIndex).Name)
-            '    Call AddtoVar(UserList(UserIndex).GuildInfo.Echadas, 1, 1000)
-            '    UserList(UserIndex).GuildInfo.GuildPoints = 0
-            '    UserList(UserIndex).GuildInfo.GuildName = ""
-            '''''''''''''''''
-            'End If
-            
             'obtengo el guildindex
             tInt = m_EcharMiembroDeClan(UserIndex, UserList(UserIndex).name)
             
