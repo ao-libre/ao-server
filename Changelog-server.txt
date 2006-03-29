@@ -46,3 +46,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/03/2006: Hice se resetease el flag CentinelaOK en ResetUserFlags (Maraxus).
  * 29/03/2006: Corregí bugs menores con el centinela, hice que se vuelva a acercar al user al pasar 1 minuto (por si "no lo vió" la primera vez) (Maraxus).
  * 29/03/2006: Hice que el centinela hable al clickearselo como cualquier otro NPC. El texto depende del user que lo clickea (Maraxus).
+ * 29/03/2006: Corregí el bug que te pateaba si enviabas un /CENTINELA antes de que este aparezca por primera vez (Maraxus).

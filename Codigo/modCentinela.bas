@@ -149,6 +149,8 @@ Private Sub CentinelaSendClave(ByVal UserIndex As Integer)
 '############################################################
 'Enviamos al usuario la clave vía el personaje centinela
 '############################################################
+    If CentinelaCharIndex = 0 Then Exit Sub
+    
     If UserIndex = Centinela.RevisandoUserIndex Then
         If Not UserList(UserIndex).flags.CentinelaOK Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "¡La clave que te he dicho es " & "/CENTINELA " & Centinela.clave & " escríbelo rápido!" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
