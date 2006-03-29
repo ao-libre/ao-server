@@ -83,7 +83,7 @@ End If
 
 End Function
 
-Function Distancia(wp1 As WorldPos, wp2 As WorldPos)
+Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
 
 'Encuentra la distancia entre dos WorldPos
 

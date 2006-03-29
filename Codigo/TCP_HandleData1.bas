@@ -1451,11 +1451,6 @@ Procesado = True 'ver al final del sub
             If Trim$(rData) = vbNullString Then Exit Sub
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "CLANDET" & modGuilds.SendGuildDetails(rData))
             Exit Sub
-        
-        Case "/CENTINELA "
-            tInt = val(Right$(rData, Len(rData) - 11))
-            Call CentinelaCheckClave(tInt)
-            Exit Sub
     End Select
     
 Procesado = False

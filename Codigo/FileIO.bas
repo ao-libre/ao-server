@@ -1793,8 +1793,8 @@ End Sub
 
 Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motivo As String)
 
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).name, "BannedBy", UserList(UserIndex).name)
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", UserList(BannedIndex).name, "Reason", motivo)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "BannedBy", UserList(UserIndex).name)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "Reason", motivo)
 
 'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
 Dim mifile As Integer

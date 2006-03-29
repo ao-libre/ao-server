@@ -586,13 +586,19 @@ Procesado = True 'ver al final del sub
         
         Exit Sub
     End If
-
+    
     If UCase$(Left$(rData, 6)) = "/PMSG " Then
         Call mdParty.BroadCastParty(UserIndex, Mid$(rData, 7))
         Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
         Exit Sub
     End If
-
+    
+    If UCase$(Left$(rData, 11)) = "/CENTINELA " Then
+        tInt = val(Right$(rData, Len(rData) - 11))
+        Call CentinelaCheckClave(UserIndex, tInt)
+        Exit Sub
+    End If
+    
     If UCase$(rData) = "/ONLINECLAN" Then
         tStr = modGuilds.m_ListaDeMiembrosOnline(UserList(UserIndex).GuildIndex)
         If tStr <> vbNullString Then

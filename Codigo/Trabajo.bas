@@ -1335,7 +1335,6 @@ End If
 If UserList(UserIndex).Counters.bPuedeMeditar = False Then
     UserList(UserIndex).Counters.bPuedeMeditar = True
 End If
-If UserList(UserIndex).Counters.bPuedeMeditar = False Then Exit Sub
 
 If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has terminado de meditar." & FONTTYPE_INFO)

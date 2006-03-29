@@ -193,11 +193,14 @@ Select Case Gen
                     UserBody = 1
                 Case "Elfo"
                     UserHead = CInt(RandomNumber(1, 13)) + 100
-                    If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
-                    ElseIf UserHead > 112 Then UserHead = 104
+                    If UserHead = 113 Then
+                        UserHead = 201       'Un índice no es continuo.... :S muy feo
+                    ElseIf UserHead > 112 Then
+                        UserHead = 104
+                    End If
                     UserBody = 2
                 Case "Elfo Oscuro"
-                    UserHead = CInt(RandomNumber(1, 8)) + 201
+                    UserHead = CInt(RandomNumber(1, 9)) + 200
                     If UserHead > 209 Then UserHead = 203
                     UserBody = 3
                 Case "Enano"
@@ -879,7 +882,7 @@ Select Case sndRoute
     Case SendTarget.ToIndex
         If UserList(sndIndex).ConnID <> -1 Then
             Call EnviarDatosASlot(sndIndex, sndData)
-             Exit Sub
+            Exit Sub
         End If
 
 
@@ -1945,9 +1948,10 @@ End Sub
 Sub ResetUserFlags(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 03/15/2006
+'Last modified: 03/29/2006
 'Resetea todos los valores generales y las stats
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'03/29/2006 Maraxus - Reseteo el CentinelaOK también.
 '*************************************************
     With UserList(UserIndex).flags
         .Comerciando = False
@@ -1993,6 +1997,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .PertAlCons = 0
         .PertAlConsCaos = 0
         .Silenciado = 0
+        .CentinelaOK = False
     End With
 End Sub
 
