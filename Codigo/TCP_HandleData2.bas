@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -68,16 +68,13 @@ Procesado = True 'ver al final del sub
 
     Select Case UCase$(rData)
         Case "/ONLINE"
+            'No se envia más la lista completa de usuarios
             N = 0
-            tStr = ""
             For LoopC = 1 To LastUser
                 If UserList(LoopC).name <> "" And UserList(LoopC).flags.Privilegios <= PlayerType.Consejero Then
                     N = N + 1
-                    tStr = tStr & UserList(LoopC).name & ", "
                 End If
             Next LoopC
-            If Len(tStr) Then tStr = Left$(tStr, Len(tStr) - 2)
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_INFO)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Número de usuarios: " & N & FONTTYPE_INFO)
             Exit Sub
         
@@ -403,7 +400,7 @@ Procesado = True 'ver al final del sub
                 'inicializa unas variables...
                 UserList(UserIndex).ComUsu.DestUsu = UserList(UserIndex).flags.TargetUser
                 UserList(UserIndex).ComUsu.DestNick = UserList(UserList(UserIndex).flags.TargetUser).name
-                UserList(UserIndex).ComUsu.Cant = 0
+                UserList(UserIndex).ComUsu.cant = 0
                 UserList(UserIndex).ComUsu.Objeto = 0
                 UserList(UserIndex).ComUsu.Acepto = False
                 
@@ -610,6 +607,7 @@ Procesado = True 'ver al final del sub
     
     If UCase$(Left$(rData, 5)) = "/ROL " Then
         rData = Right$(rData, Len(rData) - 5)
+        Call SendData(SendTarget.ToIndex, 0, 0, "|| " & "Su solicitud ha sido enviada" & FONTTYPE_INFO)
         Call SendData(SendTarget.ToRolesMasters, 0, 0, "|| " & LCase$(UserList(UserIndex).name) & " PREGUNTA ROL: " & rData & FONTTYPE_GUILDMSG)
         Exit Sub
     End If

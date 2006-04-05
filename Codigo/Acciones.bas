@@ -94,26 +94,25 @@ If InMapBounds(Map, X, Y) Then
                   Exit Sub
               End If
               
-        '[DnG!]
-        If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
-            If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                Exit Sub
+            '[DnG!]
+            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
+                If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    Exit Sub
+                End If
             End If
-        End If
-        
-        If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
-            If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                Exit Sub
+            
+            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
+                If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    Exit Sub
+                End If
             End If
+            '[/DnG!]
+            
+            'Iniciamos la rutina pa' comerciar.
+            Call IniciarCOmercioNPC(UserIndex)
         End If
-        '[/DnG!]
-        
-        'Iniciamos la rutina pa' comerciar.
-        Call IniciarCOmercioNPC(UserIndex)
-        End If
-        
     Else
         UserList(UserIndex).flags.TargetNPC = 0
         UserList(UserIndex).flags.TargetNpcTipo = 0

@@ -104,14 +104,14 @@ On Error GoTo errhandler
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then
-                Dim t As Integer
-                For t = 1 To MAXMASCOTAS
-                      If UserList(UserIndex).MascotasIndex(t) > 0 Then
-                          If Npclist(UserList(UserIndex).MascotasIndex(t)).TargetNPC = NpcIndex Then
-                                  Call FollowAmo(UserList(UserIndex).MascotasIndex(t))
+                Dim T As Integer
+                For T = 1 To MAXMASCOTAS
+                      If UserList(UserIndex).MascotasIndex(T) > 0 Then
+                          If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
+                                  Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
                           End If
                       End If
-                Next t
+                Next T
         End If
         
         '[KEVIN]
@@ -383,10 +383,8 @@ Dim Y As Integer
         altpos.Map = mapa
         
         Do While Not PosicionValida
-        
-            Randomize (Timer)
-            Pos.X = CInt(Rnd * 100 + 1) 'Obtenemos posicion al azar en x
-            Pos.Y = CInt(Rnd * 100 + 1) 'Obtenemos posicion al azar en y
+            Pos.X = RandomNumber(1, 100)    'Obtenemos posicion al azar en x
+            Pos.Y = RandomNumber(1, 100)    'Obtenemos posicion al azar en y
             
             Call ClosestLegalPos(Pos, newpos)  'Nos devuelve la posicion valida mas cercana
             If newpos.X <> 0 Then altpos.X = newpos.X
@@ -523,56 +521,56 @@ On Error GoTo errh
     
     'Es mascota ????
     If Npclist(NpcIndex).MaestroUser > 0 Then
-            ' es una posicion legal
-            If LegalPos(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y, Npclist(NpcIndex).flags.AguaValida = 1) Then
+        ' es una posicion legal
+        If LegalPos(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y, Npclist(NpcIndex).flags.AguaValida = 1) Then
+        
+            If Npclist(NpcIndex).flags.AguaValida = 0 And HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
+            If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
             
-                If Npclist(NpcIndex).flags.AguaValida = 0 And HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
-                If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
-                
 #If SeguridadAlkon Then
-                Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y), True)
+            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
 #Else
-                Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
             
-                'Update map and user pos
-                MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
-                Npclist(NpcIndex).Pos = nPos
-                Npclist(NpcIndex).Char.Heading = nHeading
-                MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
-                'Call CheckUpdateNeededNpc(NpcIndex, nHeading)
-            End If
-    Else ' No es mascota
-            ' Controlamos que la posicion sea legal, los npc que
-            ' no son mascotas tienen mas restricciones de movimiento.
-            If LegalPosNPC(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y, Npclist(NpcIndex).flags.AguaValida) Then
-                
-                If Npclist(NpcIndex).flags.AguaValida = 0 And HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
-                If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
-                
-                '[Alejo-18-5]
-                'server
+            'Update map and user pos
+            MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
+            Npclist(NpcIndex).Pos = nPos
+            Npclist(NpcIndex).Char.Heading = nHeading
+            MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
+            Call CheckUpdateNeededNpc(NpcIndex, nHeading)
+        End If
+Else ' No es mascota
+        ' Controlamos que la posicion sea legal, los npc que
+        ' no son mascotas tienen mas restricciones de movimiento.
+        If LegalPosNPC(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y, Npclist(NpcIndex).flags.AguaValida) Then
+            
+            If Npclist(NpcIndex).flags.AguaValida = 0 And HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
+            If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
+            
+            '[Alejo-18-5]
+            'server
 #If SeguridadAlkon Then
-                Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y), True)
+            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
 #Else
-                Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
-                
-                'Update map and user pos
-                MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
-                Npclist(NpcIndex).Pos = nPos
-                Npclist(NpcIndex).Char.Heading = nHeading
-                MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
-                
-                'Call CheckUpdateNeededNpc(NpcIndex, nHeading)
             
-            Else
-                If Npclist(NpcIndex).Movement = TipoAI.NpcPathfinding Then
-                    'Someone has blocked the npc's way, we must to seek a new path!
-                    Npclist(NpcIndex).PFINFO.PathLenght = 0
-                End If
+            'Update map and user pos
+            MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
+            Npclist(NpcIndex).Pos = nPos
+            Npclist(NpcIndex).Char.Heading = nHeading
+            MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
             
+            Call CheckUpdateNeededNpc(NpcIndex, nHeading)
+        
+        Else
+            If Npclist(NpcIndex).Movement = TipoAI.NpcPathfinding Then
+                'Someone has blocked the npc's way, we must to seek a new path!
+                Npclist(NpcIndex).PFINFO.PathLenght = 0
             End If
+        
+        End If
     End If
 
 Exit Sub

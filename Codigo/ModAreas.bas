@@ -502,7 +502,7 @@ Public Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As St
     Next LoopC
 End Sub
 
-Public Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String, Optional ByVal SinEndc As Boolean = False)
+Public Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
@@ -520,13 +520,13 @@ Public Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String, Optiona
     AreaX = Npclist(NpcIndex).AreasInfo.AreaPerteneceX
     AreaY = Npclist(NpcIndex).AreasInfo.AreaPerteneceY
     
-    If Not SinEndc Then sdData = sdData & ENDC
+    sdData = sdData & ENDC
     
     If Not MapaValido(Map) Then Exit Sub
-
+    
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         TempIndex = ConnGroups(Map).UserEntrys(LoopC)
-            
+        
         TempInt = UserList(TempIndex).AreasInfo.AreaReciveX And AreaX
         If TempInt Then  'Esta en el area?
             TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY

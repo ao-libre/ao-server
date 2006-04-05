@@ -65,11 +65,17 @@ Private Sub GoToNextWorkingChar()
                 Call WarpCentinela(LoopC)
                 
                 'Mandamos el mensaje
-                Call SendData(SendTarget.ToIndex, LoopC, 0, "||" & vbWhite & "°" & "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+                Call SendData(SendTarget.ToIndex, LoopC, 0, "||" & vbGreen & "°" & "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
                 Exit Sub
             End If
         End If
     Next LoopC
+    
+    'No hay chars trabajando, eliminamos el NPC si todavía estaba en algún lado y esperamos otro minuto
+    If CentinelaCharIndex Then
+        Call QuitarNPC(CentinelaCharIndex)
+        CentinelaCharIndex = 0
+    End If
 End Sub
 
 Private Sub CentinelaFinalCheck()
@@ -160,7 +166,7 @@ Private Sub CentinelaSendClave(ByVal UserIndex As Integer)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Te agradezco, pero ya me has respondido. Me retiraré pronto." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
         End If
     Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No es a ti a quien estoy revisando, ¿no ves?" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No es a ti a quien estoy hablando, ¿no ves?" & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
         
         'Logueamos el evento
         Call LogCentinela("El usuario " & UserList(UserIndex).name & " respondió aunque no se le hablaba a él.")
@@ -172,6 +178,9 @@ Public Sub PasarMinutoCentinela()
 'Control del timer. Llamado cada un minuto.
 '############################################################
     If Centinela.RevisandoUserIndex = 0 Then
+        Call GoToNextWorkingChar
+    'No usamos un Or porque VB no es LAZY y sino me tira rt 9
+    ElseIf UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
         Call GoToNextWorkingChar
     Else
         Centinela.TiempoRestante = Centinela.TiempoRestante - 1
@@ -194,6 +203,11 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
 '############################################################
 'Inciamos la revisión del usuario UserIndex
 '############################################################
+    'Evitamos conflictos de índices
+    If CentinelaCharIndex Then
+        Call QuitarNPC(CentinelaCharIndex)
+    End If
+    
     If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
         CentinelaCharIndex = SpawnNpc(NPC_CENTINELA_AGUA, UserList(UserIndex).Pos, True, False)
     Else

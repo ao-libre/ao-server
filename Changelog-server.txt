@@ -48,4 +48,17 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/03/2006: Hice que el centinela hable al clickearselo como cualquier otro NPC. El texto depende del user que lo clickea (Maraxus).
  * 29/03/2006: Corregí el bug que te pateaba si enviabas un /CENTINELA antes de que este aparezca por primera vez (Maraxus).
  * 29/03/2006: Corregí el bug que no cancelaba el comercio seguro si no se cierra con "/salir" (Maraxus).
- * 29/03/2006: corregí el bug que copiaba el equipo del GM sobre el user al que se le hacía un /MOD de BODY o HEAD (Maraxus).
+ * 29/03/2006: Corregí el bug que copiaba el equipo del GM sobre el user al que se le hacía un /MOD de BODY o HEAD (Maraxus).
+ * 30/03/2006: Implementé el comando /SHOWNAME pedido por Pol'Thalas (Maraxus).
+ * 30/03/2006: Rehabilité el ver el clan al pasar el mouse sobre un PJ (Maraxus).
+ * 31/03/2006: Corregí el /STAT para que funcione con PJs offline (Maraxus).
+ * 31/03/2006: Modifiqué los dados según pidió GD (Maraxus).
+ * 31/03/2006: Eliminé los chequeos de atributos válidos que eran obsoletos (Maraxus).
+ * 31/03/2006: Corregí un bug con /SHOWNAME (Maraxus).
+ * 31/03/2006: Eliminé los atributos de la lista de argumentos de ConnectNewUser (Maraxus).
+ * 31/03/2006: /ROL envia un mensaje notificando que el envío se realizó (Maraxus).
+ * 31/03/2006: /INV leía el número de objetos de la bóveda y no del inventario si el PJ estaba offline (Maraxus).
+ * 1/04/2006: El centinela ya no pide la contraseña al pasar un minuto si ya se le respondió (Maraxus).
+ * 1/04/2006: El ValCode y MD5 se pusieron al final del OLOGIN para evitar problemas si el MD5 contenía comas (Maraxus).
+ * 1/04/2006: Eliminé el head y el body del NLOGIN (eran ceros) (Maraxus).
+ * 1/04/2006: Hice que los NPCs actualicen sus áreas al moverse (Maraxus).

@@ -490,31 +490,15 @@ End If
 tInicioServer = GetTickCount() And &H7FFFFFFF
 Call InicializaEstadisticas
 
-Randomize Timer
-
-'ResetThread.CreateNewThread AddressOf ThreadResetActions, tpNormal
-
-'Call MainThread
-
-
 End Sub
 
-
-
-Function FileExist(file As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
-
-On Error Resume Next
+Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
 '*****************************************************************
 'Se fija si existe el archivo
 '*****************************************************************
-
-If Dir(file, FileType) = "" Then
-    FileExist = False
-Else
-    FileExist = True
-End If
-
+    FileExist = Dir$(file, FileType) <> ""
 End Function
+
 Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
 'All these functions are much faster using the "$" sign
 'after the function. This happens for a simple reason:
@@ -609,12 +593,12 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
+Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
 
@@ -1155,7 +1139,7 @@ If UserList(UserIndex).Stats.MinSta < UserList(UserIndex).Stats.MaxSta Then
    Else
        EnviarStats = True
        UserList(UserIndex).Counters.STACounter = 0
-       massta = CInt(RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)))
+       massta = RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
        UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta + massta
        If UserList(UserIndex).Stats.MinSta > UserList(UserIndex).Stats.MaxSta Then
             UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MaxSta
@@ -1248,7 +1232,7 @@ If UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP Then
    If UserList(UserIndex).Counters.HPCounter < Intervalo Then
       UserList(UserIndex).Counters.HPCounter = UserList(UserIndex).Counters.HPCounter + 1
    Else
-      mashit = CInt(RandomNumber(2, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)))
+      mashit = RandomNumber(2, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
                            
       UserList(UserIndex).Counters.HPCounter = 0
       UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit

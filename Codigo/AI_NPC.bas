@@ -788,18 +788,18 @@ On Error GoTo ErrorHandler
             Case TipoAI.MueveAlAzar
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
                 If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-                    If Int(RandomNumber(1, 12)) = 3 Then
-                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
+                    If RandomNumber(1, 12) = 3 Then
+                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(eHeading.NORTH, eHeading.WEST)))
                     End If
                     Call PersigueCriminal(NpcIndex)
                 ElseIf Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
-                    If Int(RandomNumber(1, 12)) = 3 Then
-                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
+                    If RandomNumber(1, 12) = 3 Then
+                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(eHeading.NORTH, eHeading.WEST)))
                     End If
                     Call PersigueCiudadano(NpcIndex)
                 Else
-                        If Int(RandomNumber(1, 12)) = 3 Then
-                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
+                    If RandomNumber(1, 12) = 3 Then
+                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(eHeading.NORTH, eHeading.WEST)))
                     End If
                 End If
             'Va hacia el usuario cercano
@@ -814,8 +814,8 @@ On Error GoTo ErrorHandler
             Case TipoAI.SigueAmo
                 If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Function
                 Call SeguirAmo(NpcIndex)
-                If Int(RandomNumber(1, 12)) = 3 Then
-                        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(1, 4)))
+                If RandomNumber(1, 12) = 3 Then
+                    Call MoveNPCChar(NpcIndex, CByte(RandomNumber(eHeading.NORTH, eHeading.WEST)))
                 End If
             Case TipoAI.NpcAtacaNpc
                 Call AiNpcAtacaNpc(NpcIndex)
@@ -826,7 +826,7 @@ On Error GoTo ErrorHandler
                     'Existe el camino?
                     If Npclist(NpcIndex).PFINFO.NoPath Then 'Si no existe nos movemos al azar
                         'Move randomly
-                        Call MoveNPCChar(NpcIndex, Int(RandomNumber(1, 4)))
+                        Call MoveNPCChar(NpcIndex, RandomNumber(eHeading.NORTH, eHeading.WEST))
                     End If
                 Else
                     If Not PathEnd(NpcIndex) Then

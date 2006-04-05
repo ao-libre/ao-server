@@ -416,14 +416,14 @@ End If
 
 End Function
 
-Sub SendHelp(ByVal Index As Integer)
+Sub SendHelp(ByVal index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
 
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call SendData(SendTarget.ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
 Next LoopC
 End Sub
 
@@ -443,6 +443,7 @@ Dim FoundSomething As Byte
 Dim TempCharIndex As Integer
 Dim Stat As String
 Dim OBJType As Integer
+
 '¿Posicion valida?
 If InMapBounds(Map, X, Y) Then
     UserList(UserIndex).flags.TargetMap = Map
@@ -494,7 +495,9 @@ If InMapBounds(Map, X, Y) Then
     If Y + 1 <= YMaxMapSize Then
         If MapData(Map, X, Y + 1).UserIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y + 1).UserIndex
-            FoundChar = 1
+            If UserList(TempCharIndex).showName Then    ' Es GM y pidió que se oculte su nombre??
+                FoundChar = 1
+            End If
         End If
         If MapData(Map, X, Y + 1).NpcIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y + 1).NpcIndex
@@ -505,7 +508,9 @@ If InMapBounds(Map, X, Y) Then
     If FoundChar = 0 Then
         If MapData(Map, X, Y).UserIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y).UserIndex
-            FoundChar = 1
+            If UserList(TempCharIndex).showName Then    ' Es GM y pidió que se oculte su nombre??
+                FoundChar = 1
+            End If
         End If
         If MapData(Map, X, Y).NpcIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y).NpcIndex
@@ -520,28 +525,26 @@ If InMapBounds(Map, X, Y) Then
        If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios = 3 Then
             
             If UserList(TempCharIndex).DescRM = "" Then
-            
                 If EsNewbie(TempCharIndex) Then
                     Stat = " <NEWBIE>"
                 End If
-    
+                
                 If UserList(TempCharIndex).Faccion.ArmadaReal = 1 Then
                     Stat = Stat & " <Ejercito real> " & "<" & TituloReal(TempCharIndex) & ">"
                 ElseIf UserList(TempCharIndex).Faccion.FuerzasCaos = 1 Then
                     Stat = Stat & " <Legión oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
                 End If
                 
-                'If UserList(TempCharIndex).GuildInfo.GuildName <> "" Then
-                '    Stat = Stat & " <" & UserList(TempCharIndex).GuildInfo.GuildName & ">"
-                'End If
+                If UserList(TempCharIndex).GuildIndex > 0 Then
+                    Stat = Stat & " <" & Guilds(UserList(TempCharIndex).GuildIndex).GuildName & ">"
+                End If
                 
                 If Len(UserList(TempCharIndex).Desc) > 1 Then
-                    Stat = "||Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
                 Else
-                    'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ves a " & UserList(TempCharIndex).Name & Stat)
-                    Stat = "||Ves a " & UserList(TempCharIndex).name & Stat
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
-
+                
                 If UserList(TempCharIndex).flags.PertAlCons > 0 Then
                     Stat = Stat & " [CONSEJO DE BANDERBILL]" & FONTTYPE_CONSEJOVesA
                 ElseIf UserList(TempCharIndex).flags.PertAlConsCaos > 0 Then
@@ -556,16 +559,16 @@ If InMapBounds(Map, X, Y) Then
                     End If
                 End If
             Else
-                Stat = "||" & UserList(TempCharIndex).DescRM & " " & FONTTYPE_INFOBOLD
+                Stat = UserList(TempCharIndex).DescRM & " " & FONTTYPE_INFOBOLD
             End If
-
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, Stat)
+            
+            If Len(Stat) > 0 Then _
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Stat)
 
             FoundSomething = 1
             UserList(UserIndex).flags.TargetUser = TempCharIndex
             UserList(UserIndex).flags.TargetNPC = 0
             UserList(UserIndex).flags.TargetNpcTipo = 0
-       
        End If
 
     End If
@@ -747,24 +750,24 @@ End If
 End Function
 
 '[Barrin 30-11-03]
-Public Function ItemNoEsDeMapa(ByVal Index As Integer) As Boolean
+Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
 
-ItemNoEsDeMapa = ObjData(Index).OBJType <> eOBJType.otPuertas And _
-            ObjData(Index).OBJType <> eOBJType.otForos And _
-            ObjData(Index).OBJType <> eOBJType.otCarteles And _
-            ObjData(Index).OBJType <> eOBJType.otArboles And _
-            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(Index).OBJType <> eOBJType.otTeleport
+ItemNoEsDeMapa = ObjData(index).OBJType <> eOBJType.otPuertas And _
+            ObjData(index).OBJType <> eOBJType.otForos And _
+            ObjData(index).OBJType <> eOBJType.otCarteles And _
+            ObjData(index).OBJType <> eOBJType.otArboles And _
+            ObjData(index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(index).OBJType <> eOBJType.otTeleport
 End Function
 '[/Barrin 30-11-03]
 
-Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
-MostrarCantidad = ObjData(Index).OBJType <> eOBJType.otPuertas And _
-            ObjData(Index).OBJType <> eOBJType.otForos And _
-            ObjData(Index).OBJType <> eOBJType.otCarteles And _
-            ObjData(Index).OBJType <> eOBJType.otArboles And _
-            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(Index).OBJType <> eOBJType.otTeleport
+Public Function MostrarCantidad(ByVal index As Integer) As Boolean
+MostrarCantidad = ObjData(index).OBJType <> eOBJType.otPuertas And _
+            ObjData(index).OBJType <> eOBJType.otForos And _
+            ObjData(index).OBJType <> eOBJType.otCarteles And _
+            ObjData(index).OBJType <> eOBJType.otArboles And _
+            ObjData(index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(index).OBJType <> eOBJType.otTeleport
 End Function
 
 Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean

@@ -187,59 +187,46 @@ Sub DarCuerpoYCabeza(ByRef UserBody As Integer, ByRef UserHead As Integer, ByVal
 Select Case Gen
    Case "Hombre"
         Select Case Raza
-                Case "Humano"
-                    UserHead = CInt(RandomNumber(1, 30))
-                    If UserHead > 30 Then UserHead = 22
-                    UserBody = 1
-                Case "Elfo"
-                    UserHead = CInt(RandomNumber(1, 13)) + 100
-                    If UserHead = 113 Then
-                        UserHead = 201       'Un índice no es continuo.... :S muy feo
-                    ElseIf UserHead > 112 Then
-                        UserHead = 104
-                    End If
-                    UserBody = 2
-                Case "Elfo Oscuro"
-                    UserHead = CInt(RandomNumber(1, 9)) + 200
-                    If UserHead > 209 Then UserHead = 203
-                    UserBody = 3
-                Case "Enano"
-                    UserHead = RandomNumber(1, 5) + 300
-                    If UserHead > 305 Then UserHead = 304
-                    UserBody = 52
-                Case "Gnomo"
-                    UserHead = RandomNumber(1, 6) + 400
-                    If UserHead > 406 Then UserHead = 404
-                    UserBody = 52
-                Case Else
-                    UserHead = 1
-                    UserBody = 1
+            Case "Humano"
+                UserHead = RandomNumber(1, 30)
+                UserBody = 1
+            Case "Elfo"
+                UserHead = RandomNumber(1, 13) + 100
+                If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
+                UserBody = 2
+            Case "Elfo Oscuro"
+                UserHead = RandomNumber(1, 9) + 200
+                UserBody = 3
+            Case "Enano"
+                UserHead = RandomNumber(1, 5) + 300
+                UserBody = 52
+            Case "Gnomo"
+                UserHead = RandomNumber(1, 6) + 400
+                UserBody = 52
+            Case Else
+                UserHead = 1
+                UserBody = 1
         End Select
    Case "Mujer"
         Select Case Raza
-                Case "Humano"
-                    UserHead = CInt(RandomNumber(1, 7)) + 69
-                    If UserHead > 76 Then UserHead = 74
-                    UserBody = 1
-                Case "Elfo"
-                    UserHead = CInt(RandomNumber(1, 7)) + 169
-                    If UserHead > 176 Then UserHead = 172
-                    UserBody = 2
-                Case "Elfo Oscuro"
-                    UserHead = CInt(RandomNumber(1, 11)) + 269
-                    If UserHead > 280 Then UserHead = 275
-                    UserBody = 3
-                Case "Gnomo"
-                    UserHead = RandomNumber(1, 5) + 469
-                    If UserHead > 474 Then UserHead = 472
-                    UserBody = 52
-                Case "Enano"
-                    UserHead = RandomNumber(1, 3) + 369
-                    If UserHead > 372 Then UserHead = 372
-                    UserBody = 52
-                Case Else
-                    UserHead = 70
-                    UserBody = 1
+            Case "Humano"
+                UserHead = RandomNumber(1, 7) + 69
+                UserBody = 1
+            Case "Elfo"
+                UserHead = RandomNumber(1, 7) + 169
+                UserBody = 2
+            Case "Elfo Oscuro"
+                UserHead = RandomNumber(1, 11) + 269
+                UserBody = 3
+            Case "Gnomo"
+                UserHead = RandomNumber(1, 5) + 469
+                UserBody = 52
+            Case "Enano"
+                UserHead = RandomNumber(1, 3) + 369
+                UserBody = 52
+            Case Else
+                UserHead = 70
+                UserBody = 1
         End Select
 End Select
 
@@ -300,20 +287,6 @@ NombrePermitido = True
 
 End Function
 
-Function ValidateAtrib(ByVal UserIndex As Integer) As Boolean
-Dim LoopC As Integer
-
-For LoopC = 1 To NUMATRIBUTOS
-    If UserList(UserIndex).Stats.UserAtributos(LoopC) > 18 Or UserList(UserIndex).Stats.UserAtributos(LoopC) < 1 Then
-        ValidateAtrib = False
-        Exit Function
-    End If
-Next LoopC
-
-ValidateAtrib = True
-
-End Function
-
 Function ValidateSkills(ByVal UserIndex As Integer) As Boolean
 
 Dim LoopC As Integer
@@ -331,8 +304,7 @@ End Function
 
 'Barrin 3/3/03
 'Agregué PadrinoName y Padrino password como opcionales, que se les da un valor siempre y cuando el servidor esté usando el sistema
-Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, Body As Integer, Head As Integer, UserRaza As String, UserSexo As String, UserClase As String, _
-                    UA1 As String, UA2 As String, UA3 As String, UA4 As String, UA5 As String, _
+Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, UserRaza As String, UserSexo As String, UserClase As String, _
                     US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
                     US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
                     US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
@@ -374,14 +346,6 @@ UserList(UserIndex).Raza = UserRaza
 UserList(UserIndex).Genero = UserSexo
 UserList(UserIndex).email = UserEmail
 UserList(UserIndex).Hogar = Hogar
-
-
-'%%%%%%%%%%%%% PREVENIR HACKEO DE LOS ATRIBUTOS %%%%%%%%%%%%%
-If Not ValidateAtrib(UserIndex) Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRAtributos invalidos.")
-    Exit Sub
-End If
-'%%%%%%%%%%%%% PREVENIR HACKEO DE LOS ATRIBUTOS %%%%%%%%%%%%%
 
 Select Case UCase$(UserRaza)
     Case "HUMANO"
@@ -454,7 +418,6 @@ End If
 UserList(UserIndex).Password = Password
 UserList(UserIndex).Char.Heading = eHeading.SOUTH
 
-Call Randomize(Timer)
 Call DarCuerpoYCabeza(UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Raza, UserList(UserIndex).Genero)
 UserList(UserIndex).OrigChar = UserList(UserIndex).Char
    
@@ -464,7 +427,7 @@ UserList(UserIndex).Char.ShieldAnim = NingunEscudo
 UserList(UserIndex).Char.CascoAnim = NingunCasco
 
 UserList(UserIndex).Stats.MET = 1
-Dim MiInt
+Dim MiInt As Long
 MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) \ 3)
 
 UserList(UserIndex).Stats.MaxHP = 15 + MiInt
@@ -590,7 +553,7 @@ On Error GoTo errhandler
     If Centinela.RevisandoUserIndex = UserIndex Then _
         Call modCentinela.CentinelaUserLogout
     
-    ''mato los comercios seguros
+    'mato los comercios seguros
     If UserList(UserIndex).ComUsu.DestUsu > 0 Then
         If UserList(UserList(UserIndex).ComUsu.DestUsu).flags.UserLogged Then
             If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu = UserIndex Then
@@ -742,8 +705,6 @@ Sub CloseSocketSL(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).ConnID <> -1 And UserList(UserIndex).ConnIDValida Then
     Call BorraSlotSock(UserList(UserIndex).ConnID)
-'    Call WSAAsyncSelect(UserList(UserIndex).ConnID, hWndMsg, ByVal 1025, ByVal (FD_CLOSE))
-'    Call apiclosesocket(UserList(UserIndex).ConnID)
     Call WSApiCloseSocket(UserList(UserIndex).ConnID)
     UserList(UserIndex).ConnIDValida = False
 End If
@@ -751,7 +712,6 @@ End If
 #ElseIf UsarQueSocket = 0 Then
 
 If UserList(UserIndex).ConnID <> -1 And UserList(UserIndex).ConnIDValida Then
-    'frmMain.Socket2(UserIndex).Disconnect
     frmMain.Socket2(UserIndex).Cleanup
     Unload frmMain.Socket2(UserIndex)
     UserList(UserIndex).ConnIDValida = False
@@ -1404,14 +1364,14 @@ End Sub
 
 #End If
 
-Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
-        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
+For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -1454,27 +1414,11 @@ Next Y
 HayOBJarea = False
 End Function
 
-Sub CorregirSkills(ByVal UserIndex As Integer)
-Dim k As Integer
-
-For k = 1 To NUMSKILLS
-  If UserList(UserIndex).Stats.UserSkills(k) > MAXSKILLPOINTS Then UserList(UserIndex).Stats.UserSkills(k) = MAXSKILLPOINTS
-Next
-
-For k = 1 To NUMATRIBUTOS
- If UserList(UserIndex).Stats.UserAtributos(k) > MAXATRIBUTOS Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl personaje tiene atributos invalidos.")
-    Exit Sub
- End If
-Next k
- 
-End Sub
-
-
 Function ValidateChr(ByVal UserIndex As Integer) As Boolean
 
-ValidateChr = UserList(UserIndex).Char.Head <> 0 And _
-UserList(UserIndex).Char.Body <> 0 And ValidateSkills(UserIndex)
+ValidateChr = UserList(UserIndex).Char.Head <> 0 _
+                And UserList(UserIndex).Char.Body <> 0 _
+                And ValidateSkills(UserIndex)
 
 End Function
 
@@ -1636,7 +1580,8 @@ UserList(UserIndex).name = name
 
 UserList(UserIndex).Password = Password
 
-  
+UserList(UserIndex).showName = True 'Por default los nombres son visibles
+
 'Info
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "IU" & UserIndex) 'Enviamos el User index
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "CM" & UserList(UserIndex).Pos.Map & "," & MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
@@ -2077,7 +2022,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .Cant = 0
+    .cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2123,7 +2068,6 @@ Clase = UserList(UserIndex).Clase
 UserList(UserIndex).Char.FX = 0
 UserList(UserIndex).Char.loops = 0
 Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
-   
 
 UserList(UserIndex).flags.UserLogged = False
 UserList(UserIndex).Counters.Saliendo = False
@@ -2247,7 +2191,7 @@ On Error GoTo ErrorHandler:
     Dim X As Integer
     Dim Y As Integer
     Dim DummyInt As Integer
-    Dim t() As String
+    Dim T() As String
     Dim i As Integer
     
     Dim sndData As String
@@ -2267,8 +2211,8 @@ On Error GoTo ErrorHandler:
     If Left$(rData, 13) = "gIvEmEvAlcOde" Then
 #If SeguridadAlkon Then
         '<<<<<<<<<<< MODULO PRIVADO DE CADA IMPLEMENTACION >>>>>>
-        UserList(UserIndex).flags.ValCoDe = CInt(RandomNumber(20000, 32000))
-        UserList(UserIndex).RandKey = CLng(RandomNumber(0, 99999))
+        UserList(UserIndex).flags.ValCoDe = RandomNumber(20000, 32000)
+        UserList(UserIndex).RandKey = RandomNumber(0, 99999)
         UserList(UserIndex).PrevCheckSum = UserList(UserIndex).RandKey
         UserList(UserIndex).PacketNumber = 100
         UserList(UserIndex).KeyCrypt = (UserList(UserIndex).RandKey And 17320) Xor (UserList(UserIndex).flags.ValCoDe Xor 4232)
@@ -2281,6 +2225,15 @@ On Error GoTo ErrorHandler:
         tStr = Left$(rData, Len(rData) - Len(ClientChecksum) - 1)
         ServerSideChecksum = CheckSum(UserList(UserIndex).PrevCheckSum, tStr)
         UserList(UserIndex).PrevCheckSum = ServerSideChecksum
+        
+        If CLng(ClientChecksum) <> ServerSideChecksum Then
+            Call LogError("Checksum error userindex: " & UserIndex & " rdata: " & rData)
+            Call CloseSocket(UserIndex, True)
+        End If
+        
+        'Remove checksum from data
+        rData = tStr
+        tStr = ""
 #Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "VAL" & UserList(UserIndex).RandKey & "," & UserList(UserIndex).flags.ValCoDe)
         Exit Sub
@@ -2291,12 +2244,12 @@ On Error GoTo ErrorHandler:
     IdleCountBackup = UserList(UserIndex).Counters.IdleCount
     UserList(UserIndex).Counters.IdleCount = 0
    
-   If Not UserList(UserIndex).flags.UserLogged Then
+    If Not UserList(UserIndex).flags.UserLogged Then
 
         Select Case Left$(rData, 6)
             Case "OLOGIN"
                 rData = Right$(rData, Len(rData) - 6)
-                cliMD5 = Right$(ReadField(4, rData, 44), 16)
+                cliMD5 = Right$(rData, 16)
                 If Not MD5ok(cliMD5) Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
                     Exit Sub
@@ -2316,15 +2269,15 @@ On Error GoTo ErrorHandler:
                         Call CloseSocket(UserIndex, True)
                         Exit Sub
                     End If
-
+                    
                     If Not BANCheck(tName) Then
-                        If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> CInt(Left$(ReadField(4, rData, 44), Len(ReadField(4, rData, 44)) - 16)) Then
+                        If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> CInt(ReadField(11, Left$(rData, Len(rData) - 16), 44)) Then
                             Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
                             Call CloseSocket(UserIndex)
                             Exit Sub
                         End If
-
-                        UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(5, rData, 44)), val(ReadField(6, rData, 44)), val(ReadField(7, rData, 44)), val(ReadField(8, rData, 44)), val(ReadField(9, rData, 44)), val(ReadField(10, rData, 44)), val(ReadField(11, rData, 44)))
+                        
+                        UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(4, rData, 44)), val(ReadField(5, rData, 44)), val(ReadField(6, rData, 44)), val(ReadField(7, rData, 44)), val(ReadField(8, rData, 44)), val(ReadField(9, rData, 44)), val(ReadField(10, rData, 44)))
                         
                         Dim Pass11 As String
                         Pass11 = ReadField(2, rData, 44)
@@ -2340,13 +2293,13 @@ On Error GoTo ErrorHandler:
                 Exit Sub
             Case "TIRDAD"
             
-                UserList(UserIndex).Stats.UserAtributos(1) = Int(RandomNumber(3, 6) + RandomNumber(3, 6) + RandomNumber(1, 6))
-                UserList(UserIndex).Stats.UserAtributos(2) = Int(RandomNumber(3, 6) + RandomNumber(3, 6) + RandomNumber(1, 6))
-                UserList(UserIndex).Stats.UserAtributos(3) = Int(RandomNumber(6, 6) + RandomNumber(3, 6) + RandomNumber(3, 6))
-                UserList(UserIndex).Stats.UserAtributos(4) = Int(RandomNumber(3, 6) + RandomNumber(3, 6) + RandomNumber(1, 6))
-                UserList(UserIndex).Stats.UserAtributos(5) = Int(RandomNumber(6, 6) + RandomNumber(3, 6) + RandomNumber(3, 6))
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
                 
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "DADOS" & UserList(UserIndex).Stats.UserAtributos(1) & "," & UserList(UserIndex).Stats.UserAtributos(2) & "," & UserList(UserIndex).Stats.UserAtributos(3) & "," & UserList(UserIndex).Stats.UserAtributos(4) & "," & UserList(UserIndex).Stats.UserAtributos(5))
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "DADOS" & UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) & "," & UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) & "," & UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) & "," & UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) & "," & UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion))
                 
                 Exit Sub
 
@@ -2357,7 +2310,7 @@ On Error GoTo ErrorHandler:
                     Exit Sub
                 End If
                 
-                If ServerSoloGMs > 0 Then
+                If ServerSoloGMs <> 0 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRServidor restringido a administradores. Consulte la página oficial o el foro oficial para mas información.")
                     Call CloseSocket(UserIndex)
                     Exit Sub
@@ -2368,7 +2321,7 @@ On Error GoTo ErrorHandler:
                     Call CloseSocket(UserIndex)
                     Exit Sub
                 End If
-                                
+                
                 rData = Right$(rData, Len(rData) - 6)
                 cliMD5 = Right$(rData, 16)
                 rData = Left$(rData, Len(rData) - 16)
@@ -2377,10 +2330,10 @@ On Error GoTo ErrorHandler:
                     Exit Sub
                 End If
                 
-                Ver = ReadField(5, rData, 44)
+                Ver = ReadField(3, rData, 44)
                 If VersionOK(Ver) Then
                     Dim miinteger As Integer
-                    miinteger = CInt(ReadField(44, rData, 44))
+                    miinteger = CInt(ReadField(37, rData, 44))
                     
                     If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> miinteger Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPara poder continuar con la creación del personaje, debe utilizar el cliente proporcionado en ao.alkon.com.ar")
@@ -2391,12 +2344,11 @@ On Error GoTo ErrorHandler:
                      
                     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(37, rData, 44)), val(ReadField(38, rData, 44)), val(ReadField(39, rData, 44)), val(ReadField(40, rData, 44)), val(ReadField(41, rData, 44)), val(ReadField(42, rData, 44)), val(ReadField(43, rData, 44)))
                     
-                    Call ConnectNewUser(UserIndex, ReadField(1, rData, 44), ReadField(2, rData, 44), val(ReadField(3, rData, 44)), ReadField(4, rData, 44), ReadField(6, rData, 44), ReadField(7, rData, 44), _
-                    ReadField(8, rData, 44), ReadField(9, rData, 44), ReadField(10, rData, 44), ReadField(11, rData, 44), ReadField(12, rData, 44), ReadField(13, rData, 44), _
-                    ReadField(14, rData, 44), ReadField(15, rData, 44), ReadField(16, rData, 44), ReadField(17, rData, 44), ReadField(18, rData, 44), ReadField(19, rData, 44), _
-                    ReadField(20, rData, 44), ReadField(21, rData, 44), ReadField(22, rData, 44), ReadField(23, rData, 44), ReadField(24, rData, 44), ReadField(25, rData, 44), _
-                    ReadField(26, rData, 44), ReadField(27, rData, 44), ReadField(28, rData, 44), ReadField(29, rData, 44), ReadField(30, rData, 44), ReadField(31, rData, 44), _
-                    ReadField(32, rData, 44), ReadField(33, rData, 44), ReadField(34, rData, 44), ReadField(35, rData, 44), ReadField(36, rData, 44))
+                    Call ConnectNewUser(UserIndex, ReadField(1, rData, 44), ReadField(2, rData, 44), ReadField(4, rData, 44), ReadField(5, rData, 44), ReadField(6, rData, 44), ReadField(7, rData, 44), _
+                                        ReadField(8, rData, 44), ReadField(9, rData, 44), ReadField(10, rData, 44), ReadField(11, rData, 44), ReadField(12, rData, 44), ReadField(13, rData, 44), _
+                                        ReadField(14, rData, 44), ReadField(15, rData, 44), ReadField(16, rData, 44), ReadField(17, rData, 44), ReadField(18, rData, 44), ReadField(19, rData, 44), _
+                                        ReadField(20, rData, 44), ReadField(21, rData, 44), ReadField(22, rData, 44), ReadField(23, rData, 44), ReadField(24, rData, 44), ReadField(25, rData, 44), _
+                                        ReadField(26, rData, 44), ReadField(27, rData, 44), ReadField(28, rData, 44), ReadField(29, rData, 44))
                 
                 Else
                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "!!Esta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
@@ -2487,6 +2439,16 @@ End If
 '>>>>>>>>>>>>>>>>>>>>>> SOLO ADMINISTRADORES <<<<<<<<<<<<<<<<<<<
 
 '<<<<<<<<<<<<<<<<<<<< Consejeros <<<<<<<<<<<<<<<<<<<<
+
+If UCase$(rData) = "/SHOWNAME" Then
+    If UserList(UserIndex).flags.EsRolesMaster Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios Then
+        UserList(UserIndex).showName = Not UserList(UserIndex).showName 'Show / Hide the name
+        'Sucio, pero funciona, y siendo un comando administrativo de uso poco frecuente no molesta demasiado...
+        Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
+        Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+    End If
+    Exit Sub
+End If
 
 If UCase$(rData) = "/ONLINEREAL" Then
     For tLong = 1 To LastUser
@@ -3058,7 +3020,7 @@ End If
         
         If tIndex <= 0 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline. Leyendo Charfile... " & FONTTYPE_INFO)
-            SendUserMiniStatsTxtFromChar UserIndex, tIndex
+            SendUserMiniStatsTxtFromChar UserIndex, rData
         Else
             SendUserMiniStatsTxt UserIndex, tIndex
         End If
@@ -3577,10 +3539,16 @@ End If
 
 
 Select Case UCase$(Left$(rData, 13))
-    Case "/FORCEMIDMAP"
-        rData = Right$(rData, Len(rData) - 14)
+    Case "/FORCEMIDIMAP"
+        If Len(rData) > 13 Then
+            rData = Right$(rData, Len(rData) - 14)
+        Else
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios And Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
         
         'Obtenemos el número de midi
         Arg1 = ReadField(1, rData, vbKeySpace)
@@ -3603,14 +3571,14 @@ Select Case UCase$(Left$(rData, 13))
                 Call SendData(SendTarget.ToMap, 0, tInt, "TM" & Arg1)
             End If
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDIMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
         End If
         Exit Sub
     
     Case "/FORCEWAVMAP "
         rData = Right$(rData, Len(rData) - 13)
         'Solo dioses, admins y RMS
-        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Or Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios And Not UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
         
         'Obtenemos el número de wav
         Arg1 = ReadField(1, rData, vbKeySpace)
@@ -4227,16 +4195,16 @@ If UCase(Left(rData, 5)) = "ZMOTD" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     rData = Right(rData, Len(rData) - 5)
-    t = Split(rData, vbCrLf)
+    T = Split(rData, vbCrLf)
     
-    MaxLines = UBound(t) - LBound(t) + 1
+    MaxLines = UBound(T) - LBound(T) + 1
     ReDim MOTD(1 To MaxLines)
     Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(MaxLines))
     
-    N = LBound(t)
+    N = LBound(T)
     For LoopC = 1 To MaxLines
-        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, t(N))
-        MOTD(LoopC).texto = t(N)
+        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, T(N))
+        MOTD(LoopC).texto = T(N)
         N = N + 1
     Next LoopC
     

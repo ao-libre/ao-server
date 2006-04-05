@@ -374,6 +374,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
+    otCasco = 16
+    otEscudo = 17
     otHerramientas = 18
     otTeleport = 19
     otYacimiento = 22
@@ -387,8 +389,6 @@ Public Enum eOBJType
     otBotellaVacia = 33
     otBotellaLlena = 34
     otManchas = 35          'No se usa
-    otCASCO = 36
-    otESCUDO = 37
     otCualquiera = 1000
 End Enum
 
@@ -493,7 +493,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    Cant As Integer
+    cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -912,6 +912,8 @@ End Type
 Public Type User
     name As String
     ID As Long
+    
+    showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
     modName As String
     Password As String

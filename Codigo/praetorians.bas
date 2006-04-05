@@ -180,10 +180,10 @@ On Error GoTo errorh
     quehacer = 0
     
     
-    azar = Int(Sgn(RandomNumber(-10, 10)))
+    azar = Sgn(RandomNumber(-1, 1))
     'azar = Sgn(azar)
     If azar = 0 Then azar = 1
-    azar2 = Int(Sgn(RandomNumber(-10, 10)))
+    azar2 = Sgn(RandomNumber(-1, 1))
     'azar2 = Sgn(azar2)
     If azar2 = 0 Then azar2 = 1
     
@@ -365,10 +365,10 @@ On Error GoTo errorh
         '1) invisible enemies can be detected sometimes
         '2) a wizard's mission is background spellcasting attack
         
-        azar = Int(Sgn(RandomNumber(-10, 10)))
+        azar = Sgn(RandomNumber(-1, 1))
         'azar = Sgn(azar)
         If azar = 0 Then azar = 1
-        azar2 = Int(Sgn(RandomNumber(-10, 10)))
+        azar2 = Sgn(RandomNumber(-1, 1))
         'azar2 = Sgn(azar2)
         If azar2 = 0 Then azar2 = 1
         
@@ -797,11 +797,9 @@ On Error GoTo errorh
     PJBestTarget = False
     BestTarget = 0
     
-    azar = RandomNumber(-10, 10)
-    azar = Int(Sgn(azar))
+    azar = Sgn(RandomNumber(-1, 1))
     If azar = 0 Then azar = 1
-    azar2 = RandomNumber(-10, 10)
-    azar2 = Int(Sgn(azar2))
+    azar2 = Sgn(RandomNumber(-1, 1))
     If azar2 = 0 Then azar2 = 1
     
     'pick the best target according to the following criteria:

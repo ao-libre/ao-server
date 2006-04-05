@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -88,9 +88,9 @@ Procesado = True 'ver al final del sub
             End If
             
             If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToDeadArea, UserIndex, UserList(UserIndex).Pos.Map, "||12632256°" & rData & "°" & str(ind))
+                Call SendData(SendTarget.ToDeadArea, UserIndex, UserList(UserIndex).Pos.Map, "||12632256°" & rData & "°" & CStr(ind))
             Else
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & rData & "°" & str(ind))
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & rData & "°" & CStr(ind))
             End If
             Exit Sub
         Case "-" 'Gritar
@@ -1225,7 +1225,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.Cant = val(Arg2)
+                UserList(UserIndex).ComUsu.cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub
