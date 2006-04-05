@@ -188,7 +188,7 @@ Dim M As Integer
                 If PJ > 0 Then
                     Select Case Npclist(NpcIndex).flags.AIAlineacion
                         Case e_Alineacion.Caos
-                            If Not Criminal(PJ) And Not UserList(PJ).flags.Muerto And Not UserList(PJ).flags.Invisible Then
+                            If Not Criminal(PJ) And Not UserList(PJ).flags.Muerto And Not UserList(PJ).flags.Invisible And Not UserList(PJ).flags.Oculto = 1 Then
                                 PJBestTarget = PJ
                             End If
                         Case e_Alineacion.Real
@@ -393,7 +393,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                    UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                    If UI > 0 Then
-                      If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                      If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
                             Exit Sub
                       End If
@@ -407,15 +407,15 @@ Else
     For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
         For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-                   UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
-                   If UI > 0 Then
-                      If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
-                            If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
-                            tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
-                            Call MoveNPCChar(NpcIndex, tHeading)
-                            Exit Sub
-                      End If
-                   End If
+                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
+                If UI > 0 Then
+                     If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
+                         If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
+                         tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
+                         Call MoveNPCChar(NpcIndex, tHeading)
+                         Exit Sub
+                     End If
+                End If
             End If
         Next X
     Next Y
@@ -466,7 +466,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                                 Exit Sub
                             End If
                         End If
-                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                              If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                              End If
@@ -475,7 +475,6 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                     End If
                 End If
             End If
-
         Next X
     Next Y
 Else
@@ -493,7 +492,7 @@ Else
                                 Exit Sub
                             End If
                         End If
-                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                              If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                              End If
@@ -534,7 +533,7 @@ For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RA
            UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
            If UI > 0 Then
                 If Not Criminal(UI) Then
-                   If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                   If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                         If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                               Dim k As Integer
                               k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
@@ -589,7 +588,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If Criminal(UI) Then
-                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
 '                                  Dim k As Integer
 '                                  k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
@@ -611,7 +610,7 @@ Else
                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If Criminal(UI) Then
-                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 Then
+                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   'Dim k As Integer
                                   'k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
@@ -647,6 +646,7 @@ For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
                 If UI > 0 Then
                    If UserList(UI).flags.Muerto = 0 _
                    And UserList(UI).flags.Invisible = 0 _
+                   And UserList(UI).flags.Oculto = 0 _
                    And UI = Npclist(NpcIndex).MaestroUser _
                    And Distancia(Npclist(NpcIndex).Pos, UserList(UI).Pos) > 3 Then
                         tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
@@ -954,7 +954,7 @@ For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10    'Makes a
                  'Move towards user
                   Dim tmpUserIndex As Integer
                   tmpUserIndex = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
-                  If UserList(tmpUserIndex).flags.Muerto = 0 And UserList(tmpUserIndex).flags.Invisible = 0 Then
+                  If UserList(tmpUserIndex).flags.Muerto = 0 And UserList(tmpUserIndex).flags.Invisible = 0 And UserList(tmpUserIndex).flags.Oculto = 0 Then
                     'We have to invert the coordinates, this is because
                     'ORE refers to maps in converse way of my pathfinding
                     'routines.
@@ -975,7 +975,7 @@ End Function
 
 Sub NpcLanzaUnSpell(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
-If UserList(UserIndex).flags.Invisible = 1 Then Exit Sub
+If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 0 Then Exit Sub
 
 Dim k As Integer
 k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)

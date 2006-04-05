@@ -166,7 +166,9 @@ If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
 End If
 
 If UserList(UserIndex).Faccion.RecibioExpInicialReal = 0 Then
-    Call AddtoVar(UserList(UserIndex).Stats.Exp, ExpAlUnirse, MAXEXP)
+    UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpAlUnirse
+    If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+        UserList(UserIndex).Stats.Exp = MAXEXP
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpAlUnirse & " puntos de experiencia." & FONTTYPE_FIGHT)
     UserList(UserIndex).Faccion.RecibioExpInicialReal = 1
     Call CheckUserLevel(UserIndex)
@@ -184,7 +186,9 @@ If UserList(UserIndex).Faccion.CriminalesMatados \ 100 = _
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Ya has recibido tu recompensa, mata 100 crinales mas para recibir la proxima!!!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
 Else
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Aqui tienes tu recompensa noble guerrero!!!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-    Call AddtoVar(UserList(UserIndex).Stats.Exp, ExpX100, MAXEXP)
+    UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpX100
+    If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+        UserList(UserIndex).Stats.Exp = MAXEXP
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpX100 & " puntos de experiencia." & FONTTYPE_FIGHT)
     UserList(UserIndex).Faccion.RecompensasReal = UserList(UserIndex).Faccion.RecompensasReal + 1
     Call CheckUserLevel(UserIndex)
@@ -332,7 +336,9 @@ If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
 End If
 
 If UserList(UserIndex).Faccion.RecibioExpInicialCaos = 0 Then
-    Call AddtoVar(UserList(UserIndex).Stats.Exp, ExpAlUnirse, MAXEXP)
+    UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpAlUnirse
+    If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+        UserList(UserIndex).Stats.Exp = MAXEXP
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpAlUnirse & " puntos de experiencia." & FONTTYPE_FIGHT)
     UserList(UserIndex).Faccion.RecibioExpInicialCaos = 1
     Call CheckUserLevel(UserIndex)
@@ -350,7 +356,9 @@ If UserList(UserIndex).Faccion.CiudadanosMatados \ 100 = _
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Ya has recibido tu recompensa, mata 100 ciudadanos mas para recibir la proxima!!!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
 Else
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "Aqui tienes tu recompensa noble guerrero!!!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-    Call AddtoVar(UserList(UserIndex).Stats.Exp, ExpX100, MAXEXP)
+    UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpX100
+    If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+        UserList(UserIndex).Stats.Exp = MAXEXP
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpX100 & " puntos de experiencia." & FONTTYPE_FIGHT)
     UserList(UserIndex).Faccion.RecompensasCaos = UserList(UserIndex).Faccion.RecompensasCaos + 1
     Call CheckUserLevel(UserIndex)

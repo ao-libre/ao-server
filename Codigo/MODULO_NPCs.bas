@@ -119,7 +119,9 @@ On Error GoTo errhandler
             If UserList(UserIndex).PartyIndex > 0 Then
                 Call mdParty.ObtenerExito(UserIndex, MiNPC.flags.ExpCount, MiNPC.Pos.Map, MiNPC.Pos.X, MiNPC.Pos.Y)
             Else
-                Call AddtoVar(UserList(UserIndex).Stats.Exp, MiNPC.flags.ExpCount, MAXEXP)
+                UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + MiNPC.flags.ExpCount
+                If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+                    UserList(UserIndex).Stats.Exp = MAXEXP
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia." & FONTTYPE_FIGHT)
             End If
             MiNPC.flags.ExpCount = 0
@@ -129,21 +131,30 @@ On Error GoTo errhandler
         
         '[/KEVIN]
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has matado a la criatura!" & FONTTYPE_FIGHT)
-        Call AddtoVar(UserList(UserIndex).Stats.NPCsMuertos, 1, 32000)
+        If UserList(UserIndex).Stats.NPCsMuertos < 32000 Then _
+            UserList(UserIndex).Stats.NPCsMuertos = UserList(UserIndex).Stats.NPCsMuertos + 1
         
         If MiNPC.Stats.Alineacion = 0 Then
-              If MiNPC.Numero = Guardias Then
-                    Call VolverCriminal(UserIndex)
-              End If
-              If MiNPC.MaestroUser = 0 Then
-                    Call AddtoVar(UserList(UserIndex).Reputacion.AsesinoRep, vlASESINO, MAXREP)
-              End If
+            If MiNPC.Numero = Guardias Then
+                Call VolverCriminal(UserIndex)
+            End If
+            If MiNPC.MaestroUser = 0 Then
+                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + vlASESINO
+                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+            End If
         ElseIf MiNPC.Stats.Alineacion = 1 Then
-          Call AddtoVar(UserList(UserIndex).Reputacion.PlebeRep, vlCAZADOR, MAXREP)
+            UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR
+            If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         ElseIf MiNPC.Stats.Alineacion = 2 Then
-          Call AddtoVar(UserList(UserIndex).Reputacion.NobleRep, vlASESINO / 2, MAXREP)
+            UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep + vlASESINO / 2
+            If UserList(UserIndex).Reputacion.NobleRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.NobleRep = MAXREP
         ElseIf MiNPC.Stats.Alineacion = 4 Then
-          Call AddtoVar(UserList(UserIndex).Reputacion.PlebeRep, vlCAZADOR, MAXREP)
+            UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR
+            If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         End If
         If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
         
@@ -169,38 +180,39 @@ errhandler:
 End Sub
 
 Sub ResetNpcFlags(ByVal NpcIndex As Integer)
-'Clear the npc's flags
-
-Npclist(NpcIndex).flags.AfectaParalisis = 0
-Npclist(NpcIndex).flags.AguaValida = 0
-Npclist(NpcIndex).flags.AttackedBy = ""
-Npclist(NpcIndex).flags.Attacking = 0
-Npclist(NpcIndex).flags.BackUp = 0
-Npclist(NpcIndex).flags.Bendicion = 0
-Npclist(NpcIndex).flags.Domable = 0
-Npclist(NpcIndex).flags.Envenenado = 0
-Npclist(NpcIndex).flags.Faccion = 0
-Npclist(NpcIndex).flags.Follow = False
-Npclist(NpcIndex).flags.LanzaSpells = 0
-Npclist(NpcIndex).flags.GolpeExacto = 0
-Npclist(NpcIndex).flags.Invisible = 0
-Npclist(NpcIndex).flags.Maldicion = 0
-Npclist(NpcIndex).flags.OldHostil = 0
-Npclist(NpcIndex).flags.OldMovement = 0
-Npclist(NpcIndex).flags.Paralizado = 0
-Npclist(NpcIndex).flags.Inmovilizado = 0
-Npclist(NpcIndex).flags.Respawn = 0
-Npclist(NpcIndex).flags.RespawnOrigPos = 0
-Npclist(NpcIndex).flags.Snd1 = 0
-Npclist(NpcIndex).flags.Snd2 = 0
-Npclist(NpcIndex).flags.Snd3 = 0
-Npclist(NpcIndex).flags.TierraInvalida = 0
-Npclist(NpcIndex).flags.UseAINow = False
-Npclist(NpcIndex).flags.AtacaAPJ = 0
-Npclist(NpcIndex).flags.AtacaANPC = 0
-Npclist(NpcIndex).flags.AIAlineacion = e_Alineacion.ninguna
-Npclist(NpcIndex).flags.AIPersonalidad = e_Personalidad.ninguna
-
+    'Clear the npc's flags
+    
+    With Npclist(NpcIndex).flags
+        .AfectaParalisis = 0
+        .AguaValida = 0
+        .AttackedBy = ""
+        .Attacking = 0
+        .BackUp = 0
+        .Bendicion = 0
+        .Domable = 0
+        .Envenenado = 0
+        .Faccion = 0
+        .Follow = False
+        .LanzaSpells = 0
+        .GolpeExacto = 0
+        .Invisible = 0
+        .Maldicion = 0
+        .OldHostil = 0
+        .OldMovement = 0
+        .Paralizado = 0
+        .Inmovilizado = 0
+        .Respawn = 0
+        .RespawnOrigPos = 0
+        .Snd1 = 0
+        .Snd2 = 0
+        .Snd3 = 0
+        .TierraInvalida = 0
+        .UseAINow = False
+        .AtacaAPJ = 0
+        .AtacaANPC = 0
+        .AIAlineacion = e_Alineacion.ninguna
+        .AIPersonalidad = e_Personalidad.ninguna
+    End With
 End Sub
 
 Sub ResetNpcCounters(ByVal NpcIndex As Integer)

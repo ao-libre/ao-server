@@ -826,7 +826,9 @@ Select Case Obj.OBJType
         End If
 
         'Usa el item
-        Call AddtoVar(UserList(UserIndex).Stats.MinHam, Obj.MinHam, UserList(UserIndex).Stats.MaxHam)
+        UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MinHam + Obj.MinHam
+        If UserList(UserIndex).Stats.MinHam > UserList(UserIndex).Stats.MaxHam Then _
+            UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MaxHam
         UserList(UserIndex).flags.Hambre = 0
         Call EnviarHambreYsed(UserIndex)
         'Sonido
@@ -897,7 +899,9 @@ Select Case Obj.OBJType
                 UserList(UserIndex).flags.DuracionEfecto = Obj.DuracionEfecto
         
                 'Usa el item
-                Call AddtoVar(UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad), RandomNumber(Obj.MinModificador, Obj.MaxModificador), MAXATRIBUTOS)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + RandomNumber(Obj.MinModificador, Obj.MaxModificador)
+                If UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) > MAXATRIBUTOS Then _
+                    UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = MAXATRIBUTOS
                 If UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) > 2 * UserList(UserIndex).Stats.UserAtributosBackUP(Agilidad) Then UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = 2 * UserList(UserIndex).Stats.UserAtributosBackUP(Agilidad)
                 
                 'Quitamos del inv el item
@@ -908,7 +912,9 @@ Select Case Obj.OBJType
                 UserList(UserIndex).flags.DuracionEfecto = Obj.DuracionEfecto
         
                 'Usa el item
-                Call AddtoVar(UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza), RandomNumber(Obj.MinModificador, Obj.MaxModificador), MAXATRIBUTOS)
+                UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + RandomNumber(Obj.MinModificador, Obj.MaxModificador)
+                If UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) > MAXATRIBUTOS Then _
+                    UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = MAXATRIBUTOS
                 If UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) > 2 * UserList(UserIndex).Stats.UserAtributosBackUP(Fuerza) Then UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = 2 * UserList(UserIndex).Stats.UserAtributosBackUP(Fuerza)
                 
                 
@@ -918,7 +924,9 @@ Select Case Obj.OBJType
                 
             Case 3 'Pocion roja, restaura HP
                 'Usa el item
-                AddtoVar UserList(UserIndex).Stats.MinHP, RandomNumber(Obj.MinModificador, Obj.MaxModificador), UserList(UserIndex).Stats.MaxHP
+                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + RandomNumber(Obj.MinModificador, Obj.MaxModificador)
+                If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then _
+                    UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
@@ -926,7 +934,9 @@ Select Case Obj.OBJType
             
             Case 4 'Pocion azul, restaura MANA
                 'Usa el item
-                Call AddtoVar(UserList(UserIndex).Stats.MinMAN, Porcentaje(UserList(UserIndex).Stats.MaxMAN, 5), UserList(UserIndex).Stats.MaxMAN)
+                UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Porcentaje(UserList(UserIndex).Stats.MaxMAN, 5)
+                If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
+                    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
@@ -955,7 +965,9 @@ Select Case Obj.OBJType
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
             Exit Sub
         End If
-        AddtoVar UserList(UserIndex).Stats.MinAGU, Obj.MinSed, UserList(UserIndex).Stats.MaxAGU
+        UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
+        If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
+            UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
         UserList(UserIndex).flags.Sed = 0
         Call EnviarHambreYsed(UserIndex)
         
@@ -1033,7 +1045,9 @@ Select Case Obj.OBJType
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
                 Exit Sub
             End If
-            AddtoVar UserList(UserIndex).Stats.MinAGU, Obj.MinSed, UserList(UserIndex).Stats.MaxAGU
+            UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
+            If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
+                UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
             UserList(UserIndex).flags.Sed = 0
             Call EnviarHambreYsed(UserIndex)
             MiObj.Amount = 1
@@ -1059,7 +1073,9 @@ Select Case Obj.OBJType
                 Exit Sub
             End If
             
-            Call AddtoVar(UserList(UserIndex).Reputacion.PlebeRep, vlProleta, MAXREP)
+            UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+            If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.PlebeRep = MAXREP
             
             Select Case ObjIndex
                 Case CAÑA_PESCA, RED_PESCA
@@ -1194,13 +1210,13 @@ Call TirarOro(UserList(UserIndex).Stats.GLD, UserIndex)
 
 End Sub
 
-Public Function ItemSeCae(ByVal Index As Integer) As Boolean
+Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
-ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            ObjData(Index).OBJType <> eOBJType.otLlaves And _
-            ObjData(Index).OBJType <> eOBJType.otBarcos And _
-            ObjData(Index).NoSeCae = 0
+ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
+            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
+            ObjData(index).OBJType <> eOBJType.otLlaves And _
+            ObjData(index).OBJType <> eOBJType.otBarcos And _
+            ObjData(index).NoSeCae = 0
 
 
 End Function

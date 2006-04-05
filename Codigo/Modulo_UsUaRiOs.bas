@@ -44,7 +44,9 @@ Dim DaExp As Integer
 
 DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
-Call AddtoVar(UserList(AttackerIndex).Stats.Exp, DaExp, MAXEXP)
+UserList(AttackerIndex).Stats.Exp = UserList(AttackerIndex).Stats.Exp + DaExp
+If UserList(AttackerIndex).Stats.Exp > MAXEXP Then _
+    UserList(AttackerIndex).Stats.Exp = MAXREP
      
 'Lo mata
 Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Has matado a " & UserList(VictimIndex).name & "!" & FONTTYPE_FIGHT)
@@ -54,18 +56,23 @@ Call SendData(SendTarget.ToIndex, VictimIndex, 0, "||" & UserList(AttackerIndex)
 
 If TriggerZonaPelea(VictimIndex, AttackerIndex) <> TRIGGER6_PERMITE Then
     If (Not Criminal(VictimIndex)) Then
-         Call AddtoVar(UserList(AttackerIndex).Reputacion.AsesinoRep, vlASESINO * 2, MAXREP)
+         UserList(AttackerIndex).Reputacion.AsesinoRep = UserList(AttackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
+         If UserList(AttackerIndex).Reputacion.AsesinoRep > MAXREP Then _
+            UserList(AttackerIndex).Reputacion.AsesinoRep = MAXREP
          UserList(AttackerIndex).Reputacion.BurguesRep = 0
          UserList(AttackerIndex).Reputacion.NobleRep = 0
          UserList(AttackerIndex).Reputacion.PlebeRep = 0
     Else
-         Call AddtoVar(UserList(AttackerIndex).Reputacion.NobleRep, vlNoble, MAXREP)
+         UserList(AttackerIndex).Reputacion.NobleRep = UserList(AttackerIndex).Reputacion.NobleRep + vlNoble
+         If UserList(AttackerIndex).Reputacion.NobleRep > MAXREP Then _
+            UserList(AttackerIndex).Reputacion.NobleRep = MAXREP
     End If
 End If
 
 Call UserDie(VictimIndex)
 
-Call AddtoVar(UserList(AttackerIndex).Stats.UsuariosMatados, 1, 31000)
+If UserList(AttackerIndex).Stats.UsuariosMatados < 32000 Then _
+    UserList(AttackerIndex).Stats.UsuariosMatados = UserList(AttackerIndex).Stats.UsuariosMatados + 1
 
 'Log
 Call LogAsesinato(UserList(AttackerIndex).name & " asesino a " & UserList(VictimIndex).name)
@@ -308,6 +315,7 @@ On Error GoTo errhandler
 Dim Pts As Integer
 Dim AumentoHIT As Integer
 Dim AumentoMANA As Integer
+Dim AumentoSTA As Integer
 Dim WasNewbie As Boolean
 
 '¿Alcanzo el maximo nivel?
@@ -327,10 +335,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has subido de nivel!" & FONTTYPE_INFO)
     
     If UserList(UserIndex).Stats.ELV = 1 Then
-      Pts = 10
-      
+        Pts = 10
     Else
-      Pts = 5
+        Pts = 5
     End If
     
     UserList(UserIndex).Stats.SkillPts = UserList(UserIndex).Stats.SkillPts + Pts
@@ -360,7 +367,6 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Dim AumentoHP As Integer
     Select Case UserList(UserIndex).Clase
         Case "Guerrero"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 12)
@@ -373,19 +379,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
-            
-            '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Stamina ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Golpe ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-            Call AddtoVar(UserList(UserIndex).Stats.MinHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
+            AumentoSTA = AumentoSTDef
         
         Case "Cazador"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 11)
@@ -398,18 +394,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
 
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
-            
-            '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Stamina ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Golpe ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-            Call AddtoVar(UserList(UserIndex).Stats.MinHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-                
-            
+            AumentoSTA = AumentoSTDef
+        
         Case "Pirata"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
@@ -423,19 +409,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = 3
-            
-            '¿?¿?¿?¿?¿?¿?¿ HitPoints ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Stamina ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA)
-            
-            '¿?¿?¿?¿?¿?¿?¿ Golpe ¿?¿?¿?¿?¿?¿?¿
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT)
-            Call AddtoVar(UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT)
-            
+            AumentoSTA = AumentoSTDef
+        
         Case "Paladin"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 11)
@@ -449,22 +425,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-            
-            'HP
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
-            
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV >= 36, 9999, STAT_MAXMAN))
-            
-            'STA
-            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA)
-            
-            'Golpe
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-            Call AddtoVar(UserList(UserIndex).Stats.MinHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
+            AumentoSTA = AumentoSTDef
         
         Case "Ladron"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -477,14 +440,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = 1
-            
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTLadron, STAT_MAXSTA
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTLadron
             
         Case "Mago"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
@@ -501,18 +457,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = 1
             AumentoMANA = 3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-            
-            'HP
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP)
-            'STA
-            Call AddtoVar(UserList(UserIndex).Stats.MaxSta, AumentoSTMago, STAT_MAXSTA)
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
-        Case "Leñador"
+            AumentoSTA = AumentoSTMago
         
+        Case "Leñador"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -525,16 +472,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = 2
-            
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTLeñador, STAT_MAXSTA
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTLeñador
+        
         Case "Minero"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -547,16 +487,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = 2
-            
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTMinero, STAT_MAXSTA
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTMinero
+        
         Case "Pescador"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -569,14 +502,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             
             AumentoHIT = 1
-            
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoSTPescador, STAT_MAXSTA
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTPescador
         
         Case "Clerigo"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
@@ -592,16 +518,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-                
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTDef
         
         Case "Druida"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
@@ -617,19 +534,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-                
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTDef
         
         Case "Asesino"
-            
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -643,17 +550,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-                
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
-            'Golpe
-            Call AddtoVar(UserList(UserIndex).Stats.MaxHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-            Call AddtoVar(UserList(UserIndex).Stats.MinHIT, AumentoHIT, IIf(UserList(UserIndex).Stats.ELV < 36, STAT_MAXHIT, 999))
-            
+            AumentoSTA = AumentoSTDef
+        
         Case "Bardo"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
@@ -668,15 +566,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
-            'Mana
-            Call AddtoVar(UserList(UserIndex).Stats.MaxMAN, AumentoMANA, IIf(UserList(UserIndex).Stats.ELV > 35, 9999, STAT_MAXMAN))
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTDef
         
         Case Else
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
@@ -691,21 +581,41 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
 
             AumentoHIT = 2
-            'HP
-            AddtoVar UserList(UserIndex).Stats.MaxHP, AumentoHP, STAT_MAXHP
-            'STA
-            AddtoVar UserList(UserIndex).Stats.MaxSta, AumentoST, STAT_MAXSTA
-            'Golpe
-            AddtoVar UserList(UserIndex).Stats.MaxHIT, AumentoHIT, STAT_MAXHIT
-            AddtoVar UserList(UserIndex).Stats.MinHIT, AumentoHIT, STAT_MAXHIT
+            AumentoSTA = AumentoSTDef
     End Select
     
-    'AddtoVar UserList(UserIndex).Stats.MaxHIT, 2, STAT_MAXHIT
-    'AddtoVar UserList(UserIndex).Stats.MinHIT, 2, STAT_MAXHIT
-    'AddtoVar UserList(UserIndex).Stats.Def, 2, STAT_MAXDEF
+    'Actualizamos HitPoints
+    UserList(UserIndex).Stats.MaxHP = UserList(UserIndex).Stats.MaxHP + AumentoHP
+    If UserList(UserIndex).Stats.MaxHP > STAT_MAXHP Then _
+        UserList(UserIndex).Stats.MaxHP = STAT_MAXHP
+    'Actualizamos Stamina
+    UserList(UserIndex).Stats.MaxSta = UserList(UserIndex).Stats.MaxSta + AumentoSTA
+    If UserList(UserIndex).Stats.MaxSta > STAT_MAXSTA Then _
+        UserList(UserIndex).Stats.MaxSta = STAT_MAXSTA
     
+    'Actualizamos Golpe Máximo
+    UserList(UserIndex).Stats.MaxHIT = UserList(UserIndex).Stats.MaxHIT + AumentoHIT
+    If UserList(UserIndex).Stats.ELV < 36 Then
+        If UserList(UserIndex).Stats.MaxHIT > STAT_MAXHIT_UNDER36 Then _
+            UserList(UserIndex).Stats.MaxHIT = STAT_MAXHIT_UNDER36
+    Else
+        If UserList(UserIndex).Stats.MaxHIT > STAT_MAXHIT_OVER36 Then _
+            UserList(UserIndex).Stats.MaxHIT = STAT_MAXHIT_OVER36
+    End If
+    
+    'Actualizamos Golpe Mínimo
+    UserList(UserIndex).Stats.MinHIT = UserList(UserIndex).Stats.MinHIT + AumentoHIT
+    If UserList(UserIndex).Stats.ELV < 36 Then
+        If UserList(UserIndex).Stats.MinHIT < STAT_MAXHIT_UNDER36 Then _
+            UserList(UserIndex).Stats.MinHIT = STAT_MAXHIT_UNDER36
+    Else
+        If UserList(UserIndex).Stats.MinHIT > STAT_MAXHIT_OVER36 Then _
+            UserList(UserIndex).Stats.MinHIT = STAT_MAXHIT_OVER36
+    End If
+    
+    'Notificamos al user
     If AumentoHP > 0 Then SendData SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & AumentoHP & " puntos de vida." & FONTTYPE_INFO
-    If AumentoST > 0 Then SendData SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & AumentoST & " puntos de vitalidad." & FONTTYPE_INFO
+    If AumentoSTA > 0 Then SendData SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & AumentoSTA & " puntos de vitalidad." & FONTTYPE_INFO
     If AumentoMANA > 0 Then SendData SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & AumentoMANA & " puntos de magia." & FONTTYPE_INFO
     If AumentoHIT > 0 Then
         SendData SendTarget.ToIndex, UserIndex, 0, "||Tu golpe maximo aumento en " & AumentoHIT & " puntos." & FONTTYPE_INFO
@@ -1043,11 +953,15 @@ Else
                 Call VolverCriminal(UserIndex)
        Else
             If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
-                Call AddtoVar(UserList(UserIndex).Reputacion.BandidoRep, vlASALTO, MAXREP)
+                UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
+                If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
+                    UserList(UserIndex).Reputacion.BandidoRep = MAXREP
             End If
        End If
     ElseIf Npclist(NpcIndex).Stats.Alineacion = 1 Then
-       Call AddtoVar(UserList(UserIndex).Reputacion.PlebeRep, vlCAZADOR / 2, MAXREP)
+       UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR / 2
+       If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.PlebeRep = MAXREP
     End If
     
     'hacemos que el npc se defienda
@@ -1102,13 +1016,16 @@ If UserList(UserIndex).flags.Hambre = 0 And _
     If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
     
     If Aumenta = 7 And UserList(UserIndex).Stats.UserSkills(Skill) < LevelSkill(lvl).LevelValue Then
-            Call AddtoVar(UserList(UserIndex).Stats.UserSkills(Skill), 1, MAXSKILLPOINTS)
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & UserList(UserIndex).Stats.UserSkills(Skill) & " pts." & FONTTYPE_INFO)
-            Call AddtoVar(UserList(UserIndex).Stats.Exp, 50, MAXEXP)
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has ganado 50 puntos de experiencia!" & FONTTYPE_FIGHT)
-            Call CheckUserLevel(UserIndex)
+        UserList(UserIndex).Stats.UserSkills(Skill) = UserList(UserIndex).Stats.UserSkills(Skill) + 1
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & UserList(UserIndex).Stats.UserSkills(Skill) & " pts." & FONTTYPE_INFO)
+        
+        UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + 50
+        If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+            UserList(UserIndex).Stats.Exp = MAXEXP
+        
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has ganado 50 puntos de experiencia!" & FONTTYPE_FIGHT)
+        Call CheckUserLevel(UserIndex)
     End If
-
 End If
 
 End Sub
@@ -1169,7 +1086,7 @@ On Error GoTo ErrorHandler
     End If
     
     '<<<< Invisible >>>>
-    If UserList(UserIndex).flags.Invisible = 1 Then
+    If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then
         UserList(UserIndex).flags.Oculto = 0
         UserList(UserIndex).flags.Invisible = 0
         'no hace falta encriptar este NOVER
@@ -1297,32 +1214,33 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     If TriggerZonaPelea(Muerto, Atacante) = TRIGGER6_PERMITE Then Exit Sub
     
     If Criminal(Muerto) Then
-            If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
-                UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
-                Call AddtoVar(UserList(Atacante).Faccion.CriminalesMatados, 1, 65000)
-            End If
-    
-            If UserList(Atacante).Faccion.CriminalesMatados > MAXUSERMATADOS Then
-                UserList(Atacante).Faccion.CriminalesMatados = 0
-                UserList(Atacante).Faccion.RecompensasReal = 0
-            End If
-    
-            If UserList(Atacante).Faccion.RecibioExpInicialCaos = 1 And UserList(Muerto).Faccion.FuerzasCaos = 1 Then
-                UserList(Atacante).Faccion.Reenlistadas = 200  'jaja que trucho
-                
-                'con esto evitamos que se vuelva a reenlistar
-            End If
-    
+        If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
+            UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
+            If UserList(Atacante).Faccion.CriminalesMatados < 65000 Then _
+                UserList(Atacante).Faccion.CriminalesMatados = UserList(Atacante).Faccion.CriminalesMatados + 1
+        End If
+        
+        If UserList(Atacante).Faccion.CriminalesMatados > MAXUSERMATADOS Then
+            UserList(Atacante).Faccion.CriminalesMatados = 0
+            UserList(Atacante).Faccion.RecompensasReal = 0
+        End If
+        
+        If UserList(Atacante).Faccion.RecibioExpInicialCaos = 1 And UserList(Muerto).Faccion.FuerzasCaos = 1 Then
+            UserList(Atacante).Faccion.Reenlistadas = 200  'jaja que trucho
+            
+            'con esto evitamos que se vuelva a reenlistar
+        End If
     Else
-            If UserList(Atacante).flags.LastCiudMatado <> UserList(Muerto).name Then
-                UserList(Atacante).flags.LastCiudMatado = UserList(Muerto).name
-                Call AddtoVar(UserList(Atacante).Faccion.CiudadanosMatados, 1, 65000)
-            End If
-    
-            If UserList(Atacante).Faccion.CiudadanosMatados > MAXUSERMATADOS Then
-                UserList(Atacante).Faccion.CiudadanosMatados = 0
-                UserList(Atacante).Faccion.RecompensasCaos = 0
-            End If
+        If UserList(Atacante).flags.LastCiudMatado <> UserList(Muerto).name Then
+            UserList(Atacante).flags.LastCiudMatado = UserList(Muerto).name
+            If UserList(Atacante).Faccion.CiudadanosMatados < 65000 Then _
+                UserList(Atacante).Faccion.CiudadanosMatados = UserList(Atacante).Faccion.CiudadanosMatados + 1
+        End If
+        
+        If UserList(Atacante).Faccion.CiudadanosMatados > MAXUSERMATADOS Then
+            UserList(Atacante).Faccion.CiudadanosMatados = 0
+            UserList(Atacante).Faccion.RecompensasCaos = 0
+        End If
     End If
 
 
@@ -1412,7 +1330,7 @@ Dim OldY As Integer
     
     'Seguis invisible al pasar de mapa
     If (UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then
-            Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos)
+        Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos)
     End If
     
     If FX And UserList(UserIndex).flags.AdminInvisible = 0 Then 'FX
@@ -1444,10 +1362,10 @@ For Y = YMinMapSize To YMaxMapSize
             Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).UserIndex, Map, X, Y)
 #If SeguridadAlkon Then
             If EncriptarProtocolosCriticos Then
-                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
+                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
             Else
 #End If
-                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
+                If UserList(MapData(Map, X, Y).UserIndex).flags.Invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
             End If
 #End If

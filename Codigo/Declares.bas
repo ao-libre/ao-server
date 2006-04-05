@@ -308,12 +308,12 @@ End Enum
 Public Const AdicionalHPGuerrero As Byte = 2 'HP adicionales cuando sube de nivel
 Public Const AdicionalHPCazador As Byte = 1 'HP adicionales cuando sube de nivel
 
-Public Const AumentoST As Byte = 15
-Public Const AumentoSTLadron As Byte = AumentoST + 3
-Public Const AumentoSTMago As Byte = AumentoST - 1
-Public Const AumentoSTLeñador As Byte = AumentoST + 23
-Public Const AumentoSTPescador As Byte = AumentoST + 20
-Public Const AumentoSTMinero As Byte = AumentoST + 25
+Public Const AumentoSTDef As Byte = 15
+Public Const AumentoSTLadron As Byte = AumentoSTDef + 3
+Public Const AumentoSTMago As Byte = AumentoSTDef - 1
+Public Const AumentoSTLeñador As Byte = AumentoSTDef + 23
+Public Const AumentoSTPescador As Byte = AumentoSTDef + 20
+Public Const AumentoSTMinero As Byte = AumentoSTDef + 25
 
 'Tamaño del mapa
 Public Const XMaxMapSize As Byte = 100
@@ -374,8 +374,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
-    otCasco = 16
-    otEscudo = 17
+    otCASCO = 16
+    otESCUDO = 17
     otHerramientas = 18
     otTeleport = 19
     otYacimiento = 22
@@ -414,7 +414,8 @@ Public Const STAT_MAXELV As Byte = 99
 Public Const STAT_MAXHP As Integer = 999
 Public Const STAT_MAXSTA As Integer = 999
 Public Const STAT_MAXMAN As Integer = 2000
-Public Const STAT_MAXHIT As Byte = 99
+Public Const STAT_MAXHIT_UNDER36 As Byte = 99
+Public Const STAT_MAXHIT_OVER36 As Integer = 999
 Public Const STAT_MAXDEF As Byte = 99
 
 

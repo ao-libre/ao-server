@@ -248,30 +248,30 @@ Case "GUERRERO"
 End Select
 
 End Function
-Function Minimo(ByVal A As Single, ByVal b As Single) As Single
-If A > b Then
+Function Minimo(ByVal a As Single, ByVal b As Single) As Single
+If a > b Then
     Minimo = b
-    Else: Minimo = A
+    Else: Minimo = a
 End If
 End Function
 
-Function MinimoInt(ByVal A As Integer, ByVal b As Integer) As Integer
-If A > b Then
+Function MinimoInt(ByVal a As Integer, ByVal b As Integer) As Integer
+If a > b Then
     MinimoInt = b
-    Else: MinimoInt = A
+    Else: MinimoInt = a
 End If
 End Function
 
-Function Maximo(ByVal A As Single, ByVal b As Single) As Single
-If A > b Then
-    Maximo = A
+Function Maximo(ByVal a As Single, ByVal b As Single) As Single
+If a > b Then
+    Maximo = a
     Else: Maximo = b
 End If
 End Function
 
-Function MaximoInt(ByVal A As Integer, ByVal b As Integer) As Integer
-If A > b Then
-    MaximoInt = A
+Function MaximoInt(ByVal a As Integer, ByVal b As Integer) As Integer
+If a > b Then
+    MaximoInt = a
     Else: MaximoInt = b
 End If
 End Function
@@ -933,11 +933,11 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim Index As Integer
-    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim index As Integer
+    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
     'Look for user
-    If Index > 0 Then
+    If index > 0 Then
         Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
         Call SendUserStatsBox(UserIndex)
         Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
@@ -1187,61 +1187,24 @@ Call CheckUserLevel(AtacanteIndex)
 End Sub
 
 Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer)
-
-If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
-
-'clanesnuevo
-'If UserList(AttackerIndex).GuildInfo.GuildName = "" Or UserList(VictimIndex).GuildInfo.GuildName = "" Then
+    If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
 
     If Not Criminal(AttackerIndex) And Not Criminal(VictimIndex) Then
         Call VolverCriminal(AttackerIndex)
     End If
     
     If Not Criminal(VictimIndex) Then
-          Call AddtoVar(UserList(AttackerIndex).Reputacion.BandidoRep, vlASALTO, MAXREP)
+        UserList(AttackerIndex).Reputacion.BandidoRep = UserList(AttackerIndex).Reputacion.BandidoRep + vlASALTO
+        If UserList(AttackerIndex).Reputacion.BandidoRep > MAXREP Then _
+            UserList(AttackerIndex).Reputacion.BandidoRep = MAXREP
     Else
-          Call AddtoVar(UserList(AttackerIndex).Reputacion.NobleRep, vlNoble, MAXREP)
+        UserList(AttackerIndex).Reputacion.NobleRep = UserList(AttackerIndex).Reputacion.NobleRep + vlNoble
+        If UserList(AttackerIndex).Reputacion.NobleRep > MAXREP Then _
+            UserList(AttackerIndex).Reputacion.NobleRep = MAXREP
     End If
     
-    
-'Else 'Tiene clan
-
-    'clanesnuevo
-    'If Not UserList(AttackerIndex).GuildRef.IsEnemy(UserList(VictimIndex).GuildInfo.GuildName) Then
-    '
-    '        If Not Criminal(AttackerIndex) And Not Criminal(VictimIndex) Then
-    '                Call VolverCriminal(AttackerIndex)
-    '        End If
-            
-    '        If Not Criminal(VictimIndex) Then
-    '              Call AddtoVar(UserList(AttackerIndex).Reputacion.BandidoRep, vlASALTO, MAXREP)
-    '        Else
-    '              Call AddtoVar(UserList(AttackerIndex).Reputacion.NobleRep, vlNoble, MAXREP)
-    '        End If
-    '
-    'Else
-    '
-    '        If Not Criminal(VictimIndex) Then
-    '              Call AddtoVar(UserList(AttackerIndex).Reputacion.BandidoRep, vlASALTO, MAXREP)
-    '        Else
-    '              Call AddtoVar(UserList(AttackerIndex).Reputacion.NobleRep, vlNoble, MAXREP)
-    '        End If
-    '
-    '        'Call GiveGuildPoints(1, AttackerIndex, False)
-    
-    'End If
-    
-
-'End If
-
-Call AllMascotasAtacanUser(AttackerIndex, VictimIndex)
-Call AllMascotasAtacanUser(VictimIndex, AttackerIndex)
-
-
-
-
-
-
+    Call AllMascotasAtacanUser(AttackerIndex, VictimIndex)
+    Call AllMascotasAtacanUser(VictimIndex, AttackerIndex)
 End Sub
 
 Sub AllMascotasAtacanUser(ByVal Victim As Integer, ByVal Maestro As Integer)
@@ -1260,7 +1223,7 @@ End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
 
-Dim t As eTrigger6
+Dim T As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
@@ -1268,12 +1231,12 @@ If UserList(VictimIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-t = TriggerZonaPelea(AttackerIndex, VictimIndex)
+T = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If t = TRIGGER6_PERMITE Then
+If T = TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf t = TRIGGER6_PROHIBE Then
+ElseIf T = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
 End If
@@ -1407,10 +1370,11 @@ If ExpaDar > 0 Then
     If UserList(UserIndex).PartyIndex > 0 Then
         Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
     Else
-        Call AddtoVar(UserList(UserIndex).Stats.Exp, ExpaDar, MAXEXP)
+        UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
+        If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+            UserList(UserIndex).Stats.Exp = MAXREP
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpaDar & " puntos de experiencia." & FONTTYPE_FIGHT)
     End If
-
     
     Call CheckUserLevel(UserIndex)
 End If

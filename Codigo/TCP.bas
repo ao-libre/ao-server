@@ -932,13 +932,6 @@ Select Case sndRoute
                     If MapData(sndMap, X, Y).UserIndex > 0 Then
                         If UserList(MapData(sndMap, X, Y).UserIndex).flags.Muerto = 1 Or UserList(MapData(sndMap, X, Y).UserIndex).flags.Privilegios >= 1 Then
                            If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                                'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                                'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-    '                            #If UsarAPI Then
-    '                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-    '                            #Else
-    '                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-    '                            #End If
                                 Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
                            End If
                         End If
@@ -955,13 +948,6 @@ Select Case sndRoute
                If InMapBounds(sndMap, X, Y) Then
                     If (MapData(sndMap, X, Y).UserIndex > 0) And (MapData(sndMap, X, Y).UserIndex <> sndIndex) Then
                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                            'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #If UsarAPI Then
-'                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-'                            #Else
-'                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #End If
                             Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
                        End If
                     End If
@@ -1028,13 +1014,6 @@ Select Case sndRoute
                If InMapBounds(sndMap, X, Y) Then
                     If MapData(sndMap, X, Y).UserIndex > 0 Then
                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                            'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #If UsarAPI Then
-'                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-'                            #Else
-'                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #End If
                             Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
                        End If
                     End If
@@ -1170,13 +1149,6 @@ Select Case sndRoute
         For LoopC = 1 To LastUser
             If UserList(LoopC).ConnID <> -1 Then
                 If UserList(LoopC).flags.UserLogged Then 'Esta logeado como usuario?
-                    'Call AddtoVar(UserList(LoopC).BytesTransmitidosSvr, LenB(sndData), 100000)
-                    'frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                    #If UsarAPI Then
-'                    Call WsApiEnviar(LoopC, sndData)
-'                    #Else
-'                    frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                    #End If
                     Call EnviarDatosASlot(LoopC, ProtoCrypt(sndData, LoopC) & ENDC)
                 End If
             End If
@@ -1187,13 +1159,6 @@ Select Case sndRoute
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) And (LoopC <> sndIndex) Then
                 If UserList(LoopC).flags.UserLogged Then 'Esta logeado como usuario?
-                    'Call AddtoVar(UserList(LoopC).BytesTransmitidosSvr, LenB(sndData), 100000)
-                    'frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                    #If UsarAPI Then
-'                    Call WsApiEnviar(LoopC, sndData)
-'                    #Else
-'                    frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                    #End If
                     Call EnviarDatosASlot(LoopC, ProtoCrypt(sndData, LoopC) & ENDC)
                 End If
             End If
@@ -1205,13 +1170,6 @@ Select Case sndRoute
             If (UserList(LoopC).ConnID <> -1) Then
                 If UserList(LoopC).flags.UserLogged Then
                     If UserList(LoopC).Pos.Map = sndMap Then
-                        'Call AddtoVar(UserList(LoopC).BytesTransmitidosSvr, LenB(sndData), 100000)
-                        'frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                        #If UsarAPI Then
-'                        Call WsApiEnviar(LoopC, sndData)
-'                        #Else
-'                        frmMain.Socket2(LoopC).Write sndData, Len(sndData)
-'                        #End If
                         Call EnviarDatosASlot(LoopC, ProtoCrypt(sndData, LoopC) & ENDC)
                     End If
                 End If
@@ -1249,13 +1207,6 @@ Select Case sndRoute
                If InMapBounds(sndMap, X, Y) Then
                     If MapData(sndMap, X, Y).UserIndex > 0 Then
                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                            'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #If UsarAPI Then
-'                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-'                            #Else
-'                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #End If
                             Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, ProtoCrypt(sndData, MapData(sndMap, X, Y).UserIndex) & ENDC)
                        End If
                     End If
@@ -1271,13 +1222,6 @@ Select Case sndRoute
                If InMapBounds(sndMap, X, Y) Then
                     If (MapData(sndMap, X, Y).UserIndex > 0) And (MapData(sndMap, X, Y).UserIndex <> sndIndex) Then
                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                            'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #If UsarAPI Then
-'                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-'                            #Else
-'                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #End If
                             Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, ProtoCrypt(sndData, MapData(sndMap, X, Y).UserIndex) & ENDC)
                        End If
                     End If
@@ -1310,13 +1254,6 @@ Select Case sndRoute
                If InMapBounds(sndMap, X, Y) Then
                     If MapData(sndMap, X, Y).UserIndex > 0 Then
                        If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            'Call AddtoVar(UserList(MapData(sndMap, X, Y).UserIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-                            'frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #If UsarAPI Then
-'                            Call WsApiEnviar(MapData(sndMap, X, Y).UserIndex, sndData)
-'                            #Else
-'                            frmMain.Socket2(MapData(sndMap, X, Y).UserIndex).Write sndData, Len(sndData)
-'                            #End If
                             Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, ProtoCrypt(sndData, MapData(sndMap, X, Y).UserIndex) & ENDC)
                        End If
                     End If
@@ -1327,13 +1264,6 @@ Select Case sndRoute
 
     Case SendTarget.ToIndex
         If UserList(sndIndex).ConnID <> -1 Then
-             'Call AddtoVar(UserList(sndIndex).BytesTransmitidosSvr, LenB(sndData), 100000)
-             'frmMain.Socket2(sndIndex).Write sndData, Len(sndData)
-'             #If UsarAPI Then
-'             Call WsApiEnviar(sndIndex, sndData)
-'             #Else
-'             frmMain.Socket2(sndIndex).Write sndData, Len(sndData)
-'             #End If
              Call EnviarDatosASlot(sndIndex, ProtoCrypt(sndData, sndIndex) & ENDC)
              Exit Sub
         End If

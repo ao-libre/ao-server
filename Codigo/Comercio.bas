@@ -186,7 +186,9 @@ On Error GoTo errorh
     Call QuitarUserInvItem(UserIndex, CByte(ObjIndex), Cantidad)
     'Le sumamos al user el valor en oro del obj vendido
     monto = ((ObjData(obji).Valor \ 3 + infla) * Cantidad)
-    Call AddtoVar(UserList(UserIndex).Stats.GLD, monto, MAXORO)
+    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + monto
+    If UserList(UserIndex).Stats.GLD > MAXORO Then _
+        UserList(UserIndex).Stats.GLD = MAXORO
     
     'tal vez suba el skill comerciar ;-)
     Call SubirSkill(UserIndex, Comerciar)

@@ -32,8 +32,8 @@ Attribute VB_Name = "modCentinela"
 
 Option Explicit
 
-Private Const NPC_CENTINELA_TIERRA As Integer = 158  'Índice del NPC en el .dat
-Private Const NPC_CENTINELA_AGUA As Integer = 159     'Ídem anterior, pero en mapas de agua
+Private Const NPC_CENTINELA_TIERRA As Integer = 16  'Índice del NPC en el .dat
+Private Const NPC_CENTINELA_AGUA As Integer = 16     'Ídem anterior, pero en mapas de agua
 
 Public CentinelaCharIndex As Integer                'Índice del NPC en el servidor
 
@@ -88,7 +88,10 @@ On Error GoTo Error_Handler
     Dim numPenas As Integer
     
     If Not UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
+        'Logueamos el evento
         Call LogCentinela("Centinela baneo a " & UserList(Centinela.RevisandoUserIndex).name & " por uso de macro inasistido")
+        
+        'Ponemos el ban
         UserList(Centinela.RevisandoUserIndex).flags.Ban = 1
         
         name = UserList(Centinela.RevisandoUserIndex).name
@@ -102,9 +105,6 @@ On Error GoTo Error_Handler
         numPenas = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
         Call WriteVar(CharPath & name & ".chr", "PENAS", "Cant", numPenas + 1)
         Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & numPenas + 1, LCase$(name) & ": BAN POR MACRO INASISTIDO " & Date & " " & Time)
-        
-        'Logueamos el evento
-        Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " ha sido baneado por no responder.")
         
         'Reseteamos la info del centinela (para no loguear el logout)
         Centinela.RevisandoUserIndex = 0

@@ -267,8 +267,7 @@ End Sub
 
 Public Function BANCheck(ByVal name As String) As Boolean
 
-BANCheck = (val(GetVar(App.Path & "\charfile\" & name & ".chr", "FLAGS", "Ban")) = 1) 'Or _
-(val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "AdminBan")) = 1)
+BANCheck = (val(GetVar(App.Path & "\charfile\" & name & ".chr", "FLAGS", "Ban")) = 1)
 
 End Function
 

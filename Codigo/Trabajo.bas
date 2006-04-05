@@ -76,11 +76,12 @@ If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then Suerte = Suerte + 50
 res = RandomNumber(1, Suerte)
 
 If res > 9 Then
-   UserList(UserIndex).flags.Oculto = 0
-   UserList(UserIndex).flags.Invisible = 0
-   'no hace falta encriptar este (se jode el gil que bypassea esto)
-   Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+    UserList(UserIndex).flags.Oculto = 0
+    If UserList(UserIndex).flags.Invisible = 0 Then
+        'no hace falta encriptar este (se jode el gil que bypassea esto)
+        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+    End If
 End If
 
 
@@ -91,6 +92,7 @@ errhandler:
 
 
 End Sub
+
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 
 On Error GoTo errhandler
@@ -136,7 +138,6 @@ res = RandomNumber(1, Suerte)
 
 If res <= 5 Then
     UserList(UserIndex).flags.Oculto = 1
-    UserList(UserIndex).flags.Invisible = 1
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
         Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
@@ -246,7 +247,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -257,14 +258,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If Cant <= Total Then
+If cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -273,18 +274,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).Amount = UserList(UserIndex).Invent.Object(i).Amount - Cant
+        UserList(UserIndex).Invent.Object(i).Amount = UserList(UserIndex).Invent.Object(i).Amount - cant
         If (UserList(UserIndex).Invent.Object(i).Amount <= 0) Then
-            Cant = Abs(UserList(UserIndex).Invent.Object(i).Amount)
+            cant = Abs(UserList(UserIndex).Invent.Object(i).Amount)
             UserList(UserIndex).Invent.Object(i).Amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            Cant = 0
+            cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (Cant = 0) Then
+        If (cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -586,11 +587,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim Index As Integer
+        Dim index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        Index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
-        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
+        index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(index) = NpcIndex
+        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
@@ -937,7 +938,9 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
                 If N > UserList(VictimaIndex).Stats.GLD Then N = UserList(VictimaIndex).Stats.GLD
                 UserList(VictimaIndex).Stats.GLD = UserList(VictimaIndex).Stats.GLD - N
                 
-                Call AddtoVar(UserList(LadrOnIndex).Stats.GLD, N, MAXORO)
+                UserList(LadrOnIndex).Stats.GLD = UserList(LadrOnIndex).Stats.GLD + N
+                If UserList(LadrOnIndex).Stats.GLD > MAXORO Then _
+                    UserList(LadrOnIndex).Stats.GLD = MAXORO
                 
                 Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name & FONTTYPE_INFO)
             Else
@@ -956,7 +959,9 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     
     If UserList(LadrOnIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(LadrOnIndex)
 
-    Call AddtoVar(UserList(LadrOnIndex).Reputacion.LadronesRep, vlLadron, MAXREP)
+    UserList(LadrOnIndex).Reputacion.LadronesRep = UserList(LadrOnIndex).Reputacion.LadronesRep + vlLadron
+    If UserList(LadrOnIndex).Reputacion.LadronesRep > MAXREP Then _
+        UserList(LadrOnIndex).Reputacion.LadronesRep = MAXREP
     Call SubirSkill(LadrOnIndex, Robar)
 
 End If
@@ -1207,7 +1212,9 @@ If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
     UserList(UserIndex).Reputacion.BurguesRep = 0
     UserList(UserIndex).Reputacion.NobleRep = 0
     UserList(UserIndex).Reputacion.PlebeRep = 0
-    Call AddtoVar(UserList(UserIndex).Reputacion.BandidoRep, vlASALTO, MAXREP)
+    UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
+    If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
 End If
 
@@ -1220,13 +1227,9 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
 UserList(UserIndex).Reputacion.LadronesRep = 0
 UserList(UserIndex).Reputacion.BandidoRep = 0
 UserList(UserIndex).Reputacion.AsesinoRep = 0
-Call AddtoVar(UserList(UserIndex).Reputacion.PlebeRep, vlASALTO, MAXREP)
-
-End Sub
-
-
-Public Sub DoPlayInstrumento(ByVal UserIndex As Integer)
-
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlASALTO
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
 End Sub
 
 Public Sub DoMineria(ByVal UserIndex As Integer)
@@ -1322,7 +1325,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim Cant As Integer
+Dim cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1380,11 +1383,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    Call AddtoVar(UserList(UserIndex).Stats.MinMAN, Cant, UserList(UserIndex).Stats.MaxMAN)
+    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
+    If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
+        UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & cant & " puntos de mana!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

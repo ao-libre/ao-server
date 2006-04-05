@@ -198,7 +198,7 @@ On Error GoTo errorh
             NPCAlInd = MapData(NPCPosM, X, Y).NpcIndex  ''por si implementamos algo contra NPCs
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
-                If (UserList(PJEnInd).flags.Invisible = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) Then
+                If (UserList(PJEnInd).flags.Invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) Then
                 'ToDo: Borrar los GMs
                     If (EsMagoOClerigo(PJEnInd)) Then
                         ''say no more, atacar a este
@@ -286,7 +286,7 @@ Else
                 ''si es un tile no analizado
                 PJEnInd = MapData(NPCPosM, X, Y).UserIndex    ''por si implementamos algo contra NPCs
                 If (PJEnInd > 0) Then
-                    If Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Muerto = 1) Then
+                    If Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1) Then
                         ''si no esta muerto.., ya encontro algo para ir a buscar
                         Call GreedyWalkTo(npcind, MAPA_PRETORIANO, UserList(PJEnInd).Pos.X, UserList(PJEnInd).Pos.Y)
                         Exit Sub
@@ -403,7 +403,7 @@ On Error GoTo errorh
                             End If
                         ElseIf (UserList(PJEnInd).flags.Paralizado = 1) Then
                             If (BestTarget > 0) Then
-                                If Not (UserList(BestTarget).flags.Invisible = 1) Then
+                                If Not (UserList(BestTarget).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                                 ''encontre un paralizado visible, y no hay un besttarget invisible (paralizado invisible)
                                 BestTarget = PJEnInd
                                 PJBestTarget = True
@@ -467,7 +467,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX - 1, NPCPosY).UserIndex
         If (PJEnInd > 0) Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 ''esta es una forma muy facil de matar 2 pajaros
                 ''de un tiro. Se aleja del usuario pq el centro va a
                 ''estar ocupado, y a la vez se aproxima al rey, manteniendo
@@ -479,7 +479,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX + 1, NPCPosY).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -487,7 +487,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY - 1).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -495,7 +495,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY + 1).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -600,7 +600,7 @@ On Error GoTo errorh
                 End If
 
                 If PJEnInd > 0 And Not hayPretorianos Then
-                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Ceguera = 1) Then
+                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Ceguera = 1) Then
                         ''si no esta muerto o invisible o ciego...
                         dist = Sqr((UserList(PJEnInd).Pos.X - NPCPosX) ^ 2 + (UserList(PJEnInd).Pos.Y - NPCPosY) ^ 2)
                         If (dist < distBestTarget Or BestTarget = 0) Then
@@ -612,6 +612,9 @@ On Error GoTo errorh
             End If  ''canattack = 1
         Next Y
     Next X
+    
+    'Me curo mientras haya pretorianos (no es lo ideal, debería no dar experiencia tampoco, pero por ahora es loque hay)
+    If hayPretorianos Then Npclist(npcind).Stats.MinHP = Npclist(npcind).Stats.MaxHP
     
     If Not hayPretorianos Then
         ''si estoy aca es porque no hay pretorianos cerca!!!
@@ -691,7 +694,7 @@ On Error GoTo errorh
         For Y = NPCPosY - 7 To NPCPosY + 7
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) Then
-                If (Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) Then
+                If (Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) Then
                     ''caluclo la distancia al PJ, si esta mas cerca q el actual
                     ''mejor besttarget entonces ataco a ese.
                     If (BestTarget > 0) Then
@@ -836,7 +839,7 @@ On Error GoTo errorh
                 ElseIf (PJEnInd > 0) Then ''aggressor
                     If Not (UserList(PJEnInd).flags.Muerto = 1) Then
                         If (UserList(PJEnInd).flags.Paralizado = 0) Then
-                            If (Not (UserList(PJEnInd).flags.Invisible = 1)) Then
+                            If (Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1)) Then
                                 ''PJ movil y visible, jeje, si o si es target
                                 BestTarget = PJEnInd
                                 PJBestTarget = True
@@ -933,7 +936,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX - 1, NPCPosY).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             ''esta es una forma muy facil de matar 2 pajaros
             ''de un tiro. Se aleja del usuario pq el centro va a
             ''estar ocupado, y a la vez se aproxima al rey, manteniendo
@@ -945,7 +948,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX + 1, NPCPosY).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If
@@ -953,7 +956,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY - 1).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If
@@ -961,7 +964,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY + 1).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If

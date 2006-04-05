@@ -75,7 +75,9 @@ For i = 1 To PARTY_MAXMEMBERS
                     p_members(i).Experiencia = 0
                 End If
                 If PARTY_EXPERIENCIAPORGOLPE Then
-                    Call AddtoVar(UserList(UI).Stats.Exp, expPerCapita, MAXEXP)
+                    UserList(UI).Stats.Exp = UserList(UI).Stats.Exp + expPerCapita
+                    If UserList(UI).Stats.Exp > MAXEXP Then _
+                        UserList(UI).Stats.Exp = MAXEXP
                     Call CheckUserLevel(UI)
                     Call SendUserStatsBox(UI)
                 End If
@@ -141,7 +143,9 @@ If i = 1 Then
             Call SendData(SendTarget.ToIndex, p_members(j).UserIndex, 0, "|| Durante la misma has conseguido " & p_members(j).Experiencia & " puntos de experiencia!" & FONTTYPE_PARTY)
     
             If Not PARTY_EXPERIENCIAPORGOLPE Then
-                Call AddtoVar(UserList(p_members(j).UserIndex).Stats.Exp, p_members(j).Experiencia, MAXEXP)
+                UserList(p_members(j).UserIndex).Stats.Exp = UserList(p_members(j).UserIndex).Stats.Exp + p_members(j).Experiencia
+                If UserList(p_members(j).UserIndex).Stats.Exp > MAXEXP Then _
+                    UserList(p_members(j).UserIndex).Stats.Exp = MAXEXP
                 Call CheckUserLevel(p_members(j).UserIndex)
                 Call SendUserStatsBox(p_members(j).UserIndex)
             End If
@@ -155,7 +159,9 @@ If i = 1 Then
 Else
     If i <= PARTY_MAXMEMBERS Then
         If Not PARTY_EXPERIENCIAPORGOLPE Then
-            Call AddtoVar(UserList(p_members(i).UserIndex).Stats.Exp, p_members(i).Experiencia, MAXEXP)
+            UserList(p_members(i).UserIndex).Stats.Exp = UserList(p_members(i).UserIndex).Stats.Exp + p_members(i).Experiencia
+            If UserList(p_members(i).UserIndex).Stats.Exp > MAXEXP Then _
+                UserList(p_members(i).UserIndex).Stats.Exp = MAXEXP
             Call CheckUserLevel(p_members(i).UserIndex)
             Call SendUserStatsBox(p_members(i).UserIndex)
         End If
@@ -308,7 +314,9 @@ If Not PARTY_EXPERIENCIAPORGOLPE Then   'esto sirve SOLO cuando acumulamos la ex
     For i = 1 To PARTY_MAXMEMBERS
         If p_members(i).UserIndex > 0 Then
             If p_members(i).Experiencia > 0 Then
-                Call AddtoVar(UserList(p_members(i).UserIndex).Stats.Exp, p_members(i).Experiencia, MAXEXP)
+                UserList(p_members(i).UserIndex).Stats.Exp = UserList(p_members(i).UserIndex).Stats.Exp + p_members(i).Experiencia
+                If UserList(p_members(i).UserIndex).Stats.Exp > MAXEXP Then _
+                    UserList(p_members(i).UserIndex).Stats.Exp = MAXEXP
                 Call CheckUserLevel(p_members(i).UserIndex)
             Else
                 If Abs(UserList(p_members(i).UserIndex).Stats.Exp) > Abs(p_members(i).Experiencia) Then

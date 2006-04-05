@@ -62,3 +62,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 1/04/2006: El ValCode y MD5 se pusieron al final del OLOGIN para evitar problemas si el MD5 contenía comas (Maraxus).
  * 1/04/2006: Eliminé el head y el body del NLOGIN (eran ceros) (Maraxus).
  * 1/04/2006: Hice que los NPCs actualicen sus áreas al moverse (Maraxus).
+ * 5/04/2006: Ocultarse e Invisibilidad ya no son lo mismo (Maraxus).
+ * 5/04/2006: Limpié el ResetNPCFlags (Maraxus).
+ * 5/04/2006: Eliminé AddToVar (Maraxus).

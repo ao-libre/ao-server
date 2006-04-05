@@ -31,23 +31,8 @@ Attribute VB_Name = "Matematicas"
 
 Option Explicit
 
-Sub AddtoVar(ByRef Var As Variant, ByVal Addon As Variant, ByVal max As Variant)
-'Le suma un valor a una variable respetando el maximo valor
-
-If Var >= max Then
-    Var = max
-Else
-    Var = Var + Addon
-    If Var > max Then
-        Var = max
-    End If
-End If
-
-End Sub
-
-
 Public Function Porcentaje(ByVal Total As Long, ByVal Porc As Long) As Long
-Porcentaje = (Total * Porc) / 100
+    Porcentaje = (Total * Porc) / 100
 End Function
 
 Public Function SD(ByVal N As Integer) As Integer
@@ -106,4 +91,3 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
     
     RandomNumber = Fix(Rnd * (UpperBound - LowerBound + 1)) + LowerBound
 End Function
-

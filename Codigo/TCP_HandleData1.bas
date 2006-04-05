@@ -82,7 +82,6 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
-                UserList(UserIndex).flags.Invisible = 0
                 Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
             End If
@@ -110,7 +109,6 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
-                UserList(UserIndex).flags.Invisible = 0
                 Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
             End If
@@ -173,7 +171,7 @@ Procesado = True 'ver al final del sub
                         UserList(UserIndex).flags.CountSH = 0
                     End If
                     If Not UserList(UserIndex).flags.CountSH = 0 Then
-                        dummy = 126000 / dummy
+                        dummy = 126000 \ dummy
                         Call LogHackAttemp("Tramposo SH: " & UserList(UserIndex).name & " , " & dummy)
                         Call SendData(SendTarget.ToAdmins, 0, 0, "||Servidor> " & UserList(UserIndex).name & " ha sido echado por el servidor por posible uso de SH." & FONTTYPE_SERVER)
                         Call CloseSocket(UserIndex)
@@ -201,20 +199,17 @@ Procesado = True 'ver al final del sub
                 If Not UserList(UserIndex).flags.Descansar And Not UserList(UserIndex).flags.Meditando Then
                     Call MoveUserChar(UserIndex, val(rData))
                 ElseIf UserList(UserIndex).flags.Descansar Then
-                  UserList(UserIndex).flags.Descansar = False
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "DOK")
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has dejado de descansar." & FONTTYPE_INFO)
-                  Call MoveUserChar(UserIndex, val(rData))
+                    UserList(UserIndex).flags.Descansar = False
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "DOK")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has dejado de descansar." & FONTTYPE_INFO)
+                    Call MoveUserChar(UserIndex, val(rData))
                 ElseIf UserList(UserIndex).flags.Meditando Then
-                  UserList(UserIndex).flags.Meditando = False
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "MEDOK")
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
-                  UserList(UserIndex).Char.FX = 0
-                  UserList(UserIndex).Char.loops = 0
-                  Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
-                  
-                  'retirado en el parche de setiembre 2004
-                  'Call MoveUserChar(UserIndex, val(rdata))
+                    UserList(UserIndex).flags.Meditando = False
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "MEDOK")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
+                    UserList(UserIndex).Char.FX = 0
+                    UserList(UserIndex).Char.loops = 0
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
                 End If
             Else    'paralizado
               '[CDT 17-02-2004] (<- emmmmm ?????)
@@ -268,7 +263,6 @@ Procesado = True 'ver al final del sub
                 'piedra libre para todos los compas!
                 If UserList(UserIndex).flags.Oculto > 0 Then
                     UserList(UserIndex).flags.Oculto = 0
-                    UserList(UserIndex).flags.Invisible = 0
                     Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
@@ -290,13 +284,6 @@ Procesado = True 'ver al final del sub
         Case "TAB" 'Entrar o salir modo combate
             If UserList(UserIndex).flags.ModoCombate Then
                 SendData SendTarget.ToIndex, UserIndex, 0, "||Has salido del modo de combate. " & FONTTYPE_INFO
-                '[Arkaris]
-'                If UserList(UserIndex).PartyData.RemXP > 0 Then
-'                    SendData SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & UserList(UserIndex).PartyData.RemXP & " puntos de experiencia." & FONTTYPE_FIGHT
-'                    AddtoVar UserList(UserIndex).Stats.Exp, UserList(UserIndex).PartyData.RemXP, MAXEXP
-'                    UserList(UserIndex).PartyData.RemXP = 0
-'                End If
-                    '[/Arkaris]
             Else
                 SendData SendTarget.ToIndex, UserIndex, 0, "||Has pasado al modo de combate. " & FONTTYPE_INFO
             End If

@@ -1054,31 +1054,23 @@ End Sub
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
-  
-  'cazador con armadura de cazador oculto no se hace visible
-  'mersada de inmediata direccion pero no me importa pq esta
-  'version ya fue :D
-  If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
-    If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
-        Exit Sub
+    'cazador con armadura de cazador oculto no se hace visible
+    If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
+      If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
+          Exit Sub
+      End If
     End If
-  End If
-  
-  UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
-Else
-  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
-  UserList(UserIndex).Counters.Invisibilidad = 0
-  UserList(UserIndex).flags.Invisible = 0
-  UserList(UserIndex).flags.Oculto = 0
-'   no ecripto los noverx,0
-'  If EncriptarProtocolosCriticos Then
-'    Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.charindex & ",0")
-'  Else
-    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-'  End If
     
+    UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
+Else
+    UserList(UserIndex).Counters.Invisibilidad = 0
+    UserList(UserIndex).flags.Invisible = 0
+    If UserList(UserIndex).flags.Oculto = 0 Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+    End If
 End If
-            
+
 End Sub
 
 
