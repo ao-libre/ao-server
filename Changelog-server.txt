@@ -65,3 +65,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 5/04/2006: Ocultarse e Invisibilidad ya no son lo mismo (Maraxus).
  * 5/04/2006: Limpié el ResetNPCFlags (Maraxus).
  * 5/04/2006: Eliminé AddToVar (Maraxus).
+ * 6/04/2006: Los object type de escudos y cascos estaban invertidos (Maraxus).

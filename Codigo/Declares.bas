@@ -374,8 +374,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
-    otCASCO = 16
-    otESCUDO = 17
+    otEscudo = 16
+    otCasco = 17
     otHerramientas = 18
     otTeleport = 19
     otYacimiento = 22
