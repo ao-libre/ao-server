@@ -573,7 +573,13 @@ On Error GoTo errorh
             If (Npclist(npcind).CanAttack = 1) Then   ''saltea el analisis si no puede atacar para evitar cuentas
                 If (NPCAlInd > 0) Then
                     e_p = esPretoriano(NPCAlInd)
-                    If e_p > 0 And e_p < 6 And (Not (NPCAlInd = npcind)) Then hayPretorianos = True
+                    If e_p > 0 And e_p < 6 And (Not (NPCAlInd = npcind)) Then
+                        hayPretorianos = True
+                        
+                        'Me curo mientras haya pretorianos (no es lo ideal, debería no dar experiencia tampoco, pero por ahora es lo que hay)
+                        Npclist(npcind).Stats.MinHP = Npclist(npcind).Stats.MaxHP
+                    End If
+                    
                     If (Npclist(NPCAlInd).flags.Paralizado = 1 And e_p > 0 And e_p < 6) Then
                         ''el rey puede desparalizar con una efectividad del 20%
                         If (RandomNumber(1, 100) < 21) Then
@@ -612,9 +618,6 @@ On Error GoTo errorh
             End If  ''canattack = 1
         Next Y
     Next X
-    
-    'Me curo mientras haya pretorianos (no es lo ideal, debería no dar experiencia tampoco, pero por ahora es loque hay)
-    If hayPretorianos Then Npclist(npcind).Stats.MinHP = Npclist(npcind).Stats.MaxHP
     
     If Not hayPretorianos Then
         ''si estoy aca es porque no hay pretorianos cerca!!!
