@@ -55,6 +55,8 @@ Public Enum SendTarget
     ToCiudadanos = 19
     ToCriminales = 20
     ToPartyArea = 21
+    ToReal = 22
+    ToCaos = 23
 End Enum
 
 
@@ -1084,6 +1086,26 @@ Select Case sndRoute
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
                 If Criminal(LoopC) Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case SendTarget.ToReal
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If UserList(LoopC).Faccion.ArmadaReal = 1 Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case SendTarget.ToCaos
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If UserList(LoopC).Faccion.FuerzasCaos = 1 Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -3544,9 +3566,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToConsejo, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToConsejo, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr)
             End If
         End If
         Exit Sub
@@ -3557,9 +3579,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToConsejoCaos, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr & FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToConsejoCaos, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr)
             End If
         End If
         Exit Sub
