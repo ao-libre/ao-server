@@ -300,8 +300,6 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                 If UserList(UI).flags.Muerto = 0 Then
                     atacoPJ = True
                     If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then
-                        Dim k As Integer
-                        k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
                         Call NpcLanzaUnSpell(NpcIndex, UI)
                     End If
                     If NpcAtacaUser(NpcIndex, MapData(nPos.Map, nPos.X, nPos.Y).UserIndex) Then
@@ -342,8 +340,6 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                 If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
                     If UserList(UI).flags.Muerto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
-                              Dim k As Integer
-                              k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             If NpcAtacaUser(NpcIndex, UI) Then
@@ -535,8 +531,6 @@ For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RA
                 If Not Criminal(UI) Then
                    If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                         If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
-                              Dim k As Integer
-                              k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                         End If
                         tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
@@ -590,8 +584,6 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                     If Criminal(UI) Then
                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
-'                                  Dim k As Integer
-'                                  k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             Exit Sub
@@ -612,8 +604,6 @@ Else
                     If Criminal(UI) Then
                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
-                                  'Dim k As Integer
-                                  'k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Sub
@@ -975,7 +965,7 @@ End Function
 
 Sub NpcLanzaUnSpell(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
-If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 0 Then Exit Sub
+If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
 
 Dim k As Integer
 k = RandomNumber(1, Npclist(NpcIndex).flags.LanzaSpells)
