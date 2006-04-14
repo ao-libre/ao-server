@@ -954,7 +954,11 @@ Else
     'Reputacion
     If Npclist(NpcIndex).Stats.Alineacion = 0 Then
        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-                Call VolverCriminal(UserIndex)
+            UserList(UserIndex).Reputacion.NobleRep = 0
+            UserList(UserIndex).Reputacion.PlebeRep = 0
+            UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
+            If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
        Else
             If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
                 UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
@@ -1270,12 +1274,12 @@ Dim hayobj As Boolean
         For tY = Pos.Y - LoopC To Pos.Y + LoopC
             For tX = Pos.X - LoopC To Pos.X + LoopC
             
-                If LegalPos(nPos.Map, tX, tY) = True Then
+                If LegalPos(nPos.Map, tX, tY) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex <> Obj.ObjIndex And MapData(nPos.Map, tX, tY).OBJInfo.Amount + Obj.Amount <= MAX_INVENTORY_OBJS)
+                    hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex <> Obj.ObjIndex)
+                    If Not hayobj Then _
+                        hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.Amount + Obj.Amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
-                        Obj.Amount = Obj.Amount + MapData(nPos.Map, tX, tY).OBJInfo.Amount
-                        
                         nPos.X = tX
                         nPos.Y = tY
                         tX = Pos.X + LoopC
@@ -1482,7 +1486,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer, Optional ByVal Tiempo As Integer 
     
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
-        UserList(UserIndex).Counters.Salir = IIf(UserList(UserIndex).flags.Privilegios > 0 Or Not MapInfo(UserList(UserIndex).Pos.Map).Pk, 0, Tiempo)
+        UserList(UserIndex).Counters.Salir = IIf(UserList(UserIndex).flags.Privilegios > PlayerType.User Or Not MapInfo(UserList(UserIndex).Pos.Map).Pk, 0, Tiempo)
         
         
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos..." & FONTTYPE_INFO)

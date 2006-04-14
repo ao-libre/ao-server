@@ -3960,6 +3960,9 @@ If UCase(Left(rData, 4)) = "/CI " Then
         Exit Sub
     End If
     
+    'Is the object not null?
+    If ObjData(val(rData)).name = "" Then Exit Sub
+    
     Dim Objeto As Obj
     
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||ATENCION: FUERON CREADOS ***100*** ITEMS!, TIRE Y /DEST LOS QUE NO NECESITE!!" & FONTTYPE_GUILD)

@@ -298,7 +298,7 @@ If num > 0 Then
 '            Exit Sub
 '        End If
         
-        Obj.Amount = num + MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.Amount
+        Obj.Amount = num
         
         Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
@@ -341,6 +341,9 @@ Sub MakeObj(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As I
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
+    If MapData(Map, X, Y).OBJInfo.ObjIndex = Obj.ObjIndex Then
+        MapData(Map, X, Y).OBJInfo.Amount = MapData(Map, X, Y).OBJInfo.Amount + Obj.Amount
+    Else
         MapData(Map, X, Y).OBJInfo = Obj
         
         If sndRoute = SendTarget.ToMap Then
@@ -348,6 +351,7 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
         Else
             Call SendData(sndRoute, sndIndex, sndMap, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
         End If
+    End If
 End If
 
 End Sub

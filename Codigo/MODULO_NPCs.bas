@@ -104,14 +104,14 @@ On Error GoTo errhandler
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then
-                Dim T As Integer
-                For T = 1 To MAXMASCOTAS
-                      If UserList(UserIndex).MascotasIndex(T) > 0 Then
-                          If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
-                                  Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
-                          End If
+            Dim T As Integer
+            For T = 1 To MAXMASCOTAS
+                  If UserList(UserIndex).MascotasIndex(T) > 0 Then
+                      If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
+                              Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
                       End If
-                Next T
+                  End If
+            Next T
         End If
         
         '[KEVIN]
@@ -136,7 +136,11 @@ On Error GoTo errhandler
         
         If MiNPC.Stats.Alineacion = 0 Then
             If MiNPC.Numero = Guardias Then
-                Call VolverCriminal(UserIndex)
+                UserList(UserIndex).Reputacion.NobleRep = 0
+                UserList(UserIndex).Reputacion.PlebeRep = 0
+                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 500
+                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
             End If
             If MiNPC.MaestroUser = 0 Then
                 UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + vlASESINO

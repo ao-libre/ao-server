@@ -397,9 +397,9 @@ Dim b As Boolean
 
 Select Case Hechizos(uh).Tipo
     Case TipoHechizo.uEstado ' Afectan estados (por ejem : Envenenamiento)
-       Call HechizoEstadoNPC(UserList(UserIndex).flags.TargetNPC, uh, b, UserIndex)
+        Call HechizoEstadoNPC(UserList(UserIndex).flags.TargetNPC, uh, b, UserIndex)
     Case TipoHechizo.uPropiedades ' Afectan HP,MANA,STAMINA,ETC
-       Call HechizoPropNPC(uh, UserList(UserIndex).flags.TargetNPC, UserIndex, b)
+        Call HechizoPropNPC(uh, UserList(UserIndex).flags.TargetNPC, UserIndex, b)
 End Select
 
 If b Then
@@ -756,6 +756,20 @@ If Hechizos(hIndex).Envenena = 1 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes atacar a ese npc." & FONTTYPE_INFO)
         Exit Sub
    End If
+   
+   If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+        If UserList(UserIndex).flags.Seguro Then
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitarte el seguro para de poder atacar guardias" & FONTTYPE_WARNING)
+            Exit Sub
+        Else
+            UserList(UserIndex).Reputacion.NobleRep = 0
+            UserList(UserIndex).Reputacion.PlebeRep = 0
+            UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
+            If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+        End If
+    End If
+        
    Call InfoHechizo(UserIndex)
    Npclist(NpcIndex).flags.Envenenado = 1
    b = True
@@ -772,9 +786,23 @@ If Hechizos(hIndex).Maldicion = 1 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes atacar a ese npc." & FONTTYPE_INFO)
         Exit Sub
    End If
-   Call InfoHechizo(UserIndex)
-   Npclist(NpcIndex).flags.Maldicion = 1
-   b = True
+   
+   If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+        If UserList(UserIndex).flags.Seguro Then
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitarte el seguro para de poder atacar guardias" & FONTTYPE_WARNING)
+            Exit Sub
+        Else
+            UserList(UserIndex).Reputacion.NobleRep = 0
+            UserList(UserIndex).Reputacion.PlebeRep = 0
+            UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
+            If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+        End If
+    End If
+    
+    Call InfoHechizo(UserIndex)
+    Npclist(NpcIndex).flags.Maldicion = 1
+    b = True
 End If
 
 If Hechizos(hIndex).RemoverMaldicion = 1 Then
@@ -790,15 +818,28 @@ If Hechizos(hIndex).Bendicion = 1 Then
 End If
 
 If Hechizos(hIndex).Paraliza = 1 Then
-   If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
+    If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
+        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+            If UserList(UserIndex).flags.Seguro Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitarte el seguro para de poder atacar guardias" & FONTTYPE_WARNING)
+                Exit Sub
+            Else
+                UserList(UserIndex).Reputacion.NobleRep = 0
+                UserList(UserIndex).Reputacion.PlebeRep = 0
+                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 500
+                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+            End If
+        End If
+        
         Call InfoHechizo(UserIndex)
         Npclist(NpcIndex).flags.Paralizado = 1
         Npclist(NpcIndex).flags.Inmovilizado = 0
         Npclist(NpcIndex).Contadores.Paralisis = IntervaloParalizado
         b = True
-   Else
-      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc es inmune a este hechizo." & FONTTYPE_FIGHT)
-   End If
+    Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc es inmune a este hechizo." & FONTTYPE_FIGHT)
+    End If
 End If
 
 '[Barrin 16-2-04]
@@ -815,15 +856,28 @@ End If
 '[/Barrin]
  
 If Hechizos(hIndex).Inmoviliza = 1 Then
-   If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
+    If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
+        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+            If UserList(UserIndex).flags.Seguro Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitarte el seguro para de poder atacar guardias" & FONTTYPE_WARNING)
+                Exit Sub
+            Else
+                UserList(UserIndex).Reputacion.NobleRep = 0
+                UserList(UserIndex).Reputacion.PlebeRep = 0
+                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 500
+                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
+                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+            End If
+        End If
+        
         Npclist(NpcIndex).flags.Inmovilizado = 1
         Npclist(NpcIndex).flags.Paralizado = 0
         Npclist(NpcIndex).Contadores.Paralisis = IntervaloParalizado
         Call InfoHechizo(UserIndex)
         b = True
-   Else
-      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc es inmune a este hechizo." & FONTTYPE_FIGHT)
-   End If
+    Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc es inmune a este hechizo." & FONTTYPE_FIGHT)
+    End If
 End If
 
 End Sub
@@ -898,6 +952,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
 End If
 
 End Sub
+
 Sub InfoHechizo(ByVal UserIndex As Integer)
 
 

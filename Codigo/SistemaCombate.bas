@@ -598,26 +598,29 @@ End If
 
  
 If Npclist(NpcIndex).Stats.MinHP <= 0 Then
-          
-          ' Si era un Dragon perdemos la espada matadragones
-          If Npclist(NpcIndex).NPCtype = DRAGON Then
-            Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
+        
+        ' Si era un Dragon perdemos la espada matadragones
+        If Npclist(NpcIndex).NPCtype = DRAGON Then
+            'Si tiene equipada la matadracos se la sacamos
+            If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
+                Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
+            End If
             If Npclist(NpcIndex).Stats.MaxHP > 100000 Then Call LogDesarrollo(UserList(UserIndex).name & " mató un dragón")
-          End If
-          
-          
-          ' Para que las mascotas no sigan intentando luchar y
-          ' comiencen a seguir al amo
-         
-          Dim j As Integer
-          For j = 1 To MAXMASCOTAS
-                If UserList(UserIndex).MascotasIndex(j) > 0 Then
-                    If Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = NpcIndex Then Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = 0
-                    Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = TipoAI.SigueAmo
-                End If
-          Next j
-  
-          Call MuereNpc(NpcIndex, UserIndex)
+        End If
+        
+        
+        ' Para que las mascotas no sigan intentando luchar y
+        ' comiencen a seguir al amo
+        
+        Dim j As Integer
+        For j = 1 To MAXMASCOTAS
+            If UserList(UserIndex).MascotasIndex(j) > 0 Then
+                If Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = NpcIndex Then Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = 0
+                Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = TipoAI.SigueAmo
+            End If
+        Next j
+        
+        Call MuereNpc(NpcIndex, UserIndex)
 End If
 
 End Sub
@@ -897,9 +900,6 @@ If UserImpactoNpc(UserIndex, NpcIndex) Then
     Else
         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_IMPACTO2)
     End If
-    
-    
-    
     
     Call UserDañoNpc(UserIndex, NpcIndex)
    
