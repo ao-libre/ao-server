@@ -100,7 +100,7 @@ On Error GoTo errhandler
    If UserIndex > 0 Then ' Lo mato un usuario?
         If MiNPC.flags.Snd3 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MiNPC.flags.Snd3)
         UserList(UserIndex).flags.TargetNPC = 0
-        UserList(UserIndex).flags.TargetNpcTipo = 0
+        UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then

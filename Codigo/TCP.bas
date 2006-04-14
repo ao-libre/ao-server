@@ -1381,7 +1381,7 @@ Dim tStr As String
 'Reseteamos los FLAGS
 UserList(UserIndex).flags.Escondido = 0
 UserList(UserIndex).flags.TargetNPC = 0
-UserList(UserIndex).flags.TargetNpcTipo = 0
+UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
 UserList(UserIndex).flags.TargetObj = 0
 UserList(UserIndex).flags.TargetUser = 0
 UserList(UserIndex).Char.FX = 0
@@ -1868,7 +1868,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .NpcInv = 0
         .StatsChanged = 0
         .TargetNPC = 0
-        .TargetNpcTipo = 0
+        .TargetNpcTipo = eNPCType.Comun
         .TargetObj = 0
         .TargetObjMap = 0
         .TargetObjX = 0
@@ -2719,6 +2719,12 @@ If UCase$(Left$(rData, 6)) = "/RMATA" Then
 
     rData = Right$(rData, Len(rData) - 6)
     
+    'Los consejeros no pueden RMATAr a nada en el mapa pretoriano
+    If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero And UserList(UserIndex).Pos.Map = MAPA_PRETORIANO Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los consejeros no pueden usar este comando en el mapa pretoriano." & FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
     tIndex = UserList(UserIndex).flags.TargetNPC
     If tIndex > 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||RMatas (con posible respawn) a: " & Npclist(tIndex).name & FONTTYPE_INFO)
@@ -2779,8 +2785,8 @@ End If
 
 'MODIFICA CARACTER
 If UCase$(Left$(rData, 5)) = "/MOD " Then
-    rData = Right$(rData, Len(rData) - 5)
-    tStr = ReadField(1, rData, 32)
+    rData = UCase$(Right$(rData, Len(rData) - 5))
+    tStr = Replace(ReadField(1, rData, 32), "+", " ")
     tIndex = NameIndex(tStr)
     Arg1 = ReadField(2, rData, 32)
     Arg2 = ReadField(3, rData, 32)
@@ -2806,7 +2812,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     
     Call LogGM(UserList(UserIndex).name, rData, False)
     
-    Select Case UCase$(Arg1)
+    Select Case Arg1
         Case "ORO" '/mod yo oro 95000
             If tIndex <= 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
@@ -3067,9 +3073,9 @@ If UCase$(Left$(rData, 9)) = "/REVIVIR " Then
     UserList(tIndex).flags.Muerto = 0
     UserList(tIndex).Stats.MinHP = UserList(tIndex).Stats.MaxHP
     Call DarCuerpoDesnudo(tIndex)
-    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, val(tIndex), UserList(tIndex).Char.Body, UserList(tIndex).OrigChar.Head, UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, val(tIndex), UserList(tIndex).Char.Body, UserList(tIndex).OrigChar.Head, UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
     Call SendUserStatsBox(val(tIndex))
-    Call SendData(SendTarget.ToIndex, tIndex, 0, "||" & UserList(UserIndex).name & " te há resucitado." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, tIndex, 0, "||" & UserList(UserIndex).name & " te ha resucitado." & FONTTYPE_INFO)
     Call LogGM(UserList(UserIndex).name, "Resucito a " & UserList(tIndex).name, False)
     Exit Sub
 End If
@@ -3566,7 +3572,7 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr & FONTTYPE_TALK)
             Else
                 Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr)
             End If
@@ -3579,7 +3585,7 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr & FONTTYPE_TALK)
             Else
                 Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr)
             End If
@@ -3592,7 +3598,7 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCiudadanos, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToCiudadanos, 0, 0, "||" & tStr & FONTTYPE_TALK)
             Else
                 Call SendData(SendTarget.ToCiudadanos, 0, 0, "||" & tStr)
             End If
@@ -3605,7 +3611,7 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCriminales, 0, 0, "||" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToCriminales, 0, 0, "||" & tStr & FONTTYPE_TALK)
             Else
                 Call SendData(SendTarget.ToCriminales, 0, 0, "||" & tStr)
             End If
@@ -3619,7 +3625,7 @@ Select Case UCase$(Left$(rData, 8))
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 tStr = Right$(rData, Len(rData) - 8)
                 
-                Call SendData(SendTarget.ToPCArea, 0, 0, "||" & vbWhite & "°" & tStr & "°" & CStr(UserList(UserIndex).flags.TargetNPC))
+                Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Map, "||" & vbWhite & "°" & tStr & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes seleccionar el NPC por el que quieres hablar antes de usar este comando" & FONTTYPE_INFO)
             End If
@@ -3761,7 +3767,7 @@ End If
 
 
 
-If UCase(Left(rData, 8)) = "/trigger" Then
+If UCase$(Left$(rData, 8)) = "/TRIGGER" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     
@@ -3869,18 +3875,21 @@ If UCase(Left(rData, 7)) = "/BANIP " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Dim BanIP As String, XNick As Boolean
     
-    rData = Right(rData, Len(rData) - 7)
+    rData = Right$(rData, Len(rData) - 7)
+    tStr = Replace(ReadField(1, rData, Asc(" ")), "+", " ")
     'busca primero la ip del nick
-    tIndex = NameIndex(rData)
+    tIndex = NameIndex(tStr)
     If tIndex <= 0 Then
         XNick = False
         Call LogGM(UserList(UserIndex).name, "/BanIP " & rData, False)
-        BanIP = rData
+        BanIP = tStr
     Else
         XNick = True
         Call LogGM(UserList(UserIndex).name, "/BanIP " & UserList(tIndex).name & " - " & UserList(tIndex).ip, False)
         BanIP = UserList(tIndex).ip
     End If
+    
+    rData = Right$(rData, Len(rData) - Len(tStr))
     
     If BanIpBuscar(BanIP) > 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La IP " & BanIP & " ya se encuentra en la lista de bans." & FONTTYPE_INFO)
@@ -3891,7 +3900,7 @@ If UCase(Left(rData, 7)) = "/BANIP " Then
     Call SendData(SendTarget.ToAdmins, UserIndex, 0, "||" & UserList(UserIndex).name & " Baneo la IP " & BanIP & FONTTYPE_FIGHT)
     
     If XNick = True Then
-        Call LogBan(tIndex, UserIndex, "Ban por IP desde Nick")
+        Call LogBan(tIndex, UserIndex, "Ban por IP desde Nick por " & rData)
         
         Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " echo a " & UserList(tIndex).name & "." & FONTTYPE_FIGHT)
         Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " Banned a " & UserList(tIndex).name & "." & FONTTYPE_FIGHT)
@@ -4535,7 +4544,7 @@ End If
 
 
 If UCase$(rData) = "/NOCHE" Then
-    If (UserList(UserIndex).name <> "EL OSO") Then Exit Sub
+    If (UserList(UserIndex).name <> "EL OSO" Or UCase$(UserList(UserIndex).name) <> "MARAXUS") Then Exit Sub
     DeNoche = Not DeNoche
     For LoopC = 1 To NumUsers
         If UserList(UserIndex).flags.UserLogged And UserList(UserIndex).ConnID > -1 Then
@@ -4620,14 +4629,14 @@ If UCase$(rData) = "/RELOADOBJ" Then
 End If
 
 If UCase$(rData) = "/REINICIAR" Then
-    If UserList(UserIndex).name <> "EL OSO" Then Exit Sub
+    If UserList(UserIndex).name <> "EL OSO" Or UCase$(UserList(UserIndex).name) <> "MARAXUS" Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     Call ReiniciarServidor(True)
     Exit Sub
 End If
 
 If UCase$(rData) = "/AUTOUPDATE" Then
-    If UserList(UserIndex).name <> "EL OSO" Then Exit Sub
+    If UserList(UserIndex).name <> "EL OSO" Or UCase$(UserList(UserIndex).name) <> "MARAXUS" Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| TID: " & CStr(ReiniciarAutoUpdate()) & FONTTYPE_INFO)
     Exit Sub

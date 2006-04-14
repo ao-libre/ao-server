@@ -592,6 +592,10 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     UserList(UserIndex).Stats.MaxSta = UserList(UserIndex).Stats.MaxSta + AumentoSTA
     If UserList(UserIndex).Stats.MaxSta > STAT_MAXSTA Then _
         UserList(UserIndex).Stats.MaxSta = STAT_MAXSTA
+    'Actualizamos Mana
+    UserList(UserIndex).Stats.MaxMAN = UserList(UserIndex).Stats.MaxMAN + AumentoMANA
+    If UserList(UserIndex).Stats.MaxMAN > STAT_MAXMAN Then _
+        UserList(UserIndex).Stats.MaxMAN = STAT_MAXMAN
     
     'Actualizamos Golpe Máximo
     UserList(UserIndex).Stats.MaxHIT = UserList(UserIndex).Stats.MaxHIT + AumentoHIT
@@ -1056,9 +1060,9 @@ On Error GoTo ErrorHandler
     aN = UserList(UserIndex).flags.AtacadoPorNpc
     
     If aN > 0 Then
-          Npclist(aN).Movement = Npclist(aN).flags.OldMovement
-          Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
-          Npclist(aN).flags.AttackedBy = ""
+        Npclist(aN).Movement = Npclist(aN).flags.OldMovement
+        Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
+        Npclist(aN).flags.AttackedBy = ""
     End If
     
     '<<<< Paralisis >>>>
@@ -1202,8 +1206,7 @@ On Error GoTo ErrorHandler
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en SUB USERDIE")
-
+    Call LogError("Error en SUB USERDIE. Error: " & Err.Number & " Descripción: " & Err.Description)
 End Sub
 
 
@@ -1246,7 +1249,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
 
 End Sub
 
-Sub Tilelibre(Pos As WorldPos, nPos As WorldPos)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj)
 'Call LogTarea("Sub Tilelibre")
 
 Dim Notfound As Boolean
@@ -1268,12 +1271,15 @@ Dim hayobj As Boolean
             For tX = Pos.X - LoopC To Pos.X + LoopC
             
                 If LegalPos(nPos.Map, tX, tY) = True Then
-                   hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex > 0)
-                   If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
-                         nPos.X = tX
-                         nPos.Y = tY
-                         tX = Pos.X + LoopC
-                         tY = Pos.Y + LoopC
+                    'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
+                    hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex <> Obj.ObjIndex And MapData(nPos.Map, tX, tY).OBJInfo.Amount + Obj.Amount <= MAX_INVENTORY_OBJS)
+                    If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
+                        Obj.Amount = Obj.Amount + MapData(nPos.Map, tX, tY).OBJInfo.Amount
+                        
+                        nPos.X = tX
+                        nPos.Y = tY
+                        tX = Pos.X + LoopC
+                        tY = Pos.Y + LoopC
                     End If
                 End If
             

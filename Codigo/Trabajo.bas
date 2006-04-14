@@ -627,6 +627,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         
         UserList(UserIndex).flags.AdminInvisible = 1
         UserList(UserIndex).flags.Invisible = 1
+        UserList(UserIndex).flags.Oculto = 1
         UserList(UserIndex).flags.OldBody = UserList(UserIndex).Char.Body
         UserList(UserIndex).flags.OldHead = UserList(UserIndex).Char.Head
         UserList(UserIndex).Char.Body = 0
@@ -636,6 +637,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         
         UserList(UserIndex).flags.AdminInvisible = 0
         UserList(UserIndex).flags.Invisible = 0
+        UserList(UserIndex).flags.Oculto = 0
         UserList(UserIndex).Char.Body = UserList(UserIndex).flags.OldBody
         UserList(UserIndex).Char.Head = UserList(UserIndex).flags.OldHead
         

@@ -795,11 +795,11 @@ End Sub
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 ''''''''''''''''''''''
-Private Sub ReplaceInvalidChars(ByRef s As String)
-    s = Replace(s, Chr(13), vbNullString)
-    s = Replace(s, Chr(10), vbNullString)
-    s = Replace(s, "¬", vbNullString)   'morgo usaba esto como "separador"
-    s = Replace(s, ENDC, vbNullString)
+Private Sub ReplaceInvalidChars(ByRef S As String)
+    S = Replace(S, Chr(13), vbNullString)
+    S = Replace(S, Chr(10), vbNullString)
+    S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
+    S = Replace(S, ENDC, vbNullString)
 End Sub
 
 

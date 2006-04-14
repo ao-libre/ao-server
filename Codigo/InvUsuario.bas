@@ -289,7 +289,7 @@ If num > 0 Then
   If num > UserList(UserIndex).Invent.Object(Slot).Amount Then num = UserList(UserIndex).Invent.Object(Slot).Amount
   
   'Check objeto en el suelo
-  If MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex = 0 Then
+  If MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex = 0 Or MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex Then
         If UserList(UserIndex).Invent.Object(Slot).Equipped = 1 Then Call Desequipar(UserIndex, Slot)
         Obj.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
@@ -298,7 +298,7 @@ If num > 0 Then
 '            Exit Sub
 '        End If
         
-        Obj.Amount = num
+        Obj.Amount = num + MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.Amount
         
         Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
@@ -1237,7 +1237,12 @@ For i = 1 To MAX_INVENTORY_SLOTS
          If ItemSeCae(ItemIndex) Then
                 NuevaPos.X = 0
                 NuevaPos.Y = 0
-                Tilelibre UserList(UserIndex).Pos, NuevaPos
+                
+                'Creo el Obj
+                MiObj.Amount = UserList(UserIndex).Invent.Object(i).Amount
+                MiObj.ObjIndex = ItemIndex
+                
+                Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                     If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).OBJInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
                 End If
@@ -1265,18 +1270,22 @@ Dim ItemIndex As Integer
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 For i = 1 To MAX_INVENTORY_SLOTS
-  ItemIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
-  If ItemIndex > 0 Then
-         If ItemSeCae(ItemIndex) And Not ItemNewbie(ItemIndex) Then
-                NuevaPos.X = 0
-                NuevaPos.Y = 0
-                Tilelibre UserList(UserIndex).Pos, NuevaPos
-                If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                    If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).OBJInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
-                End If
-         End If
-         
-  End If
+    ItemIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
+    If ItemIndex > 0 Then
+        If ItemSeCae(ItemIndex) And Not ItemNewbie(ItemIndex) Then
+            NuevaPos.X = 0
+            NuevaPos.Y = 0
+            
+            'Creo MiObj
+            MiObj.Amount = UserList(UserIndex).Invent.Object(i).ObjIndex
+            MiObj.ObjIndex = ItemIndex
+            
+            Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj
+            If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+                If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).OBJInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+            End If
+        End If
+    End If
 Next i
 
 End Sub

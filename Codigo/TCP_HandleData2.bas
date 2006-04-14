@@ -415,22 +415,20 @@ Procesado = True 'ver al final del sub
         Case "/BOVEDA"
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
-                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
-                      Exit Sub
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
+                Exit Sub
             End If
             '¿El target es un NPC valido?
             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                  If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
-                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
-                      Exit Sub
-                  End If
-                  If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype = 4 Then
-                    Call IniciarDeposito(UserIndex)
-                  Else
+                If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
                     Exit Sub
-                  End If
+                End If
+                If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype = eNPCType.Banquero Then
+                    Call IniciarDeposito(UserIndex)
+                End If
             Else
-              Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Primero hace click izquierdo sobre el personaje." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Primero hace click izquierdo sobre el personaje." & FONTTYPE_INFO)
             End If
             Exit Sub
         '[/KEVIN]------------------------------------

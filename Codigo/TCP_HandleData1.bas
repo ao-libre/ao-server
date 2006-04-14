@@ -254,8 +254,8 @@ Procesado = True 'ver al final del sub
             Else
                 If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                     If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).proyectil = 1 Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés usar asi esta arma." & FONTTYPE_INFO)
-                                Exit Sub
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés usar asi esta arma." & FONTTYPE_INFO)
+                        Exit Sub
                     End If
                 End If
                 Call UsuarioAtaca(UserIndex)
@@ -275,7 +275,7 @@ Procesado = True 'ver al final del sub
                     Exit Sub
             End If
             '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero And Not UserList(UserIndex).flags.EsRolesMaster Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes tomar ningun objeto. " & FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -388,7 +388,7 @@ Procesado = True 'ver al final del sub
         Case "TI" 'Tirar item
                 If UserList(UserIndex).flags.Navegando = 1 Or _
                    UserList(UserIndex).flags.Muerto = 1 Or _
-                   UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then Exit Sub
+                   (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero And Not UserList(UserIndex).flags.EsRolesMaster) Then Exit Sub
                    '[Consejeros]
                 
                 rData = Right$(rData, Len(rData) - 2)
@@ -1092,24 +1092,24 @@ Procesado = True 'ver al final del sub
         '[KEVIN]-------------------------------------------------------------------------
         '****************************************************************************************
         Case "DEPO"
-             '¿Esta el user muerto? Si es asi no puede comerciar
-             If UserList(UserIndex).flags.Muerto = 1 Then
-                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
-                       Exit Sub
-             End If
-             '¿El target es un NPC valido?
-             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                   '¿El NPC puede comerciar?
-                   If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> 4 Then
-                       Exit Sub
-                   End If
-             Else
-               Exit Sub
-             End If
-             rData = Right(rData, Len(rData) - 5)
-             'User deposita el item del slot rdata
-             Call UserDepositaItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
-             Exit Sub
+            '¿Esta el user muerto? Si es asi no puede comerciar
+            If UserList(UserIndex).flags.Muerto = 1 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
+                Exit Sub
+            End If
+            '¿El target es un NPC valido?
+            If UserList(UserIndex).flags.TargetNPC > 0 Then
+                '¿El NPC puede comerciar?
+                If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Banquero Then
+                    Exit Sub
+                End If
+            Else
+                Exit Sub
+            End If
+            rData = Right(rData, Len(rData) - 5)
+            'User deposita el item del slot rdata
+            Call UserDepositaItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
+            Exit Sub
         '****************************************************************************************
         '[/KEVIN]---------------------------------------------------------------------------------
     End Select

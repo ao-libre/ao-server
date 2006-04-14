@@ -861,6 +861,8 @@ End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
+If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then Exit Sub
+
 If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO Then
    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estás muy lejos para disparar." & FONTTYPE_FIGHT)
    Exit Sub
@@ -880,7 +882,7 @@ If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser 
     End If
 End If
 
-If Npclist(NpcIndex).NPCtype = 2 And UserList(UserIndex).flags.Seguro Then
+If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal And UserList(UserIndex).flags.Seguro Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitar el seguro para atacar guardias." & FONTTYPE_FIGHT)
     Exit Sub
 End If

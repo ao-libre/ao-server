@@ -429,7 +429,6 @@ Public Sub SendToUserArea(ByVal UserIndex As Integer, ByVal sdData As String, Op
 '
 '**************************************************************
     Dim LoopC As Long
-    Dim TempInt As Integer
     Dim TempIndex As Integer
     
     Dim Map As Integer
@@ -445,20 +444,20 @@ Public Sub SendToUserArea(ByVal UserIndex As Integer, ByVal sdData As String, Op
     
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         TempIndex = ConnGroups(Map).UserEntrys(LoopC)
-            
-        TempInt = UserList(TempIndex).AreasInfo.AreaReciveX And AreaX
-        If TempInt Then  'Esta en el area?
-            TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY
-            If TempInt Then
+        
+        If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(TempIndex).ConnIDValida Then
 #If SeguridadAlkon Then
-                If Encriptar Then
-                    Call EnviarDatosASlot(TempIndex, ProtoCrypt(sdData, TempIndex) & ENDC)
-                Else
+                    If Encriptar Then
+                        Call EnviarDatosASlot(TempIndex, ProtoCrypt(sdData, TempIndex) & ENDC)
+                    Else
 #End If
-                    Call EnviarDatosASlot(TempIndex, sdData)
+                        Call EnviarDatosASlot(TempIndex, sdData)
 #If SeguridadAlkon Then
+                    End If
+#End If
                 End If
-#End If
             End If
         End If
     Next LoopC

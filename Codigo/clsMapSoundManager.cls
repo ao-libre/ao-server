@@ -47,19 +47,18 @@ End Sub
 Public Sub LoadSoundMapInfo()
 Dim i As Integer
 Dim j As Integer
-Dim Cant As Integer
 Dim Temps As String
 Dim MAPFILE As String
-    MAPFILE = App.Path & MapPath & "\MAPA"
+    MAPFILE = App.Path & MapPath & "MAPA"
     
     For i = 1 To UBound(p_Mapas)
         Temps = GetVar(MAPFILE & i & ".dat", "SONIDOS", "Cantidad")
         If IsNumeric(Temps) Then
             p_Mapas(i).Cantidad = CInt(GetVar(MAPFILE & i & ".dat", "SONIDOS", "Cantidad"))
-            ReDim p_Mapas(i).flags(1 To Cant) As Long
-            ReDim p_Mapas(i).Probabilidad(1 To Cant) As Single
-            ReDim p_Mapas(i).SoundIndex(1 To Cant) As Integer
-            For j = 1 To Cant
+            ReDim p_Mapas(i).flags(1 To p_Mapas(i).Cantidad) As Long
+            ReDim p_Mapas(i).Probabilidad(1 To p_Mapas(i).Cantidad) As Single
+            ReDim p_Mapas(i).SoundIndex(1 To p_Mapas(i).Cantidad) As Integer
+            For j = 1 To p_Mapas(i).Cantidad
                 p_Mapas(i).flags(j) = CInt(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Flags"))
                 p_Mapas(i).Probabilidad(j) = CSng(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Probabilidad"))
                 p_Mapas(i).SoundIndex(j) = CInt(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Sonido"))

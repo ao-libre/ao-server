@@ -48,10 +48,10 @@ On Error GoTo errhandler
     Dim NuevaPos As WorldPos
     NuevaPos.X = 0
     NuevaPos.Y = 0
-    Call Tilelibre(Pos, NuevaPos)
+    Call Tilelibre(Pos, NuevaPos, Obj)
     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
           Call MakeObj(SendTarget.ToMap, 0, Pos.Map, _
-          Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
+                Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
           TirarItemAlPiso = NuevaPos
     End If
 

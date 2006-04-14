@@ -561,8 +561,8 @@ Private Function m_EstadoPermiteEntrar(ByVal UserIndex As Integer, ByVal GuildIn
 End Function
 
 
-Public Function String2Alineacion(ByRef s As String) As ALINEACION_GUILD
-    Select Case s
+Public Function String2Alineacion(ByRef S As String) As ALINEACION_GUILD
+    Select Case S
         Case "Neutro"
             String2Alineacion = ALINEACION_NEUTRO
         Case "Legión oscura"
@@ -608,8 +608,8 @@ Public Function Relacion2String(ByVal Relacion As RELACIONES_GUILD) As String
     End Select
 End Function
 
-Public Function String2Relacion(ByVal s As String) As RELACIONES_GUILD
-    Select Case UCase$(Trim$(s))
+Public Function String2Relacion(ByVal S As String) As RELACIONES_GUILD
+    Select Case UCase$(Trim$(S))
         Case vbNullString, "P"
             String2Relacion = PAZ
         Case "G"
@@ -731,7 +731,7 @@ proximo:
     Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Elecciones revisadas" & FONTTYPE_SERVER)
 Exit Sub
 errh:
-    Call LogError("modGuilds.v_RutinaElecciones(): & err.Description ")
+    Call LogError("modGuilds.v_RutinaElecciones():" & Err.Description)
     Resume proximo
 End Sub
 

@@ -112,7 +112,7 @@ Public Enum FXIDs
     FXMEDITARXGRANDE = 16
 End Enum
 
-Public Const TIEMPO_CARCEL_PIQUETE As Byte = 10
+Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
 
 'TRIGGERS
 Public Enum eTrigger
@@ -374,8 +374,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
-    otEscudo = 16
-    otCasco = 17
+    otESCUDO = 16
+    otCASCO = 17
     otHerramientas = 18
     otTeleport = 19
     otYacimiento = 22
@@ -798,7 +798,7 @@ Public Type UserFlags
     
     DuracionEfecto As Long
     TargetNPC As Integer ' Npc señalado por el usuario
-    TargetNpcTipo As Integer ' Tipo del npc señalado
+    TargetNpcTipo As eNPCType ' Tipo del npc señalado
     NpcInv As Integer
     
     Ban As Byte

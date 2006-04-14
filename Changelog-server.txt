@@ -68,3 +68,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 6/04/2006: Los object type de escudos y cascos estaban invertidos (Maraxus).
  * 6/04/2006: Corregí un bug que impedía que los NPCs tirasen hechizos (Maraxus).
  * 6/04/2006: Corregí los comandos /caosmsg y /realmsg (Maraxus).
+ * 12/04/2006: Corregí bugs varios en comando comos /talkas, /trigger y varios otrs puntos de la lógica de juego (Maraxus).
+ * 14/04/2006: Comandos /PRO y /MOd usan "+" en lugar de " " en los nicks (Maraxus).
+ * 14/04/2006: El comando /BANIP pide un motivo del ban (Maraxus).
+ * 14/04/2006: Consejeros RMs pueden agarrar y tirar items (Maraxus).
+ * 14/04/2006: Consejeros GMs no puede atcar criaturas ni usar RMATA en el mapa pretoriano (Maraxus).
+ * 14/04/2006: Al tirar un item si hay otro igual en el piso se ponen juntos (Maraxus).
+ * 14/04/2006: Corregí el código de los sonidos de mapa, ahora funcionan correctamente (Maraxus).

@@ -115,7 +115,7 @@ If InMapBounds(Map, X, Y) Then
         End If
     Else
         UserList(UserIndex).flags.TargetNPC = 0
-        UserList(UserIndex).flags.TargetNpcTipo = 0
+        UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
         UserList(UserIndex).flags.TargetUser = 0
         UserList(UserIndex).flags.TargetObj = 0
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)

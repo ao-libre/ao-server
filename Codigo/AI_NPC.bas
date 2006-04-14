@@ -188,7 +188,7 @@ Dim M As Integer
                 If PJ > 0 Then
                     Select Case Npclist(NpcIndex).flags.AIAlineacion
                         Case e_Alineacion.Caos
-                            If Not Criminal(PJ) And Not UserList(PJ).flags.Muerto And Not UserList(PJ).flags.Invisible And Not UserList(PJ).flags.Oculto = 1 Then
+                            If Not Criminal(PJ) And Not UserList(PJ).flags.Muerto And Not UserList(PJ).flags.Invisible And Not UserList(PJ).flags.Oculto Then
                                 PJBestTarget = PJ
                             End If
                         Case e_Alineacion.Real
@@ -389,7 +389,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                    UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                    If UI > 0 Then
-                      If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
+                      If UserList(UI).flags.Muerto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
                             Exit Sub
                       End If

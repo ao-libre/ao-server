@@ -38,7 +38,7 @@ Public Const SUPERANILLO As Integer = 700
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
 
 If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
-If UserList(UserIndex).flags.Invisible = 1 Then Exit Sub
+If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
 
 Npclist(NpcIndex).CanAttack = 0
 Dim daño As Integer
@@ -840,7 +840,7 @@ If Hechizos(hIndex).SubeHP = 1 Then
     
     Call InfoHechizo(UserIndex)
     Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP + daño
-    If Npclist(NpcIndex).Stats.MinHP < Npclist(NpcIndex).Stats.MaxHP Then _
+    If Npclist(NpcIndex).Stats.MinHP > Npclist(NpcIndex).Stats.MaxHP Then _
         Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MaxHP
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has curado " & daño & " puntos de salud a la criatura." & FONTTYPE_FIGHT)
     b = True

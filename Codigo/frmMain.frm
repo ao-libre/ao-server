@@ -473,7 +473,7 @@ Call CheckIdleUser
 
 '<<<<<-------- Log the number of users online ------>>>
 Dim N As Integer
-N = FreeFile(1)
+N = FreeFile()
 Open App.Path & "\logs\numusers.log" For Output Shared As N
 Print #N, NumUsers
 Close #N
@@ -842,11 +842,11 @@ End Sub
 Private Sub mnuSystray_Click()
 
 Dim i As Integer
-Dim s As String
+Dim S As String
 Dim nid As NOTIFYICONDATA
 
-s = "ARGENTUM-ONLINE"
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, s)
+S = "ARGENTUM-ONLINE"
+nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
 i = Shell_NotifyIconA(NIM_ADD, nid)
     
 If WindowState <> vbMinimized Then WindowState = vbMinimized
@@ -1034,7 +1034,7 @@ For i = 1 To LastUser
 
             'ustedes se preguntaran que hace esto aca?
             'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
-            'todos lso puntos en los cuales la alineacion puede cmabiar es un dolor de
+            'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
             'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
 
             GI = UserList(i).GuildIndex
@@ -1148,7 +1148,7 @@ eh:
 End Sub
 
 Private Sub TCPServ_Read(ByVal ID As Long, Datos As Variant, ByVal Cantidad As Long, ByVal MiDato As Long)
-Dim t() As String
+Dim T() As String
 Dim LoopC As Long
 Dim RD As String
 On Error GoTo errorh
@@ -1163,25 +1163,25 @@ RD = StrConv(Datos, vbUnicode)
 
 UserList(MiDato).RDBuffer = UserList(MiDato).RDBuffer & RD
 
-t = Split(UserList(MiDato).RDBuffer, ENDC)
-If UBound(t) > 0 Then
-    UserList(MiDato).RDBuffer = t(UBound(t))
+T = Split(UserList(MiDato).RDBuffer, ENDC)
+If UBound(T) > 0 Then
+    UserList(MiDato).RDBuffer = T(UBound(T))
     
-    For LoopC = 0 To UBound(t) - 1
+    For LoopC = 0 To UBound(T) - 1
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If t(LoopC) <> "" Then
-                If Not UserList(MiDato).CommandsBuffer.Push(t(LoopC)) Then
+            If T(LoopC) <> "" Then
+                If Not UserList(MiDato).CommandsBuffer.Push(T(LoopC)) Then
                     Call LogError("Cerramos por no encolar. Userindex:" & MiDato)
                     Call CloseSocket(MiDato)
                 End If
             End If
         Else ' no encolamos los comandos (MUY VIEJO)
               If UserList(MiDato).ConnID <> -1 Then
-                Call HandleData(MiDato, t(LoopC))
+                Call HandleData(MiDato, T(LoopC))
               Else
                 Exit Sub
               End If
