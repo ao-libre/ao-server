@@ -522,7 +522,7 @@ If InMapBounds(Map, X, Y) Then
     'Reaccion al personaje
     If FoundChar = 1 Then '  ¿Encontro un Usuario?
             
-       If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios = 3 Then
+       If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
             
             If UserList(TempCharIndex).DescRM = "" Then
                 If EsNewbie(TempCharIndex) Then

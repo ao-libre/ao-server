@@ -57,6 +57,10 @@ Public Enum SendTarget
     ToPartyArea = 21
     ToReal = 22
     ToCaos = 23
+    ToCiudadanosYRMs = 24
+    ToCriminalesYRMs = 25
+    ToRealYRMs = 26
+    ToCaosYRMs = 27
 End Enum
 
 
@@ -592,6 +596,7 @@ errhandler:
     End If
 #End If
 
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & UserIndex)
 End Sub
 
 #ElseIf UsarQueSocket = 0 Then
@@ -1106,6 +1111,46 @@ Select Case sndRoute
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
                 If UserList(LoopC).Faccion.FuerzasCaos = 1 Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+        
+    Case ToCiudadanosYRMs
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If Not Criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case ToCriminalesYRMs
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If Criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case ToRealYRMs
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If UserList(LoopC).Faccion.ArmadaReal = 1 Or UserList(LoopC).flags.EsRolesMaster Then
+                    Call EnviarDatosASlot(LoopC, sndData)
+                End If
+            End If
+        Next LoopC
+        Exit Sub
+    
+    Case ToCaosYRMs
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).ConnID <> -1) Then
+                If UserList(LoopC).Faccion.FuerzasCaos = 1 Or UserList(LoopC).flags.EsRolesMaster Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -1746,6 +1791,7 @@ Sub ResetContadores(ByVal UserIndex As Integer)
         .STACounter = 0
         .Veneno = 0
         .Trabajando = 0
+        .Ocultando = 0
 
         .TimerLanzarSpell = 0
         .TimerPuedeAtacar = 0
@@ -2057,7 +2103,7 @@ End If
 For i = 1 To MAXMASCOTAS
     If UserList(UserIndex).MascotasIndex(i) > 0 Then
         If Npclist(UserList(UserIndex).MascotasIndex(i)).flags.NPCActive Then _
-                Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
+            Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
     End If
 Next i
 
@@ -2083,7 +2129,7 @@ Close #N
 Exit Sub
 
 errhandler:
-Call LogError("Error en CloseUser")
+Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.Description)
 
 
 End Sub
@@ -2405,7 +2451,7 @@ End If
 If UCase$(rData) = "/ONLINEREAL" Then
     For tLong = 1 To LastUser
         If UserList(UserIndex).ConnID <> -1 Then
-            If UserList(UserIndex).Faccion.ArmadaReal Then
+            If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
                 tStr = tStr & UserList(UserIndex).name & ", "
             End If
         End If
@@ -2422,7 +2468,7 @@ End If
 If UCase$(rData) = "/ONLINECAOS" Then
     For tLong = 1 To LastUser
         If UserList(UserIndex).ConnID <> -1 Then
-            If UserList(UserIndex).Faccion.FuerzasCaos Then
+            If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
                 tStr = tStr & UserList(UserIndex).name & ", "
             End If
         End If
@@ -2660,12 +2706,31 @@ If UCase$(rData) = "/TRABAJANDO" Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC
-        tStr = Left$(tStr, Len(tStr) - 2)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios trabajando: " & tStr & FONTTYPE_INFO)
+        If tStr <> "" Then
+            tStr = Left$(tStr, Len(tStr) - 2)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios trabajando: " & tStr & FONTTYPE_INFO)
+        Else
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay usuarios trabajando" & FONTTYPE_INFO)
+        End If
         Exit Sub
 End If
 '[/Barrin 30-11-03]
 
+If UCase$(rData) = "/OCULTANDO" Then
+        If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        For LoopC = 1 To LastUser
+            If (UserList(LoopC).name <> "") And UserList(LoopC).Counters.Ocultando > 0 Then
+                tStr = tStr & UserList(LoopC).name & ", "
+            End If
+        Next LoopC
+        If tStr <> "" Then
+            tStr = Left$(tStr, Len(tStr) - 2)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios ocultandose: " & tStr & FONTTYPE_INFO)
+        Else
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay usuarios ocultandose" & FONTTYPE_INFO)
+        End If
+        Exit Sub
+End If
 
 If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     '/carcel nick@motivo@<tiempo>
@@ -3572,9 +3637,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||REAL> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToReal, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||REAL> " & tStr)
             End If
         End If
         Exit Sub
@@ -3585,9 +3650,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||CAOS> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToCaos, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||CAOS> " & tStr)
             End If
         End If
         Exit Sub
@@ -3598,9 +3663,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCiudadanos, 0, 0, "||" & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToCiudadanosYRMs, 0, 0, "||CIUDADANOS> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToCiudadanos, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToCiudadanosYRMs, 0, 0, "||CIUDADANOS> " & tStr)
             End If
         End If
         Exit Sub
@@ -3611,9 +3676,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 8)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCriminales, 0, 0, "||" & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToCriminalesYRMs, 0, 0, "||CRIMINALES> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToCriminales, 0, 0, "||" & tStr)
+                Call SendData(SendTarget.ToCriminalesYRMs, 0, 0, "||CRIMINALES> " & tStr)
             End If
         End If
         Exit Sub

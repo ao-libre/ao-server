@@ -75,3 +75,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 14/04/2006: Consejeros GMs no puede atcar criaturas ni usar RMATA en el mapa pretoriano (Maraxus).
  * 14/04/2006: Al tirar un item si hay otro igual en el piso se ponen juntos (Maraxus).
  * 14/04/2006: Corregí el código de los sonidos de mapa, ahora funcionan correctamente (Maraxus).
+ * 19/04/2006: Corregí un bug que permitía a los NPCs atacar a GMs con /invisible (Maraxus).
+ * 19/04/2006: Corregí bugs en comandos de GMs como /TRABAJANDO, /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 19/04/2006: Los mensajes /CAOSMSG, /REALMSG, /CUMSG y /CRIMSG se envian también a RMs y aclaran a quienes van dirijidos (Maraxus).
+ * 19/04/2006: El centinela ya no revisa a users ocultandose (Maraxus).
+ * 19/04/2006: Se creó el comando /OCULTANDO para que los GMs puedan revisar a los suers ocultandose para detectar macros (Maraxus).

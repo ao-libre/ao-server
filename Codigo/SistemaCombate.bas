@@ -741,6 +741,8 @@ End Sub
 
 Public Function NpcAtacaUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
+If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Function
+
 ' El npc puede atacar ???
 If Npclist(NpcIndex).CanAttack = 1 Then
     NpcAtacaUser = True
@@ -975,6 +977,9 @@ End If
 
 If UserList(UserIndex).Counters.Trabajando Then _
     UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
+    
+If UserList(UserIndex).Counters.Ocultando Then _
+    UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
 
 End Sub
 
@@ -1165,26 +1170,27 @@ End If
 
 
 If UserList(VictimaIndex).Stats.MinHP <= 0 Then
-     
-     Call ContarMuerte(VictimaIndex, AtacanteIndex)
-     
-     ' Para que las mascotas no sigan intentando luchar y
-     ' comiencen a seguir al amo
-     Dim j As Integer
-     For j = 1 To MAXMASCOTAS
+    
+    Call ContarMuerte(VictimaIndex, AtacanteIndex)
+    
+    ' Para que las mascotas no sigan intentando luchar y
+    ' comiencen a seguir al amo
+    Dim j As Integer
+    For j = 1 To MAXMASCOTAS
         If UserList(AtacanteIndex).MascotasIndex(j) > 0 Then
             If Npclist(UserList(AtacanteIndex).MascotasIndex(j)).Target = VictimaIndex Then Npclist(UserList(AtacanteIndex).MascotasIndex(j)).Target = 0
             Call FollowAmo(UserList(AtacanteIndex).MascotasIndex(j))
         End If
-     Next j
-
-     Call ActStats(VictimaIndex, AtacanteIndex)
+    Next j
+    
+    Call ActStats(VictimaIndex, AtacanteIndex)
+Else
+    'Está vivo - Actualizamos el HP
+    Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "ASH" & UserList(VictimaIndex).Stats.MinHP)
 End If
-        
 
 'Controla el nivel del usuario
 Call CheckUserLevel(AtacanteIndex)
-
 
 End Sub
 

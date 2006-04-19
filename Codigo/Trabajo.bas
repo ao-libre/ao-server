@@ -158,9 +158,7 @@ Else
     '[/CDT]
 End If
 
-'[Barrin 30-11-03]
-UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
-'[/Barrin 30-11-03]
+UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando + 1
 
 Exit Sub
 

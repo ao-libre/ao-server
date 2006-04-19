@@ -187,7 +187,7 @@ On Error GoTo ErrorHandler
         Loop
     End If
     
-    'Le mandamos el mensaje para que borre el personaje a los clientes que este en el mismo mapa
+    'Le mandamos el mensaje para que borre el personaje a los clientes que estén en el mismo mapa
     If sndRoute = SendTarget.ToMap Then
         Call SendToUserArea(UserIndex, "BP" & UserList(UserIndex).Char.CharIndex)
         Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
@@ -237,7 +237,7 @@ On Local Error GoTo hayerror
             If sndRoute = SendTarget.ToIndex Then
 #If SeguridadAlkon Then
                 If EncriptarProtocolosCriticos Then
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
+                    If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                         If UserList(UserIndex).showName Then
                             Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                         Else
@@ -249,7 +249,7 @@ On Local Error GoTo hayerror
                     End If
                 Else
 #End If
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
+                    If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                         If UserList(UserIndex).showName Then
                             Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                         Else
@@ -270,7 +270,7 @@ On Local Error GoTo hayerror
             If sndRoute = SendTarget.ToIndex Then
 #If SeguridadAlkon Then
                 If EncriptarProtocolosCriticos Then
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
+                    If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                         If UserList(UserIndex).showName Then
                             Call SendCryptedData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                         Else
@@ -282,7 +282,7 @@ On Local Error GoTo hayerror
                     End If
                 Else
 #End If
-                    If UserList(UserIndex).flags.Privilegios > 0 Then
+                    If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                         If UserList(UserIndex).showName Then
                             Call SendData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.Body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.Heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & "," & bCr & "," & IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
                         Else
@@ -594,8 +594,13 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         UserList(UserIndex).Stats.MaxSta = STAT_MAXSTA
     'Actualizamos Mana
     UserList(UserIndex).Stats.MaxMAN = UserList(UserIndex).Stats.MaxMAN + AumentoMANA
-    If UserList(UserIndex).Stats.MaxMAN > STAT_MAXMAN Then _
-        UserList(UserIndex).Stats.MaxMAN = STAT_MAXMAN
+    If UserList(UserIndex).Stats.ELV < 36 Then
+        If UserList(UserIndex).Stats.MaxMAN > STAT_MAXMAN Then _
+            UserList(UserIndex).Stats.MaxMAN = STAT_MAXMAN
+    Else
+        If UserList(UserIndex).Stats.MaxMAN > 9999 Then _
+            UserList(UserIndex).Stats.MaxMAN = 9999
+    End If
     
     'Actualizamos Golpe Máximo
     UserList(UserIndex).Stats.MaxHIT = UserList(UserIndex).Stats.MaxHIT + AumentoHIT
@@ -610,7 +615,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     'Actualizamos Golpe Mínimo
     UserList(UserIndex).Stats.MinHIT = UserList(UserIndex).Stats.MinHIT + AumentoHIT
     If UserList(UserIndex).Stats.ELV < 36 Then
-        If UserList(UserIndex).Stats.MinHIT < STAT_MAXHIT_UNDER36 Then _
+        If UserList(UserIndex).Stats.MinHIT > STAT_MAXHIT_UNDER36 Then _
             UserList(UserIndex).Stats.MinHIT = STAT_MAXHIT_UNDER36
     Else
         If UserList(UserIndex).Stats.MinHIT > STAT_MAXHIT_OVER36 Then _
@@ -685,6 +690,8 @@ Dim nPos As WorldPos
     If UserList(UserIndex).Counters.Trabajando Then _
         UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
 
+    If UserList(UserIndex).Counters.Ocultando Then _
+        UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
 End Sub
 
 Sub ChangeUserInv(UserIndex As Integer, Slot As Byte, Object As UserOBJ)

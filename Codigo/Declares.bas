@@ -893,6 +893,7 @@ Public Type UserCounters
     TimerUsar As Long
     
     Trabajando As Long  ' Para el centinela
+    Ocultando As Long   ' Unico trabajo no revisado por el centinela
 End Type
 
 Public Type tFacciones

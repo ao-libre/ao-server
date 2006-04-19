@@ -794,7 +794,7 @@ End If
 
 Exit Sub
 hayerror:
-LogError ("Error en GameTimer: " & Err.Description)
+LogError ("Error en GameTimer: " & Err.Description & " UserIndex = " & iUserIndex)
 '[/Alejo]
   'DoEvents
 End Sub

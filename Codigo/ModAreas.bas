@@ -113,7 +113,7 @@ Public Sub AreasOptimizacion()
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
-'Es la función de autooptimizacion.... la idea es no andar redimensionando arrays grandes todo el tiempo
+'Es la función de autooptimizacion.... la idea es no mandar redimensionando arrays grandes todo el tiempo
 '**************************************************************
     Dim LoopC As Long
     Dim tCurDay As Byte
@@ -237,7 +237,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                 If MapData(Map, X, Y).OBJInfo.ObjIndex Then
                     TempInt = MapData(Map, X, Y).OBJInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
-                        Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).OBJInfo, CInt(Map), X, Y)
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "HO" & ObjData(TempInt).GrhIndex & "," & X & "," & Y)
                         
                         If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
                             Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
@@ -490,11 +490,10 @@ Public Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As St
         If TempInt Then  'Esta en el area?
             TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY
             If TempInt Then
-                'El ConnId es valido?
                 If TempIndex <> UserIndex Then
-                    'If UserList(TempIndex).ConnID Then
+                    If UserList(TempIndex).ConnIDValida Then
                         Call EnviarDatosASlot(TempIndex, sdData)
-                    'End If
+                    End If
                 End If
             End If
         End If
@@ -530,10 +529,9 @@ Public Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
         If TempInt Then  'Esta en el area?
             TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY
             If TempInt Then
-                'El ConnId es valido?
-                'If UserList(TempIndex).ConnID Then
+                If UserList(TempIndex).ConnIDValida Then
                     Call EnviarDatosASlot(TempIndex, sdData)
-                'End If
+                End If
             End If
         End If
     Next LoopC
@@ -563,10 +561,9 @@ Public Sub SendToAreaByPos(ByVal Map As Integer, ByVal AreaX As Integer, ByVal A
         If TempInt Then  'Esta en el area?
             TempInt = UserList(TempIndex).AreasInfo.AreaReciveY And AreaY
             If TempInt Then
-                'El ConnId es valido?
-                'If UserList(TempIndex).ConnID Then
+                If UserList(TempIndex).ConnIDValida Then
                     Call EnviarDatosASlot(TempIndex, sdData)
-                'End If
+                End If
             End If
         End If
     Next LoopC

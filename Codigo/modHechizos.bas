@@ -454,6 +454,9 @@ End If
 If UserList(UserIndex).Counters.Trabajando Then _
     UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1
 
+If UserList(UserIndex).Counters.Ocultando Then _
+    UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
+    
 End Sub
 
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)

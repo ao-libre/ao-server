@@ -232,22 +232,22 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
         If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).Cerrada = 1 Then
                 'Abre la puerta
                 If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).Llave = 0 Then
-                          
-                     MapData(Map, X, Y).OBJInfo.ObjIndex = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).IndexAbierta
-                                  
-                     Call MakeObj(SendTarget.ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
+                    
+                    MapData(Map, X, Y).OBJInfo.ObjIndex = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).IndexAbierta
+                    
+                    Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
                      
-                     'Desbloquea
-                     MapData(Map, X, Y).Blocked = 0
-                     MapData(Map, X - 1, Y).Blocked = 0
-                     
-                     'Bloquea todos los mapas
-                     Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 0)
-                     Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 0)
-                     
-                       
-                     'Sonido
-                     SendData SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
+                    'Desbloquea
+                    MapData(Map, X, Y).Blocked = 0
+                    MapData(Map, X - 1, Y).Blocked = 0
+                    
+                    'Bloquea todos los mapas
+                    Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 0)
+                    Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 0)
+                    
+                      
+                    'Sonido
+                    SendData SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_PUERTA
                     
                 Else
                      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La puerta esta cerrada con llave." & FONTTYPE_INFO)
@@ -256,7 +256,7 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 'Cierra puerta
                 MapData(Map, X, Y).OBJInfo.ObjIndex = ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).IndexCerrada
                 
-                Call MakeObj(SendTarget.ToMap, 0, Map, MapData(Map, X, Y).OBJInfo, Map, X, Y)
+                Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
                 
                 
                 MapData(Map, X, Y).Blocked = 1
