@@ -1,7 +1,12 @@
 Attribute VB_Name = "wskapiAO"
 Option Explicit
 
+''
+' Modulo para manejar Winsock
+'
+
 #If UsarQueSocket = 1 Then
+
 
 'Si la variable esta en TRUE , al iniciar el WsApi se crea
 'una ventana LABEL para recibir los mensajes. Al detenerlo,
@@ -33,11 +38,13 @@ Public Const GWL_WNDPROC = (-4)
 Private Const SIZE_RCVBUF As Long = 8192
 Private Const SIZE_SNDBUF As Long = 8192
 
-'====================================================================================
-'====================================================================================
+''
 'Esto es para agilizar la busqueda del slot a partir de un socket dado,
 'sino, la funcion BuscaSlotSock se nos come todo el uso del CPU.
-
+'
+' @param Sock sock
+' @param slot slot
+'
 Public Type tSockCache
     Sock As Long
     Slot As Long
@@ -45,22 +52,22 @@ End Type
 
 Public WSAPISock2Usr As New Collection
 
-'====================================================================================
-'====================================================================================
+' ====================================================================================
+' ====================================================================================
 
 Public OldWProc As Long
 Public ActualWProc As Long
 Public hWndMsg As Long
 
-'====================================================================================
-'====================================================================================
+' ====================================================================================
+' ====================================================================================
 
 Public SockListen As Long
 
 #End If
 
-'====================================================================================
-'====================================================================================
+' ====================================================================================
+' ====================================================================================
 
 
 Public Sub IniciaWsApi(ByVal hwndParent As Long)
@@ -107,12 +114,12 @@ End If
 #End If
 End Sub
 
-Public Function BuscaSlotSock(ByVal S As Long, Optional ByVal CacheInd As Boolean = False) As Long
+Public Function BuscaSlotSock(ByVal s As Long, Optional ByVal CacheInd As Boolean = False) As Long
 #If UsarQueSocket = 1 Then
 
 On Error GoTo hayerror
 
-BuscaSlotSock = WSAPISock2Usr.Item(CStr(S))
+BuscaSlotSock = WSAPISock2Usr.Item(CStr(s))
 Exit Function
 
 hayerror:
@@ -202,13 +209,13 @@ End Sub
 
 Public Sub BorraSlotSock(ByVal Sock As Long, Optional ByVal CacheIndice As Long)
 #If (UsarQueSocket = 1) Then
-Dim cant As Long
+Dim Cant As Long
 
-cant = WSAPISock2Usr.Count
+Cant = WSAPISock2Usr.Count
 On Error Resume Next
 WSAPISock2Usr.Remove CStr(Sock)
 
-Debug.Print "BorraSockSlot " & cant & " -> " & WSAPISock2Usr.Count
+Debug.Print "BorraSockSlot " & Cant & " -> " & WSAPISock2Usr.Count
 
 #End If
 End Sub
@@ -223,7 +230,7 @@ On Error Resume Next
 Dim Ret As Long
 Dim Tmp As String
 
-Dim S As Long, E As Long
+Dim s As Long, E As Long
 Dim N As Integer
     
 Dim Dale As Boolean
@@ -241,7 +248,7 @@ End If
 Select Case msg
 Case 1025
 
-    S = wParam
+    s = wParam
     E = WSAGetSelectEvent(lParam)
     'Debug.Print "Msg: " & msg & " W: " & wParam & " L: " & lParam
     Call LogApiSock("Msg: " & msg & " W: " & wParam & " L: " & lParam)
@@ -249,9 +256,9 @@ Case 1025
     Select Case E
     Case FD_ACCEPT
             'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("FD_ACCEPT")
-        If S = SockListen Then
+        If s = SockListen Then
             'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("sockLIsten = " & s & ". Llamo a Eventosocketaccept")
-            Call EventoSockAccept(S)
+            Call EventoSockAccept(s)
         End If
         
 '    Case FD_WRITE
@@ -286,10 +293,10 @@ Case 1025
 
     Case FD_READ
         
-        N = BuscaSlotSock(S)
-        If N < 0 And S <> SockListen Then
+        N = BuscaSlotSock(s)
+        If N < 0 And s <> SockListen Then
             'Call apiclosesocket(s)
-            Call WSApiCloseSocket(S)
+            Call WSApiCloseSocket(s)
             Exit Function
         End If
         
@@ -300,7 +307,7 @@ Case 1025
         Tmp = Space$(SIZE_RCVBUF)   'si cambias este valor, tambien hacelo mas abajo
                             'donde dice ret = 8192 :)
         
-        Ret = recv(S, Tmp, Len(Tmp), 0)
+        Ret = recv(s, Tmp, Len(Tmp), 0)
         ' Comparo por = 0 ya que esto es cuando se cierra
         ' "gracefully". (mas abajo)
         If Ret < 0 Then
@@ -310,7 +317,7 @@ Case 1025
                 Ret = SIZE_RCVBUF
             Else
                 Debug.Print "Error en Recv: " & GetWSAErrorString(UltError)
-                Call LogApiSock("Error en Recv: N=" & N & " S=" & S & " Str=" & GetWSAErrorString(UltError))
+                Call LogApiSock("Error en Recv: N=" & N & " S=" & s & " Str=" & GetWSAErrorString(UltError))
                 
                 'no hay q llamar a CloseSocket() directamente,
                 'ya q pueden abusar de algun error para
@@ -335,8 +342,8 @@ Case 1025
         Call EventoSockRead(N, Tmp)
         
     Case FD_CLOSE
-        N = BuscaSlotSock(S)
-        If S <> SockListen Then Call apiclosesocket(S)
+        N = BuscaSlotSock(s)
+        If s <> SockListen Then Call apiclosesocket(s)
         
         Call LogApiSock("WndProc:FD_CLOSE:N=" & N & ":Err=" & WSAGetAsyncError(lParam))
         
@@ -592,25 +599,25 @@ End Sub
 Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
 #If UsarQueSocket = 1 Then
 
-Dim T() As String
+Dim t() As String
 Dim LoopC As Long
 
 UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & Datos
 
-T = Split(UserList(Slot).RDBuffer, ENDC)
-If UBound(T) > 0 Then
-    UserList(Slot).RDBuffer = T(UBound(T))
+t = Split(UserList(Slot).RDBuffer, ENDC)
+If UBound(t) > 0 Then
+    UserList(Slot).RDBuffer = t(UBound(t))
     
-    For LoopC = 0 To UBound(T) - 1
+    For LoopC = 0 To UBound(t) - 1
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If T(LoopC) <> "" Then If Not UserList(Slot).CommandsBuffer.Push(T(LoopC)) Then Call CloseSocket(Slot)
+            If t(LoopC) <> "" Then If Not UserList(Slot).CommandsBuffer.Push(t(LoopC)) Then Call CloseSocket(Slot)
         Else ' no encolamos los comandos (MUY VIEJO)
               If UserList(Slot).ConnID <> -1 Then
-                Call HandleData(Slot, T(LoopC))
+                Call HandleData(Slot, t(LoopC))
               Else
                 Exit Sub
               End If

@@ -31,6 +31,18 @@ Attribute VB_Name = "Acciones"
 
 Option Explicit
 
+''
+' Modulo para manejar las acciones (doble click) de los carteles, foro, puerta, ramitas
+'
+
+''
+' Ejecuta la accion del doble click
+'
+' @param UserIndex UserIndex
+' @param Map Numero de mapa
+' @param X X
+' @param Y Y
+
 Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Error Resume Next
 

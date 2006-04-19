@@ -1,40 +1,56 @@
 Attribute VB_Name = "mdParty"
 Option Explicit
 
-Public Const MAX_PARTIES As Integer = 300
+''
+' SOPORTES PARA LAS PARTIES
+' (Ver este modulo como una clase abstracta "PartyManager")
+'
+
+
+''
 'cantidad maxima de parties en el servidor
+Public Const MAX_PARTIES As Integer = 300
 
-Public Const MINPARTYLEVEL As Byte = 15
+''
 'nivel minimo para crear party
+Public Const MINPARTYLEVEL As Byte = 15
 
-Public Const PARTY_MAXMEMBERS As Byte = 5
+''
 'Cantidad maxima de gente en la party
+Public Const PARTY_MAXMEMBERS As Byte = 5
 
-Public Const PARTY_EXPERIENCIAPORGOLPE As Boolean = False
+''
 'Si esto esta en True, la exp sale por cada golpe que le da
 'Si no, la exp la recibe al salirse de la party (pq las partys, floodean)
+Public Const PARTY_EXPERIENCIAPORGOLPE As Boolean = False
 
-Public Const MAXPARTYDELTALEVEL As Byte = 7
+''
 'maxima diferencia de niveles permitida en una party
+Public Const MAXPARTYDELTALEVEL As Byte = 7
 
-Public Const MAXDISTANCIAINGRESOPARTY As Byte = 2
+''
 'distancia al leader para que este acepte el ingreso
+Public Const MAXDISTANCIAINGRESOPARTY As Byte = 2
 
-Public Const PARTY_MAXDISTANCIA As Byte = 18
+''
 'maxima distancia a un exito para obtener su experiencia
+Public Const PARTY_MAXDISTANCIA As Byte = 18
 
+''
 'restan las muertes de los miembros?
 Public Const CASTIGOS As Boolean = False
 
+''
+'tPartyMember
+'
+' @param UserIndex UserIndex
+' @param Experiencia Experiencia
+'
 Public Type tPartyMember
     UserIndex As Integer
     Experiencia As Long
 End Type
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'SOPORTES PARA LAS PARTIES
-'(Ver este modulo como una clase abstracta "PartyManager"
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Public Function NextParty() As Integer
 Dim i As Integer

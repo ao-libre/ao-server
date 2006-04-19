@@ -31,6 +31,10 @@ Attribute VB_Name = "Declaraciones"
 
 Option Explicit
 
+''
+' Modulo de declaraciones. Aca hay de todo.
+'
+
 Public MixedKey As Long
 Public ServerIp As String
 Public CrcSubKey As String
@@ -114,17 +118,35 @@ End Enum
 
 Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
 
-'TRIGGERS
+''
+' TRIGGERS
+'
+' @param NADA nada
+' @param BAJOTECHO bajo techo
+' @param trigger_2 ???
+' @param POSINVALIDA los npcs no pueden pisar tiles con este trigger
+' @param ZONASEGURA no se puede robar o pelear desde este trigger
+' @param ANTIPIQUETE
+' @param ZONAPELEA al pelear en este trigger no se caen las cosas y no cambia el estado de ciuda o crimi
+'
 Public Enum eTrigger
     NADA = 0
     BAJOTECHO = 1
     trigger_2 = 2
-    POSINVALIDA = 3 'los npcs no pueden pisar tiles con este trigger
-    ZONASEGURA = 4 'no se puede robar o pelear desde este trigger
+    POSINVALIDA = 3
+    ZONASEGURA = 4 '
     ANTIPIQUETE = 5
-    ZONAPELEA = 6 'al pelear en este trigger no se caen las cosas y no cambia el estado de ciuda o crimi
+    ZONAPELEA = 6 '
 End Enum
 
+''
+' constantes para el trigger 6
+'
+' @see eTrigger
+' @param TRIGGER6_PERMITE TRIGGER6_PERMITE
+' @param TRIGGER6_PROHIBE TRIGGER6_PROHIBE
+' @param TRIGGER6_AUSENTE El trigger no aparece
+'
 Public Enum eTrigger6
     TRIGGER6_PERMITE = 1
     TRIGGER6_PROHIBE = 2
@@ -162,6 +184,7 @@ Public Const MAX_MENSAJES_FORO As Byte = 35
 Public Const MAXUSERHECHIZOS As Byte = 35
 
 
+' TODO: Y ESTO ? LO CONOCE GD ?
 Public Const EsfuerzoTalarGeneral As Byte = 4
 Public Const EsfuerzoTalarLeñador As Byte = 2
 
@@ -229,15 +252,40 @@ End Enum
 Public Const MIN_APUÑALAR As Byte = 10
 
 '********** CONSTANTANTES ***********
+
+''
+' Cantidad de skills
 Public Const NUMSKILLS As Byte = 21
+
+''
+' Cantidad de Atributos
 Public Const NUMATRIBUTOS As Byte = 5
+
+''
+' Cantidad de Clases
 Public Const NUMCLASES As Byte = 17
+
+''
+' Cantidad de Razas
 Public Const NUMRAZAS As Byte = 5
 
+
+''
+' Valor maximo de cada skill
 Public Const MAXSKILLPOINTS As Byte = 100
 
+''
+' Constante para indicar que se esta usando ORO
 Public Const FLAGORO As Integer = 777
 
+''
+'Direccion
+'
+' @param NORTH Norte
+' @param EAST Este
+' @param SOUTH Sur
+' @param WEST Oeste
+'
 Public Enum eHeading
     NORTH = 1
     EAST = 2
@@ -245,6 +293,8 @@ Public Enum eHeading
     WEST = 4
 End Enum
 
+''
+' Cantidad maxima de mascotas
 Public Const MAXMASCOTAS As Byte = 3
 
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
@@ -354,11 +404,15 @@ Public Const MARTILLOHERRERO As Byte = 41
 Public Const LABUROCARPINTERO As Byte = 42
 Public Const SND_BEBER As Byte = 46
 
-'Objetos
+''
+' Cantidad maxima de objetos por slot de inventario
 Public Const MAX_INVENTORY_OBJS As Integer = 10000
+
+''
+' Cantidad de "slots" en el inventario
 Public Const MAX_INVENTORY_SLOTS As Byte = 20
 
-'<------------------CATEGORIAS PRINCIPALES--------->
+' CATEGORIAS PRINCIPALES
 Public Enum eOBJType
     otUseOnce = 1
     otWeapon = 2
@@ -420,11 +474,11 @@ Public Const STAT_MAXDEF As Byte = 99
 
 
 
-'**************************************************************
-'**************************************************************
-'************************ TIPOS *******************************
-'**************************************************************
-'**************************************************************
+' **************************************************************
+' **************************************************************
+' ************************ TIPOS *******************************
+' **************************************************************
+' **************************************************************
 
 Public Type tHechizo
     Nombre As String
@@ -494,7 +548,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -642,7 +696,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    clave As Long 'si clave=llave la puerta se abre o cierra
+    Clave As Long 'si clave=llave la puerta se abre o cierra
     
     IndexAbierta As Integer
     IndexCerrada As Integer
@@ -765,7 +819,7 @@ End Type
 
 'Flags
 Public Type UserFlags
-    EstaEmpo As Byte    '<-Empollando (by yb)
+    EstaEmpo As Byte    'Empollando (by yb)
     Muerto As Byte '¿Esta muerto?
     Escondido As Byte '¿Esta escondido?
     Comerciando As Boolean '¿Esta comerciando?
@@ -1073,7 +1127,7 @@ Public Type tCriaturasEntrenador
     tmpIndex As Integer
 End Type
 
-'<--------- New type for holding the pathfinding info ------>
+' New type for holding the pathfinding info
 Public Type NpcPathFindingInfo
     Path() As tVertice      ' This array holds the path
     Target As Position      ' The location where the NPC has to go
@@ -1089,7 +1143,7 @@ Public Type NpcPathFindingInfo
     '  forcing the seek of a new path.
     
 End Type
-'<--------- New type for holding the pathfinding info ------>
+' New type for holding the pathfinding info
 
 
 Public Type npc
@@ -1147,7 +1201,7 @@ Public Type npc
     MaestroNpc As Integer
     Mascotas As Integer
     
-    '<---------New!! Needed for pathfindig----------->
+    ' New!! Needed for pathfindig
     PFINFO As NpcPathFindingInfo
     AreasInfo As AreaInfo
 End Type
@@ -1189,7 +1243,7 @@ End Type
 
 Public SERVERONLINE As Boolean
 Public ULTIMAVERSION As String
-Public BackUp As Boolean
+Public BackUp As Boolean ' TODO: Se usa esta variable ?
 
 Public ListaRazas(1 To NUMRAZAS) As String
 Public SkillsNames(1 To NUMSKILLS) As String
@@ -1200,23 +1254,42 @@ Public Const ENDC As String * 1 = vbNullChar
 
 Public recordusuarios As Long
 
+'
 'Directorios
+'
+
+''
+'Ruta base del server, en donde esta el "server.ini"
 Public IniPath As String
+
+''
+'Ruta base para guardar los chars
 Public CharPath As String
+
+''
+'Ruta base para los archivos de mapas
 Public MapPath As String
+
+''
+'Ruta base para los DATs
 Public DatPath As String
 
+''
 'Bordes del mapa
 Public MinXBorder As Byte
 Public MaxXBorder As Byte
 Public MinYBorder As Byte
 Public MaxYBorder As Byte
 
-Public ResPos As WorldPos
-Public StartPos As WorldPos 'Posicion de comienzo
+Public ResPos As WorldPos ' TODO: Se usa esta variable ?
 
+''
+'Posicion de comienzo
+Public StartPos As WorldPos ' TODO: Se usa esta variable ?
 
-Public NumUsers As Integer 'Numero de usuarios actual
+''
+'Numero de usuarios actual
+Public NumUsers As Integer
 Public LastUser As Integer
 Public LastChar As Integer
 Public NumChars As Integer
@@ -1239,7 +1312,8 @@ Public PuedeCrearPersonajes As Integer
 Public CamaraLenta As Integer
 Public ServerSoloGMs As Integer
 
-
+''
+'Esta activada la verificacion MD5 ?
 Public MD5ClientesActivado As Byte
 
 

@@ -12,13 +12,15 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-'clase clan
 
-'Es el "ADO" de los clanes. La interfaz entre el disco y
-'el juego. Los datos no se guardan en memoria
-'para evitar problemas de sincronizacion, y considerando
-'que la performance de estas rutinas NO es critica.
-'by el oso :p
+''
+' clase clan
+'
+' Es el "ADO" de los clanes. La interfaz entre el disco y
+' el juego. Los datos no se guardan en memoria
+' para evitar problemas de sincronizacion, y considerando
+' que la performance de estas rutinas NO es critica.
+' by el oso :p
 
 Private p_GuildName                 As String
 Private p_Alineacion                As ALINEACION_GUILD
@@ -49,11 +51,9 @@ Public Property Get GuildName() As String
 End Property
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'ALINEACION Y ANTIFACCION
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 
 Public Property Get Alineacion() As ALINEACION_GUILD
     Alineacion = p_Alineacion
@@ -72,11 +72,9 @@ Public Sub CambiarAlineacion(ByVal NuevaAlineacion As ALINEACION_GUILD)
     Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Alineacion", Alineacion2String(p_Alineacion))
 End Sub
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'INICIALIZADORES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 
 Private Sub Class_Initialize()
     GUILDPATH = App.Path & "\GUILDS\"
@@ -129,8 +127,12 @@ Dim i As Integer
     Next i
 End Sub
 
+''
+' esta TIENE QUE LLAMARSE LUEGO DE INICIALIZAR()
+'
+' @param Fundador Nombre del fundador del clan
+'
 Public Sub InicializarNuevoClan(ByRef Fundador As String)
-'esta TIENE QUE LLAMARSE LUEGO DE INICIALIZAR()
 Dim OldQ    As String  'string pq al comienzo quizas no hay archivo guildinfo.ini y oldq es ""
 Dim NewQ    As Integer
     'para que genere los archivos
@@ -161,11 +163,10 @@ Public Sub ProcesarFundacionDeOtroClan()
 End Sub
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'MEMBRESIAS
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+
 Public Property Get Fundador() As String
     Fundador = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Founder")
 End Property
@@ -293,11 +294,9 @@ Dim MiembroDe   As String
 
 End Sub
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'ASPIRANTES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 
 Public Function GetAspirantes(ByVal Separador As String) As String
 Dim OldQ    As Integer
@@ -410,12 +409,10 @@ Public Sub InformarRechazoEnChar(ByRef Nombre As String, ByRef Detalles As Strin
     Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "MotivoRechazo", Detalles)
 End Sub
 
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'DEFINICION DEL CLAN (CODEX Y NOTICIAS)
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+
 Public Function GetFechaFundacion() As String
     GetFechaFundacion = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Date")
 End Function
@@ -464,12 +461,12 @@ End Function
 
 
 
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+'
 'ELECCIONES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+'
+
 Public Function EleccionesAbiertas() As Boolean
 Dim ee As String
     ee = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "EleccionesAbiertas")
@@ -590,13 +587,13 @@ Dim CantGanadores   As Integer
 
 End Function
 
-'/VOTACIONES''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'/VOTACIONES
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'
 'RELACIONES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+
 Public Property Get CantidadPropuestas(ByVal Tipo As RELACIONES_GUILD) As Integer
     Select Case Tipo
         Case RELACIONES_GUILD.ALIADOS
@@ -697,11 +694,10 @@ End Function
 'End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'ITERADORES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+
 Public Function Iterador_ProximaPropuesta(ByVal Tipo As RELACIONES_GUILD) As Integer
     
     Iterador_ProximaPropuesta = 0
@@ -763,15 +759,14 @@ Public Function Iterador_ProximaRelacion(ByVal r As RELACIONES_GUILD) As Integer
         p_IteradorRelaciones = 0
     End If
 End Function
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+'
+'
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'
 'ADMINISTRATIVAS
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 
 Public Sub ConectarGM(ByVal UserIndex As Integer)
     p_GMsOnline.Add UserIndex
@@ -788,18 +783,15 @@ End Sub
 
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 'VARIAS, EXTRAS Y DEMASES
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
 
-''''''''''''''''''''''
-Private Sub ReplaceInvalidChars(ByRef S As String)
-    S = Replace(S, Chr(13), vbNullString)
-    S = Replace(S, Chr(10), vbNullString)
-    S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
-    S = Replace(S, ENDC, vbNullString)
+Private Sub ReplaceInvalidChars(ByRef s As String)
+    s = Replace(s, Chr(13), vbNullString)
+    s = Replace(s, Chr(10), vbNullString)
+    s = Replace(s, "¬", vbNullString)   'morgo usaba esto como "separador"
+    s = Replace(s, ENDC, vbNullString)
 End Sub
 
 
