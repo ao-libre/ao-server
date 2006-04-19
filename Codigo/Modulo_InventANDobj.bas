@@ -105,14 +105,18 @@ On Error Resume Next
 
 Dim ln As String, npcfile As String
 Dim i As Integer
+Dim Leer As New clsLeerInis
+
 If Npclist(NpcIndex).Numero > 499 Then
     npcfile = DatPath & "NPCs-HOSTILES.dat"
 Else
     npcfile = DatPath & "NPCs.dat"
 End If
+
+Leer.Abrir npcfile
  
 For i = 1 To MAX_INVENTORY_SLOTS
-    ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
+    ln = Leer.DarValor("NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
     If ObjIndex = val(ReadField(1, ln, 45)) Then
         EncontrarCant = val(ReadField(2, ln, 45))
         Exit Function
@@ -120,7 +124,9 @@ For i = 1 To MAX_INVENTORY_SLOTS
 Next
                    
 EncontrarCant = 50
-                   
+
+Set Leer = Nothing
+
 End Function
 
 Sub ResetNpcInv(ByVal NpcIndex As Integer)
@@ -189,8 +195,8 @@ Sub CargarInvent(ByVal NpcIndex As Integer)
 'Vuelve a cargar el inventario del npc NpcIndex
 Dim LoopC As Integer
 Dim ln As String
-
 Dim npcfile As String
+Dim Leer As New clsLeerInis
 
 If Npclist(NpcIndex).Numero > 499 Then
     npcfile = DatPath & "NPCs-HOSTILES.dat"
@@ -198,14 +204,18 @@ Else
     npcfile = DatPath & "NPCs.dat"
 End If
 
-Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "NROITEMS"))
+Leer.Abrir npcfile
+
+Npclist(NpcIndex).Invent.NroItems = val(Leer.DarValor("NPC" & Npclist(NpcIndex).Numero, "NROITEMS"))
 
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
-    ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & LoopC)
+    ln = Leer.DarValor("NPC" & Npclist(NpcIndex).Numero, "Obj" & LoopC)
     Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
     Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
     
 Next LoopC
+
+Set Leer = Nothing
 
 End Sub
 

@@ -419,12 +419,17 @@ End Function
 Sub SendHelp(ByVal index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
+Dim Leer As New clsLeerInis
 
-NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
+Leer.Abrir DatPath & "Help.dat"
+
+NumHelpLines = val(Leer.DarValor("INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call SendData(SendTarget.ToIndex, index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, Index, 0, "||" & Leer.DarValor("Help", "Line" & LoopC) & FONTTYPE_INFO)
 Next LoopC
+
+Set Leer = Nothing
 End Sub
 
 Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)

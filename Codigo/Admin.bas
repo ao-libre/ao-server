@@ -117,18 +117,20 @@ Public Function VersionesActuales(ByVal v1 As Integer, ByVal v2 As Integer, ByVa
 Dim rv As Boolean
 Dim i As Integer
 Dim f As String
-f = App.Path & "\AUTOUPDATER\VERSIONES.INI"
+Dim Leer As New clsLeerInis
 
-rv = val(GetVar(f, "ACTUALES", "GRAFICOS")) = v1
-rv = rv And val(GetVar(f, "ACTUALES", "WAVS")) = v2
-rv = rv And val(GetVar(f, "ACTUALES", "MIDIS")) = v3
-rv = rv And val(GetVar(f, "ACTUALES", "INIT")) = v4
-rv = rv And val(GetVar(f, "ACTUALES", "MAPAS")) = v5
-rv = rv And val(GetVar(f, "ACTUALES", "AOEXE")) = v6
-rv = rv And val(GetVar(f, "ACTUALES", "EXTRAS")) = v7
+Leer.Abrir App.Path & "\AUTOUPDATER\VERSIONES.INI"
+
+rv = val(Leer.DarValor("ACTUALES", "GRAFICOS")) = v1
+rv = rv And val(Leer.DarValor("ACTUALES", "WAVS")) = v2
+rv = rv And val(Leer.DarValor("ACTUALES", "MIDIS")) = v3
+rv = rv And val(Leer.DarValor("ACTUALES", "INIT")) = v4
+rv = rv And val(Leer.DarValor("ACTUALES", "MAPAS")) = v5
+rv = rv And val(Leer.DarValor("ACTUALES", "AOEXE")) = v6
+rv = rv And val(Leer.DarValor("ACTUALES", "EXTRAS")) = v7
 VersionesActuales = rv
 
-
+Set Leer = Nothing
 
 End Function
 
@@ -305,16 +307,21 @@ End Function
 
 Public Sub MD5sCarga()
 Dim LoopC As Integer
+Dim Leer As New clsLeerInis
 
-MD5ClientesActivado = val(GetVar(IniPath & "Server.ini", "MD5Hush", "Activado"))
+Leer.Abrir IniPath & "Server.ini"
+
+MD5ClientesActivado = val(Leer.DarValor("MD5Hush", "Activado"))
 
 If MD5ClientesActivado = 1 Then
-    ReDim MD5s(val(GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptados")))
+    ReDim MD5s(val(Leer.DarValor("MD5Hush", "MD5Aceptados")))
     For LoopC = 0 To UBound(MD5s)
-        MD5s(LoopC) = GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptado" & (LoopC + 1))
+        MD5s(LoopC) = Leer.DarValor("MD5Hush", "MD5Aceptado" & (LoopC + 1))
         MD5s(LoopC) = txtOffset(hexMd52Asc(MD5s(LoopC)), 53)
     Next LoopC
 End If
+
+Set Leer = Nothing
 
 End Sub
 

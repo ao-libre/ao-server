@@ -80,3 +80,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 19/04/2006: Los mensajes /CAOSMSG, /REALMSG, /CUMSG y /CRIMSG se envian también a RMs y aclaran a quienes van dirijidos (Maraxus).
  * 19/04/2006: El centinela ya no revisa a users ocultandose (Maraxus).
  * 19/04/2006: Se creó el comando /OCULTANDO para que los GMs puedan revisar a los suers ocultandose para detectar macros (Maraxus).
+ * 19/04/2006: Se utiliza clsLeerInis para muchas cosas que antes usaban GetVar por eficiencia (Maraxus).
