@@ -85,6 +85,10 @@ Sub RevivirUsuario(ByVal UserIndex As Integer)
 UserList(UserIndex).flags.Muerto = 0
 UserList(UserIndex).Stats.MinHP = 35
 
+'No puede estar empollando
+UserList(UserIndex).flags.EstaEmpo = 0
+UserList(UserIndex).EmpoCont = 0
+
 If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
 End If

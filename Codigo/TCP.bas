@@ -2450,9 +2450,9 @@ End If
 
 If UCase$(rData) = "/ONLINEREAL" Then
     For tLong = 1 To LastUser
-        If UserList(UserIndex).ConnID <> -1 Then
-            If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
-                tStr = tStr & UserList(UserIndex).name & ", "
+        If UserList(tLong).ConnID <> -1 Then
+            If UserList(tLong).Faccion.ArmadaReal = 1 Then
+                tStr = tStr & UserList(tLong).name & ", "
             End If
         End If
     Next tLong
@@ -2467,9 +2467,9 @@ End If
 
 If UCase$(rData) = "/ONLINECAOS" Then
     For tLong = 1 To LastUser
-        If UserList(UserIndex).ConnID <> -1 Then
-            If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
-                tStr = tStr & UserList(UserIndex).name & ", "
+        If UserList(tLong).ConnID <> -1 Then
+            If UserList(tLong).Faccion.FuerzasCaos = 1 Then
+                tStr = tStr & UserList(tLong).name & ", "
             End If
         End If
     Next tLong
@@ -3637,9 +3637,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||REAL> " & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||ARMADA REAL> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||REAL> " & tStr)
+                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||ARMADA REAL> " & tStr)
             End If
         End If
         Exit Sub
@@ -3650,9 +3650,9 @@ Select Case UCase$(Left$(rData, 8))
             tStr = Right$(rData, Len(rData) - 9)
             
             If InStr(1, tStr, "~") = 0 Then
-                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||CAOS> " & tStr & FONTTYPE_TALK)
+                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||FUERZAS DEL CAOS> " & tStr & FONTTYPE_TALK)
             Else
-                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||CAOS> " & tStr)
+                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||FUERZAS DEL CAOS> " & tStr)
             End If
         End If
         Exit Sub

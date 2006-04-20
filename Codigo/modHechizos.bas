@@ -673,7 +673,7 @@ If Hechizos(H).Revivir = 1 Then
             End If
         End If
         
-        'Pablo Toxic waste
+        'Pablo Toxic Waste
         UserList(TU).Stats.MinAGU = UserList(TU).Stats.MinAGU - 25
         UserList(TU).Stats.MinHam = UserList(TU).Stats.MinHam - 25
         'Juan Maraxus
@@ -696,7 +696,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
         UserList(TU).Stats.MinMAN = 0
         Call EnviarHambreYsed(TU)
-        '/pablo toxic waste
+        '/Pablo Toxic Waste
         
         b = True
         Call InfoHechizo(UserIndex)
