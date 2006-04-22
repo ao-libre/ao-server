@@ -285,15 +285,10 @@ Procesado = True 'ver al final del sub
                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Primero tenes que seleccionar un personaje, hace click izquierdo sobre el." & FONTTYPE_INFO)
                Exit Sub
            End If
-           If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> 1 _
+           If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Revividor _
            Or UserList(UserIndex).flags.Muerto <> 1 Then Exit Sub
            If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El sacerdote no puede resucitarte debido a que estas demasiado lejos." & FONTTYPE_INFO)
-               Exit Sub
-           End If
-           If FileExist(CharPath & UCase$(UserList(UserIndex).name) & ".chr", vbNormal) = False Then
-               Call SendData(SendTarget.ToIndex, UserIndex, 0, "!!El personaje no existe, cree uno nuevo.")
-               CloseSocket (UserIndex)
                Exit Sub
            End If
            Call RevivirUsuario(UserIndex)
@@ -305,14 +300,14 @@ Procesado = True 'ver al final del sub
                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Primero tenes que seleccionar un personaje, hace click izquierdo sobre el." & FONTTYPE_INFO)
                Exit Sub
            End If
-           If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> 1 _
+           If Npclist(UserList(UserIndex).flags.TargetNPC).NPCtype <> eNPCType.Revividor _
            Or UserList(UserIndex).flags.Muerto <> 0 Then Exit Sub
            If Distancia(UserList(UserIndex).Pos, Npclist(UserList(UserIndex).flags.TargetNPC).Pos) > 10 Then
                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El sacerdote no puede curarte debido a que estas demasiado lejos." & FONTTYPE_INFO)
                Exit Sub
            End If
            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-           Call SendUserStatsBox(val(UserIndex))
+           Call SendUserStatsBox(UserIndex)
            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Hás sido curado!!" & FONTTYPE_INFO)
            Exit Sub
         Case "/AYUDA"
@@ -354,18 +349,6 @@ Procesado = True 'ver al final del sub
                 If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
                     If Len(Npclist(UserList(UserIndex).flags.TargetNPC).Desc) > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No tengo ningun interes en comerciar." & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                     Exit Sub
-                End If
-                If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
-                    If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                        Exit Sub
-                    End If
-                End If
-                If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
-                    If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
-                        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                        Exit Sub
-                    End If
                 End If
                 If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)

@@ -101,29 +101,37 @@ If InMapBounds(Map, X, Y) Then
         
     ElseIf MapData(Map, X, Y).NpcIndex > 0 Then
         If Npclist(MapData(Map, X, Y).NpcIndex).Comercia = 1 Then
-              If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
-                  Exit Sub
-              End If
-              
-            '[DnG!]
-            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
-                If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Muestra tu bandera antes de comprar ropa del ejército" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                    Exit Sub
-                End If
+            If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
+                Exit Sub
             End If
-            
-            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
-                If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & "¡Vete de aquí!" & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                    Exit Sub
-                End If
-            End If
-            '[/DnG!]
             
             'Iniciamos la rutina pa' comerciar.
             Call IniciarCOmercioNPC(UserIndex)
+        
+        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Banquero Then
+            If Distancia(Npclist(MapData(Map, X, Y).NpcIndex).Pos, UserList(UserIndex).Pos) > 3 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
+            'A depositar de una
+            Call IniciarDeposito(UserIndex)
+        
+        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Then
+            If Distancia(UserList(UserIndex).Pos, Npclist(MapData(Map, X, Y).NpcIndex).Pos) > 10 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El sacerdote no puede curarte debido a que estas demasiado lejos." & FONTTYPE_INFO)
+                Exit Sub
+            End If
+           
+           'Revivimos si es necesario
+            If UserList(UserIndex).flags.Muerto = 1 Then
+                Call RevivirUsuario(UserIndex)
+            End If
+            
+            'curamos totalmente
+            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
+            Call SendUserStatsBox(UserIndex)
         End If
     Else
         UserList(UserIndex).flags.TargetNPC = 0

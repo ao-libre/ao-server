@@ -201,7 +201,8 @@ Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer)
     UserList(UserIndex).Faccion.ArmadaReal = 0
     'Call PerderItemsFaccionarios(UserIndex)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sido expulsado de las tropas reales!!!." & FONTTYPE_FIGHT)
-
+    'Desequipamos la armadura real si está equipada
+    If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
 End Sub
 
 Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
@@ -209,7 +210,8 @@ Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
     UserList(UserIndex).Faccion.FuerzasCaos = 0
     'Call PerderItemsFaccionarios(UserIndex)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sido expulsado de la legión oscura!!!." & FONTTYPE_FIGHT)
-    
+    'Desequipamos la armadura real si está equipada
+    If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
 End Sub
 
 Public Function TituloReal(ByVal UserIndex As Integer) As String
@@ -304,15 +306,15 @@ If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
     
     If UCase$(UserList(UserIndex).Raza) = "ENANO" Or UCase$(UserList(UserIndex).Raza) = "GNOMO" Then
         MiObj.ObjIndex = VestimentaLegionEnano
-        Select Case UserList(UserIndex).Clase
+        Select Case UCase$(UserList(UserIndex).Clase)
             Case "MAGO"
                 MiObj2.ObjIndex = TunicaEgregiaEnano
             Case Else
                 MiObj2.ObjIndex = TunicaLobregaEnano
         End Select
     Else
-        MiObj.ObjIndex = VestimentaImperialHumano
-        Select Case UserList(UserIndex).Clase
+        MiObj.ObjIndex = VestimentaLegionHumano
+        Select Case UCase$(UserList(UserIndex).Clase)
             Case "MAGO"
                 MiObj2.ObjIndex = TunicaEgregiaHumano
             Case "CLERIGO", "DRUIDA", "BARDO"

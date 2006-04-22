@@ -617,13 +617,16 @@ For Object = 1 To NumObjDatas
     ObjData(Object).Newbie = val(Leer.DarValor("OBJ" & Object, "Newbie"))
     
     Select Case ObjData(Object).OBJType
-        Case eOBJType.otESCUDO
-            ObjData(Object).ShieldAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
+        Case eOBJType.otArmadura
+            ObjData(Object).Real = val(Leer.DarValor("OBJ" & Object, "Real"))
+            ObjData(Object).Caos = val(Leer.DarValor("OBJ" & Object, "Caos"))
             ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
             ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-            
+        
+        Case eOBJType.otESCUDO
+            ObjData(Object).ShieldAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
             ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
@@ -633,11 +636,6 @@ For Object = 1 To NumObjDatas
         
         Case eOBJType.otCASCO
             ObjData(Object).CascoAnim = val(Leer.DarValor("OBJ" & Object, "Anim"))
-            ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
-            ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
-            ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
-            ObjData(Object).SkHerreria = val(Leer.DarValor("OBJ" & Object, "SkHerreria"))
-            
             ObjData(Object).LingH = val(Leer.DarValor("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.DarValor("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.DarValor("OBJ" & Object, "LingO"))
@@ -1189,7 +1187,7 @@ On Error GoTo errh
                 Get FreeFileInf, , MapData(Map, X, Y).TileExit.X
                 Get FreeFileInf, , MapData(Map, X, Y).TileExit.Y
             End If
-                    
+            
             If ByFlags And 2 Then
                 'Get and make NPC
                 Get FreeFileInf, , MapData(Map, X, Y).NpcIndex

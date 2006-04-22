@@ -82,3 +82,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 19/04/2006: Se creó el comando /OCULTANDO para que los GMs puedan revisar a los suers ocultandose para detectar macros (Maraxus).
  * 19/04/2006: Se utiliza clsLeerInis para muchas cosas que antes usaban GetVar por eficiencia (Maraxus).
  * 19/04/2006: Corregí /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 21/04/2006: El cura te cura y revive con doble click (Maraxus).
+ * 21/04/2006: Las armaduras faccionarias se pueden vender independientemente de tu alineación (Maraxus).
+ * 21/04/2006: La bóveda se abre con doble click (Maraxus).
+ * 21/04/2006: Se solucionó un bug que entregaba mal las armaduras del caos (Maraxus).
+ * 21/04/2006: Se solucionó un bug que dejaba que te equipes armaduras faccionarias sin ser de esa facción (Maraxus).

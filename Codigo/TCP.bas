@@ -2692,7 +2692,7 @@ If UCase$(rData) = "LISTUSU" Then
         End If
     Next LoopC
     If Len(tStr) > 7 Then
-        tStr = Left$(tStr, Len(tStr) - 2)
+        tStr = Left$(tStr, Len(tStr) - 1)
     End If
     Call SendData(SendTarget.ToIndex, UserIndex, 0, tStr)
     Exit Sub

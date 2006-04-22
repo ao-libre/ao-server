@@ -1021,6 +1021,19 @@ Procesado = True 'ver al final del sub
                        Exit Sub
              End If
              
+            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
+                If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||No puedes comparar armaduras reales si no eres miembro de la Armada" & FONTTYPE_WARNING)
+                    Exit Sub
+                End If
+            End If
+            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
+                If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||No puedes comparar armaduras reales si no eres miembro de la Armada" & FONTTYPE_WARNING)
+                    Exit Sub
+                End If
+            End If
+            
              '¿El target es un NPC valido?
              If UserList(UserIndex).flags.TargetNPC > 0 Then
                    '¿El NPC puede comerciar?

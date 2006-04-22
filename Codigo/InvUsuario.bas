@@ -527,13 +527,13 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Inte
 
 If ObjData(ObjIndex).Real = 1 Then
     If Not Criminal(UserIndex) Then
-        FaccionPuedeUsarItem = UserList(UserIndex).Faccion.ArmadaReal = 1
+        FaccionPuedeUsarItem = (UserList(UserIndex).Faccion.ArmadaReal = 1)
     Else
         FaccionPuedeUsarItem = False
     End If
 ElseIf ObjData(ObjIndex).Caos = 1 Then
     If Criminal(UserIndex) Then
-        FaccionPuedeUsarItem = UserList(UserIndex).Faccion.FuerzasCaos = 1
+        FaccionPuedeUsarItem = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
     Else
         FaccionPuedeUsarItem = False
     End If
