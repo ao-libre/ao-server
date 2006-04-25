@@ -873,12 +873,11 @@ Select Case Obj.OBJType
         Else
             If UserList(UserIndex).flags.TargetObj = 0 Then Exit Sub
             
-            TargObj = ObjData(UserList(UserIndex).flags.TargetObj)
             '¿El target-objeto es leña?
-            If TargObj.OBJType = eOBJType.otLeña Then
+            If UserList(UserIndex).flags.TargetObj = Leña Then
                 If UserList(UserIndex).Invent.Object(Slot).ObjIndex = DAGA Then
-                    Call TratarDeHacerFogata(UserList(UserIndex).flags.TargetObjMap _
-                         , UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY, UserIndex)
+                    Call TratarDeHacerFogata(UserList(UserIndex).flags.TargetObjMap, _
+                         UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY, UserIndex)
                 End If
             End If
         End If

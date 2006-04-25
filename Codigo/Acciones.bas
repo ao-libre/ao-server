@@ -65,7 +65,7 @@ If InMapBounds(Map, X, Y) Then
                 Call AccionParaCartel(Map, X, Y, UserIndex)
             Case eOBJType.otForos 'Foro
                 Call AccionParaForo(Map, X, Y, UserIndex)
-            Case eOBJType.otLeña 'Leña
+            Case eOBJType.otLeña    'Leña
                 If MapData(Map, X, Y).OBJInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
                     Call AccionParaRamita(Map, X, Y, UserIndex)
                 End If
@@ -141,60 +141,6 @@ If InMapBounds(Map, X, Y) Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
     
-End If
-
-End Sub
-
-Sub AccionParaRamita(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
-On Error Resume Next
-
-Dim Suerte As Byte
-Dim exito As Byte
-Dim Obj As Obj
-Dim raise As Integer
-
-Dim Pos As WorldPos
-Pos.Map = Map
-Pos.X = X
-Pos.Y = Y
-
-If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
-    Exit Sub
-End If
-
-
-If UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) > 1 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) < 6 Then
-            Suerte = 3
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) <= 10 Then
-            Suerte = 2
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) >= 10 And UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) Then
-            Suerte = 1
-End If
-
-exito = RandomNumber(1, Suerte)
-
-If exito = 1 Then
-    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> Ciudad Then
-        Obj.ObjIndex = FOGATA
-        Obj.Amount = 1
-        
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has prendido la fogata." & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "FO")
-        
-        Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
-    Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ley impide realizar fogatas en las ciudades." & FONTTYPE_INFO)
-    End If
-    
-    
-Else
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has podido hacer fuego." & FONTTYPE_INFO)
-End If
-
-'Sino tiene hambre o sed quizas suba el skill supervivencia
-If UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 Then
-    Call SubirSkill(UserIndex, Supervivencia)
 End If
 
 End Sub
@@ -317,4 +263,66 @@ End If
 
 End Sub
 
+Sub AccionParaRamita(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+On Error Resume Next
 
+Dim Suerte As Byte
+Dim exito As Byte
+Dim Obj As Obj
+Dim raise As Integer
+
+Dim Pos As WorldPos
+Pos.Map = Map
+Pos.X = X
+Pos.Y = Y
+
+If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
+    Call SendData(ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
+    Exit Sub
+End If
+
+If MapData(Map, X, Y).trigger = eTrigger.ZONASEGURA Or MapInfo(Map).Pk = False Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
+    Exit Sub
+End If
+
+If UserList(UserIndex).Stats.UserSkills(Supervivencia) > 1 And UserList(UserIndex).Stats.UserSkills(Supervivencia) < 6 Then
+            Suerte = 3
+ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 6 And UserList(UserIndex).Stats.UserSkills(Supervivencia) <= 10 Then
+            Suerte = 2
+ElseIf UserList(UserIndex).Stats.UserSkills(Supervivencia) >= 10 And UserList(UserIndex).Stats.UserSkills(Supervivencia) Then
+            Suerte = 1
+End If
+
+exito = RandomNumber(1, Suerte)
+
+If exito = 1 Then
+    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> Ciudad Then
+        Obj.ObjIndex = FOGATA
+        Obj.Amount = 1
+        
+        Call SendData(ToIndex, UserIndex, 0, "||Has prendido la fogata." & FONTTYPE_INFO)
+        Call SendData(ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "FO")
+        
+        Call MakeObj(ToMap, 0, Map, Obj, Map, X, Y)
+        
+        'Las fogatas prendidas se deben eliminar
+        Dim Fogatita As New cGarbage
+        Fogatita.Map = Map
+        Fogatita.X = X
+        Fogatita.Y = Y
+        Call TrashCollector.Add(Fogatita)
+    Else
+        Call SendData(ToIndex, UserIndex, 0, "||La ley impide realizar fogatas en las ciudades." & FONTTYPE_INFO)
+        Exit Sub
+    End If
+Else
+    Call SendData(ToIndex, UserIndex, 0, "||No has podido hacer fuego." & FONTTYPE_INFO)
+End If
+
+'Sino tiene hambre o sed quizas suba el skill supervivencia
+If UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 Then
+    Call SubirSkill(UserIndex, Supervivencia)
+End If
+
+End Sub

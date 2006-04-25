@@ -804,7 +804,7 @@ Dim i       As Integer
     tStr = tStr & Guilds(GI).GetFechaFundacion & "¬"
     tStr = tStr & Guilds(GI).GetLeader & "¬"
     tStr = tStr & Guilds(GI).GetURL & "¬"
-    tStr = tStr & Guilds(GI).CantidadDeMiembros & "¬"
+    tStr = tStr & CStr(Guilds(GI).CantidadDeMiembros) & "¬"
     tStr = tStr & IIf(Guilds(GI).EleccionesAbiertas, "Elecciones abiertas", "Elecciones cerradas") & "¬"
     tStr = tStr & Alineacion2String(Guilds(GI).Alineacion) & "¬"
     tStr = tStr & Guilds(GI).CantidadEnemys & "¬"

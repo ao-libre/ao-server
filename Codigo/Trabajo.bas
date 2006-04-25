@@ -645,22 +645,30 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
     
 End Sub
+
 Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 
 Dim Suerte As Byte
 Dim exito As Byte
 Dim raise As Byte
 Dim Obj As Obj
+Dim posMadera As WorldPos
 
 If Not LegalPos(Map, X, Y) Then Exit Sub
 
-If UserList(UserIndex).flags.Muerto = 1 Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes hacer fogatas estando muerto." & FONTTYPE_INFO)
+With posMadera
+    .Map = Map
+    .X = X
+    .Y = Y
+End With
+
+If Distancia(posMadera, UserList(UserIndex).Pos) > 2 Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estás demasiado lejos para prender la fogata." & FONTTYPE_INFO)
     Exit Sub
 End If
 
-If MapData(Map, X, Y).trigger = eTrigger.ZONASEGURA Or MapInfo(Map).Pk = False Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||En zona segura no puedes hacer fogatas." & FONTTYPE_INFO)
+If UserList(UserIndex).flags.Muerto = 1 Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes hacer fogatas estando muerto." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -682,22 +690,14 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.Amount = MapData(Map, X, Y).OBJInfo.Amount / 3
+    Obj.Amount = MapData(Map, X, Y).OBJInfo.Amount \ 3
     
-    If Obj.Amount > 1 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho " & Obj.Amount & " fogatas." & FONTTYPE_INFO)
-    Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho una fogata." & FONTTYPE_INFO)
-    End If
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho " & Obj.Amount & " fogatas." & FONTTYPE_INFO)
     
     Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
     
-    Dim Fogatita As New cGarbage
-    Fogatita.Map = Map
-    Fogatita.X = X
-    Fogatita.Y = Y
-    Call TrashCollector.Add(Fogatita)
-    
+    'Seteamos la fogata como el nuevo TargetObj del user
+    UserList(UserIndex).flags.TargetObj = FOGATA_APAG
 Else
     '[CDT 17-02-2004]
     If Not UserList(UserIndex).flags.UltimoMensaje = 10 Then

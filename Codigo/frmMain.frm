@@ -456,7 +456,6 @@ End If
 If Minutos >= MinutosWs Then
     Call DoBackUp
     Call aClon.VaciarColeccion
-    Call modCentinela.ResetCentinelaInfo
     Minutos = 0
 End If
 

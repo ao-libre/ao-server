@@ -320,7 +320,7 @@ If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
             Case "CLERIGO", "DRUIDA", "BARDO"
                 MiObj2.ObjIndex = SacerdoteDemoniaco
             Case Else
-                MiObj2.ObjIndex = TunicaEgregiaHumano
+                MiObj2.ObjIndex = TunicaLobregaHumano
         End Select
     End If
     

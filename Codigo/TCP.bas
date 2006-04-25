@@ -2851,7 +2851,7 @@ End If
 'MODIFICA CARACTER
 If UCase$(Left$(rData, 5)) = "/MOD " Then
     rData = UCase$(Right$(rData, Len(rData) - 5))
-    tStr = Replace(ReadField(1, rData, 32), "+", " ")
+    tStr = Replace$(ReadField(1, rData, 32), "+", " ")
     tIndex = NameIndex(tStr)
     Arg1 = ReadField(2, rData, 32)
     Arg2 = ReadField(3, rData, 32)
@@ -2917,7 +2917,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             End If
         Case "BODY"
             If tIndex <= 0 Then
-                Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Head", Arg2)
+                Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Body", Arg2)
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -2926,7 +2926,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             Exit Sub
         Case "HEAD"
             If tIndex <= 0 Then
-                Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Body", Arg2)
+                Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Head", Arg2)
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If

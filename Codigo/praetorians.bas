@@ -1633,6 +1633,9 @@ On Error GoTo errorh
     Npclist(npcorig).Pos.Y = NPCy + 1
     Npclist(npcorig).Char.Heading = eHeading.SOUTH
     MapData(mapa, NPCx, NPCy + 1).NpcIndex = npcorig
+    
+    'Revisamos sidebemos cambair el área
+    Call ModAreas.CheckUpdateNeededNpc(npcorig, SOUTH)
 Exit Sub
 
 errorh:
@@ -1656,6 +1659,9 @@ On Error GoTo errorh
     Npclist(npcorig).Pos.Y = NPCy - 1
     Npclist(npcorig).Char.Heading = eHeading.NORTH
     MapData(mapa, NPCx, NPCy - 1).NpcIndex = npcorig
+    
+    'Revisamos sidebemos cambair el área
+    Call ModAreas.CheckUpdateNeededNpc(npcorig, NORTH)
 Exit Sub
 
 errorh:
@@ -1678,7 +1684,9 @@ On Error GoTo errorh
     Npclist(npcorig).Pos.X = NPCx - 1
     Npclist(npcorig).Char.Heading = eHeading.WEST
     MapData(mapa, NPCx - 1, NPCy).NpcIndex = npcorig
-
+    
+    'Revisamos sidebemos cambair el área
+    Call ModAreas.CheckUpdateNeededNpc(npcorig, WEST)
 Exit Sub
 
 errorh:
@@ -1702,6 +1710,9 @@ On Error GoTo errorh
     Npclist(npcorig).Pos.X = NPCx + 1
     Npclist(npcorig).Char.Heading = eHeading.EAST
     MapData(mapa, NPCx + 1, NPCy).NpcIndex = npcorig
+    
+    'Revisamos sidebemos cambair el área
+    Call ModAreas.CheckUpdateNeededNpc(npcorig, EAST)
 Exit Sub
 
 errorh:

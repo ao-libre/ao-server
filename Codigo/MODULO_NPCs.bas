@@ -674,7 +674,7 @@ Do While Not PosicionValida
             Exit Function
         End If
 Loop
-    
+
 'asignamos las nuevas coordenas
 Map = newpos.Map
 X = Npclist(nIndex).Pos.X

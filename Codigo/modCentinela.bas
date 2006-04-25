@@ -109,10 +109,12 @@ On Error GoTo Error_Handler
         Call WriteVar(CharPath & name & ".chr", "PENAS", "Cant", numPenas + 1)
         Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & numPenas + 1, LCase$(name) & ": BAN POR MACRO INASISTIDO " & Date & " " & Time)
         
-        Call CloseSocket(Centinela.RevisandoUserIndex)
-        
-        'Reseteamos la info del centinela (para no loguear el logout)
+        'Evitamos loguear el logout
+        Dim index As Integer
+        index = Centinela.RevisandoUserIndex
         Centinela.RevisandoUserIndex = 0
+        
+        Call CloseSocket(index)
     End If
     
     Centinela.clave = 0
