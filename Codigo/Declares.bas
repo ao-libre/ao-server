@@ -134,9 +134,9 @@ Public Enum eTrigger
     BAJOTECHO = 1
     trigger_2 = 2
     POSINVALIDA = 3
-    ZONASEGURA = 4 '
+    ZONASEGURA = 4
     ANTIPIQUETE = 5
-    ZONAPELEA = 6 '
+    ZONAPELEA = 6
 End Enum
 
 ''
@@ -696,7 +696,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    Clave As Long 'si clave=llave la puerta se abre o cierra
+    clave As Long 'si clave=llave la puerta se abre o cierra
     
     IndexAbierta As Integer
     IndexCerrada As Integer

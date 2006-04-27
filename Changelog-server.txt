@@ -93,3 +93,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - 0.11.6
  * 27/04/2006: Se incluyó la clase clsByteQueue utilizada en el nuevo protocolo. (Maraxus).
+ * 27/04/2006: No se permite invocar criaturas en zona segura por trigger o por mapa. (Maraxus).

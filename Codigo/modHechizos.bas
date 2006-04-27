@@ -296,8 +296,13 @@ End Sub
 
 Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 
-'Call LogTarea("HechizoInvocacion")
 If UserList(UserIndex).NroMacotas >= MAXMASCOTAS Then Exit Sub
+
+'No permitimos se invoquen criaturas en zonas seguras
+If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||En zona segura no puedes invocar criaturas." & FONTTYPE_INFO)
+    Exit Sub
+End If
 
 Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
@@ -310,7 +315,7 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).cant
+For j = 1 To Hechizos(H).Cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
