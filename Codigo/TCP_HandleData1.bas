@@ -1015,44 +1015,31 @@ Procesado = True 'ver al final del sub
             
             Exit Sub
         Case "COMP"
-             '¿Esta el user muerto? Si es asi no puede comerciar
-             If UserList(UserIndex).flags.Muerto = 1 Then
-                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
-                       Exit Sub
-             End If
-             
-            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" Then
-                If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||No puedes comparar armaduras reales si no eres miembro de la Armada" & FONTTYPE_WARNING)
-                    Exit Sub
-                End If
-            End If
-            If Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC" Then
-                If UserList(UserIndex).Faccion.FuerzasCaos <> 1 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||No puedes comparar armaduras reales si no eres miembro de la Armada" & FONTTYPE_WARNING)
-                    Exit Sub
-                End If
+            '¿Esta el user muerto? Si es asi no puede comerciar
+            If UserList(UserIndex).flags.Muerto = 1 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
+                Exit Sub
             End If
             
-             '¿El target es un NPC valido?
-             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                   '¿El NPC puede comerciar?
-                   If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                       Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                       Exit Sub
-                   End If
-             Else
-               Exit Sub
-             End If
-             rData = Right$(rData, Len(rData) - 5)
-             'User compra el item del slot rdata
-             If UserList(UserIndex).flags.Comerciando = False Then
+            '¿El target es un NPC valido?
+            If UserList(UserIndex).flags.TargetNPC > 0 Then
+                '¿El NPC puede comerciar?
+                If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    Exit Sub
+                End If
+            Else
+                Exit Sub
+            End If
+            rData = Right$(rData, Len(rData) - 5)
+            'User compra el item del slot rdata
+            If UserList(UserIndex).flags.Comerciando = False Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No estas comerciando " & FONTTYPE_INFO)
                 Exit Sub
-             End If
-             'listindex+1, cantidad
-             Call NPCVentaItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)), UserList(UserIndex).flags.TargetNPC)
-             Exit Sub
+            End If
+            'listindex+1, cantidad
+            Call NPCVentaItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)), UserList(UserIndex).flags.TargetNPC)
+            Exit Sub
         '[KEVIN]*********************************************************************
         '------------------------------------------------------------------------------------
         Case "RETI"
@@ -1077,31 +1064,27 @@ Procesado = True 'ver al final del sub
         '-----------------------------------------------------------------------------------
         '[/KEVIN]****************************************************************************
         Case "VEND"
-             '¿Esta el user muerto? Si es asi no puede comerciar
-             If UserList(UserIndex).flags.Muerto = 1 Then
-                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
-                       Exit Sub
-             End If
-             rData = Right$(rData, Len(rData) - 5)
-             '¿El target es un NPC valido?
-             tInt = val(ReadField(1, rData, 44))
-             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                   '¿El NPC puede comerciar?
-                   If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                       Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                       Exit Sub
-                   End If
-                   If (Not Npclist(UserList(UserIndex).flags.TargetNPC).name = "SR" And Not Npclist(UserList(UserIndex).flags.TargetNPC).name = "SC") And (ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Real = 1 Or ObjData(UserList(UserIndex).Invent.Object(tInt).ObjIndex).Caos = 1) Then
-                       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Es ilegal el comercio de este ítem en esta zona." & FONTTYPE_WARNING)
-                       Exit Sub
-                   End If
-             Else
-               Exit Sub
-             End If
-'             rdata = Right$(rdata, Len(rdata) - 5)
-             'User compra el item del slot rdata
-             Call NPCCompraItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
-             Exit Sub
+            '¿Esta el user muerto? Si es asi no puede comerciar
+            If UserList(UserIndex).flags.Muerto = 1 Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!!" & FONTTYPE_INFO)
+                Exit Sub
+            End If
+            rData = Right$(rData, Len(rData) - 5)
+            '¿El target es un NPC valido?
+            tInt = val(ReadField(1, rData, 44))
+            If UserList(UserIndex).flags.TargetNPC > 0 Then
+                '¿El NPC puede comerciar?
+                If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & FONTTYPE_TALK & "°" & "No tengo ningun interes en comerciar." & "°" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    Exit Sub
+                End If
+            Else
+                Exit Sub
+            End If
+'           rdata = Right$(rdata, Len(rdata) - 5)
+            'User compra el item del slot rdata
+            Call NPCCompraItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
+            Exit Sub
         '[KEVIN]-------------------------------------------------------------------------
         '****************************************************************************************
         Case "DEPO"

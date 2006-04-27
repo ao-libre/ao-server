@@ -144,8 +144,8 @@ On Error GoTo errorh
     If Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera Then
         '¿Son los items con los que comercia el npc?
         If Npclist(NpcIndex).TipoItems <> ObjData(obji).OBJType Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
-                Exit Sub
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
+            Exit Sub
         End If
     End If
     
@@ -260,22 +260,20 @@ On Error GoTo errhandler
     val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
     
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
-           
-           If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount > 0 Then
-                If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount
-                'Agregamos el obj que compro al inventario
-                If Not UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNPC, Cantidad) Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes comprar este ítem." & FONTTYPE_INFO)
-                End If
-                'Actualizamos el inventario del usuario
-                Call UpdateUserInv(True, UserIndex, 0)
-                'Actualizamos el oro
-                Call SendUserStatsBox(UserIndex)
-                'Actualizamos la ventana de comercio
-                Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
-                Call UpdateVentanaComercio(i, 0, UserIndex)
-            
-           End If
+        If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount > 0 Then
+            If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount
+            'Agregamos el obj que compro al inventario
+            If Not UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNPC, Cantidad) Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes comprar este ítem." & FONTTYPE_INFO)
+            End If
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(True, UserIndex, 0)
+            'Actualizamos el oro
+            Call SendUserStatsBox(UserIndex)
+            'Actualizamos la ventana de comercio
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Call UpdateVentanaComercio(i, 0, UserIndex)
+        End If
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficiente dinero." & FONTTYPE_INFO)
     End If
@@ -287,7 +285,31 @@ End Sub
 
 Sub NPCCompraItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Cantidad As Integer)
 On Error GoTo errhandler
-
+    Dim NpcIndex As Integer
+    
+    NpcIndex = UserList(UserIndex).flags.TargetNPC
+    
+    'Si es una armadura faccionaria vemos que la está intentando vender al sastre
+    If ObjData(UserList(UserIndex).Invent.Object(Item).ObjIndex).Real = 1 Then
+        If Npclist(NpcIndex).name <> "SR" Then
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
+            
+            'Actualizamos la ventana de comercio
+            Call UpdateVentanaComercio(Item, 1, UserIndex)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Exit Sub
+        End If
+    ElseIf ObjData(UserList(UserIndex).Invent.Object(Item).ObjIndex).Caos = 1 Then
+        If Npclist(NpcIndex).name <> "SC" Then
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
+            
+            'Actualizamos la ventana de comercio
+            Call UpdateVentanaComercio(Item, 1, UserIndex)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Exit Sub
+        End If
+    End If
+    
     'NPC COMPRA UN OBJ A UN USUARIO
     Call SendUserStatsBox(UserIndex)
    
@@ -299,9 +321,9 @@ On Error GoTo errhandler
         Call UpdateUserInv(True, UserIndex, 0)
         'Actualizamos el oro
         Call SendUserStatsBox(UserIndex)
+        
         Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
         'Actualizamos la ventana de comercio
-        
         Call UpdateVentanaComercio(Item, 1, UserIndex)
     End If
 Exit Sub

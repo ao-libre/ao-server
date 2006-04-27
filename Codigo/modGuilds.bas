@@ -771,7 +771,9 @@ Dim i As Integer
     If GuildIndex > 0 And GuildIndex <= CANTIDADDECLANES Then
         i = Guilds(GuildIndex).m_Iterador_ProximoUserIndex
         While i > 0
-            m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
+            'No mostramos dioses y admins
+            If UserList(i).flags.Privilegios < PlayerType.Dios Then _
+                m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
             i = Guilds(GuildIndex).m_Iterador_ProximoUserIndex
         Wend
     End If

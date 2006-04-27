@@ -1548,7 +1548,6 @@ Leer.Abrir CharPath & Nombre & ".chr"
 If FileExist(CharPath & Nombre & ".chr", vbArchive) = False Then
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pj Inexistente" & FONTTYPE_INFO)
 Else
-
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Estadisticas de: " & Nombre & FONTTYPE_INFO)
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Nivel: " & Leer.DarValor("stats", "elv") & "  EXP: " & Leer.DarValor("stats", "Exp") & "/" & Leer.DarValor("stats", "elu") & FONTTYPE_INFO)
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Vitalidad: " & Leer.DarValor("stats", "minsta") & "/" & Leer.DarValor("stats", "maxSta") & FONTTYPE_INFO)

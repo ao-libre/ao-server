@@ -2540,8 +2540,8 @@ If UCase$(Left$(rData, 7)) = "/DONDE " Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
+    If UserList(tIndex).flags.Privilegios >= PlayerType.Dios Then Exit Sub
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Ubicacion  " & UserList(tIndex).name & ": " & UserList(tIndex).Pos.Map & ", " & UserList(tIndex).Pos.X & ", " & UserList(tIndex).Pos.Y & "." & FONTTYPE_INFO)
-    If UserList(tIndex).flags.Privilegios = PlayerType.Dios Then Exit Sub
     Call LogGM(UserList(UserIndex).name, "/Donde " & UserList(tIndex).name, (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
@@ -2657,6 +2657,11 @@ If UCase$(Left$(rData, 5)) = "/IRA " Then
     rData = Right$(rData, Len(rData) - 5)
     
     tIndex = NameIndex(rData)
+    
+    'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+    If EsDios(rData) Or EsAdmin(rData) Then _
+        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
+    
     If tIndex <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
@@ -2859,16 +2864,21 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Arg4 = ReadField(5, rData, 32)
     
     If UserList(UserIndex).flags.EsRolesMaster Then
-        ' Los RMs consejeros sólo se pueden editar su head y body, el resto tieneplenos poderes
         Select Case UserList(UserIndex).flags.Privilegios
             Case PlayerType.Consejero
+                ' Los RMs consejeros sólo se pueden editar su head, body y exp
                 If NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
-                If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
+                If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "LEVEL" Then Exit Sub
             
             Case PlayerType.SemiDios
+                ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
+                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
             
             Case PlayerType.Dios
+                ' Si quiere modificar el level sólo lo puede hacer sobre sí mismo
+                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
+                ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "CIU" And Arg1 <> "CRI" And Arg1 <> "CLASE" And Arg1 <> "SKILLS" Then Exit Sub
         End Select
     ElseIf UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
@@ -2884,7 +2894,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             If val(Arg2) < 5000000 Then
                 UserList(tIndex).Stats.GLD = val(Arg2)
                 Call SendUserStatsBox(tIndex)
@@ -2898,7 +2907,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             If val(Arg2) < 15995001 Then
                 If UserList(tIndex).Stats.Exp + val(Arg2) > _
                    UserList(tIndex).Stats.ELU Then
@@ -2939,7 +2947,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             UserList(tIndex).Faccion.CriminalesMatados = val(Arg2)
             Exit Sub
         Case "CIU"
@@ -2948,7 +2955,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             UserList(tIndex).Faccion.CiudadanosMatados = val(Arg2)
             Exit Sub
         Case "LEVEL"
@@ -2957,7 +2963,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             UserList(tIndex).Stats.ELV = val(Arg2)
             Exit Sub
         Case "CLASE"
@@ -2966,7 +2971,6 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
             UserList(tIndex).Clase = UCase$(Arg2)
     '[DnG]
         Case "SKILLS"
@@ -3023,9 +3027,13 @@ If UCase$(Left$(rData, 6)) = "/INFO " Then
     tIndex = NameIndex(rData)
     
     If tIndex <= 0 Then
+        'No permitimos mirar dioses
+        If EsDios(rData) Or EsAdmin(rData) Then Exit Sub
+        
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline, Buscando en Charfile." & FONTTYPE_INFO)
         SendUserStatsTxtOFF UserIndex, rData
     Else
+        If UserList(tIndex).flags.Privilegios >= PlayerType.Dios Then Exit Sub
         SendUserStatsTxt UserIndex, tIndex
     End If
 
@@ -3147,7 +3155,7 @@ End If
 
 If UCase$(rData) = "/ONLINEGM" Then
         For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios <> PlayerType.User Then
+            If (UserList(LoopC).name <> "") And (UserList(LoopC).flags.Privilegios = PlayerType.Consejero Or UserList(LoopC).flags.Privilegios = PlayerType.SemiDios) Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC
@@ -3163,7 +3171,7 @@ End If
 'Barrin 30/9/03
 If UCase$(rData) = "/ONLINEMAP" Then
         For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map Then
+            If (UserList(LoopC).name <> "") And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map And UserList(LoopC).flags.Privilegios <> PlayerType.Dios And UserList(LoopC).flags.Privilegios <> PlayerType.Admin Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC
