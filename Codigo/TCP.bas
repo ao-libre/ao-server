@@ -201,7 +201,7 @@ Select Case Gen
                 If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
                 UserBody = 2
             Case "Elfo Oscuro"
-                UserHead = RandomNumber(1, 9) + 200
+                UserHead = RandomNumber(1, 8) + 201
                 UserBody = 3
             Case "Enano"
                 UserHead = RandomNumber(1, 5) + 300
@@ -2020,7 +2020,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0

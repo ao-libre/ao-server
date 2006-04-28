@@ -1257,12 +1257,12 @@ ElseIf Hechizos(H).SubeHP = 2 Then
     
     'cascos antimagia
     If (UserList(tempChr).Invent.CascoEqpObjIndex > 0) Then
-        daño = daño - RandomNumber(ObjData(UserList(tempChr).Invent.CascoEqpObjIndex).DefensaMagicaMin, ObjData(UserList(tempChr).Invent.CascoEqpObjIndex).DefensaMagicaMax + 1)
+        daño = daño - RandomNumber(ObjData(UserList(tempChr).Invent.CascoEqpObjIndex).DefensaMagicaMin, ObjData(UserList(tempChr).Invent.CascoEqpObjIndex).DefensaMagicaMax)
     End If
     
     'anillos
     If (UserList(tempChr).Invent.HerramientaEqpObjIndex > 0) Then
-        daño = daño - RandomNumber(ObjData(UserList(tempChr).Invent.HerramientaEqpObjIndex).DefensaMagicaMin, ObjData(UserList(tempChr).Invent.HerramientaEqpObjIndex).DefensaMagicaMax + 1)
+        daño = daño - RandomNumber(ObjData(UserList(tempChr).Invent.HerramientaEqpObjIndex).DefensaMagicaMin, ObjData(UserList(tempChr).Invent.HerramientaEqpObjIndex).DefensaMagicaMax)
     End If
     
     If daño < 0 Then daño = 0
@@ -1274,10 +1274,6 @@ ElseIf Hechizos(H).SubeHP = 2 Then
     End If
     
     Call InfoHechizo(UserIndex)
-    
-'    If UserList(UserIndex).Name = "EL OSO" Then
-'        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| le saco: " & daño & FONTTYPE_VENENO)
-'    End If
     
     UserList(tempChr).Stats.MinHP = UserList(tempChr).Stats.MinHP - daño
     
