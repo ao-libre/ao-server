@@ -202,12 +202,12 @@ End If
 
 End Sub
             
-Sub DecirPalabrasMagicas(ByVal S As String, ByVal UserIndex As Integer)
+Sub DecirPalabrasMagicas(ByVal s As String, ByVal UserIndex As Integer)
 On Error Resume Next
 
     Dim ind As String
     ind = UserList(UserIndex).Char.CharIndex
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & S & "°" & ind)
+    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbCyan & "°" & s & "°" & ind)
     Exit Sub
 End Sub
 
@@ -304,7 +304,7 @@ If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex
     Exit Sub
 End If
 
-Dim H As Integer, j As Integer, ind As Integer, index As Integer
+Dim H As Integer, j As Integer, ind As Integer, Index As Integer
 Dim TargetPos As WorldPos
 
 
@@ -315,17 +315,17 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).Cant
+For j = 1 To Hechizos(H).cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
-        If ind <= MAXNPCS Then
+        If ind > 0 Then
             UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
             
-            index = FreeMascotaIndex(UserIndex)
+            Index = FreeMascotaIndex(UserIndex)
             
-            UserList(UserIndex).MascotasIndex(index) = ind
-            UserList(UserIndex).MascotasType(index) = Npclist(ind).Numero
+            UserList(UserIndex).MascotasIndex(Index) = ind
+            UserList(UserIndex).MascotasType(Index) = Npclist(ind).Numero
             
             Npclist(ind).MaestroUser = UserIndex
             Npclist(ind).Contadores.TiempoExistencia = IntervaloInvocacion
@@ -420,33 +420,49 @@ End If
 End Sub
 
 
-Sub LanzarHechizo(index As Integer, UserIndex As Integer)
+Sub LanzarHechizo(Index As Integer, UserIndex As Integer)
 
 Dim uh As Integer
 Dim exito As Boolean
 
-uh = UserList(UserIndex).Stats.UserHechizos(index)
+uh = UserList(UserIndex).Stats.UserHechizos(Index)
 
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
         
         Case TargetType.uUsuarios
             If UserList(UserIndex).flags.TargetUser > 0 Then
-                Call HandleHechizoUsuario(UserIndex, uh)
+                If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call HandleHechizoUsuario(UserIndex, uh)
+                Else
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para lanzar este hechizo." & FONTTYPE_WARNING)
+                End If
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Este hechizo actua solo sobre usuarios." & FONTTYPE_INFO)
             End If
         Case TargetType.uNPC
             If UserList(UserIndex).flags.TargetNPC > 0 Then
-                Call HandleHechizoNPC(UserIndex, uh)
+                If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call HandleHechizoNPC(UserIndex, uh)
+                Else
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para lanzar este hechizo." & FONTTYPE_WARNING)
+                End If
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Este hechizo solo afecta a los npcs." & FONTTYPE_INFO)
             End If
         Case TargetType.uUsuariosYnpc
             If UserList(UserIndex).flags.TargetUser > 0 Then
-                Call HandleHechizoUsuario(UserIndex, uh)
+                If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call HandleHechizoUsuario(UserIndex, uh)
+                Else
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para lanzar este hechizo." & FONTTYPE_WARNING)
+                End If
             ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
-                Call HandleHechizoNPC(UserIndex, uh)
+                If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call HandleHechizoNPC(UserIndex, uh)
+                Else
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para lanzar este hechizo." & FONTTYPE_WARNING)
+                End If
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Target invalido." & FONTTYPE_INFO)
             End If
@@ -489,19 +505,19 @@ If Hechizos(H).Invisibilidad = 1 Then
             Call VolverCriminal(UserIndex)
         End If
     End If
-   
-   UserList(TU).flags.Invisible = 1
+    
+    UserList(TU).flags.Invisible = 1
 #If SeguridadAlkon Then
-   If EncriptarProtocolosCriticos Then
-      Call SendCryptedData(SendTarget.ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
-   Else
+    If EncriptarProtocolosCriticos Then
+        Call SendCryptedData(SendTarget.ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
+    Else
 #End If
-    Call SendData(SendTarget.ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
+        Call SendData(SendTarget.ToMap, 0, UserList(TU).Pos.Map, "NOVER" & UserList(TU).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
-   End If
+    End If
 #End If
-   Call InfoHechizo(UserIndex)
-   b = True
+    Call InfoHechizo(UserIndex)
+    b = True
 End If
 
 If Hechizos(H).Mimetiza = 1 Then
@@ -694,7 +710,7 @@ If Hechizos(H).Revivir = 1 Then
         If Not Criminal(TU) Then
             If TU <> UserIndex Then
                 UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep + 500
-                If UserList(UserIndex).Reputacion.NobleRep < MAXREP Then _
+                If UserList(UserIndex).Reputacion.NobleRep > MAXREP Then _
                     UserList(UserIndex).Reputacion.NobleRep = MAXREP
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Los Dioses te sonrien, has ganado 500 puntos de nobleza!." & FONTTYPE_INFO)
             End If

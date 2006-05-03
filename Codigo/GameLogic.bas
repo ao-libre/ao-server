@@ -307,7 +307,7 @@ End Function
 
 Function CheckForSameName(ByVal UserIndex As Integer, ByVal name As String) As Boolean
 'Controlo que no existan usuarios con el mismo nombre
-Dim LoopC As Integer
+Dim LoopC As Long
 For LoopC = 1 To MaxUsers
     If UserList(LoopC).flags.UserLogged Then
         
@@ -365,7 +365,7 @@ Pos.Y = nY
 
 End Sub
 
-Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua = False) As Boolean
+Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False) As Boolean
 
 '¿Es un mapa valido?
 If (Map <= 0 Or Map > NumMaps) Or _
@@ -388,8 +388,6 @@ Else
 End If
 
 End Function
-
-
 
 Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte) As Boolean
 
@@ -416,20 +414,16 @@ End If
 
 End Function
 
-Sub SendHelp(ByVal index As Integer)
+Sub SendHelp(ByVal Index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
-Dim Leer As New clsLeerInis
 
-Leer.Abrir DatPath & "Help.dat"
-
-NumHelpLines = val(Leer.DarValor("INIT", "NumLines"))
+NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call SendData(SendTarget.ToIndex, Index, 0, "||" & Leer.DarValor("Help", "Line" & LoopC) & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, Index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
 Next LoopC
 
-Set Leer = Nothing
 End Sub
 
 Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
@@ -755,24 +749,24 @@ End If
 End Function
 
 '[Barrin 30-11-03]
-Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
+Public Function ItemNoEsDeMapa(ByVal Index As Integer) As Boolean
 
-ItemNoEsDeMapa = ObjData(index).OBJType <> eOBJType.otPuertas And _
-            ObjData(index).OBJType <> eOBJType.otForos And _
-            ObjData(index).OBJType <> eOBJType.otCarteles And _
-            ObjData(index).OBJType <> eOBJType.otArboles And _
-            ObjData(index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(index).OBJType <> eOBJType.otTeleport
+ItemNoEsDeMapa = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 '[/Barrin 30-11-03]
 
-Public Function MostrarCantidad(ByVal index As Integer) As Boolean
-MostrarCantidad = ObjData(index).OBJType <> eOBJType.otPuertas And _
-            ObjData(index).OBJType <> eOBJType.otForos And _
-            ObjData(index).OBJType <> eOBJType.otCarteles And _
-            ObjData(index).OBJType <> eOBJType.otArboles And _
-            ObjData(index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(index).OBJType <> eOBJType.otTeleport
+Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
+MostrarCantidad = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 
 Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean

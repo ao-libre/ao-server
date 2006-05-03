@@ -85,13 +85,13 @@ Public Sub InitAreas()
     Next LoopC
     
     For LoopC = 1 To 100
-        PosToArea(LoopC) = (LoopC) \ 9
+        PosToArea(LoopC) = LoopC \ 9
     Next LoopC
     
     For LoopC = 1 To 100
         For loopX = 1 To 100
             'Usamos 121 IDs de area para saber si pasasamos de area "más rápido"
-            AreasInfo(LoopC, loopX) = ((LoopC) \ 9 + 1) * ((loopX \ 9) + 1)
+            AreasInfo(LoopC, loopX) = (LoopC \ 9 + 1) * (loopX \ 9 + 1)
         Next loopX
     Next LoopC
 
@@ -207,12 +207,9 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         'Esto es para ke el cliente elimine lo "fuera de area..."
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "CA" & Chr$(.Pos.X) & Chr$(.Pos.Y))
         
-        Dim tempa As Integer
-        
         'Actualizamos!!!
         For X = MinX To MaxX
             For Y = MinY To MaxY
-                tempa = tempa + 1
                 
                 '<<< User >>>
                 If MapData(Map, X, Y).UserIndex Then
@@ -222,6 +219,22 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     If UserIndex <> TempInt Then
                         Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, CInt(TempInt), Map, X, Y)
                         Call MakeUserChar(SendTarget.ToIndex, CInt(TempInt), 0, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        
+                        'Si el user estaba invisible le avisamos al nuevo cliente de eso
+#If SeguridadAlkon Then
+                        If EncriptarProtocolosCriticos Then
+                            If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
+                                 Call EnviarDatosASlot(UserIndex, ProtoCrypt("NOVER" & UserList(TempInt).Char.CharIndex & ",1", UserIndex) & ENDC)
+                            End If
+                        Else
+#End If
+                            If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
+                                 Call EnviarDatosASlot(UserIndex, "NOVER" & UserList(TempInt).Char.CharIndex & ",1" & ENDC)
+                            End If
+#If SeguridadAlkon Then
+                        End If
+#End If
+                        
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
                     End If
@@ -253,7 +266,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         TempInt = .Pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceX = 2 ^ TempInt
-            
+        
         TempInt = .Pos.Y \ 9
         .AreasInfo.AreaReciveY = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceY = 2 ^ TempInt
@@ -332,8 +345,8 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
                 For Y = MinY To MaxY
                     If MapData(.Pos.Map, X, Y).UserIndex Then _
                         Call MakeNPCChar(SendTarget.ToIndex, MapData(.Pos.Map, X, Y).UserIndex, 0, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
-                Next 'X
-            Next 'Y
+                Next Y
+            Next X
         End If
             
         'Precalculados :P
@@ -392,9 +405,6 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optiona
         If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim
             ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
         End If
-        
-        'Max de gente?
-        If TempVal > ConnGroups(Map).CountEntrys Then ConnGroups(Map).CountEntrys = TempVal
         
         ConnGroups(Map).UserEntrys(TempVal) = UserIndex
     End If

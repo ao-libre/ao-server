@@ -47,8 +47,8 @@ Public Const ELEMENTALTIERRA As Integer = 94
 Public Const ELEMENTALAGUA As Integer = 92
 
 'Damos a los NPCs el mismo rango de visión que un PJ
-Private Const RANGO_VISION_X As Byte = 8
-Private Const RANGO_VISION_Y As Byte = 6
+Public Const RANGO_VISION_X As Byte = 8
+Public Const RANGO_VISION_Y As Byte = 6
 
 Public Enum e_Alineacion
     ninguna = 0

@@ -373,7 +373,6 @@ Private Sub AutoSave_Timer()
 
 On Error GoTo errhandler
 'fired every minute
-
 Static Minutos As Long
 Static MinutosLatsClean As Long
 Static MinsSocketReset As Long
@@ -649,8 +648,6 @@ Static lPermiteAtacar As Long
 Static lPermiteCast As Long
 Static lPermiteTrabajar As Long
 
-
-
 '[Alejo]
 If lPermiteAtacar < IntervaloUserPuedeAtacar Then
     lPermiteAtacar = lPermiteAtacar + 1
@@ -822,7 +819,6 @@ End Sub
 
 Private Sub KillLog_Timer()
 On Error Resume Next
-
 If FileExist(App.Path & "\logs\connect.log", vbNormal) Then Kill App.Path & "\logs\connect.log"
 If FileExist(App.Path & "\logs\haciendo.log", vbNormal) Then Kill App.Path & "\logs\haciendo.log"
 If FileExist(App.Path & "\logs\stats.log", vbNormal) Then Kill App.Path & "\logs\stats.log"
@@ -841,11 +837,11 @@ End Sub
 Private Sub mnuSystray_Click()
 
 Dim i As Integer
-Dim S As String
+Dim s As String
 Dim nid As NOTIFYICONDATA
 
-S = "ARGENTUM-ONLINE"
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
+s = "ARGENTUM-ONLINE"
+nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, s)
 i = Shell_NotifyIconA(NIM_ADD, nid)
     
 If WindowState <> vbMinimized Then WindowState = vbMinimized
@@ -856,7 +852,6 @@ End Sub
 Private Sub npcataca_Timer()
 
 On Error Resume Next
-
 Dim npc As Integer
 
 For npc = 1 To LastNPC
@@ -868,7 +863,6 @@ End Sub
 Private Sub TIMER_AI_Timer()
 
 On Error GoTo ErrorHandler
-
 Dim NpcIndex As Integer
 Dim X As Integer
 Dim Y As Integer
@@ -934,7 +928,6 @@ End Sub
 Private Sub Timer1_Timer()
 
 On Error Resume Next
-
 Dim i As Integer
 
 For i = 1 To MaxUsers
@@ -948,7 +941,6 @@ Private Sub tLluvia_Timer()
 On Error GoTo errhandler
 
 Dim iCount As Integer
-
 If Lloviendo Then
    For iCount = 1 To LastUser
     Call EfectoLluvia(iCount)
@@ -963,7 +955,6 @@ End Sub
 Private Sub tLluviaEvent_Timer()
 
 On Error GoTo ErrorHandler
-
 Static MinutosLloviendo As Long
 Static MinutosSinLluvia As Long
 
@@ -1011,7 +1002,6 @@ Static Segundos As Integer
 Dim NuevaA As Boolean
 Dim NuevoL As Boolean
 Dim GI As Integer
-
 
 Segundos = Segundos + 6
 

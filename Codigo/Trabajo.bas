@@ -65,12 +65,17 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 90 _
                     Suerte = 10
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
    And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 91 Then
-                    Exit Sub
+                    Suerte = 10     'Lo atamos con alambre.... en la 11.6 el sistema de ocultarse debería de estar bien hecho
 End If
 
 If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then Suerte = Suerte + 50
 
-
+'cazador con armadura de cazador oculto no se hace visible
+If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
+    If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
+        Exit Sub
+    End If
+End If
 
 
 res = RandomNumber(1, Suerte)
@@ -585,11 +590,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim index As Integer
+        Dim Index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(index) = NpcIndex
-        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
+        Index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
+        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
@@ -641,9 +646,9 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         
     End If
     
-    
+    'vuelve a ser visible por la fuerza
     Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-    
+    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 End Sub
 
 Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
@@ -867,7 +872,8 @@ End Sub
 
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
-If MapInfo(UserList(VictimaIndex).Pos.Map).Pk = True Then Exit Sub
+If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
+
 If UserList(LadrOnIndex).flags.Seguro Then
     Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Debes quitar el seguro para robar" & FONTTYPE_FIGHT)
     Exit Sub
@@ -884,7 +890,6 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     Dim Suerte As Integer
     Dim res As Integer
     
-       
     If UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 10 _
        And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= -1 Then
                         Suerte = 35
@@ -954,7 +959,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     End If
 
     If Not Criminal(LadrOnIndex) Then
-            Call VolverCriminal(LadrOnIndex)
+        Call VolverCriminal(LadrOnIndex)
     End If
     
     If UserList(LadrOnIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(LadrOnIndex)
@@ -963,7 +968,6 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     If UserList(LadrOnIndex).Reputacion.LadronesRep > MAXREP Then _
         UserList(LadrOnIndex).Reputacion.LadronesRep = MAXREP
     Call SubirSkill(LadrOnIndex, Robar)
-
 End If
 
 

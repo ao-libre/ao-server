@@ -117,20 +117,15 @@ Public Function VersionesActuales(ByVal v1 As Integer, ByVal v2 As Integer, ByVa
 Dim rv As Boolean
 Dim i As Integer
 Dim f As String
-Dim Leer As New clsLeerInis
 
-Leer.Abrir App.Path & "\AUTOUPDATER\VERSIONES.INI"
-
-rv = val(Leer.DarValor("ACTUALES", "GRAFICOS")) = v1
-rv = rv And val(Leer.DarValor("ACTUALES", "WAVS")) = v2
-rv = rv And val(Leer.DarValor("ACTUALES", "MIDIS")) = v3
-rv = rv And val(Leer.DarValor("ACTUALES", "INIT")) = v4
-rv = rv And val(Leer.DarValor("ACTUALES", "MAPAS")) = v5
-rv = rv And val(Leer.DarValor("ACTUALES", "AOEXE")) = v6
-rv = rv And val(Leer.DarValor("ACTUALES", "EXTRAS")) = v7
+rv = val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "GRAFICOS")) = v1
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "WAVS")) = v2
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "MIDIS")) = v3
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "INIT")) = v4
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "MAPAS")) = v5
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "AOEXE")) = v6
+rv = rv And val(GetVar(App.Path & "\AUTOUPDATER\VERSIONES.INI", "ACTUALES", "EXTRAS")) = v7
 VersionesActuales = rv
-
-Set Leer = Nothing
 
 End Function
 
@@ -194,7 +189,7 @@ Next j
 
 FrmStat.ProgressBar1.Min = 0
 FrmStat.ProgressBar1.max = k
-FrmStat.ProgressBar1.Value = 0
+FrmStat.ProgressBar1.value = 0
 
 For loopX = 1 To NumMaps
     'DoEvents
@@ -202,7 +197,7 @@ For loopX = 1 To NumMaps
     If MapInfo(loopX).BackUp = 1 Then
     
             Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
-            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
+            FrmStat.ProgressBar1.value = FrmStat.ProgressBar1.value + 1
     End If
 
 Next loopX
@@ -307,21 +302,16 @@ End Function
 
 Public Sub MD5sCarga()
 Dim LoopC As Integer
-Dim Leer As New clsLeerInis
 
-Leer.Abrir IniPath & "Server.ini"
-
-MD5ClientesActivado = val(Leer.DarValor("MD5Hush", "Activado"))
+MD5ClientesActivado = val(GetVar(IniPath & "Server.ini", "MD5Hush", "Activado"))
 
 If MD5ClientesActivado = 1 Then
-    ReDim MD5s(val(Leer.DarValor("MD5Hush", "MD5Aceptados")))
+    ReDim MD5s(val(GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptados")))
     For LoopC = 0 To UBound(MD5s)
-        MD5s(LoopC) = Leer.DarValor("MD5Hush", "MD5Aceptado" & (LoopC + 1))
-        MD5s(LoopC) = txtOffset(hexMd52Asc(MD5s(LoopC)), 53)
+        MD5s(LoopC) = GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptado" & (LoopC + 1))
+        MD5s(LoopC) = txtOffset(hexMd52Asc(MD5s(LoopC)), 55)
     Next LoopC
 End If
-
-Set Leer = Nothing
 
 End Sub
 

@@ -157,17 +157,19 @@ On Error GoTo errorh
     '¿Ya tiene un objeto de este tipo?
     Slot = 1
     Do Until (Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = obji _
-      And Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS) _
-      Or (Slot > MAX_INVENTORY_SLOTS)
+      And Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS)
         
         Slot = Slot + 1
+        
+        If Slot > MAX_INVENTORY_SLOTS Then Exit Do
     Loop
     
     'Sino se fija por un slot vacio antes del slot devuelto
     If Slot > MAX_INVENTORY_SLOTS Then
         Slot = 1
-        Do Until Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0 Or Slot > MAX_INVENTORY_SLOTS
+        Do Until Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
             Slot = Slot + 1
+            If Slot > MAX_INVENTORY_SLOTS Then Exit Do
         Loop
         If Slot <= MAX_INVENTORY_SLOTS Then Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
     End If

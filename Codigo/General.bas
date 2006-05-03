@@ -34,8 +34,8 @@ Attribute VB_Name = "General"
 
 Option Explicit
 
-Global LeerNPCs As New clsLeerInis
-Global LeerNPCsHostiles As New clsLeerInis
+Global LeerNPCs As New clsIniReader
+Global LeerNPCsHostiles As New clsIniReader
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 
@@ -499,7 +499,7 @@ Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = 
     FileExist = Dir$(file, FileType) <> ""
 End Function
 
-Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
+Function ReadField(ByVal Pos As Integer, ByVal text As String, ByVal SepASCII As Integer) As String
 'All these functions are much faster using the "$" sign
 'after the function. This happens for a simple reason:
 'The functions return a variant without the $ sign. And
@@ -518,12 +518,12 @@ Seperator = Chr(SepASCII)
 LastPos = 0
 FieldNum = 0
 
-For i = 1 To Len(Text)
-    CurChar = Mid$(Text, i, 1)
+For i = 1 To Len(text)
+    CurChar = mid$(text, i, 1)
     If CurChar = Seperator Then
         FieldNum = FieldNum + 1
         If FieldNum = Pos Then
-            ReadField = Mid$(Text, LastPos + 1, (InStr(LastPos + 1, Text, Seperator, vbTextCompare) - 1) - (LastPos))
+            ReadField = mid$(text, LastPos + 1, (InStr(LastPos + 1, text, Seperator, vbTextCompare) - 1) - (LastPos))
             Exit Function
         End If
         LastPos = i
@@ -532,7 +532,7 @@ Next i
 
 FieldNum = FieldNum + 1
 If FieldNum = Pos Then
-    ReadField = Mid$(Text, LastPos + 1)
+    ReadField = mid$(text, LastPos + 1)
 End If
 
 End Function
@@ -593,12 +593,12 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
+Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
 
@@ -1054,13 +1054,6 @@ End Sub
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
-    'cazador con armadura de cazador oculto no se hace visible
-    If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
-      If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
-          Exit Sub
-      End If
-    End If
-    
     UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
 Else
     UserList(UserIndex).Counters.Invisibilidad = 0
@@ -1250,10 +1243,10 @@ Public Sub CargaNpcsDat()
 Dim npcfile As String
 
 npcfile = DatPath & "NPCs.dat"
-LeerNPCs.Abrir npcfile
+Call LeerNPCs.Initialize(npcfile)
 
 npcfile = DatPath & "NPCs-HOSTILES.dat"
-LeerNPCsHostiles.Abrir npcfile
+Call LeerNPCsHostiles.Initialize(npcfile)
 
 End Sub
 

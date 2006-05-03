@@ -298,6 +298,10 @@ If num > 0 Then
 '            Exit Sub
 '        End If
         
+        If num + MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.Amount > MAX_INVENTORY_OBJS Then
+            num = MAX_INVENTORY_OBJS - MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.Amount
+        End If
+        
         Obj.Amount = num
         
         Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
@@ -506,6 +510,7 @@ Call SendUserStatsBox(UserIndex)
 Call UpdateUserInv(False, UserIndex, Slot)
 
 End Sub
+
 Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer) As Boolean
 On Error GoTo errhandler
 
@@ -762,8 +767,7 @@ Select Case Obj.OBJType
 End Select
 
 'Actualiza
-Call UpdateUserInv(True, UserIndex, 0)
-
+Call UpdateUserInv(False, UserIndex, Slot)
 
 Exit Sub
 errhandler:
@@ -1213,31 +1217,27 @@ Call TirarOro(UserList(UserIndex).Stats.GLD, UserIndex)
 
 End Sub
 
-Public Function ItemSeCae(ByVal index As Integer) As Boolean
+Public Function ItemSeCae(ByVal Index As Integer) As Boolean
 
-ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
-            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
-            ObjData(index).OBJType <> eOBJType.otLlaves And _
-            ObjData(index).OBJType <> eOBJType.otBarcos And _
-            ObjData(index).NoSeCae = 0
+ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            ObjData(Index).OBJType <> eOBJType.otLlaves And _
+            ObjData(Index).OBJType <> eOBJType.otBarcos And _
+            ObjData(Index).NoSeCae = 0
 
 
 End Function
 
 Sub TirarTodosLosItems(ByVal UserIndex As Integer)
-
-'Call LogTarea("Sub TirarTodosLosItems")
-
-Dim i As Byte
-Dim NuevaPos As WorldPos
-Dim MiObj As Obj
-Dim ItemIndex As Integer
-
-For i = 1 To MAX_INVENTORY_SLOTS
-
-  ItemIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
-  If ItemIndex > 0 Then
-         If ItemSeCae(ItemIndex) Then
+    Dim i As Byte
+    Dim NuevaPos As WorldPos
+    Dim MiObj As Obj
+    Dim ItemIndex As Integer
+    
+    For i = 1 To MAX_INVENTORY_SLOTS
+        ItemIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
+        If ItemIndex > 0 Then
+             If ItemSeCae(ItemIndex) Then
                 NuevaPos.X = 0
                 NuevaPos.Y = 0
                 
@@ -1247,16 +1247,12 @@ For i = 1 To MAX_INVENTORY_SLOTS
                 
                 Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                    If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).OBJInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                    Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
                 End If
-         End If
-         
-  End If
-  
-Next i
-
+             End If
+        End If
+    Next i
 End Sub
-
 
 Function ItemNewbie(ByVal ItemIndex As Integer) As Boolean
 
@@ -1292,6 +1288,3 @@ For i = 1 To MAX_INVENTORY_SLOTS
 Next i
 
 End Sub
-
-
-

@@ -822,29 +822,26 @@ Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As S
 Dim CharFile As String
 Dim Ban As String
 Dim BanDetailPath As String
-Dim Leer As New clsLeerInis
 
     BanDetailPath = App.Path & "\logs\" & "BanDetail.dat"
     CharFile = CharPath & CharName & ".chr"
-    Leer.Abrir CharFile
     
     If FileExist(CharFile) Then
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pj: " & CharName & FONTTYPE_INFO)
         ' 3 en uno :p
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||CiudadanosMatados: " & Leer.DarValor("FACCIONES", "CiudMatados") & " CriminalesMatados: " & Leer.DarValor("FACCIONES", "CrimMatados") & " UsuariosMatados: " & Leer.DarValor("MUERTES", "UserMuertes") & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||NPCsMuertos: " & Leer.DarValor("MUERTES", "NpcsMuertes") & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clase: " & Leer.DarValor("INIT", "Clase") & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pena: " & Leer.DarValor("COUNTERS", "PENA") & FONTTYPE_INFO)
-        Ban = Leer.DarValor("FLAGS", "Ban")
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||CiudadanosMatados: " & GetVar(CharFile, "FACCIONES", "CiudMatados") & " CriminalesMatados: " & GetVar(CharFile, "FACCIONES", "CrimMatados") & " UsuariosMatados: " & GetVar(CharFile, "MUERTES", "UserMuertes") & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||NPCsMuertos: " & GetVar(CharFile, "MUERTES", "NpcsMuertes") & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clase: " & GetVar(CharFile, "INIT", "Clase") & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pena: " & GetVar(CharFile, "COUNTERS", "PENA") & FONTTYPE_INFO)
+        Ban = GetVar(CharFile, "FLAGS", "Ban")
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban: " & Ban & FONTTYPE_INFO)
         If Ban = "1" Then
-            Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban por: " & Leer.DarValor(CharName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, CharName, "Reason") & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban por: " & GetVar(CharFile, CharName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, CharName, "Reason") & FONTTYPE_INFO)
         End If
     Else
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||El pj no existe: " & CharName & FONTTYPE_INFO)
     End If
     
-        Set Leer = Nothing
 End Sub
 
 Sub SendUserInvTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
@@ -868,16 +865,15 @@ On Error Resume Next
     Dim j As Long
     Dim CharFile As String, Tmp As String
     Dim ObjInd As Long, ObjCant As Long
-    Dim Leer As New clsLeerInis
     
-    Leer.Abrir (CharPath & CharName & ".chr")
+    CharFile = CharPath & CharName & ".chr"
     
     If FileExist(CharFile, vbNormal) Then
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & CharName & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & Leer.DarValor("Inventory", "CantidadItems") & " objetos." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & GetVar(CharFile, "Inventory", "CantidadItems") & " objetos." & FONTTYPE_INFO)
         
         For j = 1 To MAX_INVENTORY_SLOTS
-            Tmp = Leer.DarValor("Inventory", "Obj" & j)
+            Tmp = GetVar(CharFile, "Inventory", "Obj" & j)
             ObjInd = ReadField(1, Tmp, Asc("-"))
             ObjCant = ReadField(2, Tmp, Asc("-"))
             If ObjInd > 0 Then
@@ -888,7 +884,6 @@ On Error Resume Next
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & CharName & FONTTYPE_INFO)
     End If
     
-    Set Leer = Nothing
 End Sub
 
 Sub SendUserSkillsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
@@ -1365,11 +1360,8 @@ Dim OldY As Integer
         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXWARP & ",0")
     End If
     
-    
     Call WarpMascotas(UserIndex)
-
 End Sub
-
 
 Sub UpdateUserMap(ByVal UserIndex As Integer)
 
@@ -1466,11 +1458,11 @@ InvocadosMatados = 0
             UserList(UserIndex).MascotasIndex(i) = SpawnNpc(PetTypes(i), UserList(UserIndex).Pos, False, PetRespawn(i))
             UserList(UserIndex).MascotasType(i) = PetTypes(i)
             'Controlamos que se sumoneo OK
-            If UserList(UserIndex).MascotasIndex(i) = MAXNPCS Then
-                    UserList(UserIndex).MascotasIndex(i) = 0
-                    UserList(UserIndex).MascotasType(i) = 0
-                    If UserList(UserIndex).NroMacotas > 0 Then UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas - 1
-                    Exit Sub
+            If UserList(UserIndex).MascotasIndex(i) = 0 Then
+                UserList(UserIndex).MascotasIndex(i) = 0
+                UserList(UserIndex).MascotasType(i) = 0
+                If UserList(UserIndex).NroMacotas > 0 Then UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas - 1
+                Exit Sub
             End If
             Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
             Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
@@ -1541,25 +1533,20 @@ End If
 End Sub
 
 Sub SendUserStatsTxtOFF(ByVal sendIndex As Integer, ByVal Nombre As String)
-Dim Leer As New clsLeerInis
-
-Leer.Abrir CharPath & Nombre & ".chr"
 
 If FileExist(CharPath & Nombre & ".chr", vbArchive) = False Then
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pj Inexistente" & FONTTYPE_INFO)
 Else
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Estadisticas de: " & Nombre & FONTTYPE_INFO)
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Nivel: " & Leer.DarValor("stats", "elv") & "  EXP: " & Leer.DarValor("stats", "Exp") & "/" & Leer.DarValor("stats", "elu") & FONTTYPE_INFO)
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Vitalidad: " & Leer.DarValor("stats", "minsta") & "/" & Leer.DarValor("stats", "maxSta") & FONTTYPE_INFO)
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Salud: " & Leer.DarValor("stats", "MinHP") & "/" & Leer.DarValor("Stats", "MaxHP") & "  Mana: " & Leer.DarValor("Stats", "MinMAN") & "/" & Leer.DarValor("Stats", "MaxMAN") & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Nivel: " & GetVar(CharPath & Nombre & ".chr", "stats", "elv") & "  EXP: " & GetVar(CharPath & Nombre & ".chr", "stats", "Exp") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "elu") & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Vitalidad: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta") & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Mana: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN") & FONTTYPE_INFO)
     
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Menor Golpe/Mayor Golpe: " & Leer.DarValor("stats", "MaxHIT") & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Menor Golpe/Mayor Golpe: " & GetVar(CharPath & Nombre & ".chr", "stats", "MaxHIT") & FONTTYPE_INFO)
     
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Oro: " & Leer.DarValor("stats", "GLD") & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Oro: " & GetVar(CharPath & Nombre & ".chr", "stats", "GLD") & FONTTYPE_INFO)
 End If
 Exit Sub
-
-Set Leer = Nothing
 
 End Sub
 Sub SendUserOROTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As String)

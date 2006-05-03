@@ -198,7 +198,7 @@ On Error GoTo errorh
             NPCAlInd = MapData(NPCPosM, X, Y).NpcIndex  ''por si implementamos algo contra NPCs
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
-                If (UserList(PJEnInd).flags.Invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) Then
+                If (UserList(PJEnInd).flags.Invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) And Not UserList(PJEnInd).flags.AdminInvisible = 1 Then
                 'ToDo: Borrar los GMs
                     If (EsMagoOClerigo(PJEnInd)) Then
                         ''say no more, atacar a este

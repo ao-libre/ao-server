@@ -261,7 +261,7 @@ Procesado = True 'ver al final del sub
                 Call UsuarioAtaca(UserIndex)
                 
                 'piedra libre para todos los compas!
-                If UserList(UserIndex).flags.Oculto > 0 Then
+                If UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).flags.AdminInvisible = 0 Then
                     UserList(UserIndex).flags.Oculto = 0
                     Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
@@ -527,7 +527,7 @@ Procesado = True 'ver al final del sub
                UserList(UserIndex).flags.Descansar Or _
                UserList(UserIndex).flags.Meditando Or _
                Not InMapBounds(UserList(UserIndex).Pos.Map, X, Y) Then Exit Sub
-                              
+            
             If Not InRangoVision(UserIndex, X, Y) Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "PU" & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y)
                 Exit Sub
@@ -582,7 +582,21 @@ Procesado = True 'ver al final del sub
                 
                 TU = UserList(UserIndex).flags.TargetUser
                 tN = UserList(UserIndex).flags.TargetNPC
-                                
+                
+                'Sólo permitimos atacar si el otro nos puede atacar también
+                If TU > 0 Then
+                    If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) > RANGO_VISION_Y Then
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para atacar." & FONTTYPE_WARNING)
+                        Exit Sub
+                    End If
+                ElseIf tN > 0 Then
+                    If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) > RANGO_VISION_Y Then
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para atacar." & FONTTYPE_WARNING)
+                        Exit Sub
+                    End If
+                End If
+                
+                
                 If TU > 0 Then
                     'Previene pegarse a uno mismo
                     If TU = UserIndex Then
@@ -937,8 +951,8 @@ Procesado = True 'ver al final del sub
                 Exit Sub
         Case "EQUI"
                 If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
-                Exit Sub
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                    Exit Sub
                 End If
                 rData = Right$(rData, Len(rData) - 4)
                 If val(rData) <= MAX_INVENTORY_SLOTS And val(rData) > 0 Then
@@ -1004,7 +1018,7 @@ Procesado = True 'ver al final del sub
                 If val(rData) > 0 And val(rData) < Npclist(UserList(UserIndex).flags.TargetNPC).NroCriaturas + 1 Then
                         Dim SpawnedNpc As Integer
                         SpawnedNpc = SpawnNpc(Npclist(UserList(UserIndex).flags.TargetNPC).Criaturas(val(rData)).NpcIndex, Npclist(UserList(UserIndex).flags.TargetNPC).Pos, True, False)
-                        If SpawnedNpc <= MAXNPCS Then
+                        If SpawnedNpc > 0 Then
                             Npclist(SpawnedNpc).MaestroNpc = UserList(UserIndex).flags.TargetNPC
                             Npclist(UserList(UserIndex).flags.TargetNPC).Mascotas = Npclist(UserList(UserIndex).flags.TargetNPC).Mascotas + 1
                         End If

@@ -64,8 +64,9 @@ Private Sub GoToNextWorkingChar()
                 'Ponemos al centinela en posición
                 Call WarpCentinela(LoopC)
                 
-                'Mandamos el mensaje
+                'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas
                 Call SendData(SendTarget.ToIndex, LoopC, 0, "||" & vbGreen & "°" & "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+                Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & "Saludos " & UserList(Centinela.RevisandoUserIndex).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & FONTTYPE_CENTINELA)
                 Exit Sub
             End If
         End If
@@ -110,11 +111,11 @@ On Error GoTo Error_Handler
         Call WriteVar(CharPath & name & ".chr", "PENAS", "P" & numPenas + 1, LCase$(name) & ": BAN POR MACRO INASISTIDO " & Date & " " & Time)
         
         'Evitamos loguear el logout
-        Dim index As Integer
-        index = Centinela.RevisandoUserIndex
+        Dim Index As Integer
+        Index = Centinela.RevisandoUserIndex
         Centinela.RevisandoUserIndex = 0
         
-        Call CloseSocket(index)
+        Call CloseSocket(Index)
     End If
     
     Centinela.clave = 0
@@ -199,7 +200,9 @@ Public Sub PasarMinutoCentinela()
                 Call WarpCentinela(Centinela.RevisandoUserIndex)
             End If
             
+            'El centinela habla y se manda a consola para que no quepan dudas
             Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbRed & "°¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & "." & "°" & CStr(Npclist(CentinelaCharIndex).Char.CharIndex))
+            Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & "." & FONTTYPE_CENTINELA)
         End If
     End If
 End Sub

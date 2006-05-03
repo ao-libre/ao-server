@@ -547,12 +547,15 @@ Procesado = True 'ver al final del sub
     End If
     
     If UCase$(Left$(rData, 6)) = "/PMSG " Then
-        Call mdParty.BroadCastParty(UserIndex, Mid$(rData, 7))
+        Call mdParty.BroadCastParty(UserIndex, mid$(rData, 7))
         Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
         Exit Sub
     End If
     
     If UCase$(Left$(rData, 11)) = "/CENTINELA " Then
+        'Evitamos overflow y underflow
+        If val(Right$(rData, Len(rData) - 11)) > &H7FFF Or val(Right$(rData, Len(rData) - 11)) < &H8000 Then Exit Sub
+        
         tInt = val(Right$(rData, Len(rData) - 11))
         Call CentinelaCheckClave(UserIndex, tInt)
         Exit Sub
@@ -651,7 +654,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La descripcion tiene caracteres invalidos." & FONTTYPE_INFO)
                 Exit Sub
             End If
-            UserList(UserIndex).Desc = rData
+            UserList(UserIndex).Desc = Trim$(rData)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La descripcion a cambiado." & FONTTYPE_INFO)
             Exit Sub
         Case "/VOTO "

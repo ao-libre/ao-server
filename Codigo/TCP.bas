@@ -245,7 +245,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(Mid$(cad, i, 1))
+    car = Asc(mid$(cad, i, 1))
     
     If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
         AsciiValidos = False
@@ -265,7 +265,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(Mid$(cad, i, 1))
+    car = Asc(mid$(cad, i, 1))
     
     If (car < 48 Or car > 57) Then
         Numeric = False
@@ -324,10 +324,16 @@ End If
 
 Dim LoopC As Integer
 Dim totalskpts As Long
-  
+
 '¿Existe el personaje?
 If FileExist(CharPath & UCase$(name) & ".chr", vbNormal) = True Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRYa existe el personaje.")
+    Exit Sub
+End If
+
+'Tiró los dados antes de llegar acá??
+If UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = 0 Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRDebe tirar los dados antes de poder crear un personaje.")
     Exit Sub
 End If
 
@@ -1188,11 +1194,6 @@ On Error Resume Next
 Dim LoopC As Integer
 Dim X As Integer
 Dim Y As Integer
-Dim aux$
-Dim dec$
-Dim nfile As Integer
-Dim Ret As Long
-
 
 
 Select Case sndRoute
@@ -1245,8 +1246,6 @@ Select Case sndRoute
         Exit Sub
       
     Case SendTarget.ToMapButIndex
-    
-    
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) And LoopC <> sndIndex Then
                 If UserList(LoopC).Pos.Map = sndMap Then
@@ -1255,7 +1254,7 @@ Select Case sndRoute
             End If
         Next LoopC
         Exit Sub
-            
+    
     Case SendTarget.ToGuildMembers
     
         LoopC = modGuilds.m_Iterador_ProximoUserIndex(sndIndex)
@@ -1361,14 +1360,14 @@ End Sub
 
 #End If
 
-Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
-        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
+For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
+        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -1431,15 +1430,13 @@ UserList(UserIndex).flags.TargetObj = 0
 UserList(UserIndex).flags.TargetUser = 0
 UserList(UserIndex).Char.FX = 0
 
-
-
 'Controlamos no pasar el maximo de usuarios
 If NumUsers >= MaxUsers Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
-  
+
 '¿Este IP ya esta conectado?
 If AllowMultiLogins = 0 Then
     If CheckForSameIP(UserIndex, UserList(UserIndex).ip) = True Then
@@ -1449,9 +1446,8 @@ If AllowMultiLogins = 0 Then
     End If
 End If
 
-
 '¿Existe el personaje?
-If FileExist(CharPath & UCase$(name) & ".chr", vbNormal) = False Then
+If Not FileExist(CharPath & UCase$(name) & ".chr", vbNormal) Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl personaje no existe.")
     Call CloseSocket(UserIndex)
     Exit Sub
@@ -1466,7 +1462,7 @@ If UCase$(Password) <> UCase$(GetVar(CharPath & UCase$(name) & ".chr", "INIT", "
 End If
 
 '¿Ya esta conectado el personaje?
-If CheckForSameName(UserIndex, name) = True Then
+If CheckForSameName(UserIndex, name) Then
     If UserList(NameIndex(name)).Counters.Saliendo Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl usuario está saliendo.")
     Else
@@ -1476,13 +1472,15 @@ If CheckForSameName(UserIndex, name) = True Then
     Exit Sub
 End If
 
+'Cargamos el personaje
+Dim Leer As New clsIniReader
+
+Call Leer.Initialize(CharPath & UCase$(name) & ".chr")
+
 'Cargamos los datos del personaje
-Call LoadUserInit(UserIndex, CharPath & UCase$(name) & ".chr")
-Call LoadUserStats(UserIndex, CharPath & UCase$(name) & ".chr")
+Call LoadUserInit(UserIndex, Leer)
 
-
-
-
+Call LoadUserStats(UserIndex, Leer)
 
 If Not ValidateChr(UserIndex) Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRError en el personaje.")
@@ -1490,8 +1488,9 @@ If Not ValidateChr(UserIndex) Then
     Exit Sub
 End If
 
-Call LoadUserReputacion(UserIndex, CharPath & UCase$(name) & ".chr")
+Call LoadUserReputacion(UserIndex, Leer)
 
+Set Leer = Nothing
 
 If UserList(UserIndex).Invent.EscudoEqpSlot = 0 Then UserList(UserIndex).Char.ShieldAnim = NingunEscudo
 If UserList(UserIndex).Invent.CascoEqpSlot = 0 Then UserList(UserIndex).Char.CascoAnim = NingunCasco
@@ -1509,7 +1508,6 @@ If UserList(UserIndex).flags.Navegando = 1 Then
      UserList(UserIndex).Char.CascoAnim = NingunCasco
 End If
 
-
 If UserList(UserIndex).flags.Paralizado Then
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
@@ -1525,8 +1523,6 @@ End If
 'Feo, esto tiene que ser parche cliente
 If UserList(UserIndex).flags.Estupidez = 0 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NESTUP")
 '
-
-
 
 'Posicion de comienzo
 If UserList(UserIndex).Pos.Map = 0 Then
@@ -1584,16 +1580,34 @@ Call SendData(SendTarget.ToIndex, UserIndex, 0, "IU" & UserIndex) 'Enviamos el U
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "CM" & UserList(UserIndex).Pos.Map & "," & MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "TM" & MapInfo(UserList(UserIndex).Pos.Map).Music)
 
+'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
+UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)
+If EsAdmin(name) Then
+    UserList(UserIndex).flags.Privilegios = PlayerType.Admin
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+ElseIf EsDios(name) Then
+    UserList(UserIndex).flags.Privilegios = PlayerType.Dios
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+ElseIf EsSemiDios(name) Then
+    UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+ElseIf EsConsejero(name) Then
+    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
+Else
+    UserList(UserIndex).flags.Privilegios = PlayerType.User
+End If
 
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
 UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
 Call MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.CharIndex)
 ''[/el oso]
 
-'Call UpdateUserMap(UserIndex)
 Call SendUserStatsBox(UserIndex)
+
 Call EnviarHambreYsed(UserIndex)
 
 Call SendMOTD(UserIndex)
@@ -1622,7 +1636,6 @@ UserList(UserIndex).flags.UserLogged = True
 'usado para borrar Pjs
 Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Logged", "1")
 
-
 Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
 
 MapInfo(UserList(UserIndex).Pos.Map).NumUsers = MapInfo(UserList(UserIndex).Pos.Map).NumUsers + 1
@@ -1642,30 +1655,13 @@ If NumUsers > recordusuarios Then
     Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 End If
 
-UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)
-If EsAdmin(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Admin
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
-ElseIf EsDios(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Dios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
-ElseIf EsSemiDios(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
-ElseIf EsConsejero(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
-Else
-    UserList(UserIndex).flags.Privilegios = PlayerType.User
-End If
-
 If UserList(UserIndex).NroMacotas > 0 Then
     Dim i As Integer
     For i = 1 To MAXMASCOTAS
         If UserList(UserIndex).MascotasType(i) > 0 Then
             UserList(UserIndex).MascotasIndex(i) = SpawnNpc(UserList(UserIndex).MascotasType(i), UserList(UserIndex).Pos, True, True)
             
-            If UserList(UserIndex).MascotasIndex(i) <= MAXNPCS Then
+            If UserList(UserIndex).MascotasIndex(i) > 0 Then
                 Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
                 Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
             Else
@@ -1674,7 +1670,6 @@ If UserList(UserIndex).NroMacotas > 0 Then
         End If
     Next i
 End If
-
 
 If UserList(UserIndex).flags.Navegando = 1 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NAVEG")
 
@@ -2020,7 +2015,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .Cant = 0
+    .cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -3170,14 +3165,15 @@ End If
 
 'Barrin 30/9/03
 If UCase$(rData) = "/ONLINEMAP" Then
-        For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map And UserList(LoopC).flags.Privilegios <> PlayerType.Dios And UserList(LoopC).flags.Privilegios <> PlayerType.Admin Then
-                tStr = tStr & UserList(LoopC).name & ", "
-            End If
-        Next LoopC
+    For LoopC = 1 To LastUser
+        If (UserList(LoopC).name <> "") And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map And UserList(LoopC).flags.Privilegios < PlayerType.Dios Then
+            tStr = tStr & UserList(LoopC).name & ", "
+        End If
+    Next LoopC
+    If Len(tStr) > 2 Then _
         tStr = Left$(tStr, Len(tStr) - 2)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios en el mapa: " & tStr & FONTTYPE_INFO)
-        Exit Sub
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios en el mapa: " & tStr & FONTTYPE_INFO)
+    Exit Sub
 End If
 
 

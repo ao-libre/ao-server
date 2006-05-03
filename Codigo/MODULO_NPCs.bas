@@ -382,7 +382,7 @@ Dim Y As Integer
 
     nIndex = OpenNPC(NroNPC) 'Conseguimos un indice
     
-    If nIndex > MAXNPCS Then Exit Sub
+    If nIndex = 0 Then Exit Sub
     
     'Necesita ser respawned en un lugar especifico
     If InMapBounds(OrigPos.Map, OrigPos.X, OrigPos.Y) Then
@@ -646,7 +646,7 @@ nIndex = OpenNPC(NpcIndex, Respawn)   'Conseguimos un indice
 it = 0
 
 If nIndex > MAXNPCS Then
-    SpawnNpc = nIndex
+    SpawnNpc = 0
     Exit Function
 End If
 
@@ -654,12 +654,19 @@ Do While Not PosicionValida
         
         Call ClosestLegalPos(Pos, newpos)  'Nos devuelve la posicion valida mas cercana
         'Si X e Y son iguales a 0 significa que no se encontro posicion valida
-        If LegalPos(newpos.Map, newpos.X, newpos.Y) Then
+        If Npclist(nIndex).flags.TierraInvalida Then
+            If LegalPos(newpos.Map, newpos.X, newpos.Y, True) Then _
+                PosicionValida = True
+        Else
+            If LegalPos(newpos.Map, newpos.X, newpos.Y, False) Or LegalPos(newpos.Map, newpos.X, newpos.Y, Npclist(nIndex).flags.AguaValida) Then _
+                PosicionValida = True
+        End If
+        
+        If PosicionValida Then
             'Asignamos las nuevas coordenas solo si son validas
             Npclist(nIndex).Pos.Map = newpos.Map
             Npclist(nIndex).Pos.X = newpos.X
             Npclist(nIndex).Pos.Y = newpos.Y
-            PosicionValida = True
         Else
             newpos.X = 0
             newpos.Y = 0
@@ -669,7 +676,7 @@ Do While Not PosicionValida
         
         If it > MAXSPAWNATTEMPS Then
             Call QuitarNPC(nIndex)
-            SpawnNpc = MAXNPCS
+            SpawnNpc = 0
             Call LogError("Mas de " & MAXSPAWNATTEMPS & " iteraciones en SpawnNpc Mapa:" & Pos.Map & " Index:" & NpcIndex)
             Exit Function
         End If
@@ -753,7 +760,7 @@ Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = True) As I
 
 Dim NpcIndex As Integer
 Dim npcfile As String
-Dim Leer As clsLeerInis
+Dim Leer As clsIniReader
 
 If NpcNumber > 499 Then
         'NpcFile = DatPath & "NPCs-HOSTILES.dat"
@@ -771,118 +778,118 @@ If NpcIndex > MAXNPCS Then 'Limite de npcs
 End If
 
 Npclist(NpcIndex).Numero = NpcNumber
-Npclist(NpcIndex).name = Leer.DarValor("NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).Desc = Leer.DarValor("NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).name = Leer.GetValue("NPC" & NpcNumber, "Name")
+Npclist(NpcIndex).Desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
 
-Npclist(NpcIndex).Movement = val(Leer.DarValor("NPC" & NpcNumber, "Movement"))
+Npclist(NpcIndex).Movement = val(Leer.GetValue("NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).flags.OldMovement = Npclist(NpcIndex).Movement
 
-Npclist(NpcIndex).flags.AguaValida = val(Leer.DarValor("NPC" & NpcNumber, "AguaValida"))
-Npclist(NpcIndex).flags.TierraInvalida = val(Leer.DarValor("NPC" & NpcNumber, "TierraInValida"))
-Npclist(NpcIndex).flags.Faccion = val(Leer.DarValor("NPC" & NpcNumber, "Faccion"))
+Npclist(NpcIndex).flags.AguaValida = val(Leer.GetValue("NPC" & NpcNumber, "AguaValida"))
+Npclist(NpcIndex).flags.TierraInvalida = val(Leer.GetValue("NPC" & NpcNumber, "TierraInValida"))
+Npclist(NpcIndex).flags.Faccion = val(Leer.GetValue("NPC" & NpcNumber, "Faccion"))
 
-Npclist(NpcIndex).NPCtype = val(Leer.DarValor("NPC" & NpcNumber, "NpcType"))
+Npclist(NpcIndex).NPCtype = val(Leer.GetValue("NPC" & NpcNumber, "NpcType"))
 
-Npclist(NpcIndex).Char.Body = val(Leer.DarValor("NPC" & NpcNumber, "Body"))
-Npclist(NpcIndex).Char.Head = val(Leer.DarValor("NPC" & NpcNumber, "Head"))
-Npclist(NpcIndex).Char.Heading = val(Leer.DarValor("NPC" & NpcNumber, "Heading"))
+Npclist(NpcIndex).Char.Body = val(Leer.GetValue("NPC" & NpcNumber, "Body"))
+Npclist(NpcIndex).Char.Head = val(Leer.GetValue("NPC" & NpcNumber, "Head"))
+Npclist(NpcIndex).Char.Heading = val(Leer.GetValue("NPC" & NpcNumber, "Heading"))
 
-Npclist(NpcIndex).Attackable = val(Leer.DarValor("NPC" & NpcNumber, "Attackable"))
-Npclist(NpcIndex).Comercia = val(Leer.DarValor("NPC" & NpcNumber, "Comercia"))
-Npclist(NpcIndex).Hostile = val(Leer.DarValor("NPC" & NpcNumber, "Hostile"))
+Npclist(NpcIndex).Attackable = val(Leer.GetValue("NPC" & NpcNumber, "Attackable"))
+Npclist(NpcIndex).Comercia = val(Leer.GetValue("NPC" & NpcNumber, "Comercia"))
+Npclist(NpcIndex).Hostile = val(Leer.GetValue("NPC" & NpcNumber, "Hostile"))
 Npclist(NpcIndex).flags.OldHostil = Npclist(NpcIndex).Hostile
 
-Npclist(NpcIndex).GiveEXP = val(Leer.DarValor("NPC" & NpcNumber, "GiveEXP"))
+Npclist(NpcIndex).GiveEXP = val(Leer.GetValue("NPC" & NpcNumber, "GiveEXP"))
 
 'Npclist(NpcIndex).flags.ExpDada = Npclist(NpcIndex).GiveEXP
 Npclist(NpcIndex).flags.ExpCount = Npclist(NpcIndex).GiveEXP
 
-Npclist(NpcIndex).Veneno = val(Leer.DarValor("NPC" & NpcNumber, "Veneno"))
+Npclist(NpcIndex).Veneno = val(Leer.GetValue("NPC" & NpcNumber, "Veneno"))
 
-Npclist(NpcIndex).flags.Domable = val(Leer.DarValor("NPC" & NpcNumber, "Domable"))
-
-
-Npclist(NpcIndex).GiveGLD = val(Leer.DarValor("NPC" & NpcNumber, "GiveGLD"))
-
-Npclist(NpcIndex).PoderAtaque = val(Leer.DarValor("NPC" & NpcNumber, "PoderAtaque"))
-Npclist(NpcIndex).PoderEvasion = val(Leer.DarValor("NPC" & NpcNumber, "PoderEvasion"))
-
-Npclist(NpcIndex).InvReSpawn = val(Leer.DarValor("NPC" & NpcNumber, "InvReSpawn"))
+Npclist(NpcIndex).flags.Domable = val(Leer.GetValue("NPC" & NpcNumber, "Domable"))
 
 
-Npclist(NpcIndex).Stats.MaxHP = val(Leer.DarValor("NPC" & NpcNumber, "MaxHP"))
-Npclist(NpcIndex).Stats.MinHP = val(Leer.DarValor("NPC" & NpcNumber, "MinHP"))
-Npclist(NpcIndex).Stats.MaxHIT = val(Leer.DarValor("NPC" & NpcNumber, "MaxHIT"))
-Npclist(NpcIndex).Stats.MinHIT = val(Leer.DarValor("NPC" & NpcNumber, "MinHIT"))
-Npclist(NpcIndex).Stats.def = val(Leer.DarValor("NPC" & NpcNumber, "DEF"))
-Npclist(NpcIndex).Stats.Alineacion = val(Leer.DarValor("NPC" & NpcNumber, "Alineacion"))
+Npclist(NpcIndex).GiveGLD = val(Leer.GetValue("NPC" & NpcNumber, "GiveGLD"))
+
+Npclist(NpcIndex).PoderAtaque = val(Leer.GetValue("NPC" & NpcNumber, "PoderAtaque"))
+Npclist(NpcIndex).PoderEvasion = val(Leer.GetValue("NPC" & NpcNumber, "PoderEvasion"))
+
+Npclist(NpcIndex).InvReSpawn = val(Leer.GetValue("NPC" & NpcNumber, "InvReSpawn"))
+
+
+Npclist(NpcIndex).Stats.MaxHP = val(Leer.GetValue("NPC" & NpcNumber, "MaxHP"))
+Npclist(NpcIndex).Stats.MinHP = val(Leer.GetValue("NPC" & NpcNumber, "MinHP"))
+Npclist(NpcIndex).Stats.MaxHIT = val(Leer.GetValue("NPC" & NpcNumber, "MaxHIT"))
+Npclist(NpcIndex).Stats.MinHIT = val(Leer.GetValue("NPC" & NpcNumber, "MinHIT"))
+Npclist(NpcIndex).Stats.def = val(Leer.GetValue("NPC" & NpcNumber, "DEF"))
+Npclist(NpcIndex).Stats.Alineacion = val(Leer.GetValue("NPC" & NpcNumber, "Alineacion"))
 
 
 Dim LoopC As Integer
 Dim ln As String
-Npclist(NpcIndex).Invent.NroItems = val(Leer.DarValor("NPC" & NpcNumber, "NROITEMS"))
+Npclist(NpcIndex).Invent.NroItems = val(Leer.GetValue("NPC" & NpcNumber, "NROITEMS"))
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
-    ln = Leer.DarValor("NPC" & NpcNumber, "Obj" & LoopC)
+    ln = Leer.GetValue("NPC" & NpcNumber, "Obj" & LoopC)
     Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
     Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
 Next LoopC
 
-Npclist(NpcIndex).flags.LanzaSpells = val(Leer.DarValor("NPC" & NpcNumber, "LanzaSpells"))
+Npclist(NpcIndex).flags.LanzaSpells = val(Leer.GetValue("NPC" & NpcNumber, "LanzaSpells"))
 If Npclist(NpcIndex).flags.LanzaSpells > 0 Then ReDim Npclist(NpcIndex).Spells(1 To Npclist(NpcIndex).flags.LanzaSpells)
 For LoopC = 1 To Npclist(NpcIndex).flags.LanzaSpells
-    Npclist(NpcIndex).Spells(LoopC) = val(Leer.DarValor("NPC" & NpcNumber, "Sp" & LoopC))
+    Npclist(NpcIndex).Spells(LoopC) = val(Leer.GetValue("NPC" & NpcNumber, "Sp" & LoopC))
 Next LoopC
 
 
 If Npclist(NpcIndex).NPCtype = eNPCType.Entrenador Then
-    Npclist(NpcIndex).NroCriaturas = val(Leer.DarValor("NPC" & NpcNumber, "NroCriaturas"))
+    Npclist(NpcIndex).NroCriaturas = val(Leer.GetValue("NPC" & NpcNumber, "NroCriaturas"))
     ReDim Npclist(NpcIndex).Criaturas(1 To Npclist(NpcIndex).NroCriaturas) As tCriaturasEntrenador
     For LoopC = 1 To Npclist(NpcIndex).NroCriaturas
-        Npclist(NpcIndex).Criaturas(LoopC).NpcIndex = Leer.DarValor("NPC" & NpcNumber, "CI" & LoopC)
-        Npclist(NpcIndex).Criaturas(LoopC).NpcName = Leer.DarValor("NPC" & NpcNumber, "CN" & LoopC)
+        Npclist(NpcIndex).Criaturas(LoopC).NpcIndex = Leer.GetValue("NPC" & NpcNumber, "CI" & LoopC)
+        Npclist(NpcIndex).Criaturas(LoopC).NpcName = Leer.GetValue("NPC" & NpcNumber, "CN" & LoopC)
     Next LoopC
 End If
 
 
-Npclist(NpcIndex).Inflacion = val(Leer.DarValor("NPC" & NpcNumber, "Inflacion"))
+Npclist(NpcIndex).Inflacion = val(Leer.GetValue("NPC" & NpcNumber, "Inflacion"))
 
 Npclist(NpcIndex).flags.NPCActive = True
 Npclist(NpcIndex).flags.UseAINow = False
 
 If Respawn Then
-    Npclist(NpcIndex).flags.Respawn = val(Leer.DarValor("NPC" & NpcNumber, "ReSpawn"))
+    Npclist(NpcIndex).flags.Respawn = val(Leer.GetValue("NPC" & NpcNumber, "ReSpawn"))
 Else
     Npclist(NpcIndex).flags.Respawn = 1
 End If
 
-Npclist(NpcIndex).flags.BackUp = val(Leer.DarValor("NPC" & NpcNumber, "BackUp"))
-Npclist(NpcIndex).flags.RespawnOrigPos = val(Leer.DarValor("NPC" & NpcNumber, "OrigPos"))
-Npclist(NpcIndex).flags.AfectaParalisis = val(Leer.DarValor("NPC" & NpcNumber, "AfectaParalisis"))
-Npclist(NpcIndex).flags.GolpeExacto = val(Leer.DarValor("NPC" & NpcNumber, "GolpeExacto"))
+Npclist(NpcIndex).flags.BackUp = val(Leer.GetValue("NPC" & NpcNumber, "BackUp"))
+Npclist(NpcIndex).flags.RespawnOrigPos = val(Leer.GetValue("NPC" & NpcNumber, "OrigPos"))
+Npclist(NpcIndex).flags.AfectaParalisis = val(Leer.GetValue("NPC" & NpcNumber, "AfectaParalisis"))
+Npclist(NpcIndex).flags.GolpeExacto = val(Leer.GetValue("NPC" & NpcNumber, "GolpeExacto"))
 
 
-Npclist(NpcIndex).flags.Snd1 = val(Leer.DarValor("NPC" & NpcNumber, "Snd1"))
-Npclist(NpcIndex).flags.Snd2 = val(Leer.DarValor("NPC" & NpcNumber, "Snd2"))
-Npclist(NpcIndex).flags.Snd3 = val(Leer.DarValor("NPC" & NpcNumber, "Snd3"))
+Npclist(NpcIndex).flags.Snd1 = val(Leer.GetValue("NPC" & NpcNumber, "Snd1"))
+Npclist(NpcIndex).flags.Snd2 = val(Leer.GetValue("NPC" & NpcNumber, "Snd2"))
+Npclist(NpcIndex).flags.Snd3 = val(Leer.GetValue("NPC" & NpcNumber, "Snd3"))
 
 '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
 Dim aux As String
-aux = Leer.DarValor("NPC" & NpcNumber, "NROEXP")
+aux = Leer.GetValue("NPC" & NpcNumber, "NROEXP")
 If aux = "" Then
     Npclist(NpcIndex).NroExpresiones = 0
 Else
     Npclist(NpcIndex).NroExpresiones = val(aux)
     ReDim Npclist(NpcIndex).Expresiones(1 To Npclist(NpcIndex).NroExpresiones) As String
     For LoopC = 1 To Npclist(NpcIndex).NroExpresiones
-        Npclist(NpcIndex).Expresiones(LoopC) = Leer.DarValor("NPC" & NpcNumber, "Exp" & LoopC)
+        Npclist(NpcIndex).Expresiones(LoopC) = Leer.GetValue("NPC" & NpcNumber, "Exp" & LoopC)
     Next LoopC
 End If
 
 '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
 'Tipo de items con los que comercia
-Npclist(NpcIndex).TipoItems = val(Leer.DarValor("NPC" & NpcNumber, "TipoItems"))
+Npclist(NpcIndex).TipoItems = val(Leer.GetValue("NPC" & NpcNumber, "TipoItems"))
 
 'Update contadores de NPCs
 If NpcIndex > LastNPC Then LastNPC = NpcIndex
