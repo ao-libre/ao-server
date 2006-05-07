@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim T() As String
+Dim t() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -547,8 +547,10 @@ Procesado = True 'ver al final del sub
     End If
     
     If UCase$(Left$(rData, 6)) = "/PMSG " Then
-        Call mdParty.BroadCastParty(UserIndex, mid$(rData, 7))
-        Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
+        If Len(rData) > 6 Then
+            Call mdParty.BroadCastParty(UserIndex, mid$(rData, 7))
+            Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & mid$(rData, 7) & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
+        End If
         Exit Sub
     End If
     
@@ -562,8 +564,8 @@ Procesado = True 'ver al final del sub
     End If
     
     If UCase$(rData) = "/ONLINECLAN" Then
-        tStr = modGuilds.m_ListaDeMiembrosOnline(UserList(UserIndex).GuildIndex)
-        If tStr <> vbNullString Then
+        tStr = modGuilds.m_ListaDeMiembrosOnline(UserIndex, UserList(UserIndex).GuildIndex)
+        If UserList(UserIndex).GuildIndex <> 0 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Compañeros de tu clan conectados: " & tStr & FONTTYPE_GUILDMSG)
         Else
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No pertences a ningún clan." & FONTTYPE_GUILDMSG)

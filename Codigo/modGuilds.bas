@@ -561,8 +561,8 @@ Private Function m_EstadoPermiteEntrar(ByVal UserIndex As Integer, ByVal GuildIn
 End Function
 
 
-Public Function String2Alineacion(ByRef S As String) As ALINEACION_GUILD
-    Select Case S
+Public Function String2Alineacion(ByRef s As String) As ALINEACION_GUILD
+    Select Case s
         Case "Neutro"
             String2Alineacion = ALINEACION_NEUTRO
         Case "Legión oscura"
@@ -608,8 +608,8 @@ Public Function Relacion2String(ByVal Relacion As RELACIONES_GUILD) As String
     End Select
 End Function
 
-Public Function String2Relacion(ByVal S As String) As RELACIONES_GUILD
-    Select Case UCase$(Trim$(S))
+Public Function String2Relacion(ByVal s As String) As RELACIONES_GUILD
+    Select Case UCase$(Trim$(s))
         Case vbNullString, "P"
             String2Relacion = PAZ
         Case "G"
@@ -630,7 +630,7 @@ Dim i       As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(Mid$(cad, i, 1))
+    car = Asc(mid$(cad, i, 1))
 
     If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
         GuildNameValido = False
@@ -765,14 +765,14 @@ Dim i As Integer
     Next i
 End Function
 
-Public Function m_ListaDeMiembrosOnline(ByVal GuildIndex As Integer) As String
+Public Function m_ListaDeMiembrosOnline(ByVal UserIndex As Integer, ByVal GuildIndex As Integer) As String
 Dim i As Integer
     
     If GuildIndex > 0 And GuildIndex <= CANTIDADDECLANES Then
         i = Guilds(GuildIndex).m_Iterador_ProximoUserIndex
         While i > 0
             'No mostramos dioses y admins
-            If UserList(i).flags.Privilegios < PlayerType.Dios Then _
+            If i <> UserIndex And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then _
                 m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
             i = Guilds(GuildIndex).m_Iterador_ProximoUserIndex
         Wend

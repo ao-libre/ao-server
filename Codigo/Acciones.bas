@@ -98,9 +98,10 @@ If InMapBounds(Map, X, Y) Then
                 Call AccionParaPuerta(Map, X, Y + 1, UserIndex)
             
         End Select
-    End If
-    
-    If MapData(Map, X, Y).NpcIndex > 0 Then
+    ElseIf MapData(Map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
+        'Set the target NPC
+        UserList(UserIndex).flags.TargetNPC = MapData(Map, X, Y).NpcIndex
+        
         If Npclist(MapData(Map, X, Y).NpcIndex).Comercia = 1 Then
             If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del vendedor." & FONTTYPE_INFO)
@@ -141,7 +142,6 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetObj = 0
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
     End If
-    
 End If
 
 End Sub

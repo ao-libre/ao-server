@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim T() As String
+Dim t() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -82,8 +82,10 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
-                Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                If UserList(UserIndex).flags.Invisible = 0 Then
+                    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                End If
             End If
             
             If UserList(UserIndex).flags.Muerto = 1 Then
@@ -109,8 +111,10 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
-                Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                If UserList(UserIndex).flags.Invisible = 0 Then
+                    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                End If
             End If
     
     
@@ -124,12 +128,21 @@ Procesado = True 'ver al final del sub
             End If
             rData = Right$(rData, Len(rData) - 1)
             tName = ReadField(1, rData, 32)
+            
+            'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
+            If (EsDios(tName) Or EsAdmin(tName)) And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los Dioses y Admins." & FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
+            'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
+            If UserList(UserIndex).flags.Privilegios = PlayerType.User And (EsSemiDios(tName) Or EsConsejero(tName)) Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los GMs" & FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
             tIndex = NameIndex(tName)
             If tIndex <> 0 Then
-                If UserList(tIndex).flags.Privilegios > PlayerType.User And UserList(UserIndex).flags.Privilegios = PlayerType.User Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los Gms" & FONTTYPE_INFO)
-                    Exit Sub
-                End If
                 If Len(rData) <> Len(tName) Then
                     tMessage = Right$(rData, Len(rData) - (1 + Len(tName)))
                 Else
@@ -212,13 +225,13 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
                 End If
             Else    'paralizado
-              '[CDT 17-02-2004] (<- emmmmm ?????)
-              If Not UserList(UserIndex).flags.UltimoMensaje = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes moverte porque estas paralizado." & FONTTYPE_INFO)
-                UserList(UserIndex).flags.UltimoMensaje = 1
-              End If
-              '[/CDT]
-              UserList(UserIndex).flags.CountSH = 0
+                '[CDT 17-02-2004] (<- emmmmm ?????)
+                If Not UserList(UserIndex).flags.UltimoMensaje = 1 Then
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes moverte porque estas paralizado." & FONTTYPE_INFO)
+                    UserList(UserIndex).flags.UltimoMensaje = 1
+                End If
+                '[/CDT]
+                UserList(UserIndex).flags.CountSH = 0
             End If
             
             If UserList(UserIndex).flags.Oculto = 1 Then
@@ -263,8 +276,10 @@ Procesado = True 'ver al final del sub
                 'piedra libre para todos los compas!
                 If UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).flags.AdminInvisible = 0 Then
                     UserList(UserIndex).flags.Oculto = 0
-                    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                    If UserList(UserIndex).flags.Invisible = 0 Then
+                        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
+                    End If
                 End If
                 
             End If
@@ -452,7 +467,6 @@ Procesado = True 'ver al final del sub
                 Case Domar
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Domar)
                 Case Ocultarse
-                    
                     If UserList(UserIndex).flags.Navegando = 1 Then
                         '[CDT 17-02-2004]
                         If Not UserList(UserIndex).flags.UltimoMensaje = 3 Then

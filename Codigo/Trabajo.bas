@@ -214,7 +214,7 @@ Else
         Else
             Call DarCuerpoDesnudo(UserIndex)
         End If
-            
+        
         If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then _
             UserList(UserIndex).Char.ShieldAnim = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex).ShieldAnim
         If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then _
@@ -228,7 +228,6 @@ Else
         UserList(UserIndex).Char.WeaponAnim = NingunArma
         UserList(UserIndex).Char.CascoAnim = NingunCasco
     End If
-
 End If
 
 Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)

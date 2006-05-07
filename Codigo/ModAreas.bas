@@ -226,15 +226,22 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                             If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
                                  Call EnviarDatosASlot(UserIndex, ProtoCrypt("NOVER" & UserList(TempInt).Char.CharIndex & ",1", UserIndex) & ENDC)
                             End If
+                            
+                            If UserList(UserIndex).flags.Invisible Or UserList(UserIndex).flags.Oculto Then
+                                 Call EnviarDatosASlot(TempInt, ProtoCrypt("NOVER" & UserList(UserIndex).Char.CharIndex & ",1", TempInt) & ENDC)
+                            End If
                         Else
 #End If
                             If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
                                  Call EnviarDatosASlot(UserIndex, "NOVER" & UserList(TempInt).Char.CharIndex & ",1" & ENDC)
                             End If
+                            
+                            If UserList(UserIndex).flags.Invisible Or UserList(UserIndex).flags.Oculto Then
+                                 Call EnviarDatosASlot(TempInt, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1" & ENDC)
+                            End If
 #If SeguridadAlkon Then
                         End If
 #End If
-                        
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
                     End If

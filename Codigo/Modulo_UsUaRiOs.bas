@@ -162,11 +162,11 @@ End Sub
 
 Sub EnviarAtrib(ByVal UserIndex As Integer)
 Dim i As Integer
-Dim cad$
+Dim cad As String
 For i = 1 To NUMATRIBUTOS
-  cad$ = cad$ & UserList(UserIndex).Stats.UserAtributos(i) & ","
+  cad = cad & UserList(UserIndex).Stats.UserAtributos(i) & ","
 Next
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "ATR" & cad$)
+Call SendData(SendTarget.ToIndex, UserIndex, 0, "ATR" & cad)
 End Sub
 
 Public Sub EnviarMiniEstadisticas(ByVal UserIndex As Integer)

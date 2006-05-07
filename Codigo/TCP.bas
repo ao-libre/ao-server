@@ -554,11 +554,11 @@ On Error GoTo errhandler
     End If
     
     'Call SecurityIp.IpRestarConexion(GetLongIp(UserList(UserIndex).ip))
-
+    
     If UserList(UserIndex).ConnID <> -1 Then
         Call CloseSocketSL(UserIndex)
     End If
-
+    
     'Es el mismo user al que está revisando el centinela??
     'IMPORTANTE!!! hacerlo antes de resetear así todavía sabemos el nombre del user
     ' y lo podemos loguear
@@ -587,7 +587,7 @@ On Error GoTo errhandler
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
-            
+    
 Exit Sub
 
 errhandler:
@@ -1036,7 +1036,6 @@ Select Case sndRoute
         Exit Sub
 
     Case SendTarget.ToDiosesYclan
-
         LoopC = modGuilds.m_Iterador_ProximoUserIndex(sndIndex)
         While LoopC > 0
             If (UserList(LoopC).ConnID <> -1) Then
@@ -1360,14 +1359,14 @@ End Sub
 
 #End If
 
-Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
-        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
+For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -1845,7 +1844,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .PacketNumber = 0
 
         .EmpoCont = 0
-        .EscucheClan = 0
         .PartyIndex = 0
         .PartySolicitud = 0
         
@@ -1886,6 +1884,7 @@ End Sub
 Sub ResetGuildInfo(ByVal UserIndex As Integer)
     If UserList(UserIndex).EscucheClan > 0 Then
         Call modGuilds.GMDejaDeEscucharClan(UserIndex, UserList(UserIndex).EscucheClan)
+        UserList(UserIndex).EscucheClan = 0
     End If
     If UserList(UserIndex).GuildIndex > 0 Then
         Call modGuilds.m_DesconectarMiembroDelClan(UserIndex, UserList(UserIndex).GuildIndex)
@@ -2446,7 +2445,7 @@ End If
 If UCase$(rData) = "/ONLINEREAL" Then
     For tLong = 1 To LastUser
         If UserList(tLong).ConnID <> -1 Then
-            If UserList(tLong).Faccion.ArmadaReal = 1 Then
+            If UserList(tLong).Faccion.ArmadaReal = 1 And (UserList(tLong).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 tStr = tStr & UserList(tLong).name & ", "
             End If
         End If
@@ -2463,7 +2462,7 @@ End If
 If UCase$(rData) = "/ONLINECAOS" Then
     For tLong = 1 To LastUser
         If UserList(tLong).ConnID <> -1 Then
-            If UserList(tLong).Faccion.FuerzasCaos = 1 Then
+            If UserList(tLong).Faccion.FuerzasCaos = 1 And (UserList(tLong).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 tStr = tStr & UserList(tLong).name & ", "
             End If
         End If
@@ -2483,7 +2482,11 @@ If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
     Dim indiceUserDestino As Integer
     rData = Right$(rData, Len(rData) - 9) 'obtiene el nombre del usuario
     tIndex = NameIndex(rData)
-
+    
+    'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+    If (EsDios(rData) Or EsAdmin(rData)) And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then _
+        Exit Sub
+    
     If tIndex <= 0 Then 'existe el usuario destino?
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
@@ -2654,8 +2657,8 @@ If UCase$(Left$(rData, 5)) = "/IRA " Then
     tIndex = NameIndex(rData)
     
     'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-    If EsDios(rData) Or EsAdmin(rData) Then _
-        If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
+    If (EsDios(rData) Or EsAdmin(rData)) And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then _
+        Exit Sub
     
     If tIndex <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
@@ -3150,7 +3153,8 @@ End If
 
 If UCase$(rData) = "/ONLINEGM" Then
         For LoopC = 1 To LastUser
-            If (UserList(LoopC).name <> "") And (UserList(LoopC).flags.Privilegios = PlayerType.Consejero Or UserList(LoopC).flags.Privilegios = PlayerType.SemiDios) Then
+            'Tiene nombre? Es GM? Si es Dios o Admin, nosotros lo somos también??
+            If (UserList(LoopC).name <> "") And UserList(LoopC).flags.Privilegios > PlayerType.User And (UserList(LoopC).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 tStr = tStr & UserList(LoopC).name & ", "
             End If
         Next LoopC
@@ -3166,7 +3170,7 @@ End If
 'Barrin 30/9/03
 If UCase$(rData) = "/ONLINEMAP" Then
     For LoopC = 1 To LastUser
-        If (UserList(LoopC).name <> "") And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map And UserList(LoopC).flags.Privilegios < PlayerType.Dios Then
+        If UserList(LoopC).name <> "" And UserList(LoopC).Pos.Map = UserList(UserIndex).Pos.Map And (UserList(LoopC).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
             tStr = tStr & UserList(LoopC).name & ", "
         End If
     Next LoopC
@@ -3468,7 +3472,7 @@ If UCase$(Left$(rData, 8)) = "/ONCLAN " Then
     tInt = GuildIndex(rData)
     
     If tInt > 0 Then
-        tStr = modGuilds.m_ListaDeMiembrosOnline(tInt)
+        tStr = modGuilds.m_ListaDeMiembrosOnline(UserIndex, tInt)
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Clan " & UCase(rData) & ": " & tStr & FONTTYPE_GUILDMSG)
     End If
 End If
@@ -4546,8 +4550,22 @@ If UCase$(Left$(rData, 7)) = "/ANAME " Then
     Exit Sub
 End If
 
-
-
+If UCase$(rData) = "/CENTINELAACTIVADO" Then
+    centinelaActivado = Not centinelaActivado
+    
+    Centinela.RevisandoUserIndex = 0
+    Centinela.clave = 0
+    Centinela.TiempoRestante = 0
+    
+    If CentinelaNPCIndex Then _
+        Call QuitarNPC(CentinelaNPCIndex)
+    
+    If centinelaActivado Then
+        Call SendData(SendTarget.ToAdmins, 0, 0, "El centinela ha sido activado.")
+    Else
+        Call SendData(SendTarget.ToAdmins, 0, 0, "El centinela ha sido desactivado.")
+    End If
+End If
 
 If UCase$(Left$(rData, 9)) = "/DOBACKUP" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
