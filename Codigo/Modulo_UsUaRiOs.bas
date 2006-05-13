@@ -46,8 +46,8 @@ DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
 UserList(AttackerIndex).Stats.Exp = UserList(AttackerIndex).Stats.Exp + DaExp
 If UserList(AttackerIndex).Stats.Exp > MAXEXP Then _
-    UserList(AttackerIndex).Stats.Exp = MAXREP
-     
+    UserList(AttackerIndex).Stats.Exp = MAXEXP
+
 'Lo mata
 Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Has matado a " & UserList(VictimIndex).name & "!" & FONTTYPE_FIGHT)
 Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Has ganado " & DaExp & " puntos de experiencia." & FONTTYPE_FIGHT)
@@ -369,8 +369,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     End If
 
     Dim AumentoHP As Integer
-    Select Case UserList(UserIndex).Clase
-        Case "Guerrero"
+    Select Case UCase$(UserList(UserIndex).Clase)
+        Case "GUERRERO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 12)
@@ -385,7 +385,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
-        Case "Cazador"
+        Case "CAZADOR"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 11)
@@ -400,7 +400,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
-        Case "Pirata"
+        Case "PIRATA"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 11)
@@ -415,7 +415,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 3
             AumentoSTA = AumentoSTDef
         
-        Case "Paladin"
+        Case "PALADIN"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(9, 11)
@@ -431,7 +431,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "Ladron"
+        Case "LADRON"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -446,7 +446,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 1
             AumentoSTA = AumentoSTLadron
             
-        Case "Mago"
+        Case "MAGO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -463,7 +463,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTMago
         
-        Case "Leñador"
+        Case "LEÑADOR"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -478,7 +478,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 2
             AumentoSTA = AumentoSTLeñador
         
-        Case "Minero"
+        Case "MINERO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -493,7 +493,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 2
             AumentoSTA = AumentoSTMinero
         
-        Case "Pescador"
+        Case "PESCADOR"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(6, 9)
@@ -508,7 +508,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 1
             AumentoSTA = AumentoSTPescador
         
-        Case "Clerigo"
+        Case "CLERIGO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 11)
@@ -524,7 +524,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "Druida"
+        Case "DRUIDA"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -540,7 +540,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "Asesino"
+        Case "ASESINO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -556,7 +556,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "Bardo"
+        Case "BARDO"
             Select Case UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -675,7 +675,7 @@ Dim nPos As WorldPos
 #If SeguridadAlkon Then
             Call SendCryptedMoveChar(nPos.Map, UserIndex, nPos.X, nPos.Y)
 #Else
-            Call SendToUserArea(UserIndex, "+" & UserList(UserIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendToUserAreaButindex(UserIndex, "+" & UserList(UserIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
 #End If
         End If
         
@@ -999,7 +999,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
  ((UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= MIN_APUÑALAR) _
  And (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).Apuñala = 1)) _
  Or _
-  ((UserList(UserIndex).Clase = "Asesino") And _
+  ((UCase$(UserList(UserIndex).Clase) = "ASESINO") And _
   (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).Apuñala = 1))
 Else
  PuedeApuñalar = False

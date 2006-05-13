@@ -1217,13 +1217,13 @@ Call TirarOro(UserList(UserIndex).Stats.GLD, UserIndex)
 
 End Sub
 
-Public Function ItemSeCae(ByVal Index As Integer) As Boolean
+Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
-ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            ObjData(Index).OBJType <> eOBJType.otLlaves And _
-            ObjData(Index).OBJType <> eOBJType.otBarcos And _
-            ObjData(Index).NoSeCae = 0
+ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
+            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
+            ObjData(index).OBJType <> eOBJType.otLlaves And _
+            ObjData(index).OBJType <> eOBJType.otBarcos And _
+            ObjData(index).NoSeCae = 0
 
 
 End Function

@@ -630,7 +630,7 @@ If InMapBounds(Map, X, Y) Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
-                Call modCentinela.CentinelaCheckClave(UserIndex, -1)
+                Call modCentinela.CentinelaSendClave(UserIndex)
             Else
                 If Npclist(TempCharIndex).MaestroUser > 0 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & FONTTYPE_INFO)

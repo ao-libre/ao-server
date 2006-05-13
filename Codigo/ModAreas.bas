@@ -245,7 +245,6 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
                     End If
-                
                 End If
                 
                 '<<< Npc >>>
@@ -484,7 +483,7 @@ Public Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As St
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
-' ESTA SOLO SE USA PARA ENVIAR MPs asi que se puede encriptar desde aca :)
+'
 '**************************************************************
     Dim LoopC As Long
     Dim TempInt As Integer
@@ -499,7 +498,9 @@ Public Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As St
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
 
     If Not MapaValido(Map) Then Exit Sub
-
+    
+    sdData = sdData & ENDC
+    
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         TempIndex = ConnGroups(Map).UserEntrys(LoopC)
             

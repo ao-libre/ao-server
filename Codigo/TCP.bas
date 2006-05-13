@@ -463,12 +463,12 @@ UserList(UserIndex).Stats.MinHam = 100
 
 
 '<-----------------MANA----------------------->
-If UserClase = "Mago" Then
+If UCase$(UserClase) = "MAGO" Then
     MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 3
     UserList(UserIndex).Stats.MaxMAN = 100 + MiInt
     UserList(UserIndex).Stats.MinMAN = 100 + MiInt
-ElseIf UserClase = "Clerigo" Or UserClase = "Druida" _
-    Or UserClase = "Bardo" Or UserClase = "Asesino" Then
+ElseIf UCase$(UserClase) = "CLERIGO" Or UCase$(UserClase) = "DRUIDA" _
+    Or UCase$(UserClase) = "BARDO" Or UCase$(UserClase) = "ASESINO" Then
         MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 4
         UserList(UserIndex).Stats.MaxMAN = 50
         UserList(UserIndex).Stats.MinMAN = 50
@@ -477,9 +477,9 @@ Else
     UserList(UserIndex).Stats.MinMAN = 0
 End If
 
-If UserClase = "Mago" Or UserClase = "Clerigo" Or _
-   UserClase = "Druida" Or UserClase = "Bardo" Or _
-   UserClase = "Asesino" Then
+If UCase$(UserClase) = "MAGO" Or UCase$(UserClase) = "CLERIGO" Or _
+   UCase$(UserClase) = "DRUIDA" Or UCase$(UserClase) = "BARDO" Or _
+   UCase$(UserClase) = "ASESINO" Then
         UserList(UserIndex).Stats.UserHechizos(1) = 2
 End If
 
@@ -2969,7 +2969,11 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            UserList(tIndex).Clase = UCase$(Arg2)
+            If Len(Arg2) > 1 Then
+                UserList(tIndex).Clase = UCase$(Left$(Arg2, 1)) & LCase$(mid$(Arg2, 2))
+            Else
+                UserList(tIndex).Clase = UCase$(Arg2)
+            End If
     '[DnG]
         Case "SKILLS"
             For LoopC = 1 To NUMSKILLS
@@ -4557,8 +4561,10 @@ If UCase$(rData) = "/CENTINELAACTIVADO" Then
     Centinela.clave = 0
     Centinela.TiempoRestante = 0
     
-    If CentinelaNPCIndex Then _
+    If CentinelaNPCIndex Then
         Call QuitarNPC(CentinelaNPCIndex)
+        CentinelaNPCIndex = 0
+    End If
     
     If centinelaActivado Then
         Call SendData(SendTarget.ToAdmins, 0, 0, "El centinela ha sido activado.")

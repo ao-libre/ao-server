@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -374,7 +374,7 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos del usuario." & FONTTYPE_INFO)
                     Exit Sub
                 End If
-                'Ya ta comerciando ? es con migo o con otro ?
+                'Ya ta comerciando ? es conmigo o con otro ?
                 If UserList(UserList(UserIndex).flags.TargetUser).flags.Comerciando = True And _
                     UserList(UserList(UserIndex).flags.TargetUser).ComUsu.DestUsu <> UserIndex Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes comerciar con el usuario en este momento." & FONTTYPE_INFO)

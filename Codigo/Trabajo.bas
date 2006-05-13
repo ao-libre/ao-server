@@ -589,11 +589,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim Index As Integer
+        Dim index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        Index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
-        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
+        index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(index) = NpcIndex
+        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
@@ -723,7 +723,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UserList(UserIndex).Clase = "Pescador" Then
+If UCase$(UserList(UserIndex).Clase) = "PESCADOR" Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
@@ -1127,7 +1127,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UserList(UserIndex).Clase = "Leñador" Then
+If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoTalarGeneral)
@@ -1170,7 +1170,7 @@ If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    If UserList(UserIndex).Clase = "Leñador" Then
+    If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
         MiObj.Amount = RandomNumber(1, 5)
     Else
         MiObj.Amount = 1
@@ -1242,7 +1242,7 @@ Dim Suerte As Integer
 Dim res As Integer
 Dim metal As Integer
 
-If UserList(UserIndex).Clase = "Minero" Then
+If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
 Else
     Call QuitarSta(UserIndex, EsfuerzoExcavarGeneral)
@@ -1289,7 +1289,7 @@ If res <= 5 Then
     
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
-    If UserList(UserIndex).Clase = "Minero" Then
+    If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
         MiObj.Amount = RandomNumber(1, 6)
     Else
         MiObj.Amount = 1

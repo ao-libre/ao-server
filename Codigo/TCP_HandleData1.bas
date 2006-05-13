@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -1230,9 +1230,11 @@ Procesado = True 'ver al final del sub
                     Exit Sub
                 End If
                 'No permitimos vender barcos mientras están equipados (no podés desequiparlos y causa errores)
-                If UserList(UserIndex).Invent.BarcoSlot = val(Arg1) Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés vender tu barco mientras lo estés usando." & FONTTYPE_TALK)
-                    Exit Sub
+                If UserList(UserIndex).flags.Navegando = 1 Then
+                    If UserList(UserIndex).Invent.BarcoSlot = val(Arg1) Then
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés vender tu barco mientras lo estés usando." & FONTTYPE_TALK)
+                        Exit Sub
+                    End If
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)

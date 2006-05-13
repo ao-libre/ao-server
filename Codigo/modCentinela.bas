@@ -69,7 +69,7 @@ Private Sub GoToNextWorkingChar()
                 If CentinelaNPCIndex Then
                     'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas
                     Call SendData(SendTarget.ToIndex, LoopC, 0, "||" & vbGreen & "°" & "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & "°" & CStr(Npclist(CentinelaNPCIndex).Char.CharIndex))
-                    Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & "Saludos " & UserList(Centinela.RevisandoUserIndex).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & FONTTYPE_CENTINELA)
+                    Call SendData(SendTarget.ToIndex, LoopC, 0, "||" & "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos." & FONTTYPE_CENTINELA)
                 End If
                 Exit Sub
             End If
@@ -151,9 +151,15 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
 '############################################################
     If clave = Centinela.clave And UserIndex = Centinela.RevisandoUserIndex Then
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
+        Centinela.RevisandoUserIndex = 0
         Call SendData(SendTarget.ToIndex, Centinela.RevisandoUserIndex, 0, "||" & vbWhite & "°" & "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia" & "°" & CStr(Npclist(CentinelaNPCIndex).Char.CharIndex))
     Else
         Call CentinelaSendClave(UserIndex)
+        
+        If UserIndex <> Centinela.RevisandoUserIndex Then
+            'Logueamos el evento
+            Call LogCentinela("El usuario " & UserList(UserIndex).name & " respondió aunque no se le hablaba a él.")
+        End If
     End If
 End Sub
 
@@ -170,7 +176,7 @@ Public Sub ResetCentinelaInfo()
     Next LoopC
 End Sub
 
-Private Sub CentinelaSendClave(ByVal UserIndex As Integer)
+Public Sub CentinelaSendClave(ByVal UserIndex As Integer)
 '############################################################
 'Enviamos al usuario la clave vía el personaje centinela
 '############################################################
@@ -186,9 +192,6 @@ Private Sub CentinelaSendClave(ByVal UserIndex As Integer)
         End If
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & "No es a ti a quien estoy hablando, ¿no ves?" & "°" & CStr(Npclist(CentinelaNPCIndex).Char.CharIndex))
-        
-        'Logueamos el evento
-        Call LogCentinela("El usuario " & UserList(UserIndex).name & " respondió aunque no se le hablaba a él.")
     End If
 End Sub
 
@@ -199,9 +202,6 @@ Public Sub PasarMinutoCentinela()
     If Not centinelaActivado Then Exit Sub
     
     If Centinela.RevisandoUserIndex = 0 Then
-        Call GoToNextWorkingChar
-    'No usamos un Or porque VB no es LAZY y sino me tira rt 9
-    ElseIf UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
         Call GoToNextWorkingChar
     Else
         Centinela.TiempoRestante = Centinela.TiempoRestante - 1
@@ -229,6 +229,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
     'Evitamos conflictos de índices
     If CentinelaNPCIndex Then
         Call QuitarNPC(CentinelaNPCIndex)
+        CentinelaNPCIndex = 0
     End If
     
     If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
@@ -246,7 +247,7 @@ Public Sub CentinelaUserLogout()
 '############################################################
 'El usuario al que revisabamos se desconectó
 '############################################################
-    If Centinela.RevisandoUserIndex > 0 Then
+    If Centinela.RevisandoUserIndex Then
         'Revisamos si no respondió ya
         If UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then Exit Sub
         

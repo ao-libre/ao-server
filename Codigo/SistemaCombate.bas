@@ -1380,7 +1380,7 @@ If ExpaDar > 0 Then
     Else
         UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
         If UserList(UserIndex).Stats.Exp > MAXEXP Then _
-            UserList(UserIndex).Stats.Exp = MAXREP
+            UserList(UserIndex).Stats.Exp = MAXEXP
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpaDar & " puntos de experiencia." & FONTTYPE_FIGHT)
     End If
     

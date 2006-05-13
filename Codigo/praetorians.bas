@@ -983,10 +983,10 @@ End Sub
 Function EsMagoOClerigo(ByVal PJEnInd As Integer) As Boolean
 On Error GoTo errorh
 
-    EsMagoOClerigo = UserList(PJEnInd).Clase = "Mago" Or _
-                        UserList(PJEnInd).Clase = "Clerigo" Or _
-                        UserList(PJEnInd).Clase = "Druida" Or _
-                        UserList(PJEnInd).Clase = "Bardo"
+    EsMagoOClerigo = UCase$(UserList(PJEnInd).Clase) = "MAGO" Or _
+                        UCase$(UserList(PJEnInd).Clase) = "CLERIGO" Or _
+                        UCase$(UserList(PJEnInd).Clase) = "DRUIDA" Or _
+                        UCase$(UserList(PJEnInd).Clase) = "BARDO"
 Exit Function
 
 errorh:
