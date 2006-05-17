@@ -788,7 +788,6 @@ Public Type UserStats
     MaxHP As Integer
     MinHP As Integer
     
-    FIT As Integer
     MaxSta As Integer
     MinSta As Integer
     MaxMAN As Integer

@@ -445,9 +445,6 @@ MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Const
 UserList(UserIndex).Stats.MaxHP = 15 + MiInt
 UserList(UserIndex).Stats.MinHP = 15 + MiInt
 
-UserList(UserIndex).Stats.FIT = 1
-
-
 MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) \ 6)
 If MiInt = 1 Then MiInt = 2
 
@@ -1856,7 +1853,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
             .CriminalesMatados = 0
             .NPCsMuertos = 0
             .UsuariosMatados = 0
-            .FIT = 0
             .SkillPts = 0
         End With
     End With

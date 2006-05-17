@@ -752,7 +752,6 @@ UserList(UserIndex).Stats.MET = CInt(UserFile.GetValue("STATS", "MET"))
 UserList(UserIndex).Stats.MaxHP = CInt(UserFile.GetValue("STATS", "MaxHP"))
 UserList(UserIndex).Stats.MinHP = CInt(UserFile.GetValue("STATS", "MinHP"))
 
-UserList(UserIndex).Stats.FIT = CInt(UserFile.GetValue("STATS", "FIT"))
 UserList(UserIndex).Stats.MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
 UserList(UserIndex).Stats.MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
 
@@ -1500,7 +1499,6 @@ Call WriteVar(UserFile, "STATS", "MET", CStr(UserList(UserIndex).Stats.MET))
 Call WriteVar(UserFile, "STATS", "MaxHP", CStr(UserList(UserIndex).Stats.MaxHP))
 Call WriteVar(UserFile, "STATS", "MinHP", CStr(UserList(UserIndex).Stats.MinHP))
 
-Call WriteVar(UserFile, "STATS", "FIT", CStr(UserList(UserIndex).Stats.FIT))
 Call WriteVar(UserFile, "STATS", "MaxSTA", CStr(UserList(UserIndex).Stats.MaxSta))
 Call WriteVar(UserFile, "STATS", "MinSTA", CStr(UserList(UserIndex).Stats.MinSta))
 
