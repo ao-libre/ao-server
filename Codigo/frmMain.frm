@@ -707,6 +707,7 @@ On Error GoTo hayerror
                             
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
                             If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                            If UserList(iUserIndex).Invent.ArmourEqpObjIndex > 0 Then _
                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
                             If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
                             
