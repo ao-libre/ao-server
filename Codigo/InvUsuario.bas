@@ -1213,7 +1213,10 @@ On Error Resume Next
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 Call TirarTodosLosItems(UserIndex)
-Call TirarOro(UserList(UserIndex).Stats.GLD, UserIndex)
+Dim Cantidad As Long
+Cantidad = UserList(UserIndex).Stats.GLD - UserList(UserIndex).Stats * 10000
+If Cantidad > 0 Then _
+Call TirarOro(Cantidad, UserIndex)
 
 End Sub
 
