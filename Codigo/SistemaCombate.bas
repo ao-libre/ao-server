@@ -57,6 +57,10 @@ Select Case UCase$(Clase)
         ModificadorEvasion = 1.1
     Case "BARDO"
         ModificadorEvasion = 1.1
+    Case "Mago"
+        ModificadorEvasion = 0.4
+    Case "Druida"
+        ModificadorEvasion = 0.75
     Case Else
         ModificadorEvasion = 0.8
 End Select
@@ -66,10 +70,10 @@ Function ModificadorPoderAtaqueArmas(ByVal Clase As String) As Single
 Select Case UCase$(Clase)
     Case "GUERRERO"
         ModificadorPoderAtaqueArmas = 1
+    Case "PALADIN"
+        ModificadorPoderAtaqueArmas = 0.9
     Case "CAZADOR"
         ModificadorPoderAtaqueArmas = 0.8
-    Case "PALADIN"
-        ModificadorPoderAtaqueArmas = 0.85
     Case "ASESINO"
         ModificadorPoderAtaqueArmas = 0.85
     Case "PIRATA"
@@ -79,11 +83,11 @@ Select Case UCase$(Clase)
     Case "BANDIDO"
         ModificadorPoderAtaqueArmas = 0.75
     Case "CLERIGO"
-        ModificadorPoderAtaqueArmas = 0.7
+        ModificadorPoderAtaqueArmas = 0.75
     Case "BARDO"
         ModificadorPoderAtaqueArmas = 0.7
     Case "DRUIDA"
-        ModificadorPoderAtaqueArmas = 0.7
+        ModificadorPoderAtaqueArmas = 0.65
     Case "PESCADOR"
         ModificadorPoderAtaqueArmas = 0.6
     Case "LEÑADOR"
@@ -140,9 +144,9 @@ Function ModicadorDañoClaseArmas(ByVal Clase As String) As Single
 Select Case UCase$(Clase)
     Case "GUERRERO"
         ModicadorDañoClaseArmas = 1.1
-    Case "CAZADOR"
-        ModicadorDañoClaseArmas = 0.9
     Case "PALADIN"
+        ModicadorDañoClaseArmas = 0.95
+    Case "CAZADOR"
         ModicadorDañoClaseArmas = 0.9
     Case "ASESINO"
         ModicadorDañoClaseArmas = 0.9
@@ -157,7 +161,7 @@ Select Case UCase$(Clase)
     Case "BARDO"
         ModicadorDañoClaseArmas = 0.75
     Case "DRUIDA"
-        ModicadorDañoClaseArmas = 0.75
+        ModicadorDañoClaseArmas = 0.7
     Case "PESCADOR"
         ModicadorDañoClaseArmas = 0.6
     Case "LEÑADOR"
@@ -175,10 +179,10 @@ End Function
 
 Function ModicadorDañoClaseProyectiles(ByVal Clase As String) As Single
 Select Case UCase$(Clase)
-    Case "GUERRERO"
-        ModicadorDañoClaseProyectiles = 1
     Case "CAZADOR"
         ModicadorDañoClaseProyectiles = 1.1
+    Case "GUERRERO"
+        ModicadorDañoClaseProyectiles = 0.9
     Case "PALADIN"
         ModicadorDañoClaseProyectiles = 0.8
     Case "ASESINO"
@@ -230,7 +234,7 @@ Case "GUERRERO"
     Case "CLERIGO"
         ModEvasionDeEscudoClase = 0.85
     Case "BARDO"
-        ModEvasionDeEscudoClase = 0.75
+        ModEvasionDeEscudoClase = 0.8
     Case "DRUIDA"
         ModEvasionDeEscudoClase = 0.75
     Case "PESCADOR"

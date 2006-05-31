@@ -240,7 +240,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
-   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
+   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.mineria) / ModFundicion(UserList(UserIndex).Clase) Then
         Call DoLingotes(UserIndex)
    Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
@@ -249,7 +249,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -260,14 +260,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If cant <= Total Then
+If Cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -276,18 +276,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).Amount = UserList(UserIndex).Invent.Object(i).Amount - cant
+        UserList(UserIndex).Invent.Object(i).Amount = UserList(UserIndex).Invent.Object(i).Amount - Cant
         If (UserList(UserIndex).Invent.Object(i).Amount <= 0) Then
-            cant = Abs(UserList(UserIndex).Invent.Object(i).Amount)
+            Cant = Abs(UserList(UserIndex).Invent.Object(i).Amount)
             UserList(UserIndex).Invent.Object(i).Amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            cant = 0
+            Cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (cant = 0) Then
+        If (Cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -729,44 +729,21 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= -1 Then
-                    Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 11 Then
-                    Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 21 Then
-                    Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 31 Then
-                    Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 41 Then
-                    Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 51 Then
-                    Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 61 Then
-                    Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 71 Then
-                    Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 81 Then
-                    Suerte = 13
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) >= 91 Then
-                    Suerte = 7
-End If
+Dim Skill As Integer
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Pesca)
+Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
+
 res = RandomNumber(1, Suerte)
 
 If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    MiObj.Amount = 1
+    If UserList(UserIndex).Clase = "Pescador" Then
+        MiObj.Amount = RandomNumber(1, 4)
+    Else
+        MiObj.Amount = 1
+    End If
     MiObj.ObjIndex = Pescado
     
     If Not MeterItemEnInventario(UserIndex, MiObj) Then
@@ -815,20 +792,7 @@ iSkill = UserList(UserIndex).Stats.UserSkills(eSkill.Pesca)
 ' m = (60-11)/(1-10)
 ' y = mx - m*10 + 11
 
-Select Case iSkill
-Case 0:         Suerte = 0
-Case 1 To 10:   Suerte = 60
-Case 11 To 20:  Suerte = 54
-Case 21 To 30:  Suerte = 49
-Case 31 To 40:  Suerte = 43
-Case 41 To 50:  Suerte = 38
-Case 51 To 60:  Suerte = 32
-Case 61 To 70:  Suerte = 27
-Case 71 To 80:  Suerte = 21
-Case 81 To 90:  Suerte = 16
-Case 91 To 100: Suerte = 11
-Case Else:      Suerte = 0
-End Select
+Suerte = Int(-0.00125 * iSkill * iSkill - 0.3 * iSkill + 49)
 
 If Suerte > 0 Then
     res = RandomNumber(1, Suerte)
@@ -1133,37 +1097,10 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoTalarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= -1 Then
-                    Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 11 Then
-                    Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 21 Then
-                    Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 31 Then
-                    Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 41 Then
-                    Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 51 Then
-                    Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 61 Then
-                    Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 71 Then
-                    Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 81 Then
-                    Suerte = 13
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Talar) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Talar) >= 91 Then
-                    Suerte = 7
-End If
+Dim Skill As Integer
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Talar)
+Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
+
 res = RandomNumber(1, Suerte)
 
 If res < 6 Then
@@ -1171,7 +1108,7 @@ If res < 6 Then
     Dim MiObj As Obj
     
     If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
-        MiObj.Amount = RandomNumber(1, 5)
+        MiObj.Amount = RandomNumber(1, 4)
     Else
         MiObj.Amount = 1
     End If
@@ -1248,37 +1185,10 @@ Else
     Call QuitarSta(UserIndex, EsfuerzoExcavarGeneral)
 End If
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= -1 Then
-                    Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 11 Then
-                    Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 21 Then
-                    Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 31 Then
-                    Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 41 Then
-                    Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 51 Then
-                    Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 61 Then
-                    Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 71 Then
-                    Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 81 Then
-                    Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) >= 91 Then
-                    Suerte = 7
-End If
+Dim Skill As Integer
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.mineria)
+Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
+
 res = RandomNumber(1, Suerte)
 
 If res <= 5 Then
@@ -1290,7 +1200,7 @@ If res <= 5 Then
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
     If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
-        MiObj.Amount = RandomNumber(1, 6)
+        MiObj.Amount = RandomNumber(1, 5)
     Else
         MiObj.Amount = 1
     End If
@@ -1309,7 +1219,7 @@ Else
     '[/CDT]
 End If
 
-Call SubirSkill(UserIndex, Mineria)
+Call SubirSkill(UserIndex, mineria)
 
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
@@ -1328,7 +1238,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim cant As Integer
+Dim Cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1386,13 +1296,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
+    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & cant & " puntos de mana!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

@@ -304,7 +304,7 @@ If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex
     Exit Sub
 End If
 
-Dim H As Integer, j As Integer, ind As Integer, Index As Integer
+Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
 
 
@@ -315,17 +315,17 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).cant
+For j = 1 To Hechizos(H).Cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
         If ind > 0 Then
             UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
             
-            Index = FreeMascotaIndex(UserIndex)
+            index = FreeMascotaIndex(UserIndex)
             
-            UserList(UserIndex).MascotasIndex(Index) = ind
-            UserList(UserIndex).MascotasType(Index) = Npclist(ind).Numero
+            UserList(UserIndex).MascotasIndex(index) = ind
+            UserList(UserIndex).MascotasType(index) = Npclist(ind).Numero
             
             Npclist(ind).MaestroUser = UserIndex
             Npclist(ind).Contadores.TiempoExistencia = IntervaloInvocacion
@@ -420,12 +420,12 @@ End If
 End Sub
 
 
-Sub LanzarHechizo(Index As Integer, UserIndex As Integer)
+Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
 Dim uh As Integer
 Dim exito As Boolean
 
-uh = UserList(UserIndex).Stats.UserHechizos(Index)
+uh = UserList(UserIndex).Stats.UserHechizos(index)
 
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
@@ -749,8 +749,10 @@ If Hechizos(H).Estupidez = 1 Then
         If UserIndex <> TU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, TU)
         End If
-        UserList(TU).flags.Estupidez = 1
-        UserList(TU).Counters.Ceguera = IntervaloParalizado
+        If UserList(TU).flags.Estupidez = 0 Then
+            UserList(TU).flags.Estupidez = 1
+            UserList(TU).Counters.Ceguera = IntervaloParalizado
+        End If
 #If SeguridadAlkon Then
         If EncriptarProtocolosCriticos Then
             Call SendCryptedData(SendTarget.ToIndex, TU, 0, "DUMB")

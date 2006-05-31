@@ -335,7 +335,7 @@ Public Enum eSkill
     Comerciar = 11
     Defensa = 12
     Pesca = 13
-    Mineria = 14
+    mineria = 14
     Carpinteria = 15
     Herreria = 16
     Liderazgo = 17
@@ -549,7 +549,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte

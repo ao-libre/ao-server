@@ -51,20 +51,6 @@ On Error GoTo errorh
     
     obji = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).ObjIndex
     
-    'es una armadura real y el tipo no es faccion?
-    If ObjData(obji).Real = 1 Then
-        If Npclist(NpcIndex).name <> "SR" Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Lo siento, la ropa faccionaria solo es para muestra, no tengo autorización para venderla. Diríjete al sastre de tu ejército." & "°" & str(Npclist(NpcIndex).Char.CharIndex))
-            Exit Function
-        End If
-    End If
-    
-    If ObjData(obji).Caos = 1 Then
-        If Npclist(NpcIndex).name <> "SC" Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "Lo siento, la ropa faccionaria solo es para muestra, no tengo autorización para venderla. Diríjete al sastre de tu ejército." & "°" & str(Npclist(NpcIndex).Char.CharIndex))
-            Exit Function
-        End If
-    End If
     
     '¿Ya tiene un objeto de este tipo?
     Slot = 1
