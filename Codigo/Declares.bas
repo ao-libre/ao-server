@@ -1041,6 +1041,10 @@ Public Type User
     KeyCrypt As Integer
     
     AreasInfo As AreaInfo
+    
+    'Outgoing and incoming messages
+    outgoingData As clsByteQueue
+    incomingData As clsByteQueue
 End Type
 
 
