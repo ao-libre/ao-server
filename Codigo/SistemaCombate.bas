@@ -57,9 +57,9 @@ Select Case UCase$(Clase)
         ModificadorEvasion = 1.1
     Case "BARDO"
         ModificadorEvasion = 1.1
-    Case "Mago"
+    Case "MAGO"
         ModificadorEvasion = 0.4
-    Case "Druida"
+    Case "DRUIDA"
         ModificadorEvasion = 0.75
     Case Else
         ModificadorEvasion = 0.8
@@ -933,7 +933,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     
     Dim AttackPos As WorldPos
     AttackPos = UserList(UserIndex).Pos
-    Call HeadtoPos(UserList(UserIndex).Char.Heading, AttackPos)
+    Call HeadtoPos(UserList(UserIndex).Char.heading, AttackPos)
     
     'Exit if not legal
     If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
@@ -1235,7 +1235,7 @@ End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
 
-Dim T As eTrigger6
+Dim t As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
@@ -1243,12 +1243,12 @@ If UserList(VictimIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-T = TriggerZonaPelea(AttackerIndex, VictimIndex)
+t = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If T = TRIGGER6_PERMITE Then
+If t = TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf T = TRIGGER6_PROHIBE Then
+ElseIf t = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
 End If
