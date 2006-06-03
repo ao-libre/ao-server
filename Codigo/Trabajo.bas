@@ -192,9 +192,9 @@ If UserList(UserIndex).flags.Navegando = 0 Then
     UserList(UserIndex).Char.Head = 0
     
     If UserList(UserIndex).flags.Muerto = 0 Then
-        UserList(UserIndex).Char.Body = Barco.Ropaje
+        UserList(UserIndex).Char.body = Barco.Ropaje
     Else
-        UserList(UserIndex).Char.Body = iFragataFantasmal
+        UserList(UserIndex).Char.body = iFragataFantasmal
     End If
     
     UserList(UserIndex).Char.ShieldAnim = NingunEscudo
@@ -210,7 +210,7 @@ Else
         UserList(UserIndex).Char.Head = UserList(UserIndex).OrigChar.Head
         
         If UserList(UserIndex).Invent.ArmourEqpObjIndex > 0 Then
-            UserList(UserIndex).Char.Body = ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Ropaje
+            UserList(UserIndex).Char.body = ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Ropaje
         Else
             Call DarCuerpoDesnudo(UserIndex)
         End If
@@ -222,7 +222,7 @@ Else
         If UserList(UserIndex).Invent.CascoEqpObjIndex > 0 Then _
             UserList(UserIndex).Char.CascoAnim = ObjData(UserList(UserIndex).Invent.CascoEqpObjIndex).CascoAnim
     Else
-        UserList(UserIndex).Char.Body = iCuerpoMuerto
+        UserList(UserIndex).Char.body = iCuerpoMuerto
         UserList(UserIndex).Char.Head = iCabezaMuerto
         UserList(UserIndex).Char.ShieldAnim = NingunEscudo
         UserList(UserIndex).Char.WeaponAnim = NingunArma
@@ -230,7 +230,7 @@ Else
     End If
 End If
 
-Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "NAVEG")
 
 End Sub
@@ -240,7 +240,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
-   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.mineria) / ModFundicion(UserList(UserIndex).Clase) Then
+   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
         Call DoLingotes(UserIndex)
    Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
@@ -618,7 +618,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         
         ' Sacamos el mimetizmo
         If UserList(UserIndex).flags.Mimetizado = 1 Then
-            UserList(UserIndex).Char.Body = UserList(UserIndex).CharMimetizado.Body
+            UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
             UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
             UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
             UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
@@ -630,9 +630,9 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         UserList(UserIndex).flags.AdminInvisible = 1
         UserList(UserIndex).flags.Invisible = 1
         UserList(UserIndex).flags.Oculto = 1
-        UserList(UserIndex).flags.OldBody = UserList(UserIndex).Char.Body
+        UserList(UserIndex).flags.OldBody = UserList(UserIndex).Char.body
         UserList(UserIndex).flags.OldHead = UserList(UserIndex).Char.Head
-        UserList(UserIndex).Char.Body = 0
+        UserList(UserIndex).Char.body = 0
         UserList(UserIndex).Char.Head = 0
         
     Else
@@ -640,13 +640,13 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         UserList(UserIndex).flags.AdminInvisible = 0
         UserList(UserIndex).flags.Invisible = 0
         UserList(UserIndex).flags.Oculto = 0
-        UserList(UserIndex).Char.Body = UserList(UserIndex).flags.OldBody
+        UserList(UserIndex).Char.body = UserList(UserIndex).flags.OldBody
         UserList(UserIndex).Char.Head = UserList(UserIndex).flags.OldHead
         
     End If
     
     'vuelve a ser visible por la fuerza
-    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
     Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 End Sub
 
@@ -848,6 +848,8 @@ If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And UserList(LadrOnIndex).Facc
     Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||No puedes robar a otros miembros de las fuerzas del caos" & FONTTYPE_FIGHT)
     Exit Sub
 End If
+
+Call QuitarSta(LadrOnIndex, 15)
 
 If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     Dim Suerte As Integer
@@ -1055,15 +1057,17 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = 100 Then
 End If
 
 If UCase$(UserList(UserIndex).Clase) = "ASESINO" Then
+    daño = Int(daño * 1.4)
     res = RandomNumber(0, Suerte)
     If res < 25 Then res = 0
 Else
+    daño = Int(daño * 1.5)
     res = RandomNumber(0, Suerte * 1.25)
 End If
 
 If res < 15 Then
     If VictimUserIndex <> 0 Then
-        UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - Int(daño * 1.5)
+        UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - daño
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
         Call SendData(SendTarget.ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).name & " por " & Int(daño * 1.5) & FONTTYPE_FIGHT)
     Else
@@ -1186,7 +1190,7 @@ Else
 End If
 
 Dim Skill As Integer
-Skill = UserList(UserIndex).Stats.UserSkills(eSkill.mineria)
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Mineria)
 Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
 
 res = RandomNumber(1, Suerte)
@@ -1219,7 +1223,7 @@ Else
     '[/CDT]
 End If
 
-Call SubirSkill(UserIndex, mineria)
+Call SubirSkill(UserIndex, Mineria)
 
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 

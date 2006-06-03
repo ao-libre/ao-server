@@ -642,7 +642,7 @@ On Error GoTo errorh
                     UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
                     If UI > 0 Then
                         If NpcAtacaUser(npcind, UI) Then
-                            Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, npcind, Npclist(npcind).Char.Body, Npclist(npcind).Char.Head, headingloop)
+                            Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                         End If
                         
                         ''special speed ability for praetorian king ---------
@@ -741,7 +741,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
         If UI > 0 Then
             If Not (UserList(UI).flags.Muerto = 1) Then
                 If NpcAtacaUser(npcind, UI) Then
-                    Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, npcind, Npclist(npcind).Char.Body, Npclist(npcind).Char.Head, headingloop)
+                    Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                 End If
                 Npclist(npcind).CanAttack = 0
             End If
@@ -1182,6 +1182,11 @@ On Error GoTo errorh
     
     Call SendData(SendTarget.ToIndex, PJEnInd, 0, "||Comienzas a hacerte visible." & FONTTYPE_VENENO)
     UserList(PJEnInd).Counters.Invisibilidad = IntervaloInvisible - 1
+    
+    'Sacamos el efecto de ocultarse
+    If UserList(PJEnInd).Counters.Ocultando Then _
+        UserList(PJEnInd).Counters.Ocultando = UserList(PJEnInd).Counters.Ocultando - 1
+    
     ''guarda, la invisiblidad corre para adelante y no para atras a diferencia de paralisis!!
     ''la invisiblidad se resetea cuando llega a intervaloinvisible
     'Alta manera de zafar las distintas maneras de manejar la invisiblidad por los distintos servidors
@@ -1195,6 +1200,11 @@ errorh:
     LogError ("Error en NPCAI.NPCRemueveInvisibilidad ")
 
 End Sub
+
+
+
+
+
 
 Sub NpcLanzaSpellSobreUser2(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
 On Error GoTo errorh
@@ -1631,7 +1641,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy + 1
-    Npclist(npcorig).Char.Heading = eHeading.SOUTH
+    Npclist(npcorig).Char.heading = eHeading.SOUTH
     MapData(mapa, NPCx, NPCy + 1).NpcIndex = npcorig
     
     'Revisamos sidebemos cambair el área
@@ -1657,7 +1667,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy - 1
-    Npclist(npcorig).Char.Heading = eHeading.NORTH
+    Npclist(npcorig).Char.heading = eHeading.NORTH
     MapData(mapa, NPCx, NPCy - 1).NpcIndex = npcorig
     
     'Revisamos sidebemos cambair el área
@@ -1682,7 +1692,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx - 1
-    Npclist(npcorig).Char.Heading = eHeading.WEST
+    Npclist(npcorig).Char.heading = eHeading.WEST
     MapData(mapa, NPCx - 1, NPCy).NpcIndex = npcorig
     
     'Revisamos sidebemos cambair el área
@@ -1708,7 +1718,7 @@ On Error GoTo errorh
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx + 1
-    Npclist(npcorig).Char.Heading = eHeading.EAST
+    Npclist(npcorig).Char.heading = eHeading.EAST
     MapData(mapa, NPCx + 1, NPCy).NpcIndex = npcorig
     
     'Revisamos sidebemos cambair el área
@@ -1944,7 +1954,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY + 1
         Npclist(npcind).Pos.X = NPCPosX + 1
-        Npclist(npcind).Char.Heading = eHeading.SOUTH
+        Npclist(npcind).Char.heading = eHeading.SOUTH
         MapData(NPCPosM, NPCPosX + 1, NPCPosY + 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1956,7 +1966,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY - 1
         Npclist(npcind).Pos.X = NPCPosX - 1
-        Npclist(npcind).Char.Heading = eHeading.NORTH
+        Npclist(npcind).Char.heading = eHeading.NORTH
         MapData(NPCPosM, NPCPosX - 1, NPCPosY - 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1968,7 +1978,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY - 1
         Npclist(npcind).Pos.X = NPCPosX + 1
-        Npclist(npcind).Char.Heading = eHeading.EAST
+        Npclist(npcind).Char.heading = eHeading.EAST
         MapData(NPCPosM, NPCPosX + 1, NPCPosY - 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
@@ -1980,7 +1990,7 @@ On Error GoTo errorh
         MapData(NPCPosM, NPCPosX, NPCPosY).NpcIndex = 0
         Npclist(npcind).Pos.Y = NPCPosY + 1
         Npclist(npcind).Pos.X = NPCPosX - 1
-        Npclist(npcind).Char.Heading = eHeading.WEST
+        Npclist(npcind).Char.heading = eHeading.WEST
         MapData(NPCPosM, NPCPosX - 1, NPCPosY + 1).NpcIndex = npcind
         Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbYellow & "°¡¡JA JA JA JA!!°" & str(Npclist(npcind).Char.CharIndex))
         Exit Sub
