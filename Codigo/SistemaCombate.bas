@@ -663,8 +663,10 @@ Select Case Lugar
   Case Else
         'Si tiene armadura absorbe el golpe
         If UserList(UserIndex).Invent.ArmourEqpObjIndex > 0 Then
+           Dim Obj2 As ObjData
            Obj = ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex)
-           absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+           Obj2 = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex)
+           absorbido = RandomNumber(Obj.MinDef + Obj.MinDef, Obj.MaxDef + Obj.MaxDef)
            absorbido = absorbido + defbarco
            daño = daño - absorbido
            If daño < 1 Then daño = 1
@@ -1142,7 +1144,9 @@ Select Case Lugar
         'Si tiene armadura absorbe el golpe
         If UserList(VictimaIndex).Invent.ArmourEqpObjIndex > 0 Then
            Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
-           absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+           Dim Obj2 As ObjData
+           Obj2 = ObjData(UserList(VictimaIndex).Invent.EscudoEqpObjIndex)
+           absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
            absorbido = absorbido + defbarco - Resist
            daño = daño - absorbido
            If daño < 0 Then daño = 1
@@ -1341,36 +1345,28 @@ PuedeAtacarNPC = True
 End Function
 
 
-'[KEVIN]
-'
-'[Alejo]
-'Modifique un poco el sistema de exp por golpe, ahora
-'son 2/3 de la exp mientras esta vivo, el resto se
-'obtiene al matarlo.
-'Ahora además
+
 Sub CalcularDarExp(ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal ElDaño As Long)
-
-Dim ExpSinMorir As Long
+'***************************************************
+'Autor: Nacho (Integer)
+'Last Modification: 03/09/06 Nacho
+'Reescribi gran parte del Sub
+'Ahora, da toda la experiencia del npc mientras este vivo.
+'***************************************************
 Dim ExpaDar As Long
-Dim TotalNpcVida As Long
 
+'[Nacho] Chekeamos que las variables sean validas para las operaciones
 If ElDaño <= 0 Then ElDaño = 0
-
-'2/3 de la experiencia se dan cuando se le golpea, el resto
-'se obtiene al matarlo
-ExpSinMorir = (2 * Npclist(NpcIndex).GiveEXP) / 3
-
-TotalNpcVida = Npclist(NpcIndex).Stats.MaxHP
-If TotalNpcVida <= 0 Then Exit Sub
-
+If Npclist(NpcIndex).Stats.MaxHP <= 0 Then Exit Sub
 If ElDaño > Npclist(NpcIndex).Stats.MinHP Then ElDaño = Npclist(NpcIndex).Stats.MinHP
 
-'totalnpcvida _____ ExpSinMorir
-'daño         _____ (daño * ExpSinMorir) / totalNpcVida
-
-ExpaDar = CLng((ElDaño) * (ExpSinMorir / TotalNpcVida))
+'[Nacho] La experiencia a dar es la porcion de vida quitada * toda la experiencia
+ExpaDar = CLng((ElDaño) * (Npclist(NpcIndex).GiveEXP / Npclist(NpcIndex).Stats.MaxHP))
 If ExpaDar <= 0 Then Exit Sub
 
+'[Nacho] Vamos contando cuanta experiencia sacamos, porque se da toda la que no se dio al user que mata al NPC
+        'Esto es porque cuando un elemental ataca, no se da exp, y tambien porque la cuenta que hicimos antes
+        'Podria dar un numero fraccionario, esas fracciones se acumulan hasta formar enteros ;P
 If ExpaDar > Npclist(NpcIndex).flags.ExpCount Then
     ExpaDar = Npclist(NpcIndex).flags.ExpCount
     Npclist(NpcIndex).flags.ExpCount = 0
@@ -1378,6 +1374,7 @@ Else
     Npclist(NpcIndex).flags.ExpCount = Npclist(NpcIndex).flags.ExpCount - ExpaDar
 End If
 
+'[Nacho] Le damos la exp al user
 If ExpaDar > 0 Then
     If UserList(UserIndex).PartyIndex > 0 Then
         Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
@@ -1391,7 +1388,6 @@ If ExpaDar > 0 Then
     Call CheckUserLevel(UserIndex)
 End If
 
-'[/KEVIN]
 End Sub
 
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
