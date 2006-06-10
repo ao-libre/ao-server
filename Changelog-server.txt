@@ -5,7 +5,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - 0.11.5
 
- * 05/03/2206: Implementación de los comandos /CIUMSG, /CAOSMSG, /CRIMS y /REALMSG pedidos por Pol'Thalas (Maraxus).
+ * 05/03/2006: Implementación de los comandos /CIUMSG, /CAOSMSG, /CRIMS y /REALMSG pedidos por Pol'Thalas (Maraxus).
  * 06/03/2006: Corrección de todos los bugs reportados y cerrados en el bug tracker de SF (Maraxus).
  * 09/03/2006: Implementación de los comandos /MOD de HEAD y BODY y /FORCEMIDIMAP para RMs y dioses pedidos por Pol'Thalas (Maraxus).
  * 10/03/2006: Corregí el bug que eliminaba mascotas y elementales al hacer worldsave - queda el código viejo por si había un motivo para esto del que no se sabía (Maraxus).
@@ -95,5 +95,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 27/04/2006: Se incluyó la clase clsByteQueue utilizada en el nuevo protocolo. (Maraxus).
  * 27/04/2006: No se permite invocar criaturas en zona segura por trigger o por mapa. (Maraxus).
  * 17/05/2006: Se eliminó la variable FIT de UserStats que no se usaba nunca. (Maraxus).
- * 03/06/2006: Cambios de Balance y DG. (Energía gastada al robar, daño de apuñalada, Sacerdotes Pretorianos remueven efecto de ocultarse) (Integer).
- * 09/06/2006: Cambios de Balance y DG. (El golpe del user es absorbido tanto por la armadura como por el escudo, reparticion de exp de los NPC, Mensajes de party overhead,  muertos no ven vida de NPC, ) (Integer).
+ * 03/06/2006: Cambios de Balance y GD. (Energía gastada al robar, daño de apuñalada, Sacerdotes Pretorianos remueven efecto de ocultarse) (Integer).
+ * 09/06/2006: Cambios de Balance y GD. (El golpe del user es absorbido tanto por la armadura como por el escudo, reparticion de exp de los NPC, Mensajes de party overhead,  muertos no ven vida de NPC ) (Integer).
