@@ -335,7 +335,7 @@ Public Enum eSkill
     Comerciar = 11
     Defensa = 12
     Pesca = 13
-    mineria = 14
+    Mineria = 14
     Carpinteria = 15
     Herreria = 16
     Liderazgo = 17
@@ -560,7 +560,7 @@ Public Type tHechizo
     'Barrin 29/9/03
     StaRequerido As Integer
 
-    Target As TargetType
+    target As TargetType
     
     NeedStaff As Integer
     StaffAffected As Boolean
@@ -571,7 +571,7 @@ Public Type LevelSkill
 End Type
 
 Public Type UserOBJ
-    ObjIndex As Integer
+    objIndex As Integer
     Amount As Integer
     Equipped As Byte
 End Type
@@ -607,7 +607,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    Map As Integer
+    map As Integer
     X As Integer
     Y As Integer
 End Type
@@ -621,8 +621,8 @@ End Type
 'Datos de user o npc
 Public Type Char
     CharIndex As Integer
-    Head As Integer
-    Body As Integer
+    head As Integer
+    body As Integer
     
     WeaponAnim As Integer
     ShieldAnim As Integer
@@ -631,7 +631,7 @@ Public Type Char
     FX As Integer
     loops As Integer
     
-    Heading As eHeading
+    heading As eHeading
 End Type
 
 'Tipos de objetos
@@ -742,7 +742,7 @@ Public Type ObjData
 End Type
 
 Public Type Obj
-    ObjIndex As Integer
+    objIndex As Integer
     Amount As Integer
 End Type
 
@@ -795,19 +795,19 @@ Public Type UserStats
     MaxHIT As Integer
     MinHIT As Integer
     
-    MaxHam As Integer
-    MinHam As Integer
+    MaxHam As Byte
+    MinHam As Byte
     
-    MaxAGU As Integer
-    MinAGU As Integer
+    MaxAGU As Byte
+    MinAGU As Byte
         
     def As Integer
     Exp As Double
     ELV As Long
     ELU As Long
-    UserSkills(1 To NUMSKILLS) As Integer
-    UserAtributos(1 To NUMATRIBUTOS) As Integer
-    UserAtributosBackUP(1 To NUMATRIBUTOS) As Integer
+    UserSkills(1 To NUMSKILLS) As Byte
+    UserAtributos(1 To NUMATRIBUTOS) As Byte
+    UserAtributosBackUP(1 To NUMATRIBUTOS) As Byte
     UserHechizos(1 To MAXUSERHECHIZOS) As Integer
     UsuariosMatados As Integer
     CriminalesMatados As Integer
@@ -1134,7 +1134,7 @@ End Type
 ' New type for holding the pathfinding info
 Public Type NpcPathFindingInfo
     Path() As tVertice      ' This array holds the path
-    Target As Position      ' The location where the NPC has to go
+    target As Position      ' The location where the NPC has to go
     PathLenght As Integer   ' Number of steps *
     CurPos As Integer       ' Current location of the npc
     TargetUser As Integer   ' UserIndex chased
@@ -1164,7 +1164,7 @@ Public Type npc
     InvReSpawn As Byte
 
     Comercia As Integer
-    Target As Long
+    target As Long
     TargetNPC As Long
     TipoItems As Integer
 
