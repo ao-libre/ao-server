@@ -1,5 +1,4 @@
 Attribute VB_Name = "modHexaStrings"
-#If SeguridadAlkon Then
 'Argentum Online 0.9.0.4
 '
 'Copyright (C) 2002 Márquez Pablo Ignacio
@@ -75,4 +74,3 @@ Public Function txtOffset(ByVal Text As String, ByVal off As Integer) As String
         txtOffset = txtOffset & Chr((Asc(L) + off) Mod 256)
     Next i
 End Function
-#End If

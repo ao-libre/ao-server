@@ -1149,8 +1149,8 @@ Select Case Lugar
         If UserList(VictimaIndex).Invent.ArmourEqpObjIndex > 0 Then
            Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
            Dim Obj2 As ObjData
-           If UserList(UserIndex).Invent.EscudoEqpObjIndex Then
-                Obj2 = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex)
+           If UserList(VictimaIndex).Invent.EscudoEqpObjIndex Then
+                Obj2 = ObjData(UserList(VictimaIndex).Invent.EscudoEqpObjIndex)
                 absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
            Else
                 absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
