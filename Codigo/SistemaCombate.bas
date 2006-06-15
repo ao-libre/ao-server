@@ -665,8 +665,12 @@ Select Case Lugar
         If UserList(UserIndex).Invent.ArmourEqpObjIndex > 0 Then
            Dim Obj2 As ObjData
            Obj = ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex)
-           Obj2 = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex)
-           absorbido = RandomNumber(Obj.MinDef + Obj.MinDef, Obj.MaxDef + Obj.MaxDef)
+           If UserList(UserIndex).Invent.EscudoEqpObjIndex Then
+                Obj2 = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex)
+                absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
+           Else
+                absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+           End If
            absorbido = absorbido + defbarco
            daño = daño - absorbido
            If daño < 1 Then daño = 1
@@ -1145,8 +1149,12 @@ Select Case Lugar
         If UserList(VictimaIndex).Invent.ArmourEqpObjIndex > 0 Then
            Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
            Dim Obj2 As ObjData
-           Obj2 = ObjData(UserList(VictimaIndex).Invent.EscudoEqpObjIndex)
-           absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
+           If UserList(UserIndex).Invent.EscudoEqpObjIndex Then
+                Obj2 = ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex)
+                absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
+           Else
+                absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+           End If
            absorbido = absorbido + defbarco - Resist
            daño = daño - absorbido
            If daño < 0 Then daño = 1
