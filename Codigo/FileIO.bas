@@ -51,7 +51,8 @@ NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Admines"))
 
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Admines", "Admin" & WizNum))
-    If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
+    
+    If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
     If UCase$(name) = NomB Then
         EsAdmin = True
         Exit Function
@@ -69,7 +70,8 @@ Dim NomB As String
 NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Dioses"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Dioses", "Dios" & WizNum))
-    If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
+    
+    If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
     If UCase$(name) = NomB Then
         EsDios = True
         Exit Function
@@ -86,7 +88,8 @@ Dim NomB As String
 NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "SemiDioses"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "SemiDioses", "SemiDios" & WizNum))
-    If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
+    
+    If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
     If UCase$(name) = NomB Then
         EsSemiDios = True
         Exit Function
@@ -104,7 +107,8 @@ Dim NomB As String
 NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Consejeros"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "Consejeros", "Consejero" & WizNum))
-    If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
+    
+    If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
     If UCase$(name) = NomB Then
         EsConsejero = True
         Exit Function
@@ -121,7 +125,8 @@ Dim NomB As String
 NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "RolesMasters"))
 For WizNum = 1 To NumWizs
     NomB = UCase$(GetVar(IniPath & "Server.ini", "RolesMasters", "RM" & WizNum))
-    If Left(NomB, 1) = "*" Or Left(NomB, 1) = "+" Then NomB = Right(NomB, Len(NomB) - 1)
+    
+    If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
     If UCase$(name) = NomB Then
         EsRolesMaster = True
         Exit Function
@@ -145,6 +150,7 @@ TxtDimension = Tam
 End Function
 
 Public Sub CargarForbidenWords()
+
 ReDim ForbidenNames(1 To TxtDimension(DatPath & "NombresInvalidos.txt"))
 Dim N As Integer, i As Integer
 N = FreeFile(1)
@@ -185,6 +191,7 @@ Call Leer.Initialize(DatPath & "Hechizos.dat")
 
 'obtiene el numero de hechizos
 NumeroHechizos = val(Leer.GetValue("INIT", "NumeroHechizos"))
+
 ReDim Hechizos(1 To NumeroHechizos) As tHechizo
 
 frmCargando.cargar.min = 0
@@ -264,7 +271,7 @@ For Hechizo = 1 To NumeroHechizos
     
     Hechizos(Hechizo).Invoca = val(Leer.GetValue("Hechizo" & Hechizo, "Invoca"))
     Hechizos(Hechizo).NumNpc = val(Leer.GetValue("Hechizo" & Hechizo, "NumNpc"))
-    Hechizos(Hechizo).cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
+    Hechizos(Hechizo).Cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
     Hechizos(Hechizo).Mimetiza = val(Leer.GetValue("hechizo" & Hechizo, "Mimetiza"))
     
     
@@ -297,6 +304,7 @@ Sub LoadMotd()
 Dim i As Integer
 
 MaxLines = val(GetVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines"))
+
 ReDim MOTD(1 To MaxLines)
 For i = 1 To MaxLines
     MOTD(i).texto = GetVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & i)
@@ -1611,7 +1619,7 @@ Call LogError("Error en SaveUser")
 
 End Sub
 
-Function Criminal(ByVal UserIndex As Integer) As Boolean
+Function criminal(ByVal UserIndex As Integer) As Boolean
 
 Dim L As Long
 L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
@@ -1621,7 +1629,7 @@ L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
     UserList(UserIndex).Reputacion.NobleRep + _
     UserList(UserIndex).Reputacion.PlebeRep
 L = L / 6
-Criminal = (L < 0)
+criminal = (L < 0)
 
 End Function
 
