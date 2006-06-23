@@ -428,9 +428,9 @@ End If
 '%%%%%%%%%%%%% PREVENIR HACKEO DE LOS SKILLS %%%%%%%%%%%%%
 
 UserList(UserIndex).Password = Password
-UserList(UserIndex).Char.Heading = eHeading.SOUTH
+UserList(UserIndex).Char.heading = eHeading.SOUTH
 
-Call DarCuerpoYCabeza(UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Raza, UserList(UserIndex).Genero)
+Call DarCuerpoYCabeza(UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Raza, UserList(UserIndex).Genero)
 UserList(UserIndex).OrigChar = UserList(UserIndex).Char
    
  
@@ -1082,7 +1082,7 @@ Select Case sndRoute
     Case SendTarget.ToCiudadanos
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
-                If Not Criminal(LoopC) Then
+                If Not criminal(LoopC) Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -1092,7 +1092,7 @@ Select Case sndRoute
     Case SendTarget.ToCriminales
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
-                If Criminal(LoopC) Then
+                If criminal(LoopC) Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -1122,7 +1122,7 @@ Select Case sndRoute
     Case ToCiudadanosYRMs
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
-                If Not Criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
+                If Not criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -1132,7 +1132,7 @@ Select Case sndRoute
     Case ToCriminalesYRMs
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
-                If Criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
+                If criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
@@ -1409,7 +1409,7 @@ End Function
 Function ValidateChr(ByVal UserIndex As Integer) As Boolean
 
 ValidateChr = UserList(UserIndex).Char.Head <> 0 _
-                And UserList(UserIndex).Char.Body <> 0 _
+                And UserList(UserIndex).Char.body <> 0 _
                 And ValidateSkills(UserIndex)
 
 End Function
@@ -1497,7 +1497,7 @@ Call UpdateUserInv(True, UserIndex, 0)
 Call UpdateUserHechizos(True, UserIndex, 0)
 
 If UserList(UserIndex).flags.Navegando = 1 Then
-     UserList(UserIndex).Char.Body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
+     UserList(UserIndex).Char.body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
      UserList(UserIndex).Char.Head = 0
      UserList(UserIndex).Char.WeaponAnim = NingunArma
      UserList(UserIndex).Char.ShieldAnim = NingunEscudo
@@ -1669,7 +1669,7 @@ End If
 
 If UserList(UserIndex).flags.Navegando = 1 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NAVEG")
 
-If Criminal(UserIndex) Then
+If criminal(UserIndex) Then
     'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Miembro de las fuerzas del caos > Seguro desactivado <" & FONTTYPE_FIGHT)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "SEGOFF")
     UserList(UserIndex).flags.Seguro = False
@@ -1799,13 +1799,13 @@ Sub ResetCharInfo(ByVal UserIndex As Integer)
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
 '*************************************************
     With UserList(UserIndex).Char
-        .Body = 0
+        .body = 0
         .CascoAnim = 0
         .CharIndex = 0
         .FX = 0
         .Head = 0
         .loops = 0
-        .Heading = 0
+        .heading = 0
         .loops = 0
         .ShieldAnim = 0
         .WeaponAnim = 0
@@ -2010,7 +2010,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2179,7 +2179,7 @@ On Error GoTo ErrorHandler:
     Dim X As Integer
     Dim Y As Integer
     Dim DummyInt As Integer
-    Dim T() As String
+    Dim t() As String
     Dim i As Integer
     
     Dim sndData As String
@@ -2924,7 +2924,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, val(Arg2), UserList(tIndex).Char.Head, UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, val(Arg2), UserList(tIndex).Char.Head, UserList(tIndex).Char.heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
             Exit Sub
         Case "HEAD"
             If tIndex <= 0 Then
@@ -2933,7 +2933,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 Exit Sub
             End If
             
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, UserList(tIndex).Char.Body, val(Arg2), UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, tIndex, UserList(tIndex).Char.body, val(Arg2), UserList(tIndex).Char.heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
             Exit Sub
         Case "CRI"
             If tIndex <= 0 Then
@@ -3144,7 +3144,7 @@ If UCase$(Left$(rData, 9)) = "/REVIVIR " Then
     UserList(tIndex).flags.Muerto = 0
     UserList(tIndex).Stats.MinHP = UserList(tIndex).Stats.MaxHP
     Call DarCuerpoDesnudo(tIndex)
-    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, val(tIndex), UserList(tIndex).Char.Body, UserList(tIndex).OrigChar.Head, UserList(tIndex).Char.Heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tIndex).Pos.Map, val(tIndex), UserList(tIndex).Char.body, UserList(tIndex).OrigChar.Head, UserList(tIndex).Char.heading, UserList(tIndex).Char.WeaponAnim, UserList(tIndex).Char.ShieldAnim, UserList(tIndex).Char.CascoAnim)
     Call SendUserStatsBox(val(tIndex))
     Call SendData(SendTarget.ToIndex, tIndex, 0, "||" & UserList(UserIndex).name & " te ha resucitado." & FONTTYPE_INFO)
     Call LogGM(UserList(UserIndex).name, "Resucito a " & UserList(tIndex).name, False)
@@ -4232,16 +4232,16 @@ If UCase(Left(rData, 5)) = "ZMOTD" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     rData = Right(rData, Len(rData) - 5)
-    T = Split(rData, vbCrLf)
+    t = Split(rData, vbCrLf)
     
-    MaxLines = UBound(T) - LBound(T) + 1
+    MaxLines = UBound(t) - LBound(t) + 1
     ReDim MOTD(1 To MaxLines)
     Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(MaxLines))
     
-    N = LBound(T)
+    N = LBound(t)
     For LoopC = 1 To MaxLines
-        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, T(N))
-        MOTD(LoopC).texto = T(N)
+        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, t(N))
+        MOTD(LoopC).texto = t(N)
         N = N + 1
     Next LoopC
     

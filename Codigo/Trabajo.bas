@@ -923,7 +923,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
         Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "||¡" & UserList(LadrOnIndex).name & " es un criminal!" & FONTTYPE_INFO)
     End If
 
-    If Not Criminal(LadrOnIndex) Then
+    If Not criminal(LadrOnIndex) Then
         Call VolverCriminal(LadrOnIndex)
     End If
     
@@ -1148,33 +1148,9 @@ errhandler:
 
 End Sub
 
-Sub VolverCriminal(ByVal UserIndex As Integer)
 
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
-If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
-    UserList(UserIndex).Reputacion.BurguesRep = 0
-    UserList(UserIndex).Reputacion.NobleRep = 0
-    UserList(UserIndex).Reputacion.PlebeRep = 0
-    UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
-    If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
-        UserList(UserIndex).Reputacion.BandidoRep = MAXREP
-    If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
-End If
 
-End Sub
-
-Sub VolverCiudadano(ByVal UserIndex As Integer)
-
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
-
-UserList(UserIndex).Reputacion.LadronesRep = 0
-UserList(UserIndex).Reputacion.BandidoRep = 0
-UserList(UserIndex).Reputacion.AsesinoRep = 0
-UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlASALTO
-If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
-    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
-End Sub
 
 Public Sub DoMineria(ByVal UserIndex As Integer)
 On Error GoTo errhandler

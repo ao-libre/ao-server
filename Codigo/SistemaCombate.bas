@@ -1353,7 +1353,7 @@ End If
 
 If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
     Debug.Print "NO PEGA"
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
+    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
     PuedeAtacarNPC = False
     Exit Function
 End If
