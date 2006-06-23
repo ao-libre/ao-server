@@ -687,9 +687,9 @@ If UserList(UserIndex).Stats.MinHP <= 0 Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "6") ' Le informamos que ha muerto ;)
     
     'Si lo mato un guardia
-    If Criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
         Call RestarCriminalidad(UserIndex)
-        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
     End If
     
     If Npclist(NpcIndex).MaestroUser > 0 Then
@@ -884,14 +884,14 @@ If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO 
 End If
 
 If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes sacar el seguro antes de poder atacar una mascota de un ciudadano." & FONTTYPE_WARNING)
         Exit Sub
     End If
 End If
 
 If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas." & FONTTYPE_WARNING)
         Exit Sub
     End If
@@ -902,6 +902,10 @@ If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal And UserList(UserIndex).flag
     Exit Sub
 End If
 
+If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
+    Exit Sub
+End If
 
 Call NpcAtacado(NpcIndex, UserIndex)
 
@@ -1213,11 +1217,11 @@ End Sub
 Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer)
     If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
 
-    If Not Criminal(AttackerIndex) And Not Criminal(VictimIndex) Then
+    If Not criminal(AttackerIndex) And Not criminal(VictimIndex) Then
         Call VolverCriminal(AttackerIndex)
     End If
     
-    If Not Criminal(VictimIndex) Then
+    If Not criminal(VictimIndex) Then
         UserList(AttackerIndex).Reputacion.BandidoRep = UserList(AttackerIndex).Reputacion.BandidoRep + vlASALTO
         If UserList(AttackerIndex).Reputacion.BandidoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.BandidoRep = MAXREP
@@ -1279,7 +1283,7 @@ If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(
     Exit Function
 End If
 
-If (Not Criminal(VictimIndex)) And (UserList(AttackerIndex).Faccion.ArmadaReal = 1) Then
+If (Not criminal(VictimIndex)) And (UserList(AttackerIndex).Faccion.ArmadaReal = 1) Then
     Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Los soldados del Ejercito Real tienen prohibido atacar ciudadanos." & FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1312,7 +1316,7 @@ If UserList(AttackerIndex).flags.Muerto = 1 Then
 End If
 
 If UserList(AttackerIndex).flags.Seguro Then
-        If Not Criminal(VictimIndex) Then
+        If Not criminal(VictimIndex) Then
                 Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar ciudadanos, para hacerlo debes desactivar el seguro apretando la tecla S" & FONTTYPE_FIGHT)
                 Exit Function
         End If
@@ -1327,7 +1331,7 @@ End Function
 Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As Integer) As Boolean
 
 If Npclist(NpcIndex).MaestroUser > 0 Then
-    If Not Criminal(AttackerIndex) And Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(AttackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
         If UserList(AttackerIndex).flags.Seguro Then
             Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Para atacar mascotas de ciudadanos debes quitarte el seguro" & FONTTYPE_FIGHT)
             PuedeAtacarNPC = False
@@ -1347,6 +1351,12 @@ If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
     Exit Function
 End If
 
+If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
+    Debug.Print "NO PEGA"
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
+    PuedeAtacarNPC = False
+    Exit Function
+End If
 
 PuedeAtacarNPC = True
 

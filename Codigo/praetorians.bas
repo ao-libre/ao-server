@@ -33,7 +33,9 @@ Public Const ALCOBA1_Y As Integer = 25
 Public Const ALCOBA2_X As Integer = 67
 Public Const ALCOBA2_Y As Integer = 25
 
-
+'Added by Nacho
+'Cuantos pretorianos vivos quedan. Uno por cada alcoba
+Public pretorianosVivos(1 To 2) As Integer
 
 '/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 '/\/\/\/\/\/\/\/\ MODULO DE COMBATE PRETORIANO /\/\/\/\/\/\/\/\/\
@@ -73,6 +75,11 @@ End Function
 
 
 Sub CrearClanPretoriano(ByVal mapa As Integer, ByVal X As Integer, ByVal Y As Integer)
+'********************************************************
+'Author: EL OSO
+'Inicializa el clan Pretoriano.
+'Last Modify Date: 22/6/06: (Nacho) Seteamos cuantos NPCs creamos
+'********************************************************
 On Error GoTo errorh
 
     ''------------------------------------------------------
@@ -95,9 +102,11 @@ On Error GoTo errorh
         Case Is < 50
             wp.X = ALCOBA2_X
             wp.Y = ALCOBA2_Y
+            pretorianosVivos(2) = 7 'Hay 7 + el Rey.
         Case Is >= 50
             wp.X = ALCOBA1_X
             wp.Y = ALCOBA1_Y
+            pretorianosVivos(1) = 7 'Hay 7 + el Rey.
     End Select
     
     TeleFrag = MapData(wp.Map, wp.X, wp.Y).NpcIndex
@@ -136,6 +145,9 @@ On Error GoTo errorh
     Call CrearNPC(PRCAZA_NPC, MAPA_PRETORIANO, wp)
     wp.X = wp.X - 4
     Call CrearNPC(PRMAGO_NPC, MAPA_PRETORIANO, wp)
+    
+    pretorianosVivos = 8
+    
 Exit Sub
 
 errorh:

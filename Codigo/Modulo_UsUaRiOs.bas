@@ -55,7 +55,7 @@ Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Has ganado " & DaExp & " 
 Call SendData(SendTarget.ToIndex, VictimIndex, 0, "||" & UserList(AttackerIndex).name & " te ha matado!" & FONTTYPE_FIGHT)
 
 If TriggerZonaPelea(VictimIndex, AttackerIndex) <> TRIGGER6_PERMITE Then
-    If (Not Criminal(VictimIndex)) Then
+    If (Not criminal(VictimIndex)) Then
          UserList(AttackerIndex).Reputacion.AsesinoRep = UserList(AttackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
          If UserList(AttackerIndex).Reputacion.AsesinoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.AsesinoRep = MAXREP
@@ -235,7 +235,7 @@ On Local Error GoTo hayerror
         Dim bCr As Byte
         Dim SendPrivilegios As Byte
        
-        bCr = Criminal(UserIndex)
+        bCr = criminal(UserIndex)
 
         If klan <> "" Then
             If sndRoute = SendTarget.ToIndex Then
@@ -968,7 +968,7 @@ End Function
 Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
 If Npclist(NpcIndex).MaestroUser > 0 Then
-        EsMascotaCiudadano = Not Criminal(Npclist(NpcIndex).MaestroUser)
+        EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
         If EsMascotaCiudadano Then Call SendData(SendTarget.ToIndex, Npclist(NpcIndex).MaestroUser, 0, "||¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!" & FONTTYPE_FIGHT)
 End If
 
@@ -1139,7 +1139,7 @@ On Error GoTo ErrorHandler
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
         ' << Si es newbie no pierde el inventario >>
-        If Not EsNewbie(UserIndex) Or Criminal(UserIndex) Then
+        If Not EsNewbie(UserIndex) Or criminal(UserIndex) Then
             Call TirarTodo(UserIndex)
         Else
             If EsNewbie(UserIndex) Then Call TirarTodosLosItemsNoNewbies(UserIndex)
@@ -1256,7 +1256,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     
     If TriggerZonaPelea(Muerto, Atacante) = TRIGGER6_PERMITE Then Exit Sub
     
-    If Criminal(Muerto) Then
+    If criminal(Muerto) Then
         If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
             UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
             If UserList(Atacante).Faccion.CriminalesMatados < 65000 Then _
@@ -1589,3 +1589,45 @@ If FileExist(CharFile, vbNormal) Then
 End If
 
 End Sub
+
+Sub VolverCriminal(ByVal UserIndex As Integer)
+'**************************************************************
+'Author: Unknow
+'Last Modify Date: 21/06/2006
+'Nacho: Actualiza el tag al cliente
+'**************************************************************
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+
+If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
+    UserList(UserIndex).Reputacion.BurguesRep = 0
+    UserList(UserIndex).Reputacion.NobleRep = 0
+    UserList(UserIndex).Reputacion.PlebeRep = 0
+    UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
+    If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.BandidoRep = MAXREP
+    If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
+End If
+Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+End Sub
+
+Sub VolverCiudadano(ByVal UserIndex As Integer)
+'**************************************************************
+'Author: Unknow
+'Last Modify Date: 21/06/2006
+'Nacho: Actualiza el tag al cliente.
+'**************************************************************
+
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+
+UserList(UserIndex).Reputacion.LadronesRep = 0
+UserList(UserIndex).Reputacion.BandidoRep = 0
+UserList(UserIndex).Reputacion.AsesinoRep = 0
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlASALTO
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+'Tenemos que actualizar el Tag del usuario. Esto no es lo optimo, ya que es un 1/0 que cambia en el paquete.
+Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+End Sub
+

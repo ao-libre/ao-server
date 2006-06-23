@@ -65,6 +65,11 @@ Sub QuitarMascotaNpc(ByVal Maestro As Integer, ByVal Mascota As Integer)
 End Sub
 
 Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+'********************************************************
+'Author: Unknown
+'Llamado cuando la vida de un NPC llega a cero.
+'Last Modify Date: 22/6/06: (Nacho) Chequeamos si es pretoriano
+'********************************************************
 On Error GoTo errhandler
 
    Dim MiNPC As npc
@@ -90,6 +95,7 @@ On Error GoTo errhandler
         Call CrearClanPretoriano(MAPA_PRETORIANO, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
     ElseIf esPretoriano(NpcIndex) > 0 Then
             Npclist(NpcIndex).Invent.ArmourEqpSlot = 0
+            pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) - 1
     End If
    
    'Quitamos el npc
@@ -104,14 +110,14 @@ On Error GoTo errhandler
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then
-            Dim T As Integer
-            For T = 1 To MAXMASCOTAS
-                  If UserList(UserIndex).MascotasIndex(T) > 0 Then
-                      If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
-                              Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
+            Dim t As Integer
+            For t = 1 To MAXMASCOTAS
+                  If UserList(UserIndex).MascotasIndex(t) > 0 Then
+                      If Npclist(UserList(UserIndex).MascotasIndex(t)).TargetNPC = NpcIndex Then
+                              Call FollowAmo(UserList(UserIndex).MascotasIndex(t))
                       End If
                   End If
-            Next T
+            Next t
         End If
         
         '[KEVIN]
@@ -160,7 +166,7 @@ On Error GoTo errhandler
             If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
                 UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         End If
-        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
         
         Call CheckUserLevel(UserIndex)
    End If ' Userindex > 0
@@ -228,12 +234,12 @@ End Sub
 
 Sub ResetNpcCharInfo(ByVal NpcIndex As Integer)
 
-Npclist(NpcIndex).Char.Body = 0
+Npclist(NpcIndex).Char.body = 0
 Npclist(NpcIndex).Char.CascoAnim = 0
 Npclist(NpcIndex).Char.CharIndex = 0
 Npclist(NpcIndex).Char.FX = 0
 Npclist(NpcIndex).Char.Head = 0
-Npclist(NpcIndex).Char.Heading = 0
+Npclist(NpcIndex).Char.heading = 0
 Npclist(NpcIndex).Char.loops = 0
 Npclist(NpcIndex).Char.ShieldAnim = 0
 Npclist(NpcIndex).Char.WeaponAnim = 0
@@ -477,21 +483,21 @@ Dim CharIndex As Integer
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CC" & Npclist(NpcIndex).Char.Body & "," & Npclist(NpcIndex).Char.Head & "," & Npclist(NpcIndex).Char.Heading & "," & Npclist(NpcIndex).Char.CharIndex & "," & X & "," & Y)
+        Call SendData(sndRoute, sndIndex, sndMap, "CC" & Npclist(NpcIndex).Char.body & "," & Npclist(NpcIndex).Char.Head & "," & Npclist(NpcIndex).Char.heading & "," & Npclist(NpcIndex).Char.CharIndex & "," & X & "," & Y)
     End If
 
 End Sub
 
-Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal NpcIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As eHeading)
+Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
 
 If NpcIndex > 0 Then
-    Npclist(NpcIndex).Char.Body = Body
+    Npclist(NpcIndex).Char.body = body
     Npclist(NpcIndex).Char.Head = Head
-    Npclist(NpcIndex).Char.Heading = Heading
+    Npclist(NpcIndex).Char.heading = heading
     If sndRoute = SendTarget.ToMap Then
-        Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
+        Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & body & "," & Head & "," & heading)
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & Body & "," & Head & "," & Heading)
+        Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & body & "," & Head & "," & heading)
     End If
 End If
 
@@ -552,7 +558,7 @@ On Error GoTo errh
             'Update map and user pos
             MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
             Npclist(NpcIndex).Pos = nPos
-            Npclist(NpcIndex).Char.Heading = nHeading
+            Npclist(NpcIndex).Char.heading = nHeading
             MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
             Call CheckUpdateNeededNpc(NpcIndex, nHeading)
         End If
@@ -575,7 +581,7 @@ Else ' No es mascota
             'Update map and user pos
             MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
             Npclist(NpcIndex).Pos = nPos
-            Npclist(NpcIndex).Char.Heading = nHeading
+            Npclist(NpcIndex).Char.heading = nHeading
             MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = NpcIndex
             
             Call CheckUpdateNeededNpc(NpcIndex, nHeading)
@@ -790,9 +796,9 @@ Npclist(NpcIndex).flags.Faccion = val(Leer.GetValue("NPC" & NpcNumber, "Faccion"
 
 Npclist(NpcIndex).NPCtype = val(Leer.GetValue("NPC" & NpcNumber, "NpcType"))
 
-Npclist(NpcIndex).Char.Body = val(Leer.GetValue("NPC" & NpcNumber, "Body"))
+Npclist(NpcIndex).Char.body = val(Leer.GetValue("NPC" & NpcNumber, "Body"))
 Npclist(NpcIndex).Char.Head = val(Leer.GetValue("NPC" & NpcNumber, "Head"))
-Npclist(NpcIndex).Char.Heading = val(Leer.GetValue("NPC" & NpcNumber, "Heading"))
+Npclist(NpcIndex).Char.heading = val(Leer.GetValue("NPC" & NpcNumber, "Heading"))
 
 Npclist(NpcIndex).Attackable = val(Leer.GetValue("NPC" & NpcNumber, "Attackable"))
 Npclist(NpcIndex).Comercia = val(Leer.GetValue("NPC" & NpcNumber, "Comercia"))
