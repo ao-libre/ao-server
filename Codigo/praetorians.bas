@@ -146,8 +146,6 @@ On Error GoTo errorh
     wp.X = wp.X - 4
     Call CrearNPC(PRMAGO_NPC, MAPA_PRETORIANO, wp)
     
-    pretorianosVivos = 8
-    
 Exit Sub
 
 errorh:
