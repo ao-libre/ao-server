@@ -742,7 +742,7 @@ Public Type ObjData
     Refuerzo As Byte
 End Type
 
-Public Type obj
+Public Type Obj
     ObjIndex As Integer
     Amount As Integer
 End Type
@@ -1127,7 +1127,7 @@ Public Type NPCFlags
 End Type
 
 Public Type tCriaturasEntrenador
-    NpcIndex As Integer
+    npcIndex As Integer
     NpcName As String
     tmpIndex As Integer
 End Type
@@ -1221,8 +1221,8 @@ Public Type MapBlock
     Blocked As Byte
     Graphic(1 To 4) As Integer
     UserIndex As Integer
-    NpcIndex As Integer
-    objInfo As obj
+    npcIndex As Integer
+    objInfo As Obj
     TileExit As WorldPos
     trigger As eTrigger
 End Type
@@ -1329,11 +1329,11 @@ Public EncriptarProtocolosCriticos As Boolean
 
 '*****************ARRAYS PUBLICOS*************************
 Public UserList() As User 'USUARIOS
-Public Npclist() As npc 'NPCS
+Public Npclist(1 To MAXNPCS) As npc 'NPCS
 Public MapData() As MapBlock
 Public MapInfo() As MapInfo
 Public Hechizos() As tHechizo
-Public CharList() As Integer
+Public CharList(1 To MAXCHARS) As Integer
 Public ObjData() As ObjData
 Public FX() As FXdata
 Public SpawnList() As tCriaturasEntrenador
@@ -1344,7 +1344,7 @@ Public ArmadurasHerrero() As Integer
 Public ObjCarpintero() As Integer
 Public MD5s() As String
 Public BanIps As New Collection
-Public Parties() As clsParty
+Public Parties(1 To MAX_PARTIES) As clsParty
 '*********************************************************
 
 Public Nix As WorldPos
@@ -1363,6 +1363,8 @@ Public Declare Function GetTickCount Lib "kernel32" () As Long
 
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
+
+Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef Destination As Any, ByVal Length As Long)
 
 Public Enum e_ObjetosCriticos
     Manzana = 1

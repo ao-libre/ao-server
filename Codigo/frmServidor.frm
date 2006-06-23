@@ -783,8 +783,8 @@ Next
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
-ReDim CharList(1 To MAXCHARS) As Integer
+Call FreeNPCs
+Call FreeCharIndexes
 
 Call LoadSini
 Call CargarBackUp
@@ -848,20 +848,20 @@ Command20.Visible = True
 Command26.Visible = False
 #End If
 
-VS1.Min = 0
+VS1.min = 0
 If picCont.Height > picFuera.ScaleHeight Then
     VS1.max = picCont.Height - picFuera.ScaleHeight
 Else
     VS1.max = 0
 End If
-picCont.Top = -VS1.Value
+picCont.Top = -VS1.value
 
 End Sub
 
 Private Sub VS1_Change()
-picCont.Top = -VS1.Value
+picCont.Top = -VS1.value
 End Sub
 
 Private Sub VS1_Scroll()
-picCont.Top = -VS1.Value
+picCont.Top = -VS1.value
 End Sub

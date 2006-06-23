@@ -44,75 +44,75 @@ Select Case UCase$(UserList(UserIndex).Raza)
       Select Case UCase$(UserList(UserIndex).Genero)
                 Case "HOMBRE"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 21
+                        UserList(UserIndex).CharMimetizado.body = 21
                     Else
-                        UserList(UserIndex).Char.Body = 21
+                        UserList(UserIndex).Char.body = 21
                     End If
                 Case "MUJER"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 39
+                        UserList(UserIndex).CharMimetizado.body = 39
                     Else
-                        UserList(UserIndex).Char.Body = 39
+                        UserList(UserIndex).Char.body = 39
                     End If
       End Select
     Case "ELFO OSCURO"
       Select Case UCase$(UserList(UserIndex).Genero)
                 Case "HOMBRE"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 32
+                        UserList(UserIndex).CharMimetizado.body = 32
                     Else
-                        UserList(UserIndex).Char.Body = 32
+                        UserList(UserIndex).Char.body = 32
                     End If
                 Case "MUJER"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 40
+                        UserList(UserIndex).CharMimetizado.body = 40
                     Else
-                        UserList(UserIndex).Char.Body = 40
+                        UserList(UserIndex).Char.body = 40
                     End If
       End Select
     Case "ENANO"
       Select Case UCase$(UserList(UserIndex).Genero)
                 Case "HOMBRE"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 53
+                        UserList(UserIndex).CharMimetizado.body = 53
                     Else
-                        UserList(UserIndex).Char.Body = 53
+                        UserList(UserIndex).Char.body = 53
                     End If
                 Case "MUJER"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 60
+                        UserList(UserIndex).CharMimetizado.body = 60
                     Else
-                        UserList(UserIndex).Char.Body = 60
+                        UserList(UserIndex).Char.body = 60
                     End If
       End Select
     Case "GNOMO"
       Select Case UCase$(UserList(UserIndex).Genero)
                 Case "HOMBRE"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 53
+                        UserList(UserIndex).CharMimetizado.body = 53
                     Else
-                        UserList(UserIndex).Char.Body = 53
+                        UserList(UserIndex).Char.body = 53
                     End If
                 Case "MUJER"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 60
+                        UserList(UserIndex).CharMimetizado.body = 60
                     Else
-                        UserList(UserIndex).Char.Body = 60
+                        UserList(UserIndex).Char.body = 60
                     End If
       End Select
     Case Else
       Select Case UCase$(UserList(UserIndex).Genero)
                 Case "HOMBRE"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 21
+                        UserList(UserIndex).CharMimetizado.body = 21
                     Else
-                        UserList(UserIndex).Char.Body = 21
+                        UserList(UserIndex).Char.body = 21
                     End If
                 Case "MUJER"
                     If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.Body = 39
+                        UserList(UserIndex).CharMimetizado.body = 39
                     Else
-                        UserList(UserIndex).Char.Body = 39
+                        UserList(UserIndex).Char.body = 39
                     End If
       End Select
     
@@ -223,15 +223,6 @@ Libertad.Y = 65
 
 LastBackup = Format(Now, "Short Time")
 Minutos = Format(Now, "Short Time")
-
-
-
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
-ReDim CharList(1 To MAXCHARS) As Integer
-ReDim Parties(1 To MAX_PARTIES) As clsParty
-ReDim Guilds(1 To MAX_GUILDS) As clsClan
-
-
 
 IniPath = App.Path & "\"
 DatPath = App.Path & "\Dat\"
@@ -499,7 +490,7 @@ Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = 
     FileExist = Dir$(file, FileType) <> ""
 End Function
 
-Function ReadField(ByVal Pos As Integer, ByVal text As String, ByVal SepASCII As Integer) As String
+Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
 'All these functions are much faster using the "$" sign
 'after the function. This happens for a simple reason:
 'The functions return a variant without the $ sign. And
@@ -518,12 +509,12 @@ Seperator = Chr(SepASCII)
 LastPos = 0
 FieldNum = 0
 
-For i = 1 To Len(text)
-    CurChar = mid$(text, i, 1)
+For i = 1 To Len(Text)
+    CurChar = mid$(Text, i, 1)
     If CurChar = Seperator Then
         FieldNum = FieldNum + 1
         If FieldNum = Pos Then
-            ReadField = mid$(text, LastPos + 1, (InStr(LastPos + 1, text, Seperator, vbTextCompare) - 1) - (LastPos))
+            ReadField = mid$(Text, LastPos + 1, (InStr(LastPos + 1, Text, Seperator, vbTextCompare) - 1) - (LastPos))
             Exit Function
         End If
         LastPos = i
@@ -532,7 +523,7 @@ Next i
 
 FieldNum = FieldNum + 1
 If FieldNum = Pos Then
-    ReadField = mid$(text, LastPos + 1)
+    ReadField = mid$(Text, LastPos + 1)
 End If
 
 End Function
@@ -593,12 +584,12 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
+Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
 
@@ -858,7 +849,7 @@ On Error Resume Next
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
 
-Dim LoopC As Integer
+Dim LoopC As Long
   
 #If UsarQueSocket = 0 Then
 
@@ -894,8 +885,8 @@ Next LoopC
 LastUser = 0
 NumUsers = 0
 
-ReDim Npclist(1 To MAXNPCS) As npc 'NPCS
-ReDim CharList(1 To MAXCHARS) As Integer
+Call FreeNPCs
+Call FreeCharIndexes
 
 Call LoadSini
 Call LoadOBJData
@@ -1035,7 +1026,7 @@ Else
     'restore old char
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Recuperas tu apariencia normal." & FONTTYPE_INFO)
     
-    UserList(UserIndex).Char.Body = UserList(UserIndex).CharMimetizado.Body
+    UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
     UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
     UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
     UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
@@ -1044,7 +1035,7 @@ Else
     
     UserList(UserIndex).Counters.Mimetismo = 0
     UserList(UserIndex).flags.Mimetizado = 0
-    Call ChangeUserChar(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 End If
             
 End Sub
@@ -1067,13 +1058,13 @@ End If
 End Sub
 
 
-Public Sub EfectoParalisisNpc(ByVal NpcIndex As Integer)
+Public Sub EfectoParalisisNpc(ByVal npcIndex As Integer)
 
-If Npclist(NpcIndex).Contadores.Paralisis > 0 Then
-    Npclist(NpcIndex).Contadores.Paralisis = Npclist(NpcIndex).Contadores.Paralisis - 1
+If Npclist(npcIndex).Contadores.Paralisis > 0 Then
+    Npclist(npcIndex).Contadores.Paralisis = Npclist(npcIndex).Contadores.Paralisis - 1
 Else
-    Npclist(NpcIndex).flags.Paralizado = 0
-    Npclist(NpcIndex).flags.Inmovilizado = 0
+    Npclist(npcIndex).flags.Paralizado = 0
+    Npclist(npcIndex).flags.Inmovilizado = 0
 End If
 
 End Sub
@@ -1372,4 +1363,30 @@ Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
 Call EstadisticasWeb.Informar(UPTIME_SERVER, (Ta - tInicioServer) / 1000)
 Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 
+End Sub
+
+Public Sub FreeNPCs()
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Releases all NPC Indexes
+'***************************************************
+    Dim LoopC As Long
+    
+    ' Free all NPC indexes
+    For LoopC = 1 To MAXNPCS
+        Npclist(LoopC).flags.NPCActive = False
+    Next LoopC
+End Sub
+
+Public Sub FreeCharIndexes()
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Releases all char indexes
+'***************************************************
+    Dim LoopC As Long
+    
+    ' Free all char indexes (set them all to 0)
+    Call ZeroMemory(CharList(1), MAXCHARS * Len(CharList(1)))
 End Sub

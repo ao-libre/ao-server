@@ -229,7 +229,7 @@ On Local Error GoTo hayerror
         'Send make character command to clients
         Dim klan As String
         If UserList(UserIndex).GuildIndex > 0 Then
-            klan = Guilds(UserList(UserIndex).GuildIndex).GuildName
+            klan = modGuilds.GuildName(UserList(UserIndex).GuildIndex)
         End If
         
         Dim bCr As Byte
@@ -818,8 +818,8 @@ Dim GuildI As Integer
     
     GuildI = UserList(UserIndex).GuildIndex
     If GuildI > 0 Then
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clan: " & Guilds(GuildI).GuildName & FONTTYPE_INFO)
-        If UCase$(Guilds(GuildI).GetLeader) = UCase$(UserList(sendIndex).name) Then
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clan: " & modGuilds.GuildName(GuildI) & FONTTYPE_INFO)
+        If UCase$(modGuilds.GuildLeader(GuildI)) = UCase$(UserList(sendIndex).name) Then
             Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Status: Lider" & FONTTYPE_INFO)
         End If
         'guildpts no tienen objeto
@@ -965,52 +965,52 @@ DameUserIndexConNombre = LoopC
 End Function
 
 
-Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
+Function EsMascotaCiudadano(ByVal npcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
-If Npclist(NpcIndex).MaestroUser > 0 Then
-        EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
-        If EsMascotaCiudadano Then Call SendData(SendTarget.ToIndex, Npclist(NpcIndex).MaestroUser, 0, "||¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!" & FONTTYPE_FIGHT)
+If Npclist(npcIndex).MaestroUser > 0 Then
+        EsMascotaCiudadano = Not criminal(Npclist(npcIndex).MaestroUser)
+        If EsMascotaCiudadano Then Call SendData(SendTarget.ToIndex, Npclist(npcIndex).MaestroUser, 0, "||¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!" & FONTTYPE_FIGHT)
 End If
 
 End Function
 
-Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+Sub NpcAtacado(ByVal npcIndex As Integer, ByVal UserIndex As Integer)
 
 
 'Guardamos el usuario que ataco el npc
-Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
+Npclist(npcIndex).flags.AttackedBy = UserList(UserIndex).name
 
-If Npclist(NpcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(NpcIndex).MaestroUser)
+If Npclist(npcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(npcIndex).MaestroUser)
 
-If EsMascotaCiudadano(NpcIndex, UserIndex) Then
+If EsMascotaCiudadano(npcIndex, UserIndex) Then
             Call VolverCriminal(UserIndex)
-            Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
-            Npclist(NpcIndex).Hostile = 1
+            Npclist(npcIndex).Movement = TipoAI.NPCDEFENSA
+            Npclist(npcIndex).Hostile = 1
 Else
     'Reputacion
-    If Npclist(NpcIndex).Stats.Alineacion = 0 Then
-       If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If Npclist(npcIndex).Stats.Alineacion = 0 Then
+       If Npclist(npcIndex).NPCtype = eNPCType.GuardiaReal Then
             UserList(UserIndex).Reputacion.NobleRep = 0
             UserList(UserIndex).Reputacion.PlebeRep = 0
             UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
             If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
                 UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
        Else
-            If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
+            If Not Npclist(npcIndex).MaestroUser > 0 Then   'mascotas nooo!
                 UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
                 If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
                     UserList(UserIndex).Reputacion.BandidoRep = MAXREP
             End If
        End If
-    ElseIf Npclist(NpcIndex).Stats.Alineacion = 1 Then
+    ElseIf Npclist(npcIndex).Stats.Alineacion = 1 Then
        UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR / 2
        If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
         UserList(UserIndex).Reputacion.PlebeRep = MAXREP
     End If
     
     'hacemos que el npc se defienda
-    Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
-    Npclist(NpcIndex).Hostile = 1
+    Npclist(npcIndex).Movement = TipoAI.NPCDEFENSA
+    Npclist(npcIndex).Hostile = 1
     
 End If
 
@@ -1277,7 +1277,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     End If
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef obj As obj)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj)
 'Call LogTarea("Sub Tilelibre")
 
 Dim Notfound As Boolean
@@ -1300,9 +1300,9 @@ Dim hayobj As Boolean
             
                 If LegalPos(nPos.Map, tX, tY) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.Map, tX, tY).objInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).objInfo.ObjIndex <> obj.ObjIndex)
+                    hayobj = (MapData(nPos.Map, tX, tY).objInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).objInfo.ObjIndex <> Obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.Map, tX, tY).objInfo.Amount + obj.Amount > MAX_INVENTORY_OBJS)
+                        hayobj = (MapData(nPos.Map, tX, tY).objInfo.Amount + Obj.Amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
@@ -1402,8 +1402,8 @@ For Y = YMinMapSize To YMaxMapSize
 #End If
         End If
 
-        If MapData(Map, X, Y).NpcIndex > 0 Then
-            Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+        If MapData(Map, X, Y).npcIndex > 0 Then
+            Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).npcIndex, Map, X, Y)
         End If
 
         If MapData(Map, X, Y).objInfo.ObjIndex > 0 Then

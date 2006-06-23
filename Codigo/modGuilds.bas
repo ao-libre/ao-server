@@ -13,28 +13,28 @@ Option Explicit
 Private GUILDINFOFILE   As String
 'archivo .\guilds\guildinfo.ini o similar
 
+Private Const MAX_GUILDS As Integer = 1000
+'cantidad maxima de guilds en el servidor
+
 Private Const ORDENARLISTADECLANES = True
 'True si se envia la lista ordenada por alineacion
 
 Public CANTIDADDECLANES As Integer
 'cantidad actual de clanes en el servidor
 
-Public Guilds()         As clsClan
+Private Guilds(1 To MAX_GUILDS) As clsClan
 'array global de guilds, se indexa por userlist().guildindex
 
-Public Const MAX_GUILDS As Integer = 1000
-'cantidad maxima de guilds en el servidor
-
-Public Const CANTIDADMAXIMACODEX As Byte = 8
+Private Const CANTIDADMAXIMACODEX As Byte = 8
 'cantidad maxima de codecs que se pueden definir
 
 Public Const MAXASPIRANTES As Byte = 10
 'cantidad maxima de aspirantes que puede tener un clan acumulados a la vez
 
-Public Const MAXANTIFACCION As Byte = 5
+Private Const MAXANTIFACCION As Byte = 5
 'puntos maximos de antifaccion que un clan tolera antes de ser cambiada su alineacion
 
-Public GMsEscuchando As New Collection
+Private GMsEscuchando As New Collection
 
 Public Enum ALINEACION_GUILD
     ALINEACION_LEGION = 1
@@ -468,12 +468,12 @@ Public Function PuedeFundarUnClan(ByVal UserIndex As Integer, ByVal Alineacion A
                 Exit Function
             End If
         Case ALINEACION_GUILD.ALINEACION_CIUDA
-            If Criminal(UserIndex) Then
+            If criminal(UserIndex) Then
                 refError = "Para fundar un clan de ciudadanos no debes ser criminal."
                 Exit Function
             End If
         Case ALINEACION_GUILD.ALINEACION_CRIMINAL
-            If Not Criminal(UserIndex) Then
+            If Not criminal(UserIndex) Then
                 refError = "Para fundar un clan de criminales no debes ser ciudadano."
                 Exit Function
             End If
@@ -544,25 +544,25 @@ End Function
 Private Function m_EstadoPermiteEntrar(ByVal UserIndex As Integer, ByVal GuildIndex As Integer) As Boolean
     Select Case Guilds(GuildIndex).Alineacion
         Case ALINEACION_GUILD.ALINEACION_ARMADA
-            m_EstadoPermiteEntrar = Not Criminal(UserIndex) And _
+            m_EstadoPermiteEntrar = Not criminal(UserIndex) And _
                     IIf(UserList(UserIndex).Stats.ELV >= 25, UserList(UserIndex).Faccion.ArmadaReal <> 0, True)
         Case ALINEACION_GUILD.ALINEACION_LEGION
-            m_EstadoPermiteEntrar = Criminal(UserIndex) And _
+            m_EstadoPermiteEntrar = criminal(UserIndex) And _
                     IIf(UserList(UserIndex).Stats.ELV >= 25, UserList(UserIndex).Faccion.FuerzasCaos <> 0, True)
         Case ALINEACION_GUILD.ALINEACION_NEUTRO
             m_EstadoPermiteEntrar = UserList(UserIndex).Faccion.ArmadaReal = 0 And UserList(UserIndex).Faccion.FuerzasCaos = 0
         Case ALINEACION_GUILD.ALINEACION_CIUDA
-            m_EstadoPermiteEntrar = Not Criminal(UserIndex)
+            m_EstadoPermiteEntrar = Not criminal(UserIndex)
         Case ALINEACION_GUILD.ALINEACION_CRIMINAL
-            m_EstadoPermiteEntrar = Criminal(UserIndex)
+            m_EstadoPermiteEntrar = criminal(UserIndex)
         Case Else   'game masters
             m_EstadoPermiteEntrar = True
     End Select
 End Function
 
 
-Public Function String2Alineacion(ByRef s As String) As ALINEACION_GUILD
-    Select Case s
+Public Function String2Alineacion(ByRef S As String) As ALINEACION_GUILD
+    Select Case S
         Case "Neutro"
             String2Alineacion = ALINEACION_NEUTRO
         Case "Legión oscura"
@@ -608,8 +608,8 @@ Public Function Relacion2String(ByVal Relacion As RELACIONES_GUILD) As String
     End Select
 End Function
 
-Public Function String2Relacion(ByVal s As String) As RELACIONES_GUILD
-    Select Case UCase$(Trim$(s))
+Public Function String2Relacion(ByVal S As String) As RELACIONES_GUILD
+    Select Case UCase$(Trim$(S))
         Case vbNullString, "P"
             String2Relacion = PAZ
         Case "G"
@@ -1333,9 +1333,9 @@ Dim GuildActual As Integer
         Exit Function
     End If
     
-    Personaje = Replace(Personaje, "\", vbNullString)
-    Personaje = Replace(Personaje, "/", vbNullString)
-    Personaje = Replace(Personaje, ".", vbNullString)
+    Personaje = Replace$(Personaje, "\", vbNullString)
+    Personaje = Replace$(Personaje, "/", vbNullString)
+    Personaje = Replace$(Personaje, ".", vbNullString)
     
     NroAsp = Guilds(GI).NumeroDeAspirante(Personaje)
     
@@ -1483,4 +1483,25 @@ Dim AspiranteUI     As Integer
 
     a_AceptarAspirante = True
 
+End Function
+
+Public Function GuildName(ByVal GuildIndex As Integer) As String
+    If GuildIndex <= 0 Or GuildIndex > CANTIDADDECLANES Then _
+        Exit Function
+    
+    GuildName = Guilds(GuildIndex).GuildName
+End Function
+
+Public Function GuildLeader(ByVal GuildIndex As Integer) As String
+    If GuildIndex <= 0 Or GuildIndex > CANTIDADDECLANES Then _
+        Exit Function
+    
+    GuildLeader = Guilds(GuildIndex).GetLeader
+End Function
+
+Public Function GuildAlignment(ByVal GuildIndex As Integer) As String
+    If GuildIndex <= 0 Or GuildIndex > CANTIDADDECLANES Then _
+        Exit Function
+    
+    GuildAlignment = Alineacion2String(Guilds(GuildIndex).Alineacion)
 End Function

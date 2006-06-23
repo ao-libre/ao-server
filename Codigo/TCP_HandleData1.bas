@@ -644,7 +644,7 @@ Procesado = True 'ver al final del sub
                     End If
                 ElseIf TU > 0 Then
                     If UserList(UserIndex).flags.Seguro Then
-                        If Not Criminal(TU) Then
+                        If Not criminal(TU) Then
                             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Para atacar ciudadanos desactiva el seguro!" & FONTTYPE_FIGHT)
                             Exit Sub
                         End If
@@ -684,8 +684,8 @@ Procesado = True 'ver al final del sub
                     End If
                     If MapData(wp2.Map, wp2.X, wp2.Y).UserIndex > 0 Then
                         txt = txt & " hacia el usuario: " & UserList(MapData(wp2.Map, wp2.X, wp2.Y).UserIndex).name
-                    ElseIf MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex > 0 Then
-                        txt = txt & " hacia el NPC: " & Npclist(MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex).name
+                    ElseIf MapData(wp2.Map, wp2.X, wp2.Y).npcIndex > 0 Then
+                        txt = txt & " hacia el NPC: " & Npclist(MapData(wp2.Map, wp2.X, wp2.Y).npcIndex).name
                     End If
                     
                     Call LogCheating(txt)
@@ -791,7 +791,7 @@ Procesado = True 'ver al final del sub
                     Exit Sub
                 End If
                 
-                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex
+                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).objInfo.ObjIndex
                 If AuxInd > 0 Then
                     wpaux.Map = UserList(UserIndex).Pos.Map
                     wpaux.X = X
@@ -830,7 +830,7 @@ Procesado = True 'ver al final del sub
                 
                 Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
                 
-                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).OBJInfo.ObjIndex
+                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).objInfo.ObjIndex
                 If AuxInd > 0 Then
                     wpaux.Map = UserList(UserIndex).Pos.Map
                     wpaux.X = X
@@ -932,7 +932,7 @@ Procesado = True 'ver al final del sub
             rData = Right$(rData, Len(rData) - 3)
             
             If modGuilds.CrearNuevoClan(rData, UserIndex, UserList(UserIndex).FundandoGuildAlineacion, tStr) Then
-                Call SendData(SendTarget.ToAll, 0, 0, "||" & UserList(UserIndex).name & " fundó el clan " & Guilds(UserList(UserIndex).GuildIndex).GuildName & " de alineación " & Alineacion2String(Guilds(UserList(UserIndex).GuildIndex).Alineacion) & "." & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToAll, 0, 0, "||" & UserList(UserIndex).name & " fundó el clan " & modGuilds.GuildName(UserList(UserIndex).GuildIndex) & " de alineación " & modGuilds.GuildAlignment(UserList(UserIndex).GuildIndex) & "." & FONTTYPE_GUILD)
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             End If
@@ -979,8 +979,8 @@ Procesado = True 'ver al final del sub
         Case "CHEA" 'Cambiar Heading ;-)
             rData = Right$(rData, Len(rData) - 4)
             If val(rData) > 0 And val(rData) < 5 Then
-                UserList(UserIndex).Char.Heading = rData
-                Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.Body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.Heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                UserList(UserIndex).Char.heading = rData
+                Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
             End If
             Exit Sub
         Case "SKSE" 'Modificar skills
@@ -1031,7 +1031,7 @@ Procesado = True 'ver al final del sub
             If Npclist(UserList(UserIndex).flags.TargetNPC).Mascotas < MAXMASCOTASENTRENADOR Then
                 If val(rData) > 0 And val(rData) < Npclist(UserList(UserIndex).flags.TargetNPC).NroCriaturas + 1 Then
                         Dim SpawnedNpc As Integer
-                        SpawnedNpc = SpawnNpc(Npclist(UserList(UserIndex).flags.TargetNPC).Criaturas(val(rData)).NpcIndex, Npclist(UserList(UserIndex).flags.TargetNPC).Pos, True, False)
+                        SpawnedNpc = SpawnNpc(Npclist(UserList(UserIndex).flags.TargetNPC).Criaturas(val(rData)).npcIndex, Npclist(UserList(UserIndex).flags.TargetNPC).Pos, True, False)
                         If SpawnedNpc > 0 Then
                             Npclist(SpawnedNpc).MaestroNpc = UserList(UserIndex).flags.TargetNPC
                             Npclist(UserList(UserIndex).flags.TargetNPC).Mascotas = Npclist(UserList(UserIndex).flags.TargetNPC).Mascotas + 1
@@ -1238,7 +1238,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.cant = val(Arg2)
+                UserList(UserIndex).ComUsu.Cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub
