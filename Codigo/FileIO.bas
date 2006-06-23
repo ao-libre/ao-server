@@ -428,16 +428,16 @@ On Error Resume Next
                 
                 ByFlags = 0
                 
-                If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-                   If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otFogata Then
-                        MapData(Map, X, Y).OBJInfo.ObjIndex = 0
-                        MapData(Map, X, Y).OBJInfo.Amount = 0
+                If MapData(Map, X, Y).objInfo.ObjIndex > 0 Then
+                   If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType = eOBJType.otFogata Then
+                        MapData(Map, X, Y).objInfo.ObjIndex = 0
+                        MapData(Map, X, Y).objInfo.Amount = 0
                     End If
                 End If
     
                 If MapData(Map, X, Y).TileExit.Map Then ByFlags = ByFlags Or 1
                 If MapData(Map, X, Y).NpcIndex Then ByFlags = ByFlags Or 2
-                If MapData(Map, X, Y).OBJInfo.ObjIndex Then ByFlags = ByFlags Or 4
+                If MapData(Map, X, Y).objInfo.ObjIndex Then ByFlags = ByFlags Or 4
                 
                 Put FreeFileInf, , ByFlags
                 
@@ -450,9 +450,9 @@ On Error Resume Next
                 If MapData(Map, X, Y).NpcIndex Then _
                     Put FreeFileInf, , Npclist(MapData(Map, X, Y).NpcIndex).Numero
                 
-                If MapData(Map, X, Y).OBJInfo.ObjIndex Then
-                    Put FreeFileInf, , MapData(Map, X, Y).OBJInfo.ObjIndex
-                    Put FreeFileInf, , MapData(Map, X, Y).OBJInfo.Amount
+                If MapData(Map, X, Y).objInfo.ObjIndex Then
+                    Put FreeFileInf, , MapData(Map, X, Y).objInfo.ObjIndex
+                    Put FreeFileInf, , MapData(Map, X, Y).objInfo.Amount
                 End If
             
             
@@ -782,8 +782,8 @@ UserList(UserIndex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
 UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
 
 
-UserList(UserIndex).Stats.UsuariosMatados = CInt(UserFile.GetValue("MUERTES", "UserMuertes"))
-UserList(UserIndex).Stats.CriminalesMatados = CInt(UserFile.GetValue("MUERTES", "CrimMuertes"))
+UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
+UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
 UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
 UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
@@ -793,13 +793,13 @@ End Sub
 
 Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
 
-UserList(UserIndex).Reputacion.AsesinoRep = CDbl(UserFile.GetValue("REP", "Asesino"))
-UserList(UserIndex).Reputacion.BandidoRep = CDbl(UserFile.GetValue("REP", "Bandido"))
-UserList(UserIndex).Reputacion.BurguesRep = CDbl(UserFile.GetValue("REP", "Burguesia"))
-UserList(UserIndex).Reputacion.LadronesRep = CDbl(UserFile.GetValue("REP", "Ladrones"))
-UserList(UserIndex).Reputacion.NobleRep = CDbl(UserFile.GetValue("REP", "Nobles"))
-UserList(UserIndex).Reputacion.PlebeRep = CDbl(UserFile.GetValue("REP", "Plebe"))
-UserList(UserIndex).Reputacion.Promedio = CDbl(UserFile.GetValue("REP", "Promedio"))
+UserList(UserIndex).Reputacion.AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
+UserList(UserIndex).Reputacion.BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
+UserList(UserIndex).Reputacion.BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
+UserList(UserIndex).Reputacion.LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
+UserList(UserIndex).Reputacion.NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
+UserList(UserIndex).Reputacion.PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
+UserList(UserIndex).Reputacion.Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
 
 End Sub
 
@@ -810,8 +810,8 @@ Dim ln As String
 
 UserList(UserIndex).Faccion.ArmadaReal = CByte(UserFile.GetValue("FACCIONES", "EjercitoReal"))
 UserList(UserIndex).Faccion.FuerzasCaos = CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos"))
-UserList(UserIndex).Faccion.CiudadanosMatados = CDbl(UserFile.GetValue("FACCIONES", "CiudMatados"))
-UserList(UserIndex).Faccion.CriminalesMatados = CDbl(UserFile.GetValue("FACCIONES", "CrimMatados"))
+UserList(UserIndex).Faccion.CiudadanosMatados = CLng(UserFile.GetValue("FACCIONES", "CiudMatados"))
+UserList(UserIndex).Faccion.CriminalesMatados = CLng(UserFile.GetValue("FACCIONES", "CrimMatados"))
 UserList(UserIndex).Faccion.RecibioArmaduraCaos = CByte(UserFile.GetValue("FACCIONES", "rArCaos"))
 UserList(UserIndex).Faccion.RecibioArmaduraReal = CByte(UserFile.GetValue("FACCIONES", "rArReal"))
 UserList(UserIndex).Faccion.RecibioExpInicialCaos = CByte(UserFile.GetValue("FACCIONES", "rExCaos"))
@@ -843,20 +843,20 @@ UserList(UserIndex).Genero = UserFile.GetValue("INIT", "Genero")
 UserList(UserIndex).Clase = UserFile.GetValue("INIT", "Clase")
 UserList(UserIndex).Raza = UserFile.GetValue("INIT", "Raza")
 UserList(UserIndex).Hogar = UserFile.GetValue("INIT", "Hogar")
-UserList(UserIndex).Char.Heading = CInt(UserFile.GetValue("INIT", "Heading"))
+UserList(UserIndex).Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
 
 
 UserList(UserIndex).OrigChar.Head = CInt(UserFile.GetValue("INIT", "Head"))
-UserList(UserIndex).OrigChar.Body = CInt(UserFile.GetValue("INIT", "Body"))
+UserList(UserIndex).OrigChar.body = CInt(UserFile.GetValue("INIT", "Body"))
 UserList(UserIndex).OrigChar.WeaponAnim = CInt(UserFile.GetValue("INIT", "Arma"))
 UserList(UserIndex).OrigChar.ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo"))
 UserList(UserIndex).OrigChar.CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
-UserList(UserIndex).OrigChar.Heading = eHeading.SOUTH
+UserList(UserIndex).OrigChar.heading = eHeading.SOUTH
 
 If UserList(UserIndex).flags.Muerto = 0 Then
     UserList(UserIndex).Char = UserList(UserIndex).OrigChar
 Else
-    UserList(UserIndex).Char.Body = iCuerpoMuerto
+    UserList(UserIndex).Char.body = iCuerpoMuerto
     UserList(UserIndex).Char.Head = iCabezaMuerto
     UserList(UserIndex).Char.WeaponAnim = NingunArma
     UserList(UserIndex).Char.ShieldAnim = NingunEscudo
@@ -1159,8 +1159,8 @@ On Error GoTo errh
             
             If ByFlags And 4 Then
                 'Get and make Object
-                Get FreeFileInf, , MapData(Map, X, Y).OBJInfo.ObjIndex
-                Get FreeFileInf, , MapData(Map, X, Y).OBJInfo.Amount
+                Get FreeFileInf, , MapData(Map, X, Y).objInfo.ObjIndex
+                Get FreeFileInf, , MapData(Map, X, Y).objInfo.Amount
             End If
         Next X
     Next Y
@@ -1407,7 +1407,7 @@ End If
 
 
 If UserList(UserIndex).flags.Mimetizado = 1 Then
-    UserList(UserIndex).Char.Body = UserList(UserIndex).CharMimetizado.Body
+    UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
     UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
     UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
     UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
@@ -1484,12 +1484,12 @@ Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).Clase)
 Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password)
 Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
 
-Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.Heading))
+Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
 
 Call WriteVar(UserFile, "INIT", "Head", CStr(UserList(UserIndex).OrigChar.Head))
 
 If UserList(UserIndex).flags.Muerto = 0 Then
-    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).Char.Body))
+    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).Char.body))
 End If
 
 Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim))
@@ -1652,8 +1652,8 @@ End If
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).Desc)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(Npclist(NpcIndex).Char.Head))
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.Body))
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(Npclist(NpcIndex).Char.Heading))
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.body))
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(Npclist(NpcIndex).Char.heading))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Movement", val(Npclist(NpcIndex).Movement))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Attackable", val(Npclist(NpcIndex).Attackable))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Comercia", val(Npclist(NpcIndex).Comercia))
@@ -1716,9 +1716,9 @@ Npclist(NpcIndex).Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
 Npclist(NpcIndex).Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
 
-Npclist(NpcIndex).Char.Body = val(GetVar(npcfile, "NPC" & NpcNumber, "Body"))
+Npclist(NpcIndex).Char.body = val(GetVar(npcfile, "NPC" & NpcNumber, "Body"))
 Npclist(NpcIndex).Char.Head = val(GetVar(npcfile, "NPC" & NpcNumber, "Head"))
-Npclist(NpcIndex).Char.Heading = val(GetVar(npcfile, "NPC" & NpcNumber, "Heading"))
+Npclist(NpcIndex).Char.heading = val(GetVar(npcfile, "NPC" & NpcNumber, "Heading"))
 
 Npclist(NpcIndex).Attackable = val(GetVar(npcfile, "NPC" & NpcNumber, "Attackable"))
 Npclist(NpcIndex).Comercia = val(GetVar(npcfile, "NPC" & NpcNumber, "Comercia"))

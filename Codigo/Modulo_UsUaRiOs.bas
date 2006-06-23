@@ -151,7 +151,7 @@ Sub EnviarFama(ByVal UserIndex As Integer)
         (-UserList(UserIndex).Reputacion.LadronesRep) + _
         UserList(UserIndex).Reputacion.NobleRep + _
         UserList(UserIndex).Reputacion.PlebeRep
-    L = L / 6
+    L = Round(L / 6)
     
     UserList(UserIndex).Reputacion.Promedio = L
     
@@ -1259,13 +1259,8 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     If criminal(Muerto) Then
         If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
             UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
-            If UserList(Atacante).Faccion.CriminalesMatados < 65000 Then _
+            If UserList(Atacante).Faccion.CriminalesMatados < MAXUSERMATADOS Then _
                 UserList(Atacante).Faccion.CriminalesMatados = UserList(Atacante).Faccion.CriminalesMatados + 1
-        End If
-        
-        If UserList(Atacante).Faccion.CriminalesMatados > MAXUSERMATADOS Then
-            UserList(Atacante).Faccion.CriminalesMatados = 0
-            UserList(Atacante).Faccion.RecompensasReal = 0
         End If
         
         If UserList(Atacante).Faccion.RecibioExpInicialCaos = 1 And UserList(Muerto).Faccion.FuerzasCaos = 1 Then
@@ -1276,20 +1271,13 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     Else
         If UserList(Atacante).flags.LastCiudMatado <> UserList(Muerto).name Then
             UserList(Atacante).flags.LastCiudMatado = UserList(Muerto).name
-            If UserList(Atacante).Faccion.CiudadanosMatados < 65000 Then _
+            If UserList(Atacante).Faccion.CiudadanosMatados < MAXUSERMATADOS Then _
                 UserList(Atacante).Faccion.CiudadanosMatados = UserList(Atacante).Faccion.CiudadanosMatados + 1
         End If
-        
-        If UserList(Atacante).Faccion.CiudadanosMatados > MAXUSERMATADOS Then
-            UserList(Atacante).Faccion.CiudadanosMatados = 0
-            UserList(Atacante).Faccion.RecompensasCaos = 0
-        End If
     End If
-
-
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef obj As obj)
 'Call LogTarea("Sub Tilelibre")
 
 Dim Notfound As Boolean
@@ -1312,9 +1300,9 @@ Dim hayobj As Boolean
             
                 If LegalPos(nPos.Map, tX, tY) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).OBJInfo.ObjIndex <> Obj.ObjIndex)
+                    hayobj = (MapData(nPos.Map, tX, tY).objInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).objInfo.ObjIndex <> obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.Map, tX, tY).OBJInfo.Amount + Obj.Amount > MAX_INVENTORY_OBJS)
+                        hayobj = (MapData(nPos.Map, tX, tY).objInfo.Amount + obj.Amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
@@ -1418,10 +1406,10 @@ For Y = YMinMapSize To YMaxMapSize
             Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
         End If
 
-        If MapData(Map, X, Y).OBJInfo.ObjIndex > 0 Then
-            If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType <> eOBJType.otArboles Then
-                Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).OBJInfo, Map, X, Y)
-                If ObjData(MapData(Map, X, Y).OBJInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
+        If MapData(Map, X, Y).objInfo.ObjIndex > 0 Then
+            If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType <> eOBJType.otArboles Then
+                Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).objInfo, Map, X, Y)
+                If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
                           Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X, Y, MapData(Map, X, Y).Blocked)
                           Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                 End If
@@ -1547,7 +1535,7 @@ End If
 End Sub
 
 Public Sub Empollando(ByVal UserIndex As Integer)
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).OBJInfo.ObjIndex > 0 Then
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).objInfo.ObjIndex > 0 Then
     UserList(UserIndex).flags.EstaEmpo = 1
 Else
     UserList(UserIndex).flags.EstaEmpo = 0

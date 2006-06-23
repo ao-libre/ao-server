@@ -56,7 +56,6 @@ Public TrashCollector As New Collection
 
 
 Public Const MAXSPAWNATTEMPS = 60
-Public Const MAXUSERMATADOS = 9000000
 Public Const LoopAdEternum = 999
 Public Const FXSANGRE = 14
 
@@ -211,6 +210,8 @@ Public Const Guardias As Integer = 6
 Public Const MAXREP As Long = 6000000
 Public Const MAXORO As Long = 90000000
 Public Const MAXEXP As Long = 99999999
+
+Public Const MAXUSERMATADOS As Long = 65000
 
 Public Const MAXATRIBUTOS As Byte = 38
 Public Const MINATRIBUTOS As Byte = 6
@@ -560,7 +561,7 @@ Public Type tHechizo
     'Barrin 29/9/03
     StaRequerido As Integer
 
-    target As TargetType
+    Target As TargetType
     
     NeedStaff As Integer
     StaffAffected As Boolean
@@ -571,7 +572,7 @@ Public Type LevelSkill
 End Type
 
 Public Type UserOBJ
-    objIndex As Integer
+    ObjIndex As Integer
     Amount As Integer
     Equipped As Byte
 End Type
@@ -607,7 +608,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     X As Integer
     Y As Integer
 End Type
@@ -621,7 +622,7 @@ End Type
 'Datos de user o npc
 Public Type Char
     CharIndex As Integer
-    head As Integer
+    Head As Integer
     body As Integer
     
     WeaponAnim As Integer
@@ -741,8 +742,8 @@ Public Type ObjData
     Refuerzo As Byte
 End Type
 
-Public Type Obj
-    objIndex As Integer
+Public Type obj
+    ObjIndex As Integer
     Amount As Integer
 End Type
 
@@ -770,13 +771,13 @@ End Type
 '*********************************************************
 
 Public Type tReputacion 'Fama del usuario
-    NobleRep As Double
-    BurguesRep As Double
-    PlebeRep As Double
-    LadronesRep As Double
-    BandidoRep As Double
-    AsesinoRep As Double
-    Promedio As Double
+    NobleRep As Long
+    BurguesRep As Long
+    PlebeRep As Long
+    LadronesRep As Long
+    BandidoRep As Long
+    AsesinoRep As Long
+    Promedio As Long
 End Type
 
 'Estadisticas de los usuarios
@@ -809,8 +810,8 @@ Public Type UserStats
     UserAtributos(1 To NUMATRIBUTOS) As Byte
     UserAtributosBackUP(1 To NUMATRIBUTOS) As Byte
     UserHechizos(1 To MAXUSERHECHIZOS) As Integer
-    UsuariosMatados As Integer
-    CriminalesMatados As Integer
+    UsuariosMatados As Long
+    CriminalesMatados As Long
     NPCsMuertos As Integer
     
     SkillPts As Integer
@@ -953,8 +954,8 @@ End Type
 Public Type tFacciones
     ArmadaReal As Byte
     FuerzasCaos As Byte
-    CriminalesMatados As Double
-    CiudadanosMatados As Double
+    CriminalesMatados As Long
+    CiudadanosMatados As Long
     RecompensasReal As Long
     RecompensasCaos As Long
     RecibioExpInicialReal As Byte
@@ -1134,7 +1135,7 @@ End Type
 ' New type for holding the pathfinding info
 Public Type NpcPathFindingInfo
     Path() As tVertice      ' This array holds the path
-    target As Position      ' The location where the NPC has to go
+    Target As Position      ' The location where the NPC has to go
     PathLenght As Integer   ' Number of steps *
     CurPos As Integer       ' Current location of the npc
     TargetUser As Integer   ' UserIndex chased
@@ -1164,7 +1165,7 @@ Public Type npc
     InvReSpawn As Byte
 
     Comercia As Integer
-    target As Long
+    Target As Long
     TargetNPC As Long
     TipoItems As Integer
 
@@ -1221,7 +1222,7 @@ Public Type MapBlock
     Graphic(1 To 4) As Integer
     UserIndex As Integer
     NpcIndex As Integer
-    OBJInfo As Obj
+    objInfo As obj
     TileExit As WorldPos
     trigger As eTrigger
 End Type

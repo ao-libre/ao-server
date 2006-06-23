@@ -99,4 +99,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 09/06/2006: Cambios de Balance y GD. (El golpe del user es absorbido tanto por la armadura como por el escudo, reparticion de exp de los NPC, Mensajes de party overhead,  muertos no ven vida de NPC ) (Integer).
  * 11/06/2006: Se cambiaron algunos tipos de miembros de UserFlags para adecuarlos a su uso real (Maraxus).
  * 15/06/2006: Se modificó ligeramente clsByteQueue para que trabaje tirando códigos de error al intentarse pasar los límites del buffer para lecutra y/o escritura (Maraxus).
- * 16/06/2006:El Rey Pretoriano ya no puede ser atacado mientras halla miembros vivos de su clan (Integer).
+ * 16/06/2006: El Rey Pretoriano ya no puede ser atacado mientras haya miembros vivos de su clan (Integer).
+ * 23/06/2006: Eliminé algunas líneas que no se ejecutaban nunca porque los Ifs siempre daban False, cambié tipos de variables de facción y stats y modifiqué la constante MAXUSERMATADOS (Maraxus).

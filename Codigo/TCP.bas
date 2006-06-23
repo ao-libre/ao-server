@@ -3304,8 +3304,8 @@ If UCase$(Left$(rData, 5)) = "/BAN " Then
         
         If UserList(tIndex).flags.Privilegios > PlayerType.User Then
             UserList(UserIndex).flags.Ban = 1
-            Call CloseSocket(UserIndex)
             Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " banned by the server por bannear un Administrador." & FONTTYPE_FIGHT)
+            Call CloseSocket(UserIndex)
         End If
         
         Call LogGM(UserList(UserIndex).name, "BAN a " & UserList(tIndex).name, False)
