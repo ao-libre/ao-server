@@ -46,8 +46,8 @@ Private Const NEWSLENGTH = 1024
 Private Const DESCLENGTH = 256
 Private Const CODEXLENGTH = 256
 
-Public Property Get GuildName() As String
-    GuildName = p_GuildName
+Public Property Get guildName() As String
+    guildName = p_GuildName
 End Property
 
 
@@ -90,10 +90,10 @@ End Sub
 
 
 
-Public Sub Inicializar(ByVal GuildName As String, ByVal GuildNumber As Integer, ByVal Alineacion As ALINEACION_GUILD)
+Public Sub Inicializar(ByVal guildName As String, ByVal GuildNumber As Integer, ByVal Alineacion As ALINEACION_GUILD)
 Dim i As Integer
 
-    p_GuildName = GuildName
+    p_GuildName = guildName
     p_GuildNumber = GuildNumber
     p_Alineacion = Alineacion
     Set p_OnlineMembers = New Collection
@@ -185,8 +185,8 @@ Dim OldQ As String
     CantidadDeMiembros = IIf(IsNumeric(OldQ), CInt(OldQ), 0)
 End Property
 
-Public Sub SetLeader(ByRef Leader As String)
-    Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Leader", Leader)
+Public Sub SetLeader(ByRef leader As String)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Leader", leader)
 End Sub
 
 Public Function GetLeader() As String
@@ -330,7 +330,7 @@ Dim Temps As String
 
 End Function
 
-Public Function DetallesSolicitudAspirante(ByVal NroAspirante As Integer)
+Public Function DetallesSolicitudAspirante(ByVal NroAspirante As Integer) As String
     DetallesSolicitudAspirante = GetVar(SOLICITUDESFILE, "SOLICITUD" & NroAspirante, "Detalle")
 End Function
 

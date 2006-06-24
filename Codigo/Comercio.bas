@@ -260,7 +260,7 @@ On Error GoTo errhandler
             Call SendUserStatsBox(UserIndex)
             'Actualizamos la ventana de comercio
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
-            Call UpdateVentanaComercio(i, 0, UserIndex)
+            Call UpdateVentanaComercio(UserIndex)
         End If
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficiente dinero." & FONTTYPE_INFO)
@@ -283,7 +283,7 @@ On Error GoTo errhandler
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
             
             'Actualizamos la ventana de comercio
-            Call UpdateVentanaComercio(Item, 1, UserIndex)
+            Call UpdateVentanaComercio(UserIndex)
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         End If
@@ -292,7 +292,7 @@ On Error GoTo errhandler
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
             
             'Actualizamos la ventana de comercio
-            Call UpdateVentanaComercio(Item, 1, UserIndex)
+            Call UpdateVentanaComercio(UserIndex)
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         End If
@@ -312,7 +312,7 @@ On Error GoTo errhandler
         
         Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
         'Actualizamos la ventana de comercio
-        Call UpdateVentanaComercio(Item, 1, UserIndex)
+        Call UpdateVentanaComercio(UserIndex)
     End If
 Exit Sub
 
@@ -320,8 +320,8 @@ errhandler:
     Call LogError("Error en vender item: " & Err.Description)
 End Sub
 
-Sub UpdateVentanaComercio(ByVal Slot As Integer, ByVal NpcInv As Byte, ByVal UserIndex As Integer)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "TRANSOK" & Slot & "," & NpcInv)
+Sub UpdateVentanaComercio(ByVal UserIndex As Integer)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "TRANSOK")
 End Sub
 
 Function Descuento(ByVal UserIndex As Integer) As Single

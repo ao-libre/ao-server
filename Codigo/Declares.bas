@@ -277,7 +277,7 @@ Public Const MAXSKILLPOINTS As Byte = 100
 
 ''
 ' Constante para indicar que se esta usando ORO
-Public Const FLAGORO As Integer = 777
+Public Const FLAGORO As Integer = -1
 
 ''
 'Direccion
@@ -550,7 +550,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    Cant As Integer
+    cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -573,7 +573,7 @@ End Type
 
 Public Type UserOBJ
     ObjIndex As Integer
-    Amount As Integer
+    amount As Integer
     Equipped As Byte
 End Type
 
@@ -744,7 +744,7 @@ End Type
 
 Public Type Obj
     ObjIndex As Integer
-    Amount As Integer
+    amount As Integer
 End Type
 
 '[KEVIN]
@@ -984,7 +984,7 @@ Public Type User
     
     Clase As String
     Raza As String
-    Genero As String
+    genero As String
     email As String
     Hogar As String
         
@@ -1127,7 +1127,7 @@ Public Type NPCFlags
 End Type
 
 Public Type tCriaturasEntrenador
-    npcIndex As Integer
+    NpcIndex As Integer
     NpcName As String
     tmpIndex As Integer
 End Type
@@ -1221,8 +1221,8 @@ Public Type MapBlock
     Blocked As Byte
     Graphic(1 To 4) As Integer
     UserIndex As Integer
-    npcIndex As Integer
-    objInfo As Obj
+    NpcIndex As Integer
+    ObjInfo As Obj
     TileExit As WorldPos
     trigger As eTrigger
 End Type
@@ -1364,7 +1364,7 @@ Public Declare Function GetTickCount Lib "kernel32" () As Long
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
 
-Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef Destination As Any, ByVal Length As Long)
+Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef destination As Any, ByVal length As Long)
 
 Public Enum e_ObjetosCriticos
     Manzana = 1

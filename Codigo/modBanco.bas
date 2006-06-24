@@ -96,7 +96,7 @@ Call SendUserStatsBox(UserIndex)
             'Actualizamos el banco
             Call UpdateBanUserInv(True, UserIndex, 0)
             'Actualizamos la ventana de comercio
-            Call UpdateVentanaBanco(i, 0, UserIndex)
+            Call UpdateVentanaBanco(UserIndex)
        End If
 
 
@@ -179,11 +179,8 @@ ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
     
 End Sub
 
-Sub UpdateVentanaBanco(ByVal Slot As Integer, ByVal NpcInv As Byte, ByVal UserIndex As Integer)
- 
- 
- Call SendData(SendTarget.ToIndex, UserIndex, 0, "BANCOOK" & Slot & "," & NpcInv)
- 
+Sub UpdateVentanaBanco(ByVal UserIndex As Integer)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "BANCOOK")
 End Sub
 
 Sub UserDepositaItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Cantidad As Integer)
@@ -204,7 +201,7 @@ If UserList(UserIndex).Invent.Object(Item).Amount > 0 And UserList(UserIndex).In
             Call UpdateBanUserInv(True, UserIndex, 0)
             'Actualizamos la ventana del banco
             
-            Call UpdateVentanaBanco(Item, 1, UserIndex)
+            Call UpdateVentanaBanco(UserIndex)
             
 End If
 
@@ -282,16 +279,16 @@ Next
 
 End Sub
 
-Sub SendUserBovedaTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As String)
+Sub SendUserBovedaTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 On Error Resume Next
 Dim j As Integer
 Dim CharFile As String, Tmp As String
 Dim ObjInd As Long, ObjCant As Long
 
-CharFile = CharPath & CharName & ".chr"
+CharFile = CharPath & charName & ".chr"
 
 If FileExist(CharFile, vbNormal) Then
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & CharName & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & charName & FONTTYPE_INFO)
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & GetVar(CharFile, "BancoInventory", "CantidadItems") & " objetos." & FONTTYPE_INFO)
     For j = 1 To MAX_BANCOINVENTORY_SLOTS
         Tmp = GetVar(CharFile, "BancoInventory", "Obj" & j)
@@ -302,7 +299,7 @@ If FileExist(CharFile, vbNormal) Then
         End If
     Next
 Else
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & CharName & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & charName & FONTTYPE_INFO)
 End If
 
 End Sub

@@ -85,17 +85,13 @@ Private Sub Class_Initialize()
 Set Cola = New Collection
 End Sub
 
-Public Function VerElemento(ByVal Index As Integer) As Variant
+Public Function VerElemento(ByVal index As Integer) As Variant
 On Error Resume Next
-
-
-
-If IndexValido(Index) Then
-    VerElemento = Cola(Index)
-Else
-    VerElemento = 0
-End If
-
+    If IndexValido(index) Then
+        VerElemento = Cola(index)
+    Else
+        VerElemento = 0
+    End If
 End Function
 
 
@@ -170,9 +166,9 @@ Next i
  
 End Sub
 
-Public Sub QuitarIndex(ByVal Index As Integer)
+Public Sub QuitarIndex(ByVal index As Integer)
 On Error Resume Next
-If IndexValido(Index) Then Call Cola.Remove(Index)
+If IndexValido(index) Then Call Cola.Remove(index)
 End Sub
 
 
