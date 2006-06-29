@@ -229,7 +229,7 @@ On Local Error GoTo hayerror
         'Send make character command to clients
         Dim klan As String
         If UserList(UserIndex).GuildIndex > 0 Then
-            klan = modGuilds.GuildName(UserList(UserIndex).GuildIndex)
+            klan = modGuilds.guildName(UserList(UserIndex).GuildIndex)
         End If
         
         Dim bCr As Byte
@@ -724,7 +724,7 @@ Sub ChangeUserInv(UserIndex As Integer, Slot As Byte, Object As UserOBJ)
     UserList(UserIndex).Invent.Object(Slot) = Object
     
     If Object.ObjIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "CSI" & Slot & "," & Object.ObjIndex & "," & ObjData(Object.ObjIndex).name & "," & Object.Amount & "," & Object.Equipped & "," & ObjData(Object.ObjIndex).GrhIndex & "," _
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "CSI" & Slot & "," & Object.ObjIndex & "," & ObjData(Object.ObjIndex).name & "," & Object.amount & "," & Object.Equipped & "," & ObjData(Object.ObjIndex).GrhIndex & "," _
         & ObjData(Object.ObjIndex).OBJType & "," _
         & ObjData(Object.ObjIndex).MaxHIT & "," _
         & ObjData(Object.ObjIndex).MinHIT & "," _
@@ -818,7 +818,7 @@ Dim GuildI As Integer
     
     GuildI = UserList(UserIndex).GuildIndex
     If GuildI > 0 Then
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clan: " & modGuilds.GuildName(GuildI) & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Clan: " & modGuilds.guildName(GuildI) & FONTTYPE_INFO)
         If UCase$(modGuilds.GuildLeader(GuildI)) = UCase$(UserList(sendIndex).name) Then
             Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Status: Lider" & FONTTYPE_INFO)
         End If
@@ -842,16 +842,16 @@ End With
 
 End Sub
 
-Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As String)
+Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 Dim CharFile As String
 Dim Ban As String
 Dim BanDetailPath As String
 
     BanDetailPath = App.Path & "\logs\" & "BanDetail.dat"
-    CharFile = CharPath & CharName & ".chr"
+    CharFile = CharPath & charName & ".chr"
     
     If FileExist(CharFile) Then
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pj: " & CharName & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Pj: " & charName & FONTTYPE_INFO)
         ' 3 en uno :p
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||CiudadanosMatados: " & GetVar(CharFile, "FACCIONES", "CiudMatados") & " CriminalesMatados: " & GetVar(CharFile, "FACCIONES", "CrimMatados") & " UsuariosMatados: " & GetVar(CharFile, "MUERTES", "UserMuertes") & FONTTYPE_INFO)
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||NPCsMuertos: " & GetVar(CharFile, "MUERTES", "NpcsMuertes") & FONTTYPE_INFO)
@@ -860,10 +860,10 @@ Dim BanDetailPath As String
         Ban = GetVar(CharFile, "FLAGS", "Ban")
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban: " & Ban & FONTTYPE_INFO)
         If Ban = "1" Then
-            Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban por: " & GetVar(CharFile, CharName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, CharName, "Reason") & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Ban por: " & GetVar(CharFile, charName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, charName, "Reason") & FONTTYPE_INFO)
         End If
     Else
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||El pj no existe: " & CharName & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||El pj no existe: " & charName & FONTTYPE_INFO)
     End If
     
 End Sub
@@ -878,22 +878,22 @@ On Error Resume Next
     
     For j = 1 To MAX_INVENTORY_SLOTS
         If UserList(UserIndex).Invent.Object(j).ObjIndex > 0 Then
-            Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Objeto " & j & " " & ObjData(UserList(UserIndex).Invent.Object(j).ObjIndex).name & " Cantidad:" & UserList(UserIndex).Invent.Object(j).Amount & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Objeto " & j & " " & ObjData(UserList(UserIndex).Invent.Object(j).ObjIndex).name & " Cantidad:" & UserList(UserIndex).Invent.Object(j).amount & FONTTYPE_INFO)
         End If
     Next j
 End Sub
 
-Sub SendUserInvTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As String)
+Sub SendUserInvTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 On Error Resume Next
 
     Dim j As Long
     Dim CharFile As String, Tmp As String
     Dim ObjInd As Long, ObjCant As Long
     
-    CharFile = CharPath & CharName & ".chr"
+    CharFile = CharPath & charName & ".chr"
     
     If FileExist(CharFile, vbNormal) Then
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & CharName & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & charName & FONTTYPE_INFO)
         Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & GetVar(CharFile, "Inventory", "CantidadItems") & " objetos." & FONTTYPE_INFO)
         
         For j = 1 To MAX_INVENTORY_SLOTS
@@ -905,7 +905,7 @@ On Error Resume Next
             End If
         Next j
     Else
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & CharName & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & charName & FONTTYPE_INFO)
     End If
     
 End Sub
@@ -965,52 +965,52 @@ DameUserIndexConNombre = LoopC
 End Function
 
 
-Function EsMascotaCiudadano(ByVal npcIndex As Integer, ByVal UserIndex As Integer) As Boolean
+Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
-If Npclist(npcIndex).MaestroUser > 0 Then
-        EsMascotaCiudadano = Not criminal(Npclist(npcIndex).MaestroUser)
-        If EsMascotaCiudadano Then Call SendData(SendTarget.ToIndex, Npclist(npcIndex).MaestroUser, 0, "||¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!" & FONTTYPE_FIGHT)
+If Npclist(NpcIndex).MaestroUser > 0 Then
+        EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
+        If EsMascotaCiudadano Then Call SendData(SendTarget.ToIndex, Npclist(NpcIndex).MaestroUser, 0, "||¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!" & FONTTYPE_FIGHT)
 End If
 
 End Function
 
-Sub NpcAtacado(ByVal npcIndex As Integer, ByVal UserIndex As Integer)
+Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
 
 'Guardamos el usuario que ataco el npc
-Npclist(npcIndex).flags.AttackedBy = UserList(UserIndex).name
+Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
 
-If Npclist(npcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(npcIndex).MaestroUser)
+If Npclist(NpcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(NpcIndex).MaestroUser)
 
-If EsMascotaCiudadano(npcIndex, UserIndex) Then
+If EsMascotaCiudadano(NpcIndex, UserIndex) Then
             Call VolverCriminal(UserIndex)
-            Npclist(npcIndex).Movement = TipoAI.NPCDEFENSA
-            Npclist(npcIndex).Hostile = 1
+            Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
+            Npclist(NpcIndex).Hostile = 1
 Else
     'Reputacion
-    If Npclist(npcIndex).Stats.Alineacion = 0 Then
-       If Npclist(npcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If Npclist(NpcIndex).Stats.Alineacion = 0 Then
+       If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
             UserList(UserIndex).Reputacion.NobleRep = 0
             UserList(UserIndex).Reputacion.PlebeRep = 0
             UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
             If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
                 UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
        Else
-            If Not Npclist(npcIndex).MaestroUser > 0 Then   'mascotas nooo!
+            If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
                 UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
                 If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
                     UserList(UserIndex).Reputacion.BandidoRep = MAXREP
             End If
        End If
-    ElseIf Npclist(npcIndex).Stats.Alineacion = 1 Then
+    ElseIf Npclist(NpcIndex).Stats.Alineacion = 1 Then
        UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR / 2
        If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
         UserList(UserIndex).Reputacion.PlebeRep = MAXREP
     End If
     
     'hacemos que el npc se defienda
-    Npclist(npcIndex).Movement = TipoAI.NPCDEFENSA
-    Npclist(npcIndex).Hostile = 1
+    Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
+    Npclist(NpcIndex).Hostile = 1
     
 End If
 
@@ -1078,7 +1078,7 @@ Sub UserDie(ByVal UserIndex As Integer)
 On Error GoTo ErrorHandler
 
     'Sonido
-    If UCase$(UserList(UserIndex).Genero) = "MUJER" Then
+    If UCase$(UserList(UserIndex).genero) = "MUJER" Then
         Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, e_SoundIndex.MUERTE_MUJER)
     Else
         Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, e_SoundIndex.MUERTE_HOMBRE)
@@ -1160,8 +1160,8 @@ On Error GoTo ErrorHandler
         Call Desequipar(UserIndex, UserList(UserIndex).Invent.CascoEqpSlot)
     End If
     'desequipar herramienta
-    If UserList(UserIndex).Invent.HerramientaEqpObjIndex > 0 Then
-        Call Desequipar(UserIndex, UserList(UserIndex).Invent.HerramientaEqpSlot)
+    If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
+        Call Desequipar(UserIndex, UserList(UserIndex).Invent.AnilloEqpSlot)
     End If
     'desequipar municiones
     If UserList(UserIndex).Invent.MunicionEqpObjIndex > 0 Then
@@ -1300,9 +1300,9 @@ Dim hayobj As Boolean
             
                 If LegalPos(nPos.Map, tX, tY) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.Map, tX, tY).objInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).objInfo.ObjIndex <> Obj.ObjIndex)
+                    hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.Map, tX, tY).objInfo.Amount + Obj.Amount > MAX_INVENTORY_OBJS)
+                        hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.amount + Obj.amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
@@ -1402,14 +1402,14 @@ For Y = YMinMapSize To YMaxMapSize
 #End If
         End If
 
-        If MapData(Map, X, Y).npcIndex > 0 Then
-            Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).npcIndex, Map, X, Y)
+        If MapData(Map, X, Y).NpcIndex > 0 Then
+            Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
         End If
 
-        If MapData(Map, X, Y).objInfo.ObjIndex > 0 Then
-            If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType <> eOBJType.otArboles Then
-                Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).objInfo, Map, X, Y)
-                If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
+        If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
+            If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType <> eOBJType.otArboles Then
+                Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).ObjInfo, Map, X, Y)
+                If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
                           Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X, Y, MapData(Map, X, Y).Blocked)
                           Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                 End If
@@ -1535,7 +1535,7 @@ End If
 End Sub
 
 Public Sub Empollando(ByVal UserIndex As Integer)
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).objInfo.ObjIndex > 0 Then
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
     UserList(UserIndex).flags.EstaEmpo = 1
 Else
     UserList(UserIndex).flags.EstaEmpo = 0
@@ -1561,19 +1561,19 @@ End If
 Exit Sub
 
 End Sub
-Sub SendUserOROTxtFromChar(ByVal sendIndex As Integer, ByVal CharName As String)
+Sub SendUserOROTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 On Error Resume Next
 Dim j As Integer
 Dim CharFile As String, Tmp As String
 Dim ObjInd As Long, ObjCant As Long
 
-CharFile = CharPath & CharName & ".chr"
+CharFile = CharPath & charName & ".chr"
 
 If FileExist(CharFile, vbNormal) Then
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & CharName & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & charName & FONTTYPE_INFO)
     Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & GetVar(CharFile, "STATS", "BANCO") & " en el banco." & FONTTYPE_INFO)
     Else
-    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & CharName & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, sendIndex, 0, "||Usuario inexistente: " & charName & FONTTYPE_INFO)
 End If
 
 End Sub

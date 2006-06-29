@@ -256,7 +256,7 @@ Dim i As Integer
 Dim Total As Long
 For i = 1 To MAX_INVENTORY_SLOTS
     If UserList(UserIndex).Invent.Object(i).ObjIndex = ItemIndex Then
-        Total = Total + UserList(UserIndex).Invent.Object(i).Amount
+        Total = Total + UserList(UserIndex).Invent.Object(i).amount
     End If
 Next i
 
@@ -276,10 +276,10 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).Amount = UserList(UserIndex).Invent.Object(i).Amount - Cant
-        If (UserList(UserIndex).Invent.Object(i).Amount <= 0) Then
-            Cant = Abs(UserList(UserIndex).Invent.Object(i).Amount)
-            UserList(UserIndex).Invent.Object(i).Amount = 0
+        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - Cant
+        If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
+            Cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
+            UserList(UserIndex).Invent.Object(i).amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
             Cant = 0
@@ -384,7 +384,7 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido la armadura!." & FONTTYPE_INFO)
     End If
     Dim MiObj As Obj
-    MiObj.Amount = 1
+    MiObj.amount = 1
     MiObj.ObjIndex = ItemIndex
     If Not MeterItemEnInventario(UserIndex, MiObj) Then
                     Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
@@ -418,13 +418,13 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) >= _
    ObjData(ItemIndex).SkCarpinteria And _
    PuedeConstruirCarpintero(ItemIndex) And _
-   UserList(UserIndex).Invent.HerramientaEqpObjIndex = SERRUCHO_CARPINTERO Then
+   UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
 
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has construido el objeto!" & FONTTYPE_INFO)
     
     Dim MiObj As Obj
-    MiObj.Amount = 1
+    MiObj.amount = 1
     MiObj.ObjIndex = ItemIndex
     If Not MeterItemEnInventario(UserIndex, MiObj) Then
                     Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
@@ -461,21 +461,21 @@ Dim obji As Integer
     Slot = UserList(UserIndex).flags.TargetObjInvSlot
     obji = UserList(UserIndex).Invent.Object(Slot).ObjIndex
     
-    If UserList(UserIndex).Invent.Object(Slot).Amount < MineralesParaLingote(obji) Or _
+    If UserList(UserIndex).Invent.Object(Slot).amount < MineralesParaLingote(obji) Or _
         ObjData(obji).OBJType <> eOBJType.otMinerales Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes suficientes minerales para hacer un lingote." & FONTTYPE_INFO)
             Exit Sub
     End If
     
-    UserList(UserIndex).Invent.Object(Slot).Amount = UserList(UserIndex).Invent.Object(Slot).Amount - MineralesParaLingote(obji)
-    If UserList(UserIndex).Invent.Object(Slot).Amount < 1 Then
-        UserList(UserIndex).Invent.Object(Slot).Amount = 0
+    UserList(UserIndex).Invent.Object(Slot).amount = UserList(UserIndex).Invent.Object(Slot).amount - MineralesParaLingote(obji)
+    If UserList(UserIndex).Invent.Object(Slot).amount < 1 Then
+        UserList(UserIndex).Invent.Object(Slot).amount = 0
         UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
     End If
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has obtenido un lingote!!!" & FONTTYPE_INFO)
     Dim nPos As WorldPos
     Dim MiObj As Obj
-    MiObj.Amount = 1
+    MiObj.amount = 1
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObjInvIndex).LingoteIndex
     If Not MeterItemEnInventario(UserIndex, MiObj) Then
         Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
@@ -676,7 +676,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(Map, X, Y).OBJInfo.Amount < 3 Then
+If MapData(Map, X, Y).ObjInfo.amount < 3 Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Necesitas por lo menos tres troncos para hacer una fogata." & FONTTYPE_INFO)
     Exit Sub
 End If
@@ -694,9 +694,9 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.Amount = MapData(Map, X, Y).OBJInfo.Amount \ 3
+    Obj.amount = MapData(Map, X, Y).ObjInfo.amount \ 3
     
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho " & Obj.Amount & " fogatas." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has hecho " & Obj.amount & " fogatas." & FONTTYPE_INFO)
     
     Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
     
@@ -740,9 +740,9 @@ If res < 6 Then
     Dim MiObj As Obj
     
     If UserList(UserIndex).Clase = "Pescador" Then
-        MiObj.Amount = RandomNumber(1, 4)
+        MiObj.amount = RandomNumber(1, 4)
     Else
-        MiObj.Amount = 1
+        MiObj.amount = 1
     End If
     MiObj.ObjIndex = Pescado
     
@@ -808,9 +808,9 @@ If Suerte > 0 Then
         PecesPosibles(4) = PESCADO4
         
         If EsPescador = True Then
-            MiObj.Amount = RandomNumber(1, 5)
+            MiObj.amount = RandomNumber(1, 5)
         Else
-            MiObj.Amount = 1
+            MiObj.amount = 1
         End If
         MiObj.ObjIndex = PecesPosibles(RandomNumber(LBound(PecesPosibles), UBound(PecesPosibles)))
         
@@ -992,16 +992,16 @@ If flag Then
     'Cantidad al azar
     num = RandomNumber(1, 5)
                 
-    If num > UserList(VictimaIndex).Invent.Object(i).Amount Then
-         num = UserList(VictimaIndex).Invent.Object(i).Amount
+    If num > UserList(VictimaIndex).Invent.Object(i).amount Then
+         num = UserList(VictimaIndex).Invent.Object(i).amount
     End If
                 
-    MiObj.Amount = num
+    MiObj.amount = num
     MiObj.ObjIndex = UserList(VictimaIndex).Invent.Object(i).ObjIndex
     
-    UserList(VictimaIndex).Invent.Object(i).Amount = UserList(VictimaIndex).Invent.Object(i).Amount - num
+    UserList(VictimaIndex).Invent.Object(i).amount = UserList(VictimaIndex).Invent.Object(i).amount - num
                 
-    If UserList(VictimaIndex).Invent.Object(i).Amount <= 0 Then
+    If UserList(VictimaIndex).Invent.Object(i).amount <= 0 Then
           Call QuitarUserInvItem(VictimaIndex, CByte(i), 1)
     End If
             
@@ -1011,7 +1011,7 @@ If flag Then
         Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
     End If
     
-    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||Has robado " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name & FONTTYPE_INFO)
 Else
     Call SendData(SendTarget.ToIndex, LadrOnIndex, 0, "||No has logrado robar un objetos." & FONTTYPE_INFO)
 End If
@@ -1112,9 +1112,9 @@ If res < 6 Then
     Dim MiObj As Obj
     
     If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
-        MiObj.Amount = RandomNumber(1, 4)
+        MiObj.amount = RandomNumber(1, 4)
     Else
-        MiObj.Amount = 1
+        MiObj.amount = 1
     End If
     
     MiObj.ObjIndex = Leña
@@ -1180,9 +1180,9 @@ If res <= 5 Then
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
     If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
-        MiObj.Amount = RandomNumber(1, 5)
+        MiObj.amount = RandomNumber(1, 5)
     Else
-        MiObj.Amount = 1
+        MiObj.amount = 1
     End If
     
     If Not MeterItemEnInventario(UserIndex, MiObj) Then _

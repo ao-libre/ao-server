@@ -428,16 +428,16 @@ On Error Resume Next
                 
                 ByFlags = 0
                 
-                If MapData(Map, X, Y).objInfo.ObjIndex > 0 Then
-                   If ObjData(MapData(Map, X, Y).objInfo.ObjIndex).OBJType = eOBJType.otFogata Then
-                        MapData(Map, X, Y).objInfo.ObjIndex = 0
-                        MapData(Map, X, Y).objInfo.Amount = 0
+                If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
+                   If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otFogata Then
+                        MapData(Map, X, Y).ObjInfo.ObjIndex = 0
+                        MapData(Map, X, Y).ObjInfo.amount = 0
                     End If
                 End If
     
                 If MapData(Map, X, Y).TileExit.Map Then ByFlags = ByFlags Or 1
                 If MapData(Map, X, Y).NpcIndex Then ByFlags = ByFlags Or 2
-                If MapData(Map, X, Y).objInfo.ObjIndex Then ByFlags = ByFlags Or 4
+                If MapData(Map, X, Y).ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
                 
                 Put FreeFileInf, , ByFlags
                 
@@ -450,9 +450,9 @@ On Error Resume Next
                 If MapData(Map, X, Y).NpcIndex Then _
                     Put FreeFileInf, , Npclist(MapData(Map, X, Y).NpcIndex).Numero
                 
-                If MapData(Map, X, Y).objInfo.ObjIndex Then
-                    Put FreeFileInf, , MapData(Map, X, Y).objInfo.ObjIndex
-                    Put FreeFileInf, , MapData(Map, X, Y).objInfo.Amount
+                If MapData(Map, X, Y).ObjInfo.ObjIndex Then
+                    Put FreeFileInf, , MapData(Map, X, Y).ObjInfo.ObjIndex
+                    Put FreeFileInf, , MapData(Map, X, Y).ObjInfo.amount
                 End If
             
             
@@ -627,11 +627,12 @@ For Object = 1 To NumObjDatas
             ObjData(Object).Real = val(Leer.GetValue("OBJ" & Object, "Real"))
             ObjData(Object).Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
         
-        Case eOBJType.otHerramientas
             ObjData(Object).LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
             ObjData(Object).LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
             ObjData(Object).LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
             ObjData(Object).SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
+        
+        
         
         Case eOBJType.otInstrumentos
             ObjData(Object).Snd1 = val(Leer.GetValue("OBJ" & Object, "SND1"))
@@ -839,7 +840,7 @@ UserList(UserIndex).Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
 
 UserList(UserIndex).email = UserFile.GetValue("CONTACTO", "Email")
 
-UserList(UserIndex).Genero = UserFile.GetValue("INIT", "Genero")
+UserList(UserIndex).genero = UserFile.GetValue("INIT", "Genero")
 UserList(UserIndex).Clase = UserFile.GetValue("INIT", "Clase")
 UserList(UserIndex).Raza = UserFile.GetValue("INIT", "Raza")
 UserList(UserIndex).Hogar = UserFile.GetValue("INIT", "Hogar")
@@ -880,7 +881,7 @@ UserList(UserIndex).BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventor
 For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
     ln = UserFile.GetValue("BancoInventory", "Obj" & LoopC)
     UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-    UserList(UserIndex).BancoInvent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
+    UserList(UserIndex).BancoInvent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
 Next LoopC
 '------------------------------------------------------------------------------------
 '[/KEVIN]*****************************************************************************
@@ -890,7 +891,7 @@ Next LoopC
 For LoopC = 1 To MAX_INVENTORY_SLOTS
     ln = UserFile.GetValue("Inventory", "Obj" & LoopC)
     UserList(UserIndex).Invent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-    UserList(UserIndex).Invent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
     UserList(UserIndex).Invent.Object(LoopC).Equipped = CByte(ReadField(3, ln, 45))
 Next LoopC
 
@@ -935,10 +936,17 @@ End If
 
 '[Alejo]
 'Obtiene el indice-objeto herramienta
-UserList(UserIndex).Invent.HerramientaEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
-If UserList(UserIndex).Invent.HerramientaEqpSlot > 0 Then
-    UserList(UserIndex).Invent.HerramientaEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.HerramientaEqpSlot).ObjIndex
+'/Nacho
+'TODO : Sacar esto en la 0.12.0
+'UserList(UserIndex).Invent.HerramientaEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
+'If UserList(UserIndex).Invent.HerramientaEqpSlot > 0 Then
+'    UserList(UserIndex).Invent.HerramientaEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.HerramientaEqpSlot).ObjIndex
+'End If
+UserList(UserIndex).Invent.AnilloEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
+If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
+    UserList(UserIndex).Invent.AnilloEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.AnilloEqpSlot).ObjIndex
 End If
+'/Nacho
 
 UserList(UserIndex).NroMacotas = 0
 
@@ -1159,8 +1167,8 @@ On Error GoTo errh
             
             If ByFlags And 4 Then
                 'Get and make Object
-                Get FreeFileInf, , MapData(Map, X, Y).objInfo.ObjIndex
-                Get FreeFileInf, , MapData(Map, X, Y).objInfo.Amount
+                Get FreeFileInf, , MapData(Map, X, Y).ObjInfo.ObjIndex
+                Get FreeFileInf, , MapData(Map, X, Y).ObjInfo.amount
             End If
         Next X
     Next Y
@@ -1477,7 +1485,7 @@ Next
 
 Call WriteVar(UserFile, "CONTACTO", "Email", UserList(UserIndex).email)
 
-Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).Genero)
+Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).Raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).Clase)
@@ -1541,7 +1549,7 @@ Call WriteVar(UserFile, "MUERTES", "NpcsMuertes", CStr(UserList(UserIndex).Stats
 Call WriteVar(UserFile, "BancoInventory", "CantidadItems", val(UserList(UserIndex).BancoInvent.NroItems))
 Dim loopd As Integer
 For loopd = 1 To MAX_BANCOINVENTORY_SLOTS
-    Call WriteVar(UserFile, "BancoInventory", "Obj" & loopd, UserList(UserIndex).BancoInvent.Object(loopd).ObjIndex & "-" & UserList(UserIndex).BancoInvent.Object(loopd).Amount)
+    Call WriteVar(UserFile, "BancoInventory", "Obj" & loopd, UserList(UserIndex).BancoInvent.Object(loopd).ObjIndex & "-" & UserList(UserIndex).BancoInvent.Object(loopd).amount)
 Next loopd
 '*******************************************************************************************
 '[/KEVIN]-----------
@@ -1550,7 +1558,7 @@ Next loopd
 Call WriteVar(UserFile, "Inventory", "CantidadItems", val(UserList(UserIndex).Invent.NroItems))
 
 For LoopC = 1 To MAX_INVENTORY_SLOTS
-    Call WriteVar(UserFile, "Inventory", "Obj" & LoopC, UserList(UserIndex).Invent.Object(LoopC).ObjIndex & "-" & UserList(UserIndex).Invent.Object(LoopC).Amount & "-" & UserList(UserIndex).Invent.Object(LoopC).Equipped)
+    Call WriteVar(UserFile, "Inventory", "Obj" & LoopC, UserList(UserIndex).Invent.Object(LoopC).ObjIndex & "-" & UserList(UserIndex).Invent.Object(LoopC).amount & "-" & UserList(UserIndex).Invent.Object(LoopC).Equipped)
 Next
 
 Call WriteVar(UserFile, "Inventory", "WeaponEqpSlot", str(UserList(UserIndex).Invent.WeaponEqpSlot))
@@ -1559,7 +1567,9 @@ Call WriteVar(UserFile, "Inventory", "CascoEqpSlot", str(UserList(UserIndex).Inv
 Call WriteVar(UserFile, "Inventory", "EscudoEqpSlot", str(UserList(UserIndex).Invent.EscudoEqpSlot))
 Call WriteVar(UserFile, "Inventory", "BarcoSlot", str(UserList(UserIndex).Invent.BarcoSlot))
 Call WriteVar(UserFile, "Inventory", "MunicionSlot", str(UserList(UserIndex).Invent.MunicionEqpSlot))
-Call WriteVar(UserFile, "Inventory", "HerramientaSlot", str(UserList(UserIndex).Invent.HerramientaEqpSlot))
+'/Nacho
+'TODO : En la 0.12 cambiar la variable del CharFile
+Call WriteVar(UserFile, "Inventory", "HerramientaSlot", str(UserList(UserIndex).Invent.AnilloEqpSlot))
 
 
 'Reputacion
@@ -1688,7 +1698,7 @@ Call WriteVar(npcfile, "NPC" & NpcNumero, "Domable", val(Npclist(NpcIndex).flags
 Call WriteVar(npcfile, "NPC" & NpcNumero, "NroItems", val(Npclist(NpcIndex).Invent.NroItems))
 If Npclist(NpcIndex).Invent.NroItems > 0 Then
    For LoopC = 1 To MAX_INVENTORY_SLOTS
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Obj" & LoopC, Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex & "-" & Npclist(NpcIndex).Invent.Object(LoopC).Amount)
+        Call WriteVar(npcfile, "NPC" & NpcNumero, "Obj" & LoopC, Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex & "-" & Npclist(NpcIndex).Invent.Object(LoopC).amount)
    Next
 End If
 
@@ -1745,13 +1755,13 @@ If Npclist(NpcIndex).Invent.NroItems > 0 Then
     For LoopC = 1 To MAX_INVENTORY_SLOTS
         ln = GetVar(npcfile, "NPC" & NpcNumber, "Obj" & LoopC)
         Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-        Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
+        Npclist(NpcIndex).Invent.Object(LoopC).amount = val(ReadField(2, ln, 45))
        
     Next LoopC
 Else
     For LoopC = 1 To MAX_INVENTORY_SLOTS
         Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = 0
-        Npclist(NpcIndex).Invent.Object(LoopC).Amount = 0
+        Npclist(NpcIndex).Invent.Object(LoopC).amount = 0
     Next LoopC
 End If
 

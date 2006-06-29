@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim T() As String
+Dim t() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -570,7 +570,7 @@ Procesado = True 'ver al final del sub
                     DummyInt = 2
                 ElseIf ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).OBJType <> eOBJType.otFlechas Then
                     DummyInt = 1
-                ElseIf UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).Amount < 1 Then
+                ElseIf UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).amount < 1 Then
                     DummyInt = 1
                 End If
                 
@@ -625,7 +625,7 @@ Procesado = True 'ver al final del sub
                     DummyInt = UserList(UserIndex).Invent.MunicionEqpSlot
                     Call QuitarUserInvItem(UserIndex, UserList(UserIndex).Invent.MunicionEqpSlot, 1)
                     If DummyInt < 1 Or DummyInt > MAX_INVENTORY_SLOTS Then Exit Sub
-                    If UserList(UserIndex).Invent.Object(DummyInt).Amount > 0 Then
+                    If UserList(UserIndex).Invent.Object(DummyInt).amount > 0 Then
                         UserList(UserIndex).Invent.Object(DummyInt).Equipped = 1
                         UserList(UserIndex).Invent.MunicionEqpSlot = DummyInt
                         UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(DummyInt).ObjIndex
@@ -696,7 +696,7 @@ Procesado = True 'ver al final del sub
             
             Case Pesca
                         
-                AuxInd = UserList(UserIndex).Invent.HerramientaEqpObjIndex
+                AuxInd = UserList(UserIndex).Invent.WeaponEqpObjIndex
                 If AuxInd = 0 Then Exit Sub
                 
                 'If UserList(UserIndex).flags.PuedeTrabajar = 0 Then Exit Sub
@@ -780,18 +780,18 @@ Procesado = True 'ver al final del sub
                 'If UserList(UserIndex).flags.PuedeTrabajar = 0 Then Exit Sub
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
-                If UserList(UserIndex).Invent.HerramientaEqpObjIndex = 0 Then
+                If UserList(UserIndex).Invent.WeaponEqpObjIndex = 0 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Deberías equiparte el hacha." & FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
-                If UserList(UserIndex).Invent.HerramientaEqpObjIndex <> HACHA_LEÑADOR Then
+                If UserList(UserIndex).Invent.WeaponEqpObjIndex <> HACHA_LEÑADOR Then
                     ' Call Cerrar_Usuario(UserIndex)
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
                 End If
                 
-                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).objInfo.ObjIndex
+                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex
                 If AuxInd > 0 Then
                     wpaux.Map = UserList(UserIndex).Pos.Map
                     wpaux.X = X
@@ -820,9 +820,9 @@ Procesado = True 'ver al final del sub
                 'If UserList(UserIndex).flags.PuedeTrabajar = 0 Then Exit Sub
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                                 
-                If UserList(UserIndex).Invent.HerramientaEqpObjIndex = 0 Then Exit Sub
+                If UserList(UserIndex).Invent.WeaponEqpObjIndex = 0 Then Exit Sub
                 
-                If UserList(UserIndex).Invent.HerramientaEqpObjIndex <> PIQUETE_MINERO Then
+                If UserList(UserIndex).Invent.WeaponEqpObjIndex <> PIQUETE_MINERO Then
                     ' Call Cerrar_Usuario(UserIndex)
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
@@ -830,7 +830,7 @@ Procesado = True 'ver al final del sub
                 
                 Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
                 
-                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).objInfo.ObjIndex
+                AuxInd = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex
                 If AuxInd > 0 Then
                     wpaux.Map = UserList(UserIndex).Pos.Map
                     wpaux.X = X
@@ -887,7 +887,7 @@ Procesado = True 'ver al final del sub
                     If ObjData(UserList(UserIndex).flags.TargetObj).OBJType = eOBJType.otFragua Then
                         ''chequeamos que no se zarpe duplicando oro
                         If UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).ObjIndex <> UserList(UserIndex).flags.TargetObjInvIndex Then
-                            If UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).ObjIndex = 0 Or UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).Amount = 0 Then
+                            If UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).ObjIndex = 0 Or UserList(UserIndex).Invent.Object(UserList(UserIndex).flags.TargetObjInvSlot).amount = 0 Then
                                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes mas minerales" & FONTTYPE_INFO)
                                 Exit Sub
                             End If
@@ -1220,7 +1220,7 @@ Procesado = True 'ver al final del sub
                     End If
                 Else
                     'inventario
-                    If val(Arg2) > UserList(UserIndex).Invent.Object(val(Arg1)).Amount Then
+                    If val(Arg2) > UserList(UserIndex).Invent.Object(val(Arg1)).amount Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes esa cantidad." & FONTTYPE_TALK)
                         Exit Sub
                     End If
@@ -1238,7 +1238,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.cant = val(Arg2)
+                UserList(UserIndex).ComUsu.Cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub

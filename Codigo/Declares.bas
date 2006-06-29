@@ -431,7 +431,7 @@ Public Enum eOBJType
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17
-    otHerramientas = 18
+    otAnillo = 18
     otTeleport = 19
     otYacimiento = 22
     otMinerales = 23
@@ -550,7 +550,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
     
     Materializa As Byte
     ItemIndex As Byte
@@ -589,8 +589,12 @@ Public Type Inventario
     CascoEqpSlot As Byte
     MunicionEqpObjIndex As Integer
     MunicionEqpSlot As Byte
-    HerramientaEqpObjIndex As Integer
-    HerramientaEqpSlot As Integer
+    '/Nacho
+'    HerramientaEqpSlot As Integer
+'    HerramientaEqpObjIndex As Integer
+    '/Nacho
+    AnilloEqpObjIndex As Integer
+    AnilloEqpSlot As Integer
     BarcoObjIndex As Integer
     BarcoSlot As Byte
     NroItems As Integer
