@@ -17,7 +17,7 @@ End Type
 Private trainningInfo() As trainningData
 
 Private fragLvlRaceData(1 To 7) As fragLvlRace
-Private fragLvlLvlData(1 To 7) As fragLvlRace
+Private fragLvlLvlData(1 To 7) As fragLvlLvl
 Private fragAlignmentLvlData(1 To 50, 1 To 4) As Long
 
 Public Sub Initialize()
@@ -44,7 +44,7 @@ Public Sub UserDisconnected(ByVal userindex As Integer)
         'Update trainning time
         .trainningTime = .trainningTime + (GetTickCount() - .startTick) / 1000
     
-        .trainningInfo(userindex).startTick = GetTickCount
+        .startTick = GetTickCount
         
         'Store info in char file
         Call WriteVar(CharPath & UCase$(UserList(userindex).name) & ".chr", "RESEARCH", "TrainningTime", CStr(.trainningTime))
@@ -62,7 +62,7 @@ Public Sub UserLevelUp(ByVal userindex As Integer)
             'Log the data
             Open App.Path & "\logs\statistics.log" For Append Shared As handle
             
-            Print handle, UCase$(UserList(userindex).name) & " completó el nivel " & CStr(UserList(userindex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
+            Print #handle, UCase$(UserList(userindex).name) & " completó el nivel " & CStr(UserList(userindex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
             
             Close handle
         End If
@@ -139,4 +139,317 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
     
     fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) = fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) + 1
+End Sub
+
+Public Sub DumpStatistics()
+    Dim handle As Integer
+    handle = FreeFile()
+    
+    Dim line As String
+    Dim i As Long
+    Dim j As Long
+    
+    Open App.Path & "\logs\frags" For Output As handle
+    
+    'Save lvl vs lvl frag matrix for each class - we use GNU Octave's ASCII file format
+    
+    Print #handle, "# name: fragLvlLvl_Ase"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(1).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Dru"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(2).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Mag"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(3).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Pal"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(4).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Gue"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(5).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Cle"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(6).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlLvl_Caz"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 50"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 50
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlLvlData(7).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    
+    
+    
+    
+    'Save lvl vs race frag matrix for each class - we use GNU Octave's ASCII file format
+    
+    Print #handle, "# name: fragLvlRace_Ase"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(1).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Dru"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(2).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Mag"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(3).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Pal"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(4).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Gue"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(5).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Cle"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(6).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlRace_Caz"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 5"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 5
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(7).matrix(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    
+    
+    
+    
+    
+    'Save lvl vs class frag matrix for each race - we use GNU Octave's ASCII file format
+    
+    Print #handle, "# name: fragLvlClass_Elf"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 7"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 7
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(j).matrix(i, 1))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlClass_Dar"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 7"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 7
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(j).matrix(i, 2))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlClass_Dwa"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 7"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 7
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(j).matrix(i, 3))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlClass_Gno"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 7"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 7
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(j).matrix(i, 4))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Print #handle, "# name: fragLvlClass_Hum"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 7"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 7
+        For i = 1 To 50
+            line = line & " " & CStr(fragLvlRaceData(j).matrix(i, 5))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    
+    
+    
+    'Save lvl vs alignment frag matrix for each race - we use GNU Octave's ASCII file format
+    
+    Print #handle, "# name: fragAlignmentLvl"
+    Print #handle, "# type: matrix"
+    Print #handle, "# rows: 4"
+    Print #handle, "# columns: 50"
+    
+    For j = 1 To 4
+        For i = 1 To 50
+            line = line & " " & CStr(fragAlignmentLvlData(i, j))
+        Next i
+        
+        Print #handle, line
+        line = ""
+    Next j
+    
+    Close #handle
 End Sub

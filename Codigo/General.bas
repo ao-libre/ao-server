@@ -875,6 +875,7 @@ For LoopC = 1 To MaxUsers
     Call CloseSocket(LoopC)
 Next
 
+'Initialize statistics!!
 Call Statistics.Initialize
 
 ReDim UserList(1 To MaxUsers)

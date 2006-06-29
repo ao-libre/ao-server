@@ -595,6 +595,9 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
 On Error Resume Next
 
+'Save stats!!!
+Call Statistics.DumpStatistics
+
 Call QuitarIconoSystray
 
 #If UsarQueSocket = 1 Then
@@ -838,11 +841,11 @@ End Sub
 Private Sub mnuSystray_Click()
 
 Dim i As Integer
-Dim s As String
+Dim S As String
 Dim nid As NOTIFYICONDATA
 
-s = "ARGENTUM-ONLINE"
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, s)
+S = "ARGENTUM-ONLINE"
+nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
 i = Shell_NotifyIconA(NIM_ADD, nid)
     
 If WindowState <> vbMinimized Then WindowState = vbMinimized
