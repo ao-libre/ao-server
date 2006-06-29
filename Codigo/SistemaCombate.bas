@@ -681,6 +681,17 @@ Call SendData(SendTarget.ToIndex, UserIndex, 0, "N2" & Lugar & "," & daño)
 
 If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
 
+If UserList(UserIndex).flags.Meditando Then
+    If daño > Fix(UserList(UserIndex).Stats.MinHP / 100 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) * UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
+        UserList(UserIndex).flags.Meditando = False
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "MEDOK")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
+        UserList(UserIndex).Char.FX = 0
+        UserList(UserIndex).Char.loops = 0
+        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
+    End If
+End If
+
 'Muere el usuario
 If UserList(UserIndex).Stats.MinHP <= 0 Then
 
@@ -951,11 +962,11 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim index As Integer
-    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim Index As Integer
+    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
     'Look for user
-    If index > 0 Then
+    If Index > 0 Then
         Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
         Call SendUserStatsBox(UserIndex)
         Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
