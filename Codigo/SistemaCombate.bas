@@ -1215,10 +1215,24 @@ Call CheckUserLevel(AtacanteIndex)
 End Sub
 
 Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer)
+'***************************************************
+'Autor: Unknown
+'Last Modification: 03/09/06 Nacho
+'Usuario deja de meditar
+'***************************************************
     If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
 
     If Not criminal(AttackerIndex) And Not criminal(VictimIndex) Then
         Call VolverCriminal(AttackerIndex)
+    End If
+    
+    If UserList(VictimIndex).flags.Meditando Then
+        UserList(VictimIndex).flags.Meditando = False
+        Call SendData(SendTarget.ToIndex, VictimIndex, 0, "MEDOK")
+        Call SendData(SendTarget.ToIndex, VictimIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
+        UserList(VictimIndex).Char.FX = 0
+        UserList(VictimIndex).Char.loops = 0
+        Call SendData(SendTarget.ToPCArea, VictimIndex, UserList(VictimIndex).Pos.Map, "CFX" & UserList(VictimIndex).Char.CharIndex & "," & 0 & "," & 0)
     End If
     
     If Not criminal(VictimIndex) Then
