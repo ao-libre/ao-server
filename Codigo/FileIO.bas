@@ -271,7 +271,7 @@ For Hechizo = 1 To NumeroHechizos
     
     Hechizos(Hechizo).Invoca = val(Leer.GetValue("Hechizo" & Hechizo, "Invoca"))
     Hechizos(Hechizo).NumNpc = val(Leer.GetValue("Hechizo" & Hechizo, "NumNpc"))
-    Hechizos(Hechizo).Cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
+    Hechizos(Hechizo).cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
     Hechizos(Hechizo).Mimetiza = val(Leer.GetValue("hechizo" & Hechizo, "Mimetiza"))
     
     
@@ -736,75 +736,75 @@ errhandler:
 
 End Sub
 
-Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
+Sub LoadUserStats(ByVal userindex As Integer, ByRef UserFile As clsIniReader)
 
 Dim LoopC As Integer
 
 
 For LoopC = 1 To NUMATRIBUTOS
-  UserList(UserIndex).Stats.UserAtributos(LoopC) = CInt(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
-  UserList(UserIndex).Stats.UserAtributosBackUP(LoopC) = UserList(UserIndex).Stats.UserAtributos(LoopC)
+  UserList(userindex).Stats.UserAtributos(LoopC) = CInt(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
+  UserList(userindex).Stats.UserAtributosBackUP(LoopC) = UserList(userindex).Stats.UserAtributos(LoopC)
 Next LoopC
 
 For LoopC = 1 To NUMSKILLS
-  UserList(UserIndex).Stats.UserSkills(LoopC) = CInt(UserFile.GetValue("SKILLS", "SK" & LoopC))
+  UserList(userindex).Stats.UserSkills(LoopC) = CInt(UserFile.GetValue("SKILLS", "SK" & LoopC))
 Next LoopC
 
 For LoopC = 1 To MAXUSERHECHIZOS
-  UserList(UserIndex).Stats.UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
+  UserList(userindex).Stats.UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
 Next LoopC
 
-UserList(UserIndex).Stats.GLD = CLng(UserFile.GetValue("STATS", "GLD"))
-UserList(UserIndex).Stats.Banco = CLng(UserFile.GetValue("STATS", "BANCO"))
+UserList(userindex).Stats.GLD = CLng(UserFile.GetValue("STATS", "GLD"))
+UserList(userindex).Stats.Banco = CLng(UserFile.GetValue("STATS", "BANCO"))
 
-UserList(UserIndex).Stats.MET = CInt(UserFile.GetValue("STATS", "MET"))
-UserList(UserIndex).Stats.MaxHP = CInt(UserFile.GetValue("STATS", "MaxHP"))
-UserList(UserIndex).Stats.MinHP = CInt(UserFile.GetValue("STATS", "MinHP"))
+UserList(userindex).Stats.MET = CInt(UserFile.GetValue("STATS", "MET"))
+UserList(userindex).Stats.MaxHP = CInt(UserFile.GetValue("STATS", "MaxHP"))
+UserList(userindex).Stats.MinHP = CInt(UserFile.GetValue("STATS", "MinHP"))
 
-UserList(UserIndex).Stats.MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
-UserList(UserIndex).Stats.MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
+UserList(userindex).Stats.MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
+UserList(userindex).Stats.MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
 
-UserList(UserIndex).Stats.MaxMAN = CInt(UserFile.GetValue("STATS", "MaxMAN"))
-UserList(UserIndex).Stats.MinMAN = CInt(UserFile.GetValue("STATS", "MinMAN"))
+UserList(userindex).Stats.MaxMAN = CInt(UserFile.GetValue("STATS", "MaxMAN"))
+UserList(userindex).Stats.MinMAN = CInt(UserFile.GetValue("STATS", "MinMAN"))
 
-UserList(UserIndex).Stats.MaxHIT = CInt(UserFile.GetValue("STATS", "MaxHIT"))
-UserList(UserIndex).Stats.MinHIT = CInt(UserFile.GetValue("STATS", "MinHIT"))
+UserList(userindex).Stats.MaxHIT = CInt(UserFile.GetValue("STATS", "MaxHIT"))
+UserList(userindex).Stats.MinHIT = CInt(UserFile.GetValue("STATS", "MinHIT"))
 
-UserList(UserIndex).Stats.MaxAGU = CInt(UserFile.GetValue("STATS", "MaxAGU"))
-UserList(UserIndex).Stats.MinAGU = CInt(UserFile.GetValue("STATS", "MinAGU"))
+UserList(userindex).Stats.MaxAGU = CInt(UserFile.GetValue("STATS", "MaxAGU"))
+UserList(userindex).Stats.MinAGU = CInt(UserFile.GetValue("STATS", "MinAGU"))
 
-UserList(UserIndex).Stats.MaxHam = CInt(UserFile.GetValue("STATS", "MaxHAM"))
-UserList(UserIndex).Stats.MinHam = CInt(UserFile.GetValue("STATS", "MinHAM"))
+UserList(userindex).Stats.MaxHam = CInt(UserFile.GetValue("STATS", "MaxHAM"))
+UserList(userindex).Stats.MinHam = CInt(UserFile.GetValue("STATS", "MinHAM"))
 
-UserList(UserIndex).Stats.SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLibres"))
+UserList(userindex).Stats.SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLibres"))
 
-UserList(UserIndex).Stats.Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
-UserList(UserIndex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
-UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
+UserList(userindex).Stats.Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
+UserList(userindex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
+UserList(userindex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
 
 
-UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
-UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
-UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
+UserList(userindex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
+UserList(userindex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
+UserList(userindex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
-UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
-UserList(UserIndex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
-
-End Sub
-
-Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
-
-UserList(UserIndex).Reputacion.AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
-UserList(UserIndex).Reputacion.BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
-UserList(UserIndex).Reputacion.BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
-UserList(UserIndex).Reputacion.LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
-UserList(UserIndex).Reputacion.NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
-UserList(UserIndex).Reputacion.PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
-UserList(UserIndex).Reputacion.Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
+UserList(userindex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
+UserList(userindex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
 
 End Sub
 
-Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
+Sub LoadUserReputacion(ByVal userindex As Integer, ByRef UserFile As clsIniReader)
+
+UserList(userindex).Reputacion.AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
+UserList(userindex).Reputacion.BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
+UserList(userindex).Reputacion.BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
+UserList(userindex).Reputacion.LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
+UserList(userindex).Reputacion.NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
+UserList(userindex).Reputacion.PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
+UserList(userindex).Reputacion.Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
+
+End Sub
+
+Sub LoadUserInit(ByVal userindex As Integer, ByRef UserFile As clsIniReader)
 
 Dim LoopC As Long
 Dim ln As String
@@ -854,29 +854,29 @@ UserList(UserIndex).OrigChar.ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo
 UserList(UserIndex).OrigChar.CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
 UserList(UserIndex).OrigChar.heading = eHeading.SOUTH
 
-If UserList(UserIndex).flags.Muerto = 0 Then
-    UserList(UserIndex).Char = UserList(UserIndex).OrigChar
+If UserList(userindex).flags.Muerto = 0 Then
+    UserList(userindex).Char = UserList(userindex).OrigChar
 Else
-    UserList(UserIndex).Char.body = iCuerpoMuerto
-    UserList(UserIndex).Char.Head = iCabezaMuerto
-    UserList(UserIndex).Char.WeaponAnim = NingunArma
-    UserList(UserIndex).Char.ShieldAnim = NingunEscudo
-    UserList(UserIndex).Char.CascoAnim = NingunCasco
+    UserList(userindex).Char.body = iCuerpoMuerto
+    UserList(userindex).Char.Head = iCabezaMuerto
+    UserList(userindex).Char.WeaponAnim = NingunArma
+    UserList(userindex).Char.ShieldAnim = NingunEscudo
+    UserList(userindex).Char.CascoAnim = NingunCasco
 End If
 
 
-UserList(UserIndex).Desc = UserFile.GetValue("INIT", "Desc")
+UserList(userindex).Desc = UserFile.GetValue("INIT", "Desc")
 
 
-UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
+UserList(userindex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
+UserList(userindex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
+UserList(userindex).Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
 
-UserList(UserIndex).Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
+UserList(userindex).Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
 
 '[KEVIN]--------------------------------------------------------------------
 '***********************************************************************************
-UserList(UserIndex).BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
+UserList(userindex).BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
 'Lista de objetos del banco
 For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
     ln = UserFile.GetValue("BancoInventory", "Obj" & LoopC)
@@ -896,65 +896,61 @@ For LoopC = 1 To MAX_INVENTORY_SLOTS
 Next LoopC
 
 'Obtiene el indice-objeto del arma
-UserList(UserIndex).Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
-If UserList(UserIndex).Invent.WeaponEqpSlot > 0 Then
-    UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.WeaponEqpSlot).ObjIndex
+UserList(userindex).Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
+If UserList(userindex).Invent.WeaponEqpSlot > 0 Then
+    UserList(userindex).Invent.WeaponEqpObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.WeaponEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del armadura
-UserList(UserIndex).Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
-If UserList(UserIndex).Invent.ArmourEqpSlot > 0 Then
-    UserList(UserIndex).Invent.ArmourEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.ArmourEqpSlot).ObjIndex
-    UserList(UserIndex).flags.Desnudo = 0
+UserList(userindex).Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
+If UserList(userindex).Invent.ArmourEqpSlot > 0 Then
+    UserList(userindex).Invent.ArmourEqpObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.ArmourEqpSlot).ObjIndex
+    UserList(userindex).flags.Desnudo = 0
 Else
-    UserList(UserIndex).flags.Desnudo = 1
+    UserList(userindex).flags.Desnudo = 1
 End If
 
 'Obtiene el indice-objeto del escudo
-UserList(UserIndex).Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
-If UserList(UserIndex).Invent.EscudoEqpSlot > 0 Then
-    UserList(UserIndex).Invent.EscudoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.EscudoEqpSlot).ObjIndex
+UserList(userindex).Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
+If UserList(userindex).Invent.EscudoEqpSlot > 0 Then
+    UserList(userindex).Invent.EscudoEqpObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.EscudoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del casco
-UserList(UserIndex).Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
-If UserList(UserIndex).Invent.CascoEqpSlot > 0 Then
-    UserList(UserIndex).Invent.CascoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.CascoEqpSlot).ObjIndex
+UserList(userindex).Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
+If UserList(userindex).Invent.CascoEqpSlot > 0 Then
+    UserList(userindex).Invent.CascoEqpObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.CascoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto barco
-UserList(UserIndex).Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
-If UserList(UserIndex).Invent.BarcoSlot > 0 Then
-    UserList(UserIndex).Invent.BarcoObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex
+UserList(userindex).Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
+If UserList(userindex).Invent.BarcoSlot > 0 Then
+    UserList(userindex).Invent.BarcoObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.BarcoSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto municion
-UserList(UserIndex).Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
-If UserList(UserIndex).Invent.MunicionEqpSlot > 0 Then
-    UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).ObjIndex
+UserList(userindex).Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
+If UserList(userindex).Invent.MunicionEqpSlot > 0 Then
+    UserList(userindex).Invent.MunicionEqpObjIndex = UserList(userindex).Invent.Object(UserList(userindex).Invent.MunicionEqpSlot).ObjIndex
 End If
 
 '[Alejo]
 'Obtiene el indice-objeto herramienta
 '/Nacho
-'TODO : Sacar esto en la 0.12.0
-'UserList(UserIndex).Invent.HerramientaEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
-'If UserList(UserIndex).Invent.HerramientaEqpSlot > 0 Then
-'    UserList(UserIndex).Invent.HerramientaEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.HerramientaEqpSlot).ObjIndex
-'End If
+'TODO : Cambiar el "HerramientaSlot" por "AnilloSlot" en la 0.12.0
 UserList(UserIndex).Invent.AnilloEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
 If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
     UserList(UserIndex).Invent.AnilloEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.AnilloEqpSlot).ObjIndex
 End If
 '/Nacho
 
-UserList(UserIndex).NroMacotas = 0
+UserList(userindex).NroMacotas = 0
 
 ln = UserFile.GetValue("Guild", "GUILDINDEX")
 If IsNumeric(ln) Then
-    UserList(UserIndex).GuildIndex = CInt(ln)
+    UserList(userindex).GuildIndex = CInt(ln)
 Else
-    UserList(UserIndex).GuildIndex = 0
+    UserList(userindex).GuildIndex = 0
 End If
 
 End Sub
@@ -1365,6 +1361,8 @@ If MaxUsers = 0 Then
     ReDim UserList(1 To MaxUsers) As User
 End If
 
+Call Statistics.Initialize
+
 Nix.Map = GetVar(DatPath & "Ciudades.dat", "NIX", "Mapa")
 Nix.X = GetVar(DatPath & "Ciudades.dat", "NIX", "X")
 Nix.Y = GetVar(DatPath & "Ciudades.dat", "NIX", "Y")
@@ -1401,35 +1399,35 @@ writeprivateprofilestring Main, Var, value, file
     
 End Sub
 
-Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
+Sub SaveUser(ByVal userindex As Integer, ByVal UserFile As String)
 On Error GoTo errhandler
 
 Dim OldUserHead As Long
 
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-If UserList(UserIndex).Clase = "" Or UserList(UserIndex).Stats.ELV = 0 Then
-    Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
+If UserList(userindex).clase = "" Or UserList(userindex).Stats.ELV = 0 Then
+    Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(userindex).name)
     Exit Sub
 End If
 
 
-If UserList(UserIndex).flags.Mimetizado = 1 Then
-    UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
-    UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
-    UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
-    UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
-    UserList(UserIndex).Char.WeaponAnim = UserList(UserIndex).CharMimetizado.WeaponAnim
-    UserList(UserIndex).Counters.Mimetismo = 0
-    UserList(UserIndex).flags.Mimetizado = 0
+If UserList(userindex).flags.Mimetizado = 1 Then
+    UserList(userindex).Char.body = UserList(userindex).CharMimetizado.body
+    UserList(userindex).Char.Head = UserList(userindex).CharMimetizado.Head
+    UserList(userindex).Char.CascoAnim = UserList(userindex).CharMimetizado.CascoAnim
+    UserList(userindex).Char.ShieldAnim = UserList(userindex).CharMimetizado.ShieldAnim
+    UserList(userindex).Char.WeaponAnim = UserList(userindex).CharMimetizado.WeaponAnim
+    UserList(userindex).Counters.Mimetismo = 0
+    UserList(userindex).flags.Mimetizado = 0
 End If
 
 
 
 If FileExist(UserFile, vbNormal) Then
-       If UserList(UserIndex).flags.Muerto = 1 Then
-        OldUserHead = UserList(UserIndex).Char.Head
-        UserList(UserIndex).Char.Head = CStr(GetVar(UserFile, "INIT", "Head"))
+       If UserList(userindex).flags.Muerto = 1 Then
+        OldUserHead = UserList(userindex).Char.Head
+        UserList(userindex).Char.Head = CStr(GetVar(UserFile, "INIT", "Head"))
        End If
 '       Kill UserFile
 End If
@@ -1437,53 +1435,53 @@ End If
 Dim LoopC As Integer
 
 
-Call WriteVar(UserFile, "FLAGS", "Muerto", CStr(UserList(UserIndex).flags.Muerto))
-Call WriteVar(UserFile, "FLAGS", "Escondido", CStr(UserList(UserIndex).flags.Escondido))
-Call WriteVar(UserFile, "FLAGS", "Hambre", CStr(UserList(UserIndex).flags.Hambre))
-Call WriteVar(UserFile, "FLAGS", "Sed", CStr(UserList(UserIndex).flags.Sed))
-Call WriteVar(UserFile, "FLAGS", "Desnudo", CStr(UserList(UserIndex).flags.Desnudo))
-Call WriteVar(UserFile, "FLAGS", "Ban", CStr(UserList(UserIndex).flags.Ban))
-Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(UserList(UserIndex).flags.Navegando))
+Call WriteVar(UserFile, "FLAGS", "Muerto", CStr(UserList(userindex).flags.Muerto))
+Call WriteVar(UserFile, "FLAGS", "Escondido", CStr(UserList(userindex).flags.Escondido))
+Call WriteVar(UserFile, "FLAGS", "Hambre", CStr(UserList(userindex).flags.Hambre))
+Call WriteVar(UserFile, "FLAGS", "Sed", CStr(UserList(userindex).flags.Sed))
+Call WriteVar(UserFile, "FLAGS", "Desnudo", CStr(UserList(userindex).flags.Desnudo))
+Call WriteVar(UserFile, "FLAGS", "Ban", CStr(UserList(userindex).flags.Ban))
+Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(UserList(userindex).flags.Navegando))
 
-Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(UserList(UserIndex).flags.Envenenado))
-Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(UserList(UserIndex).flags.Paralizado))
+Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(UserList(userindex).flags.Envenenado))
+Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(UserList(userindex).flags.Paralizado))
 
-Call WriteVar(UserFile, "CONSEJO", "PERTENECE", CStr(UserList(UserIndex).flags.PertAlCons))
-Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", CStr(UserList(UserIndex).flags.PertAlConsCaos))
+Call WriteVar(UserFile, "CONSEJO", "PERTENECE", CStr(UserList(userindex).flags.PertAlCons))
+Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", CStr(UserList(userindex).flags.PertAlConsCaos))
 
 
-Call WriteVar(UserFile, "COUNTERS", "Pena", CStr(UserList(UserIndex).Counters.Pena))
+Call WriteVar(UserFile, "COUNTERS", "Pena", CStr(UserList(userindex).Counters.Pena))
 
-Call WriteVar(UserFile, "FACCIONES", "EjercitoReal", CStr(UserList(UserIndex).Faccion.ArmadaReal))
-Call WriteVar(UserFile, "FACCIONES", "EjercitoCaos", CStr(UserList(UserIndex).Faccion.FuerzasCaos))
-Call WriteVar(UserFile, "FACCIONES", "CiudMatados", CStr(UserList(UserIndex).Faccion.CiudadanosMatados))
-Call WriteVar(UserFile, "FACCIONES", "CrimMatados", CStr(UserList(UserIndex).Faccion.CriminalesMatados))
-Call WriteVar(UserFile, "FACCIONES", "rArCaos", CStr(UserList(UserIndex).Faccion.RecibioArmaduraCaos))
-Call WriteVar(UserFile, "FACCIONES", "rArReal", CStr(UserList(UserIndex).Faccion.RecibioArmaduraReal))
-Call WriteVar(UserFile, "FACCIONES", "rExCaos", CStr(UserList(UserIndex).Faccion.RecibioExpInicialCaos))
-Call WriteVar(UserFile, "FACCIONES", "rExReal", CStr(UserList(UserIndex).Faccion.RecibioExpInicialReal))
-Call WriteVar(UserFile, "FACCIONES", "recCaos", CStr(UserList(UserIndex).Faccion.RecompensasCaos))
-Call WriteVar(UserFile, "FACCIONES", "recReal", CStr(UserList(UserIndex).Faccion.RecompensasReal))
-Call WriteVar(UserFile, "FACCIONES", "Reenlistadas", CStr(UserList(UserIndex).Faccion.Reenlistadas))
+Call WriteVar(UserFile, "FACCIONES", "EjercitoReal", CStr(UserList(userindex).Faccion.ArmadaReal))
+Call WriteVar(UserFile, "FACCIONES", "EjercitoCaos", CStr(UserList(userindex).Faccion.FuerzasCaos))
+Call WriteVar(UserFile, "FACCIONES", "CiudMatados", CStr(UserList(userindex).Faccion.CiudadanosMatados))
+Call WriteVar(UserFile, "FACCIONES", "CrimMatados", CStr(UserList(userindex).Faccion.CriminalesMatados))
+Call WriteVar(UserFile, "FACCIONES", "rArCaos", CStr(UserList(userindex).Faccion.RecibioArmaduraCaos))
+Call WriteVar(UserFile, "FACCIONES", "rArReal", CStr(UserList(userindex).Faccion.RecibioArmaduraReal))
+Call WriteVar(UserFile, "FACCIONES", "rExCaos", CStr(UserList(userindex).Faccion.RecibioExpInicialCaos))
+Call WriteVar(UserFile, "FACCIONES", "rExReal", CStr(UserList(userindex).Faccion.RecibioExpInicialReal))
+Call WriteVar(UserFile, "FACCIONES", "recCaos", CStr(UserList(userindex).Faccion.RecompensasCaos))
+Call WriteVar(UserFile, "FACCIONES", "recReal", CStr(UserList(userindex).Faccion.RecompensasReal))
+Call WriteVar(UserFile, "FACCIONES", "Reenlistadas", CStr(UserList(userindex).Faccion.Reenlistadas))
 
 '¿Fueron modificados los atributos del usuario?
-If Not UserList(UserIndex).flags.TomoPocion Then
-    For LoopC = 1 To UBound(UserList(UserIndex).Stats.UserAtributos)
-        Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(UserList(UserIndex).Stats.UserAtributos(LoopC)))
+If Not UserList(userindex).flags.TomoPocion Then
+    For LoopC = 1 To UBound(UserList(userindex).Stats.UserAtributos)
+        Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(UserList(userindex).Stats.UserAtributos(LoopC)))
     Next
 Else
-    For LoopC = 1 To UBound(UserList(UserIndex).Stats.UserAtributos)
+    For LoopC = 1 To UBound(UserList(userindex).Stats.UserAtributos)
         'UserList(UserIndex).Stats.UserAtributos(LoopC) = UserList(UserIndex).Stats.UserAtributosBackUP(LoopC)
-        Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(UserList(UserIndex).Stats.UserAtributosBackUP(LoopC)))
+        Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(UserList(userindex).Stats.UserAtributosBackUP(LoopC)))
     Next
 End If
 
-For LoopC = 1 To UBound(UserList(UserIndex).Stats.UserSkills)
-    Call WriteVar(UserFile, "SKILLS", "SK" & LoopC, CStr(UserList(UserIndex).Stats.UserSkills(LoopC)))
+For LoopC = 1 To UBound(UserList(userindex).Stats.UserSkills)
+    Call WriteVar(UserFile, "SKILLS", "SK" & LoopC, CStr(UserList(userindex).Stats.UserSkills(LoopC)))
 Next
 
 
-Call WriteVar(UserFile, "CONTACTO", "Email", UserList(UserIndex).email)
+Call WriteVar(UserFile, "CONTACTO", "Email", UserList(userindex).email)
 
 Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).Raza)
@@ -1492,61 +1490,61 @@ Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).Clase)
 Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password)
 Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
 
-Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
+Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(userindex).Char.heading))
 
-Call WriteVar(UserFile, "INIT", "Head", CStr(UserList(UserIndex).OrigChar.Head))
+Call WriteVar(UserFile, "INIT", "Head", CStr(UserList(userindex).OrigChar.Head))
 
-If UserList(UserIndex).flags.Muerto = 0 Then
-    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).Char.body))
+If UserList(userindex).flags.Muerto = 0 Then
+    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(userindex).Char.body))
 End If
 
-Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim))
-Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAnim))
-Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
+Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(userindex).Char.WeaponAnim))
+Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(userindex).Char.ShieldAnim))
+Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(userindex).Char.CascoAnim))
 
-Call WriteVar(UserFile, "INIT", "LastIP", UserList(UserIndex).ip)
-Call WriteVar(UserFile, "INIT", "Position", UserList(UserIndex).Pos.Map & "-" & UserList(UserIndex).Pos.X & "-" & UserList(UserIndex).Pos.Y)
+Call WriteVar(UserFile, "INIT", "LastIP", UserList(userindex).ip)
+Call WriteVar(UserFile, "INIT", "Position", UserList(userindex).Pos.Map & "-" & UserList(userindex).Pos.X & "-" & UserList(userindex).Pos.Y)
 
 
-Call WriteVar(UserFile, "STATS", "GLD", CStr(UserList(UserIndex).Stats.GLD))
-Call WriteVar(UserFile, "STATS", "BANCO", CStr(UserList(UserIndex).Stats.Banco))
+Call WriteVar(UserFile, "STATS", "GLD", CStr(UserList(userindex).Stats.GLD))
+Call WriteVar(UserFile, "STATS", "BANCO", CStr(UserList(userindex).Stats.Banco))
 
-Call WriteVar(UserFile, "STATS", "MET", CStr(UserList(UserIndex).Stats.MET))
-Call WriteVar(UserFile, "STATS", "MaxHP", CStr(UserList(UserIndex).Stats.MaxHP))
-Call WriteVar(UserFile, "STATS", "MinHP", CStr(UserList(UserIndex).Stats.MinHP))
+Call WriteVar(UserFile, "STATS", "MET", CStr(UserList(userindex).Stats.MET))
+Call WriteVar(UserFile, "STATS", "MaxHP", CStr(UserList(userindex).Stats.MaxHP))
+Call WriteVar(UserFile, "STATS", "MinHP", CStr(UserList(userindex).Stats.MinHP))
 
-Call WriteVar(UserFile, "STATS", "MaxSTA", CStr(UserList(UserIndex).Stats.MaxSta))
-Call WriteVar(UserFile, "STATS", "MinSTA", CStr(UserList(UserIndex).Stats.MinSta))
+Call WriteVar(UserFile, "STATS", "MaxSTA", CStr(UserList(userindex).Stats.MaxSta))
+Call WriteVar(UserFile, "STATS", "MinSTA", CStr(UserList(userindex).Stats.MinSta))
 
-Call WriteVar(UserFile, "STATS", "MaxMAN", CStr(UserList(UserIndex).Stats.MaxMAN))
-Call WriteVar(UserFile, "STATS", "MinMAN", CStr(UserList(UserIndex).Stats.MinMAN))
+Call WriteVar(UserFile, "STATS", "MaxMAN", CStr(UserList(userindex).Stats.MaxMAN))
+Call WriteVar(UserFile, "STATS", "MinMAN", CStr(UserList(userindex).Stats.MinMAN))
 
-Call WriteVar(UserFile, "STATS", "MaxHIT", CStr(UserList(UserIndex).Stats.MaxHIT))
-Call WriteVar(UserFile, "STATS", "MinHIT", CStr(UserList(UserIndex).Stats.MinHIT))
+Call WriteVar(UserFile, "STATS", "MaxHIT", CStr(UserList(userindex).Stats.MaxHIT))
+Call WriteVar(UserFile, "STATS", "MinHIT", CStr(UserList(userindex).Stats.MinHIT))
 
-Call WriteVar(UserFile, "STATS", "MaxAGU", CStr(UserList(UserIndex).Stats.MaxAGU))
-Call WriteVar(UserFile, "STATS", "MinAGU", CStr(UserList(UserIndex).Stats.MinAGU))
+Call WriteVar(UserFile, "STATS", "MaxAGU", CStr(UserList(userindex).Stats.MaxAGU))
+Call WriteVar(UserFile, "STATS", "MinAGU", CStr(UserList(userindex).Stats.MinAGU))
 
-Call WriteVar(UserFile, "STATS", "MaxHAM", CStr(UserList(UserIndex).Stats.MaxHam))
-Call WriteVar(UserFile, "STATS", "MinHAM", CStr(UserList(UserIndex).Stats.MinHam))
+Call WriteVar(UserFile, "STATS", "MaxHAM", CStr(UserList(userindex).Stats.MaxHam))
+Call WriteVar(UserFile, "STATS", "MinHAM", CStr(UserList(userindex).Stats.MinHam))
 
-Call WriteVar(UserFile, "STATS", "SkillPtsLibres", CStr(UserList(UserIndex).Stats.SkillPts))
+Call WriteVar(UserFile, "STATS", "SkillPtsLibres", CStr(UserList(userindex).Stats.SkillPts))
   
-Call WriteVar(UserFile, "STATS", "EXP", CStr(UserList(UserIndex).Stats.Exp))
-Call WriteVar(UserFile, "STATS", "ELV", CStr(UserList(UserIndex).Stats.ELV))
+Call WriteVar(UserFile, "STATS", "EXP", CStr(UserList(userindex).Stats.Exp))
+Call WriteVar(UserFile, "STATS", "ELV", CStr(UserList(userindex).Stats.ELV))
 
 
 
 
 
-Call WriteVar(UserFile, "STATS", "ELU", CStr(UserList(UserIndex).Stats.ELU))
-Call WriteVar(UserFile, "MUERTES", "UserMuertes", CStr(UserList(UserIndex).Stats.UsuariosMatados))
-Call WriteVar(UserFile, "MUERTES", "CrimMuertes", CStr(UserList(UserIndex).Stats.CriminalesMatados))
-Call WriteVar(UserFile, "MUERTES", "NpcsMuertes", CStr(UserList(UserIndex).Stats.NPCsMuertos))
+Call WriteVar(UserFile, "STATS", "ELU", CStr(UserList(userindex).Stats.ELU))
+Call WriteVar(UserFile, "MUERTES", "UserMuertes", CStr(UserList(userindex).Stats.UsuariosMatados))
+Call WriteVar(UserFile, "MUERTES", "CrimMuertes", CStr(UserList(userindex).Stats.CriminalesMatados))
+Call WriteVar(UserFile, "MUERTES", "NpcsMuertes", CStr(UserList(userindex).Stats.NPCsMuertos))
   
 '[KEVIN]----------------------------------------------------------------------------
 '*******************************************************************************************
-Call WriteVar(UserFile, "BancoInventory", "CantidadItems", val(UserList(UserIndex).BancoInvent.NroItems))
+Call WriteVar(UserFile, "BancoInventory", "CantidadItems", val(UserList(userindex).BancoInvent.NroItems))
 Dim loopd As Integer
 For loopd = 1 To MAX_BANCOINVENTORY_SLOTS
     Call WriteVar(UserFile, "BancoInventory", "Obj" & loopd, UserList(UserIndex).BancoInvent.Object(loopd).ObjIndex & "-" & UserList(UserIndex).BancoInvent.Object(loopd).amount)
@@ -1555,7 +1553,7 @@ Next loopd
 '[/KEVIN]-----------
   
 'Save Inv
-Call WriteVar(UserFile, "Inventory", "CantidadItems", val(UserList(UserIndex).Invent.NroItems))
+Call WriteVar(UserFile, "Inventory", "CantidadItems", val(UserList(userindex).Invent.NroItems))
 
 For LoopC = 1 To MAX_INVENTORY_SLOTS
     Call WriteVar(UserFile, "Inventory", "Obj" & LoopC, UserList(UserIndex).Invent.Object(LoopC).ObjIndex & "-" & UserList(UserIndex).Invent.Object(LoopC).amount & "-" & UserList(UserIndex).Invent.Object(LoopC).Equipped)
@@ -1573,39 +1571,39 @@ Call WriteVar(UserFile, "Inventory", "HerramientaSlot", str(UserList(UserIndex).
 
 
 'Reputacion
-Call WriteVar(UserFile, "REP", "Asesino", val(UserList(UserIndex).Reputacion.AsesinoRep))
-Call WriteVar(UserFile, "REP", "Bandido", val(UserList(UserIndex).Reputacion.BandidoRep))
-Call WriteVar(UserFile, "REP", "Burguesia", val(UserList(UserIndex).Reputacion.BurguesRep))
-Call WriteVar(UserFile, "REP", "Ladrones", val(UserList(UserIndex).Reputacion.LadronesRep))
-Call WriteVar(UserFile, "REP", "Nobles", val(UserList(UserIndex).Reputacion.NobleRep))
-Call WriteVar(UserFile, "REP", "Plebe", val(UserList(UserIndex).Reputacion.PlebeRep))
+Call WriteVar(UserFile, "REP", "Asesino", val(UserList(userindex).Reputacion.AsesinoRep))
+Call WriteVar(UserFile, "REP", "Bandido", val(UserList(userindex).Reputacion.BandidoRep))
+Call WriteVar(UserFile, "REP", "Burguesia", val(UserList(userindex).Reputacion.BurguesRep))
+Call WriteVar(UserFile, "REP", "Ladrones", val(UserList(userindex).Reputacion.LadronesRep))
+Call WriteVar(UserFile, "REP", "Nobles", val(UserList(userindex).Reputacion.NobleRep))
+Call WriteVar(UserFile, "REP", "Plebe", val(UserList(userindex).Reputacion.PlebeRep))
 
 Dim L As Long
-L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
-    (-UserList(UserIndex).Reputacion.BandidoRep) + _
-    UserList(UserIndex).Reputacion.BurguesRep + _
-    (-UserList(UserIndex).Reputacion.LadronesRep) + _
-    UserList(UserIndex).Reputacion.NobleRep + _
-    UserList(UserIndex).Reputacion.PlebeRep
+L = (-UserList(userindex).Reputacion.AsesinoRep) + _
+    (-UserList(userindex).Reputacion.BandidoRep) + _
+    UserList(userindex).Reputacion.BurguesRep + _
+    (-UserList(userindex).Reputacion.LadronesRep) + _
+    UserList(userindex).Reputacion.NobleRep + _
+    UserList(userindex).Reputacion.PlebeRep
 L = L / 6
 Call WriteVar(UserFile, "REP", "Promedio", val(L))
 
 Dim cad As String
 
 For LoopC = 1 To MAXUSERHECHIZOS
-    cad = UserList(UserIndex).Stats.UserHechizos(LoopC)
+    cad = UserList(userindex).Stats.UserHechizos(LoopC)
     Call WriteVar(UserFile, "HECHIZOS", "H" & LoopC, cad)
 Next
 
 Dim NroMascotas As Long
-NroMascotas = UserList(UserIndex).NroMacotas
+NroMascotas = UserList(userindex).NroMacotas
 
 For LoopC = 1 To MAXMASCOTAS
     ' Mascota valida?
-    If UserList(UserIndex).MascotasIndex(LoopC) > 0 Then
+    If UserList(userindex).MascotasIndex(LoopC) > 0 Then
         ' Nos aseguramos que la criatura no fue invocada
-        If Npclist(UserList(UserIndex).MascotasIndex(LoopC)).Contadores.TiempoExistencia = 0 Then
-            cad = UserList(UserIndex).MascotasType(LoopC)
+        If Npclist(UserList(userindex).MascotasIndex(LoopC)).Contadores.TiempoExistencia = 0 Then
+            cad = UserList(userindex).MascotasType(LoopC)
         Else 'Si fue invocada no la guardamos
             cad = "0"
             NroMascotas = NroMascotas - 1
@@ -1618,8 +1616,8 @@ Next
 Call WriteVar(UserFile, "MASCOTAS", "NroMascotas", str(NroMascotas))
 
 'Devuelve el head de muerto
-If UserList(UserIndex).flags.Muerto = 1 Then
-    UserList(UserIndex).Char.Head = iCabezaMuerto
+If UserList(userindex).flags.Muerto = 1 Then
+    UserList(userindex).Char.Head = iCabezaMuerto
 End If
 
 Exit Sub
@@ -1629,15 +1627,15 @@ Call LogError("Error en SaveUser")
 
 End Sub
 
-Function criminal(ByVal UserIndex As Integer) As Boolean
+Function criminal(ByVal userindex As Integer) As Boolean
 
 Dim L As Long
-L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
-    (-UserList(UserIndex).Reputacion.BandidoRep) + _
-    UserList(UserIndex).Reputacion.BurguesRep + _
-    (-UserList(UserIndex).Reputacion.LadronesRep) + _
-    UserList(UserIndex).Reputacion.NobleRep + _
-    UserList(UserIndex).Reputacion.PlebeRep
+L = (-UserList(userindex).Reputacion.AsesinoRep) + _
+    (-UserList(userindex).Reputacion.BandidoRep) + _
+    UserList(userindex).Reputacion.BurguesRep + _
+    (-UserList(userindex).Reputacion.LadronesRep) + _
+    UserList(userindex).Reputacion.NobleRep + _
+    UserList(userindex).Reputacion.PlebeRep
 L = L / 6
 criminal = (L < 0)
 
@@ -1781,9 +1779,9 @@ Npclist(NpcIndex).TipoItems = val(GetVar(npcfile, "NPC" & NpcNumber, "TipoItems"
 End Sub
 
 
-Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motivo As String)
+Sub LogBan(ByVal BannedIndex As Integer, ByVal userindex As Integer, ByVal motivo As String)
 
-Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "BannedBy", UserList(UserIndex).name)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "BannedBy", UserList(userindex).name)
 Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "Reason", motivo)
 
 'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
@@ -1796,9 +1794,9 @@ Close #mifile
 End Sub
 
 
-Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal motivo As String)
+Sub LogBanFromName(ByVal BannedName As String, ByVal userindex As Integer, ByVal motivo As String)
 
-Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).name)
+Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(userindex).name)
 Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", motivo)
 
 'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned

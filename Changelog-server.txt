@@ -105,4 +105,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 24/06/2006: Eliminé argumentos de varios paquetes que no eran necesarios (el cliente ni se molestaba en levantarlos). (Maraxus).
  * 29/06/2006: Las herramientas ahora son consideradas armas. (Integer)
  * 29/06/2006: El golpe de un User siempre te desconcentra de la meditacion. (Integer)
- * 29/06/2006: Una fórmula determina si el daño de un NPC te desconcentra. (Integer)
+ * 29/06/2006: Los golpes de NPCs te pueden desconcentrar mientras meditás. (Integer)
+ * 29/06/2006: Agregué la base de un sistema de estadísticas para data mining. (Maraxus)
+ * 29/06/2006: Los mensajes de party y de clan ya no aparecen overhead. (Maraxus)

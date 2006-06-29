@@ -62,6 +62,7 @@ Module=ModAreas; Codigo\ModAreas.bas
 Module=modCentinela; Codigo\modCentinela.bas
 Class=clsByteQueue; Codigo\clsByteQueue.cls
 Class=clsIniReader; Codigo\clsIniReader.cls
+Module=Statistics; Codigo\Statistics.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
