@@ -108,3 +108,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/06/2006: Los golpes de NPCs te pueden desconcentrar mientras meditás. (Integer)
  * 29/06/2006: Agregué la base de un sistema de estadísticas para data mining. (Maraxus)
  * 29/06/2006: Los mensajes de party y de clan ya no aparecen overhead. (Maraxus)
+ * 01/07/2006: Agregué parseo de chats de todo tipo para analizar su peso en el tráfico delservidor y armar un Huffman de ser necesario. (Maraxus)

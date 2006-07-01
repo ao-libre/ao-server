@@ -20,49 +20,52 @@ Private fragLvlRaceData(1 To 7) As fragLvlRace
 Private fragLvlLvlData(1 To 7) As fragLvlLvl
 Private fragAlignmentLvlData(1 To 50, 1 To 4) As Long
 
+'Currency just in case.... chats are way TOO often...
+Private keyOcurrencies(255) As Currency
+
 Public Sub Initialize()
     ReDim trainningInfo(1 To MaxUsers) As trainningData
 End Sub
 
-Public Sub UserConnected(ByVal userindex As Integer)
+Public Sub UserConnected(ByVal UserIndex As Integer)
     'A new user connected, load it's trainning time count
-    trainningInfo(userindex).trainningTime = CLng(GetVar(CharPath & UCase$(UserList(userindex).name) & ".chr", "RESEARCH", "TrainningTime", 10))
+    trainningInfo(UserIndex).trainningTime = CLng(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 10))
     
-    trainningInfo(userindex).startTick = GetTickCount
+    trainningInfo(UserIndex).startTick = GetTickCount
     
 'TODO : Get rid of this after reset!!!
-    If trainningInfo(userindex).trainningTime = 0 Then _
-        trainningInfo(userindex).trainningTime = -1
+    If trainningInfo(UserIndex).trainningTime = 0 Then _
+        trainningInfo(UserIndex).trainningTime = -1
 End Sub
 
-Public Sub UserDisconnected(ByVal userindex As Integer)
+Public Sub UserDisconnected(ByVal UserIndex As Integer)
 'TODO : Get rid of this after reset!!!
     'Abort if char had already started trainning before this system was coded
-    If trainningInfo(userindex).trainningTime = -1 Then Exit Sub
+    If trainningInfo(UserIndex).trainningTime = -1 Then Exit Sub
     
-    With trainningInfo(userindex)
+    With trainningInfo(UserIndex)
         'Update trainning time
         .trainningTime = .trainningTime + (GetTickCount() - .startTick) / 1000
     
         .startTick = GetTickCount
         
         'Store info in char file
-        Call WriteVar(CharPath & UCase$(UserList(userindex).name) & ".chr", "RESEARCH", "TrainningTime", CStr(.trainningTime))
+        Call WriteVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", CStr(.trainningTime))
     End With
 End Sub
 
-Public Sub UserLevelUp(ByVal userindex As Integer)
+Public Sub UserLevelUp(ByVal UserIndex As Integer)
     Dim handle As Integer
     handle = FreeFile()
     
-    With trainningInfo(userindex)
+    With trainningInfo(UserIndex)
     
 'TODO : get rid of the If after reset!!!
         If .trainningTime <> -1 Then
             'Log the data
             Open App.Path & "\logs\statistics.log" For Append Shared As handle
             
-            Print #handle, UCase$(UserList(userindex).name) & " completó el nivel " & CStr(UserList(userindex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
+            Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
             
             Close handle
         End If
@@ -74,31 +77,31 @@ Public Sub UserLevelUp(ByVal userindex As Integer)
 End Sub
 
 Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
-    Dim clase As Integer
+    Dim Clase As Integer
     Dim raza As Integer
     Dim alignment As Integer
     
-    Select Case UCase$(UserList(killer).clase)
+    Select Case UCase$(UserList(killer).Clase)
         Case "ASESINO"
-            clase = 1
+            Clase = 1
         
         Case "DRUIDA"
-            clase = 2
+            Clase = 2
         
         Case "MAGO"
-            clase = 3
+            Clase = 3
         
         Case "PALADIN"
-            clase = 4
+            Clase = 4
         
         Case "GUERRERO"
-            clase = 5
+            Clase = 5
         
         Case "CLERIGO"
-            clase = 6
+            Clase = 6
         
         Case "CAZADOR"
-            clase = 7
+            Clase = 7
         
         Case Else
             Exit Sub
@@ -134,9 +137,9 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         alignment = 4
     End If
     
-    fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) + 1
+    fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) + 1
     
-    fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
+    fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
     
     fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) = fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) + 1
 End Sub
@@ -149,7 +152,7 @@ Public Sub DumpStatistics()
     Dim i As Long
     Dim j As Long
     
-    Open App.Path & "\logs\frags" For Output As handle
+    Open App.Path & "\logs\frags.txt" For Output As handle
     
     'Save lvl vs lvl frag matrix for each class - we use GNU Octave's ASCII file format
     
@@ -451,5 +454,39 @@ Public Sub DumpStatistics()
         line = ""
     Next j
     
-    Close #handle
+    Close handle
+    
+    
+    
+    'Dump Chat statistics
+    handle = FreeFile()
+    
+    Open App.Path & "\logs\huffman.log" For Output As handle
+    
+    Dim Total As Currency
+    
+    'Compute total characters
+    For i = 0 To 255
+        Total = Total + keyOcurrencies(i)
+    Next i
+    
+    'Show each character's ocurrencies
+    For i = 0 To 255
+        Print #handle, CStr(i) & "    " & CStr(Round(keyOcurrencies(i) / Total, 8))
+    Next i
+    
+    Print #handle, "TOTAL =    " & CStr(Total)
+    
+    Close handle
+End Sub
+
+Public Sub ParseChat(ByVal S As String)
+    Dim i As Long
+    Dim Key As Integer
+    
+    For i = 1 To Len(S)
+        Key = Asc(mid$(S, i, 1))
+        
+        keyOcurrencies(Key) = keyOcurrencies(Key) + 1
+    Next i
 End Sub

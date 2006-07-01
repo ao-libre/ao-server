@@ -60,7 +60,7 @@ Dim mifile As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim DummyInt As Integer
-Dim t() As String
+Dim T() As String
 Dim i As Integer
 
 Procesado = True 'ver al final del sub
@@ -87,6 +87,9 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
             End If
+            
+            'Analize chat...
+            Call Statistics.ParseChat(rData)
             
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call SendData(SendTarget.ToDeadArea, UserIndex, UserList(UserIndex).Pos.Map, "||12632256°" & rData & "°" & CStr(ind))
@@ -116,8 +119,10 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
             End If
-    
-    
+            
+            'Analize chat...
+            Call Statistics.ParseChat(rData)
+            
             ind = UserList(UserIndex).Char.CharIndex
             Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & rData & "°" & str(ind))
             Exit Sub
@@ -145,6 +150,9 @@ Procesado = True 'ver al final del sub
             If tIndex <> 0 Then
                 If Len(rData) <> Len(tName) Then
                     tMessage = Right$(rData, Len(rData) - (1 + Len(tName)))
+                    
+                    'Analize chat...
+                    Call Statistics.ParseChat(rData)
                 Else
                     tMessage = " "
                 End If
@@ -1238,7 +1246,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.Cant = val(Arg2)
+                UserList(UserIndex).ComUsu.cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub
