@@ -627,24 +627,6 @@ Procesado = True 'ver al final del sub
                         Exit Sub
                     End If
                 End If
-    
-                If DummyInt = 0 Then
-                    'Saca 1 flecha
-                    DummyInt = UserList(UserIndex).Invent.MunicionEqpSlot
-                    Call QuitarUserInvItem(UserIndex, UserList(UserIndex).Invent.MunicionEqpSlot, 1)
-                    If DummyInt < 1 Or DummyInt > MAX_INVENTORY_SLOTS Then Exit Sub
-                    If UserList(UserIndex).Invent.Object(DummyInt).amount > 0 Then
-                        UserList(UserIndex).Invent.Object(DummyInt).Equipped = 1
-                        UserList(UserIndex).Invent.MunicionEqpSlot = DummyInt
-                        UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(DummyInt).ObjIndex
-                        Call UpdateUserInv(False, UserIndex, UserList(UserIndex).Invent.MunicionEqpSlot)
-                    Else
-                        Call UpdateUserInv(False, UserIndex, DummyInt)
-                        UserList(UserIndex).Invent.MunicionEqpSlot = 0
-                        UserList(UserIndex).Invent.MunicionEqpObjIndex = 0
-                    End If
-                    '-----------------------------------
-                End If
 
                 If tN > 0 Then
                     If Npclist(tN).Attackable <> 0 Then
@@ -658,6 +640,24 @@ Procesado = True 'ver al final del sub
                         End If
                     End If
                     Call UsuarioAtacaUsuario(UserIndex, TU)
+                End If
+                
+                If DummyInt = 0 Then
+                    'Saca 1 flecha - we do it AFTER hitting, since if Ammo Slot is 0 irt gives a rt9 and kicks players
+                    DummyInt = UserList(UserIndex).Invent.MunicionEqpSlot
+                    Call QuitarUserInvItem(UserIndex, UserList(UserIndex).Invent.MunicionEqpSlot, 1)
+                    If DummyInt < 1 Or DummyInt > MAX_INVENTORY_SLOTS Then Exit Sub
+                    If UserList(UserIndex).Invent.Object(DummyInt).amount > 0 Then
+                        'QuitarUserInvItem desequipa la munición, así que la equipamos de nuevo
+                        UserList(UserIndex).Invent.MunicionEqpSlot = DummyInt
+                        UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(DummyInt).ObjIndex
+                        UserList(UserIndex).Invent.Object(DummyInt).Equipped = 1
+                    Else
+                        UserList(UserIndex).Invent.MunicionEqpSlot = 0
+                        UserList(UserIndex).Invent.MunicionEqpObjIndex = 0
+                    End If
+                    Call UpdateUserInv(False, UserIndex, DummyInt)
+                    '-----------------------------------
                 End If
                 
             Case Magia

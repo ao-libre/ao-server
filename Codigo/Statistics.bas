@@ -85,7 +85,7 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         Case "ASESINO"
             Clase = 1
         
-        Case "DRUIDA"
+        Case "BARDO"
             Clase = 2
         
         Case "MAGO"
@@ -170,7 +170,7 @@ Public Sub DumpStatistics()
         line = ""
     Next j
     
-    Print #handle, "# name: fragLvlLvl_Dru"
+    Print #handle, "# name: fragLvlLvl_Bar"
     Print #handle, "# type: matrix"
     Print #handle, "# rows: 50"
     Print #handle, "# columns: 50"
@@ -274,7 +274,7 @@ Public Sub DumpStatistics()
         line = ""
     Next j
     
-    Print #handle, "# name: fragLvlRace_Dru"
+    Print #handle, "# name: fragLvlRace_Bar"
     Print #handle, "# type: matrix"
     Print #handle, "# rows: 5"
     Print #handle, "# columns: 50"
