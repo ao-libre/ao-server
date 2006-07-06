@@ -187,8 +187,8 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.TimesWalk >= 30 Then
                 TempTick = GetTickCount And &H7FFFFFFF
                 dummy = (TempTick - UserList(UserIndex).flags.StartWalk)
-                If dummy < 6050 Then
-                    If TempTick - UserList(UserIndex).flags.CountSH > 90000 Then
+                If dummy < 5800 Then
+                    If TempTick - UserList(UserIndex).flags.CountSH > 30000 Then
                         UserList(UserIndex).flags.CountSH = 0
                     End If
                     If Not UserList(UserIndex).flags.CountSH = 0 Then

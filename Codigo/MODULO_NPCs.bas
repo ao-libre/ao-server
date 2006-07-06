@@ -110,14 +110,14 @@ On Error GoTo errhandler
         
         'El user que lo mato tiene mascotas?
         If UserList(UserIndex).NroMacotas > 0 Then
-            Dim t As Integer
-            For t = 1 To MAXMASCOTAS
-                  If UserList(UserIndex).MascotasIndex(t) > 0 Then
-                      If Npclist(UserList(UserIndex).MascotasIndex(t)).TargetNPC = NpcIndex Then
-                              Call FollowAmo(UserList(UserIndex).MascotasIndex(t))
+            Dim T As Integer
+            For T = 1 To MAXMASCOTAS
+                  If UserList(UserIndex).MascotasIndex(T) > 0 Then
+                      If Npclist(UserList(UserIndex).MascotasIndex(T)).TargetNPC = NpcIndex Then
+                              Call FollowAmo(UserList(UserIndex).MascotasIndex(T))
                       End If
                   End If
-            Next t
+            Next T
         End If
         
         '[KEVIN]
@@ -405,8 +405,8 @@ Dim Y As Integer
         altpos.Map = mapa
         
         Do While Not PosicionValida
-            Pos.X = RandomNumber(1, 100)    'Obtenemos posicion al azar en x
-            Pos.Y = RandomNumber(1, 100)    'Obtenemos posicion al azar en y
+            Pos.X = RandomNumber(MinXBorder, MaxXBorder)    'Obtenemos posicion al azar en x
+            Pos.Y = RandomNumber(MinYBorder, MaxYBorder)    'Obtenemos posicion al azar en y
             
             Call ClosestLegalPos(Pos, newpos)  'Nos devuelve la posicion valida mas cercana
             If newpos.X <> 0 Then altpos.X = newpos.X
@@ -741,7 +741,7 @@ Sub NPCTirarOro(MiNPC As npc)
 'SI EL NPC TIENE ORO LO TIRAMOS
 If MiNPC.GiveGLD > 0 Then
     Dim MiObj As Obj
-    MiObj.Amount = MiNPC.GiveGLD
+    MiObj.amount = MiNPC.GiveGLD
     MiObj.ObjIndex = iORO
     Call TirarItemAlPiso(MiNPC.Pos, MiObj)
 End If
@@ -837,7 +837,7 @@ Npclist(NpcIndex).Invent.NroItems = val(Leer.GetValue("NPC" & NpcNumber, "NROITE
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
     ln = Leer.GetValue("NPC" & NpcNumber, "Obj" & LoopC)
     Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-    Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
+    Npclist(NpcIndex).Invent.Object(LoopC).amount = val(ReadField(2, ln, 45))
 Next LoopC
 
 Npclist(NpcIndex).flags.LanzaSpells = val(Leer.GetValue("NPC" & NpcNumber, "LanzaSpells"))
