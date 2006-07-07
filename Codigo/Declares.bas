@@ -491,7 +491,7 @@ Public Type tHechizo
     TargetMsg As String
     PropioMsg As String
     
-    Resis As Byte
+'    Resis As Byte
     
     Tipo As TipoHechizo
     
@@ -987,7 +987,7 @@ Public Type User
     DescRM As String
     
     Clase As String
-    Raza As String
+    raza As String
     genero As String
     email As String
     Hogar As String
