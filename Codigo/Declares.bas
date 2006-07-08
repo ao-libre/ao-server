@@ -551,9 +551,9 @@ Public Type tHechizo
     Invoca As Byte
     NumNpc As Integer
     Cant As Integer
-    
-    Materializa As Byte
-    ItemIndex As Byte
+
+'    Materializa As Byte
+'    ItemIndex As Byte
     
     MinSkill As Integer
     ManaRequerido As Integer
