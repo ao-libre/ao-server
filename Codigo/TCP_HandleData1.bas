@@ -135,13 +135,13 @@ Procesado = True 'ver al final del sub
             tName = ReadField(1, rData, 32)
             
             'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
-            If (EsDios(tName) Or EsAdmin(tName)) And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
+            If (EsDios(Replace(tName, "+", " ")) Or EsAdmin(Replace(tName, "+", " "))) And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los Dioses y Admins." & FONTTYPE_INFO)
                 Exit Sub
             End If
             
             'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
-            If UserList(UserIndex).flags.Privilegios = PlayerType.User And (EsSemiDios(tName) Or EsConsejero(tName)) Then
+            If UserList(UserIndex).flags.Privilegios = PlayerType.User And (EsSemiDios(Replace(tName, "+", " ")) Or EsConsejero(Replace(tName, "+", " "))) Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes susurrarle a los GMs" & FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -243,7 +243,7 @@ Procesado = True 'ver al final del sub
             End If
             
             If UserList(UserIndex).flags.Oculto = 1 Then
-                If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then
+                If UCase$(UserList(UserIndex).clase) <> "LADRON" Then
                     UserList(UserIndex).flags.Oculto = 0
                     If UserList(UserIndex).flags.Invisible = 0 Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)

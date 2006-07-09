@@ -112,3 +112,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 05/07/2006: Corregí el bug que te pateaba al usar la última flecha. (Maraxus)
  * 06/07/2006: Corregí el bug que te permitía comerciar y usar la bóveda con doble click estando muerto. (Maraxus)
  * 07/07/2006: Eliminé varias variables de tHechizos que no se usaban en ninguna parte del code. (Integer)
+ * 09/07/2006: Corregí un bug que permitía mandar PM a dioses y GMs bajo ciertas condiciones. (Maraxus)
