@@ -962,11 +962,11 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim index As Integer
-    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim Index As Integer
+    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
     'Look for user
-    If index > 0 Then
+    If Index > 0 Then
         Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
         Call SendUserStatsBox(UserIndex)
         Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
@@ -1184,7 +1184,11 @@ UserList(VictimaIndex).Stats.MinHP = UserList(VictimaIndex).Stats.MinHP - daño
 If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Sed = 0 Then
         'Si usa un arma quizas suba "Combate con armas"
         If UserList(AtacanteIndex).Invent.WeaponEqpObjIndex > 0 Then
+            If ObjData(UserList(AtacanteIndex).Invent.WeaponEqpObjIndex).proyectil Then
+                Call SubirSkill(AtacanteIndex, Proyectiles)
+            Else
                 Call SubirSkill(AtacanteIndex, Armas)
+            End If
         Else
         'sino tal vez lucha libre
                 Call SubirSkill(AtacanteIndex, Wresterling)
@@ -1278,7 +1282,7 @@ End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
 
-Dim T As eTrigger6
+Dim t As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
@@ -1286,12 +1290,12 @@ If UserList(VictimIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-T = TriggerZonaPelea(AttackerIndex, VictimIndex)
+t = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If T = TRIGGER6_PERMITE Then
+If t = TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf T = TRIGGER6_PROHIBE Then
+ElseIf t = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
 End If
