@@ -77,31 +77,31 @@ Public Sub UserLevelUp(ByVal UserIndex As Integer)
 End Sub
 
 Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
-    Dim Clase As Integer
+    Dim clase As Integer
     Dim raza As Integer
     Dim alignment As Integer
     
-    Select Case UCase$(UserList(killer).Clase)
+    Select Case UCase$(UserList(killer).clase)
         Case "ASESINO"
-            Clase = 1
+            clase = 1
         
         Case "BARDO"
-            Clase = 2
+            clase = 2
         
         Case "MAGO"
-            Clase = 3
+            clase = 3
         
         Case "PALADIN"
-            Clase = 4
+            clase = 4
         
         Case "GUERRERO"
-            Clase = 5
+            clase = 5
         
         Case "CLERIGO"
-            Clase = 6
+            clase = 6
         
         Case "CAZADOR"
-            Clase = 7
+            clase = 7
         
         Case Else
             Exit Sub
@@ -137,9 +137,9 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         alignment = 4
     End If
     
-    fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) + 1
+    fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) + 1
     
-    fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
+    fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
     
     fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) = fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) + 1
 End Sub
@@ -471,9 +471,11 @@ Public Sub DumpStatistics()
     Next i
     
     'Show each character's ocurrencies
-    For i = 0 To 255
-        Print #handle, CStr(i) & "    " & CStr(Round(keyOcurrencies(i) / Total, 8))
-    Next i
+    If Total <> 0 Then
+        For i = 0 To 255
+            Print #handle, CStr(i) & "    " & CStr(Round(keyOcurrencies(i) / Total, 8))
+        Next i
+    End If
     
     Print #handle, "TOTAL =    " & CStr(Total)
     

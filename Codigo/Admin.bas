@@ -187,7 +187,7 @@ For j = 1 To NumMaps
     If MapInfo(j).BackUp = 1 Then k = k + 1
 Next j
 
-FrmStat.ProgressBar1.Min = 0
+FrmStat.ProgressBar1.min = 0
 FrmStat.ProgressBar1.max = k
 FrmStat.ProgressBar1.value = 0
 

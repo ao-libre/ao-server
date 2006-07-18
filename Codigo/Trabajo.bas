@@ -68,10 +68,10 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
                     Suerte = 10     'Lo atamos con alambre.... en la 11.6 el sistema de ocultarse debería de estar bien hecho
 End If
 
-If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then Suerte = Suerte + 50
+If UCase$(UserList(UserIndex).clase) <> "LADRON" Then Suerte = Suerte + 50
 
 'cazador con armadura de cazador oculto no se hace visible
-If UCase$(UserList(UserIndex).Clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
+If UCase$(UserList(UserIndex).clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
     If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
         Exit Sub
     End If
@@ -137,7 +137,7 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
                     Suerte = 7
 End If
 
-If UCase$(UserList(UserIndex).Clase) <> "LADRON" Then Suerte = Suerte + 50
+If UCase$(UserList(UserIndex).clase) <> "LADRON" Then Suerte = Suerte + 50
 
 res = RandomNumber(1, Suerte)
 
@@ -176,7 +176,7 @@ End Sub
 Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Slot As Integer)
 
 Dim ModNave As Long
-ModNave = ModNavegacion(UserList(UserIndex).Clase)
+ModNave = ModNavegacion(UserList(UserIndex).clase)
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficientes conocimientos para usar este barco." & FONTTYPE_INFO)
@@ -240,7 +240,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
-   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) / ModFundicion(UserList(UserIndex).Clase) Then
+   If ObjData(UserList(UserIndex).flags.TargetObjInvIndex).OBJType = eOBJType.otMinerales And ObjData(UserList(UserIndex).flags.TargetObjInvIndex).MinSkill <= UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) / ModFundicion(UserList(UserIndex).clase) Then
         Call DoLingotes(UserIndex)
    Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes conocimientos de mineria suficientes para trabajar este mineral." & FONTTYPE_INFO)
@@ -249,7 +249,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -260,14 +260,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If Cant <= Total Then
+If cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -276,18 +276,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - Cant
+        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - cant
         If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
-            Cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
+            cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
             UserList(UserIndex).Invent.Object(i).amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            Cant = 0
+            cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (Cant = 0) Then
+        If (cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -489,9 +489,9 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 End Sub
 
-Function ModNavegacion(ByVal Clase As String) As Integer
+Function ModNavegacion(ByVal clase As String) As Integer
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
     Case "PIRATA"
         ModNavegacion = 1
     Case "PESCADOR"
@@ -503,9 +503,9 @@ End Select
 End Function
 
 
-Function ModFundicion(ByVal Clase As String) As Integer
+Function ModFundicion(ByVal clase As String) As Integer
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
     Case "MINERO"
         ModFundicion = 1
     Case "HERRERO"
@@ -516,9 +516,9 @@ End Select
 
 End Function
 
-Function ModCarpinteria(ByVal Clase As String) As Integer
+Function ModCarpinteria(ByVal clase As String) As Integer
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
     Case "CARPINTERO"
         ModCarpinteria = 1
     Case Else
@@ -527,9 +527,9 @@ End Select
 
 End Function
 
-Function ModHerreriA(ByVal Clase As String) As Integer
+Function ModHerreriA(ByVal clase As String) As Integer
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
     Case "HERRERO"
         ModHerreriA = 1
     Case "MINERO"
@@ -540,8 +540,8 @@ End Select
 
 End Function
 
-Function ModDomar(ByVal Clase As String) As Integer
-    Select Case UCase$(Clase)
+Function ModDomar(ByVal clase As String) As Integer
+    Select Case UCase$(clase)
         Case "DRUIDA"
             ModDomar = 6
         Case "CAZADOR"
@@ -556,7 +556,7 @@ End Function
 Function CalcularPoderDomador(ByVal UserIndex As Integer) As Long
     With UserList(UserIndex).Stats
         CalcularPoderDomador = .UserAtributos(eAtributos.Carisma) _
-            * (.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).Clase)) _
+            * (.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).clase)) _
             + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
             + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
             + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3)
@@ -723,7 +723,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UCase$(UserList(UserIndex).Clase) = "PESCADOR" Then
+If UCase$(UserList(UserIndex).clase) = "PESCADOR" Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
@@ -739,7 +739,7 @@ If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    If UserList(UserIndex).Clase = "Pescador" Then
+    If UserList(UserIndex).clase = "Pescador" Then
         MiObj.amount = RandomNumber(1, 4)
     Else
         MiObj.amount = 1
@@ -779,7 +779,7 @@ Dim Suerte As Integer
 Dim res As Integer
 Dim EsPescador As Boolean
 
-If UCase(UserList(UserIndex).Clase) = "PESCADOR" Then
+If UCase(UserList(UserIndex).clase) = "PESCADOR" Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
     EsPescador = True
 Else
@@ -890,7 +890,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     
     If res < 3 Then 'Exito robo
        
-        If (RandomNumber(1, 50) < 25) And (UCase$(UserList(LadrOnIndex).Clase) = "LADRON") Then
+        If (RandomNumber(1, 50) < 25) And (UCase$(UserList(LadrOnIndex).clase) = "LADRON") Then
             If TieneObjetosRobables(VictimaIndex) Then
                 Call RobarObjeto(LadrOnIndex, VictimaIndex)
             Else
@@ -900,7 +900,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
             If UserList(VictimaIndex).Stats.GLD > 0 Then
                 Dim N As Integer
                 
-                If UCase$(UserList(LadrOnIndex).Clase) = "LADRON" Then
+                If UCase$(UserList(LadrOnIndex).clase) = "LADRON" Then
                     N = RandomNumber(100, 1000)
                 Else
                     N = RandomNumber(1, 100)
@@ -1056,7 +1056,7 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = 100 Then
                     Suerte = 100
 End If
 
-If UCase$(UserList(UserIndex).Clase) = "ASESINO" Then
+If UCase$(UserList(UserIndex).clase) = "ASESINO" Then
     daño = Int(daño * 1.4)
     res = RandomNumber(0, Suerte)
     If res < 25 Then res = 0
@@ -1095,7 +1095,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
+If UCase$(UserList(UserIndex).clase) = "LEÑADOR" Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoTalarGeneral)
@@ -1111,7 +1111,7 @@ If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    If UCase$(UserList(UserIndex).Clase) = "LEÑADOR" Then
+    If UCase$(UserList(UserIndex).clase) = "LEÑADOR" Then
         MiObj.amount = RandomNumber(1, 4)
     Else
         MiObj.amount = 1
@@ -1159,7 +1159,7 @@ Dim Suerte As Integer
 Dim res As Integer
 Dim metal As Integer
 
-If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
+If UCase$(UserList(UserIndex).clase) = "MINERO" Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
 Else
     Call QuitarSta(UserIndex, EsfuerzoExcavarGeneral)
@@ -1179,7 +1179,7 @@ If res <= 5 Then
     
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
-    If UCase$(UserList(UserIndex).Clase) = "MINERO" Then
+    If UCase$(UserList(UserIndex).clase) = "MINERO" Then
         MiObj.amount = RandomNumber(1, 5)
     Else
         MiObj.amount = 1
@@ -1218,7 +1218,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim Cant As Integer
+Dim cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1276,13 +1276,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Cant
+    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & cant & " puntos de mana!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

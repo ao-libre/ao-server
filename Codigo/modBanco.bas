@@ -27,7 +27,7 @@ UserList(UserIndex).BancoInvent.Object(Slot) = Object
 
 If Object.ObjIndex > 0 Then
 
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "SBO" & Slot & "," & Object.ObjIndex & "," & ObjData(Object.ObjIndex).name & "," & Object.Amount & "," & ObjData(Object.ObjIndex).GrhIndex & "," _
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "SBO" & Slot & "," & Object.ObjIndex & "," & ObjData(Object.ObjIndex).name & "," & Object.amount & "," & ObjData(Object.ObjIndex).GrhIndex & "," _
     & ObjData(Object.ObjIndex).OBJType & "," _
     & ObjData(Object.ObjIndex).MaxHIT & "," _
     & ObjData(Object.ObjIndex).MinHIT & "," _
@@ -87,8 +87,8 @@ If Cantidad < 1 Then Exit Sub
 Call SendUserStatsBox(UserIndex)
 
    
-       If UserList(UserIndex).BancoInvent.Object(i).Amount > 0 Then
-            If Cantidad > UserList(UserIndex).BancoInvent.Object(i).Amount Then Cantidad = UserList(UserIndex).BancoInvent.Object(i).Amount
+       If UserList(UserIndex).BancoInvent.Object(i).amount > 0 Then
+            If Cantidad > UserList(UserIndex).BancoInvent.Object(i).amount Then Cantidad = UserList(UserIndex).BancoInvent.Object(i).amount
             'Agregamos el obj que compro al inventario
             Call UserReciveObj(UserIndex, CInt(i), Cantidad)
             'Actualizamos el inventario del usuario
@@ -111,7 +111,7 @@ Dim Slot As Integer
 Dim obji As Integer
 
 
-If UserList(UserIndex).BancoInvent.Object(ObjIndex).Amount <= 0 Then Exit Sub
+If UserList(UserIndex).BancoInvent.Object(ObjIndex).amount <= 0 Then Exit Sub
 
 obji = UserList(UserIndex).BancoInvent.Object(ObjIndex).ObjIndex
 
@@ -119,7 +119,7 @@ obji = UserList(UserIndex).BancoInvent.Object(ObjIndex).ObjIndex
 '¿Ya tiene un objeto de este tipo?
 Slot = 1
 Do Until UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji And _
-   UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
+   UserList(UserIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS
     
     Slot = Slot + 1
     If Slot > MAX_INVENTORY_SLOTS Then
@@ -144,11 +144,11 @@ End If
 
 
 'Mete el obj en el slot
-If UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
+If UserList(UserIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS Then
     
     'Menor que MAX_INV_OBJS
     UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji
-    UserList(UserIndex).Invent.Object(Slot).Amount = UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad
+    UserList(UserIndex).Invent.Object(Slot).amount = UserList(UserIndex).Invent.Object(Slot).amount + Cantidad
     
     Call QuitarBancoInvItem(UserIndex, CByte(ObjIndex), Cantidad)
 Else
@@ -167,12 +167,12 @@ ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
 
     'Quita un Obj
 
-       UserList(UserIndex).BancoInvent.Object(Slot).Amount = UserList(UserIndex).BancoInvent.Object(Slot).Amount - Cantidad
+       UserList(UserIndex).BancoInvent.Object(Slot).amount = UserList(UserIndex).BancoInvent.Object(Slot).amount - Cantidad
         
-        If UserList(UserIndex).BancoInvent.Object(Slot).Amount <= 0 Then
+        If UserList(UserIndex).BancoInvent.Object(Slot).amount <= 0 Then
             UserList(UserIndex).BancoInvent.NroItems = UserList(UserIndex).BancoInvent.NroItems - 1
             UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex = 0
-            UserList(UserIndex).BancoInvent.Object(Slot).Amount = 0
+            UserList(UserIndex).BancoInvent.Object(Slot).amount = 0
         End If
 
     
@@ -190,9 +190,9 @@ On Error GoTo errhandler
 'El usuario deposita un item
 Call SendUserStatsBox(UserIndex)
    
-If UserList(UserIndex).Invent.Object(Item).Amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
+If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
             
-            If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
+            If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).amount
             'Agregamos el obj que compro al inventario
             Call UserDejaObj(UserIndex, CInt(Item), Cantidad)
             'Actualizamos el inventario del usuario
@@ -221,7 +221,7 @@ obji = UserList(UserIndex).Invent.Object(ObjIndex).ObjIndex
 '¿Ya tiene un objeto de este tipo?
 Slot = 1
 Do Until UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex = obji And _
-         UserList(UserIndex).BancoInvent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
+         UserList(UserIndex).BancoInvent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS
             Slot = Slot + 1
         
             If Slot > MAX_BANCOINVENTORY_SLOTS Then
@@ -248,11 +248,11 @@ End If
 
 If Slot <= MAX_BANCOINVENTORY_SLOTS Then 'Slot valido
     'Mete el obj en el slot
-    If UserList(UserIndex).BancoInvent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
+    If UserList(UserIndex).BancoInvent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS Then
         
         'Menor que MAX_INV_OBJS
         UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex = obji
-        UserList(UserIndex).BancoInvent.Object(Slot).Amount = UserList(UserIndex).BancoInvent.Object(Slot).Amount + Cantidad
+        UserList(UserIndex).BancoInvent.Object(Slot).amount = UserList(UserIndex).BancoInvent.Object(Slot).amount + Cantidad
         
         Call QuitarUserInvItem(UserIndex, CByte(ObjIndex), Cantidad)
 
@@ -273,7 +273,7 @@ Call SendData(SendTarget.ToIndex, sendIndex, 0, "||" & UserList(UserIndex).name 
 Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Tiene " & UserList(UserIndex).BancoInvent.NroItems & " objetos." & FONTTYPE_INFO)
 For j = 1 To MAX_BANCOINVENTORY_SLOTS
     If UserList(UserIndex).BancoInvent.Object(j).ObjIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Objeto " & j & " " & ObjData(UserList(UserIndex).BancoInvent.Object(j).ObjIndex).name & " Cantidad:" & UserList(UserIndex).BancoInvent.Object(j).Amount & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, sendIndex, 0, "|| Objeto " & j & " " & ObjData(UserList(UserIndex).BancoInvent.Object(j).ObjIndex).name & " Cantidad:" & UserList(UserIndex).BancoInvent.Object(j).amount & FONTTYPE_INFO)
     End If
 Next
 

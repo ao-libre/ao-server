@@ -270,7 +270,7 @@ For Hechizo = 1 To NumeroHechizos
     
     Hechizos(Hechizo).Invoca = val(Leer.GetValue("Hechizo" & Hechizo, "Invoca"))
     Hechizos(Hechizo).NumNpc = val(Leer.GetValue("Hechizo" & Hechizo, "NumNpc"))
-    Hechizos(Hechizo).Cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
+    Hechizos(Hechizo).cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
     Hechizos(Hechizo).Mimetiza = val(Leer.GetValue("hechizo" & Hechizo, "Mimetiza"))
     
     
@@ -840,7 +840,7 @@ UserList(UserIndex).Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
 UserList(UserIndex).email = UserFile.GetValue("CONTACTO", "Email")
 
 UserList(UserIndex).genero = UserFile.GetValue("INIT", "Genero")
-UserList(UserIndex).Clase = UserFile.GetValue("INIT", "Clase")
+UserList(UserIndex).clase = UserFile.GetValue("INIT", "Clase")
 UserList(UserIndex).raza = UserFile.GetValue("INIT", "Raza")
 UserList(UserIndex).Hogar = UserFile.GetValue("INIT", "Hogar")
 UserList(UserIndex).Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
@@ -1405,7 +1405,7 @@ Dim OldUserHead As Long
 
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-If UserList(UserIndex).Clase = "" Or UserList(UserIndex).Stats.ELV = 0 Then
+If UserList(UserIndex).clase = "" Or UserList(UserIndex).Stats.ELV = 0 Then
     Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
     Exit Sub
 End If
@@ -1485,7 +1485,7 @@ Call WriteVar(UserFile, "CONTACTO", "Email", UserList(UserIndex).email)
 Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
-Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).Clase)
+Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
 Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password)
 Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
 

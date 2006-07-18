@@ -47,7 +47,7 @@ On Error GoTo errorh
     
     UserCompraObj = False
     
-    If (Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).Amount <= 0) Then Exit Function
+    If (Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).amount <= 0) Then Exit Function
     
     obji = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).ObjIndex
     
@@ -55,7 +55,7 @@ On Error GoTo errorh
     '¿Ya tiene un objeto de este tipo?
     Slot = 1
     Do Until UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji And _
-       UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
+       UserList(UserIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS
         
         Slot = Slot + 1
         If Slot > MAX_INVENTORY_SLOTS Then
@@ -80,10 +80,10 @@ On Error GoTo errorh
     'desde aca para abajo se realiza la transaccion
     UserCompraObj = True
     'Mete el obj en el slot
-    If UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
+    If UserList(UserIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS Then
         'Menor que MAX_INV_OBJS
         UserList(UserIndex).Invent.Object(Slot).ObjIndex = obji
-        UserList(UserIndex).Invent.Object(Slot).Amount = UserList(UserIndex).Invent.Object(Slot).Amount + Cantidad
+        UserList(UserIndex).Invent.Object(Slot).amount = UserList(UserIndex).Invent.Object(Slot).amount + Cantidad
         
         'Le sustraemos el valor en oro del obj comprado
         infla = (Npclist(NpcIndex).Inflacion * ObjData(obji).Valor) / 100
@@ -143,7 +143,7 @@ On Error GoTo errorh
     '¿Ya tiene un objeto de este tipo?
     Slot = 1
     Do Until (Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = obji _
-      And Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS)
+      And Npclist(NpcIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS)
         
         Slot = Slot + 1
         
@@ -163,11 +163,11 @@ On Error GoTo errorh
     If Slot <= MAX_INVENTORY_SLOTS Then 'Slot valido
         'Mete el obj en el slot
         Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = obji
-        If Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS Then
+        If Npclist(NpcIndex).Invent.Object(Slot).amount + Cantidad <= MAX_INVENTORY_OBJS Then
             'Menor que MAX_INV_OBJS
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount + Cantidad
+            Npclist(NpcIndex).Invent.Object(Slot).amount = Npclist(NpcIndex).Invent.Object(Slot).amount + Cantidad
         Else
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = MAX_INVENTORY_OBJS
+            Npclist(NpcIndex).Invent.Object(Slot).amount = MAX_INVENTORY_OBJS
         End If
     End If
     
@@ -248,8 +248,8 @@ On Error GoTo errhandler
     val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
     
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
-        If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount > 0 Then
-            If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).Amount
+        If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount > 0 Then
+            If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount
             'Agregamos el obj que compro al inventario
             If Not UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNPC, Cantidad) Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes comprar este ítem." & FONTTYPE_INFO)
@@ -301,8 +301,8 @@ On Error GoTo errhandler
     'NPC COMPRA UN OBJ A UN USUARIO
     Call SendUserStatsBox(UserIndex)
    
-    If UserList(UserIndex).Invent.Object(Item).Amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
-        If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
+    If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
+        If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).amount
         'Agregamos el obj que compro al inventario
         Call NpcCompraObj(UserIndex, CInt(Item), Cantidad)
         'Actualizamos el inventario del usuario
@@ -347,7 +347,7 @@ Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
             SendData SendTarget.ToIndex, UserIndex, 0, "NPCI" & _
             ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).name _
-            & "," & Npclist(NpcIndex).Invent.Object(i).Amount & _
+            & "," & Npclist(NpcIndex).Invent.Object(i).amount & _
             "," & val _
             & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).GrhIndex _
             & "," & Npclist(NpcIndex).Invent.Object(i).ObjIndex _

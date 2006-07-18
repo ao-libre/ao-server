@@ -72,7 +72,7 @@ If npc.Invent.NroItems > 0 Then
     For i = 1 To MAX_INVENTORY_SLOTS
     
         If npc.Invent.Object(i).ObjIndex > 0 Then
-              MiObj.Amount = npc.Invent.Object(i).Amount
+              MiObj.amount = npc.Invent.Object(i).amount
               MiObj.ObjIndex = npc.Invent.Object(i).ObjIndex
               Call TirarItemAlPiso(npc.Pos, MiObj)
         End If
@@ -133,7 +133,7 @@ Npclist(NpcIndex).Invent.NroItems = 0
 
 For i = 1 To MAX_INVENTORY_SLOTS
    Npclist(NpcIndex).Invent.Object(i).ObjIndex = 0
-   Npclist(NpcIndex).Invent.Object(i).Amount = 0
+   Npclist(NpcIndex).Invent.Object(i).amount = 0
 Next i
 
 Npclist(NpcIndex).InvReSpawn = 0
@@ -149,28 +149,28 @@ ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
 
     'Quita un Obj
     If ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Crucial = 0 Then
-        Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
+        Npclist(NpcIndex).Invent.Object(Slot).amount = Npclist(NpcIndex).Invent.Object(Slot).amount - Cantidad
         
-        If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
+        If Npclist(NpcIndex).Invent.Object(Slot).amount <= 0 Then
             Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
             Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
+            Npclist(NpcIndex).Invent.Object(Slot).amount = 0
             If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
                Call CargarInvent(NpcIndex) 'Reponemos el inventario
             End If
         End If
     Else
-        Npclist(NpcIndex).Invent.Object(Slot).Amount = Npclist(NpcIndex).Invent.Object(Slot).Amount - Cantidad
+        Npclist(NpcIndex).Invent.Object(Slot).amount = Npclist(NpcIndex).Invent.Object(Slot).amount - Cantidad
         
-        If Npclist(NpcIndex).Invent.Object(Slot).Amount <= 0 Then
+        If Npclist(NpcIndex).Invent.Object(Slot).amount <= 0 Then
             Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems - 1
             Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = 0
-            Npclist(NpcIndex).Invent.Object(Slot).Amount = 0
+            Npclist(NpcIndex).Invent.Object(Slot).amount = 0
             
             If Not QuedanItems(NpcIndex, ObjIndex) Then
                    
                    Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = ObjIndex
-                   Npclist(NpcIndex).Invent.Object(Slot).Amount = EncontrarCant(NpcIndex, ObjIndex)
+                   Npclist(NpcIndex).Invent.Object(Slot).amount = EncontrarCant(NpcIndex, ObjIndex)
                    Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
             
             End If
@@ -203,7 +203,7 @@ Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex
 For LoopC = 1 To Npclist(NpcIndex).Invent.NroItems
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & LoopC)
     Npclist(NpcIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-    Npclist(NpcIndex).Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
+    Npclist(NpcIndex).Invent.Object(LoopC).amount = val(ReadField(2, ln, 45))
     
 Next LoopC
 

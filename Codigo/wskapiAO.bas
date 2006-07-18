@@ -348,7 +348,7 @@ Case 1025
         Call LogApiSock("WndProc:FD_CLOSE:N=" & N & ":Err=" & WSAGetAsyncError(lParam))
         
         If N > 0 Then
-            Call BorraSlotSock(UserList(N).ConnID)
+            Call BorraSlotSock(S)
             UserList(N).ConnID = -1
             UserList(N).ConnIDValida = False
             Call EventoSockClose(N)

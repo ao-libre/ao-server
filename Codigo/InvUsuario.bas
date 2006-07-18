@@ -67,7 +67,7 @@ If ObjData(ObjIndex).ClaseProhibida(1) <> "" Then
     
     Dim i As Integer
     For i = 1 To NUMCLASES
-        If ObjData(ObjIndex).ClaseProhibida(i) = UCase$(UserList(UserIndex).Clase) Then
+        If ObjData(ObjIndex).ClaseProhibida(i) = UCase$(UserList(UserIndex).clase) Then
                 ClasePuedeUsarItem = False
                 Exit Function
         End If
@@ -778,9 +778,9 @@ Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integ
 On Error GoTo errhandler
 
 'Verifica si la raza puede usar la ropa
-If UserList(UserIndex).Raza = "Humano" Or _
-   UserList(UserIndex).Raza = "Elfo" Or _
-   UserList(UserIndex).Raza = "Elfo Oscuro" Then
+If UserList(UserIndex).raza = "Humano" Or _
+   UserList(UserIndex).raza = "Elfo" Or _
+   UserList(UserIndex).raza = "Elfo Oscuro" Then
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 0)
 Else
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 1)
@@ -1127,7 +1127,7 @@ Select Case Obj.OBJType
        Case eOBJType.otBarcos
     'Verifica si esta aproximado al agua antes de permitirle navegar
         If UserList(UserIndex).Stats.ELV < 25 Then
-            If UCase$(UserList(UserIndex).Clase) <> "PESCADOR" And UCase$(UserList(UserIndex).Clase) <> "PIRATA" Then
+            If UCase$(UserList(UserIndex).clase) <> "PESCADOR" And UCase$(UserList(UserIndex).clase) <> "PIRATA" Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para recorrer los mares debes ser nivel 25 o superior." & FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -1156,7 +1156,7 @@ Sub EnivarArmasConstruibles(ByVal UserIndex As Integer)
 Dim i As Integer, cad$
 
 For i = 1 To UBound(ArmasHerrero)
-    If ObjData(ArmasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).Clase) Then
+    If ObjData(ArmasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
         If ObjData(ArmasHerrero(i)).OBJType = eOBJType.otWeapon Then
         '[DnG!]
             cad$ = cad$ & ObjData(ArmasHerrero(i)).name & " (" & ObjData(ArmasHerrero(i)).LingH & "-" & ObjData(ArmasHerrero(i)).LingP & "-" & ObjData(ArmasHerrero(i)).LingO & ")" & "," & ArmasHerrero(i) & ","
@@ -1176,7 +1176,7 @@ Sub EnivarObjConstruibles(ByVal UserIndex As Integer)
 Dim i As Integer, cad$
 
 For i = 1 To UBound(ObjCarpintero)
-    If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) / ModCarpinteria(UserList(UserIndex).Clase) Then _
+    If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) / ModCarpinteria(UserList(UserIndex).clase) Then _
         cad$ = cad$ & ObjData(ObjCarpintero(i)).name & " (" & ObjData(ObjCarpintero(i)).Madera & ")" & "," & ObjCarpintero(i) & ","
 Next i
 
@@ -1189,7 +1189,7 @@ Sub EnivarArmadurasConstruibles(ByVal UserIndex As Integer)
 Dim i As Integer, cad$
 
 For i = 1 To UBound(ArmadurasHerrero)
-    If ObjData(ArmadurasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).Clase) Then
+    If ObjData(ArmadurasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).clase) Then
         '[DnG!]
         cad$ = cad$ & ObjData(ArmadurasHerrero(i)).name & " (" & ObjData(ArmadurasHerrero(i)).LingH & "-" & ObjData(ArmadurasHerrero(i)).LingP & "-" & ObjData(ArmadurasHerrero(i)).LingO & ")" & "," & ArmadurasHerrero(i) & ","
         '[/DnG!]
@@ -1213,13 +1213,13 @@ Call TirarOro(Cantidad, UserIndex)
 
 End Sub
 
-Public Function ItemSeCae(ByVal Index As Integer) As Boolean
+Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
-ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            ObjData(Index).OBJType <> eOBJType.otLlaves And _
-            ObjData(Index).OBJType <> eOBJType.otBarcos And _
-            ObjData(Index).NoSeCae = 0
+ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
+            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
+            ObjData(index).OBJType <> eOBJType.otLlaves And _
+            ObjData(index).OBJType <> eOBJType.otBarcos And _
+            ObjData(index).NoSeCae = 0
 
 
 End Function

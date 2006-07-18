@@ -293,7 +293,7 @@ NombrePermitido = True
 
 End Function
 
-Function ValidateSkills(ByVal userindex As Integer) As Boolean
+Function ValidateSkills(ByVal UserIndex As Integer) As Boolean
 
 Dim LoopC As Integer
 
@@ -310,7 +310,7 @@ End Function
 
 'Barrin 3/3/03
 'Agregué PadrinoName y Padrino password como opcionales, que se les da un valor siempre y cuando el servidor esté usando el sistema
-Sub ConnectNewUser(userindex As Integer, name As String, Password As String, UserRaza As String, UserSexo As String, UserClase As String, _
+Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, UserRaza As String, UserSexo As String, UserClase As String, _
                     US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
                     US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
                     US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
@@ -318,7 +318,7 @@ Sub ConnectNewUser(userindex As Integer, name As String, Password As String, Use
                     US21 As String, UserEmail As String, Hogar As String)
 
 If Not AsciiValidos(name) Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRNombre invalido.")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRNombre invalido.")
     Exit Sub
 End If
 
@@ -327,7 +327,7 @@ Dim totalskpts As Long
 
 '¿Existe el personaje?
 If FileExist(CharPath & UCase$(name) & ".chr", vbNormal) = True Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRYa existe el personaje.")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRYa existe el personaje.")
     Exit Sub
 End If
 
@@ -353,8 +353,8 @@ UserList(UserIndex).Reputacion.Promedio = 30 / 6
 
 
 UserList(UserIndex).name = name
-UserList(UserIndex).Clase = UserClase
-UserList(UserIndex).Raza = UserRaza
+UserList(UserIndex).clase = UserClase
+UserList(UserIndex).raza = UserRaza
 UserList(UserIndex).genero = UserSexo
 UserList(UserIndex).email = UserEmail
 UserList(UserIndex).Hogar = Hogar
@@ -430,7 +430,7 @@ End If
 UserList(UserIndex).Password = Password
 UserList(UserIndex).Char.heading = eHeading.SOUTH
 
-Call DarCuerpoYCabeza(UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Raza, UserList(UserIndex).genero)
+Call DarCuerpoYCabeza(UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).raza, UserList(UserIndex).genero)
 UserList(UserIndex).OrigChar = UserList(UserIndex).Char
    
  
@@ -529,16 +529,16 @@ UserList(UserIndex).Invent.WeaponEqpSlot = 3
 
 
 
-Call SaveUser(userindex, CharPath & UCase$(name) & ".chr")
+Call SaveUser(UserIndex, CharPath & UCase$(name) & ".chr")
   
 'Open User
-Call ConnectUser(userindex, name, Password)
+Call ConnectUser(UserIndex, name, Password)
   
 End Sub
 
 #If UsarQueSocket = 1 Or UsarQueSocket = 2 Then
 
-Sub CloseSocket(ByVal userindex As Integer, Optional ByVal cerrarlo As Boolean = True)
+Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
 Dim LoopC As Integer
 
 On Error GoTo errhandler
@@ -559,7 +559,7 @@ On Error GoTo errhandler
     'Es el mismo user al que está revisando el centinela??
     'IMPORTANTE!!! hacerlo antes de resetear así todavía sabemos el nombre del user
     ' y lo podemos loguear
-    If Centinela.RevisandoUserIndex = userindex Then _
+    If Centinela.RevisandoUserIndex = UserIndex Then _
         Call modCentinela.CentinelaUserLogout
     
     'mato los comercios seguros
@@ -574,11 +574,11 @@ On Error GoTo errhandler
     
     If UserList(UserIndex).flags.UserLogged Then
         If NumUsers > 0 Then NumUsers = NumUsers - 1
-        Call CloseUser(userindex)
+        Call CloseUser(UserIndex)
         
         Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
     Else
-        Call ResetUserSlot(userindex)
+        Call ResetUserSlot(UserIndex)
     End If
     
     UserList(UserIndex).ConnID = -1
@@ -599,12 +599,12 @@ errhandler:
     End If
 #End If
 
-    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & userindex)
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & UserIndex)
 End Sub
 
 #ElseIf UsarQueSocket = 0 Then
 
-Sub CloseSocket(ByVal userindex As Integer)
+Sub CloseSocket(ByVal UserIndex As Integer)
 On Error GoTo errhandler
     
     
@@ -621,12 +621,12 @@ On Error GoTo errhandler
 
     If UserList(UserIndex).flags.UserLogged Then
             If NumUsers <> 0 Then NumUsers = NumUsers - 1
-            Call CloseUser(userindex)
+            Call CloseUser(UserIndex)
     End If
 
-    frmMain.Socket2(userindex).Cleanup
-    Unload frmMain.Socket2(userindex)
-    Call ResetUserSlot(userindex)
+    frmMain.Socket2(UserIndex).Cleanup
+    Unload frmMain.Socket2(UserIndex)
+    Call ResetUserSlot(UserIndex)
 
 Exit Sub
 
@@ -644,7 +644,7 @@ End Sub
 
 #ElseIf UsarQueSocket = 3 Then
 
-Sub CloseSocket(ByVal userindex As Integer, Optional ByVal cerrarlo As Boolean = True)
+Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
 
 On Error GoTo errhandler
 
@@ -662,7 +662,7 @@ Dim CoNnEcTiOnId As Long
     UserList(UserIndex).ConnID = -1 'inabilitamos operaciones en socket
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
 
-    If userindex = LastUser And LastUser > 1 Then
+    If UserIndex = LastUser And LastUser > 1 Then
         Do
             LastUser = LastUser - 1
             If LastUser <= 1 Then Exit Do
@@ -672,10 +672,10 @@ Dim CoNnEcTiOnId As Long
     If UserList(UserIndex).flags.UserLogged Then
             If NumUsers <> 0 Then NumUsers = NumUsers - 1
             NURestados = True
-            Call CloseUser(userindex)
+            Call CloseUser(UserIndex)
     End If
     
-    Call ResetUserSlot(userindex)
+    Call ResetUserSlot(UserIndex)
     
     'limpiada la userlist... reseteo el socket, si me lo piden
     'Me lo piden desde: cerrada intecional del servidor (casi todas
@@ -701,7 +701,7 @@ errhandler:
     End If
     
     Call LogError("El usuario no guardado tenia connid " & CoNnEcTiOnId & ". Socket no liberado.")
-    Call ResetUserSlot(userindex)
+    Call ResetUserSlot(UserIndex)
 
 End Sub
 
@@ -709,13 +709,14 @@ End Sub
 #End If
 
 '[Alejo-21-5]: Cierra un socket sin limpiar el slot
-Sub CloseSocketSL(ByVal userindex As Integer)
+Sub CloseSocketSL(ByVal UserIndex As Integer)
 
 #If UsarQueSocket = 1 Then
 
 If UserList(UserIndex).ConnID <> -1 And UserList(UserIndex).ConnIDValida Then
-    Call BorraSlotSock(UserList(UserIndex).ConnID)
-    Call WSApiCloseSocket(UserList(UserIndex).ConnID)
+    'Call BorraSlotSock(UserList(UserIndex).ConnID)
+    'Call WSApiCloseSocket(UserList(UserIndex).ConnID)
+    Call ShutDown(UserList(UserIndex).ConnID, SD_BOTH)
     UserList(UserIndex).ConnIDValida = False
 End If
 
@@ -737,7 +738,7 @@ End If
 #End If
 End Sub
 
-Public Function EnviarDatosASlot(ByVal userindex As Integer, Datos As String) As Long
+Public Function EnviarDatosASlot(ByVal UserIndex As Integer, Datos As String) As Long
 
 #If UsarQueSocket = 1 Then '**********************************************
     On Error GoTo Err
@@ -746,11 +747,11 @@ Public Function EnviarDatosASlot(ByVal userindex As Integer, Datos As String) As
     
     
     
-    Ret = WsApiEnviar(userindex, Datos)
+    Ret = WsApiEnviar(UserIndex, Datos)
     
     If Ret <> 0 And Ret <> WSAEWOULDBLOCK Then
-        Call CloseSocketSL(userindex)
-        Call Cerrar_Usuario(userindex)
+        Call CloseSocketSL(UserIndex)
+        Call Cerrar_Usuario(UserIndex)
     End If
     EnviarDatosASlot = Ret
     Exit Function
@@ -771,7 +772,7 @@ Err:
                 UserList(UserIndex).SockPuedoEnviar = False
                 Encolar = True
             Else
-                Call Cerrar_Usuario(userindex)
+                Call Cerrar_Usuario(UserIndex)
             End If
         End If
     Else
@@ -801,8 +802,8 @@ Dim Ret As Long
         If Ret = 1 Then
             Encolar = True
         ElseIf Ret = 2 Then
-            Call CloseSocketSL(userindex)
-            Call Cerrar_Usuario(userindex)
+            Call CloseSocketSL(UserIndex)
+            Call Cerrar_Usuario(UserIndex)
         End If
     Else
         Encolar = True
@@ -1164,7 +1165,7 @@ End Sub
 
 #If SeguridadAlkon Then
 
-Sub SendCryptedMoveChar(ByVal Map As Integer, ByVal userindex As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub SendCryptedMoveChar(ByVal Map As Integer, ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer)
 Dim LoopC As Integer
 
     For LoopC = 1 To LastUser
@@ -1356,14 +1357,14 @@ End Sub
 
 #End If
 
-Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
-        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
+For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -1380,7 +1381,7 @@ Dim X As Integer, Y As Integer
 For Y = Pos.Y - MinYBorder + 1 To Pos.Y + MinYBorder - 1
         For X = Pos.X - MinXBorder + 1 To Pos.X + MinXBorder - 1
             If X > 0 And Y > 0 And X < 101 And Y < 101 Then
-                If MapData(Pos.Map, X, Y).userindex > 0 Then
+                If MapData(Pos.Map, X, Y).UserIndex > 0 Then
                     HayPCarea = True
                     Exit Function
                 End If
@@ -1406,7 +1407,7 @@ Next Y
 HayOBJarea = False
 End Function
 
-Function ValidateChr(ByVal userindex As Integer) As Boolean
+Function ValidateChr(ByVal UserIndex As Integer) As Boolean
 
 ValidateChr = UserList(UserIndex).Char.Head <> 0 _
                 And UserList(UserIndex).Char.body <> 0 _
@@ -1414,7 +1415,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 
 End Function
 
-Sub ConnectUser(ByVal userindex As Integer, name As String, Password As String)
+Sub ConnectUser(ByVal UserIndex As Integer, name As String, Password As String)
 Dim N As Integer
 Dim tStr As String
 
@@ -1428,8 +1429,8 @@ UserList(UserIndex).Char.FX = 0
 
 'Controlamos no pasar el maximo de usuarios
 If NumUsers >= MaxUsers Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERREl servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
-    Call CloseSocket(userindex)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
+    Call CloseSocket(UserIndex)
     Exit Sub
 End If
 
@@ -1444,16 +1445,16 @@ End If
 
 '¿Existe el personaje?
 If Not FileExist(CharPath & UCase$(name) & ".chr", vbNormal) Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERREl personaje no existe.")
-    Call CloseSocket(userindex)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl personaje no existe.")
+    Call CloseSocket(UserIndex)
     Exit Sub
 End If
 
 '¿Es el passwd valido?
 If UCase$(Password) <> UCase$(GetVar(CharPath & UCase$(name) & ".chr", "INIT", "Password")) Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRPassword incorrecto.")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPassword incorrecto.")
     
-    Call CloseSocket(userindex)
+    Call CloseSocket(UserIndex)
     Exit Sub
 End If
 
@@ -1462,9 +1463,9 @@ If CheckForSameName(UserIndex, name) Then
     If UserList(NameIndex(name)).Counters.Saliendo Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl usuario está saliendo.")
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "ERRPerdon, un usuario con el mismo nombre se há logoeado.")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPerdon, un usuario con el mismo nombre se há logoeado.")
     End If
-    Call CloseSocket(userindex)
+    Call CloseSocket(UserIndex)
     Exit Sub
 End If
 
@@ -1474,17 +1475,17 @@ Dim Leer As New clsIniReader
 Call Leer.Initialize(CharPath & UCase$(name) & ".chr")
 
 'Cargamos los datos del personaje
-Call LoadUserInit(userindex, Leer)
+Call LoadUserInit(UserIndex, Leer)
 
-Call LoadUserStats(userindex, Leer)
+Call LoadUserStats(UserIndex, Leer)
 
-If Not ValidateChr(userindex) Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRError en el personaje.")
-    Call CloseSocket(userindex)
+If Not ValidateChr(UserIndex) Then
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRError en el personaje.")
+    Call CloseSocket(UserIndex)
     Exit Sub
 End If
 
-Call LoadUserReputacion(userindex, Leer)
+Call LoadUserReputacion(UserIndex, Leer)
 
 Set Leer = Nothing
 
@@ -1493,8 +1494,8 @@ If UserList(UserIndex).Invent.CascoEqpSlot = 0 Then UserList(UserIndex).Char.Cas
 If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then UserList(UserIndex).Char.WeaponAnim = NingunArma
 
 
-Call UpdateUserInv(True, userindex, 0)
-Call UpdateUserHechizos(True, userindex, 0)
+Call UpdateUserInv(True, UserIndex, 0)
+Call UpdateUserHechizos(True, UserIndex, 0)
 
 If UserList(UserIndex).flags.Navegando = 1 Then
      UserList(UserIndex).Char.body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
@@ -1507,10 +1508,10 @@ End If
 If UserList(UserIndex).flags.Paralizado Then
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToIndex, userindex, 0, "PARADOK")
+        Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
     Else
 #End If
-        Call SendData(SendTarget.ToIndex, userindex, 0, "PARADOK")
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
 #If SeguridadAlkon Then
     End If
 #End If
@@ -1536,6 +1537,12 @@ If UserList(UserIndex).Pos.Map = 0 Then
     End If
 Else
 
+    If Not MapaValido(UserList(UserIndex).Pos.Map) Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREL PJ se encuenta en un mapa invalido.")
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
+    
    ''TELEFRAG
     If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
         ''si estaba en comercio seguro...
@@ -1556,12 +1563,6 @@ Else
     If UserList(UserIndex).flags.Muerto = 1 Then
         Call Empollando(UserIndex)
     End If
-End If
-
-If Not MapaValido(UserList(UserIndex).Pos.Map) Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREL PJ se encuenta en un mapa invalido.")
-    Call CloseSocket(UserIndex)
-    Exit Sub
 End If
 
 'Nombre de sistema
@@ -1602,20 +1603,20 @@ Call MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, U
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "IP" & UserList(UserIndex).Char.CharIndex)
 ''[/el oso]
 
-Call SendUserStatsBox(userindex)
+Call SendUserStatsBox(UserIndex)
 
-Call EnviarHambreYsed(userindex)
+Call EnviarHambreYsed(UserIndex)
 
-Call SendMOTD(userindex)
+Call SendMOTD(UserIndex)
 
 If haciendoBK Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "BKW")
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Servidor> Por favor espera algunos segundos, WorldSave esta ejecutandose." & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "BKW")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Servidor> Por favor espera algunos segundos, WorldSave esta ejecutandose." & FONTTYPE_SERVER)
 End If
 
 If EnPausa Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "BKW")
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Servidor> Lo sentimos mucho pero el servidor se encuentra actualmente detenido. Intenta ingresar más tarde." & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "BKW")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Servidor> Lo sentimos mucho pero el servidor se encuentra actualmente detenido. Intenta ingresar más tarde." & FONTTYPE_SERVER)
 End If
 
 If EnTesting And UserList(UserIndex).Stats.ELV >= 18 Then
@@ -1669,7 +1670,7 @@ End If
 
 If UserList(UserIndex).flags.Navegando = 1 Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "NAVEG")
 
-If criminal(userindex) Then
+If criminal(UserIndex) Then
     'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Miembro de las fuerzas del caos > Seguro desactivado <" & FONTTYPE_FIGHT)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "SEGOFF")
     UserList(UserIndex).flags.Seguro = False
@@ -1695,24 +1696,24 @@ End If
 
 Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXIDs.FXWARP & "," & 0)
 
-Call SendData(SendTarget.ToIndex, userindex, 0, "LOGGED")
+Call SendData(SendTarget.ToIndex, UserIndex, 0, "LOGGED")
 
-Call modGuilds.SendGuildNews(userindex)
+Call modGuilds.SendGuildNews(UserIndex)
 
 If UserList(UserIndex).flags.NoActualizado Then
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "REAU")
 End If
 
-If Lloviendo Then Call SendData(SendTarget.ToIndex, userindex, 0, "LLU")
+If Lloviendo Then Call SendData(SendTarget.ToIndex, UserIndex, 0, "LLU")
 
 tStr = modGuilds.a_ObtenerRechazoDeChar(UserList(UserIndex).name)
 
 If tStr <> vbNullString Then
-    Call SendData(SendTarget.ToIndex, userindex, 0, "!!Tu solicitud de ingreso al clan ha sido rechazada. El clan te explica que: " & tStr & ENDC)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "!!Tu solicitud de ingreso al clan ha sido rechazada. El clan te explica que: " & tStr & ENDC)
 End If
 
 'Load the user statistics
-Call Statistics.UserConnected(userindex)
+Call Statistics.UserConnected(UserIndex)
 
 Call MostrarNumUsers
 
@@ -1729,17 +1730,17 @@ Close #N
 
 End Sub
 
-Sub SendMOTD(ByVal userindex As Integer)
+Sub SendMOTD(ByVal UserIndex As Integer)
     Dim j As Long
     
-    Call SendData(SendTarget.ToIndex, userindex, 0, "|+Mensajes de entrada:" & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+Mensajes de entrada:" & FONTTYPE_INFO)
     
     For j = 1 To MaxLines
-        Call SendData(SendTarget.ToIndex, userindex, 0, "|+" & Chr$(3) & MOTD(j).texto)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|+" & Chr$(3) & MOTD(j).texto)
     Next j
 End Sub
 
-Sub ResetFacciones(ByVal userindex As Integer)
+Sub ResetFacciones(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/15/2006
@@ -1761,7 +1762,7 @@ Sub ResetFacciones(ByVal userindex As Integer)
     End With
 End Sub
 
-Sub ResetContadores(ByVal userindex As Integer)
+Sub ResetContadores(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/15/2006
@@ -1794,7 +1795,7 @@ Sub ResetContadores(ByVal userindex As Integer)
     End With
 End Sub
 
-Sub ResetCharInfo(ByVal userindex As Integer)
+Sub ResetCharInfo(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/15/2006
@@ -1815,7 +1816,7 @@ Sub ResetCharInfo(ByVal userindex As Integer)
     End With
 End Sub
 
-Sub ResetBasicUserInfo(ByVal userindex As Integer)
+Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/15/2006
@@ -1861,7 +1862,7 @@ Sub ResetBasicUserInfo(ByVal userindex As Integer)
     End With
 End Sub
 
-Sub ResetReputacion(ByVal userindex As Integer)
+Sub ResetReputacion(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/15/2006
@@ -1891,7 +1892,7 @@ Sub ResetGuildInfo(ByVal UserIndex As Integer)
     UserList(UserIndex).GuildIndex = 0
 End Sub
 
-Sub ResetUserFlags(ByVal userindex As Integer)
+Sub ResetUserFlags(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 03/29/2006
@@ -1947,14 +1948,14 @@ Sub ResetUserFlags(ByVal userindex As Integer)
     End With
 End Sub
 
-Sub ResetUserSpells(ByVal userindex As Integer)
+Sub ResetUserSpells(ByVal UserIndex As Integer)
     Dim LoopC As Long
     For LoopC = 1 To MAXUSERHECHIZOS
         UserList(UserIndex).Stats.UserHechizos(LoopC) = 0
     Next LoopC
 End Sub
 
-Sub ResetUserPets(ByVal userindex As Integer)
+Sub ResetUserPets(ByVal UserIndex As Integer)
     Dim LoopC As Long
     
     UserList(UserIndex).NroMacotas = 0
@@ -1965,7 +1966,7 @@ Sub ResetUserPets(ByVal userindex As Integer)
     Next LoopC
 End Sub
 
-Sub ResetUserBanco(ByVal userindex As Integer)
+Sub ResetUserBanco(ByVal UserIndex As Integer)
     Dim LoopC As Long
     
     For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
@@ -1981,12 +1982,12 @@ Public Sub LimpiarComercioSeguro(ByVal UserIndex As Integer)
     With UserList(UserIndex).ComUsu
         If .DestUsu > 0 Then
             Call FinComerciarUsu(.DestUsu)
-            Call FinComerciarUsu(userindex)
+            Call FinComerciarUsu(UserIndex)
         End If
     End With
 End Sub
 
-Sub ResetUserSlot(ByVal userindex As Integer)
+Sub ResetUserSlot(ByVal UserIndex As Integer)
 
 Dim UsrTMP As User
 
@@ -2013,7 +2014,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .Cant = 0
+    .cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2024,7 +2025,7 @@ UserList(UserIndex) = UsrTMP
 End Sub
 
 
-Sub CloseUser(ByVal userindex As Integer)
+Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
 
 On Error GoTo errhandler
@@ -2053,8 +2054,8 @@ Map = UserList(UserIndex).Pos.Map
 X = UserList(UserIndex).Pos.X
 Y = UserList(UserIndex).Pos.Y
 name = UCase$(UserList(UserIndex).name)
-Raza = UserList(UserIndex).Raza
-Clase = UserList(UserIndex).Clase
+raza = UserList(UserIndex).raza
+clase = UserList(UserIndex).clase
 
 UserList(UserIndex).Char.FX = 0
 UserList(UserIndex).Char.loops = 0
@@ -2067,13 +2068,13 @@ UserList(UserIndex).Counters.Saliendo = False
 If UserList(UserIndex).flags.AdminInvisible = 1 Then Call DoAdminInvisible(UserIndex)
 
 'si esta en party le devolvemos la experiencia
-If UserList(userindex).PartyIndex > 0 Then Call mdParty.SalirDeParty(userindex)
+If UserList(UserIndex).PartyIndex > 0 Then Call mdParty.SalirDeParty(UserIndex)
 
 'Save statistics
-Call Statistics.UserDisconnected(userindex)
+Call Statistics.UserDisconnected(UserIndex)
 
 ' Grabamos el personaje del usuario
-Call SaveUser(userindex, CharPath & name & ".chr")
+Call SaveUser(UserIndex, CharPath & name & ".chr")
 
 'usado para borrar Pjs
 Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Logged", "0")
@@ -2113,13 +2114,13 @@ End If
 ' Si el usuario habia dejado un msg en la gm's queue lo borramos
 If Ayuda.Existe(UserList(UserIndex).name) Then Call Ayuda.Quitar(UserList(UserIndex).name)
 
-Call ResetUserSlot(userindex)
+Call ResetUserSlot(UserIndex)
 
 Call MostrarNumUsers
 
 N = FreeFile(1)
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " há dejado el juego. " & "User Index:" & userindex & " " & Time & " " & Date
+Print #N, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & Time & " " & Date
 Close #N
 
 Exit Sub
@@ -2131,7 +2132,7 @@ Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Er
 End Sub
 
 
-Sub HandleData(ByVal userindex As Integer, ByVal rData As String)
+Sub HandleData(ByVal UserIndex As Integer, ByVal rData As String)
 
 '
 ' ATENCION: Cambios importantes en HandleData.
@@ -2185,7 +2186,7 @@ On Error GoTo ErrorHandler:
     Dim X As Integer
     Dim Y As Integer
     Dim DummyInt As Integer
-    Dim t() As String
+    Dim T() As String
     Dim i As Integer
     
     Dim sndData As String
@@ -2197,8 +2198,8 @@ On Error GoTo ErrorHandler:
     CadenaOriginal = rData
     
     '¿Tiene un indece valido?
-    If userindex <= 0 Then
-        Call CloseSocket(userindex)
+    If UserIndex <= 0 Then
+        Call CloseSocket(UserIndex)
         Exit Sub
     End If
     
@@ -2221,8 +2222,8 @@ On Error GoTo ErrorHandler:
         UserList(UserIndex).PrevCheckSum = ServerSideChecksum
         
         If CLng(ClientChecksum) <> ServerSideChecksum Then
-            Call LogError("Checksum error userindex: " & userindex & " rdata: " & rData)
-            Call CloseSocket(userindex, True)
+            Call LogError("Checksum error userindex: " & UserIndex & " rdata: " & rData)
+            Call CloseSocket(UserIndex, True)
         End If
         
         'Remove checksum from data
@@ -2245,7 +2246,7 @@ On Error GoTo ErrorHandler:
                 rData = Right$(rData, Len(rData) - 6)
                 cliMD5 = Right$(rData, 16)
                 If Not MD5ok(cliMD5) Then
-                    Call SendData(SendTarget.ToIndex, userindex, 0, "ERREl cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
                     Exit Sub
                 End If
                 Ver = ReadField(3, rData, 44)
@@ -2253,14 +2254,14 @@ On Error GoTo ErrorHandler:
                     tName = ReadField(1, rData, 44)
                     
                     If Not AsciiValidos(tName) Then
-                        Call SendData(SendTarget.ToIndex, userindex, 0, "ERRNombre invalido.")
-                        Call CloseSocket(userindex, True)
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRNombre invalido.")
+                        Call CloseSocket(UserIndex, True)
                         Exit Sub
                     End If
                     
                     If Not PersonajeExiste(tName) Then
-                        Call SendData(SendTarget.ToIndex, userindex, 0, "ERREl personaje no existe.")
-                        Call CloseSocket(userindex, True)
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl personaje no existe.")
+                        Call CloseSocket(UserIndex, True)
                         Exit Sub
                     End If
                     
@@ -2275,12 +2276,12 @@ On Error GoTo ErrorHandler:
                         
                         Dim Pass11 As String
                         Pass11 = ReadField(2, rData, 44)
-                        Call ConnectUser(userindex, tName, Pass11)
+                        Call ConnectUser(UserIndex, tName, Pass11)
                     Else
-                        Call SendData(SendTarget.ToIndex, userindex, 0, "ERRSe te ha prohibido la entrada a Argentum debido a tu mal comportamiento. Consulta en aocp.alkon.com.ar/est para ver el motivo de la prohibición.")
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRSe te ha prohibido la entrada a Argentum debido a tu mal comportamiento. Consulta en aocp.alkon.com.ar/est para ver el motivo de la prohibición.")
                     End If
                 Else
-                     Call SendData(SendTarget.ToIndex, userindex, 0, "ERREsta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
+                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREsta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
                      'Call CloseSocket(UserIndex)
                      Exit Sub
                 End If
@@ -2299,14 +2300,14 @@ On Error GoTo ErrorHandler:
 
             Case "NLOGIN"
                 If PuedeCrearPersonajes = 0 Then
-                    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRLa creacion de personajes en este servidor se ha deshabilitado.")
-                    Call CloseSocket(userindex)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRLa creacion de personajes en este servidor se ha deshabilitado.")
+                    Call CloseSocket(UserIndex)
                     Exit Sub
                 End If
                 
                 If ServerSoloGMs <> 0 Then
-                    Call SendData(SendTarget.ToIndex, userindex, 0, "ERRServidor restringido a administradores. Consulte la página oficial o el foro oficial para mas información.")
-                    Call CloseSocket(userindex)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRServidor restringido a administradores. Consulte la página oficial o el foro oficial para mas información.")
+                    Call CloseSocket(UserIndex)
                     Exit Sub
                 End If
 
@@ -2320,7 +2321,7 @@ On Error GoTo ErrorHandler:
                 cliMD5 = Right$(rData, 16)
                 rData = Left$(rData, Len(rData) - 16)
                 If Not MD5ok(cliMD5) Then
-                    Call SendData(SendTarget.ToIndex, userindex, 0, "ERREl cliente está dañado o es antiguo, por favor descárguelo nuevamente desde el sitio http://ao.alkon.com.ar")
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERREl cliente está dañado o es antiguo, por favor descárguelo nuevamente desde el sitio http://ao.alkon.com.ar")
                     Exit Sub
                 End If
                 
@@ -2332,20 +2333,20 @@ On Error GoTo ErrorHandler:
                     If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> miinteger Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRPara poder continuar con la creación del personaje, debe utilizar el cliente proporcionado en ao.alkon.com.ar")
                         'Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " intento crear un bot.")
-                        Call CloseSocket(userindex)
+                        Call CloseSocket(UserIndex)
                         Exit Sub
                     End If
                      
                     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(val(ReadField(37, rData, 44)), val(ReadField(38, rData, 44)), val(ReadField(39, rData, 44)), val(ReadField(40, rData, 44)), val(ReadField(41, rData, 44)), val(ReadField(42, rData, 44)), val(ReadField(43, rData, 44)))
                     
-                    Call ConnectNewUser(userindex, ReadField(1, rData, 44), ReadField(2, rData, 44), ReadField(4, rData, 44), ReadField(5, rData, 44), ReadField(6, rData, 44), ReadField(7, rData, 44), _
+                    Call ConnectNewUser(UserIndex, ReadField(1, rData, 44), ReadField(2, rData, 44), ReadField(4, rData, 44), ReadField(5, rData, 44), ReadField(6, rData, 44), ReadField(7, rData, 44), _
                                         ReadField(8, rData, 44), ReadField(9, rData, 44), ReadField(10, rData, 44), ReadField(11, rData, 44), ReadField(12, rData, 44), ReadField(13, rData, 44), _
                                         ReadField(14, rData, 44), ReadField(15, rData, 44), ReadField(16, rData, 44), ReadField(17, rData, 44), ReadField(18, rData, 44), ReadField(19, rData, 44), _
                                         ReadField(20, rData, 44), ReadField(21, rData, 44), ReadField(22, rData, 44), ReadField(23, rData, 44), ReadField(24, rData, 44), ReadField(25, rData, 44), _
                                         ReadField(26, rData, 44), ReadField(27, rData, 44), ReadField(28, rData, 44), ReadField(29, rData, 44))
                 
                 Else
-                     Call SendData(SendTarget.ToIndex, userindex, 0, "!!Esta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
+                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "!!Esta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en nuestra pagina.")
                      Exit Sub
                 End If
                 
@@ -2367,13 +2368,13 @@ On Error GoTo ErrorHandler:
             
             '¿Existe el personaje?
             If Not FileExist(CharPath & UCase$(Arg1) & ".chr", vbNormal) Then
-                Call CloseSocket(userindex)
+                Call CloseSocket(UserIndex)
                 Exit Sub
             End If
     
             '¿Es el passwd valido?
             If UCase$(ReadField(2, rData, 44)) <> UCase$(GetVar(CharPath & UCase$(Arg1) & ".chr", "INIT", "Password")) Then
-                Call CloseSocket(userindex)
+                Call CloseSocket(UserIndex)
                 Exit Sub
             End If
     
@@ -2382,7 +2383,7 @@ On Error GoTo ErrorHandler:
                 rt = App.Path & "\ChrBackUp\" & UCase$(Arg1) & ".bak"
                 If FileExist(rt, vbNormal) Then Kill rt
                 Name CharPath & UCase$(Arg1) & ".chr" As rt
-                Call SendData(SendTarget.ToIndex, userindex, 0, "BORROK")
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "BORROK")
                 Exit Sub
 ExitErr1:
         Call LogError(Err.Description & " " & rData)
@@ -2395,7 +2396,7 @@ ExitErr1:
     'de arriba cerramos la conexion.
     '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     Call LogHackAttemp("Mesaje enviado sin logearse:" & rData)
-    Call CloseSocket(userindex)
+    Call CloseSocket(UserIndex)
     Exit Sub
       
 End If ' if not user logged
@@ -2407,20 +2408,20 @@ Dim Procesado As Boolean
 ' con "/".
 If Left$(rData, 1) <> "/" Then
     
-    Call HandleData_1(userindex, rData, Procesado)
+    Call HandleData_1(UserIndex, rData, Procesado)
     If Procesado Then Exit Sub
     
 ' bien hasta aca fueron los comandos que NO empezaban con
 ' "/". Ahora adiviná que sigue :)
 Else
     
-    Call HandleData_2(userindex, rData, Procesado)
+    Call HandleData_2(UserIndex, rData, Procesado)
     If Procesado Then Exit Sub
 
 End If ' "/"
 
 #If SeguridadAlkon Then
-    If HandleDataEx(userindex, rData) Then Exit Sub
+    If HandleDataEx(UserIndex, rData) Then Exit Sub
 #End If
 
 
@@ -2454,9 +2455,9 @@ If UCase$(rData) = "/ONLINEREAL" Then
     Next tLong
     
     If Len(tStr) > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Armadas conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Armadas conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay Armadas conectados" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Armadas conectados" & FONTTYPE_INFO)
     End If
     Exit Sub
 End If
@@ -2471,9 +2472,9 @@ If UCase$(rData) = "/ONLINECAOS" Then
     Next tLong
     
     If Len(tStr) > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Caos conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Caos conectados: " & Left$(tStr, Len(tStr) - 2) & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay Caos conectados" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay Caos conectados" & FONTTYPE_INFO)
     End If
     Exit Sub
 End If
@@ -2490,7 +2491,7 @@ If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
         Exit Sub
     
     If tIndex <= 0 Then 'existe el usuario destino?
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
 
@@ -2512,7 +2513,7 @@ If UCase$(Left$(rData, 9)) = "/IRCERCA " Then
         Next i
     Next tInt
     
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Todos los lugares estan ocupados." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Todos los lugares estan ocupados." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -2537,7 +2538,7 @@ If UCase$(Left$(rData, 7)) = "/DONDE " Then
     rData = Right$(rData, Len(rData) - 7)
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
     If UserList(tIndex).flags.Privilegios >= PlayerType.Dios Then Exit Sub
@@ -2595,13 +2596,13 @@ If UCase$(Left$(rData, 7)) = "/TELEP " Then
         End If
         tIndex = NameIndex(name)
     Else
-        tIndex = userindex
+        tIndex = UserIndex
     End If
     X = val(ReadField(3, rData, 32))
     Y = val(ReadField(4, rData, 32))
     If Not InMapBounds(mapa, X, Y) Then Exit Sub
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
     Call WarpUserChar(tIndex, mapa, X, Y, True)
@@ -2614,7 +2615,7 @@ If UCase$(Left$(rData, 11)) = "/SILENCIAR " Then
     rData = Right$(rData, Len(rData) - 11)
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
     If UserList(tIndex).flags.Silenciado = 0 Then
@@ -2636,9 +2637,9 @@ If UCase$(Left$(rData, 9)) = "/SHOW SOS" Then
     Dim M As String
     For N = 1 To Ayuda.Longitud
         M = Ayuda.VerElemento(N)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "RSOS" & M)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "RSOS" & M)
     Next N
-    Call SendData(SendTarget.ToIndex, userindex, 0, "MSOS")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "MSOS")
     Exit Sub
 End If
 
@@ -2659,7 +2660,7 @@ If UCase$(Left$(rData, 5)) = "/IRA " Then
         Exit Sub
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -2695,7 +2696,7 @@ If UCase$(rData) = "LISTUSU" Then
     If Len(tStr) > 7 Then
         tStr = Left$(tStr, Len(tStr) - 1)
     End If
-    Call SendData(SendTarget.ToIndex, userindex, 0, tStr)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, tStr)
     Exit Sub
 End If
 
@@ -2709,9 +2710,9 @@ If UCase$(rData) = "/TRABAJANDO" Then
         Next LoopC
         If tStr <> "" Then
             tStr = Left$(tStr, Len(tStr) - 2)
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuarios trabajando: " & tStr & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios trabajando: " & tStr & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay usuarios trabajando" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay usuarios trabajando" & FONTTYPE_INFO)
         End If
         Exit Sub
 End If
@@ -2726,9 +2727,9 @@ If UCase$(rData) = "/OCULTANDO" Then
         Next LoopC
         If tStr <> "" Then
             tStr = Left$(tStr, Len(tStr) - 2)
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuarios ocultandose: " & tStr & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios ocultandose: " & tStr & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay usuarios ocultandose" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay usuarios ocultandose" & FONTTYPE_INFO)
         End If
         Exit Sub
 End If
@@ -2742,7 +2743,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     name = ReadField(1, rData, Asc("@"))
     tStr = ReadField(2, rData, Asc("@"))
     If (Not IsNumeric(ReadField(3, rData, Asc("@")))) Or name = "" Or tStr = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Utilice /carcel nick@motivo@tiempo" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Utilice /carcel nick@motivo@tiempo" & FONTTYPE_INFO)
         Exit Sub
     End If
     i = val(ReadField(3, rData, Asc("@")))
@@ -2752,7 +2753,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     'If UCase$(Name) = "REEVES" Then Exit Sub
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -2762,7 +2763,7 @@ If UCase$(Left$(rData, 8)) = "/CARCEL " Then
     End If
     
     If i > 60 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||No podes encarcelar por mas de 60 minutos." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes encarcelar por mas de 60 minutos." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -2793,7 +2794,7 @@ If UCase$(Left$(rData, 6)) = "/RMATA" Then
     
     tIndex = UserList(UserIndex).flags.TargetNPC
     If tIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||RMatas (con posible respawn) a: " & Npclist(tIndex).name & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||RMatas (con posible respawn) a: " & Npclist(tIndex).name & FONTTYPE_INFO)
         Dim MiNPC As npc
         MiNPC = Npclist(tIndex)
         Call QuitarNPC(tIndex)
@@ -2801,7 +2802,7 @@ If UCase$(Left$(rData, 6)) = "/RMATA" Then
         
     'SERES
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Debes hacer click sobre el NPC antes" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes hacer click sobre el NPC antes" & FONTTYPE_INFO)
     End If
     
     Exit Sub
@@ -2818,14 +2819,14 @@ If UCase$(Left$(rData, 13)) = "/ADVERTENCIA " Then
     name = ReadField(1, rData, Asc("@"))
     tStr = ReadField(2, rData, Asc("@"))
     If name = "" Or tStr = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Utilice /advertencia nick@motivo" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Utilice /advertencia nick@motivo" & FONTTYPE_INFO)
         Exit Sub
     End If
     
     tIndex = NameIndex(name)
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -2863,17 +2864,17 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
         Select Case UserList(UserIndex).flags.Privilegios
             Case PlayerType.Consejero
                 ' Los RMs consejeros sólo se pueden editar su head, body y exp
-                If NameIndex(ReadField(1, rData, 32)) <> userindex Then Exit Sub
+                If NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "LEVEL" Then Exit Sub
             
             Case PlayerType.SemiDios
                 ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
-                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> userindex Then Exit Sub
+                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" Then Exit Sub
             
             Case PlayerType.Dios
                 ' Si quiere modificar el level sólo lo puede hacer sobre sí mismo
-                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> userindex Then Exit Sub
+                If Arg1 = "LEVEL" And NameIndex(ReadField(1, rData, 32)) <> UserIndex Then Exit Sub
                 ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
                 If Arg1 <> "BODY" And Arg1 <> "HEAD" And Arg1 <> "CIU" And Arg1 <> "CRI" And Arg1 <> "CLASE" And Arg1 <> "SKILLS" Then Exit Sub
         End Select
@@ -2886,7 +2887,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
     Select Case Arg1
         Case "ORO" '/mod yo oro 95000
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2894,12 +2895,12 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 UserList(tIndex).Stats.GLD = val(Arg2)
                 Call SendUserStatsBox(tIndex)
             Else
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego." & FONTTYPE_INFO)
                 Exit Sub
             End If
         Case "EXP" '/mod yo exp 9995000
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2916,13 +2917,13 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
                 End If
                 Call SendUserStatsBox(tIndex)
             Else
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||No esta permitido utilizar valores mayores a mucho. Su comando ha quedado en los logs del juego." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No esta permitido utilizar valores mayores a mucho. Su comando ha quedado en los logs del juego." & FONTTYPE_INFO)
                 Exit Sub
             End If
         Case "BODY"
             If tIndex <= 0 Then
                 Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Body", Arg2)
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2931,7 +2932,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
         Case "HEAD"
             If tIndex <= 0 Then
                 Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "INIT", "Head", Arg2)
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2939,7 +2940,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             Exit Sub
         Case "CRI"
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2947,7 +2948,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             Exit Sub
         Case "CIU"
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2955,7 +2956,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             Exit Sub
         Case "LEVEL"
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -2963,14 +2964,14 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             Exit Sub
         Case "CLASE"
             If tIndex <= 0 Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline:" & tStr & FONTTYPE_INFO)
                 Exit Sub
             End If
             
             If Len(Arg2) > 1 Then
-                UserList(tIndex).Clase = UCase$(Left$(Arg2, 1)) & LCase$(mid$(Arg2, 2))
+                UserList(tIndex).clase = UCase$(Left$(Arg2, 1)) & LCase$(mid$(Arg2, 2))
             Else
-                UserList(tIndex).Clase = UCase$(Arg2)
+                UserList(tIndex).clase = UCase$(Arg2)
             End If
     '[DnG]
         Case "SKILLS"
@@ -2986,7 +2987,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
 
             If tIndex = 0 Then
                 Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "Skills", "SK" & N, Arg3)
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
             Else
                 UserList(tIndex).Stats.UserSkills(N) = val(Arg3)
             End If
@@ -2996,7 +2997,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
             
             If tIndex = 0 Then
                 Call WriteVar(CharPath & Replace$(ReadField(1, rData, 32), "+", " ") & ".chr", "STATS", "SkillPtsLibres", Arg2)
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & tStr & FONTTYPE_INFO)
             
             Else
                 UserList(tIndex).Stats.SkillPts = val(Arg2)
@@ -3004,7 +3005,7 @@ If UCase$(Left$(rData, 5)) = "/MOD " Then
         Exit Sub
     '[/DnG]
         Case Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Comando no permitido." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Comando no permitido." & FONTTYPE_INFO)
             Exit Sub
         End Select
 
@@ -3030,8 +3031,8 @@ If UCase$(Left$(rData, 6)) = "/INFO " Then
         'No permitimos mirar dioses
         If EsDios(rData) Or EsAdmin(rData) Then Exit Sub
         
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline, Buscando en Charfile." & FONTTYPE_INFO)
-        SendUserStatsTxtOFF userindex, rData
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline, Buscando en Charfile." & FONTTYPE_INFO)
+        SendUserStatsTxtOFF UserIndex, rData
     Else
         If UserList(tIndex).flags.Privilegios >= PlayerType.Dios Then Exit Sub
         SendUserStatsTxt UserIndex, tIndex
@@ -3050,10 +3051,10 @@ End If
         tIndex = NameIndex(rData)
         
         If tIndex <= 0 Then
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline. Leyendo Charfile... " & FONTTYPE_INFO)
-            SendUserMiniStatsTxtFromChar userindex, rData
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline. Leyendo Charfile... " & FONTTYPE_INFO)
+            SendUserMiniStatsTxtFromChar UserIndex, rData
         Else
-            SendUserMiniStatsTxt userindex, tIndex
+            SendUserMiniStatsTxt UserIndex, tIndex
         End If
     
         Exit Sub
@@ -3064,8 +3065,8 @@ If UCase$(Left$(rData, 5)) = "/BAL " Then
 rData = Right$(rData, Len(rData) - 5)
 tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline. Leyendo charfile... " & FONTTYPE_TALK)
-        SendUserOROTxtFromChar userindex, rData
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline. Leyendo charfile... " & FONTTYPE_TALK)
+        SendUserOROTxtFromChar UserIndex, rData
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| El usuario " & rData & " tiene " & UserList(tIndex).Stats.Banco & " en el banco" & FONTTYPE_TALK)
     End If
@@ -3081,10 +3082,10 @@ If UCase$(Left$(rData, 5)) = "/INV " Then
     tIndex = NameIndex(rData)
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline. Leyendo del charfile..." & FONTTYPE_TALK)
-        SendUserInvTxtFromChar userindex, rData
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline. Leyendo del charfile..." & FONTTYPE_TALK)
+        SendUserInvTxtFromChar UserIndex, rData
     Else
-        SendUserInvTxt userindex, tIndex
+        SendUserInvTxt UserIndex, tIndex
     End If
 
     Exit Sub
@@ -3099,10 +3100,10 @@ If UCase$(Left$(rData, 5)) = "/BOV " Then
     tIndex = NameIndex(rData)
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline. Leyendo charfile... " & FONTTYPE_TALK)
-        SendUserBovedaTxtFromChar userindex, rData
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline. Leyendo charfile... " & FONTTYPE_TALK)
+        SendUserBovedaTxtFromChar UserIndex, rData
     Else
-        SendUserBovedaTxt userindex, tIndex
+        SendUserBovedaTxt UserIndex, tIndex
     End If
 
     Exit Sub
@@ -3121,13 +3122,13 @@ If UCase$(Left$(rData, 8)) = "/SKILLS " Then
         Call Replace(rData, "/", " ")
         
         For tInt = 1 To NUMSKILLS
-            Call SendData(SendTarget.ToIndex, userindex, 0, "|| CHAR>" & SkillsNames(tInt) & " = " & GetVar(CharPath & rData & ".chr", "SKILLS", "SK" & tInt) & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| CHAR>" & SkillsNames(tInt) & " = " & GetVar(CharPath & rData & ".chr", "SKILLS", "SK" & tInt) & FONTTYPE_INFO)
         Next tInt
-            Call SendData(SendTarget.ToIndex, userindex, 0, "|| CHAR> Libres:" & GetVar(CharPath & rData & ".chr", "STATS", "SKILLPTSLIBRES") & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| CHAR> Libres:" & GetVar(CharPath & rData & ".chr", "STATS", "SKILLPTSLIBRES") & FONTTYPE_INFO)
         Exit Sub
     End If
 
-    SendUserSkillsTxt userindex, tIndex
+    SendUserSkillsTxt UserIndex, tIndex
     Exit Sub
 End If
 
@@ -3137,10 +3138,10 @@ If UCase$(Left$(rData, 9)) = "/REVIVIR " Then
     If UCase$(name) <> "YO" Then
         tIndex = NameIndex(name)
     Else
-        tIndex = userindex
+        tIndex = UserIndex
     End If
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline." & FONTTYPE_INFO)
         Exit Sub
     End If
     UserList(tIndex).flags.Muerto = 0
@@ -3162,9 +3163,9 @@ If UCase$(rData) = "/ONLINEGM" Then
         Next LoopC
         If Len(tStr) > 0 Then
             tStr = Left$(tStr, Len(tStr) - 2)
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||" & tStr & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay GMs Online" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay GMs Online" & FONTTYPE_INFO)
         End If
         Exit Sub
 End If
@@ -3178,7 +3179,7 @@ If UCase$(rData) = "/ONLINEMAP" Then
     Next LoopC
     If Len(tStr) > 2 Then _
         tStr = Left$(tStr, Len(tStr) - 2)
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuarios en el mapa: " & tStr & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuarios en el mapa: " & tStr & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -3207,7 +3208,7 @@ If UCase$(Left$(rData, 7)) = "/ECHAR " Then
     tIndex = NameIndex(rData)
     If UCase$(rData) = "MORGOLOCK" Then Exit Sub
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario no esta online." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3235,7 +3236,7 @@ If UCase$(Left$(rData, 10)) = "/EJECUTAR " Then
         Call SendData(SendTarget.ToAll, 0, 0, "||" & UserList(UserIndex).name & " ha ejecutado a " & UserList(tIndex).name & FONTTYPE_EJECUCION)
         Call LogGM(UserList(UserIndex).name, " ejecuto a " & UserList(tIndex).name, False)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||No está online" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No está online" & FONTTYPE_INFO)
     End If
 Exit Sub
 End If
@@ -3257,7 +3258,7 @@ If UCase$(Left$(rData, 5)) = "/BAN " Then
     ' face the thing that sould not be!
     
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario no esta online." & FONTTYPE_TALK)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario no esta online." & FONTTYPE_TALK)
         
         If FileExist(CharPath & tStr & ".chr", vbNormal) Then
             tLong = UserDarPrivilegioLevel(tStr)
@@ -3268,7 +3269,7 @@ If UCase$(Left$(rData, 5)) = "/BAN " Then
             End If
             
             If GetVar(CharPath & tStr & ".chr", "FLAGS", "Ban") <> "0" Then
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||El personaje ya se encuentra baneado." & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El personaje ya se encuentra baneado." & FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -3290,7 +3291,7 @@ If UCase$(Left$(rData, 5)) = "/BAN " Then
 
             Call LogGM(UserList(UserIndex).name, "BAN a " & tStr, False)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||El pj " & tStr & " no existe." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El pj " & tStr & " no existe." & FONTTYPE_INFO)
         End If
     Else
         If UserList(tIndex).flags.Privilegios > UserList(UserIndex).flags.Privilegios Then
@@ -3333,7 +3334,7 @@ If UCase$(Left$(rData, 7)) = "/UNBAN " Then
     rData = Replace(rData, "/", "")
     
     If Not FileExist(CharPath & rData & ".chr", vbNormal) Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile inexistente (no use +)" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile inexistente (no use +)" & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3366,7 +3367,7 @@ If UCase$(Left$(rData, 5)) = "/SUM " Then
     
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El jugador no esta online." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El jugador no esta online." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3379,7 +3380,7 @@ End If
 
 'Crear criatura
 If UCase$(Left$(rData, 3)) = "/CC" Then
-   Call EnviarSpawnList(userindex)
+   Call EnviarSpawnList(UserIndex)
    Exit Sub
 End If
 
@@ -3432,10 +3433,10 @@ If UCase$(Left$(rData, 9)) = "/NICK2IP " Then
         If (UserList(UserIndex).flags.Privilegios > PlayerType.User And UserList(tIndex).flags.Privilegios = PlayerType.User) Or (UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El ip de " & rData & " es " & UserList(tIndex).ip & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||No tienes los privilegios necesarios" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tienes los privilegios necesarios" & FONTTYPE_INFO)
         End If
     Else
-       Call SendData(SendTarget.ToIndex, userindex, 0, "||No hay ningun personaje con ese nick" & FONTTYPE_INFO)
+       Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay ningun personaje con ese nick" & FONTTYPE_INFO)
     End If
     Exit Sub
 End If
@@ -3448,7 +3449,7 @@ If UCase$(Left$(rData, 9)) = "/IP2NICK " Then
     If InStr(rData, ".") < 1 Then
         tInt = NameIndex(rData)
         If tInt < 1 Then
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Pj Offline" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Pj Offline" & FONTTYPE_INFO)
             Exit Sub
         End If
         rData = UserList(tInt).ip
@@ -3463,7 +3464,7 @@ If UCase$(Left$(rData, 9)) = "/IP2NICK " Then
         End If
     Next LoopC
     
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Los personajes con ip " & rData & " son: " & tStr & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los personajes con ip " & rData & " son: " & tStr & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -3474,8 +3475,8 @@ If UCase$(Left$(rData, 8)) = "/ONCLAN " Then
     tInt = GuildIndex(rData)
     
     If tInt > 0 Then
-        tStr = modGuilds.m_ListaDeMiembrosOnline(userindex, tInt)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Clan " & UCase(rData) & ": " & tStr & FONTTYPE_GUILDMSG)
+        tStr = modGuilds.m_ListaDeMiembrosOnline(UserIndex, tInt)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Clan " & UCase(rData) & ": " & tStr & FONTTYPE_GUILDMSG)
     End If
 End If
 
@@ -3501,7 +3502,7 @@ If UCase(Left(rData, 4)) = "/CT " Then
     End If
     
     If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, mapa, "||Hay un objeto en el piso en ese lugar" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, mapa, "||Hay un objeto en el piso en ese lugar" & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3562,7 +3563,7 @@ If UCase$(Left$(rData, 9)) = "/SETDESC " Then
     If DummyInt > 0 Then
         UserList(DummyInt).DescRM = rData
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Haz click sobre un personaje antes!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Haz click sobre un personaje antes!" & FONTTYPE_INFO)
     End If
     Exit Sub
     
@@ -3576,7 +3577,7 @@ Select Case UCase$(Left$(rData, 13))
         If Len(rData) > 13 Then
             rData = Right$(rData, Len(rData) - 14)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -3604,7 +3605,7 @@ Select Case UCase$(Left$(rData, 13))
                 Call SendData(SendTarget.ToMap, 0, tInt, "TM" & Arg1)
             End If
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional" & FONTTYPE_INFO)
         End If
         Exit Sub
     
@@ -3635,7 +3636,7 @@ Select Case UCase$(Left$(rData, 13))
             'Ponemos el pedido por el GM
             Call SendData(SendTarget.ToMap, 0, tInt, "TW" & Arg1)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||El formato correcto de este comando es /FORCEWAVMAP WAV MAPA X Y, siendo la posición opcional" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El formato correcto de este comando es /FORCEWAVMAP WAV MAPA X Y, siendo la posición opcional" & FONTTYPE_INFO)
         End If
         Exit Sub
 End Select
@@ -3702,7 +3703,7 @@ Select Case UCase$(Left$(rData, 8))
                 
                 Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Map, "||" & vbWhite & "°" & tStr & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
             Else
-                Call SendData(SendTarget.ToIndex, userindex, 0, "||Debes seleccionar el NPC por el que quieres hablar antes de usar este comando" & FONTTYPE_INFO)
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes seleccionar el NPC por el que quieres hablar antes de usar este comando" & FONTTYPE_INFO)
             End If
         End If
         Exit Sub
@@ -3741,7 +3742,7 @@ If UCase$(Left$(rData, 12)) = "/ACEPTCONSE " Then
     rData = Right$(rData, Len(rData) - 12)
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline" & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToAll, 0, 0, "||" & rData & " fue aceptado en el honorable Consejo Real de Banderbill." & FONTTYPE_CONSEJO)
         UserList(tIndex).flags.PertAlCons = 1
@@ -3755,7 +3756,7 @@ If UCase$(Left$(rData, 16)) = "/ACEPTCONSECAOS " Then
     rData = Right$(rData, Len(rData) - 16)
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline" & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToAll, 0, 0, "||" & rData & " fue aceptado en el Consejo de la Legión Oscura." & FONTTYPE_CONSEJOCAOS)
         UserList(tIndex).flags.PertAlConsCaos = 1
@@ -3770,7 +3771,7 @@ If Left$(UCase$(rData), 5) = "/PISO" Then
             tIndex = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex
             If tIndex > 0 Then
                 If ObjData(tIndex).OBJType <> 4 Then
-                    Call SendData(SendTarget.ToIndex, userindex, 0, "||(" & X & "," & Y & ") " & ObjData(tIndex).name & FONTTYPE_INFO)
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||(" & X & "," & Y & ") " & ObjData(tIndex).name & FONTTYPE_INFO)
                 End If
             End If
         Next Y
@@ -3784,7 +3785,7 @@ If UCase$(Left$(rData, 10)) = "/ESTUPIDO " Then
     rData = UCase$(Right$(rData, Len(rData) - 10))
     i = NameIndex(rData)
     If i <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Offline" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Offline" & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToIndex, i, 0, "DUMB")
     End If
@@ -3797,7 +3798,7 @@ If UCase$(Left$(rData, 12)) = "/NOESTUPIDO " Then
     rData = UCase$(Right$(rData, Len(rData) - 12))
     i = NameIndex(rData)
     If i <= 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Offline" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Offline" & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToIndex, i, 0, "NESTUP")
     End If
@@ -3815,11 +3816,11 @@ If UCase$(Left$(rData, 11)) = "/KICKCONSE " Then
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
         If FileExist(CharPath & rData & ".chr") Then
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||Usuario offline, Echando de los consejos" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usuario offline, Echando de los consejos" & FONTTYPE_INFO)
             Call WriteVar(CharPath & UCase(rData) & ".chr", "CONSEJO", "PERTENECE", 0)
             Call WriteVar(CharPath & UCase(rData) & ".chr", "CONSEJO", "PERTENECECAOS", 0)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||No se encuentra el charfile " & CharPath & rData & ".chr" & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No se encuentra el charfile " & CharPath & rData & ".chr" & FONTTYPE_INFO)
             Exit Sub
         End If
     Else
@@ -3854,7 +3855,7 @@ If UCase$(Left$(rData, 8)) = "/TRIGGER" Then
         tInt = MapData(mapa, X, Y).trigger
         MapData(mapa, X, Y).trigger = val(rData)
     End If
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Trigger " & MapData(mapa, X, Y).trigger & " en mapa " & mapa & " " & X & ", " & Y & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Trigger " & MapData(mapa, X, Y).trigger & " en mapa " & mapa & " " & X & ", " & Y & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -3869,7 +3870,7 @@ If UCase(rData) = "/BANIPLIST" Then
         tStr = tStr & BanIps.Item(LoopC) & ", "
     Next LoopC
     tStr = tStr & FONTTYPE_INFO
-    Call SendData(SendTarget.ToIndex, userindex, 0, tStr)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, tStr)
     Exit Sub
 End If
 
@@ -3884,7 +3885,7 @@ If UCase(Left(rData, 14)) = "/MIEMBROSCLAN " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Trim(Right(rData, Len(rData) - 9))
     If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3895,7 +3896,7 @@ If UCase(Left(rData, 14)) = "/MIEMBROSCLAN " Then
     For i = 1 To tInt
         tStr = GetVar(App.Path & "\Guilds\" & rData & "-Members" & ".mem", "Members", "Member" & i)
         'tstr es la victima
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||" & tStr & "<" & rData & ">." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & "<" & rData & ">." & FONTTYPE_INFO)
     Next i
 
     Exit Sub
@@ -3907,7 +3908,7 @@ If UCase(Left(rData, 9)) = "/BANCLAN " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Trim(Right(rData, Len(rData) - 9))
     If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3967,7 +3968,7 @@ If UCase(Left(rData, 7)) = "/BANIP " Then
     rData = Right$(rData, Len(rData) - Len(tStr))
     
     If BanIpBuscar(BanIP) > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||La IP " & BanIP & " ya se encuentra en la lista de bans." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La IP " & BanIP & " ya se encuentra en la lista de bans." & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -3975,7 +3976,7 @@ If UCase(Left(rData, 7)) = "/BANIP " Then
     Call SendData(SendTarget.ToAdmins, UserIndex, 0, "||" & UserList(UserIndex).name & " Baneo la IP " & BanIP & FONTTYPE_FIGHT)
     
     If XNick = True Then
-        Call LogBan(tIndex, userindex, "Ban por IP desde Nick por " & rData)
+        Call LogBan(tIndex, UserIndex, "Ban por IP desde Nick por " & rData)
         
         Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " echo a " & UserList(tIndex).name & "." & FONTTYPE_FIGHT)
         Call SendData(SendTarget.ToAdmins, 0, 0, "||" & UserList(UserIndex).name & " Banned a " & UserList(tIndex).name & "." & FONTTYPE_FIGHT)
@@ -4010,9 +4011,9 @@ If UCase(Left(rData, 9)) = "/UNBANIP " Then
 '    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La IP " & rdata & " NO se encuentra en la lista de bans." & FONTTYPE_INFO)
     
     If BanIpQuita(rData) Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||La IP """ & rData & """ se ha quitado de la lista de bans." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La IP """ & rData & """ se ha quitado de la lista de bans." & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||La IP """ & rData & """ NO se encuentra en la lista de bans." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La IP """ & rData & """ NO se encuentra en la lista de bans." & FONTTYPE_INFO)
     End If
     
     Exit Sub
@@ -4040,7 +4041,7 @@ If UCase(Left(rData, 4)) = "/CI " Then
     
     Dim Objeto As Obj
     
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||ATENCION: FUERON CREADOS ***100*** ITEMS!, TIRE Y /DEST LOS QUE NO NECESITE!!" & FONTTYPE_GUILD)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||ATENCION: FUERON CREADOS ***100*** ITEMS!, TIRE Y /DEST LOS QUE NO NECESITE!!" & FONTTYPE_GUILD)
     
     Objeto.amount = 100
     Objeto.ObjIndex = val(rData)
@@ -4077,7 +4078,7 @@ If UCase$(Left$(rData, 8)) = "/NOCAOS " Then
             Call WriteVar(CharPath & rData & ".chr", "FACCIONES", "Extra", "Expulsado por " & UserList(UserIndex).name)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & rData & " expulsado de las fuerzas del caos y prohibida la reenlistada" & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "|| " & rData & ".chr inexistente." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & rData & ".chr inexistente." & FONTTYPE_INFO)
         End If
     End If
     Exit Sub
@@ -4104,7 +4105,7 @@ If UCase$(Left$(rData, 8)) = "/NOREAL " Then
             Call WriteVar(CharPath & rData & ".chr", "FACCIONES", "Extra", "Expulsado por " & UserList(UserIndex).name)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & rData & " expulsado de las fuerzas reales y prohibida la reenlistada" & FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, userindex, 0, "|| " & rData & ".chr inexistente." & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & rData & ".chr inexistente." & FONTTYPE_INFO)
         End If
     End If
     Exit Sub
@@ -4140,7 +4141,7 @@ If UCase$(Left$(rData, 12)) = "/BORRARPENA " Then
     tStr = ReadField(2, rData, Asc("@"))
     
     If name = "" Or tStr = "" Or Not IsNumeric(tStr) Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Utilice /borrarpj Nick@NumeroDePena" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Utilice /borrarpj Nick@NumeroDePena" & FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -4206,9 +4207,9 @@ If UCase(Left(rData, 8)) = "/LASTIP " Then
     rData = Replace(rData, "/", "")
     
     If FileExist(CharPath & rData & ".chr", vbNormal) Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||La ultima IP de """ & rData & """ fue : " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP") & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ultima IP de """ & rData & """ fue : " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP") & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Charfile """ & rData & """ inexistente." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile """ & rData & """ inexistente." & FONTTYPE_INFO)
     End If
     Exit Sub
 End If
@@ -4226,7 +4227,7 @@ If UCase(rData) = "/MOTDCAMBIA" Then
         tStr = tStr & MOTD(LoopC).texto & vbCrLf
     Next LoopC
     If Right(tStr, 2) = vbCrLf Then tStr = Left(tStr, Len(tStr) - 2)
-    Call SendData(SendTarget.ToIndex, userindex, 0, tStr)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, tStr)
     Exit Sub
 End If
 
@@ -4234,16 +4235,16 @@ If UCase(Left(rData, 5)) = "ZMOTD" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     rData = Right(rData, Len(rData) - 5)
-    t = Split(rData, vbCrLf)
+    T = Split(rData, vbCrLf)
     
-    MaxLines = UBound(t) - LBound(t) + 1
+    MaxLines = UBound(T) - LBound(T) + 1
     ReDim MOTD(1 To MaxLines)
     Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(MaxLines))
     
-    N = LBound(t)
+    N = LBound(T)
     For LoopC = 1 To MaxLines
-        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, t(N))
-        MOTD(LoopC).texto = t(N)
+        Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & LoopC, T(N))
+        MOTD(LoopC).texto = T(N)
         N = N + 1
     Next LoopC
     
@@ -4355,10 +4356,10 @@ End If
 If UCase$(rData) = "/HABILITAR" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     If ServerSoloGMs > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Servidor habilitado para todos" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Servidor habilitado para todos" & FONTTYPE_INFO)
         ServerSoloGMs = 0
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Servidor restringido a administradores." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Servidor restringido a administradores." & FONTTYPE_INFO)
         ServerSoloGMs = 1
     End If
     Exit Sub
@@ -4423,11 +4424,11 @@ If UCase$(Left$(rData, 11)) = "/RAJARCLAN " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     rData = Right$(rData, Len(rData) - 11)
-    tInt = modGuilds.m_EcharMiembroDeClan(userindex, rData)  'me da el guildindex
+    tInt = modGuilds.m_EcharMiembroDeClan(UserIndex, rData)  'me da el guildindex
     If tInt = 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "|| No pertenece a ningun clan o es fundador." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| No pertenece a ningun clan o es fundador." & FONTTYPE_INFO)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "|| Expulsado." & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Expulsado." & FONTTYPE_INFO)
         Call SendData(SendTarget.ToGuildMembers, tInt, 0, "|| " & rData & " ha sido expulsado del clan por los administradores del servidor" & FONTTYPE_GUILD)
     End If
     Exit Sub
@@ -4439,7 +4440,7 @@ If UCase$(Left$(rData, 11)) = "/LASTEMAIL " Then
     rData = Right$(rData, Len(rData) - 11)
     If FileExist(CharPath & rData & ".chr") Then
         tStr = GetVar(CharPath & rData & ".chr", "CONTACTO", "email")
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Last email de " & rData & ":" & tStr & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Last email de " & rData & ":" & tStr & FONTTYPE_INFO)
     End If
 Exit Sub
 End If
@@ -4452,25 +4453,25 @@ If UCase$(Left$(rData, 7)) = "/APASS " Then
     rData = Right$(rData, Len(rData) - 7)
     tStr = ReadField(1, rData, Asc("@"))
     If tStr = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||usar /APASS <pjsinpass>@<pjconpass>" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||usar /APASS <pjsinpass>@<pjconpass>" & FONTTYPE_INFO)
         Exit Sub
     End If
     tIndex = NameIndex(tStr)
     If tIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario a cambiarle el pass (" & tStr & ") esta online, no se puede si esta online" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario a cambiarle el pass (" & tStr & ") esta online, no se puede si esta online" & FONTTYPE_INFO)
         Exit Sub
     End If
     Arg1 = ReadField(2, rData, Asc("@"))
     If Arg1 = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||usar /APASS <pjsinpass> <pjconpass>" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||usar /APASS <pjsinpass> <pjconpass>" & FONTTYPE_INFO)
         Exit Sub
     End If
     If Not FileExist(CharPath & tStr & ".chr") Or Not FileExist(CharPath & Arg1 & ".chr") Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||alguno de los PJs no existe " & tStr & "@" & Arg1 & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||alguno de los PJs no existe " & tStr & "@" & Arg1 & FONTTYPE_INFO)
     Else
         Arg2 = GetVar(CharPath & Arg1 & ".chr", "INIT", "Password")
         Call WriteVar(CharPath & tStr & ".chr", "INIT", "Password", Arg2)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Password de " & tStr & " cambiado a: " & Arg2 & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Password de " & tStr & " cambiado a: " & Arg2 & FONTTYPE_INFO)
     End If
 Exit Sub
 End If
@@ -4482,24 +4483,24 @@ If UCase$(Left$(rData, 8)) = "/AEMAIL " Then
     rData = Right$(rData, Len(rData) - 8)
     tStr = ReadField(1, rData, Asc("-"))
     If tStr = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||usar /AEMAIL <pj>-<nuevomail>" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||usar /AEMAIL <pj>-<nuevomail>" & FONTTYPE_INFO)
         Exit Sub
     End If
     tIndex = NameIndex(tStr)
     If tIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El usuario esta online, no se puede si esta online" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El usuario esta online, no se puede si esta online" & FONTTYPE_INFO)
         Exit Sub
     End If
     Arg1 = ReadField(2, rData, Asc("-"))
     If Arg1 = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||usar /AEMAIL <pj>-<nuevomail>" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||usar /AEMAIL <pj>-<nuevomail>" & FONTTYPE_INFO)
         Exit Sub
     End If
     If Not FileExist(CharPath & tStr & ".chr") Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||No existe el charfile " & CharPath & tStr & ".chr" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No existe el charfile " & CharPath & tStr & ".chr" & FONTTYPE_INFO)
     Else
         Call WriteVar(CharPath & tStr & ".chr", "CONTACTO", "Email", Arg1)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Email de " & tStr & " cambiado a: " & Arg1 & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Email de " & tStr & " cambiado a: " & Arg1 & FONTTYPE_INFO)
     End If
 Exit Sub
 End If
@@ -4514,39 +4515,39 @@ If UCase$(Left$(rData, 7)) = "/ANAME " Then
     
     
     If tStr = "" Or Arg1 = "" Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Usar: /ANAME origen@destino" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Usar: /ANAME origen@destino" & FONTTYPE_INFO)
         Exit Sub
     End If
     
     tIndex = NameIndex(tStr)
     If tIndex > 0 Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El Pj esta online, debe salir para el cambio" & FONTTYPE_WARNING)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El Pj esta online, debe salir para el cambio" & FONTTYPE_WARNING)
         Exit Sub
     End If
     
     If FileExist(CharPath & UCase(tStr) & ".chr") = False Then
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El pj " & tStr & " es inexistente " & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El pj " & tStr & " es inexistente " & FONTTYPE_INFO)
         Exit Sub
     End If
     
     Arg2 = GetVar(CharPath & UCase(tStr) & ".chr", "GUILD", "GUILDINDEX")
     If IsNumeric(Arg2) Then
         If CInt(Arg2) > 0 Then
-            Call SendData(SendTarget.ToIndex, userindex, 0, "||El pj " & tStr & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido. " & FONTTYPE_INFO)
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El pj " & tStr & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido. " & FONTTYPE_INFO)
             Exit Sub
         End If
     End If
     
     If FileExist(CharPath & UCase(Arg1) & ".chr") = False Then
         FileCopy CharPath & UCase(tStr) & ".chr", CharPath & UCase(Arg1) & ".chr"
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||Transferencia exitosa" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Transferencia exitosa" & FONTTYPE_INFO)
         Call WriteVar(CharPath & tStr & ".chr", "FLAGS", "Ban", "1")
         'ponemos la pena
         tInt = val(GetVar(CharPath & tStr & ".chr", "PENAS", "Cant"))
         Call WriteVar(CharPath & tStr & ".chr", "PENAS", "Cant", tInt + 1)
         Call WriteVar(CharPath & tStr & ".chr", "PENAS", "P" & tInt + 1, LCase$(UserList(UserIndex).name) & ": BAN POR Cambio de nick a " & UCase$(Arg1) & " " & Date & " " & Time)
     Else
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||El nick solicitado ya existe" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El nick solicitado ya existe" & FONTTYPE_INFO)
         Exit Sub
     End If
     Exit Sub
@@ -4580,7 +4581,7 @@ End If
 If UCase$(Left$(rData, 10)) = "/SHOWCMSG " Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     rData = Right$(rData, Len(rData) - 10)
-    Call modGuilds.GMEscuchaClan(userindex, rData)
+    Call modGuilds.GMEscuchaClan(UserIndex, rData)
     Exit Sub
 End If
 If UCase$(Left$(rData, 11)) = "/GUARDAMAPA" Then
@@ -4670,9 +4671,9 @@ If UCase$(rData) = "/TCPESSTATS" Then
     Call LogGM(UserList(UserIndex).name, rData, False)
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los datos estan en BYTES." & FONTTYPE_INFO)
     With TCPESStats
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||IN/s: " & .BytesRecibidosXSEG & " OUT/s: " & .BytesEnviadosXSEG & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||IN/s MAX: " & .BytesRecibidosXSEGMax & " -> " & .BytesRecibidosXSEGCuando & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToIndex, userindex, 0, "||OUT/s MAX: " & .BytesEnviadosXSEGMax & " -> " & .BytesEnviadosXSEGCuando & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||IN/s: " & .BytesRecibidosXSEG & " OUT/s: " & .BytesEnviadosXSEG & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||IN/s MAX: " & .BytesRecibidosXSEGMax & " -> " & .BytesRecibidosXSEGCuando & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||OUT/s MAX: " & .BytesEnviadosXSEGMax & " -> " & .BytesEnviadosXSEGCuando & FONTTYPE_INFO)
     End With
     tStr = ""
     tLong = 0
@@ -4684,8 +4685,8 @@ If UCase$(rData) = "/TCPESSTATS" Then
             End If
         End If
     Next LoopC
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||Posibles pjs trabados: " & tLong & FONTTYPE_INFO)
-    Call SendData(SendTarget.ToIndex, userindex, 0, "||" & tStr & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Posibles pjs trabados: " & tLong & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -4697,7 +4698,7 @@ If UCase$(rData) = "/RELOADNPCS" Then
     Call DescargaNpcsDat
     Call CargaNpcsDat
 
-    Call SendData(SendTarget.ToIndex, userindex, 0, "|| Npcs.dat y npcsHostiles.dat recargados." & FONTTYPE_INFO)
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Npcs.dat y npcsHostiles.dat recargados." & FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -4737,7 +4738,7 @@ If UCase$(rData) = "/AUTOUPDATE" Then
 End If
 
 #If SeguridadAlkon Then
-    HandleDataDiosEx userindex, rData
+    HandleDataDiosEx UserIndex, rData
 #End If
 
 Exit Sub
@@ -4746,7 +4747,7 @@ ErrorHandler:
  Call LogError("HandleData. CadOri:" & CadenaOriginal & " Nom:" & UserList(UserIndex).name & "UI:" & UserIndex & " N: " & Err.Number & " D: " & Err.Description)
  'Resume
  'Call CloseSocket(UserIndex)
- Call Cerrar_Usuario(userindex)
+ Call Cerrar_Usuario(UserIndex)
  
  
 
@@ -4782,7 +4783,7 @@ errhandler:
 
 End Sub
 
-Public Sub EnviarNoche(ByVal userindex As Integer)
+Public Sub EnviarNoche(ByVal UserIndex As Integer)
 
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOC" & IIf(DeNoche And (MapInfo(UserList(UserIndex).Pos.Map).Zona = Campo Or MapInfo(UserList(UserIndex).Pos.Map).Zona = Ciudad), "1", "0"))
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOC" & IIf(DeNoche, "1", "0"))
