@@ -192,7 +192,14 @@ If UserList(UserIndex).flags.Navegando = 0 Then
     UserList(UserIndex).Char.Head = 0
     
     If UserList(UserIndex).flags.Muerto = 0 Then
-        UserList(UserIndex).Char.body = Barco.Ropaje
+        '(Nacho)
+        If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
+            UserList(UserIndex).Char.body = iFragataReal
+        ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+            UserList(UserIndex).Char.body = iFragataCaos
+        Else
+            UserList(UserIndex).Char.body = Barco.Ropaje
+        End If
     Else
         UserList(UserIndex).Char.body = iFragataFantasmal
     End If

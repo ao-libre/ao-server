@@ -61,6 +61,8 @@ Public Const FXSANGRE = 14
 
 
 Public Const iFragataFantasmal = 87
+Public Const iFragataReal = 190
+Public Const iFragataCaos = 189
 
 Public Enum iMinerales
     HierroCrudo = 192
@@ -986,7 +988,7 @@ Public Type User
     Desc As String ' Descripcion
     DescRM As String
     
-    Clase As String
+    clase As String
     raza As String
     genero As String
     email As String
