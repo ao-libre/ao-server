@@ -71,10 +71,10 @@ Procesado = True 'ver al final del sub
             If InStr(rData, "°") Then
                 Exit Sub
             End If
-        
-            '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
-                Call LogGM(UserList(UserIndex).name, "Dijo: " & rData, True)
+            
+            '[Consejeros & GMs]
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Or UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios Then
+                Call LogGM(UserList(UserIndex).name, "Dijo: " & rData, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
             End If
             
             ind = UserList(UserIndex).Char.CharIndex
@@ -106,9 +106,10 @@ Procesado = True 'ver al final del sub
             If InStr(rData, "°") Then
                 Exit Sub
             End If
-            '[Consejeros]
-            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
-                Call LogGM(UserList(UserIndex).name, "Grito: " & rData, True)
+            
+            '[Consejeros & GMs]
+            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Or UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios Then
+                Call LogGM(UserList(UserIndex).name, "Grito: " & rData, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
             End If
     
             'piedra libre para todos los compas!
@@ -165,9 +166,9 @@ Procesado = True 'ver al final del sub
                     Exit Sub
                 End If
                 
-                '[Consejeros]
-                If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
-                    Call LogGM(UserList(UserIndex).name, "Le dijo a '" & UserList(tIndex).name & "' " & tMessage, True)
+                '[Consejeros & GMs]
+                If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Or UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios Then
+                    Call LogGM(UserList(UserIndex).name, "Le dijo a '" & UserList(tIndex).name & "' " & tMessage, UserList(UserIndex).flags.Privilegios = PlayerType.Consejero)
                 End If
     
                 Call SendData(SendTarget.ToIndex, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbBlue & "°" & tMessage & "°" & str(ind))
