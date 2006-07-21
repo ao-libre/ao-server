@@ -114,3 +114,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 07/07/2006: Eliminé varias variables de tHechizos que no se usaban en ninguna parte del code. (Integer)
  * 09/07/2006: Corregí un bug que permitía mandar PM a dioses y GMs bajo ciertas condiciones. (Maraxus)
  * 18/07/2006: Corregí un un RT 5 al desconectar usuarios y un RT 9 al conectar usuarios en posiciones inválidas. (Maraxus)
+ * 20/07/2006: Cambiada formula de posibilidades de apuñalar. (Integer)
+ * 21/07/2006: Agregue Barcas faccionarias. (Integer)
