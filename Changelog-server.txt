@@ -117,3 +117,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 20/07/2006: Cambiada formula de posibilidades de apuñalar. (Integer)
  * 21/07/2006: Agregue Barcas faccionarias. (Integer)
  * 27/07/2006: Corregí los mensajes que se enviaban al apuñalar (gracias Toxic por el dato). (Maraxus)
+ * 27/07/2006: Eliminé toda referencia a DescargaNpcsDat que no hacía nada (gracias Shura pro el dato) y corregí un error importante al recargar un ini. (Maraxus)

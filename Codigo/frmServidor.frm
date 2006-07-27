@@ -603,9 +603,7 @@ Call LoadSini
 End Sub
 
 Private Sub Command17_Click()
-Call DescargaNpcsDat
-Call CargaNpcsDat
-
+    Call CargaNpcsDat
 End Sub
 
 Private Sub Command18_Click()

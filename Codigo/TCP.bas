@@ -4694,10 +4694,9 @@ If UCase$(rData) = "/RELOADNPCS" Then
 
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
-
-    Call DescargaNpcsDat
+    
     Call CargaNpcsDat
-
+    
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Npcs.dat y npcsHostiles.dat recargados." & FONTTYPE_INFO)
     Exit Sub
 End If

@@ -608,9 +608,6 @@ Socket1.Cleanup
 Serv.Detener
 #End If
 
-Call DescargaNpcsDat
-
-
 Dim LoopC As Integer
 
 For LoopC = 1 To MaxUsers

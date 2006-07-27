@@ -121,6 +121,8 @@ Private Sub Class_Terminate()
         
         Erase fileData
     End If
+    
+    MainNodes = 0
 End Sub
 
 ''
@@ -133,12 +135,15 @@ End Sub
 Public Sub Initialize(ByVal file As String)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/01/2006
+'Last Modify Date: 27/07/2006
 'Opens the requested file and loads it's data into memory
 '**************************************************************
     Dim handle As Integer
     Dim Text As String
     Dim Pos As Long
+    
+    'Prevent memory losses if we are attempting to reload a file....
+    Call Class_Terminate
     
     'Get a free handle and start reading line by line until the end
     handle = FreeFile

@@ -1224,30 +1224,13 @@ End If
 End Sub
 
 Public Sub CargaNpcsDat()
-'Dim NpcFile As String
-'
-'NpcFile = DatPath & "NPCs.dat"
-'ANpc = INICarga(NpcFile)
-'Call INIConf(ANpc, 0, "", 0)
-'
-'NpcFile = DatPath & "NPCs-HOSTILES.dat"
-'Anpc_host = INICarga(NpcFile)
-'Call INIConf(Anpc_host, 0, "", 0)
-
-Dim npcfile As String
-
-npcfile = DatPath & "NPCs.dat"
-Call LeerNPCs.Initialize(npcfile)
-
-npcfile = DatPath & "NPCs-HOSTILES.dat"
-Call LeerNPCsHostiles.Initialize(npcfile)
-
-End Sub
-
-Public Sub DescargaNpcsDat()
-'If ANpc <> 0 Then Call INIDescarga(ANpc)
-'If Anpc_host <> 0 Then Call INIDescarga(Anpc_host)
-
+    Dim npcfile As String
+    
+    npcfile = DatPath & "NPCs.dat"
+    Call LeerNPCs.Initialize(npcfile)
+    
+    npcfile = DatPath & "NPCs-HOSTILES.dat"
+    Call LeerNPCsHostiles.Initialize(npcfile)
 End Sub
 
 Sub PasarSegundo()
