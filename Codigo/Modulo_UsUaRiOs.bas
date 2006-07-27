@@ -1032,23 +1032,31 @@ Else
  PuedeApuñalar = False
 End If
 End Function
+
 Sub SubirSkill(ByVal UserIndex As Integer, ByVal Skill As Integer)
 
 If UserList(UserIndex).flags.Hambre = 0 And _
-   UserList(UserIndex).flags.Sed = 0 Then
+  UserList(UserIndex).flags.Sed = 0 Then
+    
+    If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
+    
+    Dim lvl As Integer
+    lvl = UserList(UserIndex).Stats.ELV
+    
+    If lvl > UBound(LevelSkill) Then lvl = UBound(LevelSkill)
+    
+    If UserList(UserIndex).Stats.UserSkills(Skill) >= LevelSkill(lvl).LevelValue Then Exit Sub
+
     Dim Aumenta As Integer
     Dim Prob As Integer
     
-    If UserList(UserIndex).Stats.ELV <= 3 Then
+    If lvl <= 3 Then
         Prob = 25
-    ElseIf UserList(UserIndex).Stats.ELV > 3 _
-        And UserList(UserIndex).Stats.ELV < 6 Then
+    ElseIf lvl > 3 And lvl < 6 Then
         Prob = 35
-    ElseIf UserList(UserIndex).Stats.ELV >= 6 _
-        And UserList(UserIndex).Stats.ELV < 10 Then
+    ElseIf lvl >= 6 And lvl < 10 Then
         Prob = 40
-    ElseIf UserList(UserIndex).Stats.ELV >= 10 _
-        And UserList(UserIndex).Stats.ELV < 20 Then
+    ElseIf lvl >= 10 And lvl < 20 Then
         Prob = 45
     Else
         Prob = 50
@@ -1056,13 +1064,7 @@ If UserList(UserIndex).flags.Hambre = 0 And _
     
     Aumenta = RandomNumber(1, Prob)
     
-    Dim lvl As Integer
-    lvl = UserList(UserIndex).Stats.ELV
-    
-    If lvl >= UBound(LevelSkill) Then Exit Sub
-    If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
-    
-    If Aumenta = 7 And UserList(UserIndex).Stats.UserSkills(Skill) < LevelSkill(lvl).LevelValue Then
+    If Aumenta = 7 Then
         UserList(UserIndex).Stats.UserSkills(Skill) = UserList(UserIndex).Stats.UserSkills(Skill) + 1
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & UserList(UserIndex).Stats.UserSkills(Skill) & " pts." & FONTTYPE_INFO)
         
@@ -1071,6 +1073,7 @@ If UserList(UserIndex).flags.Hambre = 0 And _
             UserList(UserIndex).Stats.Exp = MAXEXP
         
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has ganado 50 puntos de experiencia!" & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASE" & UserList(UserIndex).Stats.Exp)
         Call CheckUserLevel(UserIndex)
     End If
 End If
