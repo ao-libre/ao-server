@@ -116,3 +116,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/07/2006: Corregí un un RT 5 al desconectar usuarios y un RT 9 al conectar usuarios en posiciones inválidas. (Maraxus)
  * 20/07/2006: Cambiada formula de posibilidades de apuñalar. (Integer)
  * 21/07/2006: Agregue Barcas faccionarias. (Integer)
+ * 27/07/2006: Corregí los mensajes que se enviaban al apuñalar (gracias Toxic por el dato). (Maraxus)
