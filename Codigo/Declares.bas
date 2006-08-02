@@ -1187,7 +1187,6 @@ Public Type npc
     PoderAtaque As Long
     PoderEvasion As Long
 
-    Inflacion As Long
 
     GiveEXP As Long
     GiveGLD As Long

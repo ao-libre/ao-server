@@ -38,7 +38,6 @@ Option Explicit
 
 Function UserCompraObj(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal NpcIndex As Integer, ByVal Cantidad As Integer) As Boolean
 On Error GoTo errorh
-    Dim infla As Long
     Dim Descuento As String
     Dim unidad As Long, monto As Long
     Dim Slot As Integer
@@ -86,10 +85,9 @@ On Error GoTo errorh
         UserList(UserIndex).Invent.Object(Slot).amount = UserList(UserIndex).Invent.Object(Slot).amount + Cantidad
         
         'Le sustraemos el valor en oro del obj comprado
-        infla = (Npclist(NpcIndex).Inflacion * ObjData(obji).Valor) / 100
         Descuento = UserList(UserIndex).flags.Descuento
         If Descuento = 0 Then Descuento = 1 'evitamos dividir por 0!
-        unidad = ((ObjData(Npclist(NpcIndex).Invent.Object(ObjIndex).ObjIndex).Valor + infla) / Descuento)
+        unidad = ((ObjData(Npclist(NpcIndex).Invent.Object(ObjIndex).ObjIndex).Valor) / Descuento)
         monto = unidad * Cantidad
         UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - monto
         
@@ -218,7 +216,6 @@ Sub NPCVentaItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantidad 
 'listindex+1, cantidad
 On Error GoTo errhandler
 
-    Dim infla As Long
     Dim val As Long
     Dim Desc As String
     
@@ -242,10 +239,9 @@ On Error GoTo errhandler
     End If
     
     'Calculamos el valor unitario
-    infla = (Npclist(NpcIndex).Inflacion * ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / 100
     Desc = Descuento(UserIndex)
     If Desc = 0 Then Desc = 1 'evitamos dividir por 0!
-    val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
+    val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / Desc
     
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
         If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount > 0 Then
@@ -333,7 +329,6 @@ End Function
 Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     'Enviamos el inventario del npc con el cual el user va a comerciar...
     Dim i As Integer
-    Dim infla As Long
     Dim Desc As String
     Dim val As Long
     
@@ -343,8 +338,7 @@ Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     For i = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(i).ObjIndex > 0 Then
             'Calculamos el porc de inflacion del npc
-            infla = (Npclist(NpcIndex).Inflacion * ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / 100
-            val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor + infla) / Desc
+            val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / Desc
             SendData SendTarget.ToIndex, UserIndex, 0, "NPCI" & _
             ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).name _
             & "," & Npclist(NpcIndex).Invent.Object(i).amount & _

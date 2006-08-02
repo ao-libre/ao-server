@@ -279,7 +279,6 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).GiveEXP = 0
     Npclist(NpcIndex).GiveGLD = 0
     Npclist(NpcIndex).Hostile = 0
-    Npclist(NpcIndex).Inflacion = 0
     Npclist(NpcIndex).InvReSpawn = 0
     Npclist(NpcIndex).level = 0
     
@@ -857,7 +856,6 @@ If Npclist(NpcIndex).NPCtype = eNPCType.Entrenador Then
 End If
 
 
-Npclist(NpcIndex).Inflacion = val(Leer.GetValue("NPC" & NpcNumber, "Inflacion"))
 
 Npclist(NpcIndex).flags.NPCActive = True
 Npclist(NpcIndex).flags.UseAINow = False
