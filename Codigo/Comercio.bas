@@ -171,7 +171,7 @@ On Error GoTo errorh
     
     Call QuitarUserInvItem(UserIndex, CByte(ObjIndex), Cantidad)
     'Le sumamos al user el valor en oro del obj vendido
-    monto = ((ObjData(obji).Valor \ 3 + infla) * Cantidad)
+    monto = ((ObjData(obji).Valor \ 3) * Cantidad)
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + monto
     If UserList(UserIndex).Stats.GLD > MAXORO Then _
         UserList(UserIndex).Stats.GLD = MAXORO
