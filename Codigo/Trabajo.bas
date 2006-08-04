@@ -1024,6 +1024,7 @@ Else
 End If
 
 End Sub
+
 Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
 '***************************************************
 'Autor: Nacho (Integer) & Unknown (orginal version)
@@ -1031,25 +1032,32 @@ Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Intege
 '***************************************************
 Dim Suerte As Integer
 Dim Skill As Integer
+
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar)
+
 Select Case UCase$(UserList(UserIndex).clase)
     Case "ASESINO"
         Suerte = Int((0.0000003 * Skill ^ 3 - 0.00002 * Skill ^ 2 + 0.00098 * Skill + 0.0425) * 100)
-        daño = Int(daño * 1.4)
+    
     Case "CLERIGO", "PALADIN"
         Suerte = Int((0.00000003 * Skill ^ 3 + 0.000006 * Skill ^ 2 + 0.000107 * Skill + 0.0493) * 100)
-        daño = Int(daño * 1.5)
+    
     Case "BARDO"
         Suerte = Int((0.00000002 * Skill ^ 3 + 0.000002 * Skill ^ 2 + 0.00032 * Skill + 0.0481) * 100)
-        daño = Int(daño * 1.5)
+    
     Case Else
         Suerte = Int((0.000361 * Skill + 0.0439) * 100)
-        daño = Int(daño * 1.5)
 End Select
 
 
 If RandomNumber(0, 100) < Suerte Then
     If VictimUserIndex <> 0 Then
+        If UCase$(UserList(UserIndex).clase) = "ASESINO" Then
+            daño = Int(daño * 1.4)
+        Else
+            daño = Int(daño * 1.5)
+        End If
+        
         UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - daño
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has apuñalado a " & UserList(VictimUserIndex).name & " por " & daño & FONTTYPE_FIGHT)
         Call SendData(SendTarget.ToIndex, VictimUserIndex, 0, "||Te ha apuñalado " & UserList(UserIndex).name & " por " & daño & FONTTYPE_FIGHT)

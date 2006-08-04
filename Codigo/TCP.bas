@@ -592,12 +592,6 @@ errhandler:
     UserList(UserIndex).ConnIDValida = False
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
-    
-#If UsarQueSocket = 1 Then
-    If UserList(UserIndex).ConnID <> -1 Then
-        Call CloseSocketSL(UserIndex)
-    End If
-#End If
 
     Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & UserIndex)
 End Sub
@@ -714,9 +708,8 @@ Sub CloseSocketSL(ByVal UserIndex As Integer)
 #If UsarQueSocket = 1 Then
 
 If UserList(UserIndex).ConnID <> -1 And UserList(UserIndex).ConnIDValida Then
-    'Call BorraSlotSock(UserList(UserIndex).ConnID)
-    'Call WSApiCloseSocket(UserList(UserIndex).ConnID)
-    Call ShutDown(UserList(UserIndex).ConnID, SD_BOTH)
+    Call BorraSlotSock(UserList(UserIndex).ConnID)
+    Call WSApiCloseSocket(UserList(UserIndex).ConnID)
     UserList(UserIndex).ConnIDValida = False
 End If
 
@@ -2027,7 +2020,6 @@ End Sub
 
 Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
-
 On Error GoTo errhandler
 
 Dim N As Integer

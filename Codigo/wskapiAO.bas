@@ -122,40 +122,10 @@ On Error GoTo hayerror
 BuscaSlotSock = WSAPISock2Usr.Item(CStr(S))
 Exit Function
 
-hayerror:
+hayerror:   ' The socket was already removed
+
 BuscaSlotSock = -1
-
-
-'
-'Dim Pri As Long, Ult As Long, Med As Long
-'
-'If WSAPISockChacheCant > 0 Then
-'    'Busqueda Dicotomica :D
-'    Pri = 1
-'    Ult = WSAPISockChacheCant
-'    Med = Int((Pri + Ult) / 2)
-'
-'    Do While (Pri <= Ult) And (WSAPISockChache(Med).Sock <> s)
-'        If s < WSAPISockChache(Med).Sock Then
-'            Ult = Med - 1
-'        Else
-'            Pri = Med + 1
-'        End If
-'        Med = Int((Pri + Ult) / 2)
-'    Loop
-'
-'    If Pri <= Ult Then
-'        If CacheInd Then
-'            BuscaSlotSock = Med
-'        Else
-'            BuscaSlotSock = WSAPISockChache(Med).Slot
-'        End If
-'    Else
-'        BuscaSlotSock = -1
-'    End If
-'Else
-'    BuscaSlotSock = -1
-'End If
+Err.Clear
 
 #End If
 End Function
