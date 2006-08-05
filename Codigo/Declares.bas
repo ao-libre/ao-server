@@ -932,7 +932,10 @@ Public Type UserCounters
     Paralisis As Integer
     Ceguera As Integer
     Estupidez As Integer
+    
     Invisibilidad As Integer
+    TiempoOculto As Integer
+    
     Mimetismo As Integer
     PiqueteC As Long
     Pena As Long

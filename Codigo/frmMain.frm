@@ -56,12 +56,6 @@ Begin VB.Form frmMain
       Left            =   1440
       Top             =   1020
    End
-   Begin VB.Timer Timer1 
-      Enabled         =   0   'False
-      Interval        =   3000
-      Left            =   945
-      Top             =   540
-   End
    Begin VB.Timer CmdExec 
       Enabled         =   0   'False
       Interval        =   1
@@ -89,8 +83,8 @@ Begin VB.Form frmMain
    Begin VB.Timer tLluvia 
       Enabled         =   0   'False
       Interval        =   500
-      Left            =   0
-      Top             =   1035
+      Left            =   960
+      Top             =   540
    End
    Begin VB.Timer AutoSave 
       Enabled         =   0   'False
@@ -693,7 +687,10 @@ On Error GoTo hayerror
                If UserList(iUserIndex).flags.Desnudo And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoFrio(iUserIndex)
                If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
                If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoVeneno(iUserIndex, bEnviarStats)
-               If UserList(iUserIndex).flags.AdminInvisible <> 1 And UserList(iUserIndex).flags.Invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
+               If UserList(iUserIndex).flags.AdminInvisible <> 1 Then
+                    If UserList(iUserIndex).flags.Invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
+                    If UserList(iUserIndex).flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
+               End If
                If UserList(iUserIndex).flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
                 
                Call DuracionPociones(iUserIndex)
@@ -926,17 +923,7 @@ ErrorHandler:
 
 End Sub
 
-Private Sub Timer1_Timer()
 
-On Error Resume Next
-Dim i As Integer
-
-For i = 1 To MaxUsers
-    If UserList(i).flags.UserLogged Then _
-        If UserList(i).flags.Oculto = 1 Then Call DoPermanecerOculto(i)
-Next i
-
-End Sub
 
 Private Sub tLluvia_Timer()
 On Error GoTo errhandler

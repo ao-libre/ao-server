@@ -32,62 +32,19 @@ Attribute VB_Name = "Trabajo"
 Option Explicit
 
 Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
-On Error GoTo errhandler
-Dim Suerte As Integer
-Dim res As Integer
+'********************************************************
+'Autor: Nacho (Integer)
+'5/08/2006
+'Chequea si ya debe mostrarse
+'********************************************************
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= -1 Then
-                    Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 11 Then
-                    Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 21 Then
-                    Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 31 Then
-                    Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 41 Then
-                    Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 51 Then
-                    Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 61 Then
-                    Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 71 Then
-                    Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 81 Then
-                    Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 91 Then
-                    Suerte = 10     'Lo atamos con alambre.... en la 11.6 el sistema de ocultarse debería de estar bien hecho
-End If
-
-If UCase$(UserList(UserIndex).clase) <> "LADRON" Then Suerte = Suerte + 50
-
-'cazador con armadura de cazador oculto no se hace visible
-If UCase$(UserList(UserIndex).clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
-    If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
-        Exit Sub
-    End If
-End If
-
-
-res = RandomNumber(1, Suerte)
-
-If res > 9 Then
+UserList(UserIndex).Counters.TiempoOculto = UserList(UserIndex).Counters.TiempoOculto - 1
+If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     UserList(UserIndex).flags.Oculto = 0
-    If UserList(UserIndex).flags.Invisible = 0 Then
-        'no hace falta encriptar este (se jode el gil que bypassea esto)
-        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
-    End If
+    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
 End If
+
 
 
 Exit Sub
@@ -102,47 +59,19 @@ Public Sub DoOcultarse(ByVal UserIndex As Integer)
 
 On Error GoTo errhandler
 
-Dim Suerte As Integer
+Dim Suerte As Double
 Dim res As Integer
+Dim Skill As Integer
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= -1 Then
-                    Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 11 Then
-                    Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 21 Then
-                    Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 31 Then
-                    Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 41 Then
-                    Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 51 Then
-                    Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 61 Then
-                    Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 71 Then
-                    Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 81 Then
-                    Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) <= 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) >= 91 Then
-                    Suerte = 7
-End If
+Suerte = (0.000002 * Skill ^ 3 - 0.0002 * Skill ^ 2 + 0.0064 * Skill + 0.1124) * 100
 
-If UCase$(UserList(UserIndex).clase) <> "LADRON" Then Suerte = Suerte + 50
+res = RandomNumber(1, 100)
 
-res = RandomNumber(1, Suerte)
+If res <= Suerte Then
 
-If res <= 5 Then
     UserList(UserIndex).flags.Oculto = 1
+    UserList(UserIndex).Counters.TiempoOculto = (-0.000001 * Skill ^ 3 + 0.00009229 * Skill ^ 2 - 0.0088 * Skill + 0.9571) * IntervaloOculto
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
         Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
@@ -256,7 +185,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -267,14 +196,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If cant <= Total Then
+If Cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -283,18 +212,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - cant
+        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - Cant
         If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
-            cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
+            Cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
             UserList(UserIndex).Invent.Object(i).amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            cant = 0
+            Cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (cant = 0) Then
+        If (Cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -596,11 +525,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim index As Integer
+        Dim Index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(index) = NpcIndex
-        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
+        Index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
+        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
@@ -1209,7 +1138,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim cant As Integer
+Dim Cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1267,13 +1196,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
+    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & cant & " puntos de mana!" & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has recuperado " & Cant & " puntos de mana!" & FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

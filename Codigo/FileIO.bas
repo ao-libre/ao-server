@@ -1345,6 +1345,7 @@ IntervaloFlechasCazadores = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "In
 
 IntervaloAutoReiniciar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloAutoReiniciar"))
 
+IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOculto"))
 
 'Ressurect pos
 ResPos.Map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))

@@ -404,7 +404,6 @@ With frmMain
     .AutoSave.Enabled = True
     .tLluvia.Enabled = True
     .tPiqueteC.Enabled = True
-    .Timer1.Enabled = True
     If ClientsCommandsQueue <> 0 Then
         .CmdExec.Enabled = True
     Else
@@ -584,12 +583,12 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
+Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & Time & " " & Desc
 Close #nfile
 
