@@ -15,10 +15,10 @@ UserList(UserIndex).flags.Oculto = IIf(estado, 1, 0)
 UserList(UserIndex).Counters.Invisibilidad = 0
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
+        Call SendCryptedData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
     Else
 #End If
-        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
+        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
 #If SeguridadAlkon Then
     End If
 #End If

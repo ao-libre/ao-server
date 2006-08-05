@@ -82,8 +82,9 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
+                UserList(UserIndex).Counters.TiempoOculto = 0
                 If UserList(UserIndex).flags.Invisible = 0 Then
-                    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                    Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
             End If
@@ -115,8 +116,9 @@ Procesado = True 'ver al final del sub
             'piedra libre para todos los compas!
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
+                UserList(UserIndex).Counters.TiempoOculto = 0
                 If UserList(UserIndex).flags.Invisible = 0 Then
-                    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                    Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
             End If
@@ -246,9 +248,10 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Oculto = 1 Then
                 If UCase$(UserList(UserIndex).clase) <> "LADRON" Then
                     UserList(UserIndex).flags.Oculto = 0
+                    UserList(UserIndex).Counters.TiempoOculto = 0
                     If UserList(UserIndex).flags.Invisible = 0 Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
-                        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     End If
                 End If
             End If
@@ -285,8 +288,9 @@ Procesado = True 'ver al final del sub
                 'piedra libre para todos los compas!
                 If UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).flags.AdminInvisible = 0 Then
                     UserList(UserIndex).flags.Oculto = 0
+                    UserList(UserIndex).Counters.TiempoOculto = 0
                     If UserList(UserIndex).flags.Invisible = 0 Then
-                        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+                        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                     End If
                 End If
@@ -1247,7 +1251,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.cant = val(Arg2)
+                UserList(UserIndex).ComUsu.Cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub

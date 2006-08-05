@@ -1053,7 +1053,7 @@ Else
     UserList(UserIndex).flags.Invisible = 0
     If UserList(UserIndex).flags.Oculto = 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
     End If
 End If
 

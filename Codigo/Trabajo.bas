@@ -41,7 +41,13 @@ Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
 UserList(UserIndex).Counters.TiempoOculto = UserList(UserIndex).Counters.TiempoOculto - 1
 If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     UserList(UserIndex).flags.Oculto = 0
-    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+    UserList(UserIndex).Counters.TiempoOculto = 0
+    If UCase$(UserList(UserIndex).clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
+        If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
+            Exit Sub
+        End If
+    End If
+    Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
 End If
 
@@ -74,10 +80,10 @@ If res <= Suerte Then
     UserList(UserIndex).Counters.TiempoOculto = (-0.000001 * Skill ^ 3 + 0.00009229 * Skill ^ 2 - 0.0088 * Skill + 0.9571) * IntervaloOculto
 #If SeguridadAlkon Then
     If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
+        Call SendCryptedData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
     Else
 #End If
-        Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
+        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
 #If SeguridadAlkon Then
     End If
 #End If
@@ -576,14 +582,15 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
         UserList(UserIndex).flags.AdminInvisible = 0
         UserList(UserIndex).flags.Invisible = 0
         UserList(UserIndex).flags.Oculto = 0
+        UserList(UserIndex).Counters.TiempoOculto = 0
         UserList(UserIndex).Char.body = UserList(UserIndex).flags.OldBody
         UserList(UserIndex).Char.Head = UserList(UserIndex).flags.OldHead
         
     End If
     
     'vuelve a ser visible por la fuerza
-    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-    Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+    Call ChangeUserChar(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
 End Sub
 
 Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)

@@ -1138,6 +1138,7 @@ On Error GoTo ErrorHandler
     '<<<< Invisible >>>>
     If UserList(UserIndex).flags.Invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then
         UserList(UserIndex).flags.Oculto = 0
+        UserList(UserIndex).Counters.TiempoOculto = 0
         UserList(UserIndex).flags.Invisible = 0
         'no hace falta encriptar este NOVER
         Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
