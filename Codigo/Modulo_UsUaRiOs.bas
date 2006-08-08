@@ -318,7 +318,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 'Last modified: 05/27/2006
 'Checkea que el usuario no halla alcanzado el siguiente nivel,
 'de lo contrario le da la vida, mana, etc, correspodiente.
-'05/27/2006 Integer - Uso del switch para mejor performance y claridad.
+'07/08/2006 Integer - Modificacion de los valores
 '*************************************************
 
 On Error GoTo errhandler
@@ -384,95 +384,156 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
 
     Select Case UCase$(UserList(UserIndex).clase)
         Case "GUERRERO"
-            AumentoHP = RandomNumber(Switch(Constitucion >= 20, 8 _
-                                            , Constitucion >= 18, 7 _
-                                            , Constitucion >= 16, 6 _
-                                            , Constitucion >= 14, 5 _
-                                            , True, 4), _
-                                     Switch(Constitucion = 21, 12 _
-                                            , Constitucion >= 19, 11 _
-                                            , Constitucion >= 17, 10 _
-                                            , Constitucion >= 15, 9 _
-                                            , Constitucion >= 13, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                AumentoHP = RandomNumber(8, 12)
+                Case 20
+                AumentoHP = RandomNumber(8, 11)
+                Case 19
+                AumentoHP = RandomNumber(7, 11)
+                Case 18
+                AumentoHP = RandomNumber(7, 11)
+                Case 17
+                AumentoHP = RandomNumber(6, 10)
+                Case 16
+                AumentoHP = RandomNumber(6, 9)
+                Case 15
+                AumentoHP = RandomNumber(5, 9)
+                Case 14
+                AumentoHP = RandomNumber(5, 8)
+                Case 13
+                AumentoHP = RandomNumber(4, 8)
+                Case 12
+                AumentoHP = RandomNumber(4, 7)
+            End Select
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
         Case "CAZADOR"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 8 _
-                                            , Constitucion >= 19, 7 _
-                                            , Constitucion >= 17, 6 _
-                                            , Constitucion >= 15, 5 _
-                                            , Constitucion >= 13, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion >= 20, 11 _
-                                            , Constitucion >= 18, 10 _
-                                            , Constitucion >= 16, 9 _
-                                            , Constitucion >= 14, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(8, 11)
+                Case 20
+                    AumentoHP = RandomNumber(7, 11)
+                Case 19
+                    AumentoHP = RandomNumber(7, 10)
+                Case 18
+                    AumentoHP = RandomNumber(6, 10)
+                Case 17
+                    AumentoHP = RandomNumber(6, 9)
+                Case 16
+                    AumentoHP = RandomNumber(5, 9)
+                Case 15
+                    AumentoHP = RandomNumber(5, 8)
+                Case 14
+                    AumentoHP = RandomNumber(4, 8)
+                Case 13
+                    AumentoHP = RandomNumber(4, 7)
+                Case 12
+                    AumentoHP = RandomNumber(3, 7)
+            End Select
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
         Case "PIRATA"
-            AumentoHP = RandomNumber(Switch(Constitucion >= 20, 8 _
-                                            , Constitucion >= 18, 7 _
-                                            , Constitucion >= 16, 6 _
-                                            , Constitucion >= 14, 5 _
-                                            , Constitucion >= 12, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion = 21, 12 _
-                                            , Constitucion >= 19, 11 _
-                                            , Constitucion >= 17, 10 _
-                                            , Constitucion >= 15, 9 _
-                                            , Constitucion >= 13, 8 _
-                                            , True, 7))
-            
+            Select Case Constitucion
+                Case 21
+                AumentoHP = RandomNumber(8, 12)
+                Case 20
+                AumentoHP = RandomNumber(8, 11)
+                Case 19
+                AumentoHP = RandomNumber(7, 11)
+                Case 18
+                AumentoHP = RandomNumber(7, 11)
+                Case 17
+                AumentoHP = RandomNumber(6, 10)
+                Case 16
+                AumentoHP = RandomNumber(6, 9)
+                Case 15
+                AumentoHP = RandomNumber(5, 9)
+                Case 14
+                AumentoHP = RandomNumber(5, 8)
+                Case 13
+                AumentoHP = RandomNumber(4, 8)
+                Case 12
+                AumentoHP = RandomNumber(4, 7)
+            End Select
             AumentoHIT = 3
             AumentoSTA = AumentoSTDef
         
         Case "PALADIN"
-            AumentoHP = RandomNumber(Switch(Constitucion >= 20, 8 _
-                                            , Constitucion >= 18, 7 _
-                                            , Constitucion >= 16, 6 _
-                                            , Constitucion >= 14, 5 _
-                                            , Constitucion >= 12, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion = 21, 12 _
-                                            , Constitucion >= 19, 11 _
-                                            , Constitucion >= 17, 10 _
-                                            , Constitucion >= 15, 9 _
-                                            , Constitucion >= 13, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                AumentoHP = RandomNumber(8, 12)
+                Case 20
+                AumentoHP = RandomNumber(8, 11)
+                Case 19
+                AumentoHP = RandomNumber(7, 11)
+                Case 18
+                AumentoHP = RandomNumber(7, 11)
+                Case 17
+                AumentoHP = RandomNumber(6, 10)
+                Case 16
+                AumentoHP = RandomNumber(6, 9)
+                Case 15
+                AumentoHP = RandomNumber(5, 9)
+                Case 14
+                AumentoHP = RandomNumber(5, 8)
+                Case 13
+                AumentoHP = RandomNumber(4, 8)
+                Case 12
+                AumentoHP = RandomNumber(4, 7)
+            End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case "LADRON"
-            AumentoHP = RandomNumber(Switch(Constitucion >= 20, 8 _
-                                            , Constitucion >= 18, 7 _
-                                            , Constitucion >= 16, 6 _
-                                            , Constitucion >= 14, 5 _
-                                            , Constitucion >= 12, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion = 21, 12 _
-                                            , Constitucion >= 19, 11 _
-                                            , Constitucion >= 17, 10 _
-                                            , Constitucion >= 15, 9 _
-                                            , Constitucion >= 13, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                AumentoHP = RandomNumber(8, 12)
+                Case 20
+                AumentoHP = RandomNumber(8, 11)
+                Case 19
+                AumentoHP = RandomNumber(7, 11)
+                Case 18
+                AumentoHP = RandomNumber(7, 11)
+                Case 17
+                AumentoHP = RandomNumber(6, 10)
+                Case 16
+                AumentoHP = RandomNumber(6, 9)
+                Case 15
+                AumentoHP = RandomNumber(5, 9)
+                Case 14
+                AumentoHP = RandomNumber(5, 8)
+                Case 13
+                AumentoHP = RandomNumber(4, 8)
+                Case 12
+                AumentoHP = RandomNumber(4, 7)
+            End Select
             AumentoHIT = 1
             AumentoSTA = AumentoSTLadron
             
         Case "MAGO"
-            AumentoHP = RandomNumber(Switch(Constitucion = 20, 6 _
-                                            , Constitucion >= 18, 5 _
-                                            , Constitucion >= 16, 3 _
-                                            , Constitucion >= 14, 2), _
-                                     Switch(Constitucion >= 20, 8 _
-                                            , Constitucion >= 17, 7 _
-                                            , Constitucion >= 15, 6 _
-                                            , True, 5))
+        Select Case Constitucion
+            Case 21
+                AumentoHP = RandomNumber(6, 8)
+            Case 20
+                AumentoHP = RandomNumber(5, 8)
+            Case 19
+                AumentoHP = RandomNumber(5, 7)
+            Case 18
+                AumentoHP = RandomNumber(5, 7)
+            Case 17
+                AumentoHP = RandomNumber(3, 7)
+            Case 16
+                AumentoHP = RandomNumber(3, 6)
+            Case 15
+                AumentoHP = RandomNumber(2, 6)
+            Case 14
+                AumentoHP = RandomNumber(2, 5)
+        End Select
             If AumentoHP < 1 Then AumentoHP = 4
             
             AumentoHIT = 1
@@ -480,133 +541,234 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoSTA = AumentoSTMago
         
         Case "LEÑADOR"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 8 _
-                                            , Constitucion >= 19, 7 _
-                                            , Constitucion >= 17, 6 _
-                                            , Constitucion >= 15, 5 _
-                                            , Constitucion >= 13, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion >= 20, 11 _
-                                            , Constitucion >= 18, 10 _
-                                            , Constitucion >= 16, 9 _
-                                            , Constitucion >= 14, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(8, 11)
+                Case 20
+                    AumentoHP = RandomNumber(7, 11)
+                Case 19
+                    AumentoHP = RandomNumber(7, 10)
+                Case 18
+                    AumentoHP = RandomNumber(6, 10)
+                Case 17
+                    AumentoHP = RandomNumber(6, 9)
+                Case 16
+                    AumentoHP = RandomNumber(5, 9)
+                Case 15
+                    AumentoHP = RandomNumber(5, 8)
+                Case 14
+                    AumentoHP = RandomNumber(4, 8)
+                Case 13
+                    AumentoHP = RandomNumber(4, 7)
+                Case 12
+                    AumentoHP = RandomNumber(3, 7)
+            End Select
             
             AumentoHIT = 2
             AumentoSTA = AumentoSTLeñador
         
         Case "MINERO"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 8 _
-                                            , Constitucion >= 19, 7 _
-                                            , Constitucion >= 17, 6 _
-                                            , Constitucion >= 15, 5 _
-                                            , Constitucion >= 13, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion >= 20, 11 _
-                                            , Constitucion >= 18, 10 _
-                                            , Constitucion >= 16, 9 _
-                                            , Constitucion >= 14, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(8, 11)
+                Case 20
+                    AumentoHP = RandomNumber(7, 11)
+                Case 19
+                    AumentoHP = RandomNumber(7, 10)
+                Case 18
+                    AumentoHP = RandomNumber(6, 10)
+                Case 17
+                    AumentoHP = RandomNumber(6, 9)
+                Case 16
+                    AumentoHP = RandomNumber(5, 9)
+                Case 15
+                    AumentoHP = RandomNumber(5, 8)
+                Case 14
+                    AumentoHP = RandomNumber(4, 8)
+                Case 13
+                    AumentoHP = RandomNumber(4, 7)
+                Case 12
+                    AumentoHP = RandomNumber(3, 7)
+            End Select
             
             AumentoHIT = 2
             AumentoSTA = AumentoSTMinero
         
         Case "PESCADOR"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 8 _
-                                            , Constitucion >= 19, 7 _
-                                            , Constitucion >= 17, 6 _
-                                            , Constitucion >= 15, 5 _
-                                            , Constitucion >= 13, 4 _
-                                            , Constitucion = 12, 3), _
-                                     Switch(Constitucion >= 20, 11 _
-                                            , Constitucion >= 18, 10 _
-                                            , Constitucion >= 16, 9 _
-                                            , Constitucion >= 14, 8 _
-                                            , True, 7))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(8, 11)
+                Case 20
+                    AumentoHP = RandomNumber(7, 11)
+                Case 19
+                    AumentoHP = RandomNumber(7, 10)
+                Case 18
+                    AumentoHP = RandomNumber(6, 10)
+                Case 17
+                    AumentoHP = RandomNumber(6, 9)
+                Case 16
+                    AumentoHP = RandomNumber(5, 9)
+                Case 15
+                    AumentoHP = RandomNumber(5, 8)
+                Case 14
+                    AumentoHP = RandomNumber(4, 8)
+                Case 13
+                    AumentoHP = RandomNumber(4, 7)
+                Case 12
+                    AumentoHP = RandomNumber(3, 7)
+            End Select
             
             AumentoHIT = 1
             AumentoSTA = AumentoSTPescador
         
         Case "CLERIGO"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 7 _
-                                            , Constitucion >= 19, 6 _
-                                            , Constitucion >= 17, 5 _
-                                            , Constitucion >= 15, 4 _
-                                            , Constitucion >= 13, 3 _
-                                            , Constitucion = 12, 2), _
-                                     Switch(Constitucion >= 20, 10 _
-                                            , Constitucion >= 18, 9 _
-                                            , Constitucion >= 16, 8 _
-                                            , Constitucion >= 14, 7 _
-                                            , True, 6))
-            
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case "DRUIDA"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 7 _
-                                            , Constitucion >= 19, 6 _
-                                            , Constitucion >= 17, 5 _
-                                            , Constitucion >= 15, 4 _
-                                            , Constitucion >= 13, 3 _
-                                            , Constitucion = 12, 2), _
-                                     Switch(Constitucion >= 20, 10 _
-                                            , Constitucion >= 18, 9 _
-                                            , Constitucion >= 16, 8 _
-                                            , Constitucion >= 14, 7 _
-                                            , True, 6))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case "ASESINO"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 7 _
-                                            , Constitucion >= 19, 6 _
-                                            , Constitucion >= 17, 5 _
-                                            , Constitucion >= 15, 4 _
-                                            , Constitucion >= 13, 3 _
-                                            , Constitucion = 12, 2), _
-                                     Switch(Constitucion >= 20, 10 _
-                                            , Constitucion >= 18, 9 _
-                                            , Constitucion >= 16, 8 _
-                                            , Constitucion >= 14, 7 _
-                                            , True, 6))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case "BARDO"
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 7 _
-                                            , Constitucion >= 19, 6 _
-                                            , Constitucion >= 17, 5 _
-                                            , Constitucion >= 15, 4 _
-                                            , Constitucion >= 13, 3 _
-                                            , Constitucion = 12, 2), _
-                                     Switch(Constitucion >= 20, 10 _
-                                            , Constitucion >= 18, 9 _
-                                            , Constitucion >= 16, 8 _
-                                            , Constitucion >= 14, 7 _
-                                            , True, 6))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
+        Case "HERRERO", "CARPINTERO"
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
+            AumentoHIT = 2
+            AumentoSTA = AumentoSTDef
+            
         Case Else
-            AumentoHP = RandomNumber(Switch(Constitucion = 21, 7 _
-                                            , Constitucion >= 19, 6 _
-                                            , Constitucion >= 17, 5 _
-                                            , Constitucion >= 15, 4 _
-                                            , Constitucion >= 13, 3 _
-                                            , Constitucion = 12, 2), _
-                                     Switch(Constitucion >= 20, 10 _
-                                            , Constitucion >= 18, 9 _
-                                            , Constitucion >= 16, 8 _
-                                            , Constitucion >= 14, 7 _
-                                            , True, 6))
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(6, 9)
+                Case 20
+                    AumentoHP = RandomNumber(5, 9)
+                Case 19, 18
+                    AumentoHP = RandomNumber(4, 8)
+                Case Else
+                    AumentoHP = RandomNumber(5, Constitucion \ 2) - AdicionalHPCazador
+            End Select
 
             AumentoHIT = 2
             AumentoSTA = AumentoSTDef
