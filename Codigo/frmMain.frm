@@ -949,7 +949,7 @@ Static MinutosSinLluvia As Long
 If Not Lloviendo Then
     MinutosSinLluvia = MinutosSinLluvia + 1
     If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
-            If RandomNumber(1, 100) <= 10 Then
+            If RandomNumber(1, 100) <= 5 Then
                 Lloviendo = True
                 MinutosSinLluvia = 0
                 Call SendData(SendTarget.ToAll, 0, 0, "LLU")
