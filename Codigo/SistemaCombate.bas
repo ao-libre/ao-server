@@ -38,9 +38,9 @@ Option Explicit
 Public Const MAXDISTANCIAARCO As Byte = 18
 Public Const MAXDISTANCIAMAGIA As Byte = 18
 
-Function ModificadorEvasion(ByVal Clase As String) As Single
+Function ModificadorEvasion(ByVal clase As String) As Single
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
     Case "GUERRERO"
         ModificadorEvasion = 1
     Case "CAZADOR"
@@ -66,8 +66,8 @@ Select Case UCase$(Clase)
 End Select
 End Function
 
-Function ModificadorPoderAtaqueArmas(ByVal Clase As String) As Single
-Select Case UCase$(Clase)
+Function ModificadorPoderAtaqueArmas(ByVal clase As String) As Single
+Select Case UCase$(clase)
     Case "GUERRERO"
         ModificadorPoderAtaqueArmas = 1
     Case "PALADIN"
@@ -103,8 +103,8 @@ Select Case UCase$(Clase)
 End Select
 End Function
 
-Function ModificadorPoderAtaqueProyectiles(ByVal Clase As String) As Single
-Select Case UCase$(Clase)
+Function ModificadorPoderAtaqueProyectiles(ByVal clase As String) As Single
+Select Case UCase$(clase)
     Case "GUERRERO"
         ModificadorPoderAtaqueProyectiles = 0.8
     Case "CAZADOR"
@@ -140,8 +140,8 @@ Select Case UCase$(Clase)
 End Select
 End Function
 
-Function ModicadorDañoClaseArmas(ByVal Clase As String) As Single
-Select Case UCase$(Clase)
+Function ModicadorDañoClaseArmas(ByVal clase As String) As Single
+Select Case UCase$(clase)
     Case "GUERRERO"
         ModicadorDañoClaseArmas = 1.1
     Case "PALADIN"
@@ -177,8 +177,8 @@ Select Case UCase$(Clase)
 End Select
 End Function
 
-Function ModicadorDañoClaseProyectiles(ByVal Clase As String) As Single
-Select Case UCase$(Clase)
+Function ModicadorDañoClaseProyectiles(ByVal clase As String) As Single
+Select Case UCase$(clase)
     Case "CAZADOR"
         ModicadorDañoClaseProyectiles = 1.1
     Case "GUERRERO"
@@ -214,9 +214,9 @@ Select Case UCase$(Clase)
 End Select
 End Function
 
-Function ModEvasionDeEscudoClase(ByVal Clase As String) As Single
+Function ModEvasionDeEscudoClase(ByVal clase As String) As Single
 
-Select Case UCase$(Clase)
+Select Case UCase$(clase)
 Case "GUERRERO"
         ModEvasionDeEscudoClase = 1
     Case "CAZADOR"
@@ -284,7 +284,7 @@ End Function
 Function PoderEvasionEscudo(ByVal UserIndex As Integer) As Long
 
 PoderEvasionEscudo = (UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) * _
-ModEvasionDeEscudoClase(UserList(UserIndex).Clase)) / 2
+ModEvasionDeEscudoClase(UserList(UserIndex).clase)) / 2
 
 End Function
 
@@ -293,7 +293,7 @@ Function PoderEvasion(ByVal UserIndex As Integer) As Long
      With UserList(UserIndex)
        lTemp = (.Stats.UserSkills(eSkill.Tacticas) + _
           .Stats.UserSkills(eSkill.Tacticas) / 33 * .Stats.UserAtributos(eAtributos.Agilidad)) * _
-          ModificadorEvasion(.Clase)
+          ModificadorEvasion(.clase)
        
         PoderEvasion = (lTemp + (2.5 * Maximo(.Stats.ELV - 12, 0)))
     End With
@@ -334,19 +334,19 @@ Dim PoderAtaqueTemp As Long
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Armas) < 31 Then
     PoderAtaqueTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Armas) * _
-    ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+    ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Armas) < 61 Then
     PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Armas) + _
     UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad)) * _
-    ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+    ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Armas) < 91 Then
     PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Armas) + _
     (2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-    ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+    ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 Else
    PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Armas) + _
    (3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-   ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+   ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 End If
 
 PoderAtaqueArma = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
@@ -357,19 +357,19 @@ Dim PoderAtaqueTemp As Long
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) < 31 Then
     PoderAtaqueTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) * _
-    ModificadorPoderAtaqueProyectiles(UserList(UserIndex).Clase))
+    ModificadorPoderAtaqueProyectiles(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) < 61 Then
         PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) + _
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad)) * _
-        ModificadorPoderAtaqueProyectiles(UserList(UserIndex).Clase))
+        ModificadorPoderAtaqueProyectiles(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) < 91 Then
         PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) + _
         (2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-        ModificadorPoderAtaqueProyectiles(UserList(UserIndex).Clase))
+        ModificadorPoderAtaqueProyectiles(UserList(UserIndex).clase))
 Else
        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) + _
       (3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-      ModificadorPoderAtaqueProyectiles(UserList(UserIndex).Clase))
+      ModificadorPoderAtaqueProyectiles(UserList(UserIndex).clase))
 End If
 
 PoderAtaqueProyectil = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
@@ -381,19 +381,19 @@ Dim PoderAtaqueTemp As Long
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 31 Then
     PoderAtaqueTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) * _
-    ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+    ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 61 Then
         PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad)) * _
-        ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+        ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 91 Then
         PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
         (2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-        ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+        ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 Else
        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
        (3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-       ModificadorPoderAtaqueArmas(UserList(UserIndex).Clase))
+       ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 End If
 
 PoderAtaqueWresterling = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
@@ -507,7 +507,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
         
         'Usa la mata dragones?
         If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then ' Usa la matadragones?
-            ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
+            ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
                 If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca dragon?
                 DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
@@ -518,7 +518,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
             End If
         Else ' daño comun
            If Arma.proyectil = 1 Then
-                ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).Clase)
+                ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).clase)
                     DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
                 If Arma.Municion = 1 Then
@@ -527,7 +527,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                     DañoMaxArma = Arma.MaxHIT
                 End If
            Else
-                ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
+                ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
                     DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
            End If
@@ -535,12 +535,12 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     
     Else ' Ataca usuario
         If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
-            ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
+            ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
                 DañoArma = 1 ' Si usa la espada matadragones daño es 1
             DañoMaxArma = 1
         Else
            If Arma.proyectil = 1 Then
-                ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).Clase)
+                ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).clase)
                     DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                     DañoMaxArma = Arma.MaxHIT
                 If Arma.Municion = 1 Then
@@ -549,7 +549,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                     DañoMaxArma = Arma.MaxHIT
                 End If
            Else
-                ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).Clase)
+                ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
                     DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
            End If
@@ -962,15 +962,18 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim Index As Integer
-    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim index As Integer
+    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
+            
     'Look for user
-    If Index > 0 Then
-        Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
-        Call SendUserStatsBox(UserIndex)
-        Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
-        Exit Sub
+    If index > 0 Then
+        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+            Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+            Call SendUserStatsBox(UserIndex)
+            Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+            Exit Sub
+        End If
     End If
     
     'Look for NPC
@@ -1115,7 +1118,7 @@ Else
     Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "U3" & UserList(AtacanteIndex).name)
 End If
 
-If UCase$(UserList(AtacanteIndex).Clase) = "LADRON" Then Call Desarmar(AtacanteIndex, VictimaIndex)
+If UCase$(UserList(AtacanteIndex).clase) = "LADRON" Then Call Desarmar(AtacanteIndex, VictimaIndex)
 
 End Sub
 
@@ -1282,7 +1285,7 @@ End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
 
-Dim t As eTrigger6
+Dim T As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
@@ -1290,12 +1293,12 @@ If UserList(VictimIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-t = TriggerZonaPelea(AttackerIndex, VictimIndex)
+T = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If t = TRIGGER6_PERMITE Then
+If T = TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf t = TRIGGER6_PROHIBE Then
+ElseIf T = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
 End If
@@ -1327,18 +1330,6 @@ If (UserList(VictimIndex).Faccion.FuerzasCaos = 1) And (UserList(AttackerIndex).
     Exit Function
 End If
 '[/Barrin]
-
-If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
-    PuedeAtacar = False
-    Exit Function
-End If
-
-'Se asegura que la victima no es un GM
-If UserList(VictimIndex).flags.Privilegios >= PlayerType.Consejero Then
-    SendData SendTarget.ToIndex, AttackerIndex, 0, "||¡¡No podes atacar a los administradores del juego!! " & FONTTYPE_WARNING
-    PuedeAtacar = False
-    Exit Function
-End If
 
 If UserList(AttackerIndex).flags.Muerto = 1 Then
     SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar porque estas muerto" & FONTTYPE_INFO

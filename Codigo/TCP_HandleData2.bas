@@ -383,7 +383,7 @@ Procesado = True 'ver al final del sub
                 'inicializa unas variables...
                 UserList(UserIndex).ComUsu.DestUsu = UserList(UserIndex).flags.TargetUser
                 UserList(UserIndex).ComUsu.DestNick = UserList(UserList(UserIndex).flags.TargetUser).name
-                UserList(UserIndex).ComUsu.cant = 0
+                UserList(UserIndex).ComUsu.Cant = 0
                 UserList(UserIndex).ComUsu.Objeto = 0
                 UserList(UserIndex).ComUsu.Acepto = False
                 
@@ -956,7 +956,9 @@ Procesado = True 'ver al final del sub
             rData = Right$(rData, Len(rData) - 13)
             tInt = NameIndex(rData)
             If tInt > 0 Then
-                Call mdParty.AprobarIngresoAParty(UserIndex, tInt)
+                If UserList(tInt).flags.Privilegios < PlayerType.Consejero Or UserList(UserIndex).flags.Privilegios >= PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese a menos que lo sea
+                    Call mdParty.AprobarIngresoAParty(UserIndex, tInt)
+                End If
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| El personaje no está online." & FONTTYPE_INFO)
             End If

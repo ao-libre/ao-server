@@ -121,3 +121,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 27/07/2006: Mejoré el método SubirSkill (gracias a Nigo por el código y a Patenke por el patch). (Maraxus)
  * 04/08/2006: Corregí un bug al calcular el daño hecho al apuñalar un NPC. (Maraxus)
  * 23/08/2006: Corregí las posibilidades de que llueva, ahora hay 1 posibilidad en 20 de que llueva en vez de 1 en 10. (Integer)
+ * 23/08/2006: Realizadas correcciones para que los usuarios ignoren a los Administradores. (^[GS]^)

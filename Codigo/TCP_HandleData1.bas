@@ -638,13 +638,15 @@ Procesado = True 'ver al final del sub
                         Call UsuarioAtacaNpc(UserIndex, tN)
                     End If
                 ElseIf TU > 0 Then
-                    If UserList(UserIndex).flags.Seguro Then
-                        If Not criminal(TU) Then
-                            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Para atacar ciudadanos desactiva el seguro!" & FONTTYPE_FIGHT)
-                            Exit Sub
+                    If UserList(TU).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
+                        If UserList(UserIndex).flags.Seguro Then
+                            If Not criminal(TU) Then
+                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Para atacar ciudadanos desactiva el seguro!" & FONTTYPE_FIGHT)
+                                Exit Sub
+                            End If
                         End If
+                        Call UsuarioAtacaUsuario(UserIndex, TU)
                     End If
-                    Call UsuarioAtacaUsuario(UserIndex, TU)
                 End If
                 
                 If DummyInt = 0 Then
@@ -754,37 +756,40 @@ Procesado = True 'ver al final del sub
                 End If
                 
             Case Robar
-               If MapInfo(UserList(UserIndex).Pos.Map).Pk Then
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk Then
                     'If UserList(UserIndex).flags.PuedeTrabajar = 0 Then Exit Sub
                     If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                     
                     Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
                     
                     If UserList(UserIndex).flags.TargetUser > 0 And UserList(UserIndex).flags.TargetUser <> UserIndex Then
-                       If UserList(UserList(UserIndex).flags.TargetUser).flags.Muerto = 0 Then
-                            wpaux.Map = UserList(UserIndex).Pos.Map
-                            wpaux.X = val(ReadField(1, rData, 44))
-                            wpaux.Y = val(ReadField(2, rData, 44))
-                            If Distancia(wpaux, UserList(UserIndex).Pos) > 2 Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
-                                Exit Sub
+                        If UserList(UserList(UserIndex).flags.TargetUser).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
+                            If UserList(UserList(UserIndex).flags.TargetUser).flags.Muerto = 0 Then
+                                 wpaux.Map = UserList(UserIndex).Pos.Map
+                                 wpaux.X = val(ReadField(1, rData, 44))
+                                 wpaux.Y = val(ReadField(2, rData, 44))
+                                 If Distancia(wpaux, UserList(UserIndex).Pos) > 2 Then
+                                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos." & FONTTYPE_INFO)
+                                     Exit Sub
+                                 End If
+                                 '17/09/02
+                                 'No aseguramos que el trigger le permite robar
+                                 If MapData(UserList(UserList(UserIndex).flags.TargetUser).Pos.Map, UserList(UserList(UserIndex).flags.TargetUser).Pos.X, UserList(UserList(UserIndex).flags.TargetUser).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+                                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
+                                     Exit Sub
+                                 End If
+                                 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+                                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
+                                     Exit Sub
+                                 End If
+                                 
+                                 Call DoRobar(UserIndex, UserList(UserIndex).flags.TargetUser)
+                                 
+                                 Exit Sub ' 23/08/2006 GS
                             End If
-                            '17/09/02
-                            'No aseguramos que el trigger le permite robar
-                            If MapData(UserList(UserList(UserIndex).flags.TargetUser).Pos.Map, UserList(UserList(UserIndex).flags.TargetUser).Pos.X, UserList(UserList(UserIndex).flags.TargetUser).Pos.Y).trigger = eTrigger.ZONASEGURA Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
-                                Exit Sub
-                            End If
-                            If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
-                                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes robar aquí." & FONTTYPE_WARNING)
-                                Exit Sub
-                            End If
-                            
-                            Call DoRobar(UserIndex, UserList(UserIndex).flags.TargetUser)
-                       End If
-                    Else
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No a quien robarle!." & FONTTYPE_INFO)
+                        End If
                     End If
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No a quien robarle!." & FONTTYPE_INFO)
                 Else
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No podes robarle en zonas seguras!." & FONTTYPE_INFO)
                 End If
