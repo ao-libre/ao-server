@@ -659,12 +659,12 @@ If Hechizos(H).RemoverParalisis = 1 Then
 End If
 
 If Hechizos(H).RemoverEstupidez = 1 Then
-    If Not UserList(TU).flags.Estupidez = 0 Then
-                UserList(TU).flags.Estupidez = 0
-                'no need to crypt this
-                Call SendData(SendTarget.ToIndex, TU, 0, "NESTUP")
-                Call InfoHechizo(UserIndex)
-                b = True
+    If UserList(TU).flags.Estupidez = 0 Then
+        UserList(TU).flags.Estupidez = 0
+        'no need to crypt this
+        Call SendData(SendTarget.ToIndex, TU, 0, "NESTUP")
+        Call InfoHechizo(UserIndex)
+        b = True
     End If
 End If
 
