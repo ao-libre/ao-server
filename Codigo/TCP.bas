@@ -1350,14 +1350,14 @@ End Sub
 
 #End If
 
-Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
-        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
+For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
+        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -2007,7 +2007,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2433,6 +2433,14 @@ If UCase$(rData) = "/SHOWNAME" Then
         'Sucio, pero funciona, y siendo un comando administrativo de uso poco frecuente no molesta demasiado...
         Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
         Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+    End If
+    Exit Sub
+End If
+
+'SEGUIR
+If UCase$(rData) = "/SEGUIR" Then
+    If UserList(UserIndex).flags.TargetNPC > 0 Then
+        Call DoFollow(UserList(UserIndex).flags.TargetNPC, UserList(UserIndex).name)
     End If
     Exit Sub
 End If
@@ -3345,13 +3353,7 @@ If UCase$(Left$(rData, 7)) = "/UNBAN " Then
 End If
 
 
-'SEGUIR
-If UCase$(rData) = "/SEGUIR" Then
-    If UserList(UserIndex).flags.TargetNPC > 0 Then
-        Call DoFollow(UserList(UserIndex).flags.TargetNPC, UserList(UserIndex).name)
-    End If
-    Exit Sub
-End If
+
 
 'Summon
 If UCase$(Left$(rData, 5)) = "/SUM " Then

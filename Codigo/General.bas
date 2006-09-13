@@ -1162,6 +1162,9 @@ End If
 End Sub
 
 Public Sub HambreYSed(UserIndex As Integer, fenviarAyS As Boolean)
+
+If UserList(UserIndex).flags.Privilegios > User Then Exit Sub
+
 'Sed
 If UserList(UserIndex).Stats.MinAGU > 0 Then
     If UserList(UserIndex).Counters.AGUACounter < IntervaloSed Then
