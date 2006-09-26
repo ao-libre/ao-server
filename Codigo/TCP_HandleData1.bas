@@ -95,13 +95,13 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call SendData(SendTarget.ToDeadArea, UserIndex, UserList(UserIndex).Pos.Map, "||12632256°" & rData & "°" & CStr(ind))
             Else
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & rData & "°" & CStr(ind))
-            End If
+            	Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & UserList(UserIndex).flags.ChatColor & "°" & rData & "°" & CStr(ind))
+			End If
             Exit Sub
         Case "-" 'Gritar
             If UserList(UserIndex).flags.Muerto = 1 Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. " & FONTTYPE_INFO)
-                    Exit Sub
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. " & FONTTYPE_INFO)
+                Exit Sub
             End If
             rData = Right$(rData, Len(rData) - 1)
             If InStr(rData, "°") Then
@@ -127,7 +127,12 @@ Procesado = True 'ver al final del sub
             Call Statistics.ParseChat(rData)
             
             ind = UserList(UserIndex).Char.CharIndex
-            Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & rData & "°" & str(ind))
+            
+            If UserList(UserIndex).flags.Privilegios > User Then
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||1016575°" & rData & "°" & CStr(ind))
+            Else
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & rData & "°" & CStr(ind))
+            End If
             Exit Sub
         Case "\" 'Susurrar al oido
             If UserList(UserIndex).flags.Muerto = 1 Then

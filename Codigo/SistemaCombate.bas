@@ -763,6 +763,7 @@ End Sub
 Public Function NpcAtacaUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
 If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Function
+If UserList(UserIndex).flags.Privilegios > User And Not UserList(UserIndex).flags.AdminPerseguible Then Exit Function
 
 ' El npc puede atacar ???
 If Npclist(NpcIndex).CanAttack = 1 Then
@@ -962,13 +963,13 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim index As Integer
-    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim Index As Integer
+    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
             
     'Look for user
-    If index > 0 Then
-        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+    If Index > 0 Then
+        If UserList(Index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
             Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
             Call SendUserStatsBox(UserIndex)
             Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)

@@ -297,7 +297,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
             UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
             NPCI = MapData(nPos.Map, nPos.X, nPos.Y).NpcIndex
             If UI > 0 And Not atacoPJ Then
-                If UserList(UI).flags.Muerto = 0 Then
+                If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                     atacoPJ = True
                     If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then
                         Call NpcLanzaUnSpell(NpcIndex, UI)
@@ -405,7 +405,7 @@ Else
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                 UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
-                     If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 Then
+                     If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.Invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
                          If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
                          tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                          Call MoveNPCChar(NpcIndex, tHeading)

@@ -894,6 +894,9 @@ Public Type UserFlags
     OldBody As Integer
     OldHead As Integer
     AdminInvisible As Byte
+    AdminPerseguible As Boolean
+    
+    ChatColor As Long
     
     '[el oso]
     MD5Reportado As String

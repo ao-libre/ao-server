@@ -1565,6 +1565,8 @@ UserList(UserIndex).Password = Password
 
 UserList(UserIndex).showName = True 'Por default los nombres son visibles
 
+
+
 'Info
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "IU" & UserIndex) 'Enviamos el User index
 Call SendData(SendTarget.ToIndex, UserIndex, 0, "CM" & UserList(UserIndex).Pos.Map & "," & MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
@@ -1586,6 +1588,12 @@ ElseIf EsConsejero(name) Then
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
 Else
     UserList(UserIndex).flags.Privilegios = PlayerType.User
+End If
+
+If UserList(UserIndex).flags.Privilegios > User Or UserList(UserIndex).flags.EsRolesMaster Then
+    UserList(UserIndex).flags.ChatColor = RGB(30, 150, 30)
+Else
+    UserList(UserIndex).flags.ChatColor = vbWhite
 End If
 
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
@@ -1938,6 +1946,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .PertAlConsCaos = 0
         .Silenciado = 0
         .CentinelaOK = False
+        .AdminPerseguible = False
     End With
 End Sub
 
@@ -2425,7 +2434,20 @@ End If
  If UserList(UserIndex).flags.Privilegios = PlayerType.User Then Exit Sub
 '>>>>>>>>>>>>>>>>>>>>>> SOLO ADMINISTRADORES <<<<<<<<<<<<<<<<<<<
 
+
+
 '<<<<<<<<<<<<<<<<<<<< Consejeros <<<<<<<<<<<<<<<<<<<<
+
+If UCase$(Left$(rData, 11)) = "/CHATCOLOR " Then
+    rData = Right(rData, Len(rData) - 11)
+    UserList(UserIndex).flags.ChatColor = RGB(CInt(ReadField(1, rData, Asc("~"))), CInt(ReadField(2, rData, Asc("~"))), CInt(ReadField(3, rData, Asc("~"))))
+    Exit Sub
+End If
+
+If UCase$(rData) = "/IGNORADO" Then
+    UserList(UserIndex).flags.AdminPerseguible = Not UserList(UserIndex).flags.AdminPerseguible
+    Exit Sub
+End If
 
 If UCase$(rData) = "/SHOWNAME" Then
     If UserList(UserIndex).flags.EsRolesMaster Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios Then
@@ -2678,6 +2700,8 @@ If UCase$(rData) = "/INVISIBLE" Then
     Call LogGM(UserList(UserIndex).name, "/INVISIBLE", (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     Exit Sub
 End If
+
+
 
 If UCase$(rData) = "/PANELGM" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
@@ -3549,6 +3573,24 @@ If UCase$(rData) = "/LLUVIA" Then
     Exit Sub
 End If
 
+'Ultima ip de un char
+If UCase(Left(rData, 8)) = "/LASTIP " Then
+    If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+    Call LogGM(UserList(UserIndex).name, rData, False)
+    rData = Right(rData, Len(rData) - 8)
+    
+    'No se si sea MUY necesario, pero por si las dudas... ;)
+    rData = Replace(rData, "\", "")
+    rData = Replace(rData, "/", "")
+    
+    If FileExist(CharPath & rData & ".chr", vbNormal) Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ultima IP de """ & rData & """ fue : " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP") & FONTTYPE_INFO)
+    Else
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile """ & rData & """ inexistente." & FONTTYPE_INFO)
+    End If
+    Exit Sub
+End If
+
 
 If UCase$(Left$(rData, 9)) = "/SETDESC " Then
     If Not UserList(UserIndex).flags.EsRolesMaster And UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then Exit Sub
@@ -3712,6 +3754,7 @@ End Select
 If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
     Exit Sub
 End If
+
 
 
 '[Barrin 30-11-03]
@@ -4189,28 +4232,6 @@ If UCase$(rData) = "/MASSKILL" Then
     Call LogGM(UserList(UserIndex).name, "/MASSKILL", False)
     Exit Sub
 End If
-
-'Ultima ip de un char
-If UCase(Left(rData, 8)) = "/LASTIP " Then
-    If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
-    Call LogGM(UserList(UserIndex).name, rData, False)
-    rData = Right(rData, Len(rData) - 8)
-    
-    'No se si sea MUY necesario, pero por si las dudas... ;)
-    rData = Replace(rData, "\", "")
-    rData = Replace(rData, "/", "")
-    
-    If FileExist(CharPath & rData & ".chr", vbNormal) Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ultima IP de """ & rData & """ fue : " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP") & FONTTYPE_INFO)
-    Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile """ & rData & """ inexistente." & FONTTYPE_INFO)
-    End If
-    Exit Sub
-End If
-
-
-
-
 
 'cambia el MOTD
 If UCase(rData) = "/MOTDCAMBIA" Then

@@ -111,6 +111,14 @@ Sub ChangeUserChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndM
     UserList(UserIndex).Char.ShieldAnim = Escudo
     UserList(UserIndex).Char.CascoAnim = casco
     
+    If UserList(UserIndex).flags.AdminInvisible = 1 Then
+        UserList(UserIndex).flags.OldBody = body
+        UserList(UserIndex).flags.OldHead = Head
+        Exit Sub
+    Else
+        UserList(UserIndex).Char.body = body
+        UserList(UserIndex).Char.Head = Head
+    End If
     If sndRoute = SendTarget.ToMap Then
         Call SendToUserArea(UserIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco)
     Else
