@@ -340,9 +340,6 @@ Procesado = True 'ver al final del sub
                 Exit Sub
             End If
             
-            If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
-                Exit Sub
-            End If
             '¿El target es un NPC valido?
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 '¿El NPC puede comerciar?
@@ -360,6 +357,10 @@ Procesado = True 'ver al final del sub
             ElseIf UserList(UserIndex).flags.TargetUser > 0 Then
                 'Comercio con otro usuario
                 'Puede comerciar ?
+                If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
+                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes vender items." & FONTTYPE_WARNING)
+                    Exit Sub
+                End If
                 If UserList(UserList(UserIndex).flags.TargetUser).flags.Muerto = 1 Then
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡No puedes comerciar con los muertos!!" & FONTTYPE_INFO)
                     Exit Sub

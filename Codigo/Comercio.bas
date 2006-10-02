@@ -46,6 +46,8 @@ On Error GoTo errorh
     
     UserCompraObj = False
     
+    
+    
     If (Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).amount <= 0) Then Exit Function
     
     obji = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(ObjIndex).ObjIndex
@@ -292,8 +294,10 @@ On Error GoTo errhandler
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         End If
+    ElseIf UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes vender items." & FONTTYPE_WARNING)
+        Exit Sub
     End If
-    
     'NPC COMPRA UN OBJ A UN USUARIO
     Call SendUserStatsBox(UserIndex)
    
