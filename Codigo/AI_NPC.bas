@@ -448,6 +448,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
             SignoNS = 0
     End Select
     
+    
     For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
         For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
 

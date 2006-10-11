@@ -993,7 +993,6 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
     
     If UserList(UserIndex).flags.TargetUser > 0 Then
         Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserList(UserIndex).flags.TargetUser).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
-        Call SendData(SendTarget.ToPCArea, UserList(UserIndex).flags.TargetUser, UserList(UserIndex).Pos.Map, "TW" & Hechizos(H).WAV)
     ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
         Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Map, "CFX" & Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex & "," & Hechizos(H).FXgrh & "," & Hechizos(H).loops)
         Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, UserList(UserIndex).Pos.Map, "TW" & Hechizos(H).WAV)
@@ -1001,7 +1000,11 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
     
     If UserList(UserIndex).flags.TargetUser > 0 Then
         If UserIndex <> UserList(UserIndex).flags.TargetUser Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " " & UserList(UserList(UserIndex).flags.TargetUser).name & FONTTYPE_FIGHT)
+            If UserList(UserIndex).showName Then
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " " & UserList(UserList(UserIndex).flags.TargetUser).name & FONTTYPE_FIGHT)
+            Else
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Hechizos(H).HechizeroMsg & " alguien." & FONTTYPE_FIGHT)
+            End If
             Call SendData(SendTarget.ToIndex, UserList(UserIndex).flags.TargetUser, 0, "||" & UserList(UserIndex).name & " " & Hechizos(H).TargetMsg & FONTTYPE_FIGHT)
         Else
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Hechizos(H).PropioMsg & FONTTYPE_FIGHT)

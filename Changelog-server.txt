@@ -125,3 +125,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 12/09/2006: A los GMs y demás no les baja ni el hambre ni la sed. (Integer)
  * 12/09/2006: Activé el comando "/seguir" a los GMs y Consejeros. (Integer)
  * 01/10/2006: Consejeros pueden comprar pero no vender. (Integer)
+ * 10/10/2006: /Seguir quita efectos de paralisis. (Integer)
+ * 10/10/2006: /ShowName también impide que tu nombre se vea cuando te lanzan hechizos. (Integer)

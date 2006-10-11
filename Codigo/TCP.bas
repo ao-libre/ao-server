@@ -2463,6 +2463,9 @@ End If
 If UCase$(rData) = "/SEGUIR" Then
     If UserList(UserIndex).flags.TargetNPC > 0 Then
         Call DoFollow(UserList(UserIndex).flags.TargetNPC, UserList(UserIndex).name)
+        Npclist(UserList(UserIndex).flags.TargetNPC).flags.Inmovilizado = 0
+        Npclist(UserList(UserIndex).flags.TargetNPC).flags.Paralizado = 0
+        Npclist(UserList(UserIndex).flags.TargetNPC).Contadores.Paralisis = 0
     End If
     Exit Sub
 End If
