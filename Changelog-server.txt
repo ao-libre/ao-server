@@ -124,3 +124,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/08/2006: Realizadas correcciones para que los usuarios ignoren a los Administradores. (^[GS]^)
  * 12/09/2006: A los GMs y demás no les baja ni el hambre ni la sed. (Integer)
  * 12/09/2006: Activé el comando "/seguir" a los GMs y Consejeros. (Integer)
+ * 01/10/2006: Consejeros pueden comprar pero no vender. (Integer)

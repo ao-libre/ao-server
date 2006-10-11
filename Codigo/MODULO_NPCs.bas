@@ -131,8 +131,9 @@ On Error GoTo errhandler
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia." & FONTTYPE_FIGHT)
             End If
             MiNPC.flags.ExpCount = 0
-        Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has ganado experiencia al matar la criatura." & FONTTYPE_FIGHT)
+'Nacho: ahora se da toda la experiencia con los golpes, en la mayoria de los casos el npc se queda sin exp
+'        Else
+'            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No has ganado experiencia al matar la criatura." & FONTTYPE_FIGHT)
         End If
         
         '[/KEVIN]
