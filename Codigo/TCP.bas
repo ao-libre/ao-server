@@ -1588,6 +1588,7 @@ ElseIf EsConsejero(name) Then
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
 Else
     UserList(UserIndex).flags.Privilegios = PlayerType.User
+    UserList(UserIndex).flags.AdminPerseguible = True
 End If
 
 If UserList(UserIndex).flags.Privilegios > User Or UserList(UserIndex).flags.EsRolesMaster Then
