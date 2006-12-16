@@ -3588,7 +3588,11 @@ If UCase(Left(rData, 8)) = "/LASTIP " Then
     rData = Replace(rData, "/", "")
     
     If FileExist(CharPath & rData & ".chr", vbNormal) Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La ultima IP de """ & rData & """ fue : " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP") & FONTTYPE_INFO)
+        tStr = "||Las ultimas IPs con las que " & rData & "se conecto son: "
+        For tInt = 1 To 5
+            tStr = tStr & " - " & GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & i)
+        Next tInt
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, tStr & FONTTYPE_INFO)
     Else
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile """ & rData & """ inexistente." & FONTTYPE_INFO)
     End If

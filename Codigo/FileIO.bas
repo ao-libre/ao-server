@@ -1502,7 +1502,15 @@ Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim
 Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAnim))
 Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
 
-Call WriteVar(UserFile, "INIT", "LastIP", UserList(UserIndex).ip)
+If UserList(UserIndex).ip <> GetVar(CharPath & rData & ".chr", "INIT", "LastIP1") Then
+    For i = 5 To 2 Step -1
+        Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & str(i - 1)))
+    Next i
+    Call WriteVar(UserFile, "INIT", "LastIP1", UserList(UserIndex).ip)
+End If
+
+
+
 Call WriteVar(UserFile, "INIT", "Position", UserList(UserIndex).Pos.Map & "-" & UserList(UserIndex).Pos.X & "-" & UserList(UserIndex).Pos.Y)
 
 
