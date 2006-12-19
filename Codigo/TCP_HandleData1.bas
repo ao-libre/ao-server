@@ -83,7 +83,7 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
                 UserList(UserIndex).Counters.TiempoOculto = 0
-                If UserList(UserIndex).flags.Invisible = 0 Then
+                If UserList(UserIndex).flags.invisible = 0 Then
                     Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
@@ -95,8 +95,8 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call SendData(SendTarget.ToDeadArea, UserIndex, UserList(UserIndex).Pos.Map, "||12632256°" & rData & "°" & CStr(ind))
             Else
-            	Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & UserList(UserIndex).flags.ChatColor & "°" & rData & "°" & CStr(ind))
-			End If
+                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & UserList(UserIndex).flags.ChatColor & "°" & rData & "°" & CStr(ind))
+            End If
             Exit Sub
         Case "-" 'Gritar
             If UserList(UserIndex).flags.Muerto = 1 Then
@@ -117,7 +117,7 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.Oculto > 0 Then
                 UserList(UserIndex).flags.Oculto = 0
                 UserList(UserIndex).Counters.TiempoOculto = 0
-                If UserList(UserIndex).flags.Invisible = 0 Then
+                If UserList(UserIndex).flags.invisible = 0 Then
                     Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                 End If
@@ -128,7 +128,7 @@ Procesado = True 'ver al final del sub
             
             ind = UserList(UserIndex).Char.CharIndex
             
-            If UserList(UserIndex).flags.Privilegios > User Then
+            If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                 Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||1016575°" & rData & "°" & CStr(ind))
             Else
                 Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbRed & "°" & rData & "°" & CStr(ind))
@@ -254,7 +254,7 @@ Procesado = True 'ver al final del sub
                 If UCase$(UserList(UserIndex).clase) <> "LADRON" Then
                     UserList(UserIndex).flags.Oculto = 0
                     UserList(UserIndex).Counters.TiempoOculto = 0
-                    If UserList(UserIndex).flags.Invisible = 0 Then
+                    If UserList(UserIndex).flags.invisible = 0 Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
                         Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                     End If
@@ -294,7 +294,7 @@ Procesado = True 'ver al final del sub
                 If UserList(UserIndex).flags.Oculto > 0 And UserList(UserIndex).flags.AdminInvisible = 0 Then
                     UserList(UserIndex).flags.Oculto = 0
                     UserList(UserIndex).Counters.TiempoOculto = 0
-                    If UserList(UserIndex).flags.Invisible = 0 Then
+                    If UserList(UserIndex).flags.invisible = 0 Then
                         Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Has vuelto a ser visible!" & FONTTYPE_INFO)
                     End If
@@ -568,7 +568,7 @@ Procesado = True 'ver al final del sub
             Select Case tLong
             
             Case Proyectiles
-                Dim TU As Integer, tN As Integer
+                Dim tU As Integer, tN As Integer
                 'Nos aseguramos que este usando un arma de proyectiles
                 If Not IntervaloPermiteAtacar(UserIndex, False) Or Not IntervaloPermiteUsarArcos(UserIndex) Then
                     Exit Sub
@@ -612,11 +612,11 @@ Procesado = True 'ver al final del sub
                  
                 Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, Arg1, Arg2)
                 
-                TU = UserList(UserIndex).flags.TargetUser
+                tU = UserList(UserIndex).flags.TargetUser
                 tN = UserList(UserIndex).flags.TargetNPC
                 
                 'Sólo permitimos atacar si el otro nos puede atacar también
-                If TU > 0 Then
+                If tU > 0 Then
                     If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) > RANGO_VISION_Y Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado lejos para atacar." & FONTTYPE_WARNING)
                         Exit Sub
@@ -629,9 +629,9 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 
-                If TU > 0 Then
+                If tU > 0 Then
                     'Previene pegarse a uno mismo
-                    If TU = UserIndex Then
+                    If tU = UserIndex Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡No puedes atacarte a vos mismo!" & FONTTYPE_INFO)
                         DummyInt = 1
                         Exit Sub
@@ -642,15 +642,15 @@ Procesado = True 'ver al final del sub
                     If Npclist(tN).Attackable <> 0 Then
                         Call UsuarioAtacaNpc(UserIndex, tN)
                     End If
-                ElseIf TU > 0 Then
-                    If UserList(TU).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
+                ElseIf tU > 0 Then
+                    If UserList(tU).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
                         If UserList(UserIndex).flags.Seguro Then
-                            If Not criminal(TU) Then
+                            If Not criminal(tU) Then
                                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Para atacar ciudadanos desactiva el seguro!" & FONTTYPE_FIGHT)
                                 Exit Sub
                             End If
                         End If
-                        Call UsuarioAtacaUsuario(UserIndex, TU)
+                        Call UsuarioAtacaUsuario(UserIndex, tU)
                     End If
                 End If
                 
@@ -1261,7 +1261,7 @@ Procesado = True 'ver al final del sub
                 End If
                 
                 UserList(UserIndex).ComUsu.Objeto = val(Arg1)
-                UserList(UserIndex).ComUsu.Cant = val(Arg2)
+                UserList(UserIndex).ComUsu.cant = val(Arg2)
                 If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu <> UserIndex Then
                     Call FinComerciarUsu(UserIndex)
                     Exit Sub

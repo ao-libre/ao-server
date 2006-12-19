@@ -46,8 +46,8 @@ Private Const NEWSLENGTH = 1024
 Private Const DESCLENGTH = 256
 Private Const CODEXLENGTH = 256
 
-Public Property Get guildName() As String
-    guildName = p_GuildName
+Public Property Get GuildName() As String
+    GuildName = p_GuildName
 End Property
 
 
@@ -90,10 +90,10 @@ End Sub
 
 
 
-Public Sub Inicializar(ByVal guildName As String, ByVal GuildNumber As Integer, ByVal Alineacion As ALINEACION_GUILD)
+Public Sub Inicializar(ByVal GuildName As String, ByVal GuildNumber As Integer, ByVal Alineacion As ALINEACION_GUILD)
 Dim i As Integer
 
-    p_GuildName = guildName
+    p_GuildName = GuildName
     p_GuildNumber = GuildNumber
     p_Alineacion = Alineacion
     Set p_OnlineMembers = New Collection
@@ -193,22 +193,20 @@ Public Function GetLeader() As String
     GetLeader = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Leader")
 End Function
 
-Public Function GetMemberList(ByVal Separador As String) As String
-Dim OldQ    As Integer
-Dim TempStr As String
-
+Public Function GetMemberList()     'No return type allows to return arrays :D
+    Dim OldQ    As Integer
+    Dim list() As String
+    Dim i As Long
+    
     OldQ = Me.CantidadDeMiembros
     
-    While OldQ > 0
-        TempStr = TempStr & GetVar(MEMBERSFILE, "Members", "Member" & OldQ) & Separador
-        OldQ = OldQ - 1
-    Wend
+    ReDim list(OldQ - 1) As String
     
-    If Len(TempStr) > 0 Then
-        TempStr = Left$(TempStr, Len(TempStr) - Len(Separador))
-    End If
+    For i = 1 To OldQ
+        list(i - 1) = GetVar(MEMBERSFILE, "Members", "Member" & i)
+    Next i
     
-    GetMemberList = TempStr
+    GetMemberList = list
 End Function
 
 Public Sub ConectarMiembro(ByVal UserIndex As Integer)
@@ -231,7 +229,7 @@ Dim CantP   As Integer
 Dim CantPs  As String
 Dim OldQs  As String
     
-    If Dir(CharPath & Nombre & ".chr") <> vbNullString Then
+    If dir(CharPath & Nombre & ".chr") <> vbNullString Then
         Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "GUILDINDEX", p_GuildNumber)
         Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "AspiranteA", "0")
         'CantPs = GetVar(CharPath & Nombre & ".chr", "GUILD", "ClanesParticipo")
@@ -260,7 +258,7 @@ Dim i           As Integer
 Dim EsMiembro   As Boolean
 Dim MiembroDe   As String
 
-    If Dir(CharPath & Nombre & ".chr") <> vbNullString Then
+    If dir(CharPath & Nombre & ".chr") <> vbNullString Then
         OldQ = CInt(GetVar(MEMBERSFILE, "INIT", "NroMembers"))
         i = 1
         Nombre = UCase$(Nombre)
@@ -298,25 +296,21 @@ End Sub
 'ASPIRANTES
 '
 
-Public Function GetAspirantes(ByVal Separador As String) As String
-Dim OldQ    As Integer
-Dim TempStr As String
-
+Public Function GetAspirantes()     'No return type allows to return arrays :D
+    Dim OldQ    As Integer
+    Dim list() As String
+    Dim i As Long
+    
     OldQ = Me.CantidadAspirantes()
     
-    While OldQ > 0
-        TempStr = TempStr & GetVar(SOLICITUDESFILE, "SOLICITUD" & OldQ, "Nombre") & Separador
-        OldQ = OldQ - 1
-    Wend
+    ReDim list(OldQ - 1) As String
     
-    If Len(TempStr) > 0 Then
-        TempStr = Left$(TempStr, Len(TempStr) - Len(Separador))
-    End If
+    For i = 1 To OldQ
+        list(i - 1) = GetVar(SOLICITUDESFILE, "SOLICITUD" & i, "Nombre")
+    Next i
     
-    GetAspirantes = TempStr
-
+    GetAspirantes = list
 End Function
-
 
 Public Function CantidadAspirantes() As Integer
 Dim Temps As String
@@ -448,11 +442,11 @@ Public Function GetGuildNews() As String
     GetGuildNews = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "GuildNews")
 End Function
 
-Public Sub SetDesc(ByRef Desc As String)
-    Call ReplaceInvalidChars(Desc)
-    Desc = Left$(Desc, DESCLENGTH)
+Public Sub SetDesc(ByRef desc As String)
+    Call ReplaceInvalidChars(desc)
+    desc = Left$(desc, DESCLENGTH)
     
-    Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Desc", Desc)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Desc", desc)
 End Sub
 
 Public Function GetDesc() As String
@@ -623,9 +617,9 @@ Public Function GetRelacion(ByVal OtroGuild As Integer) As RELACIONES_GUILD
     GetRelacion = p_Relaciones(OtroGuild)
 End Function
 
-Public Sub SetRelacion(ByVal GuildIndex As Integer, ByVal Relacion As RELACIONES_GUILD)
-    p_Relaciones(GuildIndex) = Relacion
-    Call WriteVar(RELACIONESFILE, "RELACIONES", GuildIndex, Relacion2String(Relacion))
+Public Sub SetRelacion(ByVal guildIndex As Integer, ByVal Relacion As RELACIONES_GUILD)
+    p_Relaciones(guildIndex) = Relacion
+    Call WriteVar(RELACIONESFILE, "RELACIONES", guildIndex, Relacion2String(Relacion))
 End Sub
 
 Public Sub SetPropuesta(ByVal Tipo As RELACIONES_GUILD, ByVal OtroGuild As Integer, ByRef Detalle As String)

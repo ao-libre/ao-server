@@ -50,7 +50,7 @@ Dim Arg3 As String
 Dim Arg4 As String
 Dim Ver As String
 Dim encpass As String
-Dim Pass As String
+Dim pass As String
 Dim mapa As Integer
 Dim name As String
 Dim ind
@@ -344,7 +344,7 @@ Procesado = True 'ver al final del sub
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 '¿El NPC puede comerciar?
                 If Npclist(UserList(UserIndex).flags.TargetNPC).Comercia = 0 Then
-                    If Len(Npclist(UserList(UserIndex).flags.TargetNPC).Desc) > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No tengo ningun interes en comerciar." & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
+                    If Len(Npclist(UserList(UserIndex).flags.TargetNPC).desc) > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & "No tengo ningun interes en comerciar." & "°" & CStr(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                     Exit Sub
                 End If
                 If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
@@ -384,7 +384,7 @@ Procesado = True 'ver al final del sub
                 'inicializa unas variables...
                 UserList(UserIndex).ComUsu.DestUsu = UserList(UserIndex).flags.TargetUser
                 UserList(UserIndex).ComUsu.DestNick = UserList(UserList(UserIndex).flags.TargetUser).name
-                UserList(UserIndex).ComUsu.Cant = 0
+                UserList(UserIndex).ComUsu.cant = 0
                 UserList(UserIndex).ComUsu.Objeto = 0
                 UserList(UserIndex).ComUsu.Acepto = False
                 
@@ -544,8 +544,8 @@ Procesado = True 'ver al final del sub
             'Analize chat...
             Call Statistics.ParseChat(rData)
             
-            If UserList(UserIndex).GuildIndex > 0 Then
-                Call SendData(SendTarget.ToDiosesYclan, UserList(UserIndex).GuildIndex, 0, "|+" & UserList(UserIndex).name & "> " & rData & FONTTYPE_GUILDMSG)
+            If UserList(UserIndex).guildIndex > 0 Then
+                Call SendData(SendTarget.ToDiosesYclan, UserList(UserIndex).guildIndex, 0, "|+" & UserList(UserIndex).name & "> " & rData & FONTTYPE_GUILDMSG)
 'TODO : Con la 0.11.7 se debe definir si esto vuelve o se borra (/CMSG overhead)
                 'Call SendData(SendTarget.ToClanArea, userindex, UserList(userindex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(userindex).Char.CharIndex))
             End If
@@ -576,8 +576,8 @@ Procesado = True 'ver al final del sub
     End If
     
     If UCase$(rData) = "/ONLINECLAN" Then
-        tStr = modGuilds.m_ListaDeMiembrosOnline(UserIndex, UserList(UserIndex).GuildIndex)
-        If UserList(UserIndex).GuildIndex <> 0 Then
+        tStr = modGuilds.m_ListaDeMiembrosOnline(UserIndex, UserList(UserIndex).guildIndex)
+        If UserList(UserIndex).guildIndex <> 0 Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Compañeros de tu clan conectados: " & tStr & FONTTYPE_GUILDMSG)
         Else
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No pertences a ningún clan." & FONTTYPE_GUILDMSG)
@@ -647,7 +647,7 @@ Procesado = True 'ver al final del sub
             Print #N,
             Print #N, "########################################################################"
             Print #N, "########################################################################"
-            Print #N, "Usuario:" & UserList(UserIndex).name & "  Fecha:" & Date & "    Hora:" & Time
+            Print #N, "Usuario:" & UserList(UserIndex).name & "  Fecha:" & Date & "    Hora:" & time
             Print #N, "########################################################################"
             Print #N, "BUG:"
             Print #N, Right$(rData, Len(rData) - 5)
@@ -671,7 +671,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La descripcion tiene caracteres invalidos." & FONTTYPE_INFO)
                 Exit Sub
             End If
-            UserList(UserIndex).Desc = Trim$(rData)
+            UserList(UserIndex).desc = Trim$(rData)
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La descripcion a cambiado." & FONTTYPE_INFO)
             Exit Sub
         Case "/VOTO "
@@ -727,7 +727,7 @@ Procesado = True 'ver al final del sub
             'Comando /APOSTAR basado en la idea de DarkLight,
             'pero con distinta probabilidad de exito.
         Case "/APOSTAR "
-            rData = Right(rData, Len(rData) - 9)
+            rData = Right$(rData, Len(rData) - 9)
             tLong = CLng(val(rData))
             If tLong > 32000 Then tLong = 32000
             N = tLong
@@ -771,7 +771,7 @@ Procesado = True 'ver al final del sub
     Select Case UCase$(Left$(rData, 10))
             'consultas populares muchacho'
         Case "/ENCUESTA "
-            rData = Right(rData, Len(rData) - 10)
+            rData = Right$(rData, Len(rData) - 10)
             If Len(rData) = 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Aca va la info de la encuesta" & FONTTYPE_GUILD)
                 Exit Sub
@@ -802,7 +802,6 @@ Procesado = True 'ver al final del sub
                     If Npclist(UserList(UserIndex).flags.TargetNPC).flags.Faccion = 0 Then
                         Call ExpulsarFaccionReal(UserIndex)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "º" & "Serás bienvenido a las fuerzas imperiales si deseas regresar." & "º" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
-                        Debug.Print "||" & vbWhite & "º" & "Serás bienvenido a las fuerzas imperiales si deseas regresar." & "º" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex)
                     Else
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "º" & "¡¡¡Sal de aquí bufón!!!" & "º" & str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex))
                     End If
@@ -970,9 +969,9 @@ Procesado = True 'ver al final del sub
 
     Select Case UCase$(Left$(rData, 14))
         Case "/MIEMBROSCLAN "
-            rData = Trim(Right(rData, Len(rData) - 14))
-            name = Replace(rData, "\", "")
-            name = Replace(rData, "/", "")
+            rData = Trim$(Right$(rData, Len(rData) - 14))
+            name = Replace$(rData, "\", "")
+            name = Replace$(rData, "/", "")
     
             If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| No existe el clan: " & rData & FONTTYPE_INFO)

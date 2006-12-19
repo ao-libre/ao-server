@@ -95,7 +95,7 @@ On Error Resume Next
 End Function
 
 
-Public Sub Push(ByVal Info As String, ByVal Nombre As String)
+Public Sub Push(ByVal Nombre As String)
 On Error Resume Next
 'Mete elemento en la cola
 Call Cola.Add(UCase$(Nombre))

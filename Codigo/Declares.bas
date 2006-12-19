@@ -59,6 +59,14 @@ Public Const MAXSPAWNATTEMPS = 60
 Public Const LoopAdEternum = 999
 Public Const FXSANGRE = 14
 
+''
+' The color of chats over head of dead characters.
+Public Const CHAT_COLOR_DEAD_CHAR As Long = &HC0C0C0
+
+''
+' The color of yells made by any kind of game administrator.
+Public Const CHAT_COLOR_GM_YELL As Long = &HF82FF
+
 
 Public Const iFragataFantasmal = 87
 Public Const iFragataReal = 190
@@ -76,7 +84,7 @@ End Enum
 
 Public Type tLlamadaGM
     Usuario As String * 255
-    Desc As String * 255
+    desc As String * 255
 End Type
 
 Public Enum PlayerType
@@ -87,10 +95,29 @@ Public Enum PlayerType
     Admin = 4
 End Enum
 
+Public Enum eClass
+    Mage        'Mago
+    Cleric      'Clérigo
+    Warrior     'Guerrero
+    Assasin     'Asesino
+    Thief       'Ladrón
+    Bard        'Bardo
+    Druid       'Druida
+    Bandit      'Bandido
+    Paladin     'Paladín
+    Hunter      'Cazador
+    Fisher      'Pescador
+    Blacksmith  'Herrero
+    Lumberjack  'Leñador
+    Miner       'Minero
+    Carpenter   'Carpintero
+    Pirat       'Pirata
+End Enum
+
 Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
-    Desc As String * 255
+    desc As String * 255
     crc As Long
     MagicWord As Long
 End Type
@@ -178,8 +205,6 @@ Public Enum TipoHechizo
     uInvocacion = 4
 End Enum
 
-Public Const DRAGON As Integer = 6
-
 Public Const MAX_MENSAJES_FORO As Byte = 35
 
 Public Const MAXUSERHECHIZOS As Byte = 35
@@ -248,8 +273,10 @@ Public Enum eNPCType
     GuardiaReal = 2
     Entrenador = 3
     Banquero = 4
+    Noble = 5
+    DRAGON = 6
     Timbero = 7
-    Guardiascaos = 8
+    GuardiasCaos = 8
 End Enum
 
 Public Const MIN_APUÑALAR As Byte = 10
@@ -486,7 +513,7 @@ Public Const STAT_MAXDEF As Byte = 99
 
 Public Type tHechizo
     Nombre As String
-    Desc As String
+    desc As String
     PalabrasMagicas As String
     
     HechizeroMsg As String
@@ -552,7 +579,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    Cant As Integer
+    cant As Integer
 
 '    Materializa As Byte
 '    ItemIndex As Byte
@@ -843,7 +870,7 @@ Public Type UserFlags
     Paralizado As Byte
     Estupidez As Byte
     Ceguera As Byte
-    Invisible As Byte
+    invisible As Byte
     Maldicion As Byte
     Bendicion As Byte
     Oculto As Byte
@@ -991,10 +1018,10 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    Desc As String ' Descripcion
+    desc As String ' Descripcion
     DescRM As String
     
-    clase As String
+    clase As eClass
     raza As String
     genero As String
     email As String
@@ -1044,7 +1071,7 @@ Public Type User
     
     EmpoCont As Byte
     
-    GuildIndex As Integer   'puntero al array global de guilds
+    guildIndex As Integer   'puntero al array global de guilds
     FundandoGuildAlineacion As ALINEACION_GUILD     'esto esta aca hasta que se parchee el cliente y se pongan cadenas de datos distintas para cada alineacion
     EscucheClan As Integer
     
@@ -1124,7 +1151,7 @@ Public Type NPCFlags
     Envenenado As Byte
     Paralizado As Byte
     Inmovilizado As Byte
-    Invisible As Byte
+    invisible As Byte
     Maldicion As Byte
     Bendicion As Byte
     
@@ -1166,7 +1193,7 @@ End Type
 Public Type npc
     name As String
     Char As Char 'Define como se vera
-    Desc As String
+    desc As String
     DescExtra As String
 
     NPCtype As eNPCType

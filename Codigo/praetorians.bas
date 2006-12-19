@@ -21,8 +21,8 @@ Public MAPA_PRETORIANO As Integer
 ''''''''''''''''''''''''''''''''''''''''''''''
 ''Estos numeros son necesarios por cuestiones de
 ''sonido. Son los numeros de los wavs del cliente.
-Private Const SONIDO_DRAGON_VIVO As Integer = 30
-Private Const SONIDO_DRAGON_MUERTO As Integer = 32
+Private Const SONIDO_Dragon_VIVO As Integer = 30
+Private Const SONIDO_Dragon_MUERTO As Integer = 32
 ''ALCOBAS REALES
 ''OJO LOS BICHOS TAN HARDCODEADOS, NO CAMBIAR EL MAPA DONDE
 ''ESTÁN UBICADOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -208,7 +208,7 @@ On Error GoTo errorh
             NPCAlInd = MapData(NPCPosM, X, Y).NpcIndex  ''por si implementamos algo contra NPCs
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
-                If (UserList(PJEnInd).flags.Invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) And Not UserList(PJEnInd).flags.AdminInvisible = 1 Then
+                If (UserList(PJEnInd).flags.invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) And Not UserList(PJEnInd).flags.AdminInvisible = 1 Then
                 'ToDo: Borrar los GMs
                     If (EsMagoOClerigo(PJEnInd)) Then
                         ''say no more, atacar a este
@@ -296,7 +296,7 @@ Else
                 ''si es un tile no analizado
                 PJEnInd = MapData(NPCPosM, X, Y).UserIndex    ''por si implementamos algo contra NPCs
                 If (PJEnInd > 0) Then
-                    If Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1) Then
+                    If Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1) Then
                         ''si no esta muerto.., ya encontro algo para ir a buscar
                         Call GreedyWalkTo(npcind, MAPA_PRETORIANO, UserList(PJEnInd).Pos.X, UserList(PJEnInd).Pos.Y)
                         Exit Sub
@@ -396,7 +396,7 @@ On Error GoTo errorh
                 
                 If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
                     If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.AdminInvisible = 1) Then
-                        If (UserList(PJEnInd).flags.Invisible = 1) Then
+                        If (UserList(PJEnInd).flags.invisible = 1) Then
                             ''usuario invisible, vamos a ver si se la podemos sacar
                             
                             If (RandomNumber(1, 100) <= 35) Then
@@ -413,7 +413,7 @@ On Error GoTo errorh
                             End If
                         ElseIf (UserList(PJEnInd).flags.Paralizado = 1) Then
                             If (BestTarget > 0) Then
-                                If Not (UserList(BestTarget).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+                                If Not (UserList(BestTarget).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                                 ''encontre un paralizado visible, y no hay un besttarget invisible (paralizado invisible)
                                 BestTarget = PJEnInd
                                 PJBestTarget = True
@@ -477,7 +477,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX - 1, NPCPosY).UserIndex
         If (PJEnInd > 0) Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 ''esta es una forma muy facil de matar 2 pajaros
                 ''de un tiro. Se aleja del usuario pq el centro va a
                 ''estar ocupado, y a la vez se aproxima al rey, manteniendo
@@ -489,7 +489,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX + 1, NPCPosY).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -497,7 +497,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY - 1).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -505,7 +505,7 @@ On Error GoTo errorh
         
         PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY + 1).UserIndex
         If PJEnInd > 0 Then
-            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+            If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
                 Call VolverAlCentro(npcind)
                 Exit Sub
             End If
@@ -616,7 +616,7 @@ On Error GoTo errorh
                 End If
 
                 If PJEnInd > 0 And Not hayPretorianos Then
-                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Ceguera = 1) Then
+                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Ceguera = 1) Then
                         ''si no esta muerto o invisible o ciego...
                         dist = Sqr((UserList(PJEnInd).Pos.X - NPCPosX) ^ 2 + (UserList(PJEnInd).Pos.Y - NPCPosY) ^ 2)
                         If (dist < distBestTarget Or BestTarget = 0) Then
@@ -707,7 +707,7 @@ On Error GoTo errorh
         For Y = NPCPosY - 7 To NPCPosY + 7
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) Then
-                If (Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) Then
+                If (Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) Then
                     ''caluclo la distancia al PJ, si esta mas cerca q el actual
                     ''mejor besttarget entonces ataco a ese.
                     If (BestTarget > 0) Then
@@ -852,7 +852,7 @@ On Error GoTo errorh
                 ElseIf (PJEnInd > 0) Then ''aggressor
                     If Not (UserList(PJEnInd).flags.Muerto = 1) Then
                         If (UserList(PJEnInd).flags.Paralizado = 0) Then
-                            If (Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1)) Then
+                            If (Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1)) Then
                                 ''PJ movil y visible, jeje, si o si es target
                                 BestTarget = PJEnInd
                                 PJBestTarget = True
@@ -949,7 +949,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX - 1, NPCPosY).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             ''esta es una forma muy facil de matar 2 pajaros
             ''de un tiro. Se aleja del usuario pq el centro va a
             ''estar ocupado, y a la vez se aproxima al rey, manteniendo
@@ -961,7 +961,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX + 1, NPCPosY).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If
@@ -969,7 +969,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY - 1).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If
@@ -977,7 +977,7 @@ On Error GoTo errorh
     
     PJEnInd = MapData(NPCPosM, NPCPosX, NPCPosY + 1).UserIndex
     If PJEnInd > 0 Then
-        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.Invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
+        If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1) Then
             Call VolverAlCentro(npcind)
             Exit Sub
         End If
@@ -1303,22 +1303,22 @@ On Error GoTo errorh
     Select Case bs
         Case 5
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "°Rahma°" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_VIVO)
+            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_VIVO)
         Case 4
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "°vôrtax °" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_VIVO)
+            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_VIVO)
         Case 3
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "°Zill°" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_VIVO)
+            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_VIVO)
         Case 2
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "°yäkà E'nta°" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_VIVO)
+            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_VIVO)
         Case 1
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "°¡¡Koràtá!!°" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_VIVO)
+            Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_VIVO)
         Case 0
             Call SendData(SendTarget.ToNPCArea, npcind, Npclist(npcind).Pos.Map, "||" & vbGreen & "° °" & str(Npclist(npcind).Char.CharIndex))
-            Call SendData(SendTarget.ToMap, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_DRAGON_MUERTO)
+            Call SendData(SendTarget.ToMap, npcind, Npclist(npcind).Pos.Map, "TW" & SONIDO_Dragon_MUERTO)
             NPCPosX = Npclist(npcind).Pos.X
             NPCPosY = Npclist(npcind).Pos.Y
             NPCPosM = Npclist(npcind).Pos.Map

@@ -493,9 +493,9 @@ Dim DañoArma As Long, DañoUsuario As Long, Arma As ObjData, ModifClase As Single
 Dim proyectil As ObjData
 Dim DañoMaxArma As Long
 
-''sacar esto si no queremos q la matadracos mate el dragon si o si
-Dim matodragon As Boolean
-matodragon = False
+''sacar esto si no queremos q la matadracos mate el Dragon si o si
+Dim matoDragon As Boolean
+matoDragon = False
 
 
 If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
@@ -505,14 +505,14 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     ' Ataca a un npc?
     If NpcIndex > 0 Then
         
-        'Usa la mata dragones?
-        If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then ' Usa la matadragones?
+        'Usa la mata Dragones?
+        If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then ' Usa la mataDragones?
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca dragon?
+                If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca Dragon?
                 DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
-                matodragon = True ''sacar esto si no queremos q la matadracos mate el dragon si o si
-            Else ' Sino es dragon daño es 1
+                matoDragon = True ''sacar esto si no queremos q la matadracos mate el Dragon si o si
+            Else ' Sino es Dragon daño es 1
                 DañoArma = 1
                 DañoMaxArma = 1
             End If
@@ -536,7 +536,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     Else ' Ataca usuario
         If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                DañoArma = 1 ' Si usa la espada matadragones daño es 1
+                DañoArma = 1 ' Si usa la espada mataDragones daño es 1
             DañoMaxArma = 1
         Else
            If Arma.proyectil = 1 Then
@@ -562,8 +562,8 @@ End If
 
 DañoUsuario = RandomNumber(UserList(UserIndex).Stats.MinHIT, UserList(UserIndex).Stats.MaxHIT)
 
-''sacar esto si no queremos q la matadracos mate el dragon si o si
-If matodragon Then
+''sacar esto si no queremos q la matadracos mate el Dragon si o si
+If matoDragon Then
     CalcularDaño = Npclist(NpcIndex).Stats.MinHP + Npclist(NpcIndex).Stats.def
 Else
     CalcularDaño = (((3 * DañoArma) + ((DañoMaxArma / 5) * Maximo(0, (UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) - 15))) + DañoUsuario) * ModifClase)
@@ -603,7 +603,7 @@ End If
  
 If Npclist(NpcIndex).Stats.MinHP <= 0 Then
         
-        ' Si era un Dragon perdemos la espada matadragones
+        ' Si era un Dragon perdemos la espada mataDragones
         If Npclist(NpcIndex).NPCtype = DRAGON Then
             'Si tiene equipada la matadracos se la sacamos
             If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
@@ -963,13 +963,13 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim Index As Integer
-    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim index As Integer
+    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
             
     'Look for user
-    If Index > 0 Then
-        If UserList(Index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+    If index > 0 Then
+        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
             Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
             Call SendUserStatsBox(UserIndex)
             Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
