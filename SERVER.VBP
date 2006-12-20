@@ -63,6 +63,7 @@ Module=modCentinela; Codigo\modCentinela.bas
 Class=clsByteQueue; Codigo\clsByteQueue.cls
 Class=clsIniReader; Codigo\clsIniReader.cls
 Module=Statistics; Codigo\Statistics.bas
+Module=Protocol; Codigo\Protocol.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
