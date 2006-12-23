@@ -114,6 +114,15 @@ Public Enum eClass
     Pirat       'Pirata
 End Enum
 
+Public Enum eClanType
+    ct_RoyalArmy
+    ct_Evil
+    ct_Neutral
+    ct_GM
+    ct_Legal
+    ct_Criminal
+End Enum
+
 Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
@@ -579,7 +588,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
 
 '    Materializa As Byte
 '    ItemIndex As Byte
