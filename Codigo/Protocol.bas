@@ -386,7 +386,7 @@ Private Enum ClientPacketID
     ChangeMapInfoBackup     '/MODMAPINFO BACKUP
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
-    ShowSeverForm           '/SHOW INT
+    ShowServerForm           '/SHOW INT
     Night                   '/NOCHE
     KickAllChars            '/ECHARTODOSPJS
     RequestTCPStats         '/TCPESSTATS
@@ -427,7 +427,7 @@ End Enum
 
 Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -901,17 +901,39 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.SaveMap                 '/GUARDAMAPA
         Case ClientPacketID.ChangeMapInfoPK         '/MODMAPINFO PK
         Case ClientPacketID.ChangeMapInfoBackup     '/MODMAPINFO BACKUP
+        
         Case ClientPacketID.SaveChars               '/GRABAR
+            Call HandleSaveChars(UserIndex)
+        
         Case ClientPacketID.CleanSOS                '/BORRAR SOS
-        Case ClientPacketID.ShowSeverForm           '/SHOW INT
+            Call HandleCleanSOS(UserIndex)
+        
+        Case ClientPacketID.ShowServerForm          '/SHOW INT
+            Call HandleShowServerForm(UserIndex)
+            
         Case ClientPacketID.Night                   '/NOCHE
+            Call HandleNight(UserIndex)
+        
         Case ClientPacketID.KickAllChars            '/ECHARTODOSPJS
+            Call HandleKickAllChars(UserIndex)
+        
         Case ClientPacketID.RequestTCPStats         '/TCPESSTATS
+            Call HandleRequestTCPStats(UserIndex)
+        
         Case ClientPacketID.ReloadNPCs              '/RELOADNPCS
+            Call HandleReloadNPCs(UserIndex)
+        
         Case ClientPacketID.ReloadServerIni         '/RELOADSINI
+            Call HandleReloadServerIni(UserIndex)
+        
         Case ClientPacketID.ReloadSpells            '/RELOADHECHIZOS
+            Call HandleReloadSpells(UserIndex)
+        
         Case ClientPacketID.ReloadObjects           '/RELOADOBJ
+            Call HandleReloadObjects(UserIndex)
+        
         Case ClientPacketID.Restart                 '/REINICIAR
+            Call HandleRestart(UserIndex)
         
         Case ClientPacketID.ResetAutoUpdate         '/AUTOUPDATE
             Call HandleResetAutoUpdate(UserIndex)
@@ -934,7 +956,7 @@ End Sub
 
 Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1017,7 +1039,7 @@ End Sub
 
 Private Sub HandleThrowDices(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1042,7 +1064,7 @@ End Sub
 
 Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1146,7 +1168,7 @@ End Sub
 
 Private Sub HandleTalk(UserIndex)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1208,7 +1230,7 @@ End Sub
 
 Private Sub HandleYell(UserIndex)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1274,7 +1296,7 @@ End Sub
 
 Private Sub HandleWhisper(UserIndex)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1349,7 +1371,7 @@ End Sub
 
 Private Sub HandleWalk(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1463,7 +1485,7 @@ End Sub
 
 Private Sub HandleRequestPositionUpdate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1482,7 +1504,7 @@ End Sub
 
 Private Sub HandleAttack(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1532,7 +1554,7 @@ End Sub
 
 Private Sub HandlePickUp(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1563,7 +1585,7 @@ End Sub
 
 Private Sub HanldeCombatModeToggle(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1588,7 +1610,7 @@ End Sub
 
 Private Sub HandleSafeToggle(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1612,7 +1634,7 @@ End Sub
 
 Private Sub HandleRequestGuildLeaderInfo(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1631,7 +1653,7 @@ End Sub
 
 Private Sub HandleRequestAtributes(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1648,7 +1670,7 @@ End Sub
 
 Private Sub HandleRequestFame(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1665,7 +1687,7 @@ End Sub
 
 Private Sub HandleRequestSkills(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1682,7 +1704,7 @@ End Sub
 
 Private Sub HandleRequestMiniStats(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1699,7 +1721,7 @@ End Sub
 
 Private Sub HandleCommerceEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1718,7 +1740,7 @@ End Sub
 
 Private Sub HandleUserCommerceEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1746,7 +1768,7 @@ End Sub
 
 Private Sub HandleBankEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1767,7 +1789,7 @@ End Sub
 
 Private Sub HandleUserCommerceOk(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1785,7 +1807,7 @@ End Sub
 
 Private Sub HandleUserCommerceReject(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1820,7 +1842,7 @@ End Sub
 
 Private Sub HandleDrop(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1866,7 +1888,7 @@ End Sub
 
 Private Sub HandleCastSpell(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1892,7 +1914,7 @@ End Sub
 
 Private Sub HandleLeftClick(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1919,7 +1941,7 @@ End Sub
 
 Private Sub HandleDoubleClick(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -1946,7 +1968,7 @@ End Sub
 
 Private Sub HandleWork(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2001,7 +2023,7 @@ End Sub
 
 Private Sub HandleUseSpellMacro(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2022,7 +2044,7 @@ End Sub
 
 Private Sub HandleUseItem(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2055,7 +2077,7 @@ End Sub
 
 Private Sub HandleCraftBlacksmith(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2084,7 +2106,7 @@ End Sub
 
 Private Sub HandleCraftCarpenter(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2113,7 +2135,7 @@ End Sub
 
 Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2524,7 +2546,7 @@ End Sub
 
 Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2572,7 +2594,7 @@ End Sub
 
 Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2617,7 +2639,7 @@ End Sub
 
 Private Sub HandleEquipItem(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2653,7 +2675,7 @@ End Sub
 
 Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2682,7 +2704,7 @@ End Sub
 
 Private Sub HandleModifySkills(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2740,7 +2762,7 @@ End Sub
 
 Private Sub HandleTrain(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2782,7 +2804,7 @@ End Sub
 
 Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2831,7 +2853,7 @@ End Sub
 
 Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2873,7 +2895,7 @@ End Sub
 
 Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2916,7 +2938,7 @@ End Sub
 
 Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -2958,7 +2980,7 @@ End Sub
 
 Private Sub HandleForumPost(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3033,7 +3055,7 @@ End Sub
 
 Private Sub HandleMoveSpell(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3062,7 +3084,7 @@ End Sub
 
 Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3101,7 +3123,7 @@ End Sub
 
 Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3195,7 +3217,7 @@ End Sub
 
 Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3241,7 +3263,7 @@ End Sub
 
 Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3287,7 +3309,7 @@ End Sub
 
 Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3333,7 +3355,7 @@ End Sub
 
 Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3379,7 +3401,7 @@ End Sub
 
 Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3423,7 +3445,7 @@ End Sub
 
 Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3467,7 +3489,7 @@ End Sub
 
 Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3512,7 +3534,7 @@ End Sub
 
 Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3557,7 +3579,7 @@ End Sub
 
 Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3601,7 +3623,7 @@ End Sub
 
 Private Sub HandleGuildAlliancePropList(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3618,7 +3640,7 @@ End Sub
 
 Private Sub HandleGuildPeacePropList(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3635,7 +3657,7 @@ End Sub
 
 Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3682,7 +3704,7 @@ End Sub
 
 Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3715,7 +3737,7 @@ End Sub
 
 Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3763,7 +3785,7 @@ End Sub
 
 Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3816,7 +3838,7 @@ End Sub
 
 Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3861,7 +3883,7 @@ End Sub
 
 Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3894,7 +3916,7 @@ End Sub
 
 Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3927,7 +3949,7 @@ End Sub
 
 Private Sub HandleGuildOpenElections(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3952,7 +3974,7 @@ End Sub
 
 Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -3996,7 +4018,7 @@ End Sub
 
 Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4029,7 +4051,7 @@ End Sub
 
 Private Sub HandleOnline(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4057,7 +4079,7 @@ End Sub
 
 Private Sub HandleQuit(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4098,7 +4120,7 @@ End Sub
 
 Private Sub HandleGuildLeave(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4127,7 +4149,7 @@ End Sub
 
 Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4184,7 +4206,7 @@ End Sub
 
 Private Sub HandlePetStand(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4227,7 +4249,7 @@ End Sub
 
 Private Sub HandlePetFollow(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4270,7 +4292,7 @@ End Sub
 
 Private Sub HandleTrainList(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4310,7 +4332,7 @@ End Sub
 
 Private Sub HandleRest(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4355,7 +4377,7 @@ End Sub
 
 Private Sub HandleMeditate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4432,7 +4454,7 @@ End Sub
 
 Private Sub HandleResucitate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4468,7 +4490,7 @@ End Sub
 
 Private Sub HandleHeal(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4505,7 +4527,7 @@ End Sub
 
 Private Sub HandleRequestStats(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4522,7 +4544,7 @@ End Sub
 
 Private Sub HandleHelp(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4539,7 +4561,7 @@ End Sub
 
 Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4633,7 +4655,7 @@ End Sub
 
 Private Sub HandleBankStart(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4671,7 +4693,7 @@ End Sub
 
 Private Sub HandleEnlist(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4708,7 +4730,7 @@ End Sub
 
 Private Sub HandleInformation(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4753,7 +4775,7 @@ End Sub
 
 Private Sub HandleReward(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4798,7 +4820,7 @@ End Sub
 
 Private Sub HandleRequestMOTD(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4815,7 +4837,7 @@ End Sub
 
 Private Sub HandleUpTime(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4866,7 +4888,7 @@ End Sub
 
 Private Sub HandlePartyLeave(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4883,7 +4905,7 @@ End Sub
 
 Private Sub HandlePartyCreate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4902,7 +4924,7 @@ End Sub
 
 Private Sub HandlePartyJoin(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4919,7 +4941,7 @@ End Sub
 
 Private Sub HandleInquiry(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4936,7 +4958,7 @@ End Sub
 
 Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -4982,7 +5004,7 @@ End Sub
 
 Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5026,7 +5048,7 @@ End Sub
 
 Private Sub HandleCentinelReport(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5047,7 +5069,7 @@ End Sub
 
 Private Sub HandleGuildOnline(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5074,7 +5096,7 @@ End Sub
 
 Private Sub HandlePartyOnline(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5091,7 +5113,7 @@ End Sub
 
 Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5137,7 +5159,7 @@ End Sub
 
 Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5177,7 +5199,7 @@ End Sub
 
 Private Sub HandleGMRequest(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5203,7 +5225,7 @@ End Sub
 
 Private Sub HandleBugReport(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5246,7 +5268,7 @@ End Sub
 
 Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5292,7 +5314,7 @@ End Sub
 
 Private Sub HandleGuildVote(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5334,7 +5356,7 @@ End Sub
 
 Private Sub HandlePunishments(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5389,7 +5411,7 @@ End Sub
 
 Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5450,7 +5472,7 @@ End Sub
 
 Private Sub HandleGamble(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5510,7 +5532,7 @@ End Sub
 
 Private Sub HandleInquiryVote(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5535,7 +5557,7 @@ End Sub
 
 Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5587,7 +5609,7 @@ End Sub
 
 Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5638,7 +5660,7 @@ End Sub
 
 Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5688,7 +5710,7 @@ End Sub
 
 Private Sub HandleDenounce(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5731,7 +5753,7 @@ End Sub
 
 Private Sub HandleGuildFundate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5778,7 +5800,7 @@ End Sub
 
 Private Sub HandlePartyKick(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5821,7 +5843,7 @@ End Sub
 
 Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5864,7 +5886,7 @@ End Sub
 
 Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5909,7 +5931,7 @@ End Sub
 
 Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -5962,7 +5984,7 @@ End Sub
 
 Private Sub HandleGMMessage(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6006,7 +6028,7 @@ End Sub
 
 Private Sub HandleShowName(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6031,7 +6053,7 @@ End Sub
 
 Private Sub HandleOnlineRoyalArmy(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6063,7 +6085,7 @@ End Sub
 
 Private Sub HandleOnlineChaosLegion(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6095,7 +6117,7 @@ End Sub
 
 Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6160,7 +6182,7 @@ End Sub
 
 Private Sub HandleComment(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6198,7 +6220,7 @@ End Sub
 
 Private Sub HandleTime(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 '
 '***************************************************
@@ -6217,7 +6239,7 @@ End Sub
 
 Public Sub HandleChatColor(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Lucas Tavolaro Ortiz (Tavo)
+'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/23/06
 'Change the user`s chat color
 '***************************************************
@@ -6237,7 +6259,7 @@ End Sub
 
 Public Sub HandleIgnored(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Lucas Tavolaro Ortiz (Tavo)
+'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/23/06
 'Ignored the user
 '***************************************************
@@ -6256,7 +6278,7 @@ End Sub
 
 Public Sub HandleResetAutoUpdate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Lucas Tavolaro Ortiz (Tavo)
+'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/23/06
 'Reset the AutoUpdate
 '***************************************************
@@ -6271,6 +6293,292 @@ Public Sub HandleResetAutoUpdate(ByVal UserIndex As Integer)
 End Sub
 
 ''
+' Handles the "Restart" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Public Sub HandleRestart(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Restart the game
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+    
+        If UCase$(.name) <> "EL OSO" Or UCase$(.name) <> "MARAXUS" Then Exit Sub
+        
+        'time and Time BUG!
+        Call LogGM(.name, .name & " reinicio el mundo", False)
+        
+        Call ReiniciarServidor(True)
+    End With
+End Sub
+
+''
+' Handles the "ReloadObjects" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Public Sub HandleReloadObjects(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Reload the objects
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha recargado a los objetos. ", False)
+        
+        Call LoadOBJData
+    End With
+End Sub
+
+''
+' Handles the "ReloadSpells" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Public Sub HandleReloadSpells(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Reload the spells
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha recargado los hechizos.", False)
+        
+        Call CargarHechizos
+    End With
+End Sub
+
+''
+' Handle the "ReloadServerIni" message.
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleReloadServerIni(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Reload the Server`s INI
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha recargado los INITs.", False)
+        
+        Call LoadSini
+    End With
+End Sub
+
+''
+' Handle the "ReloadNPCs" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleReloadNPCs(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Reload the Server`s NPC
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha recargado los NPCs.", False)
+    
+        Call CargaNpcsDat
+    
+        Call WriteConsoleMsg(UserIndex, "Npcs.dat y npcsHostiles.dat recargados.", FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub
+
+''
+' Handle the "RequestTCPStats" message
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Send the TCP`s stadistics
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Dim list As String
+        Dim count As Long
+        Dim i As Long
+        
+        Call LogGM(.name, .name & " ha pedido las estadisticas del TCP.", False)
+    
+        Call WriteConsoleMsg(UserIndex, "Los datos están en BYTES.", FontTypeNames.FONTTYPE_INFO)
+        
+        'Send the stats
+        With TCPESStats
+            Call WriteConsoleMsg(UserIndex, "IN/s: " & .BytesRecibidosXSEG & " OUT/s: " & .BytesEnviadosXSEG, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "IN/s MAX: " & .BytesRecibidosXSEGMax & " -> " & .BytesRecibidosXSEGCuando, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "OUT/s MAX: " & .BytesEnviadosXSEGMax & " -> " & .BytesEnviadosXSEGCuando, FontTypeNames.FONTTYPE_INFO)
+        End With
+        
+        'Search for users that are working
+        For LoopC = 1 To LastUser
+            With UserList(i)
+                If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
+                    If .ColaSalida.count > 0 Then
+                        list = list & .name & " (" & .ColaSalida.count & "), "
+                        count = count + 1
+                    End If
+                End If
+            End With
+        Next LoopC
+        
+        Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub
+
+''
+' Handle the "KickAllChars" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleKickAllChars(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Kick all the chars that are online
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha echado a todos los personajes.", False)
+        
+        Call EcharPjsNoPrivilegiados
+    End With
+End Sub
+
+''
+' Handle the "Night" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleNight(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .name <> UCase$("EL OSO") Or UCase$(.name) <> "MARAXUS" Then Exit Sub
+        
+        DeNoche = Not DeNoche
+        
+        Dim i As Long
+        
+        For i = 1 To NumUsers
+            If UserList(i).UserLogged And UserList(i).ConnID > -1 Then
+                Call EnviarNoche(i)
+            End If
+        Next LoopC
+        
+    End With
+End Sub
+
+''
+' Handle the "ShowServerForm" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleShowServerForm(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Show the server form
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha solicitado mostrar el formulario del servidor.", False)
+        Call frmMain.mnuMostrar_Click
+    End With
+End Sub
+
+''
+' Handle the "CleanSOS" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleCleanSOS(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Clean the SOS
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha borrado los SOS", False)
+        
+        Call Ayuda.Reset
+    End With
+End Sub
+
+''
+' Handle the "SaveChars" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleSaveChars(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/23/06
+'Save the characters
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha guardado todos los chars", False)
+        
+        Call mdParty.ActualizaExperiencias
+        Call GuardarUsuarios
+    End With
+End Sub
+
+''
 ' Writes the "Logged" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -6278,7 +6586,7 @@ End Sub
 
 Public Function WriteLoggedMessage(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Logged" message to the given user's outgoing data buffer
 '***************************************************
@@ -6293,7 +6601,7 @@ End Function
 
 Public Sub WriteRemoveAllDialogs(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "RemoveDialogs" message to the given user's outgoing data buffer
 '***************************************************
@@ -6309,7 +6617,7 @@ End Sub
 
 Public Sub WriteRemoveCharDialog(ByVal UserIndex As Integer, ByVal CharIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "RemoveCharDialog" message to the given user's outgoing data buffer
 '***************************************************
@@ -6327,7 +6635,7 @@ End Sub
 
 Public Sub WriteNavigateToggle(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "NavigateToggle" message to the given user's outgoing data buffer
 '***************************************************
@@ -6342,7 +6650,7 @@ End Sub
 
 Public Sub WriteDisconnect(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Disconnect" message to the given user's outgoing data buffer
 '***************************************************
@@ -6357,7 +6665,7 @@ End Sub
 
 Public Sub WriteCommerceEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CommerceEnd" message to the given user's outgoing data buffer
 '***************************************************
@@ -6372,7 +6680,7 @@ End Sub
 
 Public Sub WriteBankEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BankEnd" message to the given user's outgoing data buffer
 '***************************************************
@@ -6387,7 +6695,7 @@ End Sub
 
 Public Sub WriteCommerceInit(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CommerceInit" message to the given user's outgoing data buffer
 '***************************************************
@@ -6402,7 +6710,7 @@ End Sub
 
 Public Sub WriteBankInit(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BankInit" message to the given user's outgoing data buffer
 '***************************************************
@@ -6417,7 +6725,7 @@ End Sub
 
 Public Sub WriteUserCommerceInit(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserCommerceInit" message to the given user's outgoing data buffer
 '***************************************************
@@ -6432,7 +6740,7 @@ End Sub
 
 Public Sub WriteUserCommerceEnd(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserCommerceEnd" message to the given user's outgoing data buffer
 '***************************************************
@@ -6447,7 +6755,7 @@ End Sub
 
 Public Sub WriteShowBlacksmithForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowBlacksmithForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -6462,7 +6770,7 @@ End Sub
 
 Public Sub WriteShowCarpenterForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowCarpenterForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -6477,7 +6785,7 @@ End Sub
 
 Public Sub WriteNPCSwing(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "NPCSwing" message to the given user's outgoing data buffer
 '***************************************************
@@ -6492,7 +6800,7 @@ End Sub
 
 Public Sub WriteNPCKillUser(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "NPCKillUser" message to the given user's outgoing data buffer
 '***************************************************
@@ -6507,7 +6815,7 @@ End Sub
 
 Public Sub WriteBlockedWithShieldUser(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlockedWithShieldUser" message to the given user's outgoing data buffer
 '***************************************************
@@ -6522,7 +6830,7 @@ End Sub
 
 Public Sub WriteBlockedWithShieldOther(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlockedWithShieldOther" message to the given user's outgoing data buffer
 '***************************************************
@@ -6537,7 +6845,7 @@ End Sub
 
 Public Sub WriteUserSwing(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserSwing" message to the given user's outgoing data buffer
 '***************************************************
@@ -6552,7 +6860,7 @@ End Sub
 
 Public Sub WriteUpdateNeeded(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateNeeded" message to the given user's outgoing data buffer
 '***************************************************
@@ -6567,7 +6875,7 @@ End Sub
 
 Public Sub WriteSafeModeOn(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "SafeModeOn" message to the given user's outgoing data buffer
 '***************************************************
@@ -6582,7 +6890,7 @@ End Sub
 
 Public Sub WriteSafeModeOff(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "SafeModeOff" message to the given user's outgoing data buffer
 '***************************************************
@@ -6597,7 +6905,7 @@ End Sub
 
 Public Sub WriteNobilityLost(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "NobilityLost" message to the given user's outgoing data buffer
 '***************************************************
@@ -6612,7 +6920,7 @@ End Sub
 
 Public Sub WriteCantUseWhileMeditating(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CantUseWhileMeditating" message to the given user's outgoing data buffer
 '***************************************************
@@ -6627,7 +6935,7 @@ End Sub
 
 Public Sub WriteUpdateSta(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateMana" message to the given user's outgoing data buffer
 '***************************************************
@@ -6645,7 +6953,7 @@ End Sub
 
 Public Sub WriteUpdateMana(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateMana" message to the given user's outgoing data buffer
 '***************************************************
@@ -6663,7 +6971,7 @@ End Sub
 
 Public Sub WriteUpdateHP(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateMana" message to the given user's outgoing data buffer
 '***************************************************
@@ -6681,7 +6989,7 @@ End Sub
 
 Public Sub WriteUpdateGold(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateGold" message to the given user's outgoing data buffer
 '***************************************************
@@ -6699,7 +7007,7 @@ End Sub
 
 Public Sub WriteUpdateExp(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateExp" message to the given user's outgoing data buffer
 '***************************************************
@@ -6719,7 +7027,7 @@ End Sub
 
 Public Sub WriteChangeMap(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal version As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeMap" message to the given user's outgoing data buffer
 '***************************************************
@@ -6738,7 +7046,7 @@ End Sub
 
 Public Sub WritePosUpdate(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "PosUpdate" message to the given user's outgoing data buffer
 '***************************************************
@@ -6759,7 +7067,7 @@ End Sub
 
 Public Sub WriteNPCHitUser(ByVal UserIndex As Integer, ByVal Target As PartesCuerpo, ByVal damage As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "NPCHitUser" message to the given user's outgoing data buffer
 '***************************************************
@@ -6779,7 +7087,7 @@ End Sub
 
 Public Sub WriteUserHitNPC(ByVal UserIndex As Integer, ByVal damage As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserHitNPC" message to the given user's outgoing data buffer
 '***************************************************
@@ -6798,7 +7106,7 @@ End Sub
 
 Public Sub WriteUserAttackedSwing(ByVal UserIndex As Integer, ByVal attacker As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserAttackedSwing" message to the given user's outgoing data buffer
 '***************************************************
@@ -6819,7 +7127,7 @@ End Sub
 
 Public Sub WriteUserHittedByUser(ByVal UserIndex As Integer, ByVal Target As PartesCuerpo, ByVal attackerChar As Integer, ByVal damage As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserHittedByUser" message to the given user's outgoing data buffer
 '***************************************************
@@ -6842,7 +7150,7 @@ End Sub
 
 Public Sub WriteUserHittedUser(ByVal UserIndex As Integer, ByVal Target As PartesCuerpo, ByVal attackedChar As Integer, ByVal damage As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserHittedUser" message to the given user's outgoing data buffer
 '***************************************************
@@ -6865,7 +7173,7 @@ End Sub
 
 Public Sub WriteChatOverHead(ByVal UserIndex As Integer, ByVal chat As String, ByVal CharIndex As Integer, ByVal Color As Long)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChatOverHead" message to the given user's outgoing data buffer
 '***************************************************
@@ -6882,7 +7190,7 @@ End Sub
 
 Public Sub WriteConsoleMsg(ByVal UserIndex As Integer, ByVal chat As String, ByVal FontIndex As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ConsoleMsg" message to the given user's outgoing data buffer
 '***************************************************
@@ -6898,7 +7206,7 @@ End Sub
 
 Public Sub WriteGuildChat(ByVal UserIndex As Integer, ByVal chat As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildChat" message to the given user's outgoing data buffer
 '***************************************************
@@ -6914,7 +7222,7 @@ End Sub
 
 Public Sub WriteShowMessageBox(ByVal UserIndex As Integer, ByVal message As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowMessageBox" message to the given user's outgoing data buffer
 '***************************************************
@@ -6932,7 +7240,7 @@ End Sub
 
 Public Sub WriteUserIndexInServer(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserIndexInServer" message to the given user's outgoing data buffer
 '***************************************************
@@ -6950,7 +7258,7 @@ End Sub
 
 Public Sub WriteUserCharIndexInServer(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserIndexInServer" message to the given user's outgoing data buffer
 '***************************************************
@@ -6985,7 +7293,7 @@ Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Intege
                                 ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
                                 ByVal privileges As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CharacterCreate" message to the given user's outgoing data buffer
 '***************************************************
@@ -7018,7 +7326,7 @@ End Sub
 
 Public Sub WriteCharacterRemove(ByVal UserIndex As Integer, ByVal CharIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CharacterRemove" message to the given user's outgoing data buffer
 '***************************************************
@@ -7039,7 +7347,7 @@ End Sub
 
 Public Sub WriteCharacterMove(ByVal UserIndex As Integer, ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CharacterMove" message to the given user's outgoing data buffer
 '***************************************************
@@ -7070,7 +7378,7 @@ Public Sub WriteCharacterChange(ByVal UserIndex As Integer, ByVal body As Intege
                                 ByVal CharIndex As Integer, ByVal weapon As Integer, ByVal shield As Integer, _
                                 ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CharacterChange" message to the given user's outgoing data buffer
 '***************************************************
@@ -7100,7 +7408,7 @@ End Sub
 
 Public Sub WriteObjectCreate(ByVal UserIndex As Integer, ByVal GrhIndex As Integer, ByVal X As Byte, ByVal Y As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ObjectCreate" message to the given user's outgoing data buffer
 '***************************************************
@@ -7122,7 +7430,7 @@ End Sub
 
 Public Sub WriteObjectDelete(ByVal UserIndex As Integer, ByVal X As Byte, ByVal Y As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ObjectDelete" message to the given user's outgoing data buffer
 '***************************************************
@@ -7144,7 +7452,7 @@ End Sub
 
 Public Sub WriteBlockPosition(ByVal UserIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal Blocked As Boolean)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlockPosition" message to the given user's outgoing data buffer
 '***************************************************
@@ -7166,7 +7474,7 @@ End Sub
 
 Public Sub WritePlayMidi(ByVal UserIndex As Integer, ByVal midi As Byte, Optional ByVal loops As Integer = -1)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "PlayMidi" message to the given user's outgoing data buffer
 '***************************************************
@@ -7186,7 +7494,7 @@ End Sub
 
 Public Sub WritePlayWave(ByVal UserIndex As Integer, ByVal wave As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "PlayWave" message to the given user's outgoing data buffer
 '***************************************************
@@ -7202,7 +7510,7 @@ End Sub
 
 Public Sub WriteGuildList(ByVal UserIndex As Integer, ByRef guildList() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildList" message to the given user's outgoing data buffer
 '***************************************************
@@ -7231,7 +7539,7 @@ End Sub
 
 Public Sub WritePlayFireSound(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildList" message to the given user's outgoing data buffer
 '***************************************************
@@ -7248,7 +7556,7 @@ End Sub
 
 Public Sub WriteAreaChanged(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "AreaChanged" message to the given user's outgoing data buffer
 '***************************************************
@@ -7267,7 +7575,7 @@ End Sub
 
 Public Sub WriteValidateClient(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ValidateClient" message to the given user's outgoing data buffer
 '***************************************************
@@ -7287,7 +7595,7 @@ End Sub
 
 Public Sub WritePauseToggle(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "PauseToggle" message to the given user's outgoing data buffer
 '***************************************************
@@ -7307,7 +7615,7 @@ End Sub
 
 Public Sub WriteCreateFX(ByVal UserIndex As Integer, ByVal CharIndex As Integer, ByVal FX As Integer, ByVal FXLoops As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CreateFX" message to the given user's outgoing data buffer
 '***************************************************
@@ -7322,7 +7630,7 @@ End Function
 
 Public Sub WriteUpdateUserStats(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateUserStats" message to the given user's outgoing data buffer
 '***************************************************
@@ -7350,7 +7658,7 @@ End Sub
 
 Public Sub WriteWorkRequestTarget(ByVal UserIndex As Integer, ByVal Skill As eSkill)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "WorkRequestTarget" message to the given user's outgoing data buffer
 '***************************************************
@@ -7369,7 +7677,7 @@ End Sub
 
 Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeInventorySlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -7403,7 +7711,7 @@ End Sub
 
 Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeBankSlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -7436,7 +7744,7 @@ End Sub
 
 Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal Slot As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeSpellSlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -7456,7 +7764,7 @@ End Sub
 
 Public Sub WriteAttributes(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Atributes" message to the given user's outgoing data buffer
 '***************************************************
@@ -7478,7 +7786,7 @@ End Sub
 
 Public Sub WriteBlacksmithWeapons(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlacksmithWeapons" message to the given user's outgoing data buffer
 '***************************************************
@@ -7523,7 +7831,7 @@ End Sub
 
 Public Sub WriteBlacksmithArmors(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlacksmithArmors" message to the given user's outgoing data buffer
 '***************************************************
@@ -7568,7 +7876,7 @@ End Sub
 
 Public Sub WriteCarpenterObjects(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CarpenterObjects" message to the given user's outgoing data buffer
 '***************************************************
@@ -7611,7 +7919,7 @@ End Sub
 
 Public Sub WriteRestOK(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "RestOK" message to the given user's outgoing data buffer
 '***************************************************
@@ -7627,7 +7935,7 @@ End Sub
 
 Public Sub WriteErrorMsg(ByVal UserIndex As Integer, ByVal message As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ErrorMsg" message to the given user's outgoing data buffer
 '***************************************************
@@ -7645,7 +7953,7 @@ End Sub
 
 Public Sub WriteBlind(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Blind" message to the given user's outgoing data buffer
 '***************************************************
@@ -7660,7 +7968,7 @@ End Sub
 
 Public Sub WriteDumb(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Dumb" message to the given user's outgoing data buffer
 '***************************************************
@@ -7676,7 +7984,7 @@ End Sub
 
 Public Sub WriteShowSignal(ByVal UserIndex As Integer, ByVal ObjIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowSignal" message to the given user's outgoing data buffer
 '***************************************************
@@ -7697,7 +8005,7 @@ End Sub
 
 Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal message As String, ByRef Obj As Obj, ByVal price As Long)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeNPCInventorySlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -7727,7 +8035,7 @@ End Sub
 
 Public Sub WriteUpdateHungerAndThirst(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UpdateHungerAndThirst" message to the given user's outgoing data buffer
 '***************************************************
@@ -7748,7 +8056,7 @@ End Sub
 
 Public Sub WriteFame(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "Fame" message to the given user's outgoing data buffer
 '***************************************************
@@ -7773,7 +8081,7 @@ End Sub
 
 Public Sub WriteMiniStats(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "MiniStats" message to the given user's outgoing data buffer
 '***************************************************
@@ -7801,7 +8109,7 @@ End Sub
 
 Public Sub WriteLevelUp(ByVal UserIndex As Integer, ByVal skillPoints As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "LevelUp" message to the given user's outgoing data buffer
 '***************************************************
@@ -7820,7 +8128,7 @@ End Sub
 
 Public Sub WriteAddForumMsg(ByVal UserIndex As Integer, ByVal title As String, ByVal message As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "AddForumMsg" message to the given user's outgoing data buffer
 '***************************************************
@@ -7839,7 +8147,7 @@ End Sub
 
 Public Sub WriteShowForumForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowForumForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -7856,7 +8164,7 @@ End Sub
 
 Public Sub WriteSetInvisible(ByVal UserIndex As Integer, ByVal CharIndex As Integer, ByVal invisible As Boolean)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "SetInvisible" message to the given user's outgoing data buffer
 '***************************************************
@@ -7871,7 +8179,7 @@ End Sub
 
 Public Sub WriteDiceRoll(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "DiceRoll" message to the given user's outgoing data buffer
 '***************************************************
@@ -7894,7 +8202,7 @@ End Sub
 
 Public Sub WriteMeditateToggle(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "MeditateToggle" message to the given user's outgoing data buffer
 '***************************************************
@@ -7909,7 +8217,7 @@ End Sub
 
 Public Sub WriteBlindNoMore(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BlindNoMore" message to the given user's outgoing data buffer
 '***************************************************
@@ -7924,7 +8232,7 @@ End Sub
 
 Public Sub WriteDumbNoMore(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "DumbNoMore" message to the given user's outgoing data buffer
 '***************************************************
@@ -7939,7 +8247,7 @@ End Sub
 
 Public Sub WriteSendSkills(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "SendSkills" message to the given user's outgoing data buffer
 '***************************************************
@@ -7963,7 +8271,7 @@ End Sub
 
 Public Sub WriteTrainerCreatureList(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "TrainerCreatureList" message to the given user's outgoing data buffer
 '***************************************************
@@ -7991,7 +8299,7 @@ End Sub
 
 Public Sub WriteGuildNews(ByVal UserIndex As Integer, ByVal guildNews As String, ByRef enemies() As String, ByRef allies() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildNews" message to the given user's outgoing data buffer
 '***************************************************
@@ -8034,7 +8342,7 @@ End Sub
 
 Public Sub WriteOfferDetails(ByVal UserIndex As Integer, ByVal details As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "OfferDetails" message to the given user's outgoing data buffer
 '***************************************************
@@ -8056,7 +8364,7 @@ End Sub
 
 Public Sub WriteAlianceProposalsList(ByVal UserIndex As Integer, ByRef guilds() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "AlianceProposalsList" message to the given user's outgoing data buffer
 '***************************************************
@@ -8087,7 +8395,7 @@ End Sub
 
 Public Sub WritePeaceProposalsList(ByVal UserIndex As Integer, ByRef guilds() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "PeaceProposalsList" message to the given user's outgoing data buffer
 '***************************************************
@@ -8134,7 +8442,7 @@ Public Sub WriteCharacterInfo(ByVal UserIndex As Integer, ByVal charName As Stri
                             ByVal previousPetitions As String, ByVal currentGuild As String, ByVal previousGuilds As String, ByVal RoyalArmy As Boolean, _
                             ByVal CaosLegion As Boolean, ByVal citicensKilled As Long, ByVal criminalsKilled As Long)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "CharacterInfo" message to the given user's outgoing data buffer
 '***************************************************
@@ -8177,7 +8485,7 @@ End Sub
 Public Sub WriteGuildLeaderInfo(ByVal UserIndex As Integer, ByRef guildList() As String, ByRef MemberList() As String, _
                             ByVal guildNews As String, ByRef joinRequests() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildLeaderInfo" message to the given user's outgoing data buffer
 '***************************************************
@@ -8248,7 +8556,7 @@ Public Sub WriteGuildDetails(ByVal UserIndex As Integer, ByVal GuildName As Stri
                             ByVal alignment As String, ByVal enemiesCount As Integer, ByVal AlliesCount As Integer, _
                             ByVal antifactionPoints As String, ByRef codex() As String, ByVal guildDesc As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "GuildDetails" message to the given user's outgoing data buffer
 '***************************************************
@@ -8295,7 +8603,7 @@ End Sub
 
 Public Sub WriteShowGuildFundationForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowGuildFundationForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -8310,7 +8618,7 @@ End Sub
 
 Public Sub WriteParalizeOK(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ParalizeOK" message to the given user's outgoing data buffer
 '***************************************************
@@ -8326,7 +8634,7 @@ End Sub
 
 Public Sub WriteShowUserRequest(ByVal UserIndex As Integer, ByVal details As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowUserRequest" message to the given user's outgoing data buffer
 '***************************************************
@@ -8345,7 +8653,7 @@ End Sub
 
 Public Sub WriteTradeOK(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "TradeOK" message to the given user's outgoing data buffer
 '***************************************************
@@ -8360,7 +8668,7 @@ End Sub
 
 Public Sub WriteBankOK(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "BankOK" message to the given user's outgoing data buffer
 '***************************************************
@@ -8377,7 +8685,7 @@ End Sub
 
 Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal amount As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChangeUserTradeSlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -8405,7 +8713,7 @@ End Sub
 
 Public Sub WriteSpawnList(ByVal UserIndex As Integer, ByRef npcNames() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "SpawnList" message to the given user's outgoing data buffer
 '***************************************************
@@ -8435,7 +8743,7 @@ End Sub
 
 Public Sub WriteAddSOSMsg(ByVal UserIndex As Integer, ByRef SOSMessages() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "AddSOSMsg" message to the given user's outgoing data buffer
 '***************************************************
@@ -8464,7 +8772,7 @@ End Sub
 
 Public Sub WriteShowSOSForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowSOSForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -8480,7 +8788,7 @@ End Sub
 
 Public Sub WriteShowMOTDEditionForm(ByVal UserIndex As Integer, ByVal currentMOTD As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowMOTDEditionForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -8499,7 +8807,7 @@ End Sub
 
 Public Sub WriteShowGMPanelForm(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ShowGMPanelForm" message to the given user's outgoing data buffer
 '***************************************************
@@ -8515,7 +8823,7 @@ End Sub
 
 Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() As String)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "UserNameList" message to the given user's outgoing data buffer
 '***************************************************
@@ -8545,7 +8853,7 @@ End Sub
 
 Public Sub FlushBuffer(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Sends all data existing in the buffer
 '***************************************************
@@ -8564,7 +8872,7 @@ End Sub
 
 Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, ByVal invisible As Boolean) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "SetInvisible" message and returns it.
 '***************************************************
@@ -8588,7 +8896,7 @@ End Function
 
 Public Function PrepareMessageChatOverHead(ByVal chat As String, ByVal CharIndex As Integer, ByVal Color As Long) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "ChatOverHead" message and returns it.
 '***************************************************
@@ -8615,7 +8923,7 @@ End Function
 
 Public Function PrepareMessageConsoleMsg(ByVal chat As String, ByVal FontIndex As Byte) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "ConsoleMsg" message and returns it.
 '***************************************************
@@ -8639,7 +8947,7 @@ End Function
 
 Public Function PrepareMessageCreateFX(ByVal CharIndex As Integer, ByVal FX As Integer, ByVal FXLoops As Integer) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "CreateFX" message and returns it
 '***************************************************
@@ -8661,7 +8969,7 @@ End Function
 
 Public Function PrepareMessagePlayWave(ByVal wave As Byte) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "PlayWave" message and returns it
 '***************************************************
@@ -8681,7 +8989,7 @@ End Function
 
 Public Function PrepareMessageGuildChat(ByVal chat As String) As String
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Prepares the "GuildChat" message and returns it
 '***************************************************
