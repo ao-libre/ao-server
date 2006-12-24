@@ -128,3 +128,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/10/2006: /Seguir quita efectos de paralisis. (Integer)
  * 10/10/2006: /ShowName también impide que tu nombre se vea cuando te lanzan hechizos. (Integer)
  * 18/12/2006: Nuevo protocolo completo en un 70% aproximadamente. Lo subo para que el resto pueda colaborar a escribirlo. Queda pendiente implementarlo. (Maraxus)
+ * 24/12/2006: Corregí un bug que permitía escuchar conversaciones de otros clanes. (Maraxus)

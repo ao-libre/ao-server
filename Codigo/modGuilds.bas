@@ -861,12 +861,33 @@ Public Function r_Iterador_ProximaPropuesta(ByVal guildIndex As Integer, ByVal T
     End If
 End Function
 
-
 Public Function GMEscuchaClan(ByVal UserIndex As Integer, ByVal GuildName As String) As Integer
 Dim GI As Integer
+
+    'listen to no guild at all
+    If GuildName = "" And UserList(UserIndex).EscucheClan <> 0 Then
+        'Quit listening to previous guild!!
+        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan) & FONTTYPE_GUILD)
+        guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
+        Exit Function
+    End If
+    
 'devuelve el guildindex
     GI = guildIndex(GuildName)
     If GI > 0 Then
+        If UserList(UserIndex).EscucheClan <> 0 Then
+            If UserList(UserIndex).EscucheClan = GI Then
+                'Already listening to them...
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Conectado a : " & GuildName & FONTTYPE_GUILD)
+                GMEscuchaClan = GI
+                Exit Function
+            Else
+                'Quit listening to previous guild!!
+                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan) & FONTTYPE_GUILD)
+                guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
+            End If
+        End If
+        
         Call guilds(GI).ConectarGM(UserIndex)
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Conectado a : " & GuildName & FONTTYPE_GUILD)
         GMEscuchaClan = GI

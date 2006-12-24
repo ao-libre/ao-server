@@ -895,8 +895,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.AlterPassword           '/APASS
         Case ClientPacketID.AlterMail               '/AEMAIL
         Case ClientPacketID.AlterName               '/ANAME
-        
         Case ClientPacketID.ToggleCentinelActivated '/CENTINELAACTIVADO
+        
         Case ClientPacketID.DoBackUp                '/DOBACKUP
             Call HandleDoBackUp(UserIndex)
         
@@ -6598,27 +6598,31 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/24/06
-'Change the info the backup`s info of the map
+'Change the backup`s info of the map
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        'Save the boolean packet into doTheBackUp
         Dim doTheBackUp As Boolean
-        doTheBackUp = .incomingData.ReadBoolean
+        
+        doTheBackUp = .incomingData.ReadBoolean()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Call LogGM(.name, .name & " ha cambiado la informacion sobre le BackUp", False)
+        Call LogGM(.name, .name & " ha cambiado la información sobre el BackUp", False)
         
         'Change the boolean to byte in a fast way
-        MapInfo(UserList(UserIndex).Pos.Map).backUp = IIf(doTheBackUp, 1, 0)
+        If fothebackup Then
+            MapInfo(.Pos.Map).BackUp = 1
+        Else
+            MapInfo(.Pos.Map).BackUp = 0
+        End If
         
         'Change the boolean to string in a fast way
-        Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & .Pos.Map, "backup", IIf(doTheBackUp, "1", "0"))
+        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.Map & ".dat", "Mapa" & .Pos.Map, "backup", MapInfo(.Pos.Map).BackUp)
         
-        Call WriteConsoleMsg(UserIndex, "Mapa " & UserList(UserIndex).Pos.Map & " Backup: " & MapInfo(UserList(UserIndex).Pos.Map).backUp, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Backup: " & MapInfo(.Pos.Map).BackUp, FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -6631,24 +6635,23 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/24/06
-'Change the info the pk`s info of the  map
+'Change the pk`s info of the  map
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        'Save the Boolean Packet into isMapPk
         Dim isMapPk As Boolean
-        isMapPk = .incomingData.ReadBoolean
+        isMapPk = .incomingData.ReadBoolean()
         
-        If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        If .flags.EsRolesMaster Then Exit Sub
         
         Call LogGM(.name, .name & " ha cambiado la informacion sobre si es PK el mapa.", False)
         
         MapInfo(.Pos.Map).Pk = isMapPk
         
         'Change the boolean to string in a fast way
-        Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & .Pos.Map, "Pk", IIf(isMapPk, "1", "0"))
+        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.Map & ".dat", "Mapa" & .Pos.Map, "Pk", IIf(isMapPk, "1", "0"))
 
         Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " PK: " & MapInfo(.Pos.Map).Pk, FontTypeNames.FONTTYPE_INFO)
     End With
@@ -6663,11 +6666,11 @@ Public Sub HandleSaveMap(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/24/06
-'Save the map
+'Saves the map
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
-        .incomingData.ReadByte
+        Call .incomingData.ReadByte
         
         If .flags.EsRolesMaster Then Exit Sub
         
@@ -6690,11 +6693,10 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
-        .incomingData.ReadByte
+        Call .incomingData.ReadByte
         
-        'Save the String Packet into guild
         Dim guild As String
-        guild = .incomingData.ReadASCIIString
+        guild = .incomingData.ReadASCIIString()
         
         If .flags.EsRolesMaster Then Exit Sub
         
