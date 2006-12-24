@@ -895,12 +895,22 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.AlterPassword           '/APASS
         Case ClientPacketID.AlterMail               '/AEMAIL
         Case ClientPacketID.AlterName               '/ANAME
+        
         Case ClientPacketID.ToggleCentinelActivated '/CENTINELAACTIVADO
         Case ClientPacketID.DoBackUp                '/DOBACKUP
+            Call HandleDoBackUp(UserIndex)
+        
         Case ClientPacketID.ShowGuildMessages       '/SHOWCMSG
+            Call HandleShowGuildMessages(UserIndex)
+        
         Case ClientPacketID.SaveMap                 '/GUARDAMAPA
+            Call HandleSaveMap(UserIndex)
+        
         Case ClientPacketID.ChangeMapInfoPK         '/MODMAPINFO PK
+            Call HandleChangeMapInfoPK(UserIndex)
+        
         Case ClientPacketID.ChangeMapInfoBackup     '/MODMAPINFO BACKUP
+            Call HandleChangeMapInfoBackup(UserIndex)
         
         Case ClientPacketID.SaveChars               '/GRABAR
             Call HandleSaveChars(UserIndex)
@@ -6569,12 +6579,149 @@ Public Sub HandleSaveChars(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
+        Call .incomingData.ReadByte
         If .flags.EsRolesMaster Then Exit Sub
         
         Call LogGM(.name, .name & " ha guardado todos los chars", False)
         
         Call mdParty.ActualizaExperiencias
         Call GuardarUsuarios
+    End With
+End Sub
+
+''
+' Handle the "ChangeMapInfoBackup" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Change the info the backup`s info of the map
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        'Save the boolean packet into doTheBackUp
+        Dim doTheBackUp As Boolean
+        doTheBackUp = .incomingData.ReadBoolean
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha cambiado la informacion sobre le BackUp", False)
+        
+        'Change the boolean to byte in a fast way
+        MapInfo(UserList(UserIndex).Pos.Map).backUp = IIf(doTheBackUp, 1, 0)
+        
+        'Change the boolean to string in a fast way
+        Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & .Pos.Map, "backup", IIf(doTheBackUp, "1", "0"))
+        
+        Call WriteConsoleMsg(UserIndex, "Mapa " & UserList(UserIndex).Pos.Map & " Backup: " & MapInfo(UserList(UserIndex).Pos.Map).backUp, FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub
+
+''
+' Handle the "ChangeMapInfoPK" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Change the info the pk`s info of the  map
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        'Save the Boolean Packet into isMapPk
+        Dim isMapPk As Boolean
+        isMapPk = .incomingData.ReadBoolean
+        
+        If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha cambiado la informacion sobre si es PK el mapa.", False)
+        
+        MapInfo(.Pos.Map).Pk = isMapPk
+        
+        'Change the boolean to string in a fast way
+        Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & .Pos.Map, "Pk", IIf(isMapPk, "1", "0"))
+
+        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " PK: " & MapInfo(.Pos.Map).Pk, FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub
+
+''
+' Handle the "SaveMap" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleSaveMap(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Save the map
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha guardado el mapa " & CStr(.Pos.Map), False)
+        
+        Call GrabarMapa(.Pos.Map, App.Path & "\WorldBackUp\Mapa" & .Pos.Map)
+    End With
+End Sub
+
+''
+' Handle the "ShowGuildMessages" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Show guilds messages
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        .incomingData.ReadByte
+        
+        'Save the String Packet into guild
+        Dim guild As String
+        guild = .incomingData.ReadASCIIString
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call modGuilds.GMEscuchaClan(UserIndex, guild)
+    End With
+End Sub
+
+''
+' Handle the "DoBackUp"
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleDoBackUp(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Show guilds messages
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, .name & " ha hecho un backup", False)
+        
+        Call DoBackUp
     End With
 End Sub
 
