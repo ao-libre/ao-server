@@ -758,7 +758,7 @@ Err:
     
     EnviarDatosASlot = 0
     
-    If UserList(UserIndex).ColaSalida.Count <= 0 Then
+    If UserList(UserIndex).ColaSalida.count <= 0 Then
         If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
             If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
                 UserList(UserIndex).SockPuedoEnviar = False
@@ -789,7 +789,7 @@ Dim Ret As Long
     '//                     1: WSAEWOULDBLOCK
     '//                     2: Error critico
     '//
-    If UserList(UserIndex).ColaSalida.Count <= 0 Then
+    If UserList(UserIndex).ColaSalida.count <= 0 Then
         Ret = frmMain.Serv.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos))
         If Ret = 1 Then
             Encolar = True
@@ -2016,7 +2016,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2177,7 +2177,7 @@ On Error GoTo ErrorHandler:
     Dim Arg4 As String
     Dim Ver As String
     Dim encpass As String
-    Dim Pass As String
+    Dim pass As String
     Dim mapa As Integer
     Dim name As String
     Dim ind
@@ -2807,7 +2807,6 @@ End If
 
 
 If UCase$(Left$(rData, 6)) = "/RMATA" Then
-    
     'Los consejeros no pueden RMATAr a nada en el mapa pretoriano
     If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero And UserList(UserIndex).Pos.Map = MAPA_PRETORIANO Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los consejeros no pueden usar este comando en el mapa pretoriano." & FONTTYPE_INFO)
@@ -3904,7 +3903,7 @@ If UCase(rData) = "/BANIPLIST" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     tStr = "||"
-    For LoopC = 1 To BanIps.Count
+    For LoopC = 1 To BanIps.count
         tStr = tStr & BanIps.Item(LoopC) & ", "
     Next LoopC
     tStr = tStr & FONTTYPE_INFO
@@ -4695,8 +4694,8 @@ If UCase$(rData) = "/TCPESSTATS" Then
     tLong = 0
     For LoopC = 1 To LastUser
         If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-            If UserList(LoopC).ColaSalida.Count > 0 Then
-                tStr = tStr & UserList(LoopC).name & " (" & UserList(LoopC).ColaSalida.Count & "), "
+            If UserList(LoopC).ColaSalida.count > 0 Then
+                tStr = tStr & UserList(LoopC).name & " (" & UserList(LoopC).ColaSalida.count & "), "
                 tLong = tLong + 1
             End If
         End If
