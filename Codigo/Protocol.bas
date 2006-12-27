@@ -3805,7 +3805,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not modGuilds.a_AceptarAspirante(UserIndex, UserName, error) Then
             Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
@@ -3855,8 +3855,8 @@ On Error GoTo errhandler
         Dim error As String
         Dim tUser As Integer
         
-        UserName = .incomingData.ReadASCIIString()
-        reason = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
+        reason = buffer.ReadASCIIString()
         
         If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, reason, error) Then
             Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & Arg3 & FontTypeNames.FONTTYPE_GUILD)
@@ -3906,7 +3906,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim guildIndex As Integer
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
         
@@ -3947,7 +3947,7 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Call modGuilds.ActualizarNoticias(UserIndex, .incomingData.ReadASCIIString())
+        Call modGuilds.ActualizarNoticias(UserIndex, buffer.ReadASCIIString())
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -3980,7 +3980,7 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Call modGuilds.SendDetallesPersonaje(UserIndex, .incomingData.ReadASCIIString())
+        Call modGuilds.SendDetallesPersonaje(UserIndex, buffer.ReadASCIIString())
                 
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -4042,8 +4042,8 @@ On Error GoTo errhandler
         Dim application As String
         Dim error As String
         
-        guild = .incomingData.ReadASCIIString()
-        application = .incomingData.ReadASCIIString()
+        guild = buffer.ReadASCIIString()
+        application = buffer.ReadASCIIString()
         
         If Not modGuilds.a_NuevoAspirante(UserIndex, guild, application, error) Then
            Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
@@ -4082,7 +4082,7 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Call modGuilds.SendGuildDetails(.incomingData.ReadASCIIString())
+        Call modGuilds.SendGuildDetails(buffer.ReadASCIIString())
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -5777,7 +5777,7 @@ On Error GoTo errhandler
         
         Dim Text As String
         
-        Text = .incomingData.ReadASCIIString()
+        Text = buffer.ReadASCIIString()
         
         If .flags.Silenciado = 0 Then
             'Analize chat...
@@ -5868,7 +5868,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         tUser = NameIndex(UserName)
         If tUser > 0 Then
@@ -5911,7 +5911,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         tUser = NameIndex(UserName)
         If tUser > 0 Then
@@ -5954,7 +5954,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         tUser = NameIndex(UserName)
         If tUser > 0 Then
@@ -6001,7 +6001,7 @@ On Error GoTo errhandler
         Dim i As Long
         Dim UserName As String
         
-        guild = .incomingData.ReadASCIIString()
+        guild = buffer.ReadASCIIString()
         
         guild = Replace$(guild, "\", "")
         guild = Replace$(guild, "/", "")
@@ -6051,7 +6051,7 @@ On Error GoTo errhandler
         
         Dim message As String
         
-        message = .incomingData.ReadASCIIString()
+        message = buffer.ReadASCIIString()
         
         Call LogGM(.name, "Mensaje a Gms:" & message, (.flags.Privilegios = PlayerType.Consejero))
         
@@ -6184,7 +6184,7 @@ On Error GoTo errhandler
         
         Dim UserName As String
         
-        UserName = .incomingData.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         Dim tIndex As Integer
         Dim X As Long
@@ -6870,6 +6870,84 @@ Private Sub HandleKillNPC(ByVal UserIndex As Integer)
             Call WriteConsoleMsg(UserIndex, "Debes hacer click sobre el NPC antes", FontTypeNames.FONTTYPE_INFO)
         End If
     End With
+End Sub
+
+''
+' Handles the "WarnUser" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleWarnUser(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/26/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim reason As String
+        Dim tUser As Integer
+        Dim count As Byte
+        Dim advertir As Boolean
+        
+        UserName = buffer.ReadASCIIString()
+        reason = buffer.ReadASCIIString()
+
+        If Not .flags.EsRolesMaster Then
+            If UserName = "" Or reason = "" Then
+                Call WriteConsoleMsg(UserIndex, "Utilice /advertencia nick@motivo", FontTypeNames.FONTTYPE_INFO)
+            Else
+                tUser = NameIndex(UserName)
+                
+                If tUser <= 0 Then
+                    Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    If EsAdmin(UserName) Or EsDios(UserName) Or EsSemiDios(UserName) Or EsConsejero(UserName) Then
+                        Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        advertir = True
+                    End If
+                Else
+                    If UserList(tUser).flags.Privilegios > PlayerType.User Then
+                        Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        advertir = True
+                    End If
+                End If
+                
+                If advertir Then
+                    UserName = Replace(UserName, "\", "")
+                    UserName = Replace(UserName, "/", "")
+    
+                    If FileExist(CharPath & name & ".chr", vbNormal) Then
+                        count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", count + 1)
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
+                        
+                        Call WriteConsoleMsg(UserIndex, "Has advertido a " & UCase$(UserName), FontTypeNames.FONTTYPE_INFO)
+                        Call LogGM(.name, " advirtio a " & UserName, .flags.Privilegios = PlayerType.Consejero)
+                    End If
+                End If
+            End If
+        End If
+    End With
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call .incomingData.CopyBuffer(buffer)
+    
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
 End Sub
 
 ''
