@@ -7629,7 +7629,7 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
 'Request user mail
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7672,7 +7672,7 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 'Remove a user from his clan
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
