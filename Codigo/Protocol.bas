@@ -845,6 +845,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             Call HandleKillNPC(UserIndex)
         
         Case ClientPacketID.WarnUser                '/ADVERTENCIA
+            Call HandleWarnUser(UserIndex)
+            
         Case ClientPacketID.EditChar                '/MOD
         Case ClientPacketID.RequestCharInfo         '/INFO
         Case ClientPacketID.RequestCharStats        '/STAT
