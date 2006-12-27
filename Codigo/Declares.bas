@@ -1021,7 +1021,6 @@ Public Type User
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
     modName As String
-    Password As String
     
     Char As Char 'Define la apariencia
     CharMimetizado As Char

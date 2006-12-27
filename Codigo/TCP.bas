@@ -3379,6 +3379,13 @@ End If
 If UCase$(Left$(rData, 5)) = "/SUM " Then
     rData = Right$(rData, Len(rData) - 5)
     
+    If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
+        If EsDios(rData) Or EsAdmin(rData) Then
+            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes invocar a dioses y admins." & FONTTYPE_INFO)
+            Exit Sub
+        End If
+    End If
+    
     tIndex = NameIndex(rData)
     If tIndex <= 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El jugador no esta online." & FONTTYPE_INFO)
@@ -3548,6 +3555,8 @@ If UCase(Left(rData, 3)) = "/DT" Then
     mapa = UserList(UserIndex).flags.TargetMap
     X = UserList(UserIndex).flags.TargetX
     Y = UserList(UserIndex).flags.TargetY
+    
+    If Not InMapBounds(Map, X, Y) Then Exit Sub
     
     If ObjData(MapData(mapa, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And _
         MapData(mapa, X, Y).TileExit.Map > 0 Then
@@ -4093,6 +4102,12 @@ End If
 If UCase$(Left$(rData, 5)) = "/DEST" Then
     Call LogGM(UserList(UserIndex).name, "/DEST", False)
     rData = Right$(rData, Len(rData) - 5)
+    
+    If ObjData(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport Then
+        SendData SendTarget.ToIndex, UserIndex, 0, "||No puede destruir teleports así. Utilice /DT." & FONTTYPE_INFO
+        Exit Sub
+    End If
+    
     Call EraseObj(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, 10000, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
     Exit Sub
 End If
@@ -4214,7 +4229,6 @@ End If
 
 'Quitar NPC
 If UCase$(rData) = "/MATA" Then
-    rData = Right$(rData, Len(rData) - 5)
     If UserList(UserIndex).flags.TargetNPC = 0 Then Exit Sub
     Call QuitarNPC(UserList(UserIndex).flags.TargetNPC)
     Call LogGM(UserList(UserIndex).name, "/MATA " & Npclist(UserList(UserIndex).flags.TargetNPC).name, False)

@@ -5496,9 +5496,10 @@ On Error GoTo errhandler
              Call WriteConsoleMsg(UserIndex, "El password debe tener al menos 6 caractéres.", FontTypeNames.FONTTYPE_INFO)
         Else
 #End If
+            Call WriteVar(CharPath & name & ".chr", "INIT", "Password", pass)
+            
             'Everything is right, change password
             Call WriteConsoleMsg(UserIndex, "El password ha sido cambiado.", FontTypeNames.FONTTYPE_INFO)
-            .Password = pass
 #If Not SeguridadAlkon Then
         End If
         
