@@ -846,9 +846,11 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         
         Case ClientPacketID.WarnUser                '/ADVERTENCIA
             Call HandleWarnUser(UserIndex)
-            
+        
         Case ClientPacketID.EditChar                '/MOD
         Case ClientPacketID.RequestCharInfo         '/INFO
+            Call HandleRequestCharInfo(UserIndex)
+        
         Case ClientPacketID.RequestCharStats        '/STAT
         Case ClientPacketID.RequestCharGold         '/BAL
         Case ClientPacketID.RequestCharInventory    '/INV
@@ -856,6 +858,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.RequestCharSkills       '/SKILLS
         Case ClientPacketID.ReviveChar              '/REVIVIR
         Case ClientPacketID.OnlineGM                '/ONLINEGM
+            Call HandleOnlineGM(UserIndex)
+        
         Case ClientPacketID.OnlineMap               '/ONLINEMAP
         Case ClientPacketID.Forgive                 '/PERDON
         Case ClientPacketID.Kick                    '/ECHAR
@@ -6942,14 +6946,98 @@ On Error GoTo errhandler
                 End If
             End If
         End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
     End With
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call .incomingData.CopyBuffer(buffer)
     
 errhandler:
     'Destroy auxiliar buffer
     Set buffer = Nothing
+End Sub
+
+''
+' Handles the "RequestCharInfo" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Fredy Horacio Treboux (liquid)
+'Last Modification: 12/28/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+                
+        Dim targetName As String
+        Dim targetIndex As Integer
+        
+        targetName = buffer.ReadASCIIString()
+        targetIndex = NameIndex(targetIndex)
+        
+        'Actually: is the player offline?
+        If targetIndex <= 0 Then
+            'don't allow to retrieve administrator's info
+            If Not (EsDios(targetName) Or EsAdmin(targetName)) Then
+                Call WriteConsoleMsg(UserIndex, "Usuario offline, Buscando en Charfile.", FontTypeNames.FONTTYPE_INFO)
+                SendUserStatsTxtOFF UserIndex, targetName
+            End If
+        Else
+            'don't allow to retrieve administrator's info
+            If Not (UserList(targetIndex).flags.Privilegios >= PlayerType.Dios) Then
+                SendUserStatsTxt UserIndex, targetIndex
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+    
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "OnlineGM" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Fredy Horacio Treboux (liquid)
+'Last Modification: 12/28/06
+'
+'***************************************************
+    Dim i As Long
+    Dim tStr As String
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+            
+        For i = 1 To LastUser
+            If (UserList(i).name <> "") And UserList(i).flags.Privilegios > PlayerType.User And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
+                tStr = tStr & UserList(i).name & ", "
+            End If
+        Next i
+            
+        If Len(tStr) > 0 Then
+            tStr = Left$(tStr, Len(tStr) - 2)
+            Call WriteConsoleMsg(UserIndex, tStr & ".", FontTypeNames.FONTTYPE_INFO)
+        Else
+            Call WriteConsoleMsg(UserIndex, "No hay GMs Online.", FontTypeNames.FONTTYPE_INFO)
+        End If
+    End With
 End Sub
 
 ''
