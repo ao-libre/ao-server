@@ -931,12 +931,26 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.ChangeMOTD              '/MOTDCAMBIA
         Case ClientPacketID.SetMOTD                 'ZMOTD
         Case ClientPacketID.SystemMessage           '/SMSG
+        
+        
         Case ClientPacketID.CreateNPC               '/ACC
+            Call HandleCreateNPC(UserIndex)
+        
         Case ClientPacketID.CreateNPCWithRespawn    '/RACC
+            Call HandleCreateNPCWithRespawn(UserIndex)
+        
         Case ClientPacketID.ImperialArmour          '/AI1 - 4
+            Call HandleImperialArmour(UserIndex)
+        
         Case ClientPacketID.ChaosArmour             '/AC1 - 4
+            Call HandleChaosArmour(UserIndex)
+        
         Case ClientPacketID.NavigateToggle          '/NAVE
+            Call HandleNavigateToggle(UserIndex)
+        
         Case ClientPacketID.ServerOpenToUsersToggle '/HABILITAR
+            Call HandleServerOpenToUsersToggle(UserIndex)
+        
         Case ClientPacketID.TurnOffServer           '/APAGAR
             Call HandleTurnOffServer(UserIndex)
         
@@ -1948,7 +1962,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
         Else
             'Only drop valid slots
             If Slot <= MAX_INVENTORY_SLOTS And Slot > 0 Then
-                If .Invent.Object(Slot).ObjIndex = 0 Then
+                If .Invent.Object(Slot).objIndex = 0 Then
                     Exit Sub
                 End If
                 
@@ -2136,7 +2150,7 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
         Slot = .incomingData.ReadByte()
         
         If Slot <= MAX_INVENTORY_SLOTS And Slot > 0 Then
-            If .Invent.Object(Slot).ObjIndex = 0 Then Exit Sub
+            If .Invent.Object(Slot).objIndex = 0 Then Exit Sub
         End If
         
         If .flags.Meditando Then
@@ -2349,7 +2363,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     If .Object(DummyInt).amount > 0 Then
                         'QuitarUserInvItem unequipps the ammo, so we equip it again
                         .MunicionEqpSlot = DummyInt
-                        .MunicionEqpObjIndex = .Object(DummyInt).ObjIndex
+                        .MunicionEqpObjIndex = .Object(DummyInt).objIndex
                         .Object(DummyInt).Equipped = 1
                     Else
                         .MunicionEqpSlot = 0
@@ -2480,7 +2494,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.objIndex
                 
                 If DummyInt > 0 Then
                     If Abs(.Pos.X - X) + Abs(.Pos.Y - Y) > 2 Then
@@ -2516,7 +2530,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'Target whatever is in the tile
                 Call LookatTile(UserIndex, .Pos.Map, X, Y)
                 
-                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.objIndex
                 
                 If DummyInt > 0 Then
                     'Check distance
@@ -2577,8 +2591,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         End If
                         
                         ''chequeamos que no se zarpe duplicando oro
-                        If .Invent.Object(.flags.TargetObjInvSlot).ObjIndex <> .flags.TargetObjInvIndex Then
-                            If .Invent.Object(.flags.TargetObjInvSlot).ObjIndex = 0 Or .Invent.Object(.flags.TargetObjInvSlot).amount = 0 Then
+                        If .Invent.Object(.flags.TargetObjInvSlot).objIndex <> .flags.TargetObjInvIndex Then
+                            If .Invent.Object(.flags.TargetObjInvSlot).objIndex = 0 Or .Invent.Object(.flags.TargetObjInvSlot).amount = 0 Then
                                 Call WriteConsoleMsg(UserIndex, "No tienes más minerales", FontTypeNames.FONTTYPE_INFO)
                                 Exit Sub
                             End If
@@ -2739,7 +2753,7 @@ Private Sub HandleEquipItem(ByVal UserIndex As Integer)
         'Validate item slot
         If itemSlot > MAX_INVENTORY_SLOTS Or itemSlot < 1 Then Exit Sub
         
-        If .Invent.Object(itemSlot).ObjIndex = 0 Then Exit Sub
+        If .Invent.Object(itemSlot).objIndex = 0 Then Exit Sub
         
         Call EquiparInvItem(UserIndex, itemSlot)
     End With
@@ -2861,7 +2875,7 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
         If Npclist(.flags.TargetNPC).Mascotas < MAXMASCOTASENTRENADOR Then
             If petIndex > 0 And petIndex < Npclist(.flags.TargetNPC).NroCriaturas + 1 Then
                 'Create the creature
-                SpawnedNpc = SpawnNpc(Npclist(.flags.TargetNPC).Criaturas(petIndex).NpcIndex, Npclist(.flags.TargetNPC).Pos, True, False)
+                SpawnedNpc = SpawnNpc(Npclist(.flags.TargetNPC).Criaturas(petIndex).npcIndex, Npclist(.flags.TargetNPC).Pos, True, False)
                 
                 If SpawnedNpc > 0 Then
                     Npclist(SpawnedNpc).MaestroNpc = .flags.TargetNPC
@@ -8028,6 +8042,192 @@ errhandler:
 End Sub
 
 ''
+' Handle the "HandleCreateNPC" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        Dim npcIndex As Integer
+        
+        npcIndex = .incomingData.ReadInteger()
+        
+        Call LogGM(.name, "Sumoneo a " & Npclist(npcIndex).name & " en mapa " & .Pos.Map, (.flags.Privilegios = PlayerType.Consejero))
+        Call SpawnNpc(npcIndex, .Pos, True, False)
+    End With
+End Sub
+
+''
+' Handle the "CreateNPCWithRespawn" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        Dim npcIndex As Integer
+        
+        npcIndex = .incomingData.ReadInteger()
+        
+        Call LogGM(.name, "Sumoneo con respawn " & Npclist(npcIndex).name & " en mapa " & .Pos.Map, .flags.Privilegios = PlayerType.Consejero)
+        Call SpawnNpc(npcIndex, .Pos, True, True)
+    End With
+End Sub
+
+''
+' Handle the "ImperialArmour" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        Dim index As Byte
+        Dim objIndex As Integer
+        
+        index = .incomingData.ReadByte()
+        objIndex = .incomingData.ReadInteger()
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Select Case index
+            Case 1
+                ArmaduraImperial1 = objIndex
+            
+            Case 2
+                ArmaduraImperial2 = objIndex
+            
+            Case 3
+                ArmaduraImperial3 = objIndex
+            
+            Case 4
+                TunicaMagoImperial = objIndex
+        End Select
+    End With
+End Sub
+
+''
+' Handle the "ChaosArmour" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        Dim index As Byte
+        Dim objIndex As Integer
+        
+        index = .incomingData.ReadByte()
+        objIndex = .incomingData.ReadInteger()
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Select Case index
+            Case 1
+                ArmaduraCaos1 = objIndex
+            
+            Case 2
+                ArmaduraCaos2 = objIndex
+            
+            Case 3
+                ArmaduraCaos3 = objIndex
+            
+            Case 4
+                TunicaMagoCaos = objIndex
+        End Select
+    End With
+End Sub
+
+''
+' Handle the "NavigateToggle" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleNavigateToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        If .flags.Navegando = 1 Then
+            .flags.Navegando = 0
+        Else
+            .flags.Navegando = 1
+        End If
+    End With
+End Sub
+
+''
+' Handle the "ServerOpenToUsersToggle" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleServerOpenToUsersToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        If ServerSoloGMs > 0 Then
+            Call WriteConsoleMsg(UserIndex, "Servidor habilitado para todos.", FontTypeNames.FONTTYPE_INFO)
+            ServerSoloGMs = 0
+        Else
+            Call WriteConsoleMsg(UserIndex, "Servidor restringido a administradores.", FontTypeNames.FONTTYPE_INFO)
+            ServerSoloGMs = 1
+        End If
+    End With
+End Sub
+
+''
 ' Handle the "TurnOffServer" message
 '
 ' @param userIndex The index of the user sending the message
@@ -8070,7 +8270,7 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 12/26/06
-'Change user password
+'
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
@@ -8114,7 +8314,7 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 12/26/06
-'Change user password
+'
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
@@ -8159,7 +8359,7 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 12/26/06
-'Change user password
+'
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
@@ -9350,20 +9550,20 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As By
         Call .WriteByte(ServerPacketID.ChangeInventorySlot)
         Call .WriteByte(Slot)
         
-        Dim ObjIndex As Integer
+        Dim objIndex As Integer
         
-        ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
+        objIndex = UserList(UserIndex).Invent.Object(Slot).objIndex
         
-        Call .WriteInteger(ObjIndex)
-        Call .WriteASCIIString(ObjData(ObjIndex).name)
+        Call .WriteInteger(objIndex)
+        Call .WriteASCIIString(ObjData(objIndex).name)
         Call .WriteInteger(UserList(UserIndex).Invent.Object(Slot).amount)
         Call .WriteBoolean(UserList(UserIndex).Invent.Object(Slot).Equipped)
-        Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-        Call .WriteByte(ObjData(ObjIndex).OBJType)
-        Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(ObjData(ObjIndex).Valor)
+        Call .WriteInteger(ObjData(objIndex).GrhIndex)
+        Call .WriteByte(ObjData(objIndex).OBJType)
+        Call .WriteInteger(ObjData(objIndex).MaxHIT)
+        Call .WriteInteger(ObjData(objIndex).MinHIT)
+        Call .WriteInteger(ObjData(objIndex).def)
+        Call .WriteLong(ObjData(objIndex).Valor)
     End With
 End Sub
 
@@ -9384,19 +9584,19 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Call .WriteByte(ServerPacketID.ChangeBankSlot)
         Call .WriteByte(Slot)
         
-        Dim ObjIndex As Integer
+        Dim objIndex As Integer
         
-        ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
+        objIndex = UserList(UserIndex).BancoInvent.Object(Slot).objIndex
         
-        Call .WriteInteger(ObjIndex)
-        Call .WriteASCIIString(ObjData(ObjIndex).name)
+        Call .WriteInteger(objIndex)
+        Call .WriteASCIIString(ObjData(objIndex).name)
         Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
-        Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-        Call .WriteByte(ObjData(ObjIndex).OBJType)
-        Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(ObjData(ObjIndex).Valor)
+        Call .WriteInteger(ObjData(objIndex).GrhIndex)
+        Call .WriteByte(ObjData(objIndex).OBJType)
+        Call .WriteInteger(ObjData(objIndex).MaxHIT)
+        Call .WriteInteger(ObjData(objIndex).MinHIT)
+        Call .WriteInteger(ObjData(objIndex).def)
+        Call .WriteLong(ObjData(objIndex).Valor)
     End With
 End Sub
 
@@ -9647,7 +9847,7 @@ End Sub
 ' @param    objIndex Index of the signal to be displayed.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteShowSignal(ByVal UserIndex As Integer, ByVal ObjIndex As Integer)
+Public Sub WriteShowSignal(ByVal UserIndex As Integer, ByVal objIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9655,8 +9855,8 @@ Public Sub WriteShowSignal(ByVal UserIndex As Integer, ByVal ObjIndex As Integer
 '***************************************************
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ShowSignal)
-        Call .WriteASCIIString(ObjData(ObjIndex).texto)
-        Call .WriteInteger(ObjData(ObjIndex).GrhSecundario)
+        Call .WriteASCIIString(ObjData(objIndex).texto)
+        Call .WriteInteger(ObjData(objIndex).GrhSecundario)
     End With
 End Sub
 
@@ -9676,7 +9876,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal message
 '***************************************************
     Dim ObjInfo As ObjData
     
-    ObjInfo = ObjData(Obj.ObjIndex)
+    ObjInfo = ObjData(Obj.objIndex)
     
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeNPCInventorySlot)
@@ -9684,7 +9884,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal message
         Call .WriteInteger(Obj.amount)
         Call .WriteLong(price)
         Call .WriteInteger(ObjInfo.GrhIndex)
-        Call .WriteInteger(Obj.ObjIndex)
+        Call .WriteInteger(Obj.objIndex)
         Call .WriteInteger(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
@@ -9934,7 +10134,7 @@ End Sub
 ' @param    npcIndex The index of the requested trainer.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteTrainerCreatureList(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
+Public Sub WriteTrainerCreatureList(ByVal UserIndex As Integer, ByVal npcIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9945,10 +10145,10 @@ Public Sub WriteTrainerCreatureList(ByVal UserIndex As Integer, ByVal NpcIndex A
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.TrainerCreatureList)
         
-        Call .WriteInteger(Npclist(NpcIndex).NroCriaturas)
+        Call .WriteInteger(Npclist(npcIndex).NroCriaturas)
         
-        For i = 1 To Npclist(NpcIndex).NroCriaturas
-            Call .WriteASCIIString(Npclist(NpcIndex).Criaturas(i).NpcName)
+        For i = 1 To Npclist(npcIndex).NroCriaturas
+            Call .WriteASCIIString(Npclist(npcIndex).Criaturas(i).NpcName)
         Next i
     End With
 End Sub
@@ -10348,7 +10548,7 @@ End Sub
 ' @param    amount The number of objects offered.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal amount As Integer)
+Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal objIndex As Integer, ByVal amount As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -10357,15 +10557,15 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex A
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeUserTradeSlot)
         
-        Call .WriteInteger(ObjIndex)
-        Call .WriteASCIIString(ObjData(ObjIndex).name)
+        Call .WriteInteger(objIndex)
+        Call .WriteASCIIString(ObjData(objIndex).name)
         Call .WriteInteger(amount)
-        Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-        Call .WriteInteger(ObjData(ObjIndex).OBJType)
-        Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MaxDef)
-        Call .WriteLong(ObjData(ObjIndex).Valor \ 3)
+        Call .WriteInteger(ObjData(objIndex).GrhIndex)
+        Call .WriteInteger(ObjData(objIndex).OBJType)
+        Call .WriteInteger(ObjData(objIndex).MaxHIT)
+        Call .WriteInteger(ObjData(objIndex).MinHIT)
+        Call .WriteInteger(ObjData(objIndex).MaxDef)
+        Call .WriteLong(ObjData(objIndex).Valor \ 3)
     End With
 End Sub
 
