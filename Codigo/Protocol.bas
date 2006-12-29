@@ -923,9 +923,16 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.NavigateToggle          '/NAVE
         Case ClientPacketID.ServerOpenToUsersToggle '/HABILITAR
         Case ClientPacketID.TurnOffServer           '/APAGAR
+            Call HandleTurnOffServer(UserIndex)
+        
         Case ClientPacketID.TurnCriminal            '/CONDEN
+            Call HandleTurnCriminal(UserIndex)
+        
         Case ClientPacketID.ResetFactions           '/RAJAR
+            Call HandleResetFactions(UserIndex)
+        
         Case ClientPacketID.RemoveCharFromGuild     '/RAJARCLAN
+            Call HandleRemoveCharFromGuild(UserIndex)
         
         Case ClientPacketID.RequestCharMail         '/LASTEMAIL
             Call HandleRequestCharMail(UserIndex)
@@ -7775,6 +7782,129 @@ On Error GoTo errhandler
                     End If
                 End If
             End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handle the "TurnOffServer" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleTurnOffServer(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/24/06
+'Turns off the server
+'***************************************************
+    Dim handle As Integer
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+        
+        Call LogGM(.name, "/APAGAR", False)
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " VA A APAGAR EL SERVIDOR!!!", FontTypeNames.FONTTYPE_FIGHT))
+        
+        'Log
+        handle = FreeFile
+        Open App.Path & "\logs\Main.log" For Append Shared As #handle
+        
+        Print #handle, Date & " " & time & " server apagado por " & .name & ". "
+        
+        Close #handle
+        
+        Unload frmMain
+    End With
+End Sub
+
+''
+' Handle the "TurnCriminal" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/26/06
+'Change user password
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim tUser As Integer
+        
+        UserName = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, "/CONDEN " & UserName, False)
+            
+            tUser = NameIndex(UserName)
+            If tUser > 0 Then _
+                Call VolverCriminal(tUser)
+        End If
+                
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handle the "ResetFactions" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleResetFactions(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/26/06
+'Change user password
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim tUser As Integer
+        
+        UserName = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, "/RAJAR " & UserName, False)
+            
+            tUser = NameIndex(UserName)
+            
+            If tUser > 0 Then _
+                Call ResetFacciones(tUser)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
