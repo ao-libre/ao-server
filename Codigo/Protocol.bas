@@ -7729,7 +7729,7 @@ End Sub
 '
 ' @param userIndex The index of the user sending the message
 
-Public Sub HandleAlterPassword(UserIndex As Integer)
+Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 12/26/06
@@ -7774,6 +7774,55 @@ On Error GoTo errhandler
                         Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " cambiado a: " & Password & FontTypeNames.FONTTYPE_INFO)
                     End If
                 End If
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handle the "RemoveCharFromGuild" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 12/26/06
+'Change user password
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim guildIndex As Integer
+        
+        UserName = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, "/RAJARCLAN " & UserName, False)
+            
+            guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
+            
+            If guildIndex = 0 Then
+                Call WriteConsoleMsg(UserIndex, "No pertenece a ningún clan o es fundador.", FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Expulsado.", FontTypeNames.FONTTYPE_INFO)
+                Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
             End If
         End If
         
