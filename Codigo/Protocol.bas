@@ -928,10 +928,15 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.KillNPCNoRespawn        '/MATA
         Case ClientPacketID.KillAllNearbyNPCs       '/MASSKILL
         Case ClientPacketID.LastIP                  '/LASTIP
-        Case ClientPacketID.ChangeMOTD              '/MOTDCAMBIA
-        Case ClientPacketID.SetMOTD                 'ZMOTD
-        Case ClientPacketID.SystemMessage           '/SMSG
         
+        Case ClientPacketID.ChangeMOTD              '/MOTDCAMBIA
+            Call HandleChangeMOTD(UserIndex)
+        
+        Case ClientPacketID.SetMOTD                 'ZMOTD
+            Call HandleSetMOTD(UserIndex)
+        
+        Case ClientPacketID.SystemMessage           '/SMSG
+            Call HandleSystemMessage(UserIndex)
         
         Case ClientPacketID.CreateNPC               '/ACC
             Call HandleCreateNPC(UserIndex)
@@ -3288,7 +3293,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4157,7 +4162,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
             If UserList(i).name <> "" And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
                 Count = Count + 1
             End If
-        Next LoopC
+        Next loopC
         
         Call WriteConsoleMsg(UserIndex, "Número de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
     End With
@@ -4727,7 +4732,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -5335,13 +5340,13 @@ On Error GoTo errhandler
         
         bugReport = buffer.ReadASCIIString()
         
-        N = FreeFile
-        Open App.Path & "\LOGS\BUGs.log" For Append Shared As N
-        Print #N, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
-        Print #N, "BUG:"
-        Print #N, bugReport
-        Print #N, "########################################################################"
-        Close #N
+        n = FreeFile
+        Open App.Path & "\LOGS\BUGs.log" For Append Shared As n
+        Print #n, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
+        Print #n, "BUG:"
+        Print #n, bugReport
+        Print #n, "########################################################################"
+        Close #n
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -6725,7 +6730,7 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
             If (UserList(i).name <> "") And UserList(i).flags.Privilegios = PlayerType.User Then
                 names = names & UserList(i).name & ","
             End If
-        Next LoopC
+        Next loopC
         
         If names <> "" Then _
             names = Left$(names, Len(names) - 1)
@@ -7020,7 +7025,7 @@ On Error GoTo errhandler
         Dim Arg1 As String
         Dim Arg2 As String
         Dim valido As Boolean
-        Dim LoopC As Byte
+        Dim loopC As Byte
         Dim commandString As String
         
         UserName = Replace$(buffer.ReadASCIIString(), "+", " ")
@@ -7132,18 +7137,18 @@ On Error GoTo errhandler
                     End If
                 
                 Case eEditOptions.eo_Skills
-                    For LoopC = 1 To NUMSKILLS
-                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
-                    Next LoopC
+                    For loopC = 1 To NUMSKILLS
+                        If UCase$(Replace$(SkillsNames(loopC), " ", "+")) = UCase$(Arg1) Then n = loopC
+                    Next loopC
 
-                    If N = 0 Then
+                    If n = 0 Then
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If tUser <= 0 Then
-                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & n, Arg2)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.UserSkills(N) = val(Arg2)
+                            UserList(tUser).Stats.UserSkills(n) = val(Arg2)
                         End If
                     End If
                 
@@ -7506,7 +7511,7 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
         End With
         
         'Search for users that are working
-        For LoopC = 1 To LastUser
+        For loopC = 1 To LastUser
             With UserList(i)
                 If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
                     If .ColaSalida.Count > 0 Then
@@ -7515,7 +7520,7 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
                     End If
                 End If
             End With
-        Next LoopC
+        Next loopC
         
         Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
@@ -8067,6 +8072,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
     End With
 End Sub
 
+
 ''
 ' Handle the "CreateNPCWithRespawn" message
 '
@@ -8441,6 +8447,150 @@ On Error GoTo errhandler
 errhandler:
     'Destroy auxiliar buffer
     Set buffer = Nothing
+End Sub
+
+''
+' Handle the "SystemMessage" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/29/06
+'Send a message to all the users
+'***************************************************
+On Error GoTo errhandler
+
+If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString
+        
+        Call LogGM(UserList(UserIndex).name, "Mensaje de sistema:" & message, False)
+    
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handle the "SetMOTD" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/29/06
+'Set the MOTD
+'***************************************************
+On Error GoTo errhandler
+
+If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        If .flags.EsRolesMaster Then
+            'Read all the message
+            Call buffer.ReadASCIIString
+            Call .incomingData.CopyBuffer(buffer)
+            
+            'Destroy auxiliary buffer
+            Set buffer = Nothing
+            
+            Exit Sub
+        End If
+            
+        Call LogGM(UserList(UserIndex).name, "Ha fijado un nuevo MOTD", False)
+        
+        Dim newMOTD As String, auxiliaryString As String
+        Dim maxLines As Integer
+        Dim loopC As Long, n As Long
+        
+        newMOTD = buffer.ReadASCIIString
+        auxiliaryString = Split(newMOTD, vbCrLf)
+    
+        maxLines = UBound(auxiliaryString) - LBound(auxiliaryString) + 1
+        
+        ReDim MOTD(1 To maxLines)
+        
+        Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(maxLines))
+    
+        n = LBound(auxiliaryString)
+        
+        For loopC = 1 To maxLines
+            Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & CStr(loopC), auxiliaryString(n))
+            
+            MOTD(loopC).texto = auxiliaryString(n)
+            n = n + 1
+        Next loopC
+        
+        Call WriteConsoleMsg(UserIndex, "Se ha cambiado el MOTD con exito", FontTypeNames.FONTTYPE_INFO)
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handle the "ChangeMOTD" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleChangeMOTD(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/29/06
+'Change the MOTD
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        .incomingData.ReadByte
+    
+        If .flags.EsRolesMaster Then Exit Sub
+    
+        Dim auxiliaryString As String
+        Dim maxLines As Integer, loopC As Long
+    
+        Call LogGM(UserList(UserIndex).name, "Ha cambiado el MOTD", False)
+    
+        auxiliaryString = "ZMOTD"
+        
+        'I don`t know where to have the maxLines value :(
+    
+        For loopC = 1 To maxLines
+            auxiliaryString = auxiliaryString & MOTD(loopC).texto & vbCrLf
+        Next loopC
+    
+        If Right$(auxiliaryString, 2) = vbCrLf Then auxiliaryString = Left$(auxiliaryString, Len(auxiliaryString) - 2)
+        
+        Call WriteConsoleMsg(UserIndex, "El MOTD es: " & vbCrLf & auxiliaryString, FontTypeNames.FONTTYPE_INFO)
+    End With
 End Sub
 
 ''
@@ -10649,7 +10799,7 @@ Public Sub WriteShowSOSForm(ByVal UserIndex As Integer)
         
         For i = 1 To Ayuda.Longitud
             Tmp = Tmp & Ayuda.VerElemento(i) & SEPARATOR
-        Next N
+        Next n
         
         If Tmp <> "" Then _
             Tmp = Left$(Tmp, Len(temp) - 1)
