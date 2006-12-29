@@ -3274,7 +3274,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4713,7 +4713,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -7006,46 +7006,42 @@ On Error GoTo errhandler
         Dim Arg1 As String
         Dim Arg2 As String
         Dim valido As Boolean
+        Dim LoopC As Byte
+        Dim commandString As String
         
         UserName = Replace$(buffer.ReadASCIIString(), "+", " ")
         tUser = NameIndex(UserName)
-        opcion = buffer.ReadByte
+        opcion = buffer.ReadByte()
         Arg1 = buffer.ReadASCIIString()
         Arg2 = buffer.ReadASCIIString()
         
         If .flags.EsRolesMaster Then
             Select Case .flags.Privilegios
                 Case PlayerType.Consejero
-                    ' Los RMs consejeros sólo se pueden editar su head, body y exp
-                    If tUser = UserIndex And _
-                      (opcion = eEditOptions.eo_Body Or _
-                      opcion = eEditOptions.eo_Head Or _
-                      opcion = eEditOptions.eo_Level) Then _
-                        valido = True
-            
+                    ' Los RMs consejeros sólo se pueden editar su head, body y level
+                    valido = tUser = UserIndex And _
+                            (opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or opcion = eEditOptions.eo_Level)
+                
                 Case PlayerType.SemiDios
                     ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
-                    If (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
-                      opcion = eEditOptions.eo_Body Or _
-                      opcion = eEditOptions.eo_Head Then _
-                        valido = True
-            
+                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) _
+                            Or opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head
+                
                 Case PlayerType.Dios
                     ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
                     ' pero si quiere modificar el level sólo lo puede hacer sobre sí mismo
-                    If (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
-                      opcion = eEditOptions.eo_Body Or _
-                      opcion = eEditOptions.eo_Head Or _
-                      opcion = eEditOptions.eo_CiticensKilled Or _
-                      opcion = eEditOptions.eo_CriminalsKilled Or _
-                      opcion = eEditOptions.eo_Class Or _
-                      opcion = eEditOptions.eo_Skills Then _
-                        valido = True
+                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
+                            opcion = eEditOptions.eo_Body Or _
+                            opcion = eEditOptions.eo_Head Or _
+                            opcion = eEditOptions.eo_CiticensKilled Or _
+                            opcion = eEditOptions.eo_CriminalsKilled Or _
+                            opcion = eEditOptions.eo_Class Or _
+                            opcion = eEditOptions.eo_Skills
             End Select
-        ElseIf .flags.Privilegios < PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
+        ElseIf .flags.Privilegios >= PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
             valido = True
         End If
-    
+        
         If valido Then
             Select Case opcion
                 Case eEditOptions.eo_Gold
@@ -7059,7 +7055,7 @@ On Error GoTo errhandler
                             Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
                         End If
                     End If
-
+                
                 Case eEditOptions.eo_Experience
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
@@ -7072,7 +7068,7 @@ On Error GoTo errhandler
                             Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores a mucho. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
                         End If
                     End If
-            
+                
                 Case eEditOptions.eo_Body
                     If tUser <= 0 Then
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
@@ -7088,28 +7084,28 @@ On Error GoTo errhandler
                     Else
                         Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
-            
+                
                 Case eEditOptions.eo_CriminalsKilled
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Faccion.CriminalesMatados = val(Arg1)
                     End If
-
+                
                 Case eEditOptions.eo_CiticensKilled
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Faccion.CiudadanosMatados = val(Arg1)
                     End If
-
+                
                 Case eEditOptions.eo_Level
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Stats.ELV = val(Arg1)
                     End If
-
+                
                 Case eEditOptions.eo_Class
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
@@ -7121,9 +7117,7 @@ On Error GoTo errhandler
                         End If
                     End If
                 
-            '[DnG]
                 Case eEditOptions.eo_Skills
-                    Dim LoopC As Byte
                     For LoopC = 1 To NUMSKILLS
                         If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
                     Next LoopC
@@ -7138,7 +7132,7 @@ On Error GoTo errhandler
                             UserList(tUser).Stats.UserSkills(N) = val(Arg2)
                         End If
                     End If
-        
+                
                 Case eEditOptions.eo_SkillPointsLeft
                     If tUser <= 0 Then
                         Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
@@ -7146,17 +7140,57 @@ On Error GoTo errhandler
                     Else
                         UserList(tUser).Stats.SkillPts = val(Arg1)
                     End If
-    '[/DnG]
+                
                 Case Else
                     Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
             End Select
         End If
         
+        'Log it!
+        commandString = "/MOD "
+        
+        Select Case opcion
+            Case eEditOptions.eo_Gold
+                commandString = commandString & "ORO "
+            
+            Case eEditOptions.eo_Experience
+                commandString = commandString & "EXP "
+            
+            Case eEditOptions.eo_Body
+                commandString = commandString & "BODY "
+            
+            Case eEditOptions.eo_Head
+                commandString = commandString & "HEAD "
+            
+            Case eEditOptions.eo_CriminalsKilled
+                commandString = commandString & "CRI "
+            
+            Case eEditOptions.eo_CiticensKilled
+                commandString = commandString & "CIU "
+            
+            Case eEditOptions.eo_Level
+                commandString = commandString & "LEVEL "
+            
+            Case eEditOptions.eo_Class
+                commandString = commandString & "CLASE "
+            
+            Case eEditOptions.eo_Skills
+                commandString = commandString & "SKILLS "
+            
+            Case eEditOptions.eo_SkillPointsLeft
+                commandString = commandString & "SKILLSLIBRES "
+            
+            Case Else
+                commandString = commandString & "UNKOWN "
+        End Select
+        
+        commandString = commandString & Arg1 & " " & Arg2
+        
+        Call LogGM(.name, commandString, .flags.Privilegios = PlayerType.Consejero)
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
-    
-    Call LogGM(.name, rData, .flags.Privilegios = PlayerType.Consejero)
 
 errhandler:
     'Destroy auxiliar buffer
