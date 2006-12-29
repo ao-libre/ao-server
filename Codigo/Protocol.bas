@@ -419,6 +419,19 @@ Public Enum FontTypeNames
     FONTTYPE_GMMSG
 End Enum
 
+Public Enum eEditOptions
+    eo_Gold
+    eo_Experience
+    eo_Body
+    eo_Head
+    eo_CiticensKilled
+    eo_CriminalsKilled
+    eo_Level
+    eo_Class
+    eo_Skills
+    eo_SkillPointsLeft
+End Enum
+
 ''
 ' Handles incoming data.
 '
@@ -848,6 +861,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             Call HandleWarnUser(UserIndex)
         
         Case ClientPacketID.EditChar                '/MOD
+            Call HandleEditChar(UserIndex)
+            
         Case ClientPacketID.RequestCharInfo         '/INFO
             Call HandleRequestCharInfo(UserIndex)
         
@@ -3259,7 +3274,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4698,7 +4713,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -6958,6 +6973,191 @@ On Error GoTo errhandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "EditChar" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleEditChar(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/28/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 8 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim tUser As Integer
+        Dim opcion As Byte
+        Dim Arg1 As String
+        Dim Arg2 As String
+        Dim valido As Boolean
+        
+        UserName = Replace$(buffer.ReadASCIIString(), "+", " ")
+        tUser = NameIndex(UserName)
+        opcion = buffer.ReadByte
+        Arg1 = buffer.ReadASCIIString()
+        Arg2 = buffer.ReadASCIIString()
+        
+        If .flags.EsRolesMaster Then
+            Select Case .flags.Privilegios
+                Case PlayerType.Consejero
+                    ' Los RMs consejeros sólo se pueden editar su head, body y exp
+                    If tUser = UserIndex And _
+                      (opcion = eEditOptions.eo_Body Or _
+                      opcion = eEditOptions.eo_Head Or _
+                      opcion = eEditOptions.eo_Level) Then _
+                        valido = True
+            
+                Case PlayerType.SemiDios
+                    ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
+                    If (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
+                      opcion = eEditOptions.eo_Body Or _
+                      opcion = eEditOptions.eo_Head Then _
+                        valido = True
+            
+                Case PlayerType.Dios
+                    ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
+                    ' pero si quiere modificar el level sólo lo puede hacer sobre sí mismo
+                    If (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
+                      opcion = eEditOptions.eo_Body Or _
+                      opcion = eEditOptions.eo_Head Or _
+                      opcion = eEditOptions.eo_CiticensKilled Or _
+                      opcion = eEditOptions.eo_CriminalsKilled Or _
+                      opcion = eEditOptions.eo_Class Or _
+                      opcion = eEditOptions.eo_Skills Then _
+                        valido = True
+            End Select
+        ElseIf .flags.Privilegios < PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
+            valido = True
+        End If
+    
+        If valido Then
+            Select Case opcion
+                Case eEditOptions.eo_Gold
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If val(Arg1) < 5000000 Then
+                            UserList(tUser).Stats.GLD = val(Arg1)
+                            Call WriteUpdateGold(tUser)
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                    End If
+
+                Case eEditOptions.eo_Experience
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If val(Arg1) < 15995001 Then
+                            UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
+                            Call CheckUserLevel(tUser)
+                            Call WriteUpdateExp(tUser)
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores a mucho. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                    End If
+            
+                Case eEditOptions.eo_Body
+                    If tUser <= 0 Then
+                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                    End If
+                
+                Case eEditOptions.eo_Head
+                    If tUser <= 0 Then
+                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                    End If
+            
+                Case eEditOptions.eo_CriminalsKilled
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        UserList(tUser).Faccion.CriminalesMatados = val(Arg1)
+                    End If
+
+                Case eEditOptions.eo_CiticensKilled
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        UserList(tUser).Faccion.CiudadanosMatados = val(Arg1)
+                    End If
+
+                Case eEditOptions.eo_Level
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        UserList(tUser).Stats.ELV = val(Arg1)
+                    End If
+
+                Case eEditOptions.eo_Class
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If Len(Arg1) > 1 Then
+                            UserList(tUser).clase = UCase$(Left$(Arg1, 1)) & LCase$(mid$(Arg1, 2))
+                        Else
+                            UserList(tUser).clase = UCase$(Arg1)
+                        End If
+                    End If
+                
+            '[DnG]
+                Case eEditOptions.eo_Skills
+                    Dim LoopC As Byte
+                    For LoopC = 1 To NUMSKILLS
+                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
+                    Next LoopC
+
+                    If N = 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If tUser <= 0 Then
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            UserList(tUser).Stats.UserSkills(N) = val(Arg2)
+                        End If
+                    End If
+        
+                Case eEditOptions.eo_SkillPointsLeft
+                    If tUser <= 0 Then
+                        Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        UserList(tUser).Stats.SkillPts = val(Arg1)
+                    End If
+    '[/DnG]
+                Case Else
+                    Call SendData(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
+            End Select
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+    
+    Call LogGM(.name, rData, .flags.Privilegios = PlayerType.Consejero)
+
 errhandler:
     'Destroy auxiliar buffer
     Set buffer = Nothing
