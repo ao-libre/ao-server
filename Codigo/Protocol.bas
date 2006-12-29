@@ -7142,13 +7142,13 @@ On Error GoTo errhandler
                 Case eEditOptions.eo_SkillPointsLeft
                     If tUser <= 0 Then
                         Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Charfile Alterado:" & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Stats.SkillPts = val(Arg1)
                     End If
     '[/DnG]
                 Case Else
-                    Call SendData(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
             End Select
         End If
         
