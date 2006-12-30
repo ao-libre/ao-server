@@ -8499,10 +8499,10 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
                 '*Nigo: esto queda asi?
                 Call EraseObj(SendTarget.ToMap, 0, mapa, .ObjInfo.amount, mapa, X, Y)
 
-                'Nigo: Modifico este segundo EraseObj porque:
+                '*Nigo: Modifico este segundo EraseObj porque:
                 '       esta puesto para destruir el "humo" que se crea en la posicion
                 '       a donde te lleva el portal, pero no necesariamente siempre esta
-                '       este humo en esa posicion!
+                '       este humo en esa posicion! evitemos destruir otros items!
                 'Call EraseObj(SendTarget.ToMap, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
                     Call EraseObj(SendTarget.ToMap, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)

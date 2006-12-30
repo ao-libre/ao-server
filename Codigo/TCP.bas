@@ -758,7 +758,7 @@ Err:
     
     EnviarDatosASlot = 0
     
-    If UserList(UserIndex).ColaSalida.count <= 0 Then
+    If UserList(UserIndex).ColaSalida.Count <= 0 Then
         If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
             If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
                 UserList(UserIndex).SockPuedoEnviar = False
@@ -789,7 +789,7 @@ Dim Ret As Long
     '//                     1: WSAEWOULDBLOCK
     '//                     2: Error critico
     '//
-    If UserList(UserIndex).ColaSalida.count <= 0 Then
+    If UserList(UserIndex).ColaSalida.Count <= 0 Then
         Ret = frmMain.Serv.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos))
         If Ret = 1 Then
             Encolar = True
@@ -2816,7 +2816,7 @@ If UCase$(Left$(rData, 6)) = "/RMATA" Then
     tIndex = UserList(UserIndex).flags.TargetNPC
     If tIndex > 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||RMatas (con posible respawn) a: " & Npclist(tIndex).name & FONTTYPE_INFO)
-        Dim MiNPC As npc
+        Dim MiNPC As NPC
         MiNPC = Npclist(tIndex)
         Call QuitarNPC(tIndex)
         Call ReSpawnNpc(MiNPC)
@@ -3912,7 +3912,7 @@ If UCase(rData) = "/BANIPLIST" Then
     If UserList(UserIndex).flags.EsRolesMaster Then Exit Sub
     Call LogGM(UserList(UserIndex).name, rData, False)
     tStr = "||"
-    For LoopC = 1 To BanIps.count
+    For LoopC = 1 To BanIps.Count
         tStr = tStr & BanIps.Item(LoopC) & ", "
     Next LoopC
     tStr = tStr & FONTTYPE_INFO
@@ -4708,8 +4708,8 @@ If UCase$(rData) = "/TCPESSTATS" Then
     tLong = 0
     For LoopC = 1 To LastUser
         If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-            If UserList(LoopC).ColaSalida.count > 0 Then
-                tStr = tStr & UserList(LoopC).name & " (" & UserList(LoopC).ColaSalida.count & "), "
+            If UserList(LoopC).ColaSalida.Count > 0 Then
+                tStr = tStr & UserList(LoopC).name & " (" & UserList(LoopC).ColaSalida.Count & "), "
                 tLong = tLong + 1
             End If
         End If
