@@ -927,19 +927,47 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             Call HandleServerMessage(UserIndex)
             
         Case ClientPacketID.NickToIP                '/NICK2IP
+            Call HandleNickToIP(UserIndex)
+        
         Case ClientPacketID.IPToNick                '/IP2NICK
+            Call HandleIPToNick(UserIndex)
+            
         Case ClientPacketID.GuildOnlineMembers      '/ONCLAN
+            Call HandleGuildOnlineMembers(UserIndex)
+        
         Case ClientPacketID.TeleportCreate          '/CT
+            Call HandleTeleportCreate(UserIndex)
+            
         Case ClientPacketID.TeleportDestroy         '/DT
+            Call HandleTeleportDestroy(UserIndex)
+            
         Case ClientPacketID.RainToggle              '/LLUVIA
+            Call HandleRainToggle(UserIndex)
+        
         Case ClientPacketID.SetCharDescription      '/SETDESC
+            Call HandleSetCharDescription(UserIndex)
+        
         Case ClientPacketID.ForceMIDIToMap          '/FORCEMIDIMAP
+            Call HanldeForceMIDIToMap(UserIndex)
+            
         Case ClientPacketID.ForceWAVEToMap          '/FORCEWAVMAP
+            Call HandleForceWAVEToMap(UserIndex)
+            
         Case ClientPacketID.RoyalArmyMessage        '/REALMSG
+            Call HandleRoyalArmyMessage(UserIndex)
+                        
         Case ClientPacketID.ChaosLegionMessage      '/CAOSMSG
+            Call HandleChaosLegionMessage(UserIndex)
+            
         Case ClientPacketID.CitizenMessage          '/CIUMSG
+            Call HandleCitizenMessage(UserIndex)
+            
         Case ClientPacketID.CriminalMessage         '/CRIMSG
+            Call HandleCriminalMessage(UserIndex)
+            
         Case ClientPacketID.TalkAsNPC               '/TALKAS
+            Call HandleTalkAsNPC(UserIndex)
+        
         Case ClientPacketID.DestroyAllItemsInArea   '/MASSDEST
         Case ClientPacketID.AcceptRoyalCouncilMember '/ACEPTCONSE
         Case ClientPacketID.AcceptChaosCouncilMember '/ACEPTCONSECAOS
@@ -3331,7 +3359,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4770,7 +4798,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -8182,6 +8210,628 @@ On Error GoTo errhandler
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
         End If
         
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "NickToIP" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleNickToIP(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim tUser As Integer
+        
+        If Not .flags.EsRolesMaster Then
+            UserName = buffer.ReadASCIIString()
+            tUser = NameIndex(UserName)
+    
+            Call LogGM(.name, "NICK2IP Solicito la IP de " & UserName, .flags.Privilegios = PlayerType.Consejero)
+    
+            If tUser > 0 Then
+                If (.flags.Privilegios > PlayerType.User And UserList(tUser).flags.Privilegios = PlayerType.User) Or (UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
+                    Call WriteConsoleMsg(UserIndex, "El ip de " & UserName & " es " & UserList(tUser).ip, FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No tienes los privilegios necesarios", FontTypeNames.FONTTYPE_INFO)
+                End If
+            Else
+                Call WriteConsoleMsg(UserIndex, "No hay ningun personaje con ese nick", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+            
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "IPToNick" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleIPToNick(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Dim ip As String
+        Dim LoopC As Long
+        Dim lista As String
+        '*Nigo: no seria mas facil mandar como texto? no vale la pena ahorrar ancho de banda aca...
+        ip = .incomingData.ReadByte & "." & .incomingData.ReadByte & "." & .incomingData.ReadByte & "." & .incomingData.ReadByte
+        
+        If .flags.EsRolesMaster Then Exit Sub
+
+        Call LogGM(.name, "IP2NICK Solicito los Nicks de IP " & ip, .flags.Privilegios = PlayerType.Consejero)
+    
+        For LoopC = 1 To LastUser
+            If UserList(LoopC).ip = ip And UserList(LoopC).name <> "" And UserList(LoopC).flags.UserLogged Then
+                If (.flags.Privilegios > PlayerType.User And UserList(LoopC).flags.Privilegios = PlayerType.User) Or (.flags.Privilegios >= PlayerType.Dios) Then
+                    lista = lista & UserList(LoopC).name & ", "
+                End If
+            End If
+        Next LoopC
+        
+        If Len(lista) > 2 Then lista = Left$(lista, Len(lista) - 2)
+        Call WriteConsoleMsg(UserIndex, "Los personajes con ip " & ip & " son: " & lista, FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub
+
+''
+' Handles the "GuildOnlineMembers" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim GuildName As String
+        Dim tGuild As Integer
+
+        If Not .flags.EsRolesMaster Then
+            GuildName = buffer.ReadASCIIString()
+            tGuild = guildIndex(GuildName)
+    
+            If tGuild > 0 Then
+                Call WriteConsoleMsg(UserIndex, "Clan " & UCase(GuildName) & ": " & _
+                  modGuilds.m_ListaDeMiembrosOnline(UserIndex, tGuild), FontTypeNames.FONTTYPE_GUILDMSG)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "TeleportCreate" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Dim Mapa As Integer
+        Dim X As Byte
+        Dim Y As Byte
+        
+        Mapa = .incomingData.ReadInteger
+        X = .incomingData.ReadByte
+        Y = .incomingData.ReadByte
+    
+        If Not .flags.EsRolesMaster And .flags.Privilegios < PlayerType.Dios Then Exit Sub
+        
+        Call LogGM(.name, "/CT " & Mapa & "," & X & "," & Y, False)
+    
+        If Not MapaValido(Mapa) Or Not InMapBounds(Mapa, X, Y) Then
+            Exit Sub
+        End If
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then
+            Exit Sub
+        End If
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then
+            Exit Sub
+        End If
+        If MapData(Mapa, X, Y).ObjInfo.ObjIndex > 0 Then
+            Call SendData(UserIndex, "Hay un objeto en el piso en ese lugar", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    
+        Dim ET As Obj
+        ET.amount = 1
+        ET.ObjIndex = 378
+        '*Nigo: aun sin mirarlo me parece que habria que reacer el MakeObj
+        Call MakeObj(SendTarget.ToMap, 0, .Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
+    
+        ET.amount = 1
+        ET.ObjIndex = 651
+        Call MakeObj(SendTarget.ToMap, 0, Mapa, ET, Mapa, X, Y)
+        
+        With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
+            .TileExit.Map = Mapa
+            .TileExit.X = X
+            .TileExit.Y = Y
+        End With
+    End With
+End Sub
+
+''
+' Handles the "TeleportDestroy" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    With UserList(UserIndex)
+        Dim Mapa As Integer
+        Dim X As Byte
+        Dim Y As Byte
+        
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        '/dt
+        If Not .flags.EsRolesMaster And .flags.Privilegios < PlayerType.Dios Then Exit Sub
+
+        Mapa = .flags.TargetMap
+        X = .flags.TargetX
+        Y = .flags.TargetY
+
+        If Not InMapBounds(Map, X, Y) Then Exit Sub
+        
+        With MapData(Map, X, Y)
+            If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
+                '*Nigo: reacomode y agregue Map,X,Y para que se sepa que telep destruyo!
+                'Call LogGM(.name, "/DT", False)
+                Call LogGM(.name, "TeleportDestroy: " & Map & "," & X & "," & Y, False)
+                
+                '*Nigo: esto queda asi?
+                Call EraseObj(SendTarget.ToMap, 0, Mapa, .ObjInfo.amount, Mapa, X, Y)
+
+                'Nigo: Modifico este segundo EraseObj porque:
+                '       esta puesto para destruir el "humo" que se crea en la posicion
+                '       a donde te lleva el portal, pero no necesariamente siempre esta
+                '       este humo en esa posicion!
+                'Call EraseObj(SendTarget.ToMap, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
+                    Call EraseObj(SendTarget.ToMap, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                End If
+                
+                .TileExit.Map = 0
+                .TileExit.X = 0
+                .TileExit.Y = 0
+            End If
+        End With
+    End With
+End Sub
+
+''
+' Handles the "RainToggle" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleRainToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Call LogGM(.name, "/LLUVIA", False)
+        Lloviendo = Not Lloviendo
+        '*Nigo: no se con que write se reemplaza esto :(
+        Call SendData(SendTarget.ToAll, 0, "LLU")
+    End With
+End Sub
+
+''
+' Handles the "SetCharDescription" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim UserName As String
+        Dim tUser As Integer
+        Dim desc As String
+        
+        '*Nigo: hice varios cambios ya que antes usabamos
+        '   el TargetUser y ahora el cliente nos manda el UserName
+        UserName = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
+        
+        If .flags.EsRolesMaster And .flags.Privilegios >= PlayerType.Dios Then
+            tUser = NameIndex(UserName)
+            If tUser > 0 Then
+                UserList(tUser).DescRM = desc
+            Else
+                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "ForceMIDIToMap" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Dim midiID As Byte
+        Dim Mapa As Integer
+        
+        midiID = .incomingData.ReadByte
+        Mapa = .incomingData.ReadInteger
+
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
+        
+        'Si el mapa no fue enviado tomo el actual
+        If Not IsNumeric(Mapa) Then
+            Mapa = .Pos.Map
+        End If
+        
+        If IsNumeric(midiID) Then
+            If midiID = 0 Then
+                '*Nigo: no se como reemplazar esto :(
+                'Ponemos el default del mapa
+                Call SendData(SendTarget.ToMap, 0, Mapa, "TM" & CStr(MapInfo(.Pos.Map).Music))
+            Else
+                '*Nigo: no se como reemplazar esto :(
+                'Ponemos el pedido por el GM
+                Call SendData(SendTarget.ToMap, 0, Mapa, "TM" & midiID)
+            End If
+        Else
+            Call WriteConsoleMsg(UserIndex, "El formato correcto de este comando es /FORCEMIDMAP MIDI MAPA, siendo el MAPA opcional", FontTypeNames.FONTTYPE_INFO)
+        End If
+    End With
+End Sub
+
+''
+' Handles the "ForceWAVEToMap" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 6 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Dim waveID As Byte
+        Dim Mapa As Integer
+        '*Nigo: no entiendo para que estan X,Y pero asi esta implementado...
+        Dim X As Byte
+        Dim Y As Byte
+        
+        waveID = .incomingData.ReadByte
+        Mapa = .incomingData.ReadInteger
+        X = .incomingData.ReadByte
+        Y = .incomingData.ReadByte
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
+        
+        'Si el mapa no fue enviado tomo el actual
+        If Not IsNumeric(Mapa) Or Not IsNumeric(X) Or Not IsNumeric(Y) Then
+            Map = .Pos.Map
+            X = .Pos.X
+            Y = .Pos.Y
+        End If
+        
+        If IsNumeric(waveID) Then
+            '*Nigo: no se como reemplazar esto :(
+            'Ponemos el pedido por el GM
+            Call SendData(SendTarget.ToMap, 0, Mapa, "TW" & waveID)
+        Else
+            Call WriteConsoleMsg(UserIndex, "El formato correcto de este comando es /FORCEWAVMAP WAV MAPA X Y, siendo la posición opcional", FontTypeNames.FONTTYPE_INFO)
+        End If
+    End With
+End Sub
+
+''
+' Handles the "RoyalArmyMessage" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString()
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+            If InStr(1, message, "~") = 0 Then
+                Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("ARMADA REAL> " & message), FontTypeNames.FONTTYPE_TALK)
+            Else
+                '*Nigo: Supuestamente aca manda el fonttype con formato "R~G~B", pero se piensa hacer
+                Call SendData(SendTarget.ToRealYRMs, 0, 0, "||ARMADA REAL> " & message)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "ChaosLegionMessage" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString()
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+            If InStr(1, message, "~") = 0 Then
+                Call SendData(SendTarget.ToCaosYRMs, 0, PrepareMessageConsoleMsg("FUERZAS DEL CAOS> " & message), FontTypeNames.FONTTYPE_TALK)
+            Else
+                '*Nigo: Supuestamente aca manda el fonttype con formato "R~G~B", pero se piensa hacer
+                Call SendData(SendTarget.ToCaosYRMs, 0, 0, "||FUERZAS DEL CAOS> " & message)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "CitizenMessage" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString()
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+            If InStr(1, message, "~") = 0 Then
+                Call SendData(SendTarget.ToCiudadanosYRMs, 0, PrepareMessageConsoleMsg("CIUDADANOS> " & message), FontTypeNames.FONTTYPE_TALK)
+            Else
+                '*Nigo: Supuestamente aca manda el fonttype con formato "R~G~B", pero se piensa hacer
+                Call SendData(SendTarget.ToCiudadanosYRMs, 0, 0, "||CIUDADANOS> " & message)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "CriminalMessage" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString()
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+            If InStr(1, message, "~") = 0 Then
+                Call SendData(SendTarget.ToCriminalesYRMs, 0, PrepareMessageConsoleMsg("CRIMINALES> " & message), FontTypeNames.FONTTYPE_TALK)
+            Else
+                '*Nigo: Supuestamente aca manda el fonttype con formato "R~G~B", pero se piensa hacer
+                Call SendData(SendTarget.ToCriminalesYRMs, 0, 0, "||CRIMINALES> " & message)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "TalkAsNPC" message.
+'
+' @param    userIndex The index of the user sending the message.
+Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 12/29/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        message = buffer.ReadASCIIString()
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+            'Asegurarse haya un NPC seleccionado
+            If .flags.TargetNPC > 0 Then
+                Call SendData(SendTarget.ToNPCArea, .flags.TargetNPC, PrepareMessageChatOverHead(message, Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Else
+                Call WriteConsoleMsg(UserIndex, "Debes seleccionar el NPC por el que quieres hablar antes de usar este comando", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
