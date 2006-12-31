@@ -72,7 +72,7 @@ If InMapBounds(Map, X, Y) Then
                     End If
                 End If
             Else 'No es newbie
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Mapa exclusivo para newbies." & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para newbies.", FontTypeNames.FONTTYPE_INFO)
                 Dim veces As Byte
                 veces = 0
                 Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
@@ -421,7 +421,7 @@ Dim LoopC As Integer
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call SendData(SendTarget.ToIndex, index, 0, "||" & GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC) & FONTTYPE_INFO)
+    Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
 Next LoopC
 
 End Sub
@@ -430,7 +430,7 @@ Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
     If Npclist(NpcIndex).NroExpresiones > 0 Then
         Dim randomi
         randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex & FONTTYPE_INFO)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg(vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex, FontTypeNames.FONTTYPE_INFO))
     End If
 End Sub
 
@@ -484,9 +484,9 @@ If InMapBounds(Map, X, Y) Then
     If FoundSomething = 1 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex
         If MostrarCantidad(UserList(UserIndex).flags.TargetObj) Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).name & " - " & MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.amount & "" & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, ObjData(UserList(UserIndex).flags.TargetObj).name & " - " & MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.amount & "", FontTypeNames.FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & ObjData(UserList(UserIndex).flags.TargetObj).name & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, ObjData(UserList(UserIndex).flags.TargetObj).name, FontTypeNames.FONTTYPE_INFO)
         End If
     
     End If
@@ -534,12 +534,12 @@ If InMapBounds(Map, X, Y) Then
                     Stat = Stat & " <Legión oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
                 End If
                 
-                If UserList(TempCharIndex).GuildIndex > 0 Then
-                    Stat = Stat & " <" & modGuilds.guildName(UserList(TempCharIndex).GuildIndex) & ">"
+                If UserList(TempCharIndex).guildIndex > 0 Then
+                    Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).guildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).Desc) > 1 Then
-                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
+                If Len(UserList(TempCharIndex).desc) > 1 Then
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
@@ -628,16 +628,16 @@ If InMapBounds(Map, X, Y) Then
                 End If
             End If
             
-            If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & vbWhite & "°" & Npclist(TempCharIndex).Desc & "°" & Npclist(TempCharIndex).Char.CharIndex & FONTTYPE_INFO)
+            If Len(Npclist(TempCharIndex).desc) > 1 Then
+                Call WriteConsoleMsg(UserIndex, vbWhite & "°" & Npclist(TempCharIndex).desc & "°" & Npclist(TempCharIndex).Char.CharIndex, FontTypeNames.FONTTYPE_INFO)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)
             Else
                 If Npclist(TempCharIndex).MaestroUser > 0 Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name, FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & estatus & Npclist(TempCharIndex).name & "." & FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).name & ".", FontTypeNames.FONTTYPE_INFO)
                 End If
                 
             End If
@@ -664,7 +664,7 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No ves nada interesante.", FonTypeNames.FONTTYPE_INFO)
     End If
 
 Else
@@ -676,7 +676,7 @@ Else
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No ves nada interesante." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No ves nada interesante.", FontTypeNames.FONTTYPE_INFO)
     End If
 End If
 

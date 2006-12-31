@@ -202,7 +202,7 @@ frmCargando.cargar.value = 0
 For Hechizo = 1 To NumeroHechizos
 
     Hechizos(Hechizo).Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-    Hechizos(Hechizo).Desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
+    Hechizos(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
     Hechizos(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
     
     Hechizos(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
@@ -295,7 +295,7 @@ Set Leer = Nothing
 Exit Sub
 
 errhandler:
- MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.Description
+ MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
 
@@ -332,7 +332,7 @@ Dim i As Integer
 
 
 
-Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+Call SendData(SendTarget.ToAll, PrepareMessagePauseToggle())
 
 
 Call LimpiarMundo
@@ -341,7 +341,7 @@ Call modGuilds.v_RutinaElecciones
 Call ResetCentinelaInfo     'Reseteamos al centinela
 
 
-Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
 
 'Call EstadisticasWeb.Informar(EVENTO_NUEVO_CLAN, 0)
 
@@ -352,7 +352,7 @@ On Error Resume Next
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\BackUps.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time
+Print #nfile, Date & " " & time
 Close #nfile
 End Sub
 
@@ -730,7 +730,7 @@ Set Leer = Nothing
 Exit Sub
 
 errhandler:
-    MsgBox "error cargando objetos " & Err.Number & ": " & Err.Description
+    MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
 End Sub
@@ -864,7 +864,7 @@ Else
 End If
 
 
-UserList(UserIndex).Desc = UserFile.GetValue("INIT", "Desc")
+UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
 
 
 UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
@@ -947,9 +947,9 @@ UserList(UserIndex).NroMacotas = 0
 
 ln = UserFile.GetValue("Guild", "GUILDINDEX")
 If IsNumeric(ln) Then
-    UserList(UserIndex).GuildIndex = CInt(ln)
+    UserList(UserIndex).guildIndex = CInt(ln)
 Else
-    UserList(UserIndex).GuildIndex = 0
+    UserList(UserIndex).guildIndex = 0
 End If
 
 End Sub
@@ -1013,7 +1013,7 @@ Exit Sub
 
 man:
     MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
-    Call LogError(Date & " " & Err.Description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
+    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
  
 End Sub
 
@@ -1054,7 +1054,7 @@ Exit Sub
 
 man:
     MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
-    Call LogError(Date & " " & Err.Description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
+    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
 
 End Sub
 
@@ -1194,7 +1194,7 @@ On Error GoTo errh
 Exit Sub
 
 errh:
-    Call LogError("Error cargando mapa: " & Map & "." & Err.Description)
+    Call LogError("Error cargando mapa: " & Map & "." & Err.description)
 End Sub
 
 Sub LoadSini()
@@ -1488,7 +1488,7 @@ Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
 Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password)
-Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
+Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).desc)
 
 Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
 
@@ -1666,7 +1666,7 @@ End If
 
 'General
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).Desc)
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).desc)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(Npclist(NpcIndex).Char.Head))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.body))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(Npclist(NpcIndex).Char.heading))
@@ -1727,7 +1727,7 @@ End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
 Npclist(NpcIndex).Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
 

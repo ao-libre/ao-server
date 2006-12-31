@@ -132,3 +132,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 27/12/2006: Corregí una docena de bugs de antaño... Entre ellos el que /Dest funcione con teleports, el que /DT sin clickear a nada te patee, el que /APASS no asigna la pass que se acaba de setear con /PASSWD, etc. (Maraxus)
  * 31/12/2006: Admin.bas, AI_NPC.bas y Comercio.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 31/12/2006: Le saque el "message" a WriteChangeNPCInventorySlot ya que no servia para nada. (Tavo)
+ * 31/12/2006: Acciones.bas, FileIO.bas, GameLogic.bas y General.bas han sido arreglados para funcionar con el protocolo
+nuevo

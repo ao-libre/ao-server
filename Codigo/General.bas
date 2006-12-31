@@ -127,7 +127,7 @@ Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As 
 'b=1 bloquea el tile en (x,y)
 'b=0 desbloquea el tile indicado
 
-Call SendData(sndRoute, sndIndex, sndMap, "BQ" & X & "," & Y & "," & b)
+Call WriteBlockPosition(sndIndex, X, Y, CBool(b))
 
 End Sub
 
@@ -467,7 +467,7 @@ Unload frmCargando
 Dim N As Integer
 N = FreeFile
 Open App.Path & "\logs\Main.log" For Append Shared As #N
-Print #N, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
 Close #N
 
 'Ocultar
@@ -486,7 +486,7 @@ Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = 
 '*****************************************************************
 'Se fija si existe el archivo
 '*****************************************************************
-    FileExist = Dir$(file, FileType) <> ""
+    FileExist = dir$(file, FileType) <> ""
 End Function
 
 Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
@@ -537,13 +537,13 @@ frmMain.CantUsuarios.Caption = "Numero de usuarios jugando: " & NumUsers
 End Sub
 
 
-Public Sub LogCriticEvent(Desc As String)
+Public Sub LogCriticEvent(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -552,13 +552,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogEjercitoReal(Desc As String)
+Public Sub LogEjercitoReal(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-Print #nfile, Desc
+Print #nfile, desc
 Close #nfile
 
 Exit Sub
@@ -567,13 +567,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogEjercitoCaos(Desc As String)
+Public Sub LogEjercitoCaos(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-Print #nfile, Desc
+Print #nfile, desc
 Close #nfile
 
 Exit Sub
@@ -583,13 +583,13 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
+Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -599,13 +599,13 @@ errhandler:
 End Sub
 
 
-Public Sub LogError(Desc As String)
+Public Sub LogError(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -614,13 +614,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogStatic(Desc As String)
+Public Sub LogStatic(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -629,13 +629,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogTarea(Desc As String)
+Public Sub LogTarea(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile(1) ' obtenemos un canal
 Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -651,7 +651,7 @@ Public Sub LogClanes(ByVal str As String)
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\clanes.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & str
+Print #nfile, Date & " " & time & " " & str
 Close #nfile
 
 End Sub
@@ -661,7 +661,7 @@ Public Sub LogIP(ByVal str As String)
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\IP.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & str
+Print #nfile, Date & " " & time & " " & str
 Close #nfile
 
 End Sub
@@ -672,7 +672,7 @@ Public Sub LogDesarrollo(ByVal str As String)
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\desarrollo.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & str
+Print #nfile, Date & " " & time & " " & str
 Close #nfile
 
 End Sub
@@ -689,7 +689,7 @@ If Consejero Then
 Else
     Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
 End If
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Close #nfile
 
 Exit Sub
@@ -730,7 +730,7 @@ Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 
 Open App.Path & "\logs\asesinatos.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Close #nfile
 
 Exit Sub
@@ -746,7 +746,7 @@ nfile = FreeFile ' obtenemos un canal
 
 Open App.Path & "\logs\propiedades.log" For Append Shared As #nfile
 Print #nfile, "----------------------------------------------------------"
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Print #nfile, "----------------------------------------------------------"
 Close #nfile
 
@@ -763,7 +763,7 @@ Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\HackAttemps.log" For Append Shared As #nfile
 Print #nfile, "----------------------------------------------------------"
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Print #nfile, "----------------------------------------------------------"
 Close #nfile
 
@@ -779,7 +779,7 @@ On Error GoTo errhandler
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\CH.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Close #nfile
 
 Exit Sub
@@ -796,7 +796,7 @@ Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\CriticalHackAttemps.log" For Append Shared As #nfile
 Print #nfile, "----------------------------------------------------------"
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Print #nfile, "----------------------------------------------------------"
 Close #nfile
 
@@ -812,7 +812,7 @@ On Error GoTo errhandler
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\AntiCheat.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & texto
+Print #nfile, Date & " " & time & " " & texto
 Print #nfile, ""
 Close #nfile
 
@@ -929,7 +929,7 @@ If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entran
 Dim N As Integer
 N = FreeFile
 Open App.Path & "\logs\Main.log" For Append Shared As #N
-Print #N, Date & " " & Time & " servidor reiniciado."
+Print #N, Date & " " & time & " servidor reiniciado."
 Close #N
 
 'Ocultar
@@ -997,11 +997,11 @@ If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
   UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
 Else
   If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muriendo de frio, abrigate o moriras!!." & FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!.", FontTypeNames.FONTTYPE_INFO)
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
     If UserList(UserIndex).Stats.MinHP < 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has muerto de frio!!." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Has muerto de frio!!.", FontTypeNames.FONTTYPE_INFO)
             UserList(UserIndex).Stats.MinHP = 0
             Call UserDie(UserIndex)
     End If
@@ -1009,7 +1009,7 @@ Else
   Else
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
     Call QuitarSta(UserIndex, modifi)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASS" & UserList(UserIndex).Stats.MinSta)
+    Call WriteUpdateHP(UserIndex)
     'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
   End If
   
@@ -1026,7 +1026,7 @@ If UserList(UserIndex).Counters.Mimetismo < IntervaloInvisible Then
     UserList(UserIndex).Counters.Mimetismo = UserList(UserIndex).Counters.Mimetismo + 1
 Else
     'restore old char
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Recuperas tu apariencia normal." & FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "Recuperas tu apariencia normal.", FontTypeNames.FONTTYPE_INFO)
     
     UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
     UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
@@ -1050,10 +1050,10 @@ If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
     UserList(UserIndex).Counters.Invisibilidad = UserList(UserIndex).Counters.Invisibilidad + 1
 Else
     UserList(UserIndex).Counters.Invisibilidad = 0
-    UserList(UserIndex).flags.Invisible = 0
+    UserList(UserIndex).flags.invisible = 0
     If UserList(UserIndex).flags.Oculto = 0 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has vuelto a ser visible." & FONTTYPE_INFO)
-        Call SendData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",0")
+        Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
+        Call SendData(SendTarget.ToPCArea, 0, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
 End If
 
@@ -1078,11 +1078,11 @@ If UserList(UserIndex).Counters.Ceguera > 0 Then
 Else
     If UserList(UserIndex).flags.Ceguera = 1 Then
         UserList(UserIndex).flags.Ceguera = 0
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "NSEGUE")
+        Call WriteBlindNoMore(UserIndex)
     End If
     If UserList(UserIndex).flags.Estupidez = 1 Then
         UserList(UserIndex).flags.Estupidez = 0
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "NESTUP")
+        Call WriteDumbNoMore(UserIndex)
     End If
 
 End If
@@ -1098,7 +1098,7 @@ If UserList(UserIndex).Counters.Paralisis > 0 Then
 Else
     UserList(UserIndex).flags.Paralizado = 0
     'UserList(UserIndex).Flags.AdministrativeParalisis = 0
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
+    Call WriteParalizeOK(UserIndex)
 End If
 
 End Sub
@@ -1138,7 +1138,7 @@ Else
   N = RandomNumber(1, 5)
   UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - N
   If UserList(UserIndex).Stats.MinHP < 1 Then Call UserDie(UserIndex)
-  Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
+  Call WriteUpdateHP(UserIndex)
 End If
 
 End Sub
@@ -1218,7 +1218,7 @@ If UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP Then
       UserList(UserIndex).Counters.HPCounter = 0
       UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit
       If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-      Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sanado." & FONTTYPE_INFO)
+      Call WriteConsoleMsg(UserIndex, "Has sanado.", FontTypeNames.FONTTYPE_INFO)
       EnviarStats = True
     End If
 End If
@@ -1244,8 +1244,8 @@ Sub PasarSegundo()
             If UserList(i).Counters.Salir <= 0 Then
                 'If NumUsers <> 0 Then NumUsers = NumUsers - 1
 
-                Call SendData(SendTarget.ToIndex, i, 0, "||Gracias por jugar Argentum Online" & FONTTYPE_INFO)
-                Call SendData(SendTarget.ToIndex, i, 0, "FINOK")
+                Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
+                Call WriteDisconnect(i)
                 
                 Call CloseSocket(i)
                 Exit Sub
@@ -1264,13 +1264,13 @@ Sub PasarSegundo()
                  'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
 
                  'Call Encarcelar(Z, 30, "El sistema anti empollo")
-                 Call SendData(SendTarget.ToIndex, i, 0, "!! Fuiste expulsado por permanecer muerto sobre un item")
+                 Call WriteShowMessageBox(i, "Fuiste expulsado por permanecer muerto sobre un item")
                  'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
                  UserList(i).EmpoCont = 0
                  Call CloseSocket(i)
                  Exit Sub
              ElseIf UserList(i).EmpoCont = 15 Then
-                 Call SendData(SendTarget.ToIndex, i, 0, "|| LLevas 15 segundos bloqueando el item, muévete o serás desconectado." & FONTTYPE_WARNING)
+                 Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
              End If
          End If
     Next i
@@ -1324,8 +1324,8 @@ End Sub
 Sub GuardarUsuarios()
     haciendoBK = True
     
-    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
-    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Grabando Personajes" & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Grabando Personajes", FontTypeNames.FONTTYPE_SERVER))
     
     Dim i As Integer
     For i = 1 To LastUser
@@ -1334,8 +1334,8 @@ Sub GuardarUsuarios()
         End If
     Next i
     
-    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Personajes Grabados" & FONTTYPE_SERVER)
-    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Personajes Grabados", FontTypeNames.FONTTYPE_SERVER))
+    Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
 
     haciendoBK = False
 End Sub
