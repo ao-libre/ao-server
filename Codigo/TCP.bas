@@ -34,32 +34,31 @@ Option Explicit
 'RUTAS DE ENVIO DE DATOS
 Public Enum SendTarget
     ToAll = 1           'A todos los Users
-    ToMap = 2           'Todos los Usuarios en el mapa
-    ToPCArea = 3        'Todos los Users en el area de un user determinado
-    ToNone = 4          'Ninguno
-    ToAllButIndex = 5   'Todos menos el index
-    ToMapButIndex = 6   'Todos en el mapa menos el indice
-    ToGM = 7
-    ToNPCArea = 8       'Todos los Users en el area de un user determinado
-    ToGuildMembers = 9
-    ToAdmins = 10
-    ToPCAreaButIndex = 11
-    ToAdminsAreaButConsejeros = 12
-    ToDiosesYclan = 13
-    ToConsejo = 14
-    ToClanArea = 15
-    ToConsejoCaos = 16
-    ToRolesMasters = 17
-    ToDeadArea = 18
-    ToCiudadanos = 19
-    ToCriminales = 20
-    ToPartyArea = 21
-    ToReal = 22
-    ToCaos = 23
-    ToCiudadanosYRMs = 24
-    ToCriminalesYRMs = 25
-    ToRealYRMs = 26
-    ToCaosYRMs = 27
+    ToMap
+    ToPCArea
+    ToAllButIndex
+    ToMapButIndex
+    ToGM
+    ToNPCArea
+    ToGuildMembers
+    ToAdmins
+    ToPCAreaButIndex
+    ToAdminsAreaButConsejeros
+    ToDiosesYclan
+    ToConsejo
+    ToClanArea
+    ToConsejoCaos
+    ToRolesMasters
+    ToDeadArea
+    ToCiudadanos
+    ToCriminales
+    ToPartyArea
+    ToReal
+    ToCaos
+    ToCiudadanosYRMs
+    ToCriminalesYRMs
+    ToRealYRMs
+    ToCaosYRMs
 End Enum
 
 
@@ -830,49 +829,26 @@ Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndD
 
 On Error Resume Next
 
-Dim LoopC As Integer
-Dim X As Integer
-Dim Y As Integer
-
-sndData = sndData & ENDC
+Dim LoopC As Long
+Dim X As Long
+Dim Y As Long
+Dim Map As Integer
 
 Select Case sndRoute
-
     Case SendTarget.ToPCArea
-        For Y = UserList(sndIndex).Pos.Y - MinYBorder + 1 To UserList(sndIndex).Pos.Y + MinYBorder - 1
-            For X = UserList(sndIndex).Pos.X - MinXBorder + 1 To UserList(sndIndex).Pos.X + MinXBorder - 1
-               If InMapBounds(sndMap, X, Y) Then
-                    If MapData(sndMap, X, Y).UserIndex > 0 Then
-                       If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                            Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
-                       End If
-                    End If
-               End If
-            Next X
-        Next Y
+        Call ModAreas.SendToUserArea(sndIndex, sndData)
         Exit Sub
     
-    Case SendTarget.ToIndex
-        If UserList(sndIndex).ConnID <> -1 Then
-            Call EnviarDatosASlot(sndIndex, sndData)
-            Exit Sub
-        End If
-
-
-    Case SendTarget.ToNone
-        Exit Sub
-        
-        
     Case SendTarget.ToAdmins
         For LoopC = 1 To LastUser
             If UserList(LoopC).ConnID <> -1 Then
-                If UserList(LoopC).flags.Privilegios > 0 Then
+                If UserList(LoopC).flags.Privilegios > PlayerType.User Then
                     Call EnviarDatosASlot(LoopC, sndData)
                End If
             End If
         Next LoopC
         Exit Sub
-        
+    
     Case SendTarget.ToAll
         For LoopC = 1 To LastUser
             If UserList(LoopC).ConnID <> -1 Then
@@ -908,15 +884,14 @@ Select Case sndRoute
     Case SendTarget.ToMapButIndex
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) And LoopC <> sndIndex Then
-                If UserList(LoopC).Pos.Map = sndMap Then
+                If UserList(LoopC).Pos.Map = Map Then
                     Call EnviarDatosASlot(LoopC, sndData)
                 End If
             End If
         Next LoopC
         Exit Sub
-            
+    
     Case SendTarget.ToGuildMembers
-        
         LoopC = modGuilds.m_Iterador_ProximoUserIndex(sndIndex)
         While LoopC > 0
             If (UserList(LoopC).ConnID <> -1) Then
@@ -924,24 +899,10 @@ Select Case sndRoute
             End If
             LoopC = modGuilds.m_Iterador_ProximoUserIndex(sndIndex)
         Wend
-        
         Exit Sub
-
-
+    
     Case SendTarget.ToDeadArea
-        For Y = UserList(sndIndex).Pos.Y - MinYBorder + 1 To UserList(sndIndex).Pos.Y + MinYBorder - 1
-            For X = UserList(sndIndex).Pos.X - MinXBorder + 1 To UserList(sndIndex).Pos.X + MinXBorder - 1
-               If InMapBounds(sndMap, X, Y) Then
-                    If MapData(sndMap, X, Y).UserIndex > 0 Then
-                        If UserList(MapData(sndMap, X, Y).UserIndex).flags.Muerto = 1 Or UserList(MapData(sndMap, X, Y).UserIndex).flags.Privilegios >= 1 Then
-                           If UserList(MapData(sndMap, X, Y).UserIndex).ConnID <> -1 Then
-                                Call EnviarDatosASlot(MapData(sndMap, X, Y).UserIndex, sndData)
-                           End If
-                        End If
-                    End If
-               End If
-            Next X
-        Next Y
+        Call ModAreas.SendToDeadUserArea(sndIndex, sndData)
         Exit Sub
 
     '[Alejo-18-5]
@@ -2016,7 +1977,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .Cant = 0
+    .cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
@@ -2816,7 +2777,7 @@ If UCase$(Left$(rData, 6)) = "/RMATA" Then
     tIndex = UserList(UserIndex).flags.TargetNPC
     If tIndex > 0 Then
         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||RMatas (con posible respawn) a: " & Npclist(tIndex).name & FONTTYPE_INFO)
-        Dim MiNPC As NPC
+        Dim MiNPC As npc
         MiNPC = Npclist(tIndex)
         Call QuitarNPC(tIndex)
         Call ReSpawnNpc(MiNPC)

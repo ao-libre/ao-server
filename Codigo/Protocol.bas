@@ -2928,7 +2928,7 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim i As Long
-        Dim count As Integer
+        Dim Count As Integer
         Dim points(1 To NUMSKILLS) As Byte
         
         'Codigo para prevenir el hackeo de los skills
@@ -2943,10 +2943,10 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
                 Exit Sub
             End If
             
-            count = count + points(i)
+            Count = Count + points(i)
         Next i
         
-        If count > .Stats.SkillPts Then
+        If Count > .Stats.SkillPts Then
             Call LogHackAttemp(.name & " IP:" & .ip & " trató de hackear los skills.")
             Call CloseSocket(UserIndex)
             Exit Sub
@@ -3215,7 +3215,7 @@ On Error GoTo errhandler
         
         Dim handle As Integer
         Dim i As Long
-        Dim count As Integer
+        Dim Count As Integer
         
         title = buffer.ReadASCIIString()
         msg = buffer.ReadASCIIString()
@@ -3224,23 +3224,23 @@ On Error GoTo errhandler
             file = App.Path & "\foros\" & UCase$(ObjData(.flags.TargetObj).ForoID) & ".for"
             
             If FileExist(file, vbNormal) Then
-                count = val(GetVar(file, "INFO", "CantMSG"))
+                Count = val(GetVar(file, "INFO", "CantMSG"))
                 
                 'If there are too many messages, delete the forum
-                If count > MAX_MENSAJES_FORO Then
-                    For i = 1 To count
+                If Count > MAX_MENSAJES_FORO Then
+                    For i = 1 To Count
                         Kill App.Path & "\foros\" & UCase$(ObjData(.flags.TargetObj).ForoID) & i & ".for"
                     Next i
                     Kill App.Path & "\foros\" & UCase$(ObjData(.flags.TargetObj).ForoID) & ".for"
-                    count = 0
+                    Count = 0
                 End If
             Else
                 'Starting the forum....
-                count = 0
+                Count = 0
             End If
             
             handle = FreeFile()
-            postFile = Left$(file, Len(file) - 4) & CStr(count + 1) & ".for"
+            postFile = Left$(file, Len(file) - 4) & CStr(Count + 1) & ".for"
             
             'Create file
             Open postFile For Output As handle
@@ -3249,7 +3249,7 @@ On Error GoTo errhandler
             Close #handle
             
             'Update post count
-            Call WriteVar(file, "INFO", "CantMSG", count + 1)
+            Call WriteVar(file, "INFO", "CantMSG", Count + 1)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -4269,7 +4269,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
 '
 '***************************************************
     Dim i As Long
-    Dim count As Long
+    Dim Count As Long
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -4277,11 +4277,11 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
         
         For i = 1 To LastUser
             If UserList(i).name <> "" And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
-                count = count + 1
+                Count = Count + 1
             End If
         Next LoopC
         
-        Call WriteConsoleMsg(UserIndex, "Número de usuarios: " & CStr(count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Número de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -5585,7 +5585,7 @@ On Error GoTo errhandler
         Call buffer.ReadByte
         
         Dim name As String
-        Dim count As Integer
+        Dim Count As Integer
         
         name = buffer.ReadASCIIString()
         
@@ -5594,13 +5594,13 @@ On Error GoTo errhandler
             name = Replace(name, "/", "")
             
             If FileExist(CharPath & name & ".chr", vbNormal) Then
-                count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
-                If count = 0 Then
+                Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
+                If Count = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Sin prontuario..", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    While count > 0
-                        Call WriteConsoleMsg(UserIndex, count & " - " & GetVar(CharPath & name & ".chr", "PENAS", "P" & count), FontTypeNames.FONTTYPE_INFO)
-                        count = count - 1
+                    While Count > 0
+                        Call WriteConsoleMsg(UserIndex, Count & " - " & GetVar(CharPath & name & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
+                        Count = Count - 1
                     Wend
                 End If
             Else
@@ -6951,7 +6951,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim reason As String
         Dim jailTime As Byte
-        Dim count As Byte
+        Dim Count As Byte
         Dim tUser As Integer
         
         UserName = buffer.ReadASCIIString()
@@ -6977,9 +6977,9 @@ On Error GoTo errhandler
                         UserName = Replace(UserName, "/", "")
                         
                         If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                            count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
-                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", count + 1)
-                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
+                            Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
                         End If
                         
                         Call Encarcelar(tUser, jailTime, .name)
@@ -7061,7 +7061,7 @@ On Error GoTo errhandler
         Dim UserName As String
         Dim reason As String
         Dim tUser As Integer
-        Dim count As Byte
+        Dim Count As Byte
         Dim advertir As Boolean
         
         UserName = buffer.ReadASCIIString()
@@ -7094,9 +7094,9 @@ On Error GoTo errhandler
                     UserName = Replace(UserName, "/", "")
     
                     If FileExist(CharPath & name & ".chr", vbNormal) Then
-                        count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
-                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", count + 1)
-                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
+                        Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
                         
                         Call WriteConsoleMsg(UserIndex, "Has advertido a " & UCase$(UserName), FontTypeNames.FONTTYPE_INFO)
                         Call LogGM(.name, " advirtio a " & UserName, .flags.Privilegios = PlayerType.Consejero)
@@ -9272,7 +9272,7 @@ Private Sub HandleBannedIPList(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         Call LogGM(.name, "/BANIPLIST", False)
         
-        For LoopC = 1 To BanIps.count
+        For LoopC = 1 To BanIps.Count
             lista = lista & BanIps.Item(LoopC) & ", "
         Next LoopC
         
@@ -9384,7 +9384,7 @@ On Error GoTo errhandler
         Dim cantMembers As Integer
         Dim LoopC As Long
         Dim member As String
-        Dim count As Byte
+        Dim Count As Byte
         Dim tIndex As Integer
         Dim tFile As String
         
@@ -9420,9 +9420,9 @@ On Error GoTo errhandler
                     'ponemos el flag de ban a 1
                     Call WriteVar(CharPath & member & ".chr", "FLAGS", "Ban", "1")
                     'ponemos la pena
-                    count = val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
-                    Call WriteVar(CharPath & member & ".chr", "PENAS", "Cant", count + 1)
-                    Call WriteVar(CharPath & member & ".chr", "PENAS", "P" & count + 1, LCase$(.name) & ": BAN AL CLAN: " & GuildName & " " & Date & " " & time)
+                    Count = val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
+                    Call WriteVar(CharPath & member & ".chr", "PENAS", "Cant", Count + 1)
+                    Call WriteVar(CharPath & member & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": BAN AL CLAN: " & GuildName & " " & Date & " " & time)
                 Next LoopC
             End If
         End If
@@ -10123,7 +10123,7 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         
         Dim list As String
-        Dim count As Long
+        Dim Count As Long
         Dim i As Long
         
         Call LogGM(.name, .name & " ha pedido las estadisticas del TCP.", False)
@@ -10141,15 +10141,15 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
         For LoopC = 1 To LastUser
             With UserList(i)
                 If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
-                    If .ColaSalida.count > 0 Then
-                        list = list & .name & " (" & .ColaSalida.count & "), "
-                        count = count + 1
+                    If .ColaSalida.Count > 0 Then
+                        list = list & .name & " (" & .ColaSalida.Count & "), "
+                        Count = Count + 1
                     End If
                 End If
             End With
         Next LoopC
         
-        Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
@@ -12429,7 +12429,7 @@ Public Sub WriteBlacksmithWeapons(ByVal UserIndex As Integer)
     Dim i As Long
     Dim Obj As ObjData
     Dim validIndexes() As Integer
-    Dim count As Integer
+    Dim Count As Integer
     
     ReDim validIndexes(1 To UBound(ArmasHerrero()))
     
@@ -12439,16 +12439,16 @@ Public Sub WriteBlacksmithWeapons(ByVal UserIndex As Integer)
         For i = 1 To UBound(ArmasHerrero())
             ' Can the user create this object? If so add it to the list....
             If ObjData(ArmasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
-                count = count + 1
-                validIndexes(count) = i
+                Count = Count + 1
+                validIndexes(Count) = i
             End If
         Next i
         
         ' Write the number of objects in the list
-        Call .WriteInteger(count)
+        Call .WriteInteger(Count)
         
         ' Write the needed data of each object
-        For i = 1 To count
+        For i = 1 To Count
             Obj = ObjData(ArmasHerrero(validIndexes(i)))
             Call .WriteASCIIString(Obj.name)
             Call .WriteInteger(Obj.LingH)
@@ -12474,7 +12474,7 @@ Public Sub WriteBlacksmithArmors(ByVal UserIndex As Integer)
     Dim i As Long
     Dim Obj As ObjData
     Dim validIndexes() As Integer
-    Dim count As Integer
+    Dim Count As Integer
     
     ReDim validIndexes(1 To UBound(ArmadurasHerrero()))
     
@@ -12484,16 +12484,16 @@ Public Sub WriteBlacksmithArmors(ByVal UserIndex As Integer)
         For i = 1 To UBound(ArmadurasHerrero())
             ' Can the user create this object? If so add it to the list....
             If ObjData(ArmadurasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
-                count = count + 1
-                validIndexes(count) = i
+                Count = Count + 1
+                validIndexes(Count) = i
             End If
         Next i
         
         ' Write the number of objects in the list
-        Call .WriteInteger(count)
+        Call .WriteInteger(Count)
         
         ' Write the needed data of each object
-        For i = 1 To count
+        For i = 1 To Count
             Obj = ObjData(ArmadurasHerrero(validIndexes(i)))
             Call .WriteASCIIString(Obj.name)
             Call .WriteInteger(Obj.LingH)
@@ -12519,7 +12519,7 @@ Public Sub WriteCarpenterObjects(ByVal UserIndex As Integer)
     Dim i As Long
     Dim Obj As ObjData
     Dim validIndexes() As Integer
-    Dim count As Integer
+    Dim Count As Integer
     
     ReDim validIndexes(1 To UBound(ObjCarpintero()))
     
@@ -12529,16 +12529,16 @@ Public Sub WriteCarpenterObjects(ByVal UserIndex As Integer)
         For i = 1 To UBound(ObjCarpintero())
             ' Can the user create this object? If so add it to the list....
             If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase) Then
-                count = count + 1
-                validIndexes(count) = i
+                Count = Count + 1
+                validIndexes(Count) = i
             End If
         Next i
         
         ' Write the number of objects in the list
-        Call .WriteInteger(count)
+        Call .WriteInteger(Count)
         
         ' Write the needed data of each object
-        For i = 1 To count
+        For i = 1 To Count
             Obj = ObjData(ObjCarpintero(validIndexes(i)))
             Call .WriteASCIIString(Obj.name)
             Call .WriteInteger(Obj.Madera)
@@ -12639,7 +12639,7 @@ End Sub
 ' @param    price The value the NPC asks for the object.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal message As String, ByRef Obj As Obj, ByVal price As Long)
+Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As Obj, ByVal price As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -12647,7 +12647,9 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal message
 '***************************************************
     Dim ObjInfo As ObjData
     
-    ObjInfo = ObjData(Obj.ObjIndex)
+    If Obj.ObjIndex >= LBound(ObjData()) And Obj.ObjIndex <= UBound(ObjData()) Then
+        ObjInfo = ObjData(Obj.ObjIndex)
+    End If
     
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeNPCInventorySlot)

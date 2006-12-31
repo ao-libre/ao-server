@@ -97,7 +97,7 @@ Public Sub InitAreas()
 
 'Setup AutoOptimizacion de areas
     CurDay = IIf(Weekday(Date) > 6, 1, 2) 'A ke tipo de dia pertenece?
-    CurHour = Fix(Hour(Time) \ 3) 'A ke parte de la hora pertenece
+    CurHour = Fix(Hour(time) \ 3) 'A ke parte de la hora pertenece
     
     ReDim ConnGroups(1 To NumMaps) As ConnGroup
     
@@ -120,10 +120,10 @@ Public Sub AreasOptimizacion()
     Dim tCurHour As Byte
     Dim EntryValue As Long
     
-    If (CurDay <> IIf(Weekday(Date) > 6, 1, 2)) Or (CurHour <> Fix(Hour(Time) \ 3)) Then
+    If (CurDay <> IIf(Weekday(Date) > 6, 1, 2)) Or (CurHour <> Fix(Hour(time) \ 3)) Then
         
         tCurDay = IIf(Weekday(Date) > 6, 1, 2) 'A ke tipo de dia pertenece?
-        tCurHour = Fix(Hour(Time) \ 3) 'A ke parte de la hora pertenece
+        tCurHour = Fix(Hour(time) \ 3) 'A ke parte de la hora pertenece
         
         For LoopC = 1 To NumMaps
             EntryValue = val(GetVar(DatPath & "AreasStats.dat", "Mapa" & LoopC, CurDay & "-" & CurHour))
@@ -223,20 +223,20 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
 #If SeguridadAlkon Then
                         If EncriptarProtocolosCriticos Then
-                            If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
+                            If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
                                  Call EnviarDatosASlot(UserIndex, ProtoCrypt("NOVER" & UserList(TempInt).Char.CharIndex & ",1", UserIndex) & ENDC)
                             End If
                             
-                            If UserList(UserIndex).flags.Invisible Or UserList(UserIndex).flags.Oculto Then
+                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
                                  Call EnviarDatosASlot(TempInt, ProtoCrypt("NOVER" & UserList(UserIndex).Char.CharIndex & ",1", TempInt) & ENDC)
                             End If
                         Else
 #End If
-                            If UserList(TempInt).flags.Invisible Or UserList(TempInt).flags.Oculto Then
+                            If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
                                  Call EnviarDatosASlot(UserIndex, "NOVER" & UserList(TempInt).Char.CharIndex & ",1" & ENDC)
                             End If
                             
-                            If UserList(UserIndex).flags.Invisible Or UserList(UserIndex).flags.Oculto Then
+                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
                                  Call EnviarDatosASlot(TempInt, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1" & ENDC)
                             End If
 #If SeguridadAlkon Then
@@ -253,8 +253,8 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                  End If
                  
                 '<<< Item >>>
-                If MapData(Map, X, Y).OBJInfo.ObjIndex Then
-                    TempInt = MapData(Map, X, Y).OBJInfo.ObjIndex
+                If MapData(Map, X, Y).ObjInfo.ObjIndex Then
+                    TempInt = MapData(Map, X, Y).ObjInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "HO" & ObjData(TempInt).GrhIndex & "," & X & "," & Y)
                         
@@ -512,6 +512,38 @@ Public Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As St
                     If UserList(TempIndex).ConnIDValida Then
                         Call EnviarDatosASlot(TempIndex, sdData)
                     End If
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
+Public Sub SendToDeadUserArea(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: Unknow
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim TempIndex As Integer
+    
+    Dim Map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    Map = UserList(UserIndex).Pos.Map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(Map) Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        TempIndex = ConnGroups(Map).UserEntrys(LoopC)
+        
+        If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).flags.Muerto = 1 Then
+                    Call EnviarDatosASlot(TempIndex, sdData)
                 End If
             End If
         End If
