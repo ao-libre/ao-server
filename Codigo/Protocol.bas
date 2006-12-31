@@ -2376,7 +2376,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         End If
         
         If Not InRangoVision(UserIndex, X, Y) Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "PU" & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y)
+            Call WritePosUpdate(UserIndex)
             Exit Sub
         End If
         
@@ -2518,7 +2518,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         .flags.Hechizo = 0
                     End If
                 Else
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Primero selecciona el hechizo que quieres lanzar!" & FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
             
@@ -2697,7 +2697,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Call WriteConsoleMsg(UserIndex, "No podés domar a esa criatura.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay ninguna criatura alli!." & FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No hay ninguna criatura alli!.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case FundirMetal
@@ -4023,7 +4023,7 @@ On Error GoTo errhandler
         reason = buffer.ReadASCIIString()
         
         If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, reason, error) Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| " & Arg3 & FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(UserIndex, 0, Arg3, FontTypeNames.FONTTYPE_GUILD)
         Else
             tUser = NameIndex(UserName)
             
@@ -6600,7 +6600,7 @@ On Error GoTo errhandler
                 tUser = UserIndex
             End If
             
-            If tIndex <= 0 Then
+            If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             ElseIf InMapBounds(Map, X, Y) Then
                 Call WarpUserChar(tUser, Map, X, Y, True)
@@ -6653,13 +6653,13 @@ On Error GoTo errhandler
             If UserList(tUser).flags.Silenciado = 0 Then
                 UserList(tUser).flags.Silenciado = 1
                 Call WriteConsoleMsg(UserIndex, "Usuario silenciado.", FontTyprN.FONTTYPE_INFO)
-                Call WriteShowMessageBox(tIndex, "ESTIMADO USUARIO, ud ha sido silenciado por los administradores. Sus denuncias serán ignoradas por el servidor de aquí en más. Utilice /GM para contactar un administrador.")
+                Call WriteShowMessageBox(tUser, "ESTIMADO USUARIO, ud ha sido silenciado por los administradores. Sus denuncias serán ignoradas por el servidor de aquí en más. Utilice /GM para contactar un administrador.")
                 Call LogGM(.name, "/silenciar " & UserList(tUser).name, (.flags.Privilegios = PlayerType.Consejero))
                 
                 'Flush the other user's buffer
                 Call FlushBuffer(tUser)
             Else
-                UserList(tIndex).flags.Silenciado = 0
+                UserList(tUser).flags.Silenciado = 0
                 Call WriteConsoleMsg(UserIndex, "Usuario des silenciado.", FontTypeNames.FONTTYPE_INFO)
                 Call LogGM(.name, "/DESsilenciar " & UserList(tUser).name, (.flags.Privilegios = PlayerType.Consejero))
             End If
