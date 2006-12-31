@@ -130,3 +130,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/12/2006: Nuevo protocolo completo en un 70% aproximadamente. Lo subo para que el resto pueda colaborar a escribirlo. Queda pendiente implementarlo. (Maraxus)
  * 24/12/2006: Corregí un bug que permitía escuchar conversaciones de otros clanes. (Maraxus)
  * 27/12/2006: Corregí una docena de bugs de antaño... Entre ellos el que /Dest funcione con teleports, el que /DT sin clickear a nada te patee, el que /APASS no asigna la pass que se acaba de setear con /PASSWD, etc. (Maraxus)
+ * 31/12/2006: Admin.bas, AI_NPC.bas y Comercio.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 31/12/2006: Le saque el "message" a WriteChangeNPCInventorySlot ya que no servia para nada. (Tavo)

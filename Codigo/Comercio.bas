@@ -71,7 +71,7 @@ On Error GoTo errorh
             Slot = Slot + 1
             
             If Slot > MAX_INVENTORY_SLOTS Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés tener mas objetos." & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
                 Exit Function
             End If
         Loop
@@ -100,12 +100,12 @@ On Error GoTo errorh
         
         Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(ObjIndex), Cantidad)
     Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés tener mas objetos." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
 Exit Function
 
 errorh:
-Call LogError("Error en USERCOMPRAOBJ. " & Err.Description)
+Call LogError("Error en USERCOMPRAOBJ. " & Err.description)
 End Function
 
 
@@ -123,20 +123,20 @@ On Error GoTo errorh
     obji = UserList(UserIndex).Invent.Object(ObjIndex).ObjIndex
     
     If ObjData(obji).Newbie = 1 Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No comercio objetos para newbies." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No comercio objetos para newbies.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
     If Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera Then
         '¿Son los items con los que comercia el npc?
         If Npclist(NpcIndex).TipoItems <> ObjData(obji).OBJType Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "El npc no esta interesado en comprar ese objeto.", FontTypeNames.FONTTYPE_WARNING)
             Exit Sub
         End If
     End If
     
     If obji = iORO Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||El npc no esta interesado en comprar ese objeto." & FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "El npc no esta interesado en comprar ese objeto.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
     
@@ -183,7 +183,7 @@ On Error GoTo errorh
 Exit Sub
 
 errorh:
-    Call LogError("Error en NPCCOMPRAOBJ. " & Err.Description)
+    Call LogError("Error en NPCCOMPRAOBJ. " & Err.description)
 End Sub
 
 Sub IniciarCOmercioNPC(ByVal UserIndex As Integer)
@@ -219,7 +219,7 @@ Sub NPCVentaItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantidad 
 On Error GoTo errhandler
 
     Dim val As Long
-    Dim Desc As String
+    Dim desc As String
     
     If Cantidad < 1 Then Exit Sub
     
@@ -227,30 +227,30 @@ On Error GoTo errhandler
     Call SendUserStatsBox(UserIndex)
     
     If i > MAX_INVENTORY_SLOTS Then
-        Call SendData(SendTarget.ToAdmins, 0, 0, "Posible intento de romper el sistema de comercio. Usuario: " & UserList(UserIndex).name & FONTTYPE_WARNING)
+        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Posible intento de romper el sistema de comercio. Usuario: " & UserList(UserIndex).name, FontTypeNames.FONTTYPE_WARNING))
         Exit Sub
     End If
     
     If Cantidad > MAX_INVENTORY_OBJS Then
-        Call SendData(SendTarget.ToAll, 0, 0, UserList(UserIndex).name & " ha sido baneado por el sistema anti-cheats." & FONTTYPE_FIGHT)
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " ha sido baneado por el sistema anti-cheats.", FontTypeNames.FONTTYPE_FIGHT))
         Call Ban(UserList(UserIndex).name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio " & Cantidad)
         UserList(UserIndex).flags.Ban = 1
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "ERRHas sido baneado por el sistema anti cheats")
+        Call WriteErrorMsg(UserIndex, "Has sido baneado por el sistema anti cheats")
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
     
     'Calculamos el valor unitario
-    Desc = Descuento(UserIndex)
-    If Desc = 0 Then Desc = 1 'evitamos dividir por 0!
-    val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / Desc
+    desc = Descuento(UserIndex)
+    If desc = 0 Then desc = 1 'evitamos dividir por 0!
+    val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
     
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
         If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount > 0 Then
             If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount
             'Agregamos el obj que compro al inventario
             If Not UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNPC, Cantidad) Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes comprar este ítem." & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes comprar este ítem.", FontTypeNames.FONTTYPE_INFO)
             End If
             'Actualizamos el inventario del usuario
             Call UpdateUserInv(True, UserIndex, 0)
@@ -261,12 +261,12 @@ On Error GoTo errhandler
             Call UpdateVentanaComercio(UserIndex)
         End If
     Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No tenes suficiente dinero." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No tenes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
     End If
 Exit Sub
 
 errhandler:
-    Call LogError("Error en comprar item: " & Err.Description)
+    Call LogError("Error en comprar item: " & Err.description)
 End Sub
 
 Sub NPCCompraItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Cantidad As Integer)
@@ -278,7 +278,7 @@ On Error GoTo errhandler
     'Si es una armadura faccionaria vemos que la está intentando vender al sastre
     If ObjData(UserList(UserIndex).Invent.Object(Item).ObjIndex).Real = 1 Then
         If Npclist(NpcIndex).name <> "SR" Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres", FontTypeNames.FONTTYPE_WARNING)
             
             'Actualizamos la ventana de comercio
             Call UpdateVentanaComercio(UserIndex)
@@ -287,7 +287,7 @@ On Error GoTo errhandler
         End If
     ElseIf ObjData(UserList(UserIndex).Invent.Object(Item).ObjIndex).Caos = 1 Then
         If Npclist(NpcIndex).name <> "SC" Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres" & FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "Las armaduras faccionarias sólo las puedes vender a sus respectivos Sastres", FontTypeNames.FONTTYPE_WARNING)
             
             'Actualizamos la ventana de comercio
             Call UpdateVentanaComercio(UserIndex)
@@ -295,7 +295,7 @@ On Error GoTo errhandler
             Exit Sub
         End If
     ElseIf UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedes vender items." & FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
     'NPC COMPRA UN OBJ A UN USUARIO
@@ -317,11 +317,11 @@ On Error GoTo errhandler
 Exit Sub
 
 errhandler:
-    Call LogError("Error en vender item: " & Err.Description)
+    Call LogError("Error en vender item: " & Err.description)
 End Sub
 
 Sub UpdateVentanaComercio(ByVal UserIndex As Integer)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "TRANSOK")
+    Call WriteTradeOK(UserIndex)
 End Sub
 
 Function Descuento(ByVal UserIndex As Integer) As Single
@@ -333,44 +333,21 @@ End Function
 Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     'Enviamos el inventario del npc con el cual el user va a comerciar...
     Dim i As Integer
-    Dim Desc As String
+    Dim desc As String
     Dim val As Long
     
-    Desc = Descuento(UserIndex)
-    If Desc = 0 Then Desc = 1 'evitamos dividir por 0!
+    desc = Descuento(UserIndex)
+    If desc = 0 Then desc = 1 'evitamos dividir por 0!
     
     For i = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(i).ObjIndex > 0 Then
             'Calculamos el porc de inflacion del npc
-            val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / Desc
-            SendData SendTarget.ToIndex, UserIndex, 0, "NPCI" & _
-            ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).name _
-            & "," & Npclist(NpcIndex).Invent.Object(i).amount & _
-            "," & val _
-            & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).GrhIndex _
-            & "," & Npclist(NpcIndex).Invent.Object(i).ObjIndex _
-            & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).OBJType _
-            & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MaxHIT _
-            & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MinHIT _
-            & "," & ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).MaxDef
+            val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
+            Call WriteChangeNPCInventorySlot(UserIndex, _
+            ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex), val)
         Else
-            SendData SendTarget.ToIndex, UserIndex, 0, "NPCI" & _
-                        "Nada" _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0 _
-                        & "," & 0
+             Dim DummyObj As Object
+             Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
         End If
     Next i
 End Sub

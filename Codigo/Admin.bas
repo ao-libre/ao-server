@@ -174,7 +174,7 @@ On Error Resume Next
 Dim loopX As Integer
 Dim Porc As Long
 
-Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Iniciando WorldSave" & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Iniciando WorldSave", FontTypeNames.FONTTYPE_SERVER))
 
 #If SeguridadAlkon Then
     Encriptacion.StringValidacion = Encriptacion.ArmarStringValidacion
@@ -214,7 +214,7 @@ For loopX = 1 To LastNPC
     End If
 Next
 
-Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> WorldSave ha concluído" & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave ha concluído", FontTypeNames.FONTTYPE_SERVER))
 
 End Sub
 
@@ -230,9 +230,9 @@ For i = 1 To LastUser
                 If UserList(i).Counters.Pena < 1 Then
                     UserList(i).Counters.Pena = 0
                     Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
-                    Call SendData(SendTarget.ToIndex, i, 0, "||Has sido liberado!" & FONTTYPE_INFO)
+                    Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                 End If
-                
+    
         End If
         
     End If
@@ -248,9 +248,9 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
         Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
         
         If GmName = "" Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
         End If
         
 End Sub
@@ -328,7 +328,7 @@ Dim LoopC As Long
 
 Dale = True
 LoopC = 1
-Do While LoopC <= BanIps.Count And Dale
+Do While LoopC <= BanIps.count And Dale
     Dale = (BanIps.Item(LoopC) <> ip)
     LoopC = LoopC + 1
 Loop
@@ -367,7 +367,7 @@ ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
 ArchN = FreeFile()
 Open ArchivoBanIp For Output As #ArchN
 
-For LoopC = 1 To BanIps.Count
+For LoopC = 1 To BanIps.count
     Print #ArchN, BanIps.Item(LoopC)
 Next LoopC
 
@@ -382,7 +382,7 @@ Dim ArchivoBanIp As String
 
 ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
 
-Do While BanIps.Count > 0
+Do While BanIps.count > 0
     BanIps.Remove 1
 Loop
 

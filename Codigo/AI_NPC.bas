@@ -458,7 +458,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                     If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
                         If Npclist(NpcIndex).MaestroUser > 0 Then
                             If Not criminal(Npclist(NpcIndex).MaestroUser) And Not criminal(UI) And (UserList(Npclist(NpcIndex).MaestroUser).flags.Seguro Or UserList(Npclist(NpcIndex).MaestroUser).Faccion.ArmadaReal = 1) Then
-                                Call SendData(SendTarget.ToIndex, Npclist(NpcIndex).MaestroUser, 0, "||La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado" & FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado", FontTypeNames.FONTTYPE_INFO)
                                 Npclist(NpcIndex).flags.AttackedBy = ""
                                 Exit Sub
                             End If
@@ -483,7 +483,7 @@ Else
                     If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
                         If Npclist(NpcIndex).MaestroUser > 0 Then
                             If Not criminal(Npclist(NpcIndex).MaestroUser) And Not criminal(UI) And (UserList(Npclist(NpcIndex).MaestroUser).flags.Seguro Or UserList(Npclist(NpcIndex).MaestroUser).Faccion.ArmadaReal = 1) Then
-                                Call SendData(SendTarget.ToIndex, Npclist(NpcIndex).MaestroUser, 0, "||La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado" & FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado", FontTypeNames.FONTTYPE_INFO)
                                 Npclist(NpcIndex).flags.AttackedBy = ""
                                 Call FollowAmo(NpcIndex)
                                 Exit Sub
