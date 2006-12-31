@@ -639,7 +639,7 @@ Procesado = True 'ver al final del sub
     
     
     
-    Select Case UCase(Left(rData, 5))
+    Select Case UCase(Left$(rData, 5))
         Case "/_BUG "
             N = FreeFile
             Open App.Path & "\LOGS\BUGs.log" For Append Shared As N

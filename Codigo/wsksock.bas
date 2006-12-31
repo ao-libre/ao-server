@@ -519,7 +519,7 @@ Public Function GetAscIP(ByVal inn As Long) As String
         nStr = lstrlen(lpStr)
         If nStr > 32 Then nStr = 32
         MemCopy ByVal retString, ByVal lpStr, nStr
-        retString = Left(retString, nStr)
+        retString = Left$(retString, nStr)
         GetAscIP = retString
     Else
         GetAscIP = "255.255.255.255"
@@ -535,7 +535,7 @@ Public Function GetHostByAddress(ByVal addr As Long) As String
         MemCopy heDestHost, ByVal phe, hostent_size
         HostName = String(256, 0)
         MemCopy ByVal HostName, ByVal heDestHost.h_name, 256
-        GetHostByAddress = Left(HostName, InStr(HostName, Chr(0)) - 1)
+        GetHostByAddress = Left$(HostName, InStr(HostName, Chr$(0)) - 1)
     Else
         GetHostByAddress = WSA_NoName
     End If
@@ -569,8 +569,8 @@ Public Function GetLocalHostName() As String
     If gethostname(sName, 256) Then
         sName = WSA_NoName
     Else
-        If InStr(sName, Chr(0)) Then
-            sName = Left(sName, InStr(sName, Chr(0)) - 1)
+        If InStr(sName, Chr$(0)) Then
+            sName = Left$(sName, InStr(sName, Chr$(0)) - 1)
         End If
     End If
     GetLocalHostName = sName
@@ -770,7 +770,7 @@ Function IrcGetAscIp(ByVal IPL$) As String
     nStr = lstrlen(lpStr)
     If nStr > 32 Then nStr = 32
     MemCopy ByVal retString, ByVal lpStr, nStr
-    retString = Left(retString, nStr)
+    retString = Left$(retString, nStr)
     IrcGetAscIp = retString
     Exit Function
 IrcGetAscIPError:

@@ -131,6 +131,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 24/12/2006: Corregí un bug que permitía escuchar conversaciones de otros clanes. (Maraxus)
  * 27/12/2006: Corregí una docena de bugs de antaño... Entre ellos el que /Dest funcione con teleports, el que /DT sin clickear a nada te patee, el que /APASS no asigna la pass que se acaba de setear con /PASSWD, etc. (Maraxus)
  * 31/12/2006: Admin.bas, AI_NPC.bas y Comercio.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
- * 31/12/2006: Le saque el "message" a WriteChangeNPCInventorySlot ya que no servia para nada. (Tavo)
- * 31/12/2006: Acciones.bas, FileIO.bas, GameLogic.bas y General.bas han sido arreglados para funcionar con el protocolo
-nuevo
+ * 31/12/2006: Modificaciones menores a algunos paquetes. (Maraxus)
+ * 31/12/2006: Acciones.bas, FileIO.bas, GameLogic.bas y General.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 31/12/2006: Reescribí SendData y agregué muchos métodos en modAreas. (Maraxus)
+ * 31/12/2006: Varias mejoras de performance en varios algoritmos distintos. La encriptación de paquetes es ahora casi 3 veces más rápida. (Maraxus)

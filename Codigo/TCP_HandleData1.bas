@@ -50,7 +50,7 @@ Dim Arg3 As String
 Dim Arg4 As String
 Dim Ver As String
 Dim encpass As String
-Dim Pass As String
+Dim pass As String
 Dim mapa As Integer
 Dim name As String
 Dim ind
@@ -955,7 +955,7 @@ Procesado = True 'ver al final del sub
             rData = Right$(rData, Len(rData) - 3)
             
             If modGuilds.CrearNuevoClan(rData, UserIndex, UserList(UserIndex).FundandoGuildAlineacion, tStr) Then
-                Call SendData(SendTarget.ToAll, 0, 0, "||" & UserList(UserIndex).name & " fundó el clan " & modGuilds.guildName(UserList(UserIndex).GuildIndex) & " de alineación " & modGuilds.GuildAlignment(UserList(UserIndex).GuildIndex) & "." & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToAll, 0, 0, "||" & UserList(UserIndex).name & " fundó el clan " & modGuilds.GuildName(UserList(UserIndex).guildIndex) & " de alineación " & modGuilds.GuildAlignment(UserList(UserIndex).guildIndex) & "." & FONTTYPE_GUILD)
             Else
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             End If
@@ -976,7 +976,7 @@ Procesado = True 'ver al final del sub
                     If H > 0 And H < NumeroHechizos + 1 Then
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||%%%%%%%%%%%% INFO DEL HECHIZO %%%%%%%%%%%%" & FONTTYPE_INFO)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Nombre:" & Hechizos(H).Nombre & FONTTYPE_INFO)
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Descripcion:" & Hechizos(H).Desc & FONTTYPE_INFO)
+                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Descripcion:" & Hechizos(H).desc & FONTTYPE_INFO)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Skill requerido: " & Hechizos(H).MinSkill & " de magia." & FONTTYPE_INFO)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Mana necesario: " & Hechizos(H).ManaRequerido & FONTTYPE_INFO)
                         Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Stamina necesaria: " & Hechizos(H).StaRequerido & FONTTYPE_INFO)
@@ -1108,7 +1108,7 @@ Procesado = True 'ver al final del sub
              Else
                Exit Sub
              End If
-             rData = Right(rData, Len(rData) - 5)
+             rData = Right$(rData, Len(rData) - 5)
              'User retira el item del slot rdata
              Call UserRetiraItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
              Exit Sub
@@ -1153,7 +1153,7 @@ Procesado = True 'ver al final del sub
             Else
                 Exit Sub
             End If
-            rData = Right(rData, Len(rData) - 5)
+            rData = Right$(rData, Len(rData) - 5)
             'User deposita el item del slot rdata
             Call UserDepositaItem(UserIndex, val(ReadField(1, rData, 44)), val(ReadField(2, rData, 44)))
             Exit Sub
@@ -1205,12 +1205,12 @@ Procesado = True 'ver al final del sub
     
     Select Case UCase$(Left$(rData, 6))
         Case "DESPHE" 'Mover Hechizo de lugar
-            rData = Right(rData, Len(rData) - 6)
+            rData = Right$(rData, Len(rData) - 6)
             Call DesplazarHechizo(UserIndex, CInt(ReadField(1, rData, 44)), CInt(ReadField(2, rData, 44)))
             Exit Sub
         Case "DESCOD" 'Informacion del hechizo
                 rData = Right$(rData, Len(rData) - 6)
-                Call modGuilds.ActualizarCodexYDesc(rData, UserList(UserIndex).GuildIndex)
+                Call modGuilds.ActualizarCodexYDesc(rData, UserList(UserIndex).guildIndex)
                 Exit Sub
     End Select
     
@@ -1289,7 +1289,7 @@ Procesado = True 'ver al final del sub
             If tInt = 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan ha firmado la paz con " & rData & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||Tu clan ha firmado la paz con " & rData & FONTTYPE_GUILD)
                 Call SendData(SendTarget.ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
@@ -1299,7 +1299,7 @@ Procesado = True 'ver al final del sub
             If tInt = 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan rechazado la propuesta de alianza de " & rData & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||Tu clan rechazado la propuesta de alianza de " & rData & FONTTYPE_GUILD)
                 Call SendData(SendTarget.ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).name & " ha rechazado nuestra propuesta de alianza con su clan." & FONTTYPE_GUILD)
             End If
             Exit Sub
@@ -1309,7 +1309,7 @@ Procesado = True 'ver al final del sub
             If tInt = 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan rechazado la propuesta de paz de " & rData & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||Tu clan rechazado la propuesta de paz de " & rData & FONTTYPE_GUILD)
                 Call SendData(SendTarget.ToGuildMembers, tInt, 0, "||" & UserList(UserIndex).name & " ha rechazado nuestra propuesta de paz con su clan." & FONTTYPE_GUILD)
             End If
             Exit Sub
@@ -1319,7 +1319,7 @@ Procesado = True 'ver al final del sub
             If tInt = 0 Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||Tu clan ha firmado la alianza con " & rData & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||Tu clan ha firmado la alianza con " & rData & FONTTYPE_GUILD)
                 Call SendData(SendTarget.ToGuildMembers, tInt, 0, "||Tu clan ha firmado la paz con " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
@@ -1397,7 +1397,7 @@ Procesado = True 'ver al final del sub
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
                 'WAR shall be!
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "|| TU CLAN HA ENTRADO EN GUERRA CON " & rData & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "|| TU CLAN HA ENTRADO EN GUERRA CON " & rData & FONTTYPE_GUILD)
                 Call SendData(SendTarget.ToGuildMembers, tInt, 0, "|| " & UserList(UserIndex).name & " LE DECLARA LA GUERRA A TU CLAN" & FONTTYPE_GUILD)
             End If
             Exit Sub
@@ -1412,9 +1412,9 @@ Procesado = True 'ver al final del sub
             Else
                 tInt = NameIndex(rData)
                 If tInt > 0 Then
-                    Call modGuilds.m_ConectarMiembroAClan(tInt, UserList(UserIndex).GuildIndex)
+                    Call modGuilds.m_ConectarMiembroAClan(tInt, UserList(UserIndex).guildIndex)
                 End If
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||" & rData & " ha sido aceptado como miembro del clan." & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||" & rData & " ha sido aceptado como miembro del clan." & FONTTYPE_GUILD)
             End If
             Exit Sub
         Case "RECHAZAR"
@@ -1430,7 +1430,7 @@ Procesado = True 'ver al final del sub
                     Call SendData(SendTarget.ToIndex, tInt, 0, "|| " & tStr & FONTTYPE_GUILD)
                 Else
                     'hay que grabar en el char su rechazo
-                    Call modGuilds.a_RechazarAspiranteChar(Arg1, UserList(UserIndex).GuildIndex, Arg2)
+                    Call modGuilds.a_RechazarAspiranteChar(Arg1, UserList(UserIndex).guildIndex, Arg2)
                 End If
             End If
             Exit Sub
@@ -1462,7 +1462,7 @@ Procesado = True 'ver al final del sub
             If Not modGuilds.v_AbrirElecciones(UserIndex, tStr) Then
                 Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & tStr & FONTTYPE_GUILD)
             Else
-                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).GuildIndex, 0, "||¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & UserList(UserIndex).name & FONTTYPE_GUILD)
+                Call SendData(SendTarget.ToGuildMembers, UserList(UserIndex).guildIndex, 0, "||¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & UserList(UserIndex).name & FONTTYPE_GUILD)
             End If
             Exit Sub
     End Select

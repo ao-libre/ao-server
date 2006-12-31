@@ -229,7 +229,7 @@ Dim CantP   As Integer
 Dim CantPs  As String
 Dim OldQs  As String
     
-    If dir(CharPath & Nombre & ".chr") <> vbNullString Then
+    If dir$(CharPath & Nombre & ".chr") <> vbNullString Then
         Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "GUILDINDEX", p_GuildNumber)
         Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "AspiranteA", "0")
         'CantPs = GetVar(CharPath & Nombre & ".chr", "GUILD", "ClanesParticipo")
@@ -258,7 +258,7 @@ Dim i           As Integer
 Dim EsMiembro   As Boolean
 Dim MiembroDe   As String
 
-    If dir(CharPath & Nombre & ".chr") <> vbNullString Then
+    If dir$(CharPath & Nombre & ".chr") <> vbNullString Then
         OldQ = CInt(GetVar(MEMBERSFILE, "INIT", "NroMembers"))
         i = 1
         Nombre = UCase$(Nombre)
@@ -536,7 +536,7 @@ On Error GoTo errh
     
 Exit Function
 errh:
-    LogError ("clsClan.Contarvotos: " & Err.Description)
+    LogError ("clsClan.Contarvotos: " & Err.description)
     If Not d Is Nothing Then Set d = Nothing
     ContarVotos = vbNullString
 End Function
@@ -782,8 +782,8 @@ End Sub
 '
 
 Private Sub ReplaceInvalidChars(ByRef S As String)
-    S = Replace(S, Chr(13), vbNullString)
-    S = Replace(S, Chr(10), vbNullString)
+    S = Replace(S, Chr$(13), vbNullString)
+    S = Replace(S, Chr$(10), vbNullString)
     S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
     S = Replace(S, ENDC, vbNullString)
 End Sub

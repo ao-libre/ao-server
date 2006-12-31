@@ -504,7 +504,7 @@ Dim CurChar As String * 1
 Dim FieldNum As Integer
 Dim Seperator As String
   
-Seperator = Chr(SepASCII)
+Seperator = Chr$(SepASCII)
 LastPos = 0
 FieldNum = 0
 

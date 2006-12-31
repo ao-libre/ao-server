@@ -270,7 +270,7 @@ For Hechizo = 1 To NumeroHechizos
     
     Hechizos(Hechizo).Invoca = val(Leer.GetValue("Hechizo" & Hechizo, "Invoca"))
     Hechizos(Hechizo).NumNpc = val(Leer.GetValue("Hechizo" & Hechizo, "NumNpc"))
-    Hechizos(Hechizo).Cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
+    Hechizos(Hechizo).cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
     Hechizos(Hechizo).Mimetiza = val(Leer.GetValue("hechizo" & Hechizo, "Mimetiza"))
     
     
@@ -1212,14 +1212,14 @@ CrcSubKey = val(GetVar(IniPath & "Server.ini", "INIT", "CrcSubKey"))
 
 ServerIp = GetVar(IniPath & "Server.ini", "INIT", "ServerIp")
 Temporal = InStr(1, ServerIp, ".")
-Temporal1 = (mid(ServerIp, 1, Temporal - 1) And &H7F) * 16777216
-ServerIp = mid(ServerIp, Temporal + 1, Len(ServerIp))
+Temporal1 = (mid$(ServerIp, 1, Temporal - 1) And &H7F) * 16777216
+ServerIp = mid$(ServerIp, Temporal + 1, Len(ServerIp))
 Temporal = InStr(1, ServerIp, ".")
-Temporal1 = Temporal1 + mid(ServerIp, 1, Temporal - 1) * 65536
-ServerIp = mid(ServerIp, Temporal + 1, Len(ServerIp))
+Temporal1 = Temporal1 + mid$(ServerIp, 1, Temporal - 1) * 65536
+ServerIp = mid$(ServerIp, Temporal + 1, Len(ServerIp))
 Temporal = InStr(1, ServerIp, ".")
-Temporal1 = Temporal1 + mid(ServerIp, 1, Temporal - 1) * 256
-ServerIp = mid(ServerIp, Temporal + 1, Len(ServerIp))
+Temporal1 = Temporal1 + mid$(ServerIp, 1, Temporal - 1) * 256
+ServerIp = mid$(ServerIp, Temporal + 1, Len(ServerIp))
 
 MixedKey = (Temporal1 + ServerIp) Xor &H65F64B42
 

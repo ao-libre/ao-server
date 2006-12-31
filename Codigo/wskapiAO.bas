@@ -85,8 +85,8 @@ hWndMsg = hwndParent
 OldWProc = SetWindowLong(hWndMsg, GWL_WNDPROC, AddressOf WndProc)
 ActualWProc = GetWindowLong(hWndMsg, GWL_WNDPROC)
 
-Dim Desc As String
-Call StartWinsock(Desc)
+Dim desc As String
+Call StartWinsock(desc)
 
 #End If
 End Sub
@@ -305,7 +305,7 @@ Case 1025
         
         'Call WSAAsyncSelect(s, hWndMsg, ByVal 1025, ByVal (FD_READ Or FD_WRITE Or FD_CLOSE Or FD_ACCEPT))
         
-        Tmp = Left(Tmp, Ret)
+        Tmp = Left$(Tmp, Ret)
         
         'Call LogApiSock("WndProc:FD_READ:N=" & N & ":TMP=" & Tmp)
         
@@ -389,7 +389,7 @@ On Error GoTo errhandler
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\custom.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & "(" & Timer & ") " & str
+Print #nfile, Date & " " & time & "(" & Timer & ") " & str
 Close #nfile
 
 Exit Sub
@@ -408,7 +408,7 @@ On Error GoTo errhandler
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\wsapi.log" For Append Shared As #nfile
-Print #nfile, Date & " " & Time & " " & str
+Print #nfile, Date & " " & time & " " & str
 Close #nfile
 
 Exit Sub

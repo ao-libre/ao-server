@@ -57,7 +57,7 @@ While W <> 0
       T = Space(L + 1)
       L = GetWindowText(W, T, L + 1)
 
-      If Left(T, Len(str)) = str Then
+      If Left$(T, Len(str)) = str Then
          BuscaVentana = W
          Exit Function
       End If

@@ -550,6 +550,106 @@ Public Sub SendToDeadUserArea(ByVal UserIndex As Integer, ByVal sdData As String
     Next LoopC
 End Sub
 
+Public Sub SendToUserGuildArea(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: Unknow
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim TempIndex As Integer
+    
+    Dim Map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    Map = UserList(UserIndex).Pos.Map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(Map) Then Exit Sub
+    
+    If UserList(UserIndex).guildIndex = 0 Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        TempIndex = ConnGroups(Map).UserEntrys(LoopC)
+        
+        If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).guildIndex = UserList(UserIndex).guildIndex Then
+                    Call EnviarDatosASlot(TempIndex, sdData)
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
+Public Sub SendToUserPartyArea(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: Unknow
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim TempIndex As Integer
+    
+    Dim Map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    Map = UserList(UserIndex).Pos.Map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(Map) Then Exit Sub
+    
+    If UserList(UserIndex).PartyIndex = 0 Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        TempIndex = ConnGroups(Map).UserEntrys(LoopC)
+        
+        If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).PartyIndex = UserList(UserIndex).PartyIndex Then
+                    Call EnviarDatosASlot(TempIndex, sdData)
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
+Public Sub SendToAdminsButConsejerosArea(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: Unknow
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim TempIndex As Integer
+    
+    Dim Map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    Map = UserList(UserIndex).Pos.Map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(Map) Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        TempIndex = ConnGroups(Map).UserEntrys(LoopC)
+        
+        If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).flags.Privilegios > PlayerType.Consejero Then
+                    Call EnviarDatosASlot(TempIndex, sdData)
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
 Public Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
