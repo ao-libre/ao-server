@@ -173,14 +173,15 @@ Call SecurityIp.IpSecurityMantenimientoLista
 End Sub
 
 Sub EnviarSpawnList(ByVal UserIndex As Integer)
-Dim k As Integer, SD As String
-SD = "SPL" & UBound(SpawnList) & ","
+Dim k As Long
+Dim npcNames(1 To UBound(SpawnList)) As String
 
 For k = 1 To UBound(SpawnList)
-    SD = SD & SpawnList(k).NpcName & ","
+    npcNames(k) = SpawnList(k).NpcName
 Next k
 
-Call SendData(SendTarget.ToIndex, UserIndex, 0, SD)
+Call WriteSpawnList(UserIndex, npcNames())
+
 End Sub
 
 Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)

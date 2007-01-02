@@ -73,7 +73,7 @@ If InMapBounds(Map, X, Y) Then
     '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
     ElseIf MapData(Map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).ObjInfo.ObjIndex
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).name & "," & "OBJ")
+        
         Select Case ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
@@ -82,7 +82,7 @@ If InMapBounds(Map, X, Y) Then
         End Select
     ElseIf MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).name & "," & "OBJ")
+
         Select Case ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
@@ -91,7 +91,7 @@ If InMapBounds(Map, X, Y) Then
         End Select
     ElseIf MapData(Map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
         UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y + 1).ObjInfo.ObjIndex
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "SELE" & ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType & "," & ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).name & "," & "OBJ")
+
         Select Case ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType
             
             Case 6 'Es una puerta
