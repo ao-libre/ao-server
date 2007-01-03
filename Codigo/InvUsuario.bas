@@ -309,15 +309,15 @@ If num > 0 Then
         Call UpdateUserInv(False, UserIndex, Slot)
         
         If ObjData(Obj.ObjIndex).OBJType = eOBJType.otBarcos Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡ATENCION!! ¡ACABAS DE TIRAR TU BARCA!" & FONTTYPE_TALK)
+            Call WriteConsoleMsg(UserIndex, "¡¡ATENCION!! ¡ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
         End If
         If ObjData(Obj.ObjIndex).Caos = 1 Or ObjData(Obj.ObjIndex).Real = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡ATENCION!! ¡¡ACABAS DE TIRAR TU ARMADURA FACCIONARIA!!" & FONTTYPE_TALK)
+            Call WriteConsoleMsg(UserIndex, "¡ATENCION!! ¡¡ACABAS DE TIRAR TU ARMADURA FACCIONARIA!!", FontTypeNames.FONTTYPE_TALK)
         End If
         
         If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name, False)
   Else
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay espacio en el piso." & FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
   End If
     
 End If
@@ -385,7 +385,7 @@ If Slot > MAX_INVENTORY_SLOTS Then
    Do Until UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
        Slot = Slot + 1
        If Slot > MAX_INVENTORY_SLOTS Then
-           Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes cargar mas objetos." & FONTTYPE_FIGHT)
+           Call WriteConsoleMsg(UserIndex, "No podes cargar mas objetos.", FontTypeNames.FONTTYPE_FIGHT)
            MeterItemEnInventario = False
            Exit Function
        End If
@@ -433,7 +433,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
         MiObj.ObjIndex = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex
         
         If Not MeterItemEnInventario(UserIndex, MiObj) Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No puedo cargar mas objetos." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "No puedo cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
         Else
             'Quitamos el objeto
             Call EraseObj(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
@@ -442,7 +442,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
         
     End If
 Else
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay nada aqui." & FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "No hay nada aqui.", FontTypeNames.FONTTYPE_INFO)
 End If
 
 End Sub
@@ -559,7 +559,7 @@ ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
 Obj = ObjData(ObjIndex)
 
 If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
-     Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Solo los newbies pueden usar este objeto." & FONTTYPE_INFO)
+     Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
      Exit Sub
 End If
         
@@ -591,7 +591,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).Invent.WeaponEqpSlot = Slot
                 
                 'Sonido
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SACARARMA)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA))
         
                 If UserList(UserIndex).flags.Mimetizado = 1 Then
                     UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
@@ -600,7 +600,7 @@ Select Case Obj.OBJType
                     Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                 End If
        Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase no puede usar este objeto." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
        End If
     
     Case eOBJType.otAnillo
@@ -623,7 +623,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).Invent.AnilloEqpSlot = Slot
                 
        Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase no puede usar este objeto." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
        End If
     
     Case eOBJType.otFlechas
@@ -647,7 +647,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).Invent.MunicionEqpSlot = Slot
                 
        Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase no puede usar este objeto." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
        End If
     
     Case eOBJType.otArmadura
@@ -688,7 +688,7 @@ Select Case Obj.OBJType
             
 
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase,genero o raza no puede usar este objeto." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Tu clase,genero o raza no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
         End If
     
     Case eOBJType.otCASCO
@@ -723,7 +723,7 @@ Select Case Obj.OBJType
                 Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
             End If
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase no puede usar este objeto." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
         End If
     
     Case eOBJType.otESCUDO
@@ -762,7 +762,7 @@ Select Case Obj.OBJType
                  Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
              End If
          Else
-             Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Tu clase no puede usar este objeto." & FONTTYPE_INFO)
+             Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
          End If
 End Select
 
@@ -806,7 +806,7 @@ If UserList(UserIndex).Invent.Object(Slot).amount = 0 Then Exit Sub
 Obj = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex)
 
 If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Solo los newbies pueden usar estos objetos." & FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
 
@@ -829,7 +829,7 @@ UserList(UserIndex).flags.TargetObjInvSlot = Slot
 Select Case Obj.OBJType
     Case eOBJType.otUseOnce
         If UserList(UserIndex).flags.Muerto = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
 
@@ -854,7 +854,7 @@ Select Case Obj.OBJType
 
     Case eOBJType.otGuita
         If UserList(UserIndex).flags.Muerto = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -868,17 +868,17 @@ Select Case Obj.OBJType
         
     Case eOBJType.otWeapon
         If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
         End If
         
         If Not UserList(UserIndex).Stats.MinSta > 0 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas muy cansado" & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Estas muy cansado", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
         If ObjData(ObjIndex).proyectil = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Proyectiles)
+            Call WriteWorkRequestTarget(UserIndex, Proyectiles)
         Else
             If UserList(UserIndex).flags.TargetObj = Leña Then
                 If UserList(UserIndex).Invent.Object(Slot).ObjIndex = DAGA Then
@@ -891,7 +891,7 @@ Select Case Obj.OBJType
         'Solo si es herramienta ;) (en realidad si no es ni proyectil ni daga)
         
         If UserList(UserIndex).Invent.Object(Slot).Equipped = 0 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Antes de usar la herramienta deberias equipartela." & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
             
@@ -901,27 +901,27 @@ Select Case Obj.OBJType
             
         Select Case ObjIndex
             Case CAÑA_PESCA, RED_PESCA
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Pesca)
+                Call WriteWorkRequestTarget(UserIndex, Pesca)
             Case HACHA_LEÑADOR
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Talar)
+                Call WriteWorkRequestTarget(UserIndex, Talar)
             Case PIQUETE_MINERO
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Mineria)
+                Call WriteWorkRequestTarget(UserIndex, Mineria)
             Case MARTILLO_HERRERO
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & Herreria)
+                Call WriteWorkRequestTarget(UserIndex, Herreria)
             Case SERRUCHO_CARPINTERO
                 Call EnivarObjConstruibles(UserIndex)
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "SFC")
+                Call WriteShowCarpenterForm(UserIndex)
         End Select
         
     
     Case eOBJType.otPociones
         If UserList(UserIndex).flags.Muerto = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
         If Not IntervaloPermiteAtacar(UserIndex, False) Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Debes esperar unos momentos para tomar otra pocion!!" & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -941,7 +941,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
         
             Case 2 'Modif la fuerza
                 UserList(UserIndex).flags.DuracionEfecto = Obj.DuracionEfecto
@@ -955,7 +955,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
                 
             Case 3 'Pocion roja, restaura HP
                 'Usa el item
@@ -965,7 +965,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
             
             Case 4 'Pocion azul, restaura MANA
                 'Usa el item
@@ -975,21 +975,21 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
                 
             Case 5 ' Pocion violeta
                 If UserList(UserIndex).flags.Envenenado = 1 Then
                     UserList(UserIndex).flags.Envenenado = 0
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Te has curado del envenenamiento." & FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
                 End If
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
             Case 6  ' Pocion Negra
                 If UserList(UserIndex).flags.Privilegios = PlayerType.User Then
                     Call QuitarUserInvItem(UserIndex, Slot, 1)
                     Call UserDie(UserIndex)
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Sientes un gran mareo y pierdes el conocimiento." & FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)
                 End If
        End Select
        Call SendUserStatsBox(UserIndex)
@@ -997,7 +997,7 @@ Select Case Obj.OBJType
 
      Case eOBJType.otBebidas
         If UserList(UserIndex).flags.Muerto = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
@@ -1009,13 +1009,13 @@ Select Case Obj.OBJType
         'Quitamos del inv el item
         Call QuitarUserInvItem(UserIndex, Slot, 1)
         
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_BEBER)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
         
         Call UpdateUserInv(False, UserIndex, Slot)
     
     Case eOBJType.otLlaves
         If UserList(UserIndex).flags.Muerto = 1 Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -1032,26 +1032,26 @@ Select Case Obj.OBJType
                         MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex _
                         = ObjData(MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex).IndexCerrada
                         UserList(UserIndex).flags.TargetObj = MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has abierto la puerta." & FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Has abierto la puerta.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                      Else
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La llave no sirve." & FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                      End If
                   Else
                      If TargObj.clave = Obj.clave Then
                         MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex _
                         = ObjData(MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex).IndexCerradaLlave
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has cerrado con llave la puerta." & FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Has cerrado con llave la puerta.", FontTypeNames.FONTTYPE_INFO)
                         UserList(UserIndex).flags.TargetObj = MapData(UserList(UserIndex).flags.TargetObjMap, UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY).ObjInfo.ObjIndex
                         Exit Sub
                      Else
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La llave no sirve." & FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                      End If
                   End If
             Else
-                  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No esta cerrada." & FONTTYPE_INFO)
+                  Call WriteConsoleMsg(UserIndex, "No esta cerrada.", FontTypeNames.FONTTYPE_INFO)
                   Exit Sub
             End If
             
@@ -1059,11 +1059,11 @@ Select Case Obj.OBJType
     
         Case eOBJType.otBotellaVacia
             If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             If Not HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY) Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No hay agua allí." & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No hay agua allí.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             MiObj.amount = 1
@@ -1077,7 +1077,7 @@ Select Case Obj.OBJType
     
         Case eOBJType.otBotellaLlena
             If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
@@ -1097,7 +1097,7 @@ Select Case Obj.OBJType
 
         Case eOBJType.otPergaminos
             If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -1107,28 +1107,28 @@ Select Case Obj.OBJType
                 
                 Call UpdateUserInv(False, UserIndex, Slot)
             Else
-               Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas demasiado hambriento y sediento." & FONTTYPE_INFO)
+               Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
             End If
        
        Case eOBJType.otMinerales
            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
            End If
-           Call SendData(SendTarget.ToIndex, UserIndex, 0, "T01" & FundirMetal)
+           Call WriteWorkRequestTarget(UserIndex, Mineria)
        
        Case eOBJType.otInstrumentos
             If UserList(UserIndex).flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Estas muerto!! Solo podes usar items cuando estas vivo. " & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
-            Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Obj.Snd1)
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
        
        Case eOBJType.otBarcos
     'Verifica si esta aproximado al agua antes de permitirle navegar
         If UserList(UserIndex).Stats.ELV < 25 Then
             If UCase$(UserList(UserIndex).clase) <> "PESCADOR" And UCase$(UserList(UserIndex).clase) <> "PIRATA" Then
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para recorrer los mares debes ser nivel 25 o superior." & FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         End If
@@ -1140,7 +1140,7 @@ Select Case Obj.OBJType
             Or UserList(UserIndex).flags.Navegando = 1 Then
            Call DoNavega(UserIndex, Obj, Slot)
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡Debes aproximarte al agua para usar el barco!" & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
         End If
            
 End Select
@@ -1153,50 +1153,19 @@ End Sub
 
 Sub EnivarArmasConstruibles(ByVal UserIndex As Integer)
 
-Dim i As Integer, cad$
-
-For i = 1 To UBound(ArmasHerrero)
-    If ObjData(ArmasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
-        If ObjData(ArmasHerrero(i)).OBJType = eOBJType.otWeapon Then
-        '[DnG!]
-            cad$ = cad$ & ObjData(ArmasHerrero(i)).name & " (" & ObjData(ArmasHerrero(i)).LingH & "-" & ObjData(ArmasHerrero(i)).LingP & "-" & ObjData(ArmasHerrero(i)).LingO & ")" & "," & ArmasHerrero(i) & ","
-        '[/DnG!]
-        Else
-            cad$ = cad$ & ObjData(ArmasHerrero(i)).name & "," & ArmasHerrero(i) & ","
-        End If
-    End If
-Next i
-
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "LAH" & cad$)
+Call WriteBlacksmithWeapons(UserIndex)
 
 End Sub
  
 Sub EnivarObjConstruibles(ByVal UserIndex As Integer)
 
-Dim i As Integer, cad$
-
-For i = 1 To UBound(ObjCarpintero)
-    If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) / ModCarpinteria(UserList(UserIndex).clase) Then _
-        cad$ = cad$ & ObjData(ObjCarpintero(i)).name & " (" & ObjData(ObjCarpintero(i)).Madera & ")" & "," & ObjCarpintero(i) & ","
-Next i
-
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "OBR" & cad$)
+Call WriteCarpenterObjects(UserIndex)
 
 End Sub
 
 Sub EnivarArmadurasConstruibles(ByVal UserIndex As Integer)
 
-Dim i As Integer, cad$
-
-For i = 1 To UBound(ArmadurasHerrero)
-    If ObjData(ArmadurasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).clase) Then
-        '[DnG!]
-        cad$ = cad$ & ObjData(ArmadurasHerrero(i)).name & " (" & ObjData(ArmadurasHerrero(i)).LingH & "-" & ObjData(ArmadurasHerrero(i)).LingP & "-" & ObjData(ArmadurasHerrero(i)).LingO & ")" & "," & ArmadurasHerrero(i) & ","
-        '[/DnG!]
-    End If
-Next i
-
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "LAR" & cad$)
+Call WriteBlacksmithArmors(UserIndex)
 
 End Sub
 
