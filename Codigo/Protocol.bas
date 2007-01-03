@@ -1416,7 +1416,7 @@ On Error GoTo errhandler
             End If
         End If
         
-        If chat <> "" Then
+        If LenB(chat) <> 0 Then
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
@@ -1481,7 +1481,7 @@ On Error GoTo errhandler
                 End If
             End If
             
-            If chat <> "" Then
+            If LenB(chat) <> 0 Then
                 'Analize chat...
                 Call Statistics.ParseChat(chat)
                 
@@ -1553,7 +1553,7 @@ On Error GoTo errhandler
                     Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios = PlayerType.Consejero)
                 End If
                 
-                If chat <> "" Then
+                If LenB(chat) <> 0 Then
                     'Analize chat...
                     Call Statistics.ParseChat(rData)
                     
@@ -2687,7 +2687,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                             Exit Sub
                         End If
                         
-                        If Npclist(tN).flags.AttackedBy <> "" Then
+                        If LenB(Npclist(tN).flags.AttackedBy) <> 0 Then
                             Call WriteConsoleMsg(UserIndex, "No podés domar una criatura que está luchando con un jugador.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
                         End If
@@ -3725,7 +3725,7 @@ On Error GoTo errhandler
         
         details = modGuilds.r_VerPropuesta(UserIndex, guild, RELACIONES_GUILD.ALIADOS, error)
         
-        If details = vbNullString Then
+        If LenB(details) = 0 Then
             Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         Else
             Call WriteOfferDetails(UserIndex, details)
@@ -3770,7 +3770,7 @@ On Error GoTo errhandler
         
         details = modGuilds.r_VerPropuesta(UserIndex, guild, RELACIONES_GUILD.PAZ, error)
         
-        If details = vbNullString Then
+        If LenB(details) = 0 Then
             Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         Else
             Call WriteOfferDetails(UserIndex, details)
@@ -3814,7 +3814,7 @@ On Error GoTo errhandler
         
         details = modGuilds.a_DetallesAspirante(UserIndex, User)
         
-        If details = vbNullString Then
+        If LenB(details) = 0 Then
             Call WriteConsoleMsg(UserIndex, "El personaje no ha mandado solicitud, o no estás habilitado para verla.", FontTypeNames.FONTTYPE_GUILD)
         Else
             Call WriteShowUserRequest(UserIndex, details)
@@ -4276,7 +4276,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         For i = 1 To LastUser
-            If UserList(i).name <> "" And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
+            If LenB(UserList(i).name) <> 0 And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
                 Count = Count + 1
             End If
         Next LoopC
@@ -4798,7 +4798,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
         If .flags.TargetNPC > 0 Then
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If Npclist(.flags.TargetNPC).desc <> "" Then
+                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
                 End If
                 
@@ -5190,7 +5190,7 @@ On Error GoTo errhandler
         
         chat = buffer.ReadASCIIString()
         
-        If chat <> "" Then
+        If LenB(chat) <> 0 Then
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
@@ -5236,7 +5236,7 @@ On Error GoTo errhandler
         
         chat = buffer.ReadASCIIString()
         
-        If chat <> "" Then
+        If LenB(chat) <> 0 Then
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
@@ -5345,7 +5345,7 @@ On Error GoTo errhandler
         
         chat = buffer.ReadASCIIString()
         
-        If chat <> "" Then
+        If LenB(chat) <> 0 Then
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
@@ -5391,7 +5391,7 @@ On Error GoTo errhandler
         
         request = buffer.ReadASCIIString()
         
-        If request <> "" Then
+        If LenB(request) <> 0 Then
             Call WriteConsoleMsg(UserIndex, "Su solicitud ha sido enviada", FontTypeNames.FONTTYPE_INFO)
             Call SendData(SendTarget.ToRolesMasters, 0, PrepareMessageConsoleMsg(.name & " PREGUNTA ROL: " & request, FontTypeNames.FONTTYPE_GUILDMSG))
         End If
@@ -5589,7 +5589,7 @@ On Error GoTo errhandler
         
         name = buffer.ReadASCIIString()
         
-        If name <> "" Then
+        If LenB(name) <> 0 Then
             name = Replace(name, "\", "")
             name = Replace(name, "/", "")
             
@@ -6167,9 +6167,9 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        guild = Replace$(guild, "\", "")
-        guild = Replace$(guild, "/", "")
-
+        guild = Replace(guild, "\", "")
+        guild = Replace(guild, "/", "")
+        
         If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
             Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
         Else
@@ -6219,7 +6219,7 @@ On Error GoTo errhandler
         
         Call LogGM(.name, "Mensaje a Gms:" & message, (.flags.Privilegios = PlayerType.Consejero))
         
-        If message <> "" Then
+        If LenB(message) <> 0 Then
             'Analize chat...
             Call Statistics.ParseChat(message)
             
@@ -6526,7 +6526,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
                 End If
             Next i
             
-            If list <> "" Then
+            If LenB(list) <> 0 Then
                 list = Left$(list, Len(list) - 2)
             Else
                 list = "No hay NPCS"
@@ -6591,7 +6591,7 @@ On Error GoTo errhandler
         X = buffer.ReadByte()
         Y = buffer.ReadByte()
         
-        If MapaValido(Map) And UserName <> "" Then
+        If MapaValido(Map) And LenB(UserName) <> 0 Then
             If UCase$(name) <> "YO" Then
                 If Not .flags.Privilegios = PlayerType.Consejero Then
                     tUser = NameIndex(name)
@@ -6844,12 +6844,12 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         
         For i = 1 To LastUser
-            If (UserList(i).name <> "") And UserList(i).flags.Privilegios = PlayerType.User Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios = PlayerType.User Then
                 names = names & UserList(i).name & ","
             End If
         Next LoopC
         
-        If names <> "" Then _
+        If LenB(names) <> 0 Then _
             names = Left$(names, Len(names) - 1)
         
         Call WriteUserNameList(UserIndex, Split(names, ","))
@@ -6877,12 +6877,12 @@ Private Sub HandleWorking(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         
         For i = 1 To LastUser
-            If (UserList(i).name <> "") And UserList(i).Counters.Trabajando > 0 Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).Counters.Trabajando > 0 Then
                 users = users & UserList(i).name & ", "
             End If
         Next i
         
-        If users <> "" Then
+        If LenB(users) <> 0 Then
             users = Left$(users, Len(users) - 2)
             Call WriteConsoleMsg(UserIndex, "Usuarios trabajando: " & users, FontTypeNames.FONTTYPE_INFO)
         Else
@@ -6912,12 +6912,12 @@ Private Sub HandleHiding(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         
         For i = 1 To LastUser
-            If (UserList(i).name <> "") And UserList(i).Counters.Ocultando > 0 Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).Counters.Ocultando > 0 Then
                 users = users & UserList(i).name & ", "
             End If
         Next i
         
-        If users <> "" Then
+        If LenB(users) <> 0 Then
             users = Left$(users, Len(users) - 2)
             Call WriteConsoleMsg(UserIndex, "Usuarios ocultandose: " & users, FontTypeNames.FONTTYPE_INFO)
         Else
@@ -6960,7 +6960,7 @@ On Error GoTo errhandler
         
         '/carcel nick@motivo@<tiempo>
         If Not .flags.EsRolesMaster Then
-            If UserName = "" Or reason = "" Then
+            If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /carcel nick@motivo@tiempo", FontTypeNames.FONTTYPE_INFO)
             Else
                 tUser = NameIndex(UserName)
@@ -7068,7 +7068,7 @@ On Error GoTo errhandler
         reason = buffer.ReadASCIIString()
 
         If Not .flags.EsRolesMaster Then
-            If UserName = "" Or reason = "" Then
+            If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /advertencia nick@motivo", FontTypeNames.FONTTYPE_INFO)
             Else
                 tUser = NameIndex(UserName)
@@ -7092,7 +7092,7 @@ On Error GoTo errhandler
                 If advertir Then
                     UserName = Replace(UserName, "\", "")
                     UserName = Replace(UserName, "/", "")
-    
+                    
                     If FileExist(CharPath & name & ".chr", vbNormal) Then
                         Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
@@ -7145,7 +7145,8 @@ On Error GoTo errhandler
         Dim LoopC As Byte
         Dim commandString As String
         
-        UserName = Replace$(buffer.ReadASCIIString(), "+", " ")
+        UserName = buffer.ReadASCIIString()
+        
         tUser = NameIndex(UserName)
         opcion = buffer.ReadByte()
         Arg1 = buffer.ReadASCIIString()
@@ -7385,7 +7386,7 @@ errhandler:
 End Sub
 
 ''
-' Handles the "RequestCharInfo" message.
+' Handles the "RequestCharStats" message.
 '
 ' @param    userIndex The index of the user sending the message.
 
@@ -7607,8 +7608,8 @@ On Error GoTo errhandler
         Call LogGM(.name, "/STATS " & UserName, False)
         
         If tUser <= 0 Then
-            UserName = Replace(UserName, "\", " ")
-            UserName = Replace(UserName, "/", " ")
+            UserName = Replace(UserName, "\", "")
+            UserName = Replace(UserName, "/", "")
             
             For LoopC = 1 To NUMSKILLS
                 message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
@@ -7672,13 +7673,13 @@ On Error GoTo errhandler
                 Call DarCuerpoDesnudo(tUser)
                 
                 Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            End With
                 
                 Call WriteUpdateHP(tUser)
                 
                 Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call FlushBuffer(tUser)
-            End With
             
             Call LogGM(.name, "Resucito a " & UserName, False)
         End If
@@ -7711,12 +7712,12 @@ Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         For i = 1 To LastUser
-            If (UserList(i).name <> "") And UserList(i).flags.Privilegios > PlayerType.User And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios > PlayerType.User And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(i).name & ", "
             End If
         Next i
         
-        If list <> vbNullString Then
+        If LenB(list) <> 0 Then
             list = Left$(list, Len(list) - 2)
             Call WriteConsoleMsg(UserIndex, list & ".", FontTypeNames.FONTTYPE_INFO)
         Else
@@ -7744,7 +7745,7 @@ Private Sub HandleOnlineMap(ByVal UserIndex As Integer)
         Dim list As String
         
         For LoopC = 1 To LastUser
-            If UserList(LoopC).name <> "" And UserList(LoopC).Pos.Map = .Pos.Map And (UserList(LoopC).flags.Privilegios < PlayerType.Dios Or .flags.Privilegios >= PlayerType.Dios) Then
+            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Pos.Map = .Pos.Map And (UserList(LoopC).flags.Privilegios < PlayerType.Dios Or .flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(LoopC).name & ", "
             End If
         Next LoopC
@@ -8257,7 +8258,7 @@ On Error GoTo errhandler
         Dim message As String
         message = buffer.ReadASCIIString()
         
-        If message <> "" Then
+        If LenB(message) <> 0 Then
             Call LogGM(.name, "Mensaje Broadcast:" & message, False)
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
         End If
@@ -8353,14 +8354,14 @@ Private Sub HandleIPToNick(ByVal UserIndex As Integer)
         Call LogGM(.name, "IP2NICK Solicito los Nicks de IP " & ip, .flags.Privilegios = PlayerType.Consejero)
         
         For LoopC = 1 To LastUser
-            If UserList(LoopC).ip = ip And UserList(LoopC).name <> "" And UserList(LoopC).flags.UserLogged Then
+            If UserList(LoopC).ip = ip And LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).flags.UserLogged Then
                 If (.flags.Privilegios > PlayerType.User And UserList(LoopC).flags.Privilegios = PlayerType.User) Or (.flags.Privilegios >= PlayerType.Dios) Then
                     lista = lista & UserList(LoopC).name & ", "
                 End If
             End If
         Next LoopC
         
-        If lista <> vbNullString Then lista = Left$(lista, Len(lista) - 2)
+        If LenB(lista) <> 0 Then lista = Left$(lista, Len(lista) - 2)
         Call WriteConsoleMsg(UserIndex, "Los personajes con ip " & ip & " son: " & lista, FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
@@ -9276,7 +9277,7 @@ Private Sub HandleBannedIPList(ByVal UserIndex As Integer)
             lista = lista & BanIps.Item(LoopC) & ", "
         Next LoopC
         
-        If lista <> vbNullString Then lista = Left$(lista, Len(lista) - 2)
+        If LenB(lista) <> 0 Then lista = Left$(lista, Len(lista) - 2)
         
         Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
     End With
@@ -9536,7 +9537,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
             Exit Sub
         
         'Is the object not null?
-        If ObjData(tObj).name = "" Then Exit Sub
+        If LenB(ObjData(tObj).name) = 0 Then Exit Sub
         
         Dim Objeto As Obj
         Call WriteConsoleMsg(UserIndex, "ATENCION: FUERON CREADOS ***100*** ITEMS!, TIRE Y /DEST LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
@@ -9599,8 +9600,10 @@ On Error GoTo errhandler
         Dim tUser As Integer
         
         UserName = buffer.ReadASCIIString()
+        
         UserName = Replace(UserName, "\", "")
         UserName = Replace(UserName, "/", "")
+        
         tUser = NameIndex(UserName)
         
         Call LogGM(.name, "ECHO DEL CAOS A: " & UserName, False)
@@ -9657,8 +9660,10 @@ On Error GoTo errhandler
         Dim tUser As Integer
         
         UserName = buffer.ReadASCIIString()
+        
         UserName = Replace(UserName, "\", "")
         UserName = Replace(UserName, "/", "")
+        
         tUser = NameIndex(UserName)
         
         Call LogGM(.name, "ECHO DE LA REAL A: " & UserName, False)
@@ -9768,7 +9773,7 @@ On Error GoTo errhandler
         punishment = buffer.ReadByte
 
         If Not .flags.EsRolesMaster Then
-            If UserName = "" Then
+            If LenB(UserName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /borrarpj Nick@NumeroDePena", FontTypeNames.FONTTYPE_INFO)
             Else
                 UserName = Replace(UserName, "\", "")
@@ -9906,7 +9911,7 @@ On Error GoTo errhandler
             
             UserName = Replace(UserName, "\", "")
             UserName = Replace(UserName, "/", "")
-        
+            
             If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 lista = "Las ultimas IPs con las que " & UserName & "se conecto son: "
                 For LoopC = 1 To 5
@@ -9939,6 +9944,8 @@ Public Sub HandleChatColor(ByVal UserIndex As Integer)
 'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
 'Change the user`s chat color
 '***************************************************
+    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
@@ -10028,7 +10035,7 @@ Public Sub HandleReloadObjects(ByVal UserIndex As Integer)
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Call LogGM(.name, .name & " ha recargado a los objetos. ", False)
+        Call LogGM(.name, .name & " ha recargado a los objetos.", False)
         
         Call LoadOBJData
     End With
@@ -10138,7 +10145,7 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
         End With
         
         'Search for users that are working
-        For LoopC = 1 To LastUser
+        For i = 1 To LastUser
             With UserList(i)
                 If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
                     If .ColaSalida.Count > 0 Then
@@ -10147,7 +10154,7 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
                     End If
                 End If
             End With
-        Next LoopC
+        Next i
         
         Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
@@ -10193,7 +10200,7 @@ Public Sub HandleNight(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        If .name <> UCase$("EL OSO") Or UCase$(.name) <> "MARAXUS" Then Exit Sub
+        If UCase$(.name) <> "EL OSO" Or UCase$(.name) <> "MARAXUS" Then Exit Sub
         
         DeNoche = Not DeNoche
         
@@ -10289,6 +10296,8 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
 'Change the backup`s info of the map
 '***************************************************
     With UserList(UserIndex)
+        If .incomingData.length < 2 Then Exit Sub
+        
         'Remove Packet ID
         Call .incomingData.ReadByte
         
@@ -10301,7 +10310,7 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
         Call LogGM(.name, .name & " ha cambiado la información sobre el BackUp", False)
         
         'Change the boolean to byte in a fast way
-        If fothebackup Then
+        If doTheBackUp Then
             MapInfo(.Pos.Map).BackUp = 1
         Else
             MapInfo(.Pos.Map).BackUp = 0
@@ -10327,6 +10336,8 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 'Change the pk`s info of the  map
 '***************************************************
     With UserList(UserIndex)
+        If .incomingData.length < 2 Then Exit Sub
+        
         'Remove Packet ID
         Call .incomingData.ReadByte
         
@@ -10397,9 +10408,9 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        If .flags.EsRolesMaster Then Exit Sub
-        
-        Call modGuilds.GMEscuchaClan(UserIndex, guild)
+        If Not .flags.EsRolesMaster Then
+            Call modGuilds.GMEscuchaClan(UserIndex, guild)
+        End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -10502,7 +10513,7 @@ On Error GoTo errhandler
         newName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If UserName = vbNullString Or newName = vbNullString Then
+            If LenB(UserName) = 0 Or LenB(newName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usar: /ANAME origen@destino", FontTypeNames.FONTTYPE_INFO)
             Else
                 changeNameUI = NameIndex(UserName)
@@ -10582,7 +10593,7 @@ On Error GoTo errhandler
         newMail = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If UserName = vbNullString Or newMail = vbNullString Then
+            If LenB(UserName) = 0 Or LenB(newMail) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /AEMAIL <pj>-<nuevomail>", FontTypeNames.FONTTYPE_INFO)
             Else
                 userNewMailIndex = NameIndex(UserName)
@@ -10644,7 +10655,7 @@ On Error GoTo errhandler
         If Not .flags.EsRolesMaster Then
             Call LogGM(.name, "Ha alterado la contraseña de " & UserName, False)
             
-            If UserName = vbNullString Or copyFrom = vbNullString Then
+            If LenB(UserName) = 0 Or LenB(copyFrom) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /APASS <pjsinpass>@<pjconpass>", FontTypeNames.FONTTYPE_INFO)
             Else
                 userNewPassIndex = NameIndex(UserName)
@@ -13144,7 +13155,7 @@ Public Sub WriteGuildLeaderInfo(ByVal UserIndex As Integer, ByRef guildList() As
         Call .WriteASCIIString(Tmp)
         
         ' Prepare guild member's list
-        Tmp = ""
+        Tmp = vbNullString
         For i = LBound(MemberList()) To UBound(MemberList())
             Tmp = Tmp & MemberList(i) & SEPARATOR
         Next i
@@ -13158,7 +13169,7 @@ Public Sub WriteGuildLeaderInfo(ByVal UserIndex As Integer, ByRef guildList() As
         Call .WriteASCIIString(guildNews)
         
         ' Prepare the join request's list
-        Tmp = ""
+        Tmp = vbNullString
         For i = LBound(joinRequests()) To UBound(joinRequests())
             Tmp = Tmp & joinRequests(i) & SEPARATOR
         Next i
@@ -13424,7 +13435,7 @@ Public Sub WriteShowSOSForm(ByVal UserIndex As Integer)
             Tmp = Tmp & Ayuda.VerElemento(i) & SEPARATOR
         Next N
         
-        If Tmp <> "" Then _
+        If LenB(Tmp) <> 0 Then _
             Tmp = Left$(Tmp, Len(temp) - 1)
         
         Call .WriteASCIIString(Tmp)
