@@ -3410,7 +3410,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4849,7 +4849,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -11968,10 +11968,7 @@ Public Sub WriteCharacterRemove(ByVal UserIndex As Integer, ByVal CharIndex As I
 'Last Modification: 05/17/06
 'Writes the "CharacterRemove" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.CharacterRemove)
-        Call .WriteInteger(CharIndex)
-    End With
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageCharacterRemove(CharIndex))
 End Sub
 
 ''
@@ -12050,12 +12047,7 @@ Public Sub WriteObjectCreate(ByVal UserIndex As Integer, ByVal GrhIndex As Integ
 'Last Modification: 05/17/06
 'Writes the "ObjectCreate" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.ObjectCreate)
-        Call .WriteInteger(GrhIndex)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-    End With
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageObjectCreate(GrhIndex, X, Y))
 End Sub
 
 ''
@@ -12072,11 +12064,7 @@ Public Sub WriteObjectDelete(ByVal UserIndex As Integer, ByVal X As Byte, ByVal 
 'Last Modification: 05/17/06
 'Writes the "ObjectDelete" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.ObjectDelete)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-    End With
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageObjectDelete(X, Y))
 End Sub
 
 ''
@@ -12175,11 +12163,9 @@ Public Sub WritePlayFireSound(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
-'Writes the "GuildList" message to the given user's outgoing data buffer
+'Writes the "PlayFireSound" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.PlayFireSound)
-    End With
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessagePlayFireSound())
 End Sub
 
 ''
@@ -13718,5 +13704,89 @@ Public Function PrepareMessageRainToggle() As String
         Call .WriteByte(ServerPacketID.RainToggle)
         
         PrepareMessageRainToggle = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "PlayFireSound" message and returns it.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessagePlayFireSound() As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "PlayFireSound" and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.PlayFireSound)
+        
+        PrepareMessagePlayFireSound = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "ObjectDelete" message and returns it.
+'
+' @param    X X coord of the character's new position.
+' @param    Y Y coord of the character's new position.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageObjectDelete(ByVal X As Byte, ByVal Y As Byte) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "ObjectDelete" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.ObjectDelete)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        
+        PrepareMessageObjectDelete = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "ObjectCreate" message and returns it.
+'
+' @param    GrhIndex Grh of the object.
+' @param    X X coord of the character's new position.
+' @param    Y Y coord of the character's new position.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, ByVal X As Byte, ByVal Y As Byte) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'prepares the "ObjectCreate" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.ObjectCreate)
+        Call .WriteInteger(GrhIndex)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        
+        PrepareMessageObjectCreate = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "CharacterRemove" message and returns it.
+'
+' @param    CharIndex Character to be removed.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageCharacterRemove(ByVal CharIndex As Integer) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "CharacterRemove" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.CharacterRemove)
+        Call .WriteInteger(CharIndex)
+        
+        PrepareMessageCharacterRemove = .ReadASCIIStringFixed(.length)
     End With
 End Function

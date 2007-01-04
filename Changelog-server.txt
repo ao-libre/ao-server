@@ -139,3 +139,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 03/01/2007: Modulo_InventANDobj.bas, invUsuario.bas, Matematicas.bas y mdlCOmercioConUsuario.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 03/01/2007: mdParty.bas, ModAreas.bas, modBanco.bas y modCentinela.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 04/01/2007: modFaccionas.bas, modGuilds.bas, modHechizos.bas, modHexaStrings.bas y modInvisibles.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 04/01/2007: Nuevos PrepareMessage necesarios para implementar el nuevo protocolo (Maraxus)
