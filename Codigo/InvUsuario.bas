@@ -333,9 +333,9 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
     MapData(Map, X, Y).ObjInfo.amount = 0
     
     If sndRoute = SendTarget.ToMap Then
-        Call SendToAreaByPos(Map, X, Y, "BO" & X & "," & Y)
+        Call SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
    Else
-        Call SendData(sndRoute, sndIndex, sndMap, "BO" & X & "," & Y)
+        Call SendData(sndRoute, sndIndex, PrepareMessageObjectDelete(X, Y))
     End If
 End If
 
@@ -351,9 +351,9 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
         MapData(Map, X, Y).ObjInfo = Obj
         
         If sndRoute = SendTarget.ToMap Then
-            Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
+            Call ModAreas.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         Else
-            Call SendData(sndRoute, sndIndex, sndMap, "HO" & ObjData(Obj.ObjIndex).GrhIndex & "," & X & "," & Y)
+            Call SendData(sndRoute, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         End If
     End If
 End If
