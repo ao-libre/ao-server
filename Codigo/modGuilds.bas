@@ -210,14 +210,6 @@ Private Function m_EsGuildFounder(ByRef PJ As String, ByVal guildIndex As Intege
     m_EsGuildFounder = (UCase$(PJ) = UCase$(Trim$(guilds(guildIndex).Fundador)))
 End Function
 
-
-'Public Function GetLeader(ByVal GuildIndex As Integer) As String
-'    GetLeader = vbNullString
-'
-'    If GuildIndex <= 0 Then Exit Function
-'    GetLeader = Guilds(GuildIndex).GetLeader()
-'End Function
-
 Public Function m_EcharMiembroDeClan(ByVal Expulsador As Integer, ByVal Expulsado As String) As Integer
 'UI echa a Expulsado del clan de Expulsado
 Dim UserIndex   As Integer
@@ -369,40 +361,40 @@ Dim DummyString     As String
 End Function
 
 Public Sub SendGuildNews(ByVal UserIndex As Integer)
-Dim News            As String
 Dim enemiesCount    As Integer
-Dim AlliesCount     As Integer
-Dim guildIndex      As Integer
 Dim i               As Integer
-
+Dim go As Integer
 
     guildIndex = UserList(UserIndex).guildIndex
     If guildIndex = 0 Then Exit Sub
-    
-    News = "GUILDNE" & guilds(guildIndex).GetGuildNews & "¬"
 
-    enemiesCount = guilds(guildIndex).CantidadEnemys
-    News = News & CStr(enemiesCount) & "¬"
+    Dim enemies(1 To guilds(guildIndex).CantidadEnemys) As String
+    Dim allies(1 To guilds(guildIndex).CantidadAllies) As String
+
     i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.GUERRA)
+    go = 1
+    
     While i > 0
-        News = News & guilds(i).GuildName & "¬"
+        enemies(go) = guilds(i).GuildName
         i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.GUERRA)
+        go = go + 1
     Wend
-    AlliesCount = guilds(guildIndex).CantidadAllies
-    News = News & CStr(AlliesCount) & "¬"
+    
     i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.ALIADOS)
+    go = 1
+    
     While i > 0
-        News = News & guilds(i).GuildName & "¬"
+        enemies(go) = guilds(i).GuildName
         i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.ALIADOS)
     Wend
 
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, News)
+    Call WriteGuildNews(UserIndex, guilds(guildIndex).GetGuildNews, enemies, allies)
 
     If guilds(guildIndex).EleccionesAbiertas Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Hoy es la votacion para elegir un nuevo líder para el clan!!." & FONTTYPE_GUILD)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||La eleccion durara 24 horas, se puede votar a cualquier miembro del clan." & FONTTYPE_GUILD)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para votar escribe /VOTO NICKNAME." & FONTTYPE_GUILD)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Solo se computara un voto por miembro. Tu voto no puede ser cambiado." & FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Hoy es la votacion para elegir un nuevo líder para el clan!!.", FontTypeNames.FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "La eleccion durara 24 horas, se puede votar a cualquier miembro del clan.", FontTypeNames.FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Para votar escribe /VOTO NICKNAME.", FontTypeNames.FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Solo se computara un voto por miembro. Tu voto no puede ser cambiado.", FontTypeNames.FONTTYPE_GUILD)
     End If
 
 End Sub
@@ -704,16 +696,16 @@ Public Sub v_RutinaElecciones()
 Dim i       As Integer
 
 On Error GoTo errh
-    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Revisando elecciones" & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Revisando elecciones", FontTypeNames.FONTTYPE_SERVER))
     For i = 1 To CANTIDADDECLANES
         If Not guilds(i) Is Nothing Then
             If guilds(i).RevisarElecciones Then
-                Call SendData(SendTarget.ToAll, 0, 0, "||        > " & guilds(i).GetLeader & " es el nuevo lider de " & guilds(i).GuildName & "!" & FONTTYPE_SERVER)
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & guilds(i).GetLeader & " es el nuevo lider de " & guilds(i).GuildName & "!", FontTypeNames.FONTTYPE_SERVER))
             End If
         End If
 proximo:
     Next i
-    Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> Elecciones revisadas" & FONTTYPE_SERVER)
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Elecciones revisadas", FontTypeNames.FONTTYPE_SERVER))
 Exit Sub
 errh:
     Call LogError("modGuilds.v_RutinaElecciones():" & Err.description)
@@ -867,7 +859,7 @@ Dim GI As Integer
     'listen to no guild at all
     If GuildName = "" And UserList(UserIndex).EscucheClan <> 0 Then
         'Quit listening to previous guild!!
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan) & FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan), FontTypeNames.FONTTYPE_GUILD)
         guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
         Exit Function
     End If
@@ -878,22 +870,22 @@ Dim GI As Integer
         If UserList(UserIndex).EscucheClan <> 0 Then
             If UserList(UserIndex).EscucheClan = GI Then
                 'Already listening to them...
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Conectado a : " & GuildName & FONTTYPE_GUILD)
+                Call WriteConsoleMsg(UserIndex, "Conectado a : " & GuildName, FontTypeNames.FONTTYPE_GUILD)
                 GMEscuchaClan = GI
                 Exit Function
             Else
                 'Quit listening to previous guild!!
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan) & FONTTYPE_GUILD)
+                Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan), FontTypeNames.FONTTYPE_GUILD)
                 guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
             End If
         End If
         
         Call guilds(GI).ConectarGM(UserIndex)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Conectado a : " & GuildName & FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Conectado a : " & GuildName, FontTypeNames.FONTTYPE_GUILD)
         GMEscuchaClan = GI
         UserList(UserIndex).EscucheClan = GI
     Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Error, el clan no existe" & FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Error, el clan no existe", FontTypeNames.FONTTYPE_GUILD)
         GMEscuchaClan = 0
     End If
     
