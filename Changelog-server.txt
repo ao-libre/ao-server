@@ -137,3 +137,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 31/12/2006: Varias mejoras de performance en varios algoritmos distintos. La encriptación de paquetes es ahora casi 3 veces más rápida. (Maraxus)
  * 31/12/2006: Algunos arreglos al protocolo, bugs que encontró NIGO. (Maraxus)
  * 03/01/2007: Modulo_InventANDobj.bas, invUsuario.bas, Matematicas.bas y mdlCOmercioConUsuario.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 03/01/2007: mdParty.bas, ModAreas.bas, modBanco.bas y modCentinela.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)

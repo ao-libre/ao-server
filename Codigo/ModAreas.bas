@@ -205,7 +205,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         Map = UserList(UserIndex).Pos.Map
         
         'Esto es para ke el cliente elimine lo "fuera de area..."
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "CA" & Chr$(.Pos.X) & Chr$(.Pos.Y))
+        Call WriteAreaChanged(UserIndex)
         
         'Actualizamos!!!
         For X = MinX To MaxX
@@ -256,7 +256,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                 If MapData(Map, X, Y).ObjInfo.ObjIndex Then
                     TempInt = MapData(Map, X, Y).ObjInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
-                        Call SendData(SendTarget.ToIndex, UserIndex, 0, "HO" & ObjData(TempInt).GrhIndex & "," & X & "," & Y)
+                        Call WriteObjectCreate(UserIndex, ObjData(TempInt).GrhIndex, X, Y)
                         
                         If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
                             Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
