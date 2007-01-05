@@ -91,7 +91,7 @@ If UserList(UserIndex).PartyIndex = 0 Then
                     Set Parties(tInt) = Nothing
                     Exit Sub
                 Else
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| ¡ Has formado una party !" & FONTTYPE_PARTY)
+                    Call WriteConsoleMsg(UserIndex, "¡Has formado una party!", FontTypeNames.FONTTYPE_PARTY)
                     UserList(UserIndex).PartyIndex = tInt
                     UserList(UserIndex).PartySolicitud = 0
                     If Not Parties(tInt).HacerLeader(UserIndex) Then

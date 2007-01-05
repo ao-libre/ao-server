@@ -265,22 +265,22 @@ If rv Then
             'pongo los casos que evitarian que pueda entrar
             'aspirante armada en party crimi
             If UI > 0 Then
-                If esArmada And Criminal(UI) Then
+                If esArmada And criminal(UI) Then
                     razon = "Los miembros de la armada no entran a una party con criminales."
                     rv = False
                 End If
                 'aspirante caos en party ciuda
-                If esCaos And Not Criminal(UI) Then
+                If esCaos And Not criminal(UI) Then
                     razon = "Los miembros de la legión oscura no entran a una party con ciudadanos."
                     rv = False
                 End If
                 'aspirante crimi en party armada
-                If UserList(UI).Faccion.ArmadaReal = 1 And Criminal(UserIndex) Then
+                If UserList(UI).Faccion.ArmadaReal = 1 And criminal(UserIndex) Then
                     razon = "Los criminales no entran a partys con miembros de la armada real."
                     rv = False
                 End If
                 'aspirante ciuda en party caos
-                If UserList(UI).Faccion.FuerzasCaos = 1 And Not Criminal(UserIndex) Then
+                If UserList(UI).Faccion.FuerzasCaos = 1 And Not criminal(UserIndex) Then
                     razon = "Los miembros de la legión oscura no entran a una party con ciudadanos."
                     rv = False
                 End If

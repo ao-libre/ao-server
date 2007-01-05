@@ -1412,7 +1412,7 @@ On Error GoTo errhandler
             .Counters.TiempoOculto = 0
             If .flags.invisible = 0 Then
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
-                Call WriteConsoleMessage(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         

@@ -174,7 +174,9 @@ End Sub
 
 Sub EnviarSpawnList(ByVal UserIndex As Integer)
 Dim k As Long
-Dim npcNames(1 To UBound(SpawnList)) As String
+Dim npcNames() As String
+
+ReDim npcNames(1 To UBound(SpawnList)) As String
 
 For k = 1 To UBound(SpawnList)
     npcNames(k) = SpawnList(k).NpcName
@@ -1006,11 +1008,11 @@ Else
             UserList(UserIndex).Stats.MinHP = 0
             Call UserDie(UserIndex)
     End If
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
+    Call WriteUpdateHP(UserIndex)
   Else
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
     Call QuitarSta(UserIndex, modifi)
-    Call WriteUpdateHP(UserIndex)
+    Call WriteUpdateSta(UserIndex)
     'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
   End If
   
@@ -1134,7 +1136,7 @@ Dim N As Integer
 If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
   UserList(UserIndex).Counters.Veneno = UserList(UserIndex).Counters.Veneno + 1
 Else
-  Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas envenenado, si no te curas moriras." & FONTTYPE_VENENO)
+  Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas moriras.", FontTypeNames.FONTTYPE_VENENO)
   UserList(UserIndex).Counters.Veneno = 0
   N = RandomNumber(1, 5)
   UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - N
@@ -1169,18 +1171,17 @@ If UserList(UserIndex).flags.Privilegios > User Then Exit Sub
 'Sed
 If UserList(UserIndex).Stats.MinAGU > 0 Then
     If UserList(UserIndex).Counters.AGUACounter < IntervaloSed Then
-          UserList(UserIndex).Counters.AGUACounter = UserList(UserIndex).Counters.AGUACounter + 1
+        UserList(UserIndex).Counters.AGUACounter = UserList(UserIndex).Counters.AGUACounter + 1
     Else
-          UserList(UserIndex).Counters.AGUACounter = 0
-          UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU - 10
-                            
-          If UserList(UserIndex).Stats.MinAGU <= 0 Then
-               UserList(UserIndex).Stats.MinAGU = 0
-               UserList(UserIndex).flags.Sed = 1
-          End If
-                            
-          fenviarAyS = True
-                            
+        UserList(UserIndex).Counters.AGUACounter = 0
+        UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU - 10
+        
+        If UserList(UserIndex).Stats.MinAGU <= 0 Then
+            UserList(UserIndex).Stats.MinAGU = 0
+            UserList(UserIndex).flags.Sed = 1
+        End If
+        
+        fenviarAyS = True
     End If
 End If
 
@@ -1206,7 +1207,6 @@ Public Sub Sanar(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Inte
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
    MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
    MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
-       
 
 Dim mashit As Integer
 'con el paso del tiempo va sanando....pero muy lentamente ;-)
