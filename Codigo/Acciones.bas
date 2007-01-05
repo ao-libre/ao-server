@@ -76,7 +76,7 @@ If InMapBounds(Map, X, Y) Then
         
         Select Case ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType
             
-            Case 6 'Es una puerta
+            Case eOBJType.otPuertas 'Es una puerta
                 Call AccionParaPuerta(Map, X + 1, Y, UserIndex)
             
         End Select
@@ -85,7 +85,7 @@ If InMapBounds(Map, X, Y) Then
 
         Select Case ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
             
-            Case 6 'Es una puerta
+            Case eOBJType.otPuertas 'Es una puerta
                 Call AccionParaPuerta(Map, X + 1, Y + 1, UserIndex)
             
         End Select
@@ -94,7 +94,7 @@ If InMapBounds(Map, X, Y) Then
 
         Select Case ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType
             
-            Case 6 'Es una puerta
+            Case eOBJType.otPuertas 'Es una puerta
                 Call AccionParaPuerta(Map, X, Y + 1, UserIndex)
             
         End Select
@@ -331,9 +331,6 @@ Else
     Call WriteConsoleMsg(UserIndex, "No has podido hacer fuego.", FontTypeNames.FONTTYPE_INFO)
 End If
 
-'Sino tiene hambre o sed quizas suba el skill supervivencia
-If UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 Then
-    Call SubirSkill(UserIndex, Supervivencia)
-End If
+Call SubirSkill(UserIndex, Supervivencia)
 
 End Sub

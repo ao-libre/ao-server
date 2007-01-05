@@ -239,12 +239,14 @@ Function NameIndex(ByRef name As String) As Integer
 
 Dim UserIndex As Integer
 '¿Nombre valido?
-If name = "" Then
+If LenB(name) = 0 Then
     NameIndex = 0
     Exit Function
 End If
 
-name = UCase$(Replace(name, "+", " "))
+If InStrB(name, "+") <> 0 Then
+    name = UCase$(Replace(name, "+", " "))
+End If
 
 UserIndex = 1
 Do Until UCase$(UserList(UserIndex).name) = name

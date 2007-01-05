@@ -394,25 +394,25 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Case "GUERRERO"
             Select Case Constitucion
                 Case 21
-                AumentoHP = RandomNumber(8, 12)
+                    AumentoHP = RandomNumber(8, 12)
                 Case 20
-                AumentoHP = RandomNumber(8, 11)
+                    AumentoHP = RandomNumber(8, 11)
                 Case 19
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 18
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 17
-                AumentoHP = RandomNumber(6, 10)
+                    AumentoHP = RandomNumber(6, 10)
                 Case 16
-                AumentoHP = RandomNumber(6, 9)
+                    AumentoHP = RandomNumber(6, 9)
                 Case 15
-                AumentoHP = RandomNumber(5, 9)
+                    AumentoHP = RandomNumber(5, 9)
                 Case 14
-                AumentoHP = RandomNumber(5, 8)
+                    AumentoHP = RandomNumber(5, 8)
                 Case 13
-                AumentoHP = RandomNumber(4, 8)
+                    AumentoHP = RandomNumber(4, 8)
                 Case 12
-                AumentoHP = RandomNumber(4, 7)
+                    AumentoHP = RandomNumber(4, 7)
             End Select
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
@@ -446,25 +446,25 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Case "PIRATA"
             Select Case Constitucion
                 Case 21
-                AumentoHP = RandomNumber(8, 12)
+                    AumentoHP = RandomNumber(8, 12)
                 Case 20
-                AumentoHP = RandomNumber(8, 11)
+                    AumentoHP = RandomNumber(8, 11)
                 Case 19
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 18
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 17
-                AumentoHP = RandomNumber(6, 10)
+                    AumentoHP = RandomNumber(6, 10)
                 Case 16
-                AumentoHP = RandomNumber(6, 9)
+                    AumentoHP = RandomNumber(6, 9)
                 Case 15
-                AumentoHP = RandomNumber(5, 9)
+                    AumentoHP = RandomNumber(5, 9)
                 Case 14
-                AumentoHP = RandomNumber(5, 8)
+                    AumentoHP = RandomNumber(5, 8)
                 Case 13
-                AumentoHP = RandomNumber(4, 8)
+                    AumentoHP = RandomNumber(4, 8)
                 Case 12
-                AumentoHP = RandomNumber(4, 7)
+                    AumentoHP = RandomNumber(4, 7)
             End Select
             AumentoHIT = 3
             AumentoSTA = AumentoSTDef
@@ -472,25 +472,25 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Case "PALADIN"
             Select Case Constitucion
                 Case 21
-                AumentoHP = RandomNumber(8, 12)
+                    AumentoHP = RandomNumber(8, 12)
                 Case 20
-                AumentoHP = RandomNumber(8, 11)
+                    AumentoHP = RandomNumber(8, 11)
                 Case 19
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 18
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 17
-                AumentoHP = RandomNumber(6, 10)
+                    AumentoHP = RandomNumber(6, 10)
                 Case 16
-                AumentoHP = RandomNumber(6, 9)
+                    AumentoHP = RandomNumber(6, 9)
                 Case 15
-                AumentoHP = RandomNumber(5, 9)
+                    AumentoHP = RandomNumber(5, 9)
                 Case 14
-                AumentoHP = RandomNumber(5, 8)
+                    AumentoHP = RandomNumber(5, 8)
                 Case 13
-                AumentoHP = RandomNumber(4, 8)
+                    AumentoHP = RandomNumber(4, 8)
                 Case 12
-                AumentoHP = RandomNumber(4, 7)
+                    AumentoHP = RandomNumber(4, 7)
             End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
@@ -500,25 +500,25 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Case "LADRON"
             Select Case Constitucion
                 Case 21
-                AumentoHP = RandomNumber(8, 12)
+                    AumentoHP = RandomNumber(8, 12)
                 Case 20
-                AumentoHP = RandomNumber(8, 11)
+                    AumentoHP = RandomNumber(8, 11)
                 Case 19
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 18
-                AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 11)
                 Case 17
-                AumentoHP = RandomNumber(6, 10)
+                    AumentoHP = RandomNumber(6, 10)
                 Case 16
-                AumentoHP = RandomNumber(6, 9)
+                    AumentoHP = RandomNumber(6, 9)
                 Case 15
-                AumentoHP = RandomNumber(5, 9)
+                    AumentoHP = RandomNumber(5, 9)
                 Case 14
-                AumentoHP = RandomNumber(5, 8)
+                    AumentoHP = RandomNumber(5, 8)
                 Case 13
-                AumentoHP = RandomNumber(4, 8)
+                    AumentoHP = RandomNumber(4, 8)
                 Case 12
-                AumentoHP = RandomNumber(4, 7)
+                    AumentoHP = RandomNumber(4, 7)
             End Select
             AumentoHIT = 1
             AumentoSTA = AumentoSTLadron

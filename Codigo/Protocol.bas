@@ -1477,7 +1477,7 @@ On Error GoTo errhandler
                 .Counters.TiempoOculto = 0
                 If .flags.invisible = 0 Then
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
-                    Call WriteConsoleMessage(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
             
@@ -3410,7 +3410,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4849,7 +4849,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -5590,8 +5590,12 @@ On Error GoTo errhandler
         name = buffer.ReadASCIIString()
         
         If LenB(name) <> 0 Then
-            name = Replace(name, "\", "")
-            name = Replace(name, "/", "")
+            If (InStrB(name, "\") <> 0) Then
+                name = Replace(name, "\", "")
+            End If
+            If (InStrB(name, "/") <> 0) Then
+                name = Replace(name, "/", "")
+            End If
             
             If FileExist(CharPath & name & ".chr", vbNormal) Then
                 Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
@@ -6167,9 +6171,13 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        guild = Replace(guild, "\", "")
-        guild = Replace(guild, "/", "")
-        
+        If (InStrB(guild, "\") <> 0) Then
+            guild = Replace(guild, "\", "")
+        End If
+        If (InStrB(guild, "/") <> 0) Then
+            guild = Replace(guild, "/", "")
+        End If
+
         If Not FileExist(App.Path & "\guilds\" & rData & "-members.mem") Then
             Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
         Else
@@ -6973,8 +6981,12 @@ On Error GoTo errhandler
                     ElseIf jailTime > 60 Then
                         Call WriteConsoleMsg(UserIndex, "No podés encarcelar por más de 60 minutos.", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        UserName = Replace(UserName, "\", "")
-                        UserName = Replace(UserName, "/", "")
+                        If (InStrB(UserName, "\") <> 0) Then
+                            UserName = Replace(UserName, "\", "")
+                        End If
+                        If (InStrB(UserName, "/") <> 0) Then
+                            UserName = Replace(UserName, "/", "")
+                        End If
                         
                         If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                             Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
@@ -7090,9 +7102,13 @@ On Error GoTo errhandler
                 End If
                 
                 If advertir Then
-                    UserName = Replace(UserName, "\", "")
-                    UserName = Replace(UserName, "/", "")
-                    
+                    If (InStrB(UserName, "\") <> 0) Then
+                            UserName = Replace(UserName, "\", "")
+                    End If
+                    If (InStrB(UserName, "/") <> 0) Then
+                            UserName = Replace(UserName, "/", "")
+                    End If
+    
                     If FileExist(CharPath & name & ".chr", vbNormal) Then
                         Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
@@ -7608,8 +7624,12 @@ On Error GoTo errhandler
         Call LogGM(.name, "/STATS " & UserName, False)
         
         If tUser <= 0 Then
-            UserName = Replace(UserName, "\", "")
-            UserName = Replace(UserName, "/", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                    UserName = Replace(UserName, "\", "")
+            End If
+            If (InStrB(UserName, "/") <> 0) Then
+                    UserName = Replace(UserName, "/", "")
+            End If
             
             For LoopC = 1 To NUMSKILLS
                 message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
@@ -8041,8 +8061,12 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            UserName = Replace(UserName, "\", "")
-            UserName = Replace(UserName, "/", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
+            End If
+            If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
+            End If
             
             If Not FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 Call WriteConsoleMsg(UserIndex, "Charfile inexistente (no use +)", FontTypeNames.FONTTYPE_INFO)
@@ -9601,9 +9625,12 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        UserName = Replace(UserName, "\", "")
-        UserName = Replace(UserName, "/", "")
-        
+        If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
+        End If
+        If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
+        End If
         tUser = NameIndex(UserName)
         
         Call LogGM(.name, "ECHO DEL CAOS A: " & UserName, False)
@@ -9661,9 +9688,12 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        UserName = Replace(UserName, "\", "")
-        UserName = Replace(UserName, "/", "")
-        
+        If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
+        End If
+        If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
+        End If
         tUser = NameIndex(UserName)
         
         Call LogGM(.name, "ECHO DE LA REAL A: " & UserName, False)
@@ -9776,8 +9806,12 @@ On Error GoTo errhandler
             If LenB(UserName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /borrarpj Nick@NumeroDePena", FontTypeNames.FONTTYPE_INFO)
             Else
-                UserName = Replace(UserName, "\", "")
-                UserName = Replace(UserName, "/", "")
+                If (InStrB(UserName, "\") <> 0) Then
+                        UserName = Replace(UserName, "\", "")
+                End If
+                If (InStrB(UserName, "/") <> 0) Then
+                        UserName = Replace(UserName, "/", "")
+                End If
                 
                 If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                     Call LogGM(.name, " borro la pena: " & punishment & "-" & _
@@ -9909,9 +9943,13 @@ On Error GoTo errhandler
         If Not .flags.EsRolesMaster Then
             Call LogGM(.name, "/LASTIP " & UserName, False)
             
-            UserName = Replace(UserName, "\", "")
-            UserName = Replace(UserName, "/", "")
-            
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
+            End If
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "/", "")
+            End If
+        
             If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 lista = "Las ultimas IPs con las que " & UserName & "se conecto son: "
                 For LoopC = 1 To 5
