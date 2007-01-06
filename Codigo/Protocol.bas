@@ -8635,7 +8635,7 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         If .flags.Privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
         
         'Si el mapa no fue enviado tomo el actual
-        If Not mapinbounds(mapa, 50, 50) Then
+        If Not InMapBounds(mapa, 50, 50) Then
             mapa = .Pos.Map
         End If
         
