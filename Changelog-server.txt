@@ -143,3 +143,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 04/01/2007: Algunos SendData que quedaron han sido rescritos (Tavo)
  * 04/01/2007: Corrigiendo bugs de Tavo... (Maraxus)
  * 06/01/2007: ahora InMapBounds chequea que el mapa sea correcto (NIGO)
+ * 06/01/2007: Modifique algunos senddata para que funcionen, agregué algunos FlushBuffer (en timers y funciones que mandan mensajes a otros usuarios por medio de write (tengan eso en cuenta ^^)) y correjí algunitos bugs. (LIQUID)

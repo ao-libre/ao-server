@@ -432,7 +432,7 @@ Public Sub Expresar(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
     If Npclist(NpcIndex).NroExpresiones > 0 Then
         Dim randomi
         randomi = RandomNumber(1, Npclist(NpcIndex).NroExpresiones)
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg(vbWhite & "°" & Npclist(NpcIndex).Expresiones(randomi) & "°" & Npclist(NpcIndex).Char.CharIndex, FontTypeNames.FONTTYPE_INFO))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(Npclist(NpcIndex).Expresiones(randomi), Npclist(NpcIndex).Char.CharIndex, vbWhite))
     End If
 End Sub
 
@@ -444,6 +444,7 @@ Dim FoundSomething As Byte
 Dim TempCharIndex As Integer
 Dim Stat As String
 Dim OBJType As Integer
+Dim ft As FontTypeNames
 
 '¿Posicion valida?
 If InMapBounds(Map, X, Y) Then
@@ -546,10 +547,13 @@ If InMapBounds(Map, X, Y) Then
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
                 
+                                
                 If UserList(TempCharIndex).flags.PertAlCons > 0 Then
-                    Stat = Stat & " [CONSEJO DE BANDERBILL]" & FONTTYPE_CONSEJOVesA
+                    Stat = Stat & " [CONSEJO DE BANDERBILL]" '& FONTTYPE_CONSEJOVesA
+                    ft = FontTypeNames.FONTTYPE_CONSEJOVesA
                 ElseIf UserList(TempCharIndex).flags.PertAlConsCaos > 0 Then
-                    Stat = Stat & " [CONSEJO DE LAS SOMBRAS]" & FONTTYPE_CONSEJOCAOSVesA
+                    Stat = Stat & " [CONSEJO DE LAS SOMBRAS]" '& FONTTYPE_CONSEJOCAOSVesA
+                    ft = FontTypeNames.FONTTYPE_CONSEJOCAOSVesA
                 Else
                     If UserList(TempCharIndex).flags.Privilegios > 0 Then
                         Stat = Stat & " <GAME MASTER> ~0~185~0~1~0"
@@ -560,11 +564,13 @@ If InMapBounds(Map, X, Y) Then
                     End If
                 End If
             Else
-                Stat = UserList(TempCharIndex).DescRM & " " & FONTTYPE_INFOBOLD
+                Stat = UserList(TempCharIndex).DescRM & " " ' & FONTTYPE_INFOBOLD
+                ft = FontTypeNames.FONTTYPE_INFOBOLD
             End If
             
-            If Len(Stat) > 0 Then _
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & Stat)
+            If LenB(Stat) > 0 Then
+                Call WriteConsoleMsg(UserIndex, Stat, ft)
+            End If
 
             FoundSomething = 1
             UserList(UserIndex).flags.TargetUser = TempCharIndex
@@ -631,7 +637,7 @@ If InMapBounds(Map, X, Y) Then
             End If
             
             If Len(Npclist(TempCharIndex).desc) > 1 Then
-                Call WriteConsoleMsg(UserIndex, vbWhite & "°" & Npclist(TempCharIndex).desc & "°" & Npclist(TempCharIndex).Char.CharIndex, FontTypeNames.FONTTYPE_INFO)
+                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)

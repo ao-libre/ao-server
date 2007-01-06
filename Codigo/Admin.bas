@@ -236,6 +236,7 @@ For i = 1 To LastUser
         End If
         
     End If
+    Call FlushBuffer(i)
 Next i
 End Sub
 
@@ -328,7 +329,7 @@ Dim LoopC As Long
 
 Dale = True
 LoopC = 1
-Do While LoopC <= BanIps.count And Dale
+Do While LoopC <= BanIps.Count And Dale
     Dale = (BanIps.Item(LoopC) <> ip)
     LoopC = LoopC + 1
 Loop
@@ -367,7 +368,7 @@ ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
 ArchN = FreeFile()
 Open ArchivoBanIp For Output As #ArchN
 
-For LoopC = 1 To BanIps.count
+For LoopC = 1 To BanIps.Count
     Print #ArchN, BanIps.Item(LoopC)
 Next LoopC
 
@@ -382,7 +383,7 @@ Dim ArchivoBanIp As String
 
 ArchivoBanIp = App.Path & "\Dat\BanIps.dat"
 
-Do While BanIps.count > 0
+Do While BanIps.Count > 0
     BanIps.Remove 1
 Loop
 

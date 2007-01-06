@@ -1274,6 +1274,7 @@ Sub PasarSegundo()
                  Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
              End If
          End If
+        Call FlushBuffer(i)
     Next i
     
     'revisamos auto reiniciares

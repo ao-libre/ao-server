@@ -196,7 +196,7 @@ On Error GoTo errhandler
     Call SendUserStatsBox(UserIndex)
     'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
     UserList(UserIndex).flags.Comerciando = True
-    SendData SendTarget.ToIndex, UserIndex, 0, "INITCOM"
+    Call WriteCommerceInit(UserIndex)
 Exit Sub
 
 errhandler:

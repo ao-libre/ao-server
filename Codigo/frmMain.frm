@@ -326,13 +326,14 @@ For iUserIndex = 1 To MaxUsers
         'Actualiza el contador de inactividad
         UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
         If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
-            Call SendData(SendTarget.ToIndex, iUserIndex, 0, "!!Demasiado tiempo inactivo. Has sido desconectado..")
+            Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado..")
             'mato los comercios seguros
             If UserList(iUserIndex).ComUsu.DestUsu > 0 Then
                 If UserList(UserList(iUserIndex).ComUsu.DestUsu).flags.UserLogged Then
                     If UserList(UserList(iUserIndex).ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
-                        Call SendData(SendTarget.ToIndex, UserList(iUserIndex).ComUsu.DestUsu, 0, "||Comercio cancelado por el otro usuario" & FONTTYPE_TALK)
+                        Call WriteConsoleMsg(UserList(iUserIndex).ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
                         Call FinComerciarUsu(UserList(iUserIndex).ComUsu.DestUsu)
+                        Call FlushBuffer(UserList(iUserIndex).ComUsu.DestUsu) 'flush the buffer to send the message right away
                     End If
                 End If
                 Call FinComerciarUsu(iUserIndex)
@@ -340,7 +341,7 @@ For iUserIndex = 1 To MaxUsers
             Call Cerrar_Usuario(iUserIndex)
         End If
   End If
-  
+  Call FlushBuffer(iUserIndex)
 Next iUserIndex
 
 End Sub
@@ -360,7 +361,7 @@ Call ActualizaStatsES
 Exit Sub
 
 errhand:
-Call LogError("Error en Timer Auditoria. Err: " & Err.Description & " - " & Err.Number)
+Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
 End Sub
 
 Private Sub AutoSave_Timer()
@@ -443,7 +444,7 @@ If MinutosNumUsersCheck >= 2 Then
 End If
 
 If Minutos = MinutosWs - 1 Then
-    Call SendData(SendTarget.ToAll, 0, 0, "||Worldsave en 1 minuto ..." & FONTTYPE_VENENO)
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
 End If
 
 If Minutos >= MinutosWs Then
@@ -473,7 +474,7 @@ Close #N
 
 Exit Sub
 errhandler:
-    Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.Description)
+    Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
 End Sub
 
@@ -612,7 +613,7 @@ Next
 Dim N As Integer
 N = FreeFile
 Open App.Path & "\logs\Main.log" For Append Shared As #N
-Print #N, Date & " " & Time & " server cerrado."
+Print #N, Date & " " & time & " server cerrado."
 Close #N
 
 End
@@ -688,7 +689,7 @@ On Error GoTo hayerror
                If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
                If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoVeneno(iUserIndex, bEnviarStats)
                If UserList(iUserIndex).flags.AdminInvisible <> 1 Then
-                    If UserList(iUserIndex).flags.Invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
+                    If UserList(iUserIndex).flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                     If UserList(iUserIndex).flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
                End If
                If UserList(iUserIndex).flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
@@ -701,25 +702,35 @@ On Error GoTo hayerror
                     If Not Intemperie(iUserIndex) Then
                         If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
                         'No esta descansando
-                            
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
-                            If UserList(iUserIndex).Invent.ArmourEqpObjIndex > 0 Then _
-                            Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
-                            
+                            If bEnviarStats Then
+                                Call WriteUpdateHP(iUserIndex)
+                                bEnviarStats = False
+                            End If
+                            If UserList(iUserIndex).Invent.ArmourEqpObjIndex > 0 Then
+                                Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                                If bEnviarStats Then
+                                    Call WriteUpdateSta(iUserIndex)
+                                    bEnviarStats = False
+                                End If
+                            End If
                         ElseIf UserList(iUserIndex).flags.Descansar Then
                         'esta descansando
-                            
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                            If bEnviarStats Then
+                                Call WriteUpdateHP(iUserIndex)
+                                bEnviarStats = False
+                            End If
                             Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                            If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
-                                 'termina de descansar automaticamente
+                            If bEnviarStats Then
+                                Call WriteUpdateSta(iUserIndex)
+                                bEnviarStats = False
+                            End If
+                            'termina de descansar automaticamente
                             If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
                                 UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                    Call SendData(SendTarget.ToIndex, iUserIndex, 0, "DOK")
-                                    Call SendData(SendTarget.ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
+                                    Call WriteRestOK(iUserIndex)
+                                    Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
                                     UserList(iUserIndex).flags.Descansar = False
                             End If
                             
@@ -730,22 +741,34 @@ On Error GoTo hayerror
                     'No esta descansando
                         
                         Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                        If bEnviarStats Then
+                            Call WriteUpdateHP(iUserIndex)
+                            bEnviarStats = False
+                        End If
                         Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
+                        If bEnviarStats Then
+                            Call WriteUpdateSta(iUserIndex)
+                            bEnviarStats = False
+                        End If
                         
                     ElseIf UserList(iUserIndex).flags.Descansar Then
                     'esta descansando
                         
                         Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASH" & UserList(iUserIndex).Stats.MinHP): bEnviarStats = False
+                        If bEnviarStats Then
+                            Call WriteUpdateHP(iUserIndex)
+                            bEnviarStats = False
+                        End If
                         Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                        If bEnviarStats Then Call SendData(SendTarget.ToIndex, iUserIndex, 0, "ASS" & UserList(iUserIndex).Stats.MinSta): bEnviarStats = False
-                             'termina de descansar automaticamente
+                        If bEnviarStats Then
+                            Call WriteUpdateSta(iUserIndex)
+                            bEnviarStats = False
+                        End If
+                        'termina de descansar automaticamente
                         If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
                             UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                Call SendData(SendTarget.ToIndex, iUserIndex, 0, "DOK")
-                                Call SendData(SendTarget.ToIndex, iUserIndex, 0, "||Has terminado de descansar." & FONTTYPE_INFO)
+                                Call WriteRestOK(iUserIndex)
+                                Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
                                 UserList(iUserIndex).flags.Descansar = False
                         End If
                         
@@ -771,7 +794,9 @@ On Error GoTo hayerror
 
    End If
 
-   Next iUserIndex
+
+   Call FlushBuffer(iUserIndex)
+Next iUserIndex
 
 '[Alejo]
 If Not lPermiteAtacar < IntervaloUserPuedeAtacar Then
@@ -788,7 +813,7 @@ End If
 
 Exit Sub
 hayerror:
-LogError ("Error en GameTimer: " & Err.Description & " UserIndex = " & iUserIndex)
+LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
 '[/Alejo]
   'DoEvents
 End Sub
@@ -937,7 +962,7 @@ End If
 
 Exit Sub
 errhandler:
-Call LogError("tLluvia " & Err.Number & ": " & Err.Description)
+Call LogError("tLluvia " & Err.Number & ": " & Err.description)
 End Sub
 
 Private Sub tLluviaEvent_Timer()
@@ -952,24 +977,24 @@ If Not Lloviendo Then
             If RandomNumber(1, 100) <= 5 Then
                 Lloviendo = True
                 MinutosSinLluvia = 0
-                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
             End If
     ElseIf MinutosSinLluvia >= 1440 Then
                 Lloviendo = True
                 MinutosSinLluvia = 0
-                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
     End If
 Else
     MinutosLloviendo = MinutosLloviendo + 1
     If MinutosLloviendo >= 5 Then
             Lloviendo = False
-            Call SendData(SendTarget.ToAll, 0, 0, "LLU")
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
             MinutosLloviendo = 0
     Else
             If RandomNumber(1, 100) <= 7 Then
                 Lloviendo = False
                 MinutosLloviendo = 0
-                Call SendData(SendTarget.ToAll, 0, 0, "LLU")
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
             End If
     End If
 End If
@@ -1000,7 +1025,7 @@ For i = 1 To LastUser
             
             If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
                     UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-                    Call SendData(SendTarget.ToIndex, i, 0, "||Estas obstruyendo la via publica, muévete o seras encarcelado!!!" & FONTTYPE_INFO)
+                    Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muévete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                     If UserList(i).Counters.PiqueteC > 23 Then
                             UserList(i).Counters.PiqueteC = 0
                             Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
@@ -1014,19 +1039,19 @@ For i = 1 To LastUser
             'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
             'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
 
-            GI = UserList(i).GuildIndex
+            GI = UserList(i).guildIndex
             If GI > 0 Then
                 NuevaA = False
                 NuevoL = False
                 If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
-                    Call SendData(SendTarget.ToIndex, i, 0, "||Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!" & FONTTYPE_GUILD)
+                    Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
                 End If
                 If NuevaA Then
-                    Call SendData(SendTarget.ToGuildMembers, GI, 0, "||¡El clan ha pasado a tener alineación neutral!" & FONTTYPE_GUILD)
+                    Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
                     Call LogClanes("El clan cambio de alineacion!")
                 End If
                 If NuevoL Then
-                    Call SendData(SendTarget.ToGuildMembers, GI, 0, "||¡El clan tiene un nuevo líder!" & FONTTYPE_GUILD)
+                    Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
                     Call LogClanes("El clan tiene nuevo lider!")
                 End If
             End If
@@ -1041,6 +1066,7 @@ For i = 1 To LastUser
             End If
             
     End If
+    Call FlushBuffer(i)
 Next i
 
 If Segundos >= 18 Then Segundos = 0
@@ -1048,7 +1074,7 @@ If Segundos >= 18 Then Segundos = 0
 Exit Sub
 
 errhandler:
-    Call LogError("Error en tPiqueteC_Timer " & Err.Number & ": " & Err.Description)
+    Call LogError("Error en tPiqueteC_Timer " & Err.Number & ": " & Err.description)
 End Sub
 
 
@@ -1111,7 +1137,7 @@ On Error GoTo errorHandlerNC
 Exit Sub
 
 errorHandlerNC:
-Call LogError("TCPServer::NuevaConexion " & Err.Description)
+Call LogError("TCPServer::NuevaConexion " & Err.description)
 End Sub
 
 Private Sub TCPServ_Close(ByVal ID As Long, ByVal MiDato As Long)
@@ -1168,7 +1194,7 @@ End If
 Exit Sub
 
 errorh:
-Call LogError("Error socket read: " & MiDato & " dato:" & RD & " userlogged: " & UserList(MiDato).flags.UserLogged & " connid:" & UserList(MiDato).ConnID & " ID Parametro" & ID & " error:" & Err.Description)
+Call LogError("Error socket read: " & MiDato & " dato:" & RD & " userlogged: " & UserList(MiDato).flags.UserLogged & " connid:" & UserList(MiDato).ConnID & " ID Parametro" & ID & " error:" & Err.description)
 
 End Sub
 

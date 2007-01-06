@@ -666,11 +666,11 @@ Private Sub Command21_Click()
 
 If EnPausa = False Then
     EnPausa = True
-    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
     Command21.Caption = "Reanudar el servidor"
 Else
     EnPausa = False
-    Call SendData(SendTarget.ToAll, 0, 0, "BKW")
+    Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
     Command21.Caption = "Pausar el servidor"
 End If
 

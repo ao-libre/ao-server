@@ -1528,7 +1528,7 @@ On Error GoTo errhandler
         Dim targetCharIndex As Integer
         Dim targetUserIndex As Integer
         
-        CharIndex = buffer.ReadInteger()
+        targetCharIndex = buffer.ReadInteger()
         chat = buffer.ReadASCIIString()
         
         targetUserIndex = CharIndexToUserIndex(targetCharIndex)

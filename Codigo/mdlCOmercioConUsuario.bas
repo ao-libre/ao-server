@@ -49,6 +49,8 @@ Else
     
 End If
 
+Call FlushBuffer(Destino) 'CHECK: Flusheo el user Destino para que reciba los mensajes :)
+
 Exit Sub
 errhandler:
     Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
@@ -74,6 +76,7 @@ If ObjCant <= 0 Or ObjInd <= 0 Then Exit Sub
 
 If ObjInd > 0 And ObjCant > 0 Then
     Call WriteChangeUserTradeSlot(AQuien, ObjInd, ObjCant)
+    Call FlushBuffer(AQuien)  'CHECK: Hago un flush del buffer, para que reciba el cambio en el slot ^^ (es necesario aca?)
 End If
 
 End Sub
@@ -163,6 +166,8 @@ Else
         TerminarAhora = True
     End If
 End If
+
+Call FlushBuffer(OtroUserIndex) 'CHECK: Hago un flush del buffer del otro user.. antes del posible ExitSub
 
 'Por si las moscas...
 If TerminarAhora = True Then
