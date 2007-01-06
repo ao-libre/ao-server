@@ -184,7 +184,7 @@ Else
     Call WriteConsoleMsg(leader, " No eres miembro de ninguna party.", FontTypeNames.FONTTYPE_INFO)
 End If
 
-
+Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
 
 End Sub
 
@@ -215,29 +215,36 @@ If PI > 0 Then
                         Else
                             'no debe entrar
                             Call WriteConsoleMsg(leader, razon, FontTypeNames.FONTTYPE_PARTY)
+                            Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
                         End If
                     Else
                         Call WriteConsoleMsg(leader, UserList(NewMember).name & " no ha solicitado ingresar a tu party.", FontTypeNames.FONTTYPE_PARTY)
+                        Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
                         Exit Sub
                     End If
                 Else
                     Call WriteConsoleMsg(leader, " ¡Está muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
+                    Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
                     Exit Sub
                 End If
             Else
                 Call WriteConsoleMsg(leader, " ¡Estás muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
+                Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
                 Exit Sub
             End If
         Else
             Call WriteConsoleMsg(leader, UserList(NewMember).name & " ya es miembro de otra party.", FontTypeNames.FONTTYPE_PARTY)
+            Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
             ' ya tiene party el otro tipo
         End If
     Else
         Call WriteConsoleMsg(leader, " No eres líder, no puedes aceptar miembros.", FontTypeNames.FONTTYPE_PARTY)
+        Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
         Exit Sub
     End If
 Else
     Call WriteConsoleMsg(leader, " No eres miembro de ninguna party.", FontTypeNames.FONTTYPE_INFO)
+    Call FlushBuffer(leader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'leader' (revisar si es necesario)
     Exit Sub
 End If
 
@@ -295,7 +302,7 @@ If PI > 0 Then
         Call WriteConsoleMsg(OldLeader, UserList(NewLeader).name & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
     End If
 End If
-
+Call FlushBuffer(OldLeader) 'CHECK: No se de donde viene esto, asi que por las dudas flusheo al 'OldLeader' (revisar si es necesario)
 End Sub
 
 

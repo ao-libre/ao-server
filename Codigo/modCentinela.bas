@@ -70,6 +70,7 @@ Private Sub GoToNextWorkingChar()
                     'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas
                     Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", vbGreen, CStr(Npclist(CentinelaNPCIndex).Char.CharIndex))
                     Call WriteConsoleMsg(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", FontTypeNames.FONTTYPE_CENTINELA)
+                    Call FlushBuffer(LoopC) 'CHECK
                 End If
                 Exit Sub
             End If
@@ -153,6 +154,7 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
         Centinela.RevisandoUserIndex = 0
         Call WriteChatOverHead(Centinela.RevisandoUserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+        Call FlushBuffer(Centinela.RevisandoUserIndex)
     Else
         Call CentinelaSendClave(UserIndex)
         If UserIndex <> Centinela.RevisandoUserIndex Then
@@ -217,6 +219,7 @@ Public Sub PasarMinutoCentinela()
             'El centinela habla y se manda a consola para que no quepan dudas
             Call WriteChatOverHead(Centinela.RevisandoUserIndex, "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & ".", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbRed)
             Call WriteConsoleMsg(Centinela.RevisandoUserIndex, "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & ".", FontTypeNames.FONTTYPE_CENTINELA)
+            Call FlushBuffer(Centinela.RevisandoUserIndex) 'CHECK: Aca si, creo que faltaba flushear
         End If
     End If
 End Sub
