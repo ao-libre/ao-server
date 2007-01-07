@@ -64,6 +64,7 @@ Class=clsByteQueue; Codigo\clsByteQueue.cls
 Class=clsIniReader; Codigo\clsIniReader.cls
 Module=Statistics; Codigo\Statistics.bas
 Module=Protocol; Codigo\Protocol.bas
+Module=modSendData; Codigo\modSendData.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

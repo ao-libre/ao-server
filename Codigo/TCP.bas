@@ -1655,7 +1655,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = ""
     .DestUsu = 0
     .Objeto = 0
