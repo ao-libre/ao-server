@@ -317,33 +317,30 @@ Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, Call
 End Function
 
 Sub CheckIdleUser()
-Dim iUserIndex As Integer
-
-For iUserIndex = 1 To MaxUsers
-   
-   'Conexion activa? y es un usuario loggeado?
-   If UserList(iUserIndex).ConnID <> -1 And UserList(iUserIndex).flags.UserLogged Then
-        'Actualiza el contador de inactividad
-        UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
-        If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
-            Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado..")
-            'mato los comercios seguros
-            If UserList(iUserIndex).ComUsu.DestUsu > 0 Then
-                If UserList(UserList(iUserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                    If UserList(UserList(iUserIndex).ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
-                        Call WriteConsoleMsg(UserList(iUserIndex).ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
-                        Call FinComerciarUsu(UserList(iUserIndex).ComUsu.DestUsu)
-                        Call FlushBuffer(UserList(iUserIndex).ComUsu.DestUsu) 'flush the buffer to send the message right away
+    Dim iUserIndex As Long
+    
+    For iUserIndex = 1 To MaxUsers
+       'Conexion activa? y es un usuario loggeado?
+       If UserList(iUserIndex).ConnID <> -1 And UserList(iUserIndex).flags.UserLogged Then
+            'Actualiza el contador de inactividad
+            UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
+            If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
+                Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado..")
+                'mato los comercios seguros
+                If UserList(iUserIndex).ComUsu.DestUsu > 0 Then
+                    If UserList(UserList(iUserIndex).ComUsu.DestUsu).flags.UserLogged Then
+                        If UserList(UserList(iUserIndex).ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
+                            Call WriteConsoleMsg(UserList(iUserIndex).ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
+                            Call FinComerciarUsu(UserList(iUserIndex).ComUsu.DestUsu)
+                            Call FlushBuffer(UserList(iUserIndex).ComUsu.DestUsu) 'flush the buffer to send the message right away
+                        End If
                     End If
+                    Call FinComerciarUsu(iUserIndex)
                 End If
-                Call FinComerciarUsu(iUserIndex)
+                Call Cerrar_Usuario(iUserIndex)
             End If
-            Call Cerrar_Usuario(iUserIndex)
         End If
-  End If
-  Call FlushBuffer(iUserIndex)
-Next iUserIndex
-
+    Next iUserIndex
 End Sub
 
 
@@ -633,7 +630,7 @@ hayerror:
 End Sub
 
 Private Sub GameTimer_Timer()
-Dim iUserIndex As Integer
+Dim iUserIndex As Long
 Dim bEnviarStats As Boolean
 Dim bEnviarAyS As Boolean
 Dim iNpcIndex As Integer
@@ -793,8 +790,7 @@ On Error GoTo hayerror
      End If 'UserLogged
 
    End If
-
-
+   
    Call FlushBuffer(iUserIndex)
 Next iUserIndex
 
@@ -1018,7 +1014,7 @@ Dim GI As Integer
 
 Segundos = Segundos + 6
 
-Dim i As Integer
+Dim i As Long
 
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
@@ -1070,7 +1066,7 @@ For i = 1 To LastUser
 Next i
 
 If Segundos >= 18 Then Segundos = 0
-   
+
 Exit Sub
 
 errhandler:

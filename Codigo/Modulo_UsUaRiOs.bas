@@ -74,7 +74,7 @@ Call UserDie(VictimIndex)
 If UserList(AttackerIndex).Stats.UsuariosMatados < 32000 Then _
     UserList(AttackerIndex).Stats.UsuariosMatados = UserList(AttackerIndex).Stats.UsuariosMatados + 1
 
-Call FlushBuffer(VictimIndex)  'CHECK: Flush a la victima
+Call FlushBuffer(VictimIndex)
 'Log
 Call LogAsesinato(UserList(AttackerIndex).name & " asesino a " & UserList(VictimIndex).name)
 
@@ -123,7 +123,7 @@ Sub ChangeUserChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndM
     If sndRoute = SendTarget.ToMap Then
         Call SendToUserArea(UserIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: Esto deberia cambiar tambien creo...
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: CAmbiar aca, ya estoy medio ciego y no quiero mandarme cualquiera :)
+        Call SendData(sndRoute, sndIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: CAmbiar aca, ya estoy medio ciego y no quiero mandarme cualquiera :)
     End If
 End Sub
 
@@ -148,7 +148,6 @@ Sub EnviarFama(ByVal UserIndex As Integer)
     
     UserList(UserIndex).Reputacion.Promedio = L
     
-    'CHECK: Aca arriba, estoy sacando el promedio todavia (lo deje por no fijarme), deberia?
     Call WriteFame(UserIndex)
 End Sub
 
@@ -1497,7 +1496,7 @@ Dim OldY As Integer
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
-        Call WritePlayMidi(UserIndex, MapInfo(Map).Music) 'CHECK: Es necesario este mensaje?, el cliente no deberia conocer los midis de los mapas?
+        Call WritePlayMidi(UserIndex, MapInfo(Map).Music)
         
         'Update new Map Users
         MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
@@ -1518,7 +1517,7 @@ Dim OldY As Integer
     
     'Seguis invisible al pasar de mapa
     If (UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then
-        Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos) 'CHECK: Que es esto?, hay que cambiarlo?
+        Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos) 'CHECK: Cambiarlo por PrepareMessageSetInvisible
     End If
     
     If FX And UserList(UserIndex).flags.AdminInvisible = 0 Then 'FX
@@ -1547,7 +1546,7 @@ For Y = YMinMapSize To YMaxMapSize
             Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).UserIndex, Map, X, Y)
 #If SeguridadAlkon Then
             If EncriptarProtocolosCriticos Then
-                If UserList(MapData(Map, X, Y).UserIndex).flags.invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1") 'CHECK: Esto habria qeu cambiarlo?
+                If UserList(MapData(Map, X, Y).UserIndex).flags.invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "NOVER" & UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex & ",1") 'CHECK: Cambiarlo por PrepareMessageSetInvisible
             Else
 #End If
                 If UserList(MapData(Map, X, Y).UserIndex).flags.invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then

@@ -1379,7 +1379,7 @@ End Sub
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleTalk(UserIndex)
+Private Sub HandleTalk(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -1441,7 +1441,7 @@ End Sub
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleYell(UserIndex)
+Private Sub HandleYell(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -1507,7 +1507,7 @@ End Sub
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleWhisper(UserIndex)
+Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -3410,7 +3410,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -4849,7 +4849,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -7694,12 +7694,12 @@ On Error GoTo errhandler
                 
                 Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
             End With
-                
-                Call WriteUpdateHP(tUser)
-                
-                Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
-                
-                Call FlushBuffer(tUser)
+            
+            Call WriteUpdateHP(tUser)
+            
+            Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
+            
+            Call FlushBuffer(tUser)
             
             Call LogGM(.name, "Resucito a " & UserName, False)
         End If

@@ -219,25 +219,23 @@ Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave
 End Sub
 
 Public Sub PurgarPenas()
-Dim i As Integer
-For i = 1 To LastUser
-    If UserList(i).flags.UserLogged Then
+    Dim i As Long
     
-        If UserList(i).Counters.Pena > 0 Then
-                
+    For i = 1 To LastUser
+        If UserList(i).flags.UserLogged Then
+            If UserList(i).Counters.Pena > 0 Then
                 UserList(i).Counters.Pena = UserList(i).Counters.Pena - 1
                 
                 If UserList(i).Counters.Pena < 1 Then
                     UserList(i).Counters.Pena = 0
                     Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
                     Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
+                    
+                    Call FlushBuffer(i)
                 End If
-    
+            End If
         End If
-        
-    End If
-    Call FlushBuffer(i)
-Next i
+    Next i
 End Sub
 
 

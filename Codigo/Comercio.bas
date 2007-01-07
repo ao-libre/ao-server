@@ -346,12 +346,10 @@ Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             thisObj.amount = Npclist(NpcIndex).Invent.Object(i).amount
             'Calculamos el porc de inflacion del npc
             val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
-            'Call WriteChangeNPCInventorySlot(UserIndex, _
-            ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex), val)
-            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, val) 'CHECK: Algo no me termina de convencer de WriteChangeNPCInventorySlot, deberia tomar UserObj como parametro?
+            
+            Call WriteChangeNPCInventorySlot(UserIndex, thisObjv, val)
         Else
-             'Dim DummyObj As Object
-             Dim DummyObj As Obj 'CHECK
+             Dim DummyObj As Obj
              Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
         End If
     Next i

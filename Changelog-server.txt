@@ -145,3 +145,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 06/01/2007: ahora InMapBounds chequea que el mapa sea correcto (NIGO)
  * 06/01/2007: Modifique algunos senddata para que funcionen, agregué algunos FlushBuffer (en timers y funciones que mandan mensajes a otros usuarios por medio de write (tengan eso en cuenta ^^)) y correjí algunitos bugs. (liquid)
  * 06/01/2007: Trabaje mas en varios otros módulos, deje algunos "'CHECK" (sin las comillas) para que alguien mas (o yo mas tarde) revise algunas cosas que no entendí o no tube tiempo de terminar. (liquid)
+ * 07/01/2007: revisé varios CHECK de Liquid. Quedan 3 PrepareMessage pendientes, los escribo en un rato. También hay que volver privados a los envíos a áreas dejando para eso el uso de SendData. (Maraxus)

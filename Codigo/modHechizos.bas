@@ -315,7 +315,7 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).Cant
+For j = 1 To Hechizos(H).cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
@@ -1136,8 +1136,6 @@ ElseIf Hechizos(H).SubeSed = 2 Then
     b = True
 End If
 
-Call FlushBuffer(tempChr)
-
 ' <-------- Agilidad ---------->
 If Hechizos(H).SubeAgilidad = 1 Then
     If criminal(tempChr) And Not criminal(UserIndex) Then
@@ -1389,7 +1387,8 @@ ElseIf Hechizos(H).SubeMana = 2 Then
     b = True
 End If
 
-Call FlushBuffer(tempChr) 'CHECK: No se si deberia flushear antes quizas.. (Estoy empezando a notar que si 'usuario', existiera como una clase, se solucionarian muchos problemas de la vida...)
+Call FlushBuffer(tempChr)
+
 End Sub
 
 Sub UpdateUserHechizos(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal Slot As Byte)
