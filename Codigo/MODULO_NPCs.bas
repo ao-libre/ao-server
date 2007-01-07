@@ -483,7 +483,7 @@ Dim CharIndex As Integer
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CC" & Npclist(NpcIndex).Char.body & "," & Npclist(NpcIndex).Char.Head & "," & Npclist(NpcIndex).Char.heading & "," & Npclist(NpcIndex).Char.CharIndex & "," & X & "," & Y)
+        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterCreate(Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0))
     End If
 
 End Sub
@@ -495,9 +495,9 @@ If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.Head = Head
     Npclist(NpcIndex).Char.heading = heading
     If sndRoute = SendTarget.ToMap Then
-        Call SendToNpcArea(NpcIndex, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & body & "," & Head & "," & heading)
+        Call SendToNpcArea(NpcIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "CP" & Npclist(NpcIndex).Char.CharIndex & "," & body & "," & Head & "," & heading)
+        Call SendData(sndRoute, sndIndex, sndMap, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     End If
 End If
 

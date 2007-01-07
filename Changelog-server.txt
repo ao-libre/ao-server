@@ -148,3 +148,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 07/01/2007: revisé varios CHECK de Liquid. Quedan 3 PrepareMessage pendientes, los escribo en un rato. También hay que volver privados a los envíos a áreas dejando para eso el uso de SendData. (Maraxus)
  * 07/01/2007: Agregados los 3 PrepareMessage que faltaban. (Maraxus)
  * 07/01/2007: Creé el módulo modSendData con todos los métodos de envios por áreas y el SendData como interfaz. (Maraxus)
+ * 07/01/2007: MODULO_NPC.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
