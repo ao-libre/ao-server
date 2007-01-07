@@ -149,4 +149,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 07/01/2007: Agregados los 3 PrepareMessage que faltaban. (Maraxus)
  * 07/01/2007: Creé el módulo modSendData con todos los métodos de envios por áreas y el SendData como interfaz. (Maraxus)
  * 07/01/2007: MODULO_NPC.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
-  * 07/01/2007: Escribí el PrepareMessage de CharacterMove. (Maraxus)
+ * 07/01/2007: Escribí el PrepareMessage de CharacterMove. (Maraxus)
+ * 07/01/2007: preatorians.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
