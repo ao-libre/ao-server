@@ -77,7 +77,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
         UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
         
         Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-        Call SendUserStatsBox(val(UserIndex))
+        Call SendUserStatsBox(UserIndex)
         
         'Muere
         If UserList(UserIndex).Stats.MinHP < 1 Then
@@ -618,6 +618,7 @@ If Hechizos(H).Paraliza = 1 Or Hechizos(H).Inmoviliza = 1 Then
             If UserList(tU).Invent.AnilloEqpObjIndex = SUPERANILLO Then
                 Call WriteConsoleMsg(tU, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteConsoleMsg(UserIndex, " ¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
+                Call FlushBuffer(tU)
                 Exit Sub
             End If
             
@@ -629,12 +630,14 @@ If Hechizos(H).Paraliza = 1 Or Hechizos(H).Inmoviliza = 1 Then
             Else
 #End If
                 Call WriteParalizeOK(tU)
+                Call FlushBuffer(tU)
 #If SeguridadAlkon Then
             End If
 #End If
             
     End If
 End If
+
 
 If Hechizos(H).RemoverParalisis = 1 Then
     If UserList(tU).flags.Paralizado = 1 Then
@@ -660,6 +663,7 @@ If Hechizos(H).RemoverEstupidez = 1 Then
         UserList(tU).flags.Estupidez = 0
         'no need to crypt this
         Call WriteDumbNoMore(tU)
+        Call FlushBuffer(tU)
         Call InfoHechizo(UserIndex)
         b = True
     End If
@@ -739,6 +743,7 @@ If Hechizos(H).Ceguera = 1 Then
         Call SendCryptedData(SendTarget.ToIndex, tU, 0, "CEGU")
 #Else
         Call WriteBlind(tU)
+        Call FlushBuffer(tU)
 #End If
         Call InfoHechizo(UserIndex)
         b = True
@@ -755,10 +760,11 @@ If Hechizos(H).Estupidez = 1 Then
         End If
 #If SeguridadAlkon Then
         If EncriptarProtocolosCriticos Then
-            Call SendCryptedData(SendTarget.ToIndex, tU, 0, "DUMB")
+            Call SendCryptedData(SendTarget.ToIndex, tU, 0, "DUMB") 'CHECK
         Else
 #End If
-            Call SendData(SendTarget.ToIndex, tU, 0, "DUMB")
+            Call WriteDumb(tU)
+            Call FlushBuffer(tU)
 #If SeguridadAlkon Then
         End If
 #End If
@@ -965,7 +971,9 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
     Call InfoHechizo(UserIndex)
     b = True
     Call NpcAtacado(NpcIndex, UserIndex)
-    If Npclist(NpcIndex).flags.Snd2 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).flags.Snd2)
+    If Npclist(NpcIndex).flags.Snd2 > 0 Then
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
+    End If
     
     Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP - daño
     Call WriteConsoleMsg(UserIndex, "Le has causado " & daño & " puntos de daño a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
@@ -1128,11 +1136,13 @@ ElseIf Hechizos(H).SubeSed = 2 Then
     b = True
 End If
 
+Call FlushBuffer(tempChr)
+
 ' <-------- Agilidad ---------->
 If Hechizos(H).SubeAgilidad = 1 Then
     If criminal(tempChr) And Not criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos" & FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         Else
             Call DisNobAuBan(UserIndex, UserList(UserIndex).Reputacion.NobleRep * 0.5, 10000)
@@ -1379,7 +1389,7 @@ ElseIf Hechizos(H).SubeMana = 2 Then
     b = True
 End If
 
-
+Call FlushBuffer(tempChr) 'CHECK: No se si deberia flushear antes quizas.. (Estoy empezando a notar que si 'usuario', existiera como una clase, se solucionarian muchos problemas de la vida...)
 End Sub
 
 Sub UpdateUserHechizos(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal Slot As Byte)

@@ -114,20 +114,20 @@ Dim sufragio As Integer
 
 Exit Function
 errorh:
-Call LogError("Error en ConsultasPopularse.doVotar: " & Err.Description)
+Call LogError("Error en ConsultasPopularse.doVotar: " & Err.description)
 
 End Function
 
 
 Public Function SendInfoEncuesta(ByVal UserIndex As Integer) As String
 Dim i As Integer
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||CONSULTA POPULAR NUMERO " & pEncuestaActualNum & FONTTYPE_GUILD)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||" & pEncuestaActualTex & FONTTYPE_GUILD)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Opciones de voto: " & FONTTYPE_GUILDMSG)
+    Call WriteConsoleMsg(UserIndex, "CONSULTA POPULAR NUMERO " & pEncuestaActualNum, FontTypeNames.FONTTYPE_GUILD)
+    Call WriteConsoleMsg(UserIndex, pEncuestaActualTex, FontTypeNames.FONTTYPE_GUILD)
+    Call WriteConsoleMsg(UserIndex, " Opciones de voto: ", FontTypeNames.FONTTYPE_GUILDMSG)
     For i = 1 To UBound(pOpciones)
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||(Opcion " & i & "): " & GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & i) & FONTTYPE_GUILDMSG)
+        Call WriteConsoleMsg(UserIndex, "(Opcion " & i & "): " & GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & i), FontTypeNames.FONTTYPE_GUILDMSG)
     Next i
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1. Tu voto no podra ser cambiado." & FONTTYPE_VENENO)
+    Call WriteConsoleMsg(UserIndex, " Para votar una opcion, escribe /encuesta NUMERODEOPCION, por ejemplo para votar la opcion 1, escribe /encuesta 1. Tu voto no podra ser cambiado.", FontTypeNames.FONTTYPE_VENENO)
 End Function
 
 

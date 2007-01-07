@@ -1502,9 +1502,12 @@ Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim
 Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAnim))
 Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
 
-If UserList(UserIndex).ip <> GetVar(CharPath & rData & ".chr", "INIT", "LastIP1") Then
+'If UserList(UserIndex).ip <> GetVar(CharPath & rData & ".chr", "INIT", "LastIP1") Then
+If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then 'CHECK
+    Dim i As Byte
     For i = 5 To 2 Step -1
-        Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & str(i - 1)))
+        'Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & str(i - 1)))
+        Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(UserFile, "LastIP", str(i - 1)))
     Next i
     Call WriteVar(UserFile, "INIT", "LastIP1", UserList(UserIndex).ip)
 End If

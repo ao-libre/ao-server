@@ -82,11 +82,11 @@ Dim SonidoMapa As Byte
                 'tocarlo
                 If Lloviendo Then
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.Lluvia Then
-                        Call SendData(SendTarget.ToMap, 0, i, "TW" & p_Mapas(i).SoundIndex(SonidoMapa))
+                        Call SendData(SendTarget.ToMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
                     End If
                 Else
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.ninguna Then
-                        Call SendData(SendTarget.ToMap, 0, i, "TW" & p_Mapas(i).SoundIndex(SonidoMapa))
+                        Call SendData(SendTarget.ToMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
                     End If
                 End If
             End If
@@ -95,6 +95,6 @@ Dim SonidoMapa As Byte
     
 End Sub
 
-Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal UserIndex As Integer, ByVal mapa As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, UserIndex, mapa, "TW" & SoundIndex)
+Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal Index As Integer, ByVal SoundIndex As Integer)
+    Call SendData(Destino, Index, PrepareMessagePlayWave(SoundIndex))
 End Sub

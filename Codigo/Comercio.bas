@@ -335,18 +335,23 @@ Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     Dim i As Integer
     Dim desc As String
     Dim val As Long
-    
+
     desc = Descuento(UserIndex)
     If desc = 0 Then desc = 1 'evitamos dividir por 0!
     
     For i = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(i).ObjIndex > 0 Then
+            Dim thisObj As Obj
+            thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(i).ObjIndex
+            thisObj.amount = Npclist(NpcIndex).Invent.Object(i).amount
             'Calculamos el porc de inflacion del npc
             val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
-            Call WriteChangeNPCInventorySlot(UserIndex, _
+            'Call WriteChangeNPCInventorySlot(UserIndex, _
             ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex), val)
+            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, val) 'CHECK: Algo no me termina de convencer de WriteChangeNPCInventorySlot, deberia tomar UserObj como parametro?
         Else
-             Dim DummyObj As Object
+             'Dim DummyObj As Object
+             Dim DummyObj As Obj 'CHECK
              Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
         End If
     Next i

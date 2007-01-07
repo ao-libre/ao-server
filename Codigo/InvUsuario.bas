@@ -842,9 +842,9 @@ Select Case Obj.OBJType
         'Sonido
         
         If ObjIndex = e_ObjetosCriticos.Manzana Or ObjIndex = e_ObjetosCriticos.Manzana2 Or ObjIndex = e_ObjetosCriticos.ManzanaNewbie Then
-            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, e_SoundIndex.MORFAR_MANZANA)
+            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MORFAR_MANZANA)
         Else
-            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, e_SoundIndex.SOUND_COMIDA)
+            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.SOUND_COMIDA)
         End If
         
         'Quitamos del inv el item
@@ -1184,13 +1184,13 @@ If Cantidad > 0 Then _
 
 End Sub
 
-Public Function ItemSeCae(ByVal index As Integer) As Boolean
+Public Function ItemSeCae(ByVal Index As Integer) As Boolean
 
-ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
-            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
-            ObjData(index).OBJType <> eOBJType.otLlaves And _
-            ObjData(index).OBJType <> eOBJType.otBarcos And _
-            ObjData(index).NoSeCae = 0
+ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            ObjData(Index).OBJType <> eOBJType.otLlaves And _
+            ObjData(Index).OBJType <> eOBJType.otBarcos And _
+            ObjData(Index).NoSeCae = 0
 
 
 End Function
