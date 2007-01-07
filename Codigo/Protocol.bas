@@ -1555,7 +1555,7 @@ On Error GoTo errhandler
                 
                 If LenB(chat) <> 0 Then
                     'Analize chat...
-                    Call Statistics.ParseChat(rData)
+                    Call Statistics.ParseChat(chat)
                     
                     Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
                     Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)

@@ -120,11 +120,8 @@ Sub ChangeUserChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndM
         UserList(UserIndex).Char.body = body
         UserList(UserIndex).Char.Head = Head
     End If
-    If sndRoute = SendTarget.ToMap Then
-        Call SendToUserArea(UserIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: Esto deberia cambiar tambien creo...
-    Else
-        Call SendData(sndRoute, sndIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: CAmbiar aca, ya estoy medio ciego y no quiero mandarme cualquiera :)
-    End If
+    
+    Call SendData(sndRoute, sndIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: CAmbiar aca, ya estoy medio ciego y no quiero mandarme cualquiera :)
 End Sub
 
 Sub EnviarSubirNivel(ByVal UserIndex As Integer, ByVal Puntos As Integer)

@@ -172,17 +172,17 @@ If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
 End If
 
 '¿Hay mensajes?
-Dim f As String, tit As String, men As String, base As String, auxcad As String
+Dim f As String, tit As String, men As String, BASE As String, auxcad As String
 f = App.Path & "\foros\" & UCase$(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).ForoID) & ".for"
 If FileExist(f, vbNormal) Then
     Dim num As Integer
     num = val(GetVar(f, "INFO", "CantMSG"))
-    base = Left$(f, Len(f) - 4)
+    BASE = Left$(f, Len(f) - 4)
     Dim i As Integer
     Dim N As Integer
     For i = 1 To num
         N = FreeFile
-        f = base & i & ".for"
+        f = BASE & i & ".for"
         Open f For Input Shared As #N
         Input #N, tit
         men = ""
@@ -214,8 +214,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                     
                     MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexAbierta
                     
-                    Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
-                     
+                    Call modSendData.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
+                    
                     'Desbloquea
                     MapData(Map, X, Y).Blocked = 0
                     MapData(Map, X - 1, Y).Blocked = 0
@@ -235,7 +235,7 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 'Cierra puerta
                 MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexCerrada
                 
-                Call ModAreas.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
+                Call modSendData.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
                 
                 
                 MapData(Map, X, Y).Blocked = 1
