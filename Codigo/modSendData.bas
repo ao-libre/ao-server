@@ -39,7 +39,7 @@ Public Enum SendTarget
     ToAllButIndex
     ToMapButIndex
     ToGM
-    toNpcArea
+    ToNPCArea
     ToGuildMembers
     ToAdmins
     ToPCAreaButIndex
@@ -110,7 +110,7 @@ On Error Resume Next
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If UserList(LoopC).flags.UserLogged Then
-                        If UserList(LoopC).Pos.Map = sndMap Then
+                        If UserList(LoopC).Pos.Map = sndIndex Then
                             Call EnviarDatosASlot(LoopC, sndData)
                         End If
                     End If
@@ -158,7 +158,7 @@ On Error Resume Next
             Call SendToAdminsButConsejerosArea(sndIndex, sndData)
             Exit Sub
         
-        Case SendTarget.toNpcArea
+        Case SendTarget.ToNPCArea
             Call SendToNpcArea(sndIndex, sndData)
             Exit Sub
         
