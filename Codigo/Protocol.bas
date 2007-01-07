@@ -11297,10 +11297,7 @@ Public Sub WriteRemoveCharDialog(ByVal UserIndex As Integer, ByVal CharIndex As 
 'Last Modification: 05/17/06
 'Writes the "RemoveCharDialog" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.RemoveCharDialog)
-        Call .WriteInteger(CharIndex)
-    End With
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageRemoveCharDialog(CharIndex))
 End Sub
 
 ''
@@ -11973,24 +11970,8 @@ Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Intege
 'Last Modification: 05/17/06
 'Writes the "CharacterCreate" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.CharacterCreate)
-        
-        Call .WriteInteger(CharIndex)
-        Call .WriteInteger(body)
-        Call .WriteInteger(Head)
-        Call .WriteByte(heading)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-        Call .WriteInteger(weapon)
-        Call .WriteInteger(shield)
-        Call .WriteInteger(helmet)
-        Call .WriteInteger(FX)
-        Call .WriteInteger(FXLoops)
-        Call .WriteASCIIString(name)
-        Call .WriteByte(criminal)
-        Call .WriteByte(privileges)
-    End With
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterCreate(body, Head, heading, CharIndex, X, Y, weapon, shield, FX, FXLoops, _
+                                                            helmet, name, criminal, Privilegios))
 End Sub
 
 ''
@@ -12055,19 +12036,7 @@ Public Sub WriteCharacterChange(ByVal UserIndex As Integer, ByVal body As Intege
 'Last Modification: 05/17/06
 'Writes the "CharacterChange" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.CharacterChange)
-        
-        Call .WriteInteger(CharIndex)
-        Call .WriteInteger(body)
-        Call .WriteInteger(Head)
-        Call .WriteByte(heading)
-        Call .WriteInteger(weapon)
-        Call .WriteInteger(shield)
-        Call .WriteInteger(helmet)
-        Call .WriteInteger(FX)
-        Call .WriteInteger(FXLoops)
-    End With
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterChange(body, Head, heading, CharIndex, weapon, shield, FX, FXLoops, helmet))
 End Sub
 
 ''
@@ -13826,5 +13795,114 @@ Public Function PrepareMessageCharacterRemove(ByVal CharIndex As Integer) As Str
         Call .WriteInteger(CharIndex)
         
         PrepareMessageCharacterRemove = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "RemoveCharDialog" message and returns it.
+'
+' @param    CharIndex Character whose dialog will be removed.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageRemoveCharDialog(ByVal CharIndex As Integer) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Writes the "RemoveCharDialog" message to the given user's outgoing data buffer
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.RemoveCharDialog)
+        Call .WriteInteger(CharIndex)
+        
+        PrepareMessageRemoveCharDialog = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Writes the "CharacterCreate" message to the given user's outgoing data buffer.
+'
+' @param    body Body index of the new character.
+' @param    head Head index of the new character.
+' @param    heading Heading in which the new character is looking.
+' @param    CharIndex The index of the new character.
+' @param    X X coord of the new character's position.
+' @param    Y Y coord of the new character's position.
+' @param    weapon Weapon index of the new character.
+' @param    shield Shield index of the new character.
+' @param    FX FX index to be displayed over the new character.
+' @param    FXLoops Number of times the FX should be rendered.
+' @param    helmet Helmet index of the new character.
+' @param    name Name of the new character.
+' @param    criminal Determines if the character is a criminal or not.
+' @param    privileges Sets if the character is a normal one or any kind of administrative character.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageCharacterCreate(ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
+                                ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal weapon As Integer, ByVal shield As Integer, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
+                                ByVal privileges As Byte) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "CharacterCreate" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.CharacterCreate)
+        
+        Call .WriteInteger(CharIndex)
+        Call .WriteInteger(body)
+        Call .WriteInteger(Head)
+        Call .WriteByte(heading)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        Call .WriteInteger(weapon)
+        Call .WriteInteger(shield)
+        Call .WriteInteger(helmet)
+        Call .WriteInteger(FX)
+        Call .WriteInteger(FXLoops)
+        Call .WriteASCIIString(name)
+        Call .WriteByte(criminal)
+        Call .WriteByte(privileges)
+        
+        PrepareMessageCharacterCreate = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "CharacterChange" message and returns it.
+'
+' @param    body Body index of the new character.
+' @param    head Head index of the new character.
+' @param    heading Heading in which the new character is looking.
+' @param    CharIndex The index of the new character.
+' @param    weapon Weapon index of the new character.
+' @param    shield Shield index of the new character.
+' @param    FX FX index to be displayed over the new character.
+' @param    FXLoops Number of times the FX should be rendered.
+' @param    helmet Helmet index of the new character.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageCharacterChange(ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
+                                ByVal CharIndex As Integer, ByVal weapon As Integer, ByVal shield As Integer, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "CharacterChange" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.CharacterChange)
+        
+        Call .WriteInteger(CharIndex)
+        Call .WriteInteger(body)
+        Call .WriteInteger(Head)
+        Call .WriteByte(heading)
+        Call .WriteInteger(weapon)
+        Call .WriteInteger(shield)
+        Call .WriteInteger(helmet)
+        Call .WriteInteger(FX)
+        Call .WriteInteger(FXLoops)
+        
+        PrepareMessageCharacterChange = .ReadASCIIStringFixed(.length)
     End With
 End Function
