@@ -12005,12 +12005,7 @@ Public Sub WriteCharacterMove(ByVal UserIndex As Integer, ByVal CharIndex As Int
 'Last Modification: 05/17/06
 'Writes the "CharacterMove" message to the given user's outgoing data buffer
 '***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.CharacterMove)
-        Call .WriteInteger(CharIndex)
-        Call .WriteByte(X)
-        Call .WriteByte(Y)
-    End With
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterMove(CharIndex, X, Y))
 End Sub
 
 ''
@@ -13904,5 +13899,29 @@ Public Function PrepareMessageCharacterChange(ByVal body As Integer, ByVal Head 
         Call .WriteInteger(FXLoops)
         
         PrepareMessageCharacterChange = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+''
+' Prepares the "CharacterMove" message and returns it.
+'
+' @param    CharIndex Character which is moving.
+' @param    X X coord of the character's new position.
+' @param    Y Y coord of the character's new position.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageCharacterMove(ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte) As String
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Prepares the "CharacterMove" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.CharacterMove)
+        Call .WriteInteger(CharIndex)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        
+        PrepareMessageCharacterMove = .ReadASCIIStringFixed(.length)
     End With
 End Function
