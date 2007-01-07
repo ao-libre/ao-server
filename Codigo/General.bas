@@ -1106,7 +1106,7 @@ End If
 
 End Sub
 
-Public Sub RecStamina(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
+Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
    MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
@@ -1130,7 +1130,7 @@ End If
 
 End Sub
 
-Public Sub EfectoVeneno(UserIndex As Integer, EnviarStats As Boolean)
+Public Sub EfectoVeneno(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean)
 Dim N As Integer
 
 If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
@@ -1146,7 +1146,7 @@ End If
 
 End Sub
 
-Public Sub DuracionPociones(UserIndex As Integer)
+Public Sub DuracionPociones(ByVal UserIndex As Integer)
 
 'Controla la duracion de las pociones
 If UserList(UserIndex).flags.DuracionEfecto > 0 Then
@@ -1164,7 +1164,7 @@ End If
 
 End Sub
 
-Public Sub HambreYSed(UserIndex As Integer, fenviarAyS As Boolean)
+Public Sub HambreYSed(ByVal UserIndex As Integer, ByRef fenviarAyS As Boolean)
 
 If UserList(UserIndex).flags.Privilegios > User Then Exit Sub
 
@@ -1202,7 +1202,7 @@ End If
 
 End Sub
 
-Public Sub Sanar(UserIndex As Integer, EnviarStats As Boolean, Intervalo As Integer)
+Public Sub Sanar(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
    MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _

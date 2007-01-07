@@ -39,7 +39,7 @@ Public Enum SendTarget
     ToAllButIndex
     ToMapButIndex
     ToGM
-    ToNPCArea
+    toNpcArea
     ToGuildMembers
     ToAdmins
     ToPCAreaButIndex
@@ -73,7 +73,7 @@ On Error Resume Next
     
     Select Case sndRoute
         Case SendTarget.ToPCArea
-            Call ModAreas.SendToUserArea(sndIndex, sndData)
+            Call SendToUserArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToAdmins
@@ -139,27 +139,27 @@ On Error Resume Next
             Exit Sub
         
         Case SendTarget.ToDeadArea
-            Call ModAreas.SendToDeadUserArea(sndIndex, sndData)
+            Call SendToDeadUserArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToPCAreaButIndex
-            Call ModAreas.SendToUserAreaButindex(sndIndex, sndData)
+            Call SendToUserAreaButindex(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToClanArea
-            Call ModAreas.SendToUserGuildArea(sndIndex, sndData)
+            Call SendToUserGuildArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToPartyArea
-            Call ModAreas.SendToUserPartyArea(sndIndex, sndData)
+            Call SendToUserPartyArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToAdminsAreaButConsejeros
-            Call ModAreas.SendToAdminsButConsejerosArea(sndIndex, sndData)
+            Call SendToAdminsButConsejerosArea(sndIndex, sndData)
             Exit Sub
         
-        Case SendTarget.ToNPCArea
-            Call ModAreas.SendToNpcArea(sndIndex, sndData)
+        Case SendTarget.toNpcArea
+            Call SendToNpcArea(sndIndex, sndData)
             Exit Sub
         
         Case SendTarget.ToDiosesYclan
@@ -251,7 +251,7 @@ On Error Resume Next
             Next LoopC
             Exit Sub
         
-        Case ToCiudadanosYRMs
+        Case SendTarget.ToCiudadanosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If Not criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
@@ -261,7 +261,7 @@ On Error Resume Next
             Next LoopC
             Exit Sub
         
-        Case ToCriminalesYRMs
+        Case SendTarget.ToCriminalesYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
@@ -271,7 +271,7 @@ On Error Resume Next
             Next LoopC
             Exit Sub
         
-        Case ToRealYRMs
+        Case SendTarget.ToRealYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If UserList(LoopC).Faccion.ArmadaReal = 1 Or UserList(LoopC).flags.EsRolesMaster Then
@@ -281,7 +281,7 @@ On Error Resume Next
             Next LoopC
             Exit Sub
         
-        Case ToCaosYRMs
+        Case SendTarget.ToCaosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If UserList(LoopC).Faccion.FuerzasCaos = 1 Or UserList(LoopC).flags.EsRolesMaster Then

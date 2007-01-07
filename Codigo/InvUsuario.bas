@@ -333,7 +333,7 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
     MapData(Map, X, Y).ObjInfo.amount = 0
     
     If sndRoute = SendTarget.ToMap Then
-        Call SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
+        Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
    Else
         Call SendData(sndRoute, sndIndex, PrepareMessageObjectDelete(X, Y))
     End If
@@ -351,7 +351,7 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
         MapData(Map, X, Y).ObjInfo = Obj
         
         If sndRoute = SendTarget.ToMap Then
-            Call ModAreas.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
+            Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         Else
             Call SendData(sndRoute, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         End If
@@ -1184,13 +1184,13 @@ If Cantidad > 0 Then _
 
 End Sub
 
-Public Function ItemSeCae(ByVal Index As Integer) As Boolean
+Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
-ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            ObjData(Index).OBJType <> eOBJType.otLlaves And _
-            ObjData(Index).OBJType <> eOBJType.otBarcos And _
-            ObjData(Index).NoSeCae = 0
+ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
+            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
+            ObjData(index).OBJType <> eOBJType.otLlaves And _
+            ObjData(index).OBJType <> eOBJType.otBarcos And _
+            ObjData(index).NoSeCae = 0
 
 
 End Function

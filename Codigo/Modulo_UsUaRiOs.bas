@@ -171,10 +171,10 @@ On Error GoTo ErrorHandler
     
     'Le mandamos el mensaje para que borre el personaje a los clientes que estén en el mismo mapa
     If sndRoute = SendTarget.ToMap Then
-        Call SendToUserArea(UserIndex, "BP" & UserList(UserIndex).Char.CharIndex) 'CHECK
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
         Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, "BP" & UserList(UserIndex).Char.CharIndex) 'CHECK
+        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
     End If
     
     MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
@@ -848,7 +848,7 @@ Dim nPos As WorldPos
 #If SeguridadAlkon Then
             Call SendCryptedMoveChar(nPos.Map, UserIndex, nPos.X, nPos.Y)
 #Else
-            Call SendToUserAreaButindex(UserIndex, "+" & UserList(UserIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendData(SendTarget.ToAllButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
 #End If
         End If
         
@@ -1232,8 +1232,7 @@ On Error GoTo ErrorHandler
     End If
     
     'Quitar el dialogo del user muerto
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "QDL" & UserList(UserIndex).Char.CharIndex)
-    'CHECK: Falta Prepare Message
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
     
     UserList(UserIndex).Stats.MinHP = 0
     UserList(UserIndex).Stats.MinSta = 0
@@ -1481,8 +1480,8 @@ Dim OldX As Integer
 Dim OldY As Integer
 
     'Quitar el dialogo
-    Call SendToUserArea(UserIndex, "QDL" & UserList(UserIndex).Char.CharIndex)
-    'CHECK: Falta PrepareMessage
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
+    
     Call WriteRemoveAllDialogs(UserIndex)
     
     OldMap = UserList(UserIndex).Pos.Map
@@ -1514,7 +1513,7 @@ Dim OldY As Integer
     
     'Seguis invisible al pasar de mapa
     If (UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then
-        Call SendToUserArea(UserIndex, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1", EncriptarProtocolosCriticos) 'CHECK: Cambiarlo por PrepareMessageSetInvisible
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
     End If
     
     If FX And UserList(UserIndex).flags.AdminInvisible = 0 Then 'FX

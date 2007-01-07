@@ -495,9 +495,9 @@ If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.Head = Head
     Npclist(NpcIndex).Char.heading = heading
     If sndRoute = SendTarget.ToMap Then
-        Call SendToNpcArea(NpcIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
+        Call SendData(SendTarget.toNpcArea, NpcIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     Else
-        Call SendData(sndRoute, sndIndex, sndMap, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
+        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     End If
 End If
 
@@ -519,7 +519,7 @@ MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Po
 
 'Actualizamos los cliente
 If sndRoute = SendTarget.ToMap Then
-    Call SendToNpcArea(NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
+    Call SendData(SendTarget.toNpcArea, NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 Else
     Call SendData(sndRoute, sndIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 End If
@@ -550,10 +550,10 @@ On Error GoTo errh
             If Npclist(NpcIndex).flags.TierraInvalida = 1 And Not HayAgua(Npclist(NpcIndex).Pos.Map, nPos.X, nPos.Y) Then Exit Sub
             
 #If SeguridadAlkon Then
-            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
+            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y)) 'CHECK: y este tema de la encriptacion no va mas?, o como se maneja?
+            
 #Else
-            '[CHECK] Mirar este Send
-            Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendData(SendTarget.toNpcArea, NpcIndex, PrepareMessageCharacterMove(Npclist(NpcIndex).Char.CharIndex, nPos.X, nPos.Y))
 #End If
             
             'Update map and user pos
@@ -574,10 +574,9 @@ Else ' No es mascota
             '[Alejo-18-5]
             'server
 #If SeguridadAlkon Then
-            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y))
+            Call SendToNpcArea(NpcIndex, "*" & Encriptacion.MoveNPCCrypt(NpcIndex, nPos.X, nPos.Y)) 'CHECK: Lo mismo que el anterior, no se que hacer con esto aun :)
 #Else
-            '[CHECK] Mirar este Send
-            Call SendToNpcArea(NpcIndex, "*" & Npclist(NpcIndex).Char.CharIndex & "," & nPos.X & "," & nPos.Y)
+            Call SendData(SendTarget.toNpcArea, NpcIndex, PrepareMessageCharacterMove(Npclist(NpcIndex).Char.CharIndex, nPos.X, nPos.Y))
 #End If
             
             'Update map and user pos
@@ -699,8 +698,8 @@ Y = Npclist(nIndex).Pos.Y
 Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
 
 If FX Then
-    Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessagePlayWave(SND_WARP))
-    Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessageCreateFX(Npclist(nIndex).Char.CharIndex, FXIDs.FXWARP, 0))
+    Call SendData(SendTarget.toNpcArea, nIndex, PrepareMessagePlayWave(SND_WARP))
+    Call SendData(SendTarget.toNpcArea, nIndex, PrepareMessageCreateFX(Npclist(nIndex).Char.CharIndex, FXIDs.FXWARP, 0))
 End If
 
 SpawnNpc = nIndex

@@ -214,7 +214,7 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                     
                     MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexAbierta
                     
-                    Call modSendData.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
+                    Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
                     
                     'Desbloquea
                     MapData(Map, X, Y).Blocked = 0
@@ -235,9 +235,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 'Cierra puerta
                 MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexCerrada
                 
-                Call modSendData.SendToAreaByPos(Map, X, Y, "HO" & ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex & "," & X & "," & Y)
-                
-                
+                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
+                                
                 MapData(Map, X, Y).Blocked = 1
                 MapData(Map, X - 1, Y).Blocked = 1
                 

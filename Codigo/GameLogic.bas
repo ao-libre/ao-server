@@ -672,7 +672,7 @@ If InMapBounds(Map, X, Y) Then
         UserList(UserIndex).flags.TargetObjMap = 0
         UserList(UserIndex).flags.TargetObjX = 0
         UserList(UserIndex).flags.TargetObjY = 0
-        Call WriteConsoleMsg(UserIndex, "No ves nada interesante.", FonTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No ves nada interesante.", FontTypeNames.FONTTYPE_INFO)
     End If
 
 Else
