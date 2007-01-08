@@ -179,13 +179,13 @@ End Sub
 
 Public Sub BorraSlotSock(ByVal Sock As Long, Optional ByVal CacheIndice As Long)
 #If (UsarQueSocket = 1) Then
-Dim cant As Long
+Dim Cant As Long
 
-cant = WSAPISock2Usr.Count
+Cant = WSAPISock2Usr.Count
 On Error Resume Next
 WSAPISock2Usr.Remove CStr(Sock)
 
-Debug.Print "BorraSockSlot " & cant & " -> " & WSAPISock2Usr.Count
+Debug.Print "BorraSockSlot " & Cant & " -> " & WSAPISock2Usr.Count
 
 #End If
 End Sub
@@ -584,7 +584,11 @@ If UBound(T) > 0 Then
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If T(LoopC) <> "" Then If Not UserList(Slot).CommandsBuffer.Push(T(LoopC)) Then Call CloseSocket(Slot)
+            If LenB(T(LoopC)) <> 0 Then
+                If Not UserList(Slot).CommandsBuffer.Push(T(LoopC)) Then
+                    Call CloseSocket(Slot)
+                End If
+            End If
         Else ' no encolamos los comandos (MUY VIEJO)
               If UserList(Slot).ConnID <> -1 Then
                 Call HandleData(Slot, T(LoopC))

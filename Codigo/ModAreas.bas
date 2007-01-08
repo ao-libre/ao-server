@@ -220,27 +220,13 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         Call MakeUserChar(SendTarget.ToIndex, CInt(TempInt), 0, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
-#If SeguridadAlkon Then
-                        If EncriptarProtocolosCriticos Then
-                            If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                                 Call EnviarDatosASlot(UserIndex, ProtoCrypt("NOVER" & UserList(TempInt).Char.CharIndex & ",1", UserIndex) & ENDC)
-                            End If
-                            
-                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
-                                 Call EnviarDatosASlot(TempInt, ProtoCrypt("NOVER" & UserList(UserIndex).Char.CharIndex & ",1", TempInt) & ENDC)
-                            End If
-                        Else
-#End If
-                            If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                                 Call EnviarDatosASlot(UserIndex, "NOVER" & UserList(TempInt).Char.CharIndex & ",1" & ENDC)
-                            End If
-                            
-                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
-                                 Call EnviarDatosASlot(TempInt, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1" & ENDC)
-                            End If
-#If SeguridadAlkon Then
+                        If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
+                            Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
                         End If
-#End If
+                        If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
+                            Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
+                        End If
+
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, UserIndex, Map, X, Y)
                     End If

@@ -1147,15 +1147,8 @@ On Error GoTo errorh
     UserList(PJEnInd).flags.Estupidez = 1
     UserList(PJEnInd).Counters.Estupidez = IntervaloInvisible
     'manda estupidez
-#If SeguridadAlkon Then
-    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToIndex, PJEnInd, 0, "DUMB")
-    Else
-#End If
-        Call WriteDumb(PJEnInd)
-#If SeguridadAlkon Then
-    End If
-#End If
+    Call WriteDumb(PJEnInd)
+
     'bardea si es el rey
     If Npclist(npcind).name = "Rey Pretoriano" Then
         Call WriteConsoleMsg(PJEnInd, "El rey pretoriano te ha vuelto estúpido ", FontTypeNames.FONTTYPE_FIGHT)
@@ -1236,15 +1229,9 @@ If Hechizos(Spell).Paraliza = 1 Then
           UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
           Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV))
           Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
-#If SeguridadAlkon Then
-          If EncriptarProtocolosCriticos Then
-            Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
-          Else
-#End If
-            Call WriteParalizeOK(UserIndex)
-#If SeguridadAlkon Then
-          End If
-#End If
+
+          Call WriteParalizeOK(UserIndex)
+
      End If
 End If
 

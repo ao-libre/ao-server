@@ -64,8 +64,8 @@ End Enum
 Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus) - Rewrite of original
-'Last Modify Date: 01/07/2007
-'
+'Last Modify Date: 01/08/2007
+'Last modified by: (liquid)
 '**************************************************************
 On Error Resume Next
     Dim LoopC As Long
@@ -119,6 +119,7 @@ On Error Resume Next
             Exit Sub
           
         Case SendTarget.ToMapButIndex
+            Map = UserList(sndIndex).Pos.Map 'agregue esto
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) And LoopC <> sndIndex Then
                     If UserList(LoopC).Pos.Map = Map Then

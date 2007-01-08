@@ -78,16 +78,9 @@ If res <= Suerte Then
 
     UserList(UserIndex).flags.Oculto = 1
     UserList(UserIndex).Counters.TiempoOculto = (-0.000001 * Skill ^ 3 + 0.00009229 * Skill ^ 2 - 0.0088 * Skill + 0.9571) * IntervaloOculto
-#If SeguridadAlkon Then
-    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1") 'CHECK
-    Else
-#End If
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
-       
-#If SeguridadAlkon Then
-    End If
-#End If
+  
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
+
     Call WriteConsoleMsg(UserIndex, "¡Te has escondido entre las sombras!", FontTypeNames.FONTTYPE_INFO)
     Call SubirSkill(UserIndex, Ocultarse)
 Else
@@ -192,7 +185,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -203,14 +196,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If cant <= Total Then
+If Cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -219,18 +212,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - cant
+        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - Cant
         If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
-            cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
+            Cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
             UserList(UserIndex).Invent.Object(i).amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            cant = 0
+            Cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (cant = 0) Then
+        If (Cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -1145,7 +1138,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim cant As Integer
+Dim Cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1203,13 +1196,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
+    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call WriteConsoleMsg(UserIndex, "¡Has recuperado " & cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "¡Has recuperado " & Cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

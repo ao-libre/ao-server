@@ -824,7 +824,7 @@ Public Function ListenForConnect(ByVal Port&, ByVal HWndToMsg&, ByVal Enlazar As
         ListenForConnect = INVALID_SOCKET
         Exit Function
     End If
-    If Enlazar = "" Then
+    If LenB(Enlazar) = 0 Then
         sockin.sin_addr = htonl(INADDR_ANY)
     Else
         sockin.sin_addr = inet_addr(Enlazar)

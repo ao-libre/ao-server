@@ -832,7 +832,7 @@ Npclist(Victima).Stats.MinHP = Npclist(Victima).Stats.MinHP - daño
 
 If Npclist(Victima).Stats.MinHP < 1 Then
         
-        If Npclist(Atacante).flags.AttackedBy <> "" Then
+        If LenB(Npclist(Atacante).flags.AttackedBy) <> 0 Then
             Npclist(Atacante).Movement = Npclist(Atacante).flags.OldMovement
             Npclist(Atacante).Hostile = Npclist(Atacante).flags.OldHostil
         Else

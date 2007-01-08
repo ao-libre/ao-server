@@ -48,7 +48,7 @@ Dim i As Integer
 
 AtPut = False
 
-If clave = "" Then Exit Function
+If LenB(clave) = 0 Then Exit Function
 
 clave = UCase$(clave)
 

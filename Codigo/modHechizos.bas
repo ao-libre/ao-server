@@ -112,16 +112,9 @@ If Hechizos(Spell).Paraliza = 1 Then
             End If
           UserList(UserIndex).flags.Paralizado = 1
           UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
+          
+          Call WriteParalizeOK(UserIndex)
 
-#If SeguridadAlkon Then
-        If EncriptarProtocolosCriticos Then
-            Call SendCryptedData(SendTarget.ToIndex, UserIndex, 0, "PARADOK")
-        Else
-#End If
-            Call WriteParalizeOK(UserIndex)
-#If SeguridadAlkon Then
-        End If
-#End If
      End If
      
      
@@ -315,7 +308,7 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).cant
+For j = 1 To Hechizos(H).Cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
@@ -507,15 +500,8 @@ If Hechizos(H).Invisibilidad = 1 Then
     End If
     
     UserList(tU).flags.invisible = 1
-#If SeguridadAlkon Then
-    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToPCArea, 0, UserList(tU).Pos.Map, "NOVER" & UserList(tU).Char.CharIndex & ",1")
-    Else
-#End If
-        Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
-#If SeguridadAlkon Then
-    End If
-#End If
+    Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
+
     Call InfoHechizo(UserIndex)
     b = True
 End If
@@ -624,16 +610,10 @@ If Hechizos(H).Paraliza = 1 Or Hechizos(H).Inmoviliza = 1 Then
             
             UserList(tU).flags.Paralizado = 1
             UserList(tU).Counters.Paralisis = IntervaloParalizado
-#If SeguridadAlkon Then
-            If EncriptarProtocolosCriticos Then
-                Call SendCryptedData(SendTarget.ToIndex, tU, 0, "PARADOK")
-            Else
-#End If
-                Call WriteParalizeOK(tU)
-                Call FlushBuffer(tU)
-#If SeguridadAlkon Then
-            End If
-#End If
+            
+            Call WriteParalizeOK(tU)
+            Call FlushBuffer(tU)
+
             
     End If
 End If
@@ -739,12 +719,9 @@ If Hechizos(H).Ceguera = 1 Then
         End If
         UserList(tU).flags.Ceguera = 1
         UserList(tU).Counters.Ceguera = IntervaloParalizado / 3
-#If SeguridadAlkon Then
-        Call SendCryptedData(SendTarget.ToIndex, tU, 0, "CEGU")
-#Else
+
         Call WriteBlind(tU)
         Call FlushBuffer(tU)
-#End If
         Call InfoHechizo(UserIndex)
         b = True
 End If
@@ -758,16 +735,9 @@ If Hechizos(H).Estupidez = 1 Then
             UserList(tU).flags.Estupidez = 1
             UserList(tU).Counters.Ceguera = IntervaloParalizado
         End If
-#If SeguridadAlkon Then
-        If EncriptarProtocolosCriticos Then
-            Call SendCryptedData(SendTarget.ToIndex, tU, 0, "DUMB") 'CHECK
-        Else
-#End If
-            Call WriteDumb(tU)
-            Call FlushBuffer(tU)
-#If SeguridadAlkon Then
-        End If
-#End If
+        Call WriteDumb(tU)
+        Call FlushBuffer(tU)
+
         Call InfoHechizo(UserIndex)
         b = True
 End If

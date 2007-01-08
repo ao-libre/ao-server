@@ -13,15 +13,9 @@ Public Sub PonerInvisible(ByVal UserIndex As Integer, ByVal estado As Boolean)
 UserList(UserIndex).flags.invisible = IIf(estado, 1, 0)
 UserList(UserIndex).flags.Oculto = IIf(estado, 1, 0)
 UserList(UserIndex).Counters.Invisibilidad = 0
-#If SeguridadAlkon Then
-    If EncriptarProtocolosCriticos Then
-        Call SendCryptedData(SendTarget.ToPCArea, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & "," & IIf(estado, 1, 0))
-    Else
-#End If
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, Not estado))
-#If SeguridadAlkon Then
-    End If
-#End If
+
+Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, Not estado))
+
 
 #Else
 

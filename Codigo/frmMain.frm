@@ -1172,7 +1172,7 @@ If UBound(T) > 0 Then
         '%%% EL PROBLEMA DEL SPEEDHACK          %%%
         '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         If ClientsCommandsQueue = 1 Then
-            If T(LoopC) <> "" Then
+            If LenB(T(LoopC)) <> 0 Then
                 If Not UserList(MiDato).CommandsBuffer.Push(T(LoopC)) Then
                     Call LogError("Cerramos por no encolar. Userindex:" & MiDato)
                     Call CloseSocket(MiDato)

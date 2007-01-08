@@ -110,7 +110,7 @@ errhandler:
 
 End Sub
 
-Function InRangoVision(ByVal UserIndex As Integer, X As Integer, Y As Integer) As Boolean
+Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
 If X > UserList(UserIndex).Pos.X - MinXBorder And X < UserList(UserIndex).Pos.X + MinXBorder Then
     If Y > UserList(UserIndex).Pos.Y - MinYBorder And Y < UserList(UserIndex).Pos.Y + MinYBorder Then
@@ -270,7 +270,7 @@ Function IP_Index(ByVal inIP As String) As Integer
  
 Dim UserIndex As Integer
 '¿Nombre valido?
-If inIP = "" Then
+If LenB(inIP) = 0 Then
     IP_Index = 0
     Exit Function
 End If
@@ -526,7 +526,7 @@ If InMapBounds(Map, X, Y) Then
             
        If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
             
-            If UserList(TempCharIndex).DescRM = "" Then
+            If LenB(UserList(TempCharIndex).DescRM) = 0 Then
                 If EsNewbie(TempCharIndex) Then
                     Stat = " <NEWBIE>"
                 End If

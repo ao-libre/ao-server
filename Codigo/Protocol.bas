@@ -2202,7 +2202,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
         
         Select Case Skill
             Case Robar, Magia, Domar
-                Call WriteWorkRequestTarget(UserIndex, 0, Skill)
+                Call WriteWorkRequestTarget(UserIndex, Skill)
             Case Ocultarse
                 If .flags.Navegando = 1 Then
                     '[CDT 17-02-2004]
@@ -2245,7 +2245,7 @@ Private Sub HandleUseSpellMacro(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Call SendData(SendTarget.ToAdmins, UserIndex, PrepareMessageConsoleMsg(.name & " fue expulsado por Anti-macro de hechizos", FontTypeNames.FONTTYPE_VENENO))
-        Call WriteErrorMsg(UserIndex, "Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros", FontTypeNames.FONTTYPE_INFO)
+        Call WriteErrorMsg(UserIndex, "Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros")
         Call CloseSocket(UserIndex)
     End With
 End Sub
@@ -2279,7 +2279,7 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
             Exit Sub    'The error message should have been provided by the client.
         End If
         
-        Call UseInvItem(UserIndex, val(rData))
+        Call UseInvItem(UserIndex, val(Slot))
     End With
 End Sub
 
@@ -2518,7 +2518,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         .flags.Hechizo = 0
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
             
@@ -2661,8 +2661,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Exit Sub
                     End If
                     
+                    DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex 'CHECK
                     '¿Hay un yacimiento donde clickeo?
-                    If ObjData(AuxInd).OBJType = eOBJType.otYacimiento Then
+                    If ObjData(DummyInt).OBJType = eOBJType.otYacimiento Then
                         Call DoMineria(UserIndex)
                     Else
                         Call WriteConsoleMsg(UserIndex, "Ahí no hay ningún yacimiento.", FontTypeNames.FONTTYPE_INFO)
@@ -2692,7 +2693,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                             Exit Sub
                         End If
                         
-                        Call DoDomar(UserIndex, CI)
+                        Call DoDomar(UserIndex, tN)
                     Else
                         Call WriteConsoleMsg(UserIndex, "No podés domar a esa criatura.", FontTypeNames.FONTTYPE_INFO)
                     End If
@@ -2788,7 +2789,7 @@ On Error GoTo errhandler
         If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, error) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
         Else
-            Call WriteConsoleMsg(error, FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -2956,7 +2957,7 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
         With .Stats
             For i = 1 To NUMSKILLS
                 .SkillPts = .SkillPts - points(i)
-                .UserSkills(i) = .UserSkills(i) + incremento
+                .UserSkills(i) = .UserSkills(i) + points(i) 'CHECK
                 
                 'Client should prevent this, but just in case...
                 If .UserSkills(i) > 100 Then
@@ -3005,7 +3006,7 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
                 End If
             End If
         Else
-            Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, PrepareMessageChatOverHead("No puedo traer más criaturas, mata las existentes!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No puedo traer más criaturas, mata las existentes!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
         End If
     End With
 End Sub
@@ -3245,7 +3246,7 @@ On Error GoTo errhandler
             'Create file
             Open postFile For Output As handle
             Print #handle, title
-            Print #hanlde, msg
+            Print #handle, msg
             Close #handle
             
             'Update post count

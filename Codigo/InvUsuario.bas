@@ -63,7 +63,7 @@ On Error GoTo manejador
 
 Dim flag As Boolean
 
-If ObjData(ObjIndex).ClaseProhibida(1) <> "" Then
+If LenB(ObjData(ObjIndex).ClaseProhibida(1)) <> 0 Then
     
     Dim i As Integer
     For i = 1 To NUMCLASES

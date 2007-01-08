@@ -1406,7 +1406,7 @@ Dim OldUserHead As Long
 
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-If UserList(UserIndex).clase = "" Or UserList(UserIndex).Stats.ELV = 0 Then
+If LenB(UserList(UserIndex).clase) = 0 Or UserList(UserIndex).Stats.ELV = 0 Then
     Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
     Exit Sub
 End If
@@ -1487,7 +1487,7 @@ Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
-Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password)
+'Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password) 'la password no se carga mas en memoria
 Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).desc)
 
 Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))

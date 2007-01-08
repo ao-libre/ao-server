@@ -869,7 +869,7 @@ Public Function GMEscuchaClan(ByVal UserIndex As Integer, ByVal GuildName As Str
 Dim GI As Integer
 
     'listen to no guild at all
-    If GuildName = "" And UserList(UserIndex).EscucheClan <> 0 Then
+    If LenB(GuildName) = 0 And UserList(UserIndex).EscucheClan <> 0 Then
         'Quit listening to previous guild!!
         Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan), FontTypeNames.FONTTYPE_GUILD)
         guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)

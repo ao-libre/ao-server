@@ -246,7 +246,7 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
         
         Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
         
-        If GmName = "" Then
+        If LenB(GmName) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
         Else
             Call WriteConsoleMsg(UserIndex, GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)

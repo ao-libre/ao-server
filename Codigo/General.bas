@@ -132,7 +132,7 @@ Call WriteBlockPosition(sndIndex, X, Y, CBool(b))
 End Sub
 
 
-Function HayAgua(Map As Integer, X As Integer, Y As Integer) As Boolean
+Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
 If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
     If MapData(Map, X, Y).Graphic(1) >= 1505 And _
@@ -834,7 +834,7 @@ For i = 1 To 33
 
 Arg = ReadField(i, cad, 44)
 
-If Arg = "" Then Exit Function
+If LenB(Arg) = 0 Then Exit Function
 
 Next i
 
