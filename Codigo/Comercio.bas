@@ -347,7 +347,7 @@ Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             'Calculamos el porc de inflacion del npc
             val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
             
-            Call WriteChangeNPCInventorySlot(UserIndex, thisObjv, val)
+            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, val)
         Else
              Dim DummyObj As Obj
              Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
