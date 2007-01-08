@@ -299,36 +299,6 @@ Function PoderEvasion(ByVal UserIndex As Integer) As Long
     End With
 End Function
 
-
-
-'Function PoderEvasion(ByVal UserIndex As Integer) As Long
-'Dim PoderEvasionTemp As Long
-
-'If UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) < 31 Then
-'    PoderEvasionTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) * _
-'    ModificadorEvasion(UserList(UserIndex).Clase))
-'ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) < 61 Then
-'        PoderEvasionTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) + _
-'        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad)) * _
-'        ModificadorEvasion(UserList(UserIndex).Clase))
-'ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) < 91 Then
-'        PoderEvasionTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) + _
-'        (2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-'        ModificadorEvasion(UserList(UserIndex).Clase))
-'Else
-'        PoderEvasionTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) + _
-'        (3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
-'        ModificadorEvasion(UserList(UserIndex).Clase))
-'End If
-'PoderEvasion = (PoderEvasionTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
-'
-'End Function
-'
-'
-'
-
-
-
 Function PoderAtaqueArma(ByVal UserIndex As Integer) As Long
 Dim PoderAtaqueTemp As Long
 
@@ -478,8 +448,8 @@ If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
             Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
             If Rechazo = True Then
                 'Se rechazo el ataque con el escudo
-                Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_ESCUDO)
-                Call SendData(SendTarget.ToIndex, UserIndex, 0, "7")
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_ESCUDO))
+                Call WriteBlockedWithShieldUser(UserIndex)
                 Call SubirSkill(UserIndex, Defensa)
             End If
         End If
@@ -587,7 +557,7 @@ daño = daño - Npclist(NpcIndex).Stats.def
 If daño < 0 Then daño = 0
 
 '[KEVIN]
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "U2" & daño)
+Call WriteUserHitNPC(UserIndex, daño)
 Call CalcularDarExp(UserIndex, NpcIndex, daño)
 Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP - daño
 '[/KEVIN]
@@ -677,25 +647,25 @@ Select Case Lugar
         End If
 End Select
 
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "N2" & Lugar & "," & daño)
+Call WriteNPCHitUser(UserIndex, Lugar, daño)
 
 If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
 
 If UserList(UserIndex).flags.Meditando Then
     If daño > Fix(UserList(UserIndex).Stats.MinHP / 100 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) * UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
         UserList(UserIndex).flags.Meditando = False
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "MEDOK")
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
+        Call WriteMeditateToggle(UserIndex)
+        Call WriteConsoleMsg(UserIndex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
         UserList(UserIndex).Char.FX = 0
         UserList(UserIndex).Char.loops = 0
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & 0 & "," & 0)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, 0, 0))
     End If
 End If
 
 'Muere el usuario
 If UserList(UserIndex).Stats.MinHP <= 0 Then
 
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "6") ' Le informamos que ha muerto ;)
+    Call WriteNPCKillUser(UserIndex) ' Le informamos que ha muerto ;)
     
     'Si lo mato un guardia
     If criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
@@ -784,18 +754,18 @@ Npclist(NpcIndex).CanAttack = 0
 If Npclist(NpcIndex).flags.Snd1 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).flags.Snd1)
 
 If NpcImpacto(NpcIndex, UserIndex) Then
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_IMPACTO)
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO))
     
     If UserList(UserIndex).flags.Meditando = False Then
         If UserList(UserIndex).flags.Navegando = 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
     End If
     
     Call NpcDaño(NpcIndex, UserIndex)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "ASH" & UserList(UserIndex).Stats.MinHP)
+    Call WriteUpdateHP(UserIndex)
     '¿Puede envenenar?
     If Npclist(NpcIndex).Veneno = 1 Then Call NpcEnvenenarUser(UserIndex)
 Else
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "N1")
+    Call WriteNPCSwing(UserIndex)
 End If
 
 
@@ -864,23 +834,23 @@ If Npclist(Atacante).flags.Snd1 > 0 Then Call SendData(SendTarget.ToNPCArea, Ata
 If NpcImpactoNpc(Atacante, Victima) Then
     
     If Npclist(Victima).flags.Snd2 > 0 Then
-        Call SendData(SendTarget.ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & Npclist(Victima).flags.Snd2)
+        Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(Npclist(Victima).flags.Snd2))
     Else
-        Call SendData(SendTarget.ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & SND_IMPACTO2)
+        Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO2))
     End If
 
     If Npclist(Atacante).MaestroUser > 0 Then
-        Call SendData(SendTarget.ToNPCArea, Atacante, Npclist(Atacante).Pos.Map, "TW" & SND_IMPACTO)
+        Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_IMPACTO))
     Else
-        Call SendData(SendTarget.ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & SND_IMPACTO)
+        Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO))
     End If
     Call NpcDañoNpc(Atacante, Victima)
     
 Else
     If Npclist(Atacante).MaestroUser > 0 Then
-        Call SendData(SendTarget.ToNPCArea, Atacante, Npclist(Atacante).Pos.Map, "TW" & SND_SWING)
+        Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING))
     Else
-        Call SendData(SendTarget.ToNPCArea, Victima, Npclist(Victima).Pos.Map, "TW" & SND_SWING)
+        Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING))
     End If
 End If
 
@@ -891,31 +861,31 @@ Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer
 If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then Exit Sub
 
 If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO Then
-   Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estás muy lejos para disparar." & FONTTYPE_FIGHT)
+   Call WriteConsoleMsg(UserIndex, "Estás muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
    Exit Sub
 End If
 
 If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
     If Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes sacar el seguro antes de poder atacar una mascota de un ciudadano." & FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "Debes sacar el seguro antes de poder atacar una mascota de un ciudadano.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
 End If
 
 If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
     If Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas." & FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
 End If
 
 If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal And UserList(UserIndex).flags.Seguro Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes quitar el seguro para atacar guardias." & FONTTYPE_FIGHT)
+    Call WriteConsoleMsg(UserIndex, "Debes quitar el seguro para atacar guardias.", FontTypeNames.FONTTYPE_FIGHT)
     Exit Sub
 End If
 
 If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
+    Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
     Exit Sub
 End If
 
@@ -924,16 +894,16 @@ Call NpcAtacado(NpcIndex, UserIndex)
 If UserImpactoNpc(UserIndex, NpcIndex) Then
     
     If Npclist(NpcIndex).flags.Snd2 > 0 Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).flags.Snd2)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
     Else
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_IMPACTO2)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO2))
     End If
     
     Call UserDañoNpc(UserIndex, NpcIndex)
    
 Else
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
-    Call SendData(SendTarget.ToIndex, UserIndex, 0, "U1")
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
+    Call WriteUserSwing(UserIndex)
 End If
 
 End Sub
@@ -947,7 +917,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     If UserList(UserIndex).Stats.MinSta >= 10 Then
         Call QuitarSta(UserIndex, RandomNumber(1, 10))
     Else
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Estas muy cansado para luchar." & FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -959,7 +929,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     
     'Exit if not legal
     If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
         Exit Sub
     End If
     
@@ -984,14 +954,14 @@ If IntervaloPermiteAtacar(UserIndex) Then
             
             If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
                MapInfo(Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.Map).Pk = False Then
-                    Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés atacar mascotas en zonas seguras" & FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "No podés atacar mascotas en zonas seguras", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
             End If
 
             Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex)
             
         Else
-            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podés atacar a este NPC" & FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
         End If
         
         Call SendUserStatsBox(UserIndex)
@@ -1000,7 +970,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     End If
     
     
-    Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & SND_SWING)
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
     Call SendUserStatsBox(UserIndex)
 End If
 
@@ -1073,9 +1043,11 @@ If UserList(VictimaIndex).Invent.EscudoEqpObjIndex > 0 Then
       Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
       If Rechazo = True Then
       'Se rechazo el ataque con el escudo
-              Call SendData(SendTarget.ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SND_ESCUDO)
-              Call SendData(SendTarget.ToIndex, AtacanteIndex, 0, "8")
-              Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "7")
+              Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_ESCUDO))
+              
+              Call WriteBlockedWithShieldOther(AtacanteIndex)
+              Call WriteBlockedWithShieldUser(VictimaIndex)
+              
               Call SubirSkill(VictimaIndex, Defensa)
       End If
     End If
@@ -1100,7 +1072,7 @@ Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaInde
 If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Sub
 
 If Distancia(UserList(AtacanteIndex).Pos, UserList(VictimaIndex).Pos) > MAXDISTANCIAARCO Then
-   Call SendData(SendTarget.ToIndex, AtacanteIndex, 0, "||Estás muy lejos para disparar." & FONTTYPE_FIGHT)
+   Call WriteConsoleMsg(AtacanteIndex, "Estás muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
    Exit Sub
 End If
 
@@ -1108,15 +1080,15 @@ End If
 Call UsuarioAtacadoPorUsuario(AtacanteIndex, VictimaIndex)
 
 If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
-    Call SendData(SendTarget.ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SND_IMPACTO)
+    Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_IMPACTO))
     
     If UserList(VictimaIndex).flags.Navegando = 0 Then Call SendData(SendTarget.ToPCArea, VictimaIndex, UserList(VictimaIndex).Pos.Map, "CFX" & UserList(VictimaIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
     
     Call UserDañoUser(AtacanteIndex, VictimaIndex)
 Else
-    Call SendData(SendTarget.ToPCArea, AtacanteIndex, UserList(AtacanteIndex).Pos.Map, "TW" & SND_SWING)
-    Call SendData(SendTarget.ToIndex, AtacanteIndex, 0, "U1")
-    Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "U3" & UserList(AtacanteIndex).name)
+    Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING))
+    Call WriteUserSwing(AtacanteIndex)
+    Call WriteUserAttackedSwing(VictimaIndex, UserList(AtacanteIndex).name)
 End If
 
 If UCase$(UserList(AtacanteIndex).clase) = "LADRON" Then Call Desarmar(AtacanteIndex, VictimaIndex)
@@ -1180,8 +1152,8 @@ Select Case Lugar
         End If
 End Select
 
-Call SendData(SendTarget.ToIndex, AtacanteIndex, 0, "N5" & Lugar & "," & daño & "," & UserList(VictimaIndex).name)
-Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "N4" & Lugar & "," & daño & "," & UserList(AtacanteIndex).name)
+Call WriteUserHittedUser(AtacanteIndex, Lugar, UserList(VictimaIndex).Char.CharIndex, daño)
+Call WriteUserHittedByUser(VictimaIndex, Lugar, UserList(AtacanteIndex).Char.CharIndex, daño)
 
 UserList(VictimaIndex).Stats.MinHP = UserList(VictimaIndex).Stats.MinHP - daño
 
@@ -1227,7 +1199,7 @@ If UserList(VictimaIndex).Stats.MinHP <= 0 Then
     Call ActStats(VictimaIndex, AtacanteIndex)
 Else
     'Está vivo - Actualizamos el HP
-    Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "ASH" & UserList(VictimaIndex).Stats.MinHP)
+    Call WriteUpdateHP(VictimaIndex)
 End If
 
 'Controla el nivel del usuario
@@ -1249,11 +1221,11 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
     
     If UserList(VictimIndex).flags.Meditando Then
         UserList(VictimIndex).flags.Meditando = False
-        Call SendData(SendTarget.ToIndex, VictimIndex, 0, "MEDOK")
-        Call SendData(SendTarget.ToIndex, VictimIndex, 0, "||Dejas de meditar." & FONTTYPE_INFO)
+        Call WriteMeditateToggle(VictimIndex)
+        Call WriteConsoleMsg(VictimIndex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
         UserList(VictimIndex).Char.FX = 0
         UserList(VictimIndex).Char.loops = 0
-        Call SendData(SendTarget.ToPCArea, VictimIndex, UserList(VictimIndex).Pos.Map, "CFX" & UserList(VictimIndex).Char.CharIndex & "," & 0 & "," & 0)
+        Call SendData(SendTarget.ToPCArea, VictimIndex, PrepareMessageCreateFX(UserList(VictimIndex).Char.CharIndex, 0, 0))
     End If
     
     If Not criminal(VictimIndex) Then
@@ -1289,7 +1261,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As
 Dim T As eTrigger6
 
 If UserList(VictimIndex).flags.Muerto = 1 Then
-    SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar a un espiritu" & FONTTYPE_INFO
+    Call WriteConsoleMsg(AttackerIndex, "No podes atacar a un espiritu", FontTypeNames.FONTTYPE_INFO)
     PuedeAtacar = False
     Exit Function
 End If
@@ -1306,41 +1278,41 @@ End If
 
 
 If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
-    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Esta es una zona segura, aqui no podes atacar otros usuarios." & FONTTYPE_WARNING)
+    Call WriteConsoleMsg(AttackerIndex, "Esta es una zona segura, aqui no podes atacar otros usuarios.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
 
 If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
     MapData(UserList(AttackerIndex).Pos.Map, UserList(AttackerIndex).Pos.X, UserList(AttackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
-    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||No podes pelear aqui." & FONTTYPE_WARNING)
+    Call WriteConsoleMsg(AttackerIndex, "No podes pelear aqui.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
 
 If (Not criminal(VictimIndex)) And (UserList(AttackerIndex).Faccion.ArmadaReal = 1) Then
-    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Los soldados del Ejercito Real tienen prohibido atacar ciudadanos." & FONTTYPE_WARNING)
+    Call WriteConsoleMsg(AttackerIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
 
 '[Barrin 17-12-03]
 If (UserList(VictimIndex).Faccion.FuerzasCaos = 1) And (UserList(AttackerIndex).Faccion.FuerzasCaos = 1) Then
-    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Los miembros de la legión oscura tienen prohibido atacarse entre sí." & FONTTYPE_WARNING)
+    Call WriteConsoleMsg(AttackerIndex, "Los miembros de la legión oscura tienen prohibido atacarse entre sí.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
 '[/Barrin]
 
 If UserList(AttackerIndex).flags.Muerto = 1 Then
-    SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar porque estas muerto" & FONTTYPE_INFO
+    Call WriteConsoleMsg(AttackerIndex, "No podes atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
     PuedeAtacar = False
     Exit Function
 End If
 
 If UserList(AttackerIndex).flags.Seguro Then
         If Not criminal(VictimIndex) Then
-                Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar ciudadanos, para hacerlo debes desactivar el seguro apretando la tecla S" & FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(AttackerIndex, "No podes atacar ciudadanos, para hacerlo debes desactivar el seguro apretando la tecla S", FontTypeNames.FONTTYPE_FIGHT)
                 Exit Function
         End If
 End If
@@ -1356,7 +1328,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
 If Npclist(NpcIndex).MaestroUser > 0 Then
     If Not criminal(AttackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
         If UserList(AttackerIndex).flags.Seguro Then
-            Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Para atacar mascotas de ciudadanos debes quitarte el seguro" & FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(AttackerIndex, "Para atacar mascotas de ciudadanos debes quitarte el seguro", FontTypeNames.FONTTYPE_FIGHT)
             PuedeAtacarNPC = False
             Exit Function
         End If
@@ -1364,7 +1336,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then
 End If
 
 If UserList(AttackerIndex).flags.Muerto = 1 Then
-    SendData SendTarget.ToIndex, AttackerIndex, 0, "||No podes atacar porque estas muerto" & FONTTYPE_INFO
+    Call WriteConsoleMsg(AttackerIndex, "No podes atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
     PuedeAtacarNPC = False
     Exit Function
 End If
@@ -1376,7 +1348,7 @@ End If
 
 If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
     Debug.Print "NO PEGA"
-    Call SendData(SendTarget.ToIndex, AttackerIndex, 0, "||Debes matar al resto del ejercito antes de atacar al rey!" & FONTTYPE_FIGHT)
+    Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
     PuedeAtacarNPC = False
     Exit Function
 End If
@@ -1470,8 +1442,8 @@ If ArmaObjInd > 0 Then
             
             If num < 60 Then
                 UserList(VictimaIndex).flags.Envenenado = 1
-                Call SendData(SendTarget.ToIndex, VictimaIndex, 0, "||" & UserList(AtacanteIndex).name & " te ha envenenado!!" & FONTTYPE_FIGHT)
-                Call SendData(SendTarget.ToIndex, AtacanteIndex, 0, "||Has envenenado a " & UserList(VictimaIndex).name & "!!" & FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimaIndex, UserList(AtacanteIndex).name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).name & "!!", FontTypeNames.FONTTYPE_FIGHT)
             End If
         End If
     End If
