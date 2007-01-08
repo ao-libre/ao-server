@@ -139,7 +139,7 @@ DebugSocket = Not DebugSocket
 End Sub
 
 Private Sub Command3_Click()
-Text1.Text = ""
+Text1.Text = vbNullString
 End Sub
 
 Private Sub Command4_Click()

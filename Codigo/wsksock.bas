@@ -408,7 +408,7 @@ End Function
     Dim S&, SelectOps&, dummy&
 #End If
     Dim sockin As sockaddr
-    SockReadBuffer$ = ""
+    SockReadBuffer$ = vbNullString
     sockin = saZero
     sockin.sin_family = AF_INET
     sockin.sin_port = htons(Port)
@@ -586,7 +586,7 @@ End Function
     Dim sa As sockaddr
     AddrLen = sockaddr_size
     If getpeername(S, sa, AddrLen) Then
-        GetPeerAddress = ""
+        GetPeerAddress = vbNullString
     Else
         GetPeerAddress = SockAddressToString(sa)
     End If
@@ -670,7 +670,7 @@ End Function
     szRet = String(32, 0)
     AddrLen = sockaddr_size
     If getsockname(S, sa, AddrLen) Then
-        GetSockAddress = ""
+        GetSockAddress = vbNullString
     Else
         GetSockAddress = SockAddressToString(sa)
     End If
@@ -883,7 +883,7 @@ Public Function kSendData(ByVal S%, vMessage As Variant) As Integer
 Public Function kSendData(ByVal S&, vMessage As Variant) As Long
 #End If
     Dim TheMsg() As Byte, sTemp$
-    TheMsg = ""
+    TheMsg = vbNullString
     Select Case VarType(vMessage)
         Case 8209   'byte array
             sTemp = vMessage

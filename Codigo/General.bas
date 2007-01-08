@@ -161,7 +161,7 @@ Dim i As Integer
 For i = 1 To TrashCollector.Count
     Dim d As cGarbage
     Set d = TrashCollector(1)
-    Call EraseObj(SendTarget.ToMap, 0, d.Map, 1, d.Map, d.X, d.Y)
+    Call EraseObj(True, 0, d.Map, 1, d.Map, d.X, d.Y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
 Next i
@@ -484,7 +484,7 @@ Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = 
 '*****************************************************************
 'Se fija si existe el archivo
 '*****************************************************************
-    FileExist = dir$(file, FileType) <> ""
+    FileExist = LenB(dir$(file, FileType)) <> 0
 End Function
 
 Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
@@ -1035,7 +1035,7 @@ Else
     
     UserList(UserIndex).Counters.Mimetismo = 0
     UserList(UserIndex).flags.Mimetizado = 0
-    Call ChangeUserChar(SendTarget.ToMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+    Call ChangeUserChar(SendTarget.toMap, UserIndex, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 End If
             
 End Sub

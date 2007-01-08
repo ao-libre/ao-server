@@ -146,7 +146,7 @@ Dim i           As Integer
             i = 1
             ML = guilds(guildIndex).GetMemberList(",")
             M = ReadField(i, ML, Asc(","))
-            While M <> vbNullString
+            While LenB(M) <> 0
 
                 'vamos a violar un poco de capas..
                 UI = NameIndex(M)
@@ -1422,7 +1422,7 @@ Dim NuevoGuildIndex     As Integer
 
     ViejoSolicitado = GetVar(CharPath & UserList(UserIndex).name & ".chr", "GUILD", "ASPIRANTEA")
 
-    If ViejoSolicitado <> vbNullString Then
+    If LenB(ViejoSolicitado) <> 0 Then
         'borramos la vieja solicitud
         ViejoGuildINdex = CInt(ViejoSolicitado)
         If ViejoGuildINdex <> 0 Then

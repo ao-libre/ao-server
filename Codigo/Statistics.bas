@@ -167,7 +167,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Bar"
@@ -181,7 +181,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Mag"
@@ -195,7 +195,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Pal"
@@ -209,7 +209,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Gue"
@@ -223,7 +223,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Cle"
@@ -237,7 +237,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlLvl_Caz"
@@ -251,7 +251,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     
@@ -271,7 +271,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Bar"
@@ -285,7 +285,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Mag"
@@ -299,7 +299,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Pal"
@@ -313,7 +313,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Gue"
@@ -327,7 +327,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Cle"
@@ -341,7 +341,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlRace_Caz"
@@ -355,7 +355,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     
@@ -376,7 +376,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlClass_Dar"
@@ -390,7 +390,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlClass_Dwa"
@@ -404,7 +404,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlClass_Gno"
@@ -418,7 +418,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Print #handle, "# name: fragLvlClass_Hum"
@@ -432,7 +432,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     
@@ -451,7 +451,7 @@ Public Sub DumpStatistics()
         Next i
         
         Print #handle, line
-        line = ""
+        line = vbNullString
     Next j
     
     Close handle

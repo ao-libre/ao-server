@@ -863,7 +863,7 @@ Select Case sndRoute
         Next LoopC
         Exit Sub
     
-    Case SendTarget.ToMap
+    Case SendTarget.toMap
         For LoopC = 1 To LastUser
             If (UserList(LoopC).ConnID <> -1) Then
                 If UserList(LoopC).flags.UserLogged Then
@@ -1235,7 +1235,7 @@ End If
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
 UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
-Call MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+Call MakeUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 
 Call WriteUserCharIndexInServer(UserIndex)
 ''[/el oso]
@@ -1464,20 +1464,20 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
 '*************************************************
     With UserList(UserIndex)
-        .name = ""
-        .modName = ""
-        .desc = ""
-        .DescRM = ""
+        .name = vbNullString
+        .modName = vbNullString
+        .desc = vbNullString
+        .DescRM = vbNullString
         .Pos.Map = 0
         .Pos.X = 0
         .Pos.Y = 0
-        .ip = ""
-        .RDBuffer = ""
-        .clase = ""
-        .email = ""
-        .genero = ""
-        .Hogar = ""
-        .raza = ""
+        .ip = vbNullString
+        .RDBuffer = vbNullString
+        .clase = vbNullString
+        .email = vbNullString
+        .genero = vbNullString
+        .Hogar = vbNullString
+        .raza = vbNullString
 
         .RandKey = 0
         .PrevCheckSum = 0
@@ -1555,7 +1555,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .TargetUser = 0
         .TipoPocion = 0
         .TomoPocion = False
-        .Descuento = ""
+        .Descuento = vbNullString
         .Hambre = 0
         .Sed = 0
         .Descansar = False
@@ -1655,7 +1655,7 @@ Call ResetUserBanco(UserIndex)
 With UserList(UserIndex).ComUsu
     .Acepto = False
     .Cant = 0
-    .DestNick = ""
+    .DestNick = vbNullString
     .DestUsu = 0
     .Objeto = 0
 End With
@@ -1685,7 +1685,7 @@ aN = UserList(UserIndex).flags.AtacadoPorNpc
 If aN > 0 Then
       Npclist(aN).Movement = Npclist(aN).flags.OldMovement
       Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
-      Npclist(aN).flags.AttackedBy = ""
+      Npclist(aN).flags.AttackedBy = vbNullString
 End If
 UserList(UserIndex).flags.AtacadoPorNpc = 0
 
@@ -1733,7 +1733,7 @@ End If
 
 'Borrar el personaje
 If UserList(UserIndex).Char.CharIndex > 0 Then
-    Call EraseUserChar(SendTarget.ToMap, UserIndex, Map, UserIndex)
+    Call EraseUserChar(True, UserIndex, Map, UserIndex)
 End If
 
 'Borrar mascotas

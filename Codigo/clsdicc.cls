@@ -117,7 +117,7 @@ Public Sub DumpAll()
 Dim i As Integer
 
 For i = 1 To MAX_ELEM
-    p_elementos(i).clave = ""
+    p_elementos(i).clave = vbNullString
     p_elementos(i).def = Null
 Next i
 p_cant = 0

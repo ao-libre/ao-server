@@ -16,7 +16,7 @@ Public Type tCOmercioUsuario
     'El tipo de datos de Cant ahora es Long (antes Integer)
     'asi se puede comerciar con oro > 32k
     '[CORREGIDO]
-    cant As Long 'Cuantos comerciar, cuantos objetos desea dar
+    Cant As Long 'Cuantos comerciar, cuantos objetos desea dar
     '[/CORREGIDO]
     Acepto As Boolean
 End Type
@@ -65,7 +65,7 @@ Dim ObjCant As Long
 '         de no poder comerciar con mas de 32k de oro.
 '         Ahora si funciona!!!
 
-ObjCant = UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.cant
+ObjCant = UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Cant
 If UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto = FLAGORO Then
     ObjInd = iORO
 Else
@@ -88,10 +88,10 @@ With UserList(UserIndex)
     End If
     
     .ComUsu.Acepto = False
-    .ComUsu.cant = 0
+    .ComUsu.Cant = 0
     .ComUsu.DestUsu = 0
     .ComUsu.Objeto = 0
-    .ComUsu.DestNick = ""
+    .ComUsu.DestNick = vbNullString
     .flags.Comerciando = False
 End With
 
@@ -140,12 +140,12 @@ End If
 
 If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
     Obj1.ObjIndex = iORO
-    If UserList(UserIndex).ComUsu.cant > UserList(UserIndex).Stats.GLD Then
+    If UserList(UserIndex).ComUsu.Cant > UserList(UserIndex).Stats.GLD Then
         Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
         TerminarAhora = True
     End If
 Else
-    Obj1.amount = UserList(UserIndex).ComUsu.cant
+    Obj1.amount = UserList(UserIndex).ComUsu.Cant
     Obj1.ObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).ObjIndex
     If Obj1.amount > UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).amount Then
         Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
@@ -154,12 +154,12 @@ Else
 End If
 If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     Obj2.ObjIndex = iORO
-    If UserList(OtroUserIndex).ComUsu.cant > UserList(OtroUserIndex).Stats.GLD Then
+    If UserList(OtroUserIndex).ComUsu.Cant > UserList(OtroUserIndex).Stats.GLD Then
         Call WriteConsoleMsg(OtroUserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
         TerminarAhora = True
     End If
 Else
-    Obj2.amount = UserList(OtroUserIndex).ComUsu.cant
+    Obj2.amount = UserList(OtroUserIndex).ComUsu.Cant
     Obj2.ObjIndex = UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).ObjIndex
     If Obj2.amount > UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).amount Then
         Call WriteConsoleMsg(OtroUserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
@@ -183,12 +183,12 @@ End If
 'pone el oro directamente en la billetera
 If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     'quito la cantidad de oro ofrecida
-    UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD - UserList(OtroUserIndex).ComUsu.cant
-    If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " solto oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
+    UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD - UserList(OtroUserIndex).ComUsu.Cant
+    If UserList(OtroUserIndex).ComUsu.Cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " solto oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.Cant)
     Call SendUserStatsBox(OtroUserIndex)
     'y se la doy al otro
-    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.cant
-    If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
+    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.Cant
+    If UserList(OtroUserIndex).ComUsu.Cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.Cant)
     Call SendUserStatsBox(UserIndex)
 Else
     'Quita el objeto y se lo da al otro
@@ -201,12 +201,12 @@ End If
 'pone el oro directamente en la billetera
 If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
     'quito la cantidad de oro ofrecida
-    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.cant
-    If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " solto oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
+    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.Cant
+    If UserList(UserIndex).ComUsu.Cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " solto oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.Cant)
     Call SendUserStatsBox(UserIndex)
     'y se la doy al otro
-    UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.cant
-    If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
+    UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.Cant
+    If UserList(UserIndex).ComUsu.Cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.Cant)
     Call SendUserStatsBox(OtroUserIndex)
 Else
     'Quita el objeto y se lo da al otro

@@ -680,7 +680,7 @@ If UserList(UserIndex).Stats.MinHP <= 0 Then
         If Npclist(NpcIndex).Stats.Alineacion = 0 Then
                     Npclist(NpcIndex).Movement = Npclist(NpcIndex).flags.OldMovement
                     Npclist(NpcIndex).Hostile = Npclist(NpcIndex).flags.OldHostil
-                    Npclist(NpcIndex).flags.AttackedBy = ""
+                    Npclist(NpcIndex).flags.AttackedBy = vbNullString
         End If
     End If
     

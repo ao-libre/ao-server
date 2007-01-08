@@ -185,8 +185,8 @@ If FileExist(f, vbNormal) Then
         f = BASE & i & ".for"
         Open f For Input Shared As #N
         Input #N, tit
-        men = ""
-        auxcad = ""
+        men = vbNullString
+        auxcad = vbNullString
         Do While Not EOF(N)
             Input #N, auxcad
             men = men & vbCrLf & auxcad
@@ -221,8 +221,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                     MapData(Map, X - 1, Y).Blocked = 0
                     
                     'Bloquea todos los mapas
-                    Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 0)
-                    Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 0)
+                    Call Bloquear(SendTarget.toMap, 0, Map, Map, X, Y, 0)
+                    Call Bloquear(SendTarget.toMap, 0, Map, Map, X - 1, Y, 0)
                     
                       
                     'Sonido
@@ -241,8 +241,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 MapData(Map, X - 1, Y).Blocked = 1
                 
                 
-                Call Bloquear(SendTarget.ToMap, 0, Map, Map, X - 1, Y, 1)
-                Call Bloquear(SendTarget.ToMap, 0, Map, Map, X, Y, 1)
+                Call Bloquear(SendTarget.toMap, 0, Map, Map, X - 1, Y, 1)
+                Call Bloquear(SendTarget.toMap, 0, Map, Map, X, Y, 1)
                 
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_PUERTA))
         End If
@@ -314,7 +314,7 @@ If exito = 1 Then
         Call WriteConsoleMsg(UserIndex, "Has prendido la fogata.", FontTypeNames.FONTTYPE_INFO)
         Call SendData(ToPCArea, UserIndex, PrepareMessagePlayFireSound())
         
-        Call MakeObj(ToMap, 0, Map, Obj, Map, X, Y)
+        Call MakeObj(True, 0, Map, Obj, Map, X, Y)
         
         'Las fogatas prendidas se deben eliminar
         Dim Fogatita As New cGarbage

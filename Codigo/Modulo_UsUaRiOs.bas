@@ -95,7 +95,7 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
 End If
 
 Call DarCuerpoDesnudo(UserIndex)
-Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call SendUserStatsBox(UserIndex)
 
 End Sub
@@ -155,8 +155,8 @@ End Sub
 Public Sub EnviarMiniEstadisticas(ByVal UserIndex As Integer)
     Call WriteMiniStats(UserIndex)
 End Sub
-
-Sub EraseUserChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, UserIndex As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub EraseUserChar(ByRef toMap As Boolean, sndIndex As Integer, sndMap As Integer, UserIndex As Integer)
 
 On Error GoTo ErrorHandler
    
@@ -170,7 +170,7 @@ On Error GoTo ErrorHandler
     End If
     
     'Le mandamos el mensaje para que borre el personaje a los clientes que estén en el mismo mapa
-    If sndRoute = SendTarget.ToMap Then
+    If toMap Then
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
         Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
     Else
@@ -189,7 +189,9 @@ ErrorHandler:
 
 End Sub
 
-Sub MakeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub MakeUserChar(ByRef toMap As Boolean, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+
 On Local Error GoTo hayerror
     Dim CharIndex As Integer
 
@@ -215,8 +217,8 @@ On Local Error GoTo hayerror
        
         bCr = criminal(UserIndex)
 
-        If klan <> "" Then
-            If sndRoute = SendTarget.ToIndex Then 'CHECK
+        If LenB(klan) <> 0 Then
+            If Not toMap Then 'CHECK
                 If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                     If UserList(UserIndex).showName Then
                         'CHECK:
@@ -230,12 +232,12 @@ On Local Error GoTo hayerror
                     'CHECK:
                     Call SendData(sndRoute, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & " <" & klan & ">" & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
                 End If
-            ElseIf sndRoute = SendTarget.ToMap Then
+            Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
                 Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
         Else 'if tiene clan
-            If sndRoute = SendTarget.ToIndex Then
+            If Not toMap Then
                 If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                     If UserList(UserIndex).showName Then
                         Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios)) 'CHECK: OK, el 999 y el IIf no me agradan para nada
@@ -245,7 +247,7 @@ On Local Error GoTo hayerror
                 Else
                     Call SendData(SendTarget.ToIndex, sndIndex, sndMap, "CC" & UserList(UserIndex).Char.body & "," & UserList(UserIndex).Char.Head & "," & UserList(UserIndex).Char.heading & "," & UserList(UserIndex).Char.CharIndex & "," & X & "," & Y & "," & UserList(UserIndex).Char.WeaponAnim & "," & UserList(UserIndex).Char.ShieldAnim & "," & UserList(UserIndex).Char.FX & "," & 999 & "," & UserList(UserIndex).Char.CascoAnim & "," & UserList(UserIndex).name & "," & bCr & "," & IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0))) 'CHECK: Ni siquiera lo intente
                 End If
-            ElseIf sndRoute = SendTarget.ToMap Then
+            Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
                 Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
@@ -1213,7 +1215,7 @@ On Error GoTo ErrorHandler
     If aN > 0 Then
         Npclist(aN).Movement = Npclist(aN).flags.OldMovement
         Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
-        Npclist(aN).flags.AttackedBy = ""
+        Npclist(aN).flags.AttackedBy = vbNullString
     End If
     
     '<<<< Paralisis >>>>
@@ -1246,7 +1248,7 @@ On Error GoTo ErrorHandler
         UserList(UserIndex).Counters.TiempoOculto = 0
         UserList(UserIndex).flags.invisible = 0
         'no hace falta encriptar este NOVER
-        Call SendData(SendTarget.ToMap, UserList(UserIndex).Pos.Map, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+        Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
@@ -1346,7 +1348,7 @@ On Error GoTo ErrorHandler
     'End If
     
     '<< Actualizamos clientes >>
-    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
+    Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
     Call SendUserStatsBox(UserIndex)
     
     
@@ -1452,7 +1454,7 @@ Dim OldY As Integer
     OldX = UserList(UserIndex).Pos.X
     OldY = UserList(UserIndex).Pos.Y
     
-    Call EraseUserChar(SendTarget.ToMap, 0, OldMap, UserIndex)
+    Call EraseUserChar(True, 0, OldMap, UserIndex)
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
@@ -1472,7 +1474,7 @@ Dim OldY As Integer
     UserList(UserIndex).Pos.Y = Y
     UserList(UserIndex).Pos.Map = Map
     
-    Call MakeUserChar(SendTarget.ToMap, 0, Map, UserIndex, Map, X, Y)
+    Call MakeUserChar(True, 0, Map, UserIndex, Map, X, Y)
     Call WriteUserCharIndexInServer(UserIndex)
     
     'Seguis invisible al pasar de mapa
@@ -1487,48 +1489,6 @@ Dim OldY As Integer
     
     Call WarpMascotas(UserIndex)
 End Sub
-
-Sub UpdateUserMap(ByVal UserIndex As Integer)
-
-Dim Map As Integer
-Dim X As Integer
-Dim Y As Integer
-
-'EnviarNoche UserIndex
-
-On Error GoTo 0
-
-Map = UserList(UserIndex).Pos.Map
-
-For Y = YMinMapSize To YMaxMapSize
-    For X = XMinMapSize To XMaxMapSize
-        If MapData(Map, X, Y).UserIndex > 0 And UserIndex <> MapData(Map, X, Y).UserIndex Then
-            Call MakeUserChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).UserIndex, Map, X, Y)
-            If UserList(MapData(Map, X, Y).UserIndex).flags.invisible = 1 Or UserList(MapData(Map, X, Y).UserIndex).flags.Oculto = 1 Then
-                Call WriteSetInvisible(UserIndex, UserList(MapData(Map, X, Y).UserIndex).Char.CharIndex, True)
-            End If
-
-        End If
-
-        If MapData(Map, X, Y).NpcIndex > 0 Then
-            Call MakeNPCChar(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
-        End If
-
-        If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
-            If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType <> eOBJType.otArboles Then
-                Call MakeObj(SendTarget.ToIndex, UserIndex, 0, MapData(Map, X, Y).ObjInfo, Map, X, Y)
-                If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otPuertas Then
-                          Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X, Y, MapData(Map, X, Y).Blocked)
-                          Call Bloquear(SendTarget.ToIndex, UserIndex, 0, Map, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
-                End If
-            End If
-        End If
-        
-    Next X
-Next Y
-
-End Sub
-
 
 Sub WarpMascotas(ByVal UserIndex As Integer)
 Dim i As Integer
@@ -1702,8 +1662,8 @@ If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
         UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
 End If
-Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
-Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+Call UsUaRiOs.EraseUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.MakeUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 End Sub
 
 Sub VolverCiudadano(ByVal UserIndex As Integer)
@@ -1722,7 +1682,7 @@ UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRe
 If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
     UserList(UserIndex).Reputacion.PlebeRep = MAXREP
 'Tenemos que actualizar el Tag del usuario. Esto no es lo optimo, ya que es un 1/0 que cambia en el paquete.
-Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex)
-Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+Call UsUaRiOs.EraseUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.MakeUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 End Sub
 

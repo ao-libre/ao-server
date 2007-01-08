@@ -240,14 +240,14 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                          If Not DelCaos Then
                             If criminal(UI) Then
                                    If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                    End If
                                    Exit Sub
                             ElseIf Npclist(NpcIndex).flags.AttackedBy = UserList(UI).name _
                                       And Not Npclist(NpcIndex).flags.Follow Then
                                   
                                   If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                   End If
                                   Exit Sub
                             End If
@@ -255,14 +255,14 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                             If Not criminal(UI) Then
                                    
                                    If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                    End If
                                    Exit Sub
                             ElseIf Npclist(NpcIndex).flags.AttackedBy = UserList(UI).name _
                                       And Not Npclist(NpcIndex).flags.Follow Then
                                   
                                   If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                   End If
                                   Exit Sub
                             End If
@@ -303,13 +303,13 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                         Call NpcLanzaUnSpell(NpcIndex, UI)
                     End If
                     If NpcAtacaUser(NpcIndex, MapData(nPos.Map, nPos.X, nPos.Y).UserIndex) Then
-                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                     End If
                     Exit Sub
                 End If
             ElseIf NPCI > 0 Then
                     If Npclist(NPCI).MaestroUser > 0 And Npclist(NPCI).flags.Paralizado = 0 Then
-                        Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                        Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                         Call SistemaCombate.NpcAtacaNpc(NpcIndex, NPCI, False)
                         Exit Sub
                     End If
@@ -343,7 +343,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             If NpcAtacaUser(NpcIndex, UI) Then
-                                Call ChangeNPCChar(SendTarget.ToMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                             End If
                             Exit Sub
                     End If
@@ -460,7 +460,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                             If Not criminal(Npclist(NpcIndex).MaestroUser) And Not criminal(UI) And (UserList(Npclist(NpcIndex).MaestroUser).flags.Seguro Or UserList(Npclist(NpcIndex).MaestroUser).Faccion.ArmadaReal = 1) Then
                                 Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado", FontTypeNames.FONTTYPE_INFO)
                                 Call FlushBuffer(Npclist(NpcIndex).MaestroUser) 'CHECK
-                                Npclist(NpcIndex).flags.AttackedBy = ""
+                                Npclist(NpcIndex).flags.AttackedBy = vbNullString
                                 Exit Sub
                             End If
                         End If
@@ -486,7 +486,7 @@ Else
                             If Not criminal(Npclist(NpcIndex).MaestroUser) And Not criminal(UI) And (UserList(Npclist(NpcIndex).MaestroUser).flags.Seguro Or UserList(Npclist(NpcIndex).MaestroUser).Faccion.ArmadaReal = 1) Then
                                 Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "La mascota no atacará a ciudadanos si eres miembro de la Armada Real o tienes el seguro activado", FontTypeNames.FONTTYPE_INFO)
                                 Call FlushBuffer(Npclist(NpcIndex).MaestroUser) 'CHECK
-                                Npclist(NpcIndex).flags.AttackedBy = ""
+                                Npclist(NpcIndex).flags.AttackedBy = vbNullString
                                 Call FollowAmo(NpcIndex)
                                 Exit Sub
                             End If
@@ -514,7 +514,7 @@ Private Sub RestoreOldMovement(ByVal NpcIndex As Integer)
 If Npclist(NpcIndex).MaestroUser = 0 Then
     Npclist(NpcIndex).Movement = Npclist(NpcIndex).flags.OldMovement
     Npclist(NpcIndex).Hostile = Npclist(NpcIndex).flags.OldHostil
-    Npclist(NpcIndex).flags.AttackedBy = ""
+    Npclist(NpcIndex).flags.AttackedBy = vbNullString
 End If
 
 End Sub

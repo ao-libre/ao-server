@@ -307,7 +307,7 @@ MaxLines = val(GetVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines"))
 ReDim MOTD(1 To MaxLines)
 For i = 1 To MaxLines
     MOTD(i).texto = GetVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & i)
-    MOTD(i).Formato = ""
+    MOTD(i).Formato = vbNullString
 Next i
 
 End Sub
@@ -959,7 +959,7 @@ Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String,
 Dim sSpaces As String ' This will hold the input that the program will retrieve
 Dim szReturn As String ' This will be the defaul value if the string is not found
   
-szReturn = ""
+szReturn = vbNullString
   
 sSpaces = Space$(EmptySpaces) ' This tells the computer how long the longest string can be
   
@@ -1156,7 +1156,7 @@ On Error GoTo errh
                     Npclist(MapData(Map, X, Y).NpcIndex).Pos.X = X
                     Npclist(MapData(Map, X, Y).NpcIndex).Pos.Y = Y
                             
-                    Call MakeNPCChar(SendTarget.ToMap, 0, 0, MapData(Map, X, Y).NpcIndex, 1, 1, 1)
+                    Call MakeNPCChar(True, 0, 0, MapData(Map, X, Y).NpcIndex, 1, 1, 1)
                 End If
             End If
             

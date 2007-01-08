@@ -196,7 +196,7 @@ Sub ResetNpcFlags(ByVal NpcIndex As Integer)
     With Npclist(NpcIndex).flags
         .AfectaParalisis = 0
         .AguaValida = 0
-        .AttackedBy = ""
+        .AttackedBy = vbNullString
         .Attacking = 0
         .BackUp = 0
         .Bendicion = 0
@@ -255,7 +255,7 @@ Sub ResetNpcCriatures(ByVal NpcIndex As Integer)
 Dim j As Integer
 For j = 1 To Npclist(NpcIndex).NroCriaturas
     Npclist(NpcIndex).Criaturas(j).NpcIndex = 0
-    Npclist(NpcIndex).Criaturas(j).NpcName = ""
+    Npclist(NpcIndex).Criaturas(j).NpcName = vbNullString
 Next j
 
 Npclist(NpcIndex).NroCriaturas = 0
@@ -266,7 +266,7 @@ Sub ResetExpresiones(ByVal NpcIndex As Integer)
 
 Dim j As Integer
 For j = 1 To Npclist(NpcIndex).NroExpresiones
-    Npclist(NpcIndex).Expresiones(j) = ""
+    Npclist(NpcIndex).Expresiones(j) = vbNullString
 Next j
 
 Npclist(NpcIndex).NroExpresiones = 0
@@ -309,7 +309,7 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).TargetNPC = 0
     Npclist(NpcIndex).TipoItems = 0
     Npclist(NpcIndex).Veneno = 0
-    Npclist(NpcIndex).desc = ""
+    Npclist(NpcIndex).desc = vbNullString
     
     
     Dim j As Integer
@@ -330,7 +330,7 @@ On Error GoTo errhandler
     Npclist(NpcIndex).flags.NPCActive = False
     
     If InMapBounds(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
-        Call EraseNPCChar(SendTarget.ToMap, 0, Npclist(NpcIndex).Pos.Map, NpcIndex)
+        Call EraseNPCChar(True, 0, Npclist(NpcIndex).Pos.Map, NpcIndex)
     End If
     
     'Nos aseguramos de que el inventario sea removido...
@@ -438,7 +438,7 @@ Dim Y As Integer
                     Npclist(nIndex).Pos.Map = Map
                     Npclist(nIndex).Pos.X = X
                     Npclist(nIndex).Pos.Y = Y
-                    Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
+                    Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
                     Exit Sub
                 Else
                     altpos.X = 50
@@ -448,7 +448,7 @@ Dim Y As Integer
                         Npclist(nIndex).Pos.Map = newpos.Map
                         Npclist(nIndex).Pos.X = newpos.X
                         Npclist(nIndex).Pos.Y = newpos.Y
-                        Call MakeNPCChar(SendTarget.ToMap, 0, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
+                        Call MakeNPCChar(True, 0, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
                         Exit Sub
                     Else
                         Call QuitarNPC(nIndex)
@@ -466,11 +466,11 @@ Dim Y As Integer
     End If
     
     'Crea el NPC
-    Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
+    Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
 
 End Sub
-
-Sub MakeNPCChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub MakeNPCChar(ByRef toMap As Boolean, sndIndex As Integer, sndMap As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 Dim CharIndex As Integer
 
     If Npclist(NpcIndex).Char.CharIndex = 0 Then
@@ -481,7 +481,7 @@ Dim CharIndex As Integer
     
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
-    If sndRoute = SendTarget.ToMap Then
+    If toMap Then
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
@@ -496,7 +496,7 @@ If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.body = body
     Npclist(NpcIndex).Char.Head = Head
     Npclist(NpcIndex).Char.heading = heading
-    If sndRoute = SendTarget.ToMap Then
+    If sndRoute = SendTarget.toMap Then
         Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     Else
         Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
@@ -504,8 +504,8 @@ If NpcIndex > 0 Then
 End If
 
 End Sub
-
-Sub EraseNPCChar(sndRoute As Byte, sndIndex As Integer, sndMap As Integer, ByVal NpcIndex As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub EraseNPCChar(ByRef toMap As Boolean, sndIndex As Integer, sndMap As Integer, ByVal NpcIndex As Integer)
 
 If Npclist(NpcIndex).Char.CharIndex <> 0 Then CharList(Npclist(NpcIndex).Char.CharIndex) = 0
 
@@ -520,7 +520,7 @@ End If
 MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
 
 'Actualizamos los cliente
-If sndRoute = SendTarget.ToMap Then
+If toMap Then
     Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 Else
     Call SendData(sndRoute, sndIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
@@ -691,7 +691,7 @@ X = Npclist(nIndex).Pos.X
 Y = Npclist(nIndex).Pos.Y
 
 'Crea el NPC
-Call MakeNPCChar(SendTarget.ToMap, 0, Map, nIndex, Map, X, Y)
+Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
 
 If FX Then
     Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessagePlayWave(SND_WARP))
@@ -912,7 +912,7 @@ End Sub
 Sub DoFollow(ByVal NpcIndex As Integer, ByVal UserName As String)
 
 If Npclist(NpcIndex).flags.Follow Then
-  Npclist(NpcIndex).flags.AttackedBy = ""
+  Npclist(NpcIndex).flags.AttackedBy = vbNullString
   Npclist(NpcIndex).flags.Follow = False
   Npclist(NpcIndex).Movement = Npclist(NpcIndex).flags.OldMovement
   Npclist(NpcIndex).Hostile = Npclist(NpcIndex).flags.OldHostil

@@ -93,7 +93,7 @@ If Not Me.IsEmpty Then
             m_size = 0
     End If
 Else
-    Pop = ""
+    Pop = vbNullString
     
 End If
 

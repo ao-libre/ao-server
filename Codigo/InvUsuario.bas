@@ -304,7 +304,7 @@ If num > 0 Then
         
         Obj.amount = num
         
-        Call MakeObj(SendTarget.ToMap, 0, Map, Obj, Map, X, Y)
+        Call MakeObj(True, 0, Map, Obj, Map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
         Call UpdateUserInv(False, UserIndex, Slot)
         
@@ -323,8 +323,8 @@ If num > 0 Then
 End If
 
 End Sub
-
-Sub EraseObj(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal num As Integer, ByVal Map As Byte, ByVal X As Integer, ByVal Y As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub EraseObj(ByRef toMap As Boolean, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal num As Integer, ByVal Map As Byte, ByVal X As Integer, ByVal Y As Integer)
 
 MapData(Map, X, Y).ObjInfo.amount = MapData(Map, X, Y).ObjInfo.amount - num
 
@@ -332,16 +332,16 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
     MapData(Map, X, Y).ObjInfo.ObjIndex = 0
     MapData(Map, X, Y).ObjInfo.amount = 0
     
-    If sndRoute = SendTarget.ToMap Then
+    If toMap Then
         Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
-   Else
+    Else
         Call SendData(sndRoute, sndIndex, PrepareMessageObjectDelete(X, Y))
     End If
 End If
 
 End Sub
-
-Sub MakeObj(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Obj As Obj, Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
+Sub MakeObj(ByRef toMap As Boolean, ByVal sndIndex As Integer, ByVal sndMap As Integer, Obj As Obj, Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
@@ -350,7 +350,7 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
     Else
         MapData(Map, X, Y).ObjInfo = Obj
         
-        If sndRoute = SendTarget.ToMap Then
+        If toMap Then
             Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         Else
             Call SendData(sndRoute, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
@@ -436,7 +436,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
             Call WriteConsoleMsg(UserIndex, "No puedo cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
         Else
             'Quitamos el objeto
-            Call EraseObj(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+            Call EraseObj(True, 0, UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
         End If
         
@@ -467,7 +467,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.WeaponEqpSlot = 0
         If Not UserList(UserIndex).flags.Mimetizado = 1 Then
             UserList(UserIndex).Char.WeaponAnim = NingunArma
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
         End If
     
     Case eOBJType.otFlechas
@@ -485,7 +485,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.ArmourEqpObjIndex = 0
         UserList(UserIndex).Invent.ArmourEqpSlot = 0
         Call DarCuerpoDesnudo(UserIndex, UserList(UserIndex).flags.Mimetizado = 1)
-        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+        Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
             
     Case eOBJType.otCASCO
         UserList(UserIndex).Invent.Object(Slot).Equipped = 0
@@ -493,7 +493,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.CascoEqpSlot = 0
         If Not UserList(UserIndex).flags.Mimetizado = 1 Then
             UserList(UserIndex).Char.CascoAnim = NingunCasco
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
         End If
     
     Case eOBJType.otESCUDO
@@ -502,7 +502,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.EscudoEqpSlot = 0
         If Not UserList(UserIndex).flags.Mimetizado = 1 Then
             UserList(UserIndex).Char.ShieldAnim = NingunEscudo
-            Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
         End If
 End Select
 
@@ -576,7 +576,7 @@ Select Case Obj.OBJType
                         UserList(UserIndex).CharMimetizado.WeaponAnim = NingunArma
                     Else
                         UserList(UserIndex).Char.WeaponAnim = NingunArma
-                        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                        Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                     End If
                     Exit Sub
                 End If
@@ -597,7 +597,7 @@ Select Case Obj.OBJType
                     UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
                 Else
                     UserList(UserIndex).Char.WeaponAnim = Obj.WeaponAnim
-                    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                    Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                 End If
        Else
             Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -663,7 +663,7 @@ Select Case Obj.OBJType
                 Call Desequipar(UserIndex, Slot)
                 Call DarCuerpoDesnudo(UserIndex, UserList(UserIndex).flags.Mimetizado = 1)
                 If Not UserList(UserIndex).flags.Mimetizado = 1 Then
-                    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                    Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                 End If
                 Exit Sub
             End If
@@ -682,7 +682,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).CharMimetizado.body = Obj.Ropaje
             Else
                 UserList(UserIndex).Char.body = Obj.Ropaje
-                Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
             End If
             UserList(UserIndex).flags.Desnudo = 0
             
@@ -701,7 +701,7 @@ Select Case Obj.OBJType
                     UserList(UserIndex).CharMimetizado.CascoAnim = NingunCasco
                 Else
                     UserList(UserIndex).Char.CascoAnim = NingunCasco
-                    Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                    Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                 End If
                 Exit Sub
             End If
@@ -720,7 +720,7 @@ Select Case Obj.OBJType
                 UserList(UserIndex).CharMimetizado.CascoAnim = Obj.CascoAnim
             Else
                 UserList(UserIndex).Char.CascoAnim = Obj.CascoAnim
-                Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
             End If
         Else
             Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -738,7 +738,7 @@ Select Case Obj.OBJType
                      UserList(UserIndex).CharMimetizado.ShieldAnim = NingunEscudo
                  Else
                      UserList(UserIndex).Char.ShieldAnim = NingunEscudo
-                     Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                     Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                  End If
                  Exit Sub
              End If
@@ -759,7 +759,7 @@ Select Case Obj.OBJType
              Else
                  UserList(UserIndex).Char.ShieldAnim = Obj.ShieldAnim
                  
-                 Call ChangeUserChar(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+                 Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
              End If
          Else
              Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)

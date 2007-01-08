@@ -239,7 +239,7 @@ Public Sub PurgarPenas()
 End Sub
 
 
-Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optional ByVal GmName As String = "")
+Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optional ByVal GmName As String = vbNullString)
         
         UserList(UserIndex).Counters.Pena = Minutos
        

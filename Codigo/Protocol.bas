@@ -1832,12 +1832,11 @@ Private Sub HandleSafeToggle(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Seguro Then
-            Call WriteSafeModeOff(UserIndex)
+            Call WriteConsoleMsg(UserIndex, "Escribe /SEG para quitar el seguro.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteSafeModeOn(UserIndex)
+            .flags.Seguro = Not .flags.Seguro
         End If
-        
-        .flags.Seguro = Not .flags.Seguro
     End With
 End Sub
 
@@ -2907,7 +2906,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
         If heading > 0 And heading < 5 Then
             .Char.heading = heading
-            Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
     End With
 End Sub
@@ -4657,7 +4656,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
             
             .Char.FX = 0
             .Char.loops = 0
-            Call SendData(SendTarget.ToMap, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
+            Call SendData(SendTarget.toMap, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
         End If
     End With
 End Sub
@@ -6268,8 +6267,8 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
             .showName = Not .showName 'Show / Hide the name
             
             'Ugly but works, and not being a common message it doen't really bother
-            Call UsUaRiOs.EraseUserChar(SendTarget.ToMap, 0, .Pos.Map, UserIndex)
-            Call UsUaRiOs.MakeUserChar(SendTarget.ToMap, 0, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+            Call UsUaRiOs.EraseUserChar(True, 0, .Pos.Map, UserIndex)
+            Call UsUaRiOs.MakeUserChar(True, 0, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
         End If
     End With
 End Sub
@@ -7233,7 +7232,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(SendTarget.toMap, 0, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_Head
@@ -7241,7 +7240,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.ToMap, 0, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(SendTarget.toMap, 0, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_CriminalsKilled
@@ -7698,7 +7697,7 @@ On Error GoTo errhandler
                 
                 Call DarCuerpoDesnudo(tUser)
                 
-                Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
             End With
             
             Call WriteUpdateHP(tUser)
@@ -8487,11 +8486,11 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.amount = 1
         ET.ObjIndex = 378
         
-        Call MakeObj(SendTarget.ToMap, 0, .Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(True, 0, .Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
         
         ET.amount = 1
         ET.ObjIndex = 651
-        Call MakeObj(SendTarget.ToMap, 0, mapa, ET, mapa, X, Y)
+        Call MakeObj(True, 0, mapa, ET, mapa, X, Y)
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
             .TileExit.Map = mapa
@@ -8533,10 +8532,10 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
                 Call LogGM(.name, "/DT: " & Map & "," & X & "," & Y, False)
                 
-                Call EraseObj(SendTarget.ToMap, 0, mapa, .ObjInfo.amount, mapa, X, Y)
+                Call EraseObj(True, 0, mapa, .ObjInfo.amount, mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
-                    Call EraseObj(SendTarget.ToMap, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                    Call EraseObj(True, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
                 End If
                 
                 .TileExit.Map = 0
@@ -8647,10 +8646,10 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         
         If midiID = 0 Then
             'Ponemos el default del mapa
-            Call SendData(SendTarget.ToMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
+            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
         Else
             'Ponemos el pedido por el GM
-            Call SendData(SendTarget.ToMap, mapa, PrepareMessagePlayMidi(midiID))
+            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(midiID))
         End If
     End With
 End Sub
@@ -8693,7 +8692,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         End If
         
         'Ponemos el pedido por el GM
-        Call SendData(SendTarget.ToMap, mapa, PrepareMessagePlayWave(waveID))
+        Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID))
     End With
 End Sub
 
@@ -8920,7 +8919,7 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
                         If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
-                            Call EraseObj(SendTarget.ToMap, UserIndex, .Pos.Map, 10000, .Pos.Map, X, Y)
+                            Call EraseObj(True, UserIndex, .Pos.Map, 10000, .Pos.Map, X, Y)
                         End If
                     End If
                 End If
@@ -9574,7 +9573,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Objeto.amount = 100
         Objeto.ObjIndex = tObj
-        Call MakeObj(SendTarget.ToMap, 0, .Pos.Map, Objeto, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(True, 0, .Pos.Map, Objeto, .Pos.Map, .Pos.X, .Pos.Y - 1)
     End With
 End Sub
 
@@ -9600,7 +9599,7 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        Call EraseObj(SendTarget.ToMap, UserIndex, .Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
+        Call EraseObj(True, UserIndex, .Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
     End With
 End Sub
 
@@ -9863,7 +9862,7 @@ Private Sub HandleTileBlockedToggle(ByVal UserIndex As Integer)
             MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked = 0
         End If
         
-        Call Bloquear(SendTarget.ToMap, UserIndex, .Pos.Map, .Pos.Map, .Pos.X, .Pos.Y, MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked)
+        Call Bloquear(SendTarget.toMap, UserIndex, .Pos.Map, .Pos.Map, .Pos.X, .Pos.Y, MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked)
     End With
 End Sub
 
