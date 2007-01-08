@@ -56,12 +56,6 @@ Begin VB.Form frmMain
       Left            =   1440
       Top             =   1020
    End
-   Begin VB.Timer CmdExec 
-      Enabled         =   0   'False
-      Interval        =   1
-      Left            =   960
-      Top             =   60
-   End
    Begin VB.Timer GameTimer 
       Enabled         =   0   'False
       Interval        =   40
@@ -474,12 +468,6 @@ errhandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
 End Sub
-
-
-
-
-
-
 Private Sub CMDDUMP_Click()
 On Error Resume Next
 
@@ -492,47 +480,8 @@ Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
 
 End Sub
 
-Private Sub CmdExec_Timer()
-Dim i As Integer
-Static N As Long
-
-On Error Resume Next ':(((
-
-N = N + 1
-
-For i = 1 To MaxUsers
-    If UserList(i).ConnID <> -1 And UserList(i).ConnIDValida Then
-        If Not UserList(i).CommandsBuffer.IsEmpty Then
-            Call HandleData(i, UserList(i).CommandsBuffer.Pop)
-        End If
-        If N >= 10 Then
-            If UserList(i).ColaSalida.Count > 0 Then ' And UserList(i).SockPuedoEnviar Then
-    #If UsarQueSocket = 1 Then
-                Call IntentarEnviarDatosEncolados(i)
-    '#ElseIf UsarQueSocket = 0 Then
-    '            Call WrchIntentarEnviarDatosEncolados(i)
-    '#ElseIf UsarQueSocket = 2 Then
-    '            Call ServIntentarEnviarDatosEncolados(i)
-    #ElseIf UsarQueSocket = 3 Then
-        'NADA, el control deberia ocuparse de esto!!!
-        'si la cola se llena, dispara un on close
-    #End If
-            End If
-        End If
-    End If
-Next i
-
-If N >= 10 Then
-    N = 0
-End If
-
-Exit Sub
-hayerror:
-
-End Sub
-
 Private Sub Command1_Click()
-Call SendData(SendTarget.ToAll, 0, 0, "!!" & BroadMsg.Text & ENDC)
+Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(BroadMsg.Text))
 End Sub
 
 Public Sub InitMain(ByVal f As Byte)
@@ -546,7 +495,7 @@ End If
 End Sub
 
 Private Sub Command2_Click()
-Call SendData(SendTarget.ToAll, 0, 0, "||Servidor> " & BroadMsg.Text & FONTTYPE_SERVER)
+Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & BroadMsg.Text, FontTypeNames.FONTTYPE_SERVER))
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -1179,11 +1128,12 @@ If UBound(T) > 0 Then
                 End If
             End If
         Else ' no encolamos los comandos (MUY VIEJO)
-              If UserList(MiDato).ConnID <> -1 Then
-                Call HandleData(MiDato, T(LoopC))
-              Else
+            If UserList(MiDato).ConnID <> -1 Then
+                Call UserList(MiDato).incomingData.WriteASCIIStringFixed(T(LoopC))
+                Call HandleIncomingData(MiDato)
+            Else
                 Exit Sub
-              End If
+            End If
         End If
     Next LoopC
 End If

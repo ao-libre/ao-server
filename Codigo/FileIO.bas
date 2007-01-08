@@ -1333,9 +1333,6 @@ FrmInterv.txtPuedeAtacar.Text = IntervaloUserPuedeAtacar
 frmMain.tLluvia.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia"))
 FrmInterv.txtIntervaloPerdidaStaminaLluvia.Text = frmMain.tLluvia.Interval
 
-frmMain.CmdExec.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTimerExec"))
-FrmInterv.txtCmdExec.Text = frmMain.CmdExec.Interval
-
 MinutosWs = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWS"))
 If MinutosWs < 60 Then MinutosWs = 180
 

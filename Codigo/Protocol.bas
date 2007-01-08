@@ -4001,7 +4001,8 @@ End Sub
 Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 01/08/07
+'Last Modification by: (liquid)
 '
 '***************************************************
 On Error GoTo errhandler
@@ -4018,14 +4019,13 @@ On Error GoTo errhandler
         Dim error As String
         Dim UserName As String
         Dim reason As String
-        Dim error As String
         Dim tUser As Integer
         
         UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
         
         If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, reason, error) Then
-            Call WriteConsoleMsg(UserIndex, 0, Arg3, FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         Else
             tUser = NameIndex(UserName)
             
@@ -4214,7 +4214,7 @@ On Error GoTo errhandler
         If Not modGuilds.a_NuevoAspirante(UserIndex, guild, application, error) Then
            Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         Else
-           Call WriteConsoleMsg(UserIndex, "Tu solicitud ha sido enviada. Espera prontas noticias del líder de " & GuildName & ".", FontTypeNames.FONTTYPE_GUILD)
+           Call WriteConsoleMsg(UserIndex, "Tu solicitud ha sido enviada. Espera prontas noticias del líder de " & guild & ".", FontTypeNames.FONTTYPE_GUILD)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -4248,7 +4248,7 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Call modGuilds.SendGuildDetails(buffer.ReadASCIIString())
+        Call modGuilds.SendGuildDetails(UserIndex, buffer.ReadASCIIString())
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -4281,7 +4281,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
             If LenB(UserList(i).name) <> 0 And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
                 Count = Count + 1
             End If
-        Next LoopC
+        Next i
         
         Call WriteConsoleMsg(UserIndex, "Número de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
     End With
@@ -4377,7 +4377,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
         
         'Dead people can't check their accounts
         If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, 0, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -4631,7 +4631,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         If .flags.Meditando Then
             .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
             
-            Call WriteConsoleMsg(UserIndex, 0, "Te estás concentrando. En " & TIEMPO_INICIOMEDITAR & " segundos comenzarás a meditar.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Te estás concentrando. En " & TIEMPO_INICIOMEDITAR & " segundos comenzarás a meditar.", FontTypeNames.FONTTYPE_INFO)
             
             .Char.loops = LoopAdEternum
             
@@ -5450,6 +5450,8 @@ On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
+        Dim N As Integer
+        
         Call buffer.CopyBuffer(.incomingData)
         
         'Remove packet ID
@@ -5666,7 +5668,7 @@ On Error GoTo errhandler
              Call WriteConsoleMsg(UserIndex, "El password debe tener al menos 6 caractéres.", FontTypeNames.FONTTYPE_INFO)
         Else
 #End If
-            Call WriteVar(CharPath & name & ".chr", "INIT", "Password", pass)
+            Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password", pass)
             
             'Everything is right, change password
             Call WriteConsoleMsg(UserIndex, "El password ha sido cambiado.", FontTypeNames.FONTTYPE_INFO)
@@ -5700,7 +5702,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         Dim amount As Integer
         
@@ -5718,7 +5720,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
         ElseIf amount < 1 Then
             Call WriteChatOverHead(UserIndex, "El mínimo de apuesta es 1 moneda.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         ElseIf amount > 5000 Then
-            Call WriteChatOverHead(UserIndex, "El máximo de apuesta es 5000 monedas.", Npclist(.flags.TargetNPC).Char.CharIndex)
+            Call WriteChatOverHead(UserIndex, "El máximo de apuesta es 5000 monedas.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         ElseIf .Stats.GLD < amount Then
             Call WriteChatOverHead(UserIndex, "No tienes esa cantidad.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         Else
@@ -5760,7 +5762,7 @@ Private Sub HandleInquiryVote(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         Dim opt As Byte
         
@@ -5785,7 +5787,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         Dim amount As Integer
         
@@ -5835,7 +5837,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
@@ -5886,11 +5888,11 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         Dim amount As Integer
         
-        amount = .outgoingData.ReadInteger()
+        amount = .incomingData.ReadInteger()
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
@@ -5977,16 +5979,18 @@ Private Sub HandleGuildFundate(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
+
+'CHECK: LO COLOCO SOLO ACA - Porque hay funciones handle que toman datos de outgoingData?, es esto un bug?
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         Dim clanType As eClanType
         Dim error As String
         
-        clanType = .outgoingData.ReadByte()
+        clanType = .incomingData.ReadByte()
         
-        Select Case UCase$(Trim(rData))
+        Select Case UCase$(Trim(clanType))
             Case eClanType.ct_RoyalArmy
                 .FundandoGuildAlineacion = ALINEACION_ARMADA
             Case eClanType.ct_Evil
@@ -6258,7 +6262,7 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
-        Call .outgoingData.ReadByte
+        Call .incomingData.ReadByte
         
         If .flags.EsRolesMaster Or .flags.Privilegios >= PlayerType.Dios Then
             .showName = Not .showName 'Show / Hide the name
@@ -6282,7 +6286,7 @@ Private Sub HandleOnlineRoyalArmy(ByVal UserIndex As Integer)
 '
 '***************************************************
     'Remove packet ID
-    Call UserList(UserIndex).outgoingData.ReadByte
+    Call UserList(UserIndex).incomingData.ReadByte
     
     Dim i As Long
     Dim list As String
@@ -6314,7 +6318,7 @@ Private Sub HandleOnlineChaosLegion(ByVal UserIndex As Integer)
 '
 '***************************************************
     'Remove packet ID
-    Call UserList(UserIndex).outgoingData.ReadByte
+    Call UserList(UserIndex).incomingData.ReadByte
     
     Dim i As Long
     Dim list As String
@@ -13653,6 +13657,27 @@ Public Function PrepareMessageGuildChat(ByVal chat As String) As String
         PrepareMessageGuildChat = .ReadASCIIStringFixed(.length)
     End With
 End Function
+
+''
+' Prepares the "ShowMessageBox" message and returns it.
+'
+' @param    Message Text to be displayed in the message box.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageShowMessageBox(ByVal chat As String) As String
+'***************************************************
+'Author: Fredy Horacio Treboux (liquid)
+'Last Modification: 01/08/07
+'Prepares the "ShowMessageBox" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.ShowMessageBox)
+        Call .WriteASCIIString(chat)
+        
+        PrepareMessageShowMessageBox = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
 
 ''
 ' Prepares the "PlayMidi" message and returns it.

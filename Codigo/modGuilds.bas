@@ -1271,6 +1271,7 @@ Public Function a_ObtenerRechazoDeChar(ByRef Aspirante As String) As String
 End Function
 
 Public Function a_RechazarAspirante(ByVal UserIndex As Integer, ByRef Nombre As String, ByRef motivo As String, ByRef refError As String) As Boolean
+'CHECK: El parámetro motivo, no se utiliza ¬¬
 Dim GI              As Integer
 Dim UI              As Integer
 Dim NroAspirante    As Integer

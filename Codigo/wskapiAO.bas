@@ -590,11 +590,12 @@ If UBound(T) > 0 Then
                 End If
             End If
         Else ' no encolamos los comandos (MUY VIEJO)
-              If UserList(Slot).ConnID <> -1 Then
-                Call HandleData(Slot, T(LoopC))
-              Else
+            If UserList(Slot).ConnID <> -1 Then
+                Call UserList(Slot).incomingData.WriteASCIIStringFixed(T(LoopC))
+                Call HandleIncomingData(Slot)
+            Else
                 Exit Sub
-              End If
+            End If
         End If
     Next LoopC
 End If

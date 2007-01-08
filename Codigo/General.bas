@@ -407,11 +407,6 @@ With frmMain
     .AutoSave.Enabled = True
     .tLluvia.Enabled = True
     .tPiqueteC.Enabled = True
-    If ClientsCommandsQueue <> 0 Then
-        .CmdExec.Enabled = True
-    Else
-        .CmdExec.Enabled = False
-    End If
     .GameTimer.Enabled = True
     .tLluviaEvent.Enabled = True
     .FX.Enabled = True

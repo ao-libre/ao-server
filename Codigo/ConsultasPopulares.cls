@@ -67,7 +67,7 @@ Dim i As Integer
     End If
 End Sub
 
-Public Function doVotar(ByVal UserIndex As Integer, opcion As Integer) As String
+Public Function doVotar(ByVal UserIndex As Integer, ByVal opcion As Integer) As String
 On Error GoTo errorh
 Dim YaVoto As Boolean
 Dim CharFile As String
