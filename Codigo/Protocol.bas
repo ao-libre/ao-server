@@ -148,6 +148,7 @@ Private Enum ServerPacketID
     TradeOK                 ' TRANSOK
     BankOK                  ' BANCOOK
     ChangeUserTradeSlot     ' COMUSUINV
+    SendNight               ' NOC
     
     'GM messages
     SpawnList               ' SPL
@@ -386,7 +387,7 @@ Private Enum ClientPacketID
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
     ShowServerForm          '/SHOW INT
-    Night                   '/NOCHE
+    night                   '/NOCHE
     KickAllChars            '/ECHARTODOSPJS
     RequestTCPStats         '/TCPESSTATS
     ReloadNPCs              '/RELOADNPCS
@@ -1124,7 +1125,7 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.ShowServerForm          '/SHOW INT
             Call HandleShowServerForm(UserIndex)
             
-        Case ClientPacketID.Night                   '/NOCHE
+        Case ClientPacketID.night                   '/NOCHE
             Call HandleNight(UserIndex)
         
         Case ClientPacketID.KickAllChars            '/ECHARTODOSPJS
@@ -13348,6 +13349,24 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex A
         Call .WriteInteger(ObjData(ObjIndex).MinHIT)
         Call .WriteInteger(ObjData(ObjIndex).MaxDef)
         Call .WriteLong(ObjData(ObjIndex).Valor \ 3)
+    End With
+End Sub
+
+''
+' Writes the "SendNight" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteSendNight(ByVal UserIndex As Integer, ByVal night As Boolean)
+'***************************************************
+'Author: Fredy Horacio Treboux (liquid)
+'Last Modification: 01/08/07
+'Writes the "SendNight" message to the given user's outgoing data buffer
+'***************************************************
+    With UserList(UserIndex).outgoingData
+        Call .WriteByte(ServerPacketID.SendNight)
+        Call .WriteBoolean(night)
     End With
 End Sub
 

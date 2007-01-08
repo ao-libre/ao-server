@@ -1606,10 +1606,9 @@ errhandler:
 End Sub
 
 Public Sub EnviarNoche(ByVal UserIndex As Integer)
-'CHECK: NO hay mensaje "NOC", en la lista. No se hasta que punto esto se usa tampoco ^^.
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOC" & IIf(DeNoche And (MapInfo(UserList(UserIndex).Pos.Map).Zona = Campo Or MapInfo(UserList(UserIndex).Pos.Map).Zona = Ciudad), "1", "0"))
-Call SendData(SendTarget.ToIndex, UserIndex, 0, "NOC" & IIf(DeNoche, "1", "0"))
-
+    'CHECK: Lo arregle, ahora, esta bien lo que hace?.. no me enterare hoy...
+    Call WriteSendNight(UserIndex, IIf(DeNoche And (MapInfo(UserList(UserIndex).Pos.Map).Zona = Campo Or MapInfo(UserList(UserIndex).Pos.Map).Zona = Ciudad), True, False))
+    Call WriteSendNight(UserIndex, IIf(DeNoche, True, False))
 End Sub
 
 Public Sub EcharPjsNoPrivilegiados()
