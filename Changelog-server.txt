@@ -151,8 +151,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 07/01/2007: MODULO_NPC.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 07/01/2007: Escribí el PrepareMessage de CharacterMove. (Maraxus)
  * 07/01/2007: preatorians.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
- * 08/01/2007: Corrigiendo bugs, y senddatas que faltaron.., todavia quedan en modUsuarios (los que marque con 'CHECK porq me canse) y en SistemaCombate.. todos.
+ * 08/01/2007: Corrigiendo bugs, y senddatas que faltaron.., todavia quedan en modUsuarios (los que marque con 'CHECK porq me canse) y en SistemaCombate.. todos. (liquid)
  * 08/01/2007: SistemaCombate.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 08/01/2007: Agregue algunas que faltaron en SistemaCombate. (liquid) 
  * 08/01/2007: Corregi un bug en el nuevo protocolo que hacia imposible descativar el seguro xD (NIGO)
-* 08/01/2007: Cambiadas MakeObj,EraseObj, y las correspondientes para usuarios y npc's, ahora toman la ruta como un booleano, True=Al Mapa, False=Al User.., arerglados algunos bugs, y reemplazados todas las asignaciones "" por vbnullstring... y las comparaciones a "" por lenb
+ * 08/01/2007: Cambiadas MakeObj,EraseObj, y las correspondientes para usuarios y npc's, ahora toman la ruta como un booleano, True=Al Mapa, False=Al User.., arerglados algunos bugs, y reemplazados todas las asignaciones "" por vbnullstring... y las comparaciones a "" por lenb. (liquid)
+ * 08/01/2007: Termine con los mensajes CharacterCreate que restaban en MoDuLo_Usuarios.bas. Puse algunos checks importantes. (Tavo)
+ 
