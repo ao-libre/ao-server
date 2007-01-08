@@ -751,13 +751,17 @@ End If
 
 Npclist(NpcIndex).CanAttack = 0
 
-If Npclist(NpcIndex).flags.Snd1 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & Npclist(NpcIndex).flags.Snd1)
+If Npclist(NpcIndex).flags.Snd1 > 0 Then
+    Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd1))
+End If
 
 If NpcImpacto(NpcIndex, UserIndex) Then
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO))
     
     If UserList(UserIndex).flags.Meditando = False Then
-        If UserList(UserIndex).flags.Navegando = 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "CFX" & UserList(UserIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
+        If UserList(UserIndex).flags.Navegando = 0 Then
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, FXSANGRE, 0))
+        End If
     End If
     
     Call NpcDaño(NpcIndex, UserIndex)
@@ -829,7 +833,9 @@ Else
     Exit Sub
 End If
 
-If Npclist(Atacante).flags.Snd1 > 0 Then Call SendData(SendTarget.ToNPCArea, Atacante, Npclist(Atacante).Pos.Map, "TW" & Npclist(Atacante).flags.Snd1)
+If Npclist(Atacante).flags.Snd1 > 0 Then
+    Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(Npclist(Atacante).flags.Snd1))
+End If
 
 If NpcImpactoNpc(Atacante, Victima) Then
     
@@ -894,7 +900,7 @@ Call NpcAtacado(NpcIndex, UserIndex)
 If UserImpactoNpc(UserIndex, NpcIndex) Then
     
     If Npclist(NpcIndex).flags.Snd2 > 0 Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
+        Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
     Else
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO2))
     End If
@@ -1065,6 +1071,7 @@ If UsuarioImpacto Then
    End If
 End If
 
+Call FlushBuffer(VictimaIndex) 'CHECK
 End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -1082,7 +1089,9 @@ Call UsuarioAtacadoPorUsuario(AtacanteIndex, VictimaIndex)
 If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
     Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_IMPACTO))
     
-    If UserList(VictimaIndex).flags.Navegando = 0 Then Call SendData(SendTarget.ToPCArea, VictimaIndex, UserList(VictimaIndex).Pos.Map, "CFX" & UserList(VictimaIndex).Char.CharIndex & "," & FXSANGRE & "," & 0)
+    If UserList(VictimaIndex).flags.Navegando = 0 Then
+        Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateFX(UserList(VictimaIndex).Char.CharIndex, FXSANGRE, 0))
+    End If
     
     Call UserDañoUser(AtacanteIndex, VictimaIndex)
 Else
@@ -1205,6 +1214,7 @@ End If
 'Controla el nivel del usuario
 Call CheckUserLevel(AtacanteIndex)
 
+Call FlushBuffer(VictimaIndex)
 End Sub
 
 Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer)
@@ -1240,6 +1250,8 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
     
     Call AllMascotasAtacanUser(AttackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, AttackerIndex)
+    
+    Call FlushBuffer(VictimIndex)
 End Sub
 
 Sub AllMascotasAtacanUser(ByVal victim As Integer, ByVal Maestro As Integer)
@@ -1395,7 +1407,7 @@ If ExpaDar > 0 Then
         UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
         If UserList(UserIndex).Stats.Exp > MAXEXP Then _
             UserList(UserIndex).Stats.Exp = MAXEXP
-        Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Has ganado " & ExpaDar & " puntos de experiencia." & FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "Has ganado " & ExpaDar & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
     Call CheckUserLevel(UserIndex)
@@ -1449,4 +1461,5 @@ If ArmaObjInd > 0 Then
     End If
 End If
 
+Call FlushBuffer(VictimaIndex)
 End Sub

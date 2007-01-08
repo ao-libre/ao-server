@@ -151,5 +151,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 07/01/2007: MODULO_NPC.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
  * 07/01/2007: Escribí el PrepareMessage de CharacterMove. (Maraxus)
  * 07/01/2007: preatorians.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
- * 07/01/2007: Corrigiendo bugs, y senddatas que faltaron.., todavia quedan en modUsuarios (los que marque con 'CHECK porq me canse) y en SistemaCombate.. todos.
+ * 08/01/2007: Corrigiendo bugs, y senddatas que faltaron.., todavia quedan en modUsuarios (los que marque con 'CHECK porq me canse) y en SistemaCombate.. todos.
  * 08/01/2007: SistemaCombate.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 08/01/2007: Agregue algunas que faltaron en SistemaCombate. (liquid) 
