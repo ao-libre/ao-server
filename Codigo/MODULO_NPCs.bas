@@ -104,7 +104,9 @@ On Error GoTo errhandler
    
     
    If UserIndex > 0 Then ' Lo mato un usuario?
-        If MiNPC.flags.Snd3 > 0 Then Call SendData(SendTarget.ToPCArea, UserIndex, UserList(UserIndex).Pos.Map, "TW" & MiNPC.flags.Snd3)
+        If MiNPC.flags.Snd3 > 0 Then
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MiNPC.flags.Snd3))
+        End If
         UserList(UserIndex).flags.TargetNPC = 0
         UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
         
@@ -485,7 +487,7 @@ Dim CharIndex As Integer
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
-        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterCreate(Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterCreate(Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0))
     End If
 
 End Sub
@@ -523,7 +525,7 @@ MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Po
 If toMap Then
     Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 Else
-    Call SendData(sndRoute, sndIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
+    Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 End If
 
 'Update la lista npc

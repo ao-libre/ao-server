@@ -174,7 +174,7 @@ On Error GoTo ErrorHandler
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
         Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
     Else
-        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
     End If
     
     MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0

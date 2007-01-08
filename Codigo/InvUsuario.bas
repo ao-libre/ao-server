@@ -335,7 +335,7 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
     If toMap Then
         Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
     Else
-        Call SendData(sndRoute, sndIndex, PrepareMessageObjectDelete(X, Y))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageObjectDelete(X, Y))
     End If
 End If
 
@@ -353,7 +353,7 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
         If toMap Then
             Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         Else
-            Call SendData(sndRoute, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
+            Call SendData(SendTarget.toMap, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
         End If
     End If
 End If

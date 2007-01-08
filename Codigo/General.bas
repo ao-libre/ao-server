@@ -123,9 +123,12 @@ UserList(UserIndex).flags.Desnudo = 1
 End Sub
 
 
-Sub Bloquear(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal X As Integer, ByVal Y As Integer, b As Byte)
+Sub Bloquear(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal X As Integer, ByVal Y As Integer, b As Byte)
 'b=1 bloquea el tile en (x,y)
 'b=0 desbloquea el tile indicado
+
+'CHECK: El parametro sndroute ni siquiera lo usa!! Y HACE UN WRITE!... Pero avaces es llamado con toMAP!! --- LO BORRE!
+'Deberia lo mismo que hice para MakeObj, lo hago mas tarde
 
 Call WriteBlockPosition(sndIndex, X, Y, CBool(b))
 
