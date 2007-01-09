@@ -1534,7 +1534,9 @@ On Error GoTo errhandler
         
         targetUserIndex = CharIndexToUserIndex(targetCharIndex)
         
-        If targetUserIndex = INVALID_INDEX Then
+        'Check: No sabia que valor podia tener INVALID_INDEX, asi que hice
+        'un if sencillo
+        If targetUserIndex < 1 Or targetUserIndex > LastUser Then
             Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
         Else
             If UserList(targetUserIndex).flags.Privilegios >= PlayerType.Dios And .flags.Privilegios < PlayerType.Dios Then
@@ -6847,11 +6849,12 @@ End Sub
 Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 01/09/07
+'Last modified by: Lucas Tavolaro Ortiz (Tavo)
+'I haven`t found a solution to split, so i make an array of names
 '***************************************************
     Dim i As Long
-    Dim names As String
+    Dim names() As String
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -6859,16 +6862,15 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         
         If .flags.EsRolesMaster Then Exit Sub
         
+        ReDim names(1 To LastUser) As String
+        
         For i = 1 To LastUser
             If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios = PlayerType.User Then
-                names = names & UserList(i).name & ","
+                names(i) = UserList(i).name
             End If
         Next i
         
-        If LenB(names) <> 0 Then _
-            names = Left$(names, Len(names) - 1)
-        
-        Call WriteUserNameList(UserIndex, Split(names, ","))
+        Call WriteUserNameList(UserIndex, names())
     End With
 End Sub
 
@@ -12217,6 +12219,7 @@ Public Sub WriteValidateClient(ByVal UserIndex As Integer)
         Call .WriteByte(ServerPacketID.ValidateClient)
         Call .WriteLong(UserList(UserIndex).RandKey)
         Call .WriteInteger(UserList(UserIndex).flags.ValCoDe)
+        'Check: The modulo "Encriptacion" doesn`t exist.
         Call .WriteASCIIStringFixed(Encriptacion.StringValidacion)
     End With
 End Sub

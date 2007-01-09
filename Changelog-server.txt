@@ -157,4 +157,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 08/01/2007: Corregi un bug en el nuevo protocolo que hacia imposible descativar el seguro xD (NIGO)
  * 08/01/2007: Cambiadas MakeObj,EraseObj, y las correspondientes para usuarios y npc's, ahora toman la ruta como un booleano, True=Al Mapa, False=Al User.., arerglados algunos bugs, y reemplazados todas las asignaciones "" por vbnullstring... y las comparaciones a "" por lenb. (liquid)
  * 08/01/2007: Termine con los mensajes CharacterCreate que restaban en MoDuLo_Usuarios.bas. Puse algunos checks importantes. (Tavo)
- 
+ * 09/01/2007: Termine con algunos errores de compilacion que quedaba y modifique HandleRequestUserList. (Tavo)
