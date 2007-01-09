@@ -8535,7 +8535,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         
         With MapData(mapa, X, Y)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(UserIndex).name, "/DT: " & Map & "," & X & "," & Y, False) 'CHECK: Tengan cuidado con los With Anidados..
+                Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y, False) 'CHECK: Tengan cuidado con los With Anidados..
                 
                 Call EraseObj(True, 0, mapa, .ObjInfo.amount, mapa, X, Y)
                 
@@ -8601,7 +8601,8 @@ On Error GoTo errhandler
         desc = buffer.ReadASCIIString()
         
         If .flags.EsRolesMaster And .flags.Privilegios >= PlayerType.Dios Then
-            tUser = NameIndex(.flags.TargetUser)
+            'tUser = NameIndex(.flags.TargetUser)
+            tUser = .flags.TargetUser 'CHECK; CHECK!!!..
             If tUser > 0 Then
                 UserList(tUser).DescRM = desc
             Else
@@ -10255,7 +10256,7 @@ Public Sub HandleNight(ByVal UserIndex As Integer)
         Dim i As Long
         
         For i = 1 To NumUsers
-            If UserList(i).UserLogged And UserList(i).ConnID > -1 Then
+            If UserList(i).flags.UserLogged And UserList(i).ConnID > -1 Then
                 Call EnviarNoche(i)
             End If
         Next i
@@ -10488,7 +10489,7 @@ Public Sub HandleDoBackUp(ByVal UserIndex As Integer)
         
         Call LogGM(.name, .name & " ha hecho un backup", False)
         
-        Call DoBackUp
+        Call ES.DoBackUp 'CHECK: Sino lo confunde con la id del paquete
     End With
 End Sub
 

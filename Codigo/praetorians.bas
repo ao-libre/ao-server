@@ -442,7 +442,7 @@ On Error GoTo errorh
     ''case 1 esta "harcodeado" en el doble for
     ''es remover invisibilidades
     Case 2          ''apocalipsis Rahma Nañarak O'al
-        Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageChatOverHead(Hechizos(Npclist(npcind).Spells(DAT_APOCALIPSIS)).PalabrasMagicas, Npclist(npcind).Char.CharIndex), vbCyan)
+        Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageChatOverHead(Hechizos(Npclist(npcind).Spells(DAT_APOCALIPSIS)).PalabrasMagicas, Npclist(npcind).Char.CharIndex, vbCyan))
         Call NpcLanzaSpellSobreUser2(npcind, BestTarget, Npclist(npcind).Spells(DAT_APOCALIPSIS)) ''SPELL 1 de Mago: Apocalipsis
     Case 3
     
@@ -1451,7 +1451,7 @@ mapa = Map
             Else
                 ''si me muevo abajo entro en loop. Aca el algoritmo falla
                 If Npclist(npcorig).CanAttack = 1 And (RandomNumber(1, 100) > 95) Then
-                    Call SendData(SendTarget.ToNPCArea, npcorig, Npclist(npcorig).Pos.Map, "||" & vbYellow & "°Maldito bastardo, ¡ ven aquí !°" & str(Npclist(npcorig).Char.CharIndex))
+                    Call SendData(SendTarget.ToNPCArea, npcorig, PrepareMessageChatOverHead("Maldito bastardo, ¡ ven aquí !", str(Npclist(npcorig).Char.CharIndex), vbYellow))
                     Npclist(npcorig).CanAttack = 0
                 End If
             End If

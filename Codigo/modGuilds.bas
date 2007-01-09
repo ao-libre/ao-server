@@ -361,6 +361,7 @@ Dim DummyString     As String
 End Function
 
 Public Sub SendGuildNews(ByVal UserIndex As Integer)
+Dim guildIndex  As Integer
 Dim enemiesCount    As Integer
 Dim i               As Integer
 Dim go As Integer
@@ -368,9 +369,11 @@ Dim go As Integer
     guildIndex = UserList(UserIndex).guildIndex
     If guildIndex = 0 Then Exit Sub
 
-    Dim enemies(1 To guilds(guildIndex).CantidadEnemys) As String
-    Dim allies(1 To guilds(guildIndex).CantidadAllies) As String
-
+    Dim enemies() As String
+    ReDim enemies(1 To guilds(guildIndex).CantidadEnemys) As String
+    Dim allies() As String
+    ReDim allies(1 To guilds(guildIndex).CantidadAllies) As String
+    
     i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.GUERRA)
     go = 1
     
@@ -871,7 +874,7 @@ Dim GI As Integer
     'listen to no guild at all
     If LenB(GuildName) = 0 And UserList(UserIndex).EscucheClan <> 0 Then
         'Quit listening to previous guild!!
-        Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan), FontTypeNames.FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD) 'CHECK: EscucheClan debe ser el guildindex del clan...
         guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
         Exit Function
     End If
@@ -887,7 +890,7 @@ Dim GI As Integer
                 Exit Function
             Else
                 'Quit listening to previous guild!!
-                Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guildIndex(UserList(UserIndex).EscucheClan), FontTypeNames.FONTTYPE_GUILD)
+                Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD) 'CHECK: EscucheClan debe ser el guildindex del clan...
                 guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
             End If
         End If
@@ -1220,7 +1223,13 @@ Dim GI              As Integer
     
 End Function
 
-Public Function r_ListaDePropuestas(ByVal UserIndex As Integer, ByVal Tipo As RELACIONES_GUILD)     'No return type allows to return arrays ;)
+Public Function r_ListaDePropuestas(ByVal UserIndex As Integer, ByVal Tipo As RELACIONES_GUILD) As String()
+'No return type allows to return arrays ;) (1)
+'*(1), thats true ('cause it returns a variant)... but it doesn't work if you don't actually return anything! XD
+'(2) It's also unnesesary, you can use As String(), to return an array..., and thats faster!
+'(3) Just DONT use the name of the function as an intermediate value container, an ENSURE that the assignment to that name, is the LAST statement.
+'Regards.. liquid
+
     Dim GI  As Integer
     Dim i   As Integer
     Dim proposalCount As Integer
@@ -1241,6 +1250,8 @@ Public Function r_ListaDePropuestas(ByVal UserIndex As Integer, ByVal Tipo As RE
             Next i
         End With
     End If
+    
+    r_ListaDePropuestas = proposals
 End Function
 
 Public Sub a_RechazarAspiranteChar(ByRef Aspirante As String, ByVal guild As Integer, ByRef Detalles As String)
