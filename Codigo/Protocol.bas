@@ -5982,7 +5982,6 @@ Private Sub HandleGuildFundate(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-'CHECK: LO COLOCO SOLO ACA - Porque hay funciones handle que toman datos de outgoingData?, es esto un bug?
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
@@ -10493,7 +10492,7 @@ Public Sub HandleDoBackUp(ByVal UserIndex As Integer)
         
         Call LogGM(.name, .name & " ha hecho un backup", False)
         
-        Call ES.DoBackUp 'CHECK: Sino lo confunde con la id del paquete
+        Call ES.DoBackUp 'Sino lo confunde con la id del paquete
     End With
 End Sub
 

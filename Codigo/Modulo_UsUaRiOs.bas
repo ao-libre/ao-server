@@ -101,7 +101,7 @@ Call SendUserStatsBox(UserIndex)
 End Sub
 
 
-Sub ChangeUserChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal UserIndex As Integer, _
+Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal UserIndex As Integer, _
                     ByVal body As Integer, ByVal Head As Integer, ByVal heading As Byte, _
                     ByVal Arma As Integer, ByVal Escudo As Integer, ByVal casco As Integer)
 
@@ -121,7 +121,7 @@ Sub ChangeUserChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndM
         UserList(UserIndex).Char.Head = Head
     End If
     
-    Call SendData(sndRoute, sndIndex, "CP" & UserList(UserIndex).Char.CharIndex & "," & body & "," & Head & "," & heading & "," & Arma & "," & Escudo & "," & UserList(UserIndex).Char.FX & "," & UserList(UserIndex).Char.loops & "," & casco) 'CHECK: CAmbiar aca, ya estoy medio ciego y no quiero mandarme cualquiera :)
+    Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
 End Sub
 
 Sub EnviarSubirNivel(ByVal UserIndex As Integer, ByVal Puntos As Integer)
