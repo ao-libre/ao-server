@@ -13407,36 +13407,6 @@ Public Sub WriteSpawnList(ByVal UserIndex As Integer, ByRef npcNames() As String
 End Sub
 
 ''
-' Writes the "AddSOSMsg" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @param    SOSMessages List of pending SOS requests.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteAddSOSMsg(ByVal UserIndex As Integer, ByRef SOSMessages() As String)
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Writes the "AddSOSMsg" message to the given user's outgoing data buffer
-'***************************************************
-    Dim i As Long
-    Dim Tmp As String
-    
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.AddSOSMsg)
-        
-        For i = LBound(SOSMessages()) To UBound(SOSMessages())
-            Tmp = Tmp & SOSMessages(i) & SEPARATOR
-        Next i
-        
-        If Len(Tmp) Then _
-            Tmp = Left$(Tmp, Len(Tmp) - 1)
-        
-        Call .WriteASCIIString(Tmp)
-    End With
-End Sub
-
-''
 ' Writes the "ShowSOSForm" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
