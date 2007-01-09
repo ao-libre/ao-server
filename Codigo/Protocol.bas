@@ -6853,7 +6853,7 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
 'Last modified by: Lucas Tavolaro Ortiz (Tavo)
 'I haven`t found a solution to split, so i make an array of names
 '***************************************************
-    Dim i As Long
+    Dim i As Long, a As Integer
     Dim names() As String
     
     With UserList(UserIndex)
@@ -6863,10 +6863,12 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         If .flags.EsRolesMaster Then Exit Sub
         
         ReDim names(1 To LastUser) As String
+        a = 1
         
         For i = 1 To LastUser
             If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios = PlayerType.User Then
-                names(i) = UserList(i).name
+                names(a) = UserList(i).name
+                a = a + 1
             End If
         Next i
         
