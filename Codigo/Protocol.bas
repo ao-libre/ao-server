@@ -12220,8 +12220,9 @@ Public Sub WriteValidateClient(ByVal UserIndex As Integer)
         Call .WriteByte(ServerPacketID.ValidateClient)
         Call .WriteLong(UserList(UserIndex).RandKey)
         Call .WriteInteger(UserList(UserIndex).flags.ValCoDe)
-        'Check: The modulo "Encriptacion" doesn`t exist.
-        Call .WriteASCIIStringFixed(Encriptacion.StringValidacion)
+        #If SeguridadAlkon Then
+            Call .WriteASCIIStringFixed(Encriptacion.StringValidacion)
+        #End If
     End With
 End Sub
 
