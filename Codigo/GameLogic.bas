@@ -787,8 +787,3 @@ EsObjetoFijo = OBJType = eOBJType.otForos Or _
                OBJType = eOBJType.otYacimiento
 
 End Function
-
-Public Function CharIndexToUserIndex(ByVal UserIndex As Integer) As Integer
-'TODO: Add the code here!!!
-
-End Function

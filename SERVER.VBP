@@ -63,6 +63,7 @@ Class=clsIniReader; Codigo\clsIniReader.cls
 Module=Statistics; Codigo\Statistics.bas
 Module=Protocol; Codigo\Protocol.bas
 Module=modSendData; Codigo\modSendData.bas
+Module=Characters; Codigo\Characters.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
