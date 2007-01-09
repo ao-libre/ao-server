@@ -1543,38 +1543,42 @@ On Error GoTo errhandler
         
         targetUserIndex = CharIndexToUserIndex(targetCharIndex)
         
-        'Check: No sabia que valor podia tener INVALID_INDEX, asi que hice
-        'un if sencillo
-        If targetUserIndex < 1 Or targetUserIndex > LastUser Then
-            Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
+        If .flags.Muerto Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. ", FontTypeNames.FONTTYPE_INFO)
         Else
-            If UserList(targetUserIndex).flags.Privilegios >= PlayerType.Dios And .flags.Privilegios < PlayerType.Dios Then
-                'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
-                Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
-            
-            ElseIf .flags.Privilegios = PlayerType.User And UserList(targetUserIndex).flags.Privilegios > PlayerType.User Then
-                'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
-                Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
-            
-            ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
-                Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
-            
+            'Check: No sabia que valor podia tener INVALID_INDEX, asi que hice
+            'un if sencillo
+            If targetUserIndex < 1 Or targetUserIndex > LastUser Then
+                Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
-                '[Consejeros & GMs]
-                If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
-                    Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios = PlayerType.Consejero)
-                End If
+                If UserList(targetUserIndex).flags.Privilegios >= PlayerType.Dios And .flags.Privilegios < PlayerType.Dios Then
+                    'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
+                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
+            
+                ElseIf .flags.Privilegios = PlayerType.User And UserList(targetUserIndex).flags.Privilegios > PlayerType.User Then
+                    'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
+                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
+            
+                ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
+            
+                Else
+                    '[Consejeros & GMs]
+                    If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
+                        Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios = PlayerType.Consejero)
+                    End If
                 
-                If LenB(chat) <> 0 Then
-                    'Analize chat...
-                    Call Statistics.ParseChat(chat)
+                    If LenB(chat) <> 0 Then
+                        'Analize chat...
+                        Call Statistics.ParseChat(chat)
                     
-                    Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
-                    Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
+                        Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
+                        Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
                     
-                    '[CDT 17-02-2004]
-                    If .flags.Privilegios < PlayerType.SemiDios Then
-                        Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, targetCharIndex, vbYellow))
+                        '[CDT 17-02-2004]
+                        If .flags.Privilegios < PlayerType.SemiDios Then
+                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, targetCharIndex, vbYellow))
+                        End If
                     End If
                 End If
             End If
@@ -4812,7 +4816,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
                 If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+                    Call WriteChatOverHead(UserIndex, "No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 End If
                 
                 Exit Sub
