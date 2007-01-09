@@ -123,14 +123,20 @@ UserList(UserIndex).flags.Desnudo = 1
 End Sub
 
 
-Sub Bloquear(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndMap As Integer, Map As Integer, ByVal X As Integer, ByVal Y As Integer, b As Byte)
-'b=1 bloquea el tile en (x,y)
-'b=0 desbloquea el tile indicado
+Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal b As Boolean)
+'b ahora es boolean,
+'b=true bloquea el tile en (x,y)
+'b=false desbloquea el tile en (x,y)
+'toMap = true -> Envia los datos a todo el mapa
+'toMap = false -> Envia los datos al user
+'Unifique los tres parametros (sndIndex,sndMap y map) en sndIndex... pero de todas formas, el mapa jamas se indica.. eso esta bien asi?
+'Puede llegar a ser, que se quiera mandar el mapa, habria que agregar un nuevo parametro y modificar.. lo quite porque no se usaba ni aca ni en el cliente :s
 
-'CHECK: El parametro sndroute ni siquiera lo usa!! Y HACE UN WRITE!... Pero avaces es llamado con toMAP!! --- LO BORRE!
-'Deberia lo mismo que hice para MakeObj, lo hago mas tarde
-
-Call WriteBlockPosition(sndIndex, X, Y, CBool(b))
+If toMap Then
+    Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(X, Y, b))
+Else
+    Call WriteBlockPosition(sndIndex, X, Y, b)
+End If
 
 End Sub
 
@@ -966,7 +972,6 @@ If UserList(UserIndex).flags.UserLogged Then
                 Dim modifi As Long
                 modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 3)
                 Call QuitarSta(UserIndex, modifi)
-'                Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, busca pronto refugio de la lluvia!!." & FONTTYPE_INFO)
                 Call SendUserStatsBox(UserIndex)
     End If
 End If
@@ -1011,7 +1016,6 @@ Else
     modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
     Call QuitarSta(UserIndex, modifi)
     Call WriteUpdateSta(UserIndex)
-    'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||¡¡Has perdido stamina, si no te abrigas rapido perderas toda!!." & FONTTYPE_INFO)
   End If
   
   UserList(UserIndex).Counters.Frio = 0

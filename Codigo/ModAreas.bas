@@ -244,8 +244,8 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         Call WriteObjectCreate(UserIndex, ObjData(TempInt).GrhIndex, X, Y)
                         
                         If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
-                            Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X, Y, MapData(Map, X, Y).Blocked)
-                            Call Bloquear(SendTarget.ToIndex, UserIndex, 0, CInt(Map), X - 1, Y, MapData(Map, X - 1, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X, Y, MapData(Map, X, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                         End If
                     End If
                 End If

@@ -490,7 +490,7 @@ Dim Temps   As String
 End Sub
 
 Public Function YaVoto(ByRef Votante) As Boolean
-    YaVoto = LenB((Trim$(GetVar(VOTACIONESFILE, "VOTOS", Votante))) <> 0)
+    YaVoto = ((LenB(Trim$(GetVar(VOTACIONESFILE, "VOTOS", Votante)))) <> 0)
 End Function
 
 Private Function ContarVotos(ByRef CantGanadores As Integer) As String

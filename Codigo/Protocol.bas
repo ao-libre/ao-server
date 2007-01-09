@@ -8535,7 +8535,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         
         With MapData(mapa, X, Y)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(.name, "/DT: " & Map & "," & X & "," & Y, False)
+                Call LogGM(UserList(UserIndex).name, "/DT: " & Map & "," & X & "," & Y, False) 'CHECK: Tengan cuidado con los With Anidados..
                 
                 Call EraseObj(True, 0, mapa, .ObjInfo.amount, mapa, X, Y)
                 
@@ -9225,7 +9225,7 @@ On Error GoTo errhandler
             Else
                 With UserList(tUser)
                     If .flags.PertAlCons > 0 Then
-                        Call writeMessageConsoleMsg(tUser, "Has sido echado en el consejo de Banderbill", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(tUser, "Has sido echado en el consejo de Banderbill", FontTypeNames.FONTTYPE_TALK)
                         .flags.PertAlCons = 0
                         
                         Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
@@ -9867,7 +9867,7 @@ Private Sub HandleTileBlockedToggle(ByVal UserIndex As Integer)
             MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked = 0
         End If
         
-        Call Bloquear(SendTarget.toMap, UserIndex, .Pos.Map, .Pos.Map, .Pos.X, .Pos.Y, MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked)
+        Call Bloquear(True, .Pos.Map, .Pos.X, .Pos.Y, MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked)
     End With
 End Sub
 
@@ -12266,7 +12266,7 @@ Public Sub WriteCreateFX(ByVal UserIndex As Integer, ByVal CharIndex As Integer,
 'Writes the "CreateFX" message to the given user's outgoing data buffer
 '***************************************************
     Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateFX(CharIndex, FX, FXLoops))
-End Function
+End Sub
 
 ''
 ' Writes the "UpdateUserStats" message to the given user's outgoing data buffer.
@@ -13450,7 +13450,7 @@ Public Sub WriteShowSOSForm(ByVal UserIndex As Integer)
         
         For i = 1 To Ayuda.Longitud
             Tmp = Tmp & Ayuda.VerElemento(i) & SEPARATOR
-        Next N
+        Next i
         
         If LenB(Tmp) <> 0 Then _
             Tmp = Left$(Tmp, Len(Tmp) - 1)
@@ -13797,6 +13797,31 @@ Public Function PrepareMessageObjectDelete(ByVal X As Byte, ByVal Y As Byte) As 
         
         PrepareMessageObjectDelete = .ReadASCIIStringFixed(.length)
     End With
+End Function
+
+''
+' Prepares the "BlockPosition" message and returns it.
+'
+' @param    X X coord of the tile to block/unblock.
+' @param    Y Y coord of the tile to block/unblock.
+' @param    Blocked Blocked status of the tile
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessageBlockPosition(ByVal X As Byte, ByVal Y As Byte, ByVal Blocked As Boolean) As String
+'***************************************************
+'Author: Fredy Horacio Treboux (liquid)
+'Last Modification: 01/08/07
+'Prepares the "BlockPosition" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.BlockPosition)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        Call .WriteBoolean(Blocked)
+        
+        PrepareMessageBlockPosition = .ReadASCIIStringFixed(.length)
+    End With
+    
 End Function
 
 ''

@@ -1327,12 +1327,12 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As 
     GI = UserList(UserIndex).guildIndex
     
     If GI <= 0 Or GI > CANTIDADDECLANES Then
-        Call Protocol.WriteConsoleMsg(UserIndex, "No perteneces a ningún clan", FONTTYPE_INFO)
+        Call Protocol.WriteConsoleMsg(UserIndex, "No perteneces a ningún clan", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
     If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
-        Call Protocol.WriteConsoleMsg(UserIndex, "No eres el líder de tu clan", FONTTYPE_INFO)
+        Call Protocol.WriteConsoleMsg(UserIndex, "No eres el líder de tu clan", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -1350,7 +1350,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As 
     
     If NroAsp = 0 Then
         If InStr(1, guilds(GI).GetMemberList("."), Personaje, vbTextCompare) <= 0 Then
-            Call Protocol.WriteConsoleMsg(UserIndex, "El personaje no es ni aspirante ni miembro del clan", FONTTYPE_INFO)
+            Call Protocol.WriteConsoleMsg(UserIndex, "El personaje no es ni aspirante ni miembro del clan", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
     End If

@@ -545,7 +545,7 @@ If Hechizos(H).Mimetiza = 1 Then
         .Char.ShieldAnim = UserList(tU).Char.ShieldAnim
         .Char.WeaponAnim = UserList(tU).Char.WeaponAnim
     
-        Call ChangeUserChar(SendTarget.ToMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
     End With
    
    Call InfoHechizo(UserIndex)
@@ -999,10 +999,6 @@ Dim tempChr As Integer
     
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
 tempChr = UserList(UserIndex).flags.TargetUser
-      
-'If UserList(UserIndex).Name = "EL OSO" Then
-'    Call SendData(SendTarget.ToIndex, UserIndex, 0, "|| le tiro el hechizo " & H & " a " & UserList(tempChr).Name & FONTTYPE_VENENO)
-'End If
       
       
 'Hambre

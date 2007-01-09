@@ -221,8 +221,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                     MapData(Map, X - 1, Y).Blocked = 0
                     
                     'Bloquea todos los mapas
-                    Call Bloquear(SendTarget.toMap, 0, Map, Map, X, Y, 0)
-                    Call Bloquear(SendTarget.toMap, 0, Map, Map, X - 1, Y, 0)
+                    Call Bloquear(True, Map, X, Y, 0)
+                    Call Bloquear(True, Map, X - 1, Y, 0)
                     
                       
                     'Sonido
@@ -241,8 +241,8 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 MapData(Map, X - 1, Y).Blocked = 1
                 
                 
-                Call Bloquear(SendTarget.toMap, 0, Map, Map, X - 1, Y, 1)
-                Call Bloquear(SendTarget.toMap, 0, Map, Map, X, Y, 1)
+                Call Bloquear(True, Map, X - 1, Y, 1)
+                Call Bloquear(True, Map, X, Y, 1)
                 
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_PUERTA))
         End If

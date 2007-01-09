@@ -1115,7 +1115,6 @@ If UserList(UserIndex).flags.Navegando = 1 Then
 End If
 
 If criminal(UserIndex) Then
-    'Call SendData(SendTarget.ToIndex, UserIndex, 0, "||Miembro de las fuerzas del caos > Seguro desactivado <" & FONTTYPE_FIGHT)
     Call WriteSafeModeOff(UserIndex)
     UserList(UserIndex).flags.Seguro = False
 Else

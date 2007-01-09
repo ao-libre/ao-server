@@ -293,11 +293,6 @@ If num > 0 Then
         If UserList(UserIndex).Invent.Object(Slot).Equipped = 1 Then Call Desequipar(UserIndex, Slot)
         Obj.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
-'        If ObjData(Obj.ObjIndex).Newbie = 1 And EsNewbie(UserIndex) Then
-'            Call SendData(SendTarget.ToIndex, UserIndex, 0, "||No podes tirar el objeto." & FONTTYPE_INFO)
-'            Exit Sub
-'        End If
-        
         If num + MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount > MAX_INVENTORY_OBJS Then
             num = MAX_INVENTORY_OBJS - MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount
         End If
