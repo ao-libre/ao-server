@@ -700,83 +700,75 @@ End If
 #End If
 End Sub
 
-Public Function EnviarDatosASlot(ByVal UserIndex As Integer, Datos As String) As Long
+''
+' Send an string to a Slot
+'
+' @param userIndex The index of the User
+' @param Datos The string that will be send
+' @remarks If UsarQueSocket is 3 it won`t use the clsByteQueue
+
+Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As String) As Long
+'***************************************************
+'Author: Unknown
+'Last Modification: 01/10/07
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'Now it uses the clsByteQueue class and don`t make a FIFO Queue of String
+'***************************************************
 
 #If UsarQueSocket = 1 Then '**********************************************
     On Error GoTo Err
     
     Dim Ret As Long
     
-    
-    
     Ret = WsApiEnviar(UserIndex, Datos)
     
     If Ret <> 0 And Ret <> WSAEWOULDBLOCK Then
+        ' Close the socket avoiding any critical error
         Call CloseSocketSL(UserIndex)
         Call Cerrar_Usuario(UserIndex)
-    End If
-    EnviarDatosASlot = Ret
+    ElseIf Ret = WSAEWOULDBLOCK Then
+        ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
+        Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
     Exit Function
     
 Err:
         'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("EnviarDatosASlot:: ERR Handler. userindex=" & UserIndex & " datos=" & Datos & " UL?/CId/CIdV?=" & UserList(UserIndex).flags.UserLogged & "/" & UserList(UserIndex).ConnID & "/" & UserList(UserIndex).ConnIDValida & " ERR: " & Err.Description)
 
 #ElseIf UsarQueSocket = 0 Then '**********************************************
-
-    Dim Encolar As Boolean
-    Encolar = False
     
-    EnviarDatosASlot = 0
-    
-    If UserList(UserIndex).ColaSalida.Count <= 0 Then
-        If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
-            If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
-                UserList(UserIndex).SockPuedoEnviar = False
-                Encolar = True
-            Else
-                Call Cerrar_Usuario(UserIndex)
-            End If
-        End If
-    Else
-        Encolar = True
-    End If
-    
-    If Encolar Then
-        Debug.Print "Encolando..."
-        UserList(UserIndex).ColaSalida.Add Datos
-    End If
-
-#ElseIf UsarQueSocket = 2 Then '**********************************************
-
-Dim Encolar As Boolean
-Dim Ret As Long
-    
-    Encolar = False
-    
-    '//
-    '// Valores de retorno:
-    '//                     0: Todo OK
-    '//                     1: WSAEWOULDBLOCK
-    '//                     2: Error critico
-    '//
-    If UserList(UserIndex).ColaSalida.Count <= 0 Then
-        Ret = frmMain.Serv.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos))
-        If Ret = 1 Then
-            Encolar = True
-        ElseIf Ret = 2 Then
-            Call CloseSocketSL(UserIndex)
+    If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
+        If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
+            ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
+            UserList(UserIndex).SockPuedoEnviar = False
+            Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
+        Else
+            'Close the socket avoiding any critical error
             Call Cerrar_Usuario(UserIndex)
         End If
-    Else
-        Encolar = True
+    End If
+#ElseIf UsarQueSocket = 2 Then '**********************************************
+
+    'Return value for this Socket:
+    '--0) OK
+    '--1) WSAEWOULDBLOCK
+    '--2) ERROR
+    
+    Dim Ret As Long
+
+    Ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
+            
+    If Ret = 1 Then
+        ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
+        Call .outgoingData.WriteASCIIStringFixed(Datos)
+    ElseIf Ret = 2 Then
+        'Close socket avoiding any critical error
+        Call CloseSocketSL(UserIndex)
+        Call Cerrar_Usuario(UserIndex)
     End If
     
-    If Encolar Then
-        Debug.Print "Encolando..."
-        UserList(UserIndex).ColaSalida.Add Datos
-    End If
 
 #ElseIf UsarQueSocket = 3 Then
+    'THIS SOCKET DOESN`T USE THE BYTE QUEUE CLASS
     Dim rv As Long
     'al carajo, esto encola solo!!! che, me aprobará los
     'parciales también?, este control hace todo solo!!!!
