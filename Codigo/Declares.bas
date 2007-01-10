@@ -787,7 +787,6 @@ Public Type ObjData
     texto As String
     
     'Clases que no tienen permitido usar este obj
-    'CHECK: Cuando se carga esto, hay que recorrer listadeclases.. y eso...
     ClaseProhibida(1 To NUMCLASES) As eClass
     
     Snd1 As Integer

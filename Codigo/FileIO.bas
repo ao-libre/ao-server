@@ -708,11 +708,11 @@ For Object = 1 To NumObjDatas
     'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
     Dim i As Integer
     Dim n As Integer
-    Dim s As String
+    Dim S As String
     For i = 1 To NUMCLASES
-        s = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
-        n = 0
-        Do While UCase$(ListaClases(n)) <> s
+        S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
+        n = 1
+        Do While UCase$(ListaClases(n)) <> S
             n = n + 1
         Loop
         ObjData(Object).ClaseProhibida(i) = n

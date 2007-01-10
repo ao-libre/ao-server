@@ -12772,7 +12772,9 @@ Public Sub WriteMiniStats(ByVal UserIndex As Integer)
         Call .WriteInteger(UserList(UserIndex).Stats.NPCsMuertos)
         
         'CHECK CHECK: ESTO ESTA ESCRIBIENDO LA CLASE COMO UN STRING!!!; SUPONGO QUE EN CLIENTE HAY QUE CAMBIARLO TAMBIEN EHH!
-        Call .WriteASCIIString(UserList(UserIndex).clase)
+        '(FIXED)
+        'Call .WriteASCIIString(UserList(UserIndex).clase)
+        Call .WriteByte(UserList(UserIndex).clase)
         Call .WriteLong(UserList(UserIndex).Counters.Pena)
         Call .WriteLong(UserList(UserIndex).Reputacion.Promedio)
     End With
