@@ -270,10 +270,11 @@ End Sub
 Sub CheckUserLevel(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 05/27/2006
+'Last modified: 01/10/2007
 'Checkea que el usuario no halla alcanzado el siguiente nivel,
 'de lo contrario le da la vida, mana, etc, correspodiente.
 '07/08/2006 Integer - Modificacion de los valores
+'01/10/2007 Tavo - Corregido el BUG de STAT_MAXELV
 '*************************************************
 
 On Error GoTo errhandler
@@ -287,18 +288,26 @@ Dim AumentoHP As Integer
 Dim WasNewbie As Boolean
 
 '¿Alcanzo el maximo nivel?
-If UserList(UserIndex).Stats.ELV = STAT_MAXELV Then
+If UserList(UserIndex).Stats.ELV >= STAT_MAXELV Then
     UserList(UserIndex).Stats.Exp = 0
     UserList(UserIndex).Stats.ELU = 0
     Exit Sub
 End If
-
+    
 WasNewbie = EsNewbie(UserIndex)
 
 'Si exp >= then Exp para subir de nivel entonce subimos el nivel
 'If UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU Then
 Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
+    'Checkea otra vez, esto sucede si tiene mas EXP y puede saltarse el maximo
+    'nivel
+    If UserList(UserIndex).Stats.ELV >= STAT_MAXELV Then
+        UserList(UserIndex).Stats.Exp = 0
+        UserList(UserIndex).Stats.ELU = 0
+        Exit Sub
+    End If
+
     'Store it!
     Call Statistics.UserLevelUp(UserIndex)
     

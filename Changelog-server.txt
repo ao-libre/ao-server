@@ -163,4 +163,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/01/2007: Corregi un bug en "/MEMBERLIST" que dejaba a cualquiera que lo use ver la lista de cualquier clan. (NIGO)
  * 10/01/2007: EnviarDatosASlot no encola mas y utiliza la Byte Queue (Tavo)
  * 10/01/2007: Todo rastro de ColaSalida ha sido borrado y remplazado por el outgoingData Buffer en los casos necesarios (Tavo)
- * 10/01/2007: BUG #1622069 y #1477130 reparados. (Tavo)
+ * 10/01/2007: BUG #1622069, #1477130 y #1479156 reparados. (Tavo)
