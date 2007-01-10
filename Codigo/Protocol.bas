@@ -6360,8 +6360,8 @@ End Sub
 Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 01/10/07
+'BUG #1622069 repare
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
@@ -6394,7 +6394,7 @@ On Error GoTo errhandler
             For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
                 For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
                     For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
-                        If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, X, Y) Then
+                        If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Then
                             Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
                             Exit For
                         End If

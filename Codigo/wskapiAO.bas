@@ -200,7 +200,7 @@ Dim Ret As Long
 Dim Tmp As String
 
 Dim S As Long, E As Long
-Dim N As Integer
+Dim n As Integer
     
 Dim Dale As Boolean
 Dim UltError As Long
@@ -262,8 +262,8 @@ Case 1025
 
     Case FD_READ
         
-        N = BuscaSlotSock(S)
-        If N < 0 And S <> SockListen Then
+        n = BuscaSlotSock(S)
+        If n < 0 And S <> SockListen Then
             'Call apiclosesocket(s)
             Call WSApiCloseSocket(S)
             Exit Function
@@ -286,20 +286,20 @@ Case 1025
                 Ret = SIZE_RCVBUF
             Else
                 Debug.Print "Error en Recv: " & GetWSAErrorString(UltError)
-                Call LogApiSock("Error en Recv: N=" & N & " S=" & S & " Str=" & GetWSAErrorString(UltError))
+                Call LogApiSock("Error en Recv: N=" & n & " S=" & S & " Str=" & GetWSAErrorString(UltError))
                 
                 'no hay q llamar a CloseSocket() directamente,
                 'ya q pueden abusar de algun error para
                 'desconectarse sin los 10segs. CREEME.
             '    Call C l o s e Socket(N)
             
-                Call CloseSocketSL(N)
-                Call Cerrar_Usuario(N)
+                Call CloseSocketSL(n)
+                Call Cerrar_Usuario(n)
                 Exit Function
             End If
         ElseIf Ret = 0 Then
-            Call CloseSocketSL(N)
-            Call Cerrar_Usuario(N)
+            Call CloseSocketSL(n)
+            Call Cerrar_Usuario(n)
         End If
         
         'Call WSAAsyncSelect(s, hWndMsg, ByVal 1025, ByVal (FD_READ Or FD_WRITE Or FD_CLOSE Or FD_ACCEPT))
@@ -308,19 +308,19 @@ Case 1025
         
         'Call LogApiSock("WndProc:FD_READ:N=" & N & ":TMP=" & Tmp)
         
-        Call EventoSockRead(N, Tmp)
+        Call EventoSockRead(n, Tmp)
         
     Case FD_CLOSE
-        N = BuscaSlotSock(S)
+        n = BuscaSlotSock(S)
         If S <> SockListen Then Call apiclosesocket(S)
         
-        Call LogApiSock("WndProc:FD_CLOSE:N=" & N & ":Err=" & WSAGetAsyncError(lParam))
+        Call LogApiSock("WndProc:FD_CLOSE:N=" & n & ":Err=" & WSAGetAsyncError(lParam))
         
-        If N > 0 Then
+        If n > 0 Then
             Call BorraSlotSock(S)
-            UserList(N).ConnID = -1
-            UserList(N).ConnIDValida = False
-            Call EventoSockClose(N)
+            UserList(n).ConnID = -1
+            UserList(n).ConnIDValida = False
+            Call EventoSockClose(n)
         End If
         
     End Select
@@ -412,39 +412,6 @@ errhandler:
 
 #End If
 End Sub
-
-
-Public Sub IntentarEnviarDatosEncolados(ByVal N As Integer)
-#If UsarQueSocket = 1 Then
-On Error GoTo errhandler
-
-Dim Ret As Long
-Dim auxiliaryBuffer As clsByteQueue
-
-If UserList(N).outgoingData.length > 0 Then
-    Call auxiliaryBuffer.CopyBuffer(UserList(N).outgoingData)
-    
-    Ret = WsApiEnviar(N, auxiliaryBuffer.ReadASCIIStringFixed(auxiliaryBuffer.length))
-    If Ret <> 0 Then
-        'Si hay un WSAEWOULDBLOCK el outgoingData Buffer queda como antes
-        If Not Ret = WSAEWOULDBLOCK Then
-            'y aca que hacemo' ?? help! i need somebody, help!
-            Debug.Print "ERROR AL ENVIAR EL DATO DESDE LA COLA " & Ret & ": " & GetWSAErrorString(Ret)
-            Call LogApiSock("IntentarEnviarDatosEncolados: N=" & N & " " & GetWSAErrorString(Ret))
-            Call CloseSocketSL(N)
-            Call Cerrar_Usuario(N)
-        End If
-    Else
-        Call UserList(N).outgoingData.CopyBuffer(auxiliaryBuffer)
-    End If
-End If
-
-errhandler:
-Set auxiliaryBuffer = Nothing
-
-#End If
-End Sub
-
 
 Public Sub EventoSockAccept(ByVal SockID As Long)
 #If UsarQueSocket = 1 Then
@@ -561,13 +528,13 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 #End If
 End Sub
 
-Public Sub EventoSockRead(ByVal Slot As Integer, ByRef datos As String)
+Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
 #If UsarQueSocket = 1 Then
 
 Dim T() As String
 Dim LoopC As Long
 
-UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & datos
+UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & Datos
 
 T = Split(UserList(Slot).RDBuffer, ENDC)
 If UBound(T) > 0 Then
