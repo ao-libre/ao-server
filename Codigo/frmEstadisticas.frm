@@ -146,10 +146,10 @@ If cboUsusColas.ListCount > 0 Then _
 
 For LoopC = 1 To LastUser
     If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-        If UserList(LoopC).ColaSalida.Count > 0 Then
+        If UserList(LoopC).outgoingData.length > 0 Then
             N = N + 1
-            M = M + UserList(LoopC).ColaSalida.Count
-            cboUsusColas.AddItem UserList(LoopC).Name
+            M = M + UserList(LoopC).outgoingData.length
+            cboUsusColas.AddItem UserList(LoopC).name
         End If
     End If
 Next LoopC
@@ -190,7 +190,7 @@ Call ActualizaStats
 
 End Sub
 
-Private Sub lblStat_Click(Index As Integer)
+Private Sub lblStat_Click(index As Integer)
 Call ActualizaStats
 
 End Sub

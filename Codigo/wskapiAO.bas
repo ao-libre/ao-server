@@ -21,7 +21,6 @@ Private Const SD_BOTH As Long = &H2
 
 
 Private Const MAX_TIEMPOIDLE_COLALLENA = 1 'minutos
-Private Const MAX_COLASALIDA_COUNT = 800
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
@@ -348,23 +347,19 @@ Retorno = 0
 'Debug.Print ">>>> " & str
 
 If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
-    If ((UserList(Slot).ColaSalida.Count = 0)) Or (Not Encolar) Then
+    If UserList(Slot).outgoingData.length = 0 Then
         Ret = send(ByVal UserList(Slot).ConnID, ByVal str, ByVal Len(str), ByVal 0)
         If Ret < 0 Then
             UltError = Err.LastDllError
             If UltError = WSAEWOULDBLOCK Then
                 UserList(Slot).SockPuedoEnviar = False
-                If Encolar Then
-                    UserList(Slot).ColaSalida.Add str 'Metelo en la cola Vite'
-                    'LogCustom ("Encolados datos:" & str)
-                End If
+                Call UserList(Slot).outgoingData.WriteASCIIStringFixed(str)
             End If
             Retorno = UltError
         End If
     Else
-        If UserList(Slot).ColaSalida.Count < MAX_COLASALIDA_COUNT Or UserList(Slot).Counters.IdleCount < MAX_TIEMPOIDLE_COLALLENA Then
-            UserList(Slot).ColaSalida.Add str 'Metelo en la cola Vite'
-            
+        If UserList(Slot).Counters.IdleCount < MAX_TIEMPOIDLE_COLALLENA Then
+            Call UserList(Slot).outgoingData.WriteASCIIStringFixed(str)
         Else
             Retorno = -1
         End If
@@ -421,30 +416,31 @@ End Sub
 
 Public Sub IntentarEnviarDatosEncolados(ByVal N As Integer)
 #If UsarQueSocket = 1 Then
+On Error GoTo errhandler
 
-Dim Dale As Boolean
 Dim Ret As Long
+Dim auxiliaryBuffer As clsByteQueue
 
-Dale = UserList(N).ColaSalida.Count > 0
-Do While Dale
-    Ret = WsApiEnviar(N, UserList(N).ColaSalida.Item(1), False)
+If UserList(N).outgoingData.length > 0 Then
+    Call auxiliaryBuffer.CopyBuffer(UserList(N).outgoingData)
+    
+    Ret = WsApiEnviar(N, auxiliaryBuffer.ReadASCIIStringFixed(auxiliaryBuffer.length))
     If Ret <> 0 Then
-        If Ret = WSAEWOULDBLOCK Then
-            Dale = False
-        Else
+        'Si hay un WSAEWOULDBLOCK el outgoingData Buffer queda como antes
+        If Not Ret = WSAEWOULDBLOCK Then
             'y aca que hacemo' ?? help! i need somebody, help!
-            Dale = False
             Debug.Print "ERROR AL ENVIAR EL DATO DESDE LA COLA " & Ret & ": " & GetWSAErrorString(Ret)
             Call LogApiSock("IntentarEnviarDatosEncolados: N=" & N & " " & GetWSAErrorString(Ret))
             Call CloseSocketSL(N)
             Call Cerrar_Usuario(N)
         End If
     Else
-    '    Debug.Print "Dato de la cola enviado"
-        UserList(N).ColaSalida.Remove 1
-        Dale = (UserList(N).ColaSalida.Count > 0)
+        Call UserList(N).outgoingData.CopyBuffer(auxiliaryBuffer)
     End If
-Loop
+End If
+
+errhandler:
+Set auxiliaryBuffer = Nothing
 
 #End If
 End Sub
@@ -552,7 +548,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         UserList(NewIndex).ConnID = NuevoSock
         UserList(NewIndex).ConnIDValida = True
         Set UserList(NewIndex).CommandsBuffer = New CColaArray
-        Set UserList(NewIndex).ColaSalida = New Collection
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
@@ -566,13 +561,13 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 #End If
 End Sub
 
-Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
+Public Sub EventoSockRead(ByVal Slot As Integer, ByRef datos As String)
 #If UsarQueSocket = 1 Then
 
 Dim T() As String
 Dim LoopC As Long
 
-UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & Datos
+UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & datos
 
 T = Split(UserList(Slot).RDBuffer, ENDC)
 If UBound(T) > 0 Then

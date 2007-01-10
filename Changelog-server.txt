@@ -162,3 +162,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 09/01/2007: HandleIncomingData() ahora es recursivo mientras siga teniendo datos para procesar y no halla ningun error de falta de datos (Tavo)
  * 10/01/2007: Corregi un bug en "/MEMBERLIST" que dejaba a cualquiera que lo use ver la lista de cualquier clan. (NIGO)
  * 10/01/2007: EnviarDatosASlot no encola mas y utiliza la Byte Queue (Tavo)
+ * 10/01/2007: Todo rastro de ColaSalida ha sido borrado y remplazado por el outgoingData Buffer en los casos necesarios (Tavo)

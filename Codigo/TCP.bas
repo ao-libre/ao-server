@@ -707,7 +707,7 @@ End Sub
 ' @param Datos The string that will be send
 ' @remarks If UsarQueSocket is 3 it won`t use the clsByteQueue
 
-Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As String) As Long
+Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef datos As String) As Long
 '***************************************************
 'Author: Unknown
 'Last Modification: 01/10/07
@@ -720,7 +720,7 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As Stri
     
     Dim Ret As Long
     
-    Ret = WsApiEnviar(UserIndex, Datos)
+    Ret = WsApiEnviar(UserIndex, datos)
     
     If Ret <> 0 And Ret <> WSAEWOULDBLOCK Then
         ' Close the socket avoiding any critical error
@@ -728,7 +728,9 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As Stri
         Call Cerrar_Usuario(UserIndex)
     ElseIf Ret = WSAEWOULDBLOCK Then
         ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-        Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
+        Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(datos)
+    End If
+    
     Exit Function
     
 Err:
@@ -736,11 +738,11 @@ Err:
 
 #ElseIf UsarQueSocket = 0 Then '**********************************************
     
-    If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
+    If frmMain.Socket2(UserIndex).Write(datos, Len(datos)) < 0 Then
         If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
             ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
             UserList(UserIndex).SockPuedoEnviar = False
-            Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
+            Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(datos)
         Else
             'Close the socket avoiding any critical error
             Call Cerrar_Usuario(UserIndex)
@@ -755,11 +757,11 @@ Err:
     
     Dim Ret As Long
 
-    Ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
+    Ret = frmMain.Serv.Enviar(.ConnID, datos, Len(datos))
             
     If Ret = 1 Then
         ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-        Call .outgoingData.WriteASCIIStringFixed(Datos)
+        Call .outgoingData.WriteASCIIStringFixed(datos)
     ElseIf Ret = 2 Then
         'Close socket avoiding any critical error
         Call CloseSocketSL(UserIndex)
@@ -779,11 +781,11 @@ Err:
             Exit Function
         End If
         
-        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos)) = 2 Then Call CloseSocket(UserIndex, True)
+        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, datos, Len(datos)) = 2 Then Call CloseSocket(UserIndex, True)
 
 Exit Function
 ErrorHandler:
-    Call LogError("TCP::EnviarDatosASlot. UI/ConnId/Datos: " & UserIndex & "/" & UserList(UserIndex).ConnID & "/" & Datos)
+    Call LogError("TCP::EnviarDatosASlot. UI/ConnId/Datos: " & UserIndex & "/" & UserList(UserIndex).ConnID & "/" & datos)
 #End If '**********************************************
 
 End Function
@@ -1429,8 +1431,6 @@ Dim UsrTMP As User
 
 Set UserList(UserIndex).CommandsBuffer = Nothing
 
-
-Set UserList(UserIndex).ColaSalida = Nothing
 UserList(UserIndex).SockPuedoEnviar = False
 UserList(UserIndex).ConnIDValida = False
 UserList(UserIndex).ConnID = -1

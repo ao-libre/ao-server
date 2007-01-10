@@ -1044,7 +1044,6 @@ Public Type User
     RDBuffer As String 'Buffer roto
     
     CommandsBuffer As New CColaArray
-    ColaSalida As New Collection
     SockPuedoEnviar As Boolean
     
     '[KEVIN]

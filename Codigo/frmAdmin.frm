@@ -130,7 +130,7 @@ Dim tIndex As Long
 tIndex = NameIndex(cboPjs.Text)
 If tIndex > 0 Then
     With UserList(tIndex)
-        Text1.Text = .ColaSalida.Count & " elementos en cola." & vbCrLf
+        Text1.Text = .outgoingData.length & " elementos en cola." & vbCrLf
     End With
 End If
 

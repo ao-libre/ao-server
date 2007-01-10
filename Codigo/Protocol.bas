@@ -9326,7 +9326,7 @@ On Error GoTo errhandler
         If (InStrB(GuildName, "\") <> 0) Then
             GuildName = Replace(GuildName, "\", "")
         End If
-        If (InStrB(guild, "/") <> 0) Then
+        If (InStrB(GuildName, "/") <> 0) Then
             GuildName = Replace(GuildName, "/", "")
         End If
         
@@ -10158,8 +10158,8 @@ Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
         For i = 1 To LastUser
             With UserList(i)
                 If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
-                    If .ColaSalida.Count > 0 Then
-                        list = list & .name & " (" & .ColaSalida.Count & "), "
+                    If .outgoingData.length > 0 Then
+                        list = list & .name & " (" & CStr(.outgoingData.length) & "), "
                         Count = Count + 1
                     End If
                 End If
