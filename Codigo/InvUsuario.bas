@@ -63,11 +63,11 @@ On Error GoTo manejador
 
 Dim flag As Boolean
 
-If LenB(ObjData(ObjIndex).ClaseProhibida(1)) <> 0 Then
+If ObjData(ObjIndex).ClaseProhibida(1) <> 0 Then
     
     Dim i As Integer
     For i = 1 To NUMCLASES
-        If ObjData(ObjIndex).ClaseProhibida(i) = UCase$(UserList(UserIndex).clase) Then
+        If ObjData(ObjIndex).ClaseProhibida(i) = UserList(UserIndex).clase Then
                 ClasePuedeUsarItem = False
                 Exit Function
         End If
@@ -105,12 +105,12 @@ If UserList(UserIndex).Pos.Map = 37 Then
     
     Dim DeDonde As WorldPos
     
-    Select Case UCase$(UserList(UserIndex).Hogar)
-        Case "LINDOS" 'Vamos a tener que ir por todo el desierto... uff!
+    Select Case UserList(UserIndex).Hogar
+        Case eCiudad.cLindos 'Vamos a tener que ir por todo el desierto... uff!
             DeDonde = Lindos
-        Case "ULLATHORPE"
+        Case eCiudad.cUllathorpe
             DeDonde = Ullathorpe
-        Case "BANDERBILL"
+        Case eCiudad.cBanderbill
             DeDonde = Banderbill
         Case Else
             DeDonde = Nix
@@ -510,9 +510,9 @@ Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer
 On Error GoTo errhandler
 
 If ObjData(ObjIndex).Mujer = 1 Then
-    SexoPuedeUsarItem = UCase$(UserList(UserIndex).genero) <> "HOMBRE"
+    SexoPuedeUsarItem = UserList(UserIndex).genero <> eGenero.Hombre
 ElseIf ObjData(ObjIndex).Hombre = 1 Then
-    SexoPuedeUsarItem = UCase$(UserList(UserIndex).genero) <> "MUJER"
+    SexoPuedeUsarItem = UserList(UserIndex).genero <> eGenero.Mujer
 Else
     SexoPuedeUsarItem = True
 End If
@@ -773,9 +773,9 @@ Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integ
 On Error GoTo errhandler
 
 'Verifica si la raza puede usar la ropa
-If UserList(UserIndex).raza = "Humano" Or _
-   UserList(UserIndex).raza = "Elfo" Or _
-   UserList(UserIndex).raza = "Elfo Oscuro" Then
+If UserList(UserIndex).raza = eRaza.Humano Or _
+   UserList(UserIndex).raza = eRaza.Elfo Or _
+   UserList(UserIndex).raza = eRaza.ElfoOscuro Then
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 0)
 Else
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 1)
@@ -1122,7 +1122,7 @@ Select Case Obj.OBJType
        Case eOBJType.otBarcos
     'Verifica si esta aproximado al agua antes de permitirle navegar
         If UserList(UserIndex).Stats.ELV < 25 Then
-            If UCase$(UserList(UserIndex).clase) <> "PESCADOR" And UCase$(UserList(UserIndex).clase) <> "PIRATA" Then
+            If UserList(UserIndex).clase <> eClass.Fisher And UserList(UserIndex).clase <> eClass.Pirat Then
                 Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If

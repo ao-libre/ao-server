@@ -39,83 +39,82 @@ Global LeerNPCsHostiles As New clsIniReader
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 
-Select Case UCase$(UserList(UserIndex).raza)
-    Case "HUMANO"
-      Select Case UCase$(UserList(UserIndex).genero)
-                Case "HOMBRE"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 21
-                    Else
-                        UserList(UserIndex).Char.body = 21
-                    End If
-                Case "MUJER"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 39
-                    Else
-                        UserList(UserIndex).Char.body = 39
-                    End If
-      End Select
-    Case "ELFO OSCURO"
-      Select Case UCase$(UserList(UserIndex).genero)
-                Case "HOMBRE"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 32
-                    Else
-                        UserList(UserIndex).Char.body = 32
-                    End If
-                Case "MUJER"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 40
-                    Else
-                        UserList(UserIndex).Char.body = 40
-                    End If
-      End Select
-    Case "ENANO"
-      Select Case UCase$(UserList(UserIndex).genero)
-                Case "HOMBRE"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 53
-                    Else
-                        UserList(UserIndex).Char.body = 53
-                    End If
-                Case "MUJER"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 60
-                    Else
-                        UserList(UserIndex).Char.body = 60
-                    End If
-      End Select
-    Case "GNOMO"
-      Select Case UCase$(UserList(UserIndex).genero)
-                Case "HOMBRE"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 53
-                    Else
-                        UserList(UserIndex).Char.body = 53
-                    End If
-                Case "MUJER"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 60
-                    Else
-                        UserList(UserIndex).Char.body = 60
-                    End If
-      End Select
+Select Case UserList(UserIndex).raza
+    Case eRaza.Humano
+        Select Case UserList(UserIndex).genero
+            Case eGenero.Hombre
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 21
+                Else
+                    UserList(UserIndex).Char.body = 21
+                End If
+            Case eGenero.Mujer
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 39
+                Else
+                    UserList(UserIndex).Char.body = 39
+                End If
+        End Select
+    Case eRaza.ElfoOscuro
+        Select Case UserList(UserIndex).genero
+            Case eGenero.Hombre
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 32
+                Else
+                    UserList(UserIndex).Char.body = 32
+                End If
+            Case eGenero.Mujer
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 40
+                Else
+                    UserList(UserIndex).Char.body = 40
+                End If
+        End Select
+    Case eRaza.Enano
+        Select Case UserList(UserIndex).genero
+            Case eGenero.Hombre
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 53
+                Else
+                    UserList(UserIndex).Char.body = 53
+                End If
+            Case eGenero.Mujer
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 60
+                Else
+                    UserList(UserIndex).Char.body = 60
+                End If
+        End Select
+    Case eRaza.Gnomo
+        Select Case UserList(UserIndex).genero
+            Case eGenero.Hombre
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 53
+                Else
+                    UserList(UserIndex).Char.body = 53
+                End If
+            Case eGenero.Mujer
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 60
+                Else
+                    UserList(UserIndex).Char.body = 60
+                End If
+        End Select
     Case Else
-      Select Case UCase$(UserList(UserIndex).genero)
-                Case "HOMBRE"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 21
-                    Else
-                        UserList(UserIndex).Char.body = 21
-                    End If
-                Case "MUJER"
-                    If Mimetizado Then
-                        UserList(UserIndex).CharMimetizado.body = 39
-                    Else
-                        UserList(UserIndex).Char.body = 39
-                    End If
-      End Select
-    
+        Select Case UserList(UserIndex).genero
+            Case eGenero.Hombre
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 21
+                Else
+                    UserList(UserIndex).Char.body = 21
+                End If
+            Case eGenero.Mujer
+                If Mimetizado Then
+                    UserList(UserIndex).CharMimetizado.body = 39
+                Else
+                    UserList(UserIndex).Char.body = 39
+                End If
+        End Select
 End Select
 
 UserList(UserIndex).flags.Desnudo = 1
@@ -293,51 +292,51 @@ LevelSkill(49).LevelValue = 100
 LevelSkill(50).LevelValue = 100
 
 
-ListaRazas(1) = "Humano"
-ListaRazas(2) = "Elfo"
-ListaRazas(3) = "Elfo Oscuro"
-ListaRazas(4) = "Gnomo"
-ListaRazas(5) = "Enano"
+ListaRazas(eRaza.Humano) = "Humano"
+ListaRazas(eRaza.Elfo) = "Elfo"
+ListaRazas(eRaza.ElfoOscuro) = "Elfo Oscuro"
+ListaRazas(eRaza.Gnomo) = "Gnomo"
+ListaRazas(eRaza.Enano) = "Enano"
 
-ListaClases(1) = "Mago"
-ListaClases(2) = "Clerigo"
-ListaClases(3) = "Guerrero"
-ListaClases(4) = "Asesino"
-ListaClases(5) = "Ladron"
-ListaClases(6) = "Bardo"
-ListaClases(7) = "Druida"
-ListaClases(8) = "Bandido"
-ListaClases(9) = "Paladin"
-ListaClases(10) = "Cazador"
-ListaClases(11) = "Pescador"
-ListaClases(12) = "Herrero"
-ListaClases(13) = "Leñador"
-ListaClases(14) = "Minero"
-ListaClases(15) = "Carpintero"
-ListaClases(16) = "Sastre"
-ListaClases(17) = "Pirata"
+ListaClases(eClass.Mage) = "Mago"
+ListaClases(eClass.Cleric) = "Clerigo"
+ListaClases(eClass.Warrior) = "Guerrero"
+ListaClases(eClass.Assasin) = "Asesino"
+ListaClases(eClass.Thief) = "Ladron"
+ListaClases(eClass.Bard) = "Bardo"
+ListaClases(eClass.Druid) = "Druida"
+ListaClases(eClass.Bandit) = "Bandido"
+ListaClases(eClass.Paladin) = "Paladin"
+ListaClases(eClass.Hunter) = "Cazador"
+ListaClases(eClass.Fisher) = "Pescador"
+ListaClases(eClass.Blacksmith) = "Herrero"
+ListaClases(eClass.Lumberjack) = "Leñador"
+ListaClases(eClass.Miner) = "Minero"
+ListaClases(eClass.Carpenter) = "Carpintero"
+'ListaClases(eClass.) = "Sastre" 'CHECK: El sastre no esta
+ListaClases(eClass.Pirat) = "Pirata"
 
-SkillsNames(1) = "Suerte"
-SkillsNames(2) = "Magia"
-SkillsNames(3) = "Robar"
-SkillsNames(4) = "Tacticas de combate"
-SkillsNames(5) = "Combate con armas"
-SkillsNames(6) = "Meditar"
-SkillsNames(7) = "Apuñalar"
-SkillsNames(8) = "Ocultarse"
-SkillsNames(9) = "Supervivencia"
-SkillsNames(10) = "Talar arboles"
-SkillsNames(11) = "Comercio"
-SkillsNames(12) = "Defensa con escudos"
-SkillsNames(13) = "Pesca"
-SkillsNames(14) = "Mineria"
-SkillsNames(15) = "Carpinteria"
-SkillsNames(16) = "Herreria"
-SkillsNames(17) = "Liderazgo"
-SkillsNames(18) = "Domar animales"
-SkillsNames(19) = "Armas de proyectiles"
-SkillsNames(20) = "Wresterling"
-SkillsNames(21) = "Navegacion"
+SkillsNames(eSkill.Suerte) = "Suerte"
+SkillsNames(eSkill.Magia) = "Magia"
+SkillsNames(eSkill.Robar) = "Robar"
+SkillsNames(eSkill.Tacticas) = "Tacticas de combate"
+SkillsNames(eSkill.Armas) = "Combate con armas"
+SkillsNames(eSkill.Meditar) = "Meditar"
+SkillsNames(eSkill.Apuñalar) = "Apuñalar"
+SkillsNames(eSkill.Ocultarse) = "Ocultarse"
+SkillsNames(eSkill.Supervivencia) = "Supervivencia"
+SkillsNames(eSkill.Talar) = "Talar arboles"
+SkillsNames(eSkill.Comerciar) = "Comercio"
+SkillsNames(eSkill.Defensa) = "Defensa con escudos"
+SkillsNames(eSkill.Pesca) = "Pesca"
+SkillsNames(eSkill.Mineria) = "Mineria"
+SkillsNames(eSkill.Carpinteria) = "Carpinteria"
+SkillsNames(eSkill.Herreria) = "Herreria"
+SkillsNames(eSkill.Liderazgo) = "Liderazgo"
+SkillsNames(eSkill.Domar) = "Domar animales"
+SkillsNames(eSkill.Proyectiles) = "Armas de proyectiles"
+SkillsNames(eSkill.Wresterling) = "Wresterling"
+SkillsNames(eSkill.Navegacion) = "Navegacion"
 
 
 frmCargando.Show

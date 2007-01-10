@@ -32,10 +32,10 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 Public Sub CargarSpawnList()
-    Dim N As Integer, LoopC As Integer
-    N = val(GetVar(App.Path & "\Dat\Invokar.dat", "INIT", "NumNPCs"))
-    ReDim SpawnList(N) As tCriaturasEntrenador
-    For LoopC = 1 To N
+    Dim n As Integer, LoopC As Integer
+    n = val(GetVar(App.Path & "\Dat\Invokar.dat", "INIT", "NumNPCs"))
+    ReDim SpawnList(n) As tCriaturasEntrenador
+    For LoopC = 1 To n
         SpawnList(LoopC).NpcIndex = val(GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NI" & LoopC))
         SpawnList(LoopC).NpcName = GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NN" & LoopC)
     Next LoopC
@@ -137,30 +137,30 @@ End Function
 
 
 Public Function TxtDimension(ByVal name As String) As Long
-Dim N As Integer, cad As String, Tam As Long
-N = FreeFile(1)
-Open name For Input As #N
+Dim n As Integer, cad As String, Tam As Long
+n = FreeFile(1)
+Open name For Input As #n
 Tam = 0
-Do While Not EOF(N)
+Do While Not EOF(n)
     Tam = Tam + 1
-    Line Input #N, cad
+    Line Input #n, cad
 Loop
-Close N
+Close n
 TxtDimension = Tam
 End Function
 
 Public Sub CargarForbidenWords()
 
 ReDim ForbidenNames(1 To TxtDimension(DatPath & "NombresInvalidos.txt"))
-Dim N As Integer, i As Integer
-N = FreeFile(1)
-Open DatPath & "NombresInvalidos.txt" For Input As #N
+Dim n As Integer, i As Integer
+n = FreeFile(1)
+Open DatPath & "NombresInvalidos.txt" For Input As #n
 
 For i = 1 To UBound(ForbidenNames)
-    Line Input #N, ForbidenNames(i)
+    Line Input #n, ForbidenNames(i)
 Next i
 
-Close N
+Close n
 
 End Sub
 
@@ -484,13 +484,13 @@ On Error Resume Next
 End Sub
 Sub LoadArmasHerreria()
 
-Dim N As Integer, lc As Integer
+Dim n As Integer, lc As Integer
 
-N = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
+n = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
 
-ReDim Preserve ArmasHerrero(1 To N) As Integer
+ReDim Preserve ArmasHerrero(1 To n) As Integer
 
-For lc = 1 To N
+For lc = 1 To n
     ArmasHerrero(lc) = val(GetVar(DatPath & "ArmasHerrero.dat", "Arma" & lc, "Index"))
 Next lc
 
@@ -498,13 +498,13 @@ End Sub
 
 Sub LoadArmadurasHerreria()
 
-Dim N As Integer, lc As Integer
+Dim n As Integer, lc As Integer
 
-N = val(GetVar(DatPath & "ArmadurasHerrero.dat", "INIT", "NumArmaduras"))
+n = val(GetVar(DatPath & "ArmadurasHerrero.dat", "INIT", "NumArmaduras"))
 
-ReDim Preserve ArmadurasHerrero(1 To N) As Integer
+ReDim Preserve ArmadurasHerrero(1 To n) As Integer
 
-For lc = 1 To N
+For lc = 1 To n
     ArmadurasHerrero(lc) = val(GetVar(DatPath & "ArmadurasHerrero.dat", "Armadura" & lc, "Index"))
 Next lc
 
@@ -512,13 +512,13 @@ End Sub
 
 Sub LoadObjCarpintero()
 
-Dim N As Integer, lc As Integer
+Dim n As Integer, lc As Integer
 
-N = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
+n = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
 
-ReDim Preserve ObjCarpintero(1 To N) As Integer
+ReDim Preserve ObjCarpintero(1 To n) As Integer
 
-For lc = 1 To N
+For lc = 1 To n
     ObjCarpintero(lc) = val(GetVar(DatPath & "ObjCarpintero.dat", "Obj" & lc, "Index"))
 Next lc
 
@@ -704,9 +704,18 @@ For Object = 1 To NumObjDatas
     ObjData(Object).Agarrable = val(Leer.GetValue("OBJ" & Object, "Agarrable"))
     ObjData(Object).ForoID = Leer.GetValue("OBJ" & Object, "ID")
     
+    
+    'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
     Dim i As Integer
+    Dim n As Integer
+    Dim s As String
     For i = 1 To NUMCLASES
-        ObjData(Object).ClaseProhibida(i) = Leer.GetValue("OBJ" & Object, "CP" & i)
+        s = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
+        n = 0
+        Do While UCase$(ListaClases(n)) <> s
+            n = n + 1
+        Loop
+        ObjData(Object).ClaseProhibida(i) = n
     Next i
     
     ObjData(Object).DefensaMagicaMax = val(Leer.GetValue("OBJ" & Object, "DefensaMagicaMax"))
@@ -1403,7 +1412,8 @@ Dim OldUserHead As Long
 
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-If LenB(UserList(UserIndex).clase) = 0 Or UserList(UserIndex).Stats.ELV = 0 Then
+'CHECK: clase=0 es el error, porq el enum empieza de 1!!
+If UserList(UserIndex).clase = 0 Or UserList(UserIndex).Stats.ELV = 0 Then
     Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
     Exit Sub
 End If

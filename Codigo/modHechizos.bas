@@ -213,7 +213,7 @@ If UserList(UserIndex).flags.Muerto = 0 Then
     wp2.Y = UserList(UserIndex).flags.TargetY
     
     If Hechizos(HechizoIndex).NeedStaff > 0 Then
-        If UCase$(UserList(UserIndex).clase) = "MAGO" Then
+        If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).StaffPower < Hechizos(HechizoIndex).NeedStaff Then
                     Call WriteConsoleMsg(UserIndex, "Tu Báculo no es lo suficientemente poderoso para que puedas lanzar el conjuro.", FontTypeNames.FONTTYPE_INFO)
@@ -662,7 +662,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
 
         'revisamos si necesita vara
-        If UCase$(UserList(UserIndex).clase) = "MAGO" Then
+        If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).StaffPower < Hechizos(H).NeedStaff Then
                     Call WriteConsoleMsg(UserIndex, "Necesitas un mejor báculo para este hechizo", FontTypeNames.FONTTYPE_INFO)
@@ -670,7 +670,7 @@ If Hechizos(H).Revivir = 1 Then
                     Exit Sub
                 End If
             End If
-        ElseIf UCase$(UserList(UserIndex).clase) = "BARDO" Then
+        ElseIf UserList(UserIndex).clase = eClass.Bard Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex <> LAUDMAGICO Then
                 Call WriteConsoleMsg(UserIndex, "Necesitas un instrumento mágico para devolver la vida", FontTypeNames.FONTTYPE_INFO)
                 b = False
@@ -923,7 +923,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
     daño = daño + Porcentaje(daño, 3 * UserList(UserIndex).Stats.ELV)
 
     If Hechizos(hIndex).StaffAffected Then
-        If UCase$(UserList(UserIndex).clase) = "MAGO" Then
+        If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 daño = (daño * (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).StaffDamageBonus + 70)) / 100
                 'Aumenta daño segun el staff-
@@ -1227,7 +1227,7 @@ ElseIf Hechizos(H).SubeHP = 2 Then
     daño = daño + Porcentaje(daño, 3 * UserList(UserIndex).Stats.ELV)
     
     If Hechizos(H).StaffAffected Then
-        If UCase$(UserList(UserIndex).clase) = "MAGO" Then
+        If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 daño = (daño * (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).StaffDamageBonus + 70)) / 100
             Else

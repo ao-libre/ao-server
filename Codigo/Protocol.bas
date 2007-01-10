@@ -273,7 +273,7 @@ Private Enum ClientPacketID
     PartyKick               '/ECHARPARTY
     PartySetLeader          '/PARTYLIDER
     PartyAcceptMember       '/ACCEPTPARTY
-    GuildMemberList        '/MIEMBROSCLAN
+    GuildMemeberList        '/MIEMBROSCLAN
     
     'GM messages
     GMMessage               '/GMSG
@@ -346,6 +346,7 @@ Private Enum ClientPacketID
     SetTrigger              '/TRIGGER
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
+    GuildCompleteMemberList '/MIEMBROSCLAN
     GuildBan                '/BANCLAN
     BanIP                   '/BANIP
     UnbanIP                 '/UNBANIP
@@ -788,8 +789,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.PartyAcceptMember       '/ACCEPTPARTY
             Call HandlePartyAcceptMember(UserIndex)
         
-        Case ClientPacketID.GuildMemberList        '/MIEMBROSCLAN
-            Call HandleGuildMemberList(UserIndex)
+        Case ClientPacketID.GuildMemeberList        '/MIEMBROSCLAN
+            Call HandleGuildMemeberList(UserIndex)
         
         
         'GM messages
@@ -1002,6 +1003,9 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             
         Case ClientPacketID.BannedIPReload          '/BANIPRELOAD
             Call HandleBannedIPReload(UserIndex)
+            
+        Case ClientPacketID.GuildCompleteMemberList '/MIEMBROSCLAN
+            Call HandleGuildCompleteMemberList(UserIndex)
             
         Case ClientPacketID.GuildBan                '/BANCLAN
             Call HandleGuildBan(UserIndex)
@@ -5461,7 +5465,7 @@ On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
-        Dim N As Integer
+        Dim n As Integer
         
         Call buffer.CopyBuffer(.incomingData)
         
@@ -5472,13 +5476,13 @@ On Error GoTo errhandler
         
         bugReport = buffer.ReadASCIIString()
         
-        N = FreeFile
-        Open App.Path & "\LOGS\BUGs.log" For Append Shared As N
-        Print #N, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
-        Print #N, "BUG:"
-        Print #N, bugReport
-        Print #N, "########################################################################"
-        Close #N
+        n = FreeFile
+        Open App.Path & "\LOGS\BUGs.log" For Append Shared As n
+        Print #n, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
+        Print #n, "BUG:"
+        Print #n, bugReport
+        Print #n, "########################################################################"
+        Close #n
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -6147,6 +6151,63 @@ On Error GoTo errhandler
             End If
         Else
             Call WriteConsoleMsg(UserIndex, "El personaje no está online.", FontTypeNames.FONTTYPE_INFO)
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+    
+errhandler:
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+End Sub
+
+''
+' Handles the "GuildMemeberList" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'
+'***************************************************
+On Error GoTo errhandler
+    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim guild As String
+        Dim memberCount As Integer
+        Dim i As Long
+        Dim UserName As String
+        
+        guild = buffer.ReadASCIIString()
+        
+        If (InStrB(guild, "\") <> 0) Then
+            guild = Replace(guild, "\", "")
+        End If
+        If (InStrB(guild, "/") <> 0) Then
+            guild = Replace(guild, "/", "")
+        End If
+
+        If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
+            Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
+        Else
+            memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
+            
+            For i = 1 To memberCount
+                UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
+                
+                Call WriteConsoleMsg(UserIndex, UserName & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
+            Next i
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -7226,6 +7287,8 @@ On Error GoTo errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
+                    
+                        'CHECK: ESTO NO VA A FUNCIONAR SI NO LO CAMBIO, MAS LO DEJO PARA DESPUES
                         If Len(Arg1) > 1 Then
                             UserList(tUser).clase = UCase$(Left$(Arg1, 1)) & LCase$(mid$(Arg1, 2))
                         Else
@@ -7234,20 +7297,20 @@ On Error GoTo errhandler
                     End If
                 
                 Case eEditOptions.eo_Skills
-                    Dim N As Byte 'CHECK: a yo del futuro: chequear bien esto..
+                    Dim n As Byte 'CHECK: a yo del futuro: chequear bien esto..
                     
                     For LoopC = 1 To NUMSKILLS
-                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
+                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then n = LoopC
                     Next LoopC
 
-                    If N = 0 Then
+                    If n = 0 Then
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If tUser <= 0 Then
-                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & n, Arg2)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.UserSkills(N) = val(Arg2)
+                            UserList(tUser).Stats.UserSkills(n) = val(Arg2)
                         End If
                     End If
                 
@@ -9296,11 +9359,11 @@ Private Sub HandleBannedIPReload(ByVal UserIndex As Integer)
 End Sub
 
 ''
-' Handles the "GuildMemberList" message.
+' Handles the "GuildCompleteMemberList" message.
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleGuildMemberList(ByVal UserIndex As Integer)
+Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
 'Last Modification: 12/30/06
@@ -12707,6 +12770,8 @@ Public Sub WriteMiniStats(ByVal UserIndex As Integer)
         Call .WriteLong(UserList(UserIndex).Stats.UsuariosMatados)
         
         Call .WriteInteger(UserList(UserIndex).Stats.NPCsMuertos)
+        
+        'CHECK CHECK: ESTO ESTA ESCRIBIENDO LA CLASE COMO UN STRING!!!; SUPONGO QUE EN CLIENTE HAY QUE CAMBIARLO TAMBIEN EHH!
         Call .WriteASCIIString(UserList(UserIndex).clase)
         Call .WriteLong(UserList(UserIndex).Counters.Pena)
         Call .WriteLong(UserList(UserIndex).Reputacion.Promedio)

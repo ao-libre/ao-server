@@ -337,8 +337,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     Constitucion = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
 
-    Select Case UCase$(UserList(UserIndex).clase)
-        Case "GUERRERO"
+    Select Case UserList(UserIndex).clase
+        Case eClass.Warrior
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 12)
@@ -364,7 +364,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
-        Case "CAZADOR"
+        Case eClass.Hunter
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 11)
@@ -390,7 +390,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
-        Case "PIRATA"
+        Case eClass.Pirat
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 12)
@@ -416,7 +416,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 3
             AumentoSTA = AumentoSTDef
         
-        Case "PALADIN"
+        Case eClass.Paladin
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 12)
@@ -444,7 +444,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "LADRON"
+        Case eClass.Thief
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 12)
@@ -470,32 +470,32 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 1
             AumentoSTA = AumentoSTLadron
             
-        Case "MAGO"
-        Select Case Constitucion
-            Case 21
-                AumentoHP = RandomNumber(6, 8)
-            Case 20
-                AumentoHP = RandomNumber(5, 8)
-            Case 19
-                AumentoHP = RandomNumber(5, 7)
-            Case 18
-                AumentoHP = RandomNumber(5, 7)
-            Case 17
-                AumentoHP = RandomNumber(3, 7)
-            Case 16
-                AumentoHP = RandomNumber(3, 6)
-            Case 15
-                AumentoHP = RandomNumber(2, 6)
-            Case 14
-                AumentoHP = RandomNumber(2, 5)
-        End Select
+        Case eClass.Mage
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(6, 8)
+                Case 20
+                    AumentoHP = RandomNumber(5, 8)
+                Case 19
+                    AumentoHP = RandomNumber(5, 7)
+                Case 18
+                    AumentoHP = RandomNumber(5, 7)
+                Case 17
+                    AumentoHP = RandomNumber(3, 7)
+                Case 16
+                    AumentoHP = RandomNumber(3, 6)
+                Case 15
+                    AumentoHP = RandomNumber(2, 6)
+                Case 14
+                    AumentoHP = RandomNumber(2, 5)
+            End Select
             If AumentoHP < 1 Then AumentoHP = 4
             
             AumentoHIT = 1
             AumentoMANA = 3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTMago
         
-        Case "LEÑADOR"
+        Case eClass.Lumberjack
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 11)
@@ -522,7 +522,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 2
             AumentoSTA = AumentoSTLeñador
         
-        Case "MINERO"
+        Case eClass.Miner
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 11)
@@ -549,7 +549,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 2
             AumentoSTA = AumentoSTMinero
         
-        Case "PESCADOR"
+        Case eClass.Fisher
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(8, 11)
@@ -576,7 +576,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 1
             AumentoSTA = AumentoSTPescador
         
-        Case "CLERIGO"
+        Case eClass.Cleric
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -603,7 +603,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "DRUIDA"
+        Case eClass.Druid
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -631,7 +631,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "ASESINO"
+        Case eClass.Assasin
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -659,7 +659,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "BARDO"
+        Case eClass.Bard
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -687,7 +687,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
-        Case "HERRERO", "CARPINTERO"
+        Case eClass.Blacksmith, eClass.Carpenter
             Select Case Constitucion
                 Case 21
                     AumentoHP = RandomNumber(7, 10)
@@ -947,7 +947,7 @@ With UserList(UserIndex)
     Call WriteConsoleMsg(sendIndex, "Pj: " & .name, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "CiudadanosMatados: " & .Faccion.CiudadanosMatados & " CriminalesMatados: " & .Faccion.CriminalesMatados & " UsuariosMatados: " & .Stats.UsuariosMatados, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "NPCsMuertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
-    Call WriteConsoleMsg(sendIndex, "Clase: " & .clase, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Pena: " & .Counters.Pena, FontTypeNames.FONTTYPE_INFO)
 End With
 
@@ -1137,7 +1137,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
  ((UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= MIN_APUÑALAR) _
  And (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).Apuñala = 1)) _
  Or _
-  ((UCase$(UserList(UserIndex).clase) = "ASESINO") And _
+  ((UserList(UserIndex).clase = eClass.Assasin) And _
   (ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).Apuñala = 1))
 Else
  PuedeApuñalar = False
@@ -1196,7 +1196,7 @@ Sub UserDie(ByVal UserIndex As Integer)
 On Error GoTo ErrorHandler
 
     'Sonido
-    If UCase$(UserList(UserIndex).genero) = "MUJER" Then
+    If UserList(UserIndex).genero = eGenero.Mujer Then
         Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MUERTE_MUJER)
     Else
         Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MUERTE_HOMBRE)

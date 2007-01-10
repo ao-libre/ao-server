@@ -42,7 +42,7 @@ UserList(UserIndex).Counters.TiempoOculto = UserList(UserIndex).Counters.TiempoO
 If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     UserList(UserIndex).flags.Oculto = 0
     UserList(UserIndex).Counters.TiempoOculto = 0
-    If UCase$(UserList(UserIndex).clase) = "CAZADOR" And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
+    If UserList(UserIndex).clase = eClass.Hunter And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
         If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
             Exit Sub
         End If
@@ -422,12 +422,12 @@ Dim obji As Integer
     UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 End Sub
 
-Function ModNavegacion(ByVal clase As String) As Integer
+Function ModNavegacion(ByVal clase As eClass) As Integer
 
-Select Case UCase$(clase)
-    Case "PIRATA"
+Select Case clase
+    Case eClass.Pirat
         ModNavegacion = 1
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModNavegacion = 1.2
     Case Else
         ModNavegacion = 2.3
@@ -436,12 +436,12 @@ End Select
 End Function
 
 
-Function ModFundicion(ByVal clase As String) As Integer
+Function ModFundicion(ByVal clase As eClass) As Integer
 
-Select Case UCase$(clase)
-    Case "MINERO"
+Select Case clase
+    Case eClass.Miner
         ModFundicion = 1
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModFundicion = 1.2
     Case Else
         ModFundicion = 3
@@ -449,10 +449,10 @@ End Select
 
 End Function
 
-Function ModCarpinteria(ByVal clase As String) As Integer
+Function ModCarpinteria(ByVal clase As eClass) As Integer
 
-Select Case UCase$(clase)
-    Case "CARPINTERO"
+Select Case clase
+    Case eClass.Carpenter
         ModCarpinteria = 1
     Case Else
         ModCarpinteria = 3
@@ -460,12 +460,12 @@ End Select
 
 End Function
 
-Function ModHerreriA(ByVal clase As String) As Integer
+Function ModHerreriA(ByVal clase As eClass) As Integer
 
-Select Case UCase$(clase)
-    Case "HERRERO"
+Select Case clase
+    Case eClass.Blacksmith
         ModHerreriA = 1
-    Case "MINERO"
+    Case eClass.Miner
         ModHerreriA = 1.2
     Case Else
         ModHerreriA = 4
@@ -473,13 +473,13 @@ End Select
 
 End Function
 
-Function ModDomar(ByVal clase As String) As Integer
-    Select Case UCase$(clase)
-        Case "DRUIDA"
+Function ModDomar(ByVal clase As eClass) As Integer
+    Select Case clase
+        Case eClass.Druid
             ModDomar = 6
-        Case "CAZADOR"
+        Case eClass.Hunter
             ModDomar = 6
-        Case "CLERIGO"
+        Case eClass.Cleric
             ModDomar = 7
         Case Else
             ModDomar = 10
@@ -657,7 +657,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UCase$(UserList(UserIndex).clase) = "PESCADOR" Then
+If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
@@ -673,7 +673,7 @@ If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    If UserList(UserIndex).clase = "Pescador" Then
+    If UserList(UserIndex).clase = eClass.Fisher Then
         MiObj.amount = RandomNumber(1, 4)
     Else
         MiObj.amount = 1
@@ -713,7 +713,7 @@ Dim Suerte As Integer
 Dim res As Integer
 Dim EsPescador As Boolean
 
-If UCase(UserList(UserIndex).clase) = "PESCADOR" Then
+If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
     EsPescador = True
 Else
@@ -824,7 +824,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
     
     If res < 3 Then 'Exito robo
        
-        If (RandomNumber(1, 50) < 25) And (UCase$(UserList(LadrOnIndex).clase) = "LADRON") Then
+        If (RandomNumber(1, 50) < 25) And (UserList(LadrOnIndex).clase = eClass.Thief) Then
             If TieneObjetosRobables(VictimaIndex) Then
                 Call RobarObjeto(LadrOnIndex, VictimaIndex)
             Else
@@ -834,7 +834,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
             If UserList(VictimaIndex).Stats.GLD > 0 Then
                 Dim N As Integer
                 
-                If UCase$(UserList(LadrOnIndex).clase) = "LADRON" Then
+                If UserList(LadrOnIndex).clase = eClass.Thief Then
                     N = RandomNumber(100, 1000)
                 Else
                     N = RandomNumber(1, 100)
@@ -963,14 +963,14 @@ Dim Skill As Integer
 
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar)
 
-Select Case UCase$(UserList(UserIndex).clase)
-    Case "ASESINO"
+Select Case UserList(UserIndex).clase
+    Case eClass.Assasin
         Suerte = Int((0.0000003 * Skill ^ 3 - 0.00002 * Skill ^ 2 + 0.00098 * Skill + 0.0425) * 100)
     
-    Case "CLERIGO", "PALADIN"
+    Case eClass.Cleric, eClass.Paladin
         Suerte = Int((0.00000003 * Skill ^ 3 + 0.000006 * Skill ^ 2 + 0.000107 * Skill + 0.0493) * 100)
     
-    Case "BARDO"
+    Case eClass.Bard
         Suerte = Int((0.00000002 * Skill ^ 3 + 0.000002 * Skill ^ 2 + 0.00032 * Skill + 0.0481) * 100)
     
     Case Else
@@ -980,7 +980,7 @@ End Select
 
 If RandomNumber(0, 100) < Suerte Then
     If VictimUserIndex <> 0 Then
-        If UCase$(UserList(UserIndex).clase) = "ASESINO" Then
+        If UserList(UserIndex).clase = eClass.Assasin Then
             daño = Int(daño * 1.4)
         Else
             daño = Int(daño * 1.5)
@@ -1015,7 +1015,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 
-If UCase$(UserList(UserIndex).clase) = "LEÑADOR" Then
+If UserList(UserIndex).clase = eClass.Lumberjack Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
 Else
     Call QuitarSta(UserIndex, EsfuerzoTalarGeneral)
@@ -1031,7 +1031,7 @@ If res < 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
-    If UCase$(UserList(UserIndex).clase) = "LEÑADOR" Then
+    If UserList(UserIndex).clase = eClass.Lumberjack Then
         MiObj.amount = RandomNumber(1, 4)
     Else
         MiObj.amount = 1
@@ -1079,7 +1079,7 @@ Dim Suerte As Integer
 Dim res As Integer
 Dim metal As Integer
 
-If UCase$(UserList(UserIndex).clase) = "MINERO" Then
+If UserList(UserIndex).clase = eClass.Miner Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
 Else
     Call QuitarSta(UserIndex, EsfuerzoExcavarGeneral)
@@ -1099,7 +1099,7 @@ If res <= 5 Then
     
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
-    If UCase$(UserList(UserIndex).clase) = "MINERO" Then
+    If UserList(UserIndex).clase = eClass.Miner Then
         MiObj.amount = RandomNumber(1, 5)
     Else
         MiObj.amount = 1

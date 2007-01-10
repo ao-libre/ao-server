@@ -153,48 +153,48 @@ Public Const WSANO_DATA As Integer = 25004
 Public Const WSANO_ADDRESS As Integer = 2500
 #End If
 
-Sub DarCuerpoYCabeza(ByRef UserBody As Integer, ByRef UserHead As Integer, ByVal raza As String, ByVal Gen As String)
+Sub DarCuerpoYCabeza(ByRef UserBody As Integer, ByRef UserHead As Integer, ByVal raza As eRaza, ByVal Gen As eGenero)
 'TODO: Poner las heads en arrays, así se acceden por índices
 'y no hay problemas de discontinuidad de los índices.
 'También se debe usar enums para raza y sexo
 Select Case Gen
-   Case "Hombre"
+   Case eGenero.Hombre
         Select Case raza
-            Case "Humano"
+            Case eRaza.Humano
                 UserHead = RandomNumber(1, 30)
                 UserBody = 1
-            Case "Elfo"
+            Case eRaza.Elfo
                 UserHead = RandomNumber(1, 13) + 100
                 If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
                 UserBody = 2
-            Case "Elfo Oscuro"
+            Case eRaza.ElfoOscuro
                 UserHead = RandomNumber(1, 8) + 201
                 UserBody = 3
-            Case "Enano"
+            Case eRaza.Enano
                 UserHead = RandomNumber(1, 5) + 300
                 UserBody = 52
-            Case "Gnomo"
+            Case eRaza.Gnomo
                 UserHead = RandomNumber(1, 6) + 400
                 UserBody = 52
             Case Else
                 UserHead = 1
                 UserBody = 1
         End Select
-   Case "Mujer"
+   Case eGenero.Mujer
         Select Case raza
-            Case "Humano"
+            Case eRaza.Humano
                 UserHead = RandomNumber(1, 7) + 69
                 UserBody = 1
-            Case "Elfo"
+            Case eRaza.Elfo
                 UserHead = RandomNumber(1, 7) + 169
                 UserBody = 2
-            Case "Elfo Oscuro"
+            Case eRaza.ElfoOscuro
                 UserHead = RandomNumber(1, 11) + 269
                 UserBody = 3
-            Case "Gnomo"
+            Case eRaza.Gnomo
                 UserHead = RandomNumber(1, 5) + 469
                 UserBody = 52
-            Case "Enano"
+            Case eRaza.Enano
                 UserHead = RandomNumber(1, 3) + 369
                 UserBody = 52
             Case Else
@@ -277,12 +277,12 @@ End Function
 
 'Barrin 3/3/03
 'Agregué PadrinoName y Padrino password como opcionales, que se les da un valor siempre y cuando el servidor esté usando el sistema
-Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, UserRaza As String, UserSexo As String, UserClase As String, _
+Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, UserRaza As eRaza, UserSexo As eGenero, UserClase As eClass, _
                     US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
                     US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
                     US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
                     US16 As String, US17 As String, US18 As String, US19 As String, US20 As String, _
-                    US21 As String, UserEmail As String, Hogar As String)
+                    US21 As String, UserEmail As String, Hogar As eCiudad)
 
 If Not AsciiValidos(name) Then
     Call WriteErrorMsg(UserIndex, "Nombre invalido.")
@@ -326,27 +326,27 @@ UserList(UserIndex).genero = UserSexo
 UserList(UserIndex).email = UserEmail
 UserList(UserIndex).Hogar = Hogar
 
-Select Case UCase$(UserRaza)
-    Case "HUMANO"
+Select Case UserRaza
+    Case eRaza.Humano
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 1
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 1
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 2
-    Case "ELFO"
+    Case eRaza.Elfo
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 4
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 2
-    Case "ELFO OSCURO"
+    Case eRaza.ElfoOscuro
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 3
-    Case "ENANO"
+    Case eRaza.Enano
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 3
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 3
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 6
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) - 1
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 2
-    Case "GNOMO"
+    Case eRaza.Gnomo
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) - 4
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 3
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 3
@@ -355,27 +355,27 @@ End Select
 
 
 
-UserList(UserIndex).Stats.UserSkills(1) = val(US1)
-UserList(UserIndex).Stats.UserSkills(2) = val(US2)
-UserList(UserIndex).Stats.UserSkills(3) = val(US3)
-UserList(UserIndex).Stats.UserSkills(4) = val(US4)
-UserList(UserIndex).Stats.UserSkills(5) = val(US5)
-UserList(UserIndex).Stats.UserSkills(6) = val(US6)
-UserList(UserIndex).Stats.UserSkills(7) = val(US7)
-UserList(UserIndex).Stats.UserSkills(8) = val(US8)
-UserList(UserIndex).Stats.UserSkills(9) = val(US9)
-UserList(UserIndex).Stats.UserSkills(10) = val(US10)
-UserList(UserIndex).Stats.UserSkills(11) = val(US11)
-UserList(UserIndex).Stats.UserSkills(12) = val(US12)
-UserList(UserIndex).Stats.UserSkills(13) = val(US13)
-UserList(UserIndex).Stats.UserSkills(14) = val(US14)
-UserList(UserIndex).Stats.UserSkills(15) = val(US15)
-UserList(UserIndex).Stats.UserSkills(16) = val(US16)
-UserList(UserIndex).Stats.UserSkills(17) = val(US17)
-UserList(UserIndex).Stats.UserSkills(18) = val(US18)
-UserList(UserIndex).Stats.UserSkills(19) = val(US19)
-UserList(UserIndex).Stats.UserSkills(20) = val(US20)
-UserList(UserIndex).Stats.UserSkills(21) = val(US21)
+UserList(UserIndex).Stats.UserSkills(eSkill.Suerte) = val(US1)
+UserList(UserIndex).Stats.UserSkills(eSkill.Magia) = val(US2)
+UserList(UserIndex).Stats.UserSkills(eSkill.Robar) = val(US3)
+UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) = val(US4)
+UserList(UserIndex).Stats.UserSkills(eSkill.Armas) = val(US5)
+UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) = val(US6)
+UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = val(US7)
+UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) = val(US8)
+UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) = val(US9)
+UserList(UserIndex).Stats.UserSkills(eSkill.Talar) = val(US10)
+UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) = val(US11)
+UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) = val(US12)
+UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) = val(US13)
+UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) = val(US14)
+UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) = val(US15)
+UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) = val(US16)
+UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) = val(US17)
+UserList(UserIndex).Stats.UserSkills(eSkill.Domar) = val(US18)
+UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) = val(US19)
+UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = val(US20)
+UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) = val(US21)
 
 totalskpts = 0
 
@@ -426,12 +426,12 @@ UserList(UserIndex).Stats.MinHam = 100
 
 
 '<-----------------MANA----------------------->
-If UCase$(UserClase) = "MAGO" Then
+If UserClase = eClass.Mage Then
     MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 3
     UserList(UserIndex).Stats.MaxMAN = 100 + MiInt
     UserList(UserIndex).Stats.MinMAN = 100 + MiInt
-ElseIf UCase$(UserClase) = "CLERIGO" Or UCase$(UserClase) = "DRUIDA" _
-    Or UCase$(UserClase) = "BARDO" Or UCase$(UserClase) = "ASESINO" Then
+ElseIf UserClase = eClass.Cleric Or UserClase = eClass.Druid _
+    Or UserClase = eClass.Bard Or UserClase = eClass.Assasin Then
         MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 4
         UserList(UserIndex).Stats.MaxMAN = 50
         UserList(UserIndex).Stats.MinMAN = 50
@@ -440,9 +440,9 @@ Else
     UserList(UserIndex).Stats.MinMAN = 0
 End If
 
-If UCase$(UserClase) = "MAGO" Or UCase$(UserClase) = "CLERIGO" Or _
-   UCase$(UserClase) = "DRUIDA" Or UCase$(UserClase) = "BARDO" Or _
-   UCase$(UserClase) = "ASESINO" Then
+If UserClase = eClass.Mage Or UserClase = eClass.Cleric Or _
+   UserClase = eClass.Druid Or UserClase = eClass.Bard Or _
+   UserClase = eClass.Assasin Then
         UserList(UserIndex).Stats.UserHechizos(1) = 2
 End If
 
@@ -450,9 +450,6 @@ UserList(UserIndex).Stats.MaxHIT = 2
 UserList(UserIndex).Stats.MinHIT = 1
 
 UserList(UserIndex).Stats.GLD = 0
-
-
-
 
 UserList(UserIndex).Stats.Exp = 0
 UserList(UserIndex).Stats.ELU = 300
@@ -472,15 +469,15 @@ UserList(UserIndex).Invent.Object(3).amount = 1
 UserList(UserIndex).Invent.Object(3).Equipped = 1
 
 Select Case UserRaza
-    Case "Humano"
+    Case eRaza.Humano
         UserList(UserIndex).Invent.Object(4).ObjIndex = 463
-    Case "Elfo"
+    Case eRaza.Elfo
         UserList(UserIndex).Invent.Object(4).ObjIndex = 464
-    Case "Elfo Oscuro"
+    Case eRaza.ElfoOscuro
         UserList(UserIndex).Invent.Object(4).ObjIndex = 465
-    Case "Enano"
+    Case eRaza.Enano
         UserList(UserIndex).Invent.Object(4).ObjIndex = 466
-    Case "Gnomo"
+    Case eRaza.Gnomo
         UserList(UserIndex).Invent.Object(4).ObjIndex = 466
 End Select
 
@@ -847,7 +844,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 End Function
 
 Sub ConnectUser(ByVal UserIndex As Integer, name As String, Password As String)
-Dim N As Integer
+Dim n As Integer
 Dim tStr As String
 
 'Reseteamos los FLAGS
@@ -948,16 +945,16 @@ End If
 
 'Posicion de comienzo
 If UserList(UserIndex).Pos.Map = 0 Then
-    If UCase$(UserList(UserIndex).Hogar) = "NIX" Then
+    If UserList(UserIndex).Hogar = eCiudad.cNix Then
              UserList(UserIndex).Pos = Nix
-    ElseIf UCase$(UserList(UserIndex).Hogar) = "ULLATHORPE" Then
+    ElseIf UserList(UserIndex).Hogar = eCiudad.cUllathorpe Then
              UserList(UserIndex).Pos = Ullathorpe
-    ElseIf UCase$(UserList(UserIndex).Hogar) = "BANDERBILL" Then
+    ElseIf UserList(UserIndex).Hogar = eCiudad.cBanderbill Then
              UserList(UserIndex).Pos = Banderbill
-    ElseIf UCase$(UserList(UserIndex).Hogar) = "LINDOS" Then
+    ElseIf UserList(UserIndex).Hogar = eCiudad.cLindos Then
              UserList(UserIndex).Pos = Lindos
     Else
-        UserList(UserIndex).Hogar = "ULLATHORPE"
+        UserList(UserIndex).Hogar = eCiudad.cUllathorpe
         UserList(UserIndex).Pos = Ullathorpe
     End If
 Else
@@ -1156,16 +1153,16 @@ Call Statistics.UserConnected(UserIndex)
 
 Call MostrarNumUsers
 
-N = FreeFile
-Open App.Path & "\logs\numusers.log" For Output As N
-Print #N, NumUsers
-Close #N
+n = FreeFile
+Open App.Path & "\logs\numusers.log" For Output As n
+Print #n, NumUsers
+Close #n
 
-N = FreeFile
+n = FreeFile
 'Log
-Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
-Close #N
+Open App.Path & "\logs\Connect.log" For Append Shared As #n
+Print #n, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
+Close #n
 
 End Sub
 
@@ -1271,11 +1268,11 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .Pos.Y = 0
         .ip = vbNullString
         .RDBuffer = vbNullString
-        .clase = vbNullString
+        .clase = 0
         .email = vbNullString
-        .genero = vbNullString
-        .Hogar = vbNullString
-        .raza = vbNullString
+        .genero = 0
+        .Hogar = 0
+        .raza = 0
 
         .RandKey = 0
         .PrevCheckSum = 0
@@ -1465,14 +1462,14 @@ Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
 On Error GoTo errhandler
 
-Dim N As Integer
+Dim n As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim LoopC As Integer
 Dim Map As Integer
 Dim name As String
-Dim raza As String
-Dim clase As String
+Dim raza As eRaza
+Dim clase As eClass
 Dim i As Integer
 
 Dim aN As Integer
@@ -1485,6 +1482,8 @@ If aN > 0 Then
 End If
 UserList(UserIndex).flags.AtacadoPorNpc = 0
 
+
+'CHECK:: ACA SE GUARDAN UN MONTON DE COSAS QUE NO SE OCUPAN PARA NADA :S
 Map = UserList(UserIndex).Pos.Map
 X = UserList(UserIndex).Pos.X
 Y = UserList(UserIndex).Pos.Y
@@ -1554,10 +1553,10 @@ Call ResetUserSlot(UserIndex)
 
 Call MostrarNumUsers
 
-N = FreeFile(1)
-Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
-Close #N
+n = FreeFile(1)
+Open App.Path & "\logs\Connect.log" For Append Shared As #n
+Print #n, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+Close #n
 
 Exit Sub
 

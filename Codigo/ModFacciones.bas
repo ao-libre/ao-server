@@ -135,20 +135,20 @@ If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
 '
     
         
-    If UCase$(UserList(UserIndex).raza) = "ENANO" Or UCase$(UserList(UserIndex).raza) = "GNOMO" Then
+    If UserList(UserIndex).raza = eRaza.Enano Or UserList(UserIndex).raza = eRaza.Gnomo Then
         MiObj.ObjIndex = VestimentaImperialEnano
-        Select Case UCase$(UserList(UserIndex).clase)
-            Case "MAGO"
+        Select Case UserList(UserIndex).clase
+            Case eClass.Mage
                 MiObj2.ObjIndex = TunicaConspicuaEnano
             Case Else
                 MiObj2.ObjIndex = ArmaduraNobilisimaEnano
         End Select
     Else
         MiObj.ObjIndex = VestimentaImperialHumano
-        Select Case UCase$(UserList(UserIndex).clase)
-            Case "MAGO"
+        Select Case UserList(UserIndex).clase
+            Case eClass.Mage
                 MiObj2.ObjIndex = TunicaConspicuaHumano
-            Case "CLERIGO", "DRUIDA", "BARDO"
+            Case eClass.Cleric, eClass.Druid, eClass.Bard
                 MiObj2.ObjIndex = ArmaduraGranSacerdote
             Case Else
                 MiObj2.ObjIndex = ArmaduraNobilisimaHumano
@@ -304,20 +304,20 @@ If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
     MiObj.amount = 20
     MiObj2.amount = 10
     
-    If UCase$(UserList(UserIndex).raza) = "ENANO" Or UCase$(UserList(UserIndex).raza) = "GNOMO" Then
+    If UserList(UserIndex).raza = eRaza.Enano Or UserList(UserIndex).raza = eRaza.Gnomo Then
         MiObj.ObjIndex = VestimentaLegionEnano
-        Select Case UCase$(UserList(UserIndex).clase)
-            Case "MAGO"
+        Select Case UserList(UserIndex).clase
+            Case eClass.Mage
                 MiObj2.ObjIndex = TunicaEgregiaEnano
             Case Else
                 MiObj2.ObjIndex = TunicaLobregaEnano
         End Select
     Else
         MiObj.ObjIndex = VestimentaLegionHumano
-        Select Case UCase$(UserList(UserIndex).clase)
-            Case "MAGO"
+        Select Case UserList(UserIndex).clase
+            Case eClass.Mage
                 MiObj2.ObjIndex = TunicaEgregiaHumano
-            Case "CLERIGO", "DRUIDA", "BARDO"
+            Case eClass.Cleric, eClass.Druid, eClass.Bard
                 MiObj2.ObjIndex = SacerdoteDemoniaco
             Case Else
                 MiObj2.ObjIndex = TunicaLobregaHumano

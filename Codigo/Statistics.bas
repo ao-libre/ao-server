@@ -81,46 +81,46 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     Dim raza As Integer
     Dim alignment As Integer
     
-    Select Case UCase$(UserList(killer).clase)
-        Case "ASESINO"
+    Select Case UserList(killer).clase
+        Case eClass.Assasin
             clase = 1
         
-        Case "BARDO"
+        Case eClass.Bard
             clase = 2
         
-        Case "MAGO"
+        Case eClass.Mage
             clase = 3
         
-        Case "PALADIN"
+        Case eClass.Paladin
             clase = 4
         
-        Case "GUERRERO"
+        Case eClass.Warrior
             clase = 5
         
-        Case "CLERIGO"
+        Case eClass.Cleric
             clase = 6
         
-        Case "CAZADOR"
+        Case eClass.Hunter
             clase = 7
         
         Case Else
             Exit Sub
     End Select
     
-    Select Case UCase$(UserList(killer).raza)
-        Case "ELFO"
+    Select Case UserList(killer).raza
+        Case eRaza.Elfo
             raza = 1
         
-        Case "ELFO OSCURO"
+        Case eRaza.ElfoOscuro
             raza = 2
         
-        Case "ENANO"
+        Case eRaza.Enano
             raza = 3
         
-        Case "GNOMO"
+        Case eRaza.Gnomo
             raza = 4
         
-        Case "HUMANO"
+        Case eRaza.Humano
             raza = 5
         
         Case Else

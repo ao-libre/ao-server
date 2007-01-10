@@ -96,7 +96,7 @@ Public Enum PlayerType
 End Enum
 
 Public Enum eClass
-    Mage        'Mago
+    Mage = 1       'Mago
     Cleric      'Clérigo
     Warrior     'Guerrero
     Assasin     'Asesino
@@ -112,6 +112,26 @@ Public Enum eClass
     Miner       'Minero
     Carpenter   'Carpintero
     Pirat       'Pirata
+End Enum
+
+Enum eCiudad
+    cUllathorpe = 1
+    cNix
+    cBanderbill
+    cLindos
+End Enum
+
+Enum eRaza
+    Humano = 1
+    Elfo
+    ElfoOscuro
+    Gnomo
+    Enano
+End Enum
+
+Enum eGenero
+    Hombre = 1
+    Mujer
 End Enum
 
 Public Enum eClanType
@@ -747,6 +767,7 @@ Public Type ObjData
     IndexCerradaLlave As Integer
     
     RazaEnana As Byte
+    
     Mujer As Byte
     Hombre As Byte
     
@@ -766,7 +787,8 @@ Public Type ObjData
     texto As String
     
     'Clases que no tienen permitido usar este obj
-    ClaseProhibida(1 To NUMCLASES) As String
+    'CHECK: Cuando se carga esto, hay que recorrer listadeclases.. y eso...
+    ClaseProhibida(1 To NUMCLASES) As eClass
     
     Snd1 As Integer
     Snd2 As Integer
@@ -1029,11 +1051,12 @@ Public Type User
     desc As String ' Descripcion
     DescRM As String
     
+    'CHECK::: CHECKEAR que esto se cargue bien al cargar la charfile tambien...
     clase As eClass
-    raza As String
-    genero As String
+    raza As eRaza
+    genero As eGenero
     email As String
-    Hogar As String
+    Hogar As eCiudad
         
     Invent As Inventario
     
@@ -1395,6 +1418,7 @@ Public Parties(1 To MAX_PARTIES) As clsParty
 Public Nix As WorldPos
 Public Ullathorpe As WorldPos
 Public Banderbill As WorldPos
+
 Public Lindos As WorldPos
 
 Public Prision As WorldPos

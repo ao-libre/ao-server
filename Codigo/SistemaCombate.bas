@@ -38,214 +38,214 @@ Option Explicit
 Public Const MAXDISTANCIAARCO As Byte = 18
 Public Const MAXDISTANCIAMAGIA As Byte = 18
 
-Function ModificadorEvasion(ByVal clase As String) As Single
+Function ModificadorEvasion(ByVal clase As eClass) As Single
 
-Select Case UCase$(clase)
-    Case "GUERRERO"
+Select Case clase
+    Case eClass.Warrior
         ModificadorEvasion = 1
-    Case "CAZADOR"
+    Case eClass.Hunter
         ModificadorEvasion = 0.9
-    Case "PALADIN"
+    Case eClass.Paladin
         ModificadorEvasion = 0.9
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModificadorEvasion = 0.9
-    Case "ASESINO"
+    Case eClass.Assasin
         ModificadorEvasion = 1.1
-    Case "PIRATA"
+    Case eClass.Pirat
         ModificadorEvasion = 0.9
-    Case "LADRON"
+    Case eClass.Thief
         ModificadorEvasion = 1.1
-    Case "BARDO"
+    Case eClass.Bard
         ModificadorEvasion = 1.1
-    Case "MAGO"
+    Case eClass.Mage
         ModificadorEvasion = 0.4
-    Case "DRUIDA"
+    Case eClass.Druid
         ModificadorEvasion = 0.75
     Case Else
         ModificadorEvasion = 0.8
 End Select
 End Function
 
-Function ModificadorPoderAtaqueArmas(ByVal clase As String) As Single
+Function ModificadorPoderAtaqueArmas(ByVal clase As eClass) As Single
 Select Case UCase$(clase)
-    Case "GUERRERO"
+    Case eClass.Warrior
         ModificadorPoderAtaqueArmas = 1
-    Case "PALADIN"
+    Case eClass.Paladin
         ModificadorPoderAtaqueArmas = 0.9
-    Case "CAZADOR"
+    Case eClass.Hunter
         ModificadorPoderAtaqueArmas = 0.8
-    Case "ASESINO"
+    Case eClass.Assasin
         ModificadorPoderAtaqueArmas = 0.85
-    Case "PIRATA"
+    Case eClass.Pirat
         ModificadorPoderAtaqueArmas = 0.8
-    Case "LADRON"
+    Case eClass.Thief
         ModificadorPoderAtaqueArmas = 0.75
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModificadorPoderAtaqueArmas = 0.75
-    Case "CLERIGO"
+    Case eClass.Cleric
         ModificadorPoderAtaqueArmas = 0.75
-    Case "BARDO"
+    Case eClass.Bard
         ModificadorPoderAtaqueArmas = 0.7
-    Case "DRUIDA"
+    Case eClass.Druid
         ModificadorPoderAtaqueArmas = 0.65
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModificadorPoderAtaqueArmas = 0.6
-    Case "LEÑADOR"
+    Case eClass.Lumberjack
         ModificadorPoderAtaqueArmas = 0.6
-    Case "MINERO"
+    Case eClass.Miner
         ModificadorPoderAtaqueArmas = 0.6
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModificadorPoderAtaqueArmas = 0.6
-    Case "CARPINTERO"
+    Case eClass.Carpenter
         ModificadorPoderAtaqueArmas = 0.6
     Case Else
         ModificadorPoderAtaqueArmas = 0.5
 End Select
 End Function
 
-Function ModificadorPoderAtaqueProyectiles(ByVal clase As String) As Single
+Function ModificadorPoderAtaqueProyectiles(ByVal clase As eClass) As Single
 Select Case UCase$(clase)
-    Case "GUERRERO"
+    Case eClass.Warrior
         ModificadorPoderAtaqueProyectiles = 0.8
-    Case "CAZADOR"
+    Case eClass.Hunter
         ModificadorPoderAtaqueProyectiles = 1
-    Case "PALADIN"
+    Case eClass.Paladin
         ModificadorPoderAtaqueProyectiles = 0.75
-    Case "ASESINO"
+    Case eClass.Assasin
         ModificadorPoderAtaqueProyectiles = 0.75
-    Case "PIRATA"
+    Case eClass.Pirat
         ModificadorPoderAtaqueProyectiles = 0.75
-    Case "LADRON"
+    Case eClass.Thief
         ModificadorPoderAtaqueProyectiles = 0.8
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModificadorPoderAtaqueProyectiles = 0.8
-    Case "CLERIGO"
+    Case eClass.Cleric
         ModificadorPoderAtaqueProyectiles = 0.7
-    Case "BARDO"
+    Case eClass.Bard
         ModificadorPoderAtaqueProyectiles = 0.7
-    Case "DRUIDA"
+    Case eClass.Druid
         ModificadorPoderAtaqueProyectiles = 0.75
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModificadorPoderAtaqueProyectiles = 0.65
-    Case "LEÑADOR"
+    Case eClass.Lumberjack
         ModificadorPoderAtaqueProyectiles = 0.7
-    Case "MINERO"
+    Case eClass.Miner
         ModificadorPoderAtaqueProyectiles = 0.65
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModificadorPoderAtaqueProyectiles = 0.65
-    Case "CARPINTERO"
+    Case eClass.Carpenter
         ModificadorPoderAtaqueProyectiles = 0.7
     Case Else
         ModificadorPoderAtaqueProyectiles = 0.5
 End Select
 End Function
 
-Function ModicadorDañoClaseArmas(ByVal clase As String) As Single
+Function ModicadorDañoClaseArmas(ByVal clase As eClass) As Single
 Select Case UCase$(clase)
-    Case "GUERRERO"
+    Case eClass.Warrior
         ModicadorDañoClaseArmas = 1.1
-    Case "PALADIN"
+    Case eClass.Paladin
         ModicadorDañoClaseArmas = 0.95
-    Case "CAZADOR"
+    Case eClass.Hunter
         ModicadorDañoClaseArmas = 0.9
-    Case "ASESINO"
+    Case eClass.Assasin
         ModicadorDañoClaseArmas = 0.9
-    Case "LADRON"
+    Case eClass.Thief
         ModicadorDañoClaseArmas = 0.8
-    Case "PIRATA"
+    Case eClass.Pirat
         ModicadorDañoClaseArmas = 0.8
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModicadorDañoClaseArmas = 0.8
-    Case "CLERIGO"
+    Case eClass.Cleric
         ModicadorDañoClaseArmas = 0.8
-    Case "BARDO"
+    Case eClass.Bard
         ModicadorDañoClaseArmas = 0.75
-    Case "DRUIDA"
+    Case eClass.Druid
         ModicadorDañoClaseArmas = 0.7
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModicadorDañoClaseArmas = 0.6
-    Case "LEÑADOR"
+    Case eClass.Lumberjack
         ModicadorDañoClaseArmas = 0.7
-    Case "MINERO"
+    Case eClass.Miner
         ModicadorDañoClaseArmas = 0.75
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModicadorDañoClaseArmas = 0.75
-    Case "CARPINTERO"
+    Case eClass.Carpenter
         ModicadorDañoClaseArmas = 0.7
     Case Else
         ModicadorDañoClaseArmas = 0.5
 End Select
 End Function
 
-Function ModicadorDañoClaseProyectiles(ByVal clase As String) As Single
-Select Case UCase$(clase)
-    Case "CAZADOR"
+Function ModicadorDañoClaseProyectiles(ByVal clase As eClass) As Single
+Select Case clase
+    Case eClass.Hunter
         ModicadorDañoClaseProyectiles = 1.1
-    Case "GUERRERO"
+    Case eClass.Warrior
         ModicadorDañoClaseProyectiles = 0.9
-    Case "PALADIN"
+    Case eClass.Paladin
         ModicadorDañoClaseProyectiles = 0.8
-    Case "ASESINO"
+    Case eClass.Assasin
         ModicadorDañoClaseProyectiles = 0.8
-    Case "LADRON"
+    Case eClass.Thief
         ModicadorDañoClaseProyectiles = 0.75
-    Case "PIRATA"
+    Case eClass.Pirat
         ModicadorDañoClaseProyectiles = 0.75
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModicadorDañoClaseProyectiles = 0.75
-    Case "CLERIGO"
+    Case eClass.Cleric
         ModicadorDañoClaseProyectiles = 0.7
-    Case "BARDO"
+    Case eClass.Bard
         ModicadorDañoClaseProyectiles = 0.7
-    Case "DRUIDA"
+    Case eClass.Druid
         ModicadorDañoClaseProyectiles = 0.75
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModicadorDañoClaseProyectiles = 0.6
-    Case "LEÑADOR"
+    Case eClass.Lumberjack
         ModicadorDañoClaseProyectiles = 0.7
-    Case "MINERO"
+    Case eClass.Miner
         ModicadorDañoClaseProyectiles = 0.6
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModicadorDañoClaseProyectiles = 0.6
-    Case "CARPINTERO"
+    Case eClass.Carpenter
         ModicadorDañoClaseProyectiles = 0.7
     Case Else
         ModicadorDañoClaseProyectiles = 0.5
 End Select
 End Function
 
-Function ModEvasionDeEscudoClase(ByVal clase As String) As Single
+Function ModEvasionDeEscudoClase(ByVal clase As eClass) As Single
 
-Select Case UCase$(clase)
-Case "GUERRERO"
+Select Case clase
+    Case eClass.Warrior
         ModEvasionDeEscudoClase = 1
-    Case "CAZADOR"
+    Case eClass.Hunter
         ModEvasionDeEscudoClase = 0.8
-    Case "PALADIN"
+    Case eClass.Paladin
         ModEvasionDeEscudoClase = 1
-    Case "ASESINO"
+    Case eClass.Assasin
         ModEvasionDeEscudoClase = 0.8
-    Case "LADRON"
+    Case eClass.Thief
         ModEvasionDeEscudoClase = 0.7
-    Case "BANDIDO"
+    Case eClass.Bandit
         ModEvasionDeEscudoClase = 0.8
-    Case "PIRATA"
+    Case eClass.Pirat
         ModEvasionDeEscudoClase = 0.75
-    Case "CLERIGO"
+    Case eClass.Cleric
         ModEvasionDeEscudoClase = 0.85
-    Case "BARDO"
+    Case eClass.Bard
         ModEvasionDeEscudoClase = 0.8
-    Case "DRUIDA"
+    Case eClass.Druid
         ModEvasionDeEscudoClase = 0.75
-    Case "PESCADOR"
+    Case eClass.Fisher
         ModEvasionDeEscudoClase = 0.7
-    Case "LEÑADOR"
+    Case eClass.Lumberjack
         ModEvasionDeEscudoClase = 0.7
-    Case "MINERO"
+    Case eClass.Miner
         ModEvasionDeEscudoClase = 0.7
-    Case "HERRERO"
+    Case eClass.Blacksmith
         ModEvasionDeEscudoClase = 0.7
-    Case "CARPINTERO"
+    Case eClass.Carpenter
         ModEvasionDeEscudoClase = 0.7
     Case Else
         ModEvasionDeEscudoClase = 0.6
@@ -1100,7 +1100,7 @@ Else
     Call WriteUserAttackedSwing(VictimaIndex, UserList(AtacanteIndex).name)
 End If
 
-If UCase$(UserList(AtacanteIndex).clase) = "LADRON" Then Call Desarmar(AtacanteIndex, VictimaIndex)
+If UserList(AtacanteIndex).clase = eClass.Thief Then Call Desarmar(AtacanteIndex, VictimaIndex)
 
 End Sub
 
