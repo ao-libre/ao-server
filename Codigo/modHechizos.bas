@@ -527,6 +527,8 @@ If Hechizos(H).Mimetiza = 1 Then
         Exit Sub
     End If
     
+    If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Sub
+    
     'copio el char original al mimetizado
     
     With UserList(UserIndex)
