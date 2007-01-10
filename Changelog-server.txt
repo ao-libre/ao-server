@@ -159,4 +159,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 08/01/2007: Termine con los mensajes CharacterCreate que restaban en MoDuLo_Usuarios.bas. Puse algunos checks importantes. (Tavo)
  * 09/01/2007: Termine con algunos errores de compilacion que quedaba y modifique HandleRequestUserList. (Tavo)
  * 09/01/2007: Agregue le Character.bas al proyecto y correji los ultimos errores de compilacion, al fin compila! (Tavo)
- * 09/01/2207: HandleIncomingData() ahora es recursivo mientras siga teniendo datos para procesar y no halla ningun error de falta de datos (Tavo)
+ * 09/01/2007: HandleIncomingData() ahora es recursivo mientras siga teniendo datos para procesar y no halla ningun error de falta de datos (Tavo)
+ * 10/01/2007: Corregi un bug en "/MEMBERLIST" que dejaba a cualquiera que lo use ver la lista de cualquier clan. (NIGO)

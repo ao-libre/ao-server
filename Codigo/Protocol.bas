@@ -273,7 +273,7 @@ Private Enum ClientPacketID
     PartyKick               '/ECHARPARTY
     PartySetLeader          '/PARTYLIDER
     PartyAcceptMember       '/ACCEPTPARTY
-    GuildMemeberList        '/MIEMBROSCLAN
+    GuildMemberList        '/MIEMBROSCLAN
     
     'GM messages
     GMMessage               '/GMSG
@@ -346,7 +346,6 @@ Private Enum ClientPacketID
     SetTrigger              '/TRIGGER
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
-    GuildCompleteMemberList '/MIEMBROSCLAN
     GuildBan                '/BANCLAN
     BanIP                   '/BANIP
     UnbanIP                 '/UNBANIP
@@ -789,8 +788,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         Case ClientPacketID.PartyAcceptMember       '/ACCEPTPARTY
             Call HandlePartyAcceptMember(UserIndex)
         
-        Case ClientPacketID.GuildMemeberList        '/MIEMBROSCLAN
-            Call HandleGuildMemeberList(UserIndex)
+        Case ClientPacketID.GuildMemberList        '/MIEMBROSCLAN
+            Call HandleGuildMemberList(UserIndex)
         
         
         'GM messages
@@ -1003,9 +1002,6 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             
         Case ClientPacketID.BannedIPReload          '/BANIPRELOAD
             Call HandleBannedIPReload(UserIndex)
-            
-        Case ClientPacketID.GuildCompleteMemberList '/MIEMBROSCLAN
-            Call HandleGuildCompleteMemberList(UserIndex)
             
         Case ClientPacketID.GuildBan                '/BANCLAN
             Call HandleGuildBan(UserIndex)
@@ -6163,63 +6159,6 @@ errhandler:
 End Sub
 
 ''
-' Handles the "GuildMemeberList" message.
-'
-' @param    userIndex The index of the user sending the message.
-
-Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
-'***************************************************
-On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
-    
-    With UserList(UserIndex)
-        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-        Dim buffer As New clsByteQueue
-        Call buffer.CopyBuffer(.incomingData)
-        
-        'Remove packet ID
-        Call buffer.ReadByte
-        
-        Dim guild As String
-        Dim memberCount As Integer
-        Dim i As Long
-        Dim UserName As String
-        
-        guild = buffer.ReadASCIIString()
-        
-        If (InStrB(guild, "\") <> 0) Then
-            guild = Replace(guild, "\", "")
-        End If
-        If (InStrB(guild, "/") <> 0) Then
-            guild = Replace(guild, "/", "")
-        End If
-
-        If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
-            Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
-        Else
-            memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
-            
-            For i = 1 To memberCount
-                UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
-                
-                Call WriteConsoleMsg(UserIndex, UserName & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
-            Next i
-        End If
-        
-        'If we got here then packet is complete, copy data back to original queue
-        Call .incomingData.CopyBuffer(buffer)
-    End With
-    
-errhandler:
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-End Sub
-
-''
 ' Handles the "GMMessage" message.
 '
 ' @param    userIndex The index of the user sending the message.
@@ -9357,11 +9296,11 @@ Private Sub HandleBannedIPReload(ByVal UserIndex As Integer)
 End Sub
 
 ''
-' Handles the "GuildCompleteMemberList" message.
+' Handles the "GuildMemberList" message.
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
+Private Sub HandleGuildMemberList(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
 'Last Modification: 12/30/06
@@ -9384,6 +9323,12 @@ On Error GoTo errhandler
         Dim tFile As String
         
         GuildName = buffer.ReadASCIIString()
+        If (InStrB(GuildName, "\") <> 0) Then
+            GuildName = Replace(GuildName, "\", "")
+        End If
+        If (InStrB(guild, "/") <> 0) Then
+            GuildName = Replace(GuildName, "/", "")
+        End If
         
         If Not .flags.EsRolesMaster Then
             tFile = App.Path & "\guilds\" & GuildName & "-members.mem"
