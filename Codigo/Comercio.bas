@@ -245,6 +245,8 @@ On Error GoTo errhandler
     If desc = 0 Then desc = 1 'evitamos dividir por 0!
     val = (ObjData(Npclist(NpcIndex).Invent.Object(i).ObjIndex).Valor) / desc
     
+    If val = 0 Then val = 1 'Evita que un objeto valga 0
+    
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
         If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount > 0 Then
             If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount
