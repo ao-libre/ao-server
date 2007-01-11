@@ -7109,20 +7109,10 @@ On Error GoTo errhandler
             Else
                 tUser = NameIndex(UserName)
                 
-                If tUser <= 0 Then
-                    Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
-                    
-                    If EsAdmin(UserName) Or EsDios(UserName) Or EsSemiDios(UserName) Or EsConsejero(UserName) Then
-                        Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        advertir = True
-                    End If
+                If UserList(tUser).flags.Privilegios > PlayerType.User Then
+                    Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If UserList(tUser).flags.Privilegios > PlayerType.User Then
-                        Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        advertir = True
-                    End If
+                    advertir = True
                 End If
                 
                 If advertir Then

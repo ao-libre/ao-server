@@ -806,6 +806,11 @@ If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
 End If
 
 If Obj.OBJType = eOBJType.otWeapon Then
+    If Not UserList(UserIndex).flags.ModoCombate Then
+            Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+    End If
+    
     If Obj.proyectil = 1 Then
         'valido para evitar el flood pero no bloqueo. El bloqueo se hace en WLC con proyectiles.
         If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub

@@ -341,6 +341,17 @@ b = True
 End Sub
 
 Sub HandleHechizoTerreno(ByVal UserIndex As Integer, ByVal uh As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 01/10/07
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
+'usuario
+'***************************************************
+If UserList(UserIndex).flags.ModoCombate = False Then
+    Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
 
 Dim b As Boolean
 
@@ -366,6 +377,17 @@ End If
 End Sub
 
 Sub HandleHechizoUsuario(ByVal UserIndex As Integer, ByVal uh As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 01/10/07
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
+'usuario
+'***************************************************
+If UserList(UserIndex).flags.ModoCombate = False Then
+    Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
 
 Dim b As Boolean
 Select Case Hechizos(uh).Tipo
@@ -390,6 +412,17 @@ End If
 End Sub
 
 Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 01/10/07
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
+'usuario
+'***************************************************
+If UserList(UserIndex).flags.ModoCombate = False Then
+    Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
 
 Dim b As Boolean
 
