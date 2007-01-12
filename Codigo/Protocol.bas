@@ -5465,7 +5465,7 @@ On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
-        Dim n As Integer
+        Dim N As Integer
         
         Call buffer.CopyBuffer(.incomingData)
         
@@ -5476,13 +5476,13 @@ On Error GoTo errhandler
         
         bugReport = buffer.ReadASCIIString()
         
-        n = FreeFile
-        Open App.Path & "\LOGS\BUGs.log" For Append Shared As n
-        Print #n, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
-        Print #n, "BUG:"
-        Print #n, bugReport
-        Print #n, "########################################################################"
-        Close #n
+        N = FreeFile
+        Open App.Path & "\LOGS\BUGs.log" For Append Shared As N
+        Print #N, "Usuario:" & .name & "  Fecha:" & Date & "    Hora:" & time
+        Print #N, "BUG:"
+        Print #N, bugReport
+        Print #N, "########################################################################"
+        Close #N
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -6394,9 +6394,11 @@ On Error GoTo errhandler
             For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
                 For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
                     For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
-                        If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 And LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Then
-                            Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
-                            Exit For
+                        If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
+                            If LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Or LegalPos(UserList(tIndex).Pos.Map, X, Y, False) Then
+                                Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
+                                Exit For
+                            End If
                         End If
                     Next Y
                 Next X
@@ -7287,20 +7289,20 @@ On Error GoTo errhandler
                     End If
                 
                 Case eEditOptions.eo_Skills
-                    Dim n As Byte 'CHECK: a yo del futuro: chequear bien esto..
+                    Dim N As Byte 'CHECK: a yo del futuro: chequear bien esto..
                     
                     For LoopC = 1 To NUMSKILLS
-                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then n = LoopC
+                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
                     Next LoopC
 
-                    If n = 0 Then
+                    If N = 0 Then
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If tUser <= 0 Then
-                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & n, Arg2)
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.UserSkills(n) = val(Arg2)
+                            UserList(tUser).Stats.UserSkills(N) = val(Arg2)
                         End If
                     End If
                 
