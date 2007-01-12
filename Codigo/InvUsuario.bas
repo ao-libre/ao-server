@@ -877,6 +877,11 @@ Select Case Obj.OBJType
             Exit Sub
         End If
         
+        If Not UserList(UserIndex).flags.ModoCombate Then
+            Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
         If ObjData(ObjIndex).proyectil = 1 Then
             Call WriteWorkRequestTarget(UserIndex, Proyectiles)
         Else

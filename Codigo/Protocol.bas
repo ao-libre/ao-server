@@ -10890,8 +10890,8 @@ End Sub
 Public Sub HandleNavigateToggle(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/24/06
-'
+'Last Modification: 01/12/07
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
@@ -10904,6 +10904,9 @@ Public Sub HandleNavigateToggle(ByVal UserIndex As Integer)
         Else
             .flags.Navegando = 1
         End If
+        
+        'Tell the client that we are navigate.
+        Call WriteNavigateToggle(UserIndex)
     End With
 End Sub
 
