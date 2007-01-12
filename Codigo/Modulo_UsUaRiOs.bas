@@ -958,6 +958,14 @@ With UserList(UserIndex)
     Call WriteConsoleMsg(sendIndex, "NPCsMuertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Pena: " & .Counters.Pena, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(sendIndex, "Clan: " & GuildName(.guildIndex), FontTypeNames.FONTTYPE_INFO)
+    
+    If .Faccion.ArmadaReal = 0 Or .Faccion.FuerzasCaos = 0 Then
+        Call WriteConsoleMsg(sendIndex, "Status: " & IIf(criminal(sendIndex), "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
+    Else
+        Call WriteConsoleMsg(sendIndex, "Facción: " & IIf(.Faccion.ArmadaReal = 1, "Armada Real", "Caos"), FontTypeNames.FONTTYPE_INFO)
+    End If
+    
 End With
 
 End Sub
@@ -982,6 +990,20 @@ Dim BanDetailPath As String
         If Ban = "1" Then
             Call WriteConsoleMsg(sendIndex, "Ban por: " & GetVar(CharFile, charName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, charName, "Reason"), FontTypeNames.FONTTYPE_INFO)
         End If
+        
+        Call WriteConsoleMsg(sendIndex, "Clan: " & GuildName(CInt(GetVar(CharFile, "Guild", "GUILDINDEX"))), FontTypeNames.FONTTYPE_INFO)
+        
+        Dim Faccion As Byte '0 es nada, 1 es armada y 2 es caos
+        
+        'NO MIRAR, QUEMA LOS OJOS!
+        Faccion = IIf(CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1, IIf(CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos") = 1), 2, 1), 0)
+        
+        If Faccion = 0 Then
+            Call WriteConsoleMsg(sendIndex, "Status: " & IIf(CLng(UserFile.GetValue("REP", "Promedio")) < 0, "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
+        Else
+            Call WriteConsoleMsg(sendIndex, "Facción: " & IIf(Faccion = 1, "Armada Real", "Caos"), FontTypeNames.FONTTYPE_INFO)
+        End If
+
     Else
         Call WriteConsoleMsg(sendIndex, "El pj no existe: " & charName, FontTypeNames.FONTTYPE_INFO)
     End If
