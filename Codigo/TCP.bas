@@ -1267,7 +1267,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .Pos.X = 0
         .Pos.Y = 0
         .ip = vbNullString
-        .RDBuffer = vbNullString
         .clase = 0
         .email = vbNullString
         .genero = 0
@@ -1425,8 +1424,6 @@ End Sub
 Sub ResetUserSlot(ByVal UserIndex As Integer)
 
 Dim UsrTMP As User
-
-Set UserList(UserIndex).CommandsBuffer = Nothing
 
 UserList(UserIndex).SockPuedoEnviar = False
 UserList(UserIndex).ConnIDValida = False

@@ -514,7 +514,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         UserList(NewIndex).SockPuedoEnviar = True
         UserList(NewIndex).ConnID = NuevoSock
         UserList(NewIndex).ConnIDValida = True
-        Set UserList(NewIndex).CommandsBuffer = New CColaArray
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
