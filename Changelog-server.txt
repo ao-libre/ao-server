@@ -166,3 +166,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/01/2007: BUG #1629288, #1477130 y #1479156 reparados. (Tavo)
  * 10/01/2007: Correción de varios BUGs (Tavo)
  * 12/01/2007: /STAT ahora envia el status de la persona y su facción (Si la tiene) (Tavo)
+ * 13/01/2007: Arregle algunas cositas de /STAT que estaban mal y no compilaba (Maraxus)
+ * 13/01/2007: Escribí el FlushBuffer, el server estaría listo para empezar a testear (Maraxus)

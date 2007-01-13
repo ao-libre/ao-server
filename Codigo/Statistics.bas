@@ -32,17 +32,9 @@ Public Sub UserConnected(ByVal UserIndex As Integer)
     trainningInfo(UserIndex).trainningTime = CLng(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 10))
     
     trainningInfo(UserIndex).startTick = GetTickCount
-    
-'TODO : Get rid of this after reset!!!
-    If trainningInfo(UserIndex).trainningTime = 0 Then _
-        trainningInfo(UserIndex).trainningTime = -1
 End Sub
 
 Public Sub UserDisconnected(ByVal UserIndex As Integer)
-'TODO : Get rid of this after reset!!!
-    'Abort if char had already started trainning before this system was coded
-    If trainningInfo(UserIndex).trainningTime = -1 Then Exit Sub
-    
     With trainningInfo(UserIndex)
         'Update trainning time
         .trainningTime = .trainningTime + (GetTickCount() - .startTick) / 1000
@@ -59,16 +51,12 @@ Public Sub UserLevelUp(ByVal UserIndex As Integer)
     handle = FreeFile()
     
     With trainningInfo(UserIndex)
-    
-'TODO : get rid of the If after reset!!!
-        If .trainningTime <> -1 Then
-            'Log the data
-            Open App.Path & "\logs\statistics.log" For Append Shared As handle
-            
-            Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
-            
-            Close handle
-        End If
+        'Log the data
+        Open App.Path & "\logs\statistics.log" For Append Shared As handle
+        
+        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
+        
+        Close handle
         
         'Reset data
         .trainningTime = 0

@@ -9978,16 +9978,16 @@ On Error GoTo errhandler
             End If
         
             If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                lista = "Las ultimas IPs con las que " & UserName & "se conecto son: "
+                lista = "Las ultimas IPs con las que " & UserName & "se conecto son:"
                 For LoopC = 1 To 5
-                    lista = lista & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & LoopC)
+                    lista = lista & vbCrLf & LoopC & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & LoopC)
                 Next LoopC
                 Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Charfile """ & UserName & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
-            
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
@@ -13533,10 +13533,13 @@ Public Sub FlushBuffer(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 'Sends all data existing in the buffer
 '***************************************************
-
-''
-' TODO : Fill this in!!
-
+    Dim sndData As String
+    
+    With UserList(UserIndex).outgoingData
+        sndData = .ReadASCIIStringFixed(.length)
+        
+        Call EnviarDatosASlot(UserIndex, sndData)
+    End With
 End Sub
 
 ''

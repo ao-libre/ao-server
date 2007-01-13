@@ -996,18 +996,20 @@ Dim BanDetailPath As String
         Dim Faccion As Byte '0 es nada, 1 es armada y 2 es caos
         
         'NO MIRAR, QUEMA LOS OJOS!
-        Faccion = IIf(CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1, IIf(CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos") = 1), 2, 1), 0)
+        If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
+            Faccion = 1
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
+            Faccion = 2
+        End If
         
         If Faccion = 0 Then
-            Call WriteConsoleMsg(sendIndex, "Status: " & IIf(CLng(UserFile.GetValue("REP", "Promedio")) < 0, "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Status: " & IIf(CLng(GetVar(CharFile, "REP", "Promedio")) < 0, "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
         Else
             Call WriteConsoleMsg(sendIndex, "Facción: " & IIf(Faccion = 1, "Armada Real", "Caos"), FontTypeNames.FONTTYPE_INFO)
         End If
-
     Else
         Call WriteConsoleMsg(sendIndex, "El pj no existe: " & charName, FontTypeNames.FONTTYPE_INFO)
     End If
-    
 End Sub
 
 Sub SendUserInvTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)

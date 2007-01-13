@@ -704,7 +704,7 @@ End Sub
 ' @param Datos The string that will be send
 ' @remarks If UsarQueSocket is 3 it won`t use the clsByteQueue
 
-Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef datos As String) As Long
+Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As String) As Long
 '***************************************************
 'Author: Unknown
 'Last Modification: 01/10/07
@@ -717,7 +717,7 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef datos As Stri
     
     Dim Ret As Long
     
-    Ret = WsApiEnviar(UserIndex, datos)
+    Ret = WsApiEnviar(UserIndex, Datos)
     
     If Ret <> 0 And Ret <> WSAEWOULDBLOCK Then
         ' Close the socket avoiding any critical error
@@ -725,7 +725,7 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef datos As Stri
         Call Cerrar_Usuario(UserIndex)
     ElseIf Ret = WSAEWOULDBLOCK Then
         ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-        Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(datos)
+        Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
     End If
     
     Exit Function
@@ -735,11 +735,11 @@ Err:
 
 #ElseIf UsarQueSocket = 0 Then '**********************************************
     
-    If frmMain.Socket2(UserIndex).Write(datos, Len(datos)) < 0 Then
+    If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
         If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
             ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
             UserList(UserIndex).SockPuedoEnviar = False
-            Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(datos)
+            Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
         Else
             'Close the socket avoiding any critical error
             Call Cerrar_Usuario(UserIndex)
@@ -754,11 +754,11 @@ Err:
     
     Dim Ret As Long
 
-    Ret = frmMain.Serv.Enviar(.ConnID, datos, Len(datos))
+    Ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
             
     If Ret = 1 Then
         ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-        Call .outgoingData.WriteASCIIStringFixed(datos)
+        Call .outgoingData.WriteASCIIStringFixed(Datos)
     ElseIf Ret = 2 Then
         'Close socket avoiding any critical error
         Call CloseSocketSL(UserIndex)
@@ -778,11 +778,11 @@ Err:
             Exit Function
         End If
         
-        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, datos, Len(datos)) = 2 Then Call CloseSocket(UserIndex, True)
+        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos)) = 2 Then Call CloseSocket(UserIndex, True)
 
 Exit Function
 ErrorHandler:
-    Call LogError("TCP::EnviarDatosASlot. UI/ConnId/Datos: " & UserIndex & "/" & UserList(UserIndex).ConnID & "/" & datos)
+    Call LogError("TCP::EnviarDatosASlot. UI/ConnId/Datos: " & UserIndex & "/" & UserList(UserIndex).ConnID & "/" & Datos)
 #End If '**********************************************
 
 End Function
@@ -844,7 +844,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 End Function
 
 Sub ConnectUser(ByVal UserIndex As Integer, name As String, Password As String)
-Dim n As Integer
+Dim N As Integer
 Dim tStr As String
 
 'Reseteamos los FLAGS
@@ -1153,16 +1153,16 @@ Call Statistics.UserConnected(UserIndex)
 
 Call MostrarNumUsers
 
-n = FreeFile
-Open App.Path & "\logs\numusers.log" For Output As n
-Print #n, NumUsers
-Close #n
+N = FreeFile
+Open App.Path & "\logs\numusers.log" For Output As N
+Print #N, NumUsers
+Close #N
 
-n = FreeFile
+N = FreeFile
 'Log
-Open App.Path & "\logs\Connect.log" For Append Shared As #n
-Print #n, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
-Close #n
+Open App.Path & "\logs\Connect.log" For Append Shared As #N
+Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
+Close #N
 
 End Sub
 
@@ -1462,7 +1462,7 @@ Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
 On Error GoTo errhandler
 
-Dim n As Integer
+Dim N As Integer
 Dim X As Integer
 Dim Y As Integer
 Dim LoopC As Integer
@@ -1553,10 +1553,10 @@ Call ResetUserSlot(UserIndex)
 
 Call MostrarNumUsers
 
-n = FreeFile(1)
-Open App.Path & "\logs\Connect.log" For Append Shared As #n
-Print #n, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
-Close #n
+N = FreeFile(1)
+Open App.Path & "\logs\Connect.log" For Append Shared As #N
+Print #N, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+Close #N
 
 Exit Sub
 
