@@ -443,8 +443,6 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 01/09/07
 'Last Modified by: Lucas Tavolaro Ortiz
-'Now if the incoming data has more data and doesn`t have an error it calls the
-'handle again
 '***************************************************
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
@@ -1161,6 +1159,7 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
             Call HandleIgnored(UserIndex)
     End Select
     
+    'Done with this packet, move on to next one or send everything if no more packets found
     If UserList(UserIndex).incomingData.length > 0 And Not Err.Number = 40009 Then
         Err.Clear
         Call HandleIncomingData(UserIndex)
@@ -1169,7 +1168,6 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
         'Flush buffer - send everything that has been written
         Call FlushBuffer(UserIndex)
     End If
-    
 End Sub
 
 ''

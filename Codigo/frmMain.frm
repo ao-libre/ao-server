@@ -1097,47 +1097,20 @@ eh:
 End Sub
 
 Private Sub TCPServ_Read(ByVal ID As Long, Datos As Variant, ByVal Cantidad As Long, ByVal MiDato As Long)
-Dim T() As String
-Dim LoopC As Long
-Dim RD As String
 On Error GoTo errorh
-If UserList(MiDato).ConnID <> UserList(MiDato).ConnID Then
-    Call LogError("Recibi un read de un usuario con ConnId alterada")
-    Exit Sub
-End If
 
-RD = StrConv(Datos, vbUnicode)
-
-'call logindex(MiDato, "Read. ConnId: " & ID & " Midato: " & MiDato & " Dato: " & RD)
-
-UserList(MiDato).RDBuffer = UserList(MiDato).RDBuffer & RD
-
-T = Split(UserList(MiDato).RDBuffer, ENDC)
-If UBound(T) > 0 Then
-    UserList(MiDato).RDBuffer = T(UBound(T))
+With UserList(MiDato)
+    Datos = StrConv(StrConv(Datos, vbUnicode), vbFromUnicode)
     
-    For LoopC = 0 To UBound(T) - 1
-        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
-        '%%% EL PROBLEMA DEL SPEEDHACK          %%%
-        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        If ClientsCommandsQueue = 1 Then
-            If LenB(T(LoopC)) <> 0 Then
-                If Not UserList(MiDato).CommandsBuffer.Push(T(LoopC)) Then
-                    Call LogError("Cerramos por no encolar. Userindex:" & MiDato)
-                    Call CloseSocket(MiDato)
-                End If
-            End If
-        Else ' no encolamos los comandos (MUY VIEJO)
-            If UserList(MiDato).ConnID <> -1 Then
-                Call UserList(MiDato).incomingData.WriteASCIIStringFixed(T(LoopC))
-                Call HandleIncomingData(MiDato)
-            Else
-                Exit Sub
-            End If
-        End If
-    Next LoopC
-End If
+    Call .incomingData.WriteASCIIStringFixed(Datos)
+    
+    If .ConnID <> -1 Then
+        Call HandleIncomingData(MiDato)
+    Else
+        Exit Sub
+    End If
+End With
+
 Exit Sub
 
 errorh:
@@ -1150,3 +1123,4 @@ End Sub
 ''''''''''''''FIN  USO DEL CONTROL TCPSERV'''''''''''''''''''''''''
 '''''''''''''Compilar con UsarQueSocket = 3''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+

@@ -200,7 +200,7 @@ Dim Ret As Long
 Dim Tmp As String
 
 Dim S As Long, E As Long
-Dim n As Integer
+Dim N As Integer
     
 Dim Dale As Boolean
 Dim UltError As Long
@@ -262,8 +262,8 @@ Case 1025
 
     Case FD_READ
         
-        n = BuscaSlotSock(S)
-        If n < 0 And S <> SockListen Then
+        N = BuscaSlotSock(S)
+        If N < 0 And S <> SockListen Then
             'Call apiclosesocket(s)
             Call WSApiCloseSocket(S)
             Exit Function
@@ -286,20 +286,20 @@ Case 1025
                 Ret = SIZE_RCVBUF
             Else
                 Debug.Print "Error en Recv: " & GetWSAErrorString(UltError)
-                Call LogApiSock("Error en Recv: N=" & n & " S=" & S & " Str=" & GetWSAErrorString(UltError))
+                Call LogApiSock("Error en Recv: N=" & N & " S=" & S & " Str=" & GetWSAErrorString(UltError))
                 
                 'no hay q llamar a CloseSocket() directamente,
                 'ya q pueden abusar de algun error para
                 'desconectarse sin los 10segs. CREEME.
             '    Call C l o s e Socket(N)
             
-                Call CloseSocketSL(n)
-                Call Cerrar_Usuario(n)
+                Call CloseSocketSL(N)
+                Call Cerrar_Usuario(N)
                 Exit Function
             End If
         ElseIf Ret = 0 Then
-            Call CloseSocketSL(n)
-            Call Cerrar_Usuario(n)
+            Call CloseSocketSL(N)
+            Call Cerrar_Usuario(N)
         End If
         
         'Call WSAAsyncSelect(s, hWndMsg, ByVal 1025, ByVal (FD_READ Or FD_WRITE Or FD_CLOSE Or FD_ACCEPT))
@@ -308,19 +308,19 @@ Case 1025
         
         'Call LogApiSock("WndProc:FD_READ:N=" & N & ":TMP=" & Tmp)
         
-        Call EventoSockRead(n, Tmp)
+        Call EventoSockRead(N, Tmp)
         
     Case FD_CLOSE
-        n = BuscaSlotSock(S)
+        N = BuscaSlotSock(S)
         If S <> SockListen Then Call apiclosesocket(S)
         
-        Call LogApiSock("WndProc:FD_CLOSE:N=" & n & ":Err=" & WSAGetAsyncError(lParam))
+        Call LogApiSock("WndProc:FD_CLOSE:N=" & N & ":Err=" & WSAGetAsyncError(lParam))
         
-        If n > 0 Then
+        If N > 0 Then
             Call BorraSlotSock(S)
-            UserList(n).ConnID = -1
-            UserList(n).ConnIDValida = False
-            Call EventoSockClose(n)
+            UserList(N).ConnID = -1
+            UserList(N).ConnIDValida = False
+            Call EventoSockClose(N)
         End If
         
     End Select
@@ -531,36 +531,15 @@ End Sub
 Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
 #If UsarQueSocket = 1 Then
 
-Dim T() As String
-Dim LoopC As Long
-
-UserList(Slot).RDBuffer = UserList(Slot).RDBuffer & Datos
-
-T = Split(UserList(Slot).RDBuffer, ENDC)
-If UBound(T) > 0 Then
-    UserList(Slot).RDBuffer = T(UBound(T))
+With UserList(Slot)
+    .incomingData.WriteASCIIStringFixed (Datos)
     
-    For LoopC = 0 To UBound(T) - 1
-        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        '%%% SI ESTA OPCION SE ACTIVA SOLUCIONA %%%
-        '%%% EL PROBLEMA DEL SPEEDHACK          %%%
-        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        If ClientsCommandsQueue = 1 Then
-            If LenB(T(LoopC)) <> 0 Then
-                If Not UserList(Slot).CommandsBuffer.Push(T(LoopC)) Then
-                    Call CloseSocket(Slot)
-                End If
-            End If
-        Else ' no encolamos los comandos (MUY VIEJO)
-            If UserList(Slot).ConnID <> -1 Then
-                Call UserList(Slot).incomingData.WriteASCIIStringFixed(T(LoopC))
-                Call HandleIncomingData(Slot)
-            Else
-                Exit Sub
-            End If
-        End If
-    Next LoopC
-End If
+    If .ConnID <> -1 Then
+        Call HandleIncomingData(Slot)
+    Else
+        Exit Sub
+    End If
+End With
 
 #End If
 End Sub

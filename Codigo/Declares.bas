@@ -1063,9 +1063,7 @@ Public Type User
     
     ConnIDValida As Boolean
     ConnID As Long 'ID
-    RDBuffer As String 'Buffer roto
     
-    CommandsBuffer As New CColaArray
     SockPuedoEnviar As Boolean
     
     '[KEVIN]
