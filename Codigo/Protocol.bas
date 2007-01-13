@@ -1197,7 +1197,7 @@ On Error GoTo errhandler
     
     UserName = buffer.ReadASCIIString()
     
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     Password = buffer.ReadASCIIStringFixed(32)
 #Else
     Password = buffer.ReadASCIIString()
@@ -1228,7 +1228,7 @@ On Error GoTo errhandler
         Exit Sub
     End If
     
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
         Call WriteErrorMsg(UserIndex, "El cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
     Else
@@ -1241,7 +1241,7 @@ On Error GoTo errhandler
         Else
             Call ConnectUser(UserIndex, UserName, Password)
         End If
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     End If
 #End If
     
@@ -1290,7 +1290,7 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 113 Then Exit Sub
 #Else
     If UserList(UserIndex).incomingData.length < 51 Then Exit Sub
@@ -1334,7 +1334,7 @@ On Error GoTo errhandler
     
     UserName = buffer.ReadASCIIString()
     
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     Password = buffer.ReadASCIIStringFixed(32)
 #Else
     Password = buffer.ReadASCIIString()
@@ -1365,7 +1365,7 @@ On Error GoTo errhandler
         Exit Sub
     End If
     
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
         Call WriteErrorMsg(UserIndex, "El cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
     Else
@@ -1378,7 +1378,7 @@ On Error GoTo errhandler
                                 buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), _
                                 buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadASCIIString(), buffer.ReadByte())
         End If
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     End If
 #End If
 
@@ -5657,7 +5657,7 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 33 Then Exit Sub
 #Else
 On Error GoTo errhandler
@@ -5665,7 +5665,7 @@ On Error GoTo errhandler
 #End If
     
     With UserList(UserIndex)
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
         'Remove packet ID
         Call .incomingData.ReadByte
 #Else
@@ -5680,7 +5680,7 @@ On Error GoTo errhandler
         Dim pass As String
         
         'Get password and validate it if necessary
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
         pass = .incomingData.ReadASCIIStringFixed(32)
 #Else
         pass = buffer.ReadASCIIString()
@@ -5693,7 +5693,7 @@ On Error GoTo errhandler
             
             'Everything is right, change password
             Call WriteConsoleMsg(UserIndex, "El password ha sido cambiado.", FontTypeNames.FONTTYPE_INFO)
-#If Not Seguridadalkon Then
+#If Not SeguridadAlkon Then
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -5701,7 +5701,7 @@ On Error GoTo errhandler
 #End If
     End With
     
-#If Not Seguridadalkon Then
+#If Not SeguridadAlkon Then
 errhandler:
     'Destroy auxiliar buffer
     Set buffer = Nothing
@@ -12242,7 +12242,7 @@ Public Sub WriteValidateClient(ByVal UserIndex As Integer)
         Call .WriteByte(ServerPacketID.ValidateClient)
         Call .WriteLong(UserList(UserIndex).RandKey)
         Call .WriteInteger(UserList(UserIndex).flags.ValCoDe)
-        #If Seguridadalkon Then
+        #If SeguridadAlkon Then
             Call .WriteASCIIStringFixed(Encriptacion.StringValidacion)
         #End If
     End With
@@ -12431,7 +12431,12 @@ Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal Slot As Intege
         Call .WriteByte(ServerPacketID.ChangeSpellSlot)
         Call .WriteByte(Slot)
         Call .WriteInteger(UserList(UserIndex).Stats.UserHechizos(Slot))
-        Call .WriteASCIIString(Hechizos(UserList(UserIndex).Stats.UserHechizos(Slot)).Nombre)
+        
+        If UserList(UserIndex).Stats.UserHechizos(Slot) > 0 Then
+            Call .WriteASCIIString(Hechizos(UserList(UserIndex).Stats.UserHechizos(Slot)).Nombre)
+        Else
+            Call .WriteASCIIString(vbNullString)
+        End If
     End With
 End Sub
 
