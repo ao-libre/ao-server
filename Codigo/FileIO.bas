@@ -746,8 +746,7 @@ End Sub
 
 Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
 
-Dim LoopC As Integer
-
+Dim LoopC As Long
 
 For LoopC = 1 To NUMATRIBUTOS
   UserList(UserIndex).Stats.UserAtributos(LoopC) = CInt(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
@@ -759,41 +758,40 @@ For LoopC = 1 To NUMSKILLS
 Next LoopC
 
 For LoopC = 1 To MAXUSERHECHIZOS
-  UserList(UserIndex).Stats.UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
+  UserList(UserIndex).Stats.UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
 Next LoopC
 
-UserList(UserIndex).Stats.GLD = CLng(UserFile.GetValue("STATS", "GLD"))
-UserList(UserIndex).Stats.Banco = CLng(UserFile.GetValue("STATS", "BANCO"))
+UserList(UserIndex).Stats.GLD = val(UserFile.GetValue("STATS", "GLD"))
+UserList(UserIndex).Stats.Banco = val(UserFile.GetValue("STATS", "BANCO"))
 
-UserList(UserIndex).Stats.MET = CInt(UserFile.GetValue("STATS", "MET"))
-UserList(UserIndex).Stats.MaxHP = CInt(UserFile.GetValue("STATS", "MaxHP"))
-UserList(UserIndex).Stats.MinHP = CInt(UserFile.GetValue("STATS", "MinHP"))
+UserList(UserIndex).Stats.MaxHP = val(UserFile.GetValue("STATS", "MaxHP"))
+UserList(UserIndex).Stats.MinHP = val(UserFile.GetValue("STATS", "MinHP"))
 
-UserList(UserIndex).Stats.MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
-UserList(UserIndex).Stats.MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
+UserList(UserIndex).Stats.MinSta = val(UserFile.GetValue("STATS", "MinSTA"))
+UserList(UserIndex).Stats.MaxSta = val(UserFile.GetValue("STATS", "MaxSTA"))
 
-UserList(UserIndex).Stats.MaxMAN = CInt(UserFile.GetValue("STATS", "MaxMAN"))
-UserList(UserIndex).Stats.MinMAN = CInt(UserFile.GetValue("STATS", "MinMAN"))
+UserList(UserIndex).Stats.MaxMAN = val(UserFile.GetValue("STATS", "MaxMAN"))
+UserList(UserIndex).Stats.MinMAN = val(UserFile.GetValue("STATS", "MinMAN"))
 
-UserList(UserIndex).Stats.MaxHIT = CInt(UserFile.GetValue("STATS", "MaxHIT"))
-UserList(UserIndex).Stats.MinHIT = CInt(UserFile.GetValue("STATS", "MinHIT"))
+UserList(UserIndex).Stats.MaxHIT = val(UserFile.GetValue("STATS", "MaxHIT"))
+UserList(UserIndex).Stats.MinHIT = val(UserFile.GetValue("STATS", "MinHIT"))
 
-UserList(UserIndex).Stats.MaxAGU = CInt(UserFile.GetValue("STATS", "MaxAGU"))
-UserList(UserIndex).Stats.MinAGU = CInt(UserFile.GetValue("STATS", "MinAGU"))
+UserList(UserIndex).Stats.MaxAGU = val(UserFile.GetValue("STATS", "MaxAGU"))
+UserList(UserIndex).Stats.MinAGU = val(UserFile.GetValue("STATS", "MinAGU"))
 
-UserList(UserIndex).Stats.MaxHam = CInt(UserFile.GetValue("STATS", "MaxHAM"))
-UserList(UserIndex).Stats.MinHam = CInt(UserFile.GetValue("STATS", "MinHAM"))
+UserList(UserIndex).Stats.MaxHam = val(UserFile.GetValue("STATS", "MaxHAM"))
+UserList(UserIndex).Stats.MinHam = val(UserFile.GetValue("STATS", "MinHAM"))
 
-UserList(UserIndex).Stats.SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLibres"))
+UserList(UserIndex).Stats.SkillPts = val(UserFile.GetValue("STATS", "SkillPtsLibres"))
 
-UserList(UserIndex).Stats.Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
-UserList(UserIndex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
-UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
+UserList(UserIndex).Stats.Exp = val(UserFile.GetValue("STATS", "EXP"))
+UserList(UserIndex).Stats.ELU = val(UserFile.GetValue("STATS", "ELU"))
+UserList(UserIndex).Stats.ELV = val(UserFile.GetValue("STATS", "ELV"))
 
 
-UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
-UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
-UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
+UserList(UserIndex).Stats.UsuariosMatados = val(UserFile.GetValue("MUERTES", "UserMuertes"))
+UserList(UserIndex).Stats.CriminalesMatados = val(UserFile.GetValue("MUERTES", "CrimMuertes"))
+UserList(UserIndex).Stats.NPCsMuertos = val(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
 UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
 UserList(UserIndex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
@@ -802,13 +800,13 @@ End Sub
 
 Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
 
-UserList(UserIndex).Reputacion.AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
-UserList(UserIndex).Reputacion.BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
-UserList(UserIndex).Reputacion.BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
-UserList(UserIndex).Reputacion.LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
-UserList(UserIndex).Reputacion.NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
-UserList(UserIndex).Reputacion.PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
-UserList(UserIndex).Reputacion.Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
+UserList(UserIndex).Reputacion.AsesinoRep = val(UserFile.GetValue("REP", "Asesino"))
+UserList(UserIndex).Reputacion.BandidoRep = val(UserFile.GetValue("REP", "Bandido"))
+UserList(UserIndex).Reputacion.BurguesRep = val(UserFile.GetValue("REP", "Burguesia"))
+UserList(UserIndex).Reputacion.LadronesRep = val(UserFile.GetValue("REP", "Ladrones"))
+UserList(UserIndex).Reputacion.NobleRep = val(UserFile.GetValue("REP", "Nobles"))
+UserList(UserIndex).Reputacion.PlebeRep = val(UserFile.GetValue("REP", "Plebe"))
+UserList(UserIndex).Reputacion.Promedio = val(UserFile.GetValue("REP", "Promedio"))
 
 End Sub
 
@@ -876,20 +874,22 @@ End If
 UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
 
 
-UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
+'The usage of Val allows newly created chars to have everything set to 0
 
-UserList(UserIndex).Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
+UserList(UserIndex).Pos.Map = val(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
+UserList(UserIndex).Pos.X = val(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
+UserList(UserIndex).Pos.Y = val(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
+
+UserList(UserIndex).Invent.NroItems = val(UserFile.GetValue("Inventory", "CantidadItems"))
 
 '[KEVIN]--------------------------------------------------------------------
 '***********************************************************************************
-UserList(UserIndex).BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
+UserList(UserIndex).BancoInvent.NroItems = val(UserFile.GetValue("BancoInventory", "CantidadItems"))
 'Lista de objetos del banco
 For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
     ln = UserFile.GetValue("BancoInventory", "Obj" & LoopC)
-    UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-    UserList(UserIndex).BancoInvent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
+    UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
+    UserList(UserIndex).BancoInvent.Object(LoopC).amount = val(ReadField(2, ln, 45))
 Next LoopC
 '------------------------------------------------------------------------------------
 '[/KEVIN]*****************************************************************************
@@ -898,19 +898,19 @@ Next LoopC
 'Lista de objetos
 For LoopC = 1 To MAX_INVENTORY_SLOTS
     ln = UserFile.GetValue("Inventory", "Obj" & LoopC)
-    UserList(UserIndex).Invent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-    UserList(UserIndex).Invent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
-    UserList(UserIndex).Invent.Object(LoopC).Equipped = CByte(ReadField(3, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).amount = val(ReadField(2, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
 Next LoopC
 
 'Obtiene el indice-objeto del arma
-UserList(UserIndex).Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
+UserList(UserIndex).Invent.WeaponEqpSlot = val(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
 If UserList(UserIndex).Invent.WeaponEqpSlot > 0 Then
     UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.WeaponEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del armadura
-UserList(UserIndex).Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
+UserList(UserIndex).Invent.ArmourEqpSlot = val(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
 If UserList(UserIndex).Invent.ArmourEqpSlot > 0 Then
     UserList(UserIndex).Invent.ArmourEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.ArmourEqpSlot).ObjIndex
     UserList(UserIndex).flags.Desnudo = 0
@@ -919,38 +919,35 @@ Else
 End If
 
 'Obtiene el indice-objeto del escudo
-UserList(UserIndex).Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
+UserList(UserIndex).Invent.EscudoEqpSlot = val(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
 If UserList(UserIndex).Invent.EscudoEqpSlot > 0 Then
     UserList(UserIndex).Invent.EscudoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.EscudoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del casco
-UserList(UserIndex).Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
+UserList(UserIndex).Invent.CascoEqpSlot = val(UserFile.GetValue("Inventory", "CascoEqpSlot"))
 If UserList(UserIndex).Invent.CascoEqpSlot > 0 Then
     UserList(UserIndex).Invent.CascoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.CascoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto barco
-UserList(UserIndex).Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
+UserList(UserIndex).Invent.BarcoSlot = val(UserFile.GetValue("Inventory", "BarcoSlot"))
 If UserList(UserIndex).Invent.BarcoSlot > 0 Then
     UserList(UserIndex).Invent.BarcoObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto municion
-UserList(UserIndex).Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
+UserList(UserIndex).Invent.MunicionEqpSlot = val(UserFile.GetValue("Inventory", "MunicionSlot"))
 If UserList(UserIndex).Invent.MunicionEqpSlot > 0 Then
     UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).ObjIndex
 End If
 
 '[Alejo]
 'Obtiene el indice-objeto herramienta
-'/Nacho
-'TODO : Cambiar el "HerramientaSlot" por "AnilloSlot" en la 0.12.0
-UserList(UserIndex).Invent.AnilloEqpSlot = CInt(UserFile.GetValue("Inventory", "HerramientaSlot"))
+UserList(UserIndex).Invent.AnilloEqpSlot = val(UserFile.GetValue("Inventory", "HerramientaSlot"))
 If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
     UserList(UserIndex).Invent.AnilloEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.AnilloEqpSlot).ObjIndex
 End If
-'/Nacho
 
 UserList(UserIndex).NroMacotas = 0
 
@@ -1389,7 +1386,7 @@ Call MD5sCarga
 
 Call ConsultaPopular.LoadData
 
-#If SeguridadAlkon Then
+#If Seguridadalkon Then
 Encriptacion.StringValidacion = Encriptacion.ArmarStringValidacion
 #End If
 
@@ -1526,7 +1523,6 @@ Call WriteVar(UserFile, "INIT", "Position", UserList(UserIndex).Pos.Map & "-" & 
 Call WriteVar(UserFile, "STATS", "GLD", CStr(UserList(UserIndex).Stats.GLD))
 Call WriteVar(UserFile, "STATS", "BANCO", CStr(UserList(UserIndex).Stats.Banco))
 
-Call WriteVar(UserFile, "STATS", "MET", CStr(UserList(UserIndex).Stats.MET))
 Call WriteVar(UserFile, "STATS", "MaxHP", CStr(UserList(UserIndex).Stats.MaxHP))
 Call WriteVar(UserFile, "STATS", "MinHP", CStr(UserList(UserIndex).Stats.MinHP))
 

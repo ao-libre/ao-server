@@ -275,14 +275,12 @@ ValidateSkills = True
     
 End Function
 
-'Barrin 3/3/03
-'Agregué PadrinoName y Padrino password como opcionales, que se les da un valor siempre y cuando el servidor esté usando el sistema
-Sub ConnectNewUser(UserIndex As Integer, name As String, Password As String, UserRaza As eRaza, UserSexo As eGenero, UserClase As eClass, _
-                    US1 As String, US2 As String, US3 As String, US4 As String, US5 As String, _
-                    US6 As String, US7 As String, US8 As String, US9 As String, US10 As String, _
-                    US11 As String, US12 As String, US13 As String, US14 As String, US15 As String, _
-                    US16 As String, US17 As String, US18 As String, US19 As String, US20 As String, _
-                    US21 As String, UserEmail As String, Hogar As eCiudad)
+Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String, ByVal UserRaza As eRaza, ByVal UserSexo As eGenero, ByVal UserClase As eClass, _
+                    ByVal US1 As Byte, ByVal US2 As Byte, ByVal US3 As Byte, ByVal US4 As Byte, ByVal US5 As Byte, _
+                    ByVal US6 As Byte, ByVal US7 As Byte, ByVal US8 As Byte, ByVal US9 As Byte, ByVal US10 As Byte, _
+                    ByVal US11 As Byte, ByVal US12 As Byte, ByVal US13 As Byte, ByVal US14 As Byte, ByVal US15 As Byte, _
+                    ByVal US16 As Byte, ByVal US17 As Byte, ByVal US18 As Byte, ByVal US19 As Byte, ByVal US20 As Byte, _
+                    ByVal US21 As Byte, ByRef UserEmail As String, ByVal Hogar As eCiudad)
 
 If Not AsciiValidos(name) Then
     Call WriteErrorMsg(UserIndex, "Nombre invalido.")
@@ -355,27 +353,27 @@ End Select
 
 
 
-UserList(UserIndex).Stats.UserSkills(eSkill.Suerte) = val(US1)
-UserList(UserIndex).Stats.UserSkills(eSkill.Magia) = val(US2)
-UserList(UserIndex).Stats.UserSkills(eSkill.Robar) = val(US3)
-UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) = val(US4)
-UserList(UserIndex).Stats.UserSkills(eSkill.Armas) = val(US5)
-UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) = val(US6)
-UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = val(US7)
-UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) = val(US8)
-UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) = val(US9)
-UserList(UserIndex).Stats.UserSkills(eSkill.Talar) = val(US10)
-UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) = val(US11)
-UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) = val(US12)
-UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) = val(US13)
-UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) = val(US14)
-UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) = val(US15)
-UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) = val(US16)
-UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) = val(US17)
-UserList(UserIndex).Stats.UserSkills(eSkill.Domar) = val(US18)
-UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) = val(US19)
-UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = val(US20)
-UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) = val(US21)
+UserList(UserIndex).Stats.UserSkills(eSkill.Suerte) = US1
+UserList(UserIndex).Stats.UserSkills(eSkill.Magia) = US2
+UserList(UserIndex).Stats.UserSkills(eSkill.Robar) = US3
+UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) = US4
+UserList(UserIndex).Stats.UserSkills(eSkill.Armas) = US5
+UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) = US6
+UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = US7
+UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) = US8
+UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) = US9
+UserList(UserIndex).Stats.UserSkills(eSkill.Talar) = US10
+UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) = US11
+UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) = US12
+UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) = US13
+UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) = US14
+UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) = US15
+UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) = US16
+UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) = US17
+UserList(UserIndex).Stats.UserSkills(eSkill.Domar) = US18
+UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) = US19
+UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = US20
+UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) = US21
 
 totalskpts = 0
 
@@ -846,7 +844,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 
 End Function
 
-Sub ConnectUser(ByVal UserIndex As Integer, name As String, Password As String)
+Sub ConnectUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String)
 Dim N As Integer
 Dim tStr As String
 
@@ -939,23 +937,22 @@ If UserList(UserIndex).flags.Paralizado Then
     Call WriteParalizeOK(UserIndex)
 End If
 
-'Feo, esto tiene que ser parche cliente
+''
+'TODO : Feo, esto tiene que ser parche cliente
 If UserList(UserIndex).flags.Estupidez = 0 Then
     Call WriteDumbNoMore(UserIndex)
 End If
 
-'
-
 'Posicion de comienzo
 If UserList(UserIndex).Pos.Map = 0 Then
     If UserList(UserIndex).Hogar = eCiudad.cNix Then
-             UserList(UserIndex).Pos = Nix
+        UserList(UserIndex).Pos = Nix
     ElseIf UserList(UserIndex).Hogar = eCiudad.cUllathorpe Then
-             UserList(UserIndex).Pos = Ullathorpe
+        UserList(UserIndex).Pos = Ullathorpe
     ElseIf UserList(UserIndex).Hogar = eCiudad.cBanderbill Then
-             UserList(UserIndex).Pos = Banderbill
+        UserList(UserIndex).Pos = Banderbill
     ElseIf UserList(UserIndex).Hogar = eCiudad.cLindos Then
-             UserList(UserIndex).Pos = Lindos
+        UserList(UserIndex).Pos = Lindos
     Else
         UserList(UserIndex).Hogar = eCiudad.cUllathorpe
         UserList(UserIndex).Pos = Ullathorpe

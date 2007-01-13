@@ -47,7 +47,7 @@ End Type
     
 Public DayStats As tEstadisticasDiarias
 
-#If SeguridadAlkon Then
+#If Seguridadalkon Then
 Public aDos As New clsAntiDoS
 #End If
 
@@ -647,12 +647,8 @@ Public Type Inventario
     CascoEqpSlot As Byte
     MunicionEqpObjIndex As Integer
     MunicionEqpSlot As Byte
-    '/Nacho
-'    HerramientaEqpSlot As Integer
-'    HerramientaEqpObjIndex As Integer
-    '/Nacho
     AnilloEqpObjIndex As Integer
-    AnilloEqpSlot As Integer
+    AnilloEqpSlot As Byte
     BarcoObjIndex As Integer
     BarcoSlot As Byte
     NroItems As Integer
@@ -847,7 +843,6 @@ End Type
 Public Type UserStats
     GLD As Long 'Dinero
     Banco As Long
-    MET As Integer
     
     MaxHP As Integer
     MinHP As Integer
