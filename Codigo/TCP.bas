@@ -402,7 +402,6 @@ UserList(UserIndex).Char.WeaponAnim = NingunArma
 UserList(UserIndex).Char.ShieldAnim = NingunEscudo
 UserList(UserIndex).Char.CascoAnim = NingunCasco
 
-UserList(UserIndex).Stats.MET = 1
 Dim MiInt As Long
 MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) \ 3)
 
