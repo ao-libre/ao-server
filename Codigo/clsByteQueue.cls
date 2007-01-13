@@ -137,7 +137,7 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     
     Call source.PeekBlock(buf, source.length)
     
-    length = 0
+    queueLength = 0
     
     ' Write buffer
     Call WriteBlock(buf, source.length)
@@ -184,7 +184,7 @@ Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Lon
 '***************************************************
     'Check if there is enough free space
     If queueCapacity - queueLength - dataLength < 0 Then
-        Err.Raise NOT_ENOUGH_DATA
+        Err.raise NOT_ENOUGH_DATA
         Exit Function
     End If
     
@@ -218,7 +218,7 @@ Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
 '***************************************************
     'Check if we can read the number of bytes requested
     If dataLength > queueLength Then
-        Err.Raise NOT_ENOUGH_DATA
+        Err.raise NOT_ENOUGH_DATA
         Exit Function
     End If
     
