@@ -1319,9 +1319,6 @@ Public ListaRazas(1 To NUMRAZAS) As String
 Public SkillsNames(1 To NUMSKILLS) As String
 Public ListaClases(1 To NUMCLASES) As String
 
-Public Const ENDL As String * 2 = vbCrLf
-Public Const ENDC As String * 1 = vbNullChar
-
 Public recordusuarios As Long
 
 '

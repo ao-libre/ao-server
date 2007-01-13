@@ -479,8 +479,8 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 
     If False Then
     'If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
-        tStr = "ERRLimite de conexiones para su IP alcanzado." & ENDC
-        Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
+        'tStr = "Limite de conexiones para su IP alcanzado."
+        'Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
         Call WSApiCloseSocket(NuevoSock)
         Exit Sub
     End If
@@ -501,8 +501,8 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         For i = 1 To BanIps.Count
             If BanIps.Item(i) = UserList(NewIndex).ip Then
                 'Call apiclosesocket(NuevoSock)
-                tStr = "ERRSu IP se encuentra bloqueada en este servidor." & ENDC
-                Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
+                Call WriteErrorMsg(NewIndex, "Su IP se encuentra bloqueada en este servidor.")
+                Call FlushBuffer(NewIndex)
                 'Call SecurityIp.IpRestarConexion(sa.sin_addr)
                 Call WSApiCloseSocket(NuevoSock)
                 Exit Sub
@@ -517,9 +517,8 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
-        tStr = "ERRServer lleno." & ENDC
-        Dim AAA As Long
-        AAA = send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
+        'tStr = "Server lleno."
+        'Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
         'Call SecurityIp.IpRestarConexion(sa.sin_addr)
         Call WSApiCloseSocket(NuevoSock)
     End If
@@ -531,7 +530,7 @@ Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
 #If UsarQueSocket = 1 Then
 
 With UserList(Slot)
-    .incomingData.WriteASCIIStringFixed (Datos)
+    Call .incomingData.WriteASCIIStringFixed(Datos)
     
     If .ConnID <> -1 Then
         Call HandleIncomingData(Slot)
