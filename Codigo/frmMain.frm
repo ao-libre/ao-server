@@ -737,10 +737,11 @@ On Error GoTo hayerror
         End If
         
      End If 'UserLogged
-
+    
+     'If there is anything to be sent, we send it
+     Call FlushBuffer(iUserIndex)
    End If
    
-   Call FlushBuffer(iUserIndex)
 Next iUserIndex
 
 '[Alejo]
