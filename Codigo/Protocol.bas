@@ -13536,6 +13536,9 @@ Public Sub FlushBuffer(ByVal UserIndex As Integer)
     Dim sndData As String
     
     With UserList(UserIndex).outgoingData
+        If .length = 0 Then _
+            Exit Sub
+        
         sndData = .ReadASCIIStringFixed(.length)
         
         Call EnviarDatosASlot(UserIndex, sndData)
