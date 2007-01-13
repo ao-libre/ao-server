@@ -852,7 +852,7 @@ Dim nPos As WorldPos
         UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
 End Sub
 
-Sub ChangeUserInv(UserIndex As Integer, Slot As Byte, Object As UserOBJ)
+Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Object As UserOBJ)
     UserList(UserIndex).Invent.Object(Slot) = Object
     Call WriteChangeInventorySlot(UserIndex, Slot)
 End Sub

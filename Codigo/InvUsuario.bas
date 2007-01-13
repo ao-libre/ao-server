@@ -248,7 +248,7 @@ End Sub
 Sub UpdateUserInv(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal Slot As Byte)
 
 Dim NullObj As UserOBJ
-Dim LoopC As Byte
+Dim LoopC As Long
 
 'Actualiza un solo slot
 If Not UpdateAll Then
@@ -264,18 +264,13 @@ Else
 
 'Actualiza todos los slots
     For LoopC = 1 To MAX_INVENTORY_SLOTS
-
         'Actualiza el inventario
         If UserList(UserIndex).Invent.Object(LoopC).ObjIndex > 0 Then
             Call ChangeUserInv(UserIndex, LoopC, UserList(UserIndex).Invent.Object(LoopC))
         Else
-            
             Call ChangeUserInv(UserIndex, LoopC, NullObj)
-            
         End If
-
     Next LoopC
-
 End If
 
 End Sub
@@ -1189,13 +1184,13 @@ If Cantidad > 0 Then _
 
 End Sub
 
-Public Function ItemSeCae(ByVal index As Integer) As Boolean
+Public Function ItemSeCae(ByVal Index As Integer) As Boolean
 
-ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
-            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
-            ObjData(index).OBJType <> eOBJType.otLlaves And _
-            ObjData(index).OBJType <> eOBJType.otBarcos And _
-            ObjData(index).NoSeCae = 0
+ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
+            ObjData(Index).OBJType <> eOBJType.otLlaves And _
+            ObjData(Index).OBJType <> eOBJType.otBarcos And _
+            ObjData(Index).NoSeCae = 0
 
 
 End Function

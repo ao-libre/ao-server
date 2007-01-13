@@ -12360,19 +12360,24 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As By
         Call .WriteByte(Slot)
         
         Dim ObjIndex As Integer
+        Dim obData As ObjData
         
         ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
+        If ObjIndex > 0 Then
+            obData = ObjData(ObjIndex)
+        End If
+        
         Call .WriteInteger(ObjIndex)
-        Call .WriteASCIIString(ObjData(ObjIndex).name)
+        Call .WriteASCIIString(obData.name)
         Call .WriteInteger(UserList(UserIndex).Invent.Object(Slot).amount)
         Call .WriteBoolean(UserList(UserIndex).Invent.Object(Slot).Equipped)
-        Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-        Call .WriteByte(ObjData(ObjIndex).OBJType)
-        Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(ObjData(ObjIndex).Valor)
+        Call .WriteInteger(obData.GrhIndex)
+        Call .WriteByte(obData.OBJType)
+        Call .WriteInteger(obData.MaxHIT)
+        Call .WriteInteger(obData.MinHIT)
+        Call .WriteInteger(obData.def)
+        Call .WriteLong(obData.Valor)
     End With
 End Sub
 
