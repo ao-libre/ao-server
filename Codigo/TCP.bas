@@ -538,6 +538,9 @@ On Error GoTo errhandler
         End If
     End If
     
+    'Empty buffer for reuse
+    Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+    
     If UserList(UserIndex).flags.UserLogged Then
         If NumUsers > 0 Then NumUsers = NumUsers - 1
         Call CloseUser(UserIndex)
@@ -786,14 +789,14 @@ ErrorHandler:
 #End If '**********************************************
 
 End Function
-Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
-        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
+For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
+        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If

@@ -791,9 +791,6 @@ Private Sub ReplaceInvalidChars(ByRef S As String)
     If InStrB(S, "¬") <> 0 Then
         S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
     End If
-    If InStrB(S, ENDC) <> 0 Then
-        S = Replace(S, ENDC, vbNullString)
-    End If
 End Sub
 
 

@@ -1307,6 +1307,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "La creacion de personajes en este servidor se ha deshabilitado.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -10817,15 +10821,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -10858,15 +10862,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
