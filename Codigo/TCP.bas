@@ -991,8 +991,6 @@ End If
 'Nombre de sistema
 UserList(UserIndex).name = name
 
-'UserList(UserIndex).Password = Password ' no guardamos la password en memoria
-
 UserList(UserIndex).showName = True 'Por default los nombres son visibles
 
 
