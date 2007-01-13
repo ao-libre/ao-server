@@ -407,6 +407,8 @@ Dim LoopC As Integer
 For LoopC = 1 To MaxUsers
     UserList(LoopC).ConnID = -1
     UserList(LoopC).ConnIDValida = False
+    Set UserList(LoopC).incomingData = New clsByteQueue
+    Set UserList(LoopC).outgoingData = New clsByteQueue
 Next LoopC
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -883,11 +885,18 @@ Next
 'Initialize statistics!!
 Call Statistics.Initialize
 
-ReDim UserList(1 To MaxUsers)
+For LoopC = 1 To UBound(UserList())
+    Set UserList(LoopC).incomingData = Nothing
+    Set UserList(LoopC).outgoingData = Nothing
+Next LoopC
+
+ReDim UserList(1 To MaxUsers) As User
 
 For LoopC = 1 To MaxUsers
     UserList(LoopC).ConnID = -1
     UserList(LoopC).ConnIDValida = False
+    Set UserList(LoopC).incomingData = New clsByteQueue
+    Set UserList(LoopC).outgoingData = New clsByteQueue
 Next LoopC
 
 LastUser = 0

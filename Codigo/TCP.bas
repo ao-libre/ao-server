@@ -1423,8 +1423,6 @@ End Sub
 
 Sub ResetUserSlot(ByVal UserIndex As Integer)
 
-Dim UsrTMP As User
-
 UserList(UserIndex).SockPuedoEnviar = False
 UserList(UserIndex).ConnIDValida = False
 UserList(UserIndex).ConnID = -1
@@ -1449,8 +1447,6 @@ With UserList(UserIndex).ComUsu
     .DestUsu = 0
     .Objeto = 0
 End With
-
-UserList(UserIndex) = UsrTMP
 
 End Sub
 
