@@ -13525,7 +13525,6 @@ End Sub
 ' Flushes the outgoing data buffer of the user.
 '
 ' @param    UserIndex User whose outgoing data buffer will be flushed.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
 
 Public Sub FlushBuffer(ByVal UserIndex As Integer)
 '***************************************************
