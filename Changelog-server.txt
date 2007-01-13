@@ -169,3 +169,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/01/2007: Arregle algunas cositas de /STAT que estaban mal y no compilaba (Maraxus)
  * 13/01/2007: Escribí el FlushBuffer, el server estaría listo para empezar a testear (Maraxus)
  * 13/01/2007: reescribí los métodos que manejaban nuevos mensajes de recibidos de clientes a nivel socket (Maraxus)
+ * 13/01/2007: Corregí los bytes mínimos necesarios para el paquet de crear un PJ (Maraxus)
