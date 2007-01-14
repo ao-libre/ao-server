@@ -44,6 +44,12 @@ Option Explicit
 Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
+' The error number thrown when there is not enough data in
+' the buffer to be read or not enough space to write.
+' It's 9 (subscript out of range) + 40000
+Public Const NOT_ENOUGH_DATA As Long = 40009
+
+''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
 'Specially usefull to create a message once and send it over to several clients.
 Private auxiliarBuffer As New clsByteQueue
