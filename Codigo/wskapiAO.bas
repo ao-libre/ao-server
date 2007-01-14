@@ -575,11 +575,19 @@ Dim i As Long
         'Call ResetUserSlot(i)
     Next i
     
+    For i = 1 To MaxUsers
+        Set UserList(i).incomingData = Nothing
+        Set UserList(i).outgoingData = Nothing
+    Next i
+    
     ' No 'ta el PRESERVE :p
     ReDim UserList(1 To MaxUsers)
     For i = 1 To MaxUsers
         UserList(i).ConnID = -1
         UserList(i).ConnIDValida = False
+        
+        Set UserList(i).incomingData = New clsByteQueue
+        Set UserList(i).outgoingData = New clsByteQueue
     Next i
     
     LastUser = 1

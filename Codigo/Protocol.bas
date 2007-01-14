@@ -44,12 +44,6 @@ Option Explicit
 Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
-' The error number thrown when there is not enough data in
-' the buffer to be read or not enough space to write.
-' It's 9 (subscript out of range) + 40000
-Public Const NOT_ENOUGH_DATA As Long = 40009
-
-''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
 'Specially usefull to create a message once and send it over to several clients.
 Private auxiliarBuffer As New clsByteQueue
@@ -448,8 +442,9 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 01/09/07
-'Last Modified by: Lucas Tavolaro Ortiz
+'
 '***************************************************
+On Local Error Resume Next
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
@@ -1166,11 +1161,12 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
     End Select
     
     'Done with this packet, move on to next one or send everything if no more packets found
-    If UserList(UserIndex).incomingData.length > 0 And Not Err.Number = 40009 Then
+    If UserList(UserIndex).incomingData.length > 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         Err.Clear
         Call HandleIncomingData(UserIndex)
+    ElseIf Err.Number <> 0 Then
+        'An error ocurred, log it and kick player.
     Else
-        Err.Clear
         'Flush buffer - send everything that has been written
         Call FlushBuffer(UserIndex)
     End If
@@ -1189,7 +1185,7 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 23 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1301,12 +1297,12 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 On Error GoTo errhandler
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 113 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
     If UserList(UserIndex).incomingData.length < 51 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #End If
@@ -1418,7 +1414,7 @@ Private Sub HandleTalk(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1483,7 +1479,7 @@ Private Sub HandleYell(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1552,7 +1548,7 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1635,7 +1631,7 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2109,7 +2105,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2158,7 +2154,7 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2187,7 +2183,7 @@ Private Sub HandleLeftClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2217,7 +2213,7 @@ Private Sub HandleDoubleClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2247,7 +2243,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2326,7 +2322,7 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2362,7 +2358,7 @@ Private Sub HandleCraftBlacksmith(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2394,7 +2390,7 @@ Private Sub HandleCraftCarpenter(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2426,7 +2422,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2842,7 +2838,7 @@ Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 9 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2892,7 +2888,7 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2940,7 +2936,7 @@ Private Sub HandleEquipItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2979,7 +2975,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3011,7 +3007,7 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 1 + NUMSKILLS Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3072,7 +3068,7 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3117,7 +3113,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3169,7 +3165,7 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3214,7 +3210,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3260,7 +3256,7 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3306,7 +3302,7 @@ Private Sub HandleForumPost(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3383,7 +3379,7 @@ Private Sub HandleMoveSpell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3416,7 +3412,7 @@ Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3457,7 +3453,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3555,7 +3551,7 @@ Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3604,7 +3600,7 @@ Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3653,7 +3649,7 @@ Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3702,7 +3698,7 @@ Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3751,7 +3747,7 @@ Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3798,7 +3794,7 @@ Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3845,7 +3841,7 @@ Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3893,7 +3889,7 @@ Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3941,7 +3937,7 @@ Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4022,7 +4018,7 @@ Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4072,7 +4068,7 @@ Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4108,7 +4104,7 @@ Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4160,7 +4156,7 @@ Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4215,7 +4211,7 @@ Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4263,7 +4259,7 @@ Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4299,7 +4295,7 @@ Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4360,7 +4356,7 @@ Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4407,7 +4403,7 @@ Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5350,7 +5346,7 @@ Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5399,7 +5395,7 @@ Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5445,7 +5441,7 @@ Private Sub HandleCentinelReport(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5514,7 +5510,7 @@ Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5563,7 +5559,7 @@ Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5632,7 +5628,7 @@ Private Sub HandleBugReport(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5680,7 +5676,7 @@ Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5729,7 +5725,7 @@ Private Sub HandleGuildVote(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5774,7 +5770,7 @@ Private Sub HandlePunishments(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5836,13 +5832,13 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 '***************************************************
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 33 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #End If
@@ -5903,7 +5899,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5966,7 +5962,7 @@ Private Sub HandleInquiryVote(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5994,7 +5990,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6151,7 +6147,7 @@ Private Sub HandleDenounce(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6245,7 +6241,7 @@ Private Sub HandlePartyKick(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6291,7 +6287,7 @@ Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6337,7 +6333,7 @@ Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6385,7 +6381,7 @@ Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6445,7 +6441,7 @@ Private Sub HandleGMMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6581,7 +6577,7 @@ Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6651,7 +6647,7 @@ Private Sub HandleComment(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6713,7 +6709,7 @@ Private Sub HandleWhere(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6761,7 +6757,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6831,7 +6827,7 @@ Private Sub HandleWarpChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 7 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6894,7 +6890,7 @@ Private Sub HandleSilence(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6972,7 +6968,7 @@ Private Sub HandleSOSRemove(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7012,7 +7008,7 @@ Private Sub HandleGoToChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7213,7 +7209,7 @@ Private Sub HandleJail(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7330,7 +7326,7 @@ Private Sub HandleWarnUser(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7405,7 +7401,7 @@ Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 8 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7632,7 +7628,7 @@ Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7686,7 +7682,7 @@ Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7738,7 +7734,7 @@ Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7788,7 +7784,7 @@ Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7838,7 +7834,7 @@ Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7888,7 +7884,7 @@ Private Sub HandleRequestCharSkills(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7949,7 +7945,7 @@ Private Sub HandleReviveChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8079,7 +8075,7 @@ Private Sub HandleForgive(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8130,7 +8126,7 @@ Private Sub HandleKick(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8182,7 +8178,7 @@ Private Sub HandleExecute(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8236,7 +8232,7 @@ Private Sub HandleBanChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8348,7 +8344,7 @@ Private Sub HandleUnbanChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8434,7 +8430,7 @@ Private Sub HandleSummonChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8505,7 +8501,7 @@ Private Sub HandleSpawnCreature(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8581,7 +8577,7 @@ Private Sub HandleServerMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8623,7 +8619,7 @@ Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8676,7 +8672,7 @@ Private Sub HandleIPToNick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8723,7 +8719,7 @@ Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8769,7 +8765,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8902,7 +8898,7 @@ Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8950,7 +8946,7 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8994,7 +8990,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9040,7 +9036,7 @@ Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9082,7 +9078,7 @@ Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9124,7 +9120,7 @@ Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9166,7 +9162,7 @@ Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9208,7 +9204,7 @@ Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9289,7 +9285,7 @@ Private Sub HandleAcceptRoyalCouncilMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9344,7 +9340,7 @@ Private Sub HandleAcceptChaosCouncilMember(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9433,7 +9429,7 @@ Private Sub HandleMakeDumb(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9482,7 +9478,7 @@ Private Sub HandleMakeDumbNoMore(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9551,7 +9547,7 @@ Private Sub HandleCouncilKick(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9620,7 +9616,7 @@ Private Sub HandleSetTrigger(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9711,7 +9707,7 @@ Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9774,7 +9770,7 @@ Private Sub HandleGuildBan(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9854,7 +9850,7 @@ Private Sub HandleBanIP(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9893,7 +9889,7 @@ Private Sub HandleUnbanIP(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9928,7 +9924,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10001,7 +9997,7 @@ Private Sub HandleChaosLegionKick(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10067,7 +10063,7 @@ Private Sub HandleRoyalArmyKick(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10132,7 +10128,7 @@ Private Sub HandleForceMIDIAll(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10161,7 +10157,7 @@ Private Sub HandleForceWAVEAll(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10189,7 +10185,7 @@ Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10282,7 +10278,7 @@ Private Sub HandleKillNPCNoRespawn(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.TargetNPC = 0 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
         
@@ -10333,7 +10329,7 @@ Private Sub HandleLastIP(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10394,7 +10390,7 @@ Public Sub HandleChatColor(ByVal UserIndex As Integer)
 'Change the user`s chat color
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10749,7 +10745,7 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         If .incomingData.length < 2 Then
-            Err.raise NOT_ENOUGH_DATA
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
             Exit Sub
         End If
         
@@ -10792,7 +10788,7 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex)
         If .incomingData.length < 2 Then
-            Err.raise NOT_ENOUGH_DATA
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
             Exit Sub
         End If
         
@@ -10853,7 +10849,7 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10955,7 +10951,7 @@ Public Sub HandleAlterName(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11040,7 +11036,7 @@ Public Sub HandleAlterMail(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11102,7 +11098,7 @@ Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11166,7 +11162,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11196,7 +11192,7 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11225,7 +11221,7 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11233,15 +11229,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -11269,7 +11265,7 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11277,15 +11273,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
@@ -11403,7 +11399,7 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11450,7 +11446,7 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11498,7 +11494,7 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11550,7 +11546,7 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11597,7 +11593,7 @@ Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11638,7 +11634,7 @@ Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise NOT_ENOUGH_DATA
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
         
