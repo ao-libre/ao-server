@@ -10825,15 +10825,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -10866,15 +10866,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
