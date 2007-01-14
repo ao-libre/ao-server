@@ -444,7 +444,7 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 'Last Modification: 01/09/07
 '
 '***************************************************
-On Local Error Resume Next
+On Error Resume Next
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
@@ -1183,12 +1183,12 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 23 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
     Call buffer.CopyBuffer(UserList(UserIndex).incomingData)
@@ -1294,7 +1294,6 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 113 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1307,6 +1306,7 @@ On Error GoTo errhandler
     End If
 #End If
     
+On Error GoTo errhandler
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
     Call buffer.CopyBuffer(UserList(UserIndex).incomingData)
@@ -1412,12 +1412,12 @@ Private Sub HandleTalk(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
     
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1477,12 +1477,12 @@ Private Sub HandleYell(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
     
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1546,12 +1546,12 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -2836,12 +2836,12 @@ Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 9 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3300,12 +3300,12 @@ Private Sub HandleForumPost(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3410,12 +3410,12 @@ Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3549,12 +3549,12 @@ Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3598,12 +3598,12 @@ Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3647,12 +3647,12 @@ Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3696,12 +3696,12 @@ Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3745,12 +3745,12 @@ Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3792,12 +3792,12 @@ Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3839,12 +3839,12 @@ Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3887,12 +3887,12 @@ Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3935,12 +3935,12 @@ Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4016,12 +4016,12 @@ Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4066,12 +4066,12 @@ Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4102,12 +4102,12 @@ Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4154,12 +4154,12 @@ Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 'Last Modification by: (liquid)
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4209,12 +4209,12 @@ Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4257,12 +4257,12 @@ Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4293,12 +4293,12 @@ Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4354,12 +4354,12 @@ Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4401,12 +4401,12 @@ Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5344,12 +5344,12 @@ Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5393,12 +5393,12 @@ Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5508,12 +5508,12 @@ Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5557,12 +5557,12 @@ Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5626,12 +5626,12 @@ Private Sub HandleBugReport(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5674,12 +5674,12 @@ Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5723,12 +5723,12 @@ Private Sub HandleGuildVote(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5768,12 +5768,12 @@ Private Sub HandlePunishments(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6145,12 +6145,12 @@ Private Sub HandleDenounce(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6239,12 +6239,12 @@ Private Sub HandlePartyKick(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6285,12 +6285,12 @@ Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6331,12 +6331,12 @@ Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6379,12 +6379,12 @@ Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6439,12 +6439,12 @@ Private Sub HandleGMMessage(ByVal UserIndex As Integer)
 'Last Modification: 01/08/07
 'Last Modification by: (liquid)
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6573,14 +6573,14 @@ Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 01/10/07
-'BUG #1622069 repare
+'
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6645,12 +6645,12 @@ Private Sub HandleComment(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6707,12 +6707,12 @@ Private Sub HandleWhere(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6825,12 +6825,12 @@ Private Sub HandleWarpChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 7 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6888,12 +6888,12 @@ Private Sub HandleSilence(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6966,12 +6966,12 @@ Private Sub HandleSOSRemove(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7006,12 +7006,12 @@ Private Sub HandleGoToChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7207,12 +7207,12 @@ Private Sub HandleJail(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 6 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7324,12 +7324,12 @@ Private Sub HandleWarnUser(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7399,12 +7399,12 @@ Private Sub HandleEditChar(ByVal UserIndex As Integer)
 'Last Modification: 12/28/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 8 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7626,12 +7626,12 @@ Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
 'Last Modification: 01/08/07
 'Last Modification by: (liquid).. alto bug zapallo..
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7680,12 +7680,12 @@ Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7732,12 +7732,12 @@ Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7782,12 +7782,12 @@ Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7832,12 +7832,12 @@ Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7882,12 +7882,12 @@ Private Sub HandleRequestCharSkills(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7943,12 +7943,12 @@ Private Sub HandleReviveChar(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8073,12 +8073,12 @@ Private Sub HandleForgive(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8124,12 +8124,12 @@ Private Sub HandleKick(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8176,12 +8176,12 @@ Private Sub HandleExecute(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8230,12 +8230,12 @@ Private Sub HandleBanChar(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8342,12 +8342,12 @@ Private Sub HandleUnbanChar(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8428,12 +8428,12 @@ Private Sub HandleSummonChar(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8575,12 +8575,12 @@ Private Sub HandleServerMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8617,12 +8617,12 @@ Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8717,12 +8717,12 @@ Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8896,12 +8896,12 @@ Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9034,12 +9034,12 @@ Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9076,12 +9076,12 @@ Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9118,12 +9118,12 @@ Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9160,12 +9160,12 @@ Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9202,12 +9202,12 @@ Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9283,12 +9283,12 @@ Private Sub HandleAcceptRoyalCouncilMember(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9338,12 +9338,12 @@ Private Sub HandleAcceptChaosCouncilMember(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9427,12 +9427,12 @@ Private Sub HandleMakeDumb(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9476,12 +9476,12 @@ Private Sub HandleMakeDumbNoMore(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9545,12 +9545,12 @@ Private Sub HandleCouncilKick(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9705,12 +9705,12 @@ Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9768,12 +9768,12 @@ Private Sub HandleGuildBan(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9995,12 +9995,12 @@ Private Sub HandleChaosLegionKick(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10061,12 +10061,12 @@ Private Sub HandleRoyalArmyKick(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10183,12 +10183,12 @@ Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 4 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10277,10 +10277,7 @@ Private Sub HandleKillNPCNoRespawn(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.TargetNPC = 0 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
+        If .flags.TargetNPC = 0 Then Exit Sub
         
         Call QuitarNPC(.flags.TargetNPC)
         Call LogGM(.name, "/MATA " & Npclist(.flags.TargetNPC).name, False)
@@ -10327,12 +10324,12 @@ Private Sub HandleLastIP(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10847,12 +10844,12 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
 'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
 'Allows admins to read guild messages
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10949,12 +10946,12 @@ Public Sub HandleAlterName(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 'Change user name
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11034,12 +11031,12 @@ Public Sub HandleAlterMail(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 'Change user password
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11096,12 +11093,12 @@ Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 'Change user password
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11397,12 +11394,12 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11444,12 +11441,12 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11492,12 +11489,12 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 '
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11544,12 +11541,12 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
 'Last Modification: 12/26/06
 'Request user mail
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11591,12 +11588,12 @@ Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 'Send a message to all the users
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11632,12 +11629,12 @@ Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 'Set the MOTD
 '***************************************************
-On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
-        
+    
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue

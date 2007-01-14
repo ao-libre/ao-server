@@ -171,3 +171,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/01/2007: reescribí los métodos que manejaban nuevos mensajes de recibidos de clientes a nivel socket (Maraxus)
  * 13/01/2007: Corregí los bytes mínimos necesarios para el paquet de crear un PJ (Maraxus)
  * 13/01/2007: Arregle la carga de charfiles para permitir cargar PJs recién creados (Maraxus)
+ * 14/01/2007: Evitados los ciclos infinitos en HandleIncomingData. (Maraxus)
