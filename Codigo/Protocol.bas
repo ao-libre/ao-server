@@ -1182,7 +1182,10 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 23 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 23 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
@@ -1291,9 +1294,15 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo errhandler
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 113 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 113 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
 #Else
-    If UserList(UserIndex).incomingData.length < 51 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 51 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
 #End If
     
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1402,7 +1411,10 @@ Private Sub HandleTalk(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
     
@@ -1464,7 +1476,10 @@ Private Sub HandleYell(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
     
@@ -1530,7 +1545,10 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1610,7 +1628,10 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     Dim dummy As Long
     Dim TempTick As Long
@@ -2081,7 +2102,10 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     Dim Slot As Byte
     Dim amount As Integer
@@ -2127,7 +2151,10 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2153,7 +2180,10 @@ Private Sub HandleLeftClick(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex).incomingData
         'Remove packet ID
@@ -2180,7 +2210,10 @@ Private Sub HandleDoubleClick(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex).incomingData
         'Remove packet ID
@@ -2207,7 +2240,10 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2283,7 +2319,10 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2316,7 +2355,10 @@ Private Sub HandleCraftBlacksmith(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex).incomingData
         'Remove packet ID
@@ -2345,7 +2387,10 @@ Private Sub HandleCraftCarpenter(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex).incomingData
         'Remove packet ID
@@ -2374,7 +2419,10 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2787,7 +2835,10 @@ Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 9 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 9 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -2834,7 +2885,10 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2879,7 +2933,10 @@ Private Sub HandleEquipItem(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2915,7 +2972,10 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -2944,7 +3004,10 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 1 + NUMSKILLS Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 1 + NUMSKILLS Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3002,7 +3065,10 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3044,7 +3110,10 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3093,7 +3162,10 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3135,7 +3207,10 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3178,7 +3253,10 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3221,7 +3299,10 @@ Private Sub HandleForumPost(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3295,7 +3376,10 @@ Private Sub HandleMoveSpell(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex).incomingData
         'Remove packet ID
@@ -3325,7 +3409,10 @@ Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3363,7 +3450,10 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -3458,7 +3548,10 @@ Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3504,7 +3597,10 @@ Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3550,7 +3646,10 @@ Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3596,7 +3695,10 @@ Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3642,7 +3744,10 @@ Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3686,7 +3791,10 @@ Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3730,7 +3838,10 @@ Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3775,7 +3886,10 @@ Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3820,7 +3934,10 @@ Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3898,7 +4015,10 @@ Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3945,7 +4065,10 @@ Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -3978,7 +4101,10 @@ Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4027,7 +4153,10 @@ Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4079,7 +4208,10 @@ Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4124,7 +4256,10 @@ Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4157,7 +4292,10 @@ Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4215,7 +4353,10 @@ Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -4259,7 +4400,10 @@ Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5199,7 +5343,10 @@ Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5245,7 +5392,10 @@ Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5288,7 +5438,10 @@ Private Sub HandleCentinelReport(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -5354,7 +5507,10 @@ Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5400,7 +5556,10 @@ Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5466,7 +5625,10 @@ Private Sub HandleBugReport(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5511,7 +5673,10 @@ Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5557,7 +5722,10 @@ Private Sub HandleGuildVote(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5599,7 +5767,10 @@ Private Sub HandlePunishments(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -5658,10 +5829,16 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 '
 '***************************************************
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 33 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 33 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
 #Else
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
 #End If
     
     With UserList(UserIndex)
@@ -5719,7 +5896,10 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -5779,7 +5959,10 @@ Private Sub HandleInquiryVote(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -5804,7 +5987,10 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -5958,7 +6144,10 @@ Private Sub HandleDenounce(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6049,7 +6238,10 @@ Private Sub HandlePartyKick(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6092,7 +6284,10 @@ Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6135,7 +6330,10 @@ Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6180,7 +6378,10 @@ Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6237,7 +6438,10 @@ Private Sub HandleGMMessage(ByVal UserIndex As Integer)
 'Last Modification by: (liquid)
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6370,7 +6574,10 @@ Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 'BUG #1622069 repare
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6437,7 +6644,10 @@ Private Sub HandleComment(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6496,7 +6706,10 @@ Private Sub HandleWhere(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6541,7 +6754,10 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -6608,7 +6824,10 @@ Private Sub HandleWarpChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 7 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 7 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6668,7 +6887,10 @@ Private Sub HandleSilence(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6743,7 +6965,10 @@ Private Sub HandleSOSRemove(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6780,7 +7005,10 @@ Private Sub HandleGoToChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -6978,7 +7206,10 @@ Private Sub HandleJail(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 6 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 6 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7092,7 +7323,10 @@ Private Sub HandleWarnUser(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7164,7 +7398,10 @@ Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 8 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 8 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7388,7 +7625,10 @@ Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
 'Last Modification by: (liquid).. alto bug zapallo..
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7439,7 +7679,10 @@ Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7488,7 +7731,10 @@ Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7535,7 +7781,10 @@ Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7582,7 +7831,10 @@ Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7629,7 +7881,10 @@ Private Sub HandleRequestCharSkills(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7687,7 +7942,10 @@ Private Sub HandleReviveChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7814,7 +8072,10 @@ Private Sub HandleForgive(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7862,7 +8123,10 @@ Private Sub HandleKick(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7911,7 +8175,10 @@ Private Sub HandleExecute(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -7962,7 +8229,10 @@ Private Sub HandleBanChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8071,7 +8341,10 @@ Private Sub HandleUnbanChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8154,7 +8427,10 @@ Private Sub HandleSummonChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8222,7 +8498,10 @@ Private Sub HandleSpawnCreature(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -8295,7 +8574,10 @@ Private Sub HandleServerMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8334,7 +8616,10 @@ Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8384,7 +8669,10 @@ Private Sub HandleIPToNick(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -8428,7 +8716,10 @@ Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8471,7 +8762,10 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -8601,7 +8895,10 @@ Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8646,7 +8943,10 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -8687,7 +8987,10 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
 'Last Modification: 12/29/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 6 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 6 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -8730,7 +9033,10 @@ Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8769,7 +9075,10 @@ Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8808,7 +9117,10 @@ Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8847,7 +9159,10 @@ Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8886,7 +9201,10 @@ Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -8964,7 +9282,10 @@ Private Sub HandleAcceptRoyalCouncilMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9016,7 +9337,10 @@ Private Sub HandleAcceptChaosCouncilMember(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9102,7 +9426,10 @@ Private Sub HandleMakeDumb(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9148,7 +9475,10 @@ Private Sub HandleMakeDumbNoMore(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9214,7 +9544,10 @@ Private Sub HandleCouncilKick(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9280,7 +9613,10 @@ Private Sub HandleSetTrigger(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9368,7 +9704,10 @@ Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9428,7 +9767,10 @@ Private Sub HandleGuildBan(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9505,7 +9847,10 @@ Private Sub HandleBanIP(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9541,7 +9886,10 @@ Private Sub HandleUnbanIP(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9573,7 +9921,10 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9643,7 +9994,10 @@ Private Sub HandleChaosLegionKick(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9706,7 +10060,10 @@ Private Sub HandleRoyalArmyKick(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9768,7 +10125,10 @@ Private Sub HandleForceMIDIAll(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9794,7 +10154,10 @@ Private Sub HandleForceWAVEAll(ByVal UserIndex As Integer)
 'Last Modification: 12/30/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -9819,7 +10182,10 @@ Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -9909,7 +10275,10 @@ Private Sub HandleKillNPCNoRespawn(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.TargetNPC = 0 Then Exit Sub
+        If .flags.TargetNPC = 0 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
         
         Call QuitarNPC(.flags.TargetNPC)
         Call LogGM(.name, "/MATA " & Npclist(.flags.TargetNPC).name, False)
@@ -9957,7 +10326,10 @@ Private Sub HandleLastIP(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -10015,7 +10387,10 @@ Public Sub HandleChatColor(ByVal UserIndex As Integer)
 'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
 'Change the user`s chat color
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -10367,7 +10742,10 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
 'Change the backup`s info of the map
 '***************************************************
     With UserList(UserIndex)
-        If .incomingData.length < 2 Then Exit Sub
+        If .incomingData.length < 2 Then
+            Err.raise NOT_ENOUGH_DATA
+            Exit Sub
+        End If
         
         'Remove Packet ID
         Call .incomingData.ReadByte
@@ -10407,7 +10785,10 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 'Change the pk`s info of the  map
 '***************************************************
     With UserList(UserIndex)
-        If .incomingData.length < 2 Then Exit Sub
+        If .incomingData.length < 2 Then
+            Err.raise NOT_ENOUGH_DATA
+            Exit Sub
+        End If
         
         'Remove Packet ID
         Call .incomingData.ReadByte
@@ -10465,7 +10846,10 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
 'Allows admins to read guild messages
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -10564,7 +10948,10 @@ Public Sub HandleAlterName(ByVal UserIndex As Integer)
 'Change user name
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -10646,7 +11033,10 @@ Public Sub HandleAlterMail(ByVal UserIndex As Integer)
 'Change user password
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -10705,7 +11095,10 @@ Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
 'Change user password
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 5 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -10766,7 +11159,10 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
 'Last Modification: 12/24/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove Packet ID
@@ -10793,7 +11189,10 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
 'Last Modification: 12/24/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove Packet ID
@@ -10819,7 +11218,10 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
 'Last Modification: 12/24/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove Packet ID
@@ -10860,7 +11262,10 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
 'Last Modification: 12/24/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'Remove Packet ID
@@ -10991,7 +11396,10 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -11035,7 +11443,10 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -11080,7 +11491,10 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -11129,7 +11543,10 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
 'Request user mail
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -11173,7 +11590,10 @@ Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
 'Send a message to all the users
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
     
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -11211,7 +11631,10 @@ Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
 'Set the MOTD
 '***************************************************
 On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then Exit Sub
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.raise NOT_ENOUGH_DATA
+        Exit Sub
+    End If
         
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
