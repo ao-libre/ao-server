@@ -11846,15 +11846,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -11890,15 +11890,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
@@ -13811,10 +13811,10 @@ Public Sub WriteUpdateHungerAndThirst(ByVal UserIndex As Integer)
 '***************************************************
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.UpdateHungerAndThirst)
-        Call .WriteInteger(UserList(UserIndex).Stats.MaxAGU)
-        Call .WriteInteger(UserList(UserIndex).Stats.MinAGU)
-        Call .WriteInteger(UserList(UserIndex).Stats.MaxHam)
-        Call .WriteInteger(UserList(UserIndex).Stats.MinHam)
+        Call .WriteByte(UserList(UserIndex).Stats.MaxAGU)
+        Call .WriteByte(UserList(UserIndex).Stats.MinAGU)
+        Call .WriteByte(UserList(UserIndex).Stats.MaxHam)
+        Call .WriteByte(UserList(UserIndex).Stats.MinHam)
     End With
 End Sub
 

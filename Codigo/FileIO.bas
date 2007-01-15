@@ -1490,7 +1490,6 @@ Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
-'Call WriteVar(UserFile, "INIT", "Password", UserList(UserIndex).Password) 'la password no se carga mas en memoria
 Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).desc)
 
 Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
@@ -1505,11 +1504,9 @@ Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim
 Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAnim))
 Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
 
-'If UserList(UserIndex).ip <> GetVar(CharPath & rData & ".chr", "INIT", "LastIP1") Then
-If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then 'CHECK
+If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then
     Dim i As Integer
     For i = 5 To 2 Step -1
-        'Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & str(i - 1)))
         Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(UserFile, "LastIP", str(i - 1)))
     Next i
     Call WriteVar(UserFile, "INIT", "LastIP1", UserList(UserIndex).ip)
@@ -1572,24 +1569,24 @@ For LoopC = 1 To MAX_INVENTORY_SLOTS
     Call WriteVar(UserFile, "Inventory", "Obj" & LoopC, UserList(UserIndex).Invent.Object(LoopC).ObjIndex & "-" & UserList(UserIndex).Invent.Object(LoopC).amount & "-" & UserList(UserIndex).Invent.Object(LoopC).Equipped)
 Next
 
-Call WriteVar(UserFile, "Inventory", "WeaponEqpSlot", str(UserList(UserIndex).Invent.WeaponEqpSlot))
-Call WriteVar(UserFile, "Inventory", "ArmourEqpSlot", str(UserList(UserIndex).Invent.ArmourEqpSlot))
-Call WriteVar(UserFile, "Inventory", "CascoEqpSlot", str(UserList(UserIndex).Invent.CascoEqpSlot))
-Call WriteVar(UserFile, "Inventory", "EscudoEqpSlot", str(UserList(UserIndex).Invent.EscudoEqpSlot))
-Call WriteVar(UserFile, "Inventory", "BarcoSlot", str(UserList(UserIndex).Invent.BarcoSlot))
-Call WriteVar(UserFile, "Inventory", "MunicionSlot", str(UserList(UserIndex).Invent.MunicionEqpSlot))
+Call WriteVar(UserFile, "Inventory", "WeaponEqpSlot", CStr(UserList(UserIndex).Invent.WeaponEqpSlot))
+Call WriteVar(UserFile, "Inventory", "ArmourEqpSlot", CStr(UserList(UserIndex).Invent.ArmourEqpSlot))
+Call WriteVar(UserFile, "Inventory", "CascoEqpSlot", CStr(UserList(UserIndex).Invent.CascoEqpSlot))
+Call WriteVar(UserFile, "Inventory", "EscudoEqpSlot", CStr(UserList(UserIndex).Invent.EscudoEqpSlot))
+Call WriteVar(UserFile, "Inventory", "BarcoSlot", CStr(UserList(UserIndex).Invent.BarcoSlot))
+Call WriteVar(UserFile, "Inventory", "MunicionSlot", CStr(UserList(UserIndex).Invent.MunicionEqpSlot))
 '/Nacho
-'TODO : En la 0.12 cambiar la variable del CharFile
-Call WriteVar(UserFile, "Inventory", "HerramientaSlot", str(UserList(UserIndex).Invent.AnilloEqpSlot))
+
+Call WriteVar(UserFile, "Inventory", "AnilloSlot", CStr(UserList(UserIndex).Invent.AnilloEqpSlot))
 
 
 'Reputacion
-Call WriteVar(UserFile, "REP", "Asesino", val(UserList(UserIndex).Reputacion.AsesinoRep))
-Call WriteVar(UserFile, "REP", "Bandido", val(UserList(UserIndex).Reputacion.BandidoRep))
-Call WriteVar(UserFile, "REP", "Burguesia", val(UserList(UserIndex).Reputacion.BurguesRep))
-Call WriteVar(UserFile, "REP", "Ladrones", val(UserList(UserIndex).Reputacion.LadronesRep))
-Call WriteVar(UserFile, "REP", "Nobles", val(UserList(UserIndex).Reputacion.NobleRep))
-Call WriteVar(UserFile, "REP", "Plebe", val(UserList(UserIndex).Reputacion.PlebeRep))
+Call WriteVar(UserFile, "REP", "Asesino", CStr(UserList(UserIndex).Reputacion.AsesinoRep))
+Call WriteVar(UserFile, "REP", "Bandido", CStr(UserList(UserIndex).Reputacion.BandidoRep))
+Call WriteVar(UserFile, "REP", "Burguesia", CStr(UserList(UserIndex).Reputacion.BurguesRep))
+Call WriteVar(UserFile, "REP", "Ladrones", CStr(UserList(UserIndex).Reputacion.LadronesRep))
+Call WriteVar(UserFile, "REP", "Nobles", CStr(UserList(UserIndex).Reputacion.NobleRep))
+Call WriteVar(UserFile, "REP", "Plebe", CStr(UserList(UserIndex).Reputacion.PlebeRep))
 
 Dim L As Long
 L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
@@ -1599,7 +1596,7 @@ L = (-UserList(UserIndex).Reputacion.AsesinoRep) + _
     UserList(UserIndex).Reputacion.NobleRep + _
     UserList(UserIndex).Reputacion.PlebeRep
 L = L / 6
-Call WriteVar(UserFile, "REP", "Promedio", val(L))
+Call WriteVar(UserFile, "REP", "Promedio", CStr(L))
 
 Dim cad As String
 
@@ -1626,7 +1623,7 @@ For LoopC = 1 To MAXMASCOTAS
 
 Next
 
-Call WriteVar(UserFile, "MASCOTAS", "NroMascotas", str(NroMascotas))
+Call WriteVar(UserFile, "MASCOTAS", "NroMascotas", CStr(NroMascotas))
 
 'Devuelve el head de muerto
 If UserList(UserIndex).flags.Muerto = 1 Then
