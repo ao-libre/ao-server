@@ -13169,7 +13169,7 @@ Public Sub WriteObjectCreate(ByVal UserIndex As Integer, ByVal GrhIndex As Integ
 'Last Modification: 05/17/06
 'Writes the "ObjectCreate" message to the given user's outgoing data buffer
 '***************************************************
-    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageObjectCreate(GrhIndex, X, Y))
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageObjectCreate(GrhIndex, X, Y))
 End Sub
 
 ''
@@ -14941,9 +14941,9 @@ Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, ByVal X As
 '***************************************************
     With auxiliarBuffer
         Call .WriteByte(ServerPacketID.ObjectCreate)
-        Call .WriteInteger(GrhIndex)
         Call .WriteByte(X)
         Call .WriteByte(Y)
+        Call .WriteInteger(GrhIndex)
         
         PrepareMessageObjectCreate = .ReadASCIIStringFixed(.length)
     End With
