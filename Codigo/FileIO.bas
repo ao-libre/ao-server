@@ -1386,7 +1386,7 @@ Call MD5sCarga
 
 Call ConsultaPopular.LoadData
 
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
 Encriptacion.StringValidacion = Encriptacion.ArmarStringValidacion
 #End If
 
@@ -1507,7 +1507,7 @@ Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim
 
 'If UserList(UserIndex).ip <> GetVar(CharPath & rData & ".chr", "INIT", "LastIP1") Then
 If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then 'CHECK
-    Dim i As Byte
+    Dim i As Integer
     For i = 5 To 2 Step -1
         'Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(CharPath & rData & ".chr", "INIT", "LastIP" & str(i - 1)))
         Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(UserFile, "LastIP", str(i - 1)))
