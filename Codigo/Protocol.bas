@@ -418,6 +418,8 @@ Public Enum FontTypeNames
     FONTTYPE_CONSEJOCAOSVesA
     FONTTYPE_CENTINELA
     FONTTYPE_GMMSG
+    FONTTYPE_GM
+    FONTTYPE_CITIZEN
 End Enum
 
 Public Enum eEditOptions

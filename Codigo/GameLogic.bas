@@ -549,22 +549,25 @@ If InMapBounds(Map, X, Y) Then
                 
                                 
                 If UserList(TempCharIndex).flags.PertAlCons > 0 Then
-                    Stat = Stat & " [CONSEJO DE BANDERBILL]" '& FONTTYPE_CONSEJOVesA
+                    Stat = Stat & " [CONSEJO DE BANDERBILL]"
                     ft = FontTypeNames.FONTTYPE_CONSEJOVesA
                 ElseIf UserList(TempCharIndex).flags.PertAlConsCaos > 0 Then
-                    Stat = Stat & " [CONSEJO DE LAS SOMBRAS]" '& FONTTYPE_CONSEJOCAOSVesA
+                    Stat = Stat & " [CONSEJO DE LAS SOMBRAS]"
                     ft = FontTypeNames.FONTTYPE_CONSEJOCAOSVesA
                 Else
                     If UserList(TempCharIndex).flags.Privilegios > 0 Then
-                        Stat = Stat & " <GAME MASTER>" ' ~0~185~0~1~0"
+                        Stat = Stat & " <GAME MASTER>"
+                        ft = FontTypeNames.FONTTYPE_GM
                     ElseIf criminal(TempCharIndex) Then
-                        Stat = Stat & " <CRIMINAL>" ' ~255~0~0~1~0"
+                        Stat = Stat & " <CRIMINAL>"
+                        ft = FontTypeNames.FONTTYPE_FIGHT
                     Else
-                        Stat = Stat & " <CIUDADANO>" ' ~0~0~200~1~0"
+                        Stat = Stat & " <CIUDADANO>"
+                        ft = FontTypeNames.FONTTYPE_CITIZEN
                     End If
                 End If
             Else
-                Stat = UserList(TempCharIndex).DescRM & " " ' & FONTTYPE_INFOBOLD
+                Stat = UserList(TempCharIndex).DescRM
                 ft = FontTypeNames.FONTTYPE_INFOBOLD
             End If
             
