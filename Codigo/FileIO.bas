@@ -873,23 +873,20 @@ End If
 
 UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
 
+UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
+UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
+UserList(UserIndex).Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
 
-'The usage of Val allows newly created chars to have everything set to 0
-
-UserList(UserIndex).Pos.Map = val(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.X = val(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
-UserList(UserIndex).Pos.Y = val(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
-
-UserList(UserIndex).Invent.NroItems = val(UserFile.GetValue("Inventory", "CantidadItems"))
+UserList(UserIndex).Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
 
 '[KEVIN]--------------------------------------------------------------------
 '***********************************************************************************
-UserList(UserIndex).BancoInvent.NroItems = val(UserFile.GetValue("BancoInventory", "CantidadItems"))
+UserList(UserIndex).BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
 'Lista de objetos del banco
 For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
     ln = UserFile.GetValue("BancoInventory", "Obj" & LoopC)
-    UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-    UserList(UserIndex).BancoInvent.Object(LoopC).amount = val(ReadField(2, ln, 45))
+    UserList(UserIndex).BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
+    UserList(UserIndex).BancoInvent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
 Next LoopC
 '------------------------------------------------------------------------------------
 '[/KEVIN]*****************************************************************************
@@ -898,19 +895,19 @@ Next LoopC
 'Lista de objetos
 For LoopC = 1 To MAX_INVENTORY_SLOTS
     ln = UserFile.GetValue("Inventory", "Obj" & LoopC)
-    UserList(UserIndex).Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-    UserList(UserIndex).Invent.Object(LoopC).amount = val(ReadField(2, ln, 45))
-    UserList(UserIndex).Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).amount = CInt(ReadField(2, ln, 45))
+    UserList(UserIndex).Invent.Object(LoopC).Equipped = CByte(ReadField(3, ln, 45))
 Next LoopC
 
 'Obtiene el indice-objeto del arma
-UserList(UserIndex).Invent.WeaponEqpSlot = val(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
+UserList(UserIndex).Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
 If UserList(UserIndex).Invent.WeaponEqpSlot > 0 Then
     UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.WeaponEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del armadura
-UserList(UserIndex).Invent.ArmourEqpSlot = val(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
+UserList(UserIndex).Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
 If UserList(UserIndex).Invent.ArmourEqpSlot > 0 Then
     UserList(UserIndex).Invent.ArmourEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.ArmourEqpSlot).ObjIndex
     UserList(UserIndex).flags.Desnudo = 0
@@ -919,32 +916,32 @@ Else
 End If
 
 'Obtiene el indice-objeto del escudo
-UserList(UserIndex).Invent.EscudoEqpSlot = val(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
+UserList(UserIndex).Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
 If UserList(UserIndex).Invent.EscudoEqpSlot > 0 Then
     UserList(UserIndex).Invent.EscudoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.EscudoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto del casco
-UserList(UserIndex).Invent.CascoEqpSlot = val(UserFile.GetValue("Inventory", "CascoEqpSlot"))
+UserList(UserIndex).Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
 If UserList(UserIndex).Invent.CascoEqpSlot > 0 Then
     UserList(UserIndex).Invent.CascoEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.CascoEqpSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto barco
-UserList(UserIndex).Invent.BarcoSlot = val(UserFile.GetValue("Inventory", "BarcoSlot"))
+UserList(UserIndex).Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
 If UserList(UserIndex).Invent.BarcoSlot > 0 Then
     UserList(UserIndex).Invent.BarcoObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex
 End If
 
 'Obtiene el indice-objeto municion
-UserList(UserIndex).Invent.MunicionEqpSlot = val(UserFile.GetValue("Inventory", "MunicionSlot"))
+UserList(UserIndex).Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
 If UserList(UserIndex).Invent.MunicionEqpSlot > 0 Then
     UserList(UserIndex).Invent.MunicionEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.MunicionEqpSlot).ObjIndex
 End If
 
 '[Alejo]
-'Obtiene el indice-objeto herramienta
-UserList(UserIndex).Invent.AnilloEqpSlot = val(UserFile.GetValue("Inventory", "HerramientaSlot"))
+'Obtiene el indice-objeto anilo
+UserList(UserIndex).Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
 If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
     UserList(UserIndex).Invent.AnilloEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.AnilloEqpSlot).ObjIndex
 End If
