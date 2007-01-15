@@ -758,40 +758,40 @@ For LoopC = 1 To NUMSKILLS
 Next LoopC
 
 For LoopC = 1 To MAXUSERHECHIZOS
-  UserList(UserIndex).Stats.UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
+  UserList(UserIndex).Stats.UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
 Next LoopC
 
-UserList(UserIndex).Stats.GLD = val(UserFile.GetValue("STATS", "GLD"))
-UserList(UserIndex).Stats.Banco = val(UserFile.GetValue("STATS", "BANCO"))
+UserList(UserIndex).Stats.GLD = CLng(UserFile.GetValue("STATS", "GLD"))
+UserList(UserIndex).Stats.Banco = CLng(UserFile.GetValue("STATS", "BANCO"))
 
-UserList(UserIndex).Stats.MaxHP = val(UserFile.GetValue("STATS", "MaxHP"))
-UserList(UserIndex).Stats.MinHP = val(UserFile.GetValue("STATS", "MinHP"))
+UserList(UserIndex).Stats.MaxHP = CInt(UserFile.GetValue("STATS", "MaxHP"))
+UserList(UserIndex).Stats.MinHP = CInt(UserFile.GetValue("STATS", "MinHP"))
 
-UserList(UserIndex).Stats.MinSta = val(UserFile.GetValue("STATS", "MinSTA"))
-UserList(UserIndex).Stats.MaxSta = val(UserFile.GetValue("STATS", "MaxSTA"))
+UserList(UserIndex).Stats.MinSta = CInt(UserFile.GetValue("STATS", "MinSTA"))
+UserList(UserIndex).Stats.MaxSta = CInt(UserFile.GetValue("STATS", "MaxSTA"))
 
-UserList(UserIndex).Stats.MaxMAN = val(UserFile.GetValue("STATS", "MaxMAN"))
-UserList(UserIndex).Stats.MinMAN = val(UserFile.GetValue("STATS", "MinMAN"))
+UserList(UserIndex).Stats.MaxMAN = CInt(UserFile.GetValue("STATS", "MaxMAN"))
+UserList(UserIndex).Stats.MinMAN = CInt(UserFile.GetValue("STATS", "MinMAN"))
 
-UserList(UserIndex).Stats.MaxHIT = val(UserFile.GetValue("STATS", "MaxHIT"))
-UserList(UserIndex).Stats.MinHIT = val(UserFile.GetValue("STATS", "MinHIT"))
+UserList(UserIndex).Stats.MaxHIT = CInt(UserFile.GetValue("STATS", "MaxHIT"))
+UserList(UserIndex).Stats.MinHIT = CInt(UserFile.GetValue("STATS", "MinHIT"))
 
-UserList(UserIndex).Stats.MaxAGU = val(UserFile.GetValue("STATS", "MaxAGU"))
-UserList(UserIndex).Stats.MinAGU = val(UserFile.GetValue("STATS", "MinAGU"))
+UserList(UserIndex).Stats.MaxAGU = CByte(UserFile.GetValue("STATS", "MaxAGU"))
+UserList(UserIndex).Stats.MinAGU = CByte(UserFile.GetValue("STATS", "MinAGU"))
 
-UserList(UserIndex).Stats.MaxHam = val(UserFile.GetValue("STATS", "MaxHAM"))
-UserList(UserIndex).Stats.MinHam = val(UserFile.GetValue("STATS", "MinHAM"))
+UserList(UserIndex).Stats.MaxHam = CByte(UserFile.GetValue("STATS", "MaxHAM"))
+UserList(UserIndex).Stats.MinHam = CByte(UserFile.GetValue("STATS", "MinHAM"))
 
-UserList(UserIndex).Stats.SkillPts = val(UserFile.GetValue("STATS", "SkillPtsLibres"))
+UserList(UserIndex).Stats.SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLibres"))
 
-UserList(UserIndex).Stats.Exp = val(UserFile.GetValue("STATS", "EXP"))
-UserList(UserIndex).Stats.ELU = val(UserFile.GetValue("STATS", "ELU"))
-UserList(UserIndex).Stats.ELV = val(UserFile.GetValue("STATS", "ELV"))
+UserList(UserIndex).Stats.Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
+UserList(UserIndex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
+UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
 
 
-UserList(UserIndex).Stats.UsuariosMatados = val(UserFile.GetValue("MUERTES", "UserMuertes"))
-UserList(UserIndex).Stats.CriminalesMatados = val(UserFile.GetValue("MUERTES", "CrimMuertes"))
-UserList(UserIndex).Stats.NPCsMuertos = val(UserFile.GetValue("MUERTES", "NpcsMuertes"))
+UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
+UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
+UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
 UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
 UserList(UserIndex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
