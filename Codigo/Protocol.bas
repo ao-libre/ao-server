@@ -1167,9 +1167,8 @@ On Error Resume Next
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
-        Call MsgBox("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
-                    " HelpFile: " & Err.HelpFile & " HelpContext: " & Err.HelpContext & _
-                    " LastDllError: " & Err.LastDllError)
+        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
+                        vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & vbTab & " LastDllError: " & Err.LastDllError)
         Call CloseSocket(UserIndex, True)
     
     Else
