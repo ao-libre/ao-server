@@ -49,8 +49,8 @@ Option Base 0       'It's the default, but we make it explicit just in case...
 ''
 ' The error number thrown when there is not enough data in
 ' the buffer to be read or not enough space to write.
-' It's 9 (subscript out of range) + 40000
-Private Const NOT_ENOUGH_DATA As Long = 40009
+' It's 9 (subscript out of range) + the object error constant
+Private Const NOT_ENOUGH_DATA As Long = vbObjectError + 9
 
 ''
 ' Default size of a data buffer (8 Kbs)

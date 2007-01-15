@@ -944,20 +944,20 @@ End If
 
 'Posicion de comienzo
 If UserList(UserIndex).Pos.Map = 0 Then
-    If UserList(UserIndex).Hogar = eCiudad.cNix Then
-        UserList(UserIndex).Pos = Nix
-    ElseIf UserList(UserIndex).Hogar = eCiudad.cUllathorpe Then
-        UserList(UserIndex).Pos = Ullathorpe
-    ElseIf UserList(UserIndex).Hogar = eCiudad.cBanderbill Then
-        UserList(UserIndex).Pos = Banderbill
-    ElseIf UserList(UserIndex).Hogar = eCiudad.cLindos Then
-        UserList(UserIndex).Pos = Lindos
-    Else
-        UserList(UserIndex).Hogar = eCiudad.cUllathorpe
-        UserList(UserIndex).Pos = Ullathorpe
-    End If
+    Select Case UserList(UserIndex).Hogar
+        Case eCiudad.cNix
+            UserList(UserIndex).Pos = Nix
+        Case eCiudad.cUllathorpe
+            UserList(UserIndex).Pos = Ullathorpe
+        Case eCiudad.cBanderbill
+            UserList(UserIndex).Pos = Banderbill
+        Case eCiudad.cLindos
+            UserList(UserIndex).Pos = Lindos
+        Case Else
+            UserList(UserIndex).Hogar = eCiudad.cUllathorpe
+            UserList(UserIndex).Pos = Ullathorpe
+    End Select
 Else
-
     If Not MapaValido(UserList(UserIndex).Pos.Map) Then
         Call WriteErrorMsg(UserIndex, "EL PJ se encuenta en un mapa invalido.")
         Call CloseSocket(UserIndex)
@@ -998,7 +998,7 @@ UserList(UserIndex).showName = True 'Por default los nombres son visibles
 'Info
 Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
-Call WritePlayMidi(UserIndex, MapInfo(UserList(UserIndex).Pos.Map).Music)
+Call WritePlayMidi(UserIndex, CByte(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
 
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
 UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)

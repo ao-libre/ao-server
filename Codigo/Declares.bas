@@ -47,7 +47,7 @@ End Type
     
 Public DayStats As tEstadisticasDiarias
 
-#If Seguridadalkon Then
+#If SeguridadAlkon Then
 Public aDos As New clsAntiDoS
 #End If
 
@@ -114,14 +114,14 @@ Public Enum eClass
     Pirat       'Pirata
 End Enum
 
-Enum eCiudad
+Public Enum eCiudad
     cUllathorpe = 1
     cNix
     cBanderbill
     cLindos
 End Enum
 
-Enum eRaza
+Public Enum eRaza
     Humano = 1
     Elfo
     ElfoOscuro
