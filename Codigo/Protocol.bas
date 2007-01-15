@@ -421,7 +421,7 @@ Public Enum FontTypeNames
 End Enum
 
 Public Enum eEditOptions
-    eo_Gold
+    eo_Gold = 1
     eo_Experience
     eo_Body
     eo_Head

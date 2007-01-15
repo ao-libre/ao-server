@@ -297,7 +297,7 @@ If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex
     Exit Sub
 End If
 
-Dim H As Integer, j As Integer, ind As Integer, index As Integer
+Dim H As Integer, j As Integer, ind As Integer, Index As Integer
 Dim TargetPos As WorldPos
 
 
@@ -315,10 +315,10 @@ For j = 1 To Hechizos(H).Cant
         If ind > 0 Then
             UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
             
-            index = FreeMascotaIndex(UserIndex)
+            Index = FreeMascotaIndex(UserIndex)
             
-            UserList(UserIndex).MascotasIndex(index) = ind
-            UserList(UserIndex).MascotasType(index) = Npclist(ind).Numero
+            UserList(UserIndex).MascotasIndex(Index) = ind
+            UserList(UserIndex).MascotasType(Index) = Npclist(ind).Numero
             
             Npclist(ind).MaestroUser = UserIndex
             Npclist(ind).Contadores.TiempoExistencia = IntervaloInvocacion
@@ -446,12 +446,12 @@ End If
 End Sub
 
 
-Sub LanzarHechizo(index As Integer, UserIndex As Integer)
+Sub LanzarHechizo(Index As Integer, UserIndex As Integer)
 
 Dim uh As Integer
 Dim exito As Boolean
 
-uh = UserList(UserIndex).Stats.UserHechizos(index)
+uh = UserList(UserIndex).Stats.UserHechizos(Index)
 
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
@@ -580,7 +580,7 @@ If Hechizos(H).Mimetiza = 1 Then
         .Char.ShieldAnim = UserList(tU).Char.ShieldAnim
         .Char.WeaponAnim = UserList(tU).Char.WeaponAnim
     
-        Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        Call ChangeUserChar(SendTarget.toMap, .Pos.Map, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
     End With
    
    Call InfoHechizo(UserIndex)

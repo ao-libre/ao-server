@@ -166,7 +166,7 @@ Else
     End If
 End If
 
-Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call WriteNavigateToggle(UserIndex)
 
 End Sub
@@ -522,11 +522,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim index As Integer
+        Dim Index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(index) = NpcIndex
-        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
+        Index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
+        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         

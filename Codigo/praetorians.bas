@@ -118,7 +118,7 @@ On Error GoTo errorh
         If (LegalPos(wp2.Map, wp2.X, wp2.Y)) Then
             ''mover al actual
             
-            Call SendData(SendTarget.toMap, 0, PrepareMessageCharacterMove(Npclist(TeleFrag).Char.CharIndex, wp2.X, wp2.Y))
+            Call SendData(SendTarget.toMap, Npclist(TeleFrag).Pos.Map, PrepareMessageCharacterMove(Npclist(TeleFrag).Char.CharIndex, wp2.X, wp2.Y))
             'Update map and user pos
             MapData(wp.Map, wp.X, wp.Y).NpcIndex = 0
             Npclist(TeleFrag).Pos = wp2
@@ -369,7 +369,7 @@ On Error GoTo errorh
     Else
         If Not (Npclist(npcind).Invent.BarcoSlot = 6) Then
             Npclist(npcind).Invent.BarcoSlot = 6    ''restore wand break counter
-            Call SendData(SendTarget.toMap, npcind, PrepareMessageCreateFX(Npclist(npcind).Char.CharIndex, 0, 0))
+            Call SendData(SendTarget.toMap, Npclist(npcind).Pos.Map, PrepareMessageCreateFX(Npclist(npcind).Char.CharIndex, 0, 0))
         End If
     
         'pick the best target according to the following criteria:
@@ -446,7 +446,7 @@ On Error GoTo errorh
         Call NpcLanzaSpellSobreUser2(npcind, BestTarget, Npclist(npcind).Spells(DAT_APOCALIPSIS)) ''SPELL 1 de Mago: Apocalipsis
     Case 3
     
-        Call SendData(SendTarget.toMap, npcind, PrepareMessageCreateFX(Npclist(npcind).Char.CharIndex, FXIDs.FXMEDITARGRANDE, LoopAdEternum))
+        Call SendData(SendTarget.toMap, Npclist(npcind).Pos.Map, PrepareMessageCreateFX(Npclist(npcind).Char.CharIndex, FXIDs.FXMEDITARGRANDE, LoopAdEternum))
         ''UserList(UserIndex).Char.FX = FXIDs.FXMEDITARGRANDE
     
         If Npclist(npcind).CanAttack = 1 Then
@@ -653,7 +653,7 @@ On Error GoTo errorh
                     UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
                     If UI > 0 Then
                         If NpcAtacaUser(npcind, UI) Then
-                            Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
+                            Call ChangeNPCChar(SendTarget.toMap, nPos.Map, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                         End If
                         
                         ''special speed ability for praetorian king ---------
@@ -752,7 +752,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
         If UI > 0 Then
             If Not (UserList(UI).flags.Muerto = 1) Then
                 If NpcAtacaUser(npcind, UI) Then
-                    Call ChangeNPCChar(SendTarget.toMap, 0, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
+                    Call ChangeNPCChar(SendTarget.toMap, nPos.Map, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                 End If
                 Npclist(npcind).CanAttack = 0
             End If
@@ -1607,7 +1607,7 @@ On Error GoTo errorh
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
 
-    Call SendData(SendTarget.toMap, 0, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx, NPCy + 1))
+    Call SendData(SendTarget.toMap, Npclist(npcorig).Pos.Map, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx, NPCy + 1))
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy + 1
@@ -1633,7 +1633,7 @@ On Error GoTo errorh
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
     
-    Call SendData(SendTarget.toMap, 0, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx, NPCy - 1))
+    Call SendData(SendTarget.toMap, Npclist(npcorig).Pos.Map, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx, NPCy - 1))
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.Y = NPCy - 1
@@ -1658,7 +1658,7 @@ On Error GoTo errorh
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
 
-    Call SendData(SendTarget.toMap, 0, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx - 1, NPCy))
+    Call SendData(SendTarget.toMap, Npclist(npcorig).Pos.Map, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx - 1, NPCy))
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx - 1
@@ -1684,7 +1684,7 @@ On Error GoTo errorh
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
     
-    Call SendData(SendTarget.toMap, 0, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx + 1, NPCy))
+    Call SendData(SendTarget.toMap, Npclist(npcorig).Pos.Map, PrepareMessageCharacterMove(Npclist(npcorig).Char.CharIndex, NPCx + 1, NPCy))
     'Update map and npc pos
     MapData(mapa, NPCx, NPCy).NpcIndex = 0
     Npclist(npcorig).Pos.X = NPCx + 1

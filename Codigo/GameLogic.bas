@@ -249,7 +249,7 @@ If InStrB(name, "+") <> 0 Then
 End If
 
 UserIndex = 1
-Do Until UCase$(UserList(UserIndex).name) = name
+Do Until UCase$(UserList(UserIndex).name) = UCase$(name)
     
     UserIndex = UserIndex + 1
     

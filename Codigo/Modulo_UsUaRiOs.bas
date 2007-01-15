@@ -95,7 +95,7 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
 End If
 
 Call DarCuerpoDesnudo(UserIndex)
-Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call SendUserStatsBox(UserIndex)
 
 End Sub
@@ -1376,7 +1376,7 @@ On Error GoTo ErrorHandler
     'End If
     
     '<< Actualizamos clientes >>
-    Call ChangeUserChar(SendTarget.toMap, 0, UserList(UserIndex).Pos.Map, val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
+    Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.Map, val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
     Call SendUserStatsBox(UserIndex)
     
     
