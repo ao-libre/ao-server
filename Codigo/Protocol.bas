@@ -1161,11 +1161,17 @@ On Error Resume Next
     End Select
     
     'Done with this packet, move on to next one or send everything if no more packets found
-    If UserList(UserIndex).incomingData.length > 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
+    If UserList(UserIndex).incomingData.length > 0 And Err.Number = 0 Then
         Err.Clear
         Call HandleIncomingData(UserIndex)
-    ElseIf Err.Number <> 0 Then
+    
+    ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
+        Call MsgBox("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
+                    " HelpFile: " & Err.HelpFile & " HelpContext: " & Err.HelpContext & _
+                    " LastDllError: " & Err.LastDllError)
+        Call CloseSocket(UserIndex, True)
+    
     Else
         'Flush buffer - send everything that has been written
         Call FlushBuffer(UserIndex)
@@ -11841,15 +11847,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -11885,15 +11891,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
