@@ -998,7 +998,7 @@ UserList(UserIndex).showName = True 'Por default los nombres son visibles
 'Info
 Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
-Call WritePlayMidi(UserIndex, CByte(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
+Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
 
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
 UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)

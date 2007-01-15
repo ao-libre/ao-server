@@ -14688,7 +14688,7 @@ Public Function PrepareMessageChatOverHead(ByVal chat As String, ByVal CharIndex
         
         ' Write rgb channels and save one byte from long :D
         Call .WriteByte(Color And &HFF)
-        Call .WriteByte((Color And &HFF00) \ &H100)
+        Call .WriteByte((Color And &HFF00&) \ &H100&)
         Call .WriteByte((Color And &HFF0000) \ &H10000)
         
         PrepareMessageChatOverHead = .ReadASCIIStringFixed(.length)

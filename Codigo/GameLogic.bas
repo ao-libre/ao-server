@@ -416,14 +416,14 @@ End If
 
 End Function
 
-Sub SendHelp(ByVal index As Integer)
+Sub SendHelp(ByVal Index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
 
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(Index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
 Next LoopC
 
 End Sub
@@ -556,11 +556,11 @@ If InMapBounds(Map, X, Y) Then
                     ft = FontTypeNames.FONTTYPE_CONSEJOCAOSVesA
                 Else
                     If UserList(TempCharIndex).flags.Privilegios > 0 Then
-                        Stat = Stat & " <GAME MASTER> ~0~185~0~1~0"
+                        Stat = Stat & " <GAME MASTER>" ' ~0~185~0~1~0"
                     ElseIf criminal(TempCharIndex) Then
-                        Stat = Stat & " <CRIMINAL> ~255~0~0~1~0"
+                        Stat = Stat & " <CRIMINAL>" ' ~255~0~0~1~0"
                     Else
-                        Stat = Stat & " <CIUDADANO> ~0~0~200~1~0"
+                        Stat = Stat & " <CIUDADANO>" ' ~0~0~200~1~0"
                     End If
                 End If
             Else
@@ -759,24 +759,24 @@ End If
 End Function
 
 '[Barrin 30-11-03]
-Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
+Public Function ItemNoEsDeMapa(ByVal Index As Integer) As Boolean
 
-ItemNoEsDeMapa = ObjData(index).OBJType <> eOBJType.otPuertas And _
-            ObjData(index).OBJType <> eOBJType.otForos And _
-            ObjData(index).OBJType <> eOBJType.otCarteles And _
-            ObjData(index).OBJType <> eOBJType.otArboles And _
-            ObjData(index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(index).OBJType <> eOBJType.otTeleport
+ItemNoEsDeMapa = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 '[/Barrin 30-11-03]
 
-Public Function MostrarCantidad(ByVal index As Integer) As Boolean
-MostrarCantidad = ObjData(index).OBJType <> eOBJType.otPuertas And _
-            ObjData(index).OBJType <> eOBJType.otForos And _
-            ObjData(index).OBJType <> eOBJType.otCarteles And _
-            ObjData(index).OBJType <> eOBJType.otArboles And _
-            ObjData(index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(index).OBJType <> eOBJType.otTeleport
+Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
+MostrarCantidad = ObjData(Index).OBJType <> eOBJType.otPuertas And _
+            ObjData(Index).OBJType <> eOBJType.otForos And _
+            ObjData(Index).OBJType <> eOBJType.otCarteles And _
+            ObjData(Index).OBJType <> eOBJType.otArboles And _
+            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(Index).OBJType <> eOBJType.otTeleport
 End Function
 
 Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean

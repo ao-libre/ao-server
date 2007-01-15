@@ -481,7 +481,7 @@ Dim CharIndex As Integer
     
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
-    If toMap Then
+    If Not toMap Then
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
