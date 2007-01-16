@@ -653,7 +653,7 @@ On Error GoTo errorh
                     UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
                     If UI > 0 Then
                         If NpcAtacaUser(npcind, UI) Then
-                            Call ChangeNPCChar(SendTarget.toMap, nPos.Map, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
+                            Call ChangeNPCChar(SendTarget.toMap, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                         End If
                         
                         ''special speed ability for praetorian king ---------
@@ -752,7 +752,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
         If UI > 0 Then
             If Not (UserList(UI).flags.Muerto = 1) Then
                 If NpcAtacaUser(npcind, UI) Then
-                    Call ChangeNPCChar(SendTarget.toMap, nPos.Map, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
+                    Call ChangeNPCChar(SendTarget.toMap, nPos.Map, npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
                 End If
                 Npclist(npcind).CanAttack = 0
             End If

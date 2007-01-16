@@ -314,7 +314,7 @@ If exito = 1 Then
         Call WriteConsoleMsg(UserIndex, "Has prendido la fogata.", FontTypeNames.FONTTYPE_INFO)
         Call SendData(ToPCArea, UserIndex, PrepareMessagePlayFireSound())
         
-        Call MakeObj(True, 0, Map, Obj, Map, X, Y)
+        Call MakeObj(True, Map, Obj, Map, X, Y)
         
         'Las fogatas prendidas se deben eliminar
         Dim Fogatita As New cGarbage

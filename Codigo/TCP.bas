@@ -1028,7 +1028,7 @@ End If
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
 UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
-Call MakeUserChar(True, 0, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+Call MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 
 Call WriteUserCharIndexInServer(UserIndex)
 ''[/el oso]
@@ -1518,7 +1518,7 @@ End If
 
 'Borrar el personaje
 If UserList(UserIndex).Char.CharIndex > 0 Then
-    Call EraseUserChar(True, UserIndex, Map, UserIndex)
+    Call EraseUserChar(True, Map, UserIndex)
 End If
 
 'Borrar mascotas

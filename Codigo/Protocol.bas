@@ -3039,7 +3039,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
         If heading > 0 And heading < 5 Then
             .Char.heading = heading
-            Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            Call ChangeUserChar(SendTarget.toMap, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
     End With
 End Sub
@@ -6787,8 +6787,8 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
             .showName = Not .showName 'Show / Hide the name
             
             'Ugly but works, and not being a common message it doen't really bother
-            Call UsUaRiOs.EraseUserChar(True, 0, .Pos.Map, UserIndex)
-            Call UsUaRiOs.MakeUserChar(True, 0, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+            Call UsUaRiOs.EraseUserChar(True, .Pos.Map, UserIndex)
+            Call UsUaRiOs.MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
         End If
     End With
 End Sub
@@ -7844,7 +7844,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.toMap, 0, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_Head
@@ -7852,7 +7852,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.toMap, 0, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_CriminalsKilled
@@ -8383,7 +8383,7 @@ On Error GoTo errhandler
                 
                 Call DarCuerpoDesnudo(tUser)
                 
-                Call ChangeUserChar(SendTarget.toMap, 0, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                Call ChangeUserChar(SendTarget.toMap, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
             End With
             
             Call WriteUpdateHP(tUser)
@@ -9278,11 +9278,11 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.amount = 1
         ET.ObjIndex = 378
         
-        Call MakeObj(True, 0, .Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(True, .Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
         
         ET.amount = 1
         ET.ObjIndex = 651
-        Call MakeObj(True, 0, mapa, ET, mapa, X, Y)
+        Call MakeObj(True, mapa, ET, mapa, X, Y)
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
             .TileExit.Map = mapa
@@ -9324,10 +9324,10 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
                 Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y, False) 'CHECK: Tengan cuidado con los With Anidados..
                 
-                Call EraseObj(True, 0, mapa, .ObjInfo.amount, mapa, X, Y)
+                Call EraseObj(True, mapa, .ObjInfo.amount, mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
-                    Call EraseObj(True, 0, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                    Call EraseObj(True, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
                 End If
                 
                 .TileExit.Map = 0
@@ -9778,7 +9778,7 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
                         If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
-                            Call EraseObj(True, UserIndex, .Pos.Map, 10000, .Pos.Map, X, Y)
+                            Call EraseObj(True, .Pos.Map, 10000, .Pos.Map, X, Y)
                         End If
                     End If
                 End If
@@ -10520,7 +10520,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Objeto.amount = 100
         Objeto.ObjIndex = tObj
-        Call MakeObj(True, 0, .Pos.Map, Objeto, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(True, .Pos.Map, Objeto, .Pos.Map, .Pos.X, .Pos.Y - 1)
     End With
 End Sub
 
@@ -10546,7 +10546,7 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        Call EraseObj(True, UserIndex, .Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
+        Call EraseObj(True, .Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
     End With
 End Sub
 

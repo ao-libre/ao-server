@@ -580,7 +580,7 @@ If Hechizos(H).Mimetiza = 1 Then
         .Char.ShieldAnim = UserList(tU).Char.ShieldAnim
         .Char.WeaponAnim = UserList(tU).Char.WeaponAnim
     
-        Call ChangeUserChar(SendTarget.toMap, .Pos.Map, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        Call ChangeUserChar(SendTarget.toMap, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
     End With
    
    Call InfoHechizo(UserIndex)

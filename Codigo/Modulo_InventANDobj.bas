@@ -50,7 +50,7 @@ On Error GoTo errhandler
     NuevaPos.Y = 0
     Call Tilelibre(Pos, NuevaPos, Obj)
     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-          Call MakeObj(True, 0, Pos.Map, Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
+          Call MakeObj(True, Pos.Map, Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
           TirarItemAlPiso = NuevaPos
     End If
 

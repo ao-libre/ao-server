@@ -216,8 +216,8 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     TempInt = MapData(Map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
-                        Call MakeUserChar(False, UserIndex, 0, CInt(TempInt), Map, X, Y)
-                        Call MakeUserChar(False, CInt(TempInt), 0, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeUserChar(False, UserIndex, CInt(TempInt), Map, X, Y)
+                        Call MakeUserChar(False, CInt(TempInt), UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
                         If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
@@ -228,13 +228,13 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         End If
 
                     ElseIf Head = USER_NUEVO Then
-                        Call MakeUserChar(False, UserIndex, 0, UserIndex, Map, X, Y)
+                        Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)
                     End If
                 End If
                 
                 '<<< Npc >>>
                 If MapData(Map, X, Y).NpcIndex Then
-                    Call MakeNPCChar(False, UserIndex, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                    Call MakeNPCChar(False, UserIndex, MapData(Map, X, Y).NpcIndex, Map, X, Y)
                  End If
                  
                 '<<< Item >>>
@@ -335,7 +335,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
             For X = MinX To MaxX
                 For Y = MinY To MaxY
                     If MapData(.Pos.Map, X, Y).UserIndex Then _
-                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).UserIndex, 0, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).UserIndex, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
                 Next Y
             Next X
         End If

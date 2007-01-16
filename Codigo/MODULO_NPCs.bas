@@ -330,7 +330,7 @@ On Error GoTo errhandler
     Npclist(NpcIndex).flags.NPCActive = False
     
     If InMapBounds(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
-        Call EraseNPCChar(True, 0, Npclist(NpcIndex).Pos.Map, NpcIndex)
+        Call EraseNPCChar(True, Npclist(NpcIndex).Pos.Map, NpcIndex)
     End If
     
     'Nos aseguramos de que el inventario sea removido...
@@ -438,7 +438,7 @@ Dim Y As Integer
                     Npclist(nIndex).Pos.Map = Map
                     Npclist(nIndex).Pos.X = X
                     Npclist(nIndex).Pos.Y = Y
-                    Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
+                    Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
                     Exit Sub
                 Else
                     altpos.X = 50
@@ -448,7 +448,7 @@ Dim Y As Integer
                         Npclist(nIndex).Pos.Map = newpos.Map
                         Npclist(nIndex).Pos.X = newpos.X
                         Npclist(nIndex).Pos.Y = newpos.Y
-                        Call MakeNPCChar(True, 0, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
+                        Call MakeNPCChar(True, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
                         Exit Sub
                     Else
                         Call QuitarNPC(nIndex)
@@ -466,11 +466,11 @@ Dim Y As Integer
     End If
     
     'Crea el NPC
-    Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
+    Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
 
 End Sub
 'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub MakeNPCChar(ByRef toMap As Boolean, sndIndex As Integer, sndMap As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub MakeNPCChar(ByRef toMap As Boolean, sndIndex As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 Dim CharIndex As Integer
 
     If Npclist(NpcIndex).Char.CharIndex = 0 Then
@@ -482,15 +482,16 @@ Dim CharIndex As Integer
     MapData(Map, X, Y).NpcIndex = NpcIndex
     
     If Not toMap Then
+        Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
         Call ArgegarNpc(NpcIndex)
-        Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     Else
         Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterCreate(Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0))
+        Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     End If
 
 End Sub
 
-Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal sndMap As Integer, ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
+Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
 
 If NpcIndex > 0 Then
     Npclist(NpcIndex).Char.body = body
@@ -505,7 +506,7 @@ End If
 
 End Sub
 'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub EraseNPCChar(ByRef toMap As Boolean, sndIndex As Integer, sndMap As Integer, ByVal NpcIndex As Integer)
+Sub EraseNPCChar(ByRef toMap As Boolean, sndIndex As Integer, ByVal NpcIndex As Integer)
 
 If Npclist(NpcIndex).Char.CharIndex <> 0 Then CharList(Npclist(NpcIndex).Char.CharIndex) = 0
 
@@ -691,7 +692,7 @@ X = Npclist(nIndex).Pos.X
 Y = Npclist(nIndex).Pos.Y
 
 'Crea el NPC
-Call MakeNPCChar(True, 0, Map, nIndex, Map, X, Y)
+Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
 
 If FX Then
     Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessagePlayWave(SND_WARP))

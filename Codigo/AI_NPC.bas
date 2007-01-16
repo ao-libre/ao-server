@@ -240,14 +240,14 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                          If Not DelCaos Then
                             If criminal(UI) Then
                                    If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                    End If
                                    Exit Sub
                             ElseIf Npclist(NpcIndex).flags.AttackedBy = UserList(UI).name _
                                       And Not Npclist(NpcIndex).flags.Follow Then
                                   
                                   If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                   End If
                                   Exit Sub
                             End If
@@ -255,14 +255,14 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                             If Not criminal(UI) Then
                                    
                                    If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                    End If
                                    Exit Sub
                             ElseIf Npclist(NpcIndex).flags.AttackedBy = UserList(UI).name _
                                       And Not Npclist(NpcIndex).flags.Follow Then
                                   
                                   If NpcAtacaUser(NpcIndex, UI) Then
-                                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                                   End If
                                   Exit Sub
                             End If
@@ -303,13 +303,13 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                         Call NpcLanzaUnSpell(NpcIndex, UI)
                     End If
                     If NpcAtacaUser(NpcIndex, MapData(nPos.Map, nPos.X, nPos.Y).UserIndex) Then
-                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                     End If
                     Exit Sub
                 End If
             ElseIf NPCI > 0 Then
                     If Npclist(NPCI).MaestroUser > 0 And Npclist(NPCI).flags.Paralizado = 0 Then
-                        Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                        Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                         Call SistemaCombate.NpcAtacaNpc(NpcIndex, NPCI, False)
                         Exit Sub
                     End If
@@ -343,7 +343,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             If NpcAtacaUser(NpcIndex, UI) Then
-                                Call ChangeNPCChar(SendTarget.toMap, Npclist(NpcIndex).Pos.Map, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
+                                Call ChangeNPCChar(SendTarget.toMap, nPos.Map, NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                             End If
                             Exit Sub
                     End If
