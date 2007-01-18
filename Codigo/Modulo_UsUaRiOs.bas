@@ -1482,7 +1482,7 @@ Dim OldY As Integer
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
-        Call WritePlayMidi(UserIndex, MapInfo(Map).Music)
+        Call WritePlayMidi(UserIndex, ReadField(1, MapInfo(Map).Music, 45))
         
         'Update new Map Users
         MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1

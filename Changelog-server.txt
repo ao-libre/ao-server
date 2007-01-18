@@ -175,3 +175,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/01/2007: Ahora el cliente loguea y ve stats e inventario. (Maraxus)
  * 18/01/2007: Corregí un bug con los PMs. (Maraxus)
  * 18/01/2007: Corregí el /SEG. (Maraxus)
+ * 19/01/2007: Arregle un rt9 en DotileEvents, y ahora el server no te dropea cuando tiene ganas.. (liquid)

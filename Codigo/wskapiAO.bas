@@ -20,7 +20,7 @@ Private Const SD_SEND As Long = &H1
 Private Const SD_BOTH As Long = &H2
 
 
-Private Const MAX_TIEMPOIDLE_COLALLENA = 1 'minutos
+Private Const MAX_TIEMPOIDLE_COLALLENA = 5 'minutos
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 

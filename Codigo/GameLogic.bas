@@ -48,7 +48,7 @@ If InMapBounds(Map, X, Y) Then
         FxFlag = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport
     End If
     
-    If MapData(Map, X, Y).TileExit.Map > 0 Then
+    If (MapData(Map, X, Y).TileExit.Map > 0) And (MapData(Map, X, Y).TileExit.Map <= NumMaps) Then
         '¿Es mapa de newbies?
         If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
             '¿El usuario es un newbie?
