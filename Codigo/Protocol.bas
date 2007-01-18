@@ -5084,7 +5084,7 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
         
         .Stats.MinHP = .Stats.MaxHP
         
-        Call WriteUpdateMana(UserIndex)
+        Call WriteUpdateHP(UserIndex)
         
         Call WriteConsoleMsg(UserIndex, "¡¡Hás sido curado!!", FontTypeNames.FONTTYPE_INFO)
     End With
