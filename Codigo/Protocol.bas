@@ -1918,11 +1918,12 @@ Private Sub HandleSafeToggle(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Seguro Then
-            Call WriteConsoleMsg(UserIndex, "Escribe /SEG para quitar el seguro.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteSafeModeOff(UserIndex)
         Else
             Call WriteSafeModeOn(UserIndex)
-            .flags.Seguro = Not .flags.Seguro
         End If
+        
+        .flags.Seguro = Not .flags.Seguro
     End With
 End Sub
 
