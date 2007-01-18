@@ -173,3 +173,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/01/2007: Arregle la carga de charfiles para permitir cargar PJs recién creados (Maraxus)
  * 14/01/2007: Evitados los ciclos infinitos en HandleIncomingData. (Maraxus)
  * 15/01/2007: Ahora el cliente loguea y ve stats e inventario. (Maraxus)
+ * 18/01/2007: Corregí un bug con los PMs. (Maraxus)

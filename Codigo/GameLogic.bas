@@ -35,8 +35,6 @@ Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean
 EsNewbie = UserList(UserIndex).Stats.ELV <= LimiteNewbie
 End Function
 
-
-
 Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 On Error GoTo errhandler
@@ -106,8 +104,7 @@ End If
 Exit Sub
 
 errhandler:
-    Call LogError("Error en DotileEvents")
-
+    Call LogError("Error en DotileEvents " & Err.Number & " " & Err.description)
 End Sub
 
 Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean

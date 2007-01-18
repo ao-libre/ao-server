@@ -939,13 +939,13 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim index As Integer
-    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim Index As Integer
+    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
             
     'Look for user
-    If index > 0 Then
-        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+    If Index > 0 Then
+        If UserList(Index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
             Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
             Call SendUserStatsBox(UserIndex)
             Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
@@ -1071,7 +1071,7 @@ If UsuarioImpacto Then
    End If
 End If
 
-Call FlushBuffer(VictimaIndex) 'CHECK
+Call FlushBuffer(VictimaIndex)
 End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)

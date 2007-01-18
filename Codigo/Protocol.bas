@@ -1607,35 +1607,34 @@ On Error GoTo errhandler
         If .flags.Muerto Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. ", FontTypeNames.FONTTYPE_INFO)
         Else
-            'Check: No sabia que valor podia tener INVALID_INDEX, asi que hice
-            'un if sencillo
-            If targetUserIndex < 1 Or targetUserIndex > LastUser Then
+            If targetUserIndex = INVALID_INDEX Then
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
                 If UserList(targetUserIndex).flags.Privilegios >= PlayerType.Dios And .flags.Privilegios < PlayerType.Dios Then
                     'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
-            
+                
                 ElseIf .flags.Privilegios = PlayerType.User And UserList(targetUserIndex).flags.Privilegios > PlayerType.User Then
                     'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
-            
+                
                 ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
                     Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
-            
+                
                 Else
                     '[Consejeros & GMs]
                     If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
                         Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios = PlayerType.Consejero)
                     End If
-                
+                    
                     If LenB(chat) <> 0 Then
                         'Analize chat...
                         Call Statistics.ParseChat(chat)
                     
                         Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
                         Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
-                    
+                        Call FlushBuffer(targetUserIndex)
+                        
                         '[CDT 17-02-2004]
                         If .flags.Privilegios < PlayerType.SemiDios Then
                             Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, targetCharIndex, vbYellow))
@@ -6787,7 +6786,7 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
             .showName = Not .showName 'Show / Hide the name
             
             'Ugly but works, and not being a common message it doen't really bother
-            Call UsUaRiOs.EraseUserChar(True, .Pos.Map, UserIndex)
+            Call UsUaRiOs.EraseUserChar(.Pos.Map, UserIndex)
             Call UsUaRiOs.MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
         End If
     End With

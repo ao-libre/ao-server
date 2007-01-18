@@ -155,8 +155,8 @@ End Sub
 Public Sub EnviarMiniEstadisticas(ByVal UserIndex As Integer)
     Call WriteMiniStats(UserIndex)
 End Sub
-'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub EraseUserChar(ByRef toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer)
+
+Sub EraseUserChar(ByVal sndIndex As Integer, ByVal UserIndex As Integer)
 
 On Error GoTo ErrorHandler
    
@@ -169,13 +169,9 @@ On Error GoTo ErrorHandler
         Loop
     End If
     
-    'Le mandamos el mensaje para que borre el personaje a los clientes que estén en el mismo mapa
-    If toMap Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
-        Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
-    Else
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
-    End If
+    'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
+    Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
     
     MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
     UserList(UserIndex).Char.CharIndex = 0
@@ -1482,7 +1478,7 @@ Dim OldY As Integer
     OldX = UserList(UserIndex).Pos.X
     OldY = UserList(UserIndex).Pos.Y
     
-    Call EraseUserChar(True, OldMap, UserIndex)
+    Call EraseUserChar(OldMap, UserIndex)
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
@@ -1690,7 +1686,7 @@ If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
         UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
 End If
-Call UsUaRiOs.EraseUserChar(True, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
 Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 End Sub
 
@@ -1710,7 +1706,7 @@ UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRe
 If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
     UserList(UserIndex).Reputacion.PlebeRep = MAXREP
 'Tenemos que actualizar el Tag del usuario. Esto no es lo optimo, ya que es un 1/0 que cambia en el paquete.
-Call UsUaRiOs.EraseUserChar(True, UserList(UserIndex).Pos.Map, UserIndex)
+Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
 Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 End Sub
 
