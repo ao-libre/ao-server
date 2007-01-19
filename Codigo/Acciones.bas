@@ -1,4 +1,5 @@
 Attribute VB_Name = "Acciones"
+
 'Argentum Online 0.9.0.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
