@@ -334,10 +334,6 @@ Public Const NUMRAZAS As Byte = 5
 Public Const MAXSKILLPOINTS As Byte = 100
 
 ''
-' Constante para indicar que se esta usando ORO
-Public Const FLAGORO As Integer = -1
-
-''
 'Direccion
 '
 ' @param NORTH Norte
@@ -470,6 +466,11 @@ Public Const MAX_INVENTORY_OBJS As Integer = 10000
 ''
 ' Cantidad de "slots" en el inventario
 Public Const MAX_INVENTORY_SLOTS As Byte = 20
+
+''
+' Constante para indicar que se esta usando ORO
+Public Const FLAGORO As Integer = MAX_INVENTORY_SLOTS + 1
+
 
 ' CATEGORIAS PRINCIPALES
 Public Enum eOBJType

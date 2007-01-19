@@ -872,12 +872,13 @@ Select Case Obj.OBJType
             Exit Sub
         End If
         
-        If Not UserList(UserIndex).flags.ModoCombate Then
-            Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        End If
         
         If ObjData(ObjIndex).proyectil = 1 Then
+            'liquid: muevo esto aca adentro, para que solo pida modo combate si estamos por usar el arco
+            If Not UserList(UserIndex).flags.ModoCombate Then
+                Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
             Call WriteWorkRequestTarget(UserIndex, Proyectiles)
         Else
             If UserList(UserIndex).flags.TargetObj = Leña Then
@@ -1115,7 +1116,7 @@ Select Case Obj.OBJType
                 Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
            End If
-           Call WriteWorkRequestTarget(UserIndex, Mineria)
+           Call WriteWorkRequestTarget(UserIndex, FundirMetal)
        
        Case eOBJType.otInstrumentos
             If UserList(UserIndex).flags.Muerto = 1 Then

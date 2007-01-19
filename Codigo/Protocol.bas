@@ -13485,30 +13485,25 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Call .WriteByte(Slot)
         
         Dim ObjIndex As Integer
+        Dim obData As ObjData
         
         ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
         
         Call .WriteInteger(ObjIndex)
         
         If ObjIndex > 0 Then
-            Call .WriteASCIIString(ObjData(ObjIndex).name)
-            Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
-            Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-            Call .WriteByte(ObjData(ObjIndex).OBJType)
-            Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-            Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-            Call .WriteInteger(ObjData(ObjIndex).def)
-            Call .WriteLong(ObjData(ObjIndex).Valor)
-        Else
-            Call .WriteASCIIString("")
-            Call .WriteInteger(0)
-            Call .WriteInteger(0)
-            Call .WriteByte(0)
-            Call .WriteInteger(0)
-            Call .WriteInteger(0)
-            Call .WriteInteger(0)
-            Call .WriteLong(0)
+            obData = ObjData(ObjIndex)
         End If
+        
+        Call .WriteASCIIString(obData.name)
+        Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
+        Call .WriteInteger(obData.GrhIndex)
+        Call .WriteByte(obData.OBJType)
+        Call .WriteInteger(obData.MaxHIT)
+        Call .WriteInteger(obData.MinHIT)
+        Call .WriteInteger(obData.def)
+        Call .WriteLong(obData.Valor)
+        
     End With
 End Sub
 
