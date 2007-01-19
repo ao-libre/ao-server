@@ -112,14 +112,8 @@ Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVa
     UserList(UserIndex).Char.ShieldAnim = Escudo
     UserList(UserIndex).Char.CascoAnim = casco
     
-    If UserList(UserIndex).flags.AdminInvisible = 1 Then
-        UserList(UserIndex).flags.OldBody = body
-        UserList(UserIndex).flags.OldHead = Head
-        Exit Sub
-    Else
-        UserList(UserIndex).Char.body = body
-        UserList(UserIndex).Char.Head = Head
-    End If
+    UserList(UserIndex).Char.body = body
+    UserList(UserIndex).Char.Head = Head
     
     Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
 End Sub
