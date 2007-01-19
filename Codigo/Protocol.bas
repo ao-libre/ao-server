@@ -6251,7 +6251,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
         
         Dim amount As Integer
         
-        amount = .incomingData.ReadInteger()
+        amount = .incomingData.ReadLong()
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
@@ -6352,7 +6352,7 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
         
         Dim amount As Integer
         
-        amount = .incomingData.ReadInteger()
+        amount = .incomingData.ReadLong()
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
@@ -13489,14 +13489,26 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
         
         Call .WriteInteger(ObjIndex)
-        Call .WriteASCIIString(ObjData(ObjIndex).name)
-        Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
-        Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
-        Call .WriteByte(ObjData(ObjIndex).OBJType)
-        Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(ObjData(ObjIndex).Valor)
+        
+        If ObjIndex > 0 Then
+            Call .WriteASCIIString(ObjData(ObjIndex).name)
+            Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
+            Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
+            Call .WriteByte(ObjData(ObjIndex).OBJType)
+            Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
+            Call .WriteInteger(ObjData(ObjIndex).MinHIT)
+            Call .WriteInteger(ObjData(ObjIndex).def)
+            Call .WriteLong(ObjData(ObjIndex).Valor)
+        Else
+            Call .WriteASCIIString("")
+            Call .WriteInteger(0)
+            Call .WriteInteger(0)
+            Call .WriteByte(0)
+            Call .WriteInteger(0)
+            Call .WriteInteger(0)
+            Call .WriteInteger(0)
+            Call .WriteLong(0)
+        End If
     End With
 End Sub
 
