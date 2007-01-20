@@ -470,7 +470,7 @@ Public Sub DumpStatistics()
     Close handle
 End Sub
 
-Public Sub ParseChat(ByVal S As String)
+Public Sub ParseChat(ByRef S As String)
     Dim i As Long
     Dim Key As Integer
     
@@ -479,4 +479,7 @@ Public Sub ParseChat(ByVal S As String)
         
         keyOcurrencies(Key) = keyOcurrencies(Key) + 1
     Next i
+    
+    'Add a NULL-terminated to consider that possibility too....
+    keyOcurrencies(0) = keyOcurrencies(0) + 1
 End Sub
