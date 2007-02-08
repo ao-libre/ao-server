@@ -160,11 +160,16 @@ UserList(UserIndex).Invent.BarcoSlot = 0
 End Sub
 
 Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 23/01/2007
+'23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
+'***************************************************
 On Error GoTo errhandler
 
-If Cantidad > 100000 Then Exit Sub
+'If Cantidad > 100000 Then Exit Sub
 
-'SI EL NPC TIENE ORO LO TIRAMOS
+'SI EL Pjta TIENE ORO LO TIRAMOS
 If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
         Dim i As Byte
         Dim MiObj As Obj
@@ -190,24 +195,39 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
             Call LogDesarrollo(UserList(UserIndex).name & " tira oro. Cercanos: " & Cercanos)
         End If
         '/Seguridad
-        
-        Do While (Cantidad > 0) And (UserList(UserIndex).Stats.GLD > 0)
+        Dim Extra As Long
+        Dim TeniaOro As Long
+        TeniaOro = UserList(UserIndex).Stats.GLD
+        If Cantidad > 500000 Then 'Para evitar explotar demasiado
+            Extra = Cantidad - 500000
+            Cantidad = 500000
+        End If
+        Do While (Cantidad > 0)
             
             If Cantidad > MAX_INVENTORY_OBJS And UserList(UserIndex).Stats.GLD > MAX_INVENTORY_OBJS Then
                 MiObj.amount = MAX_INVENTORY_OBJS
-                UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - MAX_INVENTORY_OBJS
                 Cantidad = Cantidad - MiObj.amount
             Else
                 MiObj.amount = Cantidad
-                UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Cantidad
                 Cantidad = Cantidad - MiObj.amount
             End If
 
             MiObj.ObjIndex = iORO
             
-            If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
+            If EsGM(UserIndex) Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
+            Dim AuxPos As WorldPos
             
-            Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
+            If UserList(UserIndex).clase = eClass.Pirat And UserList(UserIndex).Invent.BarcoObjIndex = 476 Then
+                AuxPos = TirarItemAlPiso(UserList(UserIndex).Pos, MiObj, False)
+                If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
+                    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - MiObj.amount
+                End If
+            Else
+                AuxPos = TirarItemAlPiso(UserList(UserIndex).Pos, MiObj, True)
+                If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
+                    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - MiObj.amount
+                End If
+            End If
             
             'info debug
             loops = loops + 1
@@ -217,6 +237,10 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
             End If
             
         Loop
+        If TeniaOro = UserList(UserIndex).Stats.GLD Then Extra = 0
+        If Extra > 0 Then
+            UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Extra
+        End If
     
 End If
 
@@ -784,8 +808,14 @@ errhandler:
 End Function
 
 Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
+'*************************************************
+'Author: Unknown
+'Last modified: 24/01/2007
+'Handels the usage of items from inventory box.
+'24/01/2007 Pablo (ToxicWaste) - Agrego el Cuerno de la Armada y la Legión.
+'24/01/2007 Pablo (ToxicWaste) - Utilización nueva de Barco en lvl 20 por clase Pirata y Pescador.
+'*************************************************
 
-'Usa un item del inventario
 Dim Obj As ObjData
 Dim ObjIndex As Integer
 Dim TargObj As ObjData
@@ -1123,6 +1153,22 @@ Select Case Obj.OBJType
                 Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
+            If Obj.Real Then '¿Es el Cuerno Real?
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+                Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+                End If
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+                Exit Sub
+            ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+                Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+                End If
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+                Exit Sub
+            End If
+            'Si llega aca es porque es o Laud o Tambor o Flauta
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
        
        Case eOBJType.otBarcos
@@ -1131,6 +1177,11 @@ Select Case Obj.OBJType
             If UserList(UserIndex).clase <> eClass.Fisher And UserList(UserIndex).clase <> eClass.Pirat Then
                 Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
+            Else
+                If UserList(UserIndex).Stats.ELV < 20 Then
+                    Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
             End If
         End If
         If ((LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X - 1, UserList(UserIndex).Pos.Y, True) Or _
@@ -1212,8 +1263,14 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                 'Creo el Obj
                 MiObj.amount = UserList(UserIndex).Invent.Object(i).amount
                 MiObj.ObjIndex = ItemIndex
-                
-                Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj
+                'Pablo (ToxicWaste) 24/01/2007
+                'Si es pirata y usa un Galeón entonces no explota los items. (en el agua)
+                If UserList(UserIndex).clase = eClass.Pirat And UserList(UserIndex).Invent.BarcoObjIndex = 476 Then
+                    Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj, False, True
+                Else
+                    Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj, True, True
+                End If
+
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                     Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
                 End If
@@ -1246,8 +1303,9 @@ For i = 1 To MAX_INVENTORY_SLOTS
             'Creo MiObj
             MiObj.amount = UserList(UserIndex).Invent.Object(i).ObjIndex
             MiObj.ObjIndex = ItemIndex
-            
-            Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj
+            'Pablo (ToxicWaste) 24/01/2007
+            'Tira los Items no newbies en todos lados.
+            Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj, True, True
             If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                 If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).ObjInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
             End If

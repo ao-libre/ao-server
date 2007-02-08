@@ -56,7 +56,7 @@ Select Case clase
     Case eClass.Thief
         ModificadorEvasion = 1.1
     Case eClass.Bard
-        ModificadorEvasion = 1.1
+        ModificadorEvasion = 0.6
     Case eClass.Mage
         ModificadorEvasion = 0.4
     Case eClass.Druid
@@ -118,7 +118,7 @@ Select Case UCase$(clase)
     Case eClass.Thief
         ModificadorPoderAtaqueProyectiles = 0.8
     Case eClass.Bandit
-        ModificadorPoderAtaqueProyectiles = 0.8
+        ModificadorPoderAtaqueProyectiles = 0.75
     Case eClass.Cleric
         ModificadorPoderAtaqueProyectiles = 0.7
     Case eClass.Bard
@@ -177,6 +177,46 @@ Select Case UCase$(clase)
 End Select
 End Function
 
+Function ModicadorDañoClaseWresterling(ByVal clase As eClass) As Single
+'Pablo (ToxicWaste): Esto en proxima versión habrá que balancearlo para cada clase
+'Hoy por hoy está solo hecho para el bandido.
+Select Case UCase$(clase)
+    Case eClass.Warrior
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Paladin
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Hunter
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Assasin
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Thief
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Pirat
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Bandit
+        ModicadorDañoClaseWresterling = 0.8
+    Case eClass.Cleric
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Bard
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Druid
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Fisher
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Lumberjack
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Miner
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Blacksmith
+        ModicadorDañoClaseWresterling = 0.4
+    Case eClass.Carpenter
+        ModicadorDañoClaseWresterling = 0.4
+    Case Else
+        ModicadorDañoClaseWresterling = 0.4
+End Select
+End Function
+
+
 Function ModicadorDañoClaseProyectiles(ByVal clase As eClass) As Single
 Select Case clase
     Case eClass.Hunter
@@ -228,7 +268,7 @@ Select Case clase
     Case eClass.Thief
         ModEvasionDeEscudoClase = 0.7
     Case eClass.Bandit
-        ModEvasionDeEscudoClase = 0.8
+        ModEvasionDeEscudoClase = 1.95
     Case eClass.Pirat
         ModEvasionDeEscudoClase = 0.75
     Case eClass.Cleric
@@ -526,8 +566,10 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
         End If
     End If
 Else
-    CalcularDaño = CInt(UserList(UserIndex).Stats.MaxHIT / 5)
-    Exit Function
+    'Pablo (ToxicWaste)
+    ModifClase = ModicadorDañoClaseWresterling(UserList(UserIndex).clase)
+    DañoArma = RandomNumber(1, 3) 'Hacemos que sea "tipo" una daga el ataque de wresterling
+    DañoMaxArma = 3
 End If
 
 DañoUsuario = RandomNumber(UserList(UserIndex).Stats.MinHIT, UserList(UserIndex).Stats.MaxHIT)
@@ -568,6 +610,9 @@ If Npclist(NpcIndex).Stats.MinHP > 0 Then
        Call DoApuñalar(UserIndex, NpcIndex, 0, daño)
        Call SubirSkill(UserIndex, Apuñalar)
     End If
+    'trada de dar golpe crítico
+    Call DoGolpeCritico(UserIndex, NpcIndex, 0, daño)
+    
 End If
 
  
@@ -668,9 +713,9 @@ If UserList(UserIndex).Stats.MinHP <= 0 Then
     Call WriteNPCKillUser(UserIndex) ' Le informamos que ha muerto ;)
     
     'Si lo mato un guardia
-    If criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If Criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
         Call RestarCriminalidad(UserIndex)
-        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
     End If
     
     If Npclist(NpcIndex).MaestroUser > 0 Then
@@ -691,10 +736,10 @@ End If
 End Sub
 
 Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
-    'If UserList(UserIndex).Reputacion.AsesinoRep > 0 Then
-    '     UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep - vlASESINO
-    '     If UserList(UserIndex).Reputacion.AsesinoRep < 0 Then UserList(UserIndex).Reputacion.AsesinoRep = 0
-    'Else
+    
+    Dim EraCriminal As Boolean
+    EraCriminal = Criminal(UserIndex)
+    
     If UserList(UserIndex).Reputacion.BandidoRep > 0 Then
          UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep - vlASALTO
          If UserList(UserIndex).Reputacion.BandidoRep < 0 Then UserList(UserIndex).Reputacion.BandidoRep = 0
@@ -702,6 +747,11 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
          UserList(UserIndex).Reputacion.LadronesRep = UserList(UserIndex).Reputacion.LadronesRep - (vlCAZADOR * 10)
          If UserList(UserIndex).Reputacion.LadronesRep < 0 Then UserList(UserIndex).Reputacion.LadronesRep = 0
     End If
+    
+    If EraCriminal And Not Criminal(UserIndex) Then
+        Call RefreshCharStatus(UserIndex)
+    End If
+
 End Sub
 
 
@@ -872,14 +922,14 @@ If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO 
 End If
 
 If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(UserIndex, "Debes sacar el seguro antes de poder atacar una mascota de un ciudadano.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
 End If
 
 If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(UserIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
@@ -890,9 +940,19 @@ If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal And UserList(UserIndex).flag
     Exit Sub
 End If
 
-If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
-    Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-    Exit Sub
+'Revisa que el Rey pretoriano no esté solo.
+If esPretoriano(NpcIndex) = 4 Then
+    If Npclist(NpcIndex).Pos.X < 50 Then
+        If pretorianosVivos(1) > 0 Then
+            Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+            Exit Sub
+        End If
+    Else
+        If pretorianosVivos(2) > 0 Then
+            Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+            Exit Sub
+        End If
+    End If
 End If
 
 Call NpcAtacado(NpcIndex, UserIndex)
@@ -1094,6 +1154,9 @@ If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
     End If
     
     Call UserDañoUser(AtacanteIndex, VictimaIndex)
+    'Pablo (ToxicWaste): Guantes de Hurto del Bandido en acción
+    If UserList(AtacanteIndex).clase = eClass.Bandit Then Call DoHurtar(AtacanteIndex, VictimaIndex)
+    
 Else
     Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING))
     Call WriteUserSwing(AtacanteIndex)
@@ -1224,8 +1287,11 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
 'Usuario deja de meditar
 '***************************************************
     If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
-
-    If Not criminal(AttackerIndex) And Not criminal(VictimIndex) Then
+    
+    Dim EraCriminal As Boolean
+    EraCriminal = Criminal(AttackerIndex)
+    
+    If Not Criminal(AttackerIndex) And Not Criminal(VictimIndex) Then
         Call VolverCriminal(AttackerIndex)
     End If
     
@@ -1238,7 +1304,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
         Call SendData(SendTarget.ToPCArea, VictimIndex, PrepareMessageCreateFX(UserList(VictimIndex).Char.CharIndex, 0, 0))
     End If
     
-    If Not criminal(VictimIndex) Then
+    If Not Criminal(VictimIndex) Then
         UserList(AttackerIndex).Reputacion.BandidoRep = UserList(AttackerIndex).Reputacion.BandidoRep + vlASALTO
         If UserList(AttackerIndex).Reputacion.BandidoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.BandidoRep = MAXREP
@@ -1247,6 +1313,13 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
         If UserList(AttackerIndex).Reputacion.NobleRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.NobleRep = MAXREP
     End If
+    
+    If EraCriminal And Not Criminal(AttackerIndex) Then
+        Call RefreshCharStatus(AttackerIndex)
+    ElseIf Not EraCriminal And Criminal(AttackerIndex) Then
+        Call RefreshCharStatus(AttackerIndex)
+    End If
+
     
     Call AllMascotasAtacanUser(AttackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, AttackerIndex)
@@ -1269,15 +1342,30 @@ Next iCount
 End Sub
 
 Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As Integer) As Boolean
-
+'***************************************************
+'Autor: Unknown
+'Last Modification: 24/01/2007
+'Returns true if the AttackerIndex is allowed to attack the VictimIndex.
+'24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defenza en ciudad Armada y Caos.
+'***************************************************
 Dim T As eTrigger6
+'MUY importante el orden de estos "IF"...
 
-If UserList(VictimIndex).flags.Muerto = 1 Then
-    Call WriteConsoleMsg(AttackerIndex, "No podes atacar a un espiritu", FontTypeNames.FONTTYPE_INFO)
+'Estas muerto no podes atacar
+If UserList(AttackerIndex).flags.Muerto = 1 Then
+    Call WriteConsoleMsg(AttackerIndex, "No podés atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
     PuedeAtacar = False
     Exit Function
 End If
 
+'No podes atacar a alguien muerto
+If UserList(VictimIndex).flags.Muerto = 1 Then
+    Call WriteConsoleMsg(AttackerIndex, "No podés atacar a un espiritu", FontTypeNames.FONTTYPE_INFO)
+    PuedeAtacar = False
+    Exit Function
+End If
+
+'Estamos en una Arena? o un trigger zona segura?
 T = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
 If T = TRIGGER6_PERMITE Then
@@ -1288,13 +1376,62 @@ ElseIf T = TRIGGER6_PROHIBE Then
     Exit Function
 End If
 
+'Estas queriendo atacar a un GM?
+If UserList(VictimIndex).flags.Privilegios > UserList(AttackerIndex).flags.Privilegios Then
+    Call WriteConsoleMsg(AttackerIndex, "El ser es demasiado poderoso", FontTypeNames.FONTTYPE_WARNING)
+    PuedeAtacar = False
+    Exit Function
+End If
 
+'Sos un Armada atacando un ciudadano?
+If (Not Criminal(VictimIndex)) And (esArmada(AttackerIndex)) Then
+    Call WriteConsoleMsg(AttackerIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
+    PuedeAtacar = False
+    Exit Function
+End If
+
+'Sos un Caos atacando otro caos?
+If esCaos(VictimIndex) And esCaos(AttackerIndex) Then
+    Call WriteConsoleMsg(AttackerIndex, "Los miembros de la legión oscura tienen prohibido atacarse entre sí.", FontTypeNames.FONTTYPE_WARNING)
+    PuedeAtacar = False
+    Exit Function
+End If
+
+'Tenes puesto el seguro?
+If UserList(AttackerIndex).flags.Seguro Then
+        If Not Criminal(VictimIndex) Then
+                Call WriteConsoleMsg(AttackerIndex, "||No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
+                PuedeAtacar = False
+                Exit Function
+        End If
+End If
+
+'Estas en un Mapa Seguro?
 If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
+    If esArmada(AttackerIndex) Then
+        If UserList(AttackerIndex).Faccion.RecompensasReal > 11 Then
+            If UserList(VictimIndex).Pos.Map = 58 Or UserList(VictimIndex).Pos.Map = 59 Or UserList(VictimIndex).Pos.Map = 60 Then
+            Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
+            PuedeAtacar = True 'Beneficio de Armadas que atacan en su ciudad.
+            Exit Function
+            End If
+        End If
+    End If
+    If esCaos(AttackerIndex) Then
+        If UserList(AttackerIndex).Faccion.RecompensasCaos > 11 Then
+            If UserList(VictimIndex).Pos.Map = 151 Or UserList(VictimIndex).Pos.Map = 156 Then
+            Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
+            PuedeAtacar = True 'Beneficio de Caos que atacan en su ciudad.
+            Exit Function
+            End If
+        End If
+    End If
     Call WriteConsoleMsg(AttackerIndex, "Esta es una zona segura, aqui no podes atacar otros usuarios.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
 
+'Estas atacando desde un trigger seguro? o tu victima esta en uno asi?
 If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
     MapData(UserList(AttackerIndex).Pos.Map, UserList(AttackerIndex).Pos.X, UserList(AttackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(AttackerIndex, "No podes pelear aqui.", FontTypeNames.FONTTYPE_WARNING)
@@ -1302,74 +1439,108 @@ If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(
     Exit Function
 End If
 
-If (Not criminal(VictimIndex)) And (UserList(AttackerIndex).Faccion.ArmadaReal = 1) Then
-    Call WriteConsoleMsg(AttackerIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
-    PuedeAtacar = False
-    Exit Function
-End If
-
-'[Barrin 17-12-03]
-If (UserList(VictimIndex).Faccion.FuerzasCaos = 1) And (UserList(AttackerIndex).Faccion.FuerzasCaos = 1) Then
-    Call WriteConsoleMsg(AttackerIndex, "Los miembros de la legión oscura tienen prohibido atacarse entre sí.", FontTypeNames.FONTTYPE_WARNING)
-    PuedeAtacar = False
-    Exit Function
-End If
-'[/Barrin]
-
-If UserList(AttackerIndex).flags.Muerto = 1 Then
-    Call WriteConsoleMsg(AttackerIndex, "No podes atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
-    PuedeAtacar = False
-    Exit Function
-End If
-
-If UserList(AttackerIndex).flags.Seguro Then
-        If Not criminal(VictimIndex) Then
-                Call WriteConsoleMsg(AttackerIndex, "No podes atacar ciudadanos, para hacerlo debes desactivar el seguro apretando la tecla S", FontTypeNames.FONTTYPE_FIGHT)
-                Exit Function
-        End If
-End If
-   
-
 PuedeAtacar = True
 
 End Function
 
-
 Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As Integer) As Boolean
+'***************************************************
+'Autor: Unknown Author (Original version)
+'Returns True if AttackerIndex can attack the NpcIndex
+'Last Modification: 24/01/2007
+'24/01/2007 Pablo (ToxicWaste) - Orden y corrección de ataque sobre una mascota y guardias
+'***************************************************
 
+'Estas muerto?
+If UserList(AttackerIndex).flags.Muerto = 1 Then
+    Call WriteConsoleMsg(AttackerIndex, "No podés atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
+    PuedeAtacarNPC = False
+    Exit Function
+End If
+
+'Es el NPC mascota de alguien?
 If Npclist(NpcIndex).MaestroUser > 0 Then
-    If Not criminal(AttackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
+    'De un cudadanos y sos Armada?
+    If esArmada(AttackerIndex) And Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+        Call WriteConsoleMsg(AttackerIndex, "Los Armadas no pueden atacar Mascotas de Ciudadanos. ", FontTypeNames.FONTTYPE_INFO)
+        PuedeAtacarNPC = False
+        Exit Function
+    End If
+    'De un Caos y sos Caos?
+    If esCaos(AttackerIndex) And esCaos(Npclist(NpcIndex).MaestroUser) Then
+        Call WriteConsoleMsg(AttackerIndex, "Los miembros de la Legión no pueden atacar Mascotas de otros legionarios. ", FontTypeNames.FONTTYPE_INFO)
+        PuedeAtacarNPC = False
+        Exit Function
+    End If
+    'De un ciudadano y sos ciudadano?
+    If Not Criminal(AttackerIndex) And Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+        'Estas con seguro?
         If UserList(AttackerIndex).flags.Seguro Then
-            Call WriteConsoleMsg(AttackerIndex, "Para atacar mascotas de ciudadanos debes quitarte el seguro", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(AttackerIndex, "Para atacar mascotas de ciudadanos debes quitar el seguro utilizando /seg", FontTypeNames.FONTTYPE_INFO)
+            PuedeAtacarNPC = False
+            Exit Function
+        Else
+            VolverCriminal (AttackerIndex)
+            PuedeAtacarNPC = True
+            Exit Function
+        End If
+    End If
+End If
+
+'Es guardia caos?
+If Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
+    If esCaos(AttackerIndex) Then 'Lo quiere atacar un caos?
+        Call WriteConsoleMsg(AttackerIndex, "No puedes atacar Guardias del Caos siendo Legionario", FontTypeNames.FONTTYPE_INFO)
+        PuedeAtacarNPC = False
+        Exit Function
+    End If
+End If
+
+'Es guardia Real?
+If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If esArmada(AttackerIndex) Then 'Lo quiere atacar un Armada?
+        Call WriteConsoleMsg(AttackerIndex, "No puedes atacar Guardias Reales siendo Armada Real", FontTypeNames.FONTTYPE_INFO)
+        PuedeAtacarNPC = False
+        Exit Function
+    End If
+    If UserList(AttackerIndex).flags.Seguro Then 'Tienes el seguro puesto?
+        Call WriteConsoleMsg(AttackerIndex, "Debes quitar el seguro para poder Atacar Guardias Reales utilizando /seg", FontTypeNames.FONTTYPE_INFO)
+        PuedeAtacarNPC = False
+        Exit Function
+    Else
+        VolverCriminal (AttackerIndex) 'Si ya era criminal, suma puntos de bandido la función solamente
+        PuedeAtacarNPC = True
+        Exit Function
+    End If
+End If
+
+'Sos consejero? no podes atacar nunca.
+If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
+    PuedeAtacarNPC = False
+    Exit Function
+End If
+
+'Es el Rey Preatoriano?
+If esPretoriano(NpcIndex) = 4 Then
+    If Npclist(NpcIndex).Pos.X < 50 Then
+        If pretorianosVivos(1) > 0 Then
+            Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+            PuedeAtacarNPC = False
+            Exit Function
+        End If
+    Else
+        If pretorianosVivos(2) > 0 Then
+            Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
             PuedeAtacarNPC = False
             Exit Function
         End If
     End If
 End If
 
-If UserList(AttackerIndex).flags.Muerto = 1 Then
-    Call WriteConsoleMsg(AttackerIndex, "No podes atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
-    PuedeAtacarNPC = False
-    Exit Function
-End If
-
-If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
-    PuedeAtacarNPC = False
-    Exit Function
-End If
-
-If esPretoriano(NpcIndex) = 4 And Not pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = 0 Then
-    Debug.Print "NO PEGA"
-    Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-    PuedeAtacarNPC = False
-    Exit Function
-End If
 
 PuedeAtacarNPC = True
 
 End Function
-
-
 
 Sub CalcularDarExp(ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal ElDaño As Long)
 '***************************************************

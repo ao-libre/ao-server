@@ -34,19 +34,22 @@ Option Explicit
 Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
 '********************************************************
 'Autor: Nacho (Integer)
-'5/08/2006
+'Last Modif: 28/01/2007
 'Chequea si ya debe mostrarse
+'Pablo (ToxicWaste): Cambie los ordenes de prioridades porque sino no andaba.
 '********************************************************
 
 UserList(UserIndex).Counters.TiempoOculto = UserList(UserIndex).Counters.TiempoOculto - 1
 If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
-    UserList(UserIndex).flags.Oculto = 0
-    UserList(UserIndex).Counters.TiempoOculto = 0
+    
+    UserList(UserIndex).Counters.TiempoOculto = IntervaloOculto
     If UserList(UserIndex).clase = eClass.Hunter And UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) > 90 Then
         If UserList(UserIndex).Invent.ArmourEqpObjIndex = 648 Or UserList(UserIndex).Invent.ArmourEqpObjIndex = 360 Then
             Exit Sub
         End If
     End If
+    UserList(UserIndex).Counters.TiempoOculto = 0
+    UserList(UserIndex).flags.Oculto = 0
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
 End If
@@ -62,7 +65,8 @@ errhandler:
 End Sub
 
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
-
+'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
+'Modifique la fórmula y ahora anda bien.
 On Error GoTo errhandler
 
 Dim Suerte As Double
@@ -70,14 +74,19 @@ Dim res As Integer
 Dim Skill As Integer
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
-Suerte = (0.000002 * Skill ^ 3 - 0.0002 * Skill ^ 2 + 0.0064 * Skill + 0.1124) * 100
+Suerte = (0.000002 * Skill ^ 3 + -0.0002 * Skill ^ 2 + 0.0064 * Skill + 0.1124) * 100
 
 res = RandomNumber(1, 100)
 
 If res <= Suerte Then
 
     UserList(UserIndex).flags.Oculto = 1
-    UserList(UserIndex).Counters.TiempoOculto = (-0.000001 * Skill ^ 3 + 0.00009229 * Skill ^ 2 - 0.0088 * Skill + 0.9571) * IntervaloOculto
+    Suerte = (-0.000001 * (100 - Skill) ^ 3)
+    Suerte = Suerte + (0.00009229 * (100 - Skill) ^ 2)
+    Suerte = Suerte + (-0.0088 * (100 - Skill))
+    Suerte = Suerte + (0.9571)
+    Suerte = Suerte * IntervaloOculto
+    UserList(UserIndex).Counters.TiempoOculto = Suerte
   
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
 
@@ -858,7 +867,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
         Call FlushBuffer(VictimaIndex)
     End If
 
-    If Not criminal(LadrOnIndex) Then
+    If Not Criminal(LadrOnIndex) Then
         Call VolverCriminal(LadrOnIndex)
     End If
     
@@ -1000,7 +1009,41 @@ Else
     Call WriteConsoleMsg(UserIndex, "¡No has logrado apuñalar a tu enemigo!", FontTypeNames.FONTTYPE_FIGHT)
 End If
 
-Call FlushBuffer(VictimUserIndex)
+'Pablo (ToxicWaste): Revisar, saque este porque hacía que se me cuelgue.
+'Call FlushBuffer(VictimUserIndex)
+End Sub
+
+Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
+'***************************************************
+'Autor: Pablo (ToxicWaste)
+'Last Modification: 28/01/2007
+'***************************************************
+Dim Suerte As Integer
+Dim Skill As Integer
+
+If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
+If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then Exit Sub
+If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).name <> "Espada Vikinga" Then Exit Sub
+
+
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling)
+
+Suerte = Int((0.00000003 * Skill ^ 3 + 0.000006 * Skill ^ 2 + 0.000107 * Skill + 0.0493) * 100)
+
+If RandomNumber(0, 100) < Suerte Then
+    daño = Int(daño * 0.5)
+    If VictimUserIndex <> 0 Then
+        UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - daño
+        Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a " & UserList(VictimUserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha golpeado críticamente por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+    Else
+        Npclist(VictimNpcIndex).Stats.MinHP = Npclist(VictimNpcIndex).Stats.MinHP - daño
+        Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a la criatura por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        '[Alejo]
+        Call CalcularDarExp(UserIndex, VictimNpcIndex, daño)
+    End If
+End If
+
 End Sub
 
 Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
@@ -1212,7 +1255,40 @@ End If
 
 End Sub
 
+Public Sub DoHurtar(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modif: 28/01/2007
+'Implementes the pick pocket skill of the Bandit :)
+'***************************************************
+If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
+'Esto es precario y feo, pero por ahora no se me ocurrió nada mejor.
+'Uso el slot de los anillos para "equipar" los guantes.
+'Y los reconosco porque les puse DefensaMagicaMin y Max = 0
+If UserList(UserIndex).Invent.AnilloEqpObjIndex = 0 Then
+    Exit Sub
+Else
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMin <> 0 Then
+        Exit Sub
+    End If
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMax <> 0 Then
+        Exit Sub
+    End If
+End If
 
+Dim res As Integer
+res = RandomNumber(1, 100)
+If (res < 20) Then
+    If TieneObjetosRobables(VictimaIndex) Then
+        Call RobarObjeto(UserIndex, VictimaIndex)
+        Call WriteConsoleMsg(UserIndex, "Has Hurtado Objetos", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "¡ " & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
+    Else
+        Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
+    End If
+End If
+
+End Sub
 
 Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
 

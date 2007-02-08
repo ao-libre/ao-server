@@ -42,17 +42,18 @@ Option Explicit
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-Public Function TirarItemAlPiso(Pos As WorldPos, Obj As Obj) As WorldPos
+Public Function TirarItemAlPiso(Pos As WorldPos, Obj As Obj, Optional NotPirata As Boolean = True) As WorldPos
 On Error GoTo errhandler
 
     Dim NuevaPos As WorldPos
     NuevaPos.X = 0
     NuevaPos.Y = 0
-    Call Tilelibre(Pos, NuevaPos, Obj)
+    
+    Tilelibre Pos, NuevaPos, Obj, NotPirata, True
     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-          Call MakeObj(True, Pos.Map, Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
-          TirarItemAlPiso = NuevaPos
+        Call MakeObj(True, Pos.Map, Obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
     End If
+    TirarItemAlPiso = NuevaPos
 
 Exit Function
 errhandler:

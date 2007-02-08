@@ -202,7 +202,7 @@ frmCargando.cargar.value = 0
 For Hechizo = 1 To NumeroHechizos
 
     Hechizos(Hechizo).Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-    Hechizos(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
+    Hechizos(Hechizo).Desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
     Hechizos(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
     
     Hechizos(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
@@ -468,7 +468,10 @@ On Error Resume Next
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", MapInfo(Map).name)
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "MusicNum", MapInfo(Map).Music)
     Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "MagiaSinefecto", MapInfo(Map).MagiaSinEfecto)
+    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "InviSinEfecto", MapInfo(Map).InviSinEfecto)
+    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "ResuSinEfecto", MapInfo(Map).ResuSinEfecto)
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "StartPos", MapInfo(Map).StartPos.Map & "-" & MapInfo(Map).StartPos.X & "-" & MapInfo(Map).StartPos.Y)
+    
 
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Terreno", MapInfo(Map).Terreno)
     Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Zona", MapInfo(Map).Zona)
@@ -637,6 +640,9 @@ For Object = 1 To NumObjDatas
             ObjData(Object).Snd1 = val(Leer.GetValue("OBJ" & Object, "SND1"))
             ObjData(Object).Snd2 = val(Leer.GetValue("OBJ" & Object, "SND2"))
             ObjData(Object).Snd3 = val(Leer.GetValue("OBJ" & Object, "SND3"))
+            'Pablo (ToxicWaste)
+            ObjData(Object).Real = val(Leer.GetValue("OBJ" & Object, "Real"))
+            ObjData(Object).Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
         
         Case eOBJType.otMinerales
             ObjData(Object).MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
@@ -662,6 +668,13 @@ For Object = 1 To NumObjDatas
             ObjData(Object).MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
             ObjData(Object).Envenena = val(Leer.GetValue("OBJ" & Object, "Envenena"))
             ObjData(Object).Paraliza = val(Leer.GetValue("OBJ" & Object, "Paraliza"))
+        Case eOBJType.otAnillo 'Pablo (ToxicWaste)
+            ObjData(Object).LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
+            ObjData(Object).LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
+            ObjData(Object).LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
+            ObjData(Object).SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
+            
+            
     End Select
     
     ObjData(Object).Ropaje = val(Leer.GetValue("OBJ" & Object, "NumRopaje"))
@@ -708,11 +721,11 @@ For Object = 1 To NumObjDatas
     'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
     Dim i As Integer
     Dim N As Integer
-    Dim S As String
+    Dim s As String
     For i = 1 To NUMCLASES
-        S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
+        s = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
         N = 1
-        Do While UCase$(ListaClases(N)) <> S
+        Do While UCase$(ListaClases(N)) <> s
             N = N + 1
         Loop
         ObjData(Object).ClaseProhibida(i) = N
@@ -790,7 +803,7 @@ UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
 
 
 UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
-UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
+'UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
 UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
 UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
@@ -811,7 +824,13 @@ UserList(UserIndex).Reputacion.Promedio = val(UserFile.GetValue("REP", "Promedio
 End Sub
 
 Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
-
+'*************************************************
+'Author: Unknown
+'Last modified: 19/11/2006
+'Loads the Users records
+'23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
+'23/01/2007 Pablo (ToxicWaste) - Quito CriminalesMatados de Stats porque era redundante.
+'*************************************************
 Dim LoopC As Long
 Dim ln As String
 
@@ -826,6 +845,10 @@ UserList(UserIndex).Faccion.RecibioExpInicialReal = CByte(UserFile.GetValue("FAC
 UserList(UserIndex).Faccion.RecompensasCaos = CLng(UserFile.GetValue("FACCIONES", "recCaos"))
 UserList(UserIndex).Faccion.RecompensasReal = CLng(UserFile.GetValue("FACCIONES", "recReal"))
 UserList(UserIndex).Faccion.Reenlistadas = CByte(UserFile.GetValue("FACCIONES", "Reenlistadas"))
+UserList(UserIndex).Faccion.NivelIngreso = CInt(UserFile.GetValue("FACCIONES", "NivelIngreso"))
+UserList(UserIndex).Faccion.FechaIngreso = UserFile.GetValue("FACCIONES", "FechaIngreso")
+UserList(UserIndex).Faccion.MatadosIngreso = CInt(UserFile.GetValue("FACCIONES", "MatadosIngreso"))
+UserList(UserIndex).Faccion.NextRecompensa = CInt(UserFile.GetValue("FACCIONES", "NextRecompensa"))
 
 UserList(UserIndex).flags.Muerto = CByte(UserFile.GetValue("FLAGS", "Muerto"))
 UserList(UserIndex).flags.Escondido = CByte(UserFile.GetValue("FLAGS", "Escondido"))
@@ -871,7 +894,7 @@ Else
 End If
 
 
-UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
+UserList(UserIndex).Desc = UserFile.GetValue("INIT", "Desc")
 
 UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
 UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
@@ -1181,6 +1204,8 @@ On Error GoTo errh
     MapInfo(Map).StartPos.X = val(ReadField(2, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
     MapInfo(Map).StartPos.Y = val(ReadField(3, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
     MapInfo(Map).MagiaSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "MagiaSinEfecto"))
+    MapInfo(Map).InviSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "InviSinEfecto"))
+    MapInfo(Map).ResuSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "ResuSinEfecto"))
     MapInfo(Map).NoEncriptarMP = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "NoEncriptarMP"))
     
     If val(GetVar(MAPFl & ".dat", "Mapa" & Map, "Pk")) = 0 Then
@@ -1399,6 +1424,13 @@ writeprivateprofilestring Main, Var, value, file
 End Sub
 
 Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
+'*************************************************
+'Author: Unknown
+'Last modified: 23/01/2007
+'Saves the Users records
+'23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
+'*************************************************
+
 On Error GoTo errhandler
 
 Dim OldUserHead As Long
@@ -1463,6 +1495,11 @@ Call WriteVar(UserFile, "FACCIONES", "rExReal", CStr(UserList(UserIndex).Faccion
 Call WriteVar(UserFile, "FACCIONES", "recCaos", CStr(UserList(UserIndex).Faccion.RecompensasCaos))
 Call WriteVar(UserFile, "FACCIONES", "recReal", CStr(UserList(UserIndex).Faccion.RecompensasReal))
 Call WriteVar(UserFile, "FACCIONES", "Reenlistadas", CStr(UserList(UserIndex).Faccion.Reenlistadas))
+Call WriteVar(UserFile, "FACCIONES", "NivelIngreso", CStr(UserList(UserIndex).Faccion.NivelIngreso))
+Call WriteVar(UserFile, "FACCIONES", "FechaIngreso", UserList(UserIndex).Faccion.FechaIngreso)
+Call WriteVar(UserFile, "FACCIONES", "MatadosIngreso", CStr(UserList(UserIndex).Faccion.MatadosIngreso))
+Call WriteVar(UserFile, "FACCIONES", "NextRecompensa", CStr(UserList(UserIndex).Faccion.NextRecompensa))
+
 
 '¿Fueron modificados los atributos del usuario?
 If Not UserList(UserIndex).flags.TomoPocion Then
@@ -1487,7 +1524,7 @@ Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
-Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).desc)
+Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
 
 Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
 
@@ -1546,7 +1583,7 @@ Call WriteVar(UserFile, "STATS", "ELV", CStr(UserList(UserIndex).Stats.ELV))
 
 Call WriteVar(UserFile, "STATS", "ELU", CStr(UserList(UserIndex).Stats.ELU))
 Call WriteVar(UserFile, "MUERTES", "UserMuertes", CStr(UserList(UserIndex).Stats.UsuariosMatados))
-Call WriteVar(UserFile, "MUERTES", "CrimMuertes", CStr(UserList(UserIndex).Stats.CriminalesMatados))
+'Call WriteVar(UserFile, "MUERTES", "CrimMuertes", CStr(UserList(UserIndex).Stats.CriminalesMatados))
 Call WriteVar(UserFile, "MUERTES", "NpcsMuertes", CStr(UserList(UserIndex).Stats.NPCsMuertos))
   
 '[KEVIN]----------------------------------------------------------------------------
@@ -1665,7 +1702,7 @@ End If
 
 'General
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).desc)
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).Desc)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(Npclist(NpcIndex).Char.Head))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.body))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(Npclist(NpcIndex).Char.heading))
@@ -1726,7 +1763,7 @@ End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
 Npclist(NpcIndex).Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
 

@@ -85,10 +85,13 @@ Private Sub Class_Initialize()
 Set Cola = New Collection
 End Sub
 
-Public Function VerElemento(ByVal index As Integer) As Variant
+Public Function VerElemento(ByVal Index As Integer) As String
 On Error Resume Next
-    If IndexValido(index) Then
-        VerElemento = Cola(index)
+    If IndexValido(Index) Then
+        'Pablo
+        VerElemento = UCase$(Cola.Item(Index))
+        '/Pablo
+        'VerElemento = Cola(Index)
     Else
         VerElemento = 0
     End If
@@ -98,10 +101,16 @@ End Function
 Public Sub Push(ByVal Nombre As String)
 On Error Resume Next
 'Mete elemento en la cola
-Call Cola.Add(UCase$(Nombre))
+'Pablo
+Dim Aux As String
+Aux = time$ + " " + UCase$(Nombre)
+Call Cola.Add(Aux)
+'/Pablo
+
+'Call Cola.Add(UCase$(Nombre))
 End Sub
 
-Public Function Pop() As Variant
+Public Function Pop() As String
 On Error Resume Next
 'Quita elemento de la cola
 If Cola.Count > 0 Then
@@ -112,7 +121,7 @@ Else
 End If
 End Function
 
-Public Function PopByVal() As Variant
+Public Function PopByVal() As String
 On Error Resume Next
 'Call LogTarea("PopByVal SOS")
 
@@ -128,36 +137,38 @@ End Function
 Public Function Existe(ByVal Nombre As String) As Boolean
 On Error Resume Next
   
- Dim f As Boolean
- Dim V As Variant
+ Dim V As String
  Dim i As Integer
  Dim NombreEnMayusculas As String
  NombreEnMayusculas = UCase$(Nombre)
  
- i = 1
- f = False
- 
  For i = 1 To Me.Longitud
-        V = Me.VerElemento(i)
+        'Pablo
+        V = mid$(Me.VerElemento(i), 10, Len(Me.VerElemento(i)))
+        '/Pablo
+        'V = Me.VerElemento(i)
         If V = NombreEnMayusculas Then
             Existe = True
             Exit Function
         End If
  Next
-
+ Existe = False
 
 End Function
 
 Public Sub Quitar(ByVal Nombre As String)
 On Error Resume Next
-Dim V As Variant
+Dim V As String
 Dim i As Integer
 Dim NombreEnMayusculas As String
  
 NombreEnMayusculas = UCase$(Nombre)
  
 For i = 1 To Me.Longitud
-    V = Me.VerElemento(i)
+    'Pablo
+    V = mid$(Me.VerElemento(i), 10, Len(Me.VerElemento(i)))
+    '/Pablo
+    'V = Me.VerElemento(i)
     If V = NombreEnMayusculas Then
         Call Cola.Remove(i)
         Exit Sub
@@ -166,9 +177,9 @@ Next i
  
 End Sub
 
-Public Sub QuitarIndex(ByVal index As Integer)
+Public Sub QuitarIndex(ByVal Index As Integer)
 On Error Resume Next
-If IndexValido(index) Then Call Cola.Remove(index)
+If IndexValido(Index) Then Call Cola.Remove(Index)
 End Sub
 
 

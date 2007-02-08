@@ -47,6 +47,11 @@ Option Explicit
 Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Error Resume Next
 
+'¿Rango Visión? (ToxicWaste)
+If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
+    Exit Sub
+End If
+
 '¿Posicion valida?
 If InMapBounds(Map, X, Y) Then
    

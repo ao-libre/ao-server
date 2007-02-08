@@ -281,6 +281,13 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Passw
                     ByVal US11 As Byte, ByVal US12 As Byte, ByVal US13 As Byte, ByVal US14 As Byte, ByVal US15 As Byte, _
                     ByVal US16 As Byte, ByVal US17 As Byte, ByVal US18 As Byte, ByVal US19 As Byte, ByVal US20 As Byte, _
                     ByVal US21 As Byte, ByRef UserEmail As String, ByVal Hogar As eCiudad)
+'*************************************************
+'Author: Unknown
+'Last modified: 23/01/2007
+'Conecta un nuevo Usuario
+'23/01/2007 Pablo (ToxicWaste) - Agregué ResetFaccion al crear usuario
+'24/01/2007 Pablo (ToxicWaste) - Agregué el nuevo mana inicial de los magos.
+'*************************************************
 
 If Not AsciiValidos(name) Then
     Call WriteErrorMsg(UserIndex, "Nombre invalido.")
@@ -423,15 +430,17 @@ UserList(UserIndex).Stats.MinHam = 100
 
 
 '<-----------------MANA----------------------->
-If UserClase = eClass.Mage Then
-    MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 3
-    UserList(UserIndex).Stats.MaxMAN = 100 + MiInt
-    UserList(UserIndex).Stats.MinMAN = 100 + MiInt
+If UserClase = eClass.Mage Then 'Cambio en mana inicial (ToxicWaste)
+    MiInt = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) * 3
+    UserList(UserIndex).Stats.MaxMAN = MiInt
+    UserList(UserIndex).Stats.MinMAN = MiInt
 ElseIf UserClase = eClass.Cleric Or UserClase = eClass.Druid _
     Or UserClase = eClass.Bard Or UserClase = eClass.Assasin Then
-        MiInt = RandomNumber(1, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)) / 4
         UserList(UserIndex).Stats.MaxMAN = 50
         UserList(UserIndex).Stats.MinMAN = 50
+ElseIf UserClase = eClass.Bandit Then 'Mana Inicial del Bandido (ToxicWaste)
+        UserList(UserIndex).Stats.MaxMAN = 150
+        UserList(UserIndex).Stats.MinMAN = 150
 Else
     UserList(UserIndex).Stats.MaxMAN = 0
     UserList(UserIndex).Stats.MinMAN = 0
@@ -487,7 +496,8 @@ UserList(UserIndex).Invent.ArmourEqpObjIndex = UserList(UserIndex).Invent.Object
 UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(3).ObjIndex
 UserList(UserIndex).Invent.WeaponEqpSlot = 3
 
-
+'Valores Default de facciones al Activar nuevo usuario
+Call ResetFacciones(UserIndex)
 
 Call WriteVar(CharPath & UCase$(name) & ".chr", "INIT", "Password", Password) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
 
@@ -1020,7 +1030,7 @@ Else
 End If
 
 If UserList(UserIndex).flags.Privilegios > User Or UserList(UserIndex).flags.EsRolesMaster Then
-    UserList(UserIndex).flags.ChatColor = RGB(30, 150, 30)
+    UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
 Else
     UserList(UserIndex).flags.ChatColor = vbWhite
 End If
@@ -1102,7 +1112,7 @@ If UserList(UserIndex).flags.Navegando = 1 Then
     Call WriteNavigateToggle(UserIndex)
 End If
 
-If criminal(UserIndex) Then
+If Criminal(UserIndex) Then
     Call WriteSafeModeOff(UserIndex)
     UserList(UserIndex).flags.Seguro = False
 Else
@@ -1175,9 +1185,10 @@ End Sub
 Sub ResetFacciones(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 03/15/2006
+'Last modified: 23/01/2007
 'Resetea todos los valores generales y las stats
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
     With UserList(UserIndex).Faccion
         .ArmadaReal = 0
@@ -1191,6 +1202,10 @@ Sub ResetFacciones(ByVal UserIndex As Integer)
         .RecompensasCaos = 0
         .RecompensasReal = 0
         .Reenlistadas = 0
+        .NivelIngreso = 0
+        .FechaIngreso = "No ingresó a ninguna Facción"
+        .MatadosIngreso = 0
+        .NextRecompensa = 0
     End With
 End Sub
 
@@ -1258,7 +1273,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
     With UserList(UserIndex)
         .name = vbNullString
         .modName = vbNullString
-        .desc = vbNullString
+        .Desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
         .Pos.X = 0
@@ -1284,7 +1299,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
             .ELU = 0
             .Exp = 0
             .def = 0
-            .CriminalesMatados = 0
+            '.CriminalesMatados = 0
             .NPCsMuertos = 0
             .UsuariosMatados = 0
             .SkillPts = 0

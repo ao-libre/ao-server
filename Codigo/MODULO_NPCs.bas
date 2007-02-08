@@ -68,13 +68,17 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '********************************************************
 'Author: Unknown
 'Llamado cuando la vida de un NPC llega a cero.
-'Last Modify Date: 22/6/06: (Nacho) Chequeamos si es pretoriano
+'Last Modify Date: 24/01/2007
+'22/06/06: (Nacho) Chequeamos si es pretoriano
+'24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
 On Error GoTo errhandler
 
-   Dim MiNPC As npc
-   MiNPC = Npclist(NpcIndex)
-      
+    Dim MiNPC As npc
+    MiNPC = Npclist(NpcIndex)
+    Dim EraCriminal As Boolean
+    EraCriminal = criminal(UserIndex)
+   
     If (esPretoriano(NpcIndex) = 4) Then
         'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
         Dim i As Integer
@@ -98,12 +102,12 @@ On Error GoTo errhandler
             pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) - 1
     End If
    
-   'Quitamos el npc
-   Call QuitarNPC(NpcIndex)
+    'Quitamos el npc
+    Call QuitarNPC(NpcIndex)
    
    
     
-   If UserIndex > 0 Then ' Lo mato un usuario?
+    If UserIndex > 0 Then ' Lo mato un usuario?
         If MiNPC.flags.Snd3 > 0 Then
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MiNPC.flags.Snd3))
         End If
@@ -170,19 +174,25 @@ On Error GoTo errhandler
         If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
         
         Call CheckUserLevel(UserIndex)
-   End If ' Userindex > 0
+    End If ' Userindex > 0
 
    
-   If MiNPC.MaestroUser = 0 Then
+    If MiNPC.MaestroUser = 0 Then
         'Tiramos el oro
         Call NPCTirarOro(MiNPC)
         'Tiramos el inventario
         Call NPC_TIRAR_ITEMS(MiNPC)
-   End If
+    End If
    
-   'ReSpawn o no
-   Call ReSpawnNpc(MiNPC)
+    'ReSpawn o no
+    Call ReSpawnNpc(MiNPC)
    
+    If EraCriminal And Not criminal(UserIndex) Then
+        Call RefreshCharStatus(UserIndex)
+    ElseIf Not EraCriminal And criminal(UserIndex) Then
+        Call RefreshCharStatus(UserIndex)
+    End If
+
 Exit Sub
 
 errhandler:
@@ -309,7 +319,7 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).TargetNPC = 0
     Npclist(NpcIndex).TipoItems = 0
     Npclist(NpcIndex).Veneno = 0
-    Npclist(NpcIndex).desc = vbNullString
+    Npclist(NpcIndex).Desc = vbNullString
     
     
     Dim j As Integer
@@ -633,11 +643,17 @@ End If
 End Sub
 
 Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolean, ByVal Respawn As Boolean) As Integer
-'Crea un NPC del tipo Npcindex
-
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 23/01/2007
+'23/01/2007 -> Pablo (ToxicWaste): Creates an NPC of the type Npcindex
+'***************************************************
 Dim newpos As WorldPos
+Dim altpos As WorldPos
 Dim nIndex As Integer
 Dim PosicionValida As Boolean
+Dim PuedeAgua As Boolean
+Dim PuedeTierra As Boolean
 
 
 Dim Map As Integer
@@ -646,6 +662,8 @@ Dim Y As Integer
 Dim it As Integer
 
 nIndex = OpenNPC(NpcIndex, Respawn)   'Conseguimos un indice
+PuedeAgua = Npclist(nIndex).flags.AguaValida
+PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
 
 it = 0
 
@@ -656,24 +674,25 @@ End If
 
 Do While Not PosicionValida
         
-        Call ClosestLegalPos(Pos, newpos)  'Nos devuelve la posicion valida mas cercana
+        Call ClosestLegalPos(Pos, newpos, PuedeAgua, PuedeTierra)  'Nos devuelve la posicion valida mas cercana
+        Call ClosestLegalPos(Pos, altpos, PuedeAgua)
         'Si X e Y son iguales a 0 significa que no se encontro posicion valida
-        If Npclist(nIndex).flags.TierraInvalida Then
-            If LegalPos(newpos.Map, newpos.X, newpos.Y, True) Then _
-                PosicionValida = True
-        Else
-            If LegalPos(newpos.Map, newpos.X, newpos.Y, False) Or LegalPos(newpos.Map, newpos.X, newpos.Y, Npclist(nIndex).flags.AguaValida) Then _
-                PosicionValida = True
-        End If
-        
-        If PosicionValida Then
+
+        If newpos.X <> 0 And newpos.Y <> 0 Then
             'Asignamos las nuevas coordenas solo si son validas
             Npclist(nIndex).Pos.Map = newpos.Map
             Npclist(nIndex).Pos.X = newpos.X
             Npclist(nIndex).Pos.Y = newpos.Y
+            PosicionValida = True
         Else
-            newpos.X = 0
-            newpos.Y = 0
+            If altpos.X <> 0 And altpos.Y <> 0 Then
+                Npclist(nIndex).Pos.Map = altpos.Map
+                Npclist(nIndex).Pos.X = altpos.X
+                Npclist(nIndex).Pos.Y = altpos.Y
+                PosicionValida = True
+            Else
+                PosicionValida = False
+            End If
         End If
         
         it = it + 1
@@ -783,7 +802,7 @@ End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = Leer.GetValue("NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).Desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
 
 Npclist(NpcIndex).Movement = val(Leer.GetValue("NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).flags.OldMovement = Npclist(NpcIndex).Movement

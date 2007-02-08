@@ -384,6 +384,12 @@ Private Enum ClientPacketID
     SaveMap                 '/GUARDAMAPA
     ChangeMapInfoPK         '/MODMAPINFO PK
     ChangeMapInfoBackup     '/MODMAPINFO BACKUP
+    ChangeMapInfoRestricted '/MODMAPINFO RESTRINGIR
+    ChangeMapInfoNoMagic    '/MODMAPINFO MAGIASINEFECTO
+    ChangeMapInfoNoInvi     '/MODMAPINFO INVISINEFECTO
+    ChangeMapInfoNoResu     '/MODMAPINFO RESUSINEFECTO
+    ChangeMapInfoLand       '/MODMAPINFO TERRENO
+    ChangeMapInfoZone       '/MODMAPINFO ZONA
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
     ShowServerForm          '/SHOW INT
@@ -398,6 +404,7 @@ Private Enum ClientPacketID
     ResetAutoUpdate         '/AUTOUPDATE
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
+    CheckSlot               '/SLOT
 End Enum
 
 Public Enum FontTypeNames
@@ -648,7 +655,7 @@ On Error Resume Next
         
         Case ClientPacketID.GuildRequestDetails     'CLANDETAILS
             Call HandleGuildRequestDetails(UserIndex)
-        
+                  
         Case ClientPacketID.Online                  '/ONLINE
             Call HandleOnline(UserIndex)
         
@@ -1118,6 +1125,24 @@ On Error Resume Next
         
         Case ClientPacketID.ChangeMapInfoBackup     '/MODMAPINFO BACKUP
             Call HandleChangeMapInfoBackup(UserIndex)
+    
+        Case ClientPacketID.ChangeMapInfoRestricted '/MODMAPINFO RESTRINGIR
+            Call HandleChangeMapInfoRestricted(UserIndex)
+            
+        Case ClientPacketID.ChangeMapInfoNoMagic    '/MODMAPINFO MAGIASINEFECTO
+            Call HandleChangeMapInfoNoMagic(UserIndex)
+            
+        Case ClientPacketID.ChangeMapInfoNoInvi     '/MODMAPINFO INVISINEFECTO
+            Call HandleChangeMapInfoNoInvi(UserIndex)
+            
+        Case ClientPacketID.ChangeMapInfoNoResu     '/MODMAPINFO RESUSINEFECTO
+            Call HandleChangeMapInfoNoResu(UserIndex)
+            
+        Case ClientPacketID.ChangeMapInfoLand       '/MODMAPINFO TERRENO
+            Call HandleChangeMapInfoLand(UserIndex)
+            
+        Case ClientPacketID.ChangeMapInfoZone       '/MODMAPINFO ZONA
+            Call HandleChangeMapInfoZone(UserIndex)
         
         Case ClientPacketID.SaveChars               '/GRABAR
             Call HandleSaveChars(UserIndex)
@@ -1160,6 +1185,9 @@ On Error Resume Next
         
         Case ClientPacketID.Ignored                 '/IGNORADO
             Call HandleIgnored(UserIndex)
+        
+        Case ClientPacketID.CheckSlot               '/SLOT
+            Call HandleCheckSlot(UserIndex)
         
 #If SeguridadAlkon Then
         Case Else
@@ -1204,7 +1232,7 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
     Call buffer.CopyBuffer(UserList(UserIndex).incomingData)
@@ -1212,11 +1240,11 @@ On Error GoTo ErrHandler
     'Remove packet ID
     Call buffer.ReadByte
 
-    Dim username As String
+    Dim UserName As String
     Dim Password As String
     Dim version As String
     
-    username = buffer.ReadASCIIString()
+    UserName = buffer.ReadASCIIString()
     
 #If SeguridadAlkon Then
     Password = buffer.ReadASCIIStringFixed(32)
@@ -1227,14 +1255,14 @@ On Error GoTo ErrHandler
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
     
-    If Not AsciiValidos(username) Then
+    If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
         Exit Sub
     End If
     
-    If Not PersonajeExiste(username) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
@@ -1255,12 +1283,12 @@ On Error GoTo ErrHandler
     Else
 #End If
         
-        If BANCheck(username) Then
+        If BANCheck(UserName) Then
             Call WriteErrorMsg(UserIndex, "Se te ha prohibido la entrada a Argentum debido a tu mal comportamiento. Puedes consultar el reglamento y el sistema de soporte desde www.argentumonline.com.ar")
         ElseIf Not VersionOK(version) Then
             Call WriteErrorMsg(UserIndex, "Esta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
         Else
-            Call ConnectUser(UserIndex, username, Password)
+            Call ConnectUser(UserIndex, UserName, Password)
         End If
 #If SeguridadAlkon Then
     End If
@@ -1269,7 +1297,7 @@ On Error GoTo ErrHandler
     'If we got here then packet is complete, copy data back to original queue
     Call UserList(UserIndex).incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -1329,7 +1357,7 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
     End If
 #End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As New clsByteQueue
     Call buffer.CopyBuffer(UserList(UserIndex).incomingData)
@@ -1337,7 +1365,7 @@ On Error GoTo ErrHandler
     'Remove packet ID
     Call buffer.ReadByte
 
-    Dim username As String
+    Dim UserName As String
     Dim Password As String
     Dim version As String
     
@@ -1366,7 +1394,7 @@ On Error GoTo ErrHandler
         Exit Sub
     End If
     
-    username = buffer.ReadASCIIString()
+    UserName = buffer.ReadASCIIString()
     
 #If SeguridadAlkon Then
     Password = buffer.ReadASCIIStringFixed(32)
@@ -1377,14 +1405,14 @@ On Error GoTo ErrHandler
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
     
-    If Not AsciiValidos(username) Then
+    If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
         Exit Sub
     End If
 
-    If PersonajeExiste(username) Then
+    If PersonajeExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "El personaje ya existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
@@ -1408,7 +1436,7 @@ On Error GoTo ErrHandler
         If Not VersionOK(version) Then
             Call WriteErrorMsg(UserIndex, "Esta version del juego es obsoleta, la version correcta es " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
         Else
-            Call ConnectNewUser(UserIndex, username, Password, buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), _
+            Call ConnectNewUser(UserIndex, UserName, Password, buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), _
                                 buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), _
                                 buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadASCIIString(), buffer.ReadByte())
         End If
@@ -1419,7 +1447,7 @@ On Error GoTo ErrHandler
     'If we got here then packet is complete, copy data back to original queue
     Call UserList(UserIndex).incomingData.CopyBuffer(buffer)
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -1447,7 +1475,7 @@ Private Sub HandleTalk(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
     
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1462,8 +1490,8 @@ On Error GoTo ErrHandler
         chat = buffer.ReadASCIIString()
         
         '[Consejeros & GMs]
-        If .flags.privilegios = PlayerType.Consejero Or .flags.privilegios = PlayerType.SemiDios Then
-            Call LogGM(.name, "Dijo: " & chat, .flags.privilegios = PlayerType.Consejero)
+        If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
+            Call LogGM(.name, "Dijo: " & chat, .flags.Privilegios = PlayerType.Consejero)
         End If
         
         'I see you....
@@ -1491,7 +1519,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -1519,7 +1547,7 @@ Private Sub HandleYell(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
     
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1537,8 +1565,8 @@ On Error GoTo ErrHandler
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos.", FontTypeNames.FONTTYPE_INFO)
         Else
             '[Consejeros & GMs]
-            If .flags.privilegios = PlayerType.Consejero Or .flags.privilegios = PlayerType.SemiDios Then
-                Call LogGM(.name, "Grito: " & chat, .flags.privilegios = PlayerType.Consejero)
+            If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
+                Call LogGM(.name, "Grito: " & chat, .flags.Privilegios = PlayerType.Consejero)
             End If
             
             'I see you....
@@ -1555,7 +1583,7 @@ On Error GoTo ErrHandler
                 'Analize chat...
                 Call Statistics.ParseChat(chat)
                 
-                If .flags.privilegios > PlayerType.User Then
+                If .flags.Privilegios > PlayerType.User Then
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, CHAT_COLOR_GM_YELL))
                 Else
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, vbRed))
@@ -1567,7 +1595,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -1595,7 +1623,7 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -1619,11 +1647,11 @@ On Error GoTo ErrHandler
             If targetUserIndex = INVALID_INDEX Then
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
-                If UserList(targetUserIndex).flags.privilegios >= PlayerType.Dios And .flags.privilegios < PlayerType.Dios Then
+                If UserList(targetUserIndex).flags.Privilegios >= PlayerType.Dios And .flags.Privilegios < PlayerType.Dios Then
                     'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
                 
-                ElseIf .flags.privilegios = PlayerType.User And UserList(targetUserIndex).flags.privilegios > PlayerType.User Then
+                ElseIf .flags.Privilegios = PlayerType.User And UserList(targetUserIndex).flags.Privilegios > PlayerType.User Then
                     'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
                 
@@ -1632,8 +1660,8 @@ On Error GoTo ErrHandler
                 
                 Else
                     '[Consejeros & GMs]
-                    If .flags.privilegios = PlayerType.Consejero Or .flags.privilegios = PlayerType.SemiDios Then
-                        Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.privilegios = PlayerType.Consejero)
+                    If .flags.Privilegios = PlayerType.Consejero Or .flags.Privilegios = PlayerType.SemiDios Then
+                        Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios = PlayerType.Consejero)
                     End If
                     
                     If LenB(chat) <> 0 Then
@@ -1645,7 +1673,7 @@ On Error GoTo ErrHandler
                         Call FlushBuffer(targetUserIndex)
                         
                         '[CDT 17-02-2004]
-                        If .flags.privilegios < PlayerType.SemiDios Then
+                        If .flags.Privilegios < PlayerType.SemiDios Then
                             Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, targetCharIndex, vbYellow))
                         End If
                     End If
@@ -1657,7 +1685,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -1877,7 +1905,7 @@ Private Sub HandlePickUp(ByVal UserIndex As Integer)
         End If
         
         'Lower rank administrators can't pick up items
-        If .flags.privilegios = PlayerType.Consejero And Not .flags.EsRolesMaster Then
+        If .flags.Privilegios = PlayerType.Consejero And Not .flags.EsRolesMaster Then
             Call WriteConsoleMsg(UserIndex, "No puedes tomar ningun objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -2170,13 +2198,15 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
         'low rank admins can't drop item. Neither can the dead nor those sailing.
         If .flags.Navegando = 1 Or _
            .flags.Muerto = 1 Or _
-           (.flags.privilegios = PlayerType.Consejero And Not .flags.EsRolesMaster) Then Exit Sub
+           (.flags.Privilegios = PlayerType.Consejero And Not .flags.EsRolesMaster) Then Exit Sub
         
         Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'Are we dropping gold or other items??
         If Slot = FLAGORO Then
+            If amount > 100000 Then Exit Sub 'Don't drop too much gold
+
             Call TirarOro(amount, UserIndex)
             
             Call WriteUpdateGold(UserIndex)
@@ -2572,9 +2602,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     End If
                     
                     'Can't hit administrators!
-                    If UserList(tU).flags.privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
+                    If UserList(tU).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
                         If .flags.Seguro Then
-                            If Not criminal(tU) Then
+                            If Not Criminal(tU) Then
                                 Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
                                 Exit Sub
                             End If
@@ -2696,7 +2726,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     
                     If tU > 0 And tU <> UserIndex Then
                         'Can't steal administrative players
-                        If UserList(tU).flags.privilegios < PlayerType.Consejero Then
+                        If UserList(tU).flags.Privilegios < PlayerType.Consejero Then
                             If UserList(tU).flags.Muerto = 0 Then
                                  If Abs(.Pos.X - X) + Abs(.Pos.Y - Y) > 2 Then
                                      Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
@@ -2892,7 +2922,7 @@ Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -2901,18 +2931,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc As String
+        Dim Desc As String
         Dim GuildName As String
         Dim site As String
         Dim codex() As String
         Dim errorStr As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         GuildName = buffer.ReadASCIIString()
         site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(UserIndex, Desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
         Else
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
@@ -2922,7 +2952,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -2972,7 +3002,7 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
                 'Send information
                 Call WriteConsoleMsg(UserIndex, "%%%%%%%%%%%% INFO DEL HECHIZO %%%%%%%%%%%%" & vbCrLf _
                                                & "Nombre:" & .Nombre & vbCrLf _
-                                               & "Descripción:" & .desc & vbCrLf _
+                                               & "Descripción:" & .Desc & vbCrLf _
                                                & "Skill requerido: " & .MinSkill & " de magia." & vbCrLf _
                                                & "Mana necesario: " & .ManaRequerido & vbCrLf _
                                                & "Stamina necesaria: " & .StaRequerido & vbCrLf _
@@ -3363,7 +3393,7 @@ Private Sub HandleForumPost(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3420,7 +3450,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3480,7 +3510,7 @@ Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3489,19 +3519,19 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc As String
+        Dim Desc As String
         Dim codex() As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(desc, codex, .guildIndex)
+        Call modGuilds.ChangeCodexAndDesc(Desc, codex, .guildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3597,7 +3627,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -3626,7 +3656,7 @@ Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3654,7 +3684,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3682,7 +3712,7 @@ Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3710,7 +3740,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3738,7 +3768,7 @@ Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3766,7 +3796,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3794,7 +3824,7 @@ Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3822,7 +3852,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3850,7 +3880,7 @@ Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3876,7 +3906,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3904,7 +3934,7 @@ Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3930,7 +3960,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -3958,7 +3988,7 @@ Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -3985,7 +4015,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4013,7 +4043,7 @@ Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4040,7 +4070,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4068,7 +4098,7 @@ Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4094,7 +4124,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4156,7 +4186,7 @@ Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4185,7 +4215,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4213,7 +4243,7 @@ Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4228,7 +4258,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4256,7 +4286,7 @@ Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4266,27 +4296,27 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim errorStr As String
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        If Not modGuilds.a_AceptarAspirante(UserIndex, username, errorStr) Then
+        If Not modGuilds.a_AceptarAspirante(UserIndex, UserName, errorStr) Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             If tUser > 0 Then
                 Call modGuilds.m_ConectarMiembroAClan(tUser, .guildIndex)
             End If
             
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg(username & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4315,7 +4345,7 @@ Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4325,23 +4355,23 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim errorStr As String
-        Dim username As String
+        Dim UserName As String
         Dim reason As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
         
-        If Not modGuilds.a_RechazarAspirante(UserIndex, username, reason, errorStr) Then
+        If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, reason, errorStr) Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             
             If tUser > 0 Then
                 Call WriteConsoleMsg(tUser, errorStr & " : " & reason, FontTypeNames.FONTTYPE_GUILD)
             Else
                 'hay que grabar en el char su rechazo
-                Call modGuilds.a_RechazarAspiranteChar(username, .guildIndex, reason)
+                Call modGuilds.a_RechazarAspiranteChar(UserName, .guildIndex, reason)
             End If
         End If
         
@@ -4349,7 +4379,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4377,7 +4407,7 @@ Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4386,15 +4416,15 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim guildIndex As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, username)
+        guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
         
         If guildIndex > 0 Then
-            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(username & " fue expulsado del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " fue expulsado del clan.", FontTypeNames.FONTTYPE_GUILD))
         Else
             Call WriteConsoleMsg(UserIndex, "No puedes expulsar ese personaje del clan.", FontTypeNames.FONTTYPE_GUILD)
         End If
@@ -4403,7 +4433,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4431,7 +4461,7 @@ Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4446,7 +4476,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4474,7 +4504,7 @@ Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4489,7 +4519,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4542,7 +4572,7 @@ Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4568,7 +4598,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4596,7 +4626,7 @@ Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -4611,7 +4641,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -4642,7 +4672,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         For i = 1 To LastUser
-            If LenB(UserList(i).name) <> 0 And UserList(i).flags.privilegios <= PlayerType.Consejero Then
+            If LenB(UserList(i).name) <> 0 And UserList(i).flags.Privilegios <= PlayerType.Consejero Then
                 Count = Count + 1
             End If
         Next i
@@ -4761,7 +4791,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
                 Call WriteChatOverHead(UserIndex, "Tenes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             
             Case eNPCType.Timbero
-                If .flags.privilegios > PlayerType.User Then
+                If .flags.Privilegios > PlayerType.User Then
                     earnings = Apuestas.Ganancias - Apuestas.Perdidas
                     
                     If earnings >= 0 And Apuestas.Ganancias <> 0 Then
@@ -4977,7 +5007,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         End If
         
         'Admins don't have to wait :D
-        If .flags.privilegios > PlayerType.User Then
+        If .flags.Privilegios > PlayerType.User Then
             .Stats.MinMAN = .Stats.MaxMAN
             Call WriteConsoleMsg(UserIndex, "Mana restaurado", FontTypeNames.FONTTYPE_VENENO)
             Call WriteUpdateMana(UserIndex)
@@ -5164,7 +5194,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
         If .flags.TargetNPC > 0 Then
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
+                If LenB(Npclist(.flags.TargetNPC).Desc) <> 0 Then
                     Call WriteChatOverHead(UserIndex, "No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 End If
                 
@@ -5182,7 +5212,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
         ElseIf .flags.TargetUser > 0 Then
             'User commerce...
             'Can he commerce??
-            If .flags.privilegios = PlayerType.Consejero Then
+            If .flags.Privilegios = PlayerType.Consejero Then
                 Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
             End If
@@ -5215,7 +5245,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -5546,7 +5576,7 @@ Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5574,7 +5604,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5602,7 +5632,7 @@ Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5628,7 +5658,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5724,7 +5754,7 @@ Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5752,7 +5782,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5780,7 +5810,7 @@ Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5802,7 +5832,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5856,7 +5886,7 @@ Private Sub HandleBugReport(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5883,7 +5913,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5911,7 +5941,7 @@ Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5930,7 +5960,7 @@ On Error GoTo ErrHandler
             If Not AsciiValidos(description) Then
                 Call WriteConsoleMsg(UserIndex, "La descripción tiene caractéres inválidos.", FontTypeNames.FONTTYPE_INFO)
             Else
-                .desc = Trim$(description)
+                .Desc = Trim$(description)
                 Call WriteConsoleMsg(UserIndex, "La descripción a cambiado.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -5939,7 +5969,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -5967,7 +5997,7 @@ Private Sub HandleGuildVote(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -5991,7 +6021,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6019,7 +6049,7 @@ Private Sub HandlePunishments(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6039,6 +6069,12 @@ On Error GoTo ErrHandler
             End If
             If (InStrB(name, "/") <> 0) Then
                 name = Replace(name, "/", "")
+            End If
+            If (InStrB(name, ":") <> 0) Then
+                name = Replace(name, ":", "")
+            End If
+            If (InStrB(name, "|") <> 0) Then
+                name = Replace(name, "|", "")
             End If
             
             If FileExist(CharPath & name & ".chr", vbNormal) Then
@@ -6060,7 +6096,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6089,7 +6125,7 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
         Exit Sub
     End If
 #Else
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -6134,7 +6170,7 @@ On Error GoTo ErrHandler
     End With
     
 #If SeguridadAlkon = 0 Then
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6410,7 +6446,7 @@ Private Sub HandleDenounce(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6435,7 +6471,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6511,7 +6547,7 @@ Private Sub HandlePartyKick(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6520,12 +6556,12 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         If tUser > 0 Then
             Call mdParty.ExpulsarDeParty(UserIndex, tUser)
         Else
@@ -6536,7 +6572,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6564,7 +6600,7 @@ Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6573,12 +6609,12 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         If tUser > 0 Then
             Call mdParty.TransformarEnLider(UserIndex, tUser)
         Else
@@ -6589,7 +6625,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6617,7 +6653,7 @@ Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6626,14 +6662,14 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         If tUser > 0 Then
-            If UserList(tUser).flags.privilegios <= .flags.privilegios Then
+            If UserList(tUser).flags.Privilegios <= .flags.Privilegios Then
                 Call mdParty.AprobarIngresoAParty(UserIndex, tUser)
             End If
         Else
@@ -6644,7 +6680,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6672,7 +6708,7 @@ Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6684,7 +6720,7 @@ On Error GoTo ErrHandler
         Dim guild As String
         Dim memberCount As Integer
         Dim i As Long
-        Dim username As String
+        Dim UserName As String
         
         guild = buffer.ReadASCIIString()
         
@@ -6701,9 +6737,9 @@ On Error GoTo ErrHandler
             memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
             
             For i = 1 To memberCount
-                username = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
+                UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
                 
-                Call WriteConsoleMsg(UserIndex, username & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, UserName & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
             Next i
         End If
         
@@ -6711,7 +6747,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6739,7 +6775,7 @@ Private Sub HandleGMMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6752,7 +6788,7 @@ On Error GoTo ErrHandler
         
         message = buffer.ReadASCIIString()
         
-        Call LogGM(.name, "Mensaje a Gms:" & message, (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "Mensaje a Gms:" & message, (.flags.Privilegios = PlayerType.Consejero))
         
         If LenB(message) <> 0 Then
             'Analize chat...
@@ -6765,7 +6801,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6792,7 +6828,7 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.EsRolesMaster Or .flags.privilegios >= PlayerType.Dios Then
+        If .flags.EsRolesMaster Or .flags.Privilegios >= PlayerType.Dios Then
             .showName = Not .showName 'Show / Hide the name
             
             'Ugly but works, and not being a common message it doen't really bother
@@ -6821,7 +6857,7 @@ Private Sub HandleOnlineRoyalArmy(ByVal UserIndex As Integer)
     
     For i = 1 To LastUser
         If UserList(i).ConnID <> -1 Then
-            If UserList(i).Faccion.ArmadaReal = 1 And (UserList(i).flags.privilegios < PlayerType.Dios Or UserList(i).flags.privilegios >= PlayerType.Dios) Then
+            If UserList(i).Faccion.ArmadaReal = 1 And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(i).flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(i).name & ", "
             End If
         End If
@@ -6853,7 +6889,7 @@ Private Sub HandleOnlineChaosLegion(ByVal UserIndex As Integer)
     
     For i = 1 To LastUser
         If UserList(i).ConnID <> -1 Then
-            If UserList(i).Faccion.FuerzasCaos = 1 And (UserList(i).flags.privilegios < PlayerType.Dios Or UserList(i).flags.privilegios >= PlayerType.Dios) Then
+            If UserList(i).Faccion.FuerzasCaos = 1 And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(i).flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(i).name & ", "
             End If
         End If
@@ -6882,7 +6918,7 @@ Private Sub HandleGoNearby(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6891,19 +6927,19 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         Dim tIndex As Integer
         Dim X As Long
         Dim Y As Long
         Dim i As Long
         
-        tIndex = NameIndex(username)
+        tIndex = NameIndex(UserName)
         
         'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-        If Not (EsDios(username) Or EsAdmin(username)) Or .flags.privilegios >= PlayerType.Dios Then
+        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or .flags.Privilegios >= PlayerType.Dios Then
             If tIndex <= 0 Then 'existe el usuario destino?
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -6931,7 +6967,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6959,7 +6995,7 @@ Private Sub HandleComment(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6972,14 +7008,14 @@ On Error GoTo ErrHandler
         
         comment = buffer.ReadASCIIString()
         
-        Call LogGM(.name, "Comentario: " & comment, (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "Comentario: " & comment, (.flags.Privilegios = PlayerType.Consejero))
         Call WriteConsoleMsg(UserIndex, "Comentario salvado...", FontTypeNames.FONTTYPE_INFO)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7006,7 +7042,7 @@ Private Sub HandleServerTime(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
     
-        Call LogGM(.name, "Hora.", (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "Hora.", (.flags.Privilegios = PlayerType.Consejero))
     End With
     
     Call WriteConsoleMsg(SendTarget.ToAll, "Hora: " & time & " " & Date, FontTypeNames.FONTTYPE_INFO)
@@ -7028,7 +7064,7 @@ Private Sub HandleWhere(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7037,18 +7073,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
         Else
-            If UserList(tUser).flags.privilegios < PlayerType.Dios Then
-                Call WriteConsoleMsg(UserIndex, "Ubicación  " & username & ": " & UserList(tUser).Pos.Map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
-                Call LogGM(.name, "/Donde " & username, (.flags.privilegios = PlayerType.Consejero))
+            If UserList(tUser).flags.Privilegios < PlayerType.Dios Then
+                Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & ": " & UserList(tUser).Pos.Map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
+                Call LogGM(.name, "/Donde " & UserName, (.flags.Privilegios = PlayerType.Consejero))
             End If
         End If
         
@@ -7056,7 +7092,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7112,7 +7148,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
             End If
             
             Call WriteConsoleMsg(UserIndex, "Npcs en mapa: " & list, FontTypeNames.FONTTYPE_INFO)
-            Call LogGM(.name, "Numero enemigos en mapa " & Map, (.flags.privilegios = PlayerType.Consejero))
+            Call LogGM(.name, "Numero enemigos en mapa " & Map, (.flags.Privilegios = PlayerType.Consejero))
         End If
     End With
 End Sub
@@ -7133,7 +7169,7 @@ Private Sub HandleWarpMeToTarget(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Call WarpUserChar(UserIndex, .flags.TargetMap, .flags.TargetX, .flags.TargetY, True)
-        Call LogGM(.name, "/TELEPLOC a x:" & .flags.TargetX & " Y:" & .flags.TargetY & " Map:" & .Pos.Map, (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "/TELEPLOC a x:" & .flags.TargetX & " Y:" & .flags.TargetY & " Map:" & .Pos.Map, (.flags.Privilegios = PlayerType.Consejero))
     End With
 End Sub
 
@@ -7153,7 +7189,7 @@ Private Sub HandleWarpChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7162,21 +7198,21 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim Map As Integer
         Dim X As Byte
         Dim Y As Byte
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         Map = buffer.ReadInteger()
         X = buffer.ReadByte()
         Y = buffer.ReadByte()
         
-        If MapaValido(Map) And LenB(username) <> 0 Then
-            If UCase$(username) <> "YO" Then
-                If Not .flags.privilegios = PlayerType.Consejero Then
-                    tUser = NameIndex(username)
+        If MapaValido(Map) And LenB(UserName) <> 0 Then
+            If UCase$(UserName) <> "YO" Then
+                If Not .flags.Privilegios = PlayerType.Consejero Then
+                    tUser = NameIndex(UserName)
                 End If
             Else
                 tUser = UserIndex
@@ -7187,7 +7223,7 @@ On Error GoTo ErrHandler
             ElseIf InMapBounds(Map, X, Y) Then
                 Call WarpUserChar(tUser, Map, X, Y, True)
                 Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " transportado.", FontTypeNames.FONTTYPE_INFO)
-                Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y, (.flags.privilegios = PlayerType.Consejero))
+                Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y, (.flags.Privilegios = PlayerType.Consejero))
             End If
         End If
         
@@ -7195,7 +7231,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7223,7 +7259,7 @@ Private Sub HandleSilence(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7232,12 +7268,12 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
@@ -7246,14 +7282,14 @@ On Error GoTo ErrHandler
                 UserList(tUser).flags.Silenciado = 1
                 Call WriteConsoleMsg(UserIndex, "Usuario silenciado.", FontTypeNames.FONTTYPE_INFO)
                 Call WriteShowMessageBox(tUser, "ESTIMADO USUARIO, ud ha sido silenciado por los administradores. Sus denuncias serán ignoradas por el servidor de aquí en más. Utilice /GM para contactar un administrador.")
-                Call LogGM(.name, "/silenciar " & UserList(tUser).name, (.flags.privilegios = PlayerType.Consejero))
+                Call LogGM(.name, "/silenciar " & UserList(tUser).name, (.flags.Privilegios = PlayerType.Consejero))
                 
                 'Flush the other user's buffer
                 Call FlushBuffer(tUser)
             Else
                 UserList(tUser).flags.Silenciado = 0
                 Call WriteConsoleMsg(UserIndex, "Usuario des silenciado.", FontTypeNames.FONTTYPE_INFO)
-                Call LogGM(.name, "/DESsilenciar " & UserList(tUser).name, (.flags.privilegios = PlayerType.Consejero))
+                Call LogGM(.name, "/DESsilenciar " & UserList(tUser).name, (.flags.Privilegios = PlayerType.Consejero))
             End If
         End If
         
@@ -7261,7 +7297,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7308,7 +7344,7 @@ Private Sub HandleSOSRemove(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7317,17 +7353,17 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        Call Ayuda.Quitar(username)
+        Call Ayuda.Quitar(UserName)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7355,7 +7391,7 @@ Private Sub HandleGoToChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7364,14 +7400,14 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-        If Not (EsDios(username) Or EsAdmin(username)) Or .flags.privilegios >= PlayerType.Dios Then
+        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or .flags.Privilegios >= PlayerType.Dios Then
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -7382,7 +7418,7 @@ On Error GoTo ErrHandler
                     Call FlushBuffer(tUser)
                 End If
                 
-                Call LogGM(.name, "/IRA " & UserList(tUser).name & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, (.flags.privilegios = PlayerType.Consejero))
+                Call LogGM(.name, "/IRA " & UserList(tUser).name & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, (.flags.Privilegios = PlayerType.Consejero))
                 
                 'If we got here then packet is complete, copy data back to original queue
                 Call .incomingData.CopyBuffer(buffer)
@@ -7390,7 +7426,7 @@ On Error GoTo ErrHandler
         End If
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7418,7 +7454,7 @@ Private Sub HandleInvisible(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Call DoAdminInvisible(UserIndex)
-        Call LogGM(.name, "/INVISIBLE", (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "/INVISIBLE", (.flags.Privilegios = PlayerType.Consejero))
     End With
 End Sub
 
@@ -7467,7 +7503,7 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         a = 1
         
         For i = 1 To LastUser
-            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.privilegios = PlayerType.User Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios = PlayerType.User Then
                 names(a) = UserList(i).name
                 a = a + 1
             End If
@@ -7563,7 +7599,7 @@ Private Sub HandleJail(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7572,46 +7608,46 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim reason As String
         Dim jailTime As Byte
         Dim Count As Byte
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
         jailTime = buffer.ReadByte()
         
         '/carcel nick@motivo@<tiempo>
         If Not .flags.EsRolesMaster Then
-            If LenB(username) = 0 Or LenB(reason) = 0 Then
+            If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /carcel nick@motivo@tiempo", FontTypeNames.FONTTYPE_INFO)
             Else
-                tUser = NameIndex(username)
+                tUser = NameIndex(UserName)
                 
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If UserList(tUser).flags.privilegios > PlayerType.User Then
+                    If UserList(tUser).flags.Privilegios > PlayerType.User Then
                         Call WriteConsoleMsg(UserIndex, "No podés encarcelar a administradores.", FontTypeNames.FONTTYPE_INFO)
                     ElseIf jailTime > 60 Then
                         Call WriteConsoleMsg(UserIndex, "No podés encarcelar por más de 60 minutos.", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If (InStrB(username, "\") <> 0) Then
-                            username = Replace(username, "\", "")
+                        If (InStrB(UserName, "\") <> 0) Then
+                            UserName = Replace(UserName, "\", "")
                         End If
-                        If (InStrB(username, "/") <> 0) Then
-                            username = Replace(username, "/", "")
+                        If (InStrB(UserName, "/") <> 0) Then
+                            UserName = Replace(UserName, "/", "")
                         End If
                         
-                        If FileExist(CharPath & username & ".chr", vbNormal) Then
-                            Count = val(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
-                            Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", Count + 1)
-                            Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
+                        If FileExist(CharPath & UserName & ".chr", vbNormal) Then
+                            Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
                         End If
                         
                         Call Encarcelar(tUser, jailTime, .name)
-                        Call LogGM(.name, " encarcelo a " & username, .flags.privilegios = PlayerType.Consejero)
+                        Call LogGM(.name, " encarcelo a " & UserName, .flags.Privilegios = PlayerType.Consejero)
                     End If
                 End If
             End If
@@ -7621,7 +7657,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7652,7 +7688,7 @@ Private Sub HandleKillNPC(ByVal UserIndex As Integer)
         Dim auxNPC As npc
         
         'Los consejeros no pueden RMATAr a nada en el mapa pretoriano
-        If .flags.privilegios = PlayerType.Consejero And .Pos.Map = MAPA_PRETORIANO Then
+        If .flags.Privilegios = PlayerType.Consejero And .Pos.Map = MAPA_PRETORIANO Then
             Call WriteConsoleMsg(UserIndex, "Los consejeros no pueden usar este comando en el mapa pretoriano.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -7687,7 +7723,7 @@ Private Sub HandleWarnUser(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7696,42 +7732,42 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim reason As String
         Dim tUser As Integer
         Dim Count As Byte
         Dim advertir As Boolean
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
 
         If Not .flags.EsRolesMaster Then
-            If LenB(username) = 0 Or LenB(reason) = 0 Then
+            If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /advertencia nick@motivo", FontTypeNames.FONTTYPE_INFO)
             Else
-                tUser = NameIndex(username)
+                tUser = NameIndex(UserName)
                 
-                If UserList(tUser).flags.privilegios > PlayerType.User Then
+                If UserList(tUser).flags.Privilegios > PlayerType.User Then
                     Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     advertir = True
                 End If
                 
                 If advertir Then
-                    If (InStrB(username, "\") <> 0) Then
-                            username = Replace(username, "\", "")
+                    If (InStrB(UserName, "\") <> 0) Then
+                            UserName = Replace(UserName, "\", "")
                     End If
-                    If (InStrB(username, "/") <> 0) Then
-                            username = Replace(username, "/", "")
+                    If (InStrB(UserName, "/") <> 0) Then
+                            UserName = Replace(UserName, "/", "")
                     End If
     
-                    If FileExist(CharPath & username & ".chr", vbNormal) Then
-                        Count = val(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
-                        Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", Count + 1)
-                        Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
+                    If FileExist(CharPath & UserName & ".chr", vbNormal) Then
+                        Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
+                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
                         
-                        Call WriteConsoleMsg(UserIndex, "Has advertido a " & UCase$(username), FontTypeNames.FONTTYPE_INFO)
-                        Call LogGM(.name, " advirtio a " & username, .flags.privilegios = PlayerType.Consejero)
+                        Call WriteConsoleMsg(UserIndex, "Has advertido a " & UCase$(UserName), FontTypeNames.FONTTYPE_INFO)
+                        Call LogGM(.name, " advirtio a " & UserName, .flags.Privilegios = PlayerType.Consejero)
                     End If
                 End If
             End If
@@ -7741,7 +7777,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -7769,7 +7805,7 @@ Private Sub HandleEditChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -7778,7 +7814,7 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim opcion As Byte
         Dim Arg1 As String
@@ -7787,15 +7823,15 @@ On Error GoTo ErrHandler
         Dim LoopC As Byte
         Dim commandString As String
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         opcion = buffer.ReadByte()
         Arg1 = buffer.ReadASCIIString()
         Arg2 = buffer.ReadASCIIString()
         
         If .flags.EsRolesMaster Then
-            Select Case .flags.privilegios
+            Select Case .flags.Privilegios
                 Case PlayerType.Consejero
                     ' Los RMs consejeros sólo se pueden editar su head, body y level
                     valido = tUser = UserIndex And _
@@ -7817,7 +7853,7 @@ On Error GoTo ErrHandler
                             opcion = eEditOptions.eo_Class Or _
                             opcion = eEditOptions.eo_Skills
             End Select
-        ElseIf .flags.privilegios >= PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
+        ElseIf .flags.Privilegios >= PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
             valido = True
         End If
         
@@ -7825,7 +7861,7 @@ On Error GoTo ErrHandler
             Select Case opcion
                 Case eEditOptions.eo_Gold
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         If val(Arg1) < 5000000 Then
                             UserList(tUser).Stats.GLD = val(Arg1)
@@ -7837,7 +7873,7 @@ On Error GoTo ErrHandler
                 
                 Case eEditOptions.eo_Experience
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         If val(Arg1) < 15995001 Then
                             UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
@@ -7850,44 +7886,44 @@ On Error GoTo ErrHandler
                 
                 Case eEditOptions.eo_Body
                     If tUser <= 0 Then
-                        Call WriteVar(CharPath & username & ".chr", "INIT", "Body", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_Head
                     If tUser <= 0 Then
-                        Call WriteVar(CharPath & username & ".chr", "INIT", "Head", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_CriminalsKilled
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Faccion.CriminalesMatados = val(Arg1)
                     End If
                 
                 Case eEditOptions.eo_CiticensKilled
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Faccion.CiudadanosMatados = val(Arg1)
                     End If
                 
                 Case eEditOptions.eo_Level
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Stats.ELV = val(Arg1)
                     End If
                 
                 Case eEditOptions.eo_Class
                     If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                     
                         'CHECK: ESTO NO VA A FUNCIONAR SI NO LO CAMBIO, MAS LO DEJO PARA DESPUES
@@ -7909,8 +7945,8 @@ On Error GoTo ErrHandler
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If tUser <= 0 Then
-                            Call WriteVar(CharPath & username & ".chr", "Skills", "SK" & N, Arg2)
-                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & username, FontTypeNames.FONTTYPE_INFO)
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
                             UserList(tUser).Stats.UserSkills(N) = val(Arg2)
                         End If
@@ -7918,8 +7954,8 @@ On Error GoTo ErrHandler
                 
                 Case eEditOptions.eo_SkillPointsLeft
                     If tUser <= 0 Then
-                        Call WriteVar(CharPath & username & ".chr", "STATS", "SkillPtsLibres", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & username, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
+                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Stats.SkillPts = val(Arg1)
                     End If
@@ -7969,13 +8005,13 @@ On Error GoTo ErrHandler
         
         commandString = commandString & Arg1 & " " & Arg2
         
-        Call LogGM(.name, commandString, .flags.privilegios = PlayerType.Consejero)
+        Call LogGM(.name, commandString, .flags.Privilegios = PlayerType.Consejero)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8003,7 +8039,7 @@ Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8027,7 +8063,7 @@ On Error GoTo ErrHandler
             End If
         Else
             'don't allow to retrieve administrator's info
-            If Not (UserList(targetIndex).flags.privilegios >= PlayerType.Dios) Then
+            If Not (UserList(targetIndex).flags.Privilegios >= PlayerType.Dios) Then
                 SendUserStatsTxt UserIndex, targetIndex
             End If
         End If
@@ -8036,7 +8072,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
     
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8064,7 +8100,7 @@ Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8073,19 +8109,19 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "/STAT " & username, False)
+            Call LogGM(.name, "/STAT " & UserName, False)
             
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo Charfile... ", FontTypeNames.FONTTYPE_INFO)
                 
-                Call SendUserMiniStatsTxtFromChar(UserIndex, username)
+                Call SendUserMiniStatsTxtFromChar(UserIndex, UserName)
             Else
                 Call SendUserMiniStatsTxt(UserIndex, tUser)
             End If
@@ -8095,7 +8131,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8123,7 +8159,7 @@ Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8132,27 +8168,27 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "/BAL " & username, False)
+        Call LogGM(.name, "/BAL " & UserName, False)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
             
-            Call SendUserOROTxtFromChar(UserIndex, username)
+            Call SendUserOROTxtFromChar(UserIndex, UserName)
         Else
-            Call WriteConsoleMsg(UserIndex, "El usuario " & username & " tiene " & UserList(tUser).Stats.Banco & " en el banco", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(UserIndex, "El usuario " & UserName & " tiene " & UserList(tUser).Stats.Banco & " en el banco", FontTypeNames.FONTTYPE_TALK)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8180,7 +8216,7 @@ Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8189,18 +8225,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "/INV " & username, False)
+        Call LogGM(.name, "/INV " & UserName, False)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
             
-            Call SendUserInvTxtFromChar(UserIndex, username)
+            Call SendUserInvTxtFromChar(UserIndex, UserName)
         Else
             Call SendUserInvTxt(UserIndex, tUser)
         End If
@@ -8209,7 +8245,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8237,7 +8273,7 @@ Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8246,18 +8282,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "/BOV " & username, False)
+        Call LogGM(.name, "/BOV " & UserName, False)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
             
-            Call SendUserBovedaTxtFromChar(UserIndex, username)
+            Call SendUserBovedaTxtFromChar(UserIndex, UserName)
         Else
             Call SendUserBovedaTxt(UserIndex, tUser)
         End If
@@ -8266,7 +8302,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8294,7 +8330,7 @@ Private Sub HandleRequestCharSkills(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8303,29 +8339,29 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim LoopC As Long
         Dim message As String
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "/STATS " & username, False)
+        Call LogGM(.name, "/STATS " & UserName, False)
         
         If tUser <= 0 Then
-            If (InStrB(username, "\") <> 0) Then
-                    username = Replace(username, "\", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                    UserName = Replace(UserName, "\", "")
             End If
-            If (InStrB(username, "/") <> 0) Then
-                    username = Replace(username, "/", "")
+            If (InStrB(UserName, "/") <> 0) Then
+                    UserName = Replace(UserName, "/", "")
             End If
             
             For LoopC = 1 To NUMSKILLS
-                message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & username & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
+                message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
             Next LoopC
             
-            Call WriteConsoleMsg(UserIndex, message & "CHAR> Libres:" & GetVar(CharPath & username & ".chr", "STATS", "SKILLPTSLIBRES"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, message & "CHAR> Libres:" & GetVar(CharPath & UserName & ".chr", "STATS", "SKILLPTSLIBRES"), FontTypeNames.FONTTYPE_INFO)
         Else
             Call SendUserSkillsTxt(UserIndex, tUser)
         End If
@@ -8334,7 +8370,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8362,7 +8398,7 @@ Private Sub HandleReviveChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8371,14 +8407,14 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim LoopC As Byte
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        If UCase$(username) <> "YO" Then
-            tUser = NameIndex(username)
+        If UCase$(UserName) <> "YO" Then
+            tUser = NameIndex(UserName)
         Else
             tUser = UserIndex
         End If
@@ -8401,14 +8437,14 @@ On Error GoTo ErrHandler
             
             Call FlushBuffer(tUser)
             
-            Call LogGM(.name, "Resucito a " & username, False)
+            Call LogGM(.name, "Resucito a " & UserName, False)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8439,7 +8475,7 @@ Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         For i = 1 To LastUser
-            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.privilegios > PlayerType.User And (UserList(i).flags.privilegios < PlayerType.Dios Or UserList(UserIndex).flags.privilegios >= PlayerType.Dios) Then
+            If (LenB(UserList(i).name) <> 0) And UserList(i).flags.Privilegios > PlayerType.User And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(i).name & ", "
             End If
         Next i
@@ -8472,7 +8508,7 @@ Private Sub HandleOnlineMap(ByVal UserIndex As Integer)
         Dim list As String
         
         For LoopC = 1 To LastUser
-            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Pos.Map = .Pos.Map And (UserList(LoopC).flags.privilegios < PlayerType.Dios Or .flags.privilegios >= PlayerType.Dios) Then
+            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Pos.Map = .Pos.Map And (UserList(LoopC).flags.Privilegios < PlayerType.Dios Or .flags.Privilegios >= PlayerType.Dios) Then
                 list = list & UserList(LoopC).name & ", "
             End If
         Next LoopC
@@ -8499,7 +8535,7 @@ Private Sub HandleForgive(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8508,11 +8544,11 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
             
         If Not .flags.EsRolesMaster Then
             If tUser > 0 Then
@@ -8529,7 +8565,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8557,7 +8593,7 @@ Private Sub HandleKick(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8566,21 +8602,21 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
         Else
-            If UserList(tUser).flags.privilegios > .flags.privilegios Then
+            If UserList(tUser).flags.Privilegios > .flags.Privilegios Then
                 Call WriteConsoleMsg(UserIndex, "No podes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " echo a " & username & ".", FontTypeNames.FONTTYPE_INFO))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
                 Call CloseSocket(tUser)
-                Call LogGM(.name, "Echo a " & username, False)
+                Call LogGM(.name, "Echo a " & UserName, False)
             End If
         End If
         
@@ -8588,7 +8624,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8616,7 +8652,7 @@ Private Sub HandleExecute(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8625,20 +8661,20 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
             
         If Not .flags.EsRolesMaster Then
             If tUser > 0 Then
-                If UserList(tUser).flags.privilegios > PlayerType.User Then
+                If UserList(tUser).flags.Privilegios > PlayerType.User Then
                     Call WriteConsoleMsg(UserIndex, "Estás loco?? como vas a piñatear un gm!!!! :@", FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call UserDie(tUser)
-                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " ha ejecutado a " & username, FontTypeNames.FONTTYPE_EJECUCION))
-                    Call LogGM(.name, " ejecuto a " & username, False)
+                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " ha ejecutado a " & UserName, FontTypeNames.FONTTYPE_EJECUCION))
+                    Call LogGM(.name, " ejecuto a " & UserName, False)
                 End If
             Else
                 Call WriteConsoleMsg(UserIndex, "No está online", FontTypeNames.FONTTYPE_INFO)
@@ -8649,7 +8685,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8677,7 +8713,7 @@ Private Sub HandleBanChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8686,54 +8722,54 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim reason As String
         Dim userPriv As Byte
         Dim cantPenas As Byte
         
         If Not .flags.EsRolesMaster Then
-            username = buffer.ReadASCIIString()
+            UserName = buffer.ReadASCIIString()
             reason = buffer.ReadASCIIString()
             
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_TALK)
                 
-                If FileExist(CharPath & username & ".chr", vbNormal) Then
-                    userPriv = UserDarPrivilegioLevel(username)
+                If FileExist(CharPath & UserName & ".chr", vbNormal) Then
+                    userPriv = UserDarPrivilegioLevel(UserName)
                     
-                    If userPriv > .flags.privilegios Then
+                    If userPriv > .flags.Privilegios Then
                         Call WriteConsoleMsg(UserIndex, "No podes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If GetVar(CharPath & username & ".chr", "FLAGS", "Ban") <> "0" Then
+                        If GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban") <> "0" Then
                             Call WriteConsoleMsg(UserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
                         Else
-                            Call LogBanFromName(username, UserIndex, reason)
-                            Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .name & " ha baneado a " & username & ".", FontTypeNames.FONTTYPE_SERVER))
+                            Call LogBanFromName(UserName, UserIndex, reason)
+                            Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
                             
                             'ponemos el flag de ban a 1
-                            Call WriteVar(CharPath & username & ".chr", "FLAGS", "Ban", "1")
+                            Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
                             'ponemos la pena
-                            cantPenas = val(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
-                            Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", cantPenas + 1)
-                            Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
+                            cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                            Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
                             
-                            If userPriv = .flags.privilegios Then
+                            If userPriv = .flags.Privilegios Then
                                 .flags.Ban = 1
                                 Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                                 Call CloseSocket(UserIndex)
                             End If
                             
-                            Call LogGM(.name, "BAN a " & username, False)
+                            Call LogGM(.name, "BAN a " & UserName, False)
                         End If
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "El pj " & username & " no existe.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
-                If UserList(tUser).flags.privilegios > .flags.privilegios Then
+                If UserList(tUser).flags.Privilegios > .flags.Privilegios Then
                     Call WriteConsoleMsg(UserIndex, "No podes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
                 Else
                 
@@ -8745,20 +8781,20 @@ On Error GoTo ErrHandler
                 'Ponemos el flag de ban a 1
                 UserList(tUser).flags.Ban = 1
         
-                If UserList(tUser).flags.privilegios = .flags.privilegios Then
+                If UserList(tUser).flags.Privilegios = .flags.Privilegios Then
                     .flags.Ban = 1
                     Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                     Call CloseSocket(UserIndex)
                 End If
         
-                Call LogGM(.name, "BAN a " & username, False)
+                Call LogGM(.name, "BAN a " & UserName, False)
         
                 'ponemos el flag de ban a 1
-                Call WriteVar(CharPath & username & ".chr", "FLAGS", "Ban", "1")
+                Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
                 'ponemos la pena
-                cantPenas = val(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
-                Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", cantPenas + 1)
-                Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
+                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
         
                 Call CloseSocket(tUser)
             End If
@@ -8768,7 +8804,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8796,7 +8832,7 @@ Private Sub HandleUnbanChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8805,31 +8841,31 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim cantPenas As Byte
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If (InStrB(username, "\") <> 0) Then
-                username = Replace(username, "\", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
             End If
-            If (InStrB(username, "/") <> 0) Then
-                username = Replace(username, "/", "")
+            If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
             End If
             
-            If Not FileExist(CharPath & username & ".chr", vbNormal) Then
+            If Not FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 Call WriteConsoleMsg(UserIndex, "Charfile inexistente (no use +)", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call UnBan(username)
+                Call UnBan(UserName)
                 
                 'penas
-                cantPenas = val(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
-                Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", cantPenas + 1)
-                Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
+                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
                 
-                Call LogGM(.name, "/UNBAN a " & username, False)
-                Call WriteConsoleMsg(UserIndex, username & " unbanned.", FontTypeNames.FONTTYPE_INFO)
+                Call LogGM(.name, "/UNBAN a " & UserName, False)
+                Call WriteConsoleMsg(UserIndex, UserName & " unbanned.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -8837,7 +8873,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -8889,7 +8925,7 @@ Private Sub HandleSummonChar(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -8898,20 +8934,20 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If tUser <= 0 Then
             Call WriteConsoleMsg(UserIndex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
         Else
-            If .flags.privilegios = PlayerType.Dios Or _
-              UserList(tUser).flags.privilegios <= PlayerType.Consejero Then
+            If .flags.Privilegios = PlayerType.Dios Or _
+              UserList(tUser).flags.Privilegios <= PlayerType.Consejero Then
                 Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
                 Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y + 1, True)
-                Call LogGM(.name, "/SUM " & username & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y, False)
+                Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y, False)
             Else
                 Call WriteConsoleMsg(UserIndex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -8921,7 +8957,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9043,7 +9079,7 @@ Private Sub HandleServerMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9064,7 +9100,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9092,7 +9128,7 @@ Private Sub HandleNickToIP(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9101,18 +9137,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "NICK2IP Solicito la IP de " & username, .flags.privilegios = PlayerType.Consejero)
+            Call LogGM(.name, "NICK2IP Solicito la IP de " & UserName, .flags.Privilegios = PlayerType.Consejero)
             
             If tUser > 0 Then
-                If (.flags.privilegios > PlayerType.User And UserList(tUser).flags.privilegios = PlayerType.User) Or (UserList(UserIndex).flags.privilegios >= PlayerType.Dios) Then
-                    Call WriteConsoleMsg(UserIndex, "El ip de " & username & " es " & UserList(tUser).ip, FontTypeNames.FONTTYPE_INFO)
+                If (.flags.Privilegios > PlayerType.User And UserList(tUser).flags.Privilegios = PlayerType.User) Or (UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then
+                    Call WriteConsoleMsg(UserIndex, "El ip de " & UserName & " es " & UserList(tUser).ip, FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call WriteConsoleMsg(UserIndex, "No tienes los privilegios necesarios", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -9125,7 +9161,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9168,11 +9204,11 @@ Private Sub HandleIPToNick(ByVal UserIndex As Integer)
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Call LogGM(.name, "IP2NICK Solicito los Nicks de IP " & ip, .flags.privilegios = PlayerType.Consejero)
+        Call LogGM(.name, "IP2NICK Solicito los Nicks de IP " & ip, .flags.Privilegios = PlayerType.Consejero)
         
         For LoopC = 1 To LastUser
             If UserList(LoopC).ip = ip And LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).flags.UserLogged Then
-                If (.flags.privilegios > PlayerType.User And UserList(LoopC).flags.privilegios = PlayerType.User) Or (.flags.privilegios >= PlayerType.Dios) Then
+                If (.flags.Privilegios > PlayerType.User And UserList(LoopC).flags.Privilegios = PlayerType.User) Or (.flags.Privilegios >= PlayerType.Dios) Then
                     lista = lista & UserList(LoopC).name & ", "
                 End If
             End If
@@ -9199,7 +9235,7 @@ Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9225,7 +9261,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9265,7 +9301,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
-        If Not .flags.EsRolesMaster And .flags.privilegios < PlayerType.Dios Then Exit Sub
+        If Not .flags.EsRolesMaster And .flags.Privilegios < PlayerType.Dios Then Exit Sub
         
         Call LogGM(.name, "/CT " & mapa & "," & X & "," & Y, False)
         
@@ -9321,7 +9357,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         '/dt
-        If Not .flags.EsRolesMaster And .flags.privilegios < PlayerType.Dios Then Exit Sub
+        If Not .flags.EsRolesMaster And .flags.Privilegios < PlayerType.Dios Then Exit Sub
         
         mapa = .flags.TargetMap
         X = .flags.TargetX
@@ -9385,7 +9421,7 @@ Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9395,15 +9431,15 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim tUser As Integer
-        Dim desc As String
+        Dim Desc As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         
-        If .flags.EsRolesMaster And .flags.privilegios >= PlayerType.Dios Then
+        If .flags.EsRolesMaster And .flags.Privilegios >= PlayerType.Dios Then
             'tUser = NameIndex(.flags.TargetUser)
             tUser = .flags.TargetUser 'CHECK; CHECK!!!..
             If tUser > 0 Then
-                UserList(tUser).DescRM = desc
+                UserList(tUser).DescRM = Desc
             Else
                 Call WriteConsoleMsg(UserIndex, "Haz click sobre un personaje antes!", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -9413,7 +9449,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9452,7 +9488,7 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         mapa = .incomingData.ReadInteger
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
+        If .flags.Privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
         
         'Si el mapa no fue enviado tomo el actual
         If Not InMapBounds(mapa, 50, 50) Then
@@ -9500,7 +9536,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         Y = .incomingData.ReadByte()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
+        If .flags.Privilegios < PlayerType.Dios And Not .flags.EsRolesMaster Then Exit Sub
         
         'Si el mapa no fue enviado tomo el actual
         If Not InMapBounds(mapa, X, Y) Then
@@ -9530,7 +9566,7 @@ Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9543,7 +9579,7 @@ On Error GoTo ErrHandler
         message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
             Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("ARMADA REAL> " & message, FontTypeNames.FONTTYPE_TALK))
         End If
         
@@ -9551,7 +9587,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9579,7 +9615,7 @@ Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9592,7 +9628,7 @@ On Error GoTo ErrHandler
         message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
             Call SendData(SendTarget.ToCaosYRMs, 0, PrepareMessageConsoleMsg("FUERZAS DEL CAOS> " & message, FontTypeNames.FONTTYPE_TALK))
         End If
         
@@ -9600,7 +9636,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9628,7 +9664,7 @@ Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9641,7 +9677,7 @@ On Error GoTo ErrHandler
         message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
             Call SendData(SendTarget.ToCiudadanosYRMs, 0, PrepareMessageConsoleMsg("CIUDADANOS> " & message, FontTypeNames.FONTTYPE_TALK))
         End If
         
@@ -9649,7 +9685,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9677,7 +9713,7 @@ Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9690,7 +9726,7 @@ On Error GoTo ErrHandler
         message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
             Call SendData(SendTarget.ToCriminalesYRMs, 0, PrepareMessageConsoleMsg("CRIMINALES> " & message, FontTypeNames.FONTTYPE_TALK))
         End If
         
@@ -9698,7 +9734,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9726,7 +9762,7 @@ Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9739,7 +9775,7 @@ On Error GoTo ErrHandler
         message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
-        If .flags.privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
+        If .flags.Privilegios > PlayerType.SemiDios Or .flags.EsRolesMaster Then
             'Asegurarse haya un NPC seleccionado
             If .flags.TargetNPC > 0 Then
                 Call SendData(SendTarget.ToNPCArea, .flags.TargetNPC, PrepareMessageChatOverHead(message, Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
@@ -9752,7 +9788,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9794,7 +9830,7 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
             Next X
         Next Y
         
-        Call LogGM(UserList(UserIndex).name, "/MASSDEST", (UserList(UserIndex).flags.privilegios = PlayerType.Consejero))
+        Call LogGM(UserList(UserIndex).name, "/MASSDEST", (UserList(UserIndex).flags.Privilegios = PlayerType.Consejero))
     End With
 End Sub
 
@@ -9814,7 +9850,7 @@ Private Sub HandleAcceptRoyalCouncilMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9823,18 +9859,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim LoopC As Byte
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(username & " fue aceptado en el honorable Consejo Real de Banderbill.", FontTypeNames.FONTTYPE_CONSEJO))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue aceptado en el honorable Consejo Real de Banderbill.", FontTypeNames.FONTTYPE_CONSEJO))
                 With UserList(tUser)
                     .flags.PertAlCons = 1
                     .flags.PertAlConsCaos = 0
@@ -9848,7 +9884,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9876,7 +9912,7 @@ Private Sub HandleAcceptChaosCouncilMember(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9885,18 +9921,18 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         Dim LoopC As Byte
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(username & " fue aceptado en el Consejo de la Legión Oscura.", FontTypeNames.FONTTYPE_CONSEJO))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue aceptado en el Consejo de la Legión Oscura.", FontTypeNames.FONTTYPE_CONSEJO))
                 
                 With UserList(tUser)
                     .flags.PertAlCons = 0
@@ -9911,7 +9947,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -9972,7 +10008,7 @@ Private Sub HandleMakeDumb(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -9981,11 +10017,11 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
             'para deteccion de aoice
@@ -10000,7 +10036,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10028,7 +10064,7 @@ Private Sub HandleMakeDumbNoMore(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10037,11 +10073,11 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
             'para deteccion de aoice
@@ -10057,7 +10093,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10104,7 +10140,7 @@ Private Sub HandleCouncilKick(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10113,20 +10149,20 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
-        tUser = NameIndex(username)
+        UserName = buffer.ReadASCIIString()
+        tUser = NameIndex(UserName)
         
         If Not .flags.EsRolesMaster Then
             If tUser <= 0 Then
-                If FileExist(CharPath & username & ".chr") Then
+                If FileExist(CharPath & UserName & ".chr") Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline, Echando de los consejos", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteVar(CharPath & username & ".chr", "CONSEJO", "PERTENECE", 0)
-                    Call WriteVar(CharPath & username & ".chr", "CONSEJO", "PERTENECECAOS", 0)
+                    Call WriteVar(CharPath & UserName & ".chr", "CONSEJO", "PERTENECE", 0)
+                    Call WriteVar(CharPath & UserName & ".chr", "CONSEJO", "PERTENECECAOS", 0)
                 Else
-                    Call WriteConsoleMsg(UserIndex, "No se encuentra el charfile " & CharPath & username & ".chr", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No se encuentra el charfile " & CharPath & UserName & ".chr", FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
                 With UserList(tUser)
@@ -10135,7 +10171,7 @@ On Error GoTo ErrHandler
                         .flags.PertAlCons = 0
                         
                         Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
-                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(username & " fue expulsado del consejo de Banderbill", FontTypeNames.FONTTYPE_CONSEJO))
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue expulsado del consejo de Banderbill", FontTypeNames.FONTTYPE_CONSEJO))
                     End If
                     
                     If .flags.PertAlConsCaos > 0 Then
@@ -10143,7 +10179,7 @@ On Error GoTo ErrHandler
                         .flags.PertAlConsCaos = 0
                         
                         Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
-                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(username & " fue expulsado del consejo de la Legión Oscura", FontTypeNames.FONTTYPE_CONSEJO))
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue expulsado del consejo de la Legión Oscura", FontTypeNames.FONTTYPE_CONSEJO))
                     End If
                 End With
             End If
@@ -10153,7 +10189,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10271,7 +10307,7 @@ Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10313,7 +10349,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10341,7 +10377,7 @@ Private Sub HandleGuildBan(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10401,7 +10437,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10575,7 +10611,7 @@ Private Sub HandleChaosLegionKick(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10584,35 +10620,35 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        If (InStrB(username, "\") <> 0) Then
-                username = Replace(username, "\", "")
+        If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
         End If
-        If (InStrB(username, "/") <> 0) Then
-                username = Replace(username, "/", "")
+        If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
         End If
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "ECHO DEL CAOS A: " & username, False)
+        Call LogGM(.name, "ECHO DEL CAOS A: " & UserName, False)
 
         If tUser > 0 Then
             UserList(tUser).Faccion.FuerzasCaos = 0
             UserList(tUser).Faccion.Reenlistadas = 200
-            Call WriteConsoleMsg(UserIndex, username & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas del caos.", FontTypeNames.FONTTYPE_FIGHT)
             Call FlushBuffer(tUser)
         Else
-            If FileExist(CharPath & username & ".chr") Then
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "EjercitoCaos", 0)
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "Reenlistadas", 200)
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
-                Call WriteConsoleMsg(UserIndex, username & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+            If FileExist(CharPath & UserName & ".chr") Then
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+                Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, username & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
             
@@ -10620,7 +10656,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10648,7 +10684,7 @@ Private Sub HandleRoyalArmyKick(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10657,35 +10693,35 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
-        If (InStrB(username, "\") <> 0) Then
-                username = Replace(username, "\", "")
+        If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
         End If
-        If (InStrB(username, "/") <> 0) Then
-                username = Replace(username, "/", "")
+        If (InStrB(UserName, "/") <> 0) Then
+                UserName = Replace(UserName, "/", "")
         End If
-        tUser = NameIndex(username)
+        tUser = NameIndex(UserName)
         
-        Call LogGM(.name, "ECHO DE LA REAL A: " & username, False)
+        Call LogGM(.name, "ECHO DE LA REAL A: " & UserName, False)
         
         If tUser > 0 Then
             UserList(tUser).Faccion.ArmadaReal = 0
             UserList(tUser).Faccion.Reenlistadas = 200
-            Call WriteConsoleMsg(UserIndex, username & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas reales.", FontTypeNames.FONTTYPE_FIGHT)
             Call FlushBuffer(tUser)
         Else
-            If FileExist(CharPath & username & ".chr") Then
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "EjercitoReal", 0)
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "Reenlistadas", 200)
-                Call WriteVar(CharPath & username & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
-                Call WriteConsoleMsg(UserIndex, username & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+            If FileExist(CharPath & UserName & ".chr") Then
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+                Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, username & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
             
@@ -10693,7 +10729,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10777,7 +10813,7 @@ Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10786,29 +10822,29 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim punishment As Byte
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         punishment = buffer.ReadByte
 
         If Not .flags.EsRolesMaster Then
-            If LenB(username) = 0 Then
+            If LenB(UserName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /borrarpj Nick@NumeroDePena", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (InStrB(username, "\") <> 0) Then
-                        username = Replace(username, "\", "")
+                If (InStrB(UserName, "\") <> 0) Then
+                        UserName = Replace(UserName, "\", "")
                 End If
-                If (InStrB(username, "/") <> 0) Then
-                        username = Replace(username, "/", "")
+                If (InStrB(UserName, "/") <> 0) Then
+                        UserName = Replace(UserName, "/", "")
                 End If
                 
-                If FileExist(CharPath & username & ".chr", vbNormal) Then
+                If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                     Call LogGM(.name, " borro la pena: " & punishment & "-" & _
-                      GetVar(CharPath & username & ".chr", "PENAS", "P" & punishment) _
-                      & " de " & username, .flags.privilegios = PlayerType.Consejero)
+                      GetVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment) _
+                      & " de " & UserName, .flags.Privilegios = PlayerType.Consejero)
                     
-                    Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & punishment, LCase$(.name) & ": <Pena borrada> " & Date & " " & time)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment, LCase$(.name) & ": <Pena borrada> " & Date & " " & time)
                     
                     Call WriteConsoleMsg(UserIndex, "Pena borrada.", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -10819,7 +10855,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -10925,7 +10961,7 @@ Private Sub HandleLastIP(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -10934,30 +10970,30 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim lista As String
         Dim LoopC As Byte
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
 
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "/LASTIP " & username, False)
+            Call LogGM(.name, "/LASTIP " & UserName, False)
             
-            If (InStrB(username, "\") <> 0) Then
-                username = Replace(username, "\", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "\", "")
             End If
-            If (InStrB(username, "\") <> 0) Then
-                username = Replace(username, "/", "")
+            If (InStrB(UserName, "\") <> 0) Then
+                UserName = Replace(UserName, "/", "")
             End If
         
-            If FileExist(CharPath & username & ".chr", vbNormal) Then
-                lista = "Las ultimas IPs con las que " & username & "se conecto son:"
+            If FileExist(CharPath & UserName & ".chr", vbNormal) Then
+                lista = "Las ultimas IPs con las que " & UserName & "se conecto son:"
                 For LoopC = 1 To 5
-                    lista = lista & vbCrLf & LoopC & " - " & GetVar(CharPath & username & ".chr", "INIT", "LastIP" & LoopC)
+                    lista = lista & vbCrLf & LoopC & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & LoopC)
                 Next LoopC
                 Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "Charfile """ & username & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Charfile """ & UserName & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -10965,7 +11001,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -11011,7 +11047,7 @@ Public Sub HandleIgnored(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Lucas Tavolaro Ortiz (Tavo)
 'Last Modification: 12/23/06
-'Ignored the user
+'Ignore the user
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
@@ -11020,6 +11056,71 @@ Public Sub HandleIgnored(ByVal UserIndex As Integer)
         .flags.AdminPerseguible = Not .flags.AdminPerseguible
     End With
 End Sub
+
+''
+' Handles the "CheckSlot" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Public Sub HandleCheckSlot(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'Check one Users Slot in Particular from Inventory
+'***************************************************
+On Error GoTo errhandler
+    With UserList(UserIndex)
+
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        'Reads the UserName and Slot Packets
+        Dim UserName As String
+        Dim Slot As Integer
+        Dim tIndex As Integer
+        
+        UserName = buffer.ReadASCIIString() 'Que UserName?
+        Slot = buffer.ReadInteger() 'Que Slot?
+        tIndex = NameIndex(UserName)  'Que user index?
+        
+        Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName, False)
+           
+        If tIndex > 0 Then
+            If Slot > 0 And Slot <= MAX_INVENTORY_SLOTS Then
+                If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
+                    Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).amount, FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No hay Objeto en slot seleccionado", FontTypeNames.FONTTYPE_INFO)
+                End If
+            Else
+                Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
+            End If
+        Else
+            Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_TALK)
+        End If
+
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    
+    End With
+    
+                
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.raise error
+End Sub
+
 
 ''
 ' Handles the "ResetAutoUpdate" message.
@@ -11413,6 +11514,292 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 End Sub
 
 ''
+' Handle the "ChangeMapInfoRestricted" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoRestricted(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'Restringido -> Options: "SI", "NO", "ARMADA", "CAOS".
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim tStr As String
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        tStr = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            If tStr = "SI" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Then
+                Call LogGM(.name, .name & " ha cambiado la informacion sobre si es Restringido el mapa.", False)
+                MapInfo(UserList(UserIndex).Pos.Map).Restringir = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Restringir", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Restringido: " & MapInfo(.Pos.Map).Restringir, FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Opciones para restringir: 'SI', 'NO', 'ARMADA', 'CAOS'", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.raise error
+End Sub
+
+''
+' Handle the "ChangeMapInfoNoMagic" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoNoMagic(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'MagiaSinEfecto -> Options: "1" , "0".
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim nomagic As Boolean
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        nomagic = .incomingData.ReadBoolean
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar la Magia el mapa.", False)
+            MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto = nomagic
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "MagiaSinEfecto", nomagic)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " MagiaSinEfecto: " & MapInfo(.Pos.Map).MagiaSinEfecto, FontTypeNames.FONTTYPE_INFO)
+        End If
+        
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+
+End Sub
+
+''
+' Handle the "ChangeMapInfoNoInvi" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoNoInvi(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'InviSinEfecto -> Options: "1", "0"
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim noinvi As Boolean
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        noinvi = .incomingData.ReadBoolean
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Invisibilidad el mapa.", False)
+            MapInfo(UserList(UserIndex).Pos.Map).InviSinEfecto = noinvi
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "InviSinEfecto", noinvi)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " InviSinEfecto: " & MapInfo(.Pos.Map).InviSinEfecto, FontTypeNames.FONTTYPE_INFO)
+        End If
+
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+
+End Sub
+            
+''
+' Handle the "ChangeMapInfoNoResu" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoNoResu(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'ResuSinEfecto -> Options: "1", "0"
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim noresu As Boolean
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        noresu = .incomingData.ReadBoolean
+        
+        If Not .flags.EsRolesMaster Then
+            Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Resucitar el mapa.", False)
+            MapInfo(UserList(UserIndex).Pos.Map).ResuSinEfecto = noresu
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "ResuSinEfecto", noresu)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " ResuSinEfecto: " & MapInfo(.Pos.Map).ResuSinEfecto, FontTypeNames.FONTTYPE_INFO)
+        End If
+        
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+
+End Sub
+''
+' Handle the "ChangeMapInfoLand" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoLand(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'Terreno -> Opciones: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim tStr As String
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        tStr = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
+                Call LogGM(.name, .name & " ha cambiado la informacion del Terreno del mapa.", False)
+                MapInfo(UserList(UserIndex).Pos.Map).Terreno = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Terreno", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Terreno: " & MapInfo(.Pos.Map).Terreno, FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'NIEVE' ya que al ingresarlo, la gente muere de frio en el Mapa", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.raise error
+End Sub
+
+''
+' Handle the "ChangeMapInfoZone" message
+'
+' @param userIndex The index of the user sending the message
+Public Sub HandleChangeMapInfoZone(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'Zona -> Opciones: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
+'***************************************************
+On Error GoTo errhandler
+    
+    Dim tStr As String
+    With UserList(UserIndex)
+        If .incomingData.length < 2 Then
+            Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+            Exit Sub
+        End If
+        
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        tStr = buffer.ReadASCIIString()
+        
+        If Not .flags.EsRolesMaster Then
+            If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
+                Call LogGM(.name, .name & " ha cambiado la informacion de la Zona del mapa.", False)
+                MapInfo(UserList(UserIndex).Pos.Map).Zona = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Zona", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Zona: " & MapInfo(.Pos.Map).Zona, FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'DUNGEON' ya que al ingresarlo, NO se sentirá el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.raise error
+End Sub
+
+''
 ' Handle the "SaveMap" message
 '
 ' @param userIndex The index of the user sending the message
@@ -11452,7 +11839,7 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11473,7 +11860,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -11561,7 +11948,7 @@ Public Sub HandleAlterName(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11571,47 +11958,47 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         'Reads the userName and newUser Packets
-        Dim username As String
+        Dim UserName As String
         Dim newName As String
         Dim changeNameUI As Integer
         Dim guildIndex As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         newName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If LenB(username) = 0 Or LenB(newName) = 0 Then
+            If LenB(UserName) = 0 Or LenB(newName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usar: /ANAME origen@destino", FontTypeNames.FONTTYPE_INFO)
             Else
-                changeNameUI = NameIndex(username)
+                changeNameUI = NameIndex(UserName)
                 
                 If changeNameUI > 0 Then
                     Call WriteConsoleMsg(UserIndex, "El Pj esta online, debe salir para el cambio", FontTypeNames.FONTTYPE_WARNING)
                 Else
-                    If Not FileExist(CharPath & username & ".chr") Then
-                        Call WriteConsoleMsg(UserIndex, "El pj " & username & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
+                    If Not FileExist(CharPath & UserName & ".chr") Then
+                        Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        guildIndex = CInt(GetVar(CharPath & username & ".chr", "GUILD", "GUILDINDEX"))
+                        guildIndex = CInt(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
                         
                         If guildIndex > 0 Then
-                            Call WriteConsoleMsg(UserIndex, "El pj " & username & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
                         Else
                             If Not FileExist(CharPath & newName & ".chr") Then
-                                Call FileCopy(CharPath & username & ".chr", CharPath & UCase$(newName) & ".chr")
+                                Call FileCopy(CharPath & UserName & ".chr", CharPath & UCase$(newName) & ".chr")
                                 
                                 Call WriteConsoleMsg(UserIndex, "Transferencia exitosa", FontTypeNames.FONTTYPE_INFO)
                                 
-                                Call WriteVar(CharPath & username & ".chr", "FLAGS", "Ban", "1")
+                                Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
                                 
                                 Dim cantPenas As Byte
                                 
-                                cantPenas = CByte(GetVar(CharPath & username & ".chr", "PENAS", "Cant"))
+                                cantPenas = CByte(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                                 
-                                Call WriteVar(CharPath & username & ".chr", "PENAS", "Cant", CStr(cantPenas + 1))
+                                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", CStr(cantPenas + 1))
                                 
-                                Call WriteVar(CharPath & username & ".chr", "PENAS", "P" & CStr(cantPenas + 1), LCase$(.name) & ": BAN POR Cambio de nick a " & UCase$(newName) & " " & Date & " " & time)
+                                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & CStr(cantPenas + 1), LCase$(.name) & ": BAN POR Cambio de nick a " & UCase$(newName) & " " & Date & " " & time)
                                 
-                                Call LogGM(.name, "Ha cambiado de nombre al usuario " & username, False)
+                                Call LogGM(.name, "Ha cambiado de nombre al usuario " & UserName, False)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "El nick solicitado ya existe", FontTypeNames.FONTTYPE_INFO)
                             End If
@@ -11625,7 +12012,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -11653,7 +12040,7 @@ Public Sub HandleAlterMail(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11662,30 +12049,30 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim newMail As String
         Dim userNewMailIndex As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         newMail = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If LenB(username) = 0 Or LenB(newMail) = 0 Then
+            If LenB(UserName) = 0 Or LenB(newMail) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /AEMAIL <pj>-<nuevomail>", FontTypeNames.FONTTYPE_INFO)
             Else
-                userNewMailIndex = NameIndex(username)
+                userNewMailIndex = NameIndex(UserName)
                 
                 If userNewMailIndex > 0 Then
                     Call WriteConsoleMsg(UserIndex, "El usuario está online, no se puede si esta online", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If Not FileExist(CharPath & username & ".chr") Then
-                        Call WriteConsoleMsg(UserIndex, "No existe el charfile " & username & ".chr", FontTypeNames.FONTTYPE_INFO)
+                    If Not FileExist(CharPath & UserName & ".chr") Then
+                        Call WriteConsoleMsg(UserIndex, "No existe el charfile " & UserName & ".chr", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call WriteVar(CharPath & username & ".chr", "CONTACTO", "Email", newMail)
-                        Call WriteConsoleMsg(UserIndex, "Email de " & username & " cambiado a: " & newMail, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", newMail)
+                        Call WriteConsoleMsg(UserIndex, "Email de " & UserName & " cambiado a: " & newMail, FontTypeNames.FONTTYPE_INFO)
                     End If
                     
-                    Call LogGM(.name, "Le ha cambiado el mail a " & username, False)
+                    Call LogGM(.name, "Le ha cambiado el mail a " & UserName, False)
                 End If
             End If
         End If
@@ -11694,7 +12081,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -11722,7 +12109,7 @@ Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -11731,32 +12118,32 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim copyFrom As String
         Dim userNewPassIndex As Integer
         Dim Password As String
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         copyFrom = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "Ha alterado la contraseña de " & username, False)
+            Call LogGM(.name, "Ha alterado la contraseña de " & UserName, False)
             
-            If LenB(username) = 0 Or LenB(copyFrom) = 0 Then
+            If LenB(UserName) = 0 Or LenB(copyFrom) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /APASS <pjsinpass>@<pjconpass>", FontTypeNames.FONTTYPE_INFO)
             Else
-                userNewPassIndex = NameIndex(username)
+                userNewPassIndex = NameIndex(UserName)
                 
                 If userNewPassIndex > 0 Then
-                    Call WriteConsoleMsg(UserIndex, "El usuario a cambiarle el pass (" & username & ") esta online, no se puede si esta online", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "El usuario a cambiarle el pass (" & UserName & ") esta online, no se puede si esta online", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If Not FileExist(CharPath & username & ".chr") Or Not FileExist(CharPath & copyFrom & ".chr") Then
-                        Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & username & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
+                    If Not FileExist(CharPath & UserName & ".chr") Or Not FileExist(CharPath & copyFrom & ".chr") Then
+                        Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
                     Else
                         Password = GetVar(CharPath & copyFrom & ".chr", "INIT", "Password")
-                        Call WriteVar(CharPath & username & ".chr", "INIT", "Password", Password)
+                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
                         
-                        Call WriteConsoleMsg(UserIndex, "Password de " & username & " cambiado a: " & Password, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " cambiado a: " & Password, FontTypeNames.FONTTYPE_INFO)
                     End If
                 End If
             End If
@@ -11766,7 +12153,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -11802,7 +12189,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         
         NpcIndex = .incomingData.ReadInteger()
         
-        Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map, (.flags.privilegios = PlayerType.Consejero))
+        Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map, (.flags.Privilegios = PlayerType.Consejero))
         Call SpawnNpc(NpcIndex, .Pos, True, False)
     End With
 End Sub
@@ -11832,7 +12219,7 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         
         NpcIndex = .incomingData.ReadInteger()
         
-        Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map, .flags.privilegios = PlayerType.Consejero)
+        Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map, .flags.Privilegios = PlayerType.Consejero)
         Call SpawnNpc(NpcIndex, .Pos, True, True)
     End With
 End Sub
@@ -11857,15 +12244,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -11901,15 +12288,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim index As Byte
+        Dim Index As Byte
         Dim ObjIndex As Integer
         
-        index = .incomingData.ReadByte()
+        Index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case index
+        Select Case Index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
@@ -12030,7 +12417,7 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12039,15 +12426,15 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "/CONDEN " & username, False)
+            Call LogGM(.name, "/CONDEN " & UserName, False)
             
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             If tUser > 0 Then _
                 Call VolverCriminal(tUser)
         End If
@@ -12056,7 +12443,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -12084,7 +12471,7 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12093,15 +12480,15 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim tUser As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "/RAJAR " & username, False)
+            Call LogGM(.name, "/RAJAR " & UserName, False)
             
-            tUser = NameIndex(username)
+            tUser = NameIndex(UserName)
             
             If tUser > 0 Then _
                 Call ResetFacciones(tUser)
@@ -12111,7 +12498,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -12139,7 +12526,7 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12148,21 +12535,21 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim guildIndex As Integer
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            Call LogGM(.name, "/RAJARCLAN " & username, False)
+            Call LogGM(.name, "/RAJARCLAN " & UserName, False)
             
-            guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, username)
+            guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
             
             If guildIndex = 0 Then
                 Call WriteConsoleMsg(UserIndex, "No pertenece a ningún clan o es fundador.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Expulsado.", FontTypeNames.FONTTYPE_INFO)
-                Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(username & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
+                Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
             End If
         End If
         
@@ -12170,7 +12557,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -12198,7 +12585,7 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12207,16 +12594,16 @@ On Error GoTo ErrHandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim username As String
+        Dim UserName As String
         Dim mail As String
         
-        username = buffer.ReadASCIIString()
+        UserName = buffer.ReadASCIIString()
         
         If Not .flags.EsRolesMaster Then
-            If FileExist(CharPath & username & ".chr") Then
-                mail = GetVar(CharPath & username & ".chr", "CONTACTO", "email")
+            If FileExist(CharPath & UserName & ".chr") Then
+                mail = GetVar(CharPath & UserName & ".chr", "CONTACTO", "email")
                 
-                Call WriteConsoleMsg(UserIndex, "Last email de " & username & ":" & mail, FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Last email de " & UserName & ":" & mail, FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -12224,7 +12611,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -12252,7 +12639,7 @@ Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12272,7 +12659,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -12300,7 +12687,7 @@ Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -12339,7 +12726,7 @@ On Error GoTo ErrHandler
         Call .incomingData.CopyBuffer(buffer)
     End With
 
-ErrHandler:
+errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -13094,7 +13481,7 @@ End Sub
 
 Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
                                 ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal weapon As Integer, ByVal shield As Integer, _
-                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal Criminal As Byte, _
                                 ByVal privileges As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -13102,7 +13489,7 @@ Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Intege
 'Writes the "CharacterCreate" message to the given user's outgoing data buffer
 '***************************************************
     Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterCreate(body, Head, heading, CharIndex, X, Y, weapon, shield, FX, FXLoops, _
-                                                            helmet, name, criminal, privileges))
+                                                            helmet, name, Criminal, privileges))
 End Sub
 
 ''
@@ -15041,7 +15428,7 @@ End Function
 
 Public Function PrepareMessageCharacterCreate(ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
                                 ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal weapon As Integer, ByVal shield As Integer, _
-                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal Criminal As Byte, _
                                 ByVal privileges As Byte) As String
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -15063,7 +15450,7 @@ Public Function PrepareMessageCharacterCreate(ByVal body As Integer, ByVal Head 
         Call .WriteInteger(FX)
         Call .WriteInteger(FXLoops)
         Call .WriteASCIIString(name)
-        Call .WriteByte(criminal)
+        Call .WriteByte(Criminal)
         Call .WriteByte(privileges)
         
         PrepareMessageCharacterCreate = .ReadASCIIStringFixed(.length)

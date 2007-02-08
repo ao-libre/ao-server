@@ -34,9 +34,37 @@ Option Explicit
 Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean
 EsNewbie = UserList(UserIndex).Stats.ELV <= LimiteNewbie
 End Function
+Public Function esArmada(ByVal UserIndex As Integer) As Boolean
+'***************************************************
+'Autor: Pablo (ToxicWaste)
+'Last Modification: 23/01/2007
+'***************************************************
+esArmada = (UserList(UserIndex).Faccion.ArmadaReal = 1)
+End Function
+Public Function esCaos(ByVal UserIndex As Integer) As Boolean
+'***************************************************
+'Autor: Pablo (ToxicWaste)
+'Last Modification: 23/01/2007
+'***************************************************
+esCaos = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
+End Function
+Public Function EsGM(ByVal UserIndex As Integer) As Boolean
+'***************************************************
+'Autor: Pablo (ToxicWaste)
+'Last Modification: 23/01/2007
+'***************************************************
+EsGM = (UserList(UserIndex).flags.Privilegios > User)
+End Function
 
 Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
-
+'***************************************************
+'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
+'Last Modification: 23/01/2007
+'Handles the Map passage of Users. Allows the existance
+'of exclusive mapas for Newbies, Armadas and Legionarios
+'And enables GMs to enter every map without restricción.
+'Uses: Mapinfo(map).Restringir = "SI" (newbies), "ARMADA", "CAOS" and "NO".
+'***************************************************
 On Error GoTo errhandler
 
 Dim nPos As WorldPos
@@ -52,7 +80,7 @@ If InMapBounds(Map, X, Y) Then
         '¿Es mapa de newbies?
         If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
             '¿El usuario es un newbie?
-            If EsNewbie(UserIndex) Then
+            If EsNewbie(UserIndex) Or EsGM(UserIndex) Then
                 If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
                     If FxFlag Then '¿FX?
                         Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
@@ -71,15 +99,67 @@ If InMapBounds(Map, X, Y) Then
                 End If
             Else 'No es newbie
                 Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para newbies.", FontTypeNames.FONTTYPE_INFO)
-                Dim veces As Byte
-                veces = 0
                 Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
 
                 If nPos.X <> 0 And nPos.Y <> 0 Then
                         Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
                 End If
             End If
-        Else 'No es un mapa de newbies
+        ElseIf UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "ARMADA" Then '¿Es mapa de Armadas?
+            '¿El usuario es Armada?
+            If esArmada(UserIndex) Or EsGM(UserIndex) Then
+                If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
+                    If FxFlag Then '¿FX?
+                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
+                    Else
+                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
+                    End If
+                Else
+                    Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
+                    If nPos.X <> 0 And nPos.Y <> 0 Then
+                        If FxFlag Then
+                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
+                        Else
+                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
+                        End If
+                    End If
+                End If
+            Else 'No es armada
+                Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejercito Real", FontTypeNames.FONTTYPE_INFO)
+                Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
+
+                If nPos.X <> 0 And nPos.Y <> 0 Then
+                        Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
+                End If
+            End If
+        ElseIf UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "CAOS" Then '¿Es mapa de Caos?
+            '¿El usuario es Caos?
+            If esCaos(UserIndex) Or EsGM(UserIndex) Then
+                If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
+                    If FxFlag Then '¿FX?
+                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
+                    Else
+                        Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y)
+                    End If
+                Else
+                    Call ClosestLegalPos(MapData(Map, X, Y).TileExit, nPos)
+                    If nPos.X <> 0 And nPos.Y <> 0 Then
+                        If FxFlag Then
+                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, True)
+                        Else
+                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
+                        End If
+                    End If
+                End If
+            Else 'No es caos
+                Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejercito Oscuro.", FontTypeNames.FONTTYPE_INFO)
+                Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
+
+                If nPos.X <> 0 And nPos.Y <> 0 Then
+                        Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y)
+                End If
+            End If
+        Else 'No es un mapa de newbies, ni Armadas, ni Caos
             If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
                 If FxFlag Then
                     Call WarpUserChar(UserIndex, MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, True)
@@ -104,7 +184,8 @@ End If
 Exit Sub
 
 errhandler:
-    Call LogError("Error en DotileEvents " & Err.Number & " " & Err.description)
+    Call LogError("Error en DotileEvents")
+
 End Sub
 
 Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
@@ -142,8 +223,10 @@ End If
 
 End Function
 
-Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos)
+Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True)
 '*****************************************************************
+'Author: Unknown (original version)
+'Last Modification: 24/01/2007 (ToxicWaste)
 'Encuentra la posicion legal mas cercana y la guarda en nPos
 '*****************************************************************
 
@@ -154,7 +237,7 @@ Dim tY As Integer
 
 nPos.Map = Pos.Map
 
-Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y)
+Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra)
     If LoopC > 12 Then
         Notfound = True
         Exit Do
@@ -163,7 +246,7 @@ Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y)
     For tY = Pos.Y - LoopC To Pos.Y + LoopC
         For tX = Pos.X - LoopC To Pos.X + LoopC
             
-            If LegalPos(nPos.Map, tX, tY) Then
+            If LegalPos(nPos.Map, tX, tY, PuedeAgua, PuedeTierra) Then
                 nPos.X = tX
                 nPos.Y = tY
                 '¿Hay objeto?
@@ -364,30 +447,38 @@ Pos.Y = nY
 
 End Sub
 
-Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False) As Boolean
-
+Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False, Optional ByVal PuedeTierra As Boolean = True) As Boolean
+'***************************************************
+'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
+'Last Modification: 23/01/2007
+'Checks if the position is Legal.
+'***************************************************
 '¿Es un mapa valido?
 If (Map <= 0 Or Map > NumMaps) Or _
    (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
             LegalPos = False
 Else
-  
-  If Not PuedeAgua Then
+    If PuedeAgua And PuedeTierra Then
+        LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
+                   (MapData(Map, X, Y).UserIndex = 0) And _
+                   (MapData(Map, X, Y).NpcIndex = 0)
+    ElseIf PuedeTierra And Not PuedeAgua Then
         LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
                    (MapData(Map, X, Y).UserIndex = 0) And _
                    (MapData(Map, X, Y).NpcIndex = 0) And _
                    (Not HayAgua(Map, X, Y))
-  Else
+    ElseIf PuedeAgua And Not PuedeTierra Then
         LegalPos = (MapData(Map, X, Y).Blocked <> 1) And _
                    (MapData(Map, X, Y).UserIndex = 0) And _
                    (MapData(Map, X, Y).NpcIndex = 0) And _
                    (HayAgua(Map, X, Y))
-  End If
+    Else
+        LegalPos = False
+    End If
    
 End If
 
 End Function
-
 Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte) As Boolean
 
 If (Map <= 0 Or Map > NumMaps) Or _
@@ -442,6 +533,11 @@ Dim TempCharIndex As Integer
 Dim Stat As String
 Dim OBJType As Integer
 Dim ft As FontTypeNames
+
+'¿Rango Visión? (ToxicWaste)
+If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
+    Exit Sub
+End If
 
 '¿Posicion valida?
 If InMapBounds(Map, X, Y) Then
@@ -538,8 +634,8 @@ If InMapBounds(Map, X, Y) Then
                     Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).guildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).desc) > 1 Then
-                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
+                If Len(UserList(TempCharIndex).Desc) > 1 Then
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
@@ -636,8 +732,8 @@ If InMapBounds(Map, X, Y) Then
                 End If
             End If
             
-            If Len(Npclist(TempCharIndex).desc) > 1 Then
-                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+            If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).Desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)

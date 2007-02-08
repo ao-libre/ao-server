@@ -84,7 +84,7 @@ End Enum
 
 Public Type tLlamadaGM
     Usuario As String * 255
-    desc As String * 255
+    Desc As String * 255
 End Type
 
 Public Enum PlayerType
@@ -146,7 +146,7 @@ End Enum
 Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
-    desc As String * 255
+    Desc As String * 255
     crc As Long
     MagicWord As Long
 End Type
@@ -305,7 +305,7 @@ Public Enum eNPCType
     Noble = 5
     DRAGON = 6
     Timbero = 7
-    GuardiasCaos = 8
+    Guardiascaos = 8
 End Enum
 
 Public Const MIN_APUÑALAR As Byte = 10
@@ -543,7 +543,7 @@ Public Const STAT_MAXDEF As Byte = 99
 
 Public Type tHechizo
     Nombre As String
-    desc As String
+    Desc As String
     PalabrasMagicas As String
     
     HechizeroMsg As String
@@ -855,11 +855,11 @@ Public Type UserStats
     MaxHIT As Integer
     MinHIT As Integer
     
-    MaxHam As Byte
-    MinHam As Byte
+    MaxHam As Integer
+    MinHam As Integer
     
-    MaxAGU As Byte
-    MinAGU As Byte
+    MaxAGU As Integer
+    MinAGU As Integer
         
     def As Integer
     Exp As Double
@@ -1016,6 +1016,7 @@ Public Type UserCounters
     Ocultando As Long   ' Unico trabajo no revisado por el centinela
 End Type
 
+'Cosas faccionarias.
 Public Type tFacciones
     ArmadaReal As Byte
     FuerzasCaos As Byte
@@ -1028,6 +1029,10 @@ Public Type tFacciones
     RecibioArmaduraReal As Byte
     RecibioArmaduraCaos As Byte
     Reenlistadas As Byte
+    NivelIngreso As Integer
+    FechaIngreso As String
+    MatadosIngreso As Integer 'Para Armadas nada mas
+    NextRecompensa As Integer
 End Type
 
 'Tipo de los Usuarios
@@ -1043,7 +1048,7 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    desc As String ' Descripcion
+    Desc As String ' Descripcion
     DescRM As String
     
     'CHECK::: CHECKEAR que esto se cargue bien al cargar la charfile tambien...
@@ -1216,7 +1221,7 @@ End Type
 Public Type npc
     name As String
     Char As Char 'Define como se vera
-    desc As String
+    Desc As String
     DescExtra As String
 
     NPCtype As eNPCType
@@ -1298,6 +1303,8 @@ Type MapInfo
     Pk As Boolean
     MagiaSinEfecto As Byte
     NoEncriptarMP As Byte
+    InviSinEfecto As Byte
+    ResuSinEfecto As Byte
     
     Terreno As String
     Zona As String

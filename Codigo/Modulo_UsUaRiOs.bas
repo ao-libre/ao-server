@@ -41,6 +41,8 @@ Option Explicit
 Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer)
 
 Dim DaExp As Integer
+Dim EraCriminal As Boolean
+EraCriminal = Criminal(AttackerIndex)
 
 DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
@@ -55,7 +57,7 @@ Call WriteConsoleMsg(AttackerIndex, "Has ganado " & DaExp & " puntos de experien
 Call WriteConsoleMsg(AttackerIndex, UserList(AttackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
 
 If TriggerZonaPelea(VictimIndex, AttackerIndex) <> TRIGGER6_PERMITE Then
-    If (Not criminal(VictimIndex)) Then
+    If (Not Criminal(VictimIndex)) Then
          UserList(AttackerIndex).Reputacion.AsesinoRep = UserList(AttackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
          If UserList(AttackerIndex).Reputacion.AsesinoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.AsesinoRep = MAXREP
@@ -75,6 +77,14 @@ If UserList(AttackerIndex).Stats.UsuariosMatados < 32000 Then _
     UserList(AttackerIndex).Stats.UsuariosMatados = UserList(AttackerIndex).Stats.UsuariosMatados + 1
 
 Call FlushBuffer(VictimIndex)
+
+If EraCriminal And Not Criminal(AttackerIndex) Then
+    Call RefreshCharStatus(AttackerIndex)
+ElseIf Not EraCriminal And Criminal(AttackerIndex) Then
+    Call RefreshCharStatus(AttackerIndex)
+End If
+
+
 'Log
 Call LogAsesinato(UserList(AttackerIndex).name & " asesino a " & UserList(VictimIndex).name)
 
@@ -178,7 +188,18 @@ ErrorHandler:
         Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description)
 
 End Sub
+Sub RefreshCharStatus(ByVal UserIndex)
+'*************************************************
+'Author: Pablo (ToxicWaste)
+'Last modified: 24/01/2007
+'Refreshes the status of UserIndex.
+'Pablo (ToxicWaste): Hay que hacer mejor, copié lo que hizo Integer pero es medio kk ya que solo cambia 1 byte de la info y estoy remandando todo el paquete.
+'*************************************************
 
+    Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
+    Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+    
+End Sub
 Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 On Local Error GoTo hayerror
@@ -204,7 +225,7 @@ On Local Error GoTo hayerror
         Dim bCr As Byte
         Dim SendPrivilegios As Byte
         
-        bCr = criminal(UserIndex)
+        bCr = Criminal(UserIndex)
         
         If LenB(klan) <> 0 Then
             If Not toMap Then
@@ -255,6 +276,8 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 'de lo contrario le da la vida, mana, etc, correspodiente.
 '07/08/2006 Integer - Modificacion de los valores
 '01/10/2007 Tavo - Corregido el BUG de STAT_MAXELV
+'24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones en ELU al subir de nivel.
+'24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones de la subida de mana de los magos por lvl.
 '*************************************************
 
 On Error GoTo errhandler
@@ -316,12 +339,17 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         End If
     End If
 
-    If UserList(UserIndex).Stats.ELV < 11 Then
-        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.5
-    ElseIf UserList(UserIndex).Stats.ELV < 25 Then
+    'Nueva subida de exp x lvl. Pablo (ToxicWaste)
+    If UserList(UserIndex).Stats.ELV < 15 Then
+        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.4
+    ElseIf UserList(UserIndex).Stats.ELV < 21 Then
+        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.35
+    ElseIf UserList(UserIndex).Stats.ELV < 33 Then
         UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.3
+    ElseIf UserList(UserIndex).Stats.ELV < 41 Then
+        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.225
     Else
-        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.2
+        UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.25
     End If
     
     Constitucion = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
@@ -480,8 +508,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             End Select
             If AumentoHP < 1 Then AumentoHP = 4
             
-            AumentoHIT = 1
-            AumentoMANA = 3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
+            AumentoHIT = 1 'Nueva dist de mana para mago (ToxicWaste)
+            AumentoMANA = 2.8 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTMago
         
         Case eClass.Lumberjack
@@ -702,6 +730,33 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             AumentoHIT = 2
             AumentoSTA = AumentoSTDef
             
+        Case eClass.Bandit
+            Select Case Constitucion
+                Case 21
+                    AumentoHP = RandomNumber(7, 10)
+                Case 20
+                    AumentoHP = RandomNumber(6, 10)
+                Case 19
+                    AumentoHP = RandomNumber(6, 9)
+                Case 18
+                    AumentoHP = RandomNumber(5, 9)
+                Case 17
+                    AumentoHP = RandomNumber(5, 8)
+                Case 16
+                    AumentoHP = RandomNumber(4, 8)
+                Case 15
+                    AumentoHP = RandomNumber(4, 7)
+                Case 14
+                    AumentoHP = RandomNumber(3, 7)
+                Case 13
+                    AumentoHP = RandomNumber(3, 6)
+                Case 12
+                    AumentoHP = RandomNumber(2, 6)
+            End Select
+            
+            AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
+            AumentoMANA = IIf(UserList(UserIndex).Stats.MaxMAN = 300, 0, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 10)
+            AumentoSTA = AumentoSTLeñador
         Case Else
             Select Case Constitucion
                 Case 21
@@ -734,6 +789,11 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Else
         If UserList(UserIndex).Stats.MaxMAN > 9999 Then _
             UserList(UserIndex).Stats.MaxMAN = 9999
+    End If
+    If UserList(UserIndex).clase = eClass.Bandit Then 'mana del bandido restringido hasta 300
+        If UserList(UserIndex).Stats.MaxMAN > 300 Then
+            UserList(UserIndex).Stats.MaxMAN = 300
+        End If
     End If
     
     'Actualizamos Golpe Máximo
@@ -932,18 +992,37 @@ Dim GuildI As Integer
 End Sub
 
 Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 23/01/2007
+'Shows the users Stats when the user is online.
+'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribución de parámetros.
+'*************************************************
 With UserList(UserIndex)
     Call WriteConsoleMsg(sendIndex, "Pj: " & .name, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "CiudadanosMatados: " & .Faccion.CiudadanosMatados & " CriminalesMatados: " & .Faccion.CriminalesMatados & " UsuariosMatados: " & .Stats.UsuariosMatados, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "NPCsMuertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Pena: " & .Counters.Pena, FontTypeNames.FONTTYPE_INFO)
-    Call WriteConsoleMsg(sendIndex, "Clan: " & GuildName(.guildIndex), FontTypeNames.FONTTYPE_INFO)
-    
-    If .Faccion.ArmadaReal = 0 Or .Faccion.FuerzasCaos = 0 Then
-        Call WriteConsoleMsg(sendIndex, "Status: " & IIf(criminal(sendIndex), "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
-    Else
-        Call WriteConsoleMsg(sendIndex, "Facción: " & IIf(.Faccion.ArmadaReal = 1, "Armada Real", "Caos"), FontTypeNames.FONTTYPE_INFO)
+    If .Faccion.ArmadaReal = 1 Then
+        Call WriteConsoleMsg(sendIndex, "Armada Real Desde: " & .Faccion.FechaIngreso, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Ingresó en Nivel: " & .Faccion.NivelIngreso & " con " & .Faccion.MatadosIngreso & " Ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
+    ElseIf .Faccion.FuerzasCaos = 1 Then
+        Call WriteConsoleMsg(sendIndex, "Legion Oscura Desde: " & .Faccion.FechaIngreso, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Ingresó en Nivel: " & .Faccion.NivelIngreso, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
+    ElseIf .Faccion.RecibioExpInicialReal = 1 Then
+        Call WriteConsoleMsg(sendIndex, "Fue Armada Real", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
+    ElseIf .Faccion.RecibioExpInicialCaos = 1 Then
+        Call WriteConsoleMsg(sendIndex, "Fue Legionario", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
+    End If
+    Call WriteConsoleMsg(sendIndex, "Asesino: " & .Reputacion.AsesinoRep, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(sendIndex, "Noble: " & .Reputacion.NobleRep, FontTypeNames.FONTTYPE_INFO)
+    If .guildIndex > 0 Then
+        Call WriteConsoleMsg(sendIndex, "Clan: " & GuildName(.guildIndex), FontTypeNames.FONTTYPE_INFO)
     End If
     
 End With
@@ -951,6 +1030,12 @@ End With
 End Sub
 
 Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
+'*************************************************
+'Author: Unknown
+'Last modified: 23/01/2007
+'Shows the users Stats when the user is offline.
+'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribución de parámetros.
+'*************************************************
 Dim CharFile As String
 Dim Ban As String
 Dim BanDetailPath As String
@@ -960,32 +1045,38 @@ Dim BanDetailPath As String
     
     If FileExist(CharFile) Then
         Call WriteConsoleMsg(sendIndex, "Pj: " & charName, FontTypeNames.FONTTYPE_INFO)
-        ' 3 en uno :p
         Call WriteConsoleMsg(sendIndex, "CiudadanosMatados: " & GetVar(CharFile, "FACCIONES", "CiudMatados") & " CriminalesMatados: " & GetVar(CharFile, "FACCIONES", "CrimMatados") & " UsuariosMatados: " & GetVar(CharFile, "MUERTES", "UserMuertes"), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "NPCsMuertos: " & GetVar(CharFile, "MUERTES", "NpcsMuertes"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Clase: " & GetVar(CharFile, "INIT", "Clase"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(GetVar(CharFile, "INIT", "Clase")), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Pena: " & GetVar(CharFile, "COUNTERS", "PENA"), FontTypeNames.FONTTYPE_INFO)
+        If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Armada Real Desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingresó en Nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " Ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Legion Oscura Desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingresó en Nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExReal")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Fue Armada Real", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExCaos")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Fue Legionario", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que Ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        
+        Call WriteConsoleMsg(sendIndex, "Asesino: " & CLng(GetVar(CharFile, "REP", "Asesino")), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Noble: " & CLng(GetVar(CharFile, "REP", "Nobles")), FontTypeNames.FONTTYPE_INFO)
+        
+        If IsNumeric(GetVar(CharFile, "Guild", "GUILDINDEX")) Then
+            Call WriteConsoleMsg(sendIndex, "Clan: " & modGuilds.GuildName(CInt(GetVar(CharFile, "Guild", "GUILDINDEX"))), FontTypeNames.FONTTYPE_INFO)
+        End If
+        
         Ban = GetVar(CharFile, "FLAGS", "Ban")
         Call WriteConsoleMsg(sendIndex, "Ban: " & Ban, FontTypeNames.FONTTYPE_INFO)
         If Ban = "1" Then
             Call WriteConsoleMsg(sendIndex, "Ban por: " & GetVar(CharFile, charName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, charName, "Reason"), FontTypeNames.FONTTYPE_INFO)
-        End If
-        
-        Call WriteConsoleMsg(sendIndex, "Clan: " & GuildName(CInt(GetVar(CharFile, "Guild", "GUILDINDEX"))), FontTypeNames.FONTTYPE_INFO)
-        
-        Dim Faccion As Byte '0 es nada, 1 es armada y 2 es caos
-        
-        'NO MIRAR, QUEMA LOS OJOS!
-        If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
-            Faccion = 1
-        ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
-            Faccion = 2
-        End If
-        
-        If Faccion = 0 Then
-            Call WriteConsoleMsg(sendIndex, "Status: " & IIf(CLng(GetVar(CharFile, "REP", "Promedio")) < 0, "Criminal", "Ciudadano"), FontTypeNames.FONTTYPE_INFO)
-        Else
-            Call WriteConsoleMsg(sendIndex, "Facción: " & IIf(Faccion = 1, "Armada Real", "Caos"), FontTypeNames.FONTTYPE_INFO)
         End If
     Else
         Call WriteConsoleMsg(sendIndex, "El pj no existe: " & charName, FontTypeNames.FONTTYPE_INFO)
@@ -1093,7 +1184,7 @@ End Function
 Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
 If Npclist(NpcIndex).MaestroUser > 0 Then
-        EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
+        EsMascotaCiudadano = Not Criminal(Npclist(NpcIndex).MaestroUser)
         If EsMascotaCiudadano Then
             Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!", FontTypeNames.FONTTYPE_INFO)
         End If
@@ -1102,7 +1193,14 @@ End If
 End Function
 
 Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+'**********************************************
+'Author: Unknown
+'Last Modification: 24/01/2007
+'24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si orresponde.
+'**********************************************
 
+Dim EraCriminal As Boolean
+EraCriminal = Criminal(UserIndex)
 
 'Guardamos el usuario que ataco el npc
 Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
@@ -1141,6 +1239,13 @@ Else
     
 End If
 
+If EraCriminal And Not Criminal(UserIndex) Then
+    Call RefreshCharStatus(UserIndex)
+ElseIf Not EraCriminal And Criminal(UserIndex) Then
+    Call RefreshCharStatus(UserIndex)
+End If
+
+
 End Sub
 
 Function PuedeApuñalar(ByVal UserIndex As Integer) As Boolean
@@ -1164,23 +1269,23 @@ If UserList(UserIndex).flags.Hambre = 0 And _
     
     If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
     
-    Dim lvl As Integer
-    lvl = UserList(UserIndex).Stats.ELV
+    Dim Lvl As Integer
+    Lvl = UserList(UserIndex).Stats.ELV
     
-    If lvl > UBound(LevelSkill) Then lvl = UBound(LevelSkill)
+    If Lvl > UBound(LevelSkill) Then Lvl = UBound(LevelSkill)
     
-    If UserList(UserIndex).Stats.UserSkills(Skill) >= LevelSkill(lvl).LevelValue Then Exit Sub
+    If UserList(UserIndex).Stats.UserSkills(Skill) >= LevelSkill(Lvl).LevelValue Then Exit Sub
 
     Dim Aumenta As Integer
     Dim Prob As Integer
     
-    If lvl <= 3 Then
+    If Lvl <= 3 Then
         Prob = 25
-    ElseIf lvl > 3 And lvl < 6 Then
+    ElseIf Lvl > 3 And Lvl < 6 Then
         Prob = 35
-    ElseIf lvl >= 6 And lvl < 10 Then
+    ElseIf Lvl >= 6 And Lvl < 10 Then
         Prob = 40
-    ElseIf lvl >= 10 And lvl < 20 Then
+    ElseIf Lvl >= 10 And Lvl < 20 Then
         Prob = 45
     Else
         Prob = 50
@@ -1271,7 +1376,7 @@ On Error GoTo ErrorHandler
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
         ' << Si es newbie no pierde el inventario >>
-        If Not EsNewbie(UserIndex) Or criminal(UserIndex) Then
+        If Not EsNewbie(UserIndex) Or Criminal(UserIndex) Then
             Call TirarTodo(UserIndex)
         Else
             If EsNewbie(UserIndex) Then Call TirarTodosLosItemsNoNewbies(UserIndex)
@@ -1388,7 +1493,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     
     If TriggerZonaPelea(Muerto, Atacante) = TRIGGER6_PERMITE Then Exit Sub
     
-    If criminal(Muerto) Then
+    If Criminal(Muerto) Then
         If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
             UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
             If UserList(Atacante).Faccion.CriminalesMatados < MAXUSERMATADOS Then _
@@ -1409,9 +1514,12 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     End If
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj)
-'Call LogTarea("Sub Tilelibre")
-
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
+'**************************************************************
+'Author: Unknown
+'Last Modify Date: 23/01/2007
+'23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
+'**************************************************************
 Dim Notfound As Boolean
 Dim LoopC As Integer
 Dim tX As Integer
@@ -1420,7 +1528,7 @@ Dim hayobj As Boolean
     hayobj = False
     nPos.Map = Pos.Map
     
-    Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y) Or hayobj
+    Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y, Agua, Tierra) Or hayobj
         
         If LoopC > 15 Then
             Notfound = True
@@ -1430,7 +1538,7 @@ Dim hayobj As Boolean
         For tY = Pos.Y - LoopC To Pos.Y + LoopC
             For tX = Pos.X - LoopC To Pos.X + LoopC
             
-                If LegalPos(nPos.Map, tX, tY) Then
+                If LegalPos(nPos.Map, tX, tY, Agua, Tierra) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
                     hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
                     If Not hayobj Then _
@@ -1665,7 +1773,7 @@ End Sub
 
 Sub VolverCriminal(ByVal UserIndex As Integer)
 '**************************************************************
-'Author: Unknow
+'Author: Unknown
 'Last Modify Date: 21/06/2006
 'Nacho: Actualiza el tag al cliente
 '**************************************************************
@@ -1680,13 +1788,14 @@ If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
         UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
 End If
-Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
-Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+
+Call RefreshCharStatus(UserIndex)
+
 End Sub
 
 Sub VolverCiudadano(ByVal UserIndex As Integer)
 '**************************************************************
-'Author: Unknow
+'Author: Unknown
 'Last Modify Date: 21/06/2006
 'Nacho: Actualiza el tag al cliente.
 '**************************************************************
@@ -1699,8 +1808,8 @@ UserList(UserIndex).Reputacion.AsesinoRep = 0
 UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlASALTO
 If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
     UserList(UserIndex).Reputacion.PlebeRep = MAXREP
-'Tenemos que actualizar el Tag del usuario. Esto no es lo optimo, ya que es un 1/0 que cambia en el paquete.
-Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
-Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+
+Call RefreshCharStatus(UserIndex)
+
 End Sub
 

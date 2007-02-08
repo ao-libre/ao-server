@@ -198,9 +198,9 @@ End If
 
 End Sub
             
-Sub DecirPalabrasMagicas(ByVal S As String, ByVal UserIndex As Integer)
+Sub DecirPalabrasMagicas(ByVal s As String, ByVal UserIndex As Integer)
 On Error Resume Next
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(S, UserList(UserIndex).Char.CharIndex, vbCyan))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(s, UserList(UserIndex).Char.CharIndex, vbCyan))
     Exit Sub
 End Sub
 
@@ -507,7 +507,14 @@ If UserList(UserIndex).Counters.Ocultando Then _
 End Sub
 
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
-
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 24/01/2007
+'Handles the Spells that afect the Stats of an User
+'24/01/2007 Pablo (ToxicWaste) - Invisibilidad no permitida en Mapas con InviSinEfecto
+'26/01/2007 Pablo (ToxicWaste) - Cambios que permiten mejor manejo de ataques en los rings.
+'26/01/2007 Pablo (ToxicWaste) - Revivir no permitido en Mapas con ResuSinEfecto
+'***************************************************
 
 
 Dim H As Integer, tU As Integer
@@ -523,15 +530,32 @@ If Hechizos(H).Invisibilidad = 1 Then
         Exit Sub
     End If
     
-    If criminal(tU) And Not criminal(UserIndex) Then
-        If UserList(UserIndex).flags.Seguro Then
-            Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        Else
-            Call VolverCriminal(UserIndex)
+    'No usar invi mapas InviSinEfecto
+    If MapInfo(UserList(tU).Pos.Map).InviSinEfecto > 0 Then
+        Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
+        b = False
+        Exit Sub
+    End If
+    
+    'Para poder tirar invi a un pk en el ring
+    If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+        If Criminal(tU) And Not Criminal(UserIndex) Then
+            If esArmada(UserIndex) Then
+                Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                b = False
+                Exit Sub
+            End If
+            If UserList(UserIndex).flags.Seguro Then
+                Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                b = False
+                Exit Sub
+            Else
+                Call VolverCriminal(UserIndex)
+            End If
         End If
     End If
     
+   
     UserList(tU).flags.invisible = 1
     Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
 
@@ -599,9 +623,27 @@ If Hechizos(H).Envenena = 1 Then
 End If
 
 If Hechizos(H).CuraVeneno = 1 Then
-        UserList(tU).flags.Envenenado = 0
-        Call InfoHechizo(UserIndex)
-        b = True
+    'Para poder tirar curar veneno a un pk en el ring
+    If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+        If Criminal(tU) And Not Criminal(UserIndex) Then
+            If esArmada(UserIndex) Then
+                Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                b = False
+                Exit Sub
+            End If
+            If UserList(UserIndex).flags.Seguro Then
+                Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                b = False
+                Exit Sub
+            Else
+                Call DisNobAuBan(UserIndex, UserList(UserIndex).Reputacion.NobleRep * 0.5, 10000)
+            End If
+        End If
+    End If
+        
+    UserList(tU).flags.Envenenado = 0
+    Call InfoHechizo(UserIndex)
+    b = True
 End If
 
 If Hechizos(H).Maldicion = 1 Then
@@ -656,12 +698,21 @@ End If
 
 If Hechizos(H).RemoverParalisis = 1 Then
     If UserList(tU).flags.Paralizado = 1 Then
-        If criminal(tU) And Not criminal(UserIndex) Then
-            If UserList(UserIndex).flags.Seguro Then
-                Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            Else
-                Call VolverCriminal(UserIndex)
+        'Para poder tirar remo a un pk en el ring
+        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+            If Criminal(tU) And Not Criminal(UserIndex) Then
+                If esArmada(UserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                End If
+                If UserList(UserIndex).flags.Seguro Then
+                    Call WriteConsoleMsg(UserIndex, "||Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                Else
+                    Call VolverCriminal(UserIndex)
+                End If
             End If
         End If
         
@@ -674,7 +725,25 @@ If Hechizos(H).RemoverParalisis = 1 Then
 End If
 
 If Hechizos(H).RemoverEstupidez = 1 Then
-    If UserList(tU).flags.Estupidez = 0 Then
+    If UserList(tU).flags.Estupidez = 1 Then
+        'Para poder tirar remo estu a un pk en el ring
+        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+            If Criminal(tU) And Not Criminal(UserIndex) Then
+                If esArmada(UserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                End If
+                If UserList(UserIndex).flags.Seguro Then
+                    Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                Else
+                    Call DisNobAuBan(UserIndex, UserList(UserIndex).Reputacion.NobleRep * 0.5, 10000)
+                End If
+            End If
+        End If
+    
         UserList(tU).flags.Estupidez = 0
         'no need to crypt this
         Call WriteDumbNoMore(tU)
@@ -687,15 +756,14 @@ End If
 
 If Hechizos(H).Revivir = 1 Then
     If UserList(tU).flags.Muerto = 1 Then
-        If criminal(tU) And Not criminal(UserIndex) Then
-            If UserList(UserIndex).flags.Seguro Then
-                Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            Else
-                Call VolverCriminal(UserIndex)
-            End If
+    
+        'No usar resu en mapas con ResuSinEfecto
+        If MapInfo(UserList(tU).Pos.Map).ResuSinEfecto > 0 Then
+            Call WriteConsoleMsg(UserIndex, "¡Revivir no está permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
+            b = False
+            Exit Sub
         End If
-
+        
         'revisamos si necesita vara
         If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
@@ -713,6 +781,25 @@ If Hechizos(H).Revivir = 1 Then
             End If
         End If
         
+        'Para poder tirar revivir a un pk en el ring
+        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+            If Criminal(tU) And Not Criminal(UserIndex) Then
+                If esArmada(UserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                End If
+                If UserList(UserIndex).flags.Seguro Then
+                    Call WriteConsoleMsg(UserIndex, "||Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                Else
+                    Call VolverCriminal(UserIndex)
+                End If
+            End If
+        End If
+
+        
         'Pablo Toxic Waste
         UserList(tU).Stats.MinAGU = UserList(tU).Stats.MinAGU - 25
         UserList(tU).Stats.MinHam = UserList(tU).Stats.MinHam - 25
@@ -726,7 +813,9 @@ If Hechizos(H).Revivir = 1 Then
                 UserList(tU).flags.Hambre = 1
         End If
         '/Juan Maraxus
-        If Not criminal(tU) Then
+        Dim EraCriminal As Boolean
+        EraCriminal = Criminal(UserIndex)
+        If Not Criminal(tU) Then
             If tU <> UserIndex Then
                 UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep + 500
                 If UserList(UserIndex).Reputacion.NobleRep > MAXREP Then _
@@ -736,6 +825,10 @@ If Hechizos(H).Revivir = 1 Then
         End If
         UserList(tU).Stats.MinMAN = 0
         Call EnviarHambreYsed(tU)
+            If EraCriminal And Not Criminal(UserIndex) Then
+            Call RefreshCharStatus(UserIndex)
+        End If
+        
         '/Pablo Toxic Waste
         
         b = True
@@ -778,9 +871,74 @@ If Hechizos(H).Estupidez = 1 Then
 End If
 
 End Sub
+
+Sub RevisoAtaqueNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef b As Boolean, ByRef ExitSub As Boolean)
+'***************************************************
+'Autor: Pablo (ToxicWaste)
+'Last Modification: 26/01/2007
+'Finds out if the UserIndex can attack the NpcIndex
+'***************************************************
+    
+    'Es guardia caos y lo quiere atacar un caos?
+    If Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos & UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacar Guardias del Caos siendo Legionario", FontTypeNames.FONTTYPE_WARNING)
+        b = False
+        ExitSub = True
+        Exit Sub
+    End If
+    'Es guardia Real?
+    If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+        If UserList(UserIndex).Faccion.ArmadaReal = 1 Then 'Lo quiere atacar un Armada?
+            Call WriteConsoleMsg(UserIndex, "No puedes atacar Guardias Reales siendo Armada Real", FontTypeNames.FONTTYPE_WARNING)
+            b = False
+            ExitSub = True
+            Exit Sub
+        End If
+        If UserList(UserIndex).flags.Seguro Then 'Tienes el seguro puesto?
+            Call WriteConsoleMsg(UserIndex, "Debes quitarte el seguro para poder Atacar Guardias Reales", FontTypeNames.FONTTYPE_WARNING)
+            b = False
+            ExitSub = True
+            Exit Sub
+        Else
+            VolverCriminal (UserIndex) 'Si ya era criminal, suma puntos de bandidola función solamente
+        End If
+    End If
+    If Npclist(NpcIndex).MaestroUser > 0 Then 'Es mascota?
+        'Es mascota de un caos y vos sos un caos?
+        If UserList(Npclist(NpcIndex).MaestroUser).Faccion.FuerzasCaos & UserList(UserIndex).Faccion.FuerzasCaos Then
+            Call WriteConsoleMsg(UserIndex, "No puedes atacar mascotas de Legionarios siendo Legionario", FontTypeNames.FONTTYPE_WARNING)
+            b = False
+            ExitSub = True
+            Exit Sub
+        End If
+        'Es ciudadano el dueño?
+        If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+            If UserList(UserIndex).Faccion.ArmadaReal = 1 Then 'Lo quiere atacar un Armada?
+                Call WriteConsoleMsg(UserIndex, "No puedes atacar Mascotas de ciudadanos siendo Armada Real", FontTypeNames.FONTTYPE_WARNING)
+                b = False
+                ExitSub = True
+                Exit Sub
+            End If
+            If UserList(UserIndex).flags.Seguro Then 'Tiene el seguro puesto?
+                Call WriteConsoleMsg(UserIndex, "Debes quitarte el seguro para de poder atacar mascotas de ciudadanos", FontTypeNames.FONTTYPE_WARNING)
+                b = False
+                ExitSub = True
+                Exit Sub
+            Else
+                VolverCriminal (UserIndex) 'Si ya era criminal, suma puntos de bandidola función solamente
+            End If
+        End If
+    End If
+End Sub
+
 Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, ByVal hIndex As Integer, ByRef b As Boolean, ByVal UserIndex As Integer)
-
-
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 26/01/2007
+'Handles the Spells that afect the Stats of an NPC
+'26/01/2007 Pablo (ToxicWaste) - Modificaciones por funcionamiento en los Rings y ataque a guardias
+'***************************************************
+Dim ExitSub As Boolean
 
 If Hechizos(hIndex).Invisibilidad = 1 Then
    Call InfoHechizo(UserIndex)
@@ -794,18 +952,9 @@ If Hechizos(hIndex).Envenena = 1 Then
         Exit Sub
    End If
    
-   If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-        If UserList(UserIndex).flags.Seguro Then
-            Call WriteConsoleMsg(UserIndex, "Debes quitarte el seguro para de poder atacar guardias", FontTypeNames.FONTTYPE_WARNING)
-            Exit Sub
-        Else
-            UserList(UserIndex).Reputacion.NobleRep = 0
-            UserList(UserIndex).Reputacion.PlebeRep = 0
-            UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
-            If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
-                UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
-        End If
-    End If
+   ExitSub = False
+   Call RevisoAtaqueNPC(NpcIndex, UserIndex, b, ExitSub)
+   If ExitSub = True Then Exit Sub
         
    Call InfoHechizo(UserIndex)
    Npclist(NpcIndex).flags.Envenenado = 1
@@ -856,18 +1005,10 @@ End If
 
 If Hechizos(hIndex).Paraliza = 1 Then
     If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
-        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-            If UserList(UserIndex).flags.Seguro Then
-                Call WriteConsoleMsg(UserIndex, "Debes quitarte el seguro para de poder atacar guardias", FontTypeNames.FONTTYPE_WARNING)
-                Exit Sub
-            Else
-                UserList(UserIndex).Reputacion.NobleRep = 0
-                UserList(UserIndex).Reputacion.PlebeRep = 0
-                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 500
-                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
-                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
-            End If
-        End If
+        
+        ExitSub = False
+        Call RevisoAtaqueNPC(NpcIndex, UserIndex, b, ExitSub)
+        If ExitSub = True Then Exit Sub
         
         Call InfoHechizo(UserIndex)
         Npclist(NpcIndex).flags.Paralizado = 1
@@ -894,18 +1035,10 @@ End If
  
 If Hechizos(hIndex).Inmoviliza = 1 Then
     If Npclist(NpcIndex).flags.AfectaParalisis = 0 Then
-        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-            If UserList(UserIndex).flags.Seguro Then
-                Call WriteConsoleMsg(UserIndex, "Debes quitarte el seguro para de poder atacar guardias", FontTypeNames.FONTTYPE_WARNING)
-                Exit Sub
-            Else
-                UserList(UserIndex).Reputacion.NobleRep = 0
-                UserList(UserIndex).Reputacion.PlebeRep = 0
-                UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 500
-                If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
-                    UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
-            End If
-        End If
+        
+        ExitSub = False
+        Call RevisoAtaqueNPC(NpcIndex, UserIndex, b, ExitSub)
+        If ExitSub = True Then Exit Sub
         
         Npclist(NpcIndex).flags.Inmovilizado = 1
         Npclist(NpcIndex).flags.Paralizado = 0
@@ -920,9 +1053,7 @@ End If
 End Sub
 
 Sub HechizoPropNPC(ByVal hIndex As Integer, ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef b As Boolean)
-
 Dim daño As Long
-
 
 'Salud
 If Hechizos(hIndex).SubeHP = 1 Then
@@ -964,7 +1095,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
                 'Aumenta daño segun el staff-
                 'Daño = (Daño* (80 + BonifBáculo)) / 100
             Else
-                daño = daño * 0.7 'Baja daño a 80% del original
+                daño = daño * 0.7 'Baja daño a 70% del original
             End If
         End If
     End If
@@ -1003,6 +1134,7 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
     
     If UserList(UserIndex).flags.TargetUser > 0 Then
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserList(UserIndex).flags.TargetUser).Char.CharIndex, Hechizos(H).FXgrh, Hechizos(H).loops))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(H).WAV)) 'Esta linea faltaba. Pablo (ToxicWaste)
     ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
         Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, PrepareMessageCreateFX(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex, Hechizos(H).FXgrh, Hechizos(H).loops))
         Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, PrepareMessagePlayWave(Hechizos(H).WAV))
@@ -1139,7 +1271,7 @@ End If
 
 ' <-------- Agilidad ---------->
 If Hechizos(H).SubeAgilidad = 1 Then
-    If criminal(tempChr) And Not criminal(UserIndex) Then
+    If Criminal(tempChr) And Not Criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1179,7 +1311,7 @@ End If
 
 ' <-------- Fuerza ---------->
 If Hechizos(H).SubeFuerza = 1 Then
-    If criminal(tempChr) And Not criminal(UserIndex) Then
+    If Criminal(tempChr) And Not Criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1223,7 +1355,7 @@ End If
 'Salud
 If Hechizos(H).SubeHP = 1 Then
     
-    If criminal(tempChr) And Not criminal(UserIndex) Then
+    If Criminal(tempChr) And Not Criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1484,7 +1616,9 @@ End Sub
 
 Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts As Long)
 'disminuye la nobleza NoblePts puntos y aumenta el bandido BandidoPts puntos
-
+    Dim EraCriminal As Boolean
+    EraCriminal = Criminal(UserIndex)
+    
     'Si estamos en la arena no hacemos nada
     If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
     
@@ -1499,5 +1633,10 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
         UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     Call WriteNobilityLost(UserIndex)
-    If criminal(UserIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
+    If Criminal(UserIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
+    
+    If Not EraCriminal And Criminal(UserIndex) Then
+        Call RefreshCharStatus(UserIndex)
+    End If
+    
 End Sub

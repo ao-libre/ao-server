@@ -178,3 +178,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/01/2007: Arregle un rt9 en DotileEvents, y ahora el server no te dropea cuando tiene ganas.. (liquid)
  * 18/01/2007: Andan las estadísticas. (Maraxus)
  * 18/01/2007: Agregué un par de casos donde debía saltar la NOT_ENOUGH_DATA exception. (Maraxus)
+ * 08/02/2007: Agrego los cambios de Toxic, tengan en cuenta que los PJs deben crearse de cero para poder loguear. (Maraxus)
