@@ -24,11 +24,7 @@ Sub SendBanObj(UserIndex As Integer, Slot As Byte, Object As UserOBJ)
 
 UserList(UserIndex).BancoInvent.Object(Slot) = Object
 
-If Object.ObjIndex > 0 Then
-    Call WriteChangeBankSlot(UserIndex, Slot)
-Else
-    Call WriteChangeBankSlot(UserIndex, Slot)
-End If
+Call WriteChangeBankSlot(UserIndex, Slot)
 
 End Sub
 

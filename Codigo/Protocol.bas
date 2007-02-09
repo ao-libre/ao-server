@@ -273,7 +273,7 @@ Private Enum ClientPacketID
     PartyKick               '/ECHARPARTY
     PartySetLeader          '/PARTYLIDER
     PartyAcceptMember       '/ACCEPTPARTY
-    GuildMemeberList        '/MIEMBROSCLAN
+    GuildMemberList        '/MIEMBROSCLAN
     
     'GM messages
     GMMessage               '/GMSG
@@ -797,8 +797,8 @@ On Error Resume Next
         Case ClientPacketID.PartyAcceptMember       '/ACCEPTPARTY
             Call HandlePartyAcceptMember(UserIndex)
         
-        Case ClientPacketID.GuildMemeberList        '/MIEMBROSCLAN
-            Call HandleGuildMemeberList(UserIndex)
+        Case ClientPacketID.GuildMemberList        '/MIEMBROSCLAN
+            Call HandleGuildMemberList(UserIndex)
         
         
         'GM messages
@@ -2931,18 +2931,18 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim Desc As String
+        Dim desc As String
         Dim GuildName As String
         Dim site As String
         Dim codex() As String
         Dim errorStr As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         GuildName = buffer.ReadASCIIString()
         site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(UserIndex, Desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
         Else
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
@@ -3002,7 +3002,7 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
                 'Send information
                 Call WriteConsoleMsg(UserIndex, "%%%%%%%%%%%% INFO DEL HECHIZO %%%%%%%%%%%%" & vbCrLf _
                                                & "Nombre:" & .Nombre & vbCrLf _
-                                               & "Descripción:" & .Desc & vbCrLf _
+                                               & "Descripción:" & .desc & vbCrLf _
                                                & "Skill requerido: " & .MinSkill & " de magia." & vbCrLf _
                                                & "Mana necesario: " & .ManaRequerido & vbCrLf _
                                                & "Stamina necesaria: " & .StaRequerido & vbCrLf _
@@ -3519,13 +3519,13 @@ On Error GoTo errhandler
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim Desc As String
+        Dim desc As String
         Dim codex() As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(Desc, codex, .guildIndex)
+        Call modGuilds.ChangeCodexAndDesc(desc, codex, .guildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -5194,7 +5194,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
         If .flags.TargetNPC > 0 Then
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If LenB(Npclist(.flags.TargetNPC).Desc) <> 0 Then
+                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
                     Call WriteChatOverHead(UserIndex, "No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 End If
                 
@@ -5960,7 +5960,7 @@ On Error GoTo errhandler
             If Not AsciiValidos(description) Then
                 Call WriteConsoleMsg(UserIndex, "La descripción tiene caractéres inválidos.", FontTypeNames.FONTTYPE_INFO)
             Else
-                .Desc = Trim$(description)
+                .desc = Trim$(description)
                 Call WriteConsoleMsg(UserIndex, "La descripción a cambiado.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -6693,11 +6693,11 @@ On Error GoTo 0
 End Sub
 
 ''
-' Handles the "GuildMemeberList" message.
+' Handles the "GuildMemberList" message.
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleGuildMemeberList(ByVal UserIndex As Integer)
+Private Sub HandleGuildMemberList(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -9431,15 +9431,15 @@ On Error GoTo errhandler
         Call buffer.ReadByte
         
         Dim tUser As Integer
-        Dim Desc As String
+        Dim desc As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         
         If .flags.EsRolesMaster And .flags.Privilegios >= PlayerType.Dios Then
             'tUser = NameIndex(.flags.TargetUser)
             tUser = .flags.TargetUser 'CHECK; CHECK!!!..
             If tUser > 0 Then
-                UserList(tUser).DescRM = Desc
+                UserList(tUser).DescRM = desc
             Else
                 Call WriteConsoleMsg(UserIndex, "Haz click sobre un personaje antes!", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -13899,7 +13899,6 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
         Call .WriteLong(obData.Valor)
-        
     End With
 End Sub
 
