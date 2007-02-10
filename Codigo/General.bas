@@ -424,6 +424,10 @@ With frmMain
     .KillLog.Enabled = True
     .TIMER_AI.Enabled = True
     .npcataca.Enabled = True
+    
+#If SeguridadAlkon Then
+    .security.Enabled = True
+#End If
 End With
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -545,13 +549,13 @@ frmMain.CantUsuarios.Caption = "Numero de usuarios jugando: " & NumUsers
 End Sub
 
 
-Public Sub LogCriticEvent(Desc As String)
+Public Sub LogCriticEvent(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-Print #nfile, Date & " " & time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -560,13 +564,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogEjercitoReal(Desc As String)
+Public Sub LogEjercitoReal(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-Print #nfile, Desc
+Print #nfile, desc
 Close #nfile
 
 Exit Sub
@@ -575,13 +579,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogEjercitoCaos(Desc As String)
+Public Sub LogEjercitoCaos(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-Print #nfile, Desc
+Print #nfile, desc
 Close #nfile
 
 Exit Sub
@@ -591,13 +595,13 @@ errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
-Print #nfile, Date & " " & time & " " & Desc
+Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -607,13 +611,13 @@ errhandler:
 End Sub
 
 
-Public Sub LogError(Desc As String)
+Public Sub LogError(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-Print #nfile, Date & " " & time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -622,13 +626,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogStatic(Desc As String)
+Public Sub LogStatic(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-Print #nfile, Date & " " & time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub
@@ -637,13 +641,13 @@ errhandler:
 
 End Sub
 
-Public Sub LogTarea(Desc As String)
+Public Sub LogTarea(desc As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile(1) ' obtenemos un canal
 Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-Print #nfile, Date & " " & time & " " & Desc
+Print #nfile, Date & " " & time & " " & desc
 Close #nfile
 
 Exit Sub

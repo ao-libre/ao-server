@@ -28,6 +28,12 @@ Begin VB.Form frmMain
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.Timer security 
+      Enabled         =   0   'False
+      Interval        =   2000
+      Left            =   960
+      Top             =   60
+   End
    Begin VB.CheckBox SUPERLOG 
       Caption         =   "log"
       Height          =   255
@@ -827,6 +833,12 @@ For npc = 1 To LastNPC
     Npclist(npc).CanAttack = 1
 Next npc
 
+End Sub
+
+Private Sub security_Timer()
+#If SeguridadAlkon Then
+    Call Security.SecurityCheck
+#End If
 End Sub
 
 Private Sub TIMER_AI_Timer()

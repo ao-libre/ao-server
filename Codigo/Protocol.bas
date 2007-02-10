@@ -2604,7 +2604,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     'Can't hit administrators!
                     If UserList(tU).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
                         If .flags.Seguro Then
-                            If Not Criminal(tU) Then
+                            If Not criminal(tU) Then
                                 Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
                                 Exit Sub
                             End If
@@ -3627,7 +3627,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -5245,7 +5245,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -12244,15 +12244,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -12288,15 +12288,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.EsRolesMaster Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
@@ -13481,7 +13481,7 @@ End Sub
 
 Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
                                 ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal weapon As Integer, ByVal shield As Integer, _
-                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal Criminal As Byte, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
                                 ByVal privileges As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -13489,7 +13489,7 @@ Public Sub WriteCharacterCreate(ByVal UserIndex As Integer, ByVal body As Intege
 'Writes the "CharacterCreate" message to the given user's outgoing data buffer
 '***************************************************
     Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterCreate(body, Head, heading, CharIndex, X, Y, weapon, shield, FX, FXLoops, _
-                                                            helmet, name, Criminal, privileges))
+                                                            helmet, name, criminal, privileges))
 End Sub
 
 ''
@@ -15427,7 +15427,7 @@ End Function
 
 Public Function PrepareMessageCharacterCreate(ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading, _
                                 ByVal CharIndex As Integer, ByVal X As Byte, ByVal Y As Byte, ByVal weapon As Integer, ByVal shield As Integer, _
-                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal Criminal As Byte, _
+                                ByVal FX As Integer, ByVal FXLoops As Integer, ByVal helmet As Integer, ByVal name As String, ByVal criminal As Byte, _
                                 ByVal privileges As Byte) As String
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -15449,7 +15449,7 @@ Public Function PrepareMessageCharacterCreate(ByVal body As Integer, ByVal Head 
         Call .WriteInteger(FX)
         Call .WriteInteger(FXLoops)
         Call .WriteASCIIString(name)
-        Call .WriteByte(Criminal)
+        Call .WriteByte(criminal)
         Call .WriteByte(privileges)
         
         PrepareMessageCharacterCreate = .ReadASCIIStringFixed(.length)
