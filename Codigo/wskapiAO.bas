@@ -311,6 +311,8 @@ Case 1025
         Call EventoSockRead(N, Tmp)
         
     Case FD_CLOSE
+        Debug.Print hex(lParam)
+        'Debug.Print WSAGETSELECTERROR(lParam)
         N = BuscaSlotSock(S)
         If S <> SockListen Then Call apiclosesocket(S)
         

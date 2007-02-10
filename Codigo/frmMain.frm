@@ -606,7 +606,7 @@ End If
 On Error GoTo hayerror
 
  '<<<<<< Procesa eventos de los usuarios >>>>>>
- For iUserIndex = 1 To MaxUsers
+ For iUserIndex = 1 To LastUser
    'Conexion activa?
    If UserList(iUserIndex).ConnID <> -1 Then
       '¿User valido?
