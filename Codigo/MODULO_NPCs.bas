@@ -77,7 +77,7 @@ On Error GoTo errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
-    EraCriminal = criminal(UserIndex)
+    EraCriminal = Criminal(UserIndex)
    
     If (esPretoriano(NpcIndex) = 4) Then
         'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
@@ -171,7 +171,7 @@ On Error GoTo errhandler
             If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
                 UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         End If
-        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
         
         Call CheckUserLevel(UserIndex)
     End If ' Userindex > 0
@@ -187,9 +187,9 @@ On Error GoTo errhandler
     'ReSpawn o no
     Call ReSpawnNpc(MiNPC)
    
-    If EraCriminal And Not criminal(UserIndex) Then
+    If EraCriminal And Not Criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
-    ElseIf Not EraCriminal And criminal(UserIndex) Then
+    ElseIf Not EraCriminal And Criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
 
@@ -319,7 +319,7 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).TargetNPC = 0
     Npclist(NpcIndex).TipoItems = 0
     Npclist(NpcIndex).Veneno = 0
-    Npclist(NpcIndex).Desc = vbNullString
+    Npclist(NpcIndex).desc = vbNullString
     
     
     Dim j As Integer
@@ -340,7 +340,7 @@ On Error GoTo errhandler
     Npclist(NpcIndex).flags.NPCActive = False
     
     If InMapBounds(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
-        Call EraseNPCChar(True, Npclist(NpcIndex).Pos.Map, NpcIndex)
+        Call EraseNPCChar(Npclist(NpcIndex).Pos.Map, NpcIndex)
     End If
     
     'Nos aseguramos de que el inventario sea removido...
@@ -515,8 +515,8 @@ If NpcIndex > 0 Then
 End If
 
 End Sub
-'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub EraseNPCChar(ByRef toMap As Boolean, sndIndex As Integer, ByVal NpcIndex As Integer)
+
+Sub EraseNPCChar(ByVal sndIndex As Integer, ByVal NpcIndex As Integer)
 
 If Npclist(NpcIndex).Char.CharIndex <> 0 Then CharList(Npclist(NpcIndex).Char.CharIndex) = 0
 
@@ -802,7 +802,7 @@ End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = Leer.GetValue("NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).Desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
 
 Npclist(NpcIndex).Movement = val(Leer.GetValue("NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).flags.OldMovement = Npclist(NpcIndex).Movement
@@ -896,12 +896,12 @@ Npclist(NpcIndex).flags.Snd3 = val(Leer.GetValue("NPC" & NpcNumber, "Snd3"))
 
 '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
-Dim aux As String
-aux = Leer.GetValue("NPC" & NpcNumber, "NROEXP")
-If LenB(aux) = 0 Then
+Dim Aux As String
+Aux = Leer.GetValue("NPC" & NpcNumber, "NROEXP")
+If LenB(Aux) = 0 Then
     Npclist(NpcIndex).NroExpresiones = 0
 Else
-    Npclist(NpcIndex).NroExpresiones = val(aux)
+    Npclist(NpcIndex).NroExpresiones = val(Aux)
     ReDim Npclist(NpcIndex).Expresiones(1 To Npclist(NpcIndex).NroExpresiones) As String
     For LoopC = 1 To Npclist(NpcIndex).NroExpresiones
         Npclist(NpcIndex).Expresiones(LoopC) = Leer.GetValue("NPC" & NpcNumber, "Exp" & LoopC)
