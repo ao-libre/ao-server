@@ -244,7 +244,7 @@ Global Const WSANO_ADDRESS = 11004
     Public Declare Function listen Lib "ws2_32.DLL" (ByVal S As Integer, ByVal backlog As Integer) As Integer
     Public Declare Function ntohl Lib "ws2_32.DLL" (ByVal netlong As Long) As Long
     Public Declare Function ntohs Lib "ws2_32.DLL" (ByVal netshort As Integer) As Integer
-    Public Declare Function recv Lib "ws2_32.DLL" (ByVal S As Integer, ByVal buf As Any, ByVal buflen As Integer, ByVal flags As Integer) As Integer
+    Public Declare Function recv Lib "ws2_32.DLL" (ByVal S As Integer, ByRef buf As Any, ByVal buflen As Integer, ByVal flags As Integer) As Integer
     Public Declare Function recvfrom Lib "ws2_32.DLL" (ByVal S As Integer, buf As Any, ByVal buflen As Integer, ByVal flags As Integer, from As sockaddr, fromlen As Integer) As Integer
     Public Declare Function ws_select Lib "ws2_32.DLL" Alias "select" (ByVal nfds As Integer, readfds As Any, writefds As Any, exceptfds As Any, timeout As timeval) As Integer
     Public Declare Function send Lib "ws2_32.DLL" (ByVal S As Integer, buf As Any, ByVal buflen As Integer, ByVal flags As Integer) As Integer
@@ -316,7 +316,7 @@ Global Const WSANO_ADDRESS = 11004
     Public Declare Function listen Lib "wsock32.dll" (ByVal S As Long, ByVal backlog As Long) As Long
     Public Declare Function ntohl Lib "wsock32.dll" (ByVal netlong As Long) As Long
     Public Declare Function ntohs Lib "wsock32.dll" (ByVal netshort As Long) As Integer
-    Public Declare Function recv Lib "wsock32.dll" (ByVal S As Long, ByVal buf As Any, ByVal buflen As Long, ByVal flags As Long) As Long
+    Public Declare Function recv Lib "wsock32.dll" (ByVal S As Long, ByRef buf As Any, ByVal buflen As Long, ByVal flags As Long) As Long
     Public Declare Function recvfrom Lib "wsock32.dll" (ByVal S As Long, buf As Any, ByVal buflen As Long, ByVal flags As Long, from As sockaddr, fromlen As Long) As Long
     Public Declare Function ws_select Lib "wsock32.dll" Alias "select" (ByVal nfds As Long, readfds As fd_set, writefds As fd_set, exceptfds As fd_set, timeout As timeval) As Long
     Public Declare Function send Lib "wsock32.dll" (ByVal S As Long, buf As Any, ByVal buflen As Long, ByVal flags As Long) As Long

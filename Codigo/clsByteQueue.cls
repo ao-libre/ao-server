@@ -184,7 +184,7 @@ Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Lon
 '***************************************************
     'Check if there is enough free space
     If queueCapacity - queueLength - dataLength < 0 Then
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
         Exit Function
     End If
     
@@ -218,7 +218,7 @@ Private Function ReadData(ByRef buf() As Byte, ByVal dataLength As Long) As Long
 '***************************************************
     'Check if we can read the number of bytes requested
     If dataLength > queueLength Then
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
         Exit Function
     End If
     
@@ -444,20 +444,20 @@ End Function
 ' Writes a byte array at the end of the queue
 '
 ' @param value The byte array to be written. MUST be Base 0.
-' @param length The number of elements in byte array.
+' @param length The number of elements to copy from the byte array. If less than 0 it will copy the whole array.
 ' @return   The number of bytes written
 ' @remarks  value() MUST be Base 0.
 ' @see PeekBlock
 ' @see ReadBlock
 
-Public Function WriteBlock(ByRef value() As Byte, ByVal length As Long) As Long
+Public Function WriteBlock(ByRef value() As Byte, Optional ByVal length As Long = -1) As Long
 '***************************************************
 'Autor: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 04/27/06
 'Writes a byte array to the queue
 '***************************************************
     'Prevent from copying memory outside the array
-    If length > UBound(value()) + 1 Then length = UBound(value()) + 1
+    If length > UBound(value()) + 1 Or length < 0 Then length = UBound(value()) + 1
     
     WriteBlock = WriteData(value, length)
 End Function
@@ -584,7 +584,7 @@ Public Function ReadASCIIStringFixed(ByVal length As Long) As String
         
         ReadASCIIStringFixed = StrConv(buf, vbUnicode)
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -616,7 +616,7 @@ Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
         
         ReadUnicodeStringFixed = buf
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -661,10 +661,10 @@ Public Function ReadASCIIString() As String
                 ReadASCIIString = StrConv(buf2, vbUnicode)
             End If
         Else
-            Call Err.Raise(NOT_ENOUGH_DATA)
+            Call Err.raise(NOT_ENOUGH_DATA)
         End If
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -706,10 +706,10 @@ Public Function ReadUnicodeString() As String
             
             ReadUnicodeString = buf2
         Else
-            Call Err.Raise(NOT_ENOUGH_DATA)
+            Call Err.raise(NOT_ENOUGH_DATA)
         End If
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -853,7 +853,7 @@ Public Function PeekASCIIStringFixed(ByVal length As Long) As String
         
         PeekASCIIStringFixed = StrConv(buf, vbUnicode)
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -884,7 +884,7 @@ Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
         
         PeekUnicodeStringFixed = buf
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -929,10 +929,10 @@ Public Function PeekASCIIString() As String
                 PeekASCIIString = StrConv(buf3, vbUnicode)
             End If
         Else
-            Call Err.Raise(NOT_ENOUGH_DATA)
+            Call Err.raise(NOT_ENOUGH_DATA)
         End If
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 
@@ -975,10 +975,10 @@ Public Function PeekUnicodeString() As String
             
             PeekUnicodeString = buf3
         Else
-            Call Err.Raise(NOT_ENOUGH_DATA)
+            Call Err.raise(NOT_ENOUGH_DATA)
         End If
     Else
-        Call Err.Raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_DATA)
     End If
 End Function
 

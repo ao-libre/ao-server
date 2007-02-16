@@ -197,7 +197,7 @@ Public Function WndProc(ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As L
 On Error Resume Next
 
 Dim Ret As Long
-Dim Tmp As String
+Dim Tmp() As Byte
 
 Dim S As Long, E As Long
 Dim N As Integer
@@ -272,11 +272,9 @@ Case 1025
         'Call WSAAsyncSelect(s, hWndMsg, ByVal 1025, ByVal (0))
         
         '4k de buffer
-        'buffer externo
-        Tmp = Space$(SIZE_RCVBUF)   'si cambias este valor, tambien hacelo mas abajo
-                            'donde dice ret = 8192 :)
+        ReDim Preserve Tmp(SIZE_RCVBUF - 1) As Byte
         
-        Ret = recv(S, Tmp, Len(Tmp), 0)
+        Ret = recv(S, Tmp(0), SIZE_RCVBUF, 0)
         ' Comparo por = 0 ya que esto es cuando se cierra
         ' "gracefully". (mas abajo)
         If Ret < 0 Then
@@ -304,7 +302,7 @@ Case 1025
         
         'Call WSAAsyncSelect(s, hWndMsg, ByVal 1025, ByVal (FD_READ Or FD_WRITE Or FD_CLOSE Or FD_ACCEPT))
         
-        Tmp = Left$(Tmp, Ret)
+        ReDim Preserve Tmp(Ret - 1) As Byte
         
         'Call LogApiSock("WndProc:FD_READ:N=" & N & ":TMP=" & Tmp)
         
@@ -335,7 +333,7 @@ End Function
 
 'Retorna 0 cuando se envió o se metio en la cola,
 'retorna <> 0 cuando no se pudo enviar o no se pudo meter en la cola
-Public Function WsApiEnviar(ByVal Slot As Integer, ByVal str As String, Optional Encolar As Boolean = True) As Long
+Public Function WsApiEnviar(ByVal Slot As Integer, ByRef str As String, Optional Encolar As Boolean = True) As Long
 #If UsarQueSocket = 1 Then
 
 'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("WsApiEnviar:: slot=" & Slot & " str=" & str & " len(str)=" & Len(str) & " encolar=" & Encolar)
@@ -343,14 +341,24 @@ Public Function WsApiEnviar(ByVal Slot As Integer, ByVal str As String, Optional
 Dim Ret As String
 Dim UltError As Long
 Dim Retorno As Long
+Dim data() As Byte
+
+ReDim Preserve data(Len(str) - 1) As Byte
+
+data = StrConv(str, vbFromUnicode)
+
+#If SeguridadAlkon Then
+    Call security.DataSent(Slot, data)
+#End If
 
 Retorno = 0
 
 'Debug.Print ">>>> " & str
 
+
 If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
     If UserList(Slot).outgoingData.length = 0 Then
-        Ret = send(ByVal UserList(Slot).ConnID, ByVal str, ByVal Len(str), ByVal 0)
+        Ret = send(ByVal UserList(Slot).ConnID, data(0), ByVal UBound(data()) + 1, ByVal 0)
         If Ret < 0 Then
             UltError = Err.LastDllError
             If UltError = WSAEWOULDBLOCK Then
@@ -528,11 +536,16 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 #End If
 End Sub
 
-Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos As String)
+Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos() As Byte)
 #If UsarQueSocket = 1 Then
 
 With UserList(Slot)
-    Call .incomingData.WriteASCIIStringFixed(Datos)
+    
+#If SeguridadAlkon Then
+    Call security.DataReceived(Slot, Datos)
+#End If
+    
+    Call .incomingData.WriteBlock(Datos)
     
     If .ConnID <> -1 Then
         Call HandleIncomingData(Slot)
