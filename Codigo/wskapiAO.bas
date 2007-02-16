@@ -348,7 +348,7 @@ ReDim Preserve data(Len(str) - 1) As Byte
 data = StrConv(str, vbFromUnicode)
 
 #If SeguridadAlkon Then
-    Call security.DataSent(Slot, data)
+    Call Security.DataSent(Slot, data)
 #End If
 
 Retorno = 0
@@ -525,6 +525,10 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         UserList(NewIndex).ConnID = NuevoSock
         UserList(NewIndex).ConnIDValida = True
         
+#If SeguridadAlkon Then
+        Call Security.UserConnected(NewIndex)
+#End If
+        
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
         'tStr = "Server lleno."
@@ -542,7 +546,7 @@ Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos() As Byte)
 With UserList(Slot)
     
 #If SeguridadAlkon Then
-    Call security.DataReceived(Slot, Datos)
+    Call Security.DataReceived(Slot, Datos)
 #End If
     
     Call .incomingData.WriteBlock(Datos)
@@ -564,6 +568,10 @@ Public Sub EventoSockClose(ByVal Slot As Integer)
     'Si estamos acá es porque se cerró la conexión, no es un /salir, y no queremos banearlo....
     If Centinela.RevisandoUserIndex = Slot Then _
         Call modCentinela.CentinelaUserLogout
+    
+#If SeguridadAlkon Then
+    Call Security.UserDisconnected(NewIndex)
+#End If
     
     If UserList(Slot).flags.UserLogged Then
         Call CloseSocketSL(Slot)
