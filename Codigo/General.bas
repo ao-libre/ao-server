@@ -426,7 +426,7 @@ With frmMain
     .npcataca.Enabled = True
     
 #If SeguridadAlkon Then
-    .security.Enabled = True
+    .securityTimer.Enabled = True
 #End If
 End With
 

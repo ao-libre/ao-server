@@ -28,7 +28,7 @@ Begin VB.Form frmMain
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
-   Begin VB.Timer security 
+   Begin VB.Timer securityTimer 
       Enabled         =   0   'False
       Interval        =   2000
       Left            =   960
@@ -839,6 +839,14 @@ Private Sub security_Timer()
 #If SeguridadAlkon Then
     Call Security.SecurityCheck
 #End If
+End Sub
+
+Private Sub securityTimer_Timer()
+
+#If SeguridadAlkon Then
+    Call Security.SecurityCheck
+#End If
+
 End Sub
 
 Private Sub TIMER_AI_Timer()
