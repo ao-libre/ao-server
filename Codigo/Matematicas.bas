@@ -35,39 +35,6 @@ Public Function Porcentaje(ByVal Total As Long, ByVal Porc As Long) As Long
     Porcentaje = (Total * Porc) / 100
 End Function
 
-Public Function SD(ByVal N As Integer) As Integer
-'Call LogTarea("Function SD n:" & n)
-'Suma digitos
-
-Do
-    SD = SD + (N Mod 10)
-    N = N \ 10
-Loop While (N > 0)
-
-End Function
-
-Public Function SDM(ByVal N As Integer) As Integer
-'Call LogTarea("Function SDM n:" & n)
-'Suma digitos cada digito menos dos
-
-Do
-    SDM = SDM + (N Mod 10) - 1
-    N = N \ 10
-Loop While (N > 0)
-
-End Function
-
-Public Function Complex(ByVal N As Integer) As Integer
-'Call LogTarea("Complex")
-
-If N Mod 2 <> 0 Then
-    Complex = N * SD(N)
-Else
-    Complex = N * SDM(N)
-End If
-
-End Function
-
 Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
     'Encuentra la distancia entre dos WorldPos
     Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100)

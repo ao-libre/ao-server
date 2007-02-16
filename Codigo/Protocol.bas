@@ -103,7 +103,6 @@ Private Enum ServerPacketID
     guildList               ' GL
     PlayFireSound           ' FO
     AreaChanged             ' CA
-    ValidateClient          ' VAL
     PauseToggle             ' BKW
     RainToggle              ' LLU
     CreateFX                ' CFX
@@ -1227,7 +1226,7 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 23 Then
+    If UserList(UserIndex).incomingData.length < 21 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -1270,12 +1269,6 @@ On Error GoTo errhandler
     End If
     
     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger())
-    
-    If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> buffer.ReadInteger() Then
-        Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " fallo la validacion del cliente.")
-        Call CloseSocket(UserIndex)
-        Exit Sub
-    End If
     
 #If SeguridadAlkon Then
     If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
@@ -1346,12 +1339,12 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 113 Then
+    If UserList(UserIndex).incomingData.length < 111 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
-    If UserList(UserIndex).incomingData.length < 51 Then
+    If UserList(UserIndex).incomingData.length < 49 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -1420,12 +1413,6 @@ On Error GoTo errhandler
     End If
     
     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger())
-    
-    If ValidarLoginMSG(UserList(UserIndex).flags.ValCoDe) <> buffer.ReadInteger() Then
-        Call LogHackAttemp("IP:" & UserList(UserIndex).ip & " fallo la validacion del cliente.")
-        Call CloseSocket(UserIndex)
-        Exit Sub
-    End If
     
 #If SeguridadAlkon Then
     If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
@@ -3627,7 +3614,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -5245,7 +5232,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -13705,28 +13692,6 @@ Public Sub WriteAreaChanged(ByVal UserIndex As Integer)
         Call .WriteByte(ServerPacketID.AreaChanged)
         Call .WriteByte(UserList(UserIndex).Pos.X)
         Call .WriteByte(UserList(UserIndex).Pos.Y)
-    End With
-End Sub
-
-''
-' Writes the "ValidateClient" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteValidateClient(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Writes the "ValidateClient" message to the given user's outgoing data buffer
-'***************************************************
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.ValidateClient)
-        Call .WriteLong(UserList(UserIndex).RandKey)
-        Call .WriteInteger(UserList(UserIndex).flags.ValCoDe)
-        #If SeguridadAlkon Then
-            Call .WriteASCIIStringFixed(Encriptacion.StringValidacion)
-        #End If
     End With
 End Sub
 

@@ -130,17 +130,6 @@ VersionesActuales = rv
 
 End Function
 
-
-Public Function ValidarLoginMSG(ByVal N As Integer) As Integer
-On Error Resume Next
-Dim AuxInteger As Integer
-Dim AuxInteger2 As Integer
-AuxInteger = SD(N)
-AuxInteger2 = SDM(N)
-ValidarLoginMSG = Complex(AuxInteger + AuxInteger2)
-End Function
-
-
 Sub ReSpawnOrigPosNpcs()
 On Error Resume Next
 
