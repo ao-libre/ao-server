@@ -835,16 +835,10 @@ Next npc
 
 End Sub
 
-Private Sub security_Timer()
-#If SeguridadAlkon Then
-    Call Security.SecurityCheck
-#End If
-End Sub
-
 Private Sub securityTimer_Timer()
 
 #If SeguridadAlkon Then
-    Call Security.SecurityCheck
+    'Call Security.SecurityCheck
 #End If
 
 End Sub

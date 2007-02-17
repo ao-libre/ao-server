@@ -1160,6 +1160,10 @@ Call Statistics.UserConnected(UserIndex)
 
 Call MostrarNumUsers
 
+#If SeguridadAlkon Then
+    Call Security.UserConnected(UserIndex)
+#End If
+
 N = FreeFile
 Open App.Path & "\logs\numusers.log" For Output As N
 Print #N, NumUsers

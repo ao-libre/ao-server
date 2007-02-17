@@ -390,7 +390,7 @@ End Function
 Function CheckForSameName(ByVal UserIndex As Integer, ByVal name As String) As Boolean
 'Controlo que no existan usuarios con el mismo nombre
 Dim LoopC As Long
-For LoopC = 1 To MaxUsers
+For LoopC = 1 To LastUser
     If UserList(LoopC).flags.UserLogged Then
         
         'If UCase$(UserList(LoopC).Name) = UCase$(Name) And UserList(LoopC).ConnID <> -1 Then
@@ -504,14 +504,14 @@ End If
 
 End Function
 
-Sub SendHelp(ByVal Index As Integer)
+Sub SendHelp(ByVal index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
 
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call WriteConsoleMsg(Index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
 Next LoopC
 
 End Sub
@@ -634,8 +634,8 @@ If InMapBounds(Map, X, Y) Then
                     Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).guildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).Desc) > 1 Then
-                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
+                If Len(UserList(TempCharIndex).desc) > 1 Then
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
@@ -732,8 +732,8 @@ If InMapBounds(Map, X, Y) Then
                 End If
             End If
             
-            If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).Desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+            If Len(Npclist(TempCharIndex).desc) > 1 Then
+                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)
@@ -855,24 +855,24 @@ End If
 End Function
 
 '[Barrin 30-11-03]
-Public Function ItemNoEsDeMapa(ByVal Index As Integer) As Boolean
+Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
 
-ItemNoEsDeMapa = ObjData(Index).OBJType <> eOBJType.otPuertas And _
-            ObjData(Index).OBJType <> eOBJType.otForos And _
-            ObjData(Index).OBJType <> eOBJType.otCarteles And _
-            ObjData(Index).OBJType <> eOBJType.otArboles And _
-            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(Index).OBJType <> eOBJType.otTeleport
+ItemNoEsDeMapa = ObjData(index).OBJType <> eOBJType.otPuertas And _
+            ObjData(index).OBJType <> eOBJType.otForos And _
+            ObjData(index).OBJType <> eOBJType.otCarteles And _
+            ObjData(index).OBJType <> eOBJType.otArboles And _
+            ObjData(index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(index).OBJType <> eOBJType.otTeleport
 End Function
 '[/Barrin 30-11-03]
 
-Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
-MostrarCantidad = ObjData(Index).OBJType <> eOBJType.otPuertas And _
-            ObjData(Index).OBJType <> eOBJType.otForos And _
-            ObjData(Index).OBJType <> eOBJType.otCarteles And _
-            ObjData(Index).OBJType <> eOBJType.otArboles And _
-            ObjData(Index).OBJType <> eOBJType.otYacimiento And _
-            ObjData(Index).OBJType <> eOBJType.otTeleport
+Public Function MostrarCantidad(ByVal index As Integer) As Boolean
+MostrarCantidad = ObjData(index).OBJType <> eOBJType.otPuertas And _
+            ObjData(index).OBJType <> eOBJType.otForos And _
+            ObjData(index).OBJType <> eOBJType.otCarteles And _
+            ObjData(index).OBJType <> eOBJType.otArboles And _
+            ObjData(index).OBJType <> eOBJType.otYacimiento And _
+            ObjData(index).OBJType <> eOBJType.otTeleport
 End Function
 
 Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean

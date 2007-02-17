@@ -1226,10 +1226,17 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 21 Then
+#If SeguridadAlkon Then
+    If UserList(UserIndex).incomingData.length < 38 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
+#Else
+    If UserList(UserIndex).incomingData.length < 52 Then
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+#End If
     
 On Error GoTo errhandler
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
@@ -1271,7 +1278,7 @@ On Error GoTo errhandler
     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger())
     
 #If SeguridadAlkon Then
-    If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
+    If Not MD5ok(buffer.ReadASCIIStringFixed(16)) Then
         Call WriteErrorMsg(UserIndex, "El cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
     Else
 #End If
@@ -1339,7 +1346,7 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 111 Then
+    If UserList(UserIndex).incomingData.length < 81 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -1415,7 +1422,7 @@ On Error GoTo errhandler
     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger())
     
 #If SeguridadAlkon Then
-    If Not MD5ok(buffer.ReadASCIIStringFixed(32)) Then
+    If Not MD5ok(buffer.ReadASCIIStringFixed(16)) Then
         Call WriteErrorMsg(UserIndex, "El cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
     Else
 #End If
@@ -3614,7 +3621,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -5232,7 +5239,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
