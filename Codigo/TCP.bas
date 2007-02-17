@@ -796,14 +796,14 @@ ErrorHandler:
 #End If '**********************************************
 
 End Function
-Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
 
 
 Dim X As Integer, Y As Integer
-For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
-        For X = UserList(Index).Pos.X - MinXBorder + 1 To UserList(Index).Pos.X + MinXBorder - 1
+For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(Index).Pos.Map, X, Y).UserIndex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
@@ -1112,7 +1112,7 @@ If UserList(UserIndex).flags.Navegando = 1 Then
     Call WriteNavigateToggle(UserIndex)
 End If
 
-If Criminal(UserIndex) Then
+If criminal(UserIndex) Then
     Call WriteSafeModeOff(UserIndex)
     UserList(UserIndex).flags.Seguro = False
 Else
@@ -1273,7 +1273,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
     With UserList(UserIndex)
         .name = vbNullString
         .modName = vbNullString
-        .Desc = vbNullString
+        .desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
         .Pos.X = 0
@@ -1284,11 +1284,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .genero = 0
         .Hogar = 0
         .raza = 0
-
-        .RandKey = 0
-        .PrevCheckSum = 0
-        .PacketNumber = 0
-
+        
         .EmpoCont = 0
         .PartyIndex = 0
         .PartySolicitud = 0
@@ -1454,7 +1450,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .Cant = 0
+    .cant = 0
     .DestNick = vbNullString
     .DestUsu = 0
     .Objeto = 0

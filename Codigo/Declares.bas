@@ -84,7 +84,7 @@ End Enum
 
 Public Type tLlamadaGM
     Usuario As String * 255
-    Desc As String * 255
+    desc As String * 255
 End Type
 
 Public Enum PlayerType
@@ -146,7 +146,7 @@ End Enum
 Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
-    Desc As String * 255
+    desc As String * 255
     crc As Long
     MagicWord As Long
 End Type
@@ -543,7 +543,7 @@ Public Const STAT_MAXDEF As Byte = 99
 
 Public Type tHechizo
     Nombre As String
-    Desc As String
+    desc As String
     PalabrasMagicas As String
     
     HechizeroMsg As String
@@ -609,7 +609,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    Cant As Integer
+    cant As Integer
 
 '    Materializa As Byte
 '    ItemIndex As Byte
@@ -1048,7 +1048,7 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    Desc As String ' Descripcion
+    desc As String ' Descripcion
     DescRM As String
     
     'CHECK::: CHECKEAR que esto se cargue bien al cargar la charfile tambien...
@@ -1087,9 +1087,9 @@ Public Type User
     
     Faccion As tFacciones
     
-    PrevCheckSum As Long
-    PacketNumber As Long
-    RandKey As Long
+#If SeguridadAlkon Then
+    Security As SecurityData
+#End If
     
     ip As String
     
@@ -1221,7 +1221,7 @@ End Type
 Public Type npc
     name As String
     Char As Char 'Define como se vera
-    Desc As String
+    desc As String
     DescExtra As String
 
     NPCtype As eNPCType

@@ -178,13 +178,13 @@ End Sub
 
 Public Sub BorraSlotSock(ByVal Sock As Long, Optional ByVal CacheIndice As Long)
 #If (UsarQueSocket = 1) Then
-Dim Cant As Long
+Dim cant As Long
 
-Cant = WSAPISock2Usr.Count
+cant = WSAPISock2Usr.Count
 On Error Resume Next
 WSAPISock2Usr.Remove CStr(Sock)
 
-Debug.Print "BorraSockSlot " & Cant & " -> " & WSAPISock2Usr.Count
+Debug.Print "BorraSockSlot " & cant & " -> " & WSAPISock2Usr.Count
 
 #End If
 End Sub
@@ -570,7 +570,7 @@ Public Sub EventoSockClose(ByVal Slot As Integer)
         Call modCentinela.CentinelaUserLogout
     
 #If SeguridadAlkon Then
-    Call Security.UserDisconnected(NewIndex)
+    Call Security.UserDisconnected(Slot)
 #End If
     
     If UserList(Slot).flags.UserLogged Then
