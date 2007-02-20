@@ -1010,6 +1010,7 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
 
+'*Nigo: ToDo> Asignar el Privilegio
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
 UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)
 If EsAdmin(name) Then
@@ -1028,7 +1029,7 @@ Else
     UserList(UserIndex).flags.Privilegios = PlayerType.User
     UserList(UserIndex).flags.AdminPerseguible = True
 End If
-
+'*Nigo: ToDo> Adaptar este if
 If UserList(UserIndex).flags.Privilegios > User Or UserList(UserIndex).flags.EsRolesMaster Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
 Else
@@ -1386,8 +1387,6 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .StartWalk = 0
         .CountSH = 0
         .EstaEmpo = 0
-        .PertAlCons = 0
-        .PertAlConsCaos = 0
         .Silenciado = 0
         .CentinelaOK = False
         .AdminPerseguible = False

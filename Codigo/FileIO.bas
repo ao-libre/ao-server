@@ -202,7 +202,7 @@ frmCargando.cargar.value = 0
 For Hechizo = 1 To NumeroHechizos
 
     Hechizos(Hechizo).Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-    Hechizos(Hechizo).Desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
+    Hechizos(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
     Hechizos(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
     
     Hechizos(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
@@ -721,11 +721,11 @@ For Object = 1 To NumObjDatas
     'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
     Dim i As Integer
     Dim N As Integer
-    Dim s As String
+    Dim S As String
     For i = 1 To NUMCLASES
-        s = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
+        S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
         N = 1
-        Do While UCase$(ListaClases(N)) <> s
+        Do While UCase$(ListaClases(N)) <> S
             N = N + 1
         Loop
         ObjData(Object).ClaseProhibida(i) = N
@@ -806,6 +806,7 @@ UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "U
 'UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
 UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
+'*Nigo: ToDo> Cargar Consejeros Faccionarios
 UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
 UserList(UserIndex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
 
@@ -894,7 +895,7 @@ Else
 End If
 
 
-UserList(UserIndex).Desc = UserFile.GetValue("INIT", "Desc")
+UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
 
 UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
 UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
@@ -1478,6 +1479,7 @@ Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(UserList(UserIndex).flags.Nav
 Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(UserList(UserIndex).flags.Envenenado))
 Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(UserList(UserIndex).flags.Paralizado))
 
+'*Nigo: ToDo> Guardar Consejeros Faccionarios
 Call WriteVar(UserFile, "CONSEJO", "PERTENECE", CStr(UserList(UserIndex).flags.PertAlCons))
 Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", CStr(UserList(UserIndex).flags.PertAlConsCaos))
 
@@ -1524,7 +1526,7 @@ Call WriteVar(UserFile, "INIT", "Genero", UserList(UserIndex).genero)
 Call WriteVar(UserFile, "INIT", "Raza", UserList(UserIndex).raza)
 Call WriteVar(UserFile, "INIT", "Hogar", UserList(UserIndex).Hogar)
 Call WriteVar(UserFile, "INIT", "Clase", UserList(UserIndex).clase)
-Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).Desc)
+Call WriteVar(UserFile, "INIT", "Desc", UserList(UserIndex).desc)
 
 Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading))
 
@@ -1702,7 +1704,7 @@ End If
 
 'General
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
-Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).Desc)
+Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", Npclist(NpcIndex).desc)
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(Npclist(NpcIndex).Char.Head))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(Npclist(NpcIndex).Char.body))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(Npclist(NpcIndex).Char.heading))
@@ -1763,7 +1765,7 @@ End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-Npclist(NpcIndex).Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+Npclist(NpcIndex).desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
 Npclist(NpcIndex).Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
 Npclist(NpcIndex).NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
 

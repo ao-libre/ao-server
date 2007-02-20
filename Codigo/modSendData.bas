@@ -34,7 +34,7 @@ Option Explicit
 
 Public Enum SendTarget
     ToAll = 1
-    ToMap
+    toMap
     ToPCArea
     ToAllButIndex
     ToMapButIndex
@@ -106,7 +106,7 @@ On Error Resume Next
             Next LoopC
             Exit Sub
         
-        Case SendTarget.ToMap
+        Case SendTarget.toMap
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
                     If UserList(LoopC).flags.UserLogged Then
@@ -185,7 +185,7 @@ On Error Resume Next
         Case SendTarget.ToConsejo
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If UserList(LoopC).flags.PertAlCons > 0 Then
+                    If UserList(LoopC).flags.Privilegios And PlayerType.RoyalCouncil Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -195,7 +195,7 @@ On Error Resume Next
         Case SendTarget.ToConsejoCaos
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If UserList(LoopC).flags.PertAlConsCaos > 0 Then
+                    If UserList(LoopC).flags.Privilegios And PlayerType.ChaosCouncil Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -255,6 +255,7 @@ On Error Resume Next
         Case SendTarget.ToCiudadanosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
+                    '*Nigo: ToDo> Adaptar este if
                     If Not criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
@@ -265,6 +266,7 @@ On Error Resume Next
         Case SendTarget.ToCriminalesYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
+                    '*Nigo: ToDo> Adaptar este if
                     If criminal(LoopC) Or UserList(LoopC).flags.EsRolesMaster Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
@@ -275,6 +277,7 @@ On Error Resume Next
         Case SendTarget.ToRealYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
+                    '*Nigo: ToDo> Adaptar este if
                     If UserList(LoopC).Faccion.ArmadaReal = 1 Or UserList(LoopC).flags.EsRolesMaster Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
@@ -285,6 +288,7 @@ On Error Resume Next
         Case SendTarget.ToCaosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
+                    '*Nigo: ToDo> Adaptar este if
                     If UserList(LoopC).Faccion.FuerzasCaos = 1 Or UserList(LoopC).flags.EsRolesMaster Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If

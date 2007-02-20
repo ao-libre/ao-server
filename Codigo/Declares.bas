@@ -88,11 +88,14 @@ Public Type tLlamadaGM
 End Type
 
 Public Enum PlayerType
-    User = 0
-    Consejero = 1
-    SemiDios = 2
-    Dios = 3
-    Admin = 4
+    User = &H1
+    Consejero = &H2
+    SemiDios = &H4
+    Dios = &H8
+    Admin = &H10
+    RoleMaster = &H20
+    ChaosCouncil = &H40
+    RoyalCouncil = &H80
 End Enum
 
 Public Enum eClass
@@ -937,7 +940,6 @@ Public Type UserFlags
     
     StatsChanged As Byte
     Privilegios As PlayerType
-    EsRolesMaster As Boolean
     
     ValCoDe As Integer
     
@@ -966,8 +968,6 @@ Public Type UserFlags
     '[/CDT]
     
     NoActualizado As Boolean
-    PertAlCons As Byte
-    PertAlConsCaos As Byte
     
     Silenciado As Byte
     

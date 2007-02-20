@@ -641,10 +641,10 @@ If InMapBounds(Map, X, Y) Then
                 End If
                 
                                 
-                If UserList(TempCharIndex).flags.PertAlCons > 0 Then
+                If UserList(TempCharIndex).flags.Privilegios And PlayerType.RoyalCouncil Then
                     Stat = Stat & " [CONSEJO DE BANDERBILL]"
                     ft = FontTypeNames.FONTTYPE_CONSEJOVesA
-                ElseIf UserList(TempCharIndex).flags.PertAlConsCaos > 0 Then
+                ElseIf UserList(TempCharIndex).flags.Privilegios And PlayerType.ChaosCouncil Then
                     Stat = Stat & " [CONSEJO DE LAS SOMBRAS]"
                     ft = FontTypeNames.FONTTYPE_CONSEJOCAOSVesA
                 Else

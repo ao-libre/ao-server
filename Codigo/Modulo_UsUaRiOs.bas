@@ -42,7 +42,7 @@ Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer)
 
 Dim DaExp As Integer
 Dim EraCriminal As Boolean
-EraCriminal = Criminal(AttackerIndex)
+EraCriminal = criminal(AttackerIndex)
 
 DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
@@ -57,7 +57,7 @@ Call WriteConsoleMsg(AttackerIndex, "Has ganado " & DaExp & " puntos de experien
 Call WriteConsoleMsg(AttackerIndex, UserList(AttackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
 
 If TriggerZonaPelea(VictimIndex, AttackerIndex) <> TRIGGER6_PERMITE Then
-    If (Not Criminal(VictimIndex)) Then
+    If (Not criminal(VictimIndex)) Then
          UserList(AttackerIndex).Reputacion.AsesinoRep = UserList(AttackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
          If UserList(AttackerIndex).Reputacion.AsesinoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.AsesinoRep = MAXREP
@@ -78,9 +78,9 @@ If UserList(AttackerIndex).Stats.UsuariosMatados < 32000 Then _
 
 Call FlushBuffer(VictimIndex)
 
-If EraCriminal And Not Criminal(AttackerIndex) Then
+If EraCriminal And Not criminal(AttackerIndex) Then
     Call RefreshCharStatus(AttackerIndex)
-ElseIf Not EraCriminal And Criminal(AttackerIndex) Then
+ElseIf Not EraCriminal And criminal(AttackerIndex) Then
     Call RefreshCharStatus(AttackerIndex)
 End If
 
@@ -225,19 +225,19 @@ On Local Error GoTo hayerror
         Dim bCr As Byte
         Dim SendPrivilegios As Byte
         
-        bCr = Criminal(UserIndex)
+        bCr = criminal(UserIndex)
         
         If LenB(klan) <> 0 Then
             If Not toMap Then
                 If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                     If UserList(UserIndex).showName Then
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
                         'Hide the name and clan
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
                     End If
                 Else
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoyalCouncil, 4, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.ChaosCouncil, 6, 0)))
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
@@ -247,12 +247,12 @@ On Local Error GoTo hayerror
             If Not toMap Then
                 If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
                     If UserList(UserIndex).showName Then
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
                     Else
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.EsRolesMaster, 5, UserList(UserIndex).flags.Privilegios))
+                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
                     End If
                 Else
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.PertAlCons = 1, 4, IIf(UserList(UserIndex).flags.PertAlConsCaos = 1, 6, 0)))
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoyalCouncil, 4, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.ChaosCouncil, 6, 0)))
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
@@ -1184,7 +1184,7 @@ End Function
 Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
 If Npclist(NpcIndex).MaestroUser > 0 Then
-        EsMascotaCiudadano = Not Criminal(Npclist(NpcIndex).MaestroUser)
+        EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
         If EsMascotaCiudadano Then
             Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "¡¡" & UserList(UserIndex).name & " esta atacando tu mascota!!", FontTypeNames.FONTTYPE_INFO)
         End If
@@ -1200,7 +1200,7 @@ Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '**********************************************
 
 Dim EraCriminal As Boolean
-EraCriminal = Criminal(UserIndex)
+EraCriminal = criminal(UserIndex)
 
 'Guardamos el usuario que ataco el npc
 Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
@@ -1239,9 +1239,9 @@ Else
     
 End If
 
-If EraCriminal And Not Criminal(UserIndex) Then
+If EraCriminal And Not criminal(UserIndex) Then
     Call RefreshCharStatus(UserIndex)
-ElseIf Not EraCriminal And Criminal(UserIndex) Then
+ElseIf Not EraCriminal And criminal(UserIndex) Then
     Call RefreshCharStatus(UserIndex)
 End If
 
@@ -1376,7 +1376,7 @@ On Error GoTo ErrorHandler
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
         ' << Si es newbie no pierde el inventario >>
-        If Not EsNewbie(UserIndex) Or Criminal(UserIndex) Then
+        If Not EsNewbie(UserIndex) Or criminal(UserIndex) Then
             Call TirarTodo(UserIndex)
         Else
             If EsNewbie(UserIndex) Then Call TirarTodosLosItemsNoNewbies(UserIndex)
@@ -1493,7 +1493,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     
     If TriggerZonaPelea(Muerto, Atacante) = TRIGGER6_PERMITE Then Exit Sub
     
-    If Criminal(Muerto) Then
+    If criminal(Muerto) Then
         If UserList(Atacante).flags.LastCrimMatado <> UserList(Muerto).name Then
             UserList(Atacante).flags.LastCrimMatado = UserList(Muerto).name
             If UserList(Atacante).Faccion.CriminalesMatados < MAXUSERMATADOS Then _
