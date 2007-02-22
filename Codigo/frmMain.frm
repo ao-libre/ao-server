@@ -30,7 +30,7 @@ Begin VB.Form frmMain
    WindowState     =   1  'Minimized
    Begin VB.Timer securityTimer 
       Enabled         =   0   'False
-      Interval        =   2000
+      Interval        =   4000
       Left            =   960
       Top             =   60
    End
@@ -838,7 +838,7 @@ End Sub
 Private Sub securityTimer_Timer()
 
 #If SeguridadAlkon Then
-    'Call Security.SecurityCheck
+    Call Security.SecurityCheck
 #End If
 
 End Sub

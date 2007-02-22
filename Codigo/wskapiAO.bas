@@ -356,22 +356,19 @@ Retorno = 0
 
 
 If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
-    If UserList(Slot).outgoingData.length = 0 Then
-        Ret = send(ByVal UserList(Slot).ConnID, data(0), ByVal UBound(data()) + 1, ByVal 0)
-        If Ret < 0 Then
-            UltError = Err.LastDllError
-            If UltError = WSAEWOULDBLOCK Then
-                UserList(Slot).SockPuedoEnviar = False
-                Call UserList(Slot).outgoingData.WriteASCIIStringFixed(str)
-            End If
-            Retorno = UltError
-        End If
-    Else
-        If UserList(Slot).Counters.IdleCount < MAX_TIEMPOIDLE_COLALLENA Then
+    Ret = send(ByVal UserList(Slot).ConnID, data(0), ByVal UBound(data()) + 1, ByVal 0)
+    If Ret < 0 Then
+        UltError = Err.LastDllError
+        If UltError = WSAEWOULDBLOCK Then
+            UserList(Slot).SockPuedoEnviar = False
+            
+#If SeguridadAlkon Then
+            Call Security.DataStored(Slot)
+#End If
+            
             Call UserList(Slot).outgoingData.WriteASCIIStringFixed(str)
-        Else
-            Retorno = -1
         End If
+        Retorno = UltError
     End If
 ElseIf UserList(Slot).ConnID <> -1 And Not UserList(Slot).ConnIDValida Then
     If Not UserList(Slot).Counters.Saliendo Then

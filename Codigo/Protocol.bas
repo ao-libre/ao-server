@@ -453,6 +453,7 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error Resume Next
+    Debug.Print UserList(UserIndex).incomingData.PeekByte()
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
@@ -1227,12 +1228,12 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 '
 '***************************************************
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 38 Then
+    If UserList(UserIndex).incomingData.length < 68 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
-    If UserList(UserIndex).incomingData.length < 52 Then
+    If UserList(UserIndex).incomingData.length < 22 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -5018,7 +5019,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         
         Call WriteMeditateToggle(UserIndex)
         
-        If Not .flags.Meditando Then _
+        If .flags.Meditando Then _
            Call WriteConsoleMsg(UserIndex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
         
         .flags.Meditando = Not .flags.Meditando
@@ -5053,7 +5054,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
             
             .Char.FX = 0
             .Char.loops = 0
-            Call SendData(SendTarget.toMap, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
         End If
     End With
 End Sub
@@ -11222,10 +11223,13 @@ Public Sub HandleCheckSlot(ByVal UserIndex As Integer)
 'Last Modification: 26/01/2007
 'Check one Users Slot in Particular from Inventory
 '***************************************************
-'*Nigo: ToDo> Definir y Aplicar Restriccion
+    If UserList(UserIndex).incomingData.length < 4 Then
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
 On Error GoTo errhandler
     With UserList(UserIndex)
-
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
@@ -11235,11 +11239,11 @@ On Error GoTo errhandler
         
         'Reads the UserName and Slot Packets
         Dim UserName As String
-        Dim Slot As Integer
+        Dim Slot As Byte
         Dim tIndex As Integer
         
         UserName = buffer.ReadASCIIString() 'Que UserName?
-        Slot = buffer.ReadInteger() 'Que Slot?
+        Slot = buffer.ReadByte() 'Que Slot?
         tIndex = NameIndex(UserName)  'Que user index?
         
         Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName, False)
@@ -11260,10 +11264,8 @@ On Error GoTo errhandler
 
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
-    
     End With
     
-                
 errhandler:
     Dim error As Long
     error = Err.Number
