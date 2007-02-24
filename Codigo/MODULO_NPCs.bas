@@ -77,7 +77,7 @@ On Error GoTo errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
-    EraCriminal = Criminal(UserIndex)
+    EraCriminal = criminal(UserIndex)
    
     If (esPretoriano(NpcIndex) = 4) Then
         'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
@@ -171,7 +171,7 @@ On Error GoTo errhandler
             If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
                 UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         End If
-        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
         
         Call CheckUserLevel(UserIndex)
     End If ' Userindex > 0
@@ -187,9 +187,9 @@ On Error GoTo errhandler
     'ReSpawn o no
     Call ReSpawnNpc(MiNPC)
    
-    If EraCriminal And Not Criminal(UserIndex) Then
+    If EraCriminal And Not criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
-    ElseIf Not EraCriminal And Criminal(UserIndex) Then
+    ElseIf Not EraCriminal And criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
 
@@ -479,8 +479,8 @@ Dim Y As Integer
     Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
 
 End Sub
-'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub MakeNPCChar(ByRef toMap As Boolean, sndIndex As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+
+Sub MakeNPCChar(ByVal toMap As Boolean, sndIndex As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 Dim CharIndex As Integer
 
     If Npclist(NpcIndex).Char.CharIndex = 0 Then

@@ -874,7 +874,7 @@ Dim GI As Integer
     'listen to no guild at all
     If LenB(GuildName) = 0 And UserList(UserIndex).EscucheClan <> 0 Then
         'Quit listening to previous guild!!
-        Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD) 'CHECK: EscucheClan debe ser el guildindex del clan...
+        Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD)
         guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
         Exit Function
     End If
@@ -890,7 +890,7 @@ Dim GI As Integer
                 Exit Function
             Else
                 'Quit listening to previous guild!!
-                Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD) 'CHECK: EscucheClan debe ser el guildindex del clan...
+                Call WriteConsoleMsg(UserIndex, "Dejas de escuchar a : " & guilds(UserList(UserIndex).EscucheClan).GuildName, FontTypeNames.FONTTYPE_GUILD)
                 guilds(UserList(UserIndex).EscucheClan).DesconectarGM (UserIndex)
             End If
         End If

@@ -7969,8 +7969,6 @@ On Error GoTo errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                    
-                        'CHECK: ESTO NO VA A FUNCIONAR SI NO LO CAMBIO, MAS LO DEJO PARA DESPUES
                         If Len(Arg1) > 1 Then
                             UserList(tUser).clase = UCase$(Left$(Arg1, 1)) & LCase$(mid$(Arg1, 2))
                         Else
@@ -7979,12 +7977,12 @@ On Error GoTo errhandler
                     End If
                 
                 Case eEditOptions.eo_Skills
-                    Dim N As Byte 'CHECK: a yo del futuro: chequear bien esto..
+                    Dim N As Byte
                     
                     For LoopC = 1 To NUMSKILLS
                         If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
                     Next LoopC
-
+                    
                     If N = 0 Then
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
@@ -9031,7 +9029,6 @@ On Error GoTo errhandler
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
             Else
-                '*Nigo: ToDo> Adaptar este if
                 If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Or _
                   (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) Then
                     Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
@@ -9479,12 +9476,12 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         
         With MapData(mapa, X, Y)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y, False) 'CHECK: Tengan cuidado con los With Anidados..
+                Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y, False)
                 
-                Call EraseObj(True, mapa, .ObjInfo.amount, mapa, X, Y)
+                Call EraseObj(mapa, .ObjInfo.amount, mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
-                    Call EraseObj(True, .TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                    Call EraseObj(.TileExit.Map, 1, .TileExit.Map, .TileExit.X, .TileExit.Y)
                 End If
                 
                 .TileExit.Map = 0
@@ -9939,7 +9936,7 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
                         If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
-                            Call EraseObj(True, .Pos.Map, 10000, .Pos.Map, X, Y)
+                            Call EraseObj(.Pos.Map, 10000, .Pos.Map, X, Y)
                         End If
                     End If
                 End If
@@ -10723,7 +10720,7 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        Call EraseObj(True, .Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
+        Call EraseObj(.Pos.Map, 10000, .Pos.Map, .Pos.X, .Pos.Y)
     End With
 End Sub
 
@@ -11201,12 +11198,13 @@ Public Sub HandleIgnored(ByVal UserIndex As Integer)
 'Last Modification: 12/23/06
 'Ignore the user
 '***************************************************
-    '*Nigo: ToDo> Definir y Aplicar Restriccion
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        .flags.AdminPerseguible = Not .flags.AdminPerseguible
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
+            .flags.AdminPerseguible = Not .flags.AdminPerseguible
+        End If
     End With
 End Sub
 

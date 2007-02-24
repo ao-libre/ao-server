@@ -337,8 +337,8 @@ If num > 0 Then
 End If
 
 End Sub
-'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub EraseObj(ByRef toMap As Boolean, ByVal sndIndex As Integer, ByVal num As Integer, ByVal Map As Byte, ByVal X As Integer, ByVal Y As Integer)
+
+Sub EraseObj(ByVal sndIndex As Integer, ByVal num As Integer, ByVal Map As Byte, ByVal X As Integer, ByVal Y As Integer)
 
 MapData(Map, X, Y).ObjInfo.amount = MapData(Map, X, Y).ObjInfo.amount - num
 
@@ -346,11 +346,7 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
     MapData(Map, X, Y).ObjInfo.ObjIndex = 0
     MapData(Map, X, Y).ObjInfo.amount = 0
     
-    If toMap Then
-        Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
-    Else
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageObjectDelete(X, Y))
-    End If
+    Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
 End If
 
 End Sub
@@ -446,7 +442,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
             Call WriteConsoleMsg(UserIndex, "No puedo cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
         Else
             'Quitamos el objeto
-            Call EraseObj(True, UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+            Call EraseObj(UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
         End If
         

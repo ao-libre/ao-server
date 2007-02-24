@@ -1603,7 +1603,6 @@ errhandler:
 End Sub
 
 Public Sub EnviarNoche(ByVal UserIndex As Integer)
-    'CHECK: Lo arregle, ahora, esta bien lo que hace?.. no me enterare hoy...
     Call WriteSendNight(UserIndex, IIf(DeNoche And (MapInfo(UserList(UserIndex).Pos.Map).Zona = Campo Or MapInfo(UserList(UserIndex).Pos.Map).Zona = Ciudad), True, False))
     Call WriteSendNight(UserIndex, IIf(DeNoche, True, False))
 End Sub

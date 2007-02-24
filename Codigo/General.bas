@@ -169,7 +169,7 @@ Dim i As Integer
 For i = 1 To TrashCollector.Count
     Dim d As cGarbage
     Set d = TrashCollector(1)
-    Call EraseObj(True, d.Map, 1, d.Map, d.X, d.Y)
+    Call EraseObj(d.Map, 1, d.Map, d.X, d.Y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
 Next i
@@ -313,7 +313,6 @@ ListaClases(eClass.Blacksmith) = "Herrero"
 ListaClases(eClass.Lumberjack) = "Leñador"
 ListaClases(eClass.Miner) = "Minero"
 ListaClases(eClass.Carpenter) = "Carpintero"
-'ListaClases(eClass.) = "Sastre" 'CHECK: El sastre no esta
 ListaClases(eClass.Pirat) = "Pirata"
 
 SkillsNames(eSkill.Suerte) = "Suerte"

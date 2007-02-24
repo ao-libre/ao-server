@@ -1440,7 +1440,7 @@ Dim OldUserHead As Long
 
 
 'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-'CHECK: clase=0 es el error, porq el enum empieza de 1!!
+'clase=0 es el error, porq el enum empieza de 1!!
 If UserList(UserIndex).clase = 0 Or UserList(UserIndex).Stats.ELV = 0 Then
     Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & UserList(UserIndex).name)
     Exit Sub

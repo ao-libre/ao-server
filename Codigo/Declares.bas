@@ -612,7 +612,7 @@ Public Type tHechizo
     
     Invoca As Byte
     NumNpc As Integer
-    cant As Integer
+    Cant As Integer
 
 '    Materializa As Byte
 '    ItemIndex As Byte
@@ -1051,7 +1051,6 @@ Public Type User
     desc As String ' Descripcion
     DescRM As String
     
-    'CHECK::: CHECKEAR que esto se cargue bien al cargar la charfile tambien...
     clase As eClass
     raza As eRaza
     genero As eGenero
