@@ -806,9 +806,11 @@ UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "U
 'UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
 UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
-'*Nigo: ToDo> Cargar Consejeros Faccionarios
-UserList(UserIndex).flags.PertAlCons = CByte(UserFile.GetValue("CONSEJO", "PERTENECE"))
-UserList(UserIndex).flags.PertAlConsCaos = CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS"))
+If CByte(UserFile.GetValue("CONSEJO", "PERTENECE")) Then _
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.RoyalCouncil
+
+If CByte(UserFile.GetValue("CONSEJO", "PERTENECECAOS")) Then _
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.ChaosCouncil
 
 End Sub
 
@@ -1479,9 +1481,8 @@ Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(UserList(UserIndex).flags.Nav
 Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(UserList(UserIndex).flags.Envenenado))
 Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(UserList(UserIndex).flags.Paralizado))
 
-'*Nigo: ToDo> Guardar Consejeros Faccionarios
-Call WriteVar(UserFile, "CONSEJO", "PERTENECE", CStr(UserList(UserIndex).flags.PertAlCons))
-Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", CStr(UserList(UserIndex).flags.PertAlConsCaos))
+Call WriteVar(UserFile, "CONSEJO", "PERTENECE", IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoyalCouncil, "1", "0"))
+Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", IIf(UserList(UserIndex).flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
 
 
 Call WriteVar(UserFile, "COUNTERS", "Pena", CStr(UserList(UserIndex).Counters.Pena))

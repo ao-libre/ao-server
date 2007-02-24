@@ -194,7 +194,7 @@ If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
 End If
 
 End Sub
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub TieneObjetos")
 
 Dim i As Integer
@@ -205,14 +205,14 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next i
 
-If Cant <= Total Then
+If cant <= Total Then
     TieneObjetos = True
     Exit Function
 End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal Cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
@@ -221,18 +221,18 @@ For i = 1 To MAX_INVENTORY_SLOTS
         
         Call Desequipar(UserIndex, i)
         
-        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - Cant
+        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - cant
         If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
-            Cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
+            cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
             UserList(UserIndex).Invent.Object(i).amount = 0
             UserList(UserIndex).Invent.Object(i).ObjIndex = 0
         Else
-            Cant = 0
+            cant = 0
         End If
         
         Call UpdateUserInv(False, UserIndex, i)
         
-        If (Cant = 0) Then
+        If (cant = 0) Then
             QuitarObjetos = True
             Exit Function
         End If
@@ -531,11 +531,11 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
-        Dim Index As Integer
+        Dim index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
-        Index = FreeMascotaIndex(UserIndex)
-        UserList(UserIndex).MascotasIndex(Index) = NpcIndex
-        UserList(UserIndex).MascotasType(Index) = Npclist(NpcIndex).Numero
+        index = FreeMascotaIndex(UserIndex)
+        UserList(UserIndex).MascotasIndex(index) = NpcIndex
+        UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
@@ -641,7 +641,7 @@ If exito = 1 Then
     
     Call WriteConsoleMsg(UserIndex, "Has hecho " & Obj.amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-    Call MakeObj(True, Map, Obj, Map, X, Y)
+    Call MakeObj(Map, Obj, Map, X, Y)
     
     'Seteamos la fogata como el nuevo TargetObj del user
     UserList(UserIndex).flags.TargetObj = FOGATA_APAG
@@ -867,7 +867,7 @@ If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
         Call FlushBuffer(VictimaIndex)
     End If
 
-    If Not Criminal(LadrOnIndex) Then
+    If Not criminal(LadrOnIndex) Then
         Call VolverCriminal(LadrOnIndex)
     End If
     
@@ -1181,7 +1181,7 @@ UserList(UserIndex).Counters.IdleCount = 0
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim Cant As Integer
+Dim cant As Integer
 
 'Barrin 3/10/03
 'Esperamos a que se termine de concentrar
@@ -1239,13 +1239,13 @@ End If
 res = RandomNumber(1, Suerte)
 
 If res = 1 Then
-    Cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + Cant
+    cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, 3)
+    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
     
     If Not UserList(UserIndex).flags.UltimoMensaje = 22 Then
-        Call WriteConsoleMsg(UserIndex, "¡Has recuperado " & Cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "¡Has recuperado " & cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
         UserList(UserIndex).flags.UltimoMensaje = 22
     End If
     

@@ -1010,27 +1010,30 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
 
-'*Nigo: ToDo> Asignar el Privilegio
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
-UserList(UserIndex).flags.EsRolesMaster = EsRolesMaster(name)
 If EsAdmin(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Admin
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsDios(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Dios
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Dios
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsSemiDios(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.SemiDios
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.SemiDios
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
 ElseIf EsConsejero(name) Then
-    UserList(UserIndex).flags.Privilegios = PlayerType.Consejero
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Consejero
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
 Else
-    UserList(UserIndex).flags.Privilegios = PlayerType.User
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.User
     UserList(UserIndex).flags.AdminPerseguible = True
 End If
-'*Nigo: ToDo> Adaptar este if
-If UserList(UserIndex).flags.Privilegios > User Or UserList(UserIndex).flags.EsRolesMaster Then
+
+'Add RM flag if needed
+If EsRolesMaster(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.RoleMaster
+End If
+
+If UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> PlayerType.ChaosCouncil And UserList(UserIndex).flags.Privilegios <> PlayerType.RoyalCouncil Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
 Else
     UserList(UserIndex).flags.ChatColor = vbWhite
@@ -1376,7 +1379,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .Maldicion = 0
         .Bendicion = 0
         .Meditando = 0
-        .Privilegios = PlayerType.User
+        .Privilegios = 0
         .PuedeMoverse = 0
         .OldBody = 0
         .OldHead = 0
@@ -1453,7 +1456,7 @@ Call ResetUserBanco(UserIndex)
 
 With UserList(UserIndex).ComUsu
     .Acepto = False
-    .cant = 0
+    .Cant = 0
     .DestNick = vbNullString
     .DestUsu = 0
     .Objeto = 0

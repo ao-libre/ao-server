@@ -318,7 +318,7 @@ If num > 0 Then
         
         Obj.amount = num
         
-        Call MakeObj(True, Map, Obj, Map, X, Y)
+        Call MakeObj(Map, Obj, Map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
         Call UpdateUserInv(False, UserIndex, Slot)
         
@@ -354,8 +354,8 @@ If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
 End If
 
 End Sub
-'CHECK: Mando el booleano ByRef, para que no se equivoquen mandando un Byte, u otro valor q se pueda transformar a boolean, y la subrutina se los tome como que esta bien (liquid)
-Sub MakeObj(ByRef toMap As Boolean, ByVal sndIndex As Integer, Obj As Obj, Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+
+Sub MakeObj(ByVal sndIndex As Integer, Obj As Obj, Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
@@ -364,11 +364,7 @@ If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
     Else
         MapData(Map, X, Y).ObjInfo = Obj
         
-        If toMap Then
-            Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
-        Else
-            Call SendData(SendTarget.toMap, sndIndex, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
-        End If
+        Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
     End If
 End If
 
@@ -1236,13 +1232,13 @@ If Cantidad > 0 Then _
 
 End Sub
 
-Public Function ItemSeCae(ByVal Index As Integer) As Boolean
+Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
-ItemSeCae = (ObjData(Index).Real <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            (ObjData(Index).Caos <> 1 Or ObjData(Index).NoSeCae = 0) And _
-            ObjData(Index).OBJType <> eOBJType.otLlaves And _
-            ObjData(Index).OBJType <> eOBJType.otBarcos And _
-            ObjData(Index).NoSeCae = 0
+ItemSeCae = (ObjData(index).Real <> 1 Or ObjData(index).NoSeCae = 0) And _
+            (ObjData(index).Caos <> 1 Or ObjData(index).NoSeCae = 0) And _
+            ObjData(index).OBJType <> eOBJType.otLlaves And _
+            ObjData(index).OBJType <> eOBJType.otBarcos And _
+            ObjData(index).NoSeCae = 0
 
 
 End Function
