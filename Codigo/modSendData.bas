@@ -205,7 +205,7 @@ On Error Resume Next
         Case SendTarget.ToRolesMasters
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If UserList(LoopC).flags.EsRolesMaster Then
+                    If UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If

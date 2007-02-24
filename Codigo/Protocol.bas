@@ -7863,7 +7863,12 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(UserName)
+        If UCase$(UserName) = "YO" Then
+            tUser = UserIndex
+        Else
+            tUser = NameIndex(UserName)
+        End If
+        
         opcion = buffer.ReadByte()
         Arg1 = buffer.ReadASCIIString()
         Arg2 = buffer.ReadASCIIString()
@@ -7891,8 +7896,8 @@ On Error GoTo errhandler
                             opcion = eEditOptions.eo_Class Or _
                             opcion = eEditOptions.eo_Skills
             End Select
-            '*Nigo: ToDo> Adaptar este if
-        ElseIf .flags.Privilegios >= PlayerType.Dios Then   'Si no es RM debe ser dios para poder usar este comando
+            
+        ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then   'Si no es RM debe ser dios para poder usar este comando
             valido = True
         End If
         
@@ -8093,19 +8098,20 @@ On Error GoTo errhandler
         targetName = buffer.ReadASCIIString()
         targetIndex = NameIndex(targetName)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         
-        'Actually: is the player offline?
-        If targetIndex <= 0 Then
-            'don't allow to retrieve administrator's info
-            If Not (EsDios(targetName) Or EsAdmin(targetName)) Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline, Buscando en Charfile.", FontTypeNames.FONTTYPE_INFO)
-                SendUserStatsTxtOFF UserIndex, targetName
-            End If
-        Else
-            'don't allow to retrieve administrator's info
-            If UserList(targetIndex).flags.Privilegios And (PlayerType.User + PlayerType.Consejero + PlayerType.SemiDios) Then
-                SendUserStatsTxt UserIndex, targetIndex
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            'Actually: is the player offline?
+            If targetIndex <= 0 Then
+                'don't allow to retrieve administrator's info
+                If Not (EsDios(targetName) Or EsAdmin(targetName)) Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline, Buscando en Charfile.", FontTypeNames.FONTTYPE_INFO)
+                    SendUserStatsTxtOFF UserIndex, targetName
+                End If
+            Else
+                'don't allow to retrieve administrator's info
+                If UserList(targetIndex).flags.Privilegios And (PlayerType.User + PlayerType.Consejero + PlayerType.SemiDios) Then
+                    SendUserStatsTxt UserIndex, targetIndex
+                End If
             End If
         End If
         
@@ -8154,8 +8160,7 @@ On Error GoTo errhandler
         Dim tUser As Integer
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             Call LogGM(.name, "/STAT " & UserName, False)
             
             tUser = NameIndex(UserName)
@@ -8216,16 +8221,16 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
-        
-        Call LogGM(.name, "/BAL " & UserName, False)
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            Call LogGM(.name, "/BAL " & UserName, False)
             
-            Call SendUserOROTxtFromChar(UserIndex, UserName)
-        Else
-            Call WriteConsoleMsg(UserIndex, "El usuario " & UserName & " tiene " & UserList(tUser).Stats.Banco & " en el banco", FontTypeNames.FONTTYPE_TALK)
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+                
+                Call SendUserOROTxtFromChar(UserIndex, UserName)
+            Else
+                Call WriteConsoleMsg(UserIndex, "El usuario " & UserName & " tiene " & UserList(tUser).Stats.Banco & " en el banco", FontTypeNames.FONTTYPE_TALK)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8275,16 +8280,17 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         
-        Call LogGM(.name, "/INV " & UserName, False)
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            Call LogGM(.name, "/INV " & UserName, False)
             
-            Call SendUserInvTxtFromChar(UserIndex, UserName)
-        Else
-            Call SendUserInvTxt(UserIndex, tUser)
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
+                
+                Call SendUserInvTxtFromChar(UserIndex, UserName)
+            Else
+                Call SendUserInvTxt(UserIndex, tUser)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8334,18 +8340,19 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         
-        Call LogGM(.name, "/BOV " & UserName, False)
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            Call LogGM(.name, "/BOV " & UserName, False)
             
-            Call SendUserBovedaTxtFromChar(UserIndex, UserName)
-        Else
-            Call SendUserBovedaTxt(UserIndex, tUser)
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+                
+                Call SendUserBovedaTxtFromChar(UserIndex, UserName)
+            Else
+                Call SendUserBovedaTxt(UserIndex, tUser)
+            End If
         End If
-    
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
@@ -8395,25 +8402,26 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         
-        Call LogGM(.name, "/STATS " & UserName, False)
-        
-        If tUser <= 0 Then
-            If (InStrB(UserName, "\") <> 0) Then
-                    UserName = Replace(UserName, "\", "")
-            End If
-            If (InStrB(UserName, "/") <> 0) Then
-                    UserName = Replace(UserName, "/", "")
-            End If
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            Call LogGM(.name, "/STATS " & UserName, False)
             
-            For LoopC = 1 To NUMSKILLS
-                message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
-            Next LoopC
-            
-            Call WriteConsoleMsg(UserIndex, message & "CHAR> Libres:" & GetVar(CharPath & UserName & ".chr", "STATS", "SKILLPTSLIBRES"), FontTypeNames.FONTTYPE_INFO)
-        Else
-            Call SendUserSkillsTxt(UserIndex, tUser)
+            If tUser <= 0 Then
+                If (InStrB(UserName, "\") <> 0) Then
+                        UserName = Replace(UserName, "\", "")
+                End If
+                If (InStrB(UserName, "/") <> 0) Then
+                        UserName = Replace(UserName, "/", "")
+                End If
+                
+                For LoopC = 1 To NUMSKILLS
+                    message = message & "CHAR>" & SkillsNames(LoopC) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & LoopC) & vbCrLf
+                Next LoopC
+                
+                Call WriteConsoleMsg(UserIndex, message & "CHAR> Libres:" & GetVar(CharPath & UserName & ".chr", "STATS", "SKILLPTSLIBRES"), FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call SendUserSkillsTxt(UserIndex, tUser)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8463,33 +8471,34 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         
-        If UCase$(UserName) <> "YO" Then
-            tUser = NameIndex(UserName)
-        Else
-            tUser = UserIndex
-        End If
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-        Else
-            With UserList(tUser)
-                .flags.Muerto = 0
-                .Stats.MinHP = .Stats.MaxHP
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            If UCase$(UserName) <> "YO" Then
+                tUser = NameIndex(UserName)
+            Else
+                tUser = UserIndex
+            End If
+            
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+            Else
+                With UserList(tUser)
+                    .flags.Muerto = 0
+                    .Stats.MinHP = .Stats.MaxHP
+                    
+                    Call DarCuerpoDesnudo(tUser)
+                    
+                    Call ChangeUserChar(SendTarget.toMap, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                End With
                 
-                Call DarCuerpoDesnudo(tUser)
+                Call WriteUpdateHP(tUser)
                 
-                Call ChangeUserChar(SendTarget.toMap, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
-            End With
-            
-            Call WriteUpdateHP(tUser)
-            
-            Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
-            
-            Call FlushBuffer(tUser)
-            
-            Call LogGM(.name, "Resucito a " & UserName, False)
+                Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
+                
+                Call FlushBuffer(tUser)
+                
+                Call LogGM(.name, "Resucito a " & UserName, False)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8615,8 +8624,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             tUser = NameIndex(UserName)
             
             If tUser > 0 Then
@@ -8672,22 +8680,25 @@ On Error GoTo errhandler
         
         Dim UserName As String
         Dim tUser As Integer
+        Dim rank As Integer
+        
+        rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
-        tUser = NameIndex(UserName)
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
-        Else
-            '*Nigo: ToDo> Adaptar este if
-            If UserList(tUser).flags.Privilegios > .flags.Privilegios Then
-                Call WriteConsoleMsg(UserIndex, "No podes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            tUser = NameIndex(UserName)
+            
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
-                Call CloseSocket(tUser)
-                Call LogGM(.name, "Echo a " & UserName, False)
+                If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
+                    Call WriteConsoleMsg(UserIndex, "No podes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
+                    Call CloseSocket(tUser)
+                    Call LogGM(.name, "Echo a " & UserName, False)
+                End If
             End If
         End If
         
@@ -8737,8 +8748,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             tUser = NameIndex(UserName)
             
             If tUser > 0 Then
@@ -8800,12 +8810,14 @@ On Error GoTo errhandler
         Dim reason As String
         Dim userPriv As Byte
         Dim cantPenas As Byte
+        Dim rank As Integer
+        
+        rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
             
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
@@ -8814,8 +8826,7 @@ On Error GoTo errhandler
                 If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                     userPriv = UserDarPrivilegioLevel(UserName)
                     
-                    '*Nigo: ToDo> Adaptar este if
-                    If userPriv > .flags.Privilegios Then
+                    If (userPriv And rank) > (.flags.Privilegios And rank) Then
                         Call WriteConsoleMsg(UserIndex, "No podes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban") <> "0" Then
@@ -8830,8 +8841,8 @@ On Error GoTo errhandler
                             cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
-                            '*Nigo: ToDo> Adaptar este if
-                            If userPriv = .flags.Privilegios Then
+                            
+                            If (userPriv And rank) = (.flags.Privilegios And rank) Then
                                 .flags.Ban = 1
                                 Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                                 Call CloseSocket(UserIndex)
@@ -8844,11 +8855,8 @@ On Error GoTo errhandler
                     Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
-                '*Nigo: ToDo> Adaptar este if
-                If UserList(tUser).flags.Privilegios > .flags.Privilegios Then
+                If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(UserIndex, "No podes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
-                Else
-                
                 End If
         
                 Call LogBan(tUser, UserIndex, reason)
@@ -8857,8 +8865,7 @@ On Error GoTo errhandler
                 'Ponemos el flag de ban a 1
                 UserList(tUser).flags.Ban = 1
                 
-                '*Nigo: ToDo> Adaptar este if
-                If UserList(tUser).flags.Privilegios = .flags.Privilegios Then
+                If (UserList(tUser).flags.Privilegios And rank) = (.flags.Privilegios And rank) Then
                     .flags.Ban = 1
                     Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                     Call CloseSocket(UserIndex)
@@ -8923,8 +8930,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If (InStrB(UserName, "\") <> 0) Then
                 UserName = Replace(UserName, "\", "")
             End If
@@ -9019,20 +9025,21 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
-        tUser = NameIndex(UserName)
-        
-        If tUser <= 0 Then
-            Call WriteConsoleMsg(UserIndex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
-        Else
-            '*Nigo: ToDo> Adaptar este if
-            If .flags.Privilegios = PlayerType.Dios Or _
-              UserList(tUser).flags.Privilegios <= PlayerType.Consejero Then
-                Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
-                Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y + 1, True)
-                Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y, False)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            tUser = NameIndex(UserName)
+            
+            If tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
+                '*Nigo: ToDo> Adaptar este if
+                If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Or _
+                  (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) Then
+                    Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
+                    Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y + 1, True)
+                    Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y, False)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -9096,12 +9103,12 @@ Private Sub HandleSpawnCreature(ByVal UserIndex As Integer)
         Dim npc As Integer
         npc = .incomingData.ReadInteger()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
-        
-        If npc > 0 And npc <= UBound(Declaraciones.SpawnList()) Then _
-          Call SpawnNpc(Declaraciones.SpawnList(npc).NpcIndex, .Pos, True, False)
-        
-        Call LogGM(.name, "Sumoneo " & Declaraciones.SpawnList(npc).NpcName, False)
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            If npc > 0 And npc <= UBound(Declaraciones.SpawnList()) Then _
+              Call SpawnNpc(Declaraciones.SpawnList(npc).NpcIndex, .Pos, True, False)
+            
+            Call LogGM(.name, "Sumoneo " & Declaraciones.SpawnList(npc).NpcName, False)
+        End If
     End With
 End Sub
 
@@ -9120,7 +9127,6 @@ Private Sub HandleResetNPCInventory(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
         If .flags.TargetNPC = 0 Then Exit Sub
         
@@ -9178,10 +9184,11 @@ On Error GoTo errhandler
         Dim message As String
         message = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros
-        If LenB(message) <> 0 Then
-            Call LogGM(.name, "Mensaje Broadcast:" & message, False)
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            If LenB(message) <> 0 Then
+                Call LogGM(.name, "Mensaje Broadcast:" & message, False)
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -9231,8 +9238,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             tUser = NameIndex(UserName)
             Call LogGM(.name, "NICK2IP Solicito la IP de " & UserName, .flags.Privilegios And PlayerType.Consejero)
 
@@ -9354,8 +9360,7 @@ On Error GoTo errhandler
         
         GuildName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) Then
             tGuild = guildIndex(GuildName)
             
             If tGuild > 0 Then
@@ -9544,8 +9549,7 @@ On Error GoTo errhandler
         
         desc = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> (Dios o Admin) y RoleMaster
-        If (.flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+        If (.flags.Privilegios And (PlayerType.RoleMaster Or PlayerType.Dios Or PlayerType.Admin)) Then
             'tUser = NameIndex(.flags.TargetUser)
             tUser = .flags.TargetUser 'CHECK; CHECK!!!..
             If tUser > 0 Then
@@ -9977,8 +9981,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tUser = NameIndex(UserName)
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline", FontTypeNames.FONTTYPE_INFO)
@@ -10040,8 +10043,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tUser = NameIndex(UserName)
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline", FontTypeNames.FONTTYPE_INFO)
@@ -10138,8 +10140,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tUser = NameIndex(UserName)
             'para deteccion de aoice
             If tUser <= 0 Then
@@ -10195,8 +10196,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tUser = NameIndex(UserName)
             'para deteccion de aoice
             If tUser <= 0 Then
@@ -10274,8 +10274,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tUser = NameIndex(UserName)
             If tUser <= 0 Then
                 If FileExist(CharPath & UserName & ".chr") Then
@@ -10445,27 +10444,28 @@ On Error GoTo errhandler
         
         GuildName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If (InStrB(GuildName, "\") <> 0) Then
-            GuildName = Replace(GuildName, "\", "")
-        End If
-        If (InStrB(GuildName, "/") <> 0) Then
-            GuildName = Replace(GuildName, "/", "")
-        End If
-        
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
-            tFile = App.Path & "\guilds\" & GuildName & "-members.mem"
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
+            If (InStrB(GuildName, "\") <> 0) Then
+                GuildName = Replace(GuildName, "\", "")
+            End If
+            If (InStrB(GuildName, "/") <> 0) Then
+                GuildName = Replace(GuildName, "/", "")
+            End If
             
-            If Not FileExist(tFile) Then
-                Call WriteConsoleMsg(UserIndex, "No existe el clan: " & GuildName, FontTypeNames.FONTTYPE_INFO)
-            Else
-                Call LogGM(.name, "MIEMBROSCLAN a " & GuildName, False)
+            If Not .flags.Privilegios And PlayerType.RoleMaster Then
+                tFile = App.Path & "\guilds\" & GuildName & "-members.mem"
                 
-                cantMembers = val(GetVar(tFile, "INIT", "NroMembers"))
-                
-                For LoopC = 1 To cantMembers
-                    Call WriteConsoleMsg(UserIndex, GetVar(tFile, "Members", "Member" & LoopC) & " <" & GuildName & ">.", FontTypeNames.FONTTYPE_INFO)
-                Next LoopC
+                If Not FileExist(tFile) Then
+                    Call WriteConsoleMsg(UserIndex, "No existe el clan: " & GuildName, FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call LogGM(.name, "MIEMBROSCLAN a " & GuildName, False)
+                    
+                    cantMembers = val(GetVar(tFile, "INIT", "NroMembers"))
+                    
+                    For LoopC = 1 To cantMembers
+                        Call WriteConsoleMsg(UserIndex, GetVar(tFile, "Members", "Member" & LoopC) & " <" & GuildName & ">.", FontTypeNames.FONTTYPE_INFO)
+                    Next LoopC
+                End If
             End If
         End If
         
@@ -10520,8 +10520,7 @@ On Error GoTo errhandler
         
         GuildName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             tFile = App.Path & "\guilds\" & GuildName & "-members.mem"
             
             If Not FileExist(tFile) Then
@@ -10758,34 +10757,35 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses
-        If (InStrB(UserName, "\") <> 0) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
+            If (InStrB(UserName, "\") <> 0) Then
                 UserName = Replace(UserName, "\", "")
-        End If
-        If (InStrB(UserName, "/") <> 0) Then
+            End If
+            If (InStrB(UserName, "/") <> 0) Then
                 UserName = Replace(UserName, "/", "")
-        End If
-        tUser = NameIndex(UserName)
-        
-        Call LogGM(.name, "ECHO DEL CAOS A: " & UserName, False)
-
-        If tUser > 0 Then
-            UserList(tUser).Faccion.FuerzasCaos = 0
-            UserList(tUser).Faccion.Reenlistadas = 200
-            Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas del caos.", FontTypeNames.FONTTYPE_FIGHT)
-            Call FlushBuffer(tUser)
-        Else
-            If FileExist(CharPath & UserName & ".chr") Then
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+            End If
+            tUser = NameIndex(UserName)
+            
+            Call LogGM(.name, "ECHO DEL CAOS A: " & UserName, False)
+    
+            If tUser > 0 Then
+                UserList(tUser).Faccion.FuerzasCaos = 0
+                UserList(tUser).Faccion.Reenlistadas = 200
                 Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas del caos.", FontTypeNames.FONTTYPE_FIGHT)
+                Call FlushBuffer(tUser)
             Else
-                Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                If FileExist(CharPath & UserName & ".chr") Then
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+                    Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
-            
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
@@ -10832,34 +10832,35 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses
-        If (InStrB(UserName, "\") <> 0) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
+            If (InStrB(UserName, "\") <> 0) Then
                 UserName = Replace(UserName, "\", "")
-        End If
-        If (InStrB(UserName, "/") <> 0) Then
+            End If
+            If (InStrB(UserName, "/") <> 0) Then
                 UserName = Replace(UserName, "/", "")
-        End If
-        tUser = NameIndex(UserName)
-        
-        Call LogGM(.name, "ECHO DE LA REAL A: " & UserName, False)
-        
-        If tUser > 0 Then
-            UserList(tUser).Faccion.ArmadaReal = 0
-            UserList(tUser).Faccion.Reenlistadas = 200
-            Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas reales.", FontTypeNames.FONTTYPE_FIGHT)
-            Call FlushBuffer(tUser)
-        Else
-            If FileExist(CharPath & UserName & ".chr") Then
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
-                Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+            End If
+            tUser = NameIndex(UserName)
+            
+            Call LogGM(.name, "ECHO DE LA REAL A: " & UserName, False)
+            
+            If tUser > 0 Then
+                UserList(tUser).Faccion.ArmadaReal = 0
+                UserList(tUser).Faccion.Reenlistadas = 200
                 Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(tUser, .name & " te ha expulsado en forma definitiva de las fuerzas reales.", FontTypeNames.FONTTYPE_FIGHT)
+                Call FlushBuffer(tUser)
             Else
-                Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                If FileExist(CharPath & UserName & ".chr") Then
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+                    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .name)
+                    Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
-            
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
@@ -10967,8 +10968,7 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         punishment = buffer.ReadByte
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If LenB(UserName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /borrarpj Nick@NumeroDePena", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -11122,8 +11122,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "/LASTIP " & UserName, False)
             
             If (InStrB(UserName, "\") <> 0) Then
@@ -11177,12 +11176,17 @@ Public Sub HandleChatColor(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-    '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        .flags.ChatColor = RGB(.incomingData.ReadByte(), .incomingData.ReadByte(), .incomingData.ReadByte())
+        Dim color As Long
+        
+        color = RGB(.incomingData.ReadByte(), .incomingData.ReadByte(), .incomingData.ReadByte())
+        
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.RoleMaster)) Then
+            .flags.ChatColor = color
+        End If
     End With
 End Sub
 
@@ -11695,8 +11699,7 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If tStr = "SI" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion sobre si es Restringido el mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Restringir = tStr
@@ -11747,8 +11750,7 @@ On Error GoTo errhandler
         
         nomagic = .incomingData.ReadBoolean
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar la Magia el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto = nomagic
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "MagiaSinEfecto", nomagic)
@@ -11788,8 +11790,7 @@ On Error GoTo errhandler
         
         noinvi = .incomingData.ReadBoolean
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Invisibilidad el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).InviSinEfecto = noinvi
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "InviSinEfecto", noinvi)
@@ -11829,8 +11830,7 @@ On Error GoTo errhandler
         
         noresu = .incomingData.ReadBoolean
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Resucitar el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).ResuSinEfecto = noresu
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "ResuSinEfecto", noresu)
@@ -11873,8 +11873,7 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion del Terreno del mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Terreno = tStr
@@ -11930,8 +11929,7 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMasters
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion de la Zona del mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Zona = tStr
@@ -12012,8 +12010,7 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call modGuilds.GMEscuchaClan(UserIndex, guild)
         End If
         
@@ -12129,8 +12126,7 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         newName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If LenB(UserName) = 0 Or LenB(newName) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usar: /ANAME origen@destino", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -12220,8 +12216,7 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         newMail = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If LenB(UserName) = 0 Or LenB(newMail) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /AEMAIL <pj>-<nuevomail>", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -12291,8 +12286,7 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         copyFrom = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "Ha alterado la contraseña de " & UserName, False)
             
             If LenB(UserName) = 0 Or LenB(copyFrom) = 0 Then
@@ -12601,8 +12595,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "/CONDEN " & UserName, False)
             
             tUser = NameIndex(UserName)
@@ -12656,8 +12649,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "/RAJAR " & UserName, False)
             
             tUser = NameIndex(UserName)
@@ -12712,8 +12704,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "/RAJARCLAN " & UserName, False)
             
             guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
@@ -12772,8 +12763,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             If FileExist(CharPath & UserName & ".chr") Then
                 mail = GetVar(CharPath & UserName & ".chr", "CONTACTO", "email")
                 
@@ -12825,10 +12815,11 @@ On Error GoTo errhandler
         Dim message As String
         message = buffer.ReadASCIIString()
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses
-        Call LogGM(.name, "Mensaje de sistema:" & message, False)
-    
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
+            Call LogGM(.name, "Mensaje de sistema:" & message, False)
+        
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+        End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -12879,8 +12870,7 @@ On Error GoTo errhandler
         newMOTD = buffer.ReadASCIIString()
         auxiliaryString = Split(newMOTD, vbCrLf)
         
-        '*Nigo: ToDo> Ni Users Ni Consejeros Ni SemiDioses Ni RoleMaster
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios) Then
             Call LogGM(.name, "Ha fijado un nuevo MOTD", False)
             
             MaxLines = UBound(auxiliaryString()) + 1
@@ -13539,13 +13529,13 @@ End Sub
 ' @param    Color The color to be used when displaying the chat.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChatOverHead(ByVal UserIndex As Integer, ByVal chat As String, ByVal CharIndex As Integer, ByVal Color As Long)
+Public Sub WriteChatOverHead(ByVal UserIndex As Integer, ByVal chat As String, ByVal CharIndex As Integer, ByVal color As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Writes the "ChatOverHead" message to the given user's outgoing data buffer
 '***************************************************
-    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageChatOverHead(chat, CharIndex, Color))
+    UserList(UserIndex).outgoingData.WriteASCIIStringFixed (PrepareMessageChatOverHead(chat, CharIndex, color))
 End Sub
 
 ''
@@ -15232,7 +15222,7 @@ End Function
 ' @return   The formated message ready to be writen as is on outgoing buffers.
 ' @remarks  The message is written to no outgoing buffer, but only prepared in a single string to be easily sent to several clients.
 
-Public Function PrepareMessageChatOverHead(ByVal chat As String, ByVal CharIndex As Integer, ByVal Color As Long) As String
+Public Function PrepareMessageChatOverHead(ByVal chat As String, ByVal CharIndex As Integer, ByVal color As Long) As String
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -15244,9 +15234,9 @@ Public Function PrepareMessageChatOverHead(ByVal chat As String, ByVal CharIndex
         Call .WriteInteger(CharIndex)
         
         ' Write rgb channels and save one byte from long :D
-        Call .WriteByte(Color And &HFF)
-        Call .WriteByte((Color And &HFF00&) \ &H100&)
-        Call .WriteByte((Color And &HFF0000) \ &H10000)
+        Call .WriteByte(color And &HFF)
+        Call .WriteByte((color And &HFF00&) \ &H100&)
+        Call .WriteByte((color And &HFF0000) \ &H10000)
         
         PrepareMessageChatOverHead = .ReadASCIIStringFixed(.length)
     End With
