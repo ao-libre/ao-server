@@ -1,20 +1,18 @@
 Attribute VB_Name = "SistemaCombate"
-'Argentum Online 0.9.0.2
+'Argentum Online 0.11.6
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'any later version.
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
 '
 'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'GNU General Public License for more details.
+'Affero General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
 '
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
@@ -713,9 +711,9 @@ If UserList(UserIndex).Stats.MinHP <= 0 Then
     Call WriteNPCKillUser(UserIndex) ' Le informamos que ha muerto ;)
     
     'Si lo mato un guardia
-    If Criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    If criminal(UserIndex) And Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
         Call RestarCriminalidad(UserIndex)
-        If Not Criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
+        If Not criminal(UserIndex) And UserList(UserIndex).Faccion.FuerzasCaos = 1 Then Call ExpulsarFaccionCaos(UserIndex)
     End If
     
     If Npclist(NpcIndex).MaestroUser > 0 Then
@@ -738,7 +736,7 @@ End Sub
 Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
     
     Dim EraCriminal As Boolean
-    EraCriminal = Criminal(UserIndex)
+    EraCriminal = criminal(UserIndex)
     
     If UserList(UserIndex).Reputacion.BandidoRep > 0 Then
          UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep - vlASALTO
@@ -748,7 +746,7 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
          If UserList(UserIndex).Reputacion.LadronesRep < 0 Then UserList(UserIndex).Reputacion.LadronesRep = 0
     End If
     
-    If EraCriminal And Not Criminal(UserIndex) Then
+    If EraCriminal And Not criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
 
@@ -922,14 +920,14 @@ If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO 
 End If
 
 If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(UserIndex, "Debes sacar el seguro antes de poder atacar una mascota de un ciudadano.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
 End If
 
 If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(UserIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
@@ -999,13 +997,13 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    Dim Index As Integer
-    Index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    Dim index As Integer
+    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
         
             
     'Look for user
-    If Index > 0 Then
-        If UserList(Index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+    If index > 0 Then
+        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
             Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
             Call SendUserStatsBox(UserIndex)
             Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
@@ -1289,9 +1287,9 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
     If TriggerZonaPelea(AttackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
     
     Dim EraCriminal As Boolean
-    EraCriminal = Criminal(AttackerIndex)
+    EraCriminal = criminal(AttackerIndex)
     
-    If Not Criminal(AttackerIndex) And Not Criminal(VictimIndex) Then
+    If Not criminal(AttackerIndex) And Not criminal(VictimIndex) Then
         Call VolverCriminal(AttackerIndex)
     End If
     
@@ -1304,7 +1302,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
         Call SendData(SendTarget.ToPCArea, VictimIndex, PrepareMessageCreateFX(UserList(VictimIndex).Char.CharIndex, 0, 0))
     End If
     
-    If Not Criminal(VictimIndex) Then
+    If Not criminal(VictimIndex) Then
         UserList(AttackerIndex).Reputacion.BandidoRep = UserList(AttackerIndex).Reputacion.BandidoRep + vlASALTO
         If UserList(AttackerIndex).Reputacion.BandidoRep > MAXREP Then _
             UserList(AttackerIndex).Reputacion.BandidoRep = MAXREP
@@ -1314,9 +1312,9 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
             UserList(AttackerIndex).Reputacion.NobleRep = MAXREP
     End If
     
-    If EraCriminal And Not Criminal(AttackerIndex) Then
+    If EraCriminal And Not criminal(AttackerIndex) Then
         Call RefreshCharStatus(AttackerIndex)
-    ElseIf Not EraCriminal And Criminal(AttackerIndex) Then
+    ElseIf Not EraCriminal And criminal(AttackerIndex) Then
         Call RefreshCharStatus(AttackerIndex)
     End If
 
@@ -1384,7 +1382,7 @@ If UserList(VictimIndex).flags.Privilegios > UserList(AttackerIndex).flags.Privi
 End If
 
 'Sos un Armada atacando un ciudadano?
-If (Not Criminal(VictimIndex)) And (esArmada(AttackerIndex)) Then
+If (Not criminal(VictimIndex)) And (esArmada(AttackerIndex)) Then
     Call WriteConsoleMsg(AttackerIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1399,7 +1397,7 @@ End If
 
 'Tenes puesto el seguro?
 If UserList(AttackerIndex).flags.Seguro Then
-        If Not Criminal(VictimIndex) Then
+        If Not criminal(VictimIndex) Then
                 Call WriteConsoleMsg(AttackerIndex, "||No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
                 PuedeAtacar = False
                 Exit Function
@@ -1461,7 +1459,7 @@ End If
 'Es el NPC mascota de alguien?
 If Npclist(NpcIndex).MaestroUser > 0 Then
     'De un cudadanos y sos Armada?
-    If esArmada(AttackerIndex) And Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If esArmada(AttackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(AttackerIndex, "Los Armadas no pueden atacar Mascotas de Ciudadanos. ", FontTypeNames.FONTTYPE_INFO)
         PuedeAtacarNPC = False
         Exit Function
@@ -1473,7 +1471,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then
         Exit Function
     End If
     'De un ciudadano y sos ciudadano?
-    If Not Criminal(AttackerIndex) And Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+    If Not criminal(AttackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
         'Estas con seguro?
         If UserList(AttackerIndex).flags.Seguro Then
             Call WriteConsoleMsg(AttackerIndex, "Para atacar mascotas de ciudadanos debes quitar el seguro utilizando /seg", FontTypeNames.FONTTYPE_INFO)

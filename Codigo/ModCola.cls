@@ -11,22 +11,20 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'Argentum Online 0.9.0.2
+'Argentum Online 0.11.6
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'any later version.
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
 '
 'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'GNU General Public License for more details.
+'Affero General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
 '
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
@@ -85,11 +83,11 @@ Private Sub Class_Initialize()
 Set Cola = New Collection
 End Sub
 
-Public Function VerElemento(ByVal Index As Integer) As String
+Public Function VerElemento(ByVal index As Integer) As String
 On Error Resume Next
-    If IndexValido(Index) Then
+    If IndexValido(index) Then
         'Pablo
-        VerElemento = UCase$(Cola.Item(Index))
+        VerElemento = UCase$(Cola.Item(index))
         '/Pablo
         'VerElemento = Cola(Index)
     Else
@@ -102,9 +100,9 @@ Public Sub Push(ByVal Nombre As String)
 On Error Resume Next
 'Mete elemento en la cola
 'Pablo
-Dim Aux As String
-Aux = time$ + " " + UCase$(Nombre)
-Call Cola.Add(Aux)
+Dim aux As String
+aux = time$ + " " + UCase$(Nombre)
+Call Cola.Add(aux)
 '/Pablo
 
 'Call Cola.Add(UCase$(Nombre))
@@ -177,9 +175,9 @@ Next i
  
 End Sub
 
-Public Sub QuitarIndex(ByVal Index As Integer)
+Public Sub QuitarIndex(ByVal index As Integer)
 On Error Resume Next
-If IndexValido(Index) Then Call Cola.Remove(Index)
+If IndexValido(index) Then Call Cola.Remove(index)
 End Sub
 
 

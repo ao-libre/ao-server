@@ -1,20 +1,18 @@
 Attribute VB_Name = "modHechizos"
-'Argentum Online 0.9.0.2
+'Argentum Online 0.11.6
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'any later version.
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
 '
 'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'GNU General Public License for more details.
+'Affero General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
 '
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
@@ -198,9 +196,9 @@ End If
 
 End Sub
             
-Sub DecirPalabrasMagicas(ByVal s As String, ByVal UserIndex As Integer)
+Sub DecirPalabrasMagicas(ByVal S As String, ByVal UserIndex As Integer)
 On Error Resume Next
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(s, UserList(UserIndex).Char.CharIndex, vbCyan))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(S, UserList(UserIndex).Char.CharIndex, vbCyan))
     Exit Sub
 End Sub
 
@@ -297,7 +295,7 @@ If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex
     Exit Sub
 End If
 
-Dim H As Integer, j As Integer, ind As Integer, Index As Integer
+Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
 
 
@@ -308,17 +306,17 @@ TargetPos.Y = UserList(UserIndex).flags.TargetY
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
     
-For j = 1 To Hechizos(H).Cant
+For j = 1 To Hechizos(H).cant
     
     If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
         If ind > 0 Then
             UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
             
-            Index = FreeMascotaIndex(UserIndex)
+            index = FreeMascotaIndex(UserIndex)
             
-            UserList(UserIndex).MascotasIndex(Index) = ind
-            UserList(UserIndex).MascotasType(Index) = Npclist(ind).Numero
+            UserList(UserIndex).MascotasIndex(index) = ind
+            UserList(UserIndex).MascotasType(index) = Npclist(ind).Numero
             
             Npclist(ind).MaestroUser = UserIndex
             Npclist(ind).Contadores.TiempoExistencia = IntervaloInvocacion
@@ -446,12 +444,12 @@ End If
 End Sub
 
 
-Sub LanzarHechizo(Index As Integer, UserIndex As Integer)
+Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
 Dim uh As Integer
 Dim exito As Boolean
 
-uh = UserList(UserIndex).Stats.UserHechizos(Index)
+uh = UserList(UserIndex).Stats.UserHechizos(index)
 
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
@@ -539,7 +537,7 @@ If Hechizos(H).Invisibilidad = 1 Then
     
     'Para poder tirar invi a un pk en el ring
     If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
-        If Criminal(tU) And Not Criminal(UserIndex) Then
+        If criminal(tU) And Not criminal(UserIndex) Then
             If esArmada(UserIndex) Then
                 Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
                 b = False
@@ -625,7 +623,7 @@ End If
 If Hechizos(H).CuraVeneno = 1 Then
     'Para poder tirar curar veneno a un pk en el ring
     If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
-        If Criminal(tU) And Not Criminal(UserIndex) Then
+        If criminal(tU) And Not criminal(UserIndex) Then
             If esArmada(UserIndex) Then
                 Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
                 b = False
@@ -700,7 +698,7 @@ If Hechizos(H).RemoverParalisis = 1 Then
     If UserList(tU).flags.Paralizado = 1 Then
         'Para poder tirar remo a un pk en el ring
         If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
-            If Criminal(tU) And Not Criminal(UserIndex) Then
+            If criminal(tU) And Not criminal(UserIndex) Then
                 If esArmada(UserIndex) Then
                     Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
                     b = False
@@ -728,7 +726,7 @@ If Hechizos(H).RemoverEstupidez = 1 Then
     If UserList(tU).flags.Estupidez = 1 Then
         'Para poder tirar remo estu a un pk en el ring
         If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
-            If Criminal(tU) And Not Criminal(UserIndex) Then
+            If criminal(tU) And Not criminal(UserIndex) Then
                 If esArmada(UserIndex) Then
                     Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
                     b = False
@@ -783,7 +781,7 @@ If Hechizos(H).Revivir = 1 Then
         
         'Para poder tirar revivir a un pk en el ring
         If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
-            If Criminal(tU) And Not Criminal(UserIndex) Then
+            If criminal(tU) And Not criminal(UserIndex) Then
                 If esArmada(UserIndex) Then
                     Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
                     b = False
@@ -814,8 +812,8 @@ If Hechizos(H).Revivir = 1 Then
         End If
         '/Juan Maraxus
         Dim EraCriminal As Boolean
-        EraCriminal = Criminal(UserIndex)
-        If Not Criminal(tU) Then
+        EraCriminal = criminal(UserIndex)
+        If Not criminal(tU) Then
             If tU <> UserIndex Then
                 UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep + 500
                 If UserList(UserIndex).Reputacion.NobleRep > MAXREP Then _
@@ -825,7 +823,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
         UserList(tU).Stats.MinMAN = 0
         Call EnviarHambreYsed(tU)
-            If EraCriminal And Not Criminal(UserIndex) Then
+            If EraCriminal And Not criminal(UserIndex) Then
             Call RefreshCharStatus(UserIndex)
         End If
         
@@ -912,7 +910,7 @@ Sub RevisoAtaqueNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef
             Exit Sub
         End If
         'Es ciudadano el dueño?
-        If Not Criminal(Npclist(NpcIndex).MaestroUser) Then
+        If Not criminal(Npclist(NpcIndex).MaestroUser) Then
             If UserList(UserIndex).Faccion.ArmadaReal = 1 Then 'Lo quiere atacar un Armada?
                 Call WriteConsoleMsg(UserIndex, "No puedes atacar Mascotas de ciudadanos siendo Armada Real", FontTypeNames.FONTTYPE_WARNING)
                 b = False
@@ -1271,7 +1269,7 @@ End If
 
 ' <-------- Agilidad ---------->
 If Hechizos(H).SubeAgilidad = 1 Then
-    If Criminal(tempChr) And Not Criminal(UserIndex) Then
+    If criminal(tempChr) And Not criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1311,7 +1309,7 @@ End If
 
 ' <-------- Fuerza ---------->
 If Hechizos(H).SubeFuerza = 1 Then
-    If Criminal(tempChr) And Not Criminal(UserIndex) Then
+    If criminal(tempChr) And Not criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1355,7 +1353,7 @@ End If
 'Salud
 If Hechizos(H).SubeHP = 1 Then
     
-    If Criminal(tempChr) And Not Criminal(UserIndex) Then
+    If criminal(tempChr) And Not criminal(UserIndex) Then
         If UserList(UserIndex).flags.Seguro Then
             Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -1617,7 +1615,7 @@ End Sub
 Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts As Long)
 'disminuye la nobleza NoblePts puntos y aumenta el bandido BandidoPts puntos
     Dim EraCriminal As Boolean
-    EraCriminal = Criminal(UserIndex)
+    EraCriminal = criminal(UserIndex)
     
     'Si estamos en la arena no hacemos nada
     If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
@@ -1633,9 +1631,9 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
         UserList(UserIndex).Reputacion.BandidoRep = MAXREP
     Call WriteNobilityLost(UserIndex)
-    If Criminal(UserIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
+    If criminal(UserIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
     
-    If Not EraCriminal And Criminal(UserIndex) Then
+    If Not EraCriminal And criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
     

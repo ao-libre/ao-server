@@ -1,33 +1,26 @@
 Attribute VB_Name = "ModAreas"
-'Argentum Online 0.11.20
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'**************************************************************
+' ModAreas.bas - Module to allow the usage of areas instead of maps.
+' Saves a lot of bandwidth.
 '
+' Original Idea by Juan Martín Sotuyo Dodero (Maraxus)
+' (juansotuyo@gmail.com)
+' Implemented by Lucio N. Tourrilhes (DuNga)
+'**************************************************************
+
+'**************************************************************************
 'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'any later version.
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
 '
 'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'GNU General Public License for more details.
+'Affero General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'
-'Argentum Online is based on Baronsoft's VB6 Online RPG
-'You can contact the original creator of ORE at aaron@baronsoft.com
-'for more information about ORE please visit http://www.baronsoft.com/
-'
-'
-'You can contact me at:
-'morgolock@speedy.com.ar
-'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
-'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
+'**************************************************************************
 
 ' Modulo de envio por areas compatible con la versión 9.10.x ... By DuNga
 

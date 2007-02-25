@@ -11,6 +11,25 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'**************************************************************
+' SoundMapInfo.cls
+'
+'**************************************************************
+
+'**************************************************************************
+'This program is free software; you can redistribute it and/or modify
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
+'
+'This program is distributed in the hope that it will be useful,
+'but WITHOUT ANY WARRANTY; without even the implied warranty of
+'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'Affero General Public License for more details.
+'
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
+'**************************************************************************
+
 Option Explicit
 
 Private Type p_tSoundMapInfo
@@ -82,11 +101,11 @@ Dim SonidoMapa As Byte
                 'tocarlo
                 If Lloviendo Then
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.Lluvia Then
-                        Call SendData(SendTarget.ToMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
+                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
                     End If
                 Else
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.ninguna Then
-                        Call SendData(SendTarget.ToMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
+                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
                     End If
                 End If
             End If
@@ -95,6 +114,6 @@ Dim SonidoMapa As Byte
     
 End Sub
 
-Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal Index As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, Index, PrepareMessagePlayWave(SoundIndex))
+Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal index As Integer, ByVal SoundIndex As Integer)
+    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex))
 End Sub

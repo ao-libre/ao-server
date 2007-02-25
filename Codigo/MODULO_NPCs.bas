@@ -1,20 +1,18 @@
 Attribute VB_Name = "NPCs"
-'Argentum Online 0.9.0.2
+'Argentum Online 0.11.6
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'any later version.
+'it under the terms of the Affero General Public License;
+'either version 1 of the License, or any later version.
 '
 'This program is distributed in the hope that it will be useful,
 'but WITHOUT ANY WARRANTY; without even the implied warranty of
 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'GNU General Public License for more details.
+'Affero General Public License for more details.
 '
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+'You should have received a copy of the Affero General Public License
+'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
 '
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
@@ -896,12 +894,12 @@ Npclist(NpcIndex).flags.Snd3 = val(Leer.GetValue("NPC" & NpcNumber, "Snd3"))
 
 '<<<<<<<<<<<<<< Expresiones >>>>>>>>>>>>>>>>
 
-Dim Aux As String
-Aux = Leer.GetValue("NPC" & NpcNumber, "NROEXP")
-If LenB(Aux) = 0 Then
+Dim aux As String
+aux = Leer.GetValue("NPC" & NpcNumber, "NROEXP")
+If LenB(aux) = 0 Then
     Npclist(NpcIndex).NroExpresiones = 0
 Else
-    Npclist(NpcIndex).NroExpresiones = val(Aux)
+    Npclist(NpcIndex).NroExpresiones = val(aux)
     ReDim Npclist(NpcIndex).Expresiones(1 To Npclist(NpcIndex).NroExpresiones) As String
     For LoopC = 1 To Npclist(NpcIndex).NroExpresiones
         Npclist(NpcIndex).Expresiones(LoopC) = Leer.GetValue("NPC" & NpcNumber, "Exp" & LoopC)
