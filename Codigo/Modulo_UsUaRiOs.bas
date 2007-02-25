@@ -226,15 +226,11 @@ On Local Error GoTo hayerror
         
         If LenB(klan) <> 0 Then
             If Not toMap Then
-                If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
-                    If UserList(UserIndex).showName Then
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    Else
-                        'Hide the name and clan
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    End If
+                If UserList(UserIndex).showName Then
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, UserList(UserIndex).flags.Privilegios)
                 Else
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoyalCouncil, 4, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.ChaosCouncil, 6, 0)))
+                    'Hide the name and clan - set privs as normal user
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
@@ -242,14 +238,10 @@ On Local Error GoTo hayerror
             End If
         Else 'if tiene clan
             If Not toMap Then
-                If UserList(UserIndex).flags.Privilegios > PlayerType.User Then
-                    If UserList(UserIndex).showName Then
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    Else
-                        Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoleMaster, 5, UserList(UserIndex).flags.Privilegios))
-                    End If
+                If UserList(UserIndex).showName Then
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, UserList(UserIndex).flags.Privilegios)
                 Else
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.RoyalCouncil, 4, IIf(UserList(UserIndex).flags.Privilegios And PlayerType.ChaosCouncil, 6, 0)))
+                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)

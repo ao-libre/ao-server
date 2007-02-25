@@ -451,7 +451,6 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error Resume Next
-    Debug.Print UserList(UserIndex).incomingData.PeekByte()
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
