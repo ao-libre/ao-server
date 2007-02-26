@@ -1237,8 +1237,6 @@ If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando info de inicio del 
 BootDelBackUp = val(GetVar(IniPath & "Server.ini", "INIT", "IniciarDesdeBackUp"))
 
 'Misc
-CrcSubKey = val(GetVar(IniPath & "Server.ini", "INIT", "CrcSubKey"))
-
 ServerIp = GetVar(IniPath & "Server.ini", "INIT", "ServerIp")
 Temporal = InStr(1, ServerIp, ".")
 Temporal1 = (mid$(ServerIp, 1, Temporal - 1) And &H7F) * 16777216

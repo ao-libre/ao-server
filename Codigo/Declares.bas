@@ -35,7 +35,6 @@ Option Explicit
 
 Public MixedKey As Long
 Public ServerIp As String
-Public CrcSubKey As String
 
 Type tEstadisticasDiarias
     Segundos As Double

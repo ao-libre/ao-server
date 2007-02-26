@@ -911,10 +911,10 @@ End Sub
 Private Sub tLluvia_Timer()
 On Error GoTo errhandler
 
-Dim iCount As Integer
+Dim iCount As Long
 If Lloviendo Then
    For iCount = 1 To LastUser
-    Call EfectoLluvia(iCount)
+        Call EfectoLluvia(iCount)
    Next iCount
 End If
 
@@ -957,15 +957,11 @@ Else
     End If
 End If
 
-
 Exit Sub
 ErrorHandler:
 Call LogError("Error tLluviaTimer")
 
-
-
 End Sub
-
 
 Private Sub tPiqueteC_Timer()
 On Error GoTo errhandler
