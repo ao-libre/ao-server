@@ -182,8 +182,7 @@ End If
 Exit Sub
 
 errhandler:
-    Call LogError("Error en DotileEvents")
-
+    Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
 Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
@@ -646,7 +645,7 @@ If InMapBounds(Map, X, Y) Then
                     Stat = Stat & " [CONSEJO DE LAS SOMBRAS]"
                     ft = FontTypeNames.FONTTYPE_CONSEJOCAOSVesA
                 Else
-                    If UserList(TempCharIndex).flags.Privilegios > 0 Then
+                    If Not UserList(TempCharIndex).flags.Privilegios And PlayerType.User Then
                         Stat = Stat & " <GAME MASTER>"
                         ft = FontTypeNames.FONTTYPE_GM
                     ElseIf criminal(TempCharIndex) Then
@@ -665,7 +664,7 @@ If InMapBounds(Map, X, Y) Then
             If LenB(Stat) > 0 Then
                 Call WriteConsoleMsg(UserIndex, Stat, ft)
             End If
-
+            
             FoundSomething = 1
             UserList(UserIndex).flags.TargetUser = TempCharIndex
             UserList(UserIndex).flags.TargetNPC = 0
