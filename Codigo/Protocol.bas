@@ -14063,7 +14063,7 @@ Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal Slot As Intege
         If UserList(UserIndex).Stats.UserHechizos(Slot) > 0 Then
             Call .WriteASCIIString(Hechizos(UserList(UserIndex).Stats.UserHechizos(Slot)).Nombre)
         Else
-            Call .WriteASCIIString(vbNullString)
+            Call .WriteASCIIString("(None)")
         End If
     End With
 End Sub

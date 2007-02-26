@@ -1579,7 +1579,7 @@ End Sub
 
 Public Sub DesplazarHechizo(ByVal UserIndex As Integer, ByVal Dire As Integer, ByVal CualHechizo As Integer)
 
-If Not (Dire >= 1 And Dire <= 2) Then Exit Sub
+If (Dire <> 1 And Dire <> -1) Then Exit Sub
 If Not (CualHechizo >= 1 And CualHechizo <= MAXUSERHECHIZOS) Then Exit Sub
 
 Dim TempHechizo As Integer
