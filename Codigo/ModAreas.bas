@@ -265,7 +265,6 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 ' Se llama cuando se mueve un Npc
 '**************************************************************
-    
     If Npclist(NpcIndex).AreasInfo.AreaID = AreasInfo(Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long

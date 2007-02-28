@@ -322,7 +322,11 @@ Public Function GetAspirantes()     'No return type allows to return arrays :D
     
     OldQ = Me.CantidadAspirantes()
     
-    ReDim list(OldQ - 1) As String
+    If OldQ > 1 Then
+        ReDim list(OldQ - 1) As String
+    Else
+        ReDim list(0) As String
+    End If
     
     For i = 1 To OldQ
         list(i - 1) = GetVar(SOLICITUDESFILE, "SOLICITUD" & i, "Nombre")

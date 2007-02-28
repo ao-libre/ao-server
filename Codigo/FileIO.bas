@@ -1183,7 +1183,7 @@ On Error GoTo errh
                     Npclist(MapData(Map, X, Y).NpcIndex).Pos.X = X
                     Npclist(MapData(Map, X, Y).NpcIndex).Pos.Y = Y
                             
-                    Call MakeNPCChar(True, 0, MapData(Map, X, Y).NpcIndex, 1, 1, 1)
+                    Call MakeNPCChar(True, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
                 End If
             End If
             

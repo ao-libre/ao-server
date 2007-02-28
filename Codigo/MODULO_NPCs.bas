@@ -491,12 +491,10 @@ Dim CharIndex As Integer
     
     If Not toMap Then
         Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
-        Call ArgegarNpc(NpcIndex)
     Else
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterCreate(Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0))
+        Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
     End If
-
 End Sub
 
 Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
@@ -528,12 +526,8 @@ End If
 'Quitamos del mapa
 MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).NpcIndex = 0
 
-'Actualizamos los cliente
-If toMap Then
-    Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
-Else
-    Call SendData(SendTarget.toMap, sndIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
-End If
+'Actualizamos los clientes
+Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterRemove(Npclist(NpcIndex).Char.CharIndex))
 
 'Update la lista npc
 Npclist(NpcIndex).Char.CharIndex = 0

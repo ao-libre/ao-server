@@ -439,15 +439,17 @@ End If
 End Sub
 
 
-Public Function UserDarPrivilegioLevel(ByVal name As String) As Long
-If EsDios(name) Then
-    UserDarPrivilegioLevel = 3
+Public Function UserDarPrivilegioLevel(ByVal name As String) As PlayerType
+If EsAdmin(name) Then
+    UserDarPrivilegioLevel = PlayerType.Admin
+ElseIf EsDios(name) Then
+    UserDarPrivilegioLevel = PlayerType.Dios
 ElseIf EsSemiDios(name) Then
-    UserDarPrivilegioLevel = 2
+    UserDarPrivilegioLevel = PlayerType.SemiDios
 ElseIf EsConsejero(name) Then
-    UserDarPrivilegioLevel = 1
+    UserDarPrivilegioLevel = PlayerType.Consejero
 Else
-    UserDarPrivilegioLevel = 0
+    UserDarPrivilegioLevel = PlayerType.User
 End If
 End Function
 

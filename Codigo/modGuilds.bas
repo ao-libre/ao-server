@@ -391,9 +391,20 @@ Dim go As Integer
     If guildIndex = 0 Then Exit Sub
 
     Dim enemies() As String
-    ReDim enemies(1 To guilds(guildIndex).CantidadEnemys) As String
+    
+    If guilds(guildIndex).CantidadEnemys Then
+        ReDim enemies(0 To guilds(guildIndex).CantidadEnemys - 1) As String
+    Else
+        ReDim enemies(0)
+    End If
+    
     Dim allies() As String
-    ReDim allies(1 To guilds(guildIndex).CantidadAllies) As String
+    
+    If guilds(guildIndex).CantidadAllies Then
+        ReDim allies(0 To guilds(guildIndex).CantidadAllies - 1) As String
+    Else
+        ReDim allies(0)
+    End If
     
     i = guilds(guildIndex).Iterador_ProximaRelacion(RELACIONES_GUILD.GUERRA)
     go = 0

@@ -112,15 +112,14 @@ Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVa
                     ByVal body As Integer, ByVal Head As Integer, ByVal heading As Byte, _
                     ByVal Arma As Integer, ByVal Escudo As Integer, ByVal casco As Integer)
 
-    UserList(UserIndex).Char.body = body
-    UserList(UserIndex).Char.Head = Head
-    UserList(UserIndex).Char.heading = heading
-    UserList(UserIndex).Char.WeaponAnim = Arma
-    UserList(UserIndex).Char.ShieldAnim = Escudo
-    UserList(UserIndex).Char.CascoAnim = casco
-    
-    UserList(UserIndex).Char.body = body
-    UserList(UserIndex).Char.Head = Head
+    With UserList(UserIndex).Char
+        .body = body
+        .Head = Head
+        .heading = heading
+        .WeaponAnim = Arma
+        .ShieldAnim = Escudo
+        .CascoAnim = casco
+    End With
     
     Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
 End Sub
@@ -1591,6 +1590,9 @@ Dim OldY As Integer
     
     Call MakeUserChar(True, Map, UserIndex, Map, X, Y)
     Call WriteUserCharIndexInServer(UserIndex)
+    
+    'Force a flush, so user index is in there before it's destroyed for teleporting
+    Call FlushBuffer(UserIndex)
     
     'Seguis invisible al pasar de mapa
     If (UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1) And (Not UserList(UserIndex).flags.AdminInvisible = 1) Then

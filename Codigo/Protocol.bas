@@ -2202,7 +2202,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
 
         'Are we dropping gold or other items??
         If Slot = FLAGORO Then
-            If amount > 100000 Then Exit Sub 'Don't drop too much gold
+            If amount > 10000 Then Exit Sub 'Don't drop too much gold
 
             Call TirarOro(amount, UserIndex)
             
@@ -6952,6 +6952,7 @@ On Error GoTo errhandler
         Dim X As Long
         Dim Y As Long
         Dim i As Long
+        Dim found As Boolean
         
         tIndex = NameIndex(UserName)
         
@@ -6959,24 +6960,29 @@ On Error GoTo errhandler
         If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
             If tIndex <= 0 Then 'existe el usuario destino?
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-            End If
-        
-            For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
-                For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
-                    For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
-                        If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
-                            If LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Or LegalPos(UserList(tIndex).Pos.Map, X, Y, False) Then
-                                Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
-                                Exit For
+            Else
+                For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
+                    For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
+                        For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
+                            If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
+                                If LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Or LegalPos(UserList(tIndex).Pos.Map, X, Y, False) Then
+                                    Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
+                                    found = True
+                                    Exit For
+                                End If
                             End If
-                        End If
-                    Next Y
-                Next X
-            Next i
-            
-            'No space found??
-            If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex <> UserIndex Then
-                Call WriteConsoleMsg(UserIndex, "Todos los lugares están ocupados.", FontTypeNames.FONTTYPE_INFO)
+                        Next Y
+                        
+                        If found Then Exit For  ' Feo, pero hay que abortar 3 fors sin usar GoTo
+                    Next X
+                    
+                    If found Then Exit For  ' Feo, pero hay que abortar 3 fors sin usar GoTo
+                Next i
+                
+                'No space found??
+                If Not found Then
+                    Call WriteConsoleMsg(UserIndex, "Todos los lugares están ocupados.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -7438,7 +7444,7 @@ On Error GoTo errhandler
         tUser = NameIndex(UserName)
         
         'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios And PlayerType.Admin)) Then
+        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -7449,12 +7455,12 @@ On Error GoTo errhandler
                     Call FlushBuffer(tUser)
                 End If
                 
-                Call LogGM(.name, "/IRA " & UserList(tUser).name & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, .flags.Privilegios And PlayerType.Consejero)
-                
-                'If we got here then packet is complete, copy data back to original queue
-                Call .incomingData.CopyBuffer(buffer)
+                Call LogGM(.name, "/IRA " & UserName & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, .flags.Privilegios And PlayerType.Consejero)
             End If
         End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
     End With
     
 errhandler:
@@ -7857,6 +7863,7 @@ On Error GoTo errhandler
         Dim valido As Boolean
         Dim LoopC As Byte
         Dim commandString As String
+        Dim N As Byte
         
         UserName = buffer.ReadASCIIString()
         
@@ -7966,28 +7973,30 @@ On Error GoTo errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Len(Arg1) > 1 Then
-                            UserList(tUser).clase = UCase$(Left$(Arg1, 1)) & LCase$(mid$(Arg1, 2))
+                        For LoopC = 1 To NUMCLASES
+                            If UCase$(ListaClases(LoopC)) = UCase$(Arg1) Then Exit For
+                        Next LoopC
+                        
+                        If LoopC > NUMCLASES Then
+                            Call WriteConsoleMsg(UserIndex, "Clase desconocida. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).clase = UCase$(Arg1)
+                            UserList(tUser).clase = LoopC
                         End If
                     End If
                 
                 Case eEditOptions.eo_Skills
-                    Dim N As Byte
-                    
                     For LoopC = 1 To NUMSKILLS
-                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then N = LoopC
+                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then Exit For
                     Next LoopC
                     
-                    If N = 0 Then
+                    If LoopC > NUMSKILLS Then
                         Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If tUser <= 0 Then
-                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & N, Arg2)
+                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & LoopC, Arg2)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.UserSkills(N) = val(Arg2)
+                            UserList(tUser).Stats.UserSkills(LoopC) = val(Arg2)
                         End If
                     End If
                 
@@ -9354,7 +9363,7 @@ On Error GoTo errhandler
         
         GuildName = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) And (.flags.Privilegios And PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
             tGuild = guildIndex(GuildName)
             
             If tGuild > 0 Then
@@ -10708,7 +10717,9 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User + PlayerType.Consejero + PlayerType.SemiDios) Then Exit Sub
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex = 0 Then Exit Sub
         
         Call LogGM(.name, "/DEST", False)
         
