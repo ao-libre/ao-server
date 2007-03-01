@@ -445,7 +445,7 @@ Public Function m_PuedeSalirDeClan(ByRef Nombre As String, ByVal guildIndex As I
 
     'cuando UI no puede echar a nombre?
     'si no es gm Y no es lider del clan del pj Y no es el mismo que se va voluntariamente
-    If UserList(QuienLoEchaUI).flags.Privilegios = PlayerType.User Then
+    If UserList(QuienLoEchaUI).flags.Privilegios And PlayerType.User Then
         If Not m_EsGuildLeader(UCase$(UserList(QuienLoEchaUI).name), guildIndex) Then
             If UCase$(UserList(QuienLoEchaUI).name) <> UCase$(Nombre) Then      'si no sale voluntariamente...
                 Exit Function
@@ -492,7 +492,7 @@ Public Function PuedeFundarUnClan(ByVal UserIndex As Integer, ByVal Alineacion A
                 Exit Function
             End If
         Case ALINEACION_GUILD.ALINEACION_MASTER
-            If UserList(UserIndex).flags.Privilegios < PlayerType.Dios Then
+            If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then
                 refError = "Para fundar un clan sin alineación debes ser un dios."
                 Exit Function
             End If
@@ -802,7 +802,7 @@ Dim i As Integer
         i = guilds(guildIndex).m_Iterador_ProximoUserIndex
         While i > 0
             'No mostramos dioses y admins
-            If i <> UserIndex And (UserList(i).flags.Privilegios < PlayerType.Dios Or UserList(UserIndex).flags.Privilegios >= PlayerType.Dios) Then _
+            If i <> UserIndex And ((UserList(i).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Or (UserList(UserIndex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) <> 0)) Then _
                 m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
             i = guilds(guildIndex).m_Iterador_ProximoUserIndex
         Wend

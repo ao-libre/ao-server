@@ -1610,7 +1610,7 @@ Dim LoopC As Long
 
 For LoopC = 1 To LastUser
     If UserList(LoopC).flags.UserLogged And UserList(LoopC).ConnID >= 0 And UserList(LoopC).ConnIDValida Then
-        If UserList(LoopC).flags.Privilegios < PlayerType.Consejero Then
+        If UserList(LoopC).flags.Privilegios And PlayerType.User Then
             Call CloseSocket(LoopC)
         End If
     End If

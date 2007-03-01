@@ -792,7 +792,7 @@ End If
 
 Call QuitarSta(LadrOnIndex, 15)
 
-If UserList(VictimaIndex).flags.Privilegios = PlayerType.User Then
+If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
     Dim Suerte As Integer
     Dim res As Integer
     

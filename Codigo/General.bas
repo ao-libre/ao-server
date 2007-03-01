@@ -1167,7 +1167,7 @@ End Sub
 
 Public Sub HambreYSed(ByVal UserIndex As Integer, ByRef fenviarAyS As Boolean)
 
-If UserList(UserIndex).flags.Privilegios > User Then Exit Sub
+If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Exit Sub
 
 'Sed
 If UserList(UserIndex).Stats.MinAGU > 0 Then

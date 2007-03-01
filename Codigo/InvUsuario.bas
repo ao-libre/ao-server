@@ -327,7 +327,7 @@ If num > 0 Then
             Call WriteConsoleMsg(UserIndex, "¡ATENCION!! ¡¡ACABAS DE TIRAR TU ARMADURA FACCIONARIA!!", FontTypeNames.FONTTYPE_TALK)
         End If
         
-        If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name, False)
+        If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name, False)
   Else
     Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
   End If
@@ -441,7 +441,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
         Else
             'Quitamos el objeto
             Call EraseObj(UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-            If UserList(UserIndex).flags.Privilegios > PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
+            If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
         End If
         
     End If
@@ -1007,7 +1007,7 @@ Select Case Obj.OBJType
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
             Case 6  ' Pocion Negra
-                If UserList(UserIndex).flags.Privilegios = PlayerType.User Then
+                If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
                     Call QuitarUserInvItem(UserIndex, Slot, 1)
                     Call UserDie(UserIndex)
                     Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)

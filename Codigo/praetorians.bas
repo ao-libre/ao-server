@@ -1230,7 +1230,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV))
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
 
-    If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
+    If UserList(UserIndex).flags.Privilegios And PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
     
     Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
     
@@ -1314,7 +1314,7 @@ On Error GoTo errorh
                         danio = 880 / (dist ^ (3 / 7))
                         danioI = Abs(Int(danio))
                         ''efectiviza el danio
-                        If UserList(PJInd).flags.Privilegios = PlayerType.User Then UserList(PJInd).Stats.MinHP = UserList(PJInd).Stats.MinHP - danioI
+                        If UserList(PJInd).flags.Privilegios And PlayerType.User Then UserList(PJInd).Stats.MinHP = UserList(PJInd).Stats.MinHP - danioI
                         
                         Call WriteConsoleMsg(PJInd, Npclist(npcind).name & " te ha quitado " & danioI & " puntos de vida al romper su vara.", FontTypeNames.FONTTYPE_FIGHT)
                         Call SendData(SendTarget.ToPCArea, PJInd, PrepareMessagePlayWave(Hechizos(indireccion).WAV))

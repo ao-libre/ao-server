@@ -635,9 +635,9 @@ On Error GoTo hayerror
          If UserList(iUserIndex).flags.Muerto = 0 Then
                
                '[Consejeros]
-               If UserList(iUserIndex).flags.Desnudo And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoFrio(iUserIndex)
+               If UserList(iUserIndex).flags.Desnudo And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoFrio(iUserIndex)
                If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
-               If UserList(iUserIndex).flags.Envenenado = 1 And UserList(iUserIndex).flags.Privilegios = PlayerType.User Then Call EfectoVeneno(iUserIndex, bEnviarStats)
+               If UserList(iUserIndex).flags.Envenenado = 1 And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoVeneno(iUserIndex, bEnviarStats)
                If UserList(iUserIndex).flags.AdminInvisible <> 1 Then
                     If UserList(iUserIndex).flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                     If UserList(iUserIndex).flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)

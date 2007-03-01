@@ -617,7 +617,7 @@ If InMapBounds(Map, X, Y) Then
     'Reaccion al personaje
     If FoundChar = 1 Then '  ¿Encontro un Usuario?
             
-       If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
+       If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios And PlayerType.Dios Then
             
             If LenB(UserList(TempCharIndex).DescRM) = 0 Then
                 If EsNewbie(TempCharIndex) Then
@@ -678,7 +678,7 @@ If InMapBounds(Map, X, Y) Then
     If FoundChar = 2 Then '¿Encontro un NPC?
             Dim estatus As String
             
-            If UserList(UserIndex).flags.Privilegios >= PlayerType.SemiDios Then
+            If UserList(UserIndex).flags.Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then
                 estatus = "(" & Npclist(TempCharIndex).Stats.MinHP & "/" & Npclist(TempCharIndex).Stats.MaxHP & ")"
             Else
                 If UserList(UserIndex).flags.Muerto = 0 Then

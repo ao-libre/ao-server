@@ -692,7 +692,7 @@ End Select
 
 Call WriteNPCHitUser(UserIndex, Lugar, daño)
 
-If UserList(UserIndex).flags.Privilegios = PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
+If UserList(UserIndex).flags.Privilegios And PlayerType.User Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
 
 If UserList(UserIndex).flags.Meditando Then
     If daño > Fix(UserList(UserIndex).Stats.MinHP / 100 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) * UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
@@ -781,7 +781,7 @@ End Sub
 Public Function NpcAtacaUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
 
 If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Function
-If UserList(UserIndex).flags.Privilegios > User And Not UserList(UserIndex).flags.AdminPerseguible Then Exit Function
+If (Not UserList(UserIndex).flags.Privilegios And PlayerType.User) <> 0 And Not UserList(UserIndex).flags.AdminPerseguible Then Exit Function
 
 ' El npc puede atacar ???
 If Npclist(NpcIndex).CanAttack = 1 Then
@@ -912,7 +912,7 @@ End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
-If UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then Exit Sub
+If UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then Exit Sub
 
 If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO Then
    Call WriteConsoleMsg(UserIndex, "Estás muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
@@ -1003,7 +1003,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
             
     'Look for user
     If index > 0 Then
-        If UserList(index).flags.Privilegios < PlayerType.Consejero Then ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
+        If UserList(index).flags.Privilegios And PlayerType.User Then  ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
             Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
             Call SendUserStatsBox(UserIndex)
             Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
@@ -1347,6 +1347,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defenza en ciudad Armada y Caos.
 '***************************************************
 Dim T As eTrigger6
+Dim rank As Integer
 'MUY importante el orden de estos "IF"...
 
 'Estas muerto no podes atacar
@@ -1375,7 +1376,9 @@ ElseIf T = TRIGGER6_PROHIBE Then
 End If
 
 'Estas queriendo atacar a un GM?
-If UserList(VictimIndex).flags.Privilegios > UserList(AttackerIndex).flags.Privilegios Then
+rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
+
+If (UserList(VictimIndex).flags.Privilegios And rank) > (UserList(AttackerIndex).flags.Privilegios And rank) Then
     Call WriteConsoleMsg(AttackerIndex, "El ser es demasiado poderoso", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1513,7 +1516,7 @@ If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
 End If
 
 'Sos consejero? no podes atacar nunca.
-If UserList(AttackerIndex).flags.Privilegios = PlayerType.Consejero Then
+If UserList(AttackerIndex).flags.Privilegios And PlayerType.Consejero Then
     PuedeAtacarNPC = False
     Exit Function
 End If

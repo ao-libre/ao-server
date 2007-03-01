@@ -1692,7 +1692,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer, Optional ByVal Tiempo As Integer 
     
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
-        UserList(UserIndex).Counters.Salir = IIf(UserList(UserIndex).flags.Privilegios > PlayerType.User Or Not MapInfo(UserList(UserIndex).Pos.Map).Pk, 0, Tiempo)
+        UserList(UserIndex).Counters.Salir = IIf(UserList(UserIndex).flags.Privilegios And PlayerType.User Or MapInfo(UserList(UserIndex).Pos.Map).Pk, Tiempo, 0)
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
     End If
@@ -1770,7 +1770,7 @@ Sub VolverCriminal(ByVal UserIndex As Integer)
 '**************************************************************
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
-If UserList(UserIndex).flags.Privilegios < PlayerType.SemiDios Then
+If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
     UserList(UserIndex).Reputacion.BurguesRep = 0
     UserList(UserIndex).Reputacion.NobleRep = 0
     UserList(UserIndex).Reputacion.PlebeRep = 0

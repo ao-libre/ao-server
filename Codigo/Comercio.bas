@@ -294,7 +294,7 @@ On Error GoTo errhandler
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         End If
-    ElseIf UserList(UserIndex).flags.Privilegios = PlayerType.Consejero Then
+    ElseIf UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then
         Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If

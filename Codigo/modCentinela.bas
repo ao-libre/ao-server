@@ -54,7 +54,7 @@ Private Sub GoToNextWorkingChar()
     Dim LoopC As Long
     
     For LoopC = 1 To LastUser
-        If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Counters.Trabajando > 0 And UserList(LoopC).flags.Privilegios = PlayerType.User Then
+        If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Counters.Trabajando > 0 And UserList(LoopC).flags.Privilegios And PlayerType.User Then
             If Not UserList(LoopC).flags.CentinelaOK Then
                 'Inicializamos
                 Centinela.RevisandoUserIndex = LoopC

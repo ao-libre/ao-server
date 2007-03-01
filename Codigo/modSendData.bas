@@ -77,7 +77,7 @@ On Error Resume Next
         Case SendTarget.ToAdmins
             For LoopC = 1 To LastUser
                 If UserList(LoopC).ConnID <> -1 Then
-                    If UserList(LoopC).flags.Privilegios > PlayerType.User Then
+                    If Not UserList(LoopC).flags.Privilegios And PlayerType.User Then
                         Call EnviarDatosASlot(LoopC, sndData)
                    End If
                 End If
@@ -485,8 +485,9 @@ Private Sub SendToAdminsButConsejerosArea(ByVal UserIndex As Integer, ByVal sdDa
         
         If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).flags.Privilegios > PlayerType.Consejero Then
-                    Call EnviarDatosASlot(TempIndex, sdData)
+                If UserList(TempIndex).ConnIDValida Then
+                    If UserList(TempIndex).flags.Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then _
+                        Call EnviarDatosASlot(TempIndex, sdData)
                 End If
             End If
         End If
