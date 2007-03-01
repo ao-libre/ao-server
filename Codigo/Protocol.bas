@@ -1646,11 +1646,11 @@ On Error GoTo errhandler
             If targetUserIndex = INVALID_INDEX Then
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) And (Not .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+                If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (Not .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
                     'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
                 
-                ElseIf (.flags.Privilegios And PlayerType.User) And (Not targetPriv And PlayerType.User) Then
+                ElseIf (.flags.Privilegios And PlayerType.User) <> 0 And (Not targetPriv And PlayerType.User) <> 0 Then
                     'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
                 
@@ -2202,7 +2202,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
         'low rank admins can't drop item. Neither can the dead nor those sailing.
         If .flags.Navegando = 1 Or _
            .flags.Muerto = 1 Or _
-           ((.flags.Privilegios And PlayerType.Consejero) And (Not .flags.Privilegios And PlayerType.Consejero)) Then Exit Sub
+           ((.flags.Privilegios And PlayerType.Consejero) <> 0 And (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
 
         'Are we dropping gold or other items??
         If Slot = FLAGORO Then
@@ -7670,7 +7670,7 @@ On Error GoTo errhandler
         jailTime = buffer.ReadByte()
         
         '/carcel nick@motivo@<tiempo>
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (Not .flags.Privilegios And PlayerType.User) <> 0 Then
             If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /carcel nick@motivo@tiempo", FontTypeNames.FONTTYPE_INFO)
             Else
@@ -7789,19 +7789,19 @@ On Error GoTo errhandler
         
         Dim UserName As String
         Dim reason As String
-        Dim tUser As Integer
+        Dim privs As PlayerType
         Dim Count As Byte
         
         UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
         
-        If Not .flags.Privilegios And PlayerType.RoleMaster Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (Not .flags.Privilegios And PlayerType.User) <> 0 Then
             If LenB(UserName) = 0 Or LenB(reason) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Utilice /advertencia nick@motivo", FontTypeNames.FONTTYPE_INFO)
             Else
-                tUser = NameIndex(UserName)
+                privs = UserDarPrivilegioLevel(UserName)
                 
-                If Not UserList(tUser).flags.Privilegios And PlayerType.User Then
+                If Not privs And PlayerType.User Then
                     Call WriteConsoleMsg(UserIndex, "No podés advertir a administradores.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     If (InStrB(UserName, "\") <> 0) Then
@@ -7810,7 +7810,7 @@ On Error GoTo errhandler
                     If (InStrB(UserName, "/") <> 0) Then
                             UserName = Replace(UserName, "/", "")
                     End If
-    
+                    
                     If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                         Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
@@ -9561,9 +9561,8 @@ On Error GoTo errhandler
         
         desc = buffer.ReadASCIIString()
         
-        If (.flags.Privilegios And (PlayerType.RoleMaster Or PlayerType.Dios Or PlayerType.Admin)) Then
-            'tUser = NameIndex(.flags.TargetUser)
-            tUser = .flags.TargetUser 'CHECK; CHECK!!!..
+        If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+            tUser = .flags.TargetUser
             If tUser > 0 Then
                 UserList(tUser).DescRM = desc
             Else
@@ -12934,8 +12933,9 @@ Public Sub HandleChangeMOTD(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        '*Nigo: Asignar y aplicar Restriccion
-        If .flags.Privilegios And PlayerType.RoleMaster Then Exit Sub
+        If (.flags.Privilegios And PlayerType.RoleMaster) Or (Not .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+            Exit Sub
+        End If
         
         Dim auxiliaryString As String
         Dim LoopC As Long

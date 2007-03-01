@@ -30,28 +30,31 @@ Attribute VB_Name = "Extra"
 Option Explicit
 
 Public Function EsNewbie(ByVal UserIndex As Integer) As Boolean
-EsNewbie = UserList(UserIndex).Stats.ELV <= LimiteNewbie
+    EsNewbie = UserList(UserIndex).Stats.ELV <= LimiteNewbie
 End Function
+
 Public Function esArmada(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 23/01/2007
 '***************************************************
-esArmada = (UserList(UserIndex).Faccion.ArmadaReal = 1)
+    esArmada = (UserList(UserIndex).Faccion.ArmadaReal = 1)
 End Function
+
 Public Function esCaos(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 23/01/2007
 '***************************************************
-esCaos = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
+    esCaos = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
 End Function
+
 Public Function EsGM(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 23/01/2007
 '***************************************************
-EsGM = (UserList(UserIndex).flags.Privilegios > User)
+    EsGM = (UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero))
 End Function
 
 Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
@@ -59,8 +62,8 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal 
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
 'Last Modification: 23/01/2007
 'Handles the Map passage of Users. Allows the existance
-'of exclusive mapas for Newbies, Armadas and Legionarios
-'And enables GMs to enter every map without restricción.
+'of exclusive maps for Newbies, Royal Army and Caos Legion
+'and enables GMs to enter every map without restriction.
 'Uses: Mapinfo(map).Restringir = "NEWBIE" (newbies), "ARMADA", "CAOS" and "NO".
 '***************************************************
 On Error GoTo errhandler

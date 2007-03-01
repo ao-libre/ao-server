@@ -1123,7 +1123,7 @@ Else
 End If
 
 If ServerSoloGMs > 0 Then
-    If UserList(UserIndex).flags.Privilegios < ServerSoloGMs Then
+    If Not UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
         Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores de jerarquia mayor o igual a: " & ServerSoloGMs & ". Por favor intente en unos momentos.")
         Call CloseSocket(UserIndex)
         Exit Sub
