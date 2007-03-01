@@ -452,7 +452,8 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '***************************************************
 On Error Resume Next
     'Reset idle counter
-    UserList(UserIndex).Counters.IdleCount = 0
+    If UserList(UserIndex).incomingData.PeekByte() <= ClientPacketID.CheckSlot Then _
+        UserList(UserIndex).Counters.IdleCount = 0
     
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN

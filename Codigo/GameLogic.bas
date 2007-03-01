@@ -61,7 +61,7 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal 
 'Handles the Map passage of Users. Allows the existance
 'of exclusive mapas for Newbies, Armadas and Legionarios
 'And enables GMs to enter every map without restricción.
-'Uses: Mapinfo(map).Restringir = "SI" (newbies), "ARMADA", "CAOS" and "NO".
+'Uses: Mapinfo(map).Restringir = "NEWBIE" (newbies), "ARMADA", "CAOS" and "NO".
 '***************************************************
 On Error GoTo errhandler
 
@@ -76,7 +76,7 @@ If InMapBounds(Map, X, Y) Then
     
     If (MapData(Map, X, Y).TileExit.Map > 0) And (MapData(Map, X, Y).TileExit.Map <= NumMaps) Then
         '¿Es mapa de newbies?
-        If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "SI" Then
+        If UCase$(MapInfo(MapData(Map, X, Y).TileExit.Map).Restringir) = "NEWBIE" Then
             '¿El usuario es un newbie?
             If EsNewbie(UserIndex) Or EsGM(UserIndex) Then
                 If LegalPos(MapData(Map, X, Y).TileExit.Map, MapData(Map, X, Y).TileExit.X, MapData(Map, X, Y).TileExit.Y, PuedeAtravesarAgua(UserIndex)) Then
