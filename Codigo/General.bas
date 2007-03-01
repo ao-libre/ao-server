@@ -498,43 +498,32 @@ Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = 
     FileExist = LenB(dir$(file, FileType)) <> 0
 End Function
 
-Function ReadField(ByVal Pos As Integer, ByVal Text As String, ByVal SepASCII As Integer) As String
-'All these functions are much faster using the "$" sign
-'after the function. This happens for a simple reason:
-'The functions return a variant without the $ sign. And
-'variants are very slow, you should never use them.
-
+Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
 '*****************************************************************
-'Devuelve el string del campo
+'Gets a field from a string
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: 11/15/2004
+'Gets a field from a delimited string
 '*****************************************************************
-Dim i As Integer
-Dim LastPos As Integer
-Dim CurChar As String * 1
-Dim FieldNum As Integer
-Dim Seperator As String
-  
-Seperator = Chr$(SepASCII)
-LastPos = 0
-FieldNum = 0
-
-For i = 1 To Len(Text)
-    CurChar = mid$(Text, i, 1)
-    If CurChar = Seperator Then
-        FieldNum = FieldNum + 1
-        If FieldNum = Pos Then
-            ReadField = mid$(Text, LastPos + 1, (InStr(LastPos + 1, Text, Seperator, vbTextCompare) - 1) - (LastPos))
-            Exit Function
-        End If
-        LastPos = i
+    Dim i As Long
+    Dim LastPos As Long
+    Dim CurrentPos As Long
+    Dim delimiter As String * 1
+    
+    delimiter = Chr$(SepASCII)
+    
+    For i = 1 To Pos
+        LastPos = CurrentPos
+        CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
+    Next i
+    
+    If CurrentPos = 0 Then
+        ReadField = mid$(Text, LastPos + 1, Len(Text) - LastPos)
+    Else
+        ReadField = mid$(Text, LastPos + 1, CurrentPos - LastPos - 1)
     End If
-Next i
-
-FieldNum = FieldNum + 1
-If FieldNum = Pos Then
-    ReadField = mid$(Text, LastPos + 1)
-End If
-
 End Function
+
 Function MapaValido(ByVal Map As Integer) As Boolean
 MapaValido = Map >= 1 And Map <= NumMaps
 End Function

@@ -212,7 +212,7 @@ Public Function GetLeader() As String
     GetLeader = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Leader")
 End Function
 
-Public Function GetMemberList()     'No return type allows to return arrays :D
+Public Function GetMemberList() As String()
     Dim OldQ    As Integer
     Dim list() As String
     Dim i As Long
@@ -315,7 +315,7 @@ End Sub
 'ASPIRANTES
 '
 
-Public Function GetAspirantes()     'No return type allows to return arrays :D
+Public Function GetAspirantes() As String()
     Dim OldQ    As Integer
     Dim list() As String
     Dim i As Long
@@ -569,6 +569,8 @@ Dim FechaSufragio   As Date
 Dim Temps           As String
 Dim Ganador         As String
 Dim CantGanadores   As Integer
+Dim list()          As String
+Dim i               As Long
 
     RevisarElecciones = False
     Temps = Trim$(GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "EleccionesFinalizan"))
@@ -584,7 +586,13 @@ Dim CantGanadores   As Integer
                 'empate en la votacion
                 Call SetGuildNews("*Empate en la votación. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan")
             ElseIf CantGanadores = 1 Then
-                If InStr(1, Me.GetMemberList(","), Ganador, vbTextCompare) > 0 Then
+                list = Me.GetMemberList()
+                
+                For i = 0 To UBound(list())
+                    If Ganador = list(i) Then Exit For
+                Next i
+                
+                If i <= UBound(list()) Then
                     Call SetGuildNews("*" & Ganador & " ganó la elección del clan*")
                     Call Me.SetLeader(Ganador)
                     RevisarElecciones = True

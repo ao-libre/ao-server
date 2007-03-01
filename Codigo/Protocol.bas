@@ -451,6 +451,9 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error Resume Next
+    'Reset idle counter
+    UserList(UserIndex).Counters.IdleCount = 0
+    
     Select Case UserList(UserIndex).incomingData.PeekByte()
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
@@ -6283,7 +6286,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then
+    If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -6292,7 +6295,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim amount As Integer
+        Dim amount As Long
         
         amount = .incomingData.ReadLong()
         
@@ -6389,11 +6392,16 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim amount As Integer
+        Dim amount As Long
         
         amount = .incomingData.ReadLong()
         
@@ -14511,11 +14519,11 @@ Public Sub WriteDiceRoll(ByVal UserIndex As Integer)
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.DiceRoll)
         
-        Call .WriteInteger(UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza))
-        Call .WriteInteger(UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))
-        Call .WriteInteger(UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia))
-        Call .WriteInteger(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma))
-        Call .WriteInteger(UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion))
+        Call .WriteByte(UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza))
+        Call .WriteByte(UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))
+        Call .WriteByte(UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia))
+        Call .WriteByte(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma))
+        Call .WriteByte(UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion))
     End With
 End Sub
 
@@ -14762,8 +14770,8 @@ End Sub
 ' @param    criminalsKilled The number of criminals killed by the requested char.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCharacterInfo(ByVal UserIndex As Integer, ByVal charName As String, ByVal race As String, ByVal Class As String, _
-                            ByVal gender As String, ByVal level As Byte, ByVal gold As Long, ByVal bank As Long, ByVal reputation As Long, _
+Public Sub WriteCharacterInfo(ByVal UserIndex As Integer, ByVal charName As String, ByVal race As eRaza, ByVal Class As eClass, _
+                            ByVal gender As eGenero, ByVal level As Byte, ByVal gold As Long, ByVal bank As Long, ByVal reputation As Long, _
                             ByVal previousPetitions As String, ByVal currentGuild As String, ByVal previousGuilds As String, ByVal RoyalArmy As Boolean, _
                             ByVal CaosLegion As Boolean, ByVal citicensKilled As Long, ByVal criminalsKilled As Long)
 '***************************************************
@@ -14775,10 +14783,9 @@ Public Sub WriteCharacterInfo(ByVal UserIndex As Integer, ByVal charName As Stri
         Call .WriteByte(ServerPacketID.CharacterInfo)
         
         Call .WriteASCIIString(charName)
-        Call .WriteASCIIString(race)
-        Call .WriteASCIIString(charName)
-        Call .WriteASCIIString(Class)
-        Call .WriteASCIIString(gender)
+        Call .WriteByte(race)
+        Call .WriteByte(Class)
+        Call .WriteByte(gender)
         
         Call .WriteByte(level)
         Call .WriteLong(gold)

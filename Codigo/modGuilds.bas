@@ -132,7 +132,7 @@ End Function
 
 Public Function m_ValidarPermanencia(ByVal UserIndex As Integer, ByVal SumaAntifaccion As Boolean, ByRef CambioAlineacion As Boolean, ByRef CambioLider As Boolean) As Boolean
 Dim guildIndex  As Integer
-Dim ML          As String
+Dim ML()        As String
 Dim M           As String
 Dim UI          As Integer
 Dim Sale        As Boolean
@@ -165,10 +165,9 @@ Dim i           As Integer
             'internamente al iterador en el proceso
             CambioLider = False
             i = 1
-            ML = guilds(guildIndex).GetMemberList(",")
-            M = ReadField(i, ML, Asc(","))
+            ML = guilds(guildIndex).GetMemberList()
+            M = ML(i)
             While LenB(M) <> 0
-
                 'vamos a violar un poco de capas..
                 UI = NameIndex(M)
                 If UI > 0 Then
@@ -202,7 +201,7 @@ Dim i           As Integer
                     End If
                 End If
                 i = i + 1
-                M = ReadField(i, ML, Asc(","))
+                M = ML(i)
             Wend
         Else
             'no se va el fundador, el peor caso es que se vaya el lider
@@ -214,8 +213,6 @@ Dim i           As Integer
             Call m_EcharMiembroDeClan(-1, UserList(UserIndex).name)   'y lo echamos
         End If
     End If
-    
-
 End Function
 
 Public Sub m_DesconectarMiembroDelClan(ByVal UserIndex As Integer, ByVal guildIndex As Integer)
@@ -704,6 +701,8 @@ End Function
 
 Public Function v_UsuarioVota(ByVal UserIndex As Integer, ByRef Votado As String, ByRef refError As String) As Boolean
 Dim guildIndex      As Integer
+Dim list()          As String
+Dim i As Long
 
     v_UsuarioVota = False
     guildIndex = UserList(UserIndex).guildIndex
@@ -718,11 +717,18 @@ Dim guildIndex      As Integer
         Exit Function
     End If
     
-    If InStr(1, guilds(guildIndex).GetMemberList(","), Votado, vbTextCompare) <= 0 Then
+    
+    list = guilds(guildIndex).GetMemberList()
+    For i = 0 To UBound(list())
+        If Votado = list(i) Then Exit For
+    Next i
+    
+    If i > UBound(list()) Then
         refError = Votado & " no pertenece al clan"
         Exit Function
     End If
-
+    
+    
     If guilds(guildIndex).YaVoto(UserList(UserIndex).name) Then
         refError = "Ya has votado, no puedes cambiar tu voto"
         Exit Function
@@ -806,7 +812,7 @@ Dim i As Integer
     End If
 End Function
 
-Public Function PrepareGuildsList() 'No return type allows to return arrays :D
+Public Function PrepareGuildsList() As String()
     Dim tStr() As String
     Dim i As Long
     
@@ -1256,11 +1262,6 @@ Dim GI              As Integer
 End Function
 
 Public Function r_ListaDePropuestas(ByVal UserIndex As Integer, ByVal Tipo As RELACIONES_GUILD) As String()
-'No return type allows to return arrays ;) (1)
-'*(1), thats true ('cause it returns a variant)... but it doesn't work if you don't actually return anything! XD
-'(2) It's also unnesesary, you can use As String(), to return an array..., and thats faster!
-'(3) Just DONT use the name of the function as an intermediate value container, an ENSURE that the assignment to that name, is the LAST statement.
-'Regards.. liquid
 
     Dim GI  As Integer
     Dim i   As Integer
@@ -1274,7 +1275,11 @@ Public Function r_ListaDePropuestas(ByVal UserIndex As Integer, ByVal Tipo As RE
             proposalCount = .CantidadPropuestas(Tipo)
             
             'Resize array to contain all proposals
-            ReDim proposals(proposalCount - 1) As String
+            If proposalCount > 0 Then
+                ReDim proposals(proposalCount - 1) As String
+            Else
+                ReDim proposals(0) As String
+            End If
             
             'Store each guild name
             For i = 0 To proposalCount - 1
@@ -1366,6 +1371,8 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As 
     Dim UserFile    As clsIniReader
     Dim Miembro     As String
     Dim GuildActual As Integer
+    Dim list()      As String
+    Dim i           As Long
     
     GI = UserList(UserIndex).guildIndex
     
@@ -1392,7 +1399,13 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As 
     NroAsp = guilds(GI).NumeroDeAspirante(Personaje)
     
     If NroAsp = 0 Then
-        If InStr(1, guilds(GI).GetMemberList("."), Personaje, vbTextCompare) <= 0 Then
+        list = guilds(GI).GetMemberList()
+        
+        For i = 0 To UBound(list())
+            If Personaje = list(i) Then Exit For
+        Next i
+        
+        If i > UBound(list()) Then
             Call Protocol.WriteConsoleMsg(UserIndex, "El personaje no es ni aspirante ni miembro del clan", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
