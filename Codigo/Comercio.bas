@@ -234,6 +234,7 @@ On Error GoTo errhandler
         Call Ban(UserList(UserIndex).name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio " & Cantidad)
         UserList(UserIndex).flags.Ban = 1
         Call WriteErrorMsg(UserIndex, "Has sido baneado por el sistema anti cheats")
+        Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If

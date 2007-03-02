@@ -866,6 +866,7 @@ UserList(UserIndex).Char.FX = 0
 'Controlamos no pasar el maximo de usuarios
 If NumUsers >= MaxUsers Then
     Call WriteErrorMsg(UserIndex, "El servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
+    Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
@@ -874,6 +875,7 @@ End If
 If AllowMultiLogins = 0 Then
     If CheckForSameIP(UserIndex, UserList(UserIndex).ip) = True Then
         Call WriteErrorMsg(UserIndex, "No es posible usar mas de un personaje al mismo tiempo.")
+        Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
@@ -882,6 +884,7 @@ End If
 '¿Existe el personaje?
 If Not FileExist(CharPath & UCase$(name) & ".chr", vbNormal) Then
     Call WriteErrorMsg(UserIndex, "El personaje no existe.")
+    Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
@@ -889,6 +892,7 @@ End If
 '¿Es el passwd valido?
 If UCase$(Password) <> UCase$(GetVar(CharPath & UCase$(name) & ".chr", "INIT", "Password")) Then
     Call WriteErrorMsg(UserIndex, "Password incorrecto.")
+    Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
@@ -900,6 +904,7 @@ If CheckForSameName(UserIndex, name) Then
     Else
         Call WriteErrorMsg(UserIndex, "Perdon, un usuario con el mismo nombre se há logoeado.")
     End If
+    Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
@@ -968,6 +973,7 @@ If UserList(UserIndex).Pos.Map = 0 Then
 Else
     If Not MapaValido(UserList(UserIndex).Pos.Map) Then
         Call WriteErrorMsg(UserIndex, "EL PJ se encuenta en un mapa invalido.")
+        Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
@@ -1063,6 +1069,7 @@ End If
 
 If EnTesting And UserList(UserIndex).Stats.ELV >= 18 Then
     Call WriteErrorMsg(UserIndex, "Servidor en Testing por unos minutos, conectese con PJs de nivel menor a 18. No se conecte con Pjs que puedan resultar importantes por ahora pues pueden arruinarse.")
+    Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
     Exit Sub
 End If
@@ -1125,6 +1132,7 @@ End If
 If ServerSoloGMs > 0 Then
     If Not UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
         Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores de jerarquia mayor o igual a: " & ServerSoloGMs & ". Por favor intente en unos momentos.")
+        Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If

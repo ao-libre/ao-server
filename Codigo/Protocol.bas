@@ -2391,6 +2391,7 @@ Private Sub HandleUseSpellMacro(ByVal UserIndex As Integer)
         
         Call SendData(SendTarget.ToAdmins, UserIndex, PrepareMessageConsoleMsg(.name & " fue expulsado por Anti-macro de hechizos", FontTypeNames.FONTTYPE_VENENO))
         Call WriteErrorMsg(UserIndex, "Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros")
+        Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
     End With
 End Sub
@@ -2879,6 +2880,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                             
                             ''FUISTE
                             Call WriteErrorMsg(UserIndex, "Has sido expulsado por el sistema anti cheats.")
+                            Call FlushBuffer(UserIndex)
                             Call CloseSocket(UserIndex)
                             Exit Sub
                         End If
