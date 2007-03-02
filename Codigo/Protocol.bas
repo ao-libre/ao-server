@@ -9429,7 +9429,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         Y = .incomingData.ReadByte()
         
         If .flags.Privilegios And (PlayerType.User + PlayerType.Consejero + PlayerType.SemiDios + PlayerType.RoleMaster) Then Exit Sub
-
+        
         Call LogGM(.name, "/CT " & mapa & "," & X & "," & Y, False)
         
         If Not MapaValido(mapa) Or Not InMapBounds(mapa, X, Y) Then _
@@ -9442,7 +9442,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
             Exit Sub
         
         If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
-            Call SendData(UserIndex, "Hay un objeto en el piso en ese lugar", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Hay un objeto en el piso en ese lugar", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -9484,8 +9484,8 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         '/dt
-        If .flags.Privilegios And (PlayerType.User + PlayerType.Consejero + PlayerType.SemiDios + PlayerType.RoleMaster) Then Exit Sub
-
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
+        
         mapa = .flags.TargetMap
         X = .flags.TargetX
         Y = .flags.TargetY
@@ -9493,6 +9493,8 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         If Not InMapBounds(mapa, X, Y) Then Exit Sub
         
         With MapData(mapa, X, Y)
+            If .ObjInfo.ObjIndex = 0 Then Exit Sub
+            
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
                 Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y, False)
                 

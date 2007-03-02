@@ -182,20 +182,19 @@ On Error GoTo ErrorHandler
     
 ErrorHandler:
         Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description)
-
 End Sub
-Sub RefreshCharStatus(ByVal UserIndex)
+
+Sub RefreshCharStatus(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Pablo (ToxicWaste)
 'Last modified: 24/01/2007
 'Refreshes the status of UserIndex.
 'Pablo (ToxicWaste): Hay que hacer mejor, copié lo que hizo Integer pero es medio kk ya que solo cambia 1 byte de la info y estoy remandando todo el paquete.
 '*************************************************
-
     Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
     Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-    
 End Sub
+
 Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 On Local Error GoTo hayerror
@@ -1576,7 +1575,7 @@ Dim OldY As Integer
         
         'Update new Map Users
         MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
-    
+        
         'Update old Map Users
         MapInfo(OldMap).NumUsers = MapInfo(OldMap).NumUsers - 1
         If MapInfo(OldMap).NumUsers < 0 Then
