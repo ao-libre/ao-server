@@ -1594,6 +1594,11 @@ If Dire = 1 Then 'Mover arriba
         UserList(UserIndex).Stats.UserHechizos(CualHechizo - 1) = TempHechizo
         
         Call UpdateUserHechizos(False, UserIndex, CualHechizo - 1)
+        
+        'Prevent the user from casting other spells than the one he had selected when he hitted "cast".
+        If UserList(UserIndex).flags.Hechizo > 0 Then
+            UserList(UserIndex).flags.Hechizo = UserList(UserIndex).flags.Hechizo - 1
+        End If
     End If
 Else 'mover abajo
     If CualHechizo = MAXUSERHECHIZOS Then
@@ -1605,6 +1610,11 @@ Else 'mover abajo
         UserList(UserIndex).Stats.UserHechizos(CualHechizo + 1) = TempHechizo
         
         Call UpdateUserHechizos(False, UserIndex, CualHechizo + 1)
+        
+        'Prevent the user from casting other spells than the one he had selected when he hitted "cast".
+        If UserList(UserIndex).flags.Hechizo > 0 Then
+            UserList(UserIndex).flags.Hechizo = UserList(UserIndex).flags.Hechizo + 1
+        End If
     End If
 End If
 Call UpdateUserHechizos(False, UserIndex, CualHechizo)

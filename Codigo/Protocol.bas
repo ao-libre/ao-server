@@ -2247,6 +2247,12 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
         End If
         
         .flags.Hechizo = .incomingData.ReadByte()
+        
+        If .flags.Hechizo < 1 Then
+            .flags.Hechizo = 0
+        ElseIf .flags.Hechizo > MAXUSERHECHIZOS Then
+            .flags.Hechizo = 0
+        End If
     End With
 End Sub
 
