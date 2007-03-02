@@ -349,7 +349,7 @@ End If
 
 End Sub
 
-Sub MakeObj(ByVal sndIndex As Integer, Obj As Obj, Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub MakeObj(ByVal sndIndex As Integer, ByRef Obj As Obj, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
