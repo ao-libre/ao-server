@@ -14355,7 +14355,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As 
         Call .WriteLong(price)
         Call .WriteInteger(ObjInfo.GrhIndex)
         Call .WriteInteger(Obj.ObjIndex)
-        Call .WriteInteger(ObjInfo.OBJType)
+        Call .WriteByte(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.MaxDef)
