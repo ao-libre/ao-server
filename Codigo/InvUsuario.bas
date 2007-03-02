@@ -336,7 +336,7 @@ End If
 
 End Sub
 
-Sub EraseObj(ByVal sndIndex As Integer, ByVal num As Integer, ByVal Map As Byte, ByVal X As Integer, ByVal Y As Integer)
+Sub EraseObj(ByVal sndIndex As Integer, ByVal num As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 MapData(Map, X, Y).ObjInfo.amount = MapData(Map, X, Y).ObjInfo.amount - num
 
