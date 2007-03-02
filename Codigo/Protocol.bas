@@ -7877,7 +7877,7 @@ On Error GoTo errhandler
         Dim commandString As String
         Dim N As Byte
         
-        UserName = buffer.ReadASCIIString()
+        UserName = Replace(buffer.ReadASCIIString(), "+", " ")
         
         If UCase$(UserName) = "YO" Then
             tUser = UserIndex

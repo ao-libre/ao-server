@@ -822,8 +822,8 @@ End If
 
 If Obj.OBJType = eOBJType.otWeapon Then
     If Not UserList(UserIndex).flags.ModoCombate Then
-            Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+        Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
     End If
     
     If Obj.proyectil = 1 Then
@@ -883,8 +883,8 @@ Select Case Obj.OBJType
         
     Case eOBJType.otWeapon
         If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
         End If
         
         If Not UserList(UserIndex).Stats.MinSta > 0 Then
@@ -910,7 +910,6 @@ Select Case Obj.OBJType
         End If
         
         'Solo si es herramienta ;) (en realidad si no es ni proyectil ni daga)
-        
         If UserList(UserIndex).Invent.Object(Slot).Equipped = 0 Then
             Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -919,16 +918,16 @@ Select Case Obj.OBJType
         UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
         If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
             UserList(UserIndex).Reputacion.PlebeRep = MAXREP
-            
+        
         Select Case ObjIndex
             Case CAÑA_PESCA, RED_PESCA
-                Call WriteWorkRequestTarget(UserIndex, Pesca)
+                Call WriteWorkRequestTarget(UserIndex, eSkill.Pesca)
             Case HACHA_LEÑADOR
-                Call WriteWorkRequestTarget(UserIndex, Talar)
+                Call WriteWorkRequestTarget(UserIndex, eSkill.Talar)
             Case PIQUETE_MINERO
-                Call WriteWorkRequestTarget(UserIndex, Mineria)
+                Call WriteWorkRequestTarget(UserIndex, eSkill.Mineria)
             Case MARTILLO_HERRERO
-                Call WriteWorkRequestTarget(UserIndex, Herreria)
+                Call WriteWorkRequestTarget(UserIndex, eSkill.Herreria)
             Case SERRUCHO_CARPINTERO
                 Call EnivarObjConstruibles(UserIndex)
                 Call WriteShowCarpenterForm(UserIndex)

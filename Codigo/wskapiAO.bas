@@ -640,7 +640,6 @@ Dim i As Long
 #End If
 End Sub
 
-
 Public Sub WSApiCloseSocket(ByVal Socket As Long)
 #If UsarQueSocket = 1 Then
 Call WSAAsyncSelect(Socket, hWndMsg, ByVal 1025, ByVal (FD_CLOSE))
