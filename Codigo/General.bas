@@ -1045,8 +1045,6 @@ End If
             
 End Sub
 
-
-
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 
 If UserList(UserIndex).Counters.Invisibilidad < IntervaloInvisible Then
@@ -1056,7 +1054,7 @@ Else
     UserList(UserIndex).flags.invisible = 0
     If UserList(UserIndex).flags.Oculto = 0 Then
         Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-        Call SendData(SendTarget.ToPCArea, 0, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
 End If
 

@@ -34,9 +34,6 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 ''
-' TODO : Poner en cada comando de GM los chequeos de permisos!!!
-
-''
 'When we have a list of strings, we use this to separate them and prevent
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
 Private Const SEPARATOR As String * 1 = vbNullChar
@@ -12830,7 +12827,7 @@ On Error GoTo errhandler
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
             Call LogGM(.name, "Mensaje de sistema:" & message, False)
             
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(message))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
