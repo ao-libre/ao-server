@@ -9566,7 +9566,7 @@ On Error GoTo errhandler
         
         desc = buffer.ReadASCIIString()
         
-        If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+        If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or (.flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
             tUser = .flags.TargetUser
             If tUser > 0 Then
                 UserList(tUser).DescRM = desc
