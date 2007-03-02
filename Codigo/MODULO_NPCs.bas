@@ -491,6 +491,7 @@ Dim CharIndex As Integer
     
     If Not toMap Then
         Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
+        Call FlushBuffer(sndIndex)
     Else
         Call ArgegarNpc(NpcIndex)
         Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
@@ -914,12 +915,6 @@ NumNPCs = NumNPCs + 1
 OpenNPC = NpcIndex
 
 End Function
-
-
-Sub EnviarListaCriaturas(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
-  Call WriteTrainerCreatureList(UserIndex, NpcIndex)
-End Sub
-
 
 Sub DoFollow(ByVal NpcIndex As Integer, ByVal UserName As String)
 

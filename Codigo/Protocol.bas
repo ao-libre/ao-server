@@ -4937,7 +4937,7 @@ Private Sub HandleTrainList(ByVal UserIndex As Integer)
         'Make sure it's the trainer
         If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Entrenador Then Exit Sub
         
-        Call EnviarListaCriaturas(UserIndex, .flags.TargetNPC)
+        Call WriteTrainerCreatureList(UserIndex, .flags.TargetNPC)
     End With
 End Sub
 
@@ -14615,15 +14615,19 @@ Public Sub WriteTrainerCreatureList(ByVal UserIndex As Integer, ByVal NpcIndex A
 'Writes the "TrainerCreatureList" message to the given user's outgoing data buffer
 '***************************************************
     Dim i As Long
+    Dim str As String
     
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.TrainerCreatureList)
         
-        Call .WriteInteger(Npclist(NpcIndex).NroCriaturas)
-        
         For i = 1 To Npclist(NpcIndex).NroCriaturas
-            Call .WriteASCIIString(Npclist(NpcIndex).Criaturas(i).NpcName)
+            str = str & Npclist(NpcIndex).Criaturas(i).NpcName & SEPARATOR
         Next i
+        
+        If LenB(str) > 0 Then _
+            str = Left$(str, Len(str) - 1)
+        
+        Call .WriteASCIIString(str)
     End With
 End Sub
 

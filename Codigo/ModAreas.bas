@@ -210,7 +210,8 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     
                     If UserIndex <> TempInt Then
                         Call MakeUserChar(False, UserIndex, CInt(TempInt), Map, X, Y)
-                        Call MakeUserChar(False, CInt(TempInt), UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call FlushBuffer(TempInt)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
                         If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
@@ -331,7 +332,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
                 Next Y
             Next X
         End If
-            
+        
         'Precalculados :P
         TempInt = .Pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
