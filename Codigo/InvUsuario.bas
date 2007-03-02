@@ -775,7 +775,7 @@ Call UpdateUserInv(False, UserIndex, Slot)
 
 Exit Sub
 errhandler:
-Call LogError("EquiparInvItem Slot:" & Slot)
+Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 End Sub
 
 Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integer) As Boolean
