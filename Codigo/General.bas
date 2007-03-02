@@ -669,7 +669,7 @@ Public Sub LogDesarrollo(ByVal str As String)
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-Open App.Path & "\logs\desarrollo.log" For Append Shared As #nfile
+Open App.Path & "\logs\desarrollo" & Month(Date) & Year(Date) & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & time & " " & str
 Close #nfile
 
