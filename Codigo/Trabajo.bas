@@ -385,11 +385,11 @@ End Sub
 Private Function MineralesParaLingote(ByVal Lingote As iMinerales) As Integer
     Select Case Lingote
         Case iMinerales.HierroCrudo
-            MineralesParaLingote = 13
+            MineralesParaLingote = 14
         Case iMinerales.PlataCruda
-            MineralesParaLingote = 25
+            MineralesParaLingote = 20
         Case iMinerales.OroCrudo
-            MineralesParaLingote = 50
+            MineralesParaLingote = 35
         Case Else
             MineralesParaLingote = 10000
     End Select
