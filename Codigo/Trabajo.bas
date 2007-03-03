@@ -1045,8 +1045,9 @@ End If
 End Sub
 
 Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
-UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Cantidad
-If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
+    UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Cantidad
+    If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
+    Call WriteUpdateSta(UserIndex)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)

@@ -970,7 +970,7 @@ If UserList(UserIndex).flags.UserLogged Then
                 Dim modifi As Long
                 modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 3)
                 Call QuitarSta(UserIndex, modifi)
-                Call SendUserStatsBox(UserIndex)
+                Call FlushBuffer(UserIndex)
     End If
 End If
 

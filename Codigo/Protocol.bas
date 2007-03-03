@@ -2892,7 +2892,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Ahí no hay ninguna fragua.", FontTypeNames.FONTTYPE_INFO)
                 End If
-                
+            
             Case Herreria
                 'Target wehatever is in that tile
                 Call LookatTile(UserIndex, .Pos.Map, X, Y)
