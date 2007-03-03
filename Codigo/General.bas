@@ -141,8 +141,9 @@ End Sub
 Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
 If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If MapData(Map, X, Y).Graphic(1) >= 1505 And _
-       MapData(Map, X, Y).Graphic(1) <= 1520 And _
+    If ((MapData(Map, X, Y).Graphic(1) >= 1505 And MapData(Map, X, Y).Graphic(1) <= 1520) Or _
+    (MapData(Map, X, Y).Graphic(1) >= 5665 And MapData(Map, X, Y).Graphic(1) <= 5680) Or _
+    (MapData(Map, X, Y).Graphic(1) >= 13547 And MapData(Map, X, Y).Graphic(1) <= 13562)) And _
        MapData(Map, X, Y).Graphic(2) = 0 Then
             HayAgua = True
     Else
