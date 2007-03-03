@@ -1657,7 +1657,7 @@ On Error GoTo errhandler
                 Else
                     '[Consejeros & GMs]
                     If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
-                        Call LogGM(.name, "Le dijo a '" & UserList(targetCharIndex).name & "' " & chat, .flags.Privilegios And PlayerType.Consejero)
+                        Call LogGM(.name, "Le dijo a '" & UserList(targetUserIndex).name & "' " & chat, .flags.Privilegios And PlayerType.Consejero)
                     End If
                     
                     If LenB(chat) <> 0 Then
