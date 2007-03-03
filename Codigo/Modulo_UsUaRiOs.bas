@@ -1691,7 +1691,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer, Optional ByVal Tiempo As Integer 
     
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
-        UserList(UserIndex).Counters.Salir = IIf(UserList(UserIndex).flags.Privilegios And PlayerType.User Or MapInfo(UserList(UserIndex).Pos.Map).Pk, Tiempo, 0)
+        UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.Map).Pk, Tiempo, 0)
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
     End If
