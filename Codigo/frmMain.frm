@@ -761,6 +761,7 @@ If Not lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
      lPermiteTrabajar = 0
 End If
 
+
 Exit Sub
 hayerror:
 LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)

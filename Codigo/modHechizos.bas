@@ -705,7 +705,7 @@ If Hechizos(H).RemoverParalisis = 1 Then
                     Exit Sub
                 End If
                 If UserList(UserIndex).flags.Seguro Then
-                    Call WriteConsoleMsg(UserIndex, "||Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
                     b = False
                     Exit Sub
                 Else
@@ -788,7 +788,7 @@ If Hechizos(H).Revivir = 1 Then
                     Exit Sub
                 End If
                 If UserList(UserIndex).flags.Seguro Then
-                    Call WriteConsoleMsg(UserIndex, "||Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Para ayudar criminales debes sacarte el seguro ya que te volverás criminal como ellos", FontTypeNames.FONTTYPE_INFO)
                     b = False
                     Exit Sub
                 Else

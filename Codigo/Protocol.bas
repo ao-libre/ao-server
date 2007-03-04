@@ -5003,7 +5003,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Solo podés usar items cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Solo podés usar meditar cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -9448,15 +9448,16 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        If MapData(mapa, X, Y).TileExit.Map > 0 Then
+            Call WriteConsoleMsg(UserIndex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
         Dim ET As Obj
         ET.amount = 1
         ET.ObjIndex = 378
         
         Call MakeObj(.Pos.Map, ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
-        
-        ET.amount = 1
-        ET.ObjIndex = 651
-        Call MakeObj(mapa, ET, mapa, X, Y)
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
             .TileExit.Map = mapa

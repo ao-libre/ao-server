@@ -54,7 +54,7 @@ Select Case clase
     Case eClass.Thief
         ModificadorEvasion = 1.1
     Case eClass.Bard
-        ModificadorEvasion = 0.6
+        ModificadorEvasion = 1.1
     Case eClass.Mage
         ModificadorEvasion = 0.4
     Case eClass.Druid
@@ -1401,7 +1401,7 @@ End If
 'Tenes puesto el seguro?
 If UserList(AttackerIndex).flags.Seguro Then
         If Not criminal(VictimIndex) Then
-                Call WriteConsoleMsg(AttackerIndex, "||No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(AttackerIndex, "No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
                 PuedeAtacar = False
                 Exit Function
         End If
