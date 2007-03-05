@@ -8113,22 +8113,22 @@ On Error GoTo errhandler
         Dim targetName As String
         Dim targetIndex As Integer
         
-        targetName = buffer.ReadASCIIString()
+        targetName = Replace(buffer.ReadASCIIString(), "+", " ")
         targetIndex = NameIndex(targetName)
         
         
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) Then
             'Actually: is the player offline?
             If targetIndex <= 0 Then
                 'don't allow to retrieve administrator's info
                 If Not (EsDios(targetName) Or EsAdmin(targetName)) Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline, Buscando en Charfile.", FontTypeNames.FONTTYPE_INFO)
-                    SendUserStatsTxtOFF UserIndex, targetName
+                    Call SendUserStatsTxtOFF(UserIndex, targetName)
                 End If
             Else
                 'don't allow to retrieve administrator's info
                 If UserList(targetIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then
-                    SendUserStatsTxt UserIndex, targetIndex
+                    Call SendUserStatsTxt(UserIndex, targetIndex)
                 End If
             End If
         End If
@@ -12158,7 +12158,7 @@ On Error GoTo errhandler
                     If Not FileExist(CharPath & UserName & ".chr") Then
                         Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        guildIndex = CInt(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
+                        guildIndex = val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
                         
                         If guildIndex > 0 Then
                             Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
@@ -12172,7 +12172,7 @@ On Error GoTo errhandler
                                 
                                 Dim cantPenas As Byte
                                 
-                                cantPenas = CByte(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                                 
                                 Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", CStr(cantPenas + 1))
                                 
