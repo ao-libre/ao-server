@@ -1003,12 +1003,10 @@ If IntervaloPermiteAtacar(UserIndex) Then
             
     'Look for user
     If index > 0 Then
-        If UserList(index).flags.Privilegios And PlayerType.User Then  ' 23/08/2006 GS > Agregue que no ingrese a este proceso si es un Administrador asi lo ignorara
-            Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
-            Call SendUserStatsBox(UserIndex)
-            Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
-            Exit Sub
-        End If
+        Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+        Call SendUserStatsBox(UserIndex)
+        Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+        Exit Sub
     End If
     
     'Look for NPC
@@ -1347,7 +1345,6 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defenza en ciudad Armada y Caos.
 '***************************************************
 Dim T As eTrigger6
-Dim rank As Integer
 'MUY importante el orden de estos "IF"...
 
 'Estas muerto no podes atacar
@@ -1376,9 +1373,7 @@ ElseIf T = TRIGGER6_PROHIBE Then
 End If
 
 'Estas queriendo atacar a un GM?
-rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
-
-If (UserList(VictimIndex).flags.Privilegios And rank) > (UserList(AttackerIndex).flags.Privilegios And rank) Then
+If Not (UserList(VictimIndex).flags.Privilegios And PlayerType.User) Then
     Call WriteConsoleMsg(AttackerIndex, "El ser es demasiado poderoso", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1588,7 +1583,7 @@ End If
 End Sub
 
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
-
+'TODO: Pero que rebuscado!!
 If Origen > 0 And Destino > 0 And Origen <= UBound(UserList) And Destino <= UBound(UserList) Then
     If MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger = eTrigger.ZONAPELEA Or _
         MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger = eTrigger.ZONAPELEA Then
