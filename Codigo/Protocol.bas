@@ -2029,7 +2029,7 @@ Private Sub HandleRequestSkills(ByVal UserIndex As Integer)
     'Remove packet ID
     Call UserList(UserIndex).incomingData.ReadByte
     
-    Call EnviarSkills(UserIndex)
+    Call WriteSendSkills(UserIndex)
 End Sub
 
 ''

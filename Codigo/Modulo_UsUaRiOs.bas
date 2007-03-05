@@ -124,14 +124,6 @@ Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVa
     Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
 End Sub
 
-Sub EnviarSubirNivel(ByVal UserIndex As Integer, ByVal Puntos As Integer)
-    Call WriteLevelUp(UserIndex, Puntos)
-End Sub
-
-Sub EnviarSkills(ByVal UserIndex As Integer)
-    Call WriteSendSkills(UserIndex)
-End Sub
-
 Sub EnviarFama(ByVal UserIndex As Integer)
     Dim L As Long
     
@@ -286,8 +278,6 @@ End If
     
 WasNewbie = EsNewbie(UserIndex)
 
-'Si exp >= then Exp para subir de nivel entonce subimos el nivel
-'If UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU Then
 Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     'Checkea otra vez, esto sucede si tiene mas EXP y puede saltarse el maximo
@@ -297,7 +287,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         UserList(UserIndex).Stats.ELU = 0
         Exit Sub
     End If
-
+    
     'Store it!
     Call Statistics.UserLevelUp(UserIndex)
     
@@ -320,7 +310,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     If Not EsNewbie(UserIndex) And WasNewbie Then
         Call QuitarNewbieObj(UserIndex)
-        If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "SI" Then
+        If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
             Call WarpUserChar(UserIndex, 1, 50, 50, True)
             Call WriteConsoleMsg(UserIndex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
         End If
@@ -340,7 +330,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     End If
     
     Constitucion = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
-
+    
     Select Case UserList(UserIndex).clase
         Case eClass.Warrior
             Select Case Constitucion
@@ -755,7 +745,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case Else
                     AumentoHP = RandomNumber(5, Constitucion \ 2) - AdicionalHPCazador
             End Select
-
+            
             AumentoHIT = 2
             AumentoSTA = AumentoSTDef
     End Select
@@ -822,19 +812,15 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
     
-    Call EnviarSkills(UserIndex)
-    Call EnviarSubirNivel(UserIndex, Pts)
-   
-    SendUserStatsBox UserIndex
-    
+    Call WriteLevelUp(UserIndex, Pts)
 Loop
-'End If
 
+Call SendUserStatsBox(UserIndex)
 
 Exit Sub
 
 errhandler:
-    LogError ("Error en la subrutina CheckUserLevel")
+    Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
 Function PuedeAtravesarAgua(ByVal UserIndex As Integer) As Boolean

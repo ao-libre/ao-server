@@ -1087,8 +1087,8 @@ Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
 MapInfo(UserList(UserIndex).Pos.Map).NumUsers = MapInfo(UserList(UserIndex).Pos.Map).NumUsers + 1
 
 If UserList(UserIndex).Stats.SkillPts > 0 Then
-    Call EnviarSkills(UserIndex)
-    Call EnviarSubirNivel(UserIndex, UserList(UserIndex).Stats.SkillPts)
+    Call WriteSendSkills(UserIndex)
+    Call WriteLevelUp(UserIndex, UserList(UserIndex).Stats.SkillPts)
 End If
 
 If NumUsers > DayStats.MaxUsuarios Then DayStats.MaxUsuarios = NumUsers
