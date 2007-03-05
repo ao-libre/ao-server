@@ -30,7 +30,7 @@ Begin VB.Form frmMain
    WindowState     =   1  'Minimized
    Begin VB.Timer securityTimer 
       Enabled         =   0   'False
-      Interval        =   4000
+      Interval        =   10000
       Left            =   960
       Top             =   60
    End

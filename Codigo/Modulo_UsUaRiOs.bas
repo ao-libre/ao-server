@@ -107,7 +107,6 @@ Call SendUserStatsBox(UserIndex)
 
 End Sub
 
-
 Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal UserIndex As Integer, _
                     ByVal body As Integer, ByVal Head As Integer, ByVal heading As Byte, _
                     ByVal Arma As Integer, ByVal Escudo As Integer, ByVal casco As Integer)
@@ -210,7 +209,6 @@ On Local Error GoTo hayerror
         End If
         
         Dim bCr As Byte
-        Dim SendPrivilegios As Byte
         
         bCr = criminal(UserIndex)
         

@@ -571,38 +571,38 @@ Select Case Obj.OBJType
     Case eOBJType.otWeapon
        If ClasePuedeUsarItem(UserIndex, ObjIndex) And _
           FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
-                'Si esta equipado lo quita
-                If UserList(UserIndex).Invent.Object(Slot).Equipped Then
-                    'Quitamos del inv el item
-                    Call Desequipar(UserIndex, Slot)
-                    'Animacion por defecto
-                    If UserList(UserIndex).flags.Mimetizado = 1 Then
-                        UserList(UserIndex).CharMimetizado.WeaponAnim = NingunArma
-                    Else
-                        UserList(UserIndex).Char.WeaponAnim = NingunArma
-                        Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-                    End If
-                    Exit Sub
-                End If
-                
-                'Quitamos el elemento anterior
-                If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
-                    Call Desequipar(UserIndex, UserList(UserIndex).Invent.WeaponEqpSlot)
-                End If
-        
-                UserList(UserIndex).Invent.Object(Slot).Equipped = 1
-                UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
-                UserList(UserIndex).Invent.WeaponEqpSlot = Slot
-                
-                'Sonido
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA))
-        
+            'Si esta equipado lo quita
+            If UserList(UserIndex).Invent.Object(Slot).Equipped Then
+                'Quitamos del inv el item
+                Call Desequipar(UserIndex, Slot)
+                'Animacion por defecto
                 If UserList(UserIndex).flags.Mimetizado = 1 Then
-                    UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
+                    UserList(UserIndex).CharMimetizado.WeaponAnim = NingunArma
                 Else
-                    UserList(UserIndex).Char.WeaponAnim = Obj.WeaponAnim
+                    UserList(UserIndex).Char.WeaponAnim = NingunArma
                     Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
                 End If
+                Exit Sub
+            End If
+            
+            'Quitamos el elemento anterior
+            If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
+                Call Desequipar(UserIndex, UserList(UserIndex).Invent.WeaponEqpSlot)
+            End If
+            
+            UserList(UserIndex).Invent.Object(Slot).Equipped = 1
+            UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
+            UserList(UserIndex).Invent.WeaponEqpSlot = Slot
+            
+            'Sonido
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA))
+            
+            If UserList(UserIndex).flags.Mimetizado = 1 Then
+                UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
+            Else
+                UserList(UserIndex).Char.WeaponAnim = Obj.WeaponAnim
+                Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+            End If
        Else
             Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
        End If

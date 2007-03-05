@@ -10293,7 +10293,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             tUser = NameIndex(UserName)
             If tUser <= 0 Then
                 If FileExist(CharPath & UserName & ".chr") Then
@@ -10306,7 +10306,7 @@ On Error GoTo errhandler
             Else
                 With UserList(tUser)
                     If .flags.Privilegios And PlayerType.RoyalCouncil Then
-                        Call WriteConsoleMsg(tUser, "Has sido echado en el consejo de Banderbill", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(tUser, "Has sido echado del consejo de Banderbill", FontTypeNames.FONTTYPE_TALK)
                         .flags.Privilegios = .flags.Privilegios - PlayerType.RoyalCouncil
                         
                         Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
@@ -10314,7 +10314,7 @@ On Error GoTo errhandler
                     End If
                     
                     If .flags.Privilegios And PlayerType.ChaosCouncil Then
-                        Call SendData(tUser, "Has sido echado en el consejo de la Legión Oscura", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(tUser, "Has sido echado del consejo de la Legión Oscura", FontTypeNames.FONTTYPE_TALK)
                         .flags.Privilegios = .flags.Privilegios - PlayerType.ChaosCouncil
                         
                         Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)

@@ -1456,10 +1456,10 @@ End If
 
 
 If FileExist(UserFile, vbNormal) Then
-       If UserList(UserIndex).flags.Muerto = 1 Then
+    If UserList(UserIndex).flags.Muerto = 1 Then
         OldUserHead = UserList(UserIndex).Char.Head
-        UserList(UserIndex).Char.Head = CStr(GetVar(UserFile, "INIT", "Head"))
-       End If
+        UserList(UserIndex).Char.Head = GetVar(UserFile, "INIT", "Head")
+    End If
 '       Kill UserFile
 End If
 
@@ -1530,7 +1530,7 @@ Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading
 Call WriteVar(UserFile, "INIT", "Head", CStr(UserList(UserIndex).OrigChar.Head))
 
 If UserList(UserIndex).flags.Muerto = 0 Then
-    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).Char.body))
+    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).OrigChar.body))
 End If
 
 Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim))
