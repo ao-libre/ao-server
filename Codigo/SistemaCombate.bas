@@ -495,7 +495,6 @@ If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
 End If
 End Function
 
-
 Public Function CalcularDaño(ByVal UserIndex As Integer, Optional ByVal NpcIndex As Integer = 0) As Long
 Dim DañoArma As Long, DañoUsuario As Long, Arma As ObjData, ModifClase As Single
 Dim proyectil As ObjData
@@ -516,7 +515,8 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
         'Usa la mata Dragones?
         If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then ' Usa la mataDragones?
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca Dragon?
+            
+            If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca Dragon?
                 DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
                 matoDragon = True ''sacar esto si no queremos q la matadracos mate el Dragon si o si
@@ -527,7 +527,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
         Else ' daño comun
            If Arma.proyectil = 1 Then
                 ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).clase)
-                    DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
+                DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
                 If Arma.Municion = 1 Then
                     proyectil = ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex)
@@ -536,7 +536,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 End If
            Else
                 ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                    DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
+                DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
            End If
         End If
@@ -544,13 +544,14 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     Else ' Ataca usuario
         If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
             ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                DañoArma = 1 ' Si usa la espada mataDragones daño es 1
+            DañoArma = 1 ' Si usa la espada mataDragones daño es 1
             DañoMaxArma = 1
         Else
            If Arma.proyectil = 1 Then
                 ModifClase = ModicadorDañoClaseProyectiles(UserList(UserIndex).clase)
-                    DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
-                    DañoMaxArma = Arma.MaxHIT
+                DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
+                DañoMaxArma = Arma.MaxHIT
+                
                 If Arma.Municion = 1 Then
                     proyectil = ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex)
                     DañoArma = DañoArma + RandomNumber(proyectil.MinHIT, proyectil.MaxHIT)
@@ -558,7 +559,7 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 End If
            Else
                 ModifClase = ModicadorDañoClaseArmas(UserList(UserIndex).clase)
-                    DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
+                DañoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                 DañoMaxArma = Arma.MaxHIT
            End If
         End If
