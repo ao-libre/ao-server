@@ -1530,7 +1530,7 @@ Call WriteVar(UserFile, "INIT", "Heading", CStr(UserList(UserIndex).Char.heading
 Call WriteVar(UserFile, "INIT", "Head", CStr(UserList(UserIndex).OrigChar.Head))
 
 If UserList(UserIndex).flags.Muerto = 0 Then
-    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).OrigChar.body))
+    Call WriteVar(UserFile, "INIT", "Body", CStr(UserList(UserIndex).Char.body))
 End If
 
 Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim))

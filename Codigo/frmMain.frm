@@ -583,89 +583,108 @@ hayerror:
 End Sub
 
 Private Sub GameTimer_Timer()
-Dim iUserIndex As Long
-Dim bEnviarStats As Boolean
-Dim bEnviarAyS As Boolean
-Dim iNpcIndex As Integer
-
-Static lTirarBasura As Long
-Static lPermiteAtacar As Long
-Static lPermiteCast As Long
-Static lPermiteTrabajar As Long
-
-'[Alejo]
-If lPermiteAtacar < IntervaloUserPuedeAtacar Then
-    lPermiteAtacar = lPermiteAtacar + 1
-End If
-
-If lPermiteCast < IntervaloUserPuedeCastear Then
-    lPermiteCast = lPermiteCast + 1
-End If
-
-If lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-     lPermiteTrabajar = lPermiteTrabajar + 1
-End If
-'[/Alejo]
-
+    Dim iUserIndex As Long
+    Dim bEnviarStats As Boolean
+    Dim bEnviarAyS As Boolean
+    Dim iNpcIndex As Integer
+    
 On Error GoTo hayerror
-
- '<<<<<< Procesa eventos de los usuarios >>>>>>
- For iUserIndex = 1 To LastUser
-   'Conexion activa?
-   If UserList(iUserIndex).ConnID <> -1 Then
-      '¿User valido?
-
-      If UserList(iUserIndex).ConnIDValida And UserList(iUserIndex).flags.UserLogged Then
-         
-         '[Alejo-18-5]
-         bEnviarStats = False
-         bEnviarAyS = False
-         
-         UserList(iUserIndex).NumeroPaquetesPorMiliSec = 0
-
-         
-         Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.Map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
-         
-                
-         If UserList(iUserIndex).flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
-         If UserList(iUserIndex).flags.Ceguera = 1 Or _
-            UserList(iUserIndex).flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
-         
-          
-         If UserList(iUserIndex).flags.Muerto = 0 Then
-               
-               '[Consejeros]
-               If UserList(iUserIndex).flags.Desnudo And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoFrio(iUserIndex)
-               If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
-               If UserList(iUserIndex).flags.Envenenado = 1 And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoVeneno(iUserIndex, bEnviarStats)
-               If UserList(iUserIndex).flags.AdminInvisible <> 1 Then
-                    If UserList(iUserIndex).flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
-                    If UserList(iUserIndex).flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
-               End If
-               If UserList(iUserIndex).flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
-                
-               Call DuracionPociones(iUserIndex)
-                
-               Call HambreYSed(iUserIndex, bEnviarAyS)
-                
-               If Lloviendo Then
-                    If Not Intemperie(iUserIndex) Then
+    
+    '<<<<<< Procesa eventos de los usuarios >>>>>>
+    For iUserIndex = 1 To LastUser
+       'Conexion activa?
+       If UserList(iUserIndex).ConnID <> -1 Then
+          '¿User valido?
+    
+          If UserList(iUserIndex).ConnIDValida And UserList(iUserIndex).flags.UserLogged Then
+             
+             '[Alejo-18-5]
+             bEnviarStats = False
+             bEnviarAyS = False
+             
+             UserList(iUserIndex).NumeroPaquetesPorMiliSec = 0
+    
+             
+             Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.Map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
+             
+                    
+             If UserList(iUserIndex).flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
+             If UserList(iUserIndex).flags.Ceguera = 1 Or _
+                UserList(iUserIndex).flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
+             
+              
+             If UserList(iUserIndex).flags.Muerto = 0 Then
+                   
+                   '[Consejeros]
+                   If UserList(iUserIndex).flags.Desnudo And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoFrio(iUserIndex)
+                   If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
+                   If UserList(iUserIndex).flags.Envenenado = 1 And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoVeneno(iUserIndex, bEnviarStats)
+                   If UserList(iUserIndex).flags.AdminInvisible <> 1 Then
+                        If UserList(iUserIndex).flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
+                        If UserList(iUserIndex).flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
+                   End If
+                   If UserList(iUserIndex).flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
+                    
+                   Call DuracionPociones(iUserIndex)
+                    
+                   Call HambreYSed(iUserIndex, bEnviarAyS)
+                    
+                   If Lloviendo Then
+                        If Not Intemperie(iUserIndex) Then
+                            If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
+                            'No esta descansando
+                                Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
+                                If bEnviarStats Then
+                                    Call WriteUpdateHP(iUserIndex)
+                                    bEnviarStats = False
+                                End If
+                                If UserList(iUserIndex).Invent.ArmourEqpObjIndex > 0 Then
+                                    Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                                    If bEnviarStats Then
+                                        Call WriteUpdateSta(iUserIndex)
+                                        bEnviarStats = False
+                                    End If
+                                End If
+                            ElseIf UserList(iUserIndex).flags.Descansar Then
+                            'esta descansando
+                                Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
+                                If bEnviarStats Then
+                                    Call WriteUpdateHP(iUserIndex)
+                                    bEnviarStats = False
+                                End If
+                                Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
+                                If bEnviarStats Then
+                                    Call WriteUpdateSta(iUserIndex)
+                                    bEnviarStats = False
+                                End If
+                                'termina de descansar automaticamente
+                                If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
+                                    UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
+                                        Call WriteRestOK(iUserIndex)
+                                        Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
+                                        UserList(iUserIndex).flags.Descansar = False
+                                End If
+                                
+                            End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
+                        End If
+                   Else
                         If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
                         'No esta descansando
+                            
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
                             If bEnviarStats Then
                                 Call WriteUpdateHP(iUserIndex)
                                 bEnviarStats = False
                             End If
-                            If UserList(iUserIndex).Invent.ArmourEqpObjIndex > 0 Then
-                                Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                                If bEnviarStats Then
-                                    Call WriteUpdateSta(iUserIndex)
-                                    bEnviarStats = False
-                                End If
+                            Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                            If bEnviarStats Then
+                                Call WriteUpdateSta(iUserIndex)
+                                bEnviarStats = False
                             End If
+                            
                         ElseIf UserList(iUserIndex).flags.Descansar Then
                         'esta descansando
+                            
                             Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
                             If bEnviarStats Then
                                 Call WriteUpdateHP(iUserIndex)
@@ -685,88 +704,33 @@ On Error GoTo hayerror
                             End If
                             
                         End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
-                    End If
-               Else
-                    If Not UserList(iUserIndex).flags.Descansar And (UserList(iUserIndex).flags.Hambre = 0 And UserList(iUserIndex).flags.Sed = 0) Then
-                    'No esta descansando
-                        
-                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                        If bEnviarStats Then
-                            Call WriteUpdateHP(iUserIndex)
-                            bEnviarStats = False
-                        End If
-                        Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                        If bEnviarStats Then
-                            Call WriteUpdateSta(iUserIndex)
-                            bEnviarStats = False
-                        End If
-                        
-                    ElseIf UserList(iUserIndex).flags.Descansar Then
-                    'esta descansando
-                        
-                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                        If bEnviarStats Then
-                            Call WriteUpdateHP(iUserIndex)
-                            bEnviarStats = False
-                        End If
-                        Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                        If bEnviarStats Then
-                            Call WriteUpdateSta(iUserIndex)
-                            bEnviarStats = False
-                        End If
-                        'termina de descansar automaticamente
-                        If UserList(iUserIndex).Stats.MaxHP = UserList(iUserIndex).Stats.MinHP And _
-                            UserList(iUserIndex).Stats.MaxSta = UserList(iUserIndex).Stats.MinSta Then
-                                Call WriteRestOK(iUserIndex)
-                                Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
-                                UserList(iUserIndex).flags.Descansar = False
-                        End If
-                        
-                    End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
-               End If
-               
-               If bEnviarAyS Then Call EnviarHambreYsed(iUserIndex)
-
-               If UserList(iUserIndex).NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
-       End If 'Muerto
-     Else 'no esta logeado?
-     'UserList(iUserIndex).Counters.IdleCount = 0
-     '[Gonzalo]: deshabilitado para el nuevo sistema de tiraje
-     'de dados :)
-        
-        UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
-        If UserList(iUserIndex).Counters.IdleCount > IntervaloParaConexion Then
-              UserList(iUserIndex).Counters.IdleCount = 0
-              Call CloseSocket(iUserIndex)
-        End If
-        
-     End If 'UserLogged
+                   End If
+                   
+                   If bEnviarAyS Then Call EnviarHambreYsed(iUserIndex)
     
-     'If there is anything to be sent, we send it
-     Call FlushBuffer(iUserIndex)
-   End If
-   
-Next iUserIndex
-
-'[Alejo]
-If Not lPermiteAtacar < IntervaloUserPuedeAtacar Then
-    lPermiteAtacar = 0
-End If
-
-If Not lPermiteCast < IntervaloUserPuedeCastear Then
-    lPermiteCast = 0
-End If
-
-If Not lPermiteTrabajar < IntervaloUserPuedeTrabajar Then
-     lPermiteTrabajar = 0
-End If
-
-
+                   If UserList(iUserIndex).NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
+           End If 'Muerto
+         Else 'no esta logeado?
+         'UserList(iUserIndex).Counters.IdleCount = 0
+         '[Gonzalo]: deshabilitado para el nuevo sistema de tiraje
+         'de dados :)
+            
+            UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
+            If UserList(iUserIndex).Counters.IdleCount > IntervaloParaConexion Then
+                  UserList(iUserIndex).Counters.IdleCount = 0
+                  Call CloseSocket(iUserIndex)
+            End If
+            
+         End If 'UserLogged
+        
+         'If there is anything to be sent, we send it
+         Call FlushBuffer(iUserIndex)
+       End If
+    Next iUserIndex
 Exit Sub
+
 hayerror:
-LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
-'[/Alejo]
-  'DoEvents
+    LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
 End Sub
 
 Private Sub mnuCerrar_Click()

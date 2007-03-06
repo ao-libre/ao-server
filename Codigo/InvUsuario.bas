@@ -1074,94 +1074,90 @@ Select Case Obj.OBJType
                   Call WriteConsoleMsg(UserIndex, "No esta cerrada.", FontTypeNames.FONTTYPE_INFO)
                   Exit Sub
             End If
-            
         End If
     
-        Case eOBJType.otBotellaVacia
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            If Not HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY) Then
-                Call WriteConsoleMsg(UserIndex, "No hay agua allí.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            MiObj.amount = 1
-            MiObj.ObjIndex = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex).IndexAbierta
-            Call QuitarUserInvItem(UserIndex, Slot, 1)
-            If Not MeterItemEnInventario(UserIndex, MiObj) Then
-                Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
-            End If
+    Case eOBJType.otBotellaVacia
+        If UserList(UserIndex).flags.Muerto = 1 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        If Not HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY) Then
+            Call WriteConsoleMsg(UserIndex, "No hay agua allí.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        MiObj.amount = 1
+        MiObj.ObjIndex = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex).IndexAbierta
+        Call QuitarUserInvItem(UserIndex, Slot, 1)
+        If Not MeterItemEnInventario(UserIndex, MiObj) Then
+            Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
+        End If
+        
+        Call UpdateUserInv(False, UserIndex, Slot)
+    
+    Case eOBJType.otBotellaLlena
+        If UserList(UserIndex).flags.Muerto = 1 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
+        If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
+            UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
+        UserList(UserIndex).flags.Sed = 0
+        Call EnviarHambreYsed(UserIndex)
+        MiObj.amount = 1
+        MiObj.ObjIndex = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex).IndexCerrada
+        Call QuitarUserInvItem(UserIndex, Slot, 1)
+        If Not MeterItemEnInventario(UserIndex, MiObj) Then
+            Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
+        End If
+            
+    Case eOBJType.otPergaminos
+        If UserList(UserIndex).flags.Muerto = 1 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
+        If UserList(UserIndex).flags.Hambre = 0 And _
+           UserList(UserIndex).flags.Sed = 0 Then
+            Call AgregarHechizo(UserIndex, Slot)
             
             Call UpdateUserInv(False, UserIndex, Slot)
-    
-        Case eOBJType.otBotellaLlena
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MinAGU + Obj.MinSed
-            If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
-                UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
-            UserList(UserIndex).flags.Sed = 0
-            Call EnviarHambreYsed(UserIndex)
-            MiObj.amount = 1
-            MiObj.ObjIndex = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex).IndexCerrada
-            Call QuitarUserInvItem(UserIndex, Slot, 1)
-            If Not MeterItemEnInventario(UserIndex, MiObj) Then
-                Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
-            End If
-            
-            
-
-
-        Case eOBJType.otPergaminos
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            If UserList(UserIndex).flags.Hambre = 0 And _
-               UserList(UserIndex).flags.Sed = 0 Then
-                Call AgregarHechizo(UserIndex, Slot)
-                
-                Call UpdateUserInv(False, UserIndex, Slot)
-            Else
-               Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
-            End If
+        Else
+           Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
+        End If
        
-       Case eOBJType.otMinerales
-           If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-           End If
-           Call WriteWorkRequestTarget(UserIndex, FundirMetal)
+    Case eOBJType.otMinerales
+        If UserList(UserIndex).flags.Muerto = 1 Then
+             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+             Exit Sub
+        End If
+        Call WriteWorkRequestTarget(UserIndex, FundirMetal)
        
-       Case eOBJType.otInstrumentos
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
+    Case eOBJType.otInstrumentos
+        If UserList(UserIndex).flags.Muerto = 1 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        If Obj.Real Then '¿Es el Cuerno Real?
+            If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+            Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
             End If
-            If Obj.Real Then '¿Es el Cuerno Real?
-                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
-                Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-                End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
-                Exit Sub
-            ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
-                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
-                Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-                End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
-                Exit Sub
+            Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+            Exit Sub
+        ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
+            If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+            Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
             End If
-            'Si llega aca es porque es o Laud o Tambor o Flauta
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
+            Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+            Exit Sub
+        End If
+        'Si llega aca es porque es o Laud o Tambor o Flauta
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
        
-       Case eOBJType.otBarcos
-    'Verifica si esta aproximado al agua antes de permitirle navegar
+    Case eOBJType.otBarcos
+        'Verifica si esta aproximado al agua antes de permitirle navegar
         If UserList(UserIndex).Stats.ELV < 25 Then
             If UserList(UserIndex).clase <> eClass.Fisher And UserList(UserIndex).clase <> eClass.Pirat Then
                 Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
@@ -1173,22 +1169,18 @@ Select Case Obj.OBJType
                 End If
             End If
         End If
-        If ((LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X - 1, UserList(UserIndex).Pos.Y, True) Or _
-            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y - 1, True) Or _
-            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X + 1, UserList(UserIndex).Pos.Y, True) Or _
-            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y + 1, True)) And _
+        
+        If ((LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X - 1, UserList(UserIndex).Pos.Y, True, False) Or _
+            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y - 1, True, False) Or _
+            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X + 1, UserList(UserIndex).Pos.Y, True, False) Or _
+            LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y + 1, True, False)) And _
             UserList(UserIndex).flags.Navegando = 0) _
             Or UserList(UserIndex).flags.Navegando = 1 Then
            Call DoNavega(UserIndex, Obj, Slot)
         Else
             Call WriteConsoleMsg(UserIndex, "¡Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
         End If
-           
 End Select
-
-'Actualiza
-'Call SendUserStatsBox(UserIndex)
-'Call UpdateUserInv(False, UserIndex, Slot)
 
 End Sub
 

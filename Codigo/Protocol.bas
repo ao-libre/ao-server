@@ -6979,7 +6979,7 @@ On Error GoTo errhandler
                     For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
                         For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
                             If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
-                                If LegalPos(UserList(tIndex).Pos.Map, X, Y, True) Or LegalPos(UserList(tIndex).Pos.Map, X, Y, False) Then
+                                If LegalPos(UserList(tIndex).Pos.Map, X, Y, True, True) Then
                                     Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
                                     found = True
                                     Exit For
