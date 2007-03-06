@@ -102,13 +102,12 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
 End If
 
 Call DarCuerpoDesnudo(UserIndex)
-Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call SendUserStatsBox(UserIndex)
 
 End Sub
 
-Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal UserIndex As Integer, _
-                    ByVal body As Integer, ByVal Head As Integer, ByVal heading As Byte, _
+Sub ChangeUserChar(ByVal UserIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As Byte, _
                     ByVal Arma As Integer, ByVal Escudo As Integer, ByVal casco As Integer)
 
     With UserList(UserIndex).Char
@@ -120,7 +119,7 @@ Sub ChangeUserChar(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVa
         .CascoAnim = casco
     End With
     
-    Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterChange(body, Head, heading, UserList(UserIndex).Char.CharIndex, Arma, Escudo, UserList(UserIndex).Char.FX, UserList(UserIndex).Char.loops, casco))
 End Sub
 
 Sub EnviarFama(ByVal UserIndex As Integer)
@@ -1342,7 +1341,7 @@ On Error GoTo ErrorHandler
         UserList(UserIndex).Counters.TiempoOculto = 0
         UserList(UserIndex).flags.invisible = 0
         'no hace falta encriptar este NOVER
-        Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
     
     If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
@@ -1442,7 +1441,7 @@ On Error GoTo ErrorHandler
     'End If
     
     '<< Actualizamos clientes >>
-    Call ChangeUserChar(SendTarget.toMap, UserList(UserIndex).Pos.Map, val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
+    Call ChangeUserChar(val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
     Call SendUserStatsBox(UserIndex)
     
     

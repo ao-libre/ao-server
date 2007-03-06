@@ -1534,7 +1534,7 @@ Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Logged", "0
 'End If
 
 If MapInfo(Map).NumUsers > 0 Then
-    Call SendData(SendTarget.ToMapButIndex, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
+    Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
 End If
 
 

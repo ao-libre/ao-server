@@ -498,19 +498,14 @@ Dim CharIndex As Integer
     End If
 End Sub
 
-Sub ChangeNPCChar(ByVal sndRoute As Byte, ByVal sndIndex As Integer, ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
-
-If NpcIndex > 0 Then
-    Npclist(NpcIndex).Char.body = body
-    Npclist(NpcIndex).Char.Head = Head
-    Npclist(NpcIndex).Char.heading = heading
-    If sndRoute = SendTarget.toMap Then
+Sub ChangeNPCChar(ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head As Integer, ByVal heading As eHeading)
+    If NpcIndex > 0 Then
+        Npclist(NpcIndex).Char.body = body
+        Npclist(NpcIndex).Char.Head = Head
+        Npclist(NpcIndex).Char.heading = heading
+        
         Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
-    Else
-        Call SendData(sndRoute, sndIndex, PrepareMessageCharacterChange(body, Head, heading, Npclist(NpcIndex).Char.CharIndex, 0, 0, 0, 0, 0))
     End If
-End If
-
 End Sub
 
 Sub EraseNPCChar(ByVal sndIndex As Integer, ByVal NpcIndex As Integer)

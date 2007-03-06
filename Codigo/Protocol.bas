@@ -3084,7 +3084,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
         If heading > 0 And heading < 5 Then
             .Char.heading = heading
-            Call ChangeUserChar(SendTarget.toMap, .Pos.Map, UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
     End With
 End Sub
@@ -7951,7 +7951,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_Head
@@ -7959,7 +7959,7 @@ On Error GoTo errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(SendTarget.toMap, UserList(tUser).Pos.Map, tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_CriminalsKilled
@@ -8506,7 +8506,7 @@ On Error GoTo errhandler
                     
                     Call DarCuerpoDesnudo(tUser)
                     
-                    Call ChangeUserChar(SendTarget.toMap, .Pos.Map, tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                    Call ChangeUserChar(tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                 End With
                 
                 Call WriteUpdateHP(tUser)
