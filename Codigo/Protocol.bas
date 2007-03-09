@@ -12300,11 +12300,10 @@ On Error GoTo errhandler
         
         Dim UserName As String
         Dim copyFrom As String
-        Dim userNewPassIndex As Integer
         Dim Password As String
         
-        UserName = buffer.ReadASCIIString()
-        copyFrom = buffer.ReadASCIIString()
+        UserName = Replace(buffer.ReadASCIIString(), "+", " ")
+        copyFrom = Replace(buffer.ReadASCIIString(), "+", " ")
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
             Call LogGM(.name, "Ha alterado la contraseña de " & UserName, False)
@@ -12312,19 +12311,13 @@ On Error GoTo errhandler
             If LenB(UserName) = 0 Or LenB(copyFrom) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /APASS <pjsinpass>@<pjconpass>", FontTypeNames.FONTTYPE_INFO)
             Else
-                userNewPassIndex = NameIndex(UserName)
-                
-                If userNewPassIndex > 0 Then
-                    Call WriteConsoleMsg(UserIndex, "El usuario a cambiarle el pass (" & UserName & ") esta online, no se puede si esta online", FontTypeNames.FONTTYPE_INFO)
+                If Not FileExist(CharPath & UserName & ".chr") Or Not FileExist(CharPath & copyFrom & ".chr") Then
+                    Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If Not FileExist(CharPath & UserName & ".chr") Or Not FileExist(CharPath & copyFrom & ".chr") Then
-                        Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Password = GetVar(CharPath & copyFrom & ".chr", "INIT", "Password")
-                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
-                        
-                        Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " cambiado a: " & Password, FontTypeNames.FONTTYPE_INFO)
-                    End If
+                    Password = GetVar(CharPath & copyFrom & ".chr", "INIT", "Password")
+                    Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
+                    
+                    Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " cambiado a: " & Password, FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
