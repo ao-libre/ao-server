@@ -201,11 +201,11 @@ If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     'quito la cantidad de oro ofrecida
     UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD - UserList(OtroUserIndex).ComUsu.cant
     If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " solto oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
-    Call SendUserStatsBox(OtroUserIndex)
+    Call WriteUpdateUserStats(OtroUserIndex)
     'y se la doy al otro
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.cant
     If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
 Else
     'Quita el objeto y se lo da al otro
     If MeterItemEnInventario(UserIndex, Obj2) = False Then
@@ -219,11 +219,11 @@ If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
     'quito la cantidad de oro ofrecida
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.cant
     If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " solto oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
     'y se la doy al otro
     UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.cant
     If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(Date & " " & UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
-    Call SendUserStatsBox(OtroUserIndex)
+    Call WriteUpdateUserStats(OtroUserIndex)
 Else
     'Quita el objeto y se lo da al otro
     If MeterItemEnInventario(OtroUserIndex, Obj1) = False Then

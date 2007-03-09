@@ -826,7 +826,6 @@ End If
 '-----Tal vez suba los skills------
 Call SubirSkill(UserIndex, Tacticas)
 
-'Call SendUserStatsBox(UserIndex)
 'Controla el nivel del usuario
 Call CheckUserLevel(UserIndex)
 
@@ -1005,8 +1004,8 @@ If IntervaloPermiteAtacar(UserIndex) Then
     'Look for user
     If index > 0 Then
         Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
-        Call SendUserStatsBox(UserIndex)
-        Call SendUserStatsBox(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+        Call WriteUpdateUserStats(UserIndex)
+        Call WriteUpdateUserStats(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
         Exit Sub
     End If
     
@@ -1027,14 +1026,14 @@ If IntervaloPermiteAtacar(UserIndex) Then
             Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
         End If
         
-        Call SendUserStatsBox(UserIndex)
+        Call WriteUpdateUserStats(UserIndex)
         
         Exit Sub
     End If
     
     
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
 End If
 
 If UserList(UserIndex).Counters.Trabajando Then _

@@ -706,8 +706,8 @@ On Error GoTo hayerror
                         End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
                    End If
                    
-                   If bEnviarAyS Then Call EnviarHambreYsed(iUserIndex)
-    
+                   If bEnviarAyS Then Call WriteUpdateHungerAndThirst(iUserIndex)
+                    
                    If UserList(iUserIndex).NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
            End If 'Muerto
          Else 'no esta logeado?

@@ -148,7 +148,7 @@ If InMapBounds(Map, X, Y) Then
             
             'curamos totalmente
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-            Call SendUserStatsBox(UserIndex)
+            Call WriteUpdateUserStats(UserIndex)
         End If
     Else
         UserList(UserIndex).flags.TargetNPC = 0

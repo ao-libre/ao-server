@@ -510,7 +510,7 @@ Select Case Obj.OBJType
         End If
 End Select
 
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 Call UpdateUserInv(False, UserIndex, Slot)
 
 End Sub
@@ -853,7 +853,7 @@ Select Case Obj.OBJType
         If UserList(UserIndex).Stats.MinHam > UserList(UserIndex).Stats.MaxHam Then _
             UserList(UserIndex).Stats.MinHam = UserList(UserIndex).Stats.MaxHam
         UserList(UserIndex).flags.Hambre = 0
-        Call EnviarHambreYsed(UserIndex)
+        Call WriteUpdateHungerAndThirst(UserIndex)
         'Sonido
         
         If ObjIndex = e_ObjetosCriticos.Manzana Or ObjIndex = e_ObjetosCriticos.Manzana2 Or ObjIndex = e_ObjetosCriticos.ManzanaNewbie Then
@@ -879,7 +879,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
         
         Call UpdateUserInv(False, UserIndex, Slot)
-        Call SendUserStatsBox(UserIndex)
+        Call WriteUpdateUserStats(UserIndex)
         
     Case eOBJType.otWeapon
         If UserList(UserIndex).flags.Muerto = 1 Then
@@ -1012,7 +1012,7 @@ Select Case Obj.OBJType
                     Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)
                 End If
        End Select
-       Call SendUserStatsBox(UserIndex)
+       Call WriteUpdateUserStats(UserIndex)
        Call UpdateUserInv(False, UserIndex, Slot)
 
      Case eOBJType.otBebidas
@@ -1024,7 +1024,7 @@ Select Case Obj.OBJType
         If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
             UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
         UserList(UserIndex).flags.Sed = 0
-        Call EnviarHambreYsed(UserIndex)
+        Call WriteUpdateHungerAndThirst(UserIndex)
         
         'Quitamos del inv el item
         Call QuitarUserInvItem(UserIndex, Slot, 1)
@@ -1103,7 +1103,7 @@ Select Case Obj.OBJType
         If UserList(UserIndex).Stats.MinAGU > UserList(UserIndex).Stats.MaxAGU Then _
             UserList(UserIndex).Stats.MinAGU = UserList(UserIndex).Stats.MaxAGU
         UserList(UserIndex).flags.Sed = 0
-        Call EnviarHambreYsed(UserIndex)
+        Call WriteUpdateHungerAndThirst(UserIndex)
         MiObj.amount = 1
         MiObj.ObjIndex = ObjData(UserList(UserIndex).Invent.Object(Slot).ObjIndex).IndexCerrada
         Call QuitarUserInvItem(UserIndex, Slot, 1)

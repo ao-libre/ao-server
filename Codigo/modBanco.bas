@@ -28,7 +28,7 @@ On Error GoTo errhandler
 'Hacemos un Update del inventario del usuario
 Call UpdateBanUserInv(True, UserIndex, 0)
 'Atcualizamos el dinero
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
 Call WriteBankInit(UserIndex)
 UserList(UserIndex).flags.Comerciando = True
@@ -87,7 +87,7 @@ On Error GoTo errhandler
 If Cantidad < 1 Then Exit Sub
 
 
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 
    
        If UserList(UserIndex).BancoInvent.Object(i).amount > 0 Then
@@ -191,7 +191,7 @@ Sub UserDepositaItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Ca
 On Error GoTo errhandler
 
 'El usuario deposita un item
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
    
 If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
             

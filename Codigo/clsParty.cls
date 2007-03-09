@@ -98,7 +98,7 @@ For i = 1 To PARTY_MAXMEMBERS
                     If UserList(UI).Stats.Exp > MAXEXP Then _
                         UserList(UI).Stats.Exp = MAXEXP
                     Call CheckUserLevel(UI)
-                    Call SendUserStatsBox(UI)
+                    Call WriteUpdateUserStats(UI)
                 End If
             End If
         End If
@@ -167,7 +167,7 @@ If i = 1 Then
                 If UserList(p_members(j).UserIndex).Stats.Exp > MAXEXP Then _
                     UserList(p_members(j).UserIndex).Stats.Exp = MAXEXP
                 Call CheckUserLevel(p_members(j).UserIndex)
-                Call SendUserStatsBox(p_members(j).UserIndex)
+                Call WriteUpdateUserStats(p_members(j).UserIndex)
             End If
             Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party." & FontTypeNames.FONTTYPE_PARTY, "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
@@ -183,7 +183,7 @@ Else
             If UserList(p_members(i).UserIndex).Stats.Exp > MAXEXP Then _
                 UserList(p_members(i).UserIndex).Stats.Exp = MAXEXP
             Call CheckUserLevel(p_members(i).UserIndex)
-            Call SendUserStatsBox(p_members(i).UserIndex)
+            Call WriteUpdateUserStats(p_members(i).UserIndex)
         End If
         Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).name & " abandona la party." & FontTypeNames.FONTTYPE_PARTY, "Servidor")
         'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
@@ -347,7 +347,7 @@ If Not PARTY_EXPERIENCIAPORGOLPE Then   'esto sirve SOLO cuando acumulamos la ex
                 End If
             End If
             p_members(i).Experiencia = 0
-            Call SendUserStatsBox(p_members(i).UserIndex)
+            Call WriteUpdateUserStats(p_members(i).UserIndex)
         End If
     Next i
 End If

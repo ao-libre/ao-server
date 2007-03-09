@@ -103,7 +103,7 @@ End If
 
 Call DarCuerpoDesnudo(UserIndex)
 Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 
 End Sub
 
@@ -812,7 +812,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Call WriteLevelUp(UserIndex, Pts)
 Loop
 
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
@@ -908,14 +908,6 @@ Function NextOpenUser() As Integer
     NextOpenUser = LoopC
 
 End Function
-
-Sub SendUserStatsBox(ByVal UserIndex As Integer)
-    Call WriteUpdateUserStats(UserIndex)
-End Sub
-
-Sub EnviarHambreYsed(ByVal UserIndex As Integer)
-    Call WriteUpdateHungerAndThirst(UserIndex)
-End Sub
 
 Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
 Dim GuildI As Integer
@@ -1442,7 +1434,7 @@ On Error GoTo ErrorHandler
     
     '<< Actualizamos clientes >>
     Call ChangeUserChar(val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
     
     
     '<<Castigos por party>>

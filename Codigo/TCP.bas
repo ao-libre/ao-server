@@ -1051,9 +1051,9 @@ Call MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserInd
 Call WriteUserCharIndexInServer(UserIndex)
 ''[/el oso]
 
-Call SendUserStatsBox(UserIndex)
+Call WriteUpdateUserStats(UserIndex)
 
-Call EnviarHambreYsed(UserIndex)
+Call WriteUpdateHungerAndThirst(UserIndex)
 
 Call SendMOTD(UserIndex)
 

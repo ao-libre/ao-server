@@ -191,7 +191,7 @@ On Error GoTo errhandler
     'Hacemos un Update del inventario del usuario
     Call UpdateUserInv(True, UserIndex, 0)
     'Atcualizamos el dinero
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
     'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
     UserList(UserIndex).flags.Comerciando = True
     Call WriteCommerceInit(UserIndex)
@@ -222,7 +222,7 @@ On Error GoTo errhandler
     If Cantidad < 1 Then Exit Sub
     
     'NPC VENDE UN OBJ A UN USUARIO
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
     
     If i > MAX_INVENTORY_SLOTS Then
         Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Posible intento de romper el sistema de comercio. Usuario: " & UserList(UserIndex).name, FontTypeNames.FONTTYPE_WARNING))
@@ -256,7 +256,7 @@ On Error GoTo errhandler
             'Actualizamos el inventario del usuario
             Call UpdateUserInv(True, UserIndex, 0)
             'Actualizamos el oro
-            Call SendUserStatsBox(UserIndex)
+            Call WriteUpdateUserStats(UserIndex)
             'Actualizamos la ventana de comercio
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Call UpdateVentanaComercio(UserIndex)
@@ -300,7 +300,7 @@ On Error GoTo errhandler
         Exit Sub
     End If
     'NPC COMPRA UN OBJ A UN USUARIO
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
    
     If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
         If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).amount
@@ -309,7 +309,7 @@ On Error GoTo errhandler
         'Actualizamos el inventario del usuario
         Call UpdateUserInv(True, UserIndex, 0)
         'Actualizamos el oro
-        Call SendUserStatsBox(UserIndex)
+        Call WriteUpdateUserStats(UserIndex)
         
         Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
         'Actualizamos la ventana de comercio

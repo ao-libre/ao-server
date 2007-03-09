@@ -51,7 +51,7 @@ If Hechizos(Spell).SubeHP = 1 Then
     If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
     
     Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-    Call SendUserStatsBox(val(UserIndex))
+    Call WriteUpdateUserStats(UserIndex)
 
 ElseIf Hechizos(Spell).SubeHP = 2 Then
     
@@ -75,7 +75,7 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
         UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - daño
         
         Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-        Call SendUserStatsBox(UserIndex)
+        Call WriteUpdateUserStats(UserIndex)
         
         'Muere
         If UserList(UserIndex).Stats.MinHP < 1 Then
@@ -368,7 +368,7 @@ If b Then
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Hechizos(uh).StaRequerido
     If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
 End If
 
 
@@ -402,8 +402,8 @@ If b Then
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Hechizos(uh).StaRequerido
     If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
-    Call SendUserStatsBox(UserIndex)
-    Call SendUserStatsBox(UserList(UserIndex).flags.TargetUser)
+    Call WriteUpdateUserStats(UserIndex)
+    Call WriteUpdateUserStats(UserList(UserIndex).flags.TargetUser)
     UserList(UserIndex).flags.TargetUser = 0
 End If
 
@@ -438,7 +438,7 @@ If b Then
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Hechizos(uh).StaRequerido
     If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
-    Call SendUserStatsBox(UserIndex)
+    Call WriteUpdateUserStats(UserIndex)
 End If
 
 End Sub
@@ -821,9 +821,12 @@ If Hechizos(H).Revivir = 1 Then
                 Call WriteConsoleMsg(UserIndex, "¡Los Dioses te sonrien, has ganado 500 puntos de nobleza!.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
+        
         UserList(tU).Stats.MinMAN = 0
-        Call EnviarHambreYsed(tU)
-            If EraCriminal And Not criminal(UserIndex) Then
+        
+        Call WriteUpdateHungerAndThirst(tU)
+        
+        If EraCriminal And Not criminal(UserIndex) Then
             Call RefreshCharStatus(UserIndex)
         End If
         
@@ -1184,7 +1187,7 @@ If Hechizos(H).SubeHam = 1 Then
         Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
-    Call EnviarHambreYsed(tempChr)
+    Call WriteUpdateHungerAndThirst(tempChr)
     b = True
     
 ElseIf Hechizos(H).SubeHam = 2 Then
@@ -1211,7 +1214,7 @@ ElseIf Hechizos(H).SubeHam = 2 Then
         Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
-    Call EnviarHambreYsed(tempChr)
+    Call WriteUpdateHungerAndThirst(tempChr)
     
     b = True
     
