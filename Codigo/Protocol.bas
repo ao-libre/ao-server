@@ -12231,7 +12231,6 @@ On Error GoTo errhandler
         
         Dim UserName As String
         Dim newMail As String
-        Dim userNewMailIndex As Integer
         
         UserName = buffer.ReadASCIIString()
         newMail = buffer.ReadASCIIString()
@@ -12240,20 +12239,15 @@ On Error GoTo errhandler
             If LenB(UserName) = 0 Or LenB(newMail) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /AEMAIL <pj>-<nuevomail>", FontTypeNames.FONTTYPE_INFO)
             Else
-                userNewMailIndex = NameIndex(UserName)
-                
-                If userNewMailIndex > 0 Then
-                    Call WriteConsoleMsg(UserIndex, "El usuario está online, no se puede si esta online", FontTypeNames.FONTTYPE_INFO)
+                If Not FileExist(CharPath & UserName & ".chr") Then
+                    Call WriteConsoleMsg(UserIndex, "No existe el charfile " & UserName & ".chr", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If Not FileExist(CharPath & UserName & ".chr") Then
-                        Call WriteConsoleMsg(UserIndex, "No existe el charfile " & UserName & ".chr", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", newMail)
-                        Call WriteConsoleMsg(UserIndex, "Email de " & UserName & " cambiado a: " & newMail, FontTypeNames.FONTTYPE_INFO)
-                    End If
-                    
-                    Call LogGM(.name, "Le ha cambiado el mail a " & UserName, False)
+                    Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", newMail)
+                    Call WriteConsoleMsg(UserIndex, "Email de " & UserName & " cambiado a: " & newMail, FontTypeNames.FONTTYPE_INFO)
+                    UserList(UserIndex).email = newMail
                 End If
+                
+                Call LogGM(.name, "Le ha cambiado el mail a " & UserName, False)
             End If
         End If
         
