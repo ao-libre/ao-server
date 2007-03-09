@@ -720,7 +720,7 @@ Dim i As Long
     
     list = guilds(guildIndex).GetMemberList()
     For i = 0 To UBound(list())
-        If Votado = list(i) Then Exit For
+        If UCase$(Votado) = UCase$(list(i)) Then Exit For
     Next i
     
     If i > UBound(list()) Then

@@ -11152,7 +11152,7 @@ On Error GoTo errhandler
             End If
         
             If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                lista = "Las ultimas IPs con las que " & UserName & "se conecto son:"
+                lista = "Las ultimas IPs con las que " & UserName & " se conectó son:"
                 For LoopC = 1 To 5
                     lista = lista & vbCrLf & LoopC & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & LoopC)
                 Next LoopC
