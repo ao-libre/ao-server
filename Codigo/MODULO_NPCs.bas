@@ -744,11 +744,23 @@ End Function
 Sub NPCTirarOro(MiNPC As npc)
 
 'SI EL NPC TIENE ORO LO TIRAMOS
+'Pablo (ToxicWaste): Ahora se puede poner más de 10k de drop de oro en los NPC.
 If MiNPC.GiveGLD > 0 Then
     Dim MiObj As Obj
-    MiObj.amount = MiNPC.GiveGLD
-    MiObj.ObjIndex = iORO
-    Call TirarItemAlPiso(MiNPC.Pos, MiObj)
+    Dim MiAux As Double
+    MiAux = MiNPC.GiveGLD
+    Do While MiAux > 10000
+        MiObj.amount = 10000
+        MiObj.ObjIndex = iORO
+        Call TirarItemAlPiso(MiNPC.Pos, MiObj)
+        MiAux = MiAux - 10000
+    Loop
+    If MiAux > 0 Then
+        MiObj.amount = MiAux
+        MiObj.ObjIndex = iORO
+        Call TirarItemAlPiso(MiNPC.Pos, MiObj)
+    End If
+    
 End If
 
 End Sub
