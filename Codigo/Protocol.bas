@@ -267,7 +267,6 @@ Private Enum ClientPacketID
     PartyKick               '/ECHARPARTY
     PartySetLeader          '/PARTYLIDER
     PartyAcceptMember       '/ACCEPTPARTY
-    GuildMemberList        '/MIEMBROSCLAN
     
     'GM messages
     GMMessage               '/GMSG
@@ -340,7 +339,7 @@ Private Enum ClientPacketID
     SetTrigger              '/TRIGGER
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
-    GuildCompleteMemberList '/MIEMBROSCLAN
+    GuildMemberList         '/MIEMBROSCLAN
     GuildBan                '/BANCLAN
     BanIP                   '/BANIP
     UnbanIP                 '/UNBANIP
@@ -1000,58 +999,55 @@ On Error Resume Next
             
         Case ClientPacketID.CouncilKick             '/KICKCONSE
             Call HandleCouncilKick(UserIndex)
-            
+        
         Case ClientPacketID.SetTrigger              '/TRIGGER
             Call HandleSetTrigger(UserIndex)
-            
+        
         Case ClientPacketID.BannedIPList            '/BANIPLIST
             Call HandleBannedIPList(UserIndex)
-            
+        
         Case ClientPacketID.BannedIPReload          '/BANIPRELOAD
             Call HandleBannedIPReload(UserIndex)
-            
-        Case ClientPacketID.GuildCompleteMemberList '/MIEMBROSCLAN
-            Call HandleGuildCompleteMemberList(UserIndex)
-            
+        
         Case ClientPacketID.GuildBan                '/BANCLAN
             Call HandleGuildBan(UserIndex)
-            
+        
         Case ClientPacketID.BanIP                   '/BANIP
             Call HandleBanIP(UserIndex)
-            
+        
         Case ClientPacketID.UnbanIP                 '/UNBANIP
             Call HandleUnbanIP(UserIndex)
-            
+        
         Case ClientPacketID.CreateItem              '/CI
             Call HandleCreateItem(UserIndex)
         
         Case ClientPacketID.DestroyItems            '/DEST
             Call HandleDestroyItems(UserIndex)
-            
+        
         Case ClientPacketID.ChaosLegionKick         '/NOCAOS
             Call HandleChaosLegionKick(UserIndex)
-            
+        
         Case ClientPacketID.RoyalArmyKick           '/NOREAL
             Call HandleRoyalArmyKick(UserIndex)
-            
+        
         Case ClientPacketID.ForceMIDIAll            '/FORCEMIDI
             Call HandleForceMIDIAll(UserIndex)
-            
+        
         Case ClientPacketID.ForceWAVEAll            '/FORCEWAV
             Call HandleForceWAVEAll(UserIndex)
-            
+        
         Case ClientPacketID.RemovePunishment        '/BORRARPENA
             Call HandleRemovePunishment(UserIndex)
-            
+        
         Case ClientPacketID.TileBlockedToggle       '/BLOQ
             Call HandleTileBlockedToggle(UserIndex)
-            
+        
         Case ClientPacketID.KillNPCNoRespawn        '/MATA
             Call HandleKillNPCNoRespawn(UserIndex)
-            
+        
         Case ClientPacketID.KillAllNearbyNPCs       '/MASSKILL
             Call HandleKillAllNearbyNPCs(UserIndex)
-            
+        
         Case ClientPacketID.LastIP                  '/LASTIP
             Call HandleLastIP(UserIndex)
         
@@ -10429,77 +10425,6 @@ Private Sub HandleBannedIPReload(ByVal UserIndex As Integer)
         Call BanIpGuardar
         Call BanIpCargar
     End With
-End Sub
-
-''
-' Handles the "GuildCompleteMemberList" message.
-'
-' @param    userIndex The index of the user sending the message.
-
-Private Sub HandleGuildCompleteMemberList(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/30/06
-'
-'***************************************************
-    If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-On Error GoTo errhandler
-    With UserList(UserIndex)
-        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-        Dim buffer As New clsByteQueue
-        Call buffer.CopyBuffer(.incomingData)
-        
-        'Remove packet ID
-        Call buffer.ReadByte
-        
-        Dim GuildName As String
-        Dim cantMembers As Integer
-        Dim LoopC As Long
-        Dim tFile As String
-        
-        GuildName = buffer.ReadASCIIString()
-        
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
-            If (InStrB(GuildName, "\") <> 0) Then
-                GuildName = Replace(GuildName, "\", "")
-            End If
-            If (InStrB(GuildName, "/") <> 0) Then
-                GuildName = Replace(GuildName, "/", "")
-            End If
-            
-                tFile = App.Path & "\guilds\" & GuildName & "-members.mem"
-                
-            If Not FileExist(tFile) Then
-                Call WriteConsoleMsg(UserIndex, "No existe el clan: " & GuildName, FontTypeNames.FONTTYPE_INFO)
-            Else
-                Call LogGM(.name, "MIEMBROSCLAN a " & GuildName, False)
-                    
-                cantMembers = val(GetVar(tFile, "INIT", "NroMembers"))
-                    
-                For LoopC = 1 To cantMembers
-                    Call WriteConsoleMsg(UserIndex, GetVar(tFile, "Members", "Member" & LoopC) & " <" & GuildName & ">.", FontTypeNames.FONTTYPE_INFO)
-                Next LoopC
-            End If
-        End If
-        
-        'If we got here then packet is complete, copy data back to original queue
-        Call .incomingData.CopyBuffer(buffer)
-    End With
-
-errhandler:
-    Dim error As Long
-    error = Err.Number
-On Error GoTo 0
-    
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-    
-    If error <> 0 Then _
-        Err.raise error
 End Sub
 
 ''
