@@ -7978,6 +7978,8 @@ On Error GoTo errhandler
                     Else
                         UserList(tUser).Stats.ELV = val(Arg1)
                     End If
+                    
+                    Call WriteUpdateUserStats(UserIndex)
                 
                 Case eEditOptions.eo_Class
                     If tUser <= 0 Then
