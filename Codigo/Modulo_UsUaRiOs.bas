@@ -248,7 +248,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 01/10/2007
-'Checkea que el usuario no halla alcanzado el siguiente nivel,
+'Chequea que el usuario no halla alcanzado el siguiente nivel,
 'de lo contrario le da la vida, mana, etc, correspodiente.
 '07/08/2006 Integer - Modificacion de los valores
 '01/10/2007 Tavo - Corregido el BUG de STAT_MAXELV
@@ -1158,7 +1158,7 @@ Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '**********************************************
 'Author: Unknown
 'Last Modification: 24/01/2007
-'24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si orresponde.
+'24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si corresponde.
 '**********************************************
 
 Dim EraCriminal As Boolean

@@ -1258,12 +1258,12 @@ Public Sub DoHurtar(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
 'Last Modif: 28/01/2007
-'Implementes the pick pocket skill of the Bandit :)
+'Implements the pick pocket skill of the Bandit :)
 '***************************************************
 If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
 'Esto es precario y feo, pero por ahora no se me ocurrió nada mejor.
 'Uso el slot de los anillos para "equipar" los guantes.
-'Y los reconosco porque les puse DefensaMagicaMin y Max = 0
+'Y los reconozco porque les puse DefensaMagicaMin y Max = 0
 If UserList(UserIndex).Invent.AnilloEqpObjIndex = 0 Then
     Exit Sub
 Else

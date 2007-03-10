@@ -62,7 +62,7 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal 
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
 'Last Modification: 23/01/2007
 'Handles the Map passage of Users. Allows the existance
-'of exclusive maps for Newbies, Royal Army and Caos Legion
+'of exclusive maps for Newbies, Royal Army and Caos Legion members
 'and enables GMs to enter every map without restriction.
 'Uses: Mapinfo(map).Restringir = "NEWBIE" (newbies), "ARMADA", "CAOS" and "NO".
 '***************************************************
