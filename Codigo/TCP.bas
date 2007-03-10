@@ -1189,7 +1189,7 @@ End Sub
 
 Sub SendMOTD(ByVal UserIndex As Integer)
     Dim j As Long
-    'CHECK: |+ es un mensaje al clan, pero aca se utiliza para mandar el MOTD, puede estar bien, pero dejo esta linea para alguien que lo sepa lo chequee.
+    
     Call WriteGuildChat(UserIndex, "Mensajes de entrada:")
     For j = 1 To MaxLines
         Call WriteGuildChat(UserIndex, Chr$(3) & MOTD(j).texto)
