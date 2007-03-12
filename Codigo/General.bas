@@ -155,7 +155,22 @@ End If
 
 End Function
 
+Private Function HayLava(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+'***************************************************
+'Autor: Nacho (Integer)
+'Last Modification: 03/12/07
+'***************************************************
+If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
+        HayLava = True
+    Else
+        HayLava = False
+    End If
+Else
+  HayLava = False
+End If
 
+End Function
 
 
 Sub LimpiarMundo()
@@ -1023,6 +1038,33 @@ Else
 End If
 
 End Sub
+
+Public Sub EfectoLava(ByVal UserIndex As Integer)
+'***************************************************
+'Autor: Nacho (Integer)
+'Last Modification: 03/12/07
+'If user is standing on lava, take health points from him
+'***************************************************
+
+If UserList(UserIndex).Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
+  UserList(UserIndex).Counters.Lava = UserList(UserIndex).Counters.Lava + 1
+Else
+  If HayLava(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+    Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!.", FontTypeNames.FONTTYPE_INFO)
+    UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
+    If UserList(UserIndex).Stats.MinHP < 1 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Has muerto quemado!!.", FontTypeNames.FONTTYPE_INFO)
+            UserList(UserIndex).Stats.MinHP = 0
+            Call UserDie(UserIndex)
+    End If
+    Call WriteUpdateHP(UserIndex)
+  End If
+  
+  UserList(UserIndex).Counters.Frio = 0
+  
+End If
+End Sub
+
 
 Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
 

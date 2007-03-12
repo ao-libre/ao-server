@@ -616,6 +616,7 @@ On Error GoTo hayerror
              If UserList(iUserIndex).flags.Muerto = 0 Then
                    
                    '[Consejeros]
+                   If (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoLava(iUserIndex)
                    If UserList(iUserIndex).flags.Desnudo And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoFrio(iUserIndex)
                    If UserList(iUserIndex).flags.Meditando Then Call DoMeditar(iUserIndex)
                    If UserList(iUserIndex).flags.Envenenado = 1 And (UserList(iUserIndex).flags.Privilegios And PlayerType.User) Then Call EfectoVeneno(iUserIndex, bEnviarStats)

@@ -979,6 +979,7 @@ Public Type UserCounters
     HPCounter As Integer
     STACounter As Integer
     Frio As Integer
+    Lava As Integer
     COMCounter As Integer
     AGUACounter As Integer
     Veneno As Integer
