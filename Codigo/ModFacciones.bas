@@ -572,7 +572,7 @@ Select Case NextRecom
     UserList(UserIndex).Faccion.RecompensasCaos = 14
     UserList(UserIndex).Faccion.NextRecompensa = 23000
     Case 23000:
-    Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Ciudas & ". Tu única recompenza será la sangre derramada. ¡¡Continua así!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+    Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Ciudas & ". Tu única recompensa será la sangre derramada. ¡¡Continua así!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
     Exit Sub
     Case Else:
     Exit Sub
