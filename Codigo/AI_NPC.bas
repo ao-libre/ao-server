@@ -233,7 +233,7 @@ For headingloop = eHeading.NORTH To eHeading.WEST
         If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
             UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
             If UI > 0 Then
-                  If UserList(UI).flags.Muerto = 0 Then
+                  If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                          '¿ES CRIMINAL?
                          If Not DelCaos Then
                             If criminal(UI) Then
@@ -583,7 +583,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If criminal(UI) Then
-                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
+                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
@@ -603,7 +603,7 @@ Else
                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If criminal(UI) Then
-                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
+                       If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
