@@ -448,20 +448,22 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '***************************************************
 On Error Resume Next
     Dim packetID As Byte
+    
     packetID = UserList(UserIndex).incomingData.PeekByte()
-    If Not (packetID = ClientPacketID.ThrowDices Or _
-        packetID = ClientPacketID.LoginExistingChar Or _
-        packetID = ClientPacketID.LoginNewChar) And _
-        Not UserList(UserIndex).flags.UserLogged Then
-            Call CloseSocket(UserIndex, True)
-            Exit Sub
+    
+    If Not (packetID = ClientPacketID.ThrowDices _
+      Or packetID = ClientPacketID.LoginExistingChar _
+      Or packetID = ClientPacketID.LoginNewChar) _
+      And Not UserList(UserIndex).flags.UserLogged Then
+        Call CloseSocket(UserIndex, True)
+        Exit Sub
     End If
     
     'Reset idle counter
     If UserList(UserIndex).incomingData.PeekByte() <= ClientPacketID.CheckSlot Then _
         UserList(UserIndex).Counters.IdleCount = 0
     
-    Select Case bTemp
+    Select Case packetID
         Case ClientPacketID.LoginExistingChar       'OLOGIN
             Call HandleLoginExistingChar(UserIndex)
         
@@ -1210,7 +1212,7 @@ On Error Resume Next
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
-        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.Source & _
+        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
                         vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & vbTab & " LastDllError: " & Err.LastDllError)
         Call CloseSocket(UserIndex, True)
     
@@ -12352,15 +12354,15 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraImperial1 = ObjIndex
             
@@ -12396,15 +12398,15 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim Index As Byte
+        Dim index As Byte
         Dim ObjIndex As Integer
         
-        Index = .incomingData.ReadByte()
+        index = .incomingData.ReadByte()
         ObjIndex = .incomingData.ReadInteger()
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
-        Select Case Index
+        Select Case index
             Case 1
                 ArmaduraCaos1 = ObjIndex
             
