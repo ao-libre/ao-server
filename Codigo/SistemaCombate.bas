@@ -46,7 +46,7 @@ Select Case clase
     Case eClass.Paladin
         ModificadorEvasion = 0.9
     Case eClass.Bandit
-        ModificadorEvasion = 0.9
+        ModificadorEvasion = 0.7
     Case eClass.Assasin
         ModificadorEvasion = 1.1
     Case eClass.Pirat
@@ -79,7 +79,7 @@ Select Case UCase$(clase)
     Case eClass.Thief
         ModificadorPoderAtaqueArmas = 0.75
     Case eClass.Bandit
-        ModificadorPoderAtaqueArmas = 0.75
+        ModificadorPoderAtaqueArmas = 0.7
     Case eClass.Cleric
         ModificadorPoderAtaqueArmas = 0.75
     Case eClass.Bard
@@ -153,7 +153,7 @@ Select Case UCase$(clase)
     Case eClass.Pirat
         ModicadorDañoClaseArmas = 0.8
     Case eClass.Bandit
-        ModicadorDañoClaseArmas = 0.8
+        ModicadorDañoClaseArmas = 0.9
     Case eClass.Cleric
         ModicadorDañoClaseArmas = 0.8
     Case eClass.Bard
@@ -230,7 +230,7 @@ Select Case clase
     Case eClass.Pirat
         ModicadorDañoClaseProyectiles = 0.75
     Case eClass.Bandit
-        ModicadorDañoClaseProyectiles = 0.75
+        ModicadorDañoClaseProyectiles = 0.8
     Case eClass.Cleric
         ModicadorDañoClaseProyectiles = 0.7
     Case eClass.Bard
@@ -266,7 +266,7 @@ Select Case clase
     Case eClass.Thief
         ModEvasionDeEscudoClase = 0.7
     Case eClass.Bandit
-        ModEvasionDeEscudoClase = 1.95
+        ModEvasionDeEscudoClase = 2
     Case eClass.Pirat
         ModEvasionDeEscudoClase = 0.75
     Case eClass.Cleric

@@ -254,6 +254,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '01/10/2007 Tavo - Corregido el BUG de STAT_MAXELV
 '24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones en ELU al subir de nivel.
 '24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones de la subida de mana de los magos por lvl.
+'13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
 '*************************************************
 
 On Error GoTo errhandler
@@ -338,7 +339,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case 19
                     AumentoHP = RandomNumber(7, 11)
                 Case 18
-                    AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 10)
                 Case 17
                     AumentoHP = RandomNumber(6, 10)
                 Case 16
@@ -390,7 +391,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case 19
                     AumentoHP = RandomNumber(7, 11)
                 Case 18
-                    AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 10)
                 Case 17
                     AumentoHP = RandomNumber(6, 10)
                 Case 16
@@ -416,7 +417,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case 19
                     AumentoHP = RandomNumber(7, 11)
                 Case 18
-                    AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 10)
                 Case 17
                     AumentoHP = RandomNumber(6, 10)
                 Case 16
@@ -444,7 +445,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case 19
                     AumentoHP = RandomNumber(7, 11)
                 Case 18
-                    AumentoHP = RandomNumber(7, 11)
+                    AumentoHP = RandomNumber(7, 10)
                 Case 17
                     AumentoHP = RandomNumber(6, 10)
                 Case 16
@@ -470,13 +471,13 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                 Case 19
                     AumentoHP = RandomNumber(5, 7)
                 Case 18
-                    AumentoHP = RandomNumber(5, 7)
+                    AumentoHP = RandomNumber(4, 7)
                 Case 17
-                    AumentoHP = RandomNumber(3, 7)
+                    AumentoHP = RandomNumber(4, 6)
                 Case 16
                     AumentoHP = RandomNumber(3, 6)
                 Case 15
-                    AumentoHP = RandomNumber(2, 6)
+                    AumentoHP = RandomNumber(3, 5)
                 Case 14
                     AumentoHP = RandomNumber(2, 5)
             End Select
@@ -730,6 +731,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = IIf(UserList(UserIndex).Stats.MaxMAN = 300, 0, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 10)
+            If AumentoMANA < 4 Then AumentoMANA = 4
             AumentoSTA = AumentoSTLeñador
         Case Else
             Select Case Constitucion

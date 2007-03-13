@@ -285,6 +285,7 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Passw
 'Conecta un nuevo Usuario
 '23/01/2007 Pablo (ToxicWaste) - Agregué ResetFaccion al crear usuario
 '24/01/2007 Pablo (ToxicWaste) - Agregué el nuevo mana inicial de los magos.
+'12/02/2007 Pablo (ToxicWaste) - Puse + 1 de const al Elfo normal.
 '*************************************************
 
 If Not AsciiValidos(name) Then
@@ -338,6 +339,7 @@ Select Case UserRaza
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 4
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 2
+        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 1
     Case eRaza.ElfoOscuro
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 2
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 2
