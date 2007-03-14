@@ -1179,16 +1179,10 @@ Else
     'Reputacion
     If Npclist(NpcIndex).Stats.Alineacion = 0 Then
        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-            UserList(UserIndex).Reputacion.NobleRep = 0
-            UserList(UserIndex).Reputacion.PlebeRep = 0
-            UserList(UserIndex).Reputacion.AsesinoRep = UserList(UserIndex).Reputacion.AsesinoRep + 200
-            If UserList(UserIndex).Reputacion.AsesinoRep > MAXREP Then _
-                UserList(UserIndex).Reputacion.AsesinoRep = MAXREP
+            Call VolverCriminal(UserIndex)
        Else
             If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
-                UserList(UserIndex).Reputacion.BandidoRep = UserList(UserIndex).Reputacion.BandidoRep + vlASALTO
-                If UserList(UserIndex).Reputacion.BandidoRep > MAXREP Then _
-                    UserList(UserIndex).Reputacion.BandidoRep = MAXREP
+                Call VolverCriminal(UserIndex)
             End If
        End If
     ElseIf Npclist(NpcIndex).Stats.Alineacion = 1 Then
@@ -1204,9 +1198,7 @@ Else
 End If
 
 If EraCriminal And Not criminal(UserIndex) Then
-    Call RefreshCharStatus(UserIndex)
-ElseIf Not EraCriminal And criminal(UserIndex) Then
-    Call RefreshCharStatus(UserIndex)
+    Call VolverCiudadano(UserIndex)
 End If
 
 
