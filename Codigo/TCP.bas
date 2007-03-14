@@ -151,56 +151,58 @@ Public Const WSANO_DATA As Integer = 25004
 Public Const WSANO_ADDRESS As Integer = 2500
 #End If
 
-Sub DarCuerpoYCabeza(ByRef UserBody As Integer, ByRef UserHead As Integer, ByVal raza As eRaza, ByVal Gen As eGenero)
-'TODO: Poner las heads en arrays, así se acceden por índices
-'y no hay problemas de discontinuidad de los índices.
-'También se debe usar enums para raza y sexo
-Select Case Gen
+Sub DarCuerpoYCabeza(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Nacho (Integer)
+'Last modified: 14/03/2007
+'Elije una cabeza para el usuario y le da un body
+'*************************************************
+Dim NewBody As Integer
+Dim NewHead As Integer
+Dim UserRaza As Byte
+Dim UserGenero As Byte
+UserGenero = UserList(UserIndex).genero
+UserRaza = UserList(UserIndex).raza
+Select Case UserGenero
    Case eGenero.Hombre
-        Select Case raza
+        Select Case UserRaza
             Case eRaza.Humano
-                UserHead = RandomNumber(1, 30)
-                UserBody = 1
+                NewHead = RandomNumber(1, 40)
+                NewBody = 1
             Case eRaza.Elfo
-                UserHead = RandomNumber(1, 13) + 100
-                If UserHead = 113 Then UserHead = 201       'Un índice no es continuo.... :S muy feo
-                UserBody = 2
+                NewHead = RandomNumber(101, 112)
+                NewBody = 2
             Case eRaza.ElfoOscuro
-                UserHead = RandomNumber(1, 8) + 201
-                UserBody = 3
+                NewHead = RandomNumber(200, 210)
+                NewBody = 3
             Case eRaza.Enano
-                UserHead = RandomNumber(1, 5) + 300
-                UserBody = 52
+                NewHead = RandomNumber(300, 306)
+                NewBody = 52
             Case eRaza.Gnomo
-                UserHead = RandomNumber(1, 6) + 400
-                UserBody = 52
-            Case Else
-                UserHead = 1
-                UserBody = 1
+                NewHead = RandomNumber(401, 406)
+                NewBody = 52
         End Select
    Case eGenero.Mujer
-        Select Case raza
+        Select Case UserRaza
             Case eRaza.Humano
-                UserHead = RandomNumber(1, 7) + 69
-                UserBody = 1
+                NewHead = RandomNumber(70, 79)
+                NewBody = 1
             Case eRaza.Elfo
-                UserHead = RandomNumber(1, 7) + 169
-                UserBody = 2
+                NewHead = RandomNumber(170, 178)
+                NewBody = 2
             Case eRaza.ElfoOscuro
-                UserHead = RandomNumber(1, 11) + 269
-                UserBody = 3
+                NewHead = RandomNumber(270, 278)
+                NewBody = 3
             Case eRaza.Gnomo
-                UserHead = RandomNumber(1, 5) + 469
-                UserBody = 52
+                NewHead = RandomNumber(370, 372)
+                NewBody = 52
             Case eRaza.Enano
-                UserHead = RandomNumber(1, 3) + 369
-                UserBody = 52
-            Case Else
-                UserHead = 70
-                UserBody = 1
+                NewHead = RandomNumber(470, 176)
+                NewBody = 52
         End Select
 End Select
-
+UserList(UserIndex).Char.Head = NewHead
+UserList(UserIndex).Char.body = NewBody
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
@@ -401,7 +403,7 @@ End If
 
 UserList(UserIndex).Char.heading = eHeading.SOUTH
 
-Call DarCuerpoYCabeza(UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).raza, UserList(UserIndex).genero)
+Call DarCuerpoYCabeza(UserIndex)
 UserList(UserIndex).OrigChar = UserList(UserIndex).Char
    
  

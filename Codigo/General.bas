@@ -36,84 +36,46 @@ Global LeerNPCs As New clsIniReader
 Global LeerNPCsHostiles As New clsIniReader
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
-
-Select Case UserList(UserIndex).raza
-    Case eRaza.Humano
-        Select Case UserList(UserIndex).genero
-            Case eGenero.Hombre
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 21
-                Else
-                    UserList(UserIndex).Char.body = 21
-                End If
-            Case eGenero.Mujer
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 39
-                Else
-                    UserList(UserIndex).Char.body = 39
-                End If
+'***************************************************
+'Autor: Nacho (Integer)
+'Last Modification: 03/14/07
+'Da cuerpo desnudo a un usuario
+'***************************************************
+Dim CuerpoDesnudo As Integer
+Select Case UserList(UserIndex).genero
+    Case eGenero.Hombre
+        Select Case UserList(UserIndex).raza
+            Case eRaza.Humano
+                CuerpoDesnudo = 21
+            Case eRaza.ElfoOscuro
+                CuerpoDesnudo = 32
+            Case eRaza.Elfo
+                CuerpoDesnudo = 210
+            Case eRaza.Gnomo
+                CuerpoDesnudo = 222
+            Case eRaza.Enano
+                CuerpoDesnudo = 53
         End Select
-    Case eRaza.ElfoOscuro
-        Select Case UserList(UserIndex).genero
-            Case eGenero.Hombre
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 32
-                Else
-                    UserList(UserIndex).Char.body = 32
-                End If
-            Case eGenero.Mujer
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 40
-                Else
-                    UserList(UserIndex).Char.body = 40
-                End If
-        End Select
-    Case eRaza.Enano
-        Select Case UserList(UserIndex).genero
-            Case eGenero.Hombre
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 53
-                Else
-                    UserList(UserIndex).Char.body = 53
-                End If
-            Case eGenero.Mujer
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 60
-                Else
-                    UserList(UserIndex).Char.body = 60
-                End If
-        End Select
-    Case eRaza.Gnomo
-        Select Case UserList(UserIndex).genero
-            Case eGenero.Hombre
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 53
-                Else
-                    UserList(UserIndex).Char.body = 53
-                End If
-            Case eGenero.Mujer
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 60
-                Else
-                    UserList(UserIndex).Char.body = 60
-                End If
-        End Select
-    Case Else
-        Select Case UserList(UserIndex).genero
-            Case eGenero.Hombre
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 21
-                Else
-                    UserList(UserIndex).Char.body = 21
-                End If
-            Case eGenero.Mujer
-                If Mimetizado Then
-                    UserList(UserIndex).CharMimetizado.body = 39
-                Else
-                    UserList(UserIndex).Char.body = 39
-                End If
+    Case eGenero.Mujer
+        Select Case UserList(UserIndex).raza
+            Case eRaza.Humano
+                CuerpoDesnudo = 39
+            Case eRaza.ElfoOscuro
+                CuerpoDesnudo = 40
+            Case eRaza.Elfo
+                CuerpoDesnudo = 259
+            Case eRaza.Gnomo
+                CuerpoDesnudo = 260
+            Case eRaza.Enano
+                CuerpoDesnudo = 60
         End Select
 End Select
+
+If Mimetizado Then
+    UserList(UserIndex).CharMimetizado.body = CuerpoDesnudo
+Else
+    UserList(UserIndex).Char.body = CuerpoDesnudo
+End If
 
 UserList(UserIndex).flags.Desnudo = 1
 
