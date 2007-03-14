@@ -4,10 +4,10 @@ Begin VB.Form FrmInterv
    ClientHeight    =   4710
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   7695
+   ClientWidth     =   7650
    LinkTopic       =   "Form1"
    ScaleHeight     =   4710
-   ScaleWidth      =   7695
+   ScaleWidth      =   7650
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton Command2 
       Caption         =   "Guardar Intervalos"
@@ -139,10 +139,10 @@ Begin VB.Form FrmInterv
             Strikethrough   =   0   'False
          EndProperty
          Height          =   1650
-         Left            =   165
+         Left            =   120
          TabIndex        =   40
-         Top             =   300
-         Width           =   2580
+         Top             =   240
+         Width           =   2625
          Begin VB.TextBox txtCmdExec 
             Height          =   285
             Left            =   1320
@@ -710,6 +710,10 @@ MsgBox "Los intervalos se han guardado sin problemas"
 Exit Sub
 Err:
     MsgBox "Error al intentar grabar los intervalos"
+End Sub
+
+Private Sub Frame7_DragDrop(Source As Control, X As Single, Y As Single)
+
 End Sub
 
 Private Sub ok_Click()

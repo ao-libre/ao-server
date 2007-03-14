@@ -338,6 +338,10 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     
 End If
 
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 End Sub
@@ -377,6 +381,10 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
     Call UpdateUserInv(True, UserIndex, 0)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO))
 End If
+
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
 
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
@@ -704,6 +712,10 @@ End If
 
 Call SubirSkill(UserIndex, Pesca)
 
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 Exit Sub
@@ -768,6 +780,10 @@ If Suerte > 0 Then
     Call SubirSkill(UserIndex, Pesca)
 End If
 
+    UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+    If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+        
 Exit Sub
 
 errhandler:
@@ -1101,6 +1117,10 @@ End If
 
 Call SubirSkill(UserIndex, Talar)
 
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 
 Exit Sub
@@ -1162,6 +1182,10 @@ Else
 End If
 
 Call SubirSkill(UserIndex, Mineria)
+
+UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
 
 UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 

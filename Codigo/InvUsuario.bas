@@ -914,10 +914,6 @@ Select Case Obj.OBJType
             Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-            
-        UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
-        If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
-            UserList(UserIndex).Reputacion.PlebeRep = MAXREP
         
         Select Case ObjIndex
             Case CAÑA_PESCA, RED_PESCA
