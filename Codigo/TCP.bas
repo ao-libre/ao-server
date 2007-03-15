@@ -982,9 +982,10 @@ Else
         Exit Sub
     End If
     
-   ''TELEFRAG
-    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
-        ''si estaba en comercio seguro...
+   ''TELEFRAG ( esta por loguear sobre Userindex o NPCindex? )
+    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).NpcIndex <> 0 Then
+        ''si estaba en comercio seguro... lo pisamos como siempre.
+        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
         If UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
             If UserList(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
                 Call FinComerciarUsu(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu)
@@ -997,6 +998,7 @@ Else
                 Call FlushBuffer(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
             End If
         End If
+        End If
         'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
         'Pablo (ToxicWaste)
         Dim tX As Integer
@@ -1005,7 +1007,8 @@ Else
         found = False
         For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
             For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
-                If LegalPos(UserList(UserIndex).Pos.Map, tX, tY, False, True) And (MapData(UserList(UserIndex).Pos.Map, tX, tY).UserIndex = 0) Then
+                'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
+                If LegalPos(UserList(UserIndex).Pos.Map, tX, tY, False, True) And (MapData(UserList(UserIndex).Pos.Map, tX, tY).UserIndex = 0) And (MapData(UserList(UserIndex).Pos.Map, tX, tY).NpcIndex = 0) Then
                     UserList(UserIndex).Pos.X = tX
                     UserList(UserIndex).Pos.Y = tY
                     found = True
@@ -1015,10 +1018,11 @@ Else
             If found Then Exit For
         Next tY
         If Not found Then
-            Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
+            If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
+                Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
+            End If
         End If
         
-        Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
     End If
    
    
