@@ -997,6 +997,27 @@ Else
                 Call FlushBuffer(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
             End If
         End If
+        'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
+        'Pablo (ToxicWaste)
+        Dim tX As Integer
+        Dim tY As Integer
+        Dim found As Boolean
+        found = False
+        For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
+            For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
+                If LegalPos(UserList(UserIndex).Pos.Map, tX, tY, False, True) And (MapData(UserList(UserIndex).Pos.Map, tX, tY).UserIndex = 0) Then
+                    UserList(UserIndex).Pos.X = tX
+                    UserList(UserIndex).Pos.Y = tY
+                    found = True
+                End If
+                If found Then Exit For
+            Next tX
+            If found Then Exit For
+        Next tY
+        If Not found Then
+            Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
+        End If
+        
         Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
     End If
    
