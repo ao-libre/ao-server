@@ -62,7 +62,7 @@ Sub QuitarMascotaNpc(ByVal Maestro As Integer, ByVal Mascota As Integer)
     Npclist(Maestro).Mascotas = Npclist(Maestro).Mascotas - 1
 End Sub
 
-Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, Optional Drop As Boolean = True)
+Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '********************************************************
 'Author: Unknown
 'Llamado cuando la vida de un NPC llega a cero.
@@ -181,7 +181,7 @@ On Error GoTo errhandler
     End If ' Userindex > 0
 
    
-    If MiNPC.MaestroUser = 0 And Drop Then
+    If MiNPC.MaestroUser = 0 Then
         'Tiramos el oro
         Call NPCTirarOro(MiNPC)
         'Tiramos el inventario

@@ -1552,11 +1552,6 @@ Dim OldY As Integer
         End If
     End If
     
-    'Si habia un NPC ahi parado, lo matamos.
-    If MapData(Map, X, Y).NpcIndex > 0 Then
-        Call MuereNpc(MapData(Map, X, Y).NpcIndex, 0, False)
-    End If
-    
     UserList(UserIndex).Pos.X = X
     UserList(UserIndex).Pos.Y = Y
     UserList(UserIndex).Pos.Map = Map
