@@ -1345,6 +1345,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defenza en ciudad Armada y Caos.
 '***************************************************
 Dim T As eTrigger6
+Dim rank As Integer
 'MUY importante el orden de estos "IF"...
 
 'Estas muerto no podes atacar
@@ -1370,10 +1371,20 @@ If T = TRIGGER6_PERMITE Then
 ElseIf T = TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
+ElseIf TRIGGER6_AUSENTE Then
+    'Si no estamos en el Trigger 6 entonces es imposible atacar un gm
+    If Not UserList(VictimIndex).flags.Privilegios And PlayerType.User Then
+        Call WriteConsoleMsg(AttackerIndex, "No podés atacar GMs aquí", FontTypeNames.FONTTYPE_WARNING)
+        PuedeAtacar = False
+        Exit Function
+    End If
 End If
 
 'Estas queriendo atacar a un GM?
-If Not (UserList(VictimIndex).flags.Privilegios And PlayerType.User) Then
+'Estas queriendo atacar a un GM?
+rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
+
+If (UserList(VictimIndex).flags.Privilegios And rank) > (UserList(AttackerIndex).flags.Privilegios And rank) Then
     Call WriteConsoleMsg(AttackerIndex, "El ser es demasiado poderoso", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1584,10 +1595,16 @@ End Sub
 
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
-If Origen > 0 And Destino > 0 And Origen <= UBound(UserList) And Destino <= UBound(UserList) Then
-    If MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger = eTrigger.ZONAPELEA Or _
-        MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger = eTrigger.ZONAPELEA Then
-        If (MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger) Then
+'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
+On Error GoTo ErrHandler
+    Dim tOrg As eTrigger
+    Dim tDst As eTrigger
+    
+    tOrg = MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
+    tDst = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
+    
+    If tOrg = eTrigger.ZONAPELEA Or tDst = eTrigger.ZONAPELEA Then
+        If tOrg = tDst Then
             TriggerZonaPelea = TRIGGER6_PERMITE
         Else
             TriggerZonaPelea = TRIGGER6_PROHIBE
@@ -1595,10 +1612,11 @@ If Origen > 0 And Destino > 0 And Origen <= UBound(UserList) And Destino <= UBou
     Else
         TriggerZonaPelea = TRIGGER6_AUSENTE
     End If
-Else
-    TriggerZonaPelea = TRIGGER6_AUSENTE
-End If
 
+Exit Function
+ErrHandler:
+    TriggerZonaPelea = TRIGGER6_AUSENTE
+    LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
 
 Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
