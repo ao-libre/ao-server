@@ -972,33 +972,32 @@ Next i
 End Sub
 
 Public Sub EfectoFrio(ByVal UserIndex As Integer)
-
-Dim modifi As Integer
-
-If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
-  UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
-Else
-  If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
-    Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!.", FontTypeNames.FONTTYPE_INFO)
-    modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
-    UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
-    If UserList(UserIndex).Stats.MinHP < 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Has muerto de frio!!.", FontTypeNames.FONTTYPE_INFO)
-            UserList(UserIndex).Stats.MinHP = 0
-            Call UserDie(UserIndex)
+    
+    Dim modifi As Integer
+    
+    If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
+        UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
+    Else
+        If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!.", FontTypeNames.FONTTYPE_INFO)
+            modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
+            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
+            
+            If UserList(UserIndex).Stats.MinHP < 1 Then
+                Call WriteConsoleMsg(UserIndex, "¡¡Has muerto de frio!!.", FontTypeNames.FONTTYPE_INFO)
+                UserList(UserIndex).Stats.MinHP = 0
+                Call UserDie(UserIndex)
+            End If
+            
+            Call WriteUpdateHP(UserIndex)
+        Else
+            modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
+            Call QuitarSta(UserIndex, modifi)
+            Call WriteUpdateSta(UserIndex)
+        End If
+        
+        UserList(UserIndex).Counters.Frio = 0
     End If
-    Call WriteUpdateHP(UserIndex)
-  Else
-    modifi = Porcentaje(UserList(UserIndex).Stats.MaxSta, 5)
-    Call QuitarSta(UserIndex, modifi)
-    Call WriteUpdateSta(UserIndex)
-  End If
-  
-  UserList(UserIndex).Counters.Frio = 0
-  
-  
-End If
-
 End Sub
 
 Public Sub EfectoLava(ByVal UserIndex As Integer)
@@ -1007,24 +1006,24 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
 'Last Modification: 03/12/07
 'If user is standing on lava, take health points from him
 '***************************************************
-
-If UserList(UserIndex).Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
-  UserList(UserIndex).Counters.Lava = UserList(UserIndex).Counters.Lava + 1
-Else
-  If HayLava(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
-    Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!.", FontTypeNames.FONTTYPE_INFO)
-    UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
-    If UserList(UserIndex).Stats.MinHP < 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Has muerto quemado!!.", FontTypeNames.FONTTYPE_INFO)
-            UserList(UserIndex).Stats.MinHP = 0
-            Call UserDie(UserIndex)
+    If UserList(UserIndex).Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
+        UserList(UserIndex).Counters.Lava = UserList(UserIndex).Counters.Lava + 1
+    Else
+        If HayLava(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!.", FontTypeNames.FONTTYPE_INFO)
+            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
+            
+            If UserList(UserIndex).Stats.MinHP < 1 Then
+                Call WriteConsoleMsg(UserIndex, "¡¡Has muerto quemado!!.", FontTypeNames.FONTTYPE_INFO)
+                UserList(UserIndex).Stats.MinHP = 0
+                Call UserDie(UserIndex)
+            End If
+            
+            Call WriteUpdateHP(UserIndex)
+        End If
+        
+        UserList(UserIndex).Counters.Frio = 0
     End If
-    Call WriteUpdateHP(UserIndex)
-  End If
-  
-  UserList(UserIndex).Counters.Frio = 0
-  
-End If
 End Sub
 
 

@@ -712,10 +712,6 @@ Err:
     MsgBox "Error al intentar grabar los intervalos"
 End Sub
 
-Private Sub Frame7_DragDrop(Source As Control, X As Single, Y As Single)
-
-End Sub
-
 Private Sub ok_Click()
 Me.Visible = False
 End Sub

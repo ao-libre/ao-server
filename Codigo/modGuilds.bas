@@ -816,11 +816,15 @@ Public Function PrepareGuildsList() As String()
     Dim tStr() As String
     Dim i As Long
     
-    ReDim tStr(CANTIDADDECLANES - 1) As String
-    
-    For i = 1 To CANTIDADDECLANES
-        tStr(i - 1) = guilds(i).GuildName
-    Next i
+    If CANTIDADDECLANES = 0 Then
+        ReDim tStr(0) As String
+    Else
+        ReDim tStr(CANTIDADDECLANES - 1) As String
+        
+        For i = 1 To CANTIDADDECLANES
+            tStr(i - 1) = guilds(i).GuildName
+        Next i
+    End If
     
     PrepareGuildsList = tStr
 End Function
@@ -844,7 +848,6 @@ Public Function SendGuildDetails(ByVal UserIndex As Integer, ByRef GuildName As 
                                     codex, .GetDesc)
     End With
 End Function
-
 
 Public Sub SendGuildLeaderInfo(ByVal UserIndex As Integer)
 '***************************************************
