@@ -1330,7 +1330,7 @@ On Error GoTo ErrorHandler
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
     
-    If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
+    If TriggerZonaPelea(UserIndex, UserIndex) <> eTrigger6.TRIGGER6_PERMITE Then
         ' << Si es newbie no pierde el inventario >>
         If Not EsNewbie(UserIndex) Or criminal(UserIndex) Then
             Call TirarTodo(UserIndex)
@@ -1427,7 +1427,7 @@ On Error GoTo ErrorHandler
     'End If
     
     '<< Actualizamos clientes >>
-    Call ChangeUserChar(val(UserIndex), UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
+    Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
     Call WriteUpdateUserStats(UserIndex)
     
     
