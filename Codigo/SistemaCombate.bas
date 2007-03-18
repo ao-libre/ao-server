@@ -1152,6 +1152,8 @@ If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
     Call UserDañoUser(AtacanteIndex, VictimaIndex)
     'Pablo (ToxicWaste): Guantes de Hurto del Bandido en acción
     If UserList(AtacanteIndex).clase = eClass.Bandit Then Call DoHurtar(AtacanteIndex, VictimaIndex)
+    'y ahora, el ladrón puede llegar a paralizar con el golpe.
+    If UserList(AtacanteIndex).clase = eClass.Thief Then Call DoHandInmo(AtacanteIndex, VictimaIndex)
     
 Else
     Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING))
@@ -1596,7 +1598,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1614,7 +1616,7 @@ On Error GoTo ErrHandler
     End If
 
 Exit Function
-ErrHandler:
+errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function

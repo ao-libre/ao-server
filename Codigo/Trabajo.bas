@@ -1291,12 +1291,8 @@ If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
 If UserList(UserIndex).Invent.AnilloEqpObjIndex = 0 Then
     Exit Sub
 Else
-    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMin <> 0 Then
-        Exit Sub
-    End If
-    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMax <> 0 Then
-        Exit Sub
-    End If
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMin <> 0 Then Exit Sub
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMax <> 0 Then Exit Sub
 End If
 
 Dim res As Integer
@@ -1305,10 +1301,40 @@ If (res < 20) Then
     If TieneObjetosRobables(VictimaIndex) Then
         Call RobarObjeto(UserIndex, VictimaIndex)
         Call WriteConsoleMsg(UserIndex, "Has Hurtado Objetos", FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(VictimaIndex, "¡ " & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
+End If
+
+End Sub
+
+Public Sub DoHandInmo(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
+'***************************************************
+'Author: Pablo (ToxicWaste)
+'Last Modif: 17/02/2007
+'Implements the special Skill of the Thief
+'***************************************************
+If UserList(VictimaIndex).flags.Paralizado = 1 Then Exit Sub
+If UserList(UserIndex).clase <> eClass.Thief Then Exit Sub
+    
+'una vez más, la forma de reconocer los guantes es medio patética.
+If UserList(UserIndex).Invent.AnilloEqpObjIndex = 0 Then
+    Exit Sub
+Else
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMin <> 0 Then Exit Sub
+    If ObjData(UserList(UserIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMax <> 0 Then Exit Sub
+End If
+
+    
+Dim res As Integer
+res = RandomNumber(0, 100)
+If res < (UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) / 4) Then
+    UserList(VictimaIndex).flags.Paralizado = 1
+    UserList(VictimaIndex).Counters.Paralisis = IntervaloParalizado / 2
+    Call WriteParalizeOK(VictimaIndex)
+    Call WriteConsoleMsg(UserIndex, "Tu golpe ha dejado inmóvil a tu oponente", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(VictimaIndex, "¡El golpe te ha dejado inmóvil!", FontTypeNames.FONTTYPE_INFO)
 End If
 
 End Sub
