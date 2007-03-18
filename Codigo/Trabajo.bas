@@ -808,6 +808,17 @@ End If
 
 Call QuitarSta(LadrOnIndex, 15)
 
+Dim GuantesHurto As Boolean
+'Tiene los Guantes de Hurto equipados?
+GuantesHurto = True
+If UserList(LadrOnIndex).Invent.AnilloEqpObjIndex = 0 Then
+    GuantesHurto = False
+Else
+    If ObjData(UserList(LadrOnIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMin <> 0 Then GuantesHurto = False
+    If ObjData(UserList(LadrOnIndex).Invent.AnilloEqpObjIndex).DefensaMagicaMax <> 0 Then GuantesHurto = False
+End If
+
+
 If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
     Dim Suerte As Integer
     Dim res As Integer
@@ -844,7 +855,7 @@ If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
                         Suerte = 5
     End If
     res = RandomNumber(1, Suerte)
-    
+        
     If res < 3 Then 'Exito robo
        
         If (RandomNumber(1, 50) < 25) And (UserList(LadrOnIndex).clase = eClass.Thief) Then
@@ -858,7 +869,12 @@ If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
                 Dim N As Integer
                 
                 If UserList(LadrOnIndex).clase = eClass.Thief Then
-                    N = RandomNumber(100, 1000)
+                ' Si no tine puestos los guantes de hurto roba un 20% menos. Pablo (ToxicWaste)
+                    If GuantesHurto Then
+                        N = RandomNumber(100, 1000)
+                    Else
+                        N = RandomNumber(80, 800)
+                    End If
                 Else
                     N = RandomNumber(1, 100)
                 End If
