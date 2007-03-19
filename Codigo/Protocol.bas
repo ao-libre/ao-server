@@ -3568,7 +3568,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then
+    If UserList(UserIndex).incomingData.length < 6 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -3577,12 +3577,12 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim amount As Integer
+        Dim amount As Long
         Dim Slot As Byte
         Dim tUser As Integer
         
         Slot = .incomingData.ReadByte()
-        amount = .incomingData.ReadInteger()
+        amount = .incomingData.ReadLong()
         
         'Get the other player
         tUser = .ComUsu.DestUsu
@@ -7465,19 +7465,21 @@ On Error GoTo errhandler
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
         
-        'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
-            If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-            Else
-                Call WarpUserChar(UserIndex, UserList(tUser).Pos.Map, UserList(tUser).Pos.X, UserList(tUser).Pos.Y + 1, True)
-                
-                If .flags.AdminInvisible = 0 Then
-                    Call WriteConsoleMsg(tUser, .name & " se ha trasportado hacia donde te encontrás.", FontTypeNames.FONTTYPE_INFO)
-                    Call FlushBuffer(tUser)
+        If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Consejero) Then
+            'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+            If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+                If tUser <= 0 Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WarpUserChar(UserIndex, UserList(tUser).Pos.Map, UserList(tUser).Pos.X, UserList(tUser).Pos.Y + 1, True)
+                    
+                    If .flags.AdminInvisible = 0 Then
+                        Call WriteConsoleMsg(tUser, .name & " se ha trasportado hacia donde te encontrás.", FontTypeNames.FONTTYPE_INFO)
+                        Call FlushBuffer(tUser)
+                    End If
+                    
+                    Call LogGM(.name, "/IRA " & UserName & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, .flags.Privilegios And PlayerType.Consejero)
                 End If
-                
-                Call LogGM(.name, "/IRA " & UserName & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y, .flags.Privilegios And PlayerType.Consejero)
             End If
         End If
         
@@ -14952,7 +14954,7 @@ End Sub
 ' @param    amount The number of objects offered.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal amount As Integer)
+Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal amount As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -14963,7 +14965,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex A
         
         Call .WriteInteger(ObjIndex)
         Call .WriteASCIIString(ObjData(ObjIndex).name)
-        Call .WriteInteger(amount)
+        Call .WriteLong(amount)
         Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
         Call .WriteInteger(ObjData(ObjIndex).OBJType)
         Call .WriteInteger(ObjData(ObjIndex).MaxHIT)

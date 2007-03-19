@@ -1367,13 +1367,13 @@ End If
 'Estamos en una Arena? o un trigger zona segura?
 T = TriggerZonaPelea(AttackerIndex, VictimIndex)
 
-If T = TRIGGER6_PERMITE Then
+If T = eTrigger6.TRIGGER6_PERMITE Then
     PuedeAtacar = True
     Exit Function
-ElseIf T = TRIGGER6_PROHIBE Then
+ElseIf T = eTrigger6.TRIGGER6_PROHIBE Then
     PuedeAtacar = False
     Exit Function
-ElseIf TRIGGER6_AUSENTE Then
+ElseIf T = eTrigger6.TRIGGER6_AUSENTE Then
     'Si no estamos en el Trigger 6 entonces es imposible atacar un gm
     If Not UserList(VictimIndex).flags.Privilegios And PlayerType.User Then
         Call WriteConsoleMsg(AttackerIndex, "No podés atacar GMs aquí", FontTypeNames.FONTTYPE_WARNING)

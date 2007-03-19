@@ -64,23 +64,30 @@ Private Sub Class_Initialize()
 End Sub
 
 Public Sub LoadSoundMapInfo()
-Dim i As Integer
-Dim j As Integer
-Dim Temps As String
-Dim MAPFILE As String
+    Dim i As Integer
+    Dim j As Integer
+    Dim Temps As String
+    Dim MAPFILE As String
+    
     MAPFILE = App.Path & MapPath & "MAPA"
     
+    'Usage of Val() prevents errors when dats are corrputed or incomplete. All invalid values are assumed to be zero.
+    
+'TODO : Log the error in the dat for correction.
     For i = 1 To UBound(p_Mapas)
         Temps = GetVar(MAPFILE & i & ".dat", "SONIDOS", "Cantidad")
+        
         If IsNumeric(Temps) Then
-            p_Mapas(i).Cantidad = CInt(GetVar(MAPFILE & i & ".dat", "SONIDOS", "Cantidad"))
+            p_Mapas(i).Cantidad = val(Temps)
+            
             ReDim p_Mapas(i).flags(1 To p_Mapas(i).Cantidad) As Long
             ReDim p_Mapas(i).Probabilidad(1 To p_Mapas(i).Cantidad) As Single
             ReDim p_Mapas(i).SoundIndex(1 To p_Mapas(i).Cantidad) As Integer
+            
             For j = 1 To p_Mapas(i).Cantidad
-                p_Mapas(i).flags(j) = CInt(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Flags"))
-                p_Mapas(i).Probabilidad(j) = CSng(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Probabilidad"))
-                p_Mapas(i).SoundIndex(j) = CInt(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Sonido"))
+                p_Mapas(i).flags(j) = val(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Flags"))
+                p_Mapas(i).Probabilidad(j) = val(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Probabilidad"))
+                p_Mapas(i).SoundIndex(j) = val(GetVar(MAPFILE & i & ".dat", "SONIDO" & j, "Sonido"))
             Next j
         Else
             p_Mapas(i).Cantidad = 0
@@ -88,11 +95,10 @@ Dim MAPFILE As String
     Next i
 End Sub
 
-
 Public Sub ReproducirSonidosDeMapas()
-Dim i As Integer
-Dim SonidosMapa As Byte
-Dim SonidoMapa As Byte
+    Dim i As Integer
+    Dim SonidosMapa As Byte
+    Dim SonidoMapa As Byte
 
     For i = 1 To UBound(p_Mapas)
         If p_Mapas(i).Cantidad > 0 Then
@@ -111,7 +117,6 @@ Dim SonidoMapa As Byte
             End If
         End If
     Next i
-    
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal index As Integer, ByVal SoundIndex As Integer)
