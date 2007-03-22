@@ -179,9 +179,7 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
 'Author: Pablo (ToxicWaste)
 'Last modified: 24/01/2007
 'Refreshes the status of UserIndex.
-'Pablo (ToxicWaste): Hay que hacer mejor, copié lo que hizo Integer pero es medio kk ya que solo cambia 1 byte de la info y estoy remandando todo el paquete.
 '*************************************************
-    Call UsUaRiOs.EraseUserChar(UserList(UserIndex).Pos.Map, UserIndex)
     Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 End Sub
 

@@ -6857,7 +6857,6 @@ Private Sub HandleShowName(ByVal UserIndex As Integer)
             .showName = Not .showName 'Show / Hide the name
             
             'Ugly but works, and not being a common message it doen't really bother
-            Call UsUaRiOs.EraseUserChar(.Pos.Map, UserIndex)
             Call UsUaRiOs.MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
         End If
     End With
@@ -7990,6 +7989,11 @@ On Error GoTo errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
+                        If val(Arg1) > 255 Then
+                            Arg1 = "255"
+                            Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a 255.", FONTTYPE_INFO)
+                        End If
+                        
                         UserList(tUser).Stats.ELV = val(Arg1)
                     End If
                     

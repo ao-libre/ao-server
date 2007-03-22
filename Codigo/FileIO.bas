@@ -797,7 +797,7 @@ UserList(UserIndex).Stats.SkillPts = CInt(UserFile.GetValue("STATS", "SkillPtsLi
 
 UserList(UserIndex).Stats.Exp = CDbl(UserFile.GetValue("STATS", "EXP"))
 UserList(UserIndex).Stats.ELU = CLng(UserFile.GetValue("STATS", "ELU"))
-UserList(UserIndex).Stats.ELV = CLng(UserFile.GetValue("STATS", "ELV"))
+UserList(UserIndex).Stats.ELV = CByte(UserFile.GetValue("STATS", "ELV"))
 
 
 UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
@@ -1040,7 +1040,7 @@ Exit Sub
 
 man:
     MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
-    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.Source)
+    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
  
 End Sub
 
@@ -1081,7 +1081,7 @@ Exit Sub
 
 man:
     MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
-    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.Source)
+    Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
 
 End Sub
 
