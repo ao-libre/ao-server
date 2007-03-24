@@ -2958,6 +2958,9 @@ On Error GoTo errhandler
         
         If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
+            
+            'Update tag
+            Call UsUaRiOs.MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
         Else
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         End If
@@ -13396,7 +13399,7 @@ End Sub
 ' @param    damage The number of HP lost by the target creature.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserHitNPC(ByVal UserIndex As Integer, ByVal damage As Integer)
+Public Sub WriteUserHitNPC(ByVal UserIndex As Integer, ByVal damage As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -13404,7 +13407,9 @@ Public Sub WriteUserHitNPC(ByVal UserIndex As Integer, ByVal damage As Integer)
 '***************************************************
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.UserHitNPC)
-        Call .WriteInteger(damage)
+        
+        'It is a long to allow the "drake slayer" (matadracos) to kill the great red dragon of one blow.
+        Call .WriteLong(damage)
     End With
 End Sub
 
