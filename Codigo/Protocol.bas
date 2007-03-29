@@ -451,17 +451,21 @@ On Error Resume Next
     
     packetID = UserList(UserIndex).incomingData.PeekByte()
     
+    'Does the packet requires a logged user??
     If Not (packetID = ClientPacketID.ThrowDices _
       Or packetID = ClientPacketID.LoginExistingChar _
-      Or packetID = ClientPacketID.LoginNewChar) _
-      And Not UserList(UserIndex).flags.UserLogged Then
-        Call CloseSocket(UserIndex, True)
-        Exit Sub
+      Or packetID = ClientPacketID.LoginNewChar) Then
+        
+        'Is the user actually logged?
+        If Not UserList(UserIndex).flags.UserLogged Then
+            Call CloseSocket(UserIndex, True)
+            Exit Sub
+        
+        'He is logged. Reset idle counter if id is valid.
+        ElseIf UserList(UserIndex).incomingData.PeekByte() <= ClientPacketID.CheckSlot Then
+                UserList(UserIndex).Counters.IdleCount = 0
+        End If
     End If
-    
-    'Reset idle counter
-    If UserList(UserIndex).incomingData.PeekByte() <= ClientPacketID.CheckSlot Then _
-        UserList(UserIndex).Counters.IdleCount = 0
     
     Select Case packetID
         Case ClientPacketID.LoginExistingChar       'OLOGIN
