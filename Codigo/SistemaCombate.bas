@@ -1032,7 +1032,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
     End If
     
     
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
+    'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
     Call WriteUpdateUserStats(UserIndex)
 End If
 

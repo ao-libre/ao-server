@@ -7099,7 +7099,7 @@ Private Sub HandleServerTime(ByVal UserIndex As Integer)
         Call LogGM(.name, "Hora.", .flags.Privilegios And PlayerType.Consejero)
     End With
     
-    Call WriteConsoleMsg(SendTarget.ToAll, "Hora: " & time & " " & Date, FontTypeNames.FONTTYPE_INFO)
+    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Hora: " & time & " " & Date, FontTypeNames.FONTTYPE_INFO))
 End Sub
 
 ''
@@ -7542,7 +7542,7 @@ Private Sub HandleGMPanel(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster) Then Exit Sub
+        If .flags.Privilegios And PlayerType.User Then Exit Sub
         
         Call WriteShowGMPanelForm(UserIndex)
     End With
@@ -7996,9 +7996,9 @@ On Error GoTo errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If val(Arg1) > 255 Then
-                            Arg1 = "255"
-                            Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a 255.", FONTTYPE_INFO)
+                        If val(Arg1) > STAT_MAXELV Then
+                            Arg1 = CStr(STAT_MAXELV)
+                            Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a " & STAT_MAXELV & ".", FONTTYPE_INFO)
                         End If
                         
                         UserList(tUser).Stats.ELV = val(Arg1)

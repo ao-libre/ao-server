@@ -879,7 +879,7 @@ Select Case Obj.OBJType
         UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
         
         Call UpdateUserInv(False, UserIndex, Slot)
-        Call WriteUpdateUserStats(UserIndex)
+        Call WriteUpdateGold(UserIndex)
         
     Case eOBJType.otWeapon
         If UserList(UserIndex).flags.Muerto = 1 Then

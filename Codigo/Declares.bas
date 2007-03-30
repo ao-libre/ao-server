@@ -525,7 +525,7 @@ Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
 Public Const FONTTYPE_CENTINELA As String = "~0~255~0~1~0"
 
 'Estadisticas
-Public Const STAT_MAXELV As Byte = 99
+Public Const STAT_MAXELV As Byte = 255
 Public Const STAT_MAXHP As Integer = 999
 Public Const STAT_MAXSTA As Integer = 999
 Public Const STAT_MAXMAN As Integer = 9999

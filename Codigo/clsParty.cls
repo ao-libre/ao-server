@@ -169,7 +169,7 @@ If i = 1 Then
                 Call CheckUserLevel(p_members(j).UserIndex)
                 Call WriteUpdateUserStats(p_members(j).UserIndex)
             End If
-            Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party." & FontTypeNames.FONTTYPE_PARTY, "Servidor")
+            Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party.", "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
             p_CantMiembros = p_CantMiembros - 1
             p_members(j).UserIndex = 0
@@ -185,7 +185,7 @@ Else
             Call CheckUserLevel(p_members(i).UserIndex)
             Call WriteUpdateUserStats(p_members(i).UserIndex)
         End If
-        Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).name & " abandona la party." & FontTypeNames.FONTTYPE_PARTY, "Servidor")
+        Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).name & " abandona la party.", "Servidor")
         'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
         Call WriteConsoleMsg(p_members(i).UserIndex, " Durante la misma has conseguido " & p_members(i).Experiencia & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
         p_CantMiembros = p_CantMiembros - 1
