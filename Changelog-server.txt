@@ -181,3 +181,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 08/02/2007: Agrego los cambios de Toxic, tengan en cuenta que los PJs deben crearse de cero para poder loguear. (Maraxus)
  * 25/02/2007: código listo salvo pr posibles bugs. (Maraxus)
  * 01/03/2007: Privilegios y Restricciones Implementadas. (NIGO)
+ * 31/03/2007: Tras un mes de bug-fixes agregamos algo nuevo. El comando /PING. (Maraxus)

@@ -143,6 +143,7 @@ Private Enum ServerPacketID
     BankOK                  ' BANCOOK
     ChangeUserTradeSlot     ' COMUSUINV
     SendNight               ' NOC
+    Pong
     
     'GM messages
     SpawnList               ' SPL
@@ -267,6 +268,7 @@ Private Enum ClientPacketID
     PartyKick               '/ECHARPARTY
     PartySetLeader          '/PARTYLIDER
     PartyAcceptMember       '/ACCEPTPARTY
+    Ping                    '/PING
     
     'GM messages
     GMMessage               '/GMSG
@@ -810,8 +812,11 @@ On Error Resume Next
         Case ClientPacketID.PartyAcceptMember       '/ACCEPTPARTY
             Call HandlePartyAcceptMember(UserIndex)
         
-        Case ClientPacketID.GuildMemberList        '/MIEMBROSCLAN
+        Case ClientPacketID.GuildMemberList         '/MIEMBROSCLAN
             Call HandleGuildMemberList(UserIndex)
+        
+        Case ClientPacketID.Ping                    '/PING
+            Call HandlePing(UserIndex)
         
         
         'GM messages
@@ -12900,6 +12905,25 @@ Public Sub HandleChangeMOTD(ByVal UserIndex As Integer)
 End Sub
 
 ''
+' Handle the "Ping" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandlePing(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 12/24/06
+'Show guilds messages
+'***************************************************
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        Call WritePong(UserIndex)
+    End With
+End Sub
+
+''
 ' Writes the "Logged" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -15129,6 +15153,21 @@ Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() A
         
         Call .WriteASCIIString(Tmp)
     End With
+End Sub
+
+''
+' Writes the "Pong" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WritePong(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Writes the "Pong" message to the given user's outgoing data buffer
+'***************************************************
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.Pong)
 End Sub
 
 ''
