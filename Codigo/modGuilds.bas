@@ -1545,9 +1545,13 @@ Dim AspiranteUI     As Integer
     
     Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
     Call guilds(GI).AceptarNuevoMiembro(Aspirante)
-
+    
+    ' If player is online, update tag
+    If AspiranteUI > 0 Then
+        Call UsUaRiOs.MakeUserChar(True, UserList(AspiranteUI).Pos.Map, UserIndex, UserList(AspiranteUI).Pos.Map, UserList(AspiranteUI).Pos.X, UserList(AspiranteUI).Pos.Y)
+    End If
+    
     a_AceptarAspirante = True
-
 End Function
 
 Public Function GuildName(ByVal guildIndex As Integer) As String

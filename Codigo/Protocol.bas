@@ -7195,7 +7195,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
         
         If MapaValido(Map) Then
             For i = 1 To LastNPC
-                'VB isn't lazzy, so we put more restrivtive condition first to speed up the process
+                'VB isn't lazzy, so we put more restrictive condition first to speed up the process
                 If Npclist(i).Pos.Map = Map Then
                     '¿esta vivo?
                     If Npclist(i).flags.NPCActive And Npclist(i).Hostile = 1 And Npclist(i).Stats.Alineacion = 2 Then
@@ -7485,7 +7485,7 @@ On Error GoTo errhandler
                     Call WarpUserChar(UserIndex, UserList(tUser).Pos.Map, UserList(tUser).Pos.X, UserList(tUser).Pos.Y + 1, True)
                     
                     If .flags.AdminInvisible = 0 Then
-                        Call WriteConsoleMsg(tUser, .name & " se ha trasportado hacia donde te encontrás.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(tUser, .name & " se ha trasportado hacia donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
                         Call FlushBuffer(tUser)
                     End If
                     
@@ -11270,8 +11270,8 @@ Public Sub HandleResetAutoUpdate(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-        If UCase$(.name) <> "EL OSO" Or UCase$(.name) <> "MARAXUS" Then Exit Sub
-
+        If UCase$(.name) <> "EL OSO" And UCase$(.name) <> "MARAXUS" Then Exit Sub
+        
         Call WriteConsoleMsg(UserIndex, "TID: " & CStr(ReiniciarAutoUpdate()), FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
@@ -11292,7 +11292,7 @@ Public Sub HandleRestart(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
     
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-        If UCase$(.name) <> "EL OSO" Or UCase$(.name) <> "MARAXUS" Then Exit Sub
+        If UCase$(.name) <> "EL OSO" And UCase$(.name) <> "MARAXUS" Then Exit Sub
         
         'time and Time BUG!
         Call LogGM(.name, .name & " reinicio el mundo", False)
@@ -11484,7 +11484,7 @@ Public Sub HandleNight(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-        If UCase$(.name) <> "EL OSO" Or UCase$(.name) <> "MARAXUS" Then Exit Sub
+        If UCase$(.name) <> "EL OSO" And UCase$(.name) <> "MARAXUS" Then Exit Sub
         
         DeNoche = Not DeNoche
         
@@ -11652,11 +11652,12 @@ End Sub
 ' Handle the "ChangeMapInfoRestricted" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoRestricted(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
 'Last Modification: 26/01/2007
-'Restringido -> Options: "SI", "NO", "ARMADA", "CAOS".
+'Restringido -> Options: "NEWBIE", "NO", "ARMADA", "CAOS".
 '***************************************************
 On Error GoTo errhandler
     
@@ -11676,14 +11677,14 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
-            If tStr = "SI" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
+            If tStr = "NEWBIE" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion sobre si es Restringido el mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Restringir = tStr
                 Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Restringir", tStr)
                 Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Restringido: " & MapInfo(.Pos.Map).Restringir, FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "Opciones para restringir: 'SI', 'NO', 'ARMADA', 'CAOS'", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Opciones para restringir: 'NEWBIE', 'NO', 'ARMADA', 'CAOS'", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -11707,6 +11708,7 @@ End Sub
 ' Handle the "ChangeMapInfoNoMagic" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoNoMagic(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
@@ -11727,7 +11729,7 @@ On Error GoTo errhandler
         
         nomagic = .incomingData.ReadBoolean
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar la Magia el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto = nomagic
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "MagiaSinEfecto", nomagic)
@@ -11747,6 +11749,7 @@ End Sub
 ' Handle the "ChangeMapInfoNoInvi" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoNoInvi(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
@@ -11767,7 +11770,7 @@ On Error GoTo errhandler
         
         noinvi = .incomingData.ReadBoolean
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Invisibilidad el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).InviSinEfecto = noinvi
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "InviSinEfecto", noinvi)
@@ -11787,6 +11790,7 @@ End Sub
 ' Handle the "ChangeMapInfoNoResu" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoNoResu(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
@@ -11807,7 +11811,7 @@ On Error GoTo errhandler
         
         noresu = .incomingData.ReadBoolean
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Resucitar el mapa.", False)
             MapInfo(UserList(UserIndex).Pos.Map).ResuSinEfecto = noresu
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "ResuSinEfecto", noresu)
@@ -11826,6 +11830,7 @@ End Sub
 ' Handle the "ChangeMapInfoLand" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoLand(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
@@ -11850,7 +11855,7 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion del Terreno del mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Terreno = tStr
@@ -11882,6 +11887,7 @@ End Sub
 ' Handle the "ChangeMapInfoZone" message
 '
 ' @param userIndex The index of the user sending the message
+
 Public Sub HandleChangeMapInfoZone(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
@@ -11906,7 +11912,7 @@ On Error GoTo errhandler
         
         tStr = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion de la Zona del mapa.", False)
                 MapInfo(UserList(UserIndex).Pos.Map).Zona = tStr
@@ -12809,8 +12815,11 @@ End Sub
 Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Lucas Tavolaro Ortiz (Tavo)
-'Last Modification: 12/29/06
+'Last Modification: 03/31/07
 'Set the MOTD
+'Modified by: Juan Martín Sotuyo Dodero (Maraxus)
+'   - Fixed a bug that prevented from properly setting the new number of lines.
+'   - Fixed a bug that caused the player to be kicked.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -12828,7 +12837,6 @@ On Error GoTo errhandler
         
         Dim newMOTD As String
         Dim auxiliaryString() As String
-        Dim MaxLines As Integer
         Dim LoopC As Long
         
         newMOTD = buffer.ReadASCIIString()
@@ -12844,9 +12852,9 @@ On Error GoTo errhandler
             Call WriteVar(App.Path & "\Dat\Motd.ini", "INIT", "NumLines", CStr(MaxLines))
             
             For LoopC = 1 To MaxLines
-                Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & CStr(LoopC), auxiliaryString(LoopC + 1))
+                Call WriteVar(App.Path & "\Dat\Motd.ini", "Motd", "Line" & CStr(LoopC), auxiliaryString(LoopC - 1))
                 
-                MOTD(LoopC).texto = auxiliaryString(LoopC + 1)
+                MOTD(LoopC).texto = auxiliaryString(LoopC - 1)
             Next LoopC
             
             Call WriteConsoleMsg(UserIndex, "Se ha cambiado el MOTD con exito", FontTypeNames.FONTTYPE_INFO)
