@@ -1003,9 +1003,9 @@ If IntervaloPermiteAtacar(UserIndex) Then
             
     'Look for user
     If index > 0 Then
-        Call UsuarioAtacaUsuario(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+        Call UsuarioAtacaUsuario(UserIndex, index)
         Call WriteUpdateUserStats(UserIndex)
-        Call WriteUpdateUserStats(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex)
+        Call WriteUpdateUserStats(index)
         Exit Sub
     End If
     
@@ -1031,8 +1031,7 @@ If IntervaloPermiteAtacar(UserIndex) Then
         Exit Sub
     End If
     
-    
-    'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
     Call WriteUpdateUserStats(UserIndex)
 End If
 
@@ -1382,7 +1381,6 @@ ElseIf T = eTrigger6.TRIGGER6_AUSENTE Then
     End If
 End If
 
-'Estas queriendo atacar a un GM?
 'Estas queriendo atacar a un GM?
 rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
 

@@ -77,7 +77,7 @@ On Error Resume Next
         Case SendTarget.ToAdmins
             For LoopC = 1 To LastUser
                 If UserList(LoopC).ConnID <> -1 Then
-                    If Not UserList(LoopC).flags.Privilegios And PlayerType.User Then
+                    If UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
                         Call EnviarDatosASlot(LoopC, sndData)
                    End If
                 End If

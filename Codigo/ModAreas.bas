@@ -372,16 +372,30 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     End If
 End Sub
 
-Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optional ByVal EsNuevo As Boolean = True)
+Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
-'Last Modify Date: Unknow
-'
+'Last Modify Date: 04/01/2007
+'Modified by Juan Martín Sotuyo Dodero (Maraxus)
+'   - Now the method checks for repetead users instead of trusting parameters.
 '**************************************************************
     Dim TempVal As Long
+    Dim EsNuevo As Boolean
+    Dim i As Long
+    
+    If Not MapaValido(Map) Then Exit Sub
+    
+    EsNuevo = True
+    
+    'Prevent adding repeated users
+    For i = 1 To ConnGroups(Map).CountEntrys
+        If ConnGroups(Map).UserEntrys(i) = UserIndex Then
+            EsNuevo = False
+            Exit For
+        End If
+    Next i
     
     If EsNuevo Then
-        If Not MapaValido(Map) Then Exit Sub
         'Update map and connection groups data
         ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys + 1
         TempVal = ConnGroups(Map).CountEntrys
