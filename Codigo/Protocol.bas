@@ -240,7 +240,7 @@ Private Enum ClientPacketID
     Information             '/INFORMACION
     Reward                  '/RECOMPENSA
     RequestMOTD             '/MOTD
-    Uptime                  '/UPTIME
+    UpTime                  '/UPTIME
     PartyLeave              '/SALIRPARTY
     PartyCreate             '/CREARPARTY
     PartyJoin               '/PARTY
@@ -728,7 +728,7 @@ On Error Resume Next
         Case ClientPacketID.RequestMOTD             '/MOTD
             Call HandleRequestMOTD(UserIndex)
         
-        Case ClientPacketID.Uptime                  '/UPTIME
+        Case ClientPacketID.UpTime                  '/UPTIME
             Call HandleUpTime(UserIndex)
         
         Case ClientPacketID.PartyLeave              '/SALIRPARTY
@@ -11098,7 +11098,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             Call LogGM(.name, "/LASTIP " & UserName, False)
             
             If (InStrB(UserName, "\") <> 0) Then
