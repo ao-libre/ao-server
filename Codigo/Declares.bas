@@ -1087,7 +1087,12 @@ Public Type User
 #If SeguridadAlkon Then
     Security As SecurityData
 #End If
-    
+
+#If ConUpTime Then
+    LogOnTime As Date
+    UpTime As Long
+#End If
+
     ip As String
     
      '[Alejo]

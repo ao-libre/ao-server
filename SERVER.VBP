@@ -76,13 +76,13 @@ Description="Servidor Argentum"
 CompatibleMode="0"
 MajorVer=0
 MinorVer=12
-RevisionVer=0
+RevisionVer=2
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionCompanyName="M"
 VersionLegalCopyright="Argentum Online is copyright of Pablo Ignacio Marquez"
 VersionProductName="Argentum Server"
-CondComp="UsarQueSocket = 1"
+CondComp="UsarQueSocket = 1 : ConUpTime = 1"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0

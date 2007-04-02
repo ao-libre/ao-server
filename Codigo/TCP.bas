@@ -497,6 +497,10 @@ UserList(UserIndex).Invent.ArmourEqpObjIndex = UserList(UserIndex).Invent.Object
 
 UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(3).ObjIndex
 UserList(UserIndex).Invent.WeaponEqpSlot = 3
+ 
+#If ConUpTime Then
+    UserList(UserIndex).LogOnTime = Now
+#End If
 
 'Valores Default de facciones al Activar nuevo usuario
 Call ResetFacciones(UserIndex)
@@ -1073,6 +1077,10 @@ Else
 End If
 
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
+#If ConUpTime Then
+    UserList(UserIndex).LogOnTime = Now
+#End If
+
 UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
 Call MakeUserChar(True, UserList(UserIndex).Pos.Map, UserIndex, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)

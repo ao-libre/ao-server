@@ -882,6 +882,11 @@ UserList(UserIndex).OrigChar.body = CInt(UserFile.GetValue("INIT", "Body"))
 UserList(UserIndex).OrigChar.WeaponAnim = CInt(UserFile.GetValue("INIT", "Arma"))
 UserList(UserIndex).OrigChar.ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo"))
 UserList(UserIndex).OrigChar.CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
+
+#If ConUpTime Then
+    UserList(UserIndex).UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
+#End If
+
 UserList(UserIndex).OrigChar.heading = eHeading.SOUTH
 
 If UserList(UserIndex).flags.Muerto = 0 Then
@@ -1536,6 +1541,15 @@ End If
 Call WriteVar(UserFile, "INIT", "Arma", CStr(UserList(UserIndex).Char.WeaponAnim))
 Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAnim))
 Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
+
+#If ConUpTime Then
+    Dim tempdate As Date
+    tempdate = UserList(UserIndex).LogOnTime - Now
+    UserList(UserIndex).LogOnTime = Now
+    UserList(UserIndex).UpTime = UserList(UserIndex).UpTime + (Abs(Day(tempdate) - 30) * 24 * 3600) + Hour(tempdate) * 3600 + Minute(tempdate) * 60 + Second(tempdate)
+    UserList(UserIndex).UpTime = UserList(UserIndex).UpTime
+    Call WriteVar(UserFile, "INIT", "UpTime", UserList(UserIndex).UpTime)
+#End If
 
 If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then
     Dim i As Integer
