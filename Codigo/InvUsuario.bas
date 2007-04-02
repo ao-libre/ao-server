@@ -1206,7 +1206,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
 Call TirarTodosLosItems(UserIndex)
 
 Dim Cantidad As Long
-Cantidad = UserList(UserIndex).Stats.GLD - UserList(UserIndex).Stats.ELV * 10000
+Cantidad = UserList(UserIndex).Stats.GLD - CLng(UserList(UserIndex).Stats.ELV) * 10000
 
 If Cantidad > 0 Then _
     Call TirarOro(Cantidad, UserIndex)
