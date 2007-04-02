@@ -406,7 +406,7 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
         
         ConnGroups(Map).UserEntrys(TempVal) = UserIndex
     End If
-
+    
     'Update user
     UserList(UserIndex).AreasInfo.AreaID = 0
     

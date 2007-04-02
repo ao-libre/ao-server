@@ -59,7 +59,7 @@ Public Enum SendTarget
     ToCaosYRMs
 End Enum
 
-Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
+Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus) - Rewrite of original
 'Last Modify Date: 01/08/2007
@@ -117,7 +117,7 @@ On Error Resume Next
             Exit Sub
           
         Case SendTarget.ToMapButIndex
-            Map = UserList(sndIndex).Pos.Map 'agregue esto
+            Map = UserList(sndIndex).Pos.Map
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) And LoopC <> sndIndex Then
                     If UserList(LoopC).Pos.Map = Map Then
@@ -253,7 +253,7 @@ On Error Resume Next
         Case SendTarget.ToCiudadanosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If Not criminal(LoopC) Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) Then
+                    If Not criminal(LoopC) Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -263,7 +263,7 @@ On Error Resume Next
         Case SendTarget.ToCriminalesYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If criminal(LoopC) Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) Then
+                    If criminal(LoopC) Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -273,7 +273,7 @@ On Error Resume Next
         Case SendTarget.ToRealYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If UserList(LoopC).Faccion.ArmadaReal = 1 Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) Then
+                    If UserList(LoopC).Faccion.ArmadaReal = 1 Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -283,7 +283,7 @@ On Error Resume Next
         Case SendTarget.ToCaosYRMs
             For LoopC = 1 To LastUser
                 If (UserList(LoopC).ConnID <> -1) Then
-                    If UserList(LoopC).Faccion.FuerzasCaos = 1 Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) Then
+                    If UserList(LoopC).Faccion.FuerzasCaos = 1 Or (UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                     End If
                 End If
@@ -308,7 +308,7 @@ Private Sub SendToUserArea(ByVal UserIndex As Integer, ByVal sdData As String)
     Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
-
+    
     If Not MapaValido(Map) Then Exit Sub
     
     For LoopC = 1 To ConnGroups(Map).CountEntrys

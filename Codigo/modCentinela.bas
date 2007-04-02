@@ -151,8 +151,8 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
     If clave = Centinela.clave And UserIndex = Centinela.RevisandoUserIndex Then
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
         Centinela.RevisandoUserIndex = 0
-        Call WriteChatOverHead(Centinela.RevisandoUserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
-        Call FlushBuffer(Centinela.RevisandoUserIndex)
+        Call WriteChatOverHead(UserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+        Call FlushBuffer(UserIndex)
     Else
         Call CentinelaSendClave(UserIndex)
         If UserIndex <> Centinela.RevisandoUserIndex Then
