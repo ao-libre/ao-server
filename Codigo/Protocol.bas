@@ -8987,15 +8987,19 @@ On Error GoTo errhandler
             If Not FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 Call WriteConsoleMsg(UserIndex, "Charfile inexistente (no use +)", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call UnBan(UserName)
+                If (val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1) Then
+                    Call UnBan(UserName)
                 
-                'penas
-                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
-                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
-                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
+                    'penas
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
                 
-                Call LogGM(.name, "/UNBAN a " & UserName, False)
-                Call WriteConsoleMsg(UserIndex, UserName & " unbanned.", FontTypeNames.FONTTYPE_INFO)
+                    Call LogGM(.name, "/UNBAN a " & UserName, False)
+                    Call WriteConsoleMsg(UserIndex, UserName & " unbanned.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, UserName & " no esta baneado. Imposible unbanear", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
