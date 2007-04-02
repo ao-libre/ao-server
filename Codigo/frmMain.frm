@@ -29,7 +29,6 @@ Begin VB.Form frmMain
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
    Begin VB.Timer packetResend 
-      Enabled         =   0   'False
       Interval        =   10
       Left            =   480
       Top             =   60

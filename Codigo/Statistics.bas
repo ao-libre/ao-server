@@ -50,7 +50,7 @@ End Sub
 
 Public Sub UserConnected(ByVal UserIndex As Integer)
     'A new user connected, load it's trainning time count
-    trainningInfo(UserIndex).trainningTime = val(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 10))
+    trainningInfo(UserIndex).trainningTime = val(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 30))
     
     trainningInfo(UserIndex).startTick = GetTickCount
 End Sub
