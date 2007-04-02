@@ -999,8 +999,8 @@ If IntervaloPermiteAtacar(UserIndex) Then
     
     Dim index As Integer
     index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
-        
-            
+    
+    
     'Look for user
     If index > 0 Then
         Call UsuarioAtacaUsuario(UserIndex, index)

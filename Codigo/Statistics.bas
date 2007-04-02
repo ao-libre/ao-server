@@ -90,6 +90,8 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     Dim raza As Integer
     Dim alignment As Integer
     
+    If UserList(victim).Stats.ELV > 50 Or UserList(killer).Stats.ELV > 50 Then Exit Sub
+    
     Select Case UserList(killer).clase
         Case eClass.Assasin
             clase = 1

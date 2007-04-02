@@ -28,6 +28,12 @@ Begin VB.Form frmMain
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.Timer packetResend 
+      Enabled         =   0   'False
+      Interval        =   10
+      Left            =   480
+      Top             =   60
+   End
    Begin VB.Timer securityTimer 
       Enabled         =   0   'False
       Interval        =   10000
@@ -797,6 +803,23 @@ For npc = 1 To LastNPC
     Npclist(npc).CanAttack = 1
 Next npc
 
+End Sub
+
+Private Sub packetResend_Timer()
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 04/01/07
+'Attempts to resend to the user all data that may be enqueued.
+'***************************************************
+    Dim i As Long
+    
+    For i = 1 To LastUser
+        If UserList(i).ConnIDValida Then
+            If UserList(i).outgoingData.length > 0 Then
+                Call EnviarDatosASlot(i, UserList(i).outgoingData.ReadASCIIStringFixed(UserList(i).outgoingData.length))
+            End If
+        End If
+    Next i
 End Sub
 
 Private Sub securityTimer_Timer()
