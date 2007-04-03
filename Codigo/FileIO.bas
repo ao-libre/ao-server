@@ -1543,10 +1543,10 @@ Call WriteVar(UserFile, "INIT", "Escudo", CStr(UserList(UserIndex).Char.ShieldAn
 Call WriteVar(UserFile, "INIT", "Casco", CStr(UserList(UserIndex).Char.CascoAnim))
 
 #If ConUpTime Then
-    Dim tempdate As Date
-    tempdate = UserList(UserIndex).LogOnTime - Now
+    Dim TempDate As Date
+    TempDate = Now - UserList(UserIndex).LogOnTime
     UserList(UserIndex).LogOnTime = Now
-    UserList(UserIndex).UpTime = UserList(UserIndex).UpTime + (Abs(Day(tempdate) - 30) * 24 * 3600) + Hour(tempdate) * 3600 + Minute(tempdate) * 60 + Second(tempdate)
+    UserList(UserIndex).UpTime = UserList(UserIndex).UpTime + (Abs(Day(TempDate) - 30) * 24 * 3600) + Hour(TempDate) * 3600 + Minute(TempDate) * 60 + Second(TempDate)
     UserList(UserIndex).UpTime = UserList(UserIndex).UpTime
     Call WriteVar(UserFile, "INIT", "UpTime", UserList(UserIndex).UpTime)
 #End If
