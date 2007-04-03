@@ -500,6 +500,7 @@ UserList(UserIndex).Invent.WeaponEqpSlot = 3
  
 #If ConUpTime Then
     UserList(UserIndex).LogOnTime = Now
+    UserList(UserIndex).UpTime = 0
 #End If
 
 'Valores Default de facciones al Activar nuevo usuario
