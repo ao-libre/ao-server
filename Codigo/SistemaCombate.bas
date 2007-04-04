@@ -1176,12 +1176,12 @@ antdaño = daño
 
 Call UserEnvenena(AtacanteIndex, VictimaIndex)
 
-If UserList(AtacanteIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
+If UserList(AtacanteIndex).flags.Navegando = 1 And UserList(AtacanteIndex).Invent.BarcoObjIndex > 0 Then
      Obj = ObjData(UserList(AtacanteIndex).Invent.BarcoObjIndex)
      daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
 End If
 
-If UserList(VictimaIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
+If UserList(VictimaIndex).flags.Navegando = 1 And UserList(VictimaIndex).Invent.BarcoObjIndex > 0 Then
      Obj = ObjData(UserList(VictimaIndex).Invent.BarcoObjIndex)
      defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
 End If
