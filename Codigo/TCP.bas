@@ -946,12 +946,13 @@ If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then UserList(UserIndex).Char.We
 Call UpdateUserInv(True, UserIndex, 0)
 Call UpdateUserHechizos(True, UserIndex, 0)
 
-If UserList(UserIndex).flags.Navegando = 1 Then
+If UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
      UserList(UserIndex).Char.body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
      UserList(UserIndex).Char.Head = 0
      UserList(UserIndex).Char.WeaponAnim = NingunArma
      UserList(UserIndex).Char.ShieldAnim = NingunEscudo
      UserList(UserIndex).Char.CascoAnim = NingunCasco
+     UserList(UserIndex).flags.Navegando = 1
 End If
 
 If UserList(UserIndex).flags.Paralizado Then

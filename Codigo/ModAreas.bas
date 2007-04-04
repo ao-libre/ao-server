@@ -209,7 +209,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     TempInt = MapData(Map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
-                        Call MakeUserChar(False, UserIndex, CInt(TempInt), Map, X, Y)
+                        Call MakeUserChar(False, UserIndex, TempInt, Map, X, Y)
                         Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                         Call FlushBuffer(TempInt)
                         
@@ -355,14 +355,19 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     Dim TempVal As Long
     Dim LoopC As Long
     
-    'Saco del viejo mapa
-    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
-    TempVal = ConnGroups(Map).CountEntrys
-    
-    For LoopC = 1 To TempVal + 1
+    'Search for the user
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
         If ConnGroups(Map).UserEntrys(LoopC) = UserIndex Then Exit For
     Next LoopC
     
+    'Char not found
+    If LoopC > ConnGroups(Map).CountEntrys Then Exit Sub
+    
+    'Remove from old map
+    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
+    TempVal = ConnGroups(Map).CountEntrys
+    
+    'Move list back
     For LoopC = LoopC To TempVal
         ConnGroups(Map).UserEntrys(LoopC) = ConnGroups(Map).UserEntrys(LoopC + 1)
     Next LoopC

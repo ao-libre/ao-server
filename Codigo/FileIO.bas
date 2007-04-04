@@ -801,7 +801,6 @@ UserList(UserIndex).Stats.ELV = CByte(UserFile.GetValue("STATS", "ELV"))
 
 
 UserList(UserIndex).Stats.UsuariosMatados = CLng(UserFile.GetValue("MUERTES", "UserMuertes"))
-'UserList(UserIndex).Stats.CriminalesMatados = CLng(UserFile.GetValue("MUERTES", "CrimMuertes"))
 UserList(UserIndex).Stats.NPCsMuertos = CInt(UserFile.GetValue("MUERTES", "NpcsMuertes"))
 
 If CByte(UserFile.GetValue("CONSEJO", "PERTENECE")) Then _
@@ -863,7 +862,6 @@ UserList(UserIndex).flags.Paralizado = CByte(UserFile.GetValue("FLAGS", "Paraliz
 If UserList(UserIndex).flags.Paralizado = 1 Then
     UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
 End If
-UserList(UserIndex).flags.Navegando = CByte(UserFile.GetValue("FLAGS", "Navegando"))
 
 
 UserList(UserIndex).Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
@@ -1477,7 +1475,6 @@ Call WriteVar(UserFile, "FLAGS", "Hambre", CStr(UserList(UserIndex).flags.Hambre
 Call WriteVar(UserFile, "FLAGS", "Sed", CStr(UserList(UserIndex).flags.Sed))
 Call WriteVar(UserFile, "FLAGS", "Desnudo", CStr(UserList(UserIndex).flags.Desnudo))
 Call WriteVar(UserFile, "FLAGS", "Ban", CStr(UserList(UserIndex).flags.Ban))
-Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(UserList(UserIndex).flags.Navegando))
 
 Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(UserList(UserIndex).flags.Envenenado))
 Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(UserList(UserIndex).flags.Paralizado))

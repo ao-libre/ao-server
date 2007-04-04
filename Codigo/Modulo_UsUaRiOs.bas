@@ -70,7 +70,7 @@ End If
 
 Call UserDie(VictimIndex)
 
-If UserList(AttackerIndex).Stats.UsuariosMatados < 32000 Then _
+If UserList(AttackerIndex).Stats.UsuariosMatados < MAXUSERMATADOS Then _
     UserList(AttackerIndex).Stats.UsuariosMatados = UserList(AttackerIndex).Stats.UsuariosMatados + 1
 
 Call FlushBuffer(VictimIndex)
@@ -167,8 +167,7 @@ On Error GoTo ErrorHandler
     UserList(UserIndex).Char.CharIndex = 0
     
     NumChars = NumChars - 1
-    
-    Exit Sub
+Exit Sub
     
 ErrorHandler:
         Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description)
@@ -232,7 +231,7 @@ On Local Error GoTo hayerror
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
                 Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
             End If
-       End If 'if clan
+        End If 'if clan
     End If
 Exit Sub
 
@@ -1531,11 +1530,10 @@ Dim hayobj As Boolean
 End Sub
 
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal FX As Boolean = False)
-
-Dim OldMap As Integer
-Dim OldX As Integer
-Dim OldY As Integer
-
+    Dim OldMap As Integer
+    Dim OldX As Integer
+    Dim OldY As Integer
+    
     'Quitar el dialogo
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
     

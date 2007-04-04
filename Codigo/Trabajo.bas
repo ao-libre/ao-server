@@ -1146,10 +1146,6 @@ errhandler:
 
 End Sub
 
-
-
-
-
 Public Sub DoMineria(ByVal UserIndex As Integer)
 On Error GoTo errhandler
 

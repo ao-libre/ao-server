@@ -27,7 +27,7 @@ On Error GoTo errhandler
 
 'Hacemos un Update del inventario del usuario
 Call UpdateBanUserInv(True, UserIndex, 0)
-'Atcualizamos el dinero
+'Actualizamos el dinero
 Call WriteUpdateUserStats(UserIndex)
 'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
 Call WriteBankInit(UserIndex)

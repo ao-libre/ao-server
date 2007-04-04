@@ -176,9 +176,9 @@ Public Sub RecompensaArmadaReal(ByVal UserIndex As Integer)
 'Last Modification: 23/01/2007
 'Handles the way of gaining new ranks in the "Armada Real"
 '***************************************************
-Dim Crimis As Integer
-Dim Lvl As Integer
-Dim NextRecom As Integer
+Dim Crimis As Long
+Dim Lvl As Byte
+Dim NextRecom As Long
 Dim Nobleza As Long
 Lvl = UserList(UserIndex).Stats.ELV
 Crimis = UserList(UserIndex).Faccion.CriminalesMatados
@@ -192,93 +192,107 @@ End If
 
 Select Case NextRecom
     Case 70:
-    UserList(UserIndex).Faccion.RecompensasReal = 1
-    UserList(UserIndex).Faccion.NextRecompensa = 130
+        UserList(UserIndex).Faccion.RecompensasReal = 1
+        UserList(UserIndex).Faccion.NextRecompensa = 130
+    
     Case 130:
-    UserList(UserIndex).Faccion.RecompensasReal = 2
-    UserList(UserIndex).Faccion.NextRecompensa = 210
+        UserList(UserIndex).Faccion.RecompensasReal = 2
+        UserList(UserIndex).Faccion.NextRecompensa = 210
+    
     Case 210:
-    UserList(UserIndex).Faccion.RecompensasReal = 3
-    UserList(UserIndex).Faccion.NextRecompensa = 320
+        UserList(UserIndex).Faccion.RecompensasReal = 3
+        UserList(UserIndex).Faccion.NextRecompensa = 320
+    
     Case 320:
-    UserList(UserIndex).Faccion.RecompensasReal = 4
-    UserList(UserIndex).Faccion.NextRecompensa = 460
+        UserList(UserIndex).Faccion.RecompensasReal = 4
+        UserList(UserIndex).Faccion.NextRecompensa = 460
+    
     Case 460:
-    UserList(UserIndex).Faccion.RecompensasReal = 5
-    UserList(UserIndex).Faccion.NextRecompensa = 640
+        UserList(UserIndex).Faccion.RecompensasReal = 5
+        UserList(UserIndex).Faccion.NextRecompensa = 640
+    
     Case 640:
-    If Lvl < 27 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 27 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 6
-    UserList(UserIndex).Faccion.NextRecompensa = 870
+        If Lvl < 27 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 27 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 6
+        UserList(UserIndex).Faccion.NextRecompensa = 870
+    
     Case 870:
-    UserList(UserIndex).Faccion.RecompensasReal = 7
-    UserList(UserIndex).Faccion.NextRecompensa = 1160
+        UserList(UserIndex).Faccion.RecompensasReal = 7
+        UserList(UserIndex).Faccion.NextRecompensa = 1160
+    
     Case 1160:
-    UserList(UserIndex).Faccion.RecompensasReal = 8
-    UserList(UserIndex).Faccion.NextRecompensa = 2000
+        UserList(UserIndex).Faccion.RecompensasReal = 8
+        UserList(UserIndex).Faccion.NextRecompensa = 2000
+    
     Case 2000:
-    If Lvl < 30 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 30 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 9
-    UserList(UserIndex).Faccion.NextRecompensa = 2500
+        If Lvl < 30 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 30 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 9
+        UserList(UserIndex).Faccion.NextRecompensa = 2500
+    
     Case 2500:
-    If Nobleza < 2000000 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 2000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 10
-    UserList(UserIndex).Faccion.NextRecompensa = 3000
+        If Nobleza < 2000000 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 2000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 10
+        UserList(UserIndex).Faccion.NextRecompensa = 3000
+    
     Case 3000:
-    If Nobleza < 3000000 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 3000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 11
-    UserList(UserIndex).Faccion.NextRecompensa = 3500
+        If Nobleza < 3000000 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 3000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 11
+        UserList(UserIndex).Faccion.NextRecompensa = 3500
+    
     Case 3500:
-    If Lvl < 35 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 35 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    If Nobleza < 4000000 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 4000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 12
-    UserList(UserIndex).Faccion.NextRecompensa = 4000
+        If Lvl < 35 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 35 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        If Nobleza < 4000000 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 4000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 12
+        UserList(UserIndex).Faccion.NextRecompensa = 4000
+    
     Case 4000:
-    If Lvl < 36 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 36 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    If Nobleza < 5000000 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 5000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 13
-    UserList(UserIndex).Faccion.NextRecompensa = 5000
+        If Lvl < 36 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 36 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        If Nobleza < 5000000 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 5000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 13
+        UserList(UserIndex).Faccion.NextRecompensa = 5000
+    
     Case 5000:
-    If Lvl < 37 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 37 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    If Nobleza < 6000000 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 6000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasReal = 14
-    UserList(UserIndex).Faccion.NextRecompensa = 10000
+        If Lvl < 37 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 37 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        If Nobleza < 6000000 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Criminales, pero te faltan " & 6000000 - Nobleza & " puntos de Nobleza para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasReal = 14
+        UserList(UserIndex).Faccion.NextRecompensa = 10000
+    
     Case 10000:
-    Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Crimis & ", sigue asi. Ya no tengo más recompensa para darte que mi agradescimiento. ¡Felicidades!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-    Exit Sub
+        Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Crimis & ", sigue asi. Ya no tengo más recompensa para darte que mi agradescimiento. ¡Felicidades!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+        Exit Sub
+    
     Case Else:
-    Exit Sub
-        
+        Exit Sub
 End Select
 
 Call WriteChatOverHead(UserIndex, "¡¡¡Aqui tienes tu recompensa " + TituloReal(UserIndex) + "!!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
@@ -484,13 +498,13 @@ End Sub
 
 Public Sub RecompensaCaos(ByVal UserIndex As Integer)
 '***************************************************
-'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
+'Author: Pablo (ToxicWaste) & Unknown (orginal version)
 'Last Modification: 23/01/2007
 'Handles the way of gaining new ranks in the "Legión Oscura"
 '***************************************************
-Dim Ciudas As Integer
-Dim Lvl As Integer
-Dim NextRecom As Integer
+Dim Ciudas As Long
+Dim Lvl As Byte
+Dim NextRecom As Long
 Lvl = UserList(UserIndex).Stats.ELV
 Ciudas = UserList(UserIndex).Faccion.CiudadanosMatados
 NextRecom = UserList(UserIndex).Faccion.NextRecompensa
@@ -502,80 +516,95 @@ End If
 
 Select Case NextRecom
     Case 160:
-    UserList(UserIndex).Faccion.RecompensasCaos = 1
-    UserList(UserIndex).Faccion.NextRecompensa = 300
+        UserList(UserIndex).Faccion.RecompensasCaos = 1
+        UserList(UserIndex).Faccion.NextRecompensa = 300
+    
     Case 300:
-    UserList(UserIndex).Faccion.RecompensasCaos = 2
-    UserList(UserIndex).Faccion.NextRecompensa = 490
+        UserList(UserIndex).Faccion.RecompensasCaos = 2
+        UserList(UserIndex).Faccion.NextRecompensa = 490
+    
     Case 490:
-    UserList(UserIndex).Faccion.RecompensasCaos = 3
-    UserList(UserIndex).Faccion.NextRecompensa = 740
+        UserList(UserIndex).Faccion.RecompensasCaos = 3
+        UserList(UserIndex).Faccion.NextRecompensa = 740
+    
     Case 740:
-    UserList(UserIndex).Faccion.RecompensasCaos = 4
-    UserList(UserIndex).Faccion.NextRecompensa = 1100
+        UserList(UserIndex).Faccion.RecompensasCaos = 4
+        UserList(UserIndex).Faccion.NextRecompensa = 1100
+    
     Case 1100:
-    UserList(UserIndex).Faccion.RecompensasCaos = 5
-    UserList(UserIndex).Faccion.NextRecompensa = 1500
+        UserList(UserIndex).Faccion.RecompensasCaos = 5
+        UserList(UserIndex).Faccion.NextRecompensa = 1500
+    
     Case 1500:
-    If Lvl < 27 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 27 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 6
-    UserList(UserIndex).Faccion.NextRecompensa = 2010
+        If Lvl < 27 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 27 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 6
+        UserList(UserIndex).Faccion.NextRecompensa = 2010
+    
     Case 2010:
-    UserList(UserIndex).Faccion.RecompensasCaos = 7
-    UserList(UserIndex).Faccion.NextRecompensa = 2700
+        UserList(UserIndex).Faccion.RecompensasCaos = 7
+        UserList(UserIndex).Faccion.NextRecompensa = 2700
+    
     Case 2700:
-    UserList(UserIndex).Faccion.RecompensasCaos = 8
-    UserList(UserIndex).Faccion.NextRecompensa = 4600
+        UserList(UserIndex).Faccion.RecompensasCaos = 8
+        UserList(UserIndex).Faccion.NextRecompensa = 4600
+    
     Case 4600:
-    If Lvl < 30 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 30 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 9
-    UserList(UserIndex).Faccion.NextRecompensa = 5800
+        If Lvl < 30 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 30 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 9
+        UserList(UserIndex).Faccion.NextRecompensa = 5800
+    
     Case 5800:
-    If Lvl < 31 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 31 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 10
-    UserList(UserIndex).Faccion.NextRecompensa = 6990
+        If Lvl < 31 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 31 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 10
+        UserList(UserIndex).Faccion.NextRecompensa = 6990
+    
     Case 6990:
-    If Lvl < 33 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 33 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 11
-    UserList(UserIndex).Faccion.NextRecompensa = 8100
+        If Lvl < 33 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 33 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 11
+        UserList(UserIndex).Faccion.NextRecompensa = 8100
+    
     Case 8100:
-    If Lvl < 35 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 35 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 12
-    UserList(UserIndex).Faccion.NextRecompensa = 9300
+        If Lvl < 35 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 35 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 12
+        UserList(UserIndex).Faccion.NextRecompensa = 9300
+    
     Case 9300:
-    If Lvl < 36 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 36 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 13
-    UserList(UserIndex).Faccion.NextRecompensa = 11500
+        If Lvl < 36 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 36 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 13
+        UserList(UserIndex).Faccion.NextRecompensa = 11500
+    
     Case 11500:
-    If Lvl < 37 Then
-        Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 37 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-        Exit Sub
-    End If
-    UserList(UserIndex).Faccion.RecompensasCaos = 14
-    UserList(UserIndex).Faccion.NextRecompensa = 23000
+        If Lvl < 37 Then
+            Call WriteChatOverHead(UserIndex, "Mataste Suficientes Ciudadanos, pero te faltan " & 37 - Lvl & " Niveles para poder recibir la próxima Recompensa", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+            Exit Sub
+        End If
+        UserList(UserIndex).Faccion.RecompensasCaos = 14
+        UserList(UserIndex).Faccion.NextRecompensa = 23000
+    
     Case 23000:
-    Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Ciudas & ". Tu única recompensa será la sangre derramada. ¡¡Continua así!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
-    Exit Sub
+        Call WriteChatOverHead(UserIndex, "Eres uno de mis mejores Soldados. Mataste " & Ciudas & ". Tu única recompensa será la sangre derramada. ¡¡Continua así!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+        Exit Sub
+    
     Case Else:
-    Exit Sub
+        Exit Sub
         
 End Select
 

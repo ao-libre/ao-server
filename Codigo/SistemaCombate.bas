@@ -590,7 +590,7 @@ Dim daño As Long
 daño = CalcularDaño(UserIndex, NpcIndex)
 
 'esta navegando? si es asi le sumamos el daño del barco
-If UserList(UserIndex).flags.Navegando = 1 Then _
+If UserList(UserIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then _
         daño = daño + RandomNumber(ObjData(UserList(UserIndex).Invent.BarcoObjIndex).MinHIT, ObjData(UserList(UserIndex).Invent.BarcoObjIndex).MaxHIT)
 
 daño = daño - Npclist(NpcIndex).Stats.def
@@ -655,7 +655,7 @@ Dim Obj As ObjData
 daño = RandomNumber(Npclist(NpcIndex).Stats.MinHIT, Npclist(NpcIndex).Stats.MaxHIT)
 antdaño = daño
 
-If UserList(UserIndex).flags.Navegando = 1 Then
+If UserList(UserIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
     Obj = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
     defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
 End If
@@ -1176,12 +1176,12 @@ antdaño = daño
 
 Call UserEnvenena(AtacanteIndex, VictimaIndex)
 
-If UserList(AtacanteIndex).flags.Navegando = 1 Then
+If UserList(AtacanteIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
      Obj = ObjData(UserList(AtacanteIndex).Invent.BarcoObjIndex)
      daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
 End If
 
-If UserList(VictimaIndex).flags.Navegando = 1 Then
+If UserList(VictimaIndex).flags.Navegando = 1 And UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
      Obj = ObjData(UserList(VictimaIndex).Invent.BarcoObjIndex)
      defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
 End If

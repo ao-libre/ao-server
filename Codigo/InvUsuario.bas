@@ -1106,7 +1106,7 @@ Select Case Obj.OBJType
         If Not MeterItemEnInventario(UserIndex, MiObj) Then
             Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
         End If
-            
+    
     Case eOBJType.otPergaminos
         If UserList(UserIndex).flags.Muerto = 1 Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
@@ -1247,7 +1247,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                 Else
                     Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj, True, True
                 End If
-
+                
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
                     Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
                 End If
