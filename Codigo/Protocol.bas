@@ -11086,7 +11086,7 @@ On Error GoTo errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
             Call LogGM(.name, "/LASTIP " & UserName, False)
             
             If (InStrB(UserName, "\") <> 0) Then
@@ -12443,13 +12443,13 @@ Public Sub HandleNavigateToggle(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 01/12/07
-'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'
 '***************************************************
     With UserList(UserIndex)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then Exit Sub
         
         If .flags.Navegando = 1 Then
             .flags.Navegando = 0
@@ -12457,7 +12457,7 @@ Public Sub HandleNavigateToggle(ByVal UserIndex As Integer)
             .flags.Navegando = 1
         End If
         
-        'Tell the client that we are navigate.
+        'Tell the client that we are navigating.
         Call WriteNavigateToggle(UserIndex)
     End With
 End Sub
