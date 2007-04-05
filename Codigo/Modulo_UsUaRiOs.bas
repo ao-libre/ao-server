@@ -35,55 +35,55 @@ Option Explicit
 'Rutinas de los usuarios
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
-Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer)
+Sub ActStats(ByVal VictimIndex As Integer, ByVal attackerIndex As Integer)
 
 Dim DaExp As Integer
 Dim EraCriminal As Boolean
-EraCriminal = criminal(AttackerIndex)
+EraCriminal = criminal(attackerIndex)
 
 DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
-UserList(AttackerIndex).Stats.Exp = UserList(AttackerIndex).Stats.Exp + DaExp
-If UserList(AttackerIndex).Stats.Exp > MAXEXP Then _
-    UserList(AttackerIndex).Stats.Exp = MAXEXP
+UserList(attackerIndex).Stats.Exp = UserList(attackerIndex).Stats.Exp + DaExp
+If UserList(attackerIndex).Stats.Exp > MAXEXP Then _
+    UserList(attackerIndex).Stats.Exp = MAXEXP
 
 'Lo mata
-Call WriteConsoleMsg(AttackerIndex, "Has matado a " & UserList(VictimIndex).name & "!", FontTypeNames.FONTTYPE_FIGHT)
-Call WriteConsoleMsg(AttackerIndex, "Has ganado " & DaExp & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+Call WriteConsoleMsg(attackerIndex, "Has matado a " & UserList(VictimIndex).name & "!", FontTypeNames.FONTTYPE_FIGHT)
+Call WriteConsoleMsg(attackerIndex, "Has ganado " & DaExp & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
       
-Call WriteConsoleMsg(AttackerIndex, UserList(AttackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
+Call WriteConsoleMsg(attackerIndex, UserList(attackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
 
-If TriggerZonaPelea(VictimIndex, AttackerIndex) <> TRIGGER6_PERMITE Then
+If TriggerZonaPelea(VictimIndex, attackerIndex) <> TRIGGER6_PERMITE Then
     If (Not criminal(VictimIndex)) Then
-         UserList(AttackerIndex).Reputacion.AsesinoRep = UserList(AttackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
-         If UserList(AttackerIndex).Reputacion.AsesinoRep > MAXREP Then _
-            UserList(AttackerIndex).Reputacion.AsesinoRep = MAXREP
-         UserList(AttackerIndex).Reputacion.BurguesRep = 0
-         UserList(AttackerIndex).Reputacion.NobleRep = 0
-         UserList(AttackerIndex).Reputacion.PlebeRep = 0
+         UserList(attackerIndex).Reputacion.AsesinoRep = UserList(attackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
+         If UserList(attackerIndex).Reputacion.AsesinoRep > MAXREP Then _
+            UserList(attackerIndex).Reputacion.AsesinoRep = MAXREP
+         UserList(attackerIndex).Reputacion.BurguesRep = 0
+         UserList(attackerIndex).Reputacion.NobleRep = 0
+         UserList(attackerIndex).Reputacion.PlebeRep = 0
     Else
-         UserList(AttackerIndex).Reputacion.NobleRep = UserList(AttackerIndex).Reputacion.NobleRep + vlNoble
-         If UserList(AttackerIndex).Reputacion.NobleRep > MAXREP Then _
-            UserList(AttackerIndex).Reputacion.NobleRep = MAXREP
+         UserList(attackerIndex).Reputacion.NobleRep = UserList(attackerIndex).Reputacion.NobleRep + vlNoble
+         If UserList(attackerIndex).Reputacion.NobleRep > MAXREP Then _
+            UserList(attackerIndex).Reputacion.NobleRep = MAXREP
     End If
 End If
 
 Call UserDie(VictimIndex)
 
-If UserList(AttackerIndex).Stats.UsuariosMatados < MAXUSERMATADOS Then _
-    UserList(AttackerIndex).Stats.UsuariosMatados = UserList(AttackerIndex).Stats.UsuariosMatados + 1
+If UserList(attackerIndex).Stats.UsuariosMatados < MAXUSERMATADOS Then _
+    UserList(attackerIndex).Stats.UsuariosMatados = UserList(attackerIndex).Stats.UsuariosMatados + 1
 
 Call FlushBuffer(VictimIndex)
 
-If EraCriminal And Not criminal(AttackerIndex) Then
-    Call RefreshCharStatus(AttackerIndex)
-ElseIf Not EraCriminal And criminal(AttackerIndex) Then
-    Call RefreshCharStatus(AttackerIndex)
+If EraCriminal And Not criminal(attackerIndex) Then
+    Call RefreshCharStatus(attackerIndex)
+ElseIf Not EraCriminal And criminal(attackerIndex) Then
+    Call RefreshCharStatus(attackerIndex)
 End If
 
 
 'Log
-Call LogAsesinato(UserList(AttackerIndex).name & " asesino a " & UserList(VictimIndex).name)
+Call LogAsesinato(UserList(attackerIndex).name & " asesino a " & UserList(VictimIndex).name)
 
 End Sub
 
@@ -184,7 +184,7 @@ End Sub
 
 Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
-On Local Error GoTo hayerror
+On Error GoTo hayerror
     Dim CharIndex As Integer
 
     If InMapBounds(Map, X, Y) Then
@@ -292,7 +292,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     If UserList(UserIndex).Stats.ELV = 1 Then
         Pts = 10
     Else
-        Pts = 5
+        'For multiple levels being rised at once
+        Pts = Pts + 5
     End If
     
     UserList(UserIndex).Stats.SkillPts = UserList(UserIndex).Stats.SkillPts + Pts
@@ -807,9 +808,11 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " paso a nivel " & UserList(UserIndex).Stats.ELV & " gano HP: " & AumentoHP)
     
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-    
-    Call WriteLevelUp(UserIndex, Pts)
 Loop
+
+'Send all gained skill points at once (if any)
+If Pts > 0 Then _
+    Call WriteLevelUp(UserIndex, Pts)
 
 Call WriteUpdateUserStats(UserIndex)
 

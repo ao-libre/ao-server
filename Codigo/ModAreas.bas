@@ -73,7 +73,6 @@ Public Sub InitAreas()
 ' Setup areas...
     For LoopC = 0 To 11
         AreasRecive(LoopC) = (2 ^ LoopC) Or IIf(LoopC <> 0, 2 ^ (LoopC - 1), 0) Or IIf(LoopC <> 11, 2 ^ (LoopC + 1), 0)
-'        AreasEnvia(LoopC) = 2 ^ (LoopC + 1)
     Next LoopC
     
     For LoopC = 1 To 100

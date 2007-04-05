@@ -1246,10 +1246,9 @@ Sub PasarSegundo()
         If UserList(i).Counters.Saliendo Then
             UserList(i).Counters.Salir = UserList(i).Counters.Salir - 1
             If UserList(i).Counters.Salir <= 0 Then
-                'If NumUsers <> 0 Then NumUsers = NumUsers - 1
-
                 Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
                 Call WriteDisconnect(i)
+                Call FlushBuffer(i)
                 
                 Call CloseSocket(i)
                 Exit Sub

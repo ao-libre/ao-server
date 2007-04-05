@@ -13440,11 +13440,11 @@ End Sub
 ''
 ' Writes the "UserAttackedSwing" message to the given user's outgoing data buffer.
 '
-' @param    UserIndex User to which the message is intended.
-' @param    attacker The name of the attacking user.
+' @param    UserIndex       User to which the message is intended.
+' @param    attackerIndex   The user index of the user that attacked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserAttackedSwing(ByVal UserIndex As Integer, ByVal attacker As String)
+Public Sub WriteUserAttackedSwing(ByVal UserIndex As Integer, ByVal attackerIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -13452,7 +13452,7 @@ Public Sub WriteUserAttackedSwing(ByVal UserIndex As Integer, ByVal attacker As 
 '***************************************************
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.UserAttackedSwing)
-        Call .WriteASCIIString(attacker)
+        Call .WriteInteger(UserList(attackerIndex).Char.CharIndex)
     End With
 End Sub
 

@@ -385,7 +385,8 @@ Private Sub SendToDeadUserArea(ByVal UserIndex As Integer, ByVal sdData As Strin
         
         If UserList(TempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(TempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(TempIndex).ConnIDValida And UserList(TempIndex).flags.Muerto = 1 Then
+                'Dead and admins read
+                If UserList(TempIndex).ConnIDValida And (UserList(TempIndex).flags.Muerto = 1 Or UserList(TempIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) <> 0) Then
                     Call EnviarDatosASlot(TempIndex, sdData)
                 End If
             End If

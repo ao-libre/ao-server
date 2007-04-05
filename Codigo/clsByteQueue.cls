@@ -51,10 +51,10 @@ Option Base 0       'It's the default, but we make it explicit just in case...
 Private Const NOT_ENOUGH_DATA As Long = vbObjectError + 9
 
 ''
-' Default size of a data buffer (8 Kbs)
+' Default size of a data buffer (10 Kbs)
 '
 ' @see Class_Initialize
-Private Const DATA_BUFFER As Long = 8192
+Private Const DATA_BUFFER As Long = 10240
 
 ''
 ' The byte data

@@ -71,7 +71,6 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
 On Error GoTo errhandler
-
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
@@ -102,8 +101,6 @@ On Error GoTo errhandler
    
     'Quitamos el npc
     Call QuitarNPC(NpcIndex)
-   
-   
     
     If UserIndex > 0 Then ' Lo mato un usuario?
         If MiNPC.flags.Snd3 > 0 Then
@@ -196,8 +193,7 @@ On Error GoTo errhandler
 Exit Sub
 
 errhandler:
-    Call LogError("Error en MuereNpc")
-    
+    Call LogError("Error en MuereNpc - Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
 Sub ResetNpcFlags(ByVal NpcIndex As Integer)
