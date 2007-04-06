@@ -750,7 +750,6 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
     If EraCriminal And Not criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
-
 End Sub
 
 
@@ -1286,7 +1285,6 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
     If TriggerZonaPelea(attackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
     
     Dim EraCriminal As Boolean
-    EraCriminal = criminal(attackerIndex)
     
     If Not criminal(attackerIndex) And Not criminal(VictimIndex) Then
         Call VolverCriminal(attackerIndex)
@@ -1300,6 +1298,8 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
         UserList(VictimIndex).Char.loops = 0
         Call SendData(SendTarget.ToPCArea, VictimIndex, PrepareMessageCreateFX(UserList(VictimIndex).Char.CharIndex, 0, 0))
     End If
+    
+    EraCriminal = criminal(attackerIndex)
     
     If Not criminal(VictimIndex) Then
         UserList(attackerIndex).Reputacion.BandidoRep = UserList(attackerIndex).Reputacion.BandidoRep + vlASALTO
@@ -1479,6 +1479,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then
         PuedeAtacarNPC = False
         Exit Function
     End If
+    
     'De un ciudadano y sos ciudadano?
     If Not criminal(attackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
         'Estas con seguro?
@@ -1487,7 +1488,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then
             PuedeAtacarNPC = False
             Exit Function
         Else
-            VolverCriminal (attackerIndex)
+            Call VolverCriminal(attackerIndex)
             PuedeAtacarNPC = True
             Exit Function
         End If
@@ -1515,7 +1516,7 @@ If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
         PuedeAtacarNPC = False
         Exit Function
     Else
-        VolverCriminal (attackerIndex) 'Si ya era criminal, suma puntos de bandido la función solamente
+        Call VolverCriminal(attackerIndex)  'Si ya era criminal, suma puntos de bandido la función solamente
         PuedeAtacarNPC = True
         Exit Function
     End If

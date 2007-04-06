@@ -801,7 +801,7 @@ If Hechizos(H).Revivir = 1 Then
         'Pablo Toxic Waste
         UserList(tU).Stats.MinAGU = UserList(tU).Stats.MinAGU - 25
         UserList(tU).Stats.MinHam = UserList(tU).Stats.MinHam - 25
-        'Juan Maraxus
+        
         If UserList(tU).Stats.MinAGU <= 0 Then
                 UserList(tU).Stats.MinAGU = 0
                 UserList(tU).flags.Sed = 1
@@ -810,7 +810,7 @@ If Hechizos(H).Revivir = 1 Then
                 UserList(tU).Stats.MinHam = 0
                 UserList(tU).flags.Hambre = 1
         End If
-        '/Juan Maraxus
+        
         Dim EraCriminal As Boolean
         EraCriminal = criminal(UserIndex)
         If Not criminal(tU) Then
@@ -901,7 +901,7 @@ Sub RevisoAtaqueNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef
             ExitSub = True
             Exit Sub
         Else
-            VolverCriminal (UserIndex) 'Si ya era criminal, suma puntos de bandidola función solamente
+            Call VolverCriminal(UserIndex)  'Si ya era criminal, suma puntos de bandidola función solamente
         End If
     End If
     If Npclist(NpcIndex).MaestroUser > 0 Then 'Es mascota?
@@ -1649,5 +1649,4 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     If Not EraCriminal And criminal(UserIndex) Then
         Call RefreshCharStatus(UserIndex)
     End If
-    
 End Sub

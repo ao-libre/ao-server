@@ -47,6 +47,7 @@ Public Type ConnGroup
 End Type
 
 Public Const USER_NUEVO As Byte = 255
+Public Const USER_VIEJO As Byte = 254
 
 'Cuidado:
 ' ¡¡¡LAS AREAS ESTÁN HARDCODEADAS!!!
@@ -142,7 +143,6 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
     Dim TempInt As Long, Map As Long
     
     With UserList(UserIndex)
-        
         MinX = .AreasInfo.MinX
         MinY = .AreasInfo.MinY
         
@@ -219,7 +219,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
                             Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
                         End If
-
+                    
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)
                     End If

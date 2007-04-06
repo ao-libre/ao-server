@@ -39,7 +39,6 @@ Sub ActStats(ByVal VictimIndex As Integer, ByVal attackerIndex As Integer)
 
 Dim DaExp As Integer
 Dim EraCriminal As Boolean
-EraCriminal = criminal(attackerIndex)
 
 DaExp = CInt(UserList(VictimIndex).Stats.ELV * 2)
 
@@ -54,6 +53,8 @@ Call WriteConsoleMsg(attackerIndex, "Has ganado " & DaExp & " puntos de experien
 Call WriteConsoleMsg(attackerIndex, UserList(attackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
 
 If TriggerZonaPelea(VictimIndex, attackerIndex) <> TRIGGER6_PERMITE Then
+    EraCriminal = criminal(attackerIndex)
+    
     If (Not criminal(VictimIndex)) Then
          UserList(attackerIndex).Reputacion.AsesinoRep = UserList(attackerIndex).Reputacion.AsesinoRep + vlASESINO * 2
          If UserList(attackerIndex).Reputacion.AsesinoRep > MAXREP Then _
@@ -66,6 +67,12 @@ If TriggerZonaPelea(VictimIndex, attackerIndex) <> TRIGGER6_PERMITE Then
          If UserList(attackerIndex).Reputacion.NobleRep > MAXREP Then _
             UserList(attackerIndex).Reputacion.NobleRep = MAXREP
     End If
+    
+    If EraCriminal And Not criminal(attackerIndex) Then
+        Call RefreshCharStatus(attackerIndex)
+    ElseIf Not EraCriminal And criminal(attackerIndex) Then
+        Call RefreshCharStatus(attackerIndex)
+    End If
 End If
 
 Call UserDie(VictimIndex)
@@ -74,13 +81,6 @@ If UserList(attackerIndex).Stats.UsuariosMatados < MAXUSERMATADOS Then _
     UserList(attackerIndex).Stats.UsuariosMatados = UserList(attackerIndex).Stats.UsuariosMatados + 1
 
 Call FlushBuffer(VictimIndex)
-
-If EraCriminal And Not criminal(attackerIndex) Then
-    Call RefreshCharStatus(attackerIndex)
-ElseIf Not EraCriminal And criminal(attackerIndex) Then
-    Call RefreshCharStatus(attackerIndex)
-End If
-
 
 'Log
 Call LogAsesinato(UserList(attackerIndex).name & " asesino a " & UserList(VictimIndex).name)
@@ -186,6 +186,7 @@ Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIn
 
 On Error GoTo hayerror
     Dim CharIndex As Integer
+    Dim userStatus As Byte
 
     If InMapBounds(Map, X, Y) Then
         'If needed make a new character in list
@@ -195,8 +196,15 @@ On Error GoTo hayerror
             CharList(CharIndex) = UserIndex
         End If
         
-        'Place character on map
-        MapData(Map, X, Y).UserIndex = UserIndex
+        'Is the character new??
+        If MapData(Map, X, Y).UserIndex = UserIndex Then
+            userStatus = USER_VIEJO
+        Else
+            'Place character on map
+            MapData(Map, X, Y).UserIndex = UserIndex
+            
+            userStatus = USER_NUEVO
+        End If
         
         'Send make character command to clients
         Dim klan As String
@@ -218,7 +226,7 @@ On Error GoTo hayerror
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
-                Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
+                Call CheckUpdateNeededUser(UserIndex, userStatus)
             End If
         Else 'if tiene clan
             If Not toMap Then
@@ -229,7 +237,7 @@ On Error GoTo hayerror
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
-                Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
+                Call CheckUpdateNeededUser(UserIndex, userStatus)
             End If
         End If 'if clan
     End If
@@ -1173,9 +1181,7 @@ Sub NpcAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 'Last Modification: 24/01/2007
 '24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si corresponde.
 '**********************************************
-
 Dim EraCriminal As Boolean
-EraCriminal = criminal(UserIndex)
 
 'Guardamos el usuario que ataco el npc
 Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
@@ -1187,6 +1193,8 @@ If EsMascotaCiudadano(NpcIndex, UserIndex) Then
             Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
             Npclist(NpcIndex).Hostile = 1
 Else
+    EraCriminal = criminal(UserIndex)
+    
     'Reputacion
     If Npclist(NpcIndex).Stats.Alineacion = 0 Then
        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
@@ -1206,12 +1214,10 @@ Else
     Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
     Npclist(NpcIndex).Hostile = 1
     
+    If EraCriminal And Not criminal(UserIndex) Then
+        Call VolverCiudadano(UserIndex)
+    End If
 End If
-
-If EraCriminal And Not criminal(UserIndex) Then
-    Call VolverCiudadano(UserIndex)
-End If
-
 
 End Sub
 

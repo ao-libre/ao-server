@@ -248,9 +248,6 @@ Public Sub CentinelaUserLogout()
 'El usuario al que revisabamos se desconectó
 '############################################################
     If Centinela.RevisandoUserIndex Then
-        'Revisamos si no respondió ya
-        If UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then Exit Sub
-        
         'Logueamos el evento
         Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " se desolgueó al pedirsele la contraseña")
         

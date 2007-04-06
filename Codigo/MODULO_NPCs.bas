@@ -74,7 +74,6 @@ On Error GoTo errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
-    EraCriminal = criminal(UserIndex)
    
     If (esPretoriano(NpcIndex) = 4) Then
         'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
@@ -132,13 +131,14 @@ On Error GoTo errhandler
                 Call WriteConsoleMsg(UserIndex, "Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
             End If
             MiNPC.flags.ExpCount = 0
-'Nacho: ahora se da toda la experiencia con los golpes, en la mayoria de los casos el npc se queda sin exp
         End If
         
         '[/KEVIN]
         Call WriteConsoleMsg(UserIndex, "Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
         If UserList(UserIndex).Stats.NPCsMuertos < 32000 Then _
             UserList(UserIndex).Stats.NPCsMuertos = UserList(UserIndex).Stats.NPCsMuertos + 1
+        
+        EraCriminal = criminal(UserIndex)
         
         If MiNPC.Stats.Alineacion = 0 Then
             If MiNPC.Numero = Guardias Then
