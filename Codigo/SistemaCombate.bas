@@ -1343,7 +1343,7 @@ Public Function PuedeAtacar(ByVal attackerIndex As Integer, ByVal VictimIndex As
 'Autor: Unknown
 'Last Modification: 24/01/2007
 'Returns true if the AttackerIndex is allowed to attack the VictimIndex.
-'24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defenza en ciudad Armada y Caos.
+'24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defensa en ciudad Armada y Caos.
 '***************************************************
 Dim T As eTrigger6
 Dim rank As Integer
@@ -1381,6 +1381,12 @@ ElseIf T = eTrigger6.TRIGGER6_AUSENTE Then
     End If
 End If
 
+'Consejeros no pueden atacar
+'If UserList(attackerIndex).flags.Privilegios And PlayerType.Consejero Then
+'    PuedeAtacar = False
+'    Exit Sub
+'End If
+
 'Estas queriendo atacar a un GM?
 rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
 
@@ -1406,11 +1412,11 @@ End If
 
 'Tenes puesto el seguro?
 If UserList(attackerIndex).flags.Seguro Then
-        If Not criminal(VictimIndex) Then
-                Call WriteConsoleMsg(attackerIndex, "No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
-                PuedeAtacar = False
-                Exit Function
-        End If
+    If Not criminal(VictimIndex) Then
+        Call WriteConsoleMsg(attackerIndex, "No podes atacar ciudadanos, para hacerlo debes desactivar el seguro ingresando /seg", FontTypeNames.FONTTYPE_WARNING)
+        PuedeAtacar = False
+        Exit Function
+    End If
 End If
 
 'Estas en un Mapa Seguro?
