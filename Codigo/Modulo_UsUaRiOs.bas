@@ -50,7 +50,7 @@ If UserList(attackerIndex).Stats.Exp > MAXEXP Then _
 Call WriteConsoleMsg(attackerIndex, "Has matado a " & UserList(VictimIndex).name & "!", FontTypeNames.FONTTYPE_FIGHT)
 Call WriteConsoleMsg(attackerIndex, "Has ganado " & DaExp & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
       
-Call WriteConsoleMsg(attackerIndex, UserList(attackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
+Call WriteConsoleMsg(VictimIndex, UserList(attackerIndex).name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
 
 If TriggerZonaPelea(VictimIndex, attackerIndex) <> TRIGGER6_PERMITE Then
     EraCriminal = criminal(attackerIndex)
@@ -859,7 +859,7 @@ Dim nPos As WorldPos
         If MapInfo(UserList(UserIndex).Pos.Map).NumUsers > 1 Then
             'si no estoy solo en el mapa...
 
-            Call SendData(SendTarget.ToAllButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
+            Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
 
         End If
         
