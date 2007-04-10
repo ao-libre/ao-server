@@ -323,9 +323,6 @@ If num > 0 Then
         If ObjData(Obj.ObjIndex).OBJType = eOBJType.otBarcos Then
             Call WriteConsoleMsg(UserIndex, "¡¡ATENCION!! ¡ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
         End If
-        If ObjData(Obj.ObjIndex).Caos = 1 Or ObjData(Obj.ObjIndex).Real = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡ATENCION!! ¡¡ACABAS DE TIRAR TU ARMADURA FACCIONARIA!!", FontTypeNames.FONTTYPE_TALK)
-        End If
         
         If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name, False)
   Else
