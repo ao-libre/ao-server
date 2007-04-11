@@ -427,25 +427,25 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Case eClass.Paladin
             Select Case Constitucion
                 Case 21
-                    AumentoHP = RandomNumber(8, 12)
-                Case 20
                     AumentoHP = RandomNumber(8, 11)
-                Case 19
+                Case 20
                     AumentoHP = RandomNumber(7, 11)
-                Case 18
+                Case 19
                     AumentoHP = RandomNumber(7, 10)
-                Case 17
+                Case 18
                     AumentoHP = RandomNumber(6, 10)
-                Case 16
+                Case 17
                     AumentoHP = RandomNumber(6, 9)
-                Case 15
+                Case 16
                     AumentoHP = RandomNumber(5, 9)
-                Case 14
+                Case 15
                     AumentoHP = RandomNumber(5, 8)
-                Case 13
+                Case 14
                     AumentoHP = RandomNumber(4, 8)
-                Case 12
+                Case 13
                     AumentoHP = RandomNumber(4, 7)
+                Case 12
+                    AumentoHP = RandomNumber(3, 7)
             End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
