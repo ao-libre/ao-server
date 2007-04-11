@@ -192,7 +192,7 @@ Select Case UCase$(clase)
     Case eClass.Pirat
         ModicadorDañoClaseWresterling = 0.4
     Case eClass.Bandit
-        ModicadorDañoClaseWresterling = 0.8
+        ModicadorDañoClaseWresterling = 1.1
     Case eClass.Cleric
         ModicadorDañoClaseWresterling = 0.4
     Case eClass.Bard

@@ -6988,32 +6988,35 @@ On Error GoTo errhandler
         
         tIndex = NameIndex(UserName)
         
-        'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-        If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
-            If tIndex <= 0 Then 'existe el usuario destino?
-                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-            Else
-                For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
-                    For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
-                        For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
-                            If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
-                                If LegalPos(UserList(tIndex).Pos.Map, X, Y, True, True) Then
-                                    Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
-                                    found = True
-                                    Exit For
+        'Check the user has enough powers
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
+            'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+            If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+                If tIndex <= 0 Then 'existe el usuario destino?
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
+                        For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
+                            For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
+                                If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
+                                    If LegalPos(UserList(tIndex).Pos.Map, X, Y, True, True) Then
+                                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
+                                        found = True
+                                        Exit For
+                                    End If
                                 End If
-                            End If
-                        Next Y
+                            Next Y
+                            
+                            If found Then Exit For  ' Feo, pero hay que abortar 3 fors sin usar GoTo
+                        Next X
                         
                         If found Then Exit For  ' Feo, pero hay que abortar 3 fors sin usar GoTo
-                    Next X
+                    Next i
                     
-                    If found Then Exit For  ' Feo, pero hay que abortar 3 fors sin usar GoTo
-                Next i
-                
-                'No space found??
-                If Not found Then
-                    Call WriteConsoleMsg(UserIndex, "Todos los lugares están ocupados.", FontTypeNames.FONTTYPE_INFO)
+                    'No space found??
+                    If Not found Then
+                        Call WriteConsoleMsg(UserIndex, "Todos los lugares están ocupados.", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 End If
             End If
         End If

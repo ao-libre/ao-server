@@ -200,6 +200,7 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
             Extra = Cantidad - 500000
             Cantidad = 500000
         End If
+        
         Do While (Cantidad > 0)
             
             If Cantidad > MAX_INVENTORY_OBJS And UserList(UserIndex).Stats.GLD > MAX_INVENTORY_OBJS Then
