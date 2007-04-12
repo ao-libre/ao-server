@@ -496,6 +496,10 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
                     AumentoHP = RandomNumber(3, 5)
                 Case 14
                     AumentoHP = RandomNumber(2, 5)
+                Case 13
+                    AumentoHP = RandomNumber(2, 4)
+                Case 12
+                    AumentoHP = RandomNumber(1, 4)
             End Select
             If AumentoHP < 1 Then AumentoHP = 4
             
