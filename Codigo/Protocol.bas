@@ -340,6 +340,7 @@ Private Enum ClientPacketID
     DumpIPTables            '/DUMPSECURITY"
     CouncilKick             '/KICKCONSE
     SetTrigger              '/TRIGGER
+    AskTrigger              '/TRIGGER
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
     GuildMemberList         '/MIEMBROSCLAN
@@ -1025,6 +1026,9 @@ On Error Resume Next
         Case ClientPacketID.SetTrigger              '/TRIGGER
             Call HandleSetTrigger(UserIndex)
         
+        Case ClientPacketID.AskTrigger               '/TRIGGER
+            Call HandleAskTrigger(UserIndex)
+            
         Case ClientPacketID.BannedIPList            '/BANIPLIST
             Call HandleBannedIPList(UserIndex)
         
@@ -10347,6 +10351,35 @@ Private Sub HandleSetTrigger(ByVal UserIndex As Integer)
             Call LogGM(.name, tLog, False)
             Call WriteConsoleMsg(UserIndex, tLog, FontTypeNames.FONTTYPE_INFO)
         End If
+    End With
+End Sub
+
+''
+' Handles the "AskTrigger" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleAskTrigger(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolas Matias Gonzalez (NIGO)
+'Last Modification: 04/13/07
+'
+'***************************************************
+    Dim tTrigger As Byte
+    
+    With UserList(UserIndex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
+            
+        tTrigger = MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger
+            
+        Call LogGM(.name, "Miro el trigger en " & .Pos.Map & "," & .Pos.X & "," & .Pos.Y & ". Era " & tTrigger, False)
+            
+        Call WriteConsoleMsg(UserIndex, _
+            "Trigger " & tTrigger & " en mapa " & .Pos.Map & " " & .Pos.X & ", " & .Pos.Y _
+            , FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 

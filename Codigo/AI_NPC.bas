@@ -945,16 +945,18 @@ For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10    'Makes a
                  'Move towards user
                   Dim tmpUserIndex As Integer
                   tmpUserIndex = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
-                  If UserList(tmpUserIndex).flags.Muerto = 0 And UserList(tmpUserIndex).flags.invisible = 0 And UserList(tmpUserIndex).flags.Oculto = 0 Then
-                    'We have to invert the coordinates, this is because
-                    'ORE refers to maps in converse way of my pathfinding
-                    'routines.
-                    Npclist(NpcIndex).PFINFO.Target.X = UserList(tmpUserIndex).Pos.Y
-                    Npclist(NpcIndex).PFINFO.Target.Y = UserList(tmpUserIndex).Pos.X 'ops!
-                    Npclist(NpcIndex).PFINFO.TargetUser = tmpUserIndex
-                    Call SeekPath(NpcIndex)
-                    Exit Function
-                  End If
+                  With UserList(tmpUserIndex)
+                    If .flags.Muerto = 0 And .flags.invisible = 0 And .flags.Oculto = 0 And .flags.AdminPerseguible Then
+                        'We have to invert the coordinates, this is because
+                        'ORE refers to maps in converse way of my pathfinding
+                        'routines.
+                        Npclist(NpcIndex).PFINFO.Target.X = UserList(tmpUserIndex).Pos.Y
+                        Npclist(NpcIndex).PFINFO.Target.Y = UserList(tmpUserIndex).Pos.X 'ops!
+                        Npclist(NpcIndex).PFINFO.TargetUser = tmpUserIndex
+                        Call SeekPath(NpcIndex)
+                        Exit Function
+                    End If
+                  End With
              End If
              
          End If

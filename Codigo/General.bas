@@ -1022,7 +1022,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
             Call WriteUpdateHP(UserIndex)
         End If
         
-        UserList(UserIndex).Counters.Frio = 0
+        UserList(UserIndex).Counters.Lava = 0
     End If
 End Sub
 

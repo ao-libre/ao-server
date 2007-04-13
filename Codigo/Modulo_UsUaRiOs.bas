@@ -311,7 +311,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Pts = 10
     Else
         'For multiple levels being rised at once
-        Pts = Pts + 5
+        Pts = 5
     End If
     
     UserList(UserIndex).Stats.SkillPts = UserList(UserIndex).Stats.SkillPts + Pts
