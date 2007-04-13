@@ -112,6 +112,7 @@ Public Enum eClass
     Miner       'Minero
     Carpenter   'Carpintero
     Pirat       'Pirata
+    Admin       'ADMIN
 End Enum
 
 Public Enum eCiudad
@@ -154,7 +155,7 @@ End Type
 Public MiCabecera As tCabecera
 
 'Barrin 3/10/03
-Public Const TIEMPO_INICIOMEDITAR As Byte = 3
+Public Const TIEMPO_INICIOMEDITAR As Integer = 3000
 
 Public Const NingunEscudo As Integer = 2
 Public Const NingunCasco As Integer = 2

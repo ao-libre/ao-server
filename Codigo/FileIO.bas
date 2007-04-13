@@ -723,7 +723,7 @@ For Object = 1 To NumObjDatas
     For i = 1 To NUMCLASES
         S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
         N = 1
-        Do While UCase$(ListaClases(N)) <> S
+        Do While LenB(S) > 0 And UCase$(ListaClases(N)) <> S
             N = N + 1
         Loop
         ObjData(Object).ClaseProhibida(i) = N
