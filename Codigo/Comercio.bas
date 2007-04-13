@@ -28,6 +28,7 @@ Attribute VB_Name = "Comercio"
 'Pablo Ignacio Márquez
 
 Option Explicit
+Public Const REDUCTOR_PRECIOVENTA = 3
 
 '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 '%%%%%          MODULO DE COMERCIO NPC-USER              %%%%

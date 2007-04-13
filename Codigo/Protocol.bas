@@ -14022,7 +14022,7 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As By
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteLong(obData.Valor)
+        Call .WriteLong(obData.Valor \ REDUCTOR_PRECIOVENTA)
     End With
 End Sub
 
@@ -15040,7 +15040,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex A
         Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
         Call .WriteInteger(ObjData(ObjIndex).MinHIT)
         Call .WriteInteger(ObjData(ObjIndex).MaxDef)
-        Call .WriteLong(ObjData(ObjIndex).Valor \ 3)
+        Call .WriteLong(ObjData(ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
     End With
 End Sub
 
