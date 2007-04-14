@@ -318,14 +318,6 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp - UserList(UserIndex).Stats.ELU
     
-    If Not EsNewbie(UserIndex) And WasNewbie Then
-        Call QuitarNewbieObj(UserIndex)
-        If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
-            Call WarpUserChar(UserIndex, 1, 50, 50, True)
-            Call WriteConsoleMsg(UserIndex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
-        End If
-    End If
-
     'Nueva subida de exp x lvl. Pablo (ToxicWaste)
     If UserList(UserIndex).Stats.ELV < 15 Then
         UserList(UserIndex).Stats.ELU = UserList(UserIndex).Stats.ELU * 1.4
@@ -827,6 +819,15 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
 Loop
+
+'If it ceased to be a newbie, remove newbie items and get char away from newbie dungeon
+If Not EsNewbie(UserIndex) And WasNewbie Then
+    Call QuitarNewbieObj(UserIndex)
+    If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
+        Call WarpUserChar(UserIndex, 1, 50, 50, True)
+        Call WriteConsoleMsg(UserIndex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
+    End If
+End If
 
 'Send all gained skill points at once (if any)
 If Pts > 0 Then
