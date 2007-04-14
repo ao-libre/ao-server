@@ -61,20 +61,17 @@ On Error GoTo manejador
 
 Dim flag As Boolean
 
-If ObjData(ObjIndex).ClaseProhibida(1) <> 0 Then
-    
-    Dim i As Integer
-    For i = 1 To NUMCLASES
-        If ObjData(ObjIndex).ClaseProhibida(i) = UserList(UserIndex).clase Then
+'Admins can use ANYTHING!
+If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+    If ObjData(ObjIndex).ClaseProhibida(1) <> 0 Then
+        Dim i As Integer
+        For i = 1 To NUMCLASES
+            If ObjData(ObjIndex).ClaseProhibida(i) = UserList(UserIndex).clase Then
                 ClasePuedeUsarItem = False
                 Exit Function
-        End If
-    Next i
-    
-Else
-    
-    
-
+            End If
+        Next i
+    End If
 End If
 
 ClasePuedeUsarItem = True
