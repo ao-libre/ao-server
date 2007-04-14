@@ -112,7 +112,6 @@ Public Enum eClass
     Miner       'Minero
     Carpenter   'Carpintero
     Pirat       'Pirata
-    Admin       'ADMIN
 End Enum
 
 Public Enum eCiudad
@@ -323,7 +322,7 @@ Public Const NUMATRIBUTOS As Byte = 5
 
 ''
 ' Cantidad de Clases
-Public Const NUMCLASES As Byte = 17
+Public Const NUMCLASES As Byte = 16
 
 ''
 ' Cantidad de Razas

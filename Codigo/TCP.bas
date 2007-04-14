@@ -290,7 +290,7 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Passw
 '12/02/2007 Pablo (ToxicWaste) - Puse + 1 de const al Elfo normal.
 '*************************************************
 
-If Not AsciiValidos(name) Then
+If Not AsciiValidos(name) Or LenB(name) = 0 Then
     Call WriteErrorMsg(UserIndex, "Nombre invalido.")
     Exit Sub
 End If

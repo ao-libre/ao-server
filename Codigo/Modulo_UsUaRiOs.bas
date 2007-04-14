@@ -311,13 +311,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Pts = 10
     Else
         'For multiple levels being rised at once
-        Pts = 5
+        Pts = Pts + 5
     End If
     
-    UserList(UserIndex).Stats.SkillPts = UserList(UserIndex).Stats.SkillPts + Pts
-    
-    Call WriteConsoleMsg(UserIndex, "Has ganado " & Pts & " skillpoints.", FontTypeNames.FONTTYPE_INFO)
-       
     UserList(UserIndex).Stats.ELV = UserList(UserIndex).Stats.ELV + 1
     
     UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp - UserList(UserIndex).Stats.ELU
@@ -833,8 +829,13 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
 Loop
 
 'Send all gained skill points at once (if any)
-If Pts > 0 Then _
+If Pts > 0 Then
     Call WriteLevelUp(UserIndex, Pts)
+    
+    UserList(UserIndex).Stats.SkillPts = UserList(UserIndex).Stats.SkillPts + Pts
+    
+    Call WriteConsoleMsg(UserIndex, "Has ganado un total de " & Pts & " skillpoints.", FontTypeNames.FONTTYPE_INFO)
+End If
 
 Call WriteUpdateUserStats(UserIndex)
 
