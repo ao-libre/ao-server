@@ -229,7 +229,7 @@ On Error GoTo errorh
             NPCAlInd = MapData(NPCPosM, X, Y).NpcIndex  ''por si implementamos algo contra NPCs
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
-                If (UserList(PJEnInd).flags.invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) And Not UserList(PJEnInd).flags.AdminInvisible = 1 Then
+                If (UserList(PJEnInd).flags.invisible = 0 Or UserList(PJEnInd).flags.Oculto = 0) And Not (UserList(PJEnInd).flags.Muerto = 1) And Not UserList(PJEnInd).flags.AdminInvisible = 1 And UserList(PJEnInd).flags.AdminPerseguible Then
                 'ToDo: Borrar los GMs
                     If (EsMagoOClerigo(PJEnInd)) Then
                         ''say no more, atacar a este
@@ -416,8 +416,8 @@ On Error GoTo errorh
                 PJEnInd = MapData(NPCPosM, X, Y).UserIndex
                 
                 If (PJEnInd > 0) And (Npclist(npcind).CanAttack = 1) Then
-                    If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.AdminInvisible = 1) Then
-                        If (UserList(PJEnInd).flags.invisible = 1) Then
+                    If Not (UserList(PJEnInd).flags.Muerto = 1) And Not (UserList(PJEnInd).flags.AdminInvisible = 1) And UserList(PJEnInd).flags.AdminPerseguible Then
+                        If (UserList(PJEnInd).flags.invisible = 1) Or (UserList(PJEnInd).flags.Oculto = 1) Then
                             ''usuario invisible, vamos a ver si se la podemos sacar
                             
                             If (RandomNumber(1, 100) <= 35) Then
@@ -637,8 +637,8 @@ On Error GoTo errorh
                 End If
 
                 If PJEnInd > 0 And Not hayPretorianos Then
-                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Ceguera = 1) Then
-                        ''si no esta muerto o invisible o ciego...
+                    If Not (UserList(PJEnInd).flags.Muerto = 1 Or UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Ceguera = 1) And UserList(PJEnInd).flags.AdminPerseguible Then
+                        ''si no esta muerto o invisible o ciego... o tiene el /ignorando
                         dist = Sqr((UserList(PJEnInd).Pos.X - NPCPosX) ^ 2 + (UserList(PJEnInd).Pos.Y - NPCPosY) ^ 2)
                         If (dist < distBestTarget Or BestTarget = 0) Then
                             BestTarget = PJEnInd
@@ -728,7 +728,7 @@ On Error GoTo errorh
         For Y = NPCPosY - 7 To NPCPosY + 7
             PJEnInd = MapData(NPCPosM, X, Y).UserIndex
             If (PJEnInd > 0) Then
-                If (Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) Then
+                If (Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1 Or UserList(PJEnInd).flags.Muerto = 1)) And EsAlcanzable(npcind, PJEnInd) And UserList(PJEnInd).flags.AdminPerseguible Then
                     ''caluclo la distancia al PJ, si esta mas cerca q el actual
                     ''mejor besttarget entonces ataco a ese.
                     If (BestTarget > 0) Then
@@ -871,7 +871,7 @@ On Error GoTo errorh
                         End If
                     End If
                 ElseIf (PJEnInd > 0) Then ''aggressor
-                    If Not (UserList(PJEnInd).flags.Muerto = 1) Then
+                    If Not (UserList(PJEnInd).flags.Muerto = 1) And UserList(PJEnInd).flags.AdminPerseguible Then
                         If (UserList(PJEnInd).flags.Paralizado = 0) Then
                             If (Not (UserList(PJEnInd).flags.invisible = 1 Or UserList(PJEnInd).flags.Oculto = 1)) Then
                                 ''PJ movil y visible, jeje, si o si es target
@@ -1188,12 +1188,18 @@ On Error GoTo errorh
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessagePlayWave(Hechizos(indireccion).WAV))
     Call SendData(SendTarget.ToNPCArea, PJEnInd, PrepareMessageCreateFX(Npclist(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
     
-    Call WriteConsoleMsg(PJEnInd, "Comienzas a hacerte visible.", FontTypeNames.FONTTYPE_VENENO)
-    UserList(PJEnInd).Counters.Invisibilidad = IntervaloInvisible - 1
-    
     'Sacamos el efecto de ocultarse
-    If UserList(PJEnInd).Counters.Ocultando Then _
-        UserList(PJEnInd).Counters.Ocultando = UserList(PJEnInd).Counters.Ocultando - 1
+    If UserList(PJEnInd).flags.Oculto = 1 Then
+        UserList(PJEnInd).Counters.TiempoOculto = 0
+        UserList(PJEnInd).flags.Oculto = 0
+        Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageSetInvisible(UserList(PJEnInd).Char.CharIndex, False))
+        Call WriteConsoleMsg(PJEnInd, "¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
+    Else
+    'sino, solo lo "iniciamos" en la sacada de invisibilidad.
+        Call WriteConsoleMsg(PJEnInd, "Comienzas a hacerte visible.", FontTypeNames.FONTTYPE_VENENO)
+        UserList(PJEnInd).Counters.Invisibilidad = IntervaloInvisible - 1
+    End If
+
     
 Exit Sub
 
