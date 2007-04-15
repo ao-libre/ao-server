@@ -726,7 +726,7 @@ For Object = 1 To NumObjDatas
         Do While LenB(S) > 0 And UCase$(ListaClases(N)) <> S
             N = N + 1
         Loop
-        ObjData(Object).ClaseProhibida(i) = N
+        ObjData(Object).ClaseProhibida(i) = IIf(LenB(S) > 0, N, 0)
     Next i
     
     ObjData(Object).DefensaMagicaMax = val(Leer.GetValue("OBJ" & Object, "DefensaMagicaMax"))
