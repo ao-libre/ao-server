@@ -337,7 +337,7 @@ Private Enum ClientPacketID
     ItemsInTheFloor         '/PISO
     MakeDumb                '/ESTUPIDO
     MakeDumbNoMore          '/NOESTUPIDO
-    DumpIPTables            '/DUMPSECURITY"
+    DumpIPTables            '/DUMPSECURITY
     CouncilKick             '/KICKCONSE
     SetTrigger              '/TRIGGER
     AskTrigger              '/TRIGGER with no args
@@ -1441,28 +1441,6 @@ On Error GoTo errhandler
     
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-    
-    If Not AsciiValidos(UserName) Then
-        Call WriteErrorMsg(UserIndex, "Nombre invalido.")
-        Call FlushBuffer(UserIndex)
-        Call CloseSocket(UserIndex, True)
-        
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-        
-        Exit Sub
-    End If
-
-    If PersonajeExiste(UserName) Then
-        Call WriteErrorMsg(UserIndex, "El personaje ya existe.")
-        Call FlushBuffer(UserIndex)
-        Call CloseSocket(UserIndex, True)
-        
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-        
-        Exit Sub
-    End If
     
     UserList(UserIndex).flags.NoActualizado = Not VersionesActuales(buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger(), buffer.ReadInteger())
     
@@ -6787,23 +6765,25 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        If (InStrB(guild, "\") <> 0) Then
-            guild = Replace(guild, "\", "")
-        End If
-        If (InStrB(guild, "/") <> 0) Then
-            guild = Replace(guild, "/", "")
-        End If
-
-        If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
-            Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
-        Else
-            memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
+        If Not .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+            If (InStrB(guild, "\") <> 0) Then
+                guild = Replace(guild, "\", "")
+            End If
+            If (InStrB(guild, "/") <> 0) Then
+                guild = Replace(guild, "/", "")
+            End If
             
-            For i = 1 To memberCount
-                UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
+            If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
+                Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
+            Else
+                memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
                 
-                Call WriteConsoleMsg(UserIndex, UserName & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
-            Next i
+                For i = 1 To memberCount
+                    UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
+                    
+                    Call WriteConsoleMsg(UserIndex, UserName & "<" & guild & ">", FontTypeNames.FONTTYPE_INFO)
+                Next i
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
