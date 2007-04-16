@@ -197,7 +197,7 @@ Select Case UserGenero
                 NewHead = RandomNumber(370, 372)
                 NewBody = 52
             Case eRaza.Enano
-                NewHead = RandomNumber(470, 176)
+                NewHead = RandomNumber(470, 476)
                 NewBody = 52
         End Select
 End Select
