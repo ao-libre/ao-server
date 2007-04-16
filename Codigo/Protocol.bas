@@ -340,7 +340,7 @@ Private Enum ClientPacketID
     DumpIPTables            '/DUMPSECURITY"
     CouncilKick             '/KICKCONSE
     SetTrigger              '/TRIGGER
-    AskTrigger              '/TRIGGER
+    AskTrigger              '/TRIGGER with no args
     BannedIPList            '/BANIPLIST
     BannedIPReload          '/BANIPRELOAD
     GuildMemberList         '/MIEMBROSCLAN
@@ -1286,6 +1286,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -1293,6 +1297,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -1405,6 +1413,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores. Consulte la página oficial o el foro oficial para mas información.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -1412,6 +1424,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "Has creado demasiados personajes.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -1430,6 +1446,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
 
@@ -1437,6 +1457,10 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "El personaje ya existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
+        
+        'Empty buffer for reuse
+        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
+        
         Exit Sub
     End If
     
@@ -10372,11 +10396,11 @@ Private Sub HandleAskTrigger(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
-            
+        
         tTrigger = MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger
-            
+        
         Call LogGM(.name, "Miro el trigger en " & .Pos.Map & "," & .Pos.X & "," & .Pos.Y & ". Era " & tTrigger, False)
-            
+        
         Call WriteConsoleMsg(UserIndex, _
             "Trigger " & tTrigger & " en mapa " & .Pos.Map & " " & .Pos.X & ", " & .Pos.Y _
             , FontTypeNames.FONTTYPE_INFO)
