@@ -850,8 +850,10 @@ If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
     ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 90 _
        And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 81 Then
                         Suerte = 10
-    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) <= 100 _
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) < 100 _
        And UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) >= 91 Then
+                        Suerte = 7
+    ElseIf UserList(LadrOnIndex).Stats.UserSkills(eSkill.Robar) = 100 Then
                         Suerte = 5
     End If
     res = RandomNumber(1, Suerte)
@@ -1267,8 +1269,10 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 80 _
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 90 _
    And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) <= 100 _
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) < 100 _
    And UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) >= 91 Then
+                    Suerte = 7
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) = 100 Then
                     Suerte = 5
 End If
 res = RandomNumber(1, Suerte)
@@ -1383,8 +1387,10 @@ ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 80 _
 ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 90 _
    And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 100 _
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 100 _
    And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 91 Then
+                    Suerte = 7
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = 100 Then
                     Suerte = 5
 End If
 res = RandomNumber(1, Suerte)
