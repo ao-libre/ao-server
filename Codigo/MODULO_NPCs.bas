@@ -388,6 +388,8 @@ Dim altpos As WorldPos
 Dim nIndex As Integer
 Dim PosicionValida As Boolean
 Dim Iteraciones As Long
+Dim PuedeAgua As Boolean
+Dim PuedeTierra As Boolean
 
 
 Dim Map As Integer
@@ -397,6 +399,8 @@ Dim Y As Integer
     nIndex = OpenNPC(NroNPC) 'Conseguimos un indice
     
     If nIndex = 0 Then Exit Sub
+    PuedeAgua = Npclist(nIndex).flags.AguaValida
+    PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
     
     'Necesita ser respawned en un lugar especifico
     If InMapBounds(OrigPos.Map, OrigPos.X, OrigPos.Y) Then
@@ -416,13 +420,20 @@ Dim Y As Integer
             Pos.X = RandomNumber(MinXBorder, MaxXBorder)    'Obtenemos posicion al azar en x
             Pos.Y = RandomNumber(MinYBorder, MaxYBorder)    'Obtenemos posicion al azar en y
             
-            Call ClosestLegalPos(Pos, newpos)  'Nos devuelve la posicion valida mas cercana
-            If newpos.X <> 0 Then altpos.X = newpos.X
-            If newpos.Y <> 0 Then altpos.Y = newpos.Y     'posicion alternativa (para evitar el anti respawn)
-            
+            Call ClosestLegalPos(Pos, newpos, PuedeAgua, PuedeTierra)  'Nos devuelve la posicion valida mas cercana
+            If newpos.X <> 0 And newpos.Y <> 0 Then
+                altpos.X = newpos.X
+                altpos.Y = newpos.Y     'posicion alternativa (para evitar el anti respawn, pero intentando qeu si tenía que ser en el agua, sea en el agua.)
+            Else
+                Call ClosestLegalPos(Pos, newpos, PuedeAgua)
+                If newpos.X <> 0 And newpos.Y <> 0 Then
+                    altpos.X = newpos.X
+                    altpos.Y = newpos.Y     'posicion alternativa (para evitar el anti respawn)
+                End If
+            End If
             'Si X e Y son iguales a 0 significa que no se encontro posicion valida
-            If LegalPosNPC(newpos.Map, newpos.X, newpos.Y, Npclist(nIndex).flags.AguaValida) And _
-               Not HayPCarea(newpos) And TestSpawnTrigger(newpos) Then
+            If LegalPosNPC(newpos.Map, newpos.X, newpos.Y, PuedeAgua) And _
+               Not HayPCarea(newpos) And TestSpawnTrigger(newpos, PuedeAgua) Then
                 'Asignamos las nuevas coordenas solo si son validas
                 Npclist(nIndex).Pos.Map = newpos.Map
                 Npclist(nIndex).Pos.X = newpos.X
