@@ -1305,6 +1305,9 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
         UserList(attackerIndex).Reputacion.BandidoRep = UserList(attackerIndex).Reputacion.BandidoRep + vlASALTO
         If UserList(attackerIndex).Reputacion.BandidoRep > MAXREP Then _
             UserList(attackerIndex).Reputacion.BandidoRep = MAXREP
+        UserList(attackerIndex).Reputacion.NobleRep = UserList(attackerIndex).Reputacion.NobleRep / 2
+        If UserList(attackerIndex).Reputacion.NobleRep < 0 Then _
+            UserList(attackerIndex).Reputacion.NobleRep = 0
     Else
         UserList(attackerIndex).Reputacion.NobleRep = UserList(attackerIndex).Reputacion.NobleRep + vlNoble
         If UserList(attackerIndex).Reputacion.NobleRep > MAXREP Then _
@@ -1317,6 +1320,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
         Call RefreshCharStatus(attackerIndex)
     End If
 
+    If criminal(attackerIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
     
     Call AllMascotasAtacanUser(attackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, attackerIndex)
