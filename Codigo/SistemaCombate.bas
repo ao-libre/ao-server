@@ -1320,7 +1320,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
         Call RefreshCharStatus(attackerIndex)
     End If
 
-    If criminal(attackerIndex) Then If UserList(UserIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(UserIndex)
+    If criminal(attackerIndex) Then If UserList(attackerIndex).Faccion.ArmadaReal = 1 Then Call ExpulsarFaccionReal(attackerIndex)
     
     Call AllMascotasAtacanUser(attackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, attackerIndex)
