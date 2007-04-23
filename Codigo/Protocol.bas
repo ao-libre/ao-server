@@ -437,6 +437,8 @@ Public Enum eEditOptions
     eo_Class
     eo_Skills
     eo_SkillPointsLeft
+    eo_Nobleza
+    eo_Asesino
 End Enum
 
 ''
@@ -8066,6 +8068,28 @@ On Error GoTo errhandler
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
                         UserList(tUser).Stats.SkillPts = val(Arg1)
+                    End If
+                    
+                Case eEditOptions.eo_Nobleza
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If val(Arg1) > MAXREP Then
+                            UserList(tUser).Reputacion.NobleRep = MAXREP
+                        Else
+                            UserList(tUser).Reputacion.NobleRep = val(Arg1)
+                        End If
+                    End If
+                
+                Case eEditOptions.eo_Asesino
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If val(Arg1) > MAXREP Then
+                            UserList(tUser).Reputacion.AsesinoRep = MAXREP
+                        Else
+                            UserList(tUser).Reputacion.AsesinoRep = val(Arg1)
+                        End If
                     End If
                 
                 Case Else
