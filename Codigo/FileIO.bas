@@ -1165,11 +1165,11 @@ On Error GoTo errh
                 Get FreeFileInf, , MapData(Map, X, Y).NpcIndex
                 
                 If MapData(Map, X, Y).NpcIndex > 0 Then
-                    If MapData(Map, X, Y).NpcIndex > 499 Then
-                        npcfile = DatPath & "NPCs-HOSTILES.dat"
-                    Else
+                    'If MapData(Map, X, Y).NpcIndex > 499 Then
+                    '    npcfile = DatPath & "NPCs-HOSTILES.dat"
+                    'Else
                         npcfile = DatPath & "NPCs.dat"
-                    End If
+                    'End If
 
                     'Si el npc debe hacer respawn en la pos
                     'original la guardamos
@@ -1704,11 +1704,11 @@ Dim LoopC As Integer
 
 NpcNumero = Npclist(NpcIndex).Numero
 
-If NpcNumero > 499 Then
-    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
-Else
+'If NpcNumero > 499 Then
+'    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
+'Else
     npcfile = DatPath & "bkNPCs.dat"
-End If
+'End If
 
 'General
 Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", Npclist(NpcIndex).name)
@@ -1765,11 +1765,11 @@ If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando backup Npc"
 
 Dim npcfile As String
 
-If NpcNumber > 499 Then
-    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
-Else
+'If NpcNumber > 499 Then
+'    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
+'Else
     npcfile = DatPath & "bkNPCs.dat"
-End If
+'End If
 
 Npclist(NpcIndex).Numero = NpcNumber
 Npclist(NpcIndex).name = GetVar(npcfile, "NPC" & NpcNumber, "Name")

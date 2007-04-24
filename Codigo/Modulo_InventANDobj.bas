@@ -104,11 +104,11 @@ On Error Resume Next
 Dim ln As String, npcfile As String
 Dim i As Integer
 
-If Npclist(NpcIndex).Numero > 499 Then
-    npcfile = DatPath & "NPCs-HOSTILES.dat"
-Else
+'If Npclist(NpcIndex).Numero > 499 Then
+'    npcfile = DatPath & "NPCs-HOSTILES.dat"
+'Else
     npcfile = DatPath & "NPCs.dat"
-End If
+'End If
  
 For i = 1 To MAX_INVENTORY_SLOTS
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
@@ -190,11 +190,11 @@ Dim LoopC As Integer
 Dim ln As String
 Dim npcfile As String
 
-If Npclist(NpcIndex).Numero > 499 Then
-    npcfile = DatPath & "NPCs-HOSTILES.dat"
-Else
+'If Npclist(NpcIndex).Numero > 499 Then
+'    npcfile = DatPath & "NPCs-HOSTILES.dat"
+'Else
     npcfile = DatPath & "NPCs.dat"
-End If
+'End If
 
 Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "NROITEMS"))
 

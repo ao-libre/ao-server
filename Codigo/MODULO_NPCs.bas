@@ -794,13 +794,13 @@ Dim NpcIndex As Integer
 Dim npcfile As String
 Dim Leer As clsIniReader
 
-If NpcNumber > 499 Then
+'If NpcNumber > 499 Then
         'NpcFile = DatPath & "NPCs-HOSTILES.dat"
-        Set Leer = LeerNPCsHostiles
-Else
+'        Set Leer = LeerNPCsHostiles
+'Else
         'NpcFile = DatPath & "NPCs.dat"
         Set Leer = LeerNPCs
-End If
+'End If
 
 NpcIndex = NextOpenNPC
 

@@ -1235,8 +1235,8 @@ Public Sub CargaNpcsDat()
     npcfile = DatPath & "NPCs.dat"
     Call LeerNPCs.Initialize(npcfile)
     
-    npcfile = DatPath & "NPCs-HOSTILES.dat"
-    Call LeerNPCsHostiles.Initialize(npcfile)
+    'npcfile = DatPath & "NPCs-HOSTILES.dat"
+    'Call LeerNPCsHostiles.Initialize(npcfile)
 End Sub
 
 Sub PasarSegundo()
