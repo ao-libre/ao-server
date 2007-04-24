@@ -367,9 +367,9 @@ errhandler:
 
 End Sub
 
-Function TestSpawnTrigger(Pos As WorldPos) As Boolean
+Function TestSpawnTrigger(Pos As WorldPos, Optional PuedeAgua As Boolean = False) As Boolean
     
-    If LegalPos(Pos.Map, Pos.X, Pos.Y) Then
+    If LegalPos(Pos.Map, Pos.X, Pos.Y, PuedeAgua) Then
         TestSpawnTrigger = _
         MapData(Pos.Map, Pos.X, Pos.Y).trigger <> 3 And _
         MapData(Pos.Map, Pos.X, Pos.Y).trigger <> 2 And _
