@@ -439,6 +439,7 @@ Public Enum eEditOptions
     eo_SkillPointsLeft
     eo_Nobleza
     eo_Asesino
+    eo_Sex
 End Enum
 
 ''
@@ -8091,6 +8092,18 @@ On Error GoTo errhandler
                             UserList(tUser).Reputacion.AsesinoRep = val(Arg1)
                         End If
                     End If
+                    
+                Case eEditOptions.eo_Sex
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Arg1 = UCase$(Arg1)
+                        If (Arg1 = "MUJER") Then
+                            UserList(tUser).genero = 2
+                        ElseIf (Arg1 = "HOMBRE") Then
+                            UserList(tUser).genero = 1
+                        End If
+                    End If
                 
                 Case Else
                     Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
@@ -8130,7 +8143,16 @@ On Error GoTo errhandler
             
             Case eEditOptions.eo_SkillPointsLeft
                 commandString = commandString & "SKILLSLIBRES "
-            
+                
+            Case eEditOptions.eo_Nobleza
+                commandString = commandString & "NOB "
+                
+            Case eEditOptions.eo_Asesino
+                commandString = commandString & "ASE "
+                
+            Case eEditOptions.eo_Sex
+                commandString = commandString & "SEX "
+                
             Case Else
                 commandString = commandString & "UNKOWN "
         End Select
