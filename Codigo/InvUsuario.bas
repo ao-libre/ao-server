@@ -785,6 +785,10 @@ Else
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 1)
 End If
 
+'Solo se habilita la ropa exclusiva para Drows por ahora. Pablo (ToxicWaste)
+If (UserList(UserIndex).raza <> eRaza.ElfoOscuro) And ObjData(ItemIndex).RazaDrow Then
+    CheckRazaUsaRopa = False
+End If
 
 Exit Function
 errhandler:

@@ -695,6 +695,10 @@ For Object = 1 To NumObjDatas
     ObjData(Object).MaxDef = val(Leer.GetValue("OBJ" & Object, "MAXDEF"))
     
     ObjData(Object).RazaEnana = val(Leer.GetValue("OBJ" & Object, "RazaEnana"))
+    ObjData(Object).RazaDrow = val(Leer.GetValue("OBJ" & Object, "RazaDrow"))
+    ObjData(Object).RazaElfa = val(Leer.GetValue("OBJ" & Object, "RazaElfa"))
+    ObjData(Object).RazaGnoma = val(Leer.GetValue("OBJ" & Object, "RazaGnoma"))
+    ObjData(Object).RazaHumana = val(Leer.GetValue("OBJ" & Object, "RazaHumana"))
     
     ObjData(Object).Valor = val(Leer.GetValue("OBJ" & Object, "Valor"))
     

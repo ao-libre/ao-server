@@ -764,6 +764,10 @@ Public Type ObjData
     IndexCerradaLlave As Integer
     
     RazaEnana As Byte
+    RazaDrow As Byte
+    RazaElfa As Byte
+    RazaGnoma As Byte
+    RazaHumana As Byte
     
     Mujer As Byte
     Hombre As Byte

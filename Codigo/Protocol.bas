@@ -440,6 +440,7 @@ Public Enum eEditOptions
     eo_Nobleza
     eo_Asesino
     eo_Sex
+    eo_Raza
 End Enum
 
 ''
@@ -8099,9 +8100,27 @@ On Error GoTo errhandler
                     Else
                         Arg1 = UCase$(Arg1)
                         If (Arg1 = "MUJER") Then
-                            UserList(tUser).genero = 2
+                            UserList(tUser).genero = eGenero.Mujer
                         ElseIf (Arg1 = "HOMBRE") Then
-                            UserList(tUser).genero = 1
+                            UserList(tUser).genero = eGenero.Hombre
+                        End If
+                    End If
+                    
+                Case eEditOptions.eo_Raza
+                    If tUser <= 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Arg1 = UCase$(Arg1)
+                        If (Arg1 = "HUMANO") Then
+                            UserList(tUser).raza = eRaza.Humano
+                        ElseIf (Arg1 = "ELFO") Then
+                            UserList(tUser).raza = eRaza.Elfo
+                        ElseIf (Arg1 = "DROW") Then
+                            UserList(tUser).raza = eRaza.ElfoOscuro
+                        ElseIf (Arg1 = "ENANO") Then
+                            UserList(tUser).raza = eRaza.Enano
+                        ElseIf (Arg1 = "GNOMO") Then
+                            UserList(tUser).raza = eRaza.Gnomo
                         End If
                     End If
                 
@@ -8152,6 +8171,9 @@ On Error GoTo errhandler
                 
             Case eEditOptions.eo_Sex
                 commandString = commandString & "SEX "
+                
+            Case eEditOptions.eo_Raza
+                commandString = commandString & "RAZA "
                 
             Case Else
                 commandString = commandString & "UNKOWN "
