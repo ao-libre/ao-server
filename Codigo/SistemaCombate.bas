@@ -974,6 +974,10 @@ End Sub
 Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 
 'If UserList(UserIndex).flags.PuedeAtacar = 1 Then
+'Check Magic interval
+If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then Exit Sub
+'Check bow's interval
+If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
 If IntervaloPermiteAtacar(UserIndex) Then
     
     'Quitamos stamina

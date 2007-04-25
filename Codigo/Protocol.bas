@@ -2568,15 +2568,14 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         
         Select Case Skill
             Case Proyectiles
+            
                 'Check attack interval
-                If Not IntervaloPermiteAtacar(UserIndex, False) Then
-                    Exit Sub
-                End If
-                
+                If Not IntervaloPermiteAtacar(UserIndex, False) Then Exit Sub
+                'Check Magic interval
+                If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then Exit Sub
                 'Check bow's interval
-                If Not IntervaloPermiteUsarArcos(UserIndex) Then
-                    Exit Sub
-                End If
+                If Not IntervaloPermiteUsarArcos(UserIndex) Then Exit Sub
+                
                 
                 'Make sure the item is valid and there is ammo equipped.
                 With .Invent
@@ -2697,12 +2696,19 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
+                'Check attack interval
+                If Not IntervaloPermiteAtacar(UserIndex, False) Then Exit Sub
+                'Check bow's interval
+                If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
+                'Check Magic interval
+                If Not IntervaloPermiteLanzarSpell(UserIndex) Then Exit Sub
+                
                 'Check intervals and cast
                 If .flags.Hechizo > 0 Then
-                    If IntervaloPermiteLanzarSpell(UserIndex) Then
+                    'If IntervaloPermiteLanzarSpell(UserIndex) Then
                         Call LanzarHechizo(.flags.Hechizo, UserIndex)
                         .flags.Hechizo = 0
-                    End If
+                    'End If
                 Else
                     Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
