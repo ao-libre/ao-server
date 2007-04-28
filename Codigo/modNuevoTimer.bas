@@ -41,7 +41,7 @@ Dim TActual As Long
 
 TActual = GetTickCount() And &H7FFFFFFF
 
-If TActual - UserList(UserIndex).Counters.TimerLanzarSpell >= 40 * IntervaloUserPuedeCastear Then
+If TActual - UserList(UserIndex).Counters.TimerLanzarSpell >= IntervaloUserPuedeCastear Then
     If Actualizar Then UserList(UserIndex).Counters.TimerLanzarSpell = TActual
     IntervaloPermiteLanzarSpell = True
 Else
@@ -56,7 +56,7 @@ Dim TActual As Long
 
 TActual = GetTickCount() And &H7FFFFFFF
 
-If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= 40 * IntervaloUserPuedeAtacar Then
+If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= IntervaloUserPuedeAtacar Then
     If Actualizar Then UserList(UserIndex).Counters.TimerPuedeAtacar = TActual
     IntervaloPermiteAtacar = True
 Else
@@ -71,7 +71,7 @@ End Function
 '
 'TActual = GetTickCount() And &H7FFFFFFF''
 '
-'If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= 40 * IntervaloUserPuedeAtacar Then
+'If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= IntervaloUserPuedeAtacar Then
 '    If Actualizar Then UserList(UserIndex).Counters.TimerPuedeAtacar = TActual
 '    IntervaloPermiteAtacar = True
 'Else
@@ -85,7 +85,7 @@ Dim TActual As Long
 
 TActual = GetTickCount() And &H7FFFFFFF
 
-If TActual - UserList(UserIndex).Counters.TimerPuedeTrabajar >= 40 * IntervaloUserPuedeTrabajar Then
+If TActual - UserList(UserIndex).Counters.TimerPuedeTrabajar >= IntervaloUserPuedeTrabajar Then
     If Actualizar Then UserList(UserIndex).Counters.TimerPuedeTrabajar = TActual
     IntervaloPermiteTrabajar = True
 Else
