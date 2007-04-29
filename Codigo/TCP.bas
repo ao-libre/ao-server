@@ -1232,7 +1232,7 @@ Sub SendMOTD(ByVal UserIndex As Integer)
     
     Call WriteGuildChat(UserIndex, "Mensajes de entrada:")
     For j = 1 To MaxLines
-        Call WriteGuildChat(UserIndex, Chr$(3) & MOTD(j).texto)
+        Call WriteGuildChat(UserIndex, MOTD(j).texto)
     Next j
 End Sub
 
