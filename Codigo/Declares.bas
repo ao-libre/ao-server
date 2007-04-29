@@ -1011,6 +1011,7 @@ Public Type UserCounters
     
     TimerLanzarSpell As Long
     TimerPuedeAtacar As Long
+    TimerPuedeUsarArco As Long
     TimerPuedeTrabajar As Long
     TimerUsar As Long
     

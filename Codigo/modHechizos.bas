@@ -762,6 +762,13 @@ If Hechizos(H).Revivir = 1 Then
             Exit Sub
         End If
         
+        'No podemos resucitar si nuestra barra de energía no está llena. (GD: 29/04/07)
+        If UserList(UserIndex).Stats.MaxSta <> UserList(UserIndex).Stats.MinSta Then
+            Call WriteConsoleMsg(UserIndex, "No puedes resucitar si no tienes tu barra de energía llena.", FontTypeNames.FONTTYPE_INFO)
+            b = False
+            Exit Sub
+        End If
+        
         'revisamos si necesita vara
         If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
@@ -797,20 +804,6 @@ If Hechizos(H).Revivir = 1 Then
             End If
         End If
 
-        
-        'Pablo Toxic Waste
-        UserList(tU).Stats.MinAGU = UserList(tU).Stats.MinAGU - 25
-        UserList(tU).Stats.MinHam = UserList(tU).Stats.MinHam - 25
-        
-        If UserList(tU).Stats.MinAGU <= 0 Then
-                UserList(tU).Stats.MinAGU = 0
-                UserList(tU).flags.Sed = 1
-        End If
-        If UserList(tU).Stats.MinHam <= 0 Then
-                UserList(tU).Stats.MinHam = 0
-                UserList(tU).flags.Hambre = 1
-        End If
-        
         Dim EraCriminal As Boolean
         EraCriminal = criminal(UserIndex)
         If Not criminal(tU) Then
@@ -822,18 +815,36 @@ If Hechizos(H).Revivir = 1 Then
             End If
         End If
         
-        UserList(tU).Stats.MinMAN = 0
-        
-        Call WriteUpdateHungerAndThirst(tU)
-        
         If EraCriminal And Not criminal(UserIndex) Then
             Call RefreshCharStatus(UserIndex)
         End If
         
-        '/Pablo Toxic Waste
         
-        b = True
+        'Pablo Toxic Waste (GD: 29/04/07)
+        UserList(tU).Stats.MinAGU = 0
+        UserList(tU).flags.Sed = 1
+        UserList(tU).Stats.MinHam = 0
+        UserList(tU).flags.Hambre = 1
+        Call WriteUpdateHungerAndThirst(tU)
         Call InfoHechizo(UserIndex)
+        UserList(tU).Stats.MinMAN = 0
+        UserList(tU).Stats.MinSta = 0
+        Dim aux As Double
+        aux = UserList(tU).Stats.ELV / 100
+        aux = UserList(UserIndex).Stats.MaxHP * aux
+        'Solo saco vida si es User. no quiero que exploten GMs por ahi.
+        If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - aux
+        End If
+        If (UserList(UserIndex).Stats.MinHP <= 0) Then
+            Call UserDie(UserIndex)
+            Call WriteConsoleMsg(UserIndex, "El esfuerzo de Resucitar fue demasiado grande", FontTypeNames.FONTTYPE_INFO)
+            b = False
+        Else
+            Call WriteConsoleMsg(UserIndex, "El esfuerzo de resucitar te ha debilitado", FontTypeNames.FONTTYPE_INFO)
+            b = True
+        End If
+        
         Call RevivirUsuario(tU)
     Else
         b = False

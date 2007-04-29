@@ -1383,7 +1383,7 @@ ElseIf T = eTrigger6.TRIGGER6_PROHIBE Then
 ElseIf T = eTrigger6.TRIGGER6_AUSENTE Then
     'Si no estamos en el Trigger 6 entonces es imposible atacar un gm
     If Not UserList(VictimIndex).flags.Privilegios And PlayerType.User Then
-        Call WriteConsoleMsg(attackerIndex, "No podés atacar GMs aquí", FontTypeNames.FONTTYPE_WARNING)
+        'Call WriteConsoleMsg(attackerIndex, "No podés atacar GMs aquí", FontTypeNames.FONTTYPE_WARNING)
         PuedeAtacar = False
         Exit Function
     End If

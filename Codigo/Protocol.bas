@@ -2634,17 +2634,20 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     End If
                     
                     'Can't hit administrators!
-                    If UserList(tU).flags.Privilegios And PlayerType.User Then ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
-                        If .flags.Seguro Then
-                            If Not criminal(tU) Then
+                    ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
+                    ' 29/04/2007 TW > Lo cambié porque sino no permite atacar GMs en un ring.
+                    If .flags.Seguro Then
+                        If Not criminal(tU) Then
+                            If UserList(tU).flags.Privilegios And PlayerType.User Then
                                 Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
-                                Exit Sub
                             End If
+                            Exit Sub
                         End If
-                        
-                        'Attack!
-                        Call UsuarioAtacaUsuario(UserIndex, tU)
                     End If
+                        
+                    'Attack!
+                    Call UsuarioAtacaUsuario(UserIndex, tU)
+                    
                 
                 ElseIf tN > 0 Then
                     'Only allow to atack if the other one can retaliate (can see us)

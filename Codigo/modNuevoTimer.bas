@@ -113,8 +113,8 @@ Dim TActual As Long
 
 TActual = GetTickCount() And &H7FFFFFFF
 
-If TActual - UserList(UserIndex).Counters.TimerUsar >= IntervaloFlechasCazadores Then
-    If Actualizar Then UserList(UserIndex).Counters.TimerUsar = TActual
+If TActual - UserList(UserIndex).Counters.TimerPuedeUsarArco >= IntervaloFlechasCazadores Then
+    If Actualizar Then UserList(UserIndex).Counters.TimerPuedeUsarArco = TActual
     IntervaloPermiteUsarArcos = True
 Else
     IntervaloPermiteUsarArcos = False

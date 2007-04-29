@@ -91,7 +91,7 @@ End Sub
 Sub RevivirUsuario(ByVal UserIndex As Integer)
 
 UserList(UserIndex).flags.Muerto = 0
-UserList(UserIndex).Stats.MinHP = 35
+UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
 
 'No puede estar empollando
 UserList(UserIndex).flags.EstaEmpo = 0

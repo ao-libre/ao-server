@@ -1291,6 +1291,7 @@ Sub ResetContadores(ByVal UserIndex As Integer)
 
         .TimerLanzarSpell = 0
         .TimerPuedeAtacar = 0
+        .TimerPuedeUsarArco = 0
         .TimerPuedeTrabajar = 0
         .TimerUsar = 0
     End With
