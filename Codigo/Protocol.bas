@@ -2635,18 +2635,22 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     
                     'Can't hit administrators!
                     ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
-                    ' 29/04/2007 TW > Lo cambié porque sino no permite atacar GMs en un ring.
-                    If .flags.Seguro Then
-                        If Not criminal(tU) Then
-                            If UserList(tU).flags.Privilegios And PlayerType.User Then
-                                Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
-                            End If
-                            Exit Sub
-                        End If
-                    End If
-                        
+                    ' 29/04/2007 TW > Directamente NO VA ya que este chequeo se hace bien dentro de la sigueinte función.
+                    'If .flags.Seguro Then
+                    '    If Not criminal(tU) Then
+                    '        If UserList(tU).flags.Privilegios And PlayerType.User Then
+                    '            Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
+                    '            Exit Sub
+                    '        End If
+                    '    End If
+                    'End If
+                    'Pero hay que hacer algo para que no se pierda la flecha si es que ataca a un GM en zona sin trigger6
+                                                               
                     'Attack!
+                    If Not PuedeAtacar(UserIndex, tU) Then Exit Sub 'TODO: Por ahora pongo esto para solucionar lo anterior.
                     Call UsuarioAtacaUsuario(UserIndex, tU)
+                    
+                    
                     
                 
                 ElseIf tN > 0 Then
