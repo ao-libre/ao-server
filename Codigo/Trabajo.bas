@@ -72,7 +72,7 @@ Dim res As Integer
 Dim Skill As Integer
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
-Suerte = (0.000002 * Skill ^ 3 + -0.0002 * Skill ^ 2 + 0.0064 * Skill + 0.1124) * 100
+Suerte = (((0.000002 * Skill - 0.0002) * Skill + 0.0064) * Skill + 0.1124) * 100
 
 res = RandomNumber(1, 100)
 
@@ -1006,13 +1006,13 @@ Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar)
 
 Select Case UserList(UserIndex).clase
     Case eClass.Assasin
-        Suerte = Int((0.0000003 * Skill ^ 3 - 0.00002 * Skill ^ 2 + 0.00098 * Skill + 0.0425) * 100)
+        Suerte = Int((((0.0000003 * Skill - 0.00002) * Skill + 0.00098) * Skill + 0.0425) * 100)
     
     Case eClass.Cleric, eClass.Paladin
-        Suerte = Int((0.00000003 * Skill ^ 3 + 0.000006 * Skill ^ 2 + 0.000107 * Skill + 0.0493) * 100)
+        Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
     
     Case eClass.Bard
-        Suerte = Int((0.00000002 * Skill ^ 3 + 0.000002 * Skill ^ 2 + 0.00032 * Skill + 0.0481) * 100)
+        Suerte = Int((((0.00000002 * Skill + 0.000002) * Skill + 0.00032) * Skill + 0.0481) * 100)
     
     Case Else
         Suerte = Int((0.000361 * Skill + 0.0439) * 100)
@@ -1060,7 +1060,7 @@ If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).name <> "Espada Vikinga
 
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling)
 
-Suerte = Int((0.00000003 * Skill ^ 3 + 0.000006 * Skill ^ 2 + 0.000107 * Skill + 0.0493) * 100)
+Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
 
 If RandomNumber(0, 100) < Suerte Then
     daño = Int(daño * 0.5)
