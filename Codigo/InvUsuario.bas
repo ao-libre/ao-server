@@ -827,7 +827,7 @@ If Obj.OBJType = eOBJType.otWeapon Then
         End If
         
         'valido para evitar el flood pero no bloqueo. El bloqueo se hace en WLC con proyectiles.
-        If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
+        If Not IntervaloPermiteUsar(UserIndex, False) Then Exit Sub
     Else
         'dagas
         If Not IntervaloPermiteUsar(UserIndex) Then Exit Sub
