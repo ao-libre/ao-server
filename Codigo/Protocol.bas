@@ -14447,7 +14447,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As 
         Call .WriteByte(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
-        Call .WriteInteger(ObjInfo.MaxDef)
+        Call .WriteInteger(ObjInfo.def)
     End With
 End Sub
 
@@ -15126,7 +15126,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, ByVal ObjIndex A
         Call .WriteInteger(ObjData(ObjIndex).OBJType)
         Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
         Call .WriteInteger(ObjData(ObjIndex).MinHIT)
-        Call .WriteInteger(ObjData(ObjIndex).MaxDef)
+        Call .WriteInteger(ObjData(ObjIndex).def)
         Call .WriteLong(ObjData(ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
     End With
 End Sub

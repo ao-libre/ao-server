@@ -693,6 +693,7 @@ For Object = 1 To NumObjDatas
     
     ObjData(Object).MinDef = val(Leer.GetValue("OBJ" & Object, "MINDEF"))
     ObjData(Object).MaxDef = val(Leer.GetValue("OBJ" & Object, "MAXDEF"))
+    ObjData(Object).def = (ObjData(Object).MinDef + ObjData(Object).MaxDef) / 2
     
     ObjData(Object).RazaEnana = val(Leer.GetValue("OBJ" & Object, "RazaEnana"))
     ObjData(Object).RazaDrow = val(Leer.GetValue("OBJ" & Object, "RazaDrow"))
