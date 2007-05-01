@@ -11030,10 +11030,10 @@ End Sub
 Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/30/06
-'
+'Last Modification: 1/05/07
+'Pablo (ToxicWaste): 1/05/07, You can now edit the punishment.
 '***************************************************
-    If UserList(UserIndex).incomingData.length < 4 Then
+    If UserList(UserIndex).incomingData.length < 7 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -11049,13 +11049,15 @@ On Error GoTo errhandler
         
         Dim UserName As String
         Dim punishment As Byte
+        Dim NewText As String
         
         UserName = buffer.ReadASCIIString()
         punishment = buffer.ReadByte
+        NewText = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
             If LenB(UserName) = 0 Then
-                Call WriteConsoleMsg(UserIndex, "Utilice /borrarpj Nick@NumeroDePena", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Utilice /borrarpena Nick@NumeroDePena@NuevaPena", FontTypeNames.FONTTYPE_INFO)
             Else
                 If (InStrB(UserName, "\") <> 0) Then
                         UserName = Replace(UserName, "\", "")
@@ -11067,11 +11069,11 @@ On Error GoTo errhandler
                 If FileExist(CharPath & UserName & ".chr", vbNormal) Then
                     Call LogGM(.name, " borro la pena: " & punishment & "-" & _
                       GetVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment) _
-                      & " de " & UserName, .flags.Privilegios And PlayerType.Consejero)
+                      & " de " & UserName & " y la cambió por: " & NewText, .flags.Privilegios And PlayerType.Consejero)
                     
-                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment, LCase$(.name) & ": <Pena borrada> " & Date & " " & time)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment, LCase$(.name) & ": <" & NewText & "> " & Date & " " & time)
                     
-                    Call WriteConsoleMsg(UserIndex, "Pena borrada.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Pena Modificada.", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
