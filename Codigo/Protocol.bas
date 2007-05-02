@@ -5138,6 +5138,15 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        'In Arghäl it is only allowed to resurect newbies.
+        If UserList(UserIndex).Pos.Map = 196 Then
+            If Not EsNewbie(UserIndex) Then
+                Call WriteConsoleMsg(UserIndex, "El sacerdote no puede resucitarte debido a que no eres newbie. Solo se resucitan Newbies en Arghäl", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+        End If
+        
+        
         Call RevivirUsuario(UserIndex)
         Call WriteConsoleMsg(UserIndex, "¡¡Hás sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
     End With
