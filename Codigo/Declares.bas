@@ -306,6 +306,7 @@ Public Enum eNPCType
     DRAGON = 6
     Timbero = 7
     Guardiascaos = 8
+    ResucitadorNewbie = 9
 End Enum
 
 Public Const MIN_APUÑALAR As Byte = 10

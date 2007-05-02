@@ -135,25 +135,15 @@ If InMapBounds(Map, X, Y) Then
             'A depositar de una
             Call IniciarDeposito(UserIndex)
         
-        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Then
+        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
             If Distancia(UserList(UserIndex).Pos, Npclist(MapData(Map, X, Y).NpcIndex).Pos) > 10 Then
                 Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
-
            
            'Revivimos si es necesario
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                'In Arghäl it is only allowed to resurect newbies.
-                If UserList(UserIndex).Pos.Map = 196 Then
-                    If Not EsNewbie(UserIndex) Then
-                        Call WriteConsoleMsg(UserIndex, "El sacerdote no puede resucitarte debido a que no eres newbie. Solo se resucitan Newbies en Arghäl", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call RevivirUsuario(UserIndex)
-                    End If
-                Else
-                    Call RevivirUsuario(UserIndex)
-                End If
+            If UserList(UserIndex).flags.Muerto = 1 And (Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex)) Then
+                Call RevivirUsuario(UserIndex)
             End If
             
             'curamos totalmente

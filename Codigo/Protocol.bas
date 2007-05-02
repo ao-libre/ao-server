@@ -5129,23 +5129,15 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
         End If
         
         'Validate NPC and make sure player is dead
-        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
-            Or .flags.Muerto <> 1 Then Exit Sub
+        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
+            And (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie Or Not EsNewbie(UserIndex))) _
+            Or .flags.Muerto = 0 Then Exit Sub
         
         'Make sure it's close enough
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then
             Call WriteConsoleMsg(UserIndex, "El sacerdote no puede resucitarte debido a que estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-        
-        'In Arghäl it is only allowed to resurect newbies.
-        If UserList(UserIndex).Pos.Map = 196 Then
-            If Not EsNewbie(UserIndex) Then
-                Call WriteConsoleMsg(UserIndex, "El sacerdote no puede resucitarte debido a que no eres newbie. Solo se resucitan Newbies en Arghäl", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-        End If
-        
         
         Call RevivirUsuario(UserIndex)
         Call WriteConsoleMsg(UserIndex, "¡¡Hás sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
@@ -5173,7 +5165,8 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
+        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
+            And Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie) _
             Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then

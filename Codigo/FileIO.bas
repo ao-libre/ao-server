@@ -627,13 +627,6 @@ For Object = 1 To NumObjDatas
             ObjData(Object).Real = val(Leer.GetValue("OBJ" & Object, "Real"))
             ObjData(Object).Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
         
-            ObjData(Object).LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-            ObjData(Object).LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-            ObjData(Object).LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-            ObjData(Object).SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-        
-        
-        
         Case eOBJType.otInstrumentos
             ObjData(Object).Snd1 = val(Leer.GetValue("OBJ" & Object, "SND1"))
             ObjData(Object).Snd2 = val(Leer.GetValue("OBJ" & Object, "SND2"))
