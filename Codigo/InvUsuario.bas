@@ -1112,15 +1112,17 @@ Select Case Obj.OBJType
             Exit Sub
         End If
         
-        If UserList(UserIndex).flags.Hambre = 0 And _
-           UserList(UserIndex).flags.Sed = 0 Then
-            Call AgregarHechizo(UserIndex, Slot)
-            
-            Call UpdateUserInv(False, UserIndex, Slot)
+        If UserList(UserIndex).Stats.MaxMAN > 0 Then
+            If UserList(UserIndex).flags.Hambre = 0 And _
+                UserList(UserIndex).flags.Sed = 0 Then
+                Call AgregarHechizo(UserIndex, Slot)
+                Call UpdateUserInv(False, UserIndex, Slot)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
+            End If
         Else
-           Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "No tienes conocimientos de las Artes Arcanas.", FontTypeNames.FONTTYPE_INFO)
         End If
-       
     Case eOBJType.otMinerales
         If UserList(UserIndex).flags.Muerto = 1 Then
              Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
@@ -1133,20 +1135,25 @@ Select Case Obj.OBJType
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
+        
         If Obj.Real Then '¿Es el Cuerno Real?
-            If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
-            Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+            If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+                    Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+                Exit Sub
             End If
-            Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
-            Exit Sub
         ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
-            If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
-            Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+            If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
+                    Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
+                Exit Sub
             End If
-            Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1))
-            Exit Sub
         End If
         'Si llega aca es porque es o Laud o Tambor o Flauta
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
