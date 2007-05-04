@@ -56,6 +56,7 @@ Public ReiniciarServer As Long
 Public tInicioServer As Long
 Public EstadisticasWeb As New clsEstadisticasIPC
 
+'INTERVALOS
 Public SanaIntervaloSinDescansar As Integer
 Public StaminaIntervaloSinDescansar As Integer
 Public SanaIntervaloDescansar As Integer
@@ -80,6 +81,10 @@ Public IntervaloCerrarConexion As Long '[Gonzalo]
 Public IntervaloUserPuedeUsar As Long
 Public IntervaloFlechasCazadores As Long
 Public IntervaloAutoReiniciar As Long   'segundos
+
+'BALANCE
+
+Public PorcentajeRecuperoMana As Integer
 
 Public MinutosWs As Long
 Public Puerto As Integer

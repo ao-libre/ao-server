@@ -1371,6 +1371,8 @@ IntervaloAutoReiniciar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "Inter
 
 IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOculto"))
 
+'&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
+
 'Ressurect pos
 ResPos.Map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
 ResPos.X = val(ReadField(2, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
@@ -1385,6 +1387,11 @@ If MaxUsers = 0 Then
     ReDim UserList(1 To MaxUsers) As User
 End If
 
+'&&&&&&&&&&&&&&&&&&&&& BALANCE &&&&&&&&&&&&&&&&&&&&&&&
+
+PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "PorcentajeRecuperoMana"))
+
+''&&&&&&&&&&&&&&&&&&&&& FIN BALANCE &&&&&&&&&&&&&&&&&&&&&&&
 Call Statistics.Initialize
 
 Nix.Map = GetVar(DatPath & "Ciudades.dat", "NIX", "Mapa")
