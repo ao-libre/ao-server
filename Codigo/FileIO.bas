@@ -1410,6 +1410,10 @@ Lindos.Map = GetVar(DatPath & "Ciudades.dat", "Lindos", "Mapa")
 Lindos.X = GetVar(DatPath & "Ciudades.dat", "Lindos", "X")
 Lindos.Y = GetVar(DatPath & "Ciudades.dat", "Lindos", "Y")
 
+Arghal.Map = GetVar(DatPath & "Ciudades.dat", "Arghal", "Mapa")
+Arghal.X = GetVar(DatPath & "Ciudades.dat", "Arghal", "X")
+Arghal.Y = GetVar(DatPath & "Ciudades.dat", "Arghal", "Y")
+
 
 Call MD5sCarga
 

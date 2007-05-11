@@ -119,6 +119,7 @@ Public Enum eCiudad
     cNix
     cBanderbill
     cLindos
+    cArghal
 End Enum
 
 Public Enum eRaza
@@ -1423,8 +1424,8 @@ Public Parties(1 To MAX_PARTIES) As clsParty
 Public Nix As WorldPos
 Public Ullathorpe As WorldPos
 Public Banderbill As WorldPos
-
 Public Lindos As WorldPos
+Public Arghal As WorldPos
 
 Public Prision As WorldPos
 Public Libertad As WorldPos

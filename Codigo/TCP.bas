@@ -969,6 +969,8 @@ If UserList(UserIndex).Pos.Map = 0 Then
             UserList(UserIndex).Pos = Banderbill
         Case eCiudad.cLindos
             UserList(UserIndex).Pos = Lindos
+        Case eCiudad.cArghal
+            UserList(UserIndex).Pos = Arghal
         Case Else
             UserList(UserIndex).Hogar = eCiudad.cUllathorpe
             UserList(UserIndex).Pos = Ullathorpe
