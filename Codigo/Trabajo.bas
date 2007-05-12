@@ -1280,6 +1280,7 @@ res = RandomNumber(1, Suerte)
 If res = 1 Then
     
     cant = Porcentaje(UserList(UserIndex).Stats.MaxMAN, PorcentajeRecuperoMana)
+    If cant <= 0 Then cant = 1
     UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN + cant
     If UserList(UserIndex).Stats.MinMAN > UserList(UserIndex).Stats.MaxMAN Then _
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MaxMAN
