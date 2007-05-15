@@ -6784,7 +6784,7 @@ On Error GoTo errhandler
         
         guild = buffer.ReadASCIIString()
         
-        If Not .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
             If (InStrB(guild, "\") <> 0) Then
                 guild = Replace(guild, "\", "")
             End If
@@ -6850,7 +6850,7 @@ On Error GoTo errhandler
         
         message = buffer.ReadASCIIString()
         
-        If Not .flags.Privilegios And User Then
+        If Not .flags.Privilegios And PlayerType.User Then
             Call LogGM(.name, "Mensaje a Gms:" & message, .flags.Privilegios And PlayerType.Consejero)
         
             If LenB(message) <> 0 Then
@@ -7507,7 +7507,7 @@ On Error GoTo errhandler
         
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Consejero) Then
             'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-            If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
+            If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
                 Else
