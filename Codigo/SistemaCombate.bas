@@ -175,42 +175,42 @@ Select Case UCase$(clase)
 End Select
 End Function
 
-Function ModicadorDañoClaseWresterling(ByVal clase As eClass) As Single
+Function ModicadorDañoClaseWrestling(ByVal clase As eClass) As Single
 'Pablo (ToxicWaste): Esto en proxima versión habrá que balancearlo para cada clase
 'Hoy por hoy está solo hecho para el bandido.
 Select Case UCase$(clase)
     Case eClass.Warrior
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Paladin
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Hunter
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Assasin
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Thief
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Pirat
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Bandit
-        ModicadorDañoClaseWresterling = 1.1
+        ModicadorDañoClaseWrestling = 1.1
     Case eClass.Cleric
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Bard
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Druid
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Fisher
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Lumberjack
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Miner
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Blacksmith
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case eClass.Carpenter
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
     Case Else
-        ModicadorDañoClaseWresterling = 0.4
+        ModicadorDañoClaseWrestling = 0.4
 End Select
 End Function
 
@@ -384,27 +384,27 @@ PoderAtaqueProyectil = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stat
 
 End Function
 
-Function PoderAtaqueWresterling(ByVal UserIndex As Integer) As Long
+Function PoderAtaqueWrestling(ByVal UserIndex As Integer) As Long
 Dim PoderAtaqueTemp As Long
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 31 Then
-    PoderAtaqueTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) * _
+If UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) < 31 Then
+    PoderAtaqueTemp = (UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) * _
     ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 61 Then
-        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) < 61 Then
+        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) + _
         UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad)) * _
         ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 91 Then
-        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) < 91 Then
+        PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) + _
         (2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
         ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 Else
-       PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) + _
+       PoderAtaqueTemp = ((UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) + _
        (3 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad))) * _
        ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 End If
 
-PoderAtaqueWresterling = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
+PoderAtaqueWrestling = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
 
 End Function
 
@@ -425,7 +425,7 @@ If Arma > 0 Then 'Usando un arma
         PoderAtaque = PoderAtaqueArma(UserIndex)
     End If
 Else 'Peleando con puños
-    PoderAtaque = PoderAtaqueWresterling(UserIndex)
+    PoderAtaque = PoderAtaqueWrestling(UserIndex)
 End If
 
 
@@ -441,7 +441,7 @@ If UserImpactoNpc Then
             Call SubirSkill(UserIndex, Armas)
        End If
     Else
-        Call SubirSkill(UserIndex, Wresterling)
+        Call SubirSkill(UserIndex, Wrestling)
     End If
 End If
 
@@ -566,8 +566,8 @@ If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
     End If
 Else
     'Pablo (ToxicWaste)
-    ModifClase = ModicadorDañoClaseWresterling(UserList(UserIndex).clase)
-    DañoArma = RandomNumber(1, 3) 'Hacemos que sea "tipo" una daga el ataque de wresterling
+    ModifClase = ModicadorDañoClaseWrestling(UserList(UserIndex).clase)
+    DañoArma = RandomNumber(1, 3) 'Hacemos que sea "tipo" una daga el ataque de Wrestling
     DañoMaxArma = 3
 End If
 
@@ -1091,7 +1091,7 @@ If UserList(AtacanteIndex).Invent.WeaponEqpObjIndex > 0 Then
                 ((PoderAtaque - UserPoderEvasion) * 0.4)))
    
 Else
-    PoderAtaque = PoderAtaqueWresterling(AtacanteIndex)
+    PoderAtaque = PoderAtaqueWrestling(AtacanteIndex)
     ProbExito = Maximo(10, Minimo(90, 50 + _
                 ((PoderAtaque - UserPoderEvasion) * 0.4)))
     
@@ -1125,7 +1125,7 @@ If UsuarioImpacto Then
                   Call SubirSkill(AtacanteIndex, Proyectiles)
            End If
    Else
-        Call SubirSkill(AtacanteIndex, Wresterling)
+        Call SubirSkill(AtacanteIndex, Wrestling)
    End If
 End If
 
@@ -1239,7 +1239,7 @@ If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Se
             End If
         Else
         'sino tal vez lucha libre
-                Call SubirSkill(AtacanteIndex, Wresterling)
+                Call SubirSkill(AtacanteIndex, Wrestling)
         End If
         
         Call SubirSkill(AtacanteIndex, Tacticas)

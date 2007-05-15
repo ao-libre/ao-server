@@ -383,7 +383,7 @@ UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) = US16
 UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) = US17
 UserList(UserIndex).Stats.UserSkills(eSkill.Domar) = US18
 UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) = US19
-UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = US20
+UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) = US20
 UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) = US21
 
 totalskpts = 0
@@ -982,53 +982,53 @@ Else
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
-    
-    'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
-    'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer)
-    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).NpcIndex <> 0 Then
-        Dim FoundPlace As Boolean
-        Dim tX As Integer
-        Dim tY As Integer
-        FoundPlace = False
-        For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
-            For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
-                'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                If LegalPos(UserList(UserIndex).Pos.Map, tX, tY, False, True) Then
-                    FoundPlace = True
-                    Exit For
+End If
+
+'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
+'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer)
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).NpcIndex <> 0 Then
+    Dim FoundPlace As Boolean
+    Dim tX As Integer
+    Dim tY As Integer
+    FoundPlace = False
+    For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
+        For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
+            'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
+            If LegalPos(UserList(UserIndex).Pos.Map, tX, tY, False, True) Then
+                FoundPlace = True
+                Exit For
+            End If
+        Next tX
+    Next tY
+    If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
+        UserList(UserIndex).Pos.X = tX
+        UserList(UserIndex).Pos.Y = tY
+    Else
+        'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
+        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
+            'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
+            If UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
+                'Le avisamos al que estaba comerciando que se tuvo que ir.
+                If UserList(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
+                    Call FinComerciarUsu(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu)
+                    Call WriteConsoleMsg(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                    Call FlushBuffer(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu)
                 End If
-            Next tX
-        Next tY
-        If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
-            UserList(UserIndex).Pos.X = tX
-            UserList(UserIndex).Pos.Y = tY
-        Else
-            'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-            If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Then
-                'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                If UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
-                    'Le avisamos al que estaba comerciando que se tuvo que ir.
-                    If UserList(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                        Call FinComerciarUsu(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu)
-                        Call WriteConsoleMsg(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                        Call FlushBuffer(UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).ComUsu.DestUsu)
-                    End If
-                    'Lo sacamos.
-                    If UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).flags.UserLogged Then
-                        Call FinComerciarUsu(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
-                        Call WriteErrorMsg(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
-                        Call FlushBuffer(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
-                        Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
-                    End If
+                'Lo sacamos.
+                If UserList(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex).flags.UserLogged Then
+                    Call FinComerciarUsu(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
+                    Call WriteErrorMsg(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                    Call FlushBuffer(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
                 End If
             End If
+            
+            Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
         End If
     End If
-        
-   
-    If UserList(UserIndex).flags.Muerto = 1 Then
-        Call Empollando(UserIndex)
-    End If
+End If
+
+If UserList(UserIndex).flags.Muerto = 1 Then
+    Call Empollando(UserIndex)
 End If
 
 'Nombre de sistema
@@ -1619,8 +1619,8 @@ Exit Sub
 errhandler:
 Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
-
 End Sub
+
 Sub ReloadSokcet()
 On Error GoTo errhandler
 #If UsarQueSocket = 1 Then

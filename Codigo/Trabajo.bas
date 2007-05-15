@@ -1058,7 +1058,7 @@ If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then Exit Sub
 If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).name <> "Espada Vikinga" Then Exit Sub
 
 
-Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling)
+Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling)
 
 Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
 
@@ -1347,7 +1347,7 @@ End If
     
 Dim res As Integer
 res = RandomNumber(0, 100)
-If res < (UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) / 4) Then
+If res < (UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) / 4) Then
     UserList(VictimaIndex).flags.Paralizado = 1
     UserList(VictimaIndex).Counters.Paralisis = IntervaloParalizado / 2
     Call WriteParalizeOK(VictimaIndex)
@@ -1362,37 +1362,37 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
 Dim Suerte As Integer
 Dim res As Integer
 
-If UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 10 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= -1 Then
+If UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 10 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= -1 Then
                     Suerte = 35
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 20 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 11 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 20 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 11 Then
                     Suerte = 30
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 30 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 21 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 30 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 21 Then
                     Suerte = 28
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 40 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 31 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 40 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 31 Then
                     Suerte = 24
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 50 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 41 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 50 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 41 Then
                     Suerte = 22
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 60 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 51 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 60 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 51 Then
                     Suerte = 20
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 70 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 61 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 70 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 61 Then
                     Suerte = 18
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 80 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 71 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 80 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 71 Then
                     Suerte = 15
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) <= 90 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 81 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) <= 90 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 81 Then
                     Suerte = 10
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) < 100 _
-   And UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) >= 91 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) < 100 _
+   And UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) >= 91 Then
                     Suerte = 7
-ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wresterling) = 100 Then
+ElseIf UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) = 100 Then
                     Suerte = 5
 End If
 res = RandomNumber(1, Suerte)

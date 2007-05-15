@@ -310,7 +310,7 @@ SkillsNames(eSkill.Herreria) = "Herreria"
 SkillsNames(eSkill.Liderazgo) = "Liderazgo"
 SkillsNames(eSkill.Domar) = "Domar animales"
 SkillsNames(eSkill.Proyectiles) = "Armas de proyectiles"
-SkillsNames(eSkill.Wresterling) = "Wresterling"
+SkillsNames(eSkill.Wrestling) = "Wrestling"
 SkillsNames(eSkill.Navegacion) = "Navegacion"
 
 
