@@ -1052,6 +1052,9 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.Map).Music, 45)))
 
+'Reseteamos los privilegios
+UserList(UserIndex).flags.Privilegios = 0
+
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
 If EsAdmin(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
