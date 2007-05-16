@@ -728,6 +728,7 @@ Else
                             End If
                          End If
                          If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Sub
+                         If Npclist(NpcIndex).TargetNPC = 0 Then Exit Sub
                          tHeading = FindDirection(Npclist(NpcIndex).Pos, Npclist(MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex).Pos)
                          Call MoveNPCChar(NpcIndex, tHeading)
                          Exit Sub
