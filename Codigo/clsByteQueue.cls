@@ -46,9 +46,15 @@ Option Base 0       'It's the default, but we make it explicit just in case...
 
 ''
 ' The error number thrown when there is not enough data in
-' the buffer to be read or not enough space to write.
+' the buffer to read the specified data type.
 ' It's 9 (subscript out of range) + the object error constant
 Private Const NOT_ENOUGH_DATA As Long = vbObjectError + 9
+
+''
+' The error number thrown when there is not enough space in
+' the buffer to write.
+Private Const NOT_ENOUGH_SPACE As Long = vbObjectError + 10
+
 
 ''
 ' Default size of a data buffer (10 Kbs)
@@ -182,7 +188,7 @@ Private Function WriteData(ByRef buf() As Byte, ByVal dataLength As Long) As Lon
 '***************************************************
     'Check if there is enough free space
     If queueCapacity - queueLength - dataLength < 0 Then
-        Call Err.raise(NOT_ENOUGH_DATA)
+        Call Err.raise(NOT_ENOUGH_SPACE)
         Exit Function
     End If
     
@@ -1066,3 +1072,18 @@ Public Property Get NotEnoughDataErrCode() As Long
 '***************************************************
     NotEnoughDataErrCode = NOT_ENOUGH_DATA
 End Property
+
+''
+' Retrieves the NOT_ENOUGH_SPACE error code.
+'
+' @return   NOT_ENOUGH_SPACE.
+
+Public Property Get NotEnoughSpaceErrCode() As Long
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 04/27/06
+'Retrieves the NOT_ENOUGH_SPACE error code
+'***************************************************
+    NotEnoughSpaceErrCode = NOT_ENOUGH_SPACE
+End Property
+

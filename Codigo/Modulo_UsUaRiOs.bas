@@ -1253,49 +1253,48 @@ End Function
 
 Sub SubirSkill(ByVal UserIndex As Integer, ByVal Skill As Integer)
 
-If UserList(UserIndex).flags.Hambre = 0 And _
-  UserList(UserIndex).flags.Sed = 0 Then
+    If UserList(UserIndex).flags.Hambre = 0 And UserList(UserIndex).flags.Sed = 0 Then
+        
+        If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
+        
+        Dim Lvl As Integer
+        Lvl = UserList(UserIndex).Stats.ELV
+        
+        If Lvl > UBound(LevelSkill) Then Lvl = UBound(LevelSkill)
+        
+        If UserList(UserIndex).Stats.UserSkills(Skill) >= LevelSkill(Lvl).LevelValue Then Exit Sub
     
-    If UserList(UserIndex).Stats.UserSkills(Skill) = MAXSKILLPOINTS Then Exit Sub
-    
-    Dim Lvl As Integer
-    Lvl = UserList(UserIndex).Stats.ELV
-    
-    If Lvl > UBound(LevelSkill) Then Lvl = UBound(LevelSkill)
-    
-    If UserList(UserIndex).Stats.UserSkills(Skill) >= LevelSkill(Lvl).LevelValue Then Exit Sub
-
-    Dim Aumenta As Integer
-    Dim Prob As Integer
-    
-    If Lvl <= 3 Then
-        Prob = 25
-    ElseIf Lvl > 3 And Lvl < 6 Then
-        Prob = 35
-    ElseIf Lvl >= 6 And Lvl < 10 Then
-        Prob = 40
-    ElseIf Lvl >= 10 And Lvl < 20 Then
-        Prob = 45
-    Else
-        Prob = 50
+        Dim Aumenta As Integer
+        Dim Prob As Integer
+        
+        If Lvl <= 3 Then
+            Prob = 25
+        ElseIf Lvl > 3 And Lvl < 6 Then
+            Prob = 35
+        ElseIf Lvl >= 6 And Lvl < 10 Then
+            Prob = 40
+        ElseIf Lvl >= 10 And Lvl < 20 Then
+            Prob = 45
+        Else
+            Prob = 50
+        End If
+        
+        Aumenta = RandomNumber(1, Prob)
+        
+        If Aumenta = 7 Then
+            UserList(UserIndex).Stats.UserSkills(Skill) = UserList(UserIndex).Stats.UserSkills(Skill) + 1
+            Call WriteConsoleMsg(UserIndex, "¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & UserList(UserIndex).Stats.UserSkills(Skill) & " pts.", FontTypeNames.FONTTYPE_INFO)
+            
+            UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + 50
+            If UserList(UserIndex).Stats.Exp > MAXEXP Then _
+                UserList(UserIndex).Stats.Exp = MAXEXP
+            
+            Call WriteConsoleMsg(UserIndex, "¡Has ganado 50 puntos de experiencia!", FontTypeNames.FONTTYPE_FIGHT)
+            
+            Call WriteUpdateExp(UserIndex)
+            Call CheckUserLevel(UserIndex)
+        End If
     End If
-    
-    Aumenta = RandomNumber(1, Prob)
-    
-    If Aumenta = 7 Then
-        UserList(UserIndex).Stats.UserSkills(Skill) = UserList(UserIndex).Stats.UserSkills(Skill) + 1
-        Call WriteConsoleMsg(UserIndex, "¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & UserList(UserIndex).Stats.UserSkills(Skill) & " pts.", FontTypeNames.FONTTYPE_INFO)
-        
-        UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + 50
-        If UserList(UserIndex).Stats.Exp > MAXEXP Then _
-            UserList(UserIndex).Stats.Exp = MAXEXP
-        
-        Call WriteConsoleMsg(UserIndex, "¡Has ganado 50 puntos de experiencia!", FontTypeNames.FONTTYPE_FIGHT)
-        
-        Call WriteUpdateExp(UserIndex)
-        Call CheckUserLevel(UserIndex)
-    End If
-End If
 
 End Sub
 
