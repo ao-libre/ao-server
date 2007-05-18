@@ -757,7 +757,6 @@ Err:
     If frmMain.Socket2(UserIndex).Write(Datos, Len(Datos)) < 0 Then
         If frmMain.Socket2(UserIndex).LastError = WSAEWOULDBLOCK Then
             ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-            UserList(UserIndex).SockPuedoEnviar = False
             Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(Datos)
         Else
             'Close the socket avoiding any critical error
@@ -985,12 +984,14 @@ Else
 End If
 
 'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
-'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer)
+'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
 If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).NpcIndex <> 0 Then
     Dim FoundPlace As Boolean
-    Dim tX As Integer
-    Dim tY As Integer
+    Dim tX As Long
+    Dim tY As Long
+    
     FoundPlace = False
+    
     For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
         For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
             'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
@@ -999,7 +1000,11 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
                 Exit For
             End If
         Next tX
+        
+        If FoundPlace Then _
+            Exit For
     Next tY
+    
     If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
         UserList(UserIndex).Pos.X = tX
         UserList(UserIndex).Pos.Y = tY
@@ -1022,7 +1027,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
                 End If
             End If
             
-            Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
+            Call CloseSocket(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex, True)
         End If
     End If
 End If
@@ -1489,7 +1494,6 @@ End Sub
 
 Sub ResetUserSlot(ByVal UserIndex As Integer)
 
-UserList(UserIndex).SockPuedoEnviar = False
 UserList(UserIndex).ConnIDValida = False
 UserList(UserIndex).ConnID = -1
 
@@ -1515,7 +1519,6 @@ With UserList(UserIndex).ComUsu
 End With
 
 End Sub
-
 
 Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)

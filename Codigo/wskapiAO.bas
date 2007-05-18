@@ -257,7 +257,6 @@ Case 1025
 '            Exit Function
 '        End If
 '
-'        UserList(N).SockPuedoEnviar = True
 
 '        Call IntentarEnviarDatosEncolados(N)
 '
@@ -379,7 +378,6 @@ If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
     If Ret < 0 Then
         UltError = Err.LastDllError
         If UltError = WSAEWOULDBLOCK Then
-            UserList(Slot).SockPuedoEnviar = False
             
 #If SeguridadAlkon Then
             Call Security.DataStored(Slot)
@@ -536,7 +534,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         
         If NewIndex > LastUser Then LastUser = NewIndex
         
-        UserList(NewIndex).SockPuedoEnviar = True
         UserList(NewIndex).ConnID = NuevoSock
         UserList(NewIndex).ConnIDValida = True
         

@@ -1069,8 +1069,6 @@ Public Type User
     ConnIDValida As Boolean
     ConnID As Long 'ID
     
-    SockPuedoEnviar As Boolean
-    
     '[KEVIN]
     BancoInvent As BancoInventario
     '[/KEVIN]
