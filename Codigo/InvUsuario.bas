@@ -210,7 +210,7 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
 
             MiObj.ObjIndex = iORO
             
-            If EsGM(UserIndex) Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
+            If EsGM(UserIndex) Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
             Dim AuxPos As WorldPos
             
             If UserList(UserIndex).clase = eClass.Pirat And UserList(UserIndex).Invent.BarcoObjIndex = 476 Then
@@ -322,7 +322,7 @@ If num > 0 Then
             Call WriteConsoleMsg(UserIndex, "¡¡ATENCION!! ¡ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
         End If
         
-        If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name, False)
+        If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name)
   Else
     Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
   End If
@@ -436,7 +436,7 @@ If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(User
         Else
             'Quitamos el objeto
             Call EraseObj(UserList(UserIndex).Pos.Map, MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
-            If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name, False)
+            If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
         End If
         
     End If

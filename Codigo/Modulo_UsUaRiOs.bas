@@ -815,7 +815,7 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Call WriteConsoleMsg(UserIndex, "Tu golpe minimo aumento en " & AumentoHIT & " puntos.", FontTypeNames.FONTTYPE_INFO)
     End If
     
-    Call LogDesarrollo(Date & " " & UserList(UserIndex).name & " paso a nivel " & UserList(UserIndex).Stats.ELV & " gano HP: " & AumentoHP)
+    Call LogDesarrollo(UserList(UserIndex).name & " paso a nivel " & UserList(UserIndex).Stats.ELV & " gano HP: " & AumentoHP)
     
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
 Loop

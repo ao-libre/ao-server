@@ -1058,16 +1058,16 @@ UserList(UserIndex).flags.Privilegios = 0
 'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
 If EsAdmin(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
 ElseIf EsDios(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Dios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
 ElseIf EsSemiDios(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.SemiDios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, False)
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
 ElseIf EsConsejero(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Consejero
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip, True)
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
 Else
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.User
     UserList(UserIndex).flags.AdminPerseguible = True

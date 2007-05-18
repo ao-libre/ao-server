@@ -655,16 +655,13 @@ End Sub
 
 
 
-Public Sub LogGM(Nombre As String, texto As String, Consejero As Boolean)
+Public Sub LogGM(Nombre As String, texto As String)
 On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
-If Consejero Then
-    Open App.Path & "\logs\consejeros\" & Nombre & ".log" For Append Shared As #nfile
-Else
-    Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
-End If
+'Guardamos todo en el mismo lugar. Pablo (ToxicWaste) 18/05/07
+Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
 Print #nfile, Date & " " & time & " " & texto
 Close #nfile
 

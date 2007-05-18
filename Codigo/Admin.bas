@@ -502,7 +502,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                             Call CloseSocket(bannerUserIndex)
                         End If
                         
-                        Call LogGM(.name, "BAN a " & UserName, False)
+                        Call LogGM(.name, "BAN a " & UserName)
                     End If
                 End If
             Else
@@ -525,7 +525,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                 Call CloseSocket(bannerUserIndex)
             End If
             
-            Call LogGM(.name, "BAN a " & UserName, False)
+            Call LogGM(.name, "BAN a " & UserName)
             
             'ponemos el flag de ban a 1
             Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
