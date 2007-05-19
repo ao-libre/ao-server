@@ -1016,6 +1016,8 @@ Public Type UserCounters
     TimerPuedeUsarArco As Long
     TimerPuedeTrabajar As Long
     TimerUsar As Long
+    TimerMagiaGolpe As Long
+    
     
     Trabajando As Long  ' Para el centinela
     Ocultando As Long   ' Unico trabajo no revisado por el centinela

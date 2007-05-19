@@ -974,69 +974,72 @@ End Sub
 Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 
 'If UserList(UserIndex).flags.PuedeAtacar = 1 Then
-'Check Magic interval
-If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then Exit Sub
 'Check bow's interval
 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
-If IntervaloPermiteAtacar(UserIndex) Then
-    
-    'Quitamos stamina
-    If UserList(UserIndex).Stats.MinSta >= 10 Then
-        Call QuitarSta(UserIndex, RandomNumber(1, 10))
-    Else
-        Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
-        Exit Sub
-    End If
-    
-    'UserList(UserIndex).flags.PuedeAtacar = 0
-    
-    Dim AttackPos As WorldPos
-    AttackPos = UserList(UserIndex).Pos
-    Call HeadtoPos(UserList(UserIndex).Char.heading, AttackPos)
-    
-    'Exit if not legal
-    If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
-        Exit Sub
-    End If
-    
-    Dim index As Integer
-    index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
-    
-    
-    'Look for user
-    If index > 0 Then
-        Call UsuarioAtacaUsuario(UserIndex, index)
-        Call WriteUpdateUserStats(UserIndex)
-        Call WriteUpdateUserStats(index)
-        Exit Sub
-    End If
-    
-    'Look for NPC
-    If MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
-    
-        If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
-            
-            If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
-               MapInfo(Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.Map).Pk = False Then
-                    Call WriteConsoleMsg(UserIndex, "No podés atacar mascotas en zonas seguras", FontTypeNames.FONTTYPE_FIGHT)
-                    Exit Sub
-            End If
-
-            Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex)
-            
-        Else
-            Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
-        End If
-        
-        Call WriteUpdateUserStats(UserIndex)
-        
-        Exit Sub
-    End If
-    
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
-    Call WriteUpdateUserStats(UserIndex)
+'Reemplazo por intervalo Magia-Golpe
+If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then
+    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub 'Corta intervalo de Golpe
+Else
+    'Check Attack interval
+    If Not IntervaloPermiteAtacar(UserIndex) Then Exit Sub
 End If
+    
+'Quitamos stamina
+If UserList(UserIndex).Stats.MinSta >= 10 Then
+    Call QuitarSta(UserIndex, RandomNumber(1, 10))
+Else
+    Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
+ 
+'UserList(UserIndex).flags.PuedeAtacar = 0
+
+Dim AttackPos As WorldPos
+AttackPos = UserList(UserIndex).Pos
+Call HeadtoPos(UserList(UserIndex).Char.heading, AttackPos)
+   
+'Exit if not legal
+If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
+    Exit Sub
+End If
+    
+Dim index As Integer
+index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+    
+'Look for user
+If index > 0 Then
+    Call UsuarioAtacaUsuario(UserIndex, index)
+    Call WriteUpdateUserStats(UserIndex)
+    Call WriteUpdateUserStats(index)
+    Exit Sub
+End If
+    
+'Look for NPC
+If MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
+    
+    If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
+            
+        If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
+            MapInfo(Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.Map).Pk = False Then
+                Call WriteConsoleMsg(UserIndex, "No podés atacar mascotas en zonas seguras", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+        End If
+
+        Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex)
+            
+    Else
+        Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
+    End If
+        
+    Call WriteUpdateUserStats(UserIndex)
+        
+    Exit Sub
+End If
+    
+Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING))
+Call WriteUpdateUserStats(UserIndex)
+
 
 If UserList(UserIndex).Counters.Trabajando Then _
     UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando - 1

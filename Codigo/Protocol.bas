@@ -2704,12 +2704,18 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                'Check attack interval
-                If Not IntervaloPermiteAtacar(UserIndex, False) Then Exit Sub
                 'Check bow's interval
                 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
-                'Check Magic interval
-                If Not IntervaloPermiteLanzarSpell(UserIndex) Then Exit Sub
+                
+                'Reemplazado por intervalo MagiaGolpe
+                If Not IntervaloPermiteAtacar(UserIndex, False) Then
+                    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub 'Corta el intervalo de Magia.
+                Else
+                    'Check Magic interval
+                    If Not IntervaloPermiteLanzarSpell(UserIndex) Then Exit Sub
+                End If
+                
+                
                 
                 'Check intervals and cast
                 If .flags.Hechizo > 0 Then
