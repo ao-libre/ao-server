@@ -1256,9 +1256,10 @@ Sub ResetFacciones(ByVal UserIndex As Integer)
 '*************************************************
     With UserList(UserIndex).Faccion
         .ArmadaReal = 0
-        .FuerzasCaos = 0
         .CiudadanosMatados = 0
         .CriminalesMatados = 0
+        .FuerzasCaos = 0
+        .FechaIngreso = "No ingresó a ninguna Facción"
         .RecibioArmaduraCaos = 0
         .RecibioArmaduraReal = 0
         .RecibioExpInicialCaos = 0
@@ -1267,7 +1268,6 @@ Sub ResetFacciones(ByVal UserIndex As Integer)
         .RecompensasReal = 0
         .Reenlistadas = 0
         .NivelIngreso = 0
-        .FechaIngreso = "No ingresó a ninguna Facción"
         .MatadosIngreso = 0
         .NextRecompensa = 0
     End With
@@ -1279,6 +1279,7 @@ Sub ResetContadores(ByVal UserIndex As Integer)
 'Last modified: 03/15/2006
 'Resetea todos los valores generales y las stats
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
+'05/20/2007 Integer - Agregue todas las variables que faltaban.
 '*************************************************
     With UserList(UserIndex).Counters
         .AGUACounter = 0
@@ -1298,7 +1299,13 @@ Sub ResetContadores(ByVal UserIndex As Integer)
         .Veneno = 0
         .Trabajando = 0
         .Ocultando = 0
-
+        .bPuedeMeditar = False
+        .Lava = 0
+        .Mimetismo = 0
+        .Saliendo = False
+        .Salir = 0
+        .TiempoOculto = 0
+        .TimerMagiaGolpe = 0
         .TimerLanzarSpell = 0
         .TimerPuedeAtacar = 0
         .TimerPuedeUsarArco = 0
@@ -1364,7 +1371,19 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
             .NPCsMuertos = 0
             .UsuariosMatados = 0
             .SkillPts = 0
+            .GLD = 0
+            .UserAtributos(1) = 0
+            .UserAtributos(2) = 0
+            .UserAtributos(3) = 0
+            .UserAtributos(4) = 0
+            .UserAtributos(5) = 0
+            .UserAtributosBackUP(1) = 0
+            .UserAtributosBackUP(2) = 0
+            .UserAtributosBackUP(3) = 0
+            .UserAtributosBackUP(4) = 0
+            .UserAtributosBackUP(5) = 0
         End With
+        
     End With
 End Sub
 
@@ -1509,7 +1528,6 @@ Call LimpiarInventario(UserIndex)
 Call ResetUserSpells(UserIndex)
 Call ResetUserPets(UserIndex)
 Call ResetUserBanco(UserIndex)
-
 With UserList(UserIndex).ComUsu
     .Acepto = False
     .cant = 0
