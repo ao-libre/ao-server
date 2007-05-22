@@ -306,7 +306,7 @@ If rv Then
                     rv = False
                 End If
                 'diferencia entre niveles
-                If Abs(UserList(UI).Stats.ELV - UserList(UserIndex).Stats.ELV) > MAXPARTYDELTALEVEL Then
+                If Abs(CInt(UserList(UI).Stats.ELV) - CInt(UserList(UserIndex).Stats.ELV)) > MAXPARTYDELTALEVEL Then
                     razon = "La diferencia con " & UserList(UI).name & " es mayor a " & MAXPARTYDELTALEVEL & " niveles."
                     rv = False
                 End If

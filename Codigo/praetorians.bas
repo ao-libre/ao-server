@@ -1135,7 +1135,7 @@ On Error GoTo errorh
     '' Envia las palabras magicas, fx y wav del indice-esimo hechizo del npc-hostiles.dat
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageChatOverHead(Hechizos(indireccion).PalabrasMagicas, Npclist(npcind).Char.CharIndex, vbCyan))
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessagePlayWave(Hechizos(indireccion).WAV))
-    Call SendData(SendTarget.ToNPCArea, PJEnInd, PrepareMessageCreateFX(Npclist(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
+    Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageCreateFX(UserList(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
     
     UserList(PJEnInd).flags.Ceguera = 1
     UserList(PJEnInd).Counters.Ceguera = IntervaloInvisible
@@ -1162,7 +1162,7 @@ On Error GoTo errorh
     '' Envia las palabras magicas, fx y wav del indice-esimo hechizo del npc-hostiles.dat
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageChatOverHead(Hechizos(indireccion).PalabrasMagicas, Npclist(npcind).Char.CharIndex, vbCyan))
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessagePlayWave(Hechizos(indireccion).WAV))
-    Call SendData(SendTarget.ToNPCArea, PJEnInd, PrepareMessageCreateFX(Npclist(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
+    Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageCreateFX(UserList(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
     UserList(PJEnInd).flags.Estupidez = 1
     UserList(PJEnInd).Counters.Estupidez = IntervaloInvisible
     'manda estupidez
@@ -1186,7 +1186,7 @@ On Error GoTo errorh
     '' Envia las palabras magicas, fx y wav del indice-esimo hechizo del npc-hostiles.dat
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageChatOverHead(Hechizos(indireccion).PalabrasMagicas, Npclist(npcind).Char.CharIndex, vbCyan))
     Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessagePlayWave(Hechizos(indireccion).WAV))
-    Call SendData(SendTarget.ToNPCArea, PJEnInd, PrepareMessageCreateFX(Npclist(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
+    Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageCreateFX(UserList(PJEnInd).Char.CharIndex, Hechizos(indireccion).FXgrh, Hechizos(indireccion).loops))
     
     'Sacamos el efecto de ocultarse
     If UserList(PJEnInd).flags.Oculto = 1 Then

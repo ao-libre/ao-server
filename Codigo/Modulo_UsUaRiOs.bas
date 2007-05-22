@@ -854,7 +854,7 @@ PuedeAtravesarAgua = _
 
 End Function
 
-Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As Byte)
+Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
 
 Dim nPos As WorldPos
     
@@ -1571,7 +1571,7 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
-        Call WritePlayMidi(UserIndex, ReadField(1, MapInfo(Map).Music, 45))
+        Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(Map).Music, 45)))
         
         'Update new Map Users
         MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1

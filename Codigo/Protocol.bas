@@ -164,7 +164,7 @@ Private Enum ClientPacketID
     Walk                    'M
     RequestPositionUpdate   'RPU
     Attack                  'AT
-    PickUp                  'AG
+    P1ickUp                  'AG
     CombatModeToggle        'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
     SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
     RequestGuildLeaderInfo  'GLINFO
@@ -1754,14 +1754,16 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
             dummy = (TempTick - .flags.StartWalk)
             
             ' 5800 is actually less than what would be needed in perfect conditions to take 30 steps
-            '(it's about 193 ms per step against de over 200 needed in perfect conditions)
+            '(it's about 193 ms per step against the over 200 needed in perfect conditions)
             If dummy < 5800 Then
                 If TempTick - .flags.CountSH > 30000 Then
                     .flags.CountSH = 0
                 End If
                 
                 If Not .flags.CountSH = 0 Then
-                    dummy = 126000 \ dummy
+                    If dummy <> 0 Then _
+                        dummy = 126000 \ dummy
+                    
                     Call LogHackAttemp("Tramposo SH: " & .name & " , " & dummy)
                     Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .name & " ha sido echado por el servidor por posible uso de SH.", FontTypeNames.FONTTYPE_SERVER))
                     Call CloseSocket(UserIndex)
@@ -3047,7 +3049,7 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
         spellSlot = .incomingData.ReadByte()
         
         'Validate slot
-        If spellSlot < 0 Or spellSlot > MAXUSERHECHIZOS Then
+        If spellSlot < 1 Or spellSlot > MAXUSERHECHIZOS Then
             Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo.!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If

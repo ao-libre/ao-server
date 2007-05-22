@@ -829,13 +829,13 @@ Public Function PrepareGuildsList() As String()
     PrepareGuildsList = tStr
 End Function
 
-Public Function SendGuildDetails(ByVal UserIndex As Integer, ByRef GuildName As String) As String
+Public Sub SendGuildDetails(ByVal UserIndex As Integer, ByRef GuildName As String)
     Dim codex(CANTIDADMAXIMACODEX - 1)  As String
     Dim GI      As Integer
     Dim i       As Long
 
     GI = guildIndex(GuildName)
-    If GI = 0 Then Exit Function
+    If GI = 0 Then Exit Sub
     
     With guilds(GI)
         For i = 1 To CANTIDADMAXIMACODEX
@@ -847,7 +847,7 @@ Public Function SendGuildDetails(ByVal UserIndex As Integer, ByRef GuildName As 
                                     .CantidadEnemys, .CantidadAllies, .PuntosAntifaccion & "/" & CStr(MAXANTIFACCION), _
                                     codex, .GetDesc)
     End With
-End Function
+End Sub
 
 Public Sub SendGuildLeaderInfo(ByVal UserIndex As Integer)
 '***************************************************

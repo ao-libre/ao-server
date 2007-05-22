@@ -119,6 +119,6 @@ Public Sub ReproducirSonidosDeMapas()
     Next i
 End Sub
 
-Public Sub ReproducirSonido(ByVal Destino As Byte, ByVal index As Integer, ByVal SoundIndex As Integer)
+Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
     Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex))
 End Sub

@@ -238,11 +238,11 @@ If PI > 0 Then
                         Exit Sub
                     End If
                 Else
-                    Call WriteConsoleMsg(leader, " ¡Está muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
+                    Call WriteConsoleMsg(leader, "¡Está muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
                     Exit Sub
                 End If
             Else
-                Call WriteConsoleMsg(leader, " ¡Estás muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
+                Call WriteConsoleMsg(leader, "¡Estás muerto, no puedes aceptar miembros en ese estado!", FontTypeNames.FONTTYPE_PARTY)
                 Exit Sub
             End If
         Else
@@ -250,11 +250,11 @@ If PI > 0 Then
             ' ya tiene party el otro tipo
         End If
     Else
-        Call WriteConsoleMsg(leader, " No eres líder, no puedes aceptar miembros.", FontTypeNames.FONTTYPE_PARTY)
+        Call WriteConsoleMsg(leader, "No eres líder, no puedes aceptar miembros.", FontTypeNames.FONTTYPE_PARTY)
         Exit Sub
     End If
 Else
-    Call WriteConsoleMsg(leader, " No eres miembro de ninguna party.", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(leader, "No eres miembro de ninguna party.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
 
