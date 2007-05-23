@@ -213,7 +213,7 @@ errhandler:
     End If
 End Sub
 
-Sub NPCVentaItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantidad As Integer, ByVal NpcIndex As Integer)
+Sub NPCVentaItem(ByVal UserIndex As Integer, ByVal i As Byte, ByVal Cantidad As Integer, ByVal NpcIndex As Integer)
 'listindex+1, cantidad
 On Error GoTo errhandler
 
@@ -221,6 +221,26 @@ On Error GoTo errhandler
     Dim desc As String
     
     If Cantidad < 1 Then Exit Sub
+    
+    'Defensive programming
+    If i < LBound(Npclist(NpcIndex).Invent.Object()) Or i > UBound(Npclist(NpcIndex).Invent.Object()) Then
+        'Actualizamos el inventario del usuario
+        Call UpdateUserInv(True, UserIndex, 0)
+        'Actualizamos la ventana de comercio
+        Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+        Call UpdateVentanaComercio(UserIndex)
+        Exit Sub
+    End If
+    
+    'Defensive programming
+    If Npclist(NpcIndex).Invent.Object(i).ObjIndex = 0 Then
+        'Actualizamos el inventario del usuario
+        Call UpdateUserInv(True, UserIndex, 0)
+        'Actualizamos la ventana de comercio
+        Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+        Call UpdateVentanaComercio(UserIndex)
+        Exit Sub
+    End If
     
     'NPC VENDE UN OBJ A UN USUARIO
     Call WriteUpdateUserStats(UserIndex)
@@ -249,11 +269,15 @@ On Error GoTo errhandler
     
     If UserList(UserIndex).Stats.GLD >= (val * Cantidad) Then
         If Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount > 0 Then
-            If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount
+            If Cantidad > Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount Then
+                Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(i).amount
+            End If
+            
             'Agregamos el obj que compro al inventario
             If Not UserCompraObj(UserIndex, CInt(i), UserList(UserIndex).flags.TargetNPC, Cantidad) Then
                 Call WriteConsoleMsg(UserIndex, "No puedes comprar este ítem.", FontTypeNames.FONTTYPE_INFO)
             End If
+            
             'Actualizamos el inventario del usuario
             Call UpdateUserInv(True, UserIndex, 0)
             'Actualizamos el oro
@@ -271,9 +295,25 @@ errhandler:
     Call LogError("Error en comprar item: " & Err.description)
 End Sub
 
-Sub NPCCompraItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Cantidad As Integer)
+Sub NPCCompraItem(ByVal UserIndex As Integer, ByVal Item As Byte, ByVal Cantidad As Integer)
 On Error GoTo errhandler
     Dim NpcIndex As Integer
+    
+    'Defensive programing
+    If Item < LBound(UserList(UserIndex).Invent.Object()) Or Item > UBound(UserList(UserIndex).Invent.Object()) Then
+        'Actualizamos la ventana de comercio
+        Call UpdateVentanaComercio(UserIndex)
+        Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+        Exit Sub
+    End If
+    
+    'Defensive programing
+    If UserList(UserIndex).Invent.Object(Item).ObjIndex = 0 Then
+        'Actualizamos la ventana de comercio
+        Call UpdateVentanaComercio(UserIndex)
+        Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+        Exit Sub
+    End If
     
     NpcIndex = UserList(UserIndex).flags.TargetNPC
     
@@ -300,17 +340,23 @@ On Error GoTo errhandler
         Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
         Exit Sub
     End If
+    
     'NPC COMPRA UN OBJ A UN USUARIO
     Call WriteUpdateUserStats(UserIndex)
    
     If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).Invent.Object(Item).Equipped = 0 Then
-        If Cantidad > 0 And Cantidad > UserList(UserIndex).Invent.Object(Item).amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).amount
-        'Agregamos el obj que compro al inventario
-        Call NpcCompraObj(UserIndex, CInt(Item), Cantidad)
-        'Actualizamos el inventario del usuario
-        Call UpdateUserInv(True, UserIndex, 0)
-        'Actualizamos el oro
-        Call WriteUpdateUserStats(UserIndex)
+        If Cantidad > UserList(UserIndex).Invent.Object(Item).amount Then
+            Cantidad = UserList(UserIndex).Invent.Object(Item).amount
+        End If
+        
+        If Cantidad > 0 Then
+            'Agregamos el obj que compro al inventario
+            Call NpcCompraObj(UserIndex, Item, Cantidad)
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(True, UserIndex, 0)
+            'Actualizamos el oro
+            Call WriteUpdateUserStats(UserIndex)
+        End If
         
         Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
         'Actualizamos la ventana de comercio

@@ -477,6 +477,7 @@ errhandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
 End Sub
+
 Private Sub CMDDUMP_Click()
 On Error Resume Next
 

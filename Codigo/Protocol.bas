@@ -164,7 +164,7 @@ Private Enum ClientPacketID
     Walk                    'M
     RequestPositionUpdate   'RPU
     Attack                  'AT
-    P1ickUp                  'AG
+    PickUp                  'AG
     CombatModeToggle        'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
     SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
     RequestGuildLeaderInfo  'GLINFO
@@ -9123,8 +9123,8 @@ On Error GoTo errhandler
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Or _
-                  (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) Then
+                If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or _
+                  (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) <> 0 Then
                     Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
                     Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y + 1, True)
                     Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y)
