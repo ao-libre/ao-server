@@ -47,7 +47,6 @@ Public Type ConnGroup
 End Type
 
 Public Const USER_NUEVO As Byte = 255
-Public Const USER_VIEJO As Byte = 254
 
 'Cuidado:
 ' ¡¡¡LAS AREAS ESTÁN HARDCODEADAS!!!
@@ -245,7 +244,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
             
             Next Y
         Next X
-            
+        
         'Precalculados :P
         TempInt = .Pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
@@ -382,6 +381,7 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
 'Last Modify Date: 04/01/2007
 'Modified by Juan Martín Sotuyo Dodero (Maraxus)
 '   - Now the method checks for repetead users instead of trusting parameters.
+'   - If the character is new to the map, update it
 '**************************************************************
     Dim TempVal As Long
     Dim EsNuevo As Boolean
@@ -418,9 +418,11 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     UserList(UserIndex).AreasInfo.AreaPerteneceY = 0
     UserList(UserIndex).AreasInfo.AreaReciveX = 0
     UserList(UserIndex).AreasInfo.AreaReciveY = 0
+    
+    Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
 End Sub
 
-Public Sub ArgegarNpc(ByVal NpcIndex As Integer)
+Public Sub AgregarNpc(ByVal NpcIndex As Integer)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
@@ -432,4 +434,6 @@ Public Sub ArgegarNpc(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).AreasInfo.AreaPerteneceY = 0
     Npclist(NpcIndex).AreasInfo.AreaReciveX = 0
     Npclist(NpcIndex).AreasInfo.AreaReciveY = 0
+    
+    Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
 End Sub

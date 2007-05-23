@@ -502,8 +502,7 @@ Dim CharIndex As Integer
         Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, X, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
         Call FlushBuffer(sndIndex)
     Else
-        Call ArgegarNpc(NpcIndex)
-        Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
+        Call AgregarNpc(NpcIndex)
     End If
 End Sub
 

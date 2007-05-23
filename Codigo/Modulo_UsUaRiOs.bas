@@ -146,7 +146,7 @@ Public Sub EnviarMiniEstadisticas(ByVal UserIndex As Integer)
     Call WriteMiniStats(UserIndex)
 End Sub
 
-Sub EraseUserChar(ByVal sndIndex As Integer, ByVal UserIndex As Integer)
+Sub EraseUserChar(ByVal UserIndex As Integer)
 
 On Error GoTo ErrorHandler
    
@@ -196,7 +196,6 @@ Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIn
 
 On Error GoTo hayerror
     Dim CharIndex As Integer
-    Dim userStatus As Byte
 
     If InMapBounds(Map, X, Y) Then
         'If needed make a new character in list
@@ -206,15 +205,8 @@ On Error GoTo hayerror
             CharList(CharIndex) = UserIndex
         End If
         
-        'Is the character new??
-        If MapData(Map, X, Y).UserIndex = UserIndex Then
-            userStatus = USER_VIEJO
-        Else
-            'Place character on map
-            MapData(Map, X, Y).UserIndex = UserIndex
-            
-            userStatus = USER_NUEVO
-        End If
+        'Place character on map
+        MapData(Map, X, Y).UserIndex = UserIndex
         
         'Send make character command to clients
         Dim klan As String
@@ -236,7 +228,6 @@ On Error GoTo hayerror
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
-                Call CheckUpdateNeededUser(UserIndex, userStatus)
             End If
         Else 'if tiene clan
             If Not toMap Then
@@ -247,7 +238,6 @@ On Error GoTo hayerror
                 End If
             Else
                 Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
-                Call CheckUpdateNeededUser(UserIndex, userStatus)
             End If
         End If 'if clan
     End If
@@ -1567,7 +1557,7 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
     OldX = UserList(UserIndex).Pos.X
     OldY = UserList(UserIndex).Pos.Y
     
-    Call EraseUserChar(OldMap, UserIndex)
+    Call EraseUserChar(UserIndex)
     
     If OldMap <> Map Then
         Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
