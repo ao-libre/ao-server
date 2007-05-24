@@ -3686,7 +3686,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.cant = amount
+            .ComUsu.Cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -5307,7 +5307,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.cant = 0
+            .ComUsu.Cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -7617,14 +7617,14 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         
         For i = 1 To LastUser
             If (LenB(UserList(i).name) <> 0) Then
-                If (UserList(i).flags.Privilegios And PlayerType.User) <> 0 And UserList(i).flags.UserLogged = True Then
+                If UserList(i).flags.Privilegios And PlayerType.User Then
                     names(a) = UserList(i).name
                     a = a + 1
                 End If
             End If
         Next i
         
-        Call WriteUserNameList(UserIndex, names())
+        If a > 1 Then Call WriteUserNameList(UserIndex, names(), a - 1)
     End With
 End Sub
 
@@ -16076,12 +16076,13 @@ End Sub
 '
 ' @param    UserIndex User to which the message is intended.
 ' @param    userNameList List of user names.
+' @param    Cant Number of names to send.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() As String)
+Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() As String, ByVal Cant As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 05/17/06 NIGO:
 'Writes the "UserNameList" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo errhandler
@@ -16092,7 +16093,7 @@ On Error GoTo errhandler
         Call .WriteByte(ServerPacketID.UserNameList)
         
         ' Prepare user's names list
-        For i = LBound(userNamesList()) To UBound(userNamesList())
+        For i = 1 To Cant
             Tmp = Tmp & userNamesList(i) & SEPARATOR
         Next i
         
