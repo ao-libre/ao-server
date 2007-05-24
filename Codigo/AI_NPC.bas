@@ -175,7 +175,7 @@ Dim M As Integer
 
     NPCPosX = Npclist(NpcIndex).Pos.X
     NPCPosY = Npclist(NpcIndex).Pos.Y
-    M = Npclist(NpcIndex).Pos.map
+    M = Npclist(NpcIndex).Pos.Map
     
     For r = 1 To MinYBorder
         For X = NPCPosX - r To NPCPosX + r
@@ -230,8 +230,8 @@ For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or headingloop = Npclist(NpcIndex).Char.heading Then
         Call HeadtoPos(headingloop, nPos)
-        If InMapBounds(nPos.map, nPos.X, nPos.Y) Then
-            UI = MapData(nPos.map, nPos.X, nPos.Y).UserIndex
+        If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
+            UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
             If UI > 0 Then
                   If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                          '¿ES CRIMINAL?
@@ -291,16 +291,16 @@ For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or Npclist(NpcIndex).Char.heading = headingloop Then
         Call HeadtoPos(headingloop, nPos)
-        If InMapBounds(nPos.map, nPos.X, nPos.Y) Then
-            UI = MapData(nPos.map, nPos.X, nPos.Y).UserIndex
-            NPCI = MapData(nPos.map, nPos.X, nPos.Y).NpcIndex
+        If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
+            UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
+            NPCI = MapData(nPos.Map, nPos.X, nPos.Y).NpcIndex
             If UI > 0 And Not atacoPJ Then
                 If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                     atacoPJ = True
                     If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then
                         Call NpcLanzaUnSpell(NpcIndex, UI)
                     End If
-                    If NpcAtacaUser(NpcIndex, MapData(nPos.map, nPos.X, nPos.Y).UserIndex) Then
+                    If NpcAtacaUser(NpcIndex, MapData(nPos.Map, nPos.X, nPos.Y).UserIndex) Then
                         Call ChangeNPCChar(NpcIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, headingloop)
                     End If
                     Exit Sub
@@ -332,11 +332,11 @@ For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(NpcIndex).Pos
     If Npclist(NpcIndex).flags.Inmovilizado = 0 Or Npclist(NpcIndex).Char.heading = headingloop Then
         Call HeadtoPos(headingloop, nPos)
-        If InMapBounds(nPos.map, nPos.X, nPos.Y) Then
-            UI = MapData(nPos.map, nPos.X, nPos.Y).UserIndex
+        If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
+            UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
             If UI > 0 Then
                 If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
-                    If UserList(UI).flags.Muerto = 0 Then
+                    If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                             If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
@@ -385,7 +385,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
         For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
             
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-                   UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                   UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                    If UI > 0 Then
                       If UserList(UI).flags.Muerto = 0 Then
                             If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
@@ -401,11 +401,11 @@ Else
     For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
         For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-                UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
                      If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
                          If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
-                         tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                         tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                          Call MoveNPCChar(NpcIndex, tHeading)
                          Exit Sub
                      End If
@@ -451,7 +451,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
         For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
 
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-                UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
                     If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
                         If Npclist(NpcIndex).MaestroUser > 0 Then
@@ -477,7 +477,7 @@ Else
     For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
         For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-                UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
                     If UserList(UI).name = Npclist(NpcIndex).flags.AttackedBy Then
                         If Npclist(NpcIndex).MaestroUser > 0 Then
@@ -493,7 +493,7 @@ Else
                              If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                              End If
-                             tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                             tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                              Call MoveNPCChar(NpcIndex, tHeading)
                              Exit Sub
                         End If
@@ -527,14 +527,14 @@ Dim X As Integer
 For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
     For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
         If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-           UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+           UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
            If UI > 0 Then
                 If Not criminal(UI) Then
                    If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                         If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
                               Call NpcLanzaUnSpell(NpcIndex, UI)
                         End If
-                        tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                        tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                         Call MoveNPCChar(NpcIndex, tHeading)
                         Exit Sub
                    End If
@@ -580,7 +580,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
 
 
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-               UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+               UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If criminal(UI) Then
                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
@@ -600,7 +600,7 @@ Else
     For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
         For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_X To Npclist(NpcIndex).Pos.X + RANGO_VISION_X
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-               UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+               UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                If UI > 0 Then
                     If criminal(UI) Then
                        If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
@@ -608,7 +608,7 @@ Else
                                   Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
                             If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Sub
-                            tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                            tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                             Call MoveNPCChar(NpcIndex, tHeading)
                             Exit Sub
                        End If
@@ -633,14 +633,14 @@ For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10
     For X = Npclist(NpcIndex).Pos.X - 10 To Npclist(NpcIndex).Pos.X + 10
         If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
             If Npclist(NpcIndex).Target = 0 And Npclist(NpcIndex).TargetNPC = 0 Then
-                UI = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                UI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                 If UI > 0 Then
                    If UserList(UI).flags.Muerto = 0 _
                    And UserList(UI).flags.invisible = 0 _
                    And UserList(UI).flags.Oculto = 0 _
                    And UI = Npclist(NpcIndex).MaestroUser _
                    And Distancia(Npclist(NpcIndex).Pos, UserList(UI).Pos) > 3 Then
-                        tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                        tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                         Call MoveNPCChar(NpcIndex, tHeading)
                         Exit Sub
                    End If
@@ -685,7 +685,7 @@ If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
     For Y = Npclist(NpcIndex).Pos.Y To Npclist(NpcIndex).Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
         For X = Npclist(NpcIndex).Pos.X To Npclist(NpcIndex).Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-               NI = MapData(Npclist(NpcIndex).Pos.map, X, Y).NpcIndex
+               NI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex
                If NI > 0 Then
                     If Npclist(NpcIndex).TargetNPC = NI Then
                          bNoEsta = True
@@ -711,7 +711,7 @@ Else
     For Y = Npclist(NpcIndex).Pos.Y - RANGO_VISION_Y To Npclist(NpcIndex).Pos.Y + RANGO_VISION_Y
         For X = Npclist(NpcIndex).Pos.X - RANGO_VISION_Y To Npclist(NpcIndex).Pos.X + RANGO_VISION_Y
             If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
-               NI = MapData(Npclist(NpcIndex).Pos.map, X, Y).NpcIndex
+               NI = MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex
                If NI > 0 Then
                     If Npclist(NpcIndex).TargetNPC = NI Then
                          bNoEsta = True
@@ -729,7 +729,7 @@ Else
                          End If
                          If Npclist(NpcIndex).flags.Inmovilizado = 1 Then Exit Sub
                          If Npclist(NpcIndex).TargetNPC = 0 Then Exit Sub
-                         tHeading = FindDirection(Npclist(NpcIndex).Pos, Npclist(MapData(Npclist(NpcIndex).Pos.map, X, Y).NpcIndex).Pos)
+                         tHeading = FindDirection(Npclist(NpcIndex).Pos, Npclist(MapData(Npclist(NpcIndex).Pos.Map, X, Y).NpcIndex).Pos)
                          Call MoveNPCChar(NpcIndex, tHeading)
                          Exit Sub
                     End If
@@ -835,7 +835,7 @@ Exit Function
 
 
 ErrorHandler:
-    Call LogError("NPCAI " & Npclist(NpcIndex).name & " " & Npclist(NpcIndex).MaestroUser & " " & Npclist(NpcIndex).MaestroNpc & " mapa:" & Npclist(NpcIndex).Pos.map & " x:" & Npclist(NpcIndex).Pos.X & " y:" & Npclist(NpcIndex).Pos.Y & " Mov:" & Npclist(NpcIndex).Movement & " TargU:" & Npclist(NpcIndex).Target & " TargN:" & Npclist(NpcIndex).TargetNPC)
+    Call LogError("NPCAI " & Npclist(NpcIndex).name & " " & Npclist(NpcIndex).MaestroUser & " " & Npclist(NpcIndex).MaestroNpc & " mapa:" & Npclist(NpcIndex).Pos.Map & " x:" & Npclist(NpcIndex).Pos.X & " y:" & Npclist(NpcIndex).Pos.Y & " Mov:" & Npclist(NpcIndex).Movement & " TargU:" & Npclist(NpcIndex).Target & " TargN:" & Npclist(NpcIndex).TargetNPC)
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Call QuitarNPC(NpcIndex)
@@ -877,9 +877,9 @@ For Y = Npclist(NpcIndex).Pos.Y - 5 To Npclist(NpcIndex).Pos.Y + 5    'Makes a l
            'Make sure tile is legal
             If X > MinXBorder And X < MaxXBorder And Y > MinYBorder And Y < MaxYBorder Then
                 'look for a user
-                If MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex > 0 Then
+                If MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex > 0 Then
                     'Move towards user
-                    tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex).Pos)
+                    tHeading = FindDirection(Npclist(NpcIndex).Pos, UserList(MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex).Pos)
                     MoveNPCChar NpcIndex, tHeading
                     'Leave
                     Exit Function
@@ -907,7 +907,7 @@ Function FollowPath(ByVal NpcIndex As Integer) As Boolean
 Dim tmpPos As WorldPos
 Dim tHeading As Byte
 
-tmpPos.map = Npclist(NpcIndex).Pos.map
+tmpPos.Map = Npclist(NpcIndex).Pos.Map
 tmpPos.X = Npclist(NpcIndex).PFINFO.Path(Npclist(NpcIndex).PFINFO.CurPos).Y ' invertí las coordenadas
 tmpPos.Y = Npclist(NpcIndex).PFINFO.Path(Npclist(NpcIndex).PFINFO.CurPos).X
 
@@ -942,10 +942,10 @@ For Y = Npclist(NpcIndex).Pos.Y - 10 To Npclist(NpcIndex).Pos.Y + 10    'Makes a
          If X > MinXBorder And X < MaxXBorder And Y > MinYBorder And Y < MaxYBorder Then
          
              'look for a user
-             If MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex > 0 Then
+             If MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex > 0 Then
                  'Move towards user
                   Dim tmpUserIndex As Integer
-                  tmpUserIndex = MapData(Npclist(NpcIndex).Pos.map, X, Y).UserIndex
+                  tmpUserIndex = MapData(Npclist(NpcIndex).Pos.Map, X, Y).UserIndex
                   With UserList(tmpUserIndex)
                     If .flags.Muerto = 0 And .flags.invisible = 0 And .flags.Oculto = 0 And .flags.AdminPerseguible Then
                         'We have to invert the coordinates, this is because
