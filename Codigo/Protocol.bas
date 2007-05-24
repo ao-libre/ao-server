@@ -7617,7 +7617,7 @@ Private Sub HandleRequestUserList(ByVal UserIndex As Integer)
         
         For i = 1 To LastUser
             If (LenB(UserList(i).name) <> 0) Then
-                If UserList(i).flags.Privilegios And PlayerType.User Then
+                If (UserList(i).flags.Privilegios And PlayerType.User) <> 0 And UserList(i).flags.UserLogged = True Then
                     names(a) = UserList(i).name
                     a = a + 1
                 End If

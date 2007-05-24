@@ -209,7 +209,6 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     If UserIndex <> TempInt Then
                         Call MakeUserChar(False, UserIndex, TempInt, Map, X, Y)
                         Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
-                        Call FlushBuffer(TempInt)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
                         If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
@@ -218,6 +217,8 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
                             Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
                         End If
+                        
+                        Call FlushBuffer(TempInt)
                     
                     ElseIf Head = USER_NUEVO Then
                         Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)

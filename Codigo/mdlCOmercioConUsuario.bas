@@ -126,18 +126,28 @@ End If
 
 OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
 
+If Not TerminarAhora Then
+    If UserList(OtroUserIndex).flags.UserLogged = False Or UserList(UserIndex).flags.UserLogged = False Then
+        TerminarAhora = True
+    End If
+End If
 
-If UserList(OtroUserIndex).flags.UserLogged = False Or UserList(UserIndex).flags.UserLogged = False Then
-    TerminarAhora = True
+If Not TerminarAhora Then
+    If UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex Then
+        TerminarAhora = True
+    End If
 End If
-If UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex Then
-    TerminarAhora = True
+
+If Not TerminarAhora Then
+    If UserList(OtroUserIndex).name <> UserList(UserIndex).ComUsu.DestNick Then
+        TerminarAhora = True
+    End If
 End If
-If UserList(OtroUserIndex).name <> UserList(UserIndex).ComUsu.DestNick Then
-    TerminarAhora = True
-End If
-If UserList(UserIndex).name <> UserList(OtroUserIndex).ComUsu.DestNick Then
-    TerminarAhora = True
+
+If Not TerminarAhora Then
+    If UserList(UserIndex).name <> UserList(OtroUserIndex).ComUsu.DestNick Then
+        TerminarAhora = True
+    End If
 End If
 
 If TerminarAhora = True Then
@@ -168,6 +178,7 @@ Else
         TerminarAhora = True
     End If
 End If
+
 If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     Obj2.ObjIndex = iORO
     If UserList(OtroUserIndex).ComUsu.cant > UserList(OtroUserIndex).Stats.GLD Then

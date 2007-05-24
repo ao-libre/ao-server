@@ -92,11 +92,11 @@ For j = 1 To MAX_INVENTORY_SLOTS
                     Call UpdateUserInv(False, UserIndex, j)
         
         End If
-Next
+Next j
 
 '[Barrin 17-12-03] Si el usuario dejó de ser Newbie, y estaba en el Newbie Dungeon
 'es transportado a su hogar de origen ;)
-If UserList(UserIndex).Pos.Map = 37 Then
+If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
     
     Dim DeDonde As WorldPos
     
@@ -110,7 +110,7 @@ If UserList(UserIndex).Pos.Map = 37 Then
         Case Else
             DeDonde = Nix
     End Select
-       
+    
     Call WarpUserChar(UserIndex, DeDonde.Map, DeDonde.X, DeDonde.Y, True)
 
 End If

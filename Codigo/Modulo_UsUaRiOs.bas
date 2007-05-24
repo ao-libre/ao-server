@@ -205,8 +205,9 @@ On Error GoTo hayerror
             CharList(CharIndex) = UserIndex
         End If
         
-        'Place character on map
-        MapData(Map, X, Y).UserIndex = UserIndex
+        'Place character on map if needed
+        If toMap Then _
+            MapData(Map, X, Y).UserIndex = UserIndex
         
         'Send make character command to clients
         Dim klan As String

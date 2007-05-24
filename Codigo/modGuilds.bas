@@ -365,7 +365,7 @@ Dim DummyString     As String
         Call guilds(CANTIDADDECLANES).AceptarNuevoMiembro(UserList(FundadorIndex).name)
         Call guilds(CANTIDADDECLANES).ConectarMiembro(FundadorIndex)
         UserList(FundadorIndex).guildIndex = CANTIDADDECLANES
-        Call WarpUserChar(FundadorIndex, UserList(FundadorIndex).Pos.Map, UserList(FundadorIndex).Pos.X, UserList(FundadorIndex).Pos.Y, False)
+        Call RefreshCharStatus(FundadorIndex)
         
         For i = 1 To CANTIDADDECLANES - 1
             Call guilds(i).ProcesarFundacionDeOtroClan
