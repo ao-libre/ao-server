@@ -33,7 +33,7 @@ Attribute VB_Name = "General"
 Option Explicit
 
 Global LeerNPCs As New clsIniReader
-Global LeerNPCsHostiles As New clsIniReader
+'Global LeerNPCsHostiles As New clsIniReader
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 '***************************************************

@@ -3686,7 +3686,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             .ComUsu.Objeto = Slot
-            .ComUsu.Cant = amount
+            .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
             If UserList(tUser).ComUsu.Acepto = True Then
@@ -5307,7 +5307,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Initialize some variables...
             .ComUsu.DestUsu = .flags.TargetUser
             .ComUsu.DestNick = UserList(.flags.TargetUser).name
-            .ComUsu.Cant = 0
+            .ComUsu.cant = 0
             .ComUsu.Objeto = 0
             .ComUsu.Acepto = False
             
@@ -12444,8 +12444,9 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
+        NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
         Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map)
-        Call SpawnNpc(NpcIndex, .Pos, True, False)
+        
     End With
 End Sub
 
@@ -12476,8 +12477,9 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
+        NpcIndex = SpawnNpc(NpcIndex, .Pos, True, True)
         Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map)
-        Call SpawnNpc(NpcIndex, .Pos, True, True)
+        
     End With
 End Sub
 
@@ -16079,7 +16081,7 @@ End Sub
 ' @param    Cant Number of names to send.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() As String, ByVal Cant As Integer)
+Public Sub WriteUserNameList(ByVal UserIndex As Integer, ByRef userNamesList() As String, ByVal cant As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06 NIGO:
@@ -16093,7 +16095,7 @@ On Error GoTo errhandler
         Call .WriteByte(ServerPacketID.UserNameList)
         
         ' Prepare user's names list
-        For i = 1 To Cant
+        For i = 1 To cant
             Tmp = Tmp & userNamesList(i) & SEPARATOR
         Next i
         

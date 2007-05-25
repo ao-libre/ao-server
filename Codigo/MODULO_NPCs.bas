@@ -797,7 +797,7 @@ Dim Leer As clsIniReader
         'NpcFile = DatPath & "NPCs-HOSTILES.dat"
 '        Set Leer = LeerNPCsHostiles
 'Else
-        'NpcFile = DatPath & "NPCs.dat"
+        npcfile = DatPath & "NPCs.dat"
         Set Leer = LeerNPCs
 'End If
 
