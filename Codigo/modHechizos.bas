@@ -779,7 +779,7 @@ If Hechizos(H).Revivir = 1 Then
                 End If
             End If
         ElseIf UserList(UserIndex).clase = eClass.Bard Then
-            If UserList(UserIndex).Invent.WeaponEqpObjIndex <> LAUDMAGICO Then
+            If UserList(UserIndex).Invent.AnilloEqpObjIndex <> LAUDMAGICO Then
                 Call WriteConsoleMsg(UserIndex, "Necesitas un instrumento mágico para devolver la vida", FontTypeNames.FONTTYPE_INFO)
                 b = False
                 Exit Sub
@@ -1111,7 +1111,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
             End If
         End If
     End If
-    If UserList(UserIndex).Invent.WeaponEqpObjIndex = LAUDMAGICO Then
+    If UserList(UserIndex).Invent.AnilloEqpObjIndex = LAUDMAGICO Then
         daño = daño * 1.04  'laud magico de los bardos
     End If
 
@@ -1415,7 +1415,7 @@ ElseIf Hechizos(H).SubeHP = 2 Then
         End If
     End If
     
-    If UserList(UserIndex).Invent.WeaponEqpObjIndex = LAUDMAGICO Then
+    If UserList(UserIndex).Invent.AnilloEqpObjIndex = LAUDMAGICO Then
         daño = daño * 1.04  'laud magico de los bardos
     End If
     

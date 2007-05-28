@@ -56,52 +56,7 @@ If InMapBounds(Map, X, Y) Then
     Dim FoundSomething As Byte
     Dim TempCharIndex As Integer
        
-    '¿Es un obj?
-    If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).ObjInfo.ObjIndex
-        
-        Select Case ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X, Y, UserIndex)
-            Case eOBJType.otCarteles 'Es un cartel
-                Call AccionParaCartel(Map, X, Y, UserIndex)
-            Case eOBJType.otForos 'Foro
-                Call AccionParaForo(Map, X, Y, UserIndex)
-            Case eOBJType.otLeña    'Leña
-                If MapData(Map, X, Y).ObjInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
-                    Call AccionParaRamita(Map, X, Y, UserIndex)
-                End If
-        End Select
-    '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
-    ElseIf MapData(Map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).ObjInfo.ObjIndex
-        
-        Select Case ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X + 1, Y, UserIndex)
-            
-        End Select
-    ElseIf MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex
-
-        Select Case ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X + 1, Y + 1, UserIndex)
-            
-        End Select
-    ElseIf MapData(Map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y + 1).ObjInfo.ObjIndex
-
-        Select Case ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X, Y + 1, UserIndex)
-            
-        End Select
-    ElseIf MapData(Map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
+    If MapData(Map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
         'Set the target NPC
         UserList(UserIndex).flags.TargetNPC = MapData(Map, X, Y).NpcIndex
         
@@ -150,12 +105,52 @@ If InMapBounds(Map, X, Y) Then
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
             Call WriteUpdateUserStats(UserIndex)
         End If
-    Else
-        UserList(UserIndex).flags.TargetNPC = 0
-        UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
-        UserList(UserIndex).flags.TargetUser = 0
-        UserList(UserIndex).flags.TargetObj = 0
-        Call WriteConsoleMsg(UserIndex, "No ves nada interesante.", FontTypeNames.FONTTYPE_INFO)
+        
+    '¿Es un obj?
+    ElseIf MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).ObjInfo.ObjIndex
+        
+        Select Case ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType
+            
+            Case eOBJType.otPuertas 'Es una puerta
+                Call AccionParaPuerta(Map, X, Y, UserIndex)
+            Case eOBJType.otCarteles 'Es un cartel
+                Call AccionParaCartel(Map, X, Y, UserIndex)
+            Case eOBJType.otForos 'Foro
+                Call AccionParaForo(Map, X, Y, UserIndex)
+            Case eOBJType.otLeña    'Leña
+                If MapData(Map, X, Y).ObjInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
+                    Call AccionParaRamita(Map, X, Y, UserIndex)
+                End If
+        End Select
+    '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
+    ElseIf MapData(Map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).ObjInfo.ObjIndex
+        
+        Select Case ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType
+            
+            Case eOBJType.otPuertas 'Es una puerta
+                Call AccionParaPuerta(Map, X + 1, Y, UserIndex)
+            
+        End Select
+    ElseIf MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex
+
+        Select Case ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
+            
+            Case eOBJType.otPuertas 'Es una puerta
+                Call AccionParaPuerta(Map, X + 1, Y + 1, UserIndex)
+            
+        End Select
+    ElseIf MapData(Map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y + 1).ObjInfo.ObjIndex
+
+        Select Case ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType
+            
+            Case eOBJType.otPuertas 'Es una puerta
+                Call AccionParaPuerta(Map, X, Y + 1, UserIndex)
+            
+        End Select
     End If
 End If
 
