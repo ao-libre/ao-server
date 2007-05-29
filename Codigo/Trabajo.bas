@@ -987,9 +987,13 @@ If flag Then
         Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
     End If
     
-    Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+    If UserList(LadrOnIndex).clase = eClass.Thief Then
+        Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+    Else
+        Call WriteConsoleMsg(LadrOnIndex, "Has hurtado " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+    End If
 Else
-    Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar un objetos.", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
 End If
 
 End Sub
@@ -1318,7 +1322,6 @@ res = RandomNumber(1, 100)
 If (res < 20) Then
     If TieneObjetosRobables(VictimaIndex) Then
         Call RobarObjeto(UserIndex, VictimaIndex)
-        Call WriteConsoleMsg(UserIndex, "Has Hurtado Objetos", FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)

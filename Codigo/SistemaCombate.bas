@@ -609,7 +609,7 @@ If Npclist(NpcIndex).Stats.MinHP > 0 Then
        Call DoApuñalar(UserIndex, NpcIndex, 0, daño)
        Call SubirSkill(UserIndex, Apuñalar)
     End If
-    'trada de dar golpe crítico
+    'trata de dar golpe crítico
     Call DoGolpeCritico(UserIndex, NpcIndex, 0, daño)
     
 End If
@@ -1236,8 +1236,10 @@ If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Se
         'Si usa un arma quizas suba "Combate con armas"
         If UserList(AtacanteIndex).Invent.WeaponEqpObjIndex > 0 Then
             If ObjData(UserList(AtacanteIndex).Invent.WeaponEqpObjIndex).proyectil Then
+                'es un Arco. Sube Armas a Distancia
                 Call SubirSkill(AtacanteIndex, Proyectiles)
             Else
+                'Sube combate con armas.
                 Call SubirSkill(AtacanteIndex, Armas)
             End If
         Else
@@ -1245,13 +1247,15 @@ If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Se
                 Call SubirSkill(AtacanteIndex, Wrestling)
         End If
         
-        Call SubirSkill(AtacanteIndex, Tacticas)
+        Call SubirSkill(VictimaIndex, Tacticas)
         
         'Trata de apuñalar por la espalda al enemigo
         If PuedeApuñalar(AtacanteIndex) Then
                 Call DoApuñalar(AtacanteIndex, 0, VictimaIndex, daño)
                 Call SubirSkill(AtacanteIndex, Apuñalar)
         End If
+        'e intenta dar un golpe crítico [Pablo (ToxicWaste)]
+        Call DoGolpeCritico(AtacanteIndex, 0, VictimaIndex, daño)
 End If
 
 
