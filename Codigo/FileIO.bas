@@ -1564,7 +1564,7 @@ If UserList(UserIndex).ip <> GetVar(UserFile, "INIT", "LastIP1") Then
     For i = 5 To 2 Step -1
         Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(UserFile, "LastIP", str(i - 1)))
     Next i
-    Call WriteVar(UserFile, "INIT", "LastIP1", UserList(UserIndex).ip)
+    Call WriteVar(UserFile, "INIT", "LastIP1", UserList(UserIndex).ip & " - " & Date & ":" & time)
 End If
 
 
