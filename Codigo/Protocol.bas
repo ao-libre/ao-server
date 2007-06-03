@@ -1700,7 +1700,7 @@ On Error GoTo errhandler
                         
                         '[CDT 17-02-2004]
                         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
-                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, targetCharIndex, vbYellow))
+                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
                         End If
                     End If
                 End If
