@@ -925,6 +925,14 @@ If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
     End If
 End If
 
+If Npclist(NpcIndex).MaestroUser > 0 Then 'Es mascota?
+    'Es mascota de un caos y vos sos un caos?
+    If UserList(Npclist(NpcIndex).MaestroUser).Faccion.FuerzasCaos & UserList(UserIndex).Faccion.FuerzasCaos Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacar mascotas de Legionarios siendo Legionario", FontTypeNames.FONTTYPE_WARNING)
+        Exit Sub
+    End If
+End If
+
 If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
     If Not criminal(Npclist(NpcIndex).MaestroUser) Then
         Call WriteConsoleMsg(UserIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas.", FontTypeNames.FONTTYPE_WARNING)
