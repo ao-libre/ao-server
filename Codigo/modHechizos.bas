@@ -206,7 +206,7 @@ Function PuedeLanzar(ByVal UserIndex As Integer, ByVal HechizoIndex As Integer) 
 
 If UserList(UserIndex).flags.Muerto = 0 Then
     Dim wp2 As WorldPos
-    wp2.Map = UserList(UserIndex).flags.TargetMap
+    wp2.map = UserList(UserIndex).flags.TargetMap
     wp2.X = UserList(UserIndex).flags.TargetX
     wp2.Y = UserList(UserIndex).flags.TargetY
     
@@ -290,7 +290,7 @@ Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 If UserList(UserIndex).NroMacotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
-If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+If MapInfo(UserList(UserIndex).Pos.map).Pk = False Or MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(UserIndex, "En zona segura no puedes invocar criaturas.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -299,7 +299,7 @@ Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
 
 
-TargetPos.Map = UserList(UserIndex).flags.TargetMap
+TargetPos.map = UserList(UserIndex).flags.TargetMap
 TargetPos.X = UserList(UserIndex).flags.TargetX
 TargetPos.Y = UserList(UserIndex).flags.TargetY
 
@@ -529,7 +529,7 @@ If Hechizos(H).Invisibilidad = 1 Then
     End If
     
     'No usar invi mapas InviSinEfecto
-    If MapInfo(UserList(tU).Pos.Map).InviSinEfecto > 0 Then
+    If MapInfo(UserList(tU).Pos.map).InviSinEfecto > 0 Then
         Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
         b = False
         Exit Sub
@@ -756,7 +756,7 @@ If Hechizos(H).Revivir = 1 Then
     If UserList(tU).flags.Muerto = 1 Then
     
         'No usar resu en mapas con ResuSinEfecto
-        If MapInfo(UserList(tU).Pos.Map).ResuSinEfecto > 0 Then
+        If MapInfo(UserList(tU).Pos.map).ResuSinEfecto > 0 Then
             Call WriteConsoleMsg(UserIndex, "¡Revivir no está permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
             b = False
             Exit Sub
@@ -917,7 +917,7 @@ Sub RevisoAtaqueNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef
     End If
     If Npclist(NpcIndex).MaestroUser > 0 Then 'Es mascota?
         'Es mascota de un caos y vos sos un caos?
-        If UserList(Npclist(NpcIndex).MaestroUser).Faccion.FuerzasCaos & UserList(UserIndex).Faccion.FuerzasCaos Then
+        If UserList(Npclist(NpcIndex).MaestroUser).Faccion.FuerzasCaos And UserList(UserIndex).Faccion.FuerzasCaos Then
             Call WriteConsoleMsg(UserIndex, "No puedes atacar mascotas de Legionarios siendo Legionario", FontTypeNames.FONTTYPE_WARNING)
             b = False
             ExitSub = True
@@ -1636,7 +1636,7 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     EraCriminal = criminal(UserIndex)
     
     'Si estamos en la arena no hacemos nada
-    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+    If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
     
     'pierdo nobleza...
     UserList(UserIndex).Reputacion.NobleRep = UserList(UserIndex).Reputacion.NobleRep - NoblePts
