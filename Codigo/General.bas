@@ -1239,41 +1239,44 @@ End Sub
 Sub PasarSegundo()
     Dim i As Integer
     For i = 1 To LastUser
-        'Cerrar usuario
-        If UserList(i).Counters.Saliendo Then
-            UserList(i).Counters.Salir = UserList(i).Counters.Salir - 1
-            If UserList(i).Counters.Salir <= 0 Then
-                Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
-                Call WriteDisconnect(i)
-                Call FlushBuffer(i)
-                
-                Call CloseSocket(i)
-                Exit Sub
-            End If
-        
-        'ANTIEMPOLLOS
-        ElseIf UserList(i).flags.EstaEmpo = 1 Then
-             UserList(i).EmpoCont = UserList(i).EmpoCont + 1
-             If UserList(i).EmpoCont = 30 Then
-                 
-                 'If FileExist(CharPath & UserList(Z).Name & ".chr", vbNormal) Then
-                 'esto siempre existe! sino no estaria logueado ;p
-                 
-                 'TmpP = val(GetVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant"))
-                 'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant", TmpP + 1)
-                 'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
-
-                 'Call Encarcelar(Z, 30, "El sistema anti empollo")
-                 Call WriteShowMessageBox(i, "Fuiste expulsado por permanecer muerto sobre un item")
-                 'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
-                 UserList(i).EmpoCont = 0
-                 Call CloseSocket(i)
-                 Exit Sub
-             ElseIf UserList(i).EmpoCont = 15 Then
-                 Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
+        If UserList(i).flags.UserLogged Then
+            'Cerrar usuario
+            If UserList(i).Counters.Saliendo Then
+                UserList(i).Counters.Salir = UserList(i).Counters.Salir - 1
+                If UserList(i).Counters.Salir <= 0 Then
+                    Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteDisconnect(i)
+                    Call FlushBuffer(i)
+                    
+                    Call CloseSocket(i)
+                    Exit Sub
+                End If
+            
+            'ANTIEMPOLLOS
+            ElseIf UserList(i).flags.EstaEmpo = 1 Then
+                 UserList(i).EmpoCont = UserList(i).EmpoCont + 1
+                 If UserList(i).EmpoCont = 30 Then
+                     
+                     'If FileExist(CharPath & UserList(Z).Name & ".chr", vbNormal) Then
+                     'esto siempre existe! sino no estaria logueado ;p
+                     
+                     'TmpP = val(GetVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant"))
+                     'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant", TmpP + 1)
+                     'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
+    
+                     'Call Encarcelar(Z, 30, "El sistema anti empollo")
+                     Call WriteShowMessageBox(i, "Fuiste expulsado por permanecer muerto sobre un item")
+                     'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
+                     UserList(i).EmpoCont = 0
+                     Call CloseSocket(i)
+                     Call FlushBuffer(i)
+                     Exit Sub
+                 ElseIf UserList(i).EmpoCont = 15 Then
+                     Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
+                    Call FlushBuffer(i)
+                End If
              End If
-         End If
-        Call FlushBuffer(i)
+        End If
     Next i
     
     'revisamos auto reiniciares
