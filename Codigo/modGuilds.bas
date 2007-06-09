@@ -1533,10 +1533,18 @@ Dim AspiranteUI     As Integer
             refError = Aspirante & " no puede entrar a un clan " & Alineacion2String(guilds(GI).Alineacion)
             Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
             Exit Function
+        ElseIf Not UserList(AspiranteUI).guildIndex = 0 Then
+            refError = Aspirante & " ya es parte de otro clan."
+            Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
+            Exit Function
         End If
     Else
         If Not m_EstadoPermiteEntrarChar(Aspirante, GI) Then
             refError = Aspirante & " no puede entrar a un clan " & Alineacion2String(guilds(GI).Alineacion)
+            Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
+            Exit Function
+        ElseIf GetGuildIndexFromChar(Aspirante) Then
+            refError = Aspirante & " ya es parte de otro clan."
             Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
             Exit Function
         End If
