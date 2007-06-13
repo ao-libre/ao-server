@@ -98,10 +98,9 @@ Call WriteUpdateUserStats(UserIndex)
             Call UpdateUserInv(True, UserIndex, 0)
             'Actualizamos el banco
             Call UpdateBanUserInv(True, UserIndex, 0)
+       End If
             'Actualizamos la ventana de comercio
             Call UpdateVentanaBanco(UserIndex)
-       End If
-
 
 
 errhandler:
@@ -202,11 +201,9 @@ If UserList(UserIndex).Invent.Object(Item).amount > 0 And UserList(UserIndex).In
             Call UpdateUserInv(True, UserIndex, 0)
             'Actualizamos el inventario del banco
             Call UpdateBanUserInv(True, UserIndex, 0)
-            'Actualizamos la ventana del banco
-            
-            Call UpdateVentanaBanco(UserIndex)
-            
 End If
+            'Actualizamos la ventana del banco
+            Call UpdateVentanaBanco(UserIndex)
 
 errhandler:
 

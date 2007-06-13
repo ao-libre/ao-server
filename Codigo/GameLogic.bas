@@ -634,7 +634,7 @@ If InMapBounds(Map, X, Y) Then
                     Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).guildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).desc) > 1 Then
+                If Len(UserList(TempCharIndex).desc) > 0 Then
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
