@@ -366,7 +366,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-On Error GoTo errhandler
+On Error GoTo errHandler
 'fired every minute
 Static Minutos As Long
 Static MinutosLatsClean As Long
@@ -473,7 +473,7 @@ Close #N
 '<<<<<-------- Log the number of users online ------>>>
 
 Exit Sub
-errhandler:
+errHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
 End Sub
@@ -611,7 +611,7 @@ On Error GoTo hayerror
              UserList(iUserIndex).NumeroPaquetesPorMiliSec = 0
     
              
-             Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
+             Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.Map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
              
                     
              If UserList(iUserIndex).flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -811,6 +811,7 @@ Private Sub packetResend_Timer()
 'Last Modification: 04/01/07
 'Attempts to resend to the user all data that may be enqueued.
 '***************************************************
+On Error GoTo errHandler:
     Dim i As Long
     
     For i = 1 To LastUser
@@ -820,6 +821,12 @@ Private Sub packetResend_Timer()
             End If
         End If
     Next i
+
+Exit Sub
+
+errHandler:
+    LogError ("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
+    Resume Next
 End Sub
 
 Private Sub securityTimer_Timer()
@@ -870,7 +877,7 @@ If Not haciendoBK And Not EnPausa Then
                      If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                         Call EfectoParalisisNpc(NpcIndex)
                      End If
-                     mapa = Npclist(NpcIndex).Pos.map
+                     mapa = Npclist(NpcIndex).Pos.Map
                      If mapa > 0 Then
                           If MapInfo(mapa).NumUsers > 0 Then
                                   If Npclist(NpcIndex).Movement <> TipoAI.ESTATICO Then
@@ -890,7 +897,7 @@ End If
 Exit Sub
 
 ErrorHandler:
- Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
+ Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
  Call MuereNpc(NpcIndex, 0)
 
 End Sub
@@ -898,7 +905,7 @@ End Sub
 
 
 Private Sub tLluvia_Timer()
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim iCount As Long
 If Lloviendo Then
@@ -908,7 +915,7 @@ If Lloviendo Then
 End If
 
 Exit Sub
-errhandler:
+errHandler:
 Call LogError("tLluvia " & Err.Number & ": " & Err.description)
 End Sub
 
@@ -953,7 +960,7 @@ Call LogError("Error tLluviaTimer")
 End Sub
 
 Private Sub tPiqueteC_Timer()
-On Error GoTo errhandler
+On Error GoTo errHandler
 Static Segundos As Integer
 Dim NuevaA As Boolean
 Dim NuevoL As Boolean
@@ -965,7 +972,7 @@ Dim i As Long
 
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
-        If MapData(UserList(i).Pos.map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+        If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
             UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
             Call WriteConsoleMsg(i, "Estás obstruyendo la via pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
             
@@ -1011,7 +1018,7 @@ If Segundos >= 18 Then Segundos = 0
 
 Exit Sub
 
-errhandler:
+errHandler:
     Call LogError("Error en tPiqueteC_Timer " & Err.Number & ": " & Err.description)
 End Sub
 
