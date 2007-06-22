@@ -611,7 +611,7 @@ On Error GoTo hayerror
              UserList(iUserIndex).NumeroPaquetesPorMiliSec = 0
     
              
-             Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.Map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
+             Call DoTileEvents(iUserIndex, UserList(iUserIndex).Pos.map, UserList(iUserIndex).Pos.X, UserList(iUserIndex).Pos.Y)
              
                     
              If UserList(iUserIndex).flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -870,7 +870,7 @@ If Not haciendoBK And Not EnPausa Then
                      If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
                         Call EfectoParalisisNpc(NpcIndex)
                      End If
-                     mapa = Npclist(NpcIndex).Pos.Map
+                     mapa = Npclist(NpcIndex).Pos.map
                      If mapa > 0 Then
                           If MapInfo(mapa).NumUsers > 0 Then
                                   If Npclist(NpcIndex).Movement <> TipoAI.ESTATICO Then
@@ -890,7 +890,7 @@ End If
 Exit Sub
 
 ErrorHandler:
- Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
+ Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
  Call MuereNpc(NpcIndex, 0)
 
 End Sub
@@ -965,50 +965,45 @@ Dim i As Long
 
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
+        If MapData(UserList(i).Pos.map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+            UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
+            Call WriteConsoleMsg(i, "Estás obstruyendo la via pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
             
-            If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-                    UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-                    Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muévete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
-                    If UserList(i).Counters.PiqueteC > 23 Then
-                            UserList(i).Counters.PiqueteC = 0
-                            Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
-                    End If
-            Else
-                    If UserList(i).Counters.PiqueteC > 0 Then UserList(i).Counters.PiqueteC = 0
+            If UserList(i).Counters.PiqueteC > 23 Then
+                UserList(i).Counters.PiqueteC = 0
+                Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
             End If
+        Else
+            If UserList(i).Counters.PiqueteC > 0 Then UserList(i).Counters.PiqueteC = 0
+        End If
 
-            'ustedes se preguntaran que hace esto aca?
-            'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
-            'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
-            'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
+        'ustedes se preguntaran que hace esto aca?
+        'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
+        'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
+        'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
 
-            GI = UserList(i).guildIndex
-            If GI > 0 Then
-                NuevaA = False
-                NuevoL = False
-                If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
-                    Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
-                End If
-                If NuevaA Then
-                    Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
-                    Call LogClanes("El clan cambio de alineacion!")
-                End If
-                If NuevoL Then
-                    Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
-                    Call LogClanes("El clan tiene nuevo lider!")
-                End If
+        GI = UserList(i).guildIndex
+        If GI > 0 Then
+            NuevaA = False
+            NuevoL = False
+            If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
+                Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
             End If
-
-            If Segundos >= 18 Then
-'                Dim nfile As Integer
-'                nfile = FreeFile ' obtenemos un canal
-'                Open App.Path & "\logs\maxpasos.log" For Append Shared As #nfile
-'                Print #nfile, UserList(i).Counters.Pasos
-'                Close #nfile
-                If Segundos >= 18 Then UserList(i).Counters.Pasos = 0
+            If NuevaA Then
+                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
+                Call LogClanes("El clan cambio de alineacion!")
             End If
-            
+            If NuevoL Then
+                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
+                Call LogClanes("El clan tiene nuevo lider!")
+            End If
+        End If
+
+        If Segundos >= 18 Then
+            If Segundos >= 18 Then UserList(i).Counters.Pasos = 0
+        End If
     End If
+    
     Call FlushBuffer(i)
 Next i
 
