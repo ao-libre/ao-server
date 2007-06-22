@@ -87,7 +87,7 @@ expPerCapita = CLng(ExpGanada / p_CantMiembros)
 For i = 1 To PARTY_MAXMEMBERS
     UI = p_members(i).UserIndex
     If UI > 0 Then
-        If mapa = UserList(UI).Pos.Map And UserList(UI).flags.Muerto = 0 Then
+        If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
                 p_members(i).Experiencia = p_members(i).Experiencia + expPerCapita
                 If p_members(i).Experiencia < 0 Then
@@ -210,12 +210,12 @@ For i = 1 To PARTY_MAXMEMBERS
     If p_members(i).UserIndex > 0 Then
         If p_members(i).UserIndex = UserIndex Then
             UserIndexIndex = i
-            Exit For
-        End If
-        'chequeo la dif entre levels
-        If Abs(UserList(UserIndex).Stats.ELV - UserList(p_members(i).UserIndex).Stats.ELV) > MAXPARTYDELTALEVEL Then
-            Call WriteConsoleMsg(p_members(i).UserIndex, " No se puede hacer líder a " & UserList(UserIndex).name & " pues la diferencia entre niveles de los miembros de la party sería mayor a " & MAXPARTYDELTALEVEL, FontTypeNames.FONTTYPE_PARTY)
-            HacerLeader = False
+        Else
+            'chequeo la dif entre levels
+            If Abs(CInt(UserList(UserIndex).Stats.ELV) - CInt(UserList(p_members(i).UserIndex).Stats.ELV)) > MAXPARTYDELTALEVEL Then
+                Call WriteConsoleMsg(p_members(i).UserIndex, "No se puede hacer líder a " & UserList(UserIndex).name & " pues la diferencia entre niveles de los miembros de la party sería mayor a " & MAXPARTYDELTALEVEL, FontTypeNames.FONTTYPE_PARTY)
+                HacerLeader = False
+            End If
         End If
     End If
 Next i
