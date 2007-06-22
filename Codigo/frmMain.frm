@@ -1002,9 +1002,9 @@ For i = 1 To LastUser
         If Segundos >= 18 Then
             If Segundos >= 18 Then UserList(i).Counters.Pasos = 0
         End If
+		Call FlushBuffer(i)
     End If
     
-    Call FlushBuffer(i)
 Next i
 
 If Segundos >= 18 Then Segundos = 0
