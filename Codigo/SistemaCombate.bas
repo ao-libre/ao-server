@@ -333,7 +333,7 @@ Function PoderEvasion(ByVal UserIndex As Integer) As Long
           .Stats.UserSkills(eSkill.Tacticas) / 33 * .Stats.UserAtributos(eAtributos.Agilidad)) * _
           ModificadorEvasion(.clase)
        
-        PoderEvasion = (lTemp + (2.5 * Maximo(.Stats.ELV - 12, 0)))
+        PoderEvasion = (lTemp + (2.5 * Maximo(CInt(.Stats.ELV) - 12, 0)))
     End With
 End Function
 
@@ -357,7 +357,7 @@ Else
    ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 End If
 
-PoderAtaqueArma = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
+PoderAtaqueArma = (PoderAtaqueTemp + (2.5 * Maximo(CInt(UserList(UserIndex).Stats.ELV) - 12, 0)))
 End Function
 
 Function PoderAtaqueProyectil(ByVal UserIndex As Integer) As Long
@@ -380,7 +380,7 @@ Else
       ModificadorPoderAtaqueProyectiles(UserList(UserIndex).clase))
 End If
 
-PoderAtaqueProyectil = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
+PoderAtaqueProyectil = (PoderAtaqueTemp + (2.5 * Maximo(CInt(UserList(UserIndex).Stats.ELV) - 12, 0)))
 
 End Function
 
@@ -404,7 +404,7 @@ Else
        ModificadorPoderAtaqueArmas(UserList(UserIndex).clase))
 End If
 
-PoderAtaqueWrestling = (PoderAtaqueTemp + (2.5 * Maximo(UserList(UserIndex).Stats.ELV - 12, 0)))
+PoderAtaqueWrestling = (PoderAtaqueTemp + (2.5 * Maximo(CInt(UserList(UserIndex).Stats.ELV) - 12, 0)))
 
 End Function
 
@@ -1626,7 +1626,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo errhandler
+On Error GoTo errHandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1644,7 +1644,7 @@ On Error GoTo errhandler
     End If
 
 Exit Function
-errhandler:
+errHandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
