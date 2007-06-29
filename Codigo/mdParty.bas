@@ -86,7 +86,13 @@ End Function
 Public Function PuedeCrearParty(ByVal UserIndex As Integer) As Boolean
     PuedeCrearParty = True
 '    If UserList(UserIndex).Stats.ELV < MINPARTYLEVEL Then
-    If (UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo)) < 100 Then
+    Dim AUX As Integer
+    Dim AUX2 As Integer
+    Dim AUX3 As Integer
+    AUX = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma)
+    AUX2 = UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo)
+    AUX3 = AUX * AUX2
+    If AUX3 < 100 Then
         Call WriteConsoleMsg(UserIndex, "Tu carisma y liderazgo no son suficientes para liderar una party.", FontTypeNames.FONTTYPE_PARTY)
         PuedeCrearParty = False
     ElseIf UserList(UserIndex).flags.Muerto = 1 Then

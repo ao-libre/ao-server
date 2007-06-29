@@ -87,7 +87,7 @@ expPerCapita = CLng(ExpGanada / p_CantMiembros)
 For i = 1 To PARTY_MAXMEMBERS
     UI = p_members(i).UserIndex
     If UI > 0 Then
-        If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
+        If mapa = UserList(UI).Pos.Map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
                 p_members(i).Experiencia = p_members(i).Experiencia + expPerCapita
                 If p_members(i).Experiencia < 0 Then
@@ -238,8 +238,8 @@ oldExp = p_members(1).Experiencia
 p_members(1).UserIndex = p_members(UserIndexIndex).UserIndex     'que en realdiad es el userindex, pero no quiero inconsistencias moviendo experiencias
 p_members(1).Experiencia = p_members(UserIndexIndex).Experiencia
 
-p_members(i).UserIndex = OldLeader
-p_members(i).Experiencia = oldExp
+p_members(UserIndexIndex).UserIndex = OldLeader
+p_members(UserIndexIndex).Experiencia = oldExp
 
 p_Fundador = p_members(1).UserIndex
 
