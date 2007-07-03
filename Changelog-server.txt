@@ -183,3 +183,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 25/02/2007: código listo salvo pr posibles bugs. (Maraxus)
  * 01/03/2007: Privilegios y Restricciones Implementadas. (NIGO)
  * 31/03/2007: Tras un mes de bug-fixes agregamos algo nuevo. El comando /PING. (Maraxus)
+ * 26/06/2007: Se corrigieron bugs la última semana. (Integer, NIGO y Maraxus)
+ * 26/06/2007: Corregí una desincronización cliente-servidor. (Maraxus)
