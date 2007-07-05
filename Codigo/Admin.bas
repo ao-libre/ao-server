@@ -144,7 +144,7 @@ For i = 1 To LastNPC
    'OJO
    If Npclist(i).flags.NPCActive Then
         
-        If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
+        If InMapBounds(Npclist(i).Orig.map, Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
                 MiNPC = Npclist(i)
                 Call QuitarNPC(i)
                 Call ReSpawnNpc(MiNPC)
@@ -221,7 +221,7 @@ Public Sub PurgarPenas()
                 
                 If UserList(i).Counters.Pena < 1 Then
                     UserList(i).Counters.Pena = 0
-                    Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
+                    Call WarpUserChar(i, Libertad.map, Libertad.X, Libertad.Y, True)
                     Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                     
                     Call FlushBuffer(i)
@@ -237,7 +237,7 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
         UserList(UserIndex).Counters.Pena = Minutos
        
         
-        Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
+        Call WarpUserChar(UserIndex, Prision.map, Prision.X, Prision.Y, True)
         
         If LenB(GmName) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
@@ -444,19 +444,23 @@ End If
 
 End Sub
 
-
 Public Function UserDarPrivilegioLevel(ByVal name As String) As PlayerType
-If EsAdmin(name) Then
-    UserDarPrivilegioLevel = PlayerType.Admin
-ElseIf EsDios(name) Then
-    UserDarPrivilegioLevel = PlayerType.Dios
-ElseIf EsSemiDios(name) Then
-    UserDarPrivilegioLevel = PlayerType.SemiDios
-ElseIf EsConsejero(name) Then
-    UserDarPrivilegioLevel = PlayerType.Consejero
-Else
-    UserDarPrivilegioLevel = PlayerType.User
-End If
+'***************************************************
+'Author: Unknown
+'Last Modification: 03/02/07
+'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
+'***************************************************
+    If EsAdmin(name) Then
+        UserDarPrivilegioLevel = PlayerType.Admin
+    ElseIf EsDios(name) Then
+        UserDarPrivilegioLevel = PlayerType.Dios
+    ElseIf EsSemiDios(name) Then
+        UserDarPrivilegioLevel = PlayerType.SemiDios
+    ElseIf EsConsejero(name) Then
+        UserDarPrivilegioLevel = PlayerType.Consejero
+    Else
+        UserDarPrivilegioLevel = PlayerType.User
+    End If
 End Function
 
 Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As String, ByVal reason As String)
@@ -469,6 +473,10 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
     Dim userPriv As Byte
     Dim cantPenas As Byte
     Dim rank As Integer
+    
+    If InStrB(UserName, "+") Then
+        UserName = Replace(UserName, "+", " ")
+    End If
     
     tUser = NameIndex(UserName)
     
@@ -497,7 +505,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": BAN POR " & LCase$(reason) & " " & Date & " " & time)
                         
-                        If (userPriv And rank) = (.flags.Privilegios And rank) Then
+                        If (userPriv And rank) <> 0 Then
                             .flags.Ban = 1
                             Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                             Call CloseSocket(bannerUserIndex)

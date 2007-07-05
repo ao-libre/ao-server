@@ -100,13 +100,13 @@ End If
 End Sub
 
 
-Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
-If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If ((MapData(Map, X, Y).Graphic(1) >= 1505 And MapData(Map, X, Y).Graphic(1) <= 1520) Or _
-    (MapData(Map, X, Y).Graphic(1) >= 5665 And MapData(Map, X, Y).Graphic(1) <= 5680) Or _
-    (MapData(Map, X, Y).Graphic(1) >= 13547 And MapData(Map, X, Y).Graphic(1) <= 13562)) And _
-       MapData(Map, X, Y).Graphic(2) = 0 Then
+If map > 0 And map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If ((MapData(map, X, Y).Graphic(1) >= 1505 And MapData(map, X, Y).Graphic(1) <= 1520) Or _
+    (MapData(map, X, Y).Graphic(1) >= 5665 And MapData(map, X, Y).Graphic(1) <= 5680) Or _
+    (MapData(map, X, Y).Graphic(1) >= 13547 And MapData(map, X, Y).Graphic(1) <= 13562)) And _
+       MapData(map, X, Y).Graphic(2) = 0 Then
             HayAgua = True
     Else
             HayAgua = False
@@ -117,13 +117,13 @@ End If
 
 End Function
 
-Private Function HayLava(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Private Function HayLava(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 '***************************************************
 'Autor: Nacho (Integer)
 'Last Modification: 03/12/07
 '***************************************************
-If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
+If map > 0 And map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If MapData(map, X, Y).Graphic(1) >= 5837 And MapData(map, X, Y).Graphic(1) <= 5852 Then
         HayLava = True
     Else
         HayLava = False
@@ -145,7 +145,7 @@ Dim i As Integer
 For i = 1 To TrashCollector.Count
     Dim d As cGarbage
     Set d = TrashCollector(1)
-    Call EraseObj(d.Map, 1, d.Map, d.X, d.Y)
+    Call EraseObj(d.map, 1, d.map, d.X, d.Y)
     Call TrashCollector.Remove(1)
     Set d = Nothing
 Next i
@@ -199,8 +199,8 @@ ChDrive App.Path
 Call LoadMotd
 Call BanIpCargar
 
-Prision.Map = 66
-Libertad.Map = 66
+Prision.map = 66
+Libertad.map = 66
 
 Prision.X = 75
 Prision.Y = 47
@@ -502,8 +502,8 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
     End If
 End Function
 
-Function MapaValido(ByVal Map As Integer) As Boolean
-MapaValido = Map >= 1 And Map <= NumMaps
+Function MapaValido(ByVal map As Integer) As Boolean
+MapaValido = map >= 1 And map <= NumMaps
 End Function
 
 Sub MostrarNumUsers()
@@ -514,7 +514,7 @@ End Sub
 
 
 Public Sub LogCriticEvent(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -524,12 +524,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogEjercitoReal(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -539,12 +539,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogEjercitoCaos(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -554,13 +554,13 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 
 Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -570,13 +570,13 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 
 Public Sub LogError(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -586,12 +586,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogStatic(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -601,12 +601,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogTarea(desc As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile(1) ' obtenemos un canal
@@ -616,7 +616,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 
 End Sub
@@ -656,7 +656,7 @@ End Sub
 
 
 Public Sub LogGM(Nombre As String, texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -667,7 +667,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
@@ -691,13 +691,13 @@ Public Sub SaveDayStats()
 ''Close #nfile
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 
 Public Sub LogAsesinato(texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 Dim nfile As Integer
 
 nfile = FreeFile ' obtenemos un canal
@@ -708,11 +708,11 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 Public Sub logVentaCasa(ByVal texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -725,12 +725,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 
 End Sub
 Public Sub LogHackAttemp(texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -742,12 +742,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogCheating(texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -757,13 +757,13 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 
 Public Sub LogCriticalHackAttemp(texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -775,12 +775,12 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
 Public Sub LogAntiCheat(texto As String)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -791,7 +791,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 End Sub
 
@@ -926,10 +926,10 @@ End Sub
 
 Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
     
-    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> "DUNGEON" Then
-        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 1 And _
-           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 2 And _
-           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 4 Then Intemperie = True
+    If MapInfo(UserList(UserIndex).Pos.map).Zona <> "DUNGEON" Then
+        If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 1 And _
+           MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 2 And _
+           MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 4 Then Intemperie = True
     Else
         Intemperie = False
     End If
@@ -937,7 +937,7 @@ Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
 End Function
 
 Public Sub EfectoLluvia(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 
 If UserList(UserIndex).flags.UserLogged Then
@@ -950,7 +950,7 @@ If UserList(UserIndex).flags.UserLogged Then
 End If
 
 Exit Sub
-errhandler:
+errHandler:
  LogError ("Error en EfectoLluvia")
 End Sub
 
@@ -975,7 +975,7 @@ Public Sub EfectoFrio(ByVal UserIndex As Integer)
     If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
         UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
     Else
-        If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
+        If MapInfo(UserList(UserIndex).Pos.map).Terreno = Nieve Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!.", FontTypeNames.FONTTYPE_INFO)
             modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
@@ -1006,7 +1006,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
     If UserList(UserIndex).Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
         UserList(UserIndex).Counters.Lava = UserList(UserIndex).Counters.Lava + 1
     Else
-        If HayLava(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+        If HayLava(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
             Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!.", FontTypeNames.FONTTYPE_INFO)
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
             
@@ -1107,9 +1107,9 @@ End Sub
 
 Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
 
 
 Dim massta As Integer
@@ -1204,9 +1204,9 @@ End Sub
 
 Public Sub Sanar(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
 
 Dim mashit As Integer
 'con el paso del tiempo va sanando....pero muy lentamente ;-)
@@ -1237,7 +1237,8 @@ Public Sub CargaNpcsDat()
 End Sub
 
 Sub PasarSegundo()
-    Dim i As Integer
+    Dim i As Long
+    
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
             'Cerrar usuario
@@ -1249,7 +1250,6 @@ Sub PasarSegundo()
                     Call FlushBuffer(i)
                     
                     Call CloseSocket(i)
-                    Exit Sub
                 End If
             
             'ANTIEMPOLLOS
@@ -1270,7 +1270,6 @@ Sub PasarSegundo()
                      UserList(i).EmpoCont = 0
                      Call CloseSocket(i)
                      Call FlushBuffer(i)
-                     Exit Sub
                  ElseIf UserList(i).EmpoCont = 15 Then
                      Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
                     Call FlushBuffer(i)
