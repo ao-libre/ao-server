@@ -11237,10 +11237,11 @@ On Error GoTo errHandler
                 UserName = Replace(UserName, "+", " ")
             End If
             
+            'Only Gods and Admins can see the ips of adminsitrative characters. All others can be seen by every adminsitrative char.
             If NameIndex(UserName) > 0 Then
-                validCheck = (UserList(NameIndex(UserName)).flags.Privilegios And priv) < (.flags.Privilegios And priv)
+                validCheck = (UserList(NameIndex(UserName)).flags.Privilegios And priv) = 0 Or (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
             Else
-                validCheck = (UserDarPrivilegioLevel(UserName) And priv) < (.flags.Privilegios And priv)
+                validCheck = (UserDarPrivilegioLevel(UserName) And priv) = 0 Or (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
             End If
             
             If validCheck Then
