@@ -1293,9 +1293,6 @@ On Error GoTo errhandler
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
         
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-        
         Exit Sub
     End If
     
@@ -1303,9 +1300,6 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex, True)
-        
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
         
         Exit Sub
     End If
@@ -1414,9 +1408,6 @@ On Error GoTo errhandler
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-        
         Exit Sub
     End If
     
@@ -1425,9 +1416,6 @@ On Error GoTo errhandler
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-        
         Exit Sub
     End If
     
@@ -1435,9 +1423,6 @@ On Error GoTo errhandler
         Call WriteErrorMsg(UserIndex, "Has creado demasiados personajes.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        
-        'Empty buffer for reuse
-        Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
         
         Exit Sub
     End If
@@ -1773,9 +1758,6 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
                     Call LogHackAttemp("Tramposo SH: " & .name & " , " & dummy)
                     Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .name & " ha sido echado por el servidor por posible uso de SH.", FontTypeNames.FONTTYPE_SERVER))
                     Call CloseSocket(UserIndex)
-                    
-                    'Empty buffer for reuse
-                    Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
                     
                     Exit Sub
                 Else
