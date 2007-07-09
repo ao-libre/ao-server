@@ -1352,11 +1352,6 @@ Private Sub HandleThrowDices(ByVal UserIndex As Integer)
     'Remove packet ID
     Call UserList(UserIndex).incomingData.ReadByte
     
-    If UserList(UserIndex).Char.CharIndex <> 0 Then
-        LogError ("Se tiran dados par aun pj conectado con ConID : " + UserList(UserIndex).ConnID + " - ConIdValida : " + UserList(UserIndex).ConnIDValida + " - UserLogged : " + UserList(UserIndex).flags.UserLogged)
-        Exit Sub
-    End If
-    
     With UserList(UserIndex).Stats
         .UserAtributos(eAtributos.Fuerza) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)
         .UserAtributos(eAtributos.Agilidad) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)

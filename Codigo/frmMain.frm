@@ -814,7 +814,7 @@ Private Sub packetResend_Timer()
 On Error GoTo errhandler:
     Dim i As Long
     
-    For i = 1 To LastUser
+    For i = 1 To MaxUsers
         If UserList(i).ConnIDValida Then
             If UserList(i).outgoingData.length > 0 Then
                 Call EnviarDatosASlot(i, UserList(i).outgoingData.ReadASCIIStringFixed(UserList(i).outgoingData.length))

@@ -525,7 +525,7 @@ Dim LoopC As Integer
 On Error GoTo errhandler
     
     If UserIndex = LastUser Then
-        Do Until UserList(LastUser).ConnID <> -1 Or UserList(LastUser).flags.UserLogged
+        Do Until UserList(LastUser).flags.UserLogged
             LastUser = LastUser - 1
             If LastUser < 1 Then Exit Do
         Loop
@@ -592,7 +592,7 @@ On Error GoTo errhandler
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
 
     If UserIndex = LastUser And LastUser > 1 Then
-        Do Until UserList(LastUser).ConnID <> -1 Or UserList(LastUser).flags.UserLogged
+        Do Until UserList(LastUser).flags.UserLogged
             LastUser = LastUser - 1
             If LastUser <= 1 Then Exit Do
         Loop
@@ -645,7 +645,7 @@ Dim CoNnEcTiOnId As Long
         Do
             LastUser = LastUser - 1
             If LastUser <= 1 Then Exit Do
-        Loop While UserList(LastUser).ConnID = -1 Or UserList(LastUser).flags.UserLogged = True
+        Loop While UserList(LastUser).flags.UserLogged = True
     End If
 
     If UserList(UserIndex).flags.UserLogged Then
