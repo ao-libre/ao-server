@@ -162,8 +162,8 @@ Dim tInt As Integer
         Call WriteConsoleMsg(UserIndex, " Para ingresar a una party debes hacer click sobre el fundador y luego escribir /PARTY", FontTypeNames.FONTTYPE_PARTY)
         UserList(UserIndex).PartySolicitud = 0
     End If
-
 End Sub
+
 Public Sub SalirDeParty(ByVal UserIndex As Integer)
 Dim PI As Integer
 PI = UserList(UserIndex).PartyIndex

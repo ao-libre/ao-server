@@ -41,7 +41,7 @@ Option Explicit
 ' @param X X
 ' @param Y Y
 
-Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub Accion(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Error Resume Next
 
 '¿Rango Visión? (ToxicWaste)
@@ -50,17 +50,17 @@ If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIn
 End If
 
 '¿Posicion valida?
-If InMapBounds(Map, X, Y) Then
+If InMapBounds(map, X, Y) Then
    
     Dim FoundChar As Byte
     Dim FoundSomething As Byte
     Dim TempCharIndex As Integer
        
-    If MapData(Map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
+    If MapData(map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
         'Set the target NPC
-        UserList(UserIndex).flags.TargetNPC = MapData(Map, X, Y).NpcIndex
+        UserList(UserIndex).flags.TargetNPC = MapData(map, X, Y).NpcIndex
         
-        If Npclist(MapData(Map, X, Y).NpcIndex).Comercia = 1 Then
+        If Npclist(MapData(map, X, Y).NpcIndex).Comercia = 1 Then
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
@@ -75,14 +75,14 @@ If InMapBounds(Map, X, Y) Then
             'Iniciamos la rutina pa' comerciar.
             Call IniciarCOmercioNPC(UserIndex)
         
-        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Banquero Then
+        ElseIf Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Banquero Then
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             
-            If Distancia(Npclist(MapData(Map, X, Y).NpcIndex).Pos, UserList(UserIndex).Pos) > 3 Then
+            If Distancia(Npclist(MapData(map, X, Y).NpcIndex).Pos, UserList(UserIndex).Pos) > 3 Then
                 Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -90,14 +90,14 @@ If InMapBounds(Map, X, Y) Then
             'A depositar de una
             Call IniciarDeposito(UserIndex)
         
-        ElseIf Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
-            If Distancia(UserList(UserIndex).Pos, Npclist(MapData(Map, X, Y).NpcIndex).Pos) > 10 Then
+        ElseIf Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
+            If Distancia(UserList(UserIndex).Pos, Npclist(MapData(map, X, Y).NpcIndex).Pos) > 10 Then
                 Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
-           
-           'Revivimos si es necesario
-            If UserList(UserIndex).flags.Muerto = 1 And (Npclist(MapData(Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex)) Then
+            
+            'Revivimos si es necesario
+            If UserList(UserIndex).flags.Muerto = 1 And (Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex)) Then
                 Call RevivirUsuario(UserIndex)
             End If
             
@@ -107,48 +107,48 @@ If InMapBounds(Map, X, Y) Then
         End If
         
     '¿Es un obj?
-    ElseIf MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).ObjInfo.ObjIndex
+    ElseIf MapData(map, X, Y).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(map, X, Y).ObjInfo.ObjIndex
         
-        Select Case ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType
+        Select Case ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).OBJType
             
             Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X, Y, UserIndex)
+                Call AccionParaPuerta(map, X, Y, UserIndex)
             Case eOBJType.otCarteles 'Es un cartel
-                Call AccionParaCartel(Map, X, Y, UserIndex)
+                Call AccionParaCartel(map, X, Y, UserIndex)
             Case eOBJType.otForos 'Foro
-                Call AccionParaForo(Map, X, Y, UserIndex)
+                Call AccionParaForo(map, X, Y, UserIndex)
             Case eOBJType.otLeña    'Leña
-                If MapData(Map, X, Y).ObjInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
-                    Call AccionParaRamita(Map, X, Y, UserIndex)
+                If MapData(map, X, Y).ObjInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
+                    Call AccionParaRamita(map, X, Y, UserIndex)
                 End If
         End Select
     '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
-    ElseIf MapData(Map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y).ObjInfo.ObjIndex
+    ElseIf MapData(map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(map, X + 1, Y).ObjInfo.ObjIndex
         
-        Select Case ObjData(MapData(Map, X + 1, Y).ObjInfo.ObjIndex).OBJType
+        Select Case ObjData(MapData(map, X + 1, Y).ObjInfo.ObjIndex).OBJType
             
             Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X + 1, Y, UserIndex)
+                Call AccionParaPuerta(map, X + 1, Y, UserIndex)
             
         End Select
-    ElseIf MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex
+    ElseIf MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex
 
-        Select Case ObjData(MapData(Map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
+        Select Case ObjData(MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
             
             Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X + 1, Y + 1, UserIndex)
+                Call AccionParaPuerta(map, X + 1, Y + 1, UserIndex)
             
         End Select
-    ElseIf MapData(Map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y + 1).ObjInfo.ObjIndex
+    ElseIf MapData(map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
+        UserList(UserIndex).flags.TargetObj = MapData(map, X, Y + 1).ObjInfo.ObjIndex
 
-        Select Case ObjData(MapData(Map, X, Y + 1).ObjInfo.ObjIndex).OBJType
+        Select Case ObjData(MapData(map, X, Y + 1).ObjInfo.ObjIndex).OBJType
             
             Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(Map, X, Y + 1, UserIndex)
+                Call AccionParaPuerta(map, X, Y + 1, UserIndex)
             
         End Select
     End If
@@ -156,11 +156,11 @@ End If
 
 End Sub
 
-Sub AccionParaForo(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub AccionParaForo(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 
 Dim Pos As WorldPos
-Pos.Map = Map
+Pos.map = map
 Pos.X = X
 Pos.Y = Y
 
@@ -171,7 +171,7 @@ End If
 
 '¿Hay mensajes?
 Dim f As String, tit As String, men As String, BASE As String, auxcad As String
-f = App.Path & "\foros\" & UCase$(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).ForoID) & ".for"
+f = App.Path & "\foros\" & UCase$(ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).ForoID) & ".for"
 If FileExist(f, vbNormal) Then
     Dim num As Integer
     num = val(GetVar(f, "INFO", "CantMSG"))
@@ -198,29 +198,29 @@ Call WriteShowForumForm(UserIndex)
 End Sub
 
 
-Sub AccionParaPuerta(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub AccionParaPuerta(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 
 Dim MiObj As Obj
 Dim wp As WorldPos
 
 If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2) Then
-    If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).Llave = 0 Then
-        If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).Cerrada = 1 Then
+    If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).Llave = 0 Then
+        If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).Cerrada = 1 Then
                 'Abre la puerta
-                If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).Llave = 0 Then
+                If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).Llave = 0 Then
                     
-                    MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexAbierta
+                    MapData(map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).IndexAbierta
                     
-                    Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
+                    Call modSendData.SendToAreaByPos(map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
                     
                     'Desbloquea
-                    MapData(Map, X, Y).Blocked = 0
-                    MapData(Map, X - 1, Y).Blocked = 0
+                    MapData(map, X, Y).Blocked = 0
+                    MapData(map, X - 1, Y).Blocked = 0
                     
                     'Bloquea todos los mapas
-                    Call Bloquear(True, Map, X, Y, 0)
-                    Call Bloquear(True, Map, X - 1, Y, 0)
+                    Call Bloquear(True, map, X, Y, 0)
+                    Call Bloquear(True, map, X - 1, Y, 0)
                     
                       
                     'Sonido
@@ -231,21 +231,21 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
                 End If
         Else
                 'Cierra puerta
-                MapData(Map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).IndexCerrada
+                MapData(map, X, Y).ObjInfo.ObjIndex = ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).IndexCerrada
                 
-                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
+                Call modSendData.SendToAreaByPos(map, X, Y, PrepareMessageObjectCreate(ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).GrhIndex, X, Y))
                                 
-                MapData(Map, X, Y).Blocked = 1
-                MapData(Map, X - 1, Y).Blocked = 1
+                MapData(map, X, Y).Blocked = 1
+                MapData(map, X - 1, Y).Blocked = 1
                 
                 
-                Call Bloquear(True, Map, X - 1, Y, 1)
-                Call Bloquear(True, Map, X, Y, 1)
+                Call Bloquear(True, map, X - 1, Y, 1)
+                Call Bloquear(True, map, X, Y, 1)
                 
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_PUERTA))
         End If
         
-        UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).ObjInfo.ObjIndex
+        UserList(UserIndex).flags.TargetObj = MapData(map, X, Y).ObjInfo.ObjIndex
     Else
         Call WriteConsoleMsg(UserIndex, "La puerta esta cerrada con llave.", FontTypeNames.FONTTYPE_INFO)
     End If
@@ -255,23 +255,23 @@ End If
 
 End Sub
 
-Sub AccionParaCartel(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub AccionParaCartel(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 
 
 Dim MiObj As Obj
 
-If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = 8 Then
+If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).OBJType = 8 Then
   
-  If Len(ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).texto) > 0 Then
-    Call WriteShowSignal(UserIndex, MapData(Map, X, Y).ObjInfo.ObjIndex)
+  If Len(ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).texto) > 0 Then
+    Call WriteShowSignal(UserIndex, MapData(map, X, Y).ObjInfo.ObjIndex)
   End If
   
 End If
 
 End Sub
 
-Sub AccionParaRamita(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub AccionParaRamita(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 
 Dim Suerte As Byte
@@ -280,7 +280,7 @@ Dim Obj As Obj
 Dim raise As Integer
 
 Dim Pos As WorldPos
-Pos.Map = Map
+Pos.map = map
 Pos.X = X
 Pos.Y = Y
 
@@ -289,7 +289,7 @@ If Distancia(Pos, UserList(UserIndex).Pos) > 2 Then
     Exit Sub
 End If
 
-If MapData(Map, X, Y).trigger = eTrigger.ZONASEGURA Or MapInfo(Map).Pk = False Then
+If MapData(map, X, Y).trigger = eTrigger.ZONASEGURA Or MapInfo(map).Pk = False Then
     Call WriteConsoleMsg(UserIndex, "En zona segura no puedes hacer fogatas.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -305,18 +305,18 @@ End If
 exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
-    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> Ciudad Then
+    If MapInfo(UserList(UserIndex).Pos.map).Zona <> Ciudad Then
         Obj.ObjIndex = FOGATA
         Obj.amount = 1
         
         Call WriteConsoleMsg(UserIndex, "Has prendido la fogata.", FontTypeNames.FONTTYPE_INFO)
         Call SendData(ToPCArea, UserIndex, PrepareMessagePlayFireSound())
         
-        Call MakeObj(Map, Obj, Map, X, Y)
+        Call MakeObj(map, Obj, map, X, Y)
         
         'Las fogatas prendidas se deben eliminar
         Dim Fogatita As New cGarbage
-        Fogatita.Map = Map
+        Fogatita.map = map
         Fogatita.X = X
         Fogatita.Y = Y
         Call TrashCollector.Add(Fogatita)

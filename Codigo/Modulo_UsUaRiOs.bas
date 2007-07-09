@@ -93,6 +93,9 @@ Sub RevivirUsuario(ByVal UserIndex As Integer)
 UserList(UserIndex).flags.Muerto = 0
 UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
 
+'If he died, venom should fade away
+UserList(UserIndex).flags.Envenenado = 0
+
 'No puede estar empollando
 UserList(UserIndex).flags.EstaEmpo = 0
 UserList(UserIndex).EmpoCont = 0
@@ -263,7 +266,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -833,7 +836,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errhandler:
+errHandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 

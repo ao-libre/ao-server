@@ -402,7 +402,7 @@ End Function
 Public Sub LogCustom(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -412,7 +412,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 #End If
 End Sub
@@ -421,7 +421,7 @@ End Sub
 Public Sub LogApiSock(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errhandler
+On Error GoTo errHandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -431,7 +431,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+errHandler:
 
 #End If
 End Sub
@@ -489,24 +489,23 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 
     NuevoSock = Ret
     
-    'Seteamos el tamaño del buffer de entrada a 512 bytes
+    'Seteamos el tamaño del buffer de entrada
     If setsockopt(NuevoSock, SOL_SOCKET, SO_RCVBUFFER, SIZE_RCVBUF, 4) <> 0 Then
         i = Err.LastDllError
         Call LogCriticEvent("Error al setear el tamaño del buffer de entrada " & i & ": " & GetWSAErrorString(i))
     End If
-    'Seteamos el tamaño del buffer de salida a 1 Kb
+    'Seteamos el tamaño del buffer de salida
     If setsockopt(NuevoSock, SOL_SOCKET, SO_SNDBUFFER, SIZE_SNDBUF, 4) <> 0 Then
         i = Err.LastDllError
         Call LogCriticEvent("Error al setear el tamaño del buffer de salida " & i & ": " & GetWSAErrorString(i))
     End If
 
-    If False Then
     'If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
         'tStr = "Limite de conexiones para su IP alcanzado."
         'Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
-        Call WSApiCloseSocket(NuevoSock)
-        Exit Sub
-    End If
+        'Call WSApiCloseSocket(NuevoSock)
+        'Exit Sub
+    'End If
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
