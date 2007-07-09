@@ -615,6 +615,11 @@ With posMadera
     .Y = Y
 End With
 
+If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
+    Call WriteConsoleMsg(UserIndex, "Necesitas clickear sobre Leña para hacer ramitas", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
+
 If Distancia(posMadera, UserList(UserIndex).Pos) > 2 Then
     Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos para prender la fogata.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
