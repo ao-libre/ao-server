@@ -402,7 +402,7 @@ End Function
 Public Sub LogCustom(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -412,7 +412,7 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 #End If
 End Sub
@@ -421,7 +421,7 @@ End Sub
 Public Sub LogApiSock(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -431,7 +431,7 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 #End If
 End Sub
@@ -517,6 +517,13 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     NewIndex = NextOpenUser ' Nuevo indice
     
     If NewIndex <= MaxUsers Then
+        'Make sure both outgoing and incoming data buffers are clean
+        Call UserList(NewIndex).incomingData.ReadASCIIStringFixed(UserList(NewIndex).incomingData.length)
+        Call UserList(NewIndex).outgoingData.ReadASCIIStringFixed(UserList(NewIndex).outgoingData.length)
+        
+#If SeguridadAlkon Then
+        Call Security.NewConnection(NewIndex)
+#End If
         
         UserList(NewIndex).ip = GetAscIP(sa.sin_addr)
         'Busca si esta banneada la ip
@@ -535,10 +542,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         
         UserList(NewIndex).ConnID = NuevoSock
         UserList(NewIndex).ConnIDValida = True
-        
-#If SeguridadAlkon Then
-        Call Security.NewConnection(NewIndex)
-#End If
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
