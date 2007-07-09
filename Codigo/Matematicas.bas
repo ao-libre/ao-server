@@ -35,7 +35,7 @@ End Function
 
 Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
     'Encuentra la distancia entre dos WorldPos
-    Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100)
+    Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.map - wp2.map) * 100)
 End Function
 
 Function Distance(X1 As Variant, Y1 As Variant, X2 As Variant, Y2 As Variant) As Double
@@ -52,7 +52,5 @@ Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long)
 'Last Modify Date: 3/06/2006
 'Generates a random number in the range given - recoded to use longs and work properly with ranges
 '**************************************************************
-    Randomize Timer
-    
     RandomNumber = Fix(Rnd * (UpperBound - LowerBound + 1)) + LowerBound
 End Function
