@@ -188,3 +188,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 06/07/2007: Algunos bugs de permisos en /Lastip y BanCharacter arreglados. (Maraxus)
  * 09/07/2007: Corregí un typo en el parche de yaer que causaba clone sy otras yerbas. (Maraxus)
  * 09/07/2007: Corregí un un bug que permitía saber si hay GMs online con /acceptparty y /echarparty. (Maraxus)
+ * 10/07/2007: Corregí un bug en la clsByteQueue que causaba un rt9 al querer limpiarsela si estaba llena. (Maraxus)

@@ -517,10 +517,11 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     NewIndex = NextOpenUser ' Nuevo indice
     
     If NewIndex <= MaxUsers Then
-        'Make sure both outgoing and incoming data buffers are clean
-        Call UserList(NewIndex).incomingData.ReadASCIIStringFixed(UserList(NewIndex).incomingData.length)
-        Call UserList(NewIndex).outgoingData.ReadASCIIStringFixed(UserList(NewIndex).outgoingData.length)
-        
+    
+    'Make sure both outgoing and incoming data buffers are clean
+    Call UserList(NewIndex).incomingData.ReadASCIIStringFixed(UserList(NewIndex).incomingData.length)
+    Call UserList(NewIndex).outgoingData.ReadASCIIStringFixed(UserList(NewIndex).outgoingData.length)
+
 #If SeguridadAlkon Then
         Call Security.NewConnection(NewIndex)
 #End If
