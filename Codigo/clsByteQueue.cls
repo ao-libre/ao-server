@@ -611,7 +611,7 @@ Public Function ReadUnicodeStringFixed(ByVal length As Long) As String
 '***************************************************
     If length <= 0 Then Exit Function
     
-    If queueLength >= length Then
+    If queueLength >= length * 2 Then
         Dim buf() As Byte
         ReDim buf(length * 2 - 1) As Byte
         
@@ -698,7 +698,7 @@ Public Function ReadUnicodeString() As String
         Call CopyMemory(length, buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length + 2 Then
+        If queueLength >= length * 2 + 2 Then
             'Remove the length
             Call RemoveData(2)
             
@@ -879,7 +879,7 @@ Public Function PeekUnicodeStringFixed(ByVal length As Long) As String
 '***************************************************
     If length <= 0 Then Exit Function
     
-    If queueLength >= length Then
+    If queueLength >= length * 2 Then
         Dim buf() As Byte
         ReDim buf(length * 2 - 1) As Byte
         
@@ -965,7 +965,7 @@ Public Function PeekUnicodeString() As String
         Call CopyMemory(length, buf(0), 2)
         
         'Make sure there are enough bytes
-        If queueLength >= length + 2 Then
+        If queueLength >= length * 2 + 2 Then
             Dim buf2() As Byte
             ReDim buf2(length * 2 + 1) As Byte
             
