@@ -517,10 +517,10 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     NewIndex = NextOpenUser ' Nuevo indice
     
     If NewIndex <= MaxUsers Then
-    
-    'Make sure both outgoing and incoming data buffers are clean
-    Call UserList(NewIndex).incomingData.ReadASCIIStringFixed(UserList(NewIndex).incomingData.length)
-    Call UserList(NewIndex).outgoingData.ReadASCIIStringFixed(UserList(NewIndex).outgoingData.length)
+        
+        'Make sure both outgoing and incoming data buffers are clean
+        Call UserList(NewIndex).incomingData.ReadASCIIStringFixed(UserList(NewIndex).incomingData.length)
+        Call UserList(NewIndex).outgoingData.ReadASCIIStringFixed(UserList(NewIndex).outgoingData.length)
 
 #If SeguridadAlkon Then
         Call Security.NewConnection(NewIndex)
@@ -546,9 +546,20 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
-        'tStr = "Server lleno."
-        'Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
-        'Call SecurityIp.IpRestarConexion(sa.sin_addr)
+        Dim str As String
+        Dim data() As Byte
+        
+        str = Protocol.PrepareMessageErrorMsg("El server se haya lleno en este momento. Disculpe las molestias ocasionadas.")
+        
+        ReDim Preserve data(Len(str) - 1) As Byte
+        
+        data = StrConv(str, vbFromUnicode)
+        
+#If SeguridadAlkon Then
+        Call Security.DataSent(Security.NO_SLOT, data)
+#End If
+        
+        Call send(ByVal NuevoSock, data(0), ByVal UBound(data()) + 1, ByVal 0)
         Call WSApiCloseSocket(NuevoSock)
     End If
     
