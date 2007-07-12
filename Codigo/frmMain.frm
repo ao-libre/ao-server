@@ -370,9 +370,7 @@ On Error GoTo errhandler
 'fired every minute
 Static Minutos As Long
 Static MinutosLatsClean As Long
-Static MinsSocketReset As Long
 Static MinsPjesSave As Long
-Static MinutosNumUsersCheck As Long
 
 Dim i As Integer
 Dim num As Long
@@ -402,46 +400,6 @@ Call ModAreas.AreasOptimizacion
 
 'Actualizamos el centinela
 Call modCentinela.PasarMinutoCentinela
-
-#If UsarQueSocket = 1 Then
-' ok la cosa es asi, este cacho de codigo es para
-' evitar los problemas de socket. a menos que estes
-' seguro de lo que estas haciendo, te recomiendo
-' que lo dejes tal cual está.
-' alejo.
-MinsSocketReset = MinsSocketReset + 1
-' cada 1 minutos hacer el checkeo
-If MinsSocketReset >= 5 Then
-    MinsSocketReset = 0
-    For i = 1 To MaxUsers
-        If UserList(i).ConnID <> -1 And Not UserList(i).flags.UserLogged Then
-            If UserList(i).Counters.IdleCount > ((IntervaloCerrarConexion * 2) / 3) Then
-                Call CloseSocket(i)
-            End If
-        End If
-    Next i
-    'Call ReloadSokcet
-    
-    Call LogCriticEvent("NumUsers: " & NumUsers & " WSAPISock2Usr: " & WSAPISock2Usr.Count)
-End If
-#End If
-
-MinutosNumUsersCheck = MinutosNumUsersCheck + 1
-
-If MinutosNumUsersCheck >= 2 Then
-    MinutosNumUsersCheck = 0
-    num = 0
-    For i = 1 To MaxUsers
-        If UserList(i).ConnID <> -1 And UserList(i).flags.UserLogged Then
-            num = num + 1
-        End If
-    Next i
-    If num <> NumUsers Then
-        NumUsers = num
-        'Call SendData(SendTarget.ToAdmins, 0, 0, "Servidor> Error en NumUsers. Contactar a algun Programador." & FONTTYPE_SERVER)
-        Call LogCriticEvent("Num <> NumUsers")
-    End If
-End If
 
 If Minutos = MinutosWs - 1 Then
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
@@ -718,16 +676,12 @@ On Error GoTo hayerror
                    If UserList(iUserIndex).NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
            End If 'Muerto
          Else 'no esta logeado?
-         'UserList(iUserIndex).Counters.IdleCount = 0
-         '[Gonzalo]: deshabilitado para el nuevo sistema de tiraje
-         'de dados :)
-            
+            'Inactive players will be removed!
             UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
             If UserList(iUserIndex).Counters.IdleCount > IntervaloParaConexion Then
                   UserList(iUserIndex).Counters.IdleCount = 0
                   Call CloseSocket(iUserIndex)
             End If
-            
          End If 'UserLogged
         
          'If there is anything to be sent, we send it

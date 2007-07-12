@@ -470,9 +470,11 @@ On Error Resume Next
             Exit Sub
         
         'He is logged. Reset idle counter if id is valid.
-        ElseIf UserList(UserIndex).incomingData.PeekByte() <= ClientPacketID.CheckSlot Then
+        ElseIf packetID <= ClientPacketID.CheckSlot Then
                 UserList(UserIndex).Counters.IdleCount = 0
         End If
+    ElseIf packetID <= ClientPacketID.CheckSlot Then
+        UserList(UserIndex).Counters.IdleCount = 0
     End If
     
     Select Case packetID

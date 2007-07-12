@@ -266,7 +266,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
 '*************************************************
 
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -836,7 +836,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errHandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -887,33 +887,19 @@ Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Object A
     Call WriteChangeInventorySlot(UserIndex, Slot)
 End Sub
 
-
 Function NextOpenCharIndex() As Integer
-'Modificada por el oso para codificar los MP1234,2,1 en 2 bytes
-'para lograrlo, el charindex no puede tener su bit numero 6 (desde 0) en 1
-'y tampoco puede ser un charindex que tenga el bit 0 en 1.
-
-On Local Error GoTo hayerror
-
-Dim LoopC As Integer
+    Dim LoopC As Long
     
-    LoopC = 1
-    
-    While LoopC < MAXCHARS
-        If CharList(LoopC) = 0 And Not ((LoopC And &HFFC0&) = 64) Then
+    For LoopC = 1 To MAXCHARS
+        If CharList(LoopC) = 0 Then
             NextOpenCharIndex = LoopC
             NumChars = NumChars + 1
-            If LoopC > LastChar Then LastChar = LoopC
+            
+            If LoopC > LastChar Then _
+                LastChar = LoopC
+            
             Exit Function
-        Else
-            LoopC = LoopC + 1
-        End If
-    Wend
-
-Exit Function
-hayerror:
-LogError ("NextOpenCharIndex: num: " & Err.Number & " desc: " & Err.description)
-
+    Next LoopC
 End Function
 
 Function NextOpenUser() As Integer

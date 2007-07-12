@@ -1094,7 +1094,6 @@ End If
     UserList(UserIndex).LogOnTime = Now
 #End If
 
-UserList(UserIndex).Counters.IdleCount = 0
 'Crea  el personaje del usuario
 Call MakeUserChar(True, UserList(UserIndex).Pos.map, UserIndex, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
 

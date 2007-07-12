@@ -66,7 +66,7 @@ Private Sub GoToNextWorkingChar()
                 
                 If CentinelaNPCIndex Then
                     'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas
-                    Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", vbGreen, CStr(Npclist(CentinelaNPCIndex).Char.CharIndex))
+                    Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
                     Call WriteConsoleMsg(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", FontTypeNames.FONTTYPE_CENTINELA)
                     Call FlushBuffer(LoopC)
                 End If
@@ -150,8 +150,8 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
 '############################################################
     If clave = Centinela.clave And UserIndex = Centinela.RevisandoUserIndex Then
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
-        Centinela.RevisandoUserIndex = 0
         Call WriteChatOverHead(UserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+        Centinela.RevisandoUserIndex = 0
         Call FlushBuffer(UserIndex)
     Else
         Call CentinelaSendClave(UserIndex)
@@ -232,7 +232,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
         CentinelaNPCIndex = 0
     End If
     
-    If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+    If HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_AGUA, UserList(UserIndex).Pos, True, False)
     Else
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_TIERRA, UserList(UserIndex).Pos, True, False)
