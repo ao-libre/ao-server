@@ -79,7 +79,7 @@ TActual = GetTickCount() And &H7FFFFFFF
 
 If TActual - UserList(UserIndex).Counters.TimerMagiaGolpe >= IntervaloMagiaGolpe Then
     If Actualizar Then
-        UserList(UserIndex).Counters.TimerMagiaGolpe = TActual
+        UserList(UserIndex).Counters.TimerMagiaGolpe = TActual + IntervaloMagiaGolpe
         UserList(UserIndex).Counters.TimerLanzarSpell = TActual 'Actualizo el intervalo Magico
         UserList(UserIndex).Counters.TimerPuedeAtacar = TActual 'Actualizo el intervalo Físico
     End If
