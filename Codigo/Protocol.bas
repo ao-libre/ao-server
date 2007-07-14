@@ -1877,7 +1877,7 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
         End If
         
         'If user meditates, can't attack
-        If Not .flags.Meditando Then
+        If .flags.Meditando Then
             Exit Sub
         End If
         

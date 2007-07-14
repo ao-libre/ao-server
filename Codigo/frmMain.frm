@@ -350,12 +350,22 @@ End Sub
 
 Private Sub Auditoria_Timer()
 On Error GoTo errhand
+Static centinelSecs As Byte
 
 Call PasarSegundo 'sistema de desconexion de 10 segs
 
 Call ActualizaEstadisticasWeb
 Call ActualizaStatsES
 
+
+centinelSecs = centinelSecs + 1
+
+If centinelSecs = 5 Then
+    'Every 5 seconds, we try to call the player's attention so it will report the code.
+    Call modCentinela.CallUserAttention
+    
+    centinelSecs = 0
+End If
 
 
 Exit Sub

@@ -21,17 +21,22 @@ Attribute VB_Name = "modCentinela"
 
 '*****************************************************************
 'Augusto Rando(barrin@imperiumao.com.ar)
+'   ImperiumAO 1.2
 '   - First Relase
 '
 'Juan Martín Sotuyo Dodero (juansotuyo@gmail.com)
-'   - Adapted to Alkon AO
+'   Alkon AO 0.11.5
 '   - Small improvements and added logs to detect possible cheaters
+'
+'Juan Martín Sotuyo Dodero (juansotuyo@gmail.com)
+'   Alkon AO 0.12.0
+'   - Added several messages to spam users until they reply
 '*****************************************************************
 
 Option Explicit
 
 Private Const NPC_CENTINELA_TIERRA As Integer = 16  'Índice del NPC en el .dat
-Private Const NPC_CENTINELA_AGUA As Integer = 16     'Ídem anterior, pero en mapas de agua
+Private Const NPC_CENTINELA_AGUA As Integer = 16    'Ídem anterior, pero en mapas de agua
 
 Public CentinelaNPCIndex As Integer                'Índice del NPC en el servidor
 
@@ -41,11 +46,29 @@ Private Type tCentinela
     RevisandoUserIndex As Integer   '¿Qué índice revisamos?
     TiempoRestante As Integer       '¿Cuántos minutos le quedan al usuario?
     clave As Integer                'Clave que debe escribir
+    spawnTime As Long
 End Type
 
 Public centinelaActivado As Boolean
 
 Public Centinela As tCentinela
+
+Public Sub CallUserAttention()
+'############################################################
+'Makes noise and FX to call the user's attention.
+'############################################################
+    If (GetTickCount() And &H7FFFFFFF) - Centinela.spawnTime > 5000 Then
+        If Centinela.RevisandoUserIndex <> 0 And centinelaActivado Then
+            If Not UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
+                Call WritePlayWave(Centinela.RevisandoUserIndex, SND_WARP)
+                Call WriteCreateFX(Centinela.RevisandoUserIndex, Npclist(CentinelaNPCIndex).Char.CharIndex, FXIDs.FXWARP, 0)
+                
+                'Resend the key
+                Call modCentinela.CentinelaSendClave(modCentinela.Centinela.RevisandoUserIndex)
+            End If
+        End If
+    End If
+End Sub
 
 Private Sub GoToNextWorkingChar()
 '############################################################
@@ -60,12 +83,13 @@ Private Sub GoToNextWorkingChar()
                 Centinela.RevisandoUserIndex = LoopC
                 Centinela.TiempoRestante = TIEMPO_INICIAL
                 Centinela.clave = RandomNumber(1, 36000)
+                Centinela.spawnTime = GetTickCount() And &H7FFFFFFF
                 
                 'Ponemos al centinela en posición
                 Call WarpCentinela(LoopC)
                 
                 If CentinelaNPCIndex Then
-                    'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas
+                    'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas)
                     Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
                     Call WriteConsoleMsg(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", FontTypeNames.FONTTYPE_CENTINELA)
                     Call FlushBuffer(LoopC)
@@ -183,11 +207,12 @@ Public Sub CentinelaSendClave(ByVal UserIndex As Integer)
     
     If UserIndex = Centinela.RevisandoUserIndex Then
         If Not UserList(UserIndex).flags.CentinelaOK Then
-            Call WriteChatOverHead(UserIndex, "¡La clave que te he dicho es " & "/CENTINELA " & Centinela.clave & " escríbelo rápido!", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+            Call WriteChatOverHead(UserIndex, "¡La clave que te he dicho es /CENTINELA " & Centinela.clave & ", escríbelo rápido!", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
+            Call WriteConsoleMsg(UserIndex, "¡La clave correcta es /CENTINELA " & Centinela.clave & ", escríbelo rápido!", FontTypeNames.FONTTYPE_CENTINELA)
         Else
             'Logueamos el evento
             Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " respondió más de una vez la contraseña correcta.")
-            Call WriteChatOverHead(UserIndex, "Te agradezco, pero ya me has respondido. Me retiraré pronto.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+            Call WriteChatOverHead(UserIndex, "Te agradezco, pero ya me has respondido. Me retiraré pronto.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
         End If
     Else
         Call WriteChatOverHead(UserIndex, "No es a ti a quien estoy hablando, ¿no ves?", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
