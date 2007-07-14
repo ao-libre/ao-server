@@ -1876,6 +1876,11 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        'If user meditates, can't attack
+        If Not .flags.Meditando Then
+            Exit Sub
+        End If
+        
         'If equiped weapon is ranged, can't attack this way
         If .Invent.WeaponEqpObjIndex > 0 Then
             If ObjData(.Invent.WeaponEqpObjIndex).proyectil = 1 Then
