@@ -2905,7 +2905,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "No hay ninguna criatura alli!.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case eSkill.FundirMetal
+            Case FundirMetal    'UGLY!!! This is a constant, not a skill!!
                 'Check interval
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 

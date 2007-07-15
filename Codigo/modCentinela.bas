@@ -57,14 +57,14 @@ Public Sub CallUserAttention()
 '############################################################
 'Makes noise and FX to call the user's attention.
 '############################################################
-    If (GetTickCount() And &H7FFFFFFF) - Centinela.spawnTime > 5000 Then
+    If (GetTickCount() And &H7FFFFFFF) - Centinela.spawnTime >= 5000 Then
         If Centinela.RevisandoUserIndex <> 0 And centinelaActivado Then
             If Not UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
                 Call WritePlayWave(Centinela.RevisandoUserIndex, SND_WARP)
                 Call WriteCreateFX(Centinela.RevisandoUserIndex, Npclist(CentinelaNPCIndex).Char.CharIndex, FXIDs.FXWARP, 0)
                 
                 'Resend the key
-                Call modCentinela.CentinelaSendClave(modCentinela.Centinela.RevisandoUserIndex)
+                Call CentinelaSendClave(Centinela.RevisandoUserIndex)
             End If
         End If
     End If
@@ -77,7 +77,7 @@ Private Sub GoToNextWorkingChar()
     Dim LoopC As Long
     
     For LoopC = 1 To LastUser
-        If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Counters.Trabajando > 0 And UserList(LoopC).flags.Privilegios And PlayerType.User Then
+        If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Counters.Trabajando > 0 And (UserList(LoopC).flags.Privilegios And PlayerType.User) Then
             If Not UserList(LoopC).flags.CentinelaOK Then
                 'Inicializamos
                 Centinela.RevisandoUserIndex = LoopC
