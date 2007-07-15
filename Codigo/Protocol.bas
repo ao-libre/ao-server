@@ -2266,14 +2266,16 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
+        Dim Spell As Byte
+        
+        Spell = .incomingData.ReadByte()
+        
         If .flags.Muerto = 1 Then
-            'Clean buffer before exiting
-            Call .incomingData.ReadByte
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        .flags.Hechizo = .incomingData.ReadByte()
+        .flags.Hechizo = Spell
         
         If .flags.Hechizo < 1 Then
             .flags.Hechizo = 0
@@ -2566,7 +2568,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         End If
         
         Select Case Skill
-            Case Proyectiles
+            Case eSkill.Proyectiles
             
                 'Check attack interval
                 If Not IntervaloPermiteAtacar(UserIndex, False) Then Exit Sub
@@ -2597,10 +2599,11 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     If DummyInt <> 0 Then
                         If DummyInt = 1 Then
                             Call WriteConsoleMsg(UserIndex, "No tenés municiones.", FontTypeNames.FONTTYPE_INFO)
+                            
+                            Call Desequipar(UserIndex, .WeaponEqpSlot)
                         End If
                         
                         Call Desequipar(UserIndex, .MunicionEqpSlot)
-                        Call Desequipar(UserIndex, .WeaponEqpSlot)
                         Exit Sub
                     End If
                 End With
@@ -2686,8 +2689,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 End With
                 '-----------------------------------
             
-            Case Magia
-                'Check the map allows spells to eb casted.
+            Case eSkill.Magia
+                'Check the map allows spells to be casted.
                 If MapInfo(.Pos.map).MagiaSinEfecto > 0 Then
                     Call WriteConsoleMsg(UserIndex, "Una fuerza oscura te impide canalizar tu energía", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
@@ -2705,9 +2708,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'Check bow's interval
                 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
                 
-                'Reemplazado por intervalo MagiaGolpe
+                'Check Spell-Hit interval
                 If Not IntervaloPermiteAtacar(UserIndex, False) Then
-                    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub 'Corta el intervalo de Magia.
+                    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub
                 Else
                     'Check Magic interval
                     If Not IntervaloPermiteLanzarSpell(UserIndex) Then Exit Sub
@@ -2717,16 +2720,13 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 
                 'Check intervals and cast
                 If .flags.Hechizo > 0 Then
-                    'If IntervaloPermiteLanzarSpell(UserIndex) Then
-                        Call LanzarHechizo(.flags.Hechizo, UserIndex)
-                        .flags.Hechizo = 0
-                    'End If
+                    Call LanzarHechizo(.flags.Hechizo, UserIndex)
+                    .flags.Hechizo = 0
                 Else
                     Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
                 End If
             
-            Case Pesca
+            Case eSkill.Pesca
                 DummyInt = .Invent.WeaponEqpObjIndex
                 If DummyInt = 0 Then Exit Sub
                 
@@ -2763,7 +2763,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "No hay agua donde pescar. Busca un lago, rio o mar.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case Robar
+            Case eSkill.Robar
                 'Does the map allow us to steal here?
                 If MapInfo(.Pos.map).Pk Then
                     
@@ -2806,7 +2806,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "¡No podés robar en zonas seguras!.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case Talar
+            Case eSkill.Talar
                 'Check interval
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
@@ -2843,7 +2843,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "No hay ningún árbol ahí.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case Mineria
+            Case eSkill.Mineria
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                                 
                 If .Invent.WeaponEqpObjIndex = 0 Then Exit Sub
@@ -2876,7 +2876,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "Ahí no hay ningun yacimiento.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case Domar
+            Case eSkill.Domar
                 'Modificado 25/11/02
                 'Optimizado y solucionado el bug de la doma de
                 'criaturas hostiles.
@@ -2905,7 +2905,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "No hay ninguna criatura alli!.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case FundirMetal
+            Case eSkill.FundirMetal
                 'Check interval
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
@@ -2939,7 +2939,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, "Ahí no hay ninguna fragua.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
-            Case Herreria
+            Case eSkill.Herreria
                 'Target wehatever is in that tile
                 Call LookatTile(UserIndex, .Pos.map, X, Y)
                 
