@@ -65,6 +65,8 @@ Public Sub CallUserAttention()
                 
                 'Resend the key
                 Call CentinelaSendClave(Centinela.RevisandoUserIndex)
+                
+                Call FlushBuffer(Centinela.RevisandoUserIndex)
             End If
         End If
     End If

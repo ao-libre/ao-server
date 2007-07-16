@@ -101,9 +101,11 @@ If InMapBounds(map, X, Y) Then
                 Call RevivirUsuario(UserIndex)
             End If
             
-            'curamos totalmente
-            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-            Call WriteUpdateUserStats(UserIndex)
+            If Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex) Then
+                'curamos totalmente
+                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
+                Call WriteUpdateUserStats(UserIndex)
+            End If
         End If
         
     '¿Es un obj?
