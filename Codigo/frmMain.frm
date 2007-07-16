@@ -346,8 +346,6 @@ Sub CheckIdleUser()
     Next iUserIndex
 End Sub
 
-
-
 Private Sub Auditoria_Timer()
 On Error GoTo errhand
 Static centinelSecs As Byte
@@ -363,6 +361,8 @@ centinelSecs = centinelSecs + 1
 If centinelSecs = 5 Then
     'Every 5 seconds, we try to call the player's attention so it will report the code.
     Call modCentinela.CallUserAttention
+    
+    Call Protocol.FlushBuffer(modCentinela.Centinela.RevisandoUserIndex)
     
     centinelSecs = 0
 End If
