@@ -669,7 +669,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    Map As Integer
+    map As Integer
     X As Integer
     Y As Integer
 End Type
@@ -1017,6 +1017,7 @@ Public Type UserCounters
     TimerPuedeTrabajar As Long
     TimerUsar As Long
     TimerMagiaGolpe As Long
+    TimerGolpeMagia As Long
     
     
     Trabajando As Long  ' Para el centinela

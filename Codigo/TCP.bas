@@ -1305,6 +1305,7 @@ Sub ResetContadores(ByVal UserIndex As Integer)
         .Salir = 0
         .TiempoOculto = 0
         .TimerMagiaGolpe = 0
+        .TimerGolpeMagia = 0
         .TimerLanzarSpell = 0
         .TimerPuedeAtacar = 0
         .TimerPuedeUsarArco = 0

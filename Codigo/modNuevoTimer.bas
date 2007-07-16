@@ -44,7 +44,6 @@ TActual = GetTickCount() And &H7FFFFFFF
 If TActual - UserList(UserIndex).Counters.TimerLanzarSpell >= IntervaloUserPuedeCastear Then
     If Actualizar Then
         UserList(UserIndex).Counters.TimerLanzarSpell = TActual
-        UserList(UserIndex).Counters.TimerMagiaGolpe = TActual 'Cargo para controlar el intervalo Magia-Golpe
     End If
     IntervaloPermiteLanzarSpell = True
 Else
@@ -52,7 +51,6 @@ Else
 End If
 
 End Function
-
 
 Public Function IntervaloPermiteAtacar(ByVal UserIndex As Integer, Optional ByVal Actualizar As Boolean = True) As Boolean
 Dim TActual As Long
@@ -62,7 +60,6 @@ TActual = GetTickCount() And &H7FFFFFFF
 If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= IntervaloUserPuedeAtacar Then
     If Actualizar Then
         UserList(UserIndex).Counters.TimerPuedeAtacar = TActual
-        UserList(UserIndex).Counters.TimerMagiaGolpe = TActual 'Cargo para controlar el intervalo Golpe-Magia
     End If
     IntervaloPermiteAtacar = True
 Else
@@ -70,23 +67,44 @@ Else
 End If
 End Function
 
-
-
 Public Function IntervaloPermiteMagiaGolpe(ByVal UserIndex As Integer, Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
-
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - UserList(UserIndex).Counters.TimerMagiaGolpe >= IntervaloMagiaGolpe Then
-    If Actualizar Then
-        UserList(UserIndex).Counters.TimerMagiaGolpe = TActual + IntervaloMagiaGolpe
-        UserList(UserIndex).Counters.TimerLanzarSpell = TActual 'Actualizo el intervalo Magico
-        UserList(UserIndex).Counters.TimerPuedeAtacar = TActual 'Actualizo el intervalo Físico
+    Dim TActual As Long
+    
+    If UserList(UserIndex).Counters.TimerMagiaGolpe > UserList(UserIndex).Counters.TimerLanzarSpell Then
+        Exit Function
     End If
-    IntervaloPermiteMagiaGolpe = True
-Else
-    IntervaloPermiteMagiaGolpe = False
-End If
+    
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - UserList(UserIndex).Counters.TimerLanzarSpell >= IntervaloMagiaGolpe Then
+        If Actualizar Then
+            UserList(UserIndex).Counters.TimerMagiaGolpe = TActual
+            UserList(UserIndex).Counters.TimerPuedeAtacar = TActual
+        End If
+        IntervaloPermiteMagiaGolpe = True
+    Else
+        IntervaloPermiteMagiaGolpe = False
+    End If
+End Function
+
+Public Function IntervaloPermiteGolpeMagia(ByVal UserIndex As Integer, Optional ByVal Actualizar As Boolean = True) As Boolean
+    Dim TActual As Long
+    
+    If UserList(UserIndex).Counters.TimerGolpeMagia > UserList(UserIndex).Counters.TimerPuedeAtacar Then
+        Exit Function
+    End If
+    
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    If TActual - UserList(UserIndex).Counters.TimerPuedeAtacar >= IntervaloGolpeMagia Then
+        If Actualizar Then
+            UserList(UserIndex).Counters.TimerGolpeMagia = TActual
+            UserList(UserIndex).Counters.TimerLanzarSpell = TActual
+        End If
+        IntervaloPermiteGolpeMagia = True
+    Else
+        IntervaloPermiteGolpeMagia = False
+    End If
 End Function
 
 ' ATAQUE CUERPO A CUERPO

@@ -2709,13 +2709,12 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
                 
                 'Check Spell-Hit interval
-                If Not IntervaloPermiteAtacar(UserIndex, False) Then
-                    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub
-                Else
+                If Not IntervaloPermiteGolpeMagia(UserIndex) Then
                     'Check Magic interval
-                    If Not IntervaloPermiteLanzarSpell(UserIndex) Then Exit Sub
+                    If Not IntervaloPermiteLanzarSpell(UserIndex) Then
+                        Exit Sub
+                    End If
                 End If
-                
                 
                 
                 'Check intervals and cast

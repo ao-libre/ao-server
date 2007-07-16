@@ -984,14 +984,15 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 'If UserList(UserIndex).flags.PuedeAtacar = 1 Then
 'Check bow's interval
 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
-'Reemplazo por intervalo Magia-Golpe
-If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then
-    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then Exit Sub 'Corta intervalo de Golpe
-Else
+
+'Check Spell-Magic interval
+If Not IntervaloPermiteMagiaGolpe(UserIndex) Then
     'Check Attack interval
-    If Not IntervaloPermiteAtacar(UserIndex) Then Exit Sub
+    If Not IntervaloPermiteAtacar(UserIndex) Then
+        Exit Sub
+    End If
 End If
-    
+
 'Quitamos stamina
 If UserList(UserIndex).Stats.MinSta >= 10 Then
     Call QuitarSta(UserIndex, RandomNumber(1, 10))

@@ -75,6 +75,7 @@ Public IntervaloInvocacion As Integer
 Public IntervaloOculto As Integer '[Nacho]
 Public IntervaloUserPuedeAtacar As Long
 Public IntervaloMagiaGolpe As Long
+Public IntervaloGolpeMagia As Long
 Public IntervaloUserPuedeCastear As Long
 Public IntervaloUserPuedeTrabajar As Long
 Public IntervaloParaConexion As Long
