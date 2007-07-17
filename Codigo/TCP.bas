@@ -276,11 +276,7 @@ ValidateSkills = True
 End Function
 
 Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String, ByVal UserRaza As eRaza, ByVal UserSexo As eGenero, ByVal UserClase As eClass, _
-                    ByVal US1 As Byte, ByVal US2 As Byte, ByVal US3 As Byte, ByVal US4 As Byte, ByVal US5 As Byte, _
-                    ByVal US6 As Byte, ByVal US7 As Byte, ByVal US8 As Byte, ByVal US9 As Byte, ByVal US10 As Byte, _
-                    ByVal US11 As Byte, ByVal US12 As Byte, ByVal US13 As Byte, ByVal US14 As Byte, ByVal US15 As Byte, _
-                    ByVal US16 As Byte, ByVal US17 As Byte, ByVal US18 As Byte, ByVal US19 As Byte, ByVal US20 As Byte, _
-                    ByVal US21 As Byte, ByRef UserEmail As String, ByVal Hogar As eCiudad)
+                    ByRef skills() As Byte, ByRef UserEmail As String, ByVal Hogar As eCiudad)
 '*************************************************
 'Author: Unknown
 'Last modified: 20/4/2007
@@ -296,7 +292,7 @@ If Not AsciiValidos(name) Or LenB(name) = 0 Then
     Exit Sub
 End If
 
-Dim LoopC As Integer
+Dim LoopC As Long
 Dim totalskpts As Long
 
 '¿Existe el personaje?
@@ -363,36 +359,10 @@ Select Case UserRaza
 End Select
 
 
-
-UserList(UserIndex).Stats.UserSkills(eSkill.Suerte) = US1
-UserList(UserIndex).Stats.UserSkills(eSkill.Magia) = US2
-UserList(UserIndex).Stats.UserSkills(eSkill.Robar) = US3
-UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas) = US4
-UserList(UserIndex).Stats.UserSkills(eSkill.Armas) = US5
-UserList(UserIndex).Stats.UserSkills(eSkill.Meditar) = US6
-UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) = US7
-UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse) = US8
-UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia) = US9
-UserList(UserIndex).Stats.UserSkills(eSkill.Talar) = US10
-UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) = US11
-UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) = US12
-UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) = US13
-UserList(UserIndex).Stats.UserSkills(eSkill.Mineria) = US14
-UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) = US15
-UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) = US16
-UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) = US17
-UserList(UserIndex).Stats.UserSkills(eSkill.Domar) = US18
-UserList(UserIndex).Stats.UserSkills(eSkill.Proyectiles) = US19
-UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) = US20
-UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) = US21
-
-totalskpts = 0
-
-'Abs PREVINENE EL HACKEO DE LOS SKILLS %%%%%%%%%%%%%
 For LoopC = 1 To NUMSKILLS
+    UserList(UserIndex).Stats.UserSkills(LoopC) = skills(LoopC - 1)
     totalskpts = totalskpts + Abs(UserList(UserIndex).Stats.UserSkills(LoopC))
 Next LoopC
-
 
 
 If totalskpts > 10 Then
