@@ -669,7 +669,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     X As Integer
     Y As Integer
 End Type
@@ -940,6 +940,7 @@ Public Type UserFlags
     
     AtacadoPorNpc As Integer
     AtacadoPorUser As Integer
+    NPCAtacado As Integer
     
     StatsChanged As Byte
     Privilegios As PlayerType
@@ -1178,6 +1179,7 @@ Public Type NPCFlags
     Sound As Integer
     Attacking As Integer
     AttackedBy As String
+    AttackedFirstBy As String
     Category1 As String
     Category2 As String
     Category3 As String

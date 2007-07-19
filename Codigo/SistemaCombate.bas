@@ -728,6 +728,7 @@ If UserList(UserIndex).Stats.MinHP <= 0 Then
         End If
     End If
     
+    
     Call UserDie(UserIndex)
 
 End If

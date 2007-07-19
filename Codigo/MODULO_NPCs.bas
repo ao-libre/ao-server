@@ -203,6 +203,7 @@ Sub ResetNpcFlags(ByVal NpcIndex As Integer)
         .AfectaParalisis = 0
         .AguaValida = 0
         .AttackedBy = vbNullString
+        .AttackedFirstBy = vbNullString
         .Attacking = 0
         .BackUp = 0
         .Bendicion = 0
