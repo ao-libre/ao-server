@@ -350,12 +350,6 @@ Private Sub Auditoria_Timer()
 On Error GoTo errhand
 Static centinelSecs As Byte
 
-Call PasarSegundo 'sistema de desconexion de 10 segs
-
-Call ActualizaEstadisticasWeb
-Call ActualizaStatsES
-
-
 centinelSecs = centinelSecs + 1
 
 If centinelSecs = 5 Then
@@ -365,6 +359,10 @@ If centinelSecs = 5 Then
     centinelSecs = 0
 End If
 
+Call PasarSegundo 'sistema de desconexion de 10 segs
+
+Call ActualizaEstadisticasWeb
+Call ActualizaStatsES
 
 Exit Sub
 

@@ -79,7 +79,7 @@ Private Sub GoToNextWorkingChar()
     Dim LoopC As Long
     
     For LoopC = 1 To LastUser
-        If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Counters.Trabajando > 0 And (UserList(LoopC).flags.Privilegios And PlayerType.User) Then
+        If UserList(LoopC).flags.UserLogged And UserList(LoopC).Counters.Trabajando > 0 And (UserList(LoopC).flags.Privilegios And PlayerType.User) Then
             If Not UserList(LoopC).flags.CentinelaOK Then
                 'Inicializamos
                 Centinela.RevisandoUserIndex = LoopC
@@ -181,9 +181,12 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
         Call FlushBuffer(UserIndex)
     Else
         Call CentinelaSendClave(UserIndex)
+        
+        'Logueamos el evento
         If UserIndex <> Centinela.RevisandoUserIndex Then
-            'Logueamos el evento
             Call LogCentinela("El usuario " & UserList(UserIndex).name & " respondió aunque no se le hablaba a él.")
+        Else
+            Call LogCentinela("El usuario " & UserList(UserIndex).name & " respondió una clave incorrecta: " & clave & " - Se esperaba : " & Centinela.clave)
         End If
     End If
 End Sub
