@@ -367,7 +367,10 @@ Call ActualizaStatsES
 Exit Sub
 
 errhand:
+
 Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
+Resume Next
+
 End Sub
 
 Private Sub AutoSave_Timer()

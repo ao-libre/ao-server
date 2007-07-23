@@ -142,7 +142,7 @@ On Error Resume Next
 Dim i As Integer
 
 
-For i = 1 To TrashCollector.Count
+For i = 1 To TrashCollector.count
     Dim d As cGarbage
     Set d = TrashCollector(1)
     Call EraseObj(d.map, 1, d.map, d.X, d.Y)
@@ -514,7 +514,7 @@ End Sub
 
 
 Public Sub LogCriticEvent(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -524,12 +524,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogEjercitoReal(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -539,12 +539,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogEjercitoCaos(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -554,13 +554,13 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 
 Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -570,13 +570,13 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 
 Public Sub LogError(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -586,12 +586,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogStatic(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -601,12 +601,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogTarea(desc As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile(1) ' obtenemos un canal
@@ -616,7 +616,7 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 
 End Sub
@@ -656,7 +656,7 @@ End Sub
 
 
 Public Sub LogGM(Nombre As String, texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -667,7 +667,7 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
@@ -691,13 +691,13 @@ Public Sub SaveDayStats()
 ''Close #nfile
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 
 Public Sub LogAsesinato(texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 Dim nfile As Integer
 
 nfile = FreeFile ' obtenemos un canal
@@ -708,11 +708,11 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 Public Sub logVentaCasa(ByVal texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -725,12 +725,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 
 End Sub
 Public Sub LogHackAttemp(texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -742,12 +742,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogCheating(texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -757,13 +757,13 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 
 Public Sub LogCriticalHackAttemp(texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -775,12 +775,12 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
 Public Sub LogAntiCheat(texto As String)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -791,7 +791,7 @@ Close #nfile
 
 Exit Sub
 
-errHandler:
+errhandler:
 
 End Sub
 
@@ -937,7 +937,7 @@ Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
 End Function
 
 Public Sub EfectoLluvia(ByVal UserIndex As Integer)
-On Error GoTo errHandler
+On Error GoTo errhandler
 
 
 If UserList(UserIndex).flags.UserLogged Then
@@ -950,7 +950,7 @@ If UserList(UserIndex).flags.UserLogged Then
 End If
 
 Exit Sub
-errHandler:
+errhandler:
  LogError ("Error en EfectoLluvia")
 End Sub
 
@@ -1237,6 +1237,7 @@ Public Sub CargaNpcsDat()
 End Sub
 
 Sub PasarSegundo()
+On Error GoTo errhandler
     Dim i As Long
     
     For i = 1 To LastUser
@@ -1256,48 +1257,32 @@ Sub PasarSegundo()
             ElseIf UserList(i).flags.EstaEmpo = 1 Then
                  UserList(i).EmpoCont = UserList(i).EmpoCont + 1
                  If UserList(i).EmpoCont = 30 Then
-                     
-                     'If FileExist(CharPath & UserList(Z).Name & ".chr", vbNormal) Then
-                     'esto siempre existe! sino no estaria logueado ;p
-                     
-                     'TmpP = val(GetVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant"))
-                     'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant", TmpP + 1)
-                     'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
-    
-                     'Call Encarcelar(Z, 30, "El sistema anti empollo")
-                     Call WriteShowMessageBox(i, "Fuiste expulsado por permanecer muerto sobre un item")
-                     'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
-                     UserList(i).EmpoCont = 0
-                     Call CloseSocket(i)
-                     Call FlushBuffer(i)
-                 ElseIf UserList(i).EmpoCont = 15 Then
-                     Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
+                    'If FileExist(CharPath & UserList(Z).Name & ".chr", vbNormal) Then
+                    'esto siempre existe! sino no estaria logueado ;p
+                    
+                    'TmpP = val(GetVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant"))
+                    'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "Cant", TmpP + 1)
+                    'Call WriteVar(CharPath & UserList(Z).Name & ".chr", "PENAS", "P" & TmpP + 1, LCase$(UserList(Z).Name) & ": CARCEL " & 30 & "m, MOTIVO: Empollando" & " " & Date & " " & Time)
+                    
+                    'Call Encarcelar(Z, 30, "El sistema anti empollo")
+                    Call WriteShowMessageBox(i, "Fuiste expulsado por permanecer muerto sobre un item")
+                    'Call SendData(SendTarget.ToAdmins, Z, 0, "|| " & UserList(Z).Name & " Fue encarcelado por empollar" & FONTTYPE_INFO)
+                    UserList(i).EmpoCont = 0
+                    Call FlushBuffer(i)
+                    
+                    Call CloseSocket(i)
+                ElseIf UserList(i).EmpoCont = 15 Then
+                    Call WriteConsoleMsg(i, "LLevas 15 segundos bloqueando el item, muévete o serás desconectado.", FontTypeNames.FONTTYPE_WARNING)
                     Call FlushBuffer(i)
                 End If
              End If
         End If
     Next i
-    
-    'revisamos auto reiniciares
-'    If IntervaloAutoReiniciar <> -1 Then
-'        IntervaloAutoReiniciar = IntervaloAutoReiniciar - 1
-'
-'        If IntervaloAutoReiniciar <= 1200 Then
-'            Select Case IntervaloAutoReiniciar
-'
-'                Case 1200, 600, 240, 120, 180, 60, 30
-'                    Call SendData(SendTarget.ToAll, 0, 0, "|| Servidor> El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones" & FONTTYPE_SERVER)
-'                Case 300
-'                    Call SendData(SendTarget.ToAll, 0, 0, "!! El servidor se reiniciará por mantenimiento automático en " & IntervaloAutoReiniciar & " segundos. Tomen las debidas precauciones")
-'                Case Is < 30
-'                    Call SendData(SendTarget.ToAll, 0, 0, "|| Servidor> El servidor se reiniciará en " & IntervaloAutoReiniciar & " segundos." & FONTTYPE_TALK)
-'            End Select
-'
-'            If IntervaloAutoReiniciar = 0 Then
-'                Call ReiniciarServidor(True)
-'            End If
-'        End If
-'    End If
+Exit Sub
+
+errhandler:
+    Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
+    Resume Next
 End Sub
  
 Public Function ReiniciarAutoUpdate() As Double
