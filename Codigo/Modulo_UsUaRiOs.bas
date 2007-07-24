@@ -156,9 +156,9 @@ On Error GoTo ErrorHandler
     
     'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
-    Call QuitarUser(UserIndex, UserList(UserIndex).Pos.map)
+    Call QuitarUser(UserIndex, UserList(UserIndex).Pos.Map)
     
-    MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
+    MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
     UserList(UserIndex).Char.CharIndex = 0
     
     NumChars = NumChars - 1
@@ -187,12 +187,12 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
     End If
 End Sub
 
-Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 On Error GoTo hayerror
     Dim CharIndex As Integer
 
-    If InMapBounds(map, X, Y) Then
+    If InMapBounds(Map, X, Y) Then
         'If needed make a new character in list
         If UserList(UserIndex).Char.CharIndex = 0 Then
             CharIndex = NextOpenCharIndex
@@ -202,7 +202,7 @@ On Error GoTo hayerror
         
         'Place character on map if needed
         If toMap Then _
-            MapData(map, X, Y).UserIndex = UserIndex
+            MapData(Map, X, Y).UserIndex = UserIndex
         
         'Send make character command to clients
         Dim klan As String
@@ -223,7 +223,7 @@ On Error GoTo hayerror
                     Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
                 End If
             Else
-                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.map)
+                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
             End If
         Else 'if tiene clan
             If Not toMap Then
@@ -233,7 +233,7 @@ On Error GoTo hayerror
                     Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
                 End If
             Else
-                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.map)
+                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.Map)
             End If
         End If 'if clan
     End If
@@ -809,7 +809,7 @@ Loop
 'If it ceased to be a newbie, remove newbie items and get char away from newbie dungeon
 If Not EsNewbie(UserIndex) And WasNewbie Then
     Call QuitarNewbieObj(UserIndex)
-    If UCase$(MapInfo(UserList(UserIndex).Pos.map).Restringir) = "NEWBIE" Then
+    If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
         Call WarpUserChar(UserIndex, 1, 50, 50, True)
         Call WriteConsoleMsg(UserIndex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
     End If
@@ -847,8 +847,8 @@ Dim nPos As WorldPos
     nPos = UserList(UserIndex).Pos
     Call HeadtoPos(nHeading, nPos)
     
-    If LegalPos(UserList(UserIndex).Pos.map, nPos.X, nPos.Y, PuedeAtravesarAgua(UserIndex)) Then
-        If MapInfo(UserList(UserIndex).Pos.map).NumUsers > 1 Then
+    If LegalPos(UserList(UserIndex).Pos.Map, nPos.X, nPos.Y, PuedeAtravesarAgua(UserIndex)) Then
+        If MapInfo(UserList(UserIndex).Pos.Map).NumUsers > 1 Then
             'si no estoy solo en el mapa...
 
             Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
@@ -856,10 +856,10 @@ Dim nPos As WorldPos
         End If
         
         'Update map and user pos
-        MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
+        MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
         UserList(UserIndex).Pos = nPos
         UserList(UserIndex).Char.heading = nHeading
-        MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
+        MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
         
         'Actualizamos las áreas de ser necesario
         Call ModAreas.CheckUpdateNeededUser(UserIndex, nHeading)
@@ -956,7 +956,7 @@ Dim GuildI As Integer
         Call WriteConsoleMsg(sendIndex, "Total: " & TempStr, FontTypeNames.FONTTYPE_INFO)
     #End If
     
-    Call WriteConsoleMsg(sendIndex, "Oro: " & UserList(UserIndex).Stats.GLD & "  Posicion: " & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y & " en mapa " & UserList(UserIndex).Pos.map, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(sendIndex, "Oro: " & UserList(UserIndex).Stats.GLD & "  Posicion: " & UserList(UserIndex).Pos.X & "," & UserList(UserIndex).Pos.Y & " en mapa " & UserList(UserIndex).Pos.Map, FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(sendIndex, "Dados: " & UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) & ", " & UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) & ", " & UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) & ", " & UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) & ", " & UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion), FontTypeNames.FONTTYPE_INFO)
   
 End Sub
@@ -1174,13 +1174,28 @@ Dim EraCriminal As Boolean
 'Guardamos el usuario que ataco el npc.
 Npclist(NpcIndex).flags.AttackedBy = UserList(UserIndex).name
 
-'Guarda el primer nick que lo ataca.
-If Npclist(NpcIndex).flags.AttackedFirstBy = vbNullString Then
-    Npclist(NpcIndex).flags.AttackedFirstBy = UserList(UserIndex).name
-End If
-
+'Npc que estabas atacando.
+Dim LastNpcHit As Integer
+LastNpcHit = UserList(UserIndex).flags.NPCAtacado
 'Guarda el NPC que estas atacando ahora.
 UserList(UserIndex).flags.NPCAtacado = NpcIndex
+
+'Revisamos robo de npc.
+'Guarda el primer nick que lo ataca.
+If Npclist(NpcIndex).flags.AttackedFirstBy = vbNullString Then
+    'El que le pegabas antes ya no es tuyo
+    If LastNpcHit <> 0 Then
+        Npclist(LastNpcHit).flags.AttackedFirstBy = vbNullString
+    End If
+    Npclist(NpcIndex).flags.AttackedFirstBy = UserList(UserIndex).name
+Else
+    'Estas robando NPC
+    
+End If
+
+
+
+
 
 If Npclist(NpcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(NpcIndex).MaestroUser)
 
@@ -1452,7 +1467,7 @@ On Error GoTo ErrorHandler
     
     '<<Castigos por party>>
     If UserList(UserIndex).PartyIndex > 0 Then
-        Call mdParty.ObtenerExito(UserIndex, UserList(UserIndex).Stats.ELV * -10 * mdParty.CantMiembros(UserIndex), UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+        Call mdParty.ObtenerExito(UserIndex, UserList(UserIndex).Stats.ELV * -10 * mdParty.CantMiembros(UserIndex), UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
     End If
 
 Exit Sub
@@ -1501,9 +1516,9 @@ Dim tX As Integer
 Dim tY As Integer
 Dim hayobj As Boolean
     hayobj = False
-    nPos.map = Pos.map
+    nPos.Map = Pos.Map
     
-    Do While Not LegalPos(Pos.map, nPos.X, nPos.Y, Agua, Tierra) Or hayobj
+    Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y, Agua, Tierra) Or hayobj
         
         If LoopC > 15 Then
             Notfound = True
@@ -1513,12 +1528,12 @@ Dim hayobj As Boolean
         For tY = Pos.Y - LoopC To Pos.Y + LoopC
             For tX = Pos.X - LoopC To Pos.X + LoopC
             
-                If LegalPos(nPos.map, tX, tY, Agua, Tierra) Then
+                If LegalPos(nPos.Map, tX, tY, Agua, Tierra) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
+                    hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.map, tX, tY).ObjInfo.amount + Obj.amount > MAX_INVENTORY_OBJS)
-                    If Not hayobj And MapData(nPos.map, tX, tY).TileExit.map = 0 Then
+                        hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.amount + Obj.amount > MAX_INVENTORY_OBJS)
+                    If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
                         tX = Pos.X + LoopC
@@ -1540,7 +1555,7 @@ Dim hayobj As Boolean
 
 End Sub
 
-Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal FX As Boolean = False)
+Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal FX As Boolean = False)
     Dim OldMap As Integer
     Dim OldX As Integer
     Dim OldY As Integer
@@ -1550,18 +1565,18 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
     
     Call WriteRemoveAllDialogs(UserIndex)
     
-    OldMap = UserList(UserIndex).Pos.map
+    OldMap = UserList(UserIndex).Pos.Map
     OldX = UserList(UserIndex).Pos.X
     OldY = UserList(UserIndex).Pos.Y
     
     Call EraseUserChar(UserIndex)
     
-    If OldMap <> map Then
-        Call WriteChangeMap(UserIndex, map, MapInfo(UserList(UserIndex).Pos.map).MapVersion)
-        Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(map).Music, 45)))
+    If OldMap <> Map Then
+        Call WriteChangeMap(UserIndex, Map, MapInfo(UserList(UserIndex).Pos.Map).MapVersion)
+        Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(Map).Music, 45)))
         
         'Update new Map Users
-        MapInfo(map).NumUsers = MapInfo(map).NumUsers + 1
+        MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
         
         'Update old Map Users
         MapInfo(OldMap).NumUsers = MapInfo(OldMap).NumUsers - 1
@@ -1572,9 +1587,9 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
     
     UserList(UserIndex).Pos.X = X
     UserList(UserIndex).Pos.Y = Y
-    UserList(UserIndex).Pos.map = map
+    UserList(UserIndex).Pos.Map = Map
     
-    Call MakeUserChar(True, map, UserIndex, map, X, Y)
+    Call MakeUserChar(True, Map, UserIndex, Map, X, Y)
     Call WriteUserCharIndexInServer(UserIndex)
     
     'Force a flush, so user index is in there before it's destroyed for teleporting
@@ -1678,7 +1693,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer, Optional ByVal Tiempo As Integer 
     
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
-        UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, Tiempo, 0)
+        UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.Map).Pk, Tiempo, 0)
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
     End If
@@ -1705,7 +1720,7 @@ End If
 End Sub
 
 Public Sub Empollando(ByVal UserIndex As Integer)
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
     UserList(UserIndex).flags.EstaEmpo = 1
 Else
     UserList(UserIndex).flags.EstaEmpo = 0
@@ -1763,7 +1778,7 @@ Sub VolverCriminal(ByVal UserIndex As Integer)
 'Last Modify Date: 21/06/2006
 'Nacho: Actualiza el tag al cliente
 '**************************************************************
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
     UserList(UserIndex).Reputacion.BurguesRep = 0
@@ -1786,7 +1801,7 @@ Sub VolverCiudadano(ByVal UserIndex As Integer)
 'Nacho: Actualiza el tag al cliente.
 '**************************************************************
 
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 UserList(UserIndex).Reputacion.LadronesRep = 0
 UserList(UserIndex).Reputacion.BandidoRep = 0

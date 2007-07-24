@@ -178,9 +178,29 @@ If InMapBounds(Map, X, Y) Then
                 End If
             End If
         End If
+        'Te fusite del mapa. La criatura ya no es más tuya ni te reconoce como que vos la atacaste.
+        Dim aN As Integer
+    
+        aN = UserList(UserIndex).flags.AtacadoPorNpc
+        If aN > 0 Then
+           Npclist(aN).Movement = Npclist(aN).flags.OldMovement
+           Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
+           Npclist(aN).flags.AttackedBy = vbNullString
+        End If
+    
+        aN = UserList(UserIndex).flags.NPCAtacado
+        If aN > 0 Then
+            If Npclist(aN).flags.AttackedFirstBy = UserList(UserIndex).name Then
+            Npclist(aN).flags.AttackedFirstBy = vbNullString
+            End If
+        End If
+        UserList(UserIndex).flags.AtacadoPorNpc = 0
+        UserList(UserIndex).flags.NPCAtacado = 0
     End If
     
 End If
+
+
 
 Exit Sub
 

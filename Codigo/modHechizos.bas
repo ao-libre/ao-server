@@ -950,6 +950,9 @@ Sub RevisoAtaqueNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef
             End If
         End If
     End If
+
+    Call NPCAtacado(NpcIndex, UserIndex)
+
 End Sub
 
 Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, ByVal hIndex As Integer, ByRef b As Boolean, ByVal UserIndex As Integer)
@@ -1127,7 +1130,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
 
     Call InfoHechizo(UserIndex)
     b = True
-    Call NpcAtacado(NpcIndex, UserIndex)
+    Call NPCAtacado(NpcIndex, UserIndex)
     If Npclist(NpcIndex).flags.Snd2 > 0 Then
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
     End If
