@@ -11966,7 +11966,7 @@ Public Sub HandleChangeMapInfoNoInvi(ByVal UserIndex As Integer)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        noinvi = .incomingData.ReadBoolean
+        noinvi = .incomingData.ReadBoolean()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Invisibilidad el mapa.")
@@ -12007,7 +12007,6 @@ Public Sub HandleChangeMapInfoNoResu(ByVal UserIndex As Integer)
             Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "ResuSinEfecto", noresu)
             Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " ResuSinEfecto: " & MapInfo(.Pos.map).ResuSinEfecto, FontTypeNames.FONTTYPE_INFO)
         End If
-        
     End With
 End Sub
 
@@ -12147,7 +12146,6 @@ Public Sub HandleSaveMap(ByVal UserIndex As Integer)
         Call GrabarMapa(.Pos.map, App.Path & "\WorldBackUp\Mapa" & .Pos.map)
         
         Call WriteConsoleMsg(UserIndex, "Mapa Guardado", FontTypeNames.FONTTYPE_INFO)
-
     End With
 End Sub
 
@@ -12221,7 +12219,6 @@ Public Sub HandleDoBackUp(ByVal UserIndex As Integer)
         Call LogGM(.name, .name & " ha hecho un backup")
         
         Call ES.DoBackUp 'Sino lo confunde con la id del paquete
-        
     End With
 End Sub
 
@@ -12512,7 +12509,6 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
         Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
-        
     End With
 End Sub
 
