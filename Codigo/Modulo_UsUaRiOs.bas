@@ -1165,9 +1165,9 @@ End Function
 Sub NPCAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '**********************************************
 'Author: Unknown
-'Last Modification: 18/07/2007
+'Last Modification: 24/07/2007
 '24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si corresponde.
-'18/07/2007 -> Pablo (ToxicWaste): Guardar primero que ataca NPC y el que atacas ahora.
+'24/07/2007 -> Pablo (ToxicWaste): Guardar primero que ataca NPC y el que atacas ahora.
 '**********************************************
 Dim EraCriminal As Boolean
 
@@ -1185,12 +1185,19 @@ UserList(UserIndex).flags.NPCAtacado = NpcIndex
 If Npclist(NpcIndex).flags.AttackedFirstBy = vbNullString Then
     'El que le pegabas antes ya no es tuyo
     If LastNpcHit <> 0 Then
-        Npclist(LastNpcHit).flags.AttackedFirstBy = vbNullString
+        If Npclist(LastNpcHit).flags.AttackedFirstBy = UserList(UserIndex).name Then
+            Npclist(LastNpcHit).flags.AttackedFirstBy = vbNullString
+        End If
     End If
     Npclist(NpcIndex).flags.AttackedFirstBy = UserList(UserIndex).name
-Else
+ElseIf Npclist(NpcIndex).flags.AttackedFirstBy <> UserList(UserIndex).name Then
     'Estas robando NPC
-    
+    'El que le pegabas antes ya no es tuyo
+    If LastNpcHit <> 0 Then
+        If Npclist(LastNpcHit).flags.AttackedFirstBy = UserList(UserIndex).name Then
+            Npclist(LastNpcHit).flags.AttackedFirstBy = vbNullString
+        End If
+    End If
 End If
 
 

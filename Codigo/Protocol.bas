@@ -9356,8 +9356,8 @@ End Sub
 Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 24/07/07
+'Pablo (ToxicWaste): Agrego para uqe el /nick2ip tambien diga los nicks en esa ip por pedido de la DGM.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9392,8 +9392,21 @@ On Error GoTo errhandler
             If tUser > 0 Then
                 If UserList(tUser).flags.Privilegios And priv Then
                     Call WriteConsoleMsg(UserIndex, "El ip de " & UserName & " es " & UserList(tUser).ip, FontTypeNames.FONTTYPE_INFO)
-                Else
-                    Call WriteConsoleMsg(UserIndex, "No tienes los privilegios necesarios", FontTypeNames.FONTTYPE_INFO)
+                    Dim ip As String
+                    Dim lista As String
+                    Dim LoopC As Long
+                    ip = UserList(tUser).ip
+                    For LoopC = 1 To LastUser
+                        If UserList(LoopC).ip = ip Then
+                            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).flags.UserLogged Then
+                                If UserList(LoopC).flags.Privilegios And priv Then
+                                    lista = lista & UserList(LoopC).name & ", "
+                                End If
+                            End If
+                        End If
+                    Next LoopC
+                    If LenB(lista) <> 0 Then lista = Left$(lista, Len(lista) - 2)
+                    Call WriteConsoleMsg(UserIndex, "Los personajes con ip " & ip & " son: " & lista, FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
                 Call WriteConsoleMsg(UserIndex, "No hay ningun personaje con ese nick", FontTypeNames.FONTTYPE_INFO)
