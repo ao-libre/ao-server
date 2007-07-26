@@ -117,7 +117,7 @@ On Error GoTo errorh
     Dim wp2 As WorldPos
     Dim TeleFrag As Integer
     
-    wp.Map = MAPA_PRETORIANO
+    wp.map = MAPA_PRETORIANO
     Select Case X   ''forma burda de ver que alcoba es
         Case Is < 50
             wp.X = ALCOBA2_X
@@ -129,20 +129,20 @@ On Error GoTo errorh
             pretorianosVivos(1) = 7 'Hay 7 + el Rey.
     End Select
     
-    TeleFrag = MapData(wp.Map, wp.X, wp.Y).NpcIndex
+    TeleFrag = MapData(wp.map, wp.X, wp.Y).NpcIndex
     
     If TeleFrag > 0 Then
         ''El rey va a pisar a un npc de antiguo rey
         ''Obtengo en WP2 la mejor posicion cercana
         Call ClosestLegalPos(wp, wp2)
-        If (LegalPos(wp2.Map, wp2.X, wp2.Y)) Then
+        If (LegalPos(wp2.map, wp2.X, wp2.Y)) Then
             ''mover al actual
             
             Call SendData(SendTarget.ToNPCArea, TeleFrag, PrepareMessageCharacterMove(Npclist(TeleFrag).Char.CharIndex, wp2.X, wp2.Y))
             'Update map and user pos
-            MapData(wp.Map, wp.X, wp.Y).NpcIndex = 0
+            MapData(wp.map, wp.X, wp.Y).NpcIndex = 0
             Npclist(TeleFrag).Pos = wp2
-            MapData(wp2.Map, wp2.X, wp2.Y).NpcIndex = TeleFrag
+            MapData(wp2.map, wp2.X, wp2.Y).NpcIndex = TeleFrag
         Else
             ''TELEFRAG!!!
             Call QuitarNPC(TeleFrag)
@@ -203,7 +203,7 @@ On Error GoTo errorh
     
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     
     PJBestTarget = False
     X = 0
@@ -375,7 +375,7 @@ On Error GoTo errorh
 
     NPCPosX = Npclist(npcind).Pos.X   ''store current position
     NPCPosY = Npclist(npcind).Pos.Y   ''for direct access
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     
     PJBestTarget = False
     BestTarget = 0
@@ -583,7 +583,7 @@ On Error GoTo errorh
         ''2- remueve veneno
         ''3- cura
     
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
     BestTarget = 0
@@ -656,7 +656,7 @@ On Error GoTo errorh
         ''Salgo a atacar a todos a lo loco a espadazos
         If BestTarget > 0 Then
             If EsAlcanzable(npcind, BestTarget) Then
-                Call GreedyWalkTo(npcind, UserList(BestTarget).Pos.Map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
+                Call GreedyWalkTo(npcind, UserList(BestTarget).Pos.map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
                 'GreedyWalkTo npcind, UserList(BestTarget).Pos.Map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y
             Else
                 ''el chabon es piola y ataca desde lejos entonces lo castigamos!
@@ -669,8 +669,8 @@ On Error GoTo errorh
             For headingloop = eHeading.NORTH To eHeading.WEST
                 nPos = Npclist(npcind).Pos
                 Call HeadtoPos(headingloop, nPos)
-                If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
-                    UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
+                If InMapBounds(nPos.map, nPos.X, nPos.Y) Then
+                    UI = MapData(nPos.map, nPos.X, nPos.Y).UserIndex
                     If UI > 0 Then
                         If NpcAtacaUser(npcind, UI) Then
                             Call ChangeNPCChar(npcind, Npclist(npcind).Char.body, Npclist(npcind).Char.Head, headingloop)
@@ -717,7 +717,7 @@ On Error GoTo errorh
     Dim UI As Integer
     Dim PJEnInd As Integer
     Dim BestTarget As Integer
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
     BestTarget = 0
@@ -759,7 +759,7 @@ On Error GoTo errorh
         ElseIf BestTarget = 0 Or EstoyMuyLejos(npcind) Then
             Call VolverAlCentro(npcind)
         ElseIf BestTarget > 0 Then
-            Call GreedyWalkTo(npcind, UserList(BestTarget).Pos.Map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
+            Call GreedyWalkTo(npcind, UserList(BestTarget).Pos.map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
         End If
     End If
 
@@ -767,8 +767,8 @@ On Error GoTo errorh
 For headingloop = eHeading.NORTH To eHeading.WEST
     nPos = Npclist(npcind).Pos
     Call HeadtoPos(headingloop, nPos)
-    If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
-        UI = MapData(nPos.Map, nPos.X, nPos.Y).UserIndex
+    If InMapBounds(nPos.map, nPos.X, nPos.Y) Then
+        UI = MapData(nPos.map, nPos.X, nPos.Y).UserIndex
         If UI > 0 Then
             If Not (UserList(UI).flags.Muerto = 1) Then
                 If NpcAtacaUser(npcind, UI) Then
@@ -828,7 +828,7 @@ On Error GoTo errorh
         ''3- ataque a mascotas
         ''4- curar aliado
     quehacer = 0
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
     PJBestTarget = False
@@ -1307,7 +1307,7 @@ On Error GoTo errorh
             Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessagePlayWave(SONIDO_Dragon_VIVO))
             NPCPosX = Npclist(npcind).Pos.X
             NPCPosY = Npclist(npcind).Pos.Y
-            NPCPosM = Npclist(npcind).Pos.Map
+            NPCPosM = Npclist(npcind).Pos.map
             PJInd = 0
             indireccion = Npclist(npcind).Spells(indice)
             ''Daño masivo por destruccion de wand
@@ -1362,7 +1362,7 @@ errorh:
 End Sub
 
 
-Sub GreedyWalkTo(ByVal npcorig As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub GreedyWalkTo(ByVal npcorig As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
 On Error GoTo errorh
 ''  Este procedimiento es llamado cada vez que un NPC deba ir
 ''  a otro lugar en el mismo mapa. Utiliza una técnica
@@ -1372,6 +1372,8 @@ On Error GoTo errorh
 ''  Si no puedo moverme, me considero piketeado
 ''  La funcion es larga, pero es O(1) - orden algorítmico temporal constante
 
+'Rapsodius - Changed Mod by And for speed
+
 Dim NPCx As Integer
 Dim NPCy As Integer
 Dim USRx As Integer
@@ -1379,7 +1381,7 @@ Dim USRy As Integer
 Dim dual As Integer
 Dim mapa As Integer
 
-If Not (Npclist(npcorig).Pos.Map = Map) Then Exit Sub   ''si son distintos mapas abort
+If Not (Npclist(npcorig).Pos.map = map) Then Exit Sub   ''si son distintos mapas abort
 
 NPCx = Npclist(npcorig).Pos.X
 NPCy = Npclist(npcorig).Pos.Y
@@ -1390,14 +1392,14 @@ If (NPCx = X And NPCy = Y) Then Exit Sub    ''ya llegué!!
 ''  Levanto las coordenadas del destino
 USRx = X
 USRy = Y
-mapa = Map
+mapa = map
 
 ''  moverse
     If (NPCx > USRx) Then
         If (NPCy < USRy) Then
             ''NPC esta arriba a la derecha
             dual = RandomNumber(0, 10)
-            If ((dual Mod 2) = 0) Then ''move down
+            If ((dual And 1) = 0) Then ''move down
                 If LegalPos(mapa, NPCx, NPCy + 1) Then
                     Call MoverAba(npcorig)
                     Exit Sub
@@ -1434,7 +1436,7 @@ mapa = Map
             End If  ''checked random first move
         ElseIf (NPCy > USRy) Then   ''NPC esta abajo a la derecha
             dual = RandomNumber(0, 10)
-            If ((dual Mod 2) = 0) Then ''move up
+            If ((dual And 1) = 0) Then ''move up
                 If LegalPos(mapa, NPCx, NPCy - 1) Then  ''U
                     Call MoverArr(npcorig)
                     Exit Sub
@@ -1488,7 +1490,7 @@ mapa = Map
         If (NPCy < USRy) Then
             ''NPC esta arriba a la izquierda
             dual = RandomNumber(0, 10)
-            If ((dual Mod 2) = 0) Then ''move down
+            If ((dual And 1) = 0) Then ''move down
                 If LegalPos(mapa, NPCx, NPCy + 1) Then  ''ABA
                     Call MoverAba(npcorig)
                     Exit Sub
@@ -1524,7 +1526,7 @@ mapa = Map
         
         ElseIf (NPCy > USRy) Then   ''NPC esta abajo a la izquierda
             dual = RandomNumber(0, 10)
-            If ((dual Mod 2) = 0) Then ''move up
+            If ((dual And 1) = 0) Then ''move up
                 If LegalPos(mapa, NPCx, NPCy - 1) Then  ''U
                     Call MoverArr(npcorig)
                     Exit Sub
@@ -1628,7 +1630,7 @@ On Error GoTo errorh
     Dim mapa As Integer
     Dim NPCx As Integer
     Dim NPCy As Integer
-    mapa = Npclist(npcorig).Pos.Map
+    mapa = Npclist(npcorig).Pos.map
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
     
@@ -1654,7 +1656,7 @@ On Error GoTo errorh
     Dim mapa As Integer
     Dim NPCx As Integer
     Dim NPCy As Integer
-    mapa = Npclist(npcorig).Pos.Map
+    mapa = Npclist(npcorig).Pos.map
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
     
@@ -1679,7 +1681,7 @@ On Error GoTo errorh
     Dim mapa As Integer
     Dim NPCx As Integer
     Dim NPCy As Integer
-    mapa = Npclist(npcorig).Pos.Map
+    mapa = Npclist(npcorig).Pos.map
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
 
@@ -1705,7 +1707,7 @@ On Error GoTo errorh
     Dim mapa As Integer
     Dim NPCx As Integer
     Dim NPCy As Integer
-    mapa = Npclist(npcorig).Pos.Map
+    mapa = Npclist(npcorig).Pos.map
     NPCx = Npclist(npcorig).Pos.X
     NPCy = Npclist(npcorig).Pos.Y
     
@@ -1734,7 +1736,7 @@ On Error GoTo errorh
     Dim NpcMap As Integer
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
-    NpcMap = Npclist(npcind).Pos.Map
+    NpcMap = Npclist(npcind).Pos.map
     
     If NpcMap = MAPA_PRETORIANO Then
         ''35,25 y 67,25 son las posiciones del rey
@@ -1768,7 +1770,7 @@ Function EstoyMuyLejos(ByVal npcind) As Boolean
     
     retvalue = Npclist(npcind).Pos.Y > 39
     
-    If Not Npclist(npcind).Pos.Map = MAPA_PRETORIANO Then
+    If Not Npclist(npcind).Pos.map = MAPA_PRETORIANO Then
         EstoyMuyLejos = False
     Else
         EstoyMuyLejos = retvalue
@@ -1798,7 +1800,7 @@ On Error GoTo errorh
     
     retvalue = retvalue And Npclist(npcind).Pos.Y > 19 And Npclist(npcind).Pos.Y < 31
     
-    If Not Npclist(npcind).Pos.Map = MAPA_PRETORIANO Then
+    If Not Npclist(npcind).Pos.map = MAPA_PRETORIANO Then
         EstoyLejos = False
     Else
         EstoyLejos = Not retvalue
@@ -1837,7 +1839,7 @@ On Error GoTo errorh
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
     
-    If (Npclist(npcind).Pos.Map = MAPA_PRETORIANO) And (UserList(PJEnInd).Pos.Map = MAPA_PRETORIANO) Then
+    If (Npclist(npcind).Pos.map = MAPA_PRETORIANO) And (UserList(PJEnInd).Pos.map = MAPA_PRETORIANO) Then
         ''los bounds del mapa pretoriano son fijos.
         ''Esta en una posicion alcanzable si esta dentro del
         ''espacio de las alcobas reales del mapa diseñado por mi.
@@ -1884,7 +1886,7 @@ On Error GoTo errorh
     
     NPCPosX = Npclist(npc).Pos.X
     NPCPosY = Npclist(npc).Pos.Y
-    NPCPosM = Npclist(npc).Pos.Map
+    NPCPosM = Npclist(npc).Pos.map
     
     retvalue = Not (LegalPos(NPCPosM, NPCPosX + 1, NPCPosY) Or _
                 LegalPos(NPCPosM, NPCPosX - 1, NPCPosY) Or _
@@ -1941,7 +1943,7 @@ On Error GoTo errorh
     
     NPCPosX = Npclist(npcind).Pos.X
     NPCPosY = Npclist(npcind).Pos.Y
-    NPCPosM = Npclist(npcind).Pos.Map
+    NPCPosM = Npclist(npcind).Pos.map
     
     If LegalPos(NPCPosM, NPCPosX + 1, NPCPosY + 1) Then
         Call SendData(SendTarget.ToNPCArea, npcind, PrepareMessageCharacterMove(Npclist(npcind).Char.CharIndex, NPCPosX + 1, NPCPosY + 1))
