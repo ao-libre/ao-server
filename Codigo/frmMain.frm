@@ -421,11 +421,11 @@ If Minutos >= MinutosWs Then
 End If
 
 If MinutosLatsClean >= 15 Then
-        MinutosLatsClean = 0
-        Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
-        Call LimpiarMundo
+    MinutosLatsClean = 0
+    Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
+    Call LimpiarMundo
 Else
-        MinutosLatsClean = MinutosLatsClean + 1
+    MinutosLatsClean = MinutosLatsClean + 1
 End If
 
 Call PurgarPenas
@@ -442,7 +442,7 @@ Close #N
 Exit Sub
 errhandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
-
+    Resume Next
 End Sub
 
 Private Sub CMDDUMP_Click()

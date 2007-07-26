@@ -84,7 +84,7 @@ Private Sub GoToNextWorkingChar()
                 'Inicializamos
                 Centinela.RevisandoUserIndex = LoopC
                 Centinela.TiempoRestante = TIEMPO_INICIAL
-                Centinela.clave = RandomNumber(1, 36000)
+                Centinela.clave = RandomNumber(1, 32000)
                 Centinela.spawnTime = GetTickCount() And &H7FFFFFFF
                 
                 'Ponemos al centinela en posición
