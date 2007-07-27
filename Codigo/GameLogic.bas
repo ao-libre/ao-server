@@ -823,25 +823,25 @@ Y = Pos.Y - Target.Y
 
 'NE
 If Sgn(X) = -1 And Sgn(Y) = 1 Then
-    FindDirection = eHeading.NORTH
+    FindDirection = IIf(RandomNumber(0, 1), eHeading.NORTH, eHeading.EAST)
     Exit Function
 End If
 
 'NW
 If Sgn(X) = 1 And Sgn(Y) = 1 Then
-    FindDirection = eHeading.WEST
+    FindDirection = IIf(RandomNumber(0, 1), eHeading.WEST, eHeading.NORTH)
     Exit Function
 End If
 
 'SW
 If Sgn(X) = 1 And Sgn(Y) = -1 Then
-    FindDirection = eHeading.WEST
+    FindDirection = IIf(RandomNumber(0, 1), eHeading.WEST, eHeading.SOUTH)
     Exit Function
 End If
 
 'SE
 If Sgn(X) = -1 And Sgn(Y) = -1 Then
-    FindDirection = eHeading.SOUTH
+    FindDirection = IIf(RandomNumber(0, 1), eHeading.SOUTH, eHeading.EAST)
     Exit Function
 End If
 
