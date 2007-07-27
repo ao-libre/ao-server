@@ -98,19 +98,18 @@ End If
 End Sub
 
 Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
-With UserList(UserIndex)
-    If .ComUsu.DestUsu > 0 Then
-        Call WriteUserCommerceEnd(UserIndex)
-    End If
-    
-    .ComUsu.Acepto = False
-    .ComUsu.cant = 0
-    .ComUsu.DestUsu = 0
-    .ComUsu.Objeto = 0
-    .ComUsu.DestNick = vbNullString
-    .flags.Comerciando = False
-End With
-
+    With UserList(UserIndex)
+        If .ComUsu.DestUsu > 0 Then
+            Call WriteUserCommerceEnd(UserIndex)
+        End If
+        
+        .ComUsu.Acepto = False
+        .ComUsu.cant = 0
+        .ComUsu.DestUsu = 0
+        .ComUsu.Objeto = 0
+        .ComUsu.DestNick = vbNullString
+        .flags.Comerciando = False
+    End With
 End Sub
 
 Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
@@ -120,7 +119,7 @@ Dim TerminarAhora As Boolean
 
 TerminarAhora = False
 
-If UserList(UserIndex).ComUsu.DestUsu <= 0 Then
+If UserList(UserIndex).ComUsu.DestUsu <= 0 Or UserList(UserIndex).ComUsu.DestUsu > MaxUsers Then
     TerminarAhora = True
 End If
 
@@ -152,14 +151,19 @@ End If
 
 If TerminarAhora = True Then
     Call FinComerciarUsu(UserIndex)
-    Call FinComerciarUsu(OtroUserIndex)
+    
+    If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
+        Call FinComerciarUsu(OtroUserIndex)
+        Call Protocol.FlushBuffer(OtroUserIndex)
+    End If
+    
     Exit Sub
 End If
 
 UserList(UserIndex).ComUsu.Acepto = True
 TerminarAhora = False
 
-If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.Acepto = False Then
+If UserList(OtroUserIndex).ComUsu.Acepto = False Then
     Call WriteConsoleMsg(UserIndex, "El otro usuario aun no ha aceptado tu oferta.", FontTypeNames.FONTTYPE_TALK)
     Exit Sub
 End If
@@ -194,14 +198,16 @@ Else
     End If
 End If
 
-Call FlushBuffer(OtroUserIndex)
-
 'Por si las moscas...
 If TerminarAhora = True Then
     Call FinComerciarUsu(UserIndex)
+    
     Call FinComerciarUsu(OtroUserIndex)
+    Call FlushBuffer(OtroUserIndex)
     Exit Sub
 End If
+
+Call FlushBuffer(OtroUserIndex)
 
 '[CORREGIDO]
 'Desde acá corregí el bug que cuando se ofrecian mas de
@@ -254,4 +260,3 @@ Call FinComerciarUsu(OtroUserIndex)
 End Sub
 
 '[/Alejo]
-
