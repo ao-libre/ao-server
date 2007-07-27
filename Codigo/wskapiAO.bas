@@ -383,6 +383,7 @@ If UserList(Slot).ConnID <> -1 And UserList(Slot).ConnIDValida Then
             Call Security.DataStored(Slot)
 #End If
             
+            ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
             Call UserList(Slot).outgoingData.WriteASCIIStringFixed(str)
         End If
         Retorno = UltError
