@@ -95,7 +95,7 @@ On Error GoTo errhandler
         Call CrearClanPretoriano(MAPA_PRETORIANO, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
     ElseIf esPretoriano(NpcIndex) > 0 Then
             Npclist(NpcIndex).Invent.ArmourEqpSlot = 0
-            pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) = pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 2, Npclist(NpcIndex).Pos.X > 50, 1)) - 1
+            pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 1, Npclist(NpcIndex).Pos.X > 50, 2)) = pretorianosVivos(Switch(Npclist(NpcIndex).Pos.X < 50, 1, Npclist(NpcIndex).Pos.X > 50, 2)) - 1
     End If
    
     'Quitamos el npc
