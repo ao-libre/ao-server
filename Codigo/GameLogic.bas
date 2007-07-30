@@ -610,9 +610,7 @@ If InMapBounds(Map, X, Y) Then
     If Y + 1 <= YMaxMapSize Then
         If MapData(Map, X, Y + 1).UserIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y + 1).UserIndex
-            If UserList(TempCharIndex).showName Then    ' Es GM y pidió que se oculte su nombre??
-                FoundChar = 1
-            End If
+            FoundChar = 1
         End If
         If MapData(Map, X, Y + 1).NpcIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y + 1).NpcIndex
@@ -623,9 +621,7 @@ If InMapBounds(Map, X, Y) Then
     If FoundChar = 0 Then
         If MapData(Map, X, Y).UserIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y).UserIndex
-            If UserList(TempCharIndex).showName Then    ' Es GM y pidió que se oculte su nombre??
-                FoundChar = 1
-            End If
+            FoundChar = 1
         End If
         If MapData(Map, X, Y).NpcIndex > 0 Then
             TempCharIndex = MapData(Map, X, Y).NpcIndex
@@ -639,7 +635,7 @@ If InMapBounds(Map, X, Y) Then
             
        If UserList(TempCharIndex).flags.AdminInvisible = 0 Or UserList(UserIndex).flags.Privilegios And PlayerType.Dios Then
             
-            If LenB(UserList(TempCharIndex).DescRM) = 0 Then
+            If LenB(UserList(TempCharIndex).DescRM) = 0 And UserList(TempCharIndex).showName Then 'No tiene descRM y quiere que se vea su nombre.
                 If EsNewbie(TempCharIndex) Then
                     Stat = " <NEWBIE>"
                 End If
@@ -679,7 +675,7 @@ If InMapBounds(Map, X, Y) Then
                         ft = FontTypeNames.FONTTYPE_CITIZEN
                     End If
                 End If
-            Else
+            Else  'Si tiene descRM la muestro siempre.
                 Stat = UserList(TempCharIndex).DescRM
                 ft = FontTypeNames.FONTTYPE_INFOBOLD
             End If
