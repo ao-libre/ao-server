@@ -919,38 +919,15 @@ If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO 
    Exit Sub
 End If
 
-If UserList(UserIndex).flags.Seguro And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        Call WriteConsoleMsg(UserIndex, "Debes sacar el seguro antes de poder atacar una mascota de un ciudadano.", FontTypeNames.FONTTYPE_WARNING)
-        Exit Sub
-    End If
-End If
-
 'Para atacar a un NPC bueno hay que quitar el seguro
 If (Npclist(NpcIndex).Stats.Alineacion = 0) And UserList(UserIndex).flags.Seguro Then
     Call WriteConsoleMsg(UserIndex, "Debes quitar el seguro para atacar estas criaturas.", FontTypeNames.FONTTYPE_FIGHT)
     Exit Sub
 End If
 
-If Npclist(NpcIndex).MaestroUser > 0 Then 'Es mascota?
-    'Es mascota de un caos y vos sos un caos?
-    If UserList(Npclist(NpcIndex).MaestroUser).Faccion.FuerzasCaos & UserList(UserIndex).Faccion.FuerzasCaos Then
-        Call WriteConsoleMsg(UserIndex, "No puedes atacar mascotas de Legionarios siendo Legionario", FontTypeNames.FONTTYPE_WARNING)
-        Exit Sub
-    End If
-End If
-
-If UserList(UserIndex).Faccion.ArmadaReal = 1 And Npclist(NpcIndex).MaestroUser <> 0 Then
-    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        Call WriteConsoleMsg(UserIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos y sus macotas.", FontTypeNames.FONTTYPE_WARNING)
-        Exit Sub
-    End If
-End If
-
-If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal And UserList(UserIndex).flags.Seguro Then
-    Call WriteConsoleMsg(UserIndex, "Debes quitar el seguro para atacar guardias.", FontTypeNames.FONTTYPE_FIGHT)
-    Exit Sub
-End If
+Dim ExitSub As Boolean
+Call RevisoAtaqueNPC(NpcIndex, UserIndex, False, ExitSub)
+If ExitSub Then Exit Sub
 
 'Revisa que el Rey pretoriano no esté solo.
 If esPretoriano(NpcIndex) = 4 Then
@@ -966,8 +943,6 @@ If esPretoriano(NpcIndex) = 4 Then
         End If
     End If
 End If
-
-Call NpcAtacado(NpcIndex, UserIndex)
 
 If UserImpactoNpc(UserIndex, NpcIndex) Then
     
