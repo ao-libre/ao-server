@@ -292,6 +292,16 @@ If Not AsciiValidos(name) Or LenB(name) = 0 Then
     Exit Sub
 End If
 
+If UserList(UserIndex).flags.UserLogged Then
+    Call LogCheating("El usuario " & UserList(UserIndex).name & " ha intentado crear a " & name & " desde la IP " & UserList(UserIndex).ip)
+    
+    'Kick player ( and leave character inside :D )!
+    Call CloseSocketSL(UserIndex)
+    Call Cerrar_Usuario(UserIndex)
+    
+    Exit Sub
+End If
+
 Dim LoopC As Long
 Dim totalskpts As Long
 
@@ -830,6 +840,16 @@ End Function
 Sub ConnectUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String)
 Dim N As Integer
 Dim tStr As String
+
+If UserList(UserIndex).flags.UserLogged Then
+    Call LogCheating("El usuario " & UserList(UserIndex).name & " ha intentado loguear a " & name & " desde la IP " & UserList(UserIndex).ip)
+    
+    'Kick player ( and leave character inside :D )!
+    Call CloseSocketSL(UserIndex)
+    Call Cerrar_Usuario(UserIndex)
+    
+    Exit Sub
+End If
 
 'Reseteamos los FLAGS
 UserList(UserIndex).flags.Escondido = 0

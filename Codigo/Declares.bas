@@ -33,9 +33,6 @@ Option Explicit
 ' Modulo de declaraciones. Aca hay de todo.
 '
 
-Public MixedKey As Long
-Public ServerIp As String
-
 Type tEstadisticasDiarias
     Segundos As Double
     MaxUsuarios As Integer
@@ -669,7 +666,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    Map As Integer
+    map As Integer
     X As Integer
     Y As Integer
 End Type
