@@ -413,6 +413,11 @@ Else
             End If
         Next X
     Next Y
+    'Si llega aca es que no había ningún usuario cercano vivo.
+    'A bailar. Pablo (ToxicWaste)
+    If RandomNumber(0, 10) = 0 Then
+        Call MoveNPCChar(NpcIndex, CByte(RandomNumber(eHeading.NORTH, eHeading.WEST)))
+    End If
 End If
 
 Call RestoreOldMovement(NpcIndex)

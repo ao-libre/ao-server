@@ -666,7 +666,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     X As Integer
     Y As Integer
 End Type
@@ -1141,6 +1141,7 @@ Public Type NPCStats
     MaxHIT As Integer
     MinHIT As Integer
     def As Integer
+    defM As Integer
     UsuariosMatados As Integer
 End Type
 

@@ -1135,6 +1135,10 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2))
     End If
     
+    'Quizas tenga defenza magica el NPC. Pablo (ToxicWaste)
+    daño = daño - Npclist(NpcIndex).Stats.defM
+    If daño < 0 Then daño = 0
+    
     Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP - daño
     Call WriteConsoleMsg(UserIndex, "Le has causado " & daño & " puntos de daño a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
     Call CalcularDarExp(UserIndex, NpcIndex, daño)
