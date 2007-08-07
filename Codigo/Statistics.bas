@@ -52,15 +52,15 @@ Public Sub UserConnected(ByVal UserIndex As Integer)
     'A new user connected, load it's trainning time count
     trainningInfo(UserIndex).trainningTime = val(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 30))
     
-    trainningInfo(UserIndex).startTick = GetTickCount
+    trainningInfo(UserIndex).startTick = (GetTickCount() And &H7FFFFFFF)
 End Sub
 
 Public Sub UserDisconnected(ByVal UserIndex As Integer)
     With trainningInfo(UserIndex)
         'Update trainning time
-        .trainningTime = .trainningTime + (GetTickCount() - .startTick) / 1000
-    
-        .startTick = GetTickCount
+        .trainningTime = .trainningTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
+        
+        .startTick = (GetTickCount() And &H7FFFFFFF)
         
         'Store info in char file
         Call WriteVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", CStr(.trainningTime))
@@ -75,13 +75,13 @@ Public Sub UserLevelUp(ByVal UserIndex As Integer)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + (GetTickCount() - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         
         'Reset data
         .trainningTime = 0
-        .startTick = GetTickCount()
+        .startTick = (GetTickCount() And &H7FFFFFFF)
     End With
 End Sub
 
@@ -495,12 +495,12 @@ End Sub
 
 Public Sub ParseChat(ByRef S As String)
     Dim i As Long
-    Dim Key As Integer
+    Dim key As Integer
     
     For i = 1 To Len(S)
-        Key = Asc(mid$(S, i, 1))
+        key = Asc(mid$(S, i, 1))
         
-        keyOcurrencies(Key) = keyOcurrencies(Key) + 1
+        keyOcurrencies(key) = keyOcurrencies(key) + 1
     Next i
     
     'Add a NULL-terminated to consider that possibility too....
