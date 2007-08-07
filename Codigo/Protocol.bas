@@ -39,6 +39,10 @@ Option Explicit
 Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
+'The last existing client packet id.
+Private Const LAST_CLIENT_PACKET_ID As Byte = 244
+
+''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
 'Specially usefull to create a message once and send it over to several clients.
 Private auxiliarBuffer As New clsByteQueue
@@ -470,10 +474,10 @@ On Error Resume Next
             Exit Sub
         
         'He is logged. Reset idle counter if id is valid.
-        ElseIf packetID <= ClientPacketID.CheckSlot Then
+        ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
             UserList(UserIndex).Counters.IdleCount = 0
         End If
-    ElseIf packetID <= ClientPacketID.CheckSlot Then
+    ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
         UserList(UserIndex).Counters.IdleCount = 0
     End If
     
