@@ -590,7 +590,7 @@ Select Case Obj.OBJType
             UserList(UserIndex).Invent.WeaponEqpSlot = Slot
             
             'Sonido
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
             
             If UserList(UserIndex).flags.Mimetizado = 1 Then
                 UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
@@ -956,7 +956,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
         
             Case 2 'Modif la fuerza
                 UserList(UserIndex).flags.DuracionEfecto = Obj.DuracionEfecto
@@ -970,7 +970,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
                 
             Case 3 'Pocion roja, restaura HP
                 'Usa el item
@@ -980,7 +980,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
             
             Case 4 'Pocion azul, restaura MANA
                 'Usa el item
@@ -990,7 +990,7 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
                 
             Case 5 ' Pocion violeta
                 If UserList(UserIndex).flags.Envenenado = 1 Then
@@ -999,7 +999,7 @@ Select Case Obj.OBJType
                 End If
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
             Case 6  ' Pocion Negra
                 If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
                     Call QuitarUserInvItem(UserIndex, Slot, 1)
@@ -1024,7 +1024,7 @@ Select Case Obj.OBJType
         'Quitamos del inv el item
         Call QuitarUserInvItem(UserIndex, Slot, 1)
         
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
         
         Call UpdateUserInv(False, UserIndex, Slot)
     
@@ -1144,7 +1144,7 @@ Select Case Obj.OBJType
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1))
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, NO_3D_SOUND, NO_3D_SOUND))
                 Exit Sub
             End If
         ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
@@ -1153,12 +1153,12 @@ Select Case Obj.OBJType
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1))
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, NO_3D_SOUND, NO_3D_SOUND))
                 Exit Sub
             End If
         End If
         'Si llega aca es porque es o Laud o Tambor o Flauta
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
        
     Case eOBJType.otBarcos
         'Verifica si esta aproximado al agua antes de permitirle navegar

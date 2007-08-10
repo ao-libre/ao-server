@@ -61,6 +61,10 @@ Public Const CHAT_COLOR_DEAD_CHAR As Long = &HC0C0C0
 ' The color of yells made by any kind of game administrator.
 Public Const CHAT_COLOR_GM_YELL As Long = &HF82FF
 
+''
+' Coordinates for normal sounds (not 3D, like rain)
+' You can set this to anything but positive numbers
+Public Const NO_3D_SOUND As Integer = (-8)
 
 Public Const iFragataFantasmal = 87
 Public Const iFragataReal = 190

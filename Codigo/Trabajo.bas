@@ -334,7 +334,7 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     End If
     Call SubirSkill(UserIndex, Herreria)
     Call UpdateUserInv(True, UserIndex, 0)
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
     
 End If
 
@@ -379,7 +379,7 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
     
     Call SubirSkill(UserIndex, Carpinteria)
     Call UpdateUserInv(True, UserIndex, 0)
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO))
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
 End If
 
 UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
@@ -599,7 +599,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
 End Sub
 
-Sub TratarDeHacerFogata(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 
 Dim Suerte As Byte
 Dim exito As Byte
@@ -607,15 +607,15 @@ Dim raise As Byte
 Dim Obj As Obj
 Dim posMadera As WorldPos
 
-If Not LegalPos(map, X, Y) Then Exit Sub
+If Not LegalPos(Map, X, Y) Then Exit Sub
 
 With posMadera
-    .map = map
+    .Map = Map
     .X = X
     .Y = Y
 End With
 
-If MapData(map, X, Y).ObjInfo.ObjIndex <> 58 Then
+If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas clickear sobre Leña para hacer ramitas", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -630,7 +630,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(map, X, Y).ObjInfo.amount < 3 Then
+If MapData(Map, X, Y).ObjInfo.amount < 3 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas por lo menos tres troncos para hacer una fogata.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -648,11 +648,11 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.amount = MapData(map, X, Y).ObjInfo.amount \ 3
+    Obj.amount = MapData(Map, X, Y).ObjInfo.amount \ 3
     
     Call WriteConsoleMsg(UserIndex, "Has hecho " & Obj.amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-    Call MakeObj(map, Obj, map, X, Y)
+    Call MakeObj(Map, Obj, Map, X, Y)
     
     'Seteamos la fogata como el nuevo TargetObj del user
     UserList(UserIndex).flags.TargetObj = FOGATA_APAG
@@ -797,7 +797,7 @@ End Sub
 
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
-If Not MapInfo(UserList(VictimaIndex).Pos.map).Pk Then Exit Sub
+If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
 
 If UserList(LadrOnIndex).flags.Seguro Then
     Call WriteConsoleMsg(LadrOnIndex, "Debes quitar el seguro para robar", FontTypeNames.FONTTYPE_FIGHT)

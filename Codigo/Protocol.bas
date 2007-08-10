@@ -2776,7 +2776,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     End Select
                     
                     'Play sound!
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_PESCAR))
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_PESCAR, .Pos.X, .Pos.Y))
                 Else
                     Call WriteConsoleMsg(UserIndex, "No hay agua donde pescar. Busca un lago, rio o mar.", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -2854,7 +2854,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     
                     '¿Hay un arbol donde clickeo?
                     If ObjData(DummyInt).OBJType = eOBJType.otArboles Then
-                        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR))
+                        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.X, .Pos.Y))
                         Call DoTalar(UserIndex)
                     End If
                 Else
@@ -9870,7 +9870,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
             End If
             
             'Ponemos el pedido por el GM
-            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID))
+            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID, X, Y))
         End If
     End With
 End Sub
@@ -11148,7 +11148,7 @@ Private Sub HandleForceWAVEAll(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(waveID))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(waveID, NO_3D_SOUND, NO_3D_SOUND))
     End With
 End Sub
 
@@ -14423,16 +14423,19 @@ End Sub
 '
 ' @param    UserIndex User to which the message is intended.
 ' @param    wave The wave to be played.
+' @param    X The X position in map coordinates from where the sound comes.
+' @param    Y The Y position in map coordinates from where the sound comes.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WritePlayWave(ByVal UserIndex As Integer, ByVal wave As Byte)
+Public Sub WritePlayWave(ByVal UserIndex As Integer, ByVal wave As Byte, ByVal X As Integer, ByVal Y As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Writes the "PlayWave" message to the given user's outgoing data buffer
+'Last Modification: 08/08/07
+'Last Modified by: Rapsodius
+'Added X and Y positions for 3D Sounds
 '***************************************************
-On Error GoTo ErrHandler
-    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(wave))
+On Error GoTo errhandler
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(wave, X, Y))
 Exit Sub
 
 ErrHandler:
@@ -16375,18 +16378,23 @@ End Function
 ' Prepares the "PlayWave" message and returns it.
 '
 ' @param    wave The wave to be played.
+' @param    X The X position in map coordinates from where the sound comes.
+' @param    Y The Y position in map coordinates from where the sound comes.
 ' @return   The formated message ready to be writen as is on outgoing buffers.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Function PrepareMessagePlayWave(ByVal wave As Byte) As String
+Public Function PrepareMessagePlayWave(ByVal wave As Byte, ByVal X As Integer, ByVal Y As Integer) As String
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Prepares the "PlayWave" message and returns it
+'Last Modification: 08/08/07
+'Last Modified by: Rapsodius
+'Added X and Y positions for 3D Sounds
 '***************************************************
     With auxiliarBuffer
         Call .WriteByte(ServerPacketID.PlayWave)
         Call .WriteByte(wave)
+        Call .WriteInteger(X)
+        Call .WriteInteger(Y)
         
         PrepareMessagePlayWave = .ReadASCIIStringFixed(.length)
     End With

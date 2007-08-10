@@ -60,7 +60,7 @@ Public Sub CallUserAttention()
     If (GetTickCount() And &H7FFFFFFF) - Centinela.spawnTime >= 5000 Then
         If Centinela.RevisandoUserIndex <> 0 And centinelaActivado Then
             If Not UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
-                Call WritePlayWave(Centinela.RevisandoUserIndex, SND_WARP)
+                Call WritePlayWave(Centinela.RevisandoUserIndex, SND_WARP, Npclist(CentinelaNPCIndex).Pos.X, Npclist(CentinelaNPCIndex).Pos.Y)
                 Call WriteCreateFX(Centinela.RevisandoUserIndex, Npclist(CentinelaNPCIndex).Char.CharIndex, FXIDs.FXWARP, 0)
                 
                 'Resend the key
@@ -262,7 +262,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
         CentinelaNPCIndex = 0
     End If
     
-    If HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+    If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_AGUA, UserList(UserIndex).Pos, True, False)
     Else
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_TIERRA, UserList(UserIndex).Pos, True, False)

@@ -107,11 +107,11 @@ Public Sub ReproducirSonidosDeMapas()
                 'tocarlo
                 If Lloviendo Then
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.Lluvia Then
-                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
+                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa), NO_3D_SOUND, NO_3D_SOUND))
                     End If
                 Else
                     If p_Mapas(i).flags(SonidoMapa) Xor p_eSoundFlags.ninguna Then
-                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa)))
+                        Call SendData(SendTarget.toMap, i, PrepareMessagePlayWave(p_Mapas(i).SoundIndex(SonidoMapa), NO_3D_SOUND, NO_3D_SOUND))
                     End If
                 End If
             End If
@@ -120,5 +120,5 @@ Public Sub ReproducirSonidosDeMapas()
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex))
+    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
 End Sub

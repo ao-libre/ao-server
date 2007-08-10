@@ -103,7 +103,7 @@ On Error GoTo errhandler
     
     If UserIndex > 0 Then ' Lo mato un usuario?
         If MiNPC.flags.Snd3 > 0 Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MiNPC.flags.Snd3))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MiNPC.flags.Snd3, MiNPC.Pos.X, MiNPC.Pos.Y))
         End If
         UserList(UserIndex).flags.TargetNPC = 0
         UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
@@ -711,7 +711,7 @@ Y = Npclist(nIndex).Pos.Y
 Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
 
 If FX Then
-    Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessagePlayWave(SND_WARP))
+    Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessagePlayWave(SND_WARP, X, Y))
     Call SendData(SendTarget.ToNPCArea, nIndex, PrepareMessageCreateFX(Npclist(nIndex).Char.CharIndex, FXIDs.FXWARP, 0))
 End If
 
