@@ -136,10 +136,10 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 'Es la función clave del sistema de areas... Es llamada al mover un user
 '**************************************************************
-    If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then Exit Sub
+    If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).pos.X, UserList(UserIndex).pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
-    Dim TempInt As Long, Map As Long
+    Dim TempInt As Long, map As Long
     
     With UserList(UserIndex)
         MinX = .AreasInfo.MinX
@@ -177,10 +177,10 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
            
         ElseIf Head = USER_NUEVO Then
             'Esto pasa por cuando cambiamos de mapa o logeamos...
-            MinY = ((.Pos.Y \ 9) - 1) * 9
+            MinY = ((.pos.Y \ 9) - 1) * 9
             MaxY = MinY + 26
             
-            MinX = ((.Pos.X \ 9) - 1) * 9
+            MinX = ((.pos.X \ 9) - 1) * 9
             MaxX = MinX + 26
             
             .AreasInfo.MinX = CInt(MinX)
@@ -192,7 +192,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         If MaxY > 100 Then MaxY = 100
         If MaxX > 100 Then MaxX = 100
         
-        Map = UserList(UserIndex).Pos.Map
+        map = UserList(UserIndex).pos.map
         
         'Esto es para ke el cliente elimine lo "fuera de area..."
         Call WriteAreaChanged(UserIndex)
@@ -202,13 +202,13 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
             For Y = MinY To MaxY
                 
                 '<<< User >>>
-                If MapData(Map, X, Y).UserIndex Then
+                If MapData(map, X, Y).UserIndex Then
                     
-                    TempInt = MapData(Map, X, Y).UserIndex
+                    TempInt = MapData(map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
-                        Call MakeUserChar(False, UserIndex, TempInt, Map, X, Y)
-                        Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call MakeUserChar(False, UserIndex, TempInt, map, X, Y)
+                        Call MakeUserChar(False, TempInt, UserIndex, .pos.map, .pos.X, .pos.Y)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
                         If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
@@ -221,24 +221,24 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         Call FlushBuffer(TempInt)
                     
                     ElseIf Head = USER_NUEVO Then
-                        Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)
+                        Call MakeUserChar(False, UserIndex, UserIndex, map, X, Y)
                     End If
                 End If
                 
                 '<<< Npc >>>
-                If MapData(Map, X, Y).NpcIndex Then
-                    Call MakeNPCChar(False, UserIndex, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                If MapData(map, X, Y).NpcIndex Then
+                    Call MakeNPCChar(False, UserIndex, MapData(map, X, Y).NpcIndex, map, X, Y)
                  End If
                  
                 '<<< Item >>>
-                If MapData(Map, X, Y).ObjInfo.ObjIndex Then
-                    TempInt = MapData(Map, X, Y).ObjInfo.ObjIndex
+                If MapData(map, X, Y).ObjInfo.ObjIndex Then
+                    TempInt = MapData(map, X, Y).ObjInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
                         Call WriteObjectCreate(UserIndex, ObjData(TempInt).GrhIndex, X, Y)
                         
                         If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
-                            Call Bloquear(False, UserIndex, X, Y, MapData(Map, X, Y).Blocked)
-                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X, Y, MapData(map, X, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(map, X - 1, Y).Blocked)
                         End If
                     End If
                 End If
@@ -247,15 +247,15 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         Next X
         
         'Precalculados :P
-        TempInt = .Pos.X \ 9
+        TempInt = .pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceX = 2 ^ TempInt
         
-        TempInt = .Pos.Y \ 9
+        TempInt = .pos.Y \ 9
         .AreasInfo.AreaReciveY = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceY = 2 ^ TempInt
         
-        .AreasInfo.AreaID = AreasInfo(.Pos.X, .Pos.Y)
+        .AreasInfo.AreaID = AreasInfo(.pos.X, .pos.Y)
     End With
 End Sub
 
@@ -265,7 +265,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 ' Se llama cuando se mueve un Npc
 '**************************************************************
-    If Npclist(NpcIndex).AreasInfo.AreaID = AreasInfo(Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then Exit Sub
+    If Npclist(NpcIndex).AreasInfo.AreaID = AreasInfo(Npclist(NpcIndex).pos.X, Npclist(NpcIndex).pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
     Dim TempInt As Long
@@ -306,10 +306,10 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
            
         ElseIf Head = USER_NUEVO Then
             'Esto pasa por cuando cambiamos de mapa o logeamos...
-            MinY = ((.Pos.Y \ 9) - 1) * 9
+            MinY = ((.pos.Y \ 9) - 1) * 9
             MaxY = MinY + 26
             
-            MinX = ((.Pos.X \ 9) - 1) * 9
+            MinX = ((.pos.X \ 9) - 1) * 9
             MaxX = MinX + 26
             
             .AreasInfo.MinX = CInt(MinX)
@@ -323,29 +323,29 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 
         
         'Actualizamos!!!
-        If MapInfo(.Pos.Map).NumUsers <> 0 Then
+        If MapInfo(.pos.map).NumUsers <> 0 Then
             For X = MinX To MaxX
                 For Y = MinY To MaxY
-                    If MapData(.Pos.Map, X, Y).UserIndex Then _
-                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).UserIndex, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                    If MapData(.pos.map, X, Y).UserIndex Then _
+                        Call MakeNPCChar(False, MapData(.pos.map, X, Y).UserIndex, NpcIndex, .pos.map, .pos.X, .pos.Y)
                 Next Y
             Next X
         End If
         
         'Precalculados :P
-        TempInt = .Pos.X \ 9
+        TempInt = .pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceX = 2 ^ TempInt
             
-        TempInt = .Pos.Y \ 9
+        TempInt = .pos.Y \ 9
         .AreasInfo.AreaReciveY = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceY = 2 ^ TempInt
         
-        .AreasInfo.AreaID = AreasInfo(.Pos.X, .Pos.Y)
+        .AreasInfo.AreaID = AreasInfo(.pos.X, .pos.Y)
     End With
 End Sub
 
-Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
+Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal map As Integer)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
@@ -355,28 +355,28 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     Dim LoopC As Long
     
     'Search for the user
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(LoopC) = UserIndex Then Exit For
+    For LoopC = 1 To ConnGroups(map).CountEntrys
+        If ConnGroups(map).UserEntrys(LoopC) = UserIndex Then Exit For
     Next LoopC
     
     'Char not found
-    If LoopC > ConnGroups(Map).CountEntrys Then Exit Sub
+    If LoopC > ConnGroups(map).CountEntrys Then Exit Sub
     
     'Remove from old map
-    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
-    TempVal = ConnGroups(Map).CountEntrys
+    ConnGroups(map).CountEntrys = ConnGroups(map).CountEntrys - 1
+    TempVal = ConnGroups(map).CountEntrys
     
     'Move list back
     For LoopC = LoopC To TempVal
-        ConnGroups(Map).UserEntrys(LoopC) = ConnGroups(Map).UserEntrys(LoopC + 1)
+        ConnGroups(map).UserEntrys(LoopC) = ConnGroups(map).UserEntrys(LoopC + 1)
     Next LoopC
     
-    If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim?
-        ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
+    If TempVal > ConnGroups(map).OptValue Then 'Nescesito Redim?
+        ReDim Preserve ConnGroups(map).UserEntrys(1 To TempVal) As Long
     End If
 End Sub
 
-Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
+Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal map As Integer)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: 04/01/2007
@@ -388,13 +388,13 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     Dim EsNuevo As Boolean
     Dim i As Long
     
-    If Not MapaValido(Map) Then Exit Sub
+    If Not MapaValido(map) Then Exit Sub
     
     EsNuevo = True
     
     'Prevent adding repeated users
-    For i = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(i) = UserIndex Then
+    For i = 1 To ConnGroups(map).CountEntrys
+        If ConnGroups(map).UserEntrys(i) = UserIndex Then
             EsNuevo = False
             Exit For
         End If
@@ -402,14 +402,14 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     
     If EsNuevo Then
         'Update map and connection groups data
-        ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys + 1
-        TempVal = ConnGroups(Map).CountEntrys
+        ConnGroups(map).CountEntrys = ConnGroups(map).CountEntrys + 1
+        TempVal = ConnGroups(map).CountEntrys
         
-        If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim
-            ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
+        If TempVal > ConnGroups(map).OptValue Then 'Nescesito Redim
+            ReDim Preserve ConnGroups(map).UserEntrys(1 To TempVal) As Long
         End If
         
-        ConnGroups(Map).UserEntrys(TempVal) = UserIndex
+        ConnGroups(map).UserEntrys(TempVal) = UserIndex
     End If
     
     'Update user

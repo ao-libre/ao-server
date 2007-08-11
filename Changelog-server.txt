@@ -191,3 +191,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/07/2007: Corregí un bug en la clsByteQueue que causaba un rt9 al querer limpiarsela si estaba llena. (Maraxus)
  * 16/07/2007: Corregí varias posibles desincronizaciones cliente-servidor. (Maraxus)
  * 18/07/2007: Nuevas cosas delcentinela. Loguea más datos y permite saber a quein está visitando ahora. (Maraxus)
+ * 11/08/2007: Gran mejora de performance en el manejo de NPCs y algunas mejoras en GameTimer. (Maraxus)
