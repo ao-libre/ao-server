@@ -578,7 +578,7 @@ On Error GoTo hayerror
                     
                     .NumeroPaquetesPorMiliSec = 0
                     
-                    Call DoTileEvents(iUserIndex, .pos.map, .pos.X, .pos.Y)
+                    Call DoTileEvents(iUserIndex, .Pos.map, .Pos.X, .Pos.Y)
                     
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -837,14 +837,14 @@ If Not haciendoBK And Not EnPausa Then
                        Call EfectoParalisisNpc(NpcIndex)
                     End If
                     
-                    mapa = Npclist(NpcIndex).pos.map
+                    mapa = Npclist(NpcIndex).Pos.map
                     
                     If mapa > 0 Then
-                        'If MapInfo(mapa).NumUsers > 0 Then
+                        If MapInfo(mapa).NumUsers > 0 Then
                             If Npclist(NpcIndex).Movement <> TipoAI.ESTATICO Then
                                 Call NPCAI(NpcIndex)
                             End If
-                        'End If
+                        End If
                     End If
                 End If
             End If
@@ -855,7 +855,7 @@ End If
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).pos.map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 
@@ -927,7 +927,7 @@ Dim i As Long
 
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
-        If MapData(UserList(i).pos.map, UserList(i).pos.X, UserList(i).pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+        If MapData(UserList(i).Pos.map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
             UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
             Call WriteConsoleMsg(i, "Estás obstruyendo la via pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
             
