@@ -548,7 +548,10 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         Call FollowAmo(NpcIndex)
         
         Call WriteConsoleMsg(UserIndex, "La criatura te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
-        Call SubirSkill(UserIndex, Domar)
+        
+        If UserList(UserIndex).clase = eClass.Druid Or RandomNumber(1, 70) = 1 Then
+            Call SubirSkill(UserIndex, Domar)
+        End If
     Else
         If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
             Call WriteConsoleMsg(UserIndex, "No has logrado domar la criatura.", FontTypeNames.FONTTYPE_INFO)

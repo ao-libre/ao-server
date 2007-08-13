@@ -58,7 +58,7 @@ Select Case clase
     Case eClass.Mage
         ModificadorEvasion = 0.4
     Case eClass.Druid
-        ModificadorEvasion = 0.75
+        ModificadorEvasion = 0.6
     Case Else
         ModificadorEvasion = 0.8
 End Select
@@ -122,7 +122,7 @@ Select Case UCase$(clase)
     Case eClass.Bard
         ModificadorPoderAtaqueProyectiles = 0.7
     Case eClass.Druid
-        ModificadorPoderAtaqueProyectiles = 0.75
+        ModificadorPoderAtaqueProyectiles = 0.7
     Case eClass.Fisher
         ModificadorPoderAtaqueProyectiles = 0.65
     Case eClass.Lumberjack
