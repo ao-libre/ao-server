@@ -73,7 +73,7 @@ If InMapBounds(map, X, Y) Then
             End If
             
             'Iniciamos la rutina pa' comerciar.
-            Call IniciarCOmercioNPC(UserIndex)
+            Call IniciarComercioNPC(UserIndex)
         
         ElseIf Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Banquero Then
             '¿Esta el user muerto? Si es asi no puede comerciar

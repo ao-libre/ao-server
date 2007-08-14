@@ -63,8 +63,7 @@ Public Const CHAT_COLOR_GM_YELL As Long = &HF82FF
 
 ''
 ' Coordinates for normal sounds (not 3D, like rain)
-' You can set this to anything but positive numbers
-Public Const NO_3D_SOUND As Integer = (-8)
+Public Const NO_3D_SOUND As Byte = 255
 
 Public Const iFragataFantasmal = 87
 Public Const iFragataReal = 190
@@ -670,7 +669,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    Map As Integer
+    map As Integer
     X As Integer
     Y As Integer
 End Type

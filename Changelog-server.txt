@@ -197,3 +197,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - 0.12.1
 
  * 12/08/2007: Ahora el WriteParalizeOk actualiza la posicion del personaje. (Tavo)
+ * 14/08/2007: Modificado el WritePlayWave para que tenga los parametros X e Y como bytes, la constante NO_3D_SOUND fue actualizada (Rapsodius)
