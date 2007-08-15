@@ -914,37 +914,12 @@ End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
-If UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then Exit Sub
 
-If Distancia(UserList(UserIndex).Pos, Npclist(NpcIndex).Pos) > MAXDISTANCIAARCO Then
-   Call WriteConsoleMsg(UserIndex, "Estás muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
-   Exit Sub
-End If
-
-'Para atacar a un NPC bueno hay que quitar el seguro
-If (Npclist(NpcIndex).Stats.Alineacion = 0) And UserList(UserIndex).flags.Seguro Then
-    Call WriteConsoleMsg(UserIndex, "Debes quitar el seguro para atacar estas criaturas.", FontTypeNames.FONTTYPE_FIGHT)
+If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then
     Exit Sub
 End If
 
-Dim ExitSub As Boolean
-Call RevisoAtaqueNPC(NpcIndex, UserIndex, False, ExitSub)
-If ExitSub Then Exit Sub
-
-'Revisa que el Rey pretoriano no esté solo.
-If esPretoriano(NpcIndex) = 4 Then
-    If Npclist(NpcIndex).Pos.X < 50 Then
-        If pretorianosVivos(1) > 0 Then
-            Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-            Exit Sub
-        End If
-    Else
-        If pretorianosVivos(2) > 0 Then
-            Call WriteConsoleMsg(UserIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-            Exit Sub
-        End If
-    End If
-End If
+Call NPCAtacado(NpcIndex, UserIndex)
 
 If UserImpactoNpc(UserIndex, NpcIndex) Then
     
@@ -998,7 +973,7 @@ If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMin
 End If
     
 Dim index As Integer
-index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
+index = MapData(AttackPos.map, AttackPos.X, AttackPos.Y).UserIndex
     
 'Look for user
 If index > 0 Then
@@ -1009,17 +984,17 @@ If index > 0 Then
 End If
     
 'Look for NPC
-If MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
+If MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
     
-    If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
+    If Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
             
-        If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
-            MapInfo(Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.Map).Pk = False Then
+        If Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
+            MapInfo(Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.map).Pk = False Then
                 Call WriteConsoleMsg(UserIndex, "No podés atacar mascotas en zonas seguras", FontTypeNames.FONTTYPE_FIGHT)
                 Exit Sub
         End If
 
-        Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex)
+        Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex)
             
     Else
         Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
@@ -1430,10 +1405,10 @@ If UserList(attackerIndex).flags.Seguro Then
 End If
 
 'Estas en un Mapa Seguro?
-If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
+If MapInfo(UserList(VictimIndex).Pos.map).Pk = False Then
     If esArmada(attackerIndex) Then
         If UserList(attackerIndex).Faccion.RecompensasReal > 11 Then
-            If UserList(VictimIndex).Pos.Map = 58 Or UserList(VictimIndex).Pos.Map = 59 Or UserList(VictimIndex).Pos.Map = 60 Then
+            If UserList(VictimIndex).Pos.map = 58 Or UserList(VictimIndex).Pos.map = 59 Or UserList(VictimIndex).Pos.map = 60 Then
             Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
             PuedeAtacar = True 'Beneficio de Armadas que atacan en su ciudad.
             Exit Function
@@ -1442,7 +1417,7 @@ If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
     End If
     If esCaos(attackerIndex) Then
         If UserList(attackerIndex).Faccion.RecompensasCaos > 11 Then
-            If UserList(VictimIndex).Pos.Map = 151 Or UserList(VictimIndex).Pos.Map = 156 Then
+            If UserList(VictimIndex).Pos.map = 151 Or UserList(VictimIndex).Pos.map = 156 Then
             Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
             PuedeAtacar = True 'Beneficio de Caos que atacan en su ciudad.
             Exit Function
@@ -1455,8 +1430,8 @@ If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
 End If
 
 'Estas atacando desde un trigger seguro? o tu victima esta en uno asi?
-If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
-    MapData(UserList(attackerIndex).Pos.Map, UserList(attackerIndex).Pos.X, UserList(attackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+If MapData(UserList(VictimIndex).Pos.map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
+    MapData(UserList(attackerIndex).Pos.map, UserList(attackerIndex).Pos.X, UserList(attackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(attackerIndex, "No podes pelear aqui.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1472,6 +1447,8 @@ Public Function PuedeAtacarNPC(ByVal attackerIndex As Integer, ByVal NpcIndex As
 'Returns True if AttackerIndex can attack the NpcIndex
 'Last Modification: 24/01/2007
 '24/01/2007 Pablo (ToxicWaste) - Orden y corrección de ataque sobre una mascota y guardias
+'14/08/2007 Pablo (ToxicWaste) - Reescribo y agrego TODOS los casos posibles cosa de usar
+'esta función para todo lo referente a ataque a un NPC. Ya sea Magia, Físico o a Distancia.
 '***************************************************
 
 'Estas muerto?
@@ -1481,83 +1458,135 @@ If UserList(attackerIndex).flags.Muerto = 1 Then
     Exit Function
 End If
 
-'Es el NPC mascota de alguien?
-If Npclist(NpcIndex).MaestroUser > 0 Then
-    'De un cudadanos y sos Armada?
-    If esArmada(attackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        Call WriteConsoleMsg(attackerIndex, "Los Armadas no pueden atacar Mascotas de Ciudadanos. ", FontTypeNames.FONTTYPE_INFO)
-        PuedeAtacarNPC = False
-        Exit Function
+'Sos consejero?
+If UserList(attackerIndex).flags.Privilegios And PlayerType.Consejero Then
+    'No pueden atacar NPC los Consejeros.
+    PuedeAtacarNPC = False
+    Exit Function
+End If
+
+'Estas en modo Combate?
+If Not UserList(attackerIndex).flags.ModoCombate Then
+    Call WriteConsoleMsg(attackerIndex, "Debes estar en modo de combate poder atacar al NPC.", FontTypeNames.FONTTYPE_INFO)
+    PuedeAtacarNPC = False
+    Exit Function
+End If
+
+'Es una criatura atacable?
+If Npclist(NpcIndex).Attackable = 0 Then
+'No es una criatura atacable
+    Call WriteConsoleMsg(attackerIndex, "No puedes atacar esta criatura.", FontTypeNames.FONTTYPE_INFO)
+    PuedeAtacarNPC = False
+    Exit Function
+End If
+
+'Es valida la distancia a la cual estamos atacando?
+If Distancia(UserList(attackerIndex).Pos, Npclist(NpcIndex).Pos) >= MAXDISTANCIAARCO Then
+   Call WriteConsoleMsg(attackerIndex, "Estás muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
+   PuedeAtacarNPC = False
+   Exit Function
+End If
+
+'Es una criatura No-Hostil?
+If Npclist(NpcIndex).Hostile = 0 Then
+'Es una criatura No-Hostil.
+    'Es Guardia del Caos?
+    If Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
+        'Lo quiere atacar un caos?
+        If esCaos(attackerIndex) Then
+            Call WriteConsoleMsg(attackerIndex, "No puedes atacar Guardias del Caos siendo Legionario", FontTypeNames.FONTTYPE_INFO)
+            PuedeAtacarNPC = False
+            Exit Function
+        End If
     End If
-    'De un Caos y sos Caos?
-    If esCaos(attackerIndex) And esCaos(Npclist(NpcIndex).MaestroUser) Then
-        Call WriteConsoleMsg(attackerIndex, "Los miembros de la Legión no pueden atacar Mascotas de otros legionarios. ", FontTypeNames.FONTTYPE_INFO)
-        PuedeAtacarNPC = False
-        Exit Function
-    End If
-    
-    'De un ciudadano y sos ciudadano?
-    If Not criminal(attackerIndex) And Not criminal(Npclist(NpcIndex).MaestroUser) Then
-        'Estas con seguro?
+    'Es guardia Real?
+    If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+        'Lo quiere atacar un Armada?
+        If esArmada(attackerIndex) Then
+            Call WriteConsoleMsg(attackerIndex, "No puedes atacar Guardias Reales siendo Armada Real", FontTypeNames.FONTTYPE_INFO)
+            PuedeAtacarNPC = False
+            Exit Function
+        End If
+        'Tienes el seguro puesto?
         If UserList(attackerIndex).flags.Seguro Then
-            Call WriteConsoleMsg(attackerIndex, "Para atacar mascotas de ciudadanos debes quitar el seguro utilizando /seg", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(attackerIndex, "Debes quitar el seguro para poder Atacar Guardias Reales utilizando /seg", FontTypeNames.FONTTYPE_INFO)
             PuedeAtacarNPC = False
             Exit Function
         Else
+            Call WriteConsoleMsg(attackerIndex, "Atacaste un Guardia Real! Eres un Criminal.", FontTypeNames.FONTTYPE_INFO)
             Call VolverCriminal(attackerIndex)
             PuedeAtacarNPC = True
             Exit Function
         End If
     End If
-End If
 
-'Es guardia caos?
-If Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
-    If esCaos(attackerIndex) Then 'Lo quiere atacar un caos?
-        Call WriteConsoleMsg(attackerIndex, "No puedes atacar Guardias del Caos siendo Legionario", FontTypeNames.FONTTYPE_INFO)
-        PuedeAtacarNPC = False
-        Exit Function
+    'No era un Guardia, asi que es una criatura No-Hostil común.
+    'Para asegurarnos que no sea una Mascota:
+    If Npclist(NpcIndex).MaestroUser = 0 Then
+        'Si sos ciudadano tenes que quitar el seguro para atacarla.
+        If Not criminal(attackerIndex) Then
+            'Sos ciudadano, tenes el seguro puesto?
+            If UserList(attackerIndex).flags.Seguro Then
+            'Tiene el seguro puesto. No puede atacar
+                Call WriteConsoleMsg(attackerIndex, "Para atacar a este NPC debés quitar el seguro", FontTypeNames.FONTTYPE_INFO)
+                PuedeAtacarNPC = False
+                Exit Function
+            Else
+            'No tiene seguro puesto. Puede atacar pero es penalizado.
+                Call WriteConsoleMsg(attackerIndex, "Atacaste un NPC No-Hostil. Continua haciendolo y serás Criminal.", FontTypeNames.FONTTYPE_INFO)
+                Call DisNobAuBan(attackerIndex, 10000, 1000)
+                PuedeAtacarNPC = True
+                Exit Function
+            End If
+        End If
     End If
 End If
 
-'Es guardia Real?
-If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-    If esArmada(attackerIndex) Then 'Lo quiere atacar un Armada?
-        Call WriteConsoleMsg(attackerIndex, "No puedes atacar Guardias Reales siendo Armada Real", FontTypeNames.FONTTYPE_INFO)
-        PuedeAtacarNPC = False
-        Exit Function
-    End If
-    If UserList(attackerIndex).flags.Seguro Then 'Tienes el seguro puesto?
-        Call WriteConsoleMsg(attackerIndex, "Debes quitar el seguro para poder Atacar Guardias Reales utilizando /seg", FontTypeNames.FONTTYPE_INFO)
-        PuedeAtacarNPC = False
-        Exit Function
+'Es el NPC mascota de alguien?
+If Npclist(NpcIndex).MaestroUser > 0 Then
+    If Not criminal(Npclist(NpcIndex).MaestroUser) Then
+    'Es mascota de un Ciudadano.
+        If esArmada(attackerIndex) Then
+        'El atacante es Armada y esta intentando atacar mascota de un Ciudadano
+            Call WriteConsoleMsg(attackerIndex, "Los Armadas no pueden atacar mascotas de Ciudadanos.", FontTypeNames.FONTTYPE_INFO)
+            PuedeAtacarNPC = False
+            Exit Function
+        End If
+        If Not criminal(attackerIndex) Then
+        'El atacante es Ciudadano y esta intentando atacar mascota de un Ciudadano.
+            If UserList(attackerIndex).flags.Seguro Then
+            'El atacante tiene el seguro puesto. No puede atacar.
+                Call WriteConsoleMsg(attackerIndex, "Para atacar mascotas de Ciudadanos debes quitar el seguro utilizando /seg", FontTypeNames.FONTTYPE_INFO)
+                PuedeAtacarNPC = False
+                Exit Function
+            Else
+            'El atacante no tiene el seguro puesto. Recibe penalización.
+                Call WriteConsoleMsg(attackerIndex, "Has atacado la Mascota de un Ciudadano. Eres un Criminal.", FontTypeNames.FONTTYPE_INFO)
+                Call VolverCriminal(attackerIndex)
+                PuedeAtacarNPC = True
+                Exit Function
+            End If
+        End If
     Else
-        Call VolverCriminal(attackerIndex)  'Si ya era criminal, suma puntos de bandido la función solamente
-        PuedeAtacarNPC = True
-        Exit Function
+    'Es mascota de un Criminal.
+        If esCaos(Npclist(NpcIndex).MaestroUser) Then
+        'Es Caos el Dueño.
+            If esCaos(attackerIndex) Then
+            'Un Caos intenta atacar una criatura de un Caos. No puede atacar.
+                Call WriteConsoleMsg(attackerIndex, "Los miembros de la Legión Oscura no pueden atacar mascotas de otros legionarios. ", FontTypeNames.FONTTYPE_INFO)
+                PuedeAtacarNPC = False
+                Exit Function
+            End If
+        End If
     End If
-End If
-
-'Sos consejero? no podes atacar nunca.
-If UserList(attackerIndex).flags.Privilegios And PlayerType.Consejero Then
-    PuedeAtacarNPC = False
-    Exit Function
 End If
 
 'Es el Rey Preatoriano?
 If esPretoriano(NpcIndex) = 4 Then
-    If Npclist(NpcIndex).Pos.X < 50 Then
-        If pretorianosVivos(1) > 0 Then
-            Call WriteConsoleMsg(attackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-            PuedeAtacarNPC = False
-            Exit Function
-        End If
-    Else
-        If pretorianosVivos(2) > 0 Then
-            Call WriteConsoleMsg(attackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
-            PuedeAtacarNPC = False
-            Exit Function
-        End If
+    If pretorianosVivos > 0 Then
+        Call WriteConsoleMsg(attackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+        PuedeAtacarNPC = False
+        Exit Function
     End If
 End If
 
@@ -1597,7 +1626,7 @@ End If
 '[Nacho] Le damos la exp al user
 If ExpaDar > 0 Then
     If UserList(UserIndex).PartyIndex > 0 Then
-        Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
+        Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
     Else
         UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
         If UserList(UserIndex).Stats.Exp > MAXEXP Then _
@@ -1613,12 +1642,12 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo errhandler
+On Error GoTo Errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
-    tOrg = MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
-    tDst = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
+    tOrg = MapData(UserList(Origen).Pos.map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
+    tDst = MapData(UserList(Destino).Pos.map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
     
     If tOrg = eTrigger.ZONAPELEA Or tDst = eTrigger.ZONAPELEA Then
         If tOrg = tDst Then
@@ -1631,7 +1660,7 @@ On Error GoTo errhandler
     End If
 
 Exit Function
-errhandler:
+Errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function

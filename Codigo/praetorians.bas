@@ -55,7 +55,7 @@ Public Const ALCOBA2_Y As Integer = 25
 
 'Added by Nacho
 'Cuantos pretorianos vivos quedan. Uno por cada alcoba
-Public pretorianosVivos(1 To 2) As Integer
+Public pretorianosVivos As Integer
 
 '/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 '/\/\/\/\/\/\/\/\ MODULO DE COMBATE PRETORIANO /\/\/\/\/\/\/\/\/\
@@ -122,13 +122,11 @@ On Error GoTo errorh
         Case Is < 50
             wp.X = ALCOBA2_X
             wp.Y = ALCOBA2_Y
-            pretorianosVivos(2) = 7 'Hay 7 + el Rey.
         Case Is >= 50
             wp.X = ALCOBA1_X
             wp.Y = ALCOBA1_Y
-            pretorianosVivos(1) = 7 'Hay 7 + el Rey.
     End Select
-    
+    pretorianosVivos = 7 'Hay 7 + el Rey.
     TeleFrag = MapData(wp.map, wp.X, wp.Y).NpcIndex
     
     If TeleFrag > 0 Then
