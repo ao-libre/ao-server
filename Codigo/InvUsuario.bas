@@ -160,7 +160,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
 'Last Modification: 23/01/2007
 '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
 '***************************************************
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 'If Cantidad > 100000 Then Exit Sub
 
@@ -242,7 +242,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
 
 End Sub
 
@@ -360,7 +360,7 @@ End If
 End Sub
 
 Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) As Boolean
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 'Call LogTarea("MeterItemEnInventario")
  
@@ -407,7 +407,7 @@ Call UpdateUserInv(False, UserIndex, Slot)
 
 
 Exit Function
-errhandler:
+Errhandler:
 
 End Function
 
@@ -511,7 +511,7 @@ Call UpdateUserInv(False, UserIndex, Slot)
 End Sub
 
 Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer) As Boolean
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If ObjData(ObjIndex).Mujer = 1 Then
     SexoPuedeUsarItem = UserList(UserIndex).genero <> eGenero.Hombre
@@ -522,7 +522,7 @@ Else
 End If
 
 Exit Function
-errhandler:
+Errhandler:
     Call LogError("SexoPuedeUsarItem")
 End Function
 
@@ -531,13 +531,13 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Inte
 
 If ObjData(ObjIndex).Real = 1 Then
     If Not criminal(UserIndex) Then
-        FaccionPuedeUsarItem = (UserList(UserIndex).Faccion.ArmadaReal = 1)
+        FaccionPuedeUsarItem = esArmada(UserIndex)
     Else
         FaccionPuedeUsarItem = False
     End If
 ElseIf ObjData(ObjIndex).Caos = 1 Then
     If criminal(UserIndex) Then
-        FaccionPuedeUsarItem = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
+        FaccionPuedeUsarItem = esCaos(UserIndex)
     Else
         FaccionPuedeUsarItem = False
     End If
@@ -548,7 +548,7 @@ End If
 End Function
 
 Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 'Equipa un item del inventario
 Dim Obj As ObjData
@@ -769,12 +769,12 @@ End Select
 Call UpdateUserInv(False, UserIndex, Slot)
 
 Exit Sub
-errhandler:
+Errhandler:
 Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 End Sub
 
 Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integer) As Boolean
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 'Verifica si la raza puede usar la ropa
 If UserList(UserIndex).raza = eRaza.Humano Or _
@@ -791,7 +791,7 @@ If (UserList(UserIndex).raza <> eRaza.ElfoOscuro) And ObjData(ItemIndex).RazaDro
 End If
 
 Exit Function
-errhandler:
+Errhandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function
@@ -1146,6 +1146,9 @@ Select Case Obj.OBJType
                 End If
                 Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, NO_3D_SOUND, NO_3D_SOUND))
                 Exit Sub
+            Else
+                Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Armada Real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
             End If
         ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
             If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
@@ -1154,6 +1157,9 @@ Select Case Obj.OBJType
                     Exit Sub
                 End If
                 Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, NO_3D_SOUND, NO_3D_SOUND))
+                Exit Sub
+            Else
+                Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Legión Oscura pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         End If
