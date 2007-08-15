@@ -366,8 +366,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X And Sgn(.Pos.X - UserList(UI).Pos.X) = SignoEO Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y And Sgn(.Pos.Y - UserList(UI).Pos.Y) = SignoNS Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X And Sgn(UserList(UI).Pos.X - .Pos.X) = SignoEO Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y And Sgn(UserList(UI).Pos.Y - .Pos.Y) = SignoNS Then
                         
                         If UserList(UI).flags.Muerto = 0 Then
                             If .flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
@@ -382,8 +382,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                         
                         If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
                             If .flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, UI)
@@ -442,8 +442,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X And Sgn(.Pos.X - UserList(UI).Pos.X) = SignoEO Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y And Sgn(.Pos.Y - UserList(UI).Pos.Y) = SignoNS Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X And Sgn(UserList(UI).Pos.X - .Pos.X) = SignoEO Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y And Sgn(UserList(UI).Pos.Y - .Pos.Y) = SignoNS Then
                         
                         If UserList(UI).name = .flags.AttackedBy Then
                             If .MaestroUser > 0 Then
@@ -472,8 +472,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                         
                         If UserList(UI).name = .flags.AttackedBy Then
                             If .MaestroUser > 0 Then
@@ -530,8 +530,8 @@ Private Sub PersigueCiudadano(ByVal NpcIndex As Integer)
             UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
             'Is it in it's range of vision??
-            If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X Then
-                If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y Then
+            If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                     
                     If Not criminal(UI) Then
                         If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
@@ -586,8 +586,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X And Sgn(.Pos.X - UserList(UI).Pos.X) = SignoEO Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y And Sgn(.Pos.Y - UserList(UI).Pos.Y) = SignoNS Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X And Sgn(UserList(UI).Pos.X - .Pos.X) = SignoEO Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y And Sgn(UserList(UI).Pos.Y - .Pos.Y) = SignoNS Then
                         
                         If criminal(UI) Then
                            If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
@@ -607,8 +607,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                         
                         If criminal(UI) Then
                            If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 And UserList(UI).flags.AdminPerseguible Then
@@ -645,8 +645,8 @@ Private Sub SeguirAmo(ByVal NpcIndex As Integer)
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
-                If Abs(.Pos.X - UserList(UI).Pos.X) <= RANGO_VISION_X Then
-                    If Abs(.Pos.Y - UserList(UI).Pos.Y) <= RANGO_VISION_Y Then
+                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                     
                         If UserList(UI).flags.Muerto = 0 _
                                 And UserList(UI).flags.invisible = 0 _

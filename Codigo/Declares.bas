@@ -50,7 +50,7 @@ Public TrashCollector As New Collection
 
 
 Public Const MAXSPAWNATTEMPS = 60
-Public Const LoopAdEternum = 999
+Public Const INFINITE_LOOPS As Integer = -1
 Public Const FXSANGRE = 14
 
 ''
