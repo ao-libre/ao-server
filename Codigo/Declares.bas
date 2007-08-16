@@ -163,6 +163,8 @@ Public Const NingunArma As Integer = 2
 
 Public Const EspadaMataDragonesIndex As Integer = 402
 Public Const LAUDMAGICO As Integer = 696
+Public Const FLAUTAMAGICA As Integer = 0
+
 
 Public Const MAXMASCOTASENTRENADOR As Byte = 7
 
@@ -669,7 +671,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     X As Integer
     Y As Integer
 End Type
