@@ -501,16 +501,6 @@ Function ModDomar(ByVal clase As eClass) As Integer
     End Select
 End Function
 
-Function CalcularPoderDomador(ByVal UserIndex As Integer) As Long
-    With UserList(UserIndex).Stats
-        CalcularPoderDomador = .UserAtributos(eAtributos.Carisma) _
-            * (.UserSkills(eSkill.Domar) / ModDomar(UserList(UserIndex).clase)) _
-            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
-            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3) _
-            + RandomNumber(1, .UserAtributos(eAtributos.Carisma) / 3)
-    End With
-End Function
-
 Function FreeMascotaIndex(ByVal UserIndex As Integer) As Integer
     Dim j As Integer
     For j = 1 To MAXMASCOTAS
@@ -522,18 +512,30 @@ Function FreeMascotaIndex(ByVal UserIndex As Integer) As Integer
 End Function
 
 Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
-'Call LogTarea("Sub DoDomar")
+'***************************************************
+'Author: Nacho (Integer)
+'Last Modification: 18/08/07
+'
+'***************************************************
+
+Dim puntosDomar As Integer
+Dim puntosRequeridos As Integer
 
 If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
     
     If Npclist(NpcIndex).MaestroUser = UserIndex Then
         Call WriteConsoleMsg(UserIndex, "La criatura ya te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
-    End If
-    
-    If Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
+    ElseIf Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
         Call WriteConsoleMsg(UserIndex, "La criatura ya tiene amo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
+    End If
+    
+    puntosDomar = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * UserList(UserIndex).Stats.UserSkills(eSkill.Domar)
+    If UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA Then
+        puntosRequeridos = Npclist(NpcIndex).flags.Domable * 0.8
+    Else
+        puntosRequeridos = Npclist(NpcIndex).flags.Domable
     End If
     
     If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
@@ -559,7 +561,7 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         End If
     End If
 Else
-    Call WriteConsoleMsg(UserIndex, "No podes controlar mas criaturas.", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "No puedes controlar más criaturas.", FontTypeNames.FONTTYPE_INFO)
 End If
 End Sub
 
