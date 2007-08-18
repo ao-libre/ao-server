@@ -538,7 +538,7 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         puntosRequeridos = Npclist(NpcIndex).flags.Domable
     End If
     
-    If Npclist(NpcIndex).flags.Domable <= CalcularPoderDomador(UserIndex) Then
+    If puntosRequeridos <= puntosDomar Then
         Dim index As Integer
         UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
         index = FreeMascotaIndex(UserIndex)
