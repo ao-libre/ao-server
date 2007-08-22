@@ -143,7 +143,7 @@ Select Case UCase$(clase)
     Case eClass.Warrior
         ModicadorDañoClaseArmas = 1.1
     Case eClass.Paladin
-        ModicadorDañoClaseArmas = 0.95
+        ModicadorDañoClaseArmas = 0.9
     Case eClass.Hunter
         ModicadorDañoClaseArmas = 0.9
     Case eClass.Assasin
