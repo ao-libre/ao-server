@@ -14427,7 +14427,7 @@ End Sub
 ' @param    Y The Y position in map coordinates from where the sound comes.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WritePlayWave(ByVal UserIndex As Integer, ByVal wave As Byte, ByVal X As Integer, ByVal Y As Integer)
+Public Sub WritePlayWave(ByVal UserIndex As Integer, ByVal wave As Byte, ByVal X As Byte, ByVal Y As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 08/08/07
