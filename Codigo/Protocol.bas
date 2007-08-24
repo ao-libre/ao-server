@@ -470,7 +470,7 @@ On Error Resume Next
         
         'Is the user actually logged?
         If Not UserList(UserIndex).flags.UserLogged Then
-            Call CloseSocket(UserIndex, True)
+            Call CloseSocket(UserIndex)
             Exit Sub
         
         'He is logged. Reset idle counter if id is valid.
@@ -1225,7 +1225,7 @@ On Error Resume Next
 #Else
         Case Else
             'ERROR : Abort!
-            Call CloseSocket(UserIndex, True)
+            Call CloseSocket(UserIndex)
 #End If
     End Select
     
@@ -1240,7 +1240,7 @@ On Error Resume Next
                         vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & _
                         vbTab & " LastDllError: " & Err.LastDllError & vbTab & _
                         " - UserIndex: " & UserIndex & " - producido al manejar el paquete: " & CStr(packetID))
-        Call CloseSocket(UserIndex, True)
+        Call CloseSocket(UserIndex)
     
     Else
         'Flush buffer - send everything that has been written
@@ -1297,7 +1297,7 @@ On Error GoTo Errhandler
     If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Call FlushBuffer(UserIndex)
-        Call CloseSocket(UserIndex, True)
+        Call CloseSocket(UserIndex)
         
         Exit Sub
     End If
@@ -1305,7 +1305,7 @@ On Error GoTo Errhandler
     If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
-        Call CloseSocket(UserIndex, True)
+        Call CloseSocket(UserIndex)
         
         Exit Sub
     End If
@@ -4435,7 +4435,7 @@ On Error GoTo Errhandler
         UserName = buffer.ReadASCIIString()
         reason = buffer.ReadASCIIString()
         
-        If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, reason, errorStr) Then
+        If Not modGuilds.a_RechazarAspirante(UserIndex, UserName, errorStr) Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
             tUser = NameIndex(UserName)
@@ -9649,7 +9649,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.amount = 1
         ET.ObjIndex = 378
         
-        Call MakeObj(.Pos.map, ET, .Pos.map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(ET, .Pos.map, .Pos.X, .Pos.Y - 1)
         
         With MapData(.Pos.map, .Pos.X, .Pos.Y - 1)
             .TileExit.map = mapa
@@ -9693,10 +9693,10 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.map > 0 Then
                 Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y)
                 
-                Call EraseObj(mapa, .ObjInfo.amount, mapa, X, Y)
+                Call EraseObj(.ObjInfo.amount, mapa, X, Y)
                 
                 If MapData(.TileExit.map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
-                    Call EraseObj(.TileExit.map, 1, .TileExit.map, .TileExit.X, .TileExit.Y)
+                    Call EraseObj(1, .TileExit.map, .TileExit.X, .TileExit.Y)
                 End If
                 
                 .TileExit.map = 0
@@ -10150,7 +10150,7 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.map, X, Y).ObjInfo.ObjIndex > 0 Then
                         If ItemNoEsDeMapa(MapData(.Pos.map, X, Y).ObjInfo.ObjIndex) Then
-                            Call EraseObj(.Pos.map, MAX_INVENTORY_OBJS, .Pos.map, X, Y)
+                            Call EraseObj(MAX_INVENTORY_OBJS, .Pos.map, X, Y)
                         End If
                     End If
                 End If
@@ -10908,7 +10908,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Objeto.amount = 100
         Objeto.ObjIndex = tObj
-        Call MakeObj(.Pos.map, Objeto, .Pos.map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(Objeto, .Pos.map, .Pos.X, .Pos.Y - 1)
     End With
 End Sub
 
@@ -10938,7 +10938,7 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        Call EraseObj(.Pos.map, 10000, .Pos.map, .Pos.X, .Pos.Y)
+        Call EraseObj(10000, .Pos.map, .Pos.X, .Pos.Y)
     End With
 End Sub
 

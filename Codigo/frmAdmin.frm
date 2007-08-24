@@ -138,11 +138,6 @@ Call EcharPjsNoPrivilegiados
 
 End Sub
 
-Private Sub Label1_Click()
-Call ActualizaPjInfo
-
-End Sub
-
 Private Sub ActualizaPjInfo()
 Dim tIndex As Long
 

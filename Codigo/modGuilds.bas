@@ -37,9 +37,6 @@ Private GUILDINFOFILE   As String
 Private Const MAX_GUILDS As Integer = 1000
 'cantidad maxima de guilds en el servidor
 
-Private Const ORDENARLISTADECLANES = True
-'True si se envia la lista ordenada por alineacion
-
 Public CANTIDADDECLANES As Integer
 'cantidad actual de clanes en el servidor
 
@@ -54,8 +51,6 @@ Public Const MAXASPIRANTES As Byte = 10
 
 Private Const MAXANTIFACCION As Byte = 5
 'puntos maximos de antifaccion que un clan tolera antes de ser cambiada su alineacion
-
-Private GMsEscuchando As New Collection
 
 Public Enum ALINEACION_GUILD
     ALINEACION_LEGION = 1
@@ -380,7 +375,6 @@ End Function
 
 Public Sub SendGuildNews(ByVal UserIndex As Integer)
 Dim guildIndex  As Integer
-Dim enemiesCount    As Integer
 Dim i               As Integer
 Dim go As Integer
 
@@ -762,7 +756,6 @@ End Sub
 Private Function GetGuildIndexFromChar(ByRef PlayerName As String) As Integer
 'aca si que vamos a violar las capas deliveradamente ya que
 'visual basic no permite declarar metodos de clase
-Dim i       As Integer
 Dim Temps   As String
     If InStrB(PlayerName, "\") <> 0 Then
         PlayerName = Replace(PlayerName, "\", vbNullString)
@@ -1321,10 +1314,8 @@ Public Function a_ObtenerRechazoDeChar(ByRef Aspirante As String) As String
     Call WriteVar(CharPath & Aspirante & ".chr", "GUILD", "MotivoRechazo", vbNullString)
 End Function
 
-Public Function a_RechazarAspirante(ByVal UserIndex As Integer, ByRef Nombre As String, ByRef motivo As String, ByRef refError As String) As Boolean
-'CHECK: El parámetro motivo, no se utiliza ¬¬
+Public Function a_RechazarAspirante(ByVal UserIndex As Integer, ByRef Nombre As String, ByRef refError As String) As Boolean
 Dim GI              As Integer
-Dim UI              As Integer
 Dim NroAspirante    As Integer
 
     a_RechazarAspirante = False

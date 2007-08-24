@@ -42,7 +42,6 @@ Public MAPA_PRETORIANO As Integer
 ''Estos numeros son necesarios por cuestiones de
 ''sonido. Son los numeros de los wavs del cliente.
 Private Const SONIDO_Dragon_VIVO As Integer = 30
-Private Const SONIDO_Dragon_MUERTO As Integer = 32
 ''ALCOBAS REALES
 ''OJO LOS BICHOS TAN HARDCODEADOS, NO CAMBIAR EL MAPA DONDE
 ''ESTÁN UBICADOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -94,7 +93,7 @@ errorh:
 End Function
 
 
-Sub CrearClanPretoriano(ByVal mapa As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub CrearClanPretoriano(ByVal X As Integer)
 '********************************************************
 'Author: EL OSO
 'Inicializa el clan Pretoriano.

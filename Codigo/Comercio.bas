@@ -218,6 +218,3 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     Next Slot
 End Sub
 
-Private Function SlotLibre(ByVal UserIndex As Integer)
-
-End Function

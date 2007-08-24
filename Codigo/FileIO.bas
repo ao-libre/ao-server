@@ -178,7 +178,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
 
@@ -292,7 +292,7 @@ Next Hechizo
 Set Leer = Nothing
 Exit Sub
 
-errhandler:
+Errhandler:
  MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -354,7 +354,7 @@ Print #nfile, Date & " " & time
 Close #nfile
 End Sub
 
-Public Sub GrabarMapa(ByVal Map As Long, ByVal MAPFILE As String)
+Public Sub GrabarMapa(ByVal map As Long, ByVal MAPFILE As String)
 On Error Resume Next
     Dim FreeFileMap As Long
     Dim FreeFileInf As Long
@@ -383,7 +383,7 @@ On Error Resume Next
     Seek FreeFileInf, 1
     'map Header
             
-    Put FreeFileMap, , MapInfo(Map).MapVersion
+    Put FreeFileMap, , MapInfo(map).MapVersion
     Put FreeFileMap, , MiCabecera
     Put FreeFileMap, , TempInt
     Put FreeFileMap, , TempInt
@@ -403,53 +403,53 @@ On Error Resume Next
             
                 ByFlags = 0
                 
-                If MapData(Map, X, Y).Blocked Then ByFlags = ByFlags Or 1
-                If MapData(Map, X, Y).Graphic(2) Then ByFlags = ByFlags Or 2
-                If MapData(Map, X, Y).Graphic(3) Then ByFlags = ByFlags Or 4
-                If MapData(Map, X, Y).Graphic(4) Then ByFlags = ByFlags Or 8
-                If MapData(Map, X, Y).trigger Then ByFlags = ByFlags Or 16
+                If MapData(map, X, Y).Blocked Then ByFlags = ByFlags Or 1
+                If MapData(map, X, Y).Graphic(2) Then ByFlags = ByFlags Or 2
+                If MapData(map, X, Y).Graphic(3) Then ByFlags = ByFlags Or 4
+                If MapData(map, X, Y).Graphic(4) Then ByFlags = ByFlags Or 8
+                If MapData(map, X, Y).trigger Then ByFlags = ByFlags Or 16
                 
                 Put FreeFileMap, , ByFlags
                 
-                Put FreeFileMap, , MapData(Map, X, Y).Graphic(1)
+                Put FreeFileMap, , MapData(map, X, Y).Graphic(1)
                 
                 For LoopC = 2 To 4
-                    If MapData(Map, X, Y).Graphic(LoopC) Then _
-                        Put FreeFileMap, , MapData(Map, X, Y).Graphic(LoopC)
+                    If MapData(map, X, Y).Graphic(LoopC) Then _
+                        Put FreeFileMap, , MapData(map, X, Y).Graphic(LoopC)
                 Next LoopC
                 
-                If MapData(Map, X, Y).trigger Then _
-                    Put FreeFileMap, , CInt(MapData(Map, X, Y).trigger)
+                If MapData(map, X, Y).trigger Then _
+                    Put FreeFileMap, , CInt(MapData(map, X, Y).trigger)
                 
                 '.inf file
                 
                 ByFlags = 0
                 
-                If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
-                   If ObjData(MapData(Map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otFogata Then
-                        MapData(Map, X, Y).ObjInfo.ObjIndex = 0
-                        MapData(Map, X, Y).ObjInfo.amount = 0
+                If MapData(map, X, Y).ObjInfo.ObjIndex > 0 Then
+                   If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).OBJType = eOBJType.otFogata Then
+                        MapData(map, X, Y).ObjInfo.ObjIndex = 0
+                        MapData(map, X, Y).ObjInfo.amount = 0
                     End If
                 End If
     
-                If MapData(Map, X, Y).TileExit.Map Then ByFlags = ByFlags Or 1
-                If MapData(Map, X, Y).NpcIndex Then ByFlags = ByFlags Or 2
-                If MapData(Map, X, Y).ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
+                If MapData(map, X, Y).TileExit.map Then ByFlags = ByFlags Or 1
+                If MapData(map, X, Y).NpcIndex Then ByFlags = ByFlags Or 2
+                If MapData(map, X, Y).ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
                 
                 Put FreeFileInf, , ByFlags
                 
-                If MapData(Map, X, Y).TileExit.Map Then
-                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.Map
-                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.X
-                    Put FreeFileInf, , MapData(Map, X, Y).TileExit.Y
+                If MapData(map, X, Y).TileExit.map Then
+                    Put FreeFileInf, , MapData(map, X, Y).TileExit.map
+                    Put FreeFileInf, , MapData(map, X, Y).TileExit.X
+                    Put FreeFileInf, , MapData(map, X, Y).TileExit.Y
                 End If
                 
-                If MapData(Map, X, Y).NpcIndex Then _
-                    Put FreeFileInf, , Npclist(MapData(Map, X, Y).NpcIndex).Numero
+                If MapData(map, X, Y).NpcIndex Then _
+                    Put FreeFileInf, , Npclist(MapData(map, X, Y).NpcIndex).Numero
                 
-                If MapData(Map, X, Y).ObjInfo.ObjIndex Then
-                    Put FreeFileInf, , MapData(Map, X, Y).ObjInfo.ObjIndex
-                    Put FreeFileInf, , MapData(Map, X, Y).ObjInfo.amount
+                If MapData(map, X, Y).ObjInfo.ObjIndex Then
+                    Put FreeFileInf, , MapData(map, X, Y).ObjInfo.ObjIndex
+                    Put FreeFileInf, , MapData(map, X, Y).ObjInfo.amount
                 End If
             
             
@@ -463,23 +463,23 @@ On Error Resume Next
     Close FreeFileInf
 
     'write .dat file
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", MapInfo(Map).name)
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "MusicNum", MapInfo(Map).Music)
-    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "MagiaSinefecto", MapInfo(Map).MagiaSinEfecto)
-    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "InviSinEfecto", MapInfo(Map).InviSinEfecto)
-    Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "ResuSinEfecto", MapInfo(Map).ResuSinEfecto)
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "StartPos", MapInfo(Map).StartPos.Map & "-" & MapInfo(Map).StartPos.X & "-" & MapInfo(Map).StartPos.Y)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Name", MapInfo(map).name)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "MusicNum", MapInfo(map).Music)
+    Call WriteVar(MAPFILE & ".dat", "mapa" & map, "MagiaSinefecto", MapInfo(map).MagiaSinEfecto)
+    Call WriteVar(MAPFILE & ".dat", "mapa" & map, "InviSinEfecto", MapInfo(map).InviSinEfecto)
+    Call WriteVar(MAPFILE & ".dat", "mapa" & map, "ResuSinEfecto", MapInfo(map).ResuSinEfecto)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "StartPos", MapInfo(map).StartPos.map & "-" & MapInfo(map).StartPos.X & "-" & MapInfo(map).StartPos.Y)
     
 
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Terreno", MapInfo(Map).Terreno)
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Zona", MapInfo(Map).Zona)
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Restringir", MapInfo(Map).Restringir)
-    Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "BackUp", str(MapInfo(Map).BackUp))
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Terreno", MapInfo(map).Terreno)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Zona", MapInfo(map).Zona)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Restringir", MapInfo(map).Restringir)
+    Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "BackUp", str(MapInfo(map).BackUp))
 
-    If MapInfo(Map).Pk Then
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "0")
+    If MapInfo(map).Pk Then
+        Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Pk", "0")
     Else
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "1")
+        Call WriteVar(MAPFILE & ".dat", "Mapa" & map, "Pk", "1")
     End If
 
 End Sub
@@ -545,7 +545,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
 
@@ -747,7 +747,7 @@ Set Leer = Nothing
 
 Exit Sub
 
-errhandler:
+Errhandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -898,7 +898,7 @@ End If
 
 UserList(UserIndex).desc = UserFile.GetValue("INIT", "Desc")
 
-UserList(UserIndex).Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
+UserList(UserIndex).Pos.map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
 UserList(UserIndex).Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
 UserList(UserIndex).Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
 
@@ -1003,7 +1003,7 @@ Sub CargarBackUp()
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando backup."
 
-Dim Map As Integer
+Dim map As Integer
 Dim TempInt As Integer
 Dim tFileName As String
 Dim npcfile As String
@@ -1023,24 +1023,24 @@ On Error GoTo man
     ReDim MapData(1 To NumMaps, XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     ReDim MapInfo(1 To NumMaps) As MapInfo
       
-    For Map = 1 To NumMaps
+    For map = 1 To NumMaps
         
-        If val(GetVar(App.Path & MapPath & "Mapa" & Map & ".Dat", "Mapa" & Map, "BackUp")) <> 0 Then
-            tFileName = App.Path & "\WorldBackUp\Mapa" & Map
+        If val(GetVar(App.Path & MapPath & "Mapa" & map & ".Dat", "Mapa" & map, "BackUp")) <> 0 Then
+            tFileName = App.Path & "\WorldBackUp\Mapa" & map
         Else
-            tFileName = App.Path & MapPath & "Mapa" & Map
+            tFileName = App.Path & MapPath & "Mapa" & map
         End If
         
-        Call CargarMapa(Map, tFileName)
+        Call CargarMapa(map, tFileName)
         
         frmCargando.cargar.value = frmCargando.cargar.value + 1
         DoEvents
-    Next Map
+    Next map
 
 Exit Sub
 
 man:
-    MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
+    MsgBox ("Error durante la carga de mapas, el mapa " & map & " contiene errores")
     Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
  
 End Sub
@@ -1049,7 +1049,7 @@ Sub LoadMapData()
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando mapas..."
 
-Dim Map As Integer
+Dim map As Integer
 Dim TempInt As Integer
 Dim tFileName As String
 Dim npcfile As String
@@ -1069,24 +1069,24 @@ On Error GoTo man
     ReDim MapData(1 To NumMaps, XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     ReDim MapInfo(1 To NumMaps) As MapInfo
       
-    For Map = 1 To NumMaps
+    For map = 1 To NumMaps
         
-        tFileName = App.Path & MapPath & "Mapa" & Map
-        Call CargarMapa(Map, tFileName)
+        tFileName = App.Path & MapPath & "Mapa" & map
+        Call CargarMapa(map, tFileName)
         
         frmCargando.cargar.value = frmCargando.cargar.value + 1
         DoEvents
-    Next Map
+    Next map
 
 Exit Sub
 
 man:
-    MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
+    MsgBox ("Error durante la carga de mapas, el mapa " & map & " contiene errores")
     Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
 
 End Sub
 
-Public Sub CargarMapa(ByVal Map As Long, ByVal MAPFl As String)
+Public Sub CargarMapa(ByVal map As Long, ByVal MAPFl As String)
 On Error GoTo errh
     Dim FreeFileMap As Long
     Dim FreeFileInf As Long
@@ -1108,7 +1108,7 @@ On Error GoTo errh
     Seek FreeFileInf, 1
 
     'map Header
-    Get #FreeFileMap, , MapInfo(Map).MapVersion
+    Get #FreeFileMap, , MapInfo(map).MapVersion
     Get #FreeFileMap, , MiCabecera
     Get #FreeFileMap, , TempInt
     Get #FreeFileMap, , TempInt
@@ -1129,40 +1129,40 @@ On Error GoTo errh
             Get FreeFileMap, , ByFlags
 
             If ByFlags And 1 Then
-                MapData(Map, X, Y).Blocked = 1
+                MapData(map, X, Y).Blocked = 1
             End If
             
-            Get FreeFileMap, , MapData(Map, X, Y).Graphic(1)
+            Get FreeFileMap, , MapData(map, X, Y).Graphic(1)
             
             'Layer 2 used?
-            If ByFlags And 2 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(2)
+            If ByFlags And 2 Then Get FreeFileMap, , MapData(map, X, Y).Graphic(2)
             
             'Layer 3 used?
-            If ByFlags And 4 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(3)
+            If ByFlags And 4 Then Get FreeFileMap, , MapData(map, X, Y).Graphic(3)
             
             'Layer 4 used?
-            If ByFlags And 8 Then Get FreeFileMap, , MapData(Map, X, Y).Graphic(4)
+            If ByFlags And 8 Then Get FreeFileMap, , MapData(map, X, Y).Graphic(4)
             
             'Trigger used?
             If ByFlags And 16 Then
                 'Enums are 4 byte long in VB, so we make sure we only read 2
                 Get FreeFileMap, , TempInt
-                MapData(Map, X, Y).trigger = TempInt
+                MapData(map, X, Y).trigger = TempInt
             End If
             
             Get FreeFileInf, , ByFlags
             
             If ByFlags And 1 Then
-                Get FreeFileInf, , MapData(Map, X, Y).TileExit.Map
-                Get FreeFileInf, , MapData(Map, X, Y).TileExit.X
-                Get FreeFileInf, , MapData(Map, X, Y).TileExit.Y
+                Get FreeFileInf, , MapData(map, X, Y).TileExit.map
+                Get FreeFileInf, , MapData(map, X, Y).TileExit.X
+                Get FreeFileInf, , MapData(map, X, Y).TileExit.Y
             End If
             
             If ByFlags And 2 Then
                 'Get and make NPC
-                Get FreeFileInf, , MapData(Map, X, Y).NpcIndex
+                Get FreeFileInf, , MapData(map, X, Y).NpcIndex
                 
-                If MapData(Map, X, Y).NpcIndex > 0 Then
+                If MapData(map, X, Y).NpcIndex > 0 Then
                     'If MapData(Map, X, Y).NpcIndex > 499 Then
                     '    npcfile = DatPath & "NPCs-HOSTILES.dat"
                     'Else
@@ -1171,27 +1171,27 @@ On Error GoTo errh
 
                     'Si el npc debe hacer respawn en la pos
                     'original la guardamos
-                    If val(GetVar(npcfile, "NPC" & MapData(Map, X, Y).NpcIndex, "PosOrig")) = 1 Then
-                        MapData(Map, X, Y).NpcIndex = OpenNPC(MapData(Map, X, Y).NpcIndex)
-                        Npclist(MapData(Map, X, Y).NpcIndex).Orig.Map = Map
-                        Npclist(MapData(Map, X, Y).NpcIndex).Orig.X = X
-                        Npclist(MapData(Map, X, Y).NpcIndex).Orig.Y = Y
+                    If val(GetVar(npcfile, "NPC" & MapData(map, X, Y).NpcIndex, "PosOrig")) = 1 Then
+                        MapData(map, X, Y).NpcIndex = OpenNPC(MapData(map, X, Y).NpcIndex)
+                        Npclist(MapData(map, X, Y).NpcIndex).Orig.map = map
+                        Npclist(MapData(map, X, Y).NpcIndex).Orig.X = X
+                        Npclist(MapData(map, X, Y).NpcIndex).Orig.Y = Y
                     Else
-                        MapData(Map, X, Y).NpcIndex = OpenNPC(MapData(Map, X, Y).NpcIndex)
+                        MapData(map, X, Y).NpcIndex = OpenNPC(MapData(map, X, Y).NpcIndex)
                     End If
                             
-                    Npclist(MapData(Map, X, Y).NpcIndex).Pos.Map = Map
-                    Npclist(MapData(Map, X, Y).NpcIndex).Pos.X = X
-                    Npclist(MapData(Map, X, Y).NpcIndex).Pos.Y = Y
+                    Npclist(MapData(map, X, Y).NpcIndex).Pos.map = map
+                    Npclist(MapData(map, X, Y).NpcIndex).Pos.X = X
+                    Npclist(MapData(map, X, Y).NpcIndex).Pos.Y = Y
                             
-                    Call MakeNPCChar(True, 0, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                    Call MakeNPCChar(True, 0, MapData(map, X, Y).NpcIndex, map, X, Y)
                 End If
             End If
             
             If ByFlags And 4 Then
                 'Get and make Object
-                Get FreeFileInf, , MapData(Map, X, Y).ObjInfo.ObjIndex
-                Get FreeFileInf, , MapData(Map, X, Y).ObjInfo.amount
+                Get FreeFileInf, , MapData(map, X, Y).ObjInfo.ObjIndex
+                Get FreeFileInf, , MapData(map, X, Y).ObjInfo.amount
             End If
         Next X
     Next Y
@@ -1200,38 +1200,36 @@ On Error GoTo errh
     Close FreeFileMap
     Close FreeFileInf
     
-    MapInfo(Map).name = GetVar(MAPFl & ".dat", "Mapa" & Map, "Name")
-    MapInfo(Map).Music = GetVar(MAPFl & ".dat", "Mapa" & Map, "MusicNum")
-    MapInfo(Map).StartPos.Map = val(ReadField(1, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-    MapInfo(Map).StartPos.X = val(ReadField(2, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-    MapInfo(Map).StartPos.Y = val(ReadField(3, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-    MapInfo(Map).MagiaSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "MagiaSinEfecto"))
-    MapInfo(Map).InviSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "InviSinEfecto"))
-    MapInfo(Map).ResuSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "ResuSinEfecto"))
-    MapInfo(Map).NoEncriptarMP = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "NoEncriptarMP"))
+    MapInfo(map).name = GetVar(MAPFl & ".dat", "Mapa" & map, "Name")
+    MapInfo(map).Music = GetVar(MAPFl & ".dat", "Mapa" & map, "MusicNum")
+    MapInfo(map).StartPos.map = val(ReadField(1, GetVar(MAPFl & ".dat", "Mapa" & map, "StartPos"), Asc("-")))
+    MapInfo(map).StartPos.X = val(ReadField(2, GetVar(MAPFl & ".dat", "Mapa" & map, "StartPos"), Asc("-")))
+    MapInfo(map).StartPos.Y = val(ReadField(3, GetVar(MAPFl & ".dat", "Mapa" & map, "StartPos"), Asc("-")))
+    MapInfo(map).MagiaSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & map, "MagiaSinEfecto"))
+    MapInfo(map).InviSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & map, "InviSinEfecto"))
+    MapInfo(map).ResuSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & map, "ResuSinEfecto"))
+    MapInfo(map).NoEncriptarMP = val(GetVar(MAPFl & ".dat", "Mapa" & map, "NoEncriptarMP"))
     
-    If val(GetVar(MAPFl & ".dat", "Mapa" & Map, "Pk")) = 0 Then
-        MapInfo(Map).Pk = True
+    If val(GetVar(MAPFl & ".dat", "Mapa" & map, "Pk")) = 0 Then
+        MapInfo(map).Pk = True
     Else
-        MapInfo(Map).Pk = False
+        MapInfo(map).Pk = False
     End If
     
     
-    MapInfo(Map).Terreno = GetVar(MAPFl & ".dat", "Mapa" & Map, "Terreno")
-    MapInfo(Map).Zona = GetVar(MAPFl & ".dat", "Mapa" & Map, "Zona")
-    MapInfo(Map).Restringir = GetVar(MAPFl & ".dat", "Mapa" & Map, "Restringir")
-    MapInfo(Map).BackUp = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "BACKUP"))
+    MapInfo(map).Terreno = GetVar(MAPFl & ".dat", "Mapa" & map, "Terreno")
+    MapInfo(map).Zona = GetVar(MAPFl & ".dat", "Mapa" & map, "Zona")
+    MapInfo(map).Restringir = GetVar(MAPFl & ".dat", "Mapa" & map, "Restringir")
+    MapInfo(map).BackUp = val(GetVar(MAPFl & ".dat", "Mapa" & map, "BACKUP"))
 Exit Sub
 
 errh:
-    Call LogError("Error cargando mapa: " & Map & "." & Err.description)
+    Call LogError("Error cargando mapa: " & map & "." & Err.description)
 End Sub
 
 Sub LoadSini()
 
 Dim Temporal As Long
-Dim Temporal1 As Long
-Dim LoopC As Integer
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando info de inicio del server."
 
@@ -1289,7 +1287,7 @@ EnTesting = val(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
 EncriptarProtocolosCriticos = val(GetVar(IniPath & "Server.ini", "INIT", "Encriptar"))
 
 'Start pos
-StartPos.Map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
+StartPos.map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
 StartPos.X = val(ReadField(2, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
 StartPos.Y = val(ReadField(3, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
 
@@ -1372,7 +1370,7 @@ IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOcu
 '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
 
 'Ressurect pos
-ResPos.Map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
+ResPos.map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
 ResPos.X = val(ReadField(2, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
 ResPos.Y = val(ReadField(3, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
   
@@ -1392,23 +1390,23 @@ PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "Porcenta
 ''&&&&&&&&&&&&&&&&&&&&& FIN BALANCE &&&&&&&&&&&&&&&&&&&&&&&
 Call Statistics.Initialize
 
-Nix.Map = GetVar(DatPath & "Ciudades.dat", "NIX", "Mapa")
+Nix.map = GetVar(DatPath & "Ciudades.dat", "NIX", "Mapa")
 Nix.X = GetVar(DatPath & "Ciudades.dat", "NIX", "X")
 Nix.Y = GetVar(DatPath & "Ciudades.dat", "NIX", "Y")
 
-Ullathorpe.Map = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "Mapa")
+Ullathorpe.map = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "Mapa")
 Ullathorpe.X = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "X")
 Ullathorpe.Y = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "Y")
 
-Banderbill.Map = GetVar(DatPath & "Ciudades.dat", "Banderbill", "Mapa")
+Banderbill.map = GetVar(DatPath & "Ciudades.dat", "Banderbill", "Mapa")
 Banderbill.X = GetVar(DatPath & "Ciudades.dat", "Banderbill", "X")
 Banderbill.Y = GetVar(DatPath & "Ciudades.dat", "Banderbill", "Y")
 
-Lindos.Map = GetVar(DatPath & "Ciudades.dat", "Lindos", "Mapa")
+Lindos.map = GetVar(DatPath & "Ciudades.dat", "Lindos", "Mapa")
 Lindos.X = GetVar(DatPath & "Ciudades.dat", "Lindos", "X")
 Lindos.Y = GetVar(DatPath & "Ciudades.dat", "Lindos", "Y")
 
-Arghal.Map = GetVar(DatPath & "Ciudades.dat", "Arghal", "Mapa")
+Arghal.map = GetVar(DatPath & "Ciudades.dat", "Arghal", "Mapa")
 Arghal.X = GetVar(DatPath & "Ciudades.dat", "Arghal", "X")
 Arghal.Y = GetVar(DatPath & "Ciudades.dat", "Arghal", "Y")
 
@@ -1440,7 +1438,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim OldUserHead As Long
 
@@ -1572,7 +1570,7 @@ End If
 
 
 
-Call WriteVar(UserFile, "INIT", "Position", UserList(UserIndex).Pos.Map & "-" & UserList(UserIndex).Pos.X & "-" & UserList(UserIndex).Pos.Y)
+Call WriteVar(UserFile, "INIT", "Position", UserList(UserIndex).Pos.map & "-" & UserList(UserIndex).Pos.X & "-" & UserList(UserIndex).Pos.Y)
 
 
 Call WriteVar(UserFile, "STATS", "GLD", CStr(UserList(UserIndex).Stats.GLD))
@@ -1690,7 +1688,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
 Call LogError("Error en SaveUser")
 
 End Sub

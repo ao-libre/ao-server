@@ -82,7 +82,6 @@ Option Explicit
 Private Const ROWS As Integer = 100
 Private Const COLUMS As Integer = 100
 Private Const MAXINT As Integer = 1000
-Private Const Walkable As Integer = 0
 
 Private Type tIntermidiateWork
     Known As Boolean
@@ -92,22 +91,17 @@ End Type
 
 Dim TmpArray(1 To ROWS, 1 To COLUMS) As tIntermidiateWork
 
-Dim TilePosX As Integer, TilePosY As Integer
-
-Dim MyVert As tVertice
-Dim MyFin As tVertice
-
-Dim Iter As Integer
+Dim TilePosY As Integer
 
 Private Function Limites(ByVal vfila As Integer, ByVal vcolu As Integer)
 Limites = vcolu >= 1 And vcolu <= COLUMS And vfila >= 1 And vfila <= ROWS
 End Function
 
-Private Function IsWalkable(ByVal Map As Integer, ByVal row As Integer, ByVal Col As Integer, ByVal NpcIndex As Integer) As Boolean
-IsWalkable = MapData(Map, row, Col).Blocked = 0 And MapData(Map, row, Col).NpcIndex = 0
+Private Function IsWalkable(ByVal map As Integer, ByVal row As Integer, ByVal Col As Integer, ByVal NpcIndex As Integer) As Boolean
+IsWalkable = MapData(map, row, Col).Blocked = 0 And MapData(map, row, Col).NpcIndex = 0
 
-If MapData(Map, row, Col).UserIndex <> 0 Then
-     If MapData(Map, row, Col).UserIndex <> Npclist(NpcIndex).PFINFO.TargetUser Then IsWalkable = False
+If MapData(map, row, Col).UserIndex <> 0 Then
+     If MapData(map, row, Col).UserIndex <> Npclist(NpcIndex).PFINFO.TargetUser Then IsWalkable = False
 End If
 
 End Function
@@ -200,7 +194,7 @@ Dim V As tVertice
 Dim NpcMap As Integer
 Dim steps As Integer
 
-NpcMap = Npclist(NpcIndex).Pos.Map
+NpcMap = Npclist(NpcIndex).Pos.map
 
 steps = 0
 

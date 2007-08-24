@@ -68,7 +68,6 @@ Public Sub InitAreas()
 '**************************************************************
     Dim LoopC As Long
     Dim loopX As Long
-    Dim CurArea As Byte
 
 ' Setup areas...
     For LoopC = 0 To 11
@@ -136,7 +135,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 'Es la función clave del sistema de areas... Es llamada al mover un user
 '**************************************************************
-    If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).pos.X, UserList(UserIndex).pos.Y) Then Exit Sub
+    If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
     Dim TempInt As Long, map As Long
@@ -177,10 +176,10 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
            
         ElseIf Head = USER_NUEVO Then
             'Esto pasa por cuando cambiamos de mapa o logeamos...
-            MinY = ((.pos.Y \ 9) - 1) * 9
+            MinY = ((.Pos.Y \ 9) - 1) * 9
             MaxY = MinY + 26
             
-            MinX = ((.pos.X \ 9) - 1) * 9
+            MinX = ((.Pos.X \ 9) - 1) * 9
             MaxX = MinX + 26
             
             .AreasInfo.MinX = CInt(MinX)
@@ -192,7 +191,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         If MaxY > 100 Then MaxY = 100
         If MaxX > 100 Then MaxX = 100
         
-        map = UserList(UserIndex).pos.map
+        map = UserList(UserIndex).Pos.map
         
         'Esto es para ke el cliente elimine lo "fuera de area..."
         Call WriteAreaChanged(UserIndex)
@@ -208,7 +207,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     
                     If UserIndex <> TempInt Then
                         Call MakeUserChar(False, UserIndex, TempInt, map, X, Y)
-                        Call MakeUserChar(False, TempInt, UserIndex, .pos.map, .pos.X, .pos.Y)
+                        Call MakeUserChar(False, TempInt, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
                         
                         'Si el user estaba invisible le avisamos al nuevo cliente de eso
                         If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
@@ -247,15 +246,15 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         Next X
         
         'Precalculados :P
-        TempInt = .pos.X \ 9
+        TempInt = .Pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceX = 2 ^ TempInt
         
-        TempInt = .pos.Y \ 9
+        TempInt = .Pos.Y \ 9
         .AreasInfo.AreaReciveY = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceY = 2 ^ TempInt
         
-        .AreasInfo.AreaID = AreasInfo(.pos.X, .pos.Y)
+        .AreasInfo.AreaID = AreasInfo(.Pos.X, .Pos.Y)
     End With
 End Sub
 
@@ -265,7 +264,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 'Last Modify Date: Unknow
 ' Se llama cuando se mueve un Npc
 '**************************************************************
-    If Npclist(NpcIndex).AreasInfo.AreaID = AreasInfo(Npclist(NpcIndex).pos.X, Npclist(NpcIndex).pos.Y) Then Exit Sub
+    If Npclist(NpcIndex).AreasInfo.AreaID = AreasInfo(Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
     Dim TempInt As Long
@@ -306,10 +305,10 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
            
         ElseIf Head = USER_NUEVO Then
             'Esto pasa por cuando cambiamos de mapa o logeamos...
-            MinY = ((.pos.Y \ 9) - 1) * 9
+            MinY = ((.Pos.Y \ 9) - 1) * 9
             MaxY = MinY + 26
             
-            MinX = ((.pos.X \ 9) - 1) * 9
+            MinX = ((.Pos.X \ 9) - 1) * 9
             MaxX = MinX + 26
             
             .AreasInfo.MinX = CInt(MinX)
@@ -323,25 +322,25 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 
         
         'Actualizamos!!!
-        If MapInfo(.pos.map).NumUsers <> 0 Then
+        If MapInfo(.Pos.map).NumUsers <> 0 Then
             For X = MinX To MaxX
                 For Y = MinY To MaxY
-                    If MapData(.pos.map, X, Y).UserIndex Then _
-                        Call MakeNPCChar(False, MapData(.pos.map, X, Y).UserIndex, NpcIndex, .pos.map, .pos.X, .pos.Y)
+                    If MapData(.Pos.map, X, Y).UserIndex Then _
+                        Call MakeNPCChar(False, MapData(.Pos.map, X, Y).UserIndex, NpcIndex, .Pos.map, .Pos.X, .Pos.Y)
                 Next Y
             Next X
         End If
         
         'Precalculados :P
-        TempInt = .pos.X \ 9
+        TempInt = .Pos.X \ 9
         .AreasInfo.AreaReciveX = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceX = 2 ^ TempInt
             
-        TempInt = .pos.Y \ 9
+        TempInt = .Pos.Y \ 9
         .AreasInfo.AreaReciveY = AreasRecive(TempInt)
         .AreasInfo.AreaPerteneceY = 2 ^ TempInt
         
-        .AreasInfo.AreaID = AreasInfo(.pos.X, .pos.Y)
+        .AreasInfo.AreaID = AreasInfo(.Pos.X, .Pos.Y)
     End With
 End Sub
 

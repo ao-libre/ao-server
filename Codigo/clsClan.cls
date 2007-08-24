@@ -244,8 +244,6 @@ End Sub
 
 Public Sub AceptarNuevoMiembro(ByRef Nombre As String)
 Dim OldQ    As Integer
-Dim CantP   As Integer
-Dim CantPs  As String
 Dim OldQs  As String
     
     If LenB(dir$(CharPath & Nombre & ".chr")) <> 0 Then
@@ -353,7 +351,6 @@ End Function
 
 Public Function NumeroDeAspirante(ByRef Nombre As String) As Integer
 Dim i       As Integer
-Dim CantAsp As Integer
     
     NumeroDeAspirante = 0
     
@@ -521,8 +518,6 @@ Dim q           As Integer
 Dim i           As Integer
 Dim Temps       As String
 Dim tempV       As String
-Dim tempN       As String
-Dim tempW       As String
 Dim d           As diccionario
 
 On Error GoTo errh

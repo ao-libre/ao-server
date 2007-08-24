@@ -648,7 +648,7 @@ End Sub
 
 Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
-Dim daño As Integer, Lugar As Integer, absorbido As Integer, npcfile As String
+Dim daño As Integer, Lugar As Integer, absorbido As Integer
 Dim antdaño As Integer, defbarco As Integer
 Dim Obj As ObjData
 
@@ -834,7 +834,7 @@ Call CheckUserLevel(UserIndex)
 End Function
 
 Function NpcImpactoNpc(ByVal Atacante As Integer, ByVal Victima As Integer) As Boolean
-Dim PoderAtt As Long, PoderEva As Long, dif As Long
+Dim PoderAtt As Long, PoderEva As Long
 Dim ProbExito As Long
 
 PoderAtt = Npclist(Atacante).PoderAtaque
@@ -848,7 +848,7 @@ End Function
 
 Public Sub NpcDañoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
 Dim daño As Integer
-Dim ANpc As npc, DNpc As npc
+Dim ANpc As npc
 ANpc = Npclist(Atacante)
 
 daño = RandomNumber(ANpc.Stats.MinHIT, ANpc.Stats.MaxHIT)

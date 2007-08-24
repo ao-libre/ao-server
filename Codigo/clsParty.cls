@@ -87,7 +87,7 @@ expPerCapita = CLng(ExpGanada / p_CantMiembros)
 For i = 1 To PARTY_MAXMEMBERS
     UI = p_members(i).UserIndex
     If UI > 0 Then
-        If mapa = UserList(UI).Pos.Map And UserList(UI).flags.Muerto = 0 Then
+        If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
                 p_members(i).Experiencia = p_members(i).Experiencia + expPerCapita
                 If p_members(i).Experiencia < 0 Then
@@ -360,7 +360,6 @@ End Sub
 Private Sub CompactMemberList()
 Dim i As Integer
 Dim freeIndex As Integer
-Dim tPlayer As tPartyMember
 i = 1
 While i <= PARTY_MAXMEMBERS
     If p_members(i).UserIndex = 0 And freeIndex = 0 Then

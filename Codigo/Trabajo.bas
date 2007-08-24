@@ -56,7 +56,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -65,7 +65,7 @@ End Sub
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
 'Modifique la fórmula y ahora anda bien.
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Double
 Dim res As Integer
@@ -103,7 +103,7 @@ UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando 
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -604,23 +604,22 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
 End Sub
 
-Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub TratarDeHacerFogata(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 
 Dim Suerte As Byte
 Dim exito As Byte
-Dim raise As Byte
 Dim Obj As Obj
 Dim posMadera As WorldPos
 
-If Not LegalPos(Map, X, Y) Then Exit Sub
+If Not LegalPos(map, X, Y) Then Exit Sub
 
 With posMadera
-    .Map = Map
+    .map = map
     .X = X
     .Y = Y
 End With
 
-If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
+If MapData(map, X, Y).ObjInfo.ObjIndex <> 58 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas clickear sobre Leña para hacer ramitas", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -635,7 +634,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(Map, X, Y).ObjInfo.amount < 3 Then
+If MapData(map, X, Y).ObjInfo.amount < 3 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas por lo menos tres troncos para hacer una fogata.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -653,11 +652,11 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.amount = MapData(Map, X, Y).ObjInfo.amount \ 3
+    Obj.amount = MapData(map, X, Y).ObjInfo.amount \ 3
     
     Call WriteConsoleMsg(UserIndex, "Has hecho " & Obj.amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-    Call MakeObj(Map, Obj, Map, X, Y)
+    Call MakeObj(Obj, map, X, Y)
     
     'Seteamos la fogata como el nuevo TargetObj del user
     UserList(UserIndex).flags.TargetObj = FOGATA_APAG
@@ -676,7 +675,7 @@ Call SubirSkill(UserIndex, Supervivencia)
 End Sub
 
 Public Sub DoPescar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -730,12 +729,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescar")
 End Sub
 
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -796,13 +795,13 @@ End If
         
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
-If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
+If Not MapInfo(UserList(VictimaIndex).Pos.map).Pk Then Exit Sub
 
 If UserList(LadrOnIndex).flags.Seguro Then
     Call WriteConsoleMsg(LadrOnIndex, "Debes quitar el seguro para robar", FontTypeNames.FONTTYPE_FIGHT)
@@ -1099,7 +1098,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1157,13 +1156,13 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
 
 Public Sub DoMineria(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1219,7 +1218,7 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub

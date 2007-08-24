@@ -33,11 +33,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Declare Function RegisterWindowMessage Lib "user32" Alias "RegisterWindowMessageA" (ByVal lpString As String) As Long
-Private Declare Function SendNotifyMessage Lib "user32" Alias "SendNotifyMessageA" (ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-
-Private Const WM_USER = &H400
 
 Private sMensaje As Long, hVentana As Long, hVentanaMia As Long
 
@@ -98,7 +94,6 @@ End If
 End Function
 
 Public Function EstadisticasAndando() As Boolean
-Dim Ret As Long
 
 Call BuscaWndEstadisticas
 'Ret = SendNotifyMessage(hVentana, sMensaje, 0, 0)

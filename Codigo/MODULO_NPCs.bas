@@ -58,7 +58,7 @@ Next i
 
 End Sub
 
-Sub QuitarMascotaNpc(ByVal Maestro As Integer, ByVal Mascota As Integer)
+Sub QuitarMascotaNpc(ByVal Maestro As Integer)
     Npclist(Maestro).Mascotas = Npclist(Maestro).Mascotas - 1
 End Sub
 
@@ -94,7 +94,7 @@ On Error GoTo Errhandler
                     End If
                 Next j
             Next i
-            Call CrearClanPretoriano(MAPA_PRETORIANO, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
+            Call CrearClanPretoriano(Npclist(NpcIndex).Pos.X)
         End If
     ElseIf esPretoriano(NpcIndex) > 0 Then
         If Npclist(NpcIndex).Pos.map = MAPA_PRETORIANO Then
@@ -296,7 +296,7 @@ Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
     Npclist(NpcIndex).level = 0
     
     If Npclist(NpcIndex).MaestroUser > 0 Then Call QuitarMascota(Npclist(NpcIndex).MaestroUser, NpcIndex)
-    If Npclist(NpcIndex).MaestroNpc > 0 Then Call QuitarMascotaNpc(Npclist(NpcIndex).MaestroNpc, NpcIndex)
+    If Npclist(NpcIndex).MaestroNpc > 0 Then Call QuitarMascotaNpc(Npclist(NpcIndex).MaestroNpc)
     
     Npclist(NpcIndex).MaestroUser = 0
     Npclist(NpcIndex).MaestroNpc = 0
@@ -340,7 +340,7 @@ On Error GoTo Errhandler
     Npclist(NpcIndex).flags.NPCActive = False
     
     If InMapBounds(Npclist(NpcIndex).Pos.map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
-        Call EraseNPCChar(Npclist(NpcIndex).Pos.map, NpcIndex)
+        Call EraseNPCChar(NpcIndex)
     End If
     
     'Nos aseguramos de que el inventario sea removido...
@@ -520,7 +520,7 @@ Sub ChangeNPCChar(ByVal NpcIndex As Integer, ByVal body As Integer, ByVal Head A
     End If
 End Sub
 
-Sub EraseNPCChar(ByVal sndIndex As Integer, ByVal NpcIndex As Integer)
+Sub EraseNPCChar(ByVal NpcIndex As Integer)
 
 If Npclist(NpcIndex).Char.CharIndex <> 0 Then CharList(Npclist(NpcIndex).Char.CharIndex) = 0
 

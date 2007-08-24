@@ -97,7 +97,6 @@ End Sub
 
 Public Sub ReproducirSonidosDeMapas()
     Dim i As Integer
-    Dim SonidosMapa As Byte
     Dim SonidoMapa As Byte
 
     For i = 1 To UBound(p_Mapas)

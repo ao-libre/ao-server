@@ -284,25 +284,16 @@ Private Type NOTIFYICONDATA
 End Type
    
 Const NIM_ADD = 0
-Const NIM_MODIFY = 1
 Const NIM_DELETE = 2
 Const NIF_MESSAGE = 1
 Const NIF_ICON = 2
 Const NIF_TIP = 4
 
 Const WM_MOUSEMOVE = &H200
-Const WM_LBUTTONDOWN = &H201
-Const WM_LBUTTONUP = &H202
 Const WM_LBUTTONDBLCLK = &H203
-Const WM_RBUTTONDOWN = &H204
 Const WM_RBUTTONUP = &H205
-Const WM_RBUTTONDBLCLK = &H206
-Const WM_MBUTTONDOWN = &H207
-Const WM_MBUTTONUP = &H208
-Const WM_MBUTTONDBLCLK = &H209
 
 Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, lpdwProcessId As Long) As Long
-Private Declare Function SetCapture Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function Shell_NotifyIconA Lib "SHELL32" (ByVal dwMessage As Long, lpData As NOTIFYICONDATA) As Integer
 
 Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, CallbackMessage As Long, Icon As Long, Tip As String) As NOTIFYICONDATA
@@ -519,7 +510,7 @@ Call Statistics.DumpStatistics
 Call QuitarIconoSystray
 
 #If UsarQueSocket = 1 Then
-Call LimpiaWsApi(frmMain.hWnd)
+Call LimpiaWsApi
 #ElseIf UsarQueSocket = 0 Then
 Socket1.Cleanup
 #ElseIf UsarQueSocket = 2 Then
@@ -559,7 +550,6 @@ Private Sub GameTimer_Timer()
     Dim iUserIndex As Long
     Dim bEnviarStats As Boolean
     Dim bEnviarAyS As Boolean
-    Dim iNpcIndex As Integer
     
 On Error GoTo hayerror
     
@@ -591,7 +581,7 @@ On Error GoTo hayerror
                         If (.flags.Privilegios And PlayerType.User) Then Call EfectoLava(iUserIndex)
                         If .flags.Desnudo <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoFrio(iUserIndex)
                         If .flags.Meditando Then Call DoMeditar(iUserIndex)
-                        If .flags.Envenenado <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoVeneno(iUserIndex, bEnviarStats)
+                        If .flags.Envenenado <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoVeneno(iUserIndex)
                         If .flags.AdminInvisible <> 1 Then
                             If .flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                             If .flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)

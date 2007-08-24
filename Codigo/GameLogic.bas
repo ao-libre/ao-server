@@ -461,7 +461,6 @@ Sub HeadtoPos(ByVal Head As eHeading, ByRef Pos As WorldPos)
 '*****************************************************************
 Dim X As Integer
 Dim Y As Integer
-Dim tempVar As Single
 Dim nX As Integer
 Dim nY As Integer
 
@@ -578,7 +577,6 @@ Dim FoundChar As Byte
 Dim FoundSomething As Byte
 Dim TempCharIndex As Integer
 Dim Stat As String
-Dim OBJType As Integer
 Dim ft As FontTypeNames
 
 '¿Rango Visión? (ToxicWaste)

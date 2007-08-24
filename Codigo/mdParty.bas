@@ -182,7 +182,6 @@ End Sub
 
 Public Sub ExpulsarDeParty(ByVal leader As Integer, ByVal OldMember As Integer)
 Dim PI As Integer
-Dim razon As String
 PI = UserList(leader).PartyIndex
 If PI > 0 Then
     If PI = UserList(OldMember).PartyIndex Then

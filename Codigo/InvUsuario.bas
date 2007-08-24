@@ -248,7 +248,6 @@ End Sub
 
 Sub QuitarUserInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Cantidad As Integer)
 
-Dim MiObj As Obj
 'Desequipa
 If Slot < 1 Or Slot > MAX_INVENTORY_SLOTS Then Exit Sub
 
@@ -314,7 +313,7 @@ If num > 0 Then
         
         Obj.amount = num
         
-        Call MakeObj(map, Obj, map, X, Y)
+        Call MakeObj(Obj, map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
         Call UpdateUserInv(False, UserIndex, Slot)
         
@@ -331,7 +330,7 @@ End If
 
 End Sub
 
-Sub EraseObj(ByVal sndIndex As Integer, ByVal num As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub EraseObj(ByVal num As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 MapData(map, X, Y).ObjInfo.amount = MapData(map, X, Y).ObjInfo.amount - num
 
@@ -344,7 +343,7 @@ End If
 
 End Sub
 
-Sub MakeObj(ByVal sndIndex As Integer, ByRef Obj As Obj, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub MakeObj(ByRef Obj As Obj, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
@@ -435,7 +434,7 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
             'Call WriteConsoleMsg(UserIndex, "No puedo cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
         Else
             'Quitamos el objeto
-            Call EraseObj(UserList(UserIndex).Pos.map, MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+            Call EraseObj(MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
         End If
         

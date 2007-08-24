@@ -1614,10 +1614,6 @@ End Sub
 Sub WarpMascotas(ByVal UserIndex As Integer)
 Dim i As Integer
 
-Dim UMascRespawn  As Boolean
-Dim miflag As Byte, MascotasReales As Integer
-Dim prevMacotaType As Integer
-
 Dim PetTypes(1 To MAXMASCOTAS) As Integer
 Dim PetRespawn(1 To MAXMASCOTAS) As Boolean
 Dim PetTiempoDeVida(1 To MAXMASCOTAS) As Integer

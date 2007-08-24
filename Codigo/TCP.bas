@@ -499,10 +499,9 @@ End Sub
 
 #If UsarQueSocket = 1 Or UsarQueSocket = 2 Then
 
-Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
-Dim LoopC As Integer
+Sub CloseSocket(ByVal UserIndex As Integer)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     If UserIndex = LastUser Then
         Do Until UserList(LastUser).flags.UserLogged
@@ -552,7 +551,7 @@ On Error GoTo errhandler
     
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
@@ -564,7 +563,7 @@ End Sub
 #ElseIf UsarQueSocket = 0 Then
 
 Sub CloseSocket(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     
     
@@ -589,7 +588,7 @@ On Error GoTo errhandler
 
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
@@ -605,7 +604,7 @@ End Sub
 
 Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim NURestados As Boolean
 Dim CoNnEcTiOnId As Long
@@ -646,7 +645,7 @@ Dim CoNnEcTiOnId As Long
 
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
@@ -772,7 +771,7 @@ Err:
             Exit Function
         End If
         
-        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos)) = 2 Then Call CloseSocket(UserIndex, True)
+        If frmMain.TCPServ.Enviar(UserList(UserIndex).ConnID, Datos, Len(Datos)) = 2 Then Call CloseSocket(UserIndex)
 
 Exit Function
 ErrorHandler:
@@ -1013,7 +1012,7 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
                 End If
             End If
             
-            Call CloseSocket(MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex, True)
+            Call CloseSocket(MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex)
         End If
     End If
 End If
@@ -1526,7 +1525,7 @@ End Sub
 
 Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim N As Integer
 Dim X As Integer
@@ -1633,13 +1632,13 @@ Close #N
 
 Exit Sub
 
-errhandler:
+Errhandler:
 Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
 End Sub
 
 Sub ReloadSokcet()
-On Error GoTo errhandler
+On Error GoTo Errhandler
 #If UsarQueSocket = 1 Then
 
     Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
@@ -1663,7 +1662,7 @@ On Error GoTo errhandler
 #End If
 
 Exit Sub
-errhandler:
+Errhandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub

@@ -449,7 +449,6 @@ End Sub
 Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
 Dim uh As Integer
-Dim exito As Boolean
 
 uh = UserList(UserIndex).Stats.UserHechizos(index)
 

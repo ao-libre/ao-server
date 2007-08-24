@@ -196,10 +196,3 @@ Private Function OpcionValida(ByVal opcion As Integer) As Boolean
     OpcionValida = opcion > 0 And opcion <= UBound(pOpciones)
 End Function
 
-Private Function DameOpcion(ByVal opcion As Integer) As String
-    If OpcionValida(opcion) Then
-        DameOpcion = GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & opcion)
-    Else
-        DameOpcion = "ERROR"
-    End If
-End Function

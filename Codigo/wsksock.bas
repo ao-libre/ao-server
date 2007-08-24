@@ -546,7 +546,7 @@ Public Function GetAscIP(ByVal inn As Long) As String
 End Function
 
 Public Function GetHostByAddress(ByVal addr As Long) As String
-    Dim phe&, Ret&
+    Dim phe&
     Dim heDestHost As HostEnt
     Dim HostName$
     phe = gethostbyaddr(addr, 4, PF_INET)

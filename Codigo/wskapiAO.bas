@@ -34,12 +34,7 @@ Option Explicit
 'que sea).
 #Const WSAPI_CREAR_LABEL = True
 
-Private Const SD_RECEIVE As Long = &H0
-Private Const SD_SEND As Long = &H1
 Private Const SD_BOTH As Long = &H2
-
-
-Private Const MAX_TIEMPOIDLE_COLALLENA = 5 'minutos
 
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
@@ -109,7 +104,7 @@ Call StartWinsock(desc)
 #End If
 End Sub
 
-Public Sub LimpiaWsApi(ByVal hWnd As Long)
+Public Sub LimpiaWsApi()
 #If UsarQueSocket = 1 Then
 
 Call LogApiSock("LimpiaWsApi")
@@ -132,7 +127,7 @@ End If
 #End If
 End Sub
 
-Public Function BuscaSlotSock(ByVal S As Long, Optional ByVal CacheInd As Boolean = False) As Long
+Public Function BuscaSlotSock(ByVal S As Long) As Long
 #If UsarQueSocket = 1 Then
 
 On Error GoTo hayerror
@@ -195,7 +190,7 @@ WSAPISock2Usr.Add CStr(Slot), CStr(Sock)
 #End If
 End Sub
 
-Public Sub BorraSlotSock(ByVal Sock As Long, Optional ByVal CacheIndice As Long)
+Public Sub BorraSlotSock(ByVal Sock As Long)
 #If (UsarQueSocket = 1) Then
 Dim cant As Long
 
@@ -350,7 +345,7 @@ End Function
 
 'Retorna 0 cuando se envió o se metio en la cola,
 'retorna <> 0 cuando no se pudo enviar o no se pudo meter en la cola
-Public Function WsApiEnviar(ByVal Slot As Integer, ByRef str As String, Optional Encolar As Boolean = True) As Long
+Public Function WsApiEnviar(ByVal Slot As Integer, ByRef str As String) As Long
 #If UsarQueSocket = 1 Then
 
 'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("WsApiEnviar:: slot=" & Slot & " str=" & str & " len(str)=" & Len(str) & " encolar=" & Encolar)
@@ -403,7 +398,7 @@ End Function
 Public Sub LogCustom(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -413,7 +408,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+Errhandler:
 
 #End If
 End Sub
@@ -422,7 +417,7 @@ End Sub
 Public Sub LogApiSock(ByVal str As String)
 #If (UsarQueSocket = 1) Then
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
@@ -432,7 +427,7 @@ Close #nfile
 
 Exit Sub
 
-errhandler:
+Errhandler:
 
 #End If
 End Sub
@@ -643,7 +638,7 @@ Dim i As Long
     LastUser = 1
     NumUsers = 0
     
-    Call LimpiaWsApi(frmMain.hWnd)
+    Call LimpiaWsApi
     Call Sleep(100)
     Call IniciaWsApi(frmMain.hWnd)
     SockListen = ListenForConnect(Puerto, hWndMsg, "")

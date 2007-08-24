@@ -81,130 +81,9 @@ End Enum
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
-Private Sub HandleAlineacion(ByVal NpcIndex As Integer)
-    Dim Al As e_Alineacion
-    Dim Pe As e_Personalidad
-    Dim TargetPJ As Integer
-    Dim TargetNPC As Integer
-    Dim EsNpc As Boolean
-
-    With Npclist(NpcIndex)
-        Al = .flags.AIAlineacion
-        TargetPJ = .flags.AtacaAPJ
-        TargetNPC = .flags.AtacaANPC
-        
-        
-        Select Case Al
-            Case e_Alineacion.Caos
-                If TargetPJ > 0 Then
-                    If InRangoVisionNPC(NpcIndex, UserList(TargetPJ).Pos.X, UserList(TargetPJ).Pos.Y) Then
-                        If criminal(TargetPJ) Then
-                            .flags.AtacaAPJ = 0
-                        End If
-                    Else
-                        .flags.AtacaAPJ = 0
-                    End If
-                End If
-                
-                If TargetNPC > 0 Then
-                    If Not InRangoVisionNPC(NpcIndex, Npclist(TargetNPC).Pos.X, Npclist(TargetNPC).Pos.Y) Then
-                        .flags.AtacaANPC = 0
-                    End If
-                End If
-            
-            Case e_Alineacion.Neutro
-                If TargetPJ > 0 Then
-                    If Not InRangoVisionNPC(NpcIndex, UserList(TargetPJ).Pos.X, UserList(TargetPJ).Pos.Y) Then
-                        .flags.AtacaAPJ = 0
-                    End If
-                End If
-                If TargetNPC > 0 Then
-                    If Not InRangoVisionNPC(NpcIndex, Npclist(TargetNPC).Pos.X, Npclist(TargetNPC).Pos.Y) Then
-                        .flags.AtacaANPC = 0
-                    End If
-                End If
-            
-            Case e_Alineacion.ninguna
-                Exit Sub
-            
-            Case e_Alineacion.Real
-                If TargetPJ > 0 Then
-                    If InRangoVisionNPC(NpcIndex, UserList(TargetPJ).Pos.X, UserList(TargetPJ).Pos.Y) Then
-                        If Not criminal(TargetPJ) Then
-                            .flags.AtacaAPJ = 0
-                        End If
-                    Else
-                        .flags.AtacaAPJ = 0
-                    End If
-                End If
-                
-                If TargetNPC > 0 Then
-                    If Not InRangoVisionNPC(NpcIndex, Npclist(TargetNPC).Pos.X, Npclist(TargetNPC).Pos.Y) Then
-                        .flags.AtacaANPC = 0
-                    End If
-                End If
-        End Select
-    End With
-End Sub
-
-Private Function AcquireNewTargetForAlignment(ByVal NpcIndex As Integer, ByRef EsNpc As Boolean) As Integer
-    Dim r As Long
-    Dim NPCPosX As Byte
-    Dim NPCPosY As Byte
-    Dim NpcBestTarget As Integer
-    Dim PJBestTarget As Integer
-    Dim PJ As Integer
-    Dim npc As Integer
-    
-    Dim X As Long
-    Dim Y As Long
-    Dim M As Integer
-    
-    With Npclist(NpcIndex)
-        NPCPosX = .Pos.X
-        NPCPosY = .Pos.Y
-        M = .Pos.map
-        
-        For r = 1 To MinYBorder
-            For X = NPCPosX - r To NPCPosX + r
-                For Y = NPCPosY - r To NPCPosY + r
-                    PJ = MapData(M, X, Y).UserIndex
-                    npc = MapData(M, X, Y).NpcIndex
-                    
-                    If PJ > 0 Then
-                        Select Case .flags.AIAlineacion
-                            Case e_Alineacion.Caos
-                                If Not criminal(PJ) And Not UserList(PJ).flags.Muerto And Not UserList(PJ).flags.invisible And Not UserList(PJ).flags.Oculto Then
-                                    PJBestTarget = PJ
-                                End If
-                            Case e_Alineacion.Real
-                            
-                            Case e_Alineacion.Neutro
-                            
-                        End Select
-                    End If
-                Next Y
-            Next X
-            
-            If PJBestTarget > 0 Then
-                EsNpc = False
-                AcquireNewTargetForAlignment = PJBestTarget
-                Exit Function
-            End If
-            
-            If NpcBestTarget > 0 Then
-                EsNpc = True
-                AcquireNewTargetForAlignment = NpcBestTarget
-                Exit Function
-            End If
-        Next r
-    End With
-End Function
-
 Private Sub GuardiasAI(ByVal NpcIndex As Integer, ByVal DelCaos As Boolean)
     Dim nPos As WorldPos
     Dim headingloop As Byte
-    Dim tHeading As Byte
     Dim UI As Integer
     
     With Npclist(NpcIndex)
@@ -257,7 +136,6 @@ End Sub
 Private Sub HostilMalvadoAI(ByVal NpcIndex As Integer)
     Dim nPos As WorldPos
     Dim headingloop As Byte
-    Dim tHeading As Byte
     Dim UI As Integer
     Dim NPCI As Integer
     Dim atacoPJ As Boolean
@@ -301,7 +179,6 @@ End Sub
 Private Sub HostilBuenoAI(ByVal NpcIndex As Integer)
     Dim nPos As WorldPos
     Dim headingloop As eHeading
-    Dim tHeading As Byte
     Dim UI As Integer
     
     With Npclist(NpcIndex)
@@ -334,8 +211,6 @@ Private Sub HostilBuenoAI(ByVal NpcIndex As Integer)
 End Sub
 
 Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim UI As Integer
     Dim SignoNS As Integer
@@ -408,8 +283,6 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
 End Sub
 
 Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim UI As Integer
     
@@ -520,8 +393,6 @@ End Sub
 
 Private Sub PersigueCiudadano(ByVal NpcIndex As Integer)
     Dim UI As Integer
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim i As Long
     
@@ -555,8 +426,6 @@ End Sub
 
 Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
     Dim UI As Integer
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim i As Long
     Dim SignoNS As Integer
@@ -633,8 +502,6 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 End Sub
 
 Private Sub SeguirAmo(ByVal NpcIndex As Integer)
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim i As Long
     Dim UI As Integer
@@ -669,8 +536,6 @@ Private Sub SeguirAmo(ByVal NpcIndex As Integer)
 End Sub
 
 Private Sub AiNpcAtacaNpc(ByVal NpcIndex As Integer)
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
     Dim tHeading As Byte
     Dim X As Long
     Dim Y As Long
@@ -916,9 +781,6 @@ Function PathFindingAI(ByVal NpcIndex As Integer) As Boolean
 'This function seeks the shortest path from the Npc
 'to the user's location.
 '#################################################################
-    Dim nPos As WorldPos
-    Dim headingloop As Byte
-    Dim tHeading As Byte
     Dim Y As Long
     Dim X As Long
     
