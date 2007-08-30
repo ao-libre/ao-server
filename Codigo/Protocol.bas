@@ -4763,10 +4763,13 @@ End Sub
 Private Sub HandleQuit(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 08/29/07 by Rapsodius
+'If user is invisible, it automatically becomes
+'visible before doing the countdown to exit
 '
 '***************************************************
     Dim tUser As Integer
+    Dim isNotVisible As Boolean
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -4790,6 +4793,14 @@ Private Sub HandleQuit(ByVal UserIndex As Integer)
             
             Call WriteConsoleMsg(UserIndex, "Comercio cancelado. ", FontTypeNames.FONTTYPE_TALK)
             Call FinComerciarUsu(UserIndex)
+        End If
+        
+        isNotVisible = (.flags.Oculto Or .flags.invisible)
+        If isNotVisible Then
+            .flags.Oculto = 0
+            .flags.invisible = 0
+            Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
         End If
         
         Call Cerrar_Usuario(UserIndex)
