@@ -808,6 +808,9 @@ Public Type ObjData
     DefensaMagicaMax As Integer
     DefensaMagicaMin As Integer
     Refuerzo As Byte
+    
+    Log As Byte 'es un objeto que queremos loguear? Pablo (ToxicWaste) 07/09/07
+    NoLog As Byte 'es un objeto que esta prohibido loguear?
 End Type
 
 Public Type Obj

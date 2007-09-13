@@ -178,7 +178,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
 
@@ -292,7 +292,7 @@ Next Hechizo
 Set Leer = Nothing
 Exit Sub
 
-Errhandler:
+errhandler:
  MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -545,7 +545,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
 
@@ -571,6 +571,11 @@ ReDim Preserve ObjData(1 To NumObjDatas) As ObjData
 For Object = 1 To NumObjDatas
         
     ObjData(Object).name = Leer.GetValue("OBJ" & Object, "Name")
+    
+    'Pablo (ToxicWaste) Log de Objetos.
+    ObjData(Object).Log = val(Leer.GetValue("OBJ" & Object, "Log"))
+    ObjData(Object).NoLog = val(Leer.GetValue("OBJ" & Object, "NoLog"))
+    '07/09/07
     
     ObjData(Object).GrhIndex = val(Leer.GetValue("OBJ" & Object, "GrhIndex"))
     If ObjData(Object).GrhIndex = 0 Then
@@ -747,7 +752,7 @@ Set Leer = Nothing
 
 Exit Sub
 
-Errhandler:
+errhandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -1438,7 +1443,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim OldUserHead As Long
 
@@ -1688,7 +1693,7 @@ End If
 
 Exit Sub
 
-Errhandler:
+errhandler:
 Call LogError("Error en SaveUser")
 
 End Sub

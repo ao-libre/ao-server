@@ -56,7 +56,7 @@ End If
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -65,7 +65,7 @@ End Sub
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
 'Modifique la fórmula y ahora anda bien.
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Double
 Dim res As Integer
@@ -103,7 +103,7 @@ UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando 
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -330,20 +330,24 @@ If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Th
     MiObj.amount = 1
     MiObj.ObjIndex = ItemIndex
     If Not MeterItemEnInventario(UserIndex, MiObj) Then
-                    Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
+        Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
     End If
+    
+    'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
+    If ObjData(MiObj.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(UserIndex).name & " ha construído " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
+    End If
+    
     Call SubirSkill(UserIndex, Herreria)
     Call UpdateUserInv(True, UserIndex, 0)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
-    
+
+    UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+    If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+
+    UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 End If
-
-UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
-If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
-    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
-
-UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
-
 End Sub
 
 Public Function PuedeConstruirCarpintero(ByVal ItemIndex As Integer) As Boolean
@@ -377,17 +381,23 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
                     Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
     End If
     
+    'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
+    If ObjData(MiObj.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(UserIndex).name & " ha construído " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
+    End If
+    
     Call SubirSkill(UserIndex, Carpinteria)
     Call UpdateUserInv(True, UserIndex, 0)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+
+
+    UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
+    If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
+        UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+
+    UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
+
 End If
-
-UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
-If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
-    UserList(UserIndex).Reputacion.PlebeRep = MAXREP
-
-UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
-
 End Sub
 
 Private Function MineralesParaLingote(ByVal Lingote As iMinerales) As Integer
@@ -675,7 +685,7 @@ Call SubirSkill(UserIndex, Supervivencia)
 End Sub
 
 Public Sub DoPescar(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -729,12 +739,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoPescar")
 End Sub
 
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -795,7 +805,7 @@ End If
         
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
@@ -1098,7 +1108,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1156,13 +1166,13 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
 
 Public Sub DoMineria(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1218,7 +1228,7 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub

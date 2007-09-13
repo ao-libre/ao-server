@@ -79,6 +79,17 @@ If Modo = eModoComercio.Compra Then
     
     Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(Slot), Cantidad)
     
+    'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
+    'Es un Objeto que tenemos que loguear?
+    If ObjData(Objeto.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.amount & " " & ObjData(Objeto.ObjIndex).name)
+    ElseIf Objeto.amount = 1000 Then 'Es mucha cantidad?
+        'Si no es de los prohibidos de loguear, lo logueamos.
+        If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
+            Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.amount & " " & ObjData(Objeto.ObjIndex).name)
+        End If
+    End If
+    
 ElseIf Modo = eModoComercio.Venta Then
     
     If Cantidad > UserList(UserIndex).Invent.Object(Slot).amount Then Cantidad = UserList(UserIndex).Invent.Object(Slot).amount
@@ -136,8 +147,20 @@ ElseIf Modo = eModoComercio.Venta Then
         End If
     End If
     
+    'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
+    'Es un Objeto que tenemos que loguear?
+    If ObjData(Objeto.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.amount & " " & ObjData(Objeto.ObjIndex).name)
+    ElseIf Objeto.amount = 1000 Then 'Es mucha cantidad?
+        'Si no es de los prohibidos de loguear, lo logueamos.
+        If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
+            Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.amount & " " & ObjData(Objeto.ObjIndex).name)
+        End If
+    End If
+    
 End If
-        
+
+    
     Call UpdateUserInv(True, UserIndex, 0)
     Call WriteUpdateUserStats(UserIndex)
     Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)

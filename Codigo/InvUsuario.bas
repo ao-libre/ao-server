@@ -160,7 +160,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
 'Last Modification: 23/01/2007
 '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 'If Cantidad > 100000 Then Exit Sub
 
@@ -171,8 +171,8 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
         'info debug
         Dim loops As Integer
         
-        'Seguridad Alkon
-        If Cantidad > 39999 Then
+        'Seguridad Alkon (guardo el oro tirado si supera los 50k)
+        If Cantidad > 50000 Then
             Dim j As Integer
             Dim k As Integer
             Dim M As Integer
@@ -242,7 +242,7 @@ End If
 
 Exit Sub
 
-Errhandler:
+errhandler:
 
 End Sub
 
@@ -322,6 +322,17 @@ If num > 0 Then
         End If
         
         If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Tiro cantidad:" & num & " Objeto:" & ObjData(Obj.ObjIndex).name)
+        
+        'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
+        'Es un Objeto que tenemos que loguear?
+        If ObjData(Obj.ObjIndex).Log = 1 Then
+            Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name)
+        ElseIf Obj.amount = 1000 Then 'Es mucha cantidad?
+        'Si no es de los prohibidos de loguear, lo logueamos.
+            If ObjData(Obj.ObjIndex).NoLog <> 1 Then
+                Call LogDesarrollo(UserList(UserIndex).name & " tiró del piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name)
+            End If
+        End If
   Else
     Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
   End If
@@ -359,7 +370,7 @@ End If
 End Sub
 
 Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) As Boolean
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 'Call LogTarea("MeterItemEnInventario")
  
@@ -406,7 +417,7 @@ Call UpdateUserInv(False, UserIndex, Slot)
 
 
 Exit Function
-Errhandler:
+errhandler:
 
 End Function
 
@@ -436,6 +447,18 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
             'Quitamos el objeto
             Call EraseObj(MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
+            
+            'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
+            'Es un Objeto que tenemos que loguear?
+            If ObjData(MiObj.ObjIndex).Log = 1 Then
+                Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
+            ElseIf MiObj.amount = 1000 Then 'Es mucha cantidad?
+                'Si no es de los prohibidos de loguear, lo logueamos.
+                If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
+                    Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
+                End If
+            End If
+            
         End If
         
     End If
@@ -510,7 +533,7 @@ Call UpdateUserInv(False, UserIndex, Slot)
 End Sub
 
 Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer) As Boolean
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 If ObjData(ObjIndex).Mujer = 1 Then
     SexoPuedeUsarItem = UserList(UserIndex).genero <> eGenero.Hombre
@@ -521,7 +544,7 @@ Else
 End If
 
 Exit Function
-Errhandler:
+errhandler:
     Call LogError("SexoPuedeUsarItem")
 End Function
 
@@ -547,7 +570,7 @@ End If
 End Function
 
 Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 'Equipa un item del inventario
 Dim Obj As ObjData
@@ -768,12 +791,12 @@ End Select
 Call UpdateUserInv(False, UserIndex, Slot)
 
 Exit Sub
-Errhandler:
+errhandler:
 Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 End Sub
 
 Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integer) As Boolean
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 'Verifica si la raza puede usar la ropa
 If UserList(UserIndex).raza = eRaza.Humano Or _
@@ -790,7 +813,7 @@ If (UserList(UserIndex).raza <> eRaza.ElfoOscuro) And ObjData(ItemIndex).RazaDro
 End If
 
 Exit Function
-Errhandler:
+errhandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function

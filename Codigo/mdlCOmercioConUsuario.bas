@@ -22,7 +22,8 @@ Attribute VB_Name = "mdlCOmercioConUsuario"
 '[Alejo]
 Option Explicit
 
-Private Const MAX_ORO_LOGUEABLE As Long = 90000
+Private Const MAX_ORO_LOGUEABLE As Long = 50000
+Private Const MAX_OBJ_LOGUEABLE As Long = 1000
 
 Public Type tCOmercioUsuario
     DestUsu As Integer 'El otro Usuario
@@ -221,7 +222,8 @@ If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     Call WriteUpdateUserStats(OtroUserIndex)
     'y se la doy al otro
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.cant
-    If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
+    'If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
+    'Esta linea del log es al pedo.
     Call WriteUpdateUserStats(UserIndex)
 Else
     'Quita el objeto y se lo da al otro
@@ -229,17 +231,30 @@ Else
         Call TirarItemAlPiso(UserList(UserIndex).Pos, Obj2)
     End If
     Call QuitarObjetos(Obj2.ObjIndex, Obj2.amount, OtroUserIndex)
+    
+    'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
+    If ObjData(Obj2.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
+    End If
+    'Es mucha cantidad?
+    If Obj2.amount > MAX_OBJ_LOGUEABLE Then
+    'Si no es de los prohibidos de loguear, lo logueamos.
+        If ObjData(Obj2.ObjIndex).NoLog <> 1 Then
+            Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
+        End If
+    End If
 End If
 
 'pone el oro directamente en la billetera
 If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
     'quito la cantidad de oro ofrecida
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.cant
-    If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " solto oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
+    If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
     Call WriteUpdateUserStats(UserIndex)
     'y se la doy al otro
     UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.cant
-    If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
+    'If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
+    'Esta linea del log es al pedo.
     Call WriteUpdateUserStats(OtroUserIndex)
 Else
     'Quita el objeto y se lo da al otro
@@ -247,6 +262,19 @@ Else
         Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, Obj1)
     End If
     Call QuitarObjetos(Obj1.ObjIndex, Obj1.amount, UserIndex)
+    
+    'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
+    If ObjData(Obj1.ObjIndex).Log = 1 Then
+        Call LogDesarrollo(UserList(UserIndex).name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
+    End If
+    'Es mucha cantidad?
+    If Obj1.amount > MAX_OBJ_LOGUEABLE Then
+    'Si no es de los prohibidos de loguear, lo logueamos.
+        If ObjData(Obj1.ObjIndex).NoLog <> 1 Then
+            Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
+        End If
+    End If
+    
 End If
 
 '[/CORREGIDO] :p
