@@ -912,6 +912,9 @@ Call Leer.Initialize(CharPath & UCase$(name) & ".chr")
 'Cargamos los datos del personaje
 Call LoadUserInit(UserIndex, Leer)
 
+'Reseteamos los privilegios
+UserList(UserIndex).flags.Privilegios = 0
+
 Call LoadUserStats(UserIndex, Leer)
 
 If Not ValidateChr(UserIndex) Then
@@ -1064,10 +1067,7 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.map, MapInfo(UserList(UserIndex).Pos.map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
 
-'Reseteamos los privilegios
-UserList(UserIndex).flags.Privilegios = 0
-
-'Vemos que clase de user es (se lo usa para setear los privilegios alcrear el PJ)
+'Vemos que clase de user es (se lo usa para setear los privilegios al loguear el PJ)
 If EsAdmin(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
     Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
@@ -1090,11 +1090,16 @@ If EsRolesMaster(name) Then
     UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.RoleMaster
 End If
 
-If UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> PlayerType.ChaosCouncil And UserList(UserIndex).flags.Privilegios <> PlayerType.RoyalCouncil Then
+If UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
+ElseIf UserList(UserIndex).flags.Privilegios = (PlayerType.User Or PlayerType.RoyalCouncil) Then
+    UserList(UserIndex).flags.ChatColor = RGB(0, 255, 255)
+ElseIf UserList(UserIndex).flags.Privilegios = (PlayerType.User Or PlayerType.ChaosCouncil) Then
+    UserList(UserIndex).flags.ChatColor = RGB(255, 128, 64)
 Else
     UserList(UserIndex).flags.ChatColor = vbWhite
 End If
+
 
 ''[EL OSO]: TRAIGO ESTO ACA ARRIBA PARA DARLE EL IP!
 #If ConUpTime Then
