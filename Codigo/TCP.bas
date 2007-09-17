@@ -501,7 +501,7 @@ End Sub
 
 Sub CloseSocket(ByVal UserIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
     
     If UserIndex = LastUser Then
         Do Until UserList(LastUser).flags.UserLogged
@@ -551,7 +551,7 @@ On Error GoTo Errhandler
     
 Exit Sub
 
-Errhandler:
+errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
@@ -563,7 +563,7 @@ End Sub
 #ElseIf UsarQueSocket = 0 Then
 
 Sub CloseSocket(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
     
     
     
@@ -588,7 +588,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
@@ -604,7 +604,7 @@ End Sub
 
 Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim NURestados As Boolean
 Dim CoNnEcTiOnId As Long
@@ -645,7 +645,7 @@ Dim CoNnEcTiOnId As Long
 
 Exit Sub
 
-Errhandler:
+errhandler:
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
@@ -1028,12 +1028,34 @@ UserList(UserIndex).showName = True 'Por default los nombres son visibles
 
 'If in the water, and has a boat, equip it!
 If UserList(UserIndex).Invent.BarcoObjIndex > 0 And HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
-     UserList(UserIndex).Char.body = ObjData(UserList(UserIndex).Invent.BarcoObjIndex).Ropaje
-     UserList(UserIndex).Char.Head = 0
-     UserList(UserIndex).Char.WeaponAnim = NingunArma
-     UserList(UserIndex).Char.ShieldAnim = NingunEscudo
-     UserList(UserIndex).Char.CascoAnim = NingunCasco
-     UserList(UserIndex).flags.Navegando = 1
+    Dim Barco As ObjData
+    Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+    UserList(UserIndex).Char.Head = 0
+    If UserList(UserIndex).flags.Muerto = 0 Then
+
+        If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
+            UserList(UserIndex).Char.body = iFragataReal
+        ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+            UserList(UserIndex).Char.body = iFragataCaos
+        Else
+            If criminal(UserIndex) Then
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+            Else
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+            End If
+        End If
+    Else
+        UserList(UserIndex).Char.body = iFragataFantasmal
+    End If
+    
+    UserList(UserIndex).Char.ShieldAnim = NingunEscudo
+    UserList(UserIndex).Char.WeaponAnim = NingunArma
+    UserList(UserIndex).Char.CascoAnim = NingunCasco
+    UserList(UserIndex).flags.Navegando = 1
 End If
 
 
@@ -1525,7 +1547,7 @@ End Sub
 
 Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim N As Integer
 Dim X As Integer
@@ -1632,13 +1654,13 @@ Close #N
 
 Exit Sub
 
-Errhandler:
+errhandler:
 Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
 End Sub
 
 Sub ReloadSokcet()
-On Error GoTo Errhandler
+On Error GoTo errhandler
 #If UsarQueSocket = 1 Then
 
     Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
@@ -1662,7 +1684,7 @@ On Error GoTo Errhandler
 #End If
 
 Exit Sub
-Errhandler:
+errhandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub

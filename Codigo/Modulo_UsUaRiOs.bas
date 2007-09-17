@@ -104,7 +104,33 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
 End If
 
-Call DarCuerpoDesnudo(UserIndex)
+If UserList(UserIndex).flags.Navegando = 1 Then
+    Dim Barco As ObjData
+    Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+    UserList(UserIndex).Char.Head = 0
+        
+    If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
+        UserList(UserIndex).Char.body = iFragataReal
+    ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+        UserList(UserIndex).Char.body = iFragataCaos
+    Else
+        If criminal(UserIndex) Then
+            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+        Else
+            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+        End If
+    End If
+    
+    UserList(UserIndex).Char.ShieldAnim = NingunEscudo
+    UserList(UserIndex).Char.WeaponAnim = NingunArma
+    UserList(UserIndex).Char.CascoAnim = NingunCasco
+Else
+    Call DarCuerpoDesnudo(UserIndex)
+End If
 Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call WriteUpdateUserStats(UserIndex)
 
@@ -258,7 +284,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -828,7 +854,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 

@@ -68,6 +68,15 @@ Public Const NO_3D_SOUND As Byte = 255
 Public Const iFragataFantasmal = 87
 Public Const iFragataReal = 190
 Public Const iFragataCaos = 189
+Public Const iBarca = 84
+Public Const iGalera = 85
+Public Const iGaleon = 86
+Public Const iBarcaCiuda = 395
+Public Const iBarcaPk = 396
+Public Const iGaleraCiuda = 397
+Public Const iGaleraPk = 398
+Public Const iGaleonCiuda = 399
+Public Const iGaleonPk = 400
 
 Public Enum iMinerales
     HierroCrudo = 192

@@ -134,7 +134,15 @@ If UserList(UserIndex).flags.Navegando = 0 Then
         ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
             UserList(UserIndex).Char.body = iFragataCaos
         Else
-            UserList(UserIndex).Char.body = Barco.Ropaje
+            If criminal(UserIndex) Then
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+            Else
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+            End If
         End If
     Else
         UserList(UserIndex).Char.body = iFragataFantasmal
