@@ -3014,6 +3014,8 @@ On Error GoTo errhandler
         
         If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
+
             
             'Update tag
              Call RefreshCharStatus(UserIndex)
@@ -4282,6 +4284,8 @@ On Error GoTo errhandler
             'WAR shall be!
             Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("TU CLAN HA ENTRADO EN GUERRA CON " & guild, FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.guildIndex) & " LE DECLARA LA GUERRA A TU CLAN", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
+            Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -4383,6 +4387,8 @@ On Error GoTo errhandler
             End If
             
             Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call RefreshCharStatus(tUser)
+            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessagePlayWave(43, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -4498,6 +4504,7 @@ On Error GoTo errhandler
         
         If guildIndex > 0 Then
             Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " fue expulsado del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
         Else
             Call WriteConsoleMsg(UserIndex, "No puedes expulsar ese personaje del clan.", FontTypeNames.FONTTYPE_GUILD)
         End If
