@@ -4284,7 +4284,7 @@ On Error GoTo errhandler
             'WAR shall be!
             Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("TU CLAN HA ENTRADO EN GUERRA CON " & guild, FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.guildIndex) & " LE DECLARA LA GUERRA A TU CLAN", FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
+            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
             Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
