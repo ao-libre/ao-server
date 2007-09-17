@@ -8325,7 +8325,7 @@ On Error GoTo errhandler
         commandString = commandString & Arg1 & " " & Arg2
         
         If valido Then _
-            Call LogGM(.name, commandString & " " & UserList(tUser).name)
+            Call LogGM(.name, commandString & " " & UserName)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
