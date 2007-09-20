@@ -156,7 +156,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -167,7 +167,7 @@ On Error GoTo Errhandler
     Next
 
 Exit Function
-Errhandler:
+errhandler:
 
 End Function
 
@@ -556,6 +556,12 @@ If Hechizos(H).Invisibilidad = 1 Then
         End If
     End If
     
+    'Si sos user, no uses este hechizo con GMS.
+    If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+        If Not UserList(tU).flags.Privilegios And PlayerType.User Then
+            Exit Sub
+        End If
+    End If
    
     UserList(tU).flags.invisible = 1
     Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
@@ -576,8 +582,11 @@ If Hechizos(H).Mimetiza = 1 Then
         Exit Sub
     End If
     
-    If Not UserList(tU).flags.Privilegios And PlayerType.User Then
-        Exit Sub
+    'Si sos user, no uses este hechizo con GMS.
+    If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+        If Not UserList(tU).flags.Privilegios And PlayerType.User Then
+            Exit Sub
+        End If
     End If
     
     If UserList(UserIndex).flags.Mimetizado = 1 Then
@@ -639,6 +648,13 @@ If Hechizos(H).CuraVeneno = 1 Then
             Else
                 Call DisNobAuBan(UserIndex, UserList(UserIndex).Reputacion.NobleRep * 0.5, 10000)
             End If
+        End If
+    End If
+        
+    'Si sos user, no uses este hechizo con GMS.
+    If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+        If Not UserList(tU).flags.Privilegios And PlayerType.User Then
+            Exit Sub
         End If
     End If
         
@@ -1001,6 +1017,39 @@ If Hechizos(hIndex).Inmoviliza = 1 Then
     End If
 End If
 
+If Hechizos(hIndex).Mimetiza = 1 Then
+    
+    If UserList(UserIndex).flags.Mimetizado = 1 Then
+        Call WriteConsoleMsg(UserIndex, "Ya te encuentras transformado. El hechizo no ha tenido efecto", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
+    If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Sub
+    
+    'copio el char original al mimetizado
+    
+    With UserList(UserIndex)
+        .CharMimetizado.body = .Char.body
+        .CharMimetizado.Head = .Char.Head
+        .CharMimetizado.CascoAnim = .Char.CascoAnim
+        .CharMimetizado.ShieldAnim = .Char.ShieldAnim
+        .CharMimetizado.WeaponAnim = .Char.WeaponAnim
+        
+        .flags.Mimetizado = 1
+        
+        'ahora pongo lo del NPC.
+        .Char.body = Npclist(NpcIndex).Char.body
+        .Char.Head = Npclist(NpcIndex).Char.Head
+        .Char.CascoAnim = NingunCasco
+        .Char.ShieldAnim = NingunEscudo
+        .Char.WeaponAnim = NingunArma
+    
+        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+    End With
+   
+   Call InfoHechizo(UserIndex)
+   b = True
+End If
 End Sub
 
 Sub HechizoPropNPC(ByVal hIndex As Integer, ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef b As Boolean)

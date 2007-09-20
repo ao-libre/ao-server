@@ -5122,21 +5122,25 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
             .Char.loops = INFINITE_LOOPS
             
             'Show proper FX according to level
-            If .Stats.ELV < 15 Then
+            If .Stats.ELV < 13 Then
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARCHICO, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARCHICO
             
-            ElseIf .Stats.ELV < 30 Then
+            ElseIf .Stats.ELV < 25 Then
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARMEDIANO, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARMEDIANO
             
-            ElseIf .Stats.ELV < 45 Then
+            ElseIf .Stats.ELV < 35 Then
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARGRANDE, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARGRANDE
             
+            ElseIf .Stats.ELV < 42 Then
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARGRANDE, INFINITE_LOOPS))
+                .Char.FX = FXIDs.FXMEDITARXGRANDE
+            
             Else
                 Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARXGRANDE, INFINITE_LOOPS))
-                .Char.FX = FXIDs.FXMEDITARXGRANDE
+                .Char.FX = FXIDs.FXMEDITARXXGRANDE
             End If
         Else
             .Counters.bPuedeMeditar = False

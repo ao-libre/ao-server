@@ -172,7 +172,7 @@ Public Const NingunArma As Integer = 2
 
 Public Const EspadaMataDragonesIndex As Integer = 402
 Public Const LAUDMAGICO As Integer = 696
-Public Const FLAUTAMAGICA As Integer = 0
+Public Const FLAUTAMAGICA As Integer = 208
 
 
 Public Const MAXMASCOTASENTRENADOR As Byte = 7
@@ -183,6 +183,7 @@ Public Enum FXIDs
     FXMEDITARMEDIANO = 5
     FXMEDITARGRANDE = 6
     FXMEDITARXGRANDE = 16
+    FXMEDITARXXGRANDE = 16 'poner el que corresponda. (ToxicWaste)
 End Enum
 
 Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
