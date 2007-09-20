@@ -1162,7 +1162,7 @@ If NumUsers > recordusuarios Then
     Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 End If
 
-If UserList(UserIndex).NroMacotas > 0 Then
+If UserList(UserIndex).NroMascotas > 0 And MapInfo(UserList(UserIndex).Pos.map).Pk Then
     Dim i As Integer
     For i = 1 To MAXMASCOTAS
         If UserList(UserIndex).MascotasType(i) > 0 Then
@@ -1494,7 +1494,7 @@ End Sub
 Sub ResetUserPets(ByVal UserIndex As Integer)
     Dim LoopC As Long
     
-    UserList(UserIndex).NroMacotas = 0
+    UserList(UserIndex).NroMascotas = 0
         
     For LoopC = 1 To MAXMASCOTAS
         UserList(UserIndex).MascotasIndex(LoopC) = 0

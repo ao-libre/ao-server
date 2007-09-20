@@ -1096,7 +1096,7 @@ Public Type User
     
     MascotasIndex(1 To MAXMASCOTAS) As Integer
     MascotasType(1 To MAXMASCOTAS) As Integer
-    NroMacotas As Integer
+    NroMascotas As Integer
     
     Stats As UserStats
     flags As UserFlags

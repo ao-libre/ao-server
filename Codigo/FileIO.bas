@@ -976,7 +976,11 @@ If UserList(UserIndex).Invent.AnilloEqpSlot > 0 Then
     UserList(UserIndex).Invent.AnilloEqpObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.AnilloEqpSlot).ObjIndex
 End If
 
-UserList(UserIndex).NroMacotas = 0
+UserList(UserIndex).NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
+Dim NpcIndex As Integer
+For LoopC = 1 To MAXMASCOTAS
+    UserList(UserIndex).MascotasType(LoopC) = CInt(UserFile.GetValue("MASCOTAS", "MAS" & LoopC))
+Next LoopC
 
 ln = UserFile.GetValue("Guild", "GUILDINDEX")
 If IsNumeric(ln) Then
@@ -1667,7 +1671,7 @@ For LoopC = 1 To MAXUSERHECHIZOS
 Next
 
 Dim NroMascotas As Long
-NroMascotas = UserList(UserIndex).NroMacotas
+NroMascotas = UserList(UserIndex).NroMascotas
 
 For LoopC = 1 To MAXMASCOTAS
     ' Mascota valida?
@@ -1679,6 +1683,9 @@ For LoopC = 1 To MAXMASCOTAS
             cad = "0"
             NroMascotas = NroMascotas - 1
         End If
+        Call WriteVar(UserFile, "MASCOTAS", "MAS" & LoopC, cad)
+    Else
+        cad = UserList(UserIndex).MascotasType(LoopC)
         Call WriteVar(UserFile, "MASCOTAS", "MAS" & LoopC, cad)
     End If
 

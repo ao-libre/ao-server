@@ -287,7 +287,7 @@ End Sub
 
 Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 
-If UserList(UserIndex).NroMacotas >= MAXMASCOTAS Then Exit Sub
+If UserList(UserIndex).NroMascotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
 If MapInfo(UserList(UserIndex).Pos.map).Pk = False Or MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
@@ -308,10 +308,10 @@ H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
     
 For j = 1 To Hechizos(H).cant
     
-    If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
+    If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
         ind = SpawnNpc(Hechizos(H).NumNpc, TargetPos, True, False)
         If ind > 0 Then
-            UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
+            UserList(UserIndex).NroMascotas = UserList(UserIndex).NroMascotas + 1
             
             index = FreeMascotaIndex(UserIndex)
             

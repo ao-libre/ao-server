@@ -1458,22 +1458,12 @@ On Error GoTo ErrorHandler
     
     Dim i As Integer
     For i = 1 To MAXMASCOTAS
-        
         If UserList(UserIndex).MascotasIndex(i) > 0 Then
-               If Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia > 0 Then
-                    Call MuereNpc(UserList(UserIndex).MascotasIndex(i), 0)
-               Else
-                    Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = 0
-                    Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = Npclist(UserList(UserIndex).MascotasIndex(i)).flags.OldMovement
-                    Npclist(UserList(UserIndex).MascotasIndex(i)).Hostile = Npclist(UserList(UserIndex).MascotasIndex(i)).flags.OldHostil
-                    UserList(UserIndex).MascotasIndex(i) = 0
-                    UserList(UserIndex).MascotasType(i) = 0
-               End If
+            Call MuereNpc(UserList(UserIndex).MascotasIndex(i), 0)
         End If
-        
     Next i
     
-    UserList(UserIndex).NroMacotas = 0
+    UserList(UserIndex).NroMascotas = 0
     
     
     'If MapInfo(UserList(UserIndex).Pos.Map).Pk Then
@@ -1646,7 +1636,7 @@ Dim PetTiempoDeVida(1 To MAXMASCOTAS) As Integer
 
 Dim NroPets As Integer, InvocadosMatados As Integer
 
-NroPets = UserList(UserIndex).NroMacotas
+NroPets = UserList(UserIndex).NroMascotas
 InvocadosMatados = 0
 
     'Matamos los invocados
@@ -1664,7 +1654,7 @@ InvocadosMatados = 0
     Next i
     
     If InvocadosMatados > 0 Then
-        Call WriteConsoleMsg(UserIndex, "Pierdes el control de tus mascotas.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Pierdes el control de tus mascotas invocadas.", FontTypeNames.FONTTYPE_INFO)
     End If
     
     For i = 1 To MAXMASCOTAS
@@ -1673,19 +1663,25 @@ InvocadosMatados = 0
             PetTypes(i) = UserList(UserIndex).MascotasType(i)
             PetTiempoDeVida(i) = Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia
             Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
+        ElseIf UserList(UserIndex).MascotasType(i) > 0 Then
+            PetRespawn(i) = True
+            PetTypes(i) = UserList(UserIndex).MascotasType(i)
+            PetTiempoDeVida(i) = 0
         End If
     Next i
     
     For i = 1 To MAXMASCOTAS
+        UserList(UserIndex).MascotasType(i) = PetTypes(i)
+    Next i
+    
+    For i = 1 To MAXMASCOTAS
         If PetTypes(i) > 0 Then
+          If MapInfo(UserList(UserIndex).Pos.map).Pk = True Then
             UserList(UserIndex).MascotasIndex(i) = SpawnNpc(PetTypes(i), UserList(UserIndex).Pos, False, PetRespawn(i))
-            UserList(UserIndex).MascotasType(i) = PetTypes(i)
             'Controlamos que se sumoneo OK
             If UserList(UserIndex).MascotasIndex(i) = 0 Then
-                UserList(UserIndex).MascotasIndex(i) = 0
-                UserList(UserIndex).MascotasType(i) = 0
-                If UserList(UserIndex).NroMacotas > 0 Then UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas - 1
-                Exit Sub
+                Call WriteConsoleMsg(UserIndex, "No hay espacio aquí para tu mascota.", FontTypeNames.FONTTYPE_INFO)
+                Exit For
             End If
             Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
             Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
@@ -1693,10 +1689,14 @@ InvocadosMatados = 0
             Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = 0
             Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia = PetTiempoDeVida(i)
             Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
+          Else
+            Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Estas te esperarán afuera.", FontTypeNames.FONTTYPE_INFO)
+            Exit For
+          End If
         End If
     Next i
     
-    UserList(UserIndex).NroMacotas = NroPets
+    UserList(UserIndex).NroMascotas = NroPets
 
 End Sub
 
@@ -1709,7 +1709,7 @@ Dim MascotasReales As Integer
       If UserList(UserIndex).MascotasType(i) > 0 Then MascotasReales = MascotasReales + 1
     Next i
     
-    If MascotasReales <> UserList(UserIndex).NroMacotas Then UserList(UserIndex).NroMacotas = 0
+    If MascotasReales <> UserList(UserIndex).NroMascotas Then UserList(UserIndex).NroMascotas = 0
 
 End Sub
 

@@ -366,7 +366,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 'fired every minute
 Static Minutos As Long
 Static MinutosLatsClean As Long
@@ -431,7 +431,7 @@ Close #N
 '<<<<<-------- Log the number of users online ------>>>
 
 Exit Sub
-Errhandler:
+errhandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
     Resume Next
 End Sub
@@ -669,7 +669,7 @@ On Error GoTo hayerror
                         
                         If bEnviarAyS Then Call WriteUpdateHungerAndThirst(iUserIndex)
                         
-                        If .NroMacotas > 0 Then Call TiempoInvocacion(iUserIndex)
+                        If .NroMascotas > 0 Then Call TiempoInvocacion(iUserIndex)
                     End If 'Muerto
                 Else 'no esta logeado?
                     'Inactive players will be removed!
@@ -762,7 +762,7 @@ Private Sub packetResend_Timer()
 'Last Modification: 04/01/07
 'Attempts to resend to the user all data that may be enqueued.
 '***************************************************
-On Error GoTo Errhandler:
+On Error GoTo errhandler:
     Dim i As Long
     
     For i = 1 To MaxUsers
@@ -775,7 +775,7 @@ On Error GoTo Errhandler:
 
 Exit Sub
 
-Errhandler:
+errhandler:
     LogError ("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
     Resume Next
 End Sub
@@ -850,7 +850,7 @@ ErrorHandler:
 End Sub
 
 Private Sub tLluvia_Timer()
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim iCount As Long
 If Lloviendo Then
@@ -860,7 +860,7 @@ If Lloviendo Then
 End If
 
 Exit Sub
-Errhandler:
+errhandler:
 Call LogError("tLluvia " & Err.Number & ": " & Err.description)
 End Sub
 
@@ -905,7 +905,7 @@ Call LogError("Error tLluviaTimer")
 End Sub
 
 Private Sub tPiqueteC_Timer()
-On Error GoTo Errhandler
+On Error GoTo errhandler
 Static Segundos As Integer
 Dim NuevaA As Boolean
 Dim NuevoL As Boolean
@@ -963,7 +963,7 @@ If Segundos >= 18 Then Segundos = 0
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en tPiqueteC_Timer " & Err.Number & ": " & Err.description)
 End Sub
 

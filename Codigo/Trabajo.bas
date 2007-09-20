@@ -539,7 +539,7 @@ Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 Dim puntosDomar As Integer
 Dim puntosRequeridos As Integer
 
-If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
+If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
     
     If Npclist(NpcIndex).MaestroUser = UserIndex Then
         Call WriteConsoleMsg(UserIndex, "La criatura ya te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
@@ -549,35 +549,43 @@ If UserList(UserIndex).NroMacotas < MAXMASCOTAS Then
         Exit Sub
     End If
     
-    puntosDomar = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) * UserList(UserIndex).Stats.UserSkills(eSkill.Domar)
+    puntosDomar = CInt(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma)) * CInt(UserList(UserIndex).Stats.UserSkills(eSkill.Domar))
     If UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA Then
         puntosRequeridos = Npclist(NpcIndex).flags.Domable * 0.8
     Else
         puntosRequeridos = Npclist(NpcIndex).flags.Domable
     End If
     
-    If puntosRequeridos <= puntosDomar Then
+    If puntosRequeridos <= puntosDomar And RandomNumber(1, 5) = 1 Then
         Dim index As Integer
-        UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas + 1
+        UserList(UserIndex).NroMascotas = UserList(UserIndex).NroMascotas + 1
         index = FreeMascotaIndex(UserIndex)
         UserList(UserIndex).MascotasIndex(index) = NpcIndex
         UserList(UserIndex).MascotasType(index) = Npclist(NpcIndex).Numero
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
+        'Entreno domar. Es un 30% más dificil si no sos druida.
+        If UserList(UserIndex).clase = eClass.Druid Or (RandomNumber(1, 3) < 3) Then
+            Call SubirSkill(UserIndex, Domar)
+        End If
+        
         Call FollowAmo(NpcIndex)
+        Call ReSpawnNpc(Npclist(NpcIndex))
         
         Call WriteConsoleMsg(UserIndex, "La criatura te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
         
-        If UserList(UserIndex).clase = eClass.Druid Or RandomNumber(1, 70) = 1 Then
-            Call SubirSkill(UserIndex, Domar)
-        End If
     Else
         If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
             Call WriteConsoleMsg(UserIndex, "No has logrado domar la criatura.", FontTypeNames.FONTTYPE_INFO)
             UserList(UserIndex).flags.UltimoMensaje = 5
         End If
+        'Entreno domar aunque no logue domar.
+        If UserList(UserIndex).clase = eClass.Druid Or (RandomNumber(1, 3) < 3) Then
+            Call SubirSkill(UserIndex, Domar)
+        End If
     End If
+
 Else
     Call WriteConsoleMsg(UserIndex, "No puedes controlar más criaturas.", FontTypeNames.FONTTYPE_INFO)
 End If

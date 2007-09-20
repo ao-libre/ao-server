@@ -47,7 +47,7 @@ Option Explicit
 Sub QuitarMascota(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
 Dim i As Integer
-UserList(UserIndex).NroMacotas = UserList(UserIndex).NroMacotas - 1
+UserList(UserIndex).NroMascotas = UserList(UserIndex).NroMascotas - 1
 For i = 1 To MAXMASCOTAS
   If UserList(UserIndex).MascotasIndex(i) = NpcIndex Then
      UserList(UserIndex).MascotasIndex(i) = 0
@@ -70,7 +70,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
-On Error GoTo Errhandler
+On Error GoTo errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
@@ -114,7 +114,7 @@ On Error GoTo Errhandler
         UserList(UserIndex).flags.TargetNpcTipo = eNPCType.Comun
         
         'El user que lo mato tiene mascotas?
-        If UserList(UserIndex).NroMacotas > 0 Then
+        If UserList(UserIndex).NroMascotas > 0 Then
             Dim T As Integer
             For T = 1 To MAXMASCOTAS
                   If UserList(UserIndex).MascotasIndex(T) > 0 Then
@@ -188,14 +188,15 @@ On Error GoTo Errhandler
         Call NPCTirarOro(MiNPC)
         'Tiramos el inventario
         Call NPC_TIRAR_ITEMS(MiNPC)
+        'ReSpawn o no
+        Call ReSpawnNpc(MiNPC)
     End If
    
-    'ReSpawn o no
-    Call ReSpawnNpc(MiNPC)
+    
     
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en MuereNpc - Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
@@ -335,7 +336,7 @@ End Sub
 
 Sub QuitarNPC(ByVal NpcIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
     Npclist(NpcIndex).flags.NPCActive = False
     
@@ -365,7 +366,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Npclist(NpcIndex).flags.NPCActive = False
     Call LogError("Error en QuitarNPC")
 
@@ -614,7 +615,7 @@ End Sub
 Function NextOpenNPC() As Integer
 'Call LogTarea("Sub NextOpenNPC")
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim LoopC As Integer
   
@@ -627,7 +628,7 @@ NextOpenNPC = LoopC
 
 
 Exit Function
-Errhandler:
+errhandler:
     Call LogError("Error en NextOpenNPC")
 End Function
 
