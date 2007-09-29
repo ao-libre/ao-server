@@ -44,12 +44,22 @@ Private p_Fundador As Integer
 Private p_CantMiembros As Integer
 'cantidad de miembros
 
+Private p_SumaNiveles As Integer
+'suma de todos los niveles
+
 'datos en los pjs: | indexParty(indice en p_members), partyLeader(userindex del lider) |
 
 'Constructor de clase
 Public Sub Class_Initialize()
+'***************************************************
+'Author: Unknown
+'Last Modification: 09/29/07
+'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+' - 09/29/07 p_SumaNiveles added
+'***************************************************
     p_expTotal = 0
     p_CantMiembros = 0
+    p_SumaNiveles = 0
 End Sub
 
 'Destructor de clase
@@ -86,29 +96,30 @@ Public Sub ObtenerExito(ByVal ExpGanada As Long, ByVal mapa As Integer, X As Int
 'Author: Unknown
 'Last Modification: 09/29/07
 'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+' - 09/29/07 New formula for calculating the experience point of each user
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
 '***************************************************
 'Se produjo un evento que da experiencia en la wp referenciada
 Dim i As Integer
 Dim UI As Integer
-Dim expPerCapita As Double
+Dim expThisUser As Double
 
 p_expTotal = p_expTotal + ExpGanada
 
-expPerCapita = CDbl(ExpGanada / p_CantMiembros)
-
 For i = 1 To PARTY_MAXMEMBERS
+    ' Formula: Exp*Nivel/sumadeNiveles
+    expThisUser = CDbl(ExpGanada * UserList(p_members(i).UserIndex).Stats.ELV / p_SumaNiveles)
     UI = p_members(i).UserIndex
     If UI > 0 Then
         If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
-                p_members(i).Experiencia = p_members(i).Experiencia + expPerCapita
+                p_members(i).Experiencia = p_members(i).Experiencia + expThisUser
                 If p_members(i).Experiencia < 0 Then
                     p_members(i).Experiencia = 0
                 End If
                 If PARTY_EXPERIENCIAPORGOLPE Then
-                    UserList(UI).Stats.Exp = UserList(UI).Stats.Exp + Fix(expPerCapita)
+                    UserList(UI).Stats.Exp = UserList(UI).Stats.Exp + Fix(expThisUser)
                     If UserList(UI).Stats.Exp > MAXEXP Then _
                         UserList(UI).Stats.Exp = MAXEXP
                     Call CheckUserLevel(UI)
@@ -155,6 +166,7 @@ If i <= PARTY_MAXMEMBERS Then
     p_members(i).UserIndex = UserIndex
     NuevoMiembro = True
     p_CantMiembros = p_CantMiembros + 1
+    p_SumaNiveles = p_SumaNiveles + UserList(UserIndex).Stats.ELV
 Else
     NuevoMiembro = False
 End If
@@ -199,6 +211,7 @@ If i = 1 Then
             Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party.", "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
             p_CantMiembros = p_CantMiembros - 1
+            p_SumaNiveles = p_SumaNiveles - UserList(UserIndex).Stats.ELV
             p_members(j).UserIndex = 0
             p_members(j).Experiencia = 0
         End If
@@ -216,6 +229,7 @@ Else
         'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
         Call WriteConsoleMsg(p_members(i).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(i).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
         p_CantMiembros = p_CantMiembros - 1
+        p_SumaNiveles = p_SumaNiveles - UserList(UserIndex).Stats.ELV
         p_members(i).UserIndex = 0
         p_members(i).Experiencia = 0
         CompactMemberList

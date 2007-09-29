@@ -203,3 +203,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/09/2007: Volo la restriccion por niveles para ingresar en una party (Tavo)
  * 29/09/2007: La experiencia dentro de una party es un numero real (Tavo)
  * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al numero mas chico (Tavo)
+ * 29/09/2007: Nueva formula para la experiencia de cada personaje en la party (Tavo)
