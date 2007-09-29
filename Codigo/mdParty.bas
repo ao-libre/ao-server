@@ -68,7 +68,7 @@ Public Const CASTIGOS As Boolean = False
 '
 Public Type tPartyMember
     UserIndex As Integer
-    Experiencia As Long
+    Experiencia As Double
 End Type
 
 

@@ -201,3 +201,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/08/2007: Borré cosas que no servian (Rapsodius)
  * 29/08/2007: En la cuenta regresiva del /SALIR se te va la invisibilidad. (Rapsodius)
  * 29/09/2007: Volo la restriccion por niveles para ingresar en una party (Tavo)
+ * 29/09/2007: La experiencia dentro de una party es un numero real (Tavo)
+ * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al numero mas chico (Tavo)
