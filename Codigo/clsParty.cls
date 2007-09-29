@@ -305,11 +305,6 @@ If rv Then
                     razon = "Los miembros de la legión oscura no entran a una party con ciudadanos."
                     rv = False
                 End If
-                'diferencia entre niveles
-                If Abs(CInt(UserList(UI).Stats.ELV) - CInt(UserList(UserIndex).Stats.ELV)) > MAXPARTYDELTALEVEL Then
-                    razon = "La diferencia con " & UserList(UI).name & " es mayor a " & MAXPARTYDELTALEVEL & " niveles."
-                    rv = False
-                End If
             
                 If Not rv Then Exit For 'violate una programacion estructurada
             End If
