@@ -930,6 +930,7 @@ Public Type UserFlags
     Vuela As Byte
     Navegando As Byte
     Seguro As Boolean
+    SeguroResu As Boolean
     
     DuracionEfecto As Long
     TargetNPC As Integer ' Npc señalado por el usuario

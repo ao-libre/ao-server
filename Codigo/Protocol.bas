@@ -70,6 +70,9 @@ Private Enum ServerPacketID
     UpdateNeeded            ' REAU
     SafeModeOn              ' SEGON
     SafeModeOff             ' SEGOFF
+    ResuscitationSafeOn
+    ResuscitationSafeOff
+    OpenPasswordForm
     NobilityLost            ' PN
     CantUseWhileMeditating  ' M!
     UpdateSta               ' ASS
@@ -171,6 +174,7 @@ Private Enum ClientPacketID
     PickUp                  'AG
     CombatModeToggle        'TAB        - SHOULD BE HANLDED JUST BY THE CLIENT!!
     SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
+    ResuscitationSafeToggle
     RequestGuildLeaderInfo  'GLINFO
     RequestAtributes        'ATR
     RequestFame             'FAMA
@@ -262,7 +266,8 @@ Private Enum ClientPacketID
     ChangeDescription       '/DESC
     GuildVote               '/VOTO
     Punishments             '/PENAS
-    ChangePassword          '/PASSWD
+    ChangePassword          '/CONTRASEÑA
+    NewPassword
     Gamble                  '/APOSTAR
     InquiryVote             '/ENCUESTA ( with parameters )
     LeaveFaction            '/RETIRAR ( with no arguments )
@@ -517,6 +522,9 @@ On Error Resume Next
         
         Case ClientPacketID.SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
             Call HandleSafeToggle(UserIndex)
+        
+        Case ClientPacketID.ResuscitationSafeToggle
+            Call HandleResuscitationToggle(UserIndex)
         
         Case ClientPacketID.RequestGuildLeaderInfo  'GLINFO
             Call HandleRequestGuildLeaderInfo(UserIndex)
@@ -791,8 +799,11 @@ On Error Resume Next
         Case ClientPacketID.Punishments             '/PENAS
             Call HandlePunishments(UserIndex)
         
-        Case ClientPacketID.ChangePassword          '/PASSWD
+        Case ClientPacketID.ChangePassword          '/CONTRASEÑA
             Call HandleChangePassword(UserIndex)
+            
+        Case ClientPacketID.NewPassword
+            Call HandleNewPassword(UserIndex)
         
         Case ClientPacketID.Gamble                  '/APOSTAR
             Call HandleGamble(UserIndex)
@@ -2005,6 +2016,29 @@ Private Sub HandleSafeToggle(ByVal UserIndex As Integer)
         End If
         
         .flags.Seguro = Not .flags.Seguro
+    End With
+End Sub
+
+''
+' Handles the "ResuscitationSafeToggle" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleResuscitationToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Rapsodius
+'Creation Date: 10/10/07
+'***************************************************
+    With UserList(UserIndex)
+        Call .incomingData.ReadByte
+        
+        .flags.SeguroResu = Not .flags.SeguroResu
+        
+        If .flags.SeguroResu Then
+            Call WriteResuscitationSafeOn(UserIndex)
+        Else
+            Call WriteResuscitationSafeOff(UserIndex)
+        End If
     End With
 End Sub
 
@@ -6213,62 +6247,82 @@ End Sub
 
 Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 '***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Author: Rapsodius
+'Creation Date: 10/10/07
 '
 '***************************************************
-#If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 33 Then
+    If UserList(UserIndex).incomingData.length < 1 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
-#Else
-On Error GoTo errhandler
-    If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-#End If
     
     With UserList(UserIndex)
-#If SeguridadAlkon Then
         'Remove packet ID
         Call .incomingData.ReadByte
-#Else
+        
+        Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.OpenPasswordForm)
+    End With
+End Sub
+
+''
+' Handles the "NewPassword" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleNewPassword(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Rapsodius
+'Creation Date: 10/10/07
+'
+'***************************************************
+
+Dim oldPass As String
+Dim newPass As String
+
+Dim oldPass2 As String
+
+    If UserList(UserIndex).incomingData.length < 1 Then
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+On Error GoTo Errhandler
+            
+    With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
         
         'Remove packet ID
         Call buffer.ReadByte
-#End If
         
-        Dim pass As String
+        oldPass = buffer.ReadASCIIString()
+        newPass = buffer.ReadASCIIString()
         
-        'Get password and validate it if necessary
-#If SeguridadAlkon Then
-        pass = .incomingData.ReadASCIIStringFixed(32)
-#Else
-        pass = buffer.ReadASCIIString()
-        
-        If Len(pass) < 6 Then
-             Call WriteConsoleMsg(UserIndex, "El password debe tener al menos 6 caractéres.", FontTypeNames.FONTTYPE_INFO)
-        Else
-#End If
-            Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password", pass)
-            
-            'Everything is right, change password
-            Call WriteConsoleMsg(UserIndex, "El password ha sido cambiado.", FontTypeNames.FONTTYPE_INFO)
-#If SeguridadAlkon = 0 Then
+        If LenB(newPass) = 0 Then
+            Call WriteConsoleMsg(UserIndex, "Debe especificar una contraseña nueva, inténtelo de nuevo", FontTypeNames.FONTTYPE_INFO)
+            Call .incomingData.CopyBuffer(buffer)
+            Set buffer = Nothing
+            Exit Sub
         End If
+        
+        oldPass2 = GetVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password")
+        
+        If oldPass2 <> oldPass Then
+            Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtelo de nuevo.", FontTypeNames.FONTTYPE_INFO)
+            Call .incomingData.CopyBuffer(buffer)
+            Set buffer = Nothing
+            Exit Sub
+        End If
+        
+        Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password", newPass)
+        Call WriteConsoleMsg(UserIndex, "La contraseña fue cambiada con éxito", FontTypeNames.FONTTYPE_INFO)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
-#End If
     End With
     
-#If SeguridadAlkon = 0 Then
-errhandler:
+Errhandler:
     Dim error As Long
     error = Err.Number
 On Error GoTo 0
@@ -6278,8 +6332,8 @@ On Error GoTo 0
     
     If error <> 0 Then _
         Err.raise error
-#End If
 End Sub
+
 
 ''
 ' Handles the "Gamble" message.
@@ -13669,6 +13723,52 @@ On Error GoTo errhandler
 Exit Sub
 
 errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
+End Sub
+
+''
+' Writes the "ResuscitationSafeOn" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteResuscitationSafeOn(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Rapsodius
+'Last Modification: 10/10/07
+'Writes the "ResuscitationSafeOn" message to the given user's outgoing data buffer
+'***************************************************
+On Error GoTo Errhandler
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.ResuscitationSafeOn)
+Exit Sub
+
+Errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
+End Sub
+
+''
+' Writes the "ResuscitationSafeOff" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteResuscitationSafeOff(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Rapsodius
+'Last Modification: 10/10/07
+'Writes the "ResuscitationSafeOff" message to the given user's outgoing data buffer
+'***************************************************
+On Error GoTo Errhandler
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.ResuscitationSafeOff)
+Exit Sub
+
+Errhandler:
     If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer(UserIndex)
         Resume

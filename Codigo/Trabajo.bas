@@ -70,6 +70,12 @@ On Error GoTo errhandler
 Dim Suerte As Double
 Dim res As Integer
 Dim Skill As Integer
+
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "¡No puedes ocultarte mientras te encuentres saliendo!", FontTypeNames.FONTTYPE_WARNING)
+    Exit Sub
+End If
+    
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
 Suerte = (((0.000002 * Skill - 0.0002) * Skill + 0.0064) * Skill + 0.1124) * 100

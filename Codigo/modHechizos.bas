@@ -531,6 +531,18 @@ If Hechizos(H).Invisibilidad = 1 Then
         Exit Sub
     End If
     
+    If UserList(tU).Counters.Saliendo Then
+        If UserIndex <> tU Then
+            Call WriteConsoleMsg(UserIndex, "¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_INFO)
+            b = False
+            Exit Sub
+        Else
+            Call WriteConsoleMsg(UserIndex, "¡No puedes ponerte invisible mientras te encuentres saliendo!", FontTypeNames.FONTTYPE_WARNING)
+            b = False
+            Exit Sub
+        End If
+    End If
+    
     'No usar invi mapas InviSinEfecto
     If MapInfo(UserList(tU).Pos.map).InviSinEfecto > 0 Then
         Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
@@ -542,7 +554,7 @@ If Hechizos(H).Invisibilidad = 1 Then
     If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
         If criminal(tU) And Not criminal(UserIndex) Then
             If esArmada(UserIndex) Then
-                Call WriteConsoleMsg(UserIndex, "Los Armadas no pueden ayudar a los Criminales", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Los miembros de la armada real no pueden ayudar a los criminales", FontTypeNames.FONTTYPE_INFO)
                 b = False
                 Exit Sub
             End If
@@ -773,6 +785,13 @@ End If
 
 If Hechizos(H).Revivir = 1 Then
     If UserList(tU).flags.Muerto = 1 Then
+        
+        'Seguro de resurreccion (solo afecta a los hechizos, no al sacerdote ni al comando de GM)
+        If UserList(tU).flags.SeguroResu Then
+            Call WriteConsoleMsg(UserIndex, "¡El espíritu no tiene intenciones de regresar al mundo de los vivos!", FontTypeNames.FONTTYPE_INFO)
+            b = False
+            Exit Sub
+        End If
     
         'No usar resu en mapas con ResuSinEfecto
         If MapInfo(UserList(tU).Pos.map).ResuSinEfecto > 0 Then

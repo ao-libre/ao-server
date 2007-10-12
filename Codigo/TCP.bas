@@ -931,6 +931,13 @@ If UserList(UserIndex).Invent.EscudoEqpSlot = 0 Then UserList(UserIndex).Char.Sh
 If UserList(UserIndex).Invent.CascoEqpSlot = 0 Then UserList(UserIndex).Char.CascoAnim = NingunCasco
 If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then UserList(UserIndex).Char.WeaponAnim = NingunArma
 
+If (UserList(UserIndex).flags.Muerto = 0) Then
+    UserList(UserIndex).flags.SeguroResu = False
+    Call WriteResuscitationSafeOff(UserIndex)
+Else
+    UserList(UserIndex).flags.SeguroResu = True
+    Call WriteResuscitationSafeOn(UserIndex)
+End If
 
 Call UpdateUserInv(True, UserIndex, 0)
 Call UpdateUserHechizos(True, UserIndex, 0)
