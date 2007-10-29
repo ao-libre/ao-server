@@ -38,8 +38,14 @@ Attribute VB_Exposed = False
 ' Used to create and manipulate the byte arrays to be sent and received by both client and server
 '
 ' @author Juan Martín Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
-' @version 1.0.0
+' @version 1.1.0
 ' @date 20060427
+
+'**************************************************************************
+' - HISTORY
+'       v1.0.0  -   Initial release ( 2006/04/27 - Juan Martín Sotuyo Dodero )
+'       v1.1.0  -   Added Single and Double support ( 2007/10/28 - Juan Martín Sotuyo Dodero )
+'**************************************************************************
 
 Option Explicit
 Option Base 0       'It's the default, but we make it explicit just in case...
@@ -323,6 +329,50 @@ Public Function WriteLong(ByVal value As Long) As Long
 End Function
 
 ''
+' Writes a single at the end of the queue
+'
+' @param value The value to be written
+' @return   The number of bytes written
+' @see PeekSingle
+' @see ReadSingle
+
+Public Function WriteSingle(ByVal value As Single) As Long
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Writes a single to the queue
+'***************************************************
+    Dim buf(3) As Byte
+    
+    'Copy data to temp buffer
+    Call CopyMemory(buf(0), value, 4)
+    
+    WriteSingle = WriteData(buf, 4)
+End Function
+
+''
+' Writes a double at the end of the queue
+'
+' @param value The value to be written
+' @return   The number of bytes written
+' @see PeekDouble
+' @see ReadDouble
+
+Public Function WriteDouble(ByVal value As Double) As Long
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Writes a double to the queue
+'***************************************************
+    Dim buf(7) As Byte
+    
+    'Copy data to temp buffer
+    Call CopyMemory(buf(0), value, 8)
+    
+    WriteDouble = WriteData(buf, 8)
+End Function
+
+''
 ' Writes a boolean value at the end of the queue
 '
 ' @param value The value to be written
@@ -536,6 +586,54 @@ Public Function ReadLong() As Long
     
     'Copy data to temp buffer
     Call CopyMemory(ReadLong, buf(0), 4)
+End Function
+
+''
+' Reads a single from the begining of the queue and removes it
+'
+' @return   The read value
+' @remarks  Read methods removes the data from the queue.
+' Data removed can't be recovered by the queue in any way
+' @see PeekSingle
+' @see WriteSingle
+
+Public Function ReadSingle() As Single
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Reads a single from the queue and removes it
+'***************************************************
+    Dim buf(3) As Byte
+    
+    'Read the data and remove it
+    Call RemoveData(ReadData(buf, 4))
+    
+    'Copy data to temp buffer
+    Call CopyMemory(ReadSingle, buf(0), 4)
+End Function
+
+''
+' Reads a double from the begining of the queue and removes it
+'
+' @return   The read value
+' @remarks  Read methods removes the data from the queue.
+' Data removed can't be recovered by the queue in any way
+' @see PeekDouble
+' @see WriteDouble
+
+Public Function ReadDouble() As Double
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Reads a double from the queue and removes it
+'***************************************************
+    Dim buf(7) As Byte
+    
+    'Read the data and remove it
+    Call RemoveData(ReadData(buf, 8))
+    
+    'Copy data to temp buffer
+    Call CopyMemory(ReadDouble, buf(0), 8)
 End Function
 
 ''
@@ -807,6 +905,52 @@ Public Function PeekLong() As Long
     
     'Copy data to temp buffer
     Call CopyMemory(PeekLong, buf(0), 4)
+End Function
+
+''
+' Reads a single from the begining of the queue but DOES NOT remove it.
+'
+' @return   The read value.
+' @remarks  Peek methods, unlike Read methods, don't remove the data from the queue.
+' @see ReadSingle
+' @see WriteSingle
+
+Public Function PeekSingle() As Single
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Reads a single from the queue but doesn't removes it
+'***************************************************
+    Dim buf(3) As Byte
+    
+    'Read the data and remove it
+    Call ReadData(buf, 4)
+    
+    'Copy data to temp buffer
+    Call CopyMemory(PeekSingle, buf(0), 4)
+End Function
+
+''
+' Reads a double from the begining of the queue but DOES NOT remove it.
+'
+' @return   The read value.
+' @remarks  Peek methods, unlike Read methods, don't remove the data from the queue.
+' @see ReadDouble
+' @see WriteDouble
+
+Public Function PeekDouble() As Double
+'***************************************************
+'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 10/28/07
+'Reads a double from the queue but doesn't removes it
+'***************************************************
+    Dim buf(7) As Byte
+    
+    'Read the data and remove it
+    Call ReadData(buf, 8)
+    
+    'Copy data to temp buffer
+    Call CopyMemory(PeekDouble, buf(0), 8)
 End Function
 
 ''
