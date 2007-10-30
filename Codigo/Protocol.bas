@@ -6246,14 +6246,17 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 'Creation Date: 10/10/07
 'Last Modified By: Rapsodius
 '***************************************************
-    Dim oldPass As String
-    Dim newPass As String
-    Dim oldPass2 As String
-
+#If SeguridadAlkon Then
+    If UserList(UserIndex).incomingData.length < 33 Then
+        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+#Else
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
+#End If
     
 On Error GoTo Errhandler
     With UserList(UserIndex)
@@ -6261,11 +6264,20 @@ On Error GoTo Errhandler
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
         
+        Dim oldPass As String
+        Dim newPass As String
+        Dim oldPass2 As String
+        
         'Remove packet ID
         Call buffer.ReadByte
         
+#If SeguridadAlkon Then
+        oldPass = buffer.ReadASCIIStringFixed(16)
+        newPass = buffer.ReadASCIIStringFixed(16)
+#Else
         oldPass = buffer.ReadASCIIString()
         newPass = buffer.ReadASCIIString()
+#End If
         
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debe especificar una contraseña nueva, inténtelo de nuevo", FontTypeNames.FONTTYPE_INFO)
