@@ -184,7 +184,7 @@ Public Enum FXIDs
     FXMEDITARMEDIANO = 5
     FXMEDITARGRANDE = 6
     FXMEDITARXGRANDE = 16
-    FXMEDITARXXGRANDE = 16 'poner el que corresponda. (ToxicWaste)
+    FXMEDITARXXGRANDE = 32 '(ToxicWaste) 5/11/07
 End Enum
 
 Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
