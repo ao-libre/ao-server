@@ -35,7 +35,7 @@ Public Sub Comercio(Modo As eModoComercio, UserIndex As Integer, NpcIndex As Int
 'Author: Nacho (Integer)
 'Last modified: 2/8/06
 '*************************************************
-Dim Precio As Long
+Dim Precio As Single
 Dim Objeto As Obj
 
 If Cantidad < 1 Or Slot < 1 Then Exit Sub
@@ -61,7 +61,7 @@ If Modo = eModoComercio.Compra Then
     
     If Cantidad > Npclist(NpcIndex).Invent.Object(Slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(Slot).amount
     
-    Precio = ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad
+    Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex), 2) * Cantidad ' Hace falta redondear eso tmb?
     
     If UserList(UserIndex).Stats.GLD < Precio Then
         Call WriteConsoleMsg(UserIndex, "No tienes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
@@ -74,7 +74,7 @@ If Modo = eModoComercio.Compra Then
         Exit Sub
     End If
     
-    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Precio
+    UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Round(Precio, 0)
     
     
     Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(Slot), Cantidad)
@@ -218,13 +218,21 @@ Private Function Descuento(ByVal UserIndex As Integer) As Single
     Descuento = 1 + UserList(UserIndex).Stats.UserSkills(eSkill.Comerciar) / 100
 End Function
 
+''
+' Send the inventory of the Npc to the user
+'
+' @param userIndex The index of the User
+' @param npcIndex The index of the NPC
+
 Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last modified: 2/8/06
+'Last Modified: 10/10/07
+'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
 '*************************************************
     Dim Slot As Byte
-    Dim val As Long
+    Dim val As Single
+    Dim pVenta As Long
     
     For Slot = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(Slot).ObjIndex > 0 Then
@@ -232,11 +240,12 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
             thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
             val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex)
+            pVenta = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
             
-            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, val)
+            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, Round(val, 2), pVenta)
         Else
             Dim DummyObj As Obj
-            Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
+            Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0, 0)
         End If
     Next Slot
 End Sub

@@ -15206,12 +15206,14 @@ End Sub
 ' @param    UserIndex User to which the message is intended.
 ' @param    obj The object to be set in the NPC's inventory window.
 ' @param    price The value the NPC asks for the object.
+' @param    pVenta El valor de venta del item
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As Obj, ByVal price As Long)
+Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As Obj, ByVal price As Single, ByVal pVenta As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
+'Last Modified by: Nicolas Ezequiel Bouhid (NicoNZ)
 'Writes the "ChangeNPCInventorySlot" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
@@ -15225,13 +15227,14 @@ On Error GoTo Errhandler
         Call .WriteByte(ServerPacketID.ChangeNPCInventorySlot)
         Call .WriteASCIIString(ObjInfo.name)
         Call .WriteInteger(Obj.amount)
-        Call .WriteLong(price)
+        Call .WriteSingle(price)
         Call .WriteInteger(ObjInfo.GrhIndex)
         Call .WriteInteger(Obj.ObjIndex)
         Call .WriteByte(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.def)
+        Call .WriteLong(pVenta)
     End With
 Exit Sub
 
