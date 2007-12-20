@@ -178,7 +178,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
 
@@ -292,7 +292,7 @@ Next Hechizo
 Set Leer = Nothing
 Exit Sub
 
-errhandler:
+Errhandler:
  MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -545,7 +545,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
 
@@ -752,7 +752,7 @@ Set Leer = Nothing
 
 Exit Sub
 
-errhandler:
+Errhandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -979,7 +979,7 @@ End If
 UserList(UserIndex).NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
 Dim NpcIndex As Integer
 For LoopC = 1 To MAXMASCOTAS
-    UserList(UserIndex).MascotasType(LoopC) = CInt(UserFile.GetValue("MASCOTAS", "MAS" & LoopC))
+    UserList(UserIndex).MascotasType(LoopC) = val(UserFile.GetValue("MASCOTAS", "MAS" & LoopC))
 Next LoopC
 
 ln = UserFile.GetValue("Guild", "GUILDINDEX")
@@ -1447,7 +1447,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim OldUserHead As Long
 
@@ -1700,7 +1700,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
 Call LogError("Error en SaveUser")
 
 End Sub
