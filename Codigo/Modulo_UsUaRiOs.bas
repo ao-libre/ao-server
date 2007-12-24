@@ -284,7 +284,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -854,7 +854,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -1714,12 +1714,10 @@ Dim MascotasReales As Integer
 
 End Sub
 
-Sub Cerrar_Usuario(ByVal UserIndex As Integer, Optional ByVal Tiempo As Integer = -1)
-    If Tiempo = -1 Then Tiempo = IntervaloCerrarConexion
-    
+Sub Cerrar_Usuario(ByVal UserIndex As Integer)
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
-        UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, Tiempo, 0)
+        UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, IntervaloCerrarConexion, 0)
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
     End If
