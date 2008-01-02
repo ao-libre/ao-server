@@ -156,7 +156,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -167,7 +167,7 @@ On Error GoTo errhandler
     Next
 
 Exit Function
-errhandler:
+Errhandler:
 
 End Function
 
@@ -510,11 +510,12 @@ End Sub
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 24/01/2007
+'Last Modification: 02/01/2008
 'Handles the Spells that afect the Stats of an User
 '24/01/2007 Pablo (ToxicWaste) - Invisibilidad no permitida en Mapas con InviSinEfecto
 '26/01/2007 Pablo (ToxicWaste) - Cambios que permiten mejor manejo de ataques en los rings.
 '26/01/2007 Pablo (ToxicWaste) - Revivir no permitido en Mapas con ResuSinEfecto
+'02/01/2008 Marcos (ByVal) - Curar Veneno no permitido en usuarios muertos.
 '***************************************************
 
 
@@ -645,6 +646,14 @@ If Hechizos(H).Envenena = 1 Then
 End If
 
 If Hechizos(H).CuraVeneno = 1 Then
+
+    'Verificamos que el usuario no este muerto (ByVal)
+    If UserList(tU).flags.Muerto = 1 Then
+        Call WriteConsoleMsg(UserIndex, "¡Está muerto!", FontTypeNames.FONTTYPE_INFO)
+        b = False
+        Exit Sub
+    End If
+    
     'Para poder tirar curar veneno a un pk en el ring
     If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
         If criminal(tU) And Not criminal(UserIndex) Then
@@ -1175,6 +1184,11 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
 End Sub
 
 Sub HechizoPropUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 02/01/2008
+'02/01/2008 Marcos (ByVal) - No permite tirar curar heridas a usuarios muertos.
+'***************************************************
 
 Dim H As Integer
 Dim daño As Integer
@@ -1394,6 +1408,13 @@ End If
 
 'Salud
 If Hechizos(H).SubeHP = 1 Then
+    
+    'Verifica que el usuario no este muerto (ByVal)
+    If UserList(tempChr).flags.Muerto = 1 Then
+        Call WriteConsoleMsg(UserIndex, "¡Está muerto!", FontTypeNames.FONTTYPE_INFO)
+        b = False
+        Exit Sub
+    End If
     
     'Para poder tirar curar a un pk en el ring
     If (TriggerZonaPelea(UserIndex, tempChr) <> TRIGGER6_PERMITE) Then
