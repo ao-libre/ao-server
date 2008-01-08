@@ -67,6 +67,11 @@ If InMapBounds(map, X, Y) Then
                 Exit Sub
             End If
             
+            'Is it already in commerce mode??
+            If .flags.Comerciando Then
+                Exit Sub
+            End If
+            
             If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
                 Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
@@ -79,6 +84,11 @@ If InMapBounds(map, X, Y) Then
             '¿Esta el user muerto? Si es asi no puede comerciar
             If UserList(UserIndex).flags.Muerto = 1 Then
                 Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
+            'Is it already in commerce mode??
+            If .flags.Comerciando Then
                 Exit Sub
             End If
             

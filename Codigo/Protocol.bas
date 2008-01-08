@@ -5405,6 +5405,11 @@ Private Sub HandleBankStart(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        If .flags.Comerciando Then
+            Call WriteConsoleMsg(UserIndex, "Ya estás comerciando", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
         'Validate target NPC
         If .flags.TargetNPC > 0 Then
             If Distancia(Npclist(.flags.TargetNPC).Pos, .Pos) > 3 Then

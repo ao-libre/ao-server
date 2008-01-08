@@ -206,3 +206,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/09/2007: Nueva formula para la experiencia de cada personaje en la party (Tavo)
  * 28/10/2007: Arreglé las passwords y agregué soporte para Singles y Doubles en ByteQueue. (Maraxus)
  * 02/01/2008: Arreglé el error que perimitia tirar curar veneno, heridas leves y graves a un usuario muerto (ByVal)
+ * 07/01/2008: dupliqué chequeos de comercio y boveda en el server para evitar duplicación de las listas. (Maraxus)

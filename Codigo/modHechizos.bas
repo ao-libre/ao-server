@@ -647,7 +647,7 @@ End If
 
 If Hechizos(H).CuraVeneno = 1 Then
 
-    'Verificamos que el usuario no este muerto (ByVal)
+    'Verificamos que el usuario no este muerto
     If UserList(tU).flags.Muerto = 1 Then
         Call WriteConsoleMsg(UserIndex, "¡Está muerto!", FontTypeNames.FONTTYPE_INFO)
         b = False
@@ -1409,7 +1409,7 @@ End If
 'Salud
 If Hechizos(H).SubeHP = 1 Then
     
-    'Verifica que el usuario no este muerto (ByVal)
+    'Verifica que el usuario no este muerto
     If UserList(tempChr).flags.Muerto = 1 Then
         Call WriteConsoleMsg(UserIndex, "¡Está muerto!", FontTypeNames.FONTTYPE_INFO)
         b = False
