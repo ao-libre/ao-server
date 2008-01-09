@@ -282,9 +282,10 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones en ELU al subir de nivel.
 '24/01/2007 Pablo (ToxicWaste) - Agrego modificaciones de la subida de mana de los magos por lvl.
 '13/03/2007 Pablo (ToxicWaste) - Agrego diferencias entre el 18 y el 19 en Constitución.
+'09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -293,6 +294,9 @@ Dim AumentoMANA As Integer
 Dim AumentoSTA As Integer
 Dim AumentoHP As Integer
 Dim WasNewbie As Boolean
+Dim Promedio As Double
+Dim aux As Integer
+Dim DistVida(1 To 5) As Integer
 
 '¿Alcanzo el maximo nivel?
 If UserList(UserIndex).Stats.ELV >= STAT_MAXELV Then
@@ -345,425 +349,130 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
     Constitucion = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
     
+    'Calculo subida de vida
+    Promedio = ModVida(UserList(UserIndex).clase) - (21 - Constitucion) * 0.5
+    aux = RandomNumber(0, 100)
+    If Promedio - Int(Promedio) = 0.5 Then
+    'Es promedio semientero
+        DistVida(1) = DistribucionSemienteraVida(1)
+        DistVida(2) = DistVida(1) + DistribucionSemienteraVida(2)
+        DistVida(3) = DistVida(2) + DistribucionSemienteraVida(3)
+        DistVida(4) = DistVida(3) + DistribucionSemienteraVida(4)
+        
+        If aux <= DistVida(1) Then
+            AumentoHP = Promedio + 1.5
+        ElseIf aux <= DistVida(2) Then
+            AumentoHP = Promedio + 0.5
+        ElseIf aux <= DistVida(3) Then
+            AumentoHP = Promedio - 0.5
+        Else
+            AumentoHP = Promedio - 1.5
+        End If
+    Else
+    'Es promedio entero
+        DistVida(1) = DistribucionSemienteraVida(1)
+        DistVida(2) = DistVida(1) + DistribucionEnteraVida(2)
+        DistVida(3) = DistVida(2) + DistribucionEnteraVida(3)
+        DistVida(4) = DistVida(3) + DistribucionEnteraVida(4)
+        DistVida(5) = DistVida(4) + DistribucionEnteraVida(5)
+        
+        If aux <= DistVida(1) Then
+            AumentoHP = Promedio + 2
+        ElseIf aux <= DistVida(2) Then
+            AumentoHP = Promedio + 1
+        ElseIf aux <= DistVida(3) Then
+            AumentoHP = Promedio
+        ElseIf aux <= DistVida(4) Then
+            AumentoHP = Promedio - 1
+        Else
+            AumentoHP = Promedio - 2
+        End If
+    End If
+    
     Select Case UserList(UserIndex).clase
         Case eClass.Warrior
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 12)
-                Case 20
-                    AumentoHP = RandomNumber(8, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 11)
-                Case 18
-                    AumentoHP = RandomNumber(7, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 10)
-                Case 16
-                    AumentoHP = RandomNumber(6, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 9)
-                Case 14
-                    AumentoHP = RandomNumber(5, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 8)
-                Case 12
-                    AumentoHP = RandomNumber(4, 7)
-            End Select
+        
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Hunter
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 11)
-                Case 20
-                    AumentoHP = RandomNumber(7, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 10)
-                Case 18
-                    AumentoHP = RandomNumber(6, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 9)
-                Case 16
-                    AumentoHP = RandomNumber(5, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 8)
-                Case 14
-                    AumentoHP = RandomNumber(4, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 7)
-                Case 12
-                    AumentoHP = RandomNumber(3, 7)
-            End Select
+
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 2, 3)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Pirat
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 12)
-                Case 20
-                    AumentoHP = RandomNumber(8, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 11)
-                Case 18
-                    AumentoHP = RandomNumber(7, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 10)
-                Case 16
-                    AumentoHP = RandomNumber(6, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 9)
-                Case 14
-                    AumentoHP = RandomNumber(5, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 8)
-                Case 12
-                    AumentoHP = RandomNumber(4, 7)
-            End Select
+
             AumentoHIT = 3
             AumentoSTA = AumentoSTDef
         
         Case eClass.Paladin
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 11)
-                Case 20
-                    AumentoHP = RandomNumber(7, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 10)
-                Case 18
-                    AumentoHP = RandomNumber(6, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 9)
-                Case 16
-                    AumentoHP = RandomNumber(5, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 8)
-                Case 14
-                    AumentoHP = RandomNumber(4, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 7)
-                Case 12
-                    AumentoHP = RandomNumber(3, 7)
-            End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Thief
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 12)
-                Case 20
-                    AumentoHP = RandomNumber(8, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 11)
-                Case 18
-                    AumentoHP = RandomNumber(7, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 10)
-                Case 16
-                    AumentoHP = RandomNumber(6, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 9)
-                Case 14
-                    AumentoHP = RandomNumber(5, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 8)
-                Case 12
-                    AumentoHP = RandomNumber(4, 7)
-            End Select
+
             AumentoHIT = 1
             AumentoSTA = AumentoSTLadron
             
         Case eClass.Mage
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(6, 8)
-                Case 20
-                    AumentoHP = RandomNumber(5, 8)
-                Case 19
-                    AumentoHP = RandomNumber(5, 7)
-                Case 18
-                    AumentoHP = RandomNumber(4, 7)
-                Case 17
-                    AumentoHP = RandomNumber(4, 6)
-                Case 16
-                    AumentoHP = RandomNumber(3, 6)
-                Case 15
-                    AumentoHP = RandomNumber(3, 5)
-                Case 14
-                    AumentoHP = RandomNumber(2, 5)
-                Case 13
-                    AumentoHP = RandomNumber(2, 4)
-                Case 12
-                    AumentoHP = RandomNumber(1, 4)
-            End Select
-            If AumentoHP < 1 Then AumentoHP = 4
             
             AumentoHIT = 1 'Nueva dist de mana para mago (ToxicWaste)
             AumentoMANA = 2.8 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTMago
         
         Case eClass.Lumberjack
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 11)
-                Case 20
-                    AumentoHP = RandomNumber(7, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 10)
-                Case 18
-                    AumentoHP = RandomNumber(6, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 9)
-                Case 16
-                    AumentoHP = RandomNumber(5, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 8)
-                Case 14
-                    AumentoHP = RandomNumber(4, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 7)
-                Case 12
-                    AumentoHP = RandomNumber(3, 7)
-            End Select
             
             AumentoHIT = 2
             AumentoSTA = AumentoSTLeñador
         
         Case eClass.Miner
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 11)
-                Case 20
-                    AumentoHP = RandomNumber(7, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 10)
-                Case 18
-                    AumentoHP = RandomNumber(6, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 9)
-                Case 16
-                    AumentoHP = RandomNumber(5, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 8)
-                Case 14
-                    AumentoHP = RandomNumber(4, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 7)
-                Case 12
-                    AumentoHP = RandomNumber(3, 7)
-            End Select
             
             AumentoHIT = 2
             AumentoSTA = AumentoSTMinero
         
         Case eClass.Fisher
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(8, 11)
-                Case 20
-                    AumentoHP = RandomNumber(7, 11)
-                Case 19
-                    AumentoHP = RandomNumber(7, 10)
-                Case 18
-                    AumentoHP = RandomNumber(6, 10)
-                Case 17
-                    AumentoHP = RandomNumber(6, 9)
-                Case 16
-                    AumentoHP = RandomNumber(5, 9)
-                Case 15
-                    AumentoHP = RandomNumber(5, 8)
-                Case 14
-                    AumentoHP = RandomNumber(4, 8)
-                Case 13
-                    AumentoHP = RandomNumber(4, 7)
-                Case 12
-                    AumentoHP = RandomNumber(3, 7)
-            End Select
             
             AumentoHIT = 1
             AumentoSTA = AumentoSTPescador
         
         Case eClass.Cleric
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
+            
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Druid
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Assasin
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Bard
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
             
             AumentoHIT = 2
             AumentoMANA = 2 * UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia)
             AumentoSTA = AumentoSTDef
         
         Case eClass.Blacksmith, eClass.Carpenter
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
+            
             AumentoHIT = 2
             AumentoSTA = AumentoSTDef
             
         Case eClass.Bandit
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(7, 10)
-                Case 20
-                    AumentoHP = RandomNumber(6, 10)
-                Case 19
-                    AumentoHP = RandomNumber(6, 9)
-                Case 18
-                    AumentoHP = RandomNumber(5, 9)
-                Case 17
-                    AumentoHP = RandomNumber(5, 8)
-                Case 16
-                    AumentoHP = RandomNumber(4, 8)
-                Case 15
-                    AumentoHP = RandomNumber(4, 7)
-                Case 14
-                    AumentoHP = RandomNumber(3, 7)
-                Case 13
-                    AumentoHP = RandomNumber(3, 6)
-                Case 12
-                    AumentoHP = RandomNumber(2, 6)
-            End Select
             
             AumentoHIT = IIf(UserList(UserIndex).Stats.ELV > 35, 1, 3)
             AumentoMANA = IIf(UserList(UserIndex).Stats.MaxMAN = 300, 0, UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 10)
             If AumentoMANA < 4 Then AumentoMANA = 4
             AumentoSTA = AumentoSTLeñador
         Case Else
-            Select Case Constitucion
-                Case 21
-                    AumentoHP = RandomNumber(6, 9)
-                Case 20
-                    AumentoHP = RandomNumber(5, 9)
-                Case 19, 18
-                    AumentoHP = RandomNumber(4, 8)
-                Case Else
-                    AumentoHP = RandomNumber(5, Constitucion \ 2) - AdicionalHPCazador
-            End Select
             
             AumentoHIT = 2
             AumentoSTA = AumentoSTDef
@@ -854,7 +563,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 

@@ -31,263 +31,54 @@ Attribute VB_Name = "SistemaCombate"
 'Gerardo Saiz, gerardosaiz@yahoo.com
 '
 
+'9/01/2008 Pablo (ToxicWaste) - Ahora TODOS los modificadores de Clase se controlan desde Balance.dat
+
+
 Option Explicit
 
 Public Const MAXDISTANCIAARCO As Byte = 18
 Public Const MAXDISTANCIAMAGIA As Byte = 18
 
+
 Function ModificadorEvasion(ByVal clase As eClass) As Single
 
-Select Case clase
-    Case eClass.Warrior
-        ModificadorEvasion = 1
-    Case eClass.Hunter
-        ModificadorEvasion = 0.9
-    Case eClass.Paladin
-        ModificadorEvasion = 0.9
-    Case eClass.Bandit
-        ModificadorEvasion = 0.7
-    Case eClass.Assasin
-        ModificadorEvasion = 1.1
-    Case eClass.Pirat
-        ModificadorEvasion = 0.9
-    Case eClass.Thief
-        ModificadorEvasion = 1.1
-    Case eClass.Bard
-        ModificadorEvasion = 1.1
-    Case eClass.Mage
-        ModificadorEvasion = 0.4
-    Case eClass.Druid
-        ModificadorEvasion = 0.6
-    Case Else
-        ModificadorEvasion = 0.8
-End Select
+    ModificadorEvasion = ModClase(clase).Evasion
+
 End Function
 
 Function ModificadorPoderAtaqueArmas(ByVal clase As eClass) As Single
-Select Case UCase$(clase)
-    Case eClass.Warrior
-        ModificadorPoderAtaqueArmas = 1
-    Case eClass.Paladin
-        ModificadorPoderAtaqueArmas = 0.9
-    Case eClass.Hunter
-        ModificadorPoderAtaqueArmas = 0.8
-    Case eClass.Assasin
-        ModificadorPoderAtaqueArmas = 0.85
-    Case eClass.Pirat
-        ModificadorPoderAtaqueArmas = 0.8
-    Case eClass.Thief
-        ModificadorPoderAtaqueArmas = 0.75
-    Case eClass.Bandit
-        ModificadorPoderAtaqueArmas = 0.7
-    Case eClass.Cleric
-        ModificadorPoderAtaqueArmas = 0.75
-    Case eClass.Bard
-        ModificadorPoderAtaqueArmas = 0.7
-    Case eClass.Druid
-        ModificadorPoderAtaqueArmas = 0.65
-    Case eClass.Fisher
-        ModificadorPoderAtaqueArmas = 0.6
-    Case eClass.Lumberjack
-        ModificadorPoderAtaqueArmas = 0.6
-    Case eClass.Miner
-        ModificadorPoderAtaqueArmas = 0.6
-    Case eClass.Blacksmith
-        ModificadorPoderAtaqueArmas = 0.6
-    Case eClass.Carpenter
-        ModificadorPoderAtaqueArmas = 0.6
-    Case Else
-        ModificadorPoderAtaqueArmas = 0.5
-End Select
+
+    ModificadorPoderAtaqueArmas = ModClase(clase).AtaqueArmas
+
 End Function
 
 Function ModificadorPoderAtaqueProyectiles(ByVal clase As eClass) As Single
-Select Case UCase$(clase)
-    Case eClass.Warrior
-        ModificadorPoderAtaqueProyectiles = 0.8
-    Case eClass.Hunter
-        ModificadorPoderAtaqueProyectiles = 1
-    Case eClass.Paladin
-        ModificadorPoderAtaqueProyectiles = 0.75
-    Case eClass.Assasin
-        ModificadorPoderAtaqueProyectiles = 0.75
-    Case eClass.Pirat
-        ModificadorPoderAtaqueProyectiles = 0.75
-    Case eClass.Thief
-        ModificadorPoderAtaqueProyectiles = 0.8
-    Case eClass.Bandit
-        ModificadorPoderAtaqueProyectiles = 0.75
-    Case eClass.Cleric
-        ModificadorPoderAtaqueProyectiles = 0.7
-    Case eClass.Bard
-        ModificadorPoderAtaqueProyectiles = 0.7
-    Case eClass.Druid
-        ModificadorPoderAtaqueProyectiles = 0.7
-    Case eClass.Fisher
-        ModificadorPoderAtaqueProyectiles = 0.65
-    Case eClass.Lumberjack
-        ModificadorPoderAtaqueProyectiles = 0.7
-    Case eClass.Miner
-        ModificadorPoderAtaqueProyectiles = 0.65
-    Case eClass.Blacksmith
-        ModificadorPoderAtaqueProyectiles = 0.65
-    Case eClass.Carpenter
-        ModificadorPoderAtaqueProyectiles = 0.7
-    Case Else
-        ModificadorPoderAtaqueProyectiles = 0.5
-End Select
+    
+    ModificadorPoderAtaqueProyectiles = ModClase(clase).AtaqueProyectiles
+
 End Function
 
 Function ModicadorDañoClaseArmas(ByVal clase As eClass) As Single
-Select Case UCase$(clase)
-    Case eClass.Warrior
-        ModicadorDañoClaseArmas = 1.1
-    Case eClass.Paladin
-        ModicadorDañoClaseArmas = 0.9
-    Case eClass.Hunter
-        ModicadorDañoClaseArmas = 0.9
-    Case eClass.Assasin
-        ModicadorDañoClaseArmas = 0.9
-    Case eClass.Thief
-        ModicadorDañoClaseArmas = 0.8
-    Case eClass.Pirat
-        ModicadorDañoClaseArmas = 0.8
-    Case eClass.Bandit
-        ModicadorDañoClaseArmas = 0.9
-    Case eClass.Cleric
-        ModicadorDañoClaseArmas = 0.8
-    Case eClass.Bard
-        ModicadorDañoClaseArmas = 0.75
-    Case eClass.Druid
-        ModicadorDañoClaseArmas = 0.7
-    Case eClass.Fisher
-        ModicadorDañoClaseArmas = 0.6
-    Case eClass.Lumberjack
-        ModicadorDañoClaseArmas = 0.7
-    Case eClass.Miner
-        ModicadorDañoClaseArmas = 0.75
-    Case eClass.Blacksmith
-        ModicadorDañoClaseArmas = 0.75
-    Case eClass.Carpenter
-        ModicadorDañoClaseArmas = 0.7
-    Case Else
-        ModicadorDañoClaseArmas = 0.5
-End Select
+    
+    ModicadorDañoClaseArmas = ModClase(clase).DañoArmas
+
 End Function
 
 Function ModicadorDañoClaseWrestling(ByVal clase As eClass) As Single
-'Pablo (ToxicWaste): Esto en proxima versión habrá que balancearlo para cada clase
-'Hoy por hoy está solo hecho para el bandido.
-Select Case UCase$(clase)
-    Case eClass.Warrior
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Paladin
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Hunter
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Assasin
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Thief
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Pirat
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Bandit
-        ModicadorDañoClaseWrestling = 1.1
-    Case eClass.Cleric
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Bard
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Druid
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Fisher
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Lumberjack
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Miner
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Blacksmith
-        ModicadorDañoClaseWrestling = 0.4
-    Case eClass.Carpenter
-        ModicadorDañoClaseWrestling = 0.4
-    Case Else
-        ModicadorDañoClaseWrestling = 0.4
-End Select
+        
+    ModicadorDañoClaseWrestling = ModClase(clase).DañoWrestling
+
 End Function
 
-
 Function ModicadorDañoClaseProyectiles(ByVal clase As eClass) As Single
-Select Case clase
-    Case eClass.Hunter
-        ModicadorDañoClaseProyectiles = 1.1
-    Case eClass.Warrior
-        ModicadorDañoClaseProyectiles = 0.9
-    Case eClass.Paladin
-        ModicadorDañoClaseProyectiles = 0.8
-    Case eClass.Assasin
-        ModicadorDañoClaseProyectiles = 0.8
-    Case eClass.Thief
-        ModicadorDañoClaseProyectiles = 0.75
-    Case eClass.Pirat
-        ModicadorDañoClaseProyectiles = 0.75
-    Case eClass.Bandit
-        ModicadorDañoClaseProyectiles = 0.8
-    Case eClass.Cleric
-        ModicadorDañoClaseProyectiles = 0.7
-    Case eClass.Bard
-        ModicadorDañoClaseProyectiles = 0.7
-    Case eClass.Druid
-        ModicadorDañoClaseProyectiles = 0.75
-    Case eClass.Fisher
-        ModicadorDañoClaseProyectiles = 0.6
-    Case eClass.Lumberjack
-        ModicadorDañoClaseProyectiles = 0.7
-    Case eClass.Miner
-        ModicadorDañoClaseProyectiles = 0.6
-    Case eClass.Blacksmith
-        ModicadorDañoClaseProyectiles = 0.6
-    Case eClass.Carpenter
-        ModicadorDañoClaseProyectiles = 0.7
-    Case Else
-        ModicadorDañoClaseProyectiles = 0.5
-End Select
+        
+    ModicadorDañoClaseProyectiles = ModClase(clase).DañoProyectiles
+
 End Function
 
 Function ModEvasionDeEscudoClase(ByVal clase As eClass) As Single
 
-Select Case clase
-    Case eClass.Warrior
-        ModEvasionDeEscudoClase = 1
-    Case eClass.Hunter
-        ModEvasionDeEscudoClase = 0.8
-    Case eClass.Paladin
-        ModEvasionDeEscudoClase = 1
-    Case eClass.Assasin
-        ModEvasionDeEscudoClase = 0.8
-    Case eClass.Thief
-        ModEvasionDeEscudoClase = 0.7
-    Case eClass.Bandit
-        ModEvasionDeEscudoClase = 2
-    Case eClass.Pirat
-        ModEvasionDeEscudoClase = 0.75
-    Case eClass.Cleric
-        ModEvasionDeEscudoClase = 0.85
-    Case eClass.Bard
-        ModEvasionDeEscudoClase = 0.8
-    Case eClass.Druid
-        ModEvasionDeEscudoClase = 0.75
-    Case eClass.Fisher
-        ModEvasionDeEscudoClase = 0.7
-    Case eClass.Lumberjack
-        ModEvasionDeEscudoClase = 0.7
-    Case eClass.Miner
-        ModEvasionDeEscudoClase = 0.7
-    Case eClass.Blacksmith
-        ModEvasionDeEscudoClase = 0.7
-    Case eClass.Carpenter
-        ModEvasionDeEscudoClase = 0.7
-    Case Else
-        ModEvasionDeEscudoClase = 0.6
-End Select
+    ModEvasionDeEscudoClase = ModClase(clase).Escudo
 
 End Function
 Function Minimo(ByVal a As Single, ByVal b As Single) As Single
@@ -1642,7 +1433,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo Errhandler
+On Error GoTo errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1660,7 +1451,7 @@ On Error GoTo Errhandler
     End If
 
 Exit Function
-Errhandler:
+errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function

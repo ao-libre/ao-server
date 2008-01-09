@@ -172,7 +172,7 @@ Select Case UserGenero
             Case eRaza.Elfo
                 NewHead = RandomNumber(101, 112)
                 NewBody = 2
-            Case eRaza.ElfoOscuro
+            Case eRaza.Drow
                 NewHead = RandomNumber(200, 210)
                 NewBody = 3
             Case eRaza.Enano
@@ -190,7 +190,7 @@ Select Case UserGenero
             Case eRaza.Elfo
                 NewHead = RandomNumber(170, 178)
                 NewBody = 2
-            Case eRaza.ElfoOscuro
+            Case eRaza.Drow
                 NewHead = RandomNumber(270, 278)
                 NewBody = 3
             Case eRaza.Gnomo
@@ -285,6 +285,7 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Passw
 '24/01/2007 Pablo (ToxicWaste) - Agregué el nuevo mana inicial de los magos.
 '12/02/2007 Pablo (ToxicWaste) - Puse + 1 de const al Elfo normal.
 '20/04/2007 Pablo (ToxicWaste) - Puse -1 de fuerza al Elfo.
+'09/01/2008 Pablo (ToxicWaste) - Ahora los modificadores de Raza se controlan desde Balance.dat
 '*************************************************
 
 If Not AsciiValidos(name) Or LenB(name) = 0 Then
@@ -339,35 +340,13 @@ UserList(UserIndex).genero = UserSexo
 UserList(UserIndex).email = UserEmail
 UserList(UserIndex).Hogar = Hogar
 
-Select Case UserRaza
-    Case eRaza.Humano
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 1
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 1
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 2
-    Case eRaza.Elfo
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) - 1
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 4
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 2
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 1
-    Case eRaza.ElfoOscuro
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 2
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 2
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 2
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 3
-    Case eRaza.Enano
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + 3
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + 3
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) - 6
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) - 1
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) - 2
-    Case eRaza.Gnomo
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) - 4
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + 3
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + 3
-        UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + 1
-End Select
-
+'[Pablo (Toxic Waste) 9/01/08]
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Fuerza) + ModRaza(UserRaza).Fuerza
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Agilidad) + ModRaza(UserRaza).Agilidad
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Inteligencia) + ModRaza(UserRaza).Inteligencia
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma) + ModRaza(UserRaza).Carisma
+UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion) + ModRaza(UserRaza).Constitucion
+'[/Pablo (Toxic Waste)]
 
 For LoopC = 1 To NUMSKILLS
     UserList(UserIndex).Stats.UserSkills(LoopC) = skills(LoopC - 1)
@@ -463,7 +442,7 @@ Select Case UserRaza
         UserList(UserIndex).Invent.Object(4).ObjIndex = 463
     Case eRaza.Elfo
         UserList(UserIndex).Invent.Object(4).ObjIndex = 464
-    Case eRaza.ElfoOscuro
+    Case eRaza.Drow
         UserList(UserIndex).Invent.Object(4).ObjIndex = 465
     Case eRaza.Enano
         UserList(UserIndex).Invent.Object(4).ObjIndex = 466

@@ -68,7 +68,7 @@ If InMapBounds(map, X, Y) Then
             End If
             
             'Is it already in commerce mode??
-            If .flags.Comerciando Then
+            If UserList(UserIndex).flags.Comerciando Then
                 Exit Sub
             End If
             
@@ -88,7 +88,7 @@ If InMapBounds(map, X, Y) Then
             End If
             
             'Is it already in commerce mode??
-            If .flags.Comerciando Then
+            If UserList(UserIndex).flags.Comerciando Then
                 Exit Sub
             End If
             

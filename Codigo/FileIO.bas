@@ -178,7 +178,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
 
@@ -292,7 +292,7 @@ Next Hechizo
 Set Leer = Nothing
 Exit Sub
 
-Errhandler:
+errhandler:
  MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -511,6 +511,57 @@ Next lc
 
 End Sub
 
+Sub LoadBalance()
+
+Dim i As Integer
+
+'Modificadores de Clase
+
+For i = 1 To NUMCLASES
+'Modificador de Evasión
+    ModClase(i).Evasion = val(GetVar(DatPath & "Balance.dat", "MODEVASION", ListaClases(i)))
+'Modificador de Ataque con Armas
+    ModClase(i).AtaqueArmas = val(GetVar(DatPath & "Balance.dat", "MODATAQUEARMAS", ListaClases(i)))
+'Modificador de Ataque con Proyectiles
+    ModClase(i).AtaqueProyectiles = val(GetVar(DatPath & "Balance.dat", "MODATAQUEPROYECTILES", ListaClases(i)))
+'Modificador de Daño con Armas
+    ModClase(i).DañoArmas = val(GetVar(DatPath & "Balance.dat", "MODDAÑOARMAS", ListaClases(i)))
+'Modificador de Daño con Proyectiles
+    ModClase(i).DañoProyectiles = val(GetVar(DatPath & "Balance.dat", "MODDAÑOPROYECTILES", ListaClases(i)))
+'Modificador de Daño con Wrestling
+    ModClase(i).DañoWrestling = val(GetVar(DatPath & "Balance.dat", "MODDAÑOWRESTLING", ListaClases(i)))
+'Modificador de Defenza con Escudos
+    ModClase(i).Escudo = val(GetVar(DatPath & "Balance.dat", "MODESCUDO", ListaClases(i)))
+Next i
+
+'Modificadores de Raza
+For i = 1 To NUMRAZAS
+    ModRaza(i).Fuerza = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Fuerza"))
+    ModRaza(i).Agilidad = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Agilidad"))
+    ModRaza(i).Inteligencia = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Inteligencia"))
+    ModRaza(i).Carisma = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Carisma"))
+    ModRaza(i).Constitucion = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Constitucion"))
+Next i
+
+'Modificadores de Vida
+For i = 1 To NUMCLASES
+    ModVida(i) = val(GetVar(DatPath & "Balance.dat", "MODVIDA", ListaClases(i)))
+Next i
+
+'Distribución de Vida
+For i = 1 To 5
+    DistribucionEnteraVida(i) = val(GetVar(DatPath & "Balance.dat", "DISTRIBUCION", "E" + CStr(i)))
+Next i
+For i = 1 To 4
+    DistribucionSemienteraVida(i) = val(GetVar(DatPath & "Balance.dat", "DISTRIBUCION", "S" + CStr(i)))
+Next i
+
+'Extra
+PorcentajeRecuperoMana = val(GetVar(DatPath & "Balance.dat", "EXTRA", "PorcentajeRecuperoMana"))
+
+
+End Sub
+
 Sub LoadObjCarpintero()
 
 Dim N As Integer, lc As Integer
@@ -545,7 +596,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
 
@@ -752,7 +803,7 @@ Set Leer = Nothing
 
 Exit Sub
 
-Errhandler:
+errhandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -1393,8 +1444,8 @@ If MaxUsers = 0 Then
 End If
 
 '&&&&&&&&&&&&&&&&&&&&& BALANCE &&&&&&&&&&&&&&&&&&&&&&&
-
-PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "PorcentajeRecuperoMana"))
+'Se agregó en LoadBalance y en el Balance.dat
+'PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "PorcentajeRecuperoMana"))
 
 ''&&&&&&&&&&&&&&&&&&&&& FIN BALANCE &&&&&&&&&&&&&&&&&&&&&&&
 Call Statistics.Initialize
@@ -1447,7 +1498,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim OldUserHead As Long
 
@@ -1700,7 +1751,7 @@ End If
 
 Exit Sub
 
-Errhandler:
+errhandler:
 Call LogError("Error en SaveUser")
 
 End Sub

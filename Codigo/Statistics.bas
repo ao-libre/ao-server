@@ -122,7 +122,7 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         Case eRaza.Elfo
             raza = 1
         
-        Case eRaza.ElfoOscuro
+        Case eRaza.Drow
             raza = 2
         
         Case eRaza.Enano
@@ -495,12 +495,12 @@ End Sub
 
 Public Sub ParseChat(ByRef S As String)
     Dim i As Long
-    Dim key As Integer
+    Dim Key As Integer
     
     For i = 1 To Len(S)
-        key = Asc(mid$(S, i, 1))
+        Key = Asc(mid$(S, i, 1))
         
-        keyOcurrencies(key) = keyOcurrencies(key) + 1
+        keyOcurrencies(Key) = keyOcurrencies(Key) + 1
     Next i
     
     'Add a NULL-terminated to consider that possibility too....

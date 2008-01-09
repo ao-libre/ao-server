@@ -801,14 +801,14 @@ On Error GoTo errhandler
 'Verifica si la raza puede usar la ropa
 If UserList(UserIndex).raza = eRaza.Humano Or _
    UserList(UserIndex).raza = eRaza.Elfo Or _
-   UserList(UserIndex).raza = eRaza.ElfoOscuro Then
+   UserList(UserIndex).raza = eRaza.Drow Then
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 0)
 Else
         CheckRazaUsaRopa = (ObjData(ItemIndex).RazaEnana = 1)
 End If
 
 'Solo se habilita la ropa exclusiva para Drows por ahora. Pablo (ToxicWaste)
-If (UserList(UserIndex).raza <> eRaza.ElfoOscuro) And ObjData(ItemIndex).RazaDrow Then
+If (UserList(UserIndex).raza <> eRaza.Drow) And ObjData(ItemIndex).RazaDrow Then
     CheckRazaUsaRopa = False
 End If
 

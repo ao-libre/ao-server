@@ -134,7 +134,7 @@ End Enum
 Public Enum eRaza
     Humano = 1
     Elfo
-    ElfoOscuro
+    Drow
     Gnomo
     Enano
 End Enum
@@ -829,6 +829,26 @@ Public Type Obj
     amount As Integer
 End Type
 
+'[Pablo ToxicWaste]
+Public Type ModClase
+    Evasion As Double
+    AtaqueArmas As Double
+    AtaqueProyectiles As Double
+    DañoArmas As Double
+    DañoProyectiles As Double
+    DañoWrestling As Double
+    Escudo As Double
+End Type
+
+Public Type ModRaza
+    Fuerza As Single
+    Agilidad As Single
+    Inteligencia As Single
+    Carisma As Single
+    Constitucion As Single
+End Type
+'[/Pablo ToxicWaste]
+
 '[KEVIN]
 'Banco Objs
 Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 40
@@ -1351,6 +1371,8 @@ Public BackUp As Boolean ' TODO: Se usa esta variable ?
 Public ListaRazas(1 To NUMRAZAS) As String
 Public SkillsNames(1 To NUMSKILLS) As String
 Public ListaClases(1 To NUMCLASES) As String
+Public ListaAtributos(1 To NUMATRIBUTOS) As String
+
 
 Public recordusuarios As Long
 
@@ -1440,6 +1462,11 @@ Public ObjCarpintero() As Integer
 Public MD5s() As String
 Public BanIps As New Collection
 Public Parties(1 To MAX_PARTIES) As clsParty
+Public ModClase(1 To NUMCLASES) As ModClase
+Public ModRaza(1 To NUMRAZAS) As ModRaza
+Public ModVida(1 To NUMCLASES) As Double
+Public DistribucionEnteraVida(1 To 5) As Integer
+Public DistribucionSemienteraVida(1 To 4) As Integer
 '*********************************************************
 
 Public Nix As WorldPos
