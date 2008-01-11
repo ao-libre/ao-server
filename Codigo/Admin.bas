@@ -82,7 +82,6 @@ Public IntervaloParaConexion As Long
 Public IntervaloCerrarConexion As Long '[Gonzalo]
 Public IntervaloUserPuedeUsar As Long
 Public IntervaloFlechasCazadores As Long
-Public IntervaloAutoReiniciar As Long   'segundos
 
 'BALANCE
 

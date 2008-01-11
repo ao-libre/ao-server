@@ -178,7 +178,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
 
@@ -292,7 +292,7 @@ Next Hechizo
 Set Leer = Nothing
 Exit Sub
 
-errhandler:
+Errhandler:
  MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -596,7 +596,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
 
@@ -803,7 +803,7 @@ Set Leer = Nothing
 
 Exit Sub
 
-errhandler:
+Errhandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -1423,8 +1423,6 @@ IntervaloCerrarConexion = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "Inte
 IntervaloUserPuedeUsar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeUsar"))
 IntervaloFlechasCazadores = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFlechasCazadores"))
 
-IntervaloAutoReiniciar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloAutoReiniciar"))
-
 IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOculto"))
 
 '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
@@ -1498,7 +1496,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim OldUserHead As Long
 
@@ -1751,7 +1749,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
 Call LogError("Error en SaveUser")
 
 End Sub
