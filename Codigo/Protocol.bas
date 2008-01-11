@@ -3163,8 +3163,9 @@ End Sub
 Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 10/01/08
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+' 10/01/2008: Tavo - Se cancela la salida del juego si el user esta saliendo
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -3183,6 +3184,12 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         If heading > 0 And heading < 5 Then
             .Char.heading = heading
             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        End If
+        
+        If .Counters.Saliendo Then
+            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+            .Counters.Saliendo = False
+            .Counters.Salir = 0
         End If
     End With
 End Sub
