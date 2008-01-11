@@ -1051,9 +1051,11 @@ End Sub
 Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex As Integer)
 '***************************************************
 'Autor: Unknown
-'Last Modification: 03/09/06 Nacho
-'Usuario deja de meditar
+'Last Modification: 10/01/08
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+' 10/01/2008: Tavo - Se cancela la salida del juego si el user esta saliendo
 '***************************************************
+
     If TriggerZonaPelea(attackerIndex, VictimIndex) = TRIGGER6_PERMITE Then Exit Sub
     
     Dim EraCriminal As Boolean
@@ -1096,6 +1098,13 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
     
     Call AllMascotasAtacanUser(attackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, attackerIndex)
+    
+    'Si esta saliendo se cancela la salida
+    If UserList(VictimIndex).Counters.Saliendo Then
+        Call WriteConsoleMsg(VictimIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        UserList(VictimIndex).Counters.Saliendo = False
+        UserList(VictimIndex).Counters.Salir = 0
+    End If
     
     Call FlushBuffer(VictimIndex)
 End Sub
@@ -1433,7 +1442,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo errhandler
+On Error GoTo Errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1451,7 +1460,7 @@ On Error GoTo errhandler
     End If
 
 Exit Function
-errhandler:
+Errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
