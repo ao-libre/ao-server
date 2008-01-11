@@ -56,7 +56,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -65,7 +65,7 @@ End Sub
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
 'Modifique la fórmula y ahora anda bien.
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Double
 Dim res As Integer
@@ -109,7 +109,7 @@ UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando 
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -707,7 +707,7 @@ Call SubirSkill(UserIndex, Supervivencia)
 End Sub
 
 Public Sub DoPescar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -761,12 +761,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescar")
 End Sub
 
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -827,7 +827,7 @@ End If
         
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
@@ -847,6 +847,7 @@ If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And UserList(LadrOnIndex).Facc
     Exit Sub
 End If
 
+
 Call QuitarSta(LadrOnIndex, 15)
 
 Dim GuantesHurto As Boolean
@@ -861,6 +862,18 @@ End If
 
 
 If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
+
+    'Si esta saliendo se cancela la salida (Tanto al que roba como al que recibe el robo)
+    If UserList(LadrOnIndex).Counters.Saliendo Then
+        Call WriteConsoleMsg(LadrOnIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        UserList(LadrOnIndex).Counters.Saliendo = False
+        UserList(LadrOnIndex).Counters.Salir = 0
+    ElseIf UserList(VictimaIndex).Counters.Saliendo Then
+        Call WriteConsoleMsg(VictimaIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        UserList(VictimaIndex).Counters.Saliendo = False
+        UserList(VictimaIndex).Counters.Salir = 0
+    End If
+    
     Dim Suerte As Integer
     Dim res As Integer
     
@@ -1130,7 +1143,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1188,13 +1201,13 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
 
 Public Sub DoMineria(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1250,7 +1263,7 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
