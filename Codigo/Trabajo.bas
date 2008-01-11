@@ -120,6 +120,13 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 Dim ModNave As Long
 ModNave = ModNavegacion(UserList(UserIndex).clase)
 
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
+
 If UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
     Call WriteConsoleMsg(UserIndex, "No tenes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
     Call WriteConsoleMsg(UserIndex, "Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion.", FontTypeNames.FONTTYPE_INFO)
@@ -194,6 +201,13 @@ End Sub
 
 Public Sub FundirMineral(ByVal UserIndex As Integer)
 'Call LogTarea("Sub FundirMineral")
+
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
@@ -328,6 +342,14 @@ End Function
 
 Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 'Call LogTarea("Sub HerreroConstruirItem")
+
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
+
 If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Then
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
     ' AGREGAR FX
@@ -385,6 +407,13 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    PuedeConstruirCarpintero(ItemIndex) And _
    UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
 
+    'Si esta saliendo se cancela la salida
+    If UserList(UserIndex).Counters.Saliendo Then
+        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        UserList(UserIndex).Counters.Saliendo = False
+        UserList(UserIndex).Counters.Salir = 0
+    End If
+    
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
     Call WriteConsoleMsg(UserIndex, "Has construido el objeto!.", FontTypeNames.FONTTYPE_INFO)
     
@@ -430,8 +459,8 @@ End Function
 
 Public Sub DoLingotes(ByVal UserIndex As Integer)
 '    Call LogTarea("Sub DoLingotes")
-Dim Slot As Integer
-Dim obji As Integer
+    Dim Slot As Integer
+    Dim obji As Integer
 
     Slot = UserList(UserIndex).flags.TargetObjInvSlot
     obji = UserList(UserIndex).Invent.Object(Slot).ObjIndex
@@ -560,6 +589,13 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
         puntosRequeridos = Npclist(NpcIndex).flags.Domable * 0.8
     Else
         puntosRequeridos = Npclist(NpcIndex).flags.Domable
+    End If
+    
+    'Si esta saliendo se cancela la salida
+    If UserList(UserIndex).Counters.Saliendo Then
+        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        UserList(UserIndex).Counters.Saliendo = False
+        UserList(UserIndex).Counters.Salir = 0
     End If
     
     If puntosRequeridos <= puntosDomar And RandomNumber(1, 5) = 1 Then
@@ -712,6 +748,12 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
 
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
@@ -772,6 +814,13 @@ Dim iSkill As Integer
 Dim Suerte As Integer
 Dim res As Integer
 Dim EsPescador As Boolean
+
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
 
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
@@ -862,18 +911,6 @@ End If
 
 
 If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
-
-    'Si esta saliendo se cancela la salida (Tanto al que roba como al que recibe el robo)
-    If UserList(LadrOnIndex).Counters.Saliendo Then
-        Call WriteConsoleMsg(LadrOnIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-        UserList(LadrOnIndex).Counters.Saliendo = False
-        UserList(LadrOnIndex).Counters.Salir = 0
-    ElseIf UserList(VictimaIndex).Counters.Saliendo Then
-        Call WriteConsoleMsg(VictimaIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-        UserList(VictimaIndex).Counters.Saliendo = False
-        UserList(VictimaIndex).Counters.Salir = 0
-    End If
-    
     Dim Suerte As Integer
     Dim res As Integer
     
@@ -1050,6 +1087,17 @@ Else
     Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
 End If
 
+'Si esta saliendo se cancela la salida (Tanto al que roba como al que recibe el robo)
+If UserList(LadrOnIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(LadrOnIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(LadrOnIndex).Counters.Saliendo = False
+    UserList(LadrOnIndex).Counters.Salir = 0
+ElseIf UserList(VictimaIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(VictimaIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(VictimaIndex).Counters.Saliendo = False
+    UserList(VictimaIndex).Counters.Salir = 0
+End If
+
 End Sub
 
 Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
@@ -1148,6 +1196,12 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
 
 If UserList(UserIndex).clase = eClass.Lumberjack Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
@@ -1212,6 +1266,13 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 Dim metal As Integer
+
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
 
 If UserList(UserIndex).clase = eClass.Miner Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
@@ -1288,6 +1349,13 @@ If UserList(UserIndex).Counters.bPuedeMeditar = False Then
     UserList(UserIndex).Counters.bPuedeMeditar = True
 End If
 
+'Si esta saliendo se cancela la salida
+If UserList(UserIndex).Counters.Saliendo Then
+    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(UserIndex).Counters.Saliendo = False
+    UserList(UserIndex).Counters.Salir = 0
+End If
+    
 If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     Call WriteConsoleMsg(UserIndex, "Has terminado de meditar.", FontTypeNames.FONTTYPE_INFO)
     Call WriteMeditateToggle(UserIndex)
