@@ -2613,6 +2613,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         
         Skill = .incomingData.ReadByte()
         
+        
         If .flags.Muerto = 1 Or .flags.Descansar Or .flags.Meditando _
                         Or Not InMapBounds(.Pos.map, X, Y) Then
             Exit Sub
@@ -2632,7 +2633,6 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then Exit Sub
                 'Check bow's interval
                 If Not IntervaloPermiteUsarArcos(UserIndex) Then Exit Sub
-                
                 
                 'Make sure the item is valid and there is ammo equipped.
                 With .Invent
@@ -2708,9 +2708,12 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     If Not PuedeAtacar(UserIndex, tU) Then Exit Sub 'TODO: Por ahora pongo esto para solucionar lo anterior.
                     Call UsuarioAtacaUsuario(UserIndex, tU)
                     
-                    
-                    
-                
+                    'Si esta saliendo se cancela la salida
+                    If .Counters.Saliendo Then
+                        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+                        .Counters.Saliendo = False
+                        .Counters.Salir = 0
+                    End If
                 ElseIf tN > 0 Then
                     'Only allow to atack if the other one can retaliate (can see us)
                     If Abs(Npclist(tN).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(tN).Pos.X - .Pos.X) > RANGO_VISION_X Then
@@ -2723,6 +2726,12 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         
                         'Attack!
                         Call UsuarioAtacaNpc(UserIndex, tN)
+                        'Si esta saliendo se cancela la salida
+                        If .Counters.Saliendo Then
+                            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+                            .Counters.Saliendo = False
+                            .Counters.Salir = 0
+                        End If
                     End If
                 End If
                 

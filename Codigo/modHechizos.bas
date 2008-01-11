@@ -452,6 +452,13 @@ Dim uh As Integer
 
 uh = UserList(UserIndex).Stats.UserHechizos(index)
 
+'Si esta saliendo se cancela la salida
+If UserList(index).Counters.Saliendo Then
+    Call WriteConsoleMsg(index, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    UserList(index).Counters.Saliendo = False
+    UserList(index).Counters.Salir = 0
+End If
+
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
         Case TargetType.uUsuarios
@@ -633,7 +640,6 @@ If Hechizos(H).Mimetiza = 1 Then
    Call InfoHechizo(UserIndex)
    b = True
 End If
-
 
 If Hechizos(H).Envenena = 1 Then
         If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
