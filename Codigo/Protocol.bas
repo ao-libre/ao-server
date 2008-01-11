@@ -1884,13 +1884,21 @@ End Sub
 Private Sub HandleAttack(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 10/01/08
+'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+' 10/01/2008: Tavo - Se cancela la salida del juego si el user esta saliendo
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
+        'Si esta saliendo se cancela la salida
+        If .Counters.Saliendo Then
+            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+            .Counters.Saliendo = False
+            .Counters.Salir = 0
+        End If
+
         'If dead, can't attack
         If .flags.Muerto = 1 Then
             Call WriteConsoleMsg(UserIndex, "¡¡No podes atacar a nadie porque estas muerto!!.", FontTypeNames.FONTTYPE_INFO)
@@ -3186,6 +3194,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
         
+        'Si esta saliendo se cancela la salida
         If .Counters.Saliendo Then
             Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
             .Counters.Saliendo = False
