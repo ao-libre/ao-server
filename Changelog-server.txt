@@ -211,4 +211,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/01/2008: De ahora en más si el usuario se mueve, o simplemente cambia su dirección de visión, se cancela la salida del usuario en caso que este saliendo obviamente. (Tavo)
  * 10/01/2008: Si el usuario ataca se cancela la salida. También se cancela si un usuario recibe un golpe. (Tavo)
  * 11/01/2008: Si el usuario tira un hechizo a otro se cancela la salida. También si un usuario recibe un ataque ofensivo o mundano. (Tavo)
- * 11/01/2208: Si un usuario intenta hacer una habilidad, o un usuario recibe una habilidad entonces se cancela su salida. (Tavo)
+ * 11/01/2008: Si un usuario intenta hacer una habilidad, o un usuario recibe una habilidad entonces se cancela su salida. (Tavo)
+ * 14/01/2008: La sentencia FOR de la funcion LimpiarMundo estaba mal diseñada. (ByVal)
