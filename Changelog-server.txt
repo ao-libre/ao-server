@@ -204,6 +204,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/09/2007: La experiencia dentro de una party es un numero real (Tavo)
  * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al numero mas chico (Tavo)
  * 29/09/2007: Nueva formula para la experiencia de cada personaje en la party (Tavo)
+ * 10/10/2007: Modifiqué el sistema de comercio, para que mande el precio de venta. (NicoNZ)
  * 28/10/2007: Arreglé las passwords y agregué soporte para Singles y Doubles en ByteQueue. (Maraxus)
  * 02/01/2008: Arreglé el error que perimitia tirar curar veneno, heridas leves y graves a un usuario muerto (ByVal)
  * 07/01/2008: Dupliqué chequeos de comercio y boveda en el server para evitar duplicación de las listas. (Maraxus)
@@ -213,3 +214,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 11/01/2008: Si el usuario tira un hechizo a otro se cancela la salida. También si un usuario recibe un ataque ofensivo o mundano. (Tavo)
  * 11/01/2008: Si un usuario intenta hacer una habilidad, o un usuario recibe una habilidad entonces se cancela su salida. (Tavo)
  * 14/01/2008: La sentencia FOR de la funcion LimpiarMundo estaba mal diseñada. (ByVal)
+ * 17/01/2008: Arreglé el bug que permitia usar la barca a 1 o 2 tiles del agua. (NicoNZ)

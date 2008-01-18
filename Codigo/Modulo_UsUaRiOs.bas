@@ -285,7 +285,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -563,7 +563,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -578,11 +578,14 @@ End Function
 Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
 
 Dim nPos As WorldPos
-    
+Dim sailing As Boolean
+
+
+    sailing = PuedeAtravesarAgua(UserIndex)
     nPos = UserList(UserIndex).Pos
     Call HeadtoPos(nHeading, nPos)
     
-    If LegalPos(UserList(UserIndex).Pos.map, nPos.X, nPos.Y, PuedeAtravesarAgua(UserIndex)) Then
+    If LegalPos(UserList(UserIndex).Pos.map, nPos.X, nPos.Y, sailing, Not sailing) Then
         If MapInfo(UserList(UserIndex).Pos.map).NumUsers > 1 Then
             'si no estoy solo en el mapa...
 
