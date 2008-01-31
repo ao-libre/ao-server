@@ -285,7 +285,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -352,6 +352,8 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     'Calculo subida de vida
     Promedio = ModVida(UserList(UserIndex).clase) - (21 - Constitucion) * 0.5
     aux = RandomNumber(0, 100)
+    
+
     If Promedio - Int(Promedio) = 0.5 Then
     'Es promedio semientero
         DistVida(1) = DistribucionSemienteraVida(1)
@@ -370,6 +372,18 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         End If
     Else
     'Es promedio entero
+        'Sacar este IF en la 0.13 (ToxicWaste)
+        If UserList(UserIndex).clase = eClass.Mage Then
+        
+        If aux <= 33 Then
+            AumentoHP = Promedio + 1
+        ElseIf aux <= 66 Then
+            AumentoHP = Promedio
+        Else
+            AumentoHP = Promedio - 1
+        End If
+        
+        Else
         DistVida(1) = DistribucionSemienteraVida(1)
         DistVida(2) = DistVida(1) + DistribucionEnteraVida(2)
         DistVida(3) = DistVida(2) + DistribucionEnteraVida(3)
@@ -387,8 +401,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         Else
             AumentoHP = Promedio - 2
         End If
+        End If
     End If
-    
+
     Select Case UserList(UserIndex).clase
         Case eClass.Warrior
         
@@ -563,7 +578,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
