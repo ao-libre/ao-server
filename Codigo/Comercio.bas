@@ -76,7 +76,6 @@ If Modo = eModoComercio.Compra Then
     
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Round(Precio, 0)
     
-    
     Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(Slot), Cantidad)
     
     'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
@@ -88,6 +87,11 @@ If Modo = eModoComercio.Compra Then
         If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
             Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.amount & " " & ObjData(Objeto.ObjIndex).name)
         End If
+    End If
+    
+    'Agregado por si cae el server y se respawnean las llaves.
+    If ObjData(Objeto.ObjIndex).OBJType = otLlaves Then
+        Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & Slot, Objeto.ObjIndex & "-0")
     End If
     
 ElseIf Modo = eModoComercio.Venta Then

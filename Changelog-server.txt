@@ -215,3 +215,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 11/01/2008: Si un usuario intenta hacer una habilidad, o un usuario recibe una habilidad entonces se cancela su salida. (Tavo)
  * 14/01/2008: La sentencia FOR de la funcion LimpiarMundo estaba mal diseñada. (ByVal)
  * 17/01/2008: Arreglé el bug que permitia usar la barca a 1 o 2 tiles del agua. (NicoNZ)
+ * 12/02/2008: Solucioné el bug que se respawneaban llaves ya vendidas. (NicoNZ)
