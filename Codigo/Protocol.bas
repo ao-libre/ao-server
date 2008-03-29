@@ -15668,6 +15668,7 @@ On Error GoTo Errhandler
         
         Call .WriteASCIIString(Tmp)
         
+        Tmp = vbNullString
         'Prepare allies' list
         For i = LBound(allies()) To UBound(allies())
             Tmp = Tmp & allies(i) & SEPARATOR
