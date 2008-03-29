@@ -4648,7 +4648,7 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
         Call modGuilds.SendDetallesPersonaje(UserIndex, buffer.ReadASCIIString())
-                
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With

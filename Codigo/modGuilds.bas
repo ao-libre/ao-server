@@ -714,7 +714,7 @@ Dim i As Long
     
     list = guilds(guildIndex).GetMemberList()
     For i = 0 To UBound(list())
-        If UCase$(Votado) = UCase$(list(i)) Then Exit For
+        If UCase$(Votado) = list(i) Then Exit For
     Next i
     
     If i > UBound(list()) Then
@@ -1358,7 +1358,7 @@ Dim NroAspirante    As Integer
     
 End Function
 
-Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As String)
+Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As String)
     Dim GI          As Integer
     Dim NroAsp      As Integer
     Dim GuildName   As String
@@ -1369,6 +1369,8 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByRef Personaje As 
     Dim i           As Long
     
     GI = UserList(UserIndex).guildIndex
+    
+    Personaje = UCase$(Personaje)
     
     If GI <= 0 Or GI > CANTIDADDECLANES Then
         Call Protocol.WriteConsoleMsg(UserIndex, "No perteneces a ningún clan", FontTypeNames.FONTTYPE_INFO)

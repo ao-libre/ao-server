@@ -222,7 +222,7 @@ Public Function GetMemberList() As String()
     ReDim list(OldQ - 1) As String
     
     For i = 1 To OldQ
-        list(i - 1) = GetVar(MEMBERSFILE, "Members", "Member" & i)
+        list(i - 1) = UCase$(GetVar(MEMBERSFILE, "Members", "Member" & i))
     Next i
     
     GetMemberList = list
