@@ -322,7 +322,6 @@ If exito = 1 Then
         Obj.amount = 1
         
         Call WriteConsoleMsg(UserIndex, "Has prendido la fogata.", FontTypeNames.FONTTYPE_INFO)
-        Call SendData(ToPCArea, UserIndex, PrepareMessagePlayFireSound())
         
         Call MakeObj(Obj, map, X, Y)
         

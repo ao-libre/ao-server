@@ -102,7 +102,6 @@ Private Enum ServerPacketID
     PlayMidi                ' TM
     PlayWave                ' TW
     guildList               ' GL
-    PlayFireSound           ' FO
     AreaChanged             ' CA
     PauseToggle             ' BKW
     RainToggle              ' LLU
@@ -14599,29 +14598,6 @@ Errhandler:
 End Sub
 
 ''
-' Writes the "PlayFireSound" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WritePlayFireSound(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Writes the "PlayFireSound" message to the given user's outgoing data buffer
-'***************************************************
-On Error GoTo Errhandler
-    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayFireSound())
-Exit Sub
-
-Errhandler:
-    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(UserIndex)
-        Resume
-    End If
-End Sub
-
-''
 ' Writes the "AreaChanged" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -16621,25 +16597,6 @@ Public Function PrepareMessageRainToggle() As String
         Call .WriteByte(ServerPacketID.RainToggle)
         
         PrepareMessageRainToggle = .ReadASCIIStringFixed(.length)
-    End With
-End Function
-
-''
-' Prepares the "PlayFireSound" message and returns it.
-'
-' @return   The formated message ready to be writen as is on outgoing buffers.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Function PrepareMessagePlayFireSound() As String
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Prepares the "PlayFireSound" and returns it
-'***************************************************
-    With auxiliarBuffer
-        Call .WriteByte(ServerPacketID.PlayFireSound)
-        
-        PrepareMessagePlayFireSound = .ReadASCIIStringFixed(.length)
     End With
 End Function
 

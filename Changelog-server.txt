@@ -219,3 +219,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/03/2008: Arreglo del bug que causaba problemas al definir ganadores de elecciones de líder de clan (daba la elección como desierta). (NIGO)
  * 29/03/2008: Arreglo del valor de la constante con el último packetId del cliente. Ahora CheckSlot vuelve a funcionar. (Maraxus)
  * 29/03/2008: Arreglo del cambio de password al estar con SeguridadAlkon. (Maraxus)
+ * 30/03/2008: Arreglos con el sonido 3D. Ahora se mandan posiciones para muchos sonidos donde antes no dando mejor ambiente. (Maraxus)

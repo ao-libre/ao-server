@@ -63,7 +63,7 @@ Public Const CHAT_COLOR_GM_YELL As Long = &HF82FF
 
 ''
 ' Coordinates for normal sounds (not 3D, like rain)
-Public Const NO_3D_SOUND As Byte = 255
+Public Const NO_3D_SOUND As Byte = 0
 
 Public Const iFragataFantasmal = 87
 Public Const iFragataReal = 190
