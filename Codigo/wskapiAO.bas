@@ -545,7 +545,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         Dim str As String
         Dim data() As Byte
         
-        str = Protocol.PrepareMessageErrorMsg("El server se haya lleno en este momento. Disculpe las molestias ocasionadas.")
+        str = Protocol.PrepareMessageErrorMsg("El server se encuentra lleno en este momento. Disculpe las molestias ocasionadas.")
         
         ReDim Preserve data(Len(str) - 1) As Byte
         

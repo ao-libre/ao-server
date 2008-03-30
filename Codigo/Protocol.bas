@@ -40,7 +40,7 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 244
+Private Const LAST_CLIENT_PACKET_ID As Byte = 245
 
 ''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
@@ -5626,14 +5626,12 @@ Private Sub HandleUpTime(ByVal UserIndex As Integer)
     UpTimeStr = (time Mod 24) & " horas, " & UpTimeStr
     time = time \ 24
     
-    'ByVal: If days = 1 we display the message in singular(day), otherwise in plural(days)
     If time = 1 Then
         UpTimeStr = time & " día, " & UpTimeStr
     Else
         UpTimeStr = time & " días, " & UpTimeStr
     End If
     
-    'ByVal: We show in console how long is the server online
     Call WriteConsoleMsg(UserIndex, "Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
 End Sub
 

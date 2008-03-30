@@ -217,3 +217,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 17/01/2008: Arreglé el bug que permitia usar la barca a 1 o 2 tiles del agua. (NicoNZ)
  * 12/02/2008: Solucioné el bug que se respawneaban llaves ya vendidas. (NicoNZ)
  * 29/03/2008: Arreglo del bug que causaba problemas al definir ganadores de elecciones de líder de clan (daba la elección como desierta). (NIGO)
+ * 29/03/2008: Arreglo del valor de la constante con el último packetId del cliente. Ahora CheckSlot vuelve a funcionar. (Maraxus)
