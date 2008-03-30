@@ -6265,7 +6265,7 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 'Last Modified By: Rapsodius
 '***************************************************
 #If SeguridadAlkon Then
-    If UserList(UserIndex).incomingData.length < 33 Then
+    If UserList(UserIndex).incomingData.length < 65 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
@@ -6290,8 +6290,8 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
 #If SeguridadAlkon Then
-        oldPass = buffer.ReadASCIIStringFixed(16)
-        newPass = buffer.ReadASCIIStringFixed(16)
+        oldPass = buffer.ReadASCIIStringFixed(32)
+        newPass = buffer.ReadASCIIStringFixed(32)
 #Else
         oldPass = buffer.ReadASCIIString()
         newPass = buffer.ReadASCIIString()

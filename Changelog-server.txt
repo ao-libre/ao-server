@@ -202,7 +202,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/08/2007: En la cuenta regresiva del /SALIR se te va la invisibilidad. (Rapsodius)
  * 29/09/2007: Volo la restriccion por niveles para ingresar en una party (Tavo)
  * 29/09/2007: La experiencia dentro de una party es un numero real (Tavo)
- * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al numero mas chico (Tavo)
+ * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al número mas chico (Tavo)
  * 29/09/2007: Nueva formula para la experiencia de cada personaje en la party (Tavo)
  * 10/10/2007: Modifiqué el sistema de comercio, para que mande el precio de venta. (NicoNZ)
  * 28/10/2007: Arreglé las passwords y agregué soporte para Singles y Doubles en ByteQueue. (Maraxus)
@@ -218,3 +218,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 12/02/2008: Solucioné el bug que se respawneaban llaves ya vendidas. (NicoNZ)
  * 29/03/2008: Arreglo del bug que causaba problemas al definir ganadores de elecciones de líder de clan (daba la elección como desierta). (NIGO)
  * 29/03/2008: Arreglo del valor de la constante con el último packetId del cliente. Ahora CheckSlot vuelve a funcionar. (Maraxus)
+ * 29/03/2008: Arreglo del cambio de password al estar con SeguridadAlkon. (Maraxus)
