@@ -12511,7 +12511,6 @@ On Error GoTo Errhandler
                 Else
                     Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", newMail)
                     Call WriteConsoleMsg(UserIndex, "Email de " & UserName & " cambiado a: " & newMail, FontTypeNames.FONTTYPE_INFO)
-                    UserList(UserIndex).email = newMail
                 End If
                 
                 Call LogGM(.name, "Le ha cambiado el mail a " & UserName)
