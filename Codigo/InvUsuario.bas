@@ -247,21 +247,23 @@ Errhandler:
 End Sub
 
 Sub QuitarUserInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Cantidad As Integer)
-
-'Desequipa
-If Slot < 1 Or Slot > MAX_INVENTORY_SLOTS Then Exit Sub
-
-If UserList(UserIndex).Invent.Object(Slot).Equipped = 1 Then Call Desequipar(UserIndex, Slot)
-
-'Quita un objeto
-UserList(UserIndex).Invent.Object(Slot).amount = UserList(UserIndex).Invent.Object(Slot).amount - Cantidad
-'¿Quedan mas?
-If UserList(UserIndex).Invent.Object(Slot).amount <= 0 Then
-    UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
-    UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
-    UserList(UserIndex).Invent.Object(Slot).amount = 0
-End If
+    'Desequipa
+    If Slot < 1 Or Slot > MAX_INVENTORY_SLOTS Then Exit Sub
     
+    With UserList(UserIndex).Invent.Object(Slot)
+        If .amount <= Cantidad And .Equipped = 1 Then
+            Call Desequipar(UserIndex, Slot)
+        End If
+        
+        'Quita un objeto
+        .amount = .amount - Cantidad
+        '¿Quedan mas?
+        If .amount <= 0 Then
+            UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
+            .ObjIndex = 0
+            .amount = 0
+        End If
+    End With
 End Sub
 
 Sub UpdateUserInv(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal Slot As Byte)
@@ -304,7 +306,6 @@ If num > 0 Then
   
   'Check objeto en el suelo
   If MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex = 0 Or MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex Then
-        If UserList(UserIndex).Invent.Object(Slot).Equipped = 1 Then Call Desequipar(UserIndex, Slot)
         Obj.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
         If num + MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount > MAX_INVENTORY_OBJS Then
