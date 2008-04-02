@@ -1273,7 +1273,7 @@ On Error GoTo errh
 Exit Sub
 
 errh:
-    Call LogError("Error cargando mapa: " & map & "." & Err.description)
+    Call LogError("Error cargando mapa: " & map & " - Pos: " & X & "," & Y & "." & Err.description)
 End Sub
 
 Sub LoadSini()

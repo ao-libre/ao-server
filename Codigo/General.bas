@@ -27,13 +27,9 @@ Attribute VB_Name = "General"
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
-'Global ANpc As Long
-'Global Anpc_host As Long
-
 Option Explicit
 
 Global LeerNPCs As New clsIniReader
-'Global LeerNPCsHostiles As New clsIniReader
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 '***************************************************

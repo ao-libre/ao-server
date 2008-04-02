@@ -87,7 +87,6 @@ Call LogAsesinato(UserList(attackerIndex).name & " asesino a " & UserList(Victim
 
 End Sub
 
-
 Sub RevivirUsuario(ByVal UserIndex As Integer)
 
 UserList(UserIndex).flags.Muerto = 0
@@ -108,7 +107,7 @@ If UserList(UserIndex).flags.Navegando = 1 Then
     Dim Barco As ObjData
     Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
     UserList(UserIndex).Char.Head = 0
-        
+    
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
         UserList(UserIndex).Char.body = iFragataReal
     ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
@@ -131,7 +130,8 @@ If UserList(UserIndex).flags.Navegando = 1 Then
 Else
     Call DarCuerpoDesnudo(UserIndex)
 End If
-Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).OrigChar.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
+
+Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
 Call WriteUpdateUserStats(UserIndex)
 
 End Sub
@@ -285,7 +285,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -578,7 +578,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -1051,7 +1051,9 @@ End Sub
 
 Sub UserDie(ByVal UserIndex As Integer)
 On Error GoTo ErrorHandler
-
+    Dim i As Long
+    Dim aN As Integer
+    
     'Sonido
     If UserList(UserIndex).genero = eGenero.Mujer Then
         Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MUERTE_MUJER)
@@ -1069,8 +1071,6 @@ On Error GoTo ErrorHandler
     UserList(UserIndex).flags.Muerto = 1
     UserList(UserIndex).flags.SeguroResu = True
     Call WriteResuscitationSafeOn(UserIndex)
-    
-    Dim aN As Integer
     
     aN = UserList(UserIndex).flags.AtacadoPorNpc
     If aN > 0 Then
@@ -1173,6 +1173,13 @@ On Error GoTo ErrorHandler
         UserList(UserIndex).flags.Mimetizado = 0
     End If
     
+    ' << Restauramos los atributos >>
+    If UserList(UserIndex).flags.TomoPocion = True Then
+        For i = 1 To 5
+            UserList(UserIndex).Stats.UserAtributos(i) = UserList(UserIndex).Stats.UserAtributosBackUP(i)
+        Next i
+    End If
+    
     '<< Cambiamos la apariencia del char >>
     If UserList(UserIndex).flags.Navegando = 0 Then
         UserList(UserIndex).Char.body = iCuerpoMuerto
@@ -1184,7 +1191,6 @@ On Error GoTo ErrorHandler
         UserList(UserIndex).Char.body = iFragataFantasmal ';)
     End If
     
-    Dim i As Integer
     For i = 1 To MAXMASCOTAS
         If UserList(UserIndex).MascotasIndex(i) > 0 Then
             Call MuereNpc(UserList(UserIndex).MascotasIndex(i), 0)
@@ -1192,20 +1198,6 @@ On Error GoTo ErrorHandler
     Next i
     
     UserList(UserIndex).NroMascotas = 0
-    
-    
-    'If MapInfo(UserList(UserIndex).Pos.Map).Pk Then
-    '        Dim MiObj As Obj
-    '        Dim nPos As WorldPos
-    '        MiObj.ObjIndex = RandomNumber(554, 555)
-    '        MiObj.Amount = 1
-    '        nPos = TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
-    '        Dim ManchaSangre As New cGarbage
-    '        ManchaSangre.Map = nPos.Map
-    '        ManchaSangre.X = nPos.X
-    '        ManchaSangre.Y = nPos.Y
-    '        Call TrashCollector.Add(ManchaSangre)
-    'End If
     
     '<< Actualizamos clientes >>
     Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, NingunArma, NingunEscudo, NingunCasco)
