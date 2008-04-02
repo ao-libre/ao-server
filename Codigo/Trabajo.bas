@@ -71,8 +71,6 @@ Dim Suerte As Double
 Dim res As Integer
 Dim Skill As Integer
 
-Call CancelExit(UserIndex)
-    
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
 Suerte = (((0.000002 * Skill - 0.0002) * Skill + 0.0064) * Skill + 0.1124) * 100
@@ -116,8 +114,6 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 
 Dim ModNave As Long
 ModNave = ModNavegacion(UserList(UserIndex).clase)
-
-Call CancelExit(UserIndex)
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
     Call WriteConsoleMsg(UserIndex, "No tenes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
@@ -192,10 +188,6 @@ Call WriteNavigateToggle(UserIndex)
 End Sub
 
 Public Sub FundirMineral(ByVal UserIndex As Integer)
-'Call LogTarea("Sub FundirMineral")
-
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
@@ -329,10 +321,6 @@ End Function
 
 
 Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
-'Call LogTarea("Sub HerreroConstruirItem")
-
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
 
 If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Then
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
@@ -390,9 +378,6 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    ObjData(ItemIndex).SkCarpinteria And _
    PuedeConstruirCarpintero(ItemIndex) And _
    UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
-
-    'Si esta saliendo se cancela la salida
-    Call CancelExit(UserIndex)
     
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
     Call WriteConsoleMsg(UserIndex, "Has construido el objeto!.", FontTypeNames.FONTTYPE_INFO)
@@ -571,9 +556,6 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
         puntosRequeridos = Npclist(NpcIndex).flags.Domable
     End If
     
-    'Si esta saliendo se cancela la salida
-    Call CancelExit(UserIndex)
-    
     If puntosRequeridos <= puntosDomar And RandomNumber(1, 5) = 1 Then
         Dim index As Integer
         UserList(UserIndex).NroMascotas = UserList(UserIndex).NroMascotas + 1
@@ -724,9 +706,6 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
-
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
 Else
@@ -786,9 +765,6 @@ Dim iSkill As Integer
 Dim Suerte As Integer
 Dim res As Integer
 Dim EsPescador As Boolean
-
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
@@ -1055,8 +1031,7 @@ Else
     Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
 End If
 
-'Si esta saliendo se cancela la salida (Tanto al que roba como al que recibe el robo)
-Call CancelExit(LadrOnIndex)
+'Si esta saliendo se cancela la salida de quien es robado
 Call CancelExit(VictimaIndex)
 
 End Sub
@@ -1157,9 +1132,6 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
-
 If UserList(UserIndex).clase = eClass.Lumberjack Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
 Else
@@ -1223,9 +1195,6 @@ On Error GoTo Errhandler
 Dim Suerte As Integer
 Dim res As Integer
 Dim metal As Integer
-
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Miner Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
@@ -1301,9 +1270,6 @@ End If
 If UserList(UserIndex).Counters.bPuedeMeditar = False Then
     UserList(UserIndex).Counters.bPuedeMeditar = True
 End If
-
-'Si esta saliendo se cancela la salida
-Call CancelExit(UserIndex)
     
 If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     Call WriteConsoleMsg(UserIndex, "Has terminado de meditar.", FontTypeNames.FONTTYPE_INFO)

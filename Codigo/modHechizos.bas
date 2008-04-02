@@ -452,9 +452,6 @@ Dim uh As Integer
 
 uh = UserList(UserIndex).Stats.UserHechizos(index)
 
-'Si esta saliendo se cancela la salida
-Call CancelExit(index)
-
 If PuedeLanzar(UserIndex, uh) Then
     Select Case Hechizos(uh).Target
         Case TargetType.uUsuarios

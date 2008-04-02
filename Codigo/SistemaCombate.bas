@@ -1099,7 +1099,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
     Call AllMascotasAtacanUser(attackerIndex, VictimIndex)
     Call AllMascotasAtacanUser(VictimIndex, attackerIndex)
     
-    'Si esta saliendo se cancela la salida
+    'Si la victima esta saliendo se cancela la salida
     Call CancelExit(VictimIndex)
     Call FlushBuffer(VictimIndex)
 End Sub

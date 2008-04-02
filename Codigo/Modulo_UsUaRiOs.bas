@@ -1442,11 +1442,27 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
     End If
 End Sub
 
+''
+' Cancels the exit of a user. If it's disconnected it's reset.
+'
+' @param    UserIndex   The index of the user whose exit is being reset.
+
 Public Sub CancelExit(ByVal UserIndex As Integer)
-    If UserList(UserIndex).Counters.Saliendo = True Then
-        UserList(UserIndex).Counters.Saliendo = False
-        UserList(UserIndex).Counters.Salir = 0
-        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 04/02/08
+'
+'***************************************************
+    If UserList(UserIndex).Counters.Saliendo Then
+        ' Is the user still connected?
+        If UserList(UserIndex).ConnIDValida Then
+            UserList(UserIndex).Counters.Saliendo = False
+            UserList(UserIndex).Counters.Salir = 0
+            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+        Else
+            'Simply reset
+            UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, IntervaloCerrarConexion, 0)
+        End If
     End If
 End Sub
 

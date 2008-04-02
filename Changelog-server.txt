@@ -228,3 +228,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 01/04/2008: Se restauran los atributos originales al morir. (DarkThom)
  * 01/04/2008: Mejora en el control de resitrcción en el server. (DarkThom)
  * 02/04/2008: Se llama a CancelExit para cancelar la salida. (Tavo)
+ * 02/04/2008: CancelExit ahora no deja a usuarios adentro eternamente. Además se limpiaron muchas llamadas a CancelExit y se homogeneizó su uso. (Maraxus)

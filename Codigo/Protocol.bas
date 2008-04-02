@@ -478,6 +478,9 @@ On Error Resume Next
         'He is logged. Reset idle counter if id is valid.
         ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
             UserList(UserIndex).Counters.IdleCount = 0
+            
+            'Si esta saliendo se cancela la salida
+            Call CancelExit(UserIndex)
         End If
     ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
         UserList(UserIndex).Counters.IdleCount = 0
@@ -1795,9 +1798,6 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
         
         .flags.TimesWalk = .flags.TimesWalk + 1
         
-        'salida parche
-        Call CancelExit(UserIndex)
-        
         If .flags.Paralizado = 0 Then
             If .flags.Meditando Then
                 'Stop meditating, next action will start movement.
@@ -1887,9 +1887,6 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        'Si esta saliendo se cancela la salida
-        Call CancelExit(UserIndex)
-
         'If dead, can't attack
         If .flags.Muerto = 1 Then
             Call WriteConsoleMsg(UserIndex, "¡¡No podes atacar a nadie porque estas muerto!!.", FontTypeNames.FONTTYPE_INFO)
@@ -2698,9 +2695,6 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     'Attack!
                     If Not PuedeAtacar(UserIndex, tU) Then Exit Sub 'TODO: Por ahora pongo esto para solucionar lo anterior.
                     Call UsuarioAtacaUsuario(UserIndex, tU)
-                    
-                    'Si esta saliendo se cancela la salida
-                    Call CancelExit(UserIndex)
                 ElseIf tN > 0 Then
                     'Only allow to atack if the other one can retaliate (can see us)
                     If Abs(Npclist(tN).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(tN).Pos.X - .Pos.X) > RANGO_VISION_X Then
@@ -2713,8 +2707,6 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         
                         'Attack!
                         Call UsuarioAtacaNpc(UserIndex, tN)
-                        'Si esta saliendo se cancela la salida
-                        Call CancelExit(UserIndex)
                     End If
                 End If
                 
@@ -3185,9 +3177,6 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
             .Char.heading = heading
             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
-        
-        'Si esta saliendo se cancela la salida
-        Call CancelExit(UserIndex)
     End With
 End Sub
 
