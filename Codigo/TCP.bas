@@ -480,7 +480,7 @@ End Sub
 
 Sub CloseSocket(ByVal UserIndex As Integer)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     If UserIndex = LastUser Then
         Do Until UserList(LastUser).flags.UserLogged
@@ -530,7 +530,7 @@ On Error GoTo errhandler
     
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
@@ -542,7 +542,7 @@ End Sub
 #ElseIf UsarQueSocket = 0 Then
 
 Sub CloseSocket(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     
     
@@ -567,7 +567,7 @@ On Error GoTo errhandler
 
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
@@ -583,7 +583,7 @@ End Sub
 
 Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean = True)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim NURestados As Boolean
 Dim CoNnEcTiOnId As Long
@@ -624,7 +624,7 @@ Dim CoNnEcTiOnId As Long
 
 Exit Sub
 
-errhandler:
+Errhandler:
     UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
@@ -883,6 +883,41 @@ If CheckForSameName(name) Then
     Exit Sub
 End If
 
+'Reseteamos los privilegios
+UserList(UserIndex).flags.Privilegios = 0
+
+'Vemos que clase de user es (se lo usa para setear los privilegios al loguear el PJ)
+If EsAdmin(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
+ElseIf EsDios(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Dios
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
+ElseIf EsSemiDios(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.SemiDios
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
+ElseIf EsConsejero(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Consejero
+    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
+Else
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.User
+    UserList(UserIndex).flags.AdminPerseguible = True
+End If
+
+'Add RM flag if needed
+If EsRolesMaster(name) Then
+    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.RoleMaster
+End If
+
+If ServerSoloGMs > 0 Then
+    If (UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)) = 0 Then
+        Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores. Por favor reintente en unos momentos.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
+End If
+
 'Cargamos el personaje
 Dim Leer As New clsIniReader
 
@@ -890,9 +925,6 @@ Call Leer.Initialize(CharPath & UCase$(name) & ".chr")
 
 'Cargamos los datos del personaje
 Call LoadUserInit(UserIndex, Leer)
-
-'Reseteamos los privilegios
-UserList(UserIndex).flags.Privilegios = 0
 
 Call LoadUserStats(UserIndex, Leer)
 
@@ -1053,29 +1085,6 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.map, MapInfo(UserList(UserIndex).Pos.map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
 
-'Vemos que clase de user es (se lo usa para setear los privilegios al loguear el PJ)
-If EsAdmin(name) Then
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Admin
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
-ElseIf EsDios(name) Then
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Dios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
-ElseIf EsSemiDios(name) Then
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.SemiDios
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
-ElseIf EsConsejero(name) Then
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.Consejero
-    Call LogGM(UserList(UserIndex).name, "Se conecto con ip:" & UserList(UserIndex).ip)
-Else
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.User
-    UserList(UserIndex).flags.AdminPerseguible = True
-End If
-
-'Add RM flag if needed
-If EsRolesMaster(name) Then
-    UserList(UserIndex).flags.Privilegios = UserList(UserIndex).flags.Privilegios Or PlayerType.RoleMaster
-End If
-
 If UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
 ElseIf UserList(UserIndex).flags.Privilegios = (PlayerType.User Or PlayerType.RoyalCouncil) Then
@@ -1174,15 +1183,6 @@ If criminal(UserIndex) Then
 Else
     UserList(UserIndex).flags.Seguro = True
     Call WriteSafeModeOn(UserIndex)
-End If
-
-If ServerSoloGMs > 0 Then
-    If (UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)) = 0 Then
-        Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores de jerarquia mayor o igual a: " & ServerSoloGMs & ". Por favor intente en unos momentos.")
-        Call FlushBuffer(UserIndex)
-        Call CloseSocket(UserIndex)
-        Exit Sub
-    End If
 End If
 
 If UserList(UserIndex).guildIndex > 0 Then
@@ -1538,7 +1538,7 @@ End Sub
 
 Sub CloseUser(ByVal UserIndex As Integer)
 'Call LogTarea("CloseUser " & UserIndex)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim N As Integer
 Dim X As Integer
@@ -1645,13 +1645,13 @@ Close #N
 
 Exit Sub
 
-errhandler:
+Errhandler:
 Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
 End Sub
 
 Sub ReloadSokcet()
-On Error GoTo errhandler
+On Error GoTo Errhandler
 #If UsarQueSocket = 1 Then
 
     Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
@@ -1675,7 +1675,7 @@ On Error GoTo errhandler
 #End If
 
 Exit Sub
-errhandler:
+Errhandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub
