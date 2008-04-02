@@ -1796,11 +1796,7 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
         .flags.TimesWalk = .flags.TimesWalk + 1
         
         'salida parche
-        If .Counters.Saliendo Then
-            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-            .Counters.Saliendo = False
-            .Counters.Salir = 0
-        End If
+        Call CancelExit(UserIndex)
         
         If .flags.Paralizado = 0 Then
             If .flags.Meditando Then
@@ -1892,11 +1888,7 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         'Si esta saliendo se cancela la salida
-        If .Counters.Saliendo Then
-            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-            .Counters.Saliendo = False
-            .Counters.Salir = 0
-        End If
+        Call CancelExit(UserIndex)
 
         'If dead, can't attack
         If .flags.Muerto = 1 Then
@@ -2708,11 +2700,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call UsuarioAtacaUsuario(UserIndex, tU)
                     
                     'Si esta saliendo se cancela la salida
-                    If .Counters.Saliendo Then
-                        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-                        .Counters.Saliendo = False
-                        .Counters.Salir = 0
-                    End If
+                    Call CancelExit(UserIndex)
                 ElseIf tN > 0 Then
                     'Only allow to atack if the other one can retaliate (can see us)
                     If Abs(Npclist(tN).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(tN).Pos.X - .Pos.X) > RANGO_VISION_X Then
@@ -2726,11 +2714,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         'Attack!
                         Call UsuarioAtacaNpc(UserIndex, tN)
                         'Si esta saliendo se cancela la salida
-                        If .Counters.Saliendo Then
-                            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-                            .Counters.Saliendo = False
-                            .Counters.Salir = 0
-                        End If
+                        Call CancelExit(UserIndex)
                     End If
                 End If
                 
@@ -3203,11 +3187,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         End If
         
         'Si esta saliendo se cancela la salida
-        If .Counters.Saliendo Then
-            Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-            .Counters.Saliendo = False
-            .Counters.Salir = 0
-        End If
+        Call CancelExit(UserIndex)
     End With
 End Sub
 

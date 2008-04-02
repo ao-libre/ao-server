@@ -71,10 +71,7 @@ Dim Suerte As Double
 Dim res As Integer
 Dim Skill As Integer
 
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "¡No puedes ocultarte mientras te encuentres saliendo!", FontTypeNames.FONTTYPE_WARNING)
-    Exit Sub
-End If
+Call CancelExit(UserIndex)
     
 Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Ocultarse)
 
@@ -120,12 +117,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 Dim ModNave As Long
 ModNave = ModNavegacion(UserList(UserIndex).clase)
 
-'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
     Call WriteConsoleMsg(UserIndex, "No tenes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
@@ -203,11 +195,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 'Call LogTarea("Sub FundirMineral")
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).flags.TargetObjInvIndex > 0 Then
    
@@ -344,11 +332,7 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
 'Call LogTarea("Sub HerreroConstruirItem")
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Then
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
@@ -408,11 +392,7 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
 
     'Si esta saliendo se cancela la salida
-    If UserList(UserIndex).Counters.Saliendo Then
-        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-        UserList(UserIndex).Counters.Saliendo = False
-        UserList(UserIndex).Counters.Salir = 0
-    End If
+    Call CancelExit(UserIndex)
     
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
     Call WriteConsoleMsg(UserIndex, "Has construido el objeto!.", FontTypeNames.FONTTYPE_INFO)
@@ -592,11 +572,7 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
     End If
     
     'Si esta saliendo se cancela la salida
-    If UserList(UserIndex).Counters.Saliendo Then
-        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-        UserList(UserIndex).Counters.Saliendo = False
-        UserList(UserIndex).Counters.Salir = 0
-    End If
+    Call CancelExit(UserIndex)
     
     If puntosRequeridos <= puntosDomar And RandomNumber(1, 5) = 1 Then
         Dim index As Integer
@@ -749,11 +725,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
@@ -816,11 +788,7 @@ Dim res As Integer
 Dim EsPescador As Boolean
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Fisher Then
     Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
@@ -1088,15 +1056,8 @@ Else
 End If
 
 'Si esta saliendo se cancela la salida (Tanto al que roba como al que recibe el robo)
-If UserList(LadrOnIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(LadrOnIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(LadrOnIndex).Counters.Saliendo = False
-    UserList(LadrOnIndex).Counters.Salir = 0
-ElseIf UserList(VictimaIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(VictimaIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(VictimaIndex).Counters.Saliendo = False
-    UserList(VictimaIndex).Counters.Salir = 0
-End If
+Call CancelExit(LadrOnIndex)
+Call CancelExit(VictimaIndex)
 
 End Sub
 
@@ -1197,11 +1158,7 @@ Dim Suerte As Integer
 Dim res As Integer
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Lumberjack Then
     Call QuitarSta(UserIndex, EsfuerzoTalarLeñador)
@@ -1268,11 +1225,7 @@ Dim res As Integer
 Dim metal As Integer
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
 
 If UserList(UserIndex).clase = eClass.Miner Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
@@ -1350,11 +1303,7 @@ If UserList(UserIndex).Counters.bPuedeMeditar = False Then
 End If
 
 'Si esta saliendo se cancela la salida
-If UserList(UserIndex).Counters.Saliendo Then
-    Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-    UserList(UserIndex).Counters.Saliendo = False
-    UserList(UserIndex).Counters.Salir = 0
-End If
+Call CancelExit(UserIndex)
     
 If UserList(UserIndex).Stats.MinMAN >= UserList(UserIndex).Stats.MaxMAN Then
     Call WriteConsoleMsg(UserIndex, "Has terminado de meditar.", FontTypeNames.FONTTYPE_INFO)

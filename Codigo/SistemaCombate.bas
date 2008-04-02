@@ -1100,12 +1100,7 @@ Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex A
     Call AllMascotasAtacanUser(VictimIndex, attackerIndex)
     
     'Si esta saliendo se cancela la salida
-    If UserList(VictimIndex).Counters.Saliendo Then
-        Call WriteConsoleMsg(VictimIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
-        UserList(VictimIndex).Counters.Saliendo = False
-        UserList(VictimIndex).Counters.Salir = 0
-    End If
-    
+    Call CancelExit(VictimIndex)
     Call FlushBuffer(VictimIndex)
 End Sub
 

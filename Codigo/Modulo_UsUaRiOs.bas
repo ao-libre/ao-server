@@ -1442,6 +1442,14 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
     End If
 End Sub
 
+Public Sub CancelExit(ByVal UserIndex As Integer)
+    If UserList(UserIndex).Counters.Saliendo = True Then
+        UserList(UserIndex).Counters.Saliendo = False
+        UserList(UserIndex).Counters.Salir = 0
+        Call WriteConsoleMsg(UserIndex, "/salir cancelado.", FontTypeNames.FONTTYPE_WARNING)
+    End If
+End Sub
+
 'CambiarNick: Cambia el Nick de un slot.
 '
 'UserIndex: Quien ejecutó la orden
