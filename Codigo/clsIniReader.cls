@@ -41,8 +41,15 @@ Attribute VB_Exposed = False
 ' Based in the idea of AlejoLP and his clsLeerInis.
 '
 ' @author Juan Martín Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
-' @version 1.0.0
+' @version 1.1.0
 ' @date 20060501
+
+'01/05/2006 - Juan Martín Sotuyo Dodero (Maraxus) - (juansotuyo@gmail.com)
+'   - First Release
+'
+'01/04/2008 - Juan Martín Sotuyo Dodero (Maraxus) - (juansotuyo@gmail.com)
+'   - Add: KeyExists method allows to check for valid section keys.
+
 
 Option Explicit
 Option Base 0
@@ -57,7 +64,7 @@ Option Base 0
 '
 
 Private Type ChildNode
-    Key As String
+    key As String
     value As String
 End Type
 
@@ -69,7 +76,6 @@ End Type
 'It's the key used when searching for a main section of the INI data.
 ' @param    values Array of ChildNodes, each containing a value entry along with it's key.
 ' @param    numValues Number of entrys in the main node.
-'
 
 Private Type MainNode
     name As String
@@ -79,17 +85,14 @@ End Type
 
 ''
 'Containts all Main sections of the loaded INI file
-'
 Private fileData() As MainNode
 
 ''
 'Stores the total number of main sections in the loaded INI file
-'
 Private MainNodes As Long
 
 ''
 'Default constructor. Does nothing.
-'
 
 Private Sub Class_Initialize()
 '**************************************************************
@@ -128,7 +131,6 @@ End Sub
 '
 ' @param    file Complete path of the INI file to be loaded.
 ' @see      GetValue
-'
 
 Public Sub Initialize(ByVal file As String)
 '**************************************************************
@@ -176,7 +178,7 @@ Public Sub Initialize(ByVal file As String)
                             ReDim Preserve .values(.numValues) As ChildNode
                             
                             .values(.numValues).value = Right$(Text, Len(Text) - Pos)
-                            .values(.numValues).Key = UCase$(Left$(Text, Pos - 1))
+                            .values(.numValues).key = UCase$(Left$(Text, Pos - 1))
                             
                             .numValues = .numValues + 1
                         End With
@@ -208,7 +210,6 @@ End Sub
 ' @param    Node The MainNode whose values are to be sorted.
 ' @param    first The first index to consider when sorting.
 ' @param    last The last index to be considered when sorting.
-'
 
 Private Sub SortChildNodes(ByRef Node As MainNode, ByVal First As Integer, ByVal Last As Integer)
 '**************************************************************
@@ -226,13 +227,13 @@ Private Sub SortChildNodes(ByRef Node As MainNode, ByVal First As Integer, ByVal
     max = Last
     
     With Node
-        comp = .values((min + max) \ 2).Key
+        comp = .values((min + max) \ 2).key
     
         Do While min <= max
-            Do While .values(min).Key < comp And min < Last
+            Do While .values(min).key < comp And min < Last
                 min = min + 1
             Loop
-            Do While .values(max).Key > comp And max > First
+            Do While .values(max).key > comp And max > First
                 max = max - 1
             Loop
             If min <= max Then
@@ -254,7 +255,6 @@ End Sub
 '
 ' @param    first The first index to consider when sorting.
 ' @param    last The last index to be considered when sorting.
-'
 
 Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
 '**************************************************************
@@ -299,9 +299,8 @@ End Sub
 ' @param    Main The name of the main section in which we will be searching.
 ' @param    key The key of the value we are looking for.
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
-'
 
-Public Function GetValue(ByVal Main As String, ByVal Key As String) As String
+Public Function GetValue(ByVal Main As String, ByVal key As String) As String
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
@@ -315,7 +314,7 @@ Public Function GetValue(ByVal Main As String, ByVal Key As String) As String
     
     If i >= 0 Then
         'If valid, binary search among keys
-        j = FindKey(fileData(i), UCase$(Key))
+        j = FindKey(fileData(i), UCase$(key))
         
         'If we found it we return it
         If j >= 0 Then GetValue = fileData(i).values(j).value
@@ -328,9 +327,8 @@ End Function
 ' @param    Node The MainNode among whose value entries we will be searching.
 ' @param    key The key of the value we are looking for.
 ' @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
-'
 
-Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
+Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
@@ -347,9 +345,9 @@ Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
     Do While min <= max
         mid = (min + max) \ 2
         
-        If Node.values(mid).Key < Key Then
+        If Node.values(mid).key < key Then
             min = mid + 1
-        ElseIf Node.values(mid).Key > Key Then
+        ElseIf Node.values(mid).key > key Then
             max = mid - 1
         Else
             'We found it
@@ -368,7 +366,6 @@ End Function
 '
 ' @param    name The name of the MainNode we are looking for.
 ' @returns  The index in which the main section we are looking for is stored or the negation of the index in which it should be if not found.
-'
 
 Private Function FindMain(ByVal name As String) As Long
 '**************************************************************
@@ -402,3 +399,19 @@ Private Function FindMain(ByVal name As String) As Long
     '(all higher values are to the right of the list and lower values are to the left)
     FindMain = Not mid
 End Function
+
+''
+'Checks wether a given key exists or not.
+'
+' @param    name    The name of the element whose existance is being checked.
+' @returns  True if the key exists, false otherwise.
+
+Public Function KeyExists(ByVal name As String) As Boolean
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero
+'Last Modify Date: 04/01/2008
+'Returns true of the key exists, false otherwise.
+'**************************************************************
+    KeyExists = FindMain(name) >= 0
+End Function
+

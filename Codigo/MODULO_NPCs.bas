@@ -70,7 +70,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
-On Error GoTo errhandler
+On Error GoTo Errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
@@ -196,7 +196,7 @@ On Error GoTo errhandler
     
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en MuereNpc - Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
@@ -336,7 +336,7 @@ End Sub
 
 Sub QuitarNPC(ByVal NpcIndex As Integer)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
     Npclist(NpcIndex).flags.NPCActive = False
     
@@ -366,7 +366,7 @@ On Error GoTo errhandler
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Npclist(NpcIndex).flags.NPCActive = False
     Call LogError("Error en QuitarNPC")
 
@@ -615,7 +615,7 @@ End Sub
 Function NextOpenNPC() As Integer
 'Call LogTarea("Sub NextOpenNPC")
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim LoopC As Integer
   
@@ -628,7 +628,7 @@ NextOpenNPC = LoopC
 
 
 Exit Function
-errhandler:
+Errhandler:
     Call LogError("Error en NextOpenNPC")
 End Function
 
@@ -663,15 +663,16 @@ Dim Y As Integer
 Dim it As Integer
 
 nIndex = OpenNPC(NpcIndex, Respawn)   'Conseguimos un indice
-PuedeAgua = Npclist(nIndex).flags.AguaValida
-PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
-
-it = 0
 
 If nIndex > MAXNPCS Then
     SpawnNpc = 0
     Exit Function
 End If
+
+PuedeAgua = Npclist(nIndex).flags.AguaValida
+PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
+
+it = 0
 
 Do While Not PosicionValida
         
@@ -787,24 +788,23 @@ Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = True) As I
 '    ¡¡¡¡ NO USAR GetVar PARA LEER LOS NPCS !!!!
 '
 'El que ose desafiar esta LEY, se las tendrá que ver
-'con migo. Para leer los NPCS se deberá usar la
-'nueva clase clsLeerInis.
+'conmigo. Para leer los NPCS se deberá usar la
+'nueva clase clsIniReader.
 '
 'Alejo
 '
 '###################################################
 
 Dim NpcIndex As Integer
-Dim npcfile As String
 Dim Leer As clsIniReader
 
-'If NpcNumber > 499 Then
-        'NpcFile = DatPath & "NPCs-HOSTILES.dat"
-'        Set Leer = LeerNPCsHostiles
-'Else
-        npcfile = DatPath & "NPCs.dat"
-        Set Leer = LeerNPCs
-'End If
+Set Leer = LeerNPCs
+
+'If requested index is invalid, abort
+If Not Leer.KeyExists("NPC" & NpcNumber) Then
+    OpenNPC = MAXNPCS + 1
+    Exit Function
+End If
 
 NpcIndex = NextOpenNPC
 

@@ -224,3 +224,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 30/03/2008: Corregí un bug que le cambiaba el mail no sólo al usuario sino también al Dios que ejecutaba /AEMAIL. (Maraxus)
  * 31/03/2008: Se pueden tirar y depositar items incluso si están equipados (de estar sacando todos se desequipan sólos, sino sigue como si nada). Proximamente haré lo mismo con comercio. (Maraxus)
  * 01/04/2008: Se pueden vender items incluso estando equipados (se desequipan al venderse el último). (Maraxus)
+ * 01/04/2008: Ahora el uso de un /acc o /racc con un id inexistente no crea ningún NPC, evitandose producir rt-9 en el cliente. (Maraxus)

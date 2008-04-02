@@ -12625,7 +12625,10 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
-        Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
+        
+        If NpcIndex <> 0 Then
+            Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
+        End If
     End With
 End Sub
 
@@ -12657,8 +12660,10 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, True)
-        Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
         
+        If NpcIndex <> 0 Then
+            Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
+        End If
     End With
 End Sub
 
