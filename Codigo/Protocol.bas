@@ -3365,7 +3365,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
         End If
         
         'User compra el item
-        Call Comercio(Compra, UserIndex, .flags.TargetNPC, CInt(Slot), amount)
+        Call Comercio(eModoComercio.Compra, UserIndex, .flags.TargetNPC, Slot, amount)
     End With
 End Sub
 
@@ -3456,7 +3456,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
         End If
         
         'User compra el item del slot
-        Call Comercio(Venta, UserIndex, .flags.TargetNPC, CInt(Slot), amount)
+        Call Comercio(eModoComercio.Venta, UserIndex, .flags.TargetNPC, Slot, amount)
     End With
 End Sub
 

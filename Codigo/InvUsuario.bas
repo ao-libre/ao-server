@@ -247,7 +247,6 @@ Errhandler:
 End Sub
 
 Sub QuitarUserInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Cantidad As Integer)
-    'Desequipa
     If Slot < 1 Or Slot > MAX_INVENTORY_SLOTS Then Exit Sub
     
     With UserList(UserIndex).Invent.Object(Slot)
