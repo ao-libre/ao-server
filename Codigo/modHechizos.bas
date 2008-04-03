@@ -635,13 +635,18 @@ If Hechizos(H).Mimetiza = 1 Then
 End If
 
 If Hechizos(H).Envenena = 1 Then
-        If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
-        If UserIndex <> tU Then
-            Call UsuarioAtacadoPorUsuario(UserIndex, tU)
-        End If
-        UserList(tU).flags.Envenenado = 1
-        Call InfoHechizo(UserIndex)
-        b = True
+    If UserIndex = tU Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Exit Sub
+    End If
+    
+    If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
+    If UserIndex <> tU Then
+        Call UsuarioAtacadoPorUsuario(UserIndex, tU)
+    End If
+    UserList(tU).flags.Envenenado = 1
+    Call InfoHechizo(UserIndex)
+    b = True
 End If
 
 If Hechizos(H).CuraVeneno = 1 Then
@@ -684,13 +689,18 @@ If Hechizos(H).CuraVeneno = 1 Then
 End If
 
 If Hechizos(H).Maldicion = 1 Then
-        If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
-        If UserIndex <> tU Then
-            Call UsuarioAtacadoPorUsuario(UserIndex, tU)
-        End If
-        UserList(tU).flags.Maldicion = 1
-        Call InfoHechizo(UserIndex)
-        b = True
+    If UserIndex = tU Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Exit Sub
+    End If
+    
+    If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
+    If UserIndex <> tU Then
+        Call UsuarioAtacadoPorUsuario(UserIndex, tU)
+    End If
+    UserList(tU).flags.Maldicion = 1
+    Call InfoHechizo(UserIndex)
+    b = True
 End If
 
 If Hechizos(H).RemoverMaldicion = 1 Then
@@ -706,6 +716,11 @@ If Hechizos(H).Bendicion = 1 Then
 End If
 
 If Hechizos(H).Paraliza = 1 Or Hechizos(H).Inmoviliza = 1 Then
+    If UserIndex = tU Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Exit Sub
+    End If
+    
      If UserList(tU).flags.Paralizado = 0 Then
             If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
             
@@ -905,6 +920,11 @@ If Hechizos(H).Revivir = 1 Then
 End If
 
 If Hechizos(H).Ceguera = 1 Then
+    If UserIndex = tU Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Exit Sub
+    End If
+    
         If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
         If UserIndex <> tU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, tU)
@@ -919,6 +939,10 @@ If Hechizos(H).Ceguera = 1 Then
 End If
 
 If Hechizos(H).Estupidez = 1 Then
+    If UserIndex = tU Then
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Exit Sub
+    End If
         If Not PuedeAtacar(UserIndex, tU) Then Exit Sub
         If UserIndex <> tU Then
             Call UsuarioAtacadoPorUsuario(UserIndex, tU)
@@ -1453,7 +1477,7 @@ If Hechizos(H).SubeHP = 1 Then
 ElseIf Hechizos(H).SubeHP = 2 Then
     
     If UserIndex = tempChr Then
-        Call WriteConsoleMsg(UserIndex, "No podes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo.", FontTypeNames.FONTTYPE_FIGHT)
         Exit Sub
     End If
     
