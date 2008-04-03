@@ -92,9 +92,6 @@ Sub RevivirUsuario(ByVal UserIndex As Integer)
 UserList(UserIndex).flags.Muerto = 0
 UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.UserAtributos(eAtributos.Constitucion)
 
-'If he died, venom should fade away
-UserList(UserIndex).flags.Envenenado = 0
-
 'No puede estar empollando
 UserList(UserIndex).flags.EstaEmpo = 0
 UserList(UserIndex).EmpoCont = 0
@@ -129,6 +126,8 @@ If UserList(UserIndex).flags.Navegando = 1 Then
     UserList(UserIndex).Char.CascoAnim = NingunCasco
 Else
     Call DarCuerpoDesnudo(UserIndex)
+    
+    UserList(UserIndex).Char.Head = UserList(UserIndex).OrigChar.Head
 End If
 
 Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
