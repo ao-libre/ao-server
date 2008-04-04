@@ -478,9 +478,6 @@ On Error Resume Next
         'He is logged. Reset idle counter if id is valid.
         ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
             UserList(UserIndex).Counters.IdleCount = 0
-            
-            'Si esta saliendo se cancela la salida
-            Call CancelExit(UserIndex)
         End If
     ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
         UserList(UserIndex).Counters.IdleCount = 0
@@ -1466,7 +1463,7 @@ On Error GoTo Errhandler
     race = buffer.ReadByte()
     gender = buffer.ReadByte()
     Class = buffer.ReadByte()
-    Call buffer.ReadBlock(skills, 21)
+    Call buffer.ReadBlock(skills, NUMSKILLS)
     mail = buffer.ReadASCIIString()
     homeland = buffer.ReadByte()
     
@@ -1798,6 +1795,9 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
         
         .flags.TimesWalk = .flags.TimesWalk + 1
         
+        'If exiting, cancel
+        Call CancelExit(UserIndex)
+        
         If .flags.Paralizado = 0 Then
             If .flags.Meditando Then
                 'Stop meditating, next action will start movement.
@@ -1911,6 +1911,9 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
                 Exit Sub
             End If
         End If
+        
+        'If exiting, cancel
+        Call CancelExit(UserIndex)
         
         'Attack!
         Call UsuarioAtaca(UserIndex)
@@ -2418,6 +2421,9 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        'If exiting, cancel
+        Call CancelExit(UserIndex)
+        
         Select Case Skill
             Case Robar, Magia, Domar
                 Call WriteWorkRequestTarget(UserIndex, Skill)
@@ -2612,6 +2618,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
+        'If exiting, cancel
+        Call CancelExit(UserIndex)
+        
         Select Case Skill
             Case eSkill.Proyectiles
             
@@ -2679,19 +2688,6 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Exit Sub
                     End If
                     
-                    'Can't hit administrators!
-                    ' 23/08/2006 GS > Agregue que si es un personaje Administrativo no ingrese
-                    ' 29/04/2007 TW > Directamente NO VA ya que este chequeo se hace bien dentro de la sigueinte función.
-                    'If .flags.Seguro Then
-                    '    If Not criminal(tU) Then
-                    '        If UserList(tU).flags.Privilegios And PlayerType.User Then
-                    '            Call WriteConsoleMsg(UserIndex, "¡Para atacar ciudadanos desactiva el seguro!", FontTypeNames.FONTTYPE_FIGHT)
-                    '            Exit Sub
-                    '        End If
-                    '    End If
-                    'End If
-                    'Pero hay que hacer algo para que no se pierda la flecha si es que ataca a un GM en zona sin trigger6
-                                                               
                     'Attack!
                     If Not PuedeAtacar(UserIndex, tU) Then Exit Sub 'TODO: Por ahora pongo esto para solucionar lo anterior.
                     Call UsuarioAtacaUsuario(UserIndex, tU)

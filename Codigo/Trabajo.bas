@@ -1031,7 +1031,7 @@ Else
     Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
 End If
 
-'Si esta saliendo se cancela la salida de quien es robado
+'If exiting, cancel de quien es robado
 Call CancelExit(VictimaIndex)
 
 End Sub

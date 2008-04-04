@@ -905,7 +905,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
         If (UserList(UserIndex).Stats.MinHP <= 0) Then
             Call UserDie(UserIndex)
-            Call WriteConsoleMsg(UserIndex, "El esfuerzo de Resucitar fue demasiado grande", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "El esfuerzo de resucitar fue demasiado grande", FontTypeNames.FONTTYPE_INFO)
             b = False
         Else
             Call WriteConsoleMsg(UserIndex, "El esfuerzo de resucitar te ha debilitado", FontTypeNames.FONTTYPE_INFO)

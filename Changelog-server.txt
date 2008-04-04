@@ -231,3 +231,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 02/04/2008: CancelExit ahora no deja a usuarios adentro eternamente. Además se limpiaron muchas llamadas a CancelExit y se homogeneizó su uso. (Maraxus)
  * 02/04/2008: Al resucitar un usuario se le reestablece su cabeza original. (Maraxus)
  * 02/04/2008: Se corrigió un error ortográfico y se evitó sea posible tirarse hechizos negativos a uno mismo. (Maraxus)
+ * 03/04/2008: Se volvió el comportamiento de cancelar salida al de siempre, con las condiciones nuevas agregadas en enero. Siguen siendo menos llamadas de todos modos y más organizado. (Maraxus)
