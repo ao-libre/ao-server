@@ -4402,10 +4402,10 @@ On Error GoTo Errhandler
             tUser = NameIndex(UserName)
             If tUser > 0 Then
                 Call modGuilds.m_ConectarMiembroAClan(tUser, .guildIndex)
+                Call RefreshCharStatus(tUser)
             End If
             
             Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
-            Call RefreshCharStatus(tUser)
             Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessagePlayWave(43, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
@@ -9654,7 +9654,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
         Call LogGM(.name, "/CT " & mapa & "," & X & "," & Y)
         
@@ -9711,7 +9711,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         '/dt
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
         mapa = .flags.TargetMap
         X = .flags.TargetX
