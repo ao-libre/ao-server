@@ -94,11 +94,12 @@ End Function
 Public Sub ObtenerExito(ByVal ExpGanada As Long, ByVal mapa As Integer, X As Integer, Y As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 04/04/08
+'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 New formula for calculating the experience point of each user
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
+' - 04/04/08 Ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe
 '***************************************************
 'Se produjo un evento que da experiencia en la wp referenciada
 Dim i As Integer
@@ -108,10 +109,11 @@ Dim expThisUser As Double
 p_expTotal = p_expTotal + ExpGanada
 
 For i = 1 To PARTY_MAXMEMBERS
-    ' Formula: Exp*Nivel/sumadeNiveles
-    expThisUser = CDbl(ExpGanada * UserList(p_members(i).UserIndex).Stats.ELV / p_SumaNiveles)
     UI = p_members(i).UserIndex
     If UI > 0 Then
+        ' Formula: Exp*Nivel/sumadeNiveles
+        expThisUser = CDbl(ExpGanada * UserList(p_members(i).UserIndex).Stats.ELV / p_SumaNiveles)
+        
         If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
                 p_members(i).Experiencia = p_members(i).Experiencia + expThisUser
