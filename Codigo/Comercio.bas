@@ -61,8 +61,8 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         If Cantidad > Npclist(NpcIndex).Invent.Object(Slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(Slot).amount
         
-        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex), 2) * Cantidad ' Hace falta redondear eso tmb?
-        
+        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).valor / Descuento(UserIndex) * Cantidad, 0)
+            
         If UserList(UserIndex).Stats.GLD < Precio Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -74,7 +74,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         End If
         
-        UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Round(Precio, 0)
+        UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Precio
         
         Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(Slot), Cantidad)
         
@@ -130,7 +130,8 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         Call QuitarUserInvItem(UserIndex, Slot, Cantidad)
         
-        Precio = ObjData(Objeto.ObjIndex).Valor \ REDUCTOR_PRECIOVENTA * Cantidad
+        'Precio = Round(ObjData(Objeto.ObjIndex).valor / REDUCTOR_PRECIOVENTA * Cantidad, 0)
+        Precio = Round(SalePrice(ObjData(Objeto.ObjIndex).valor) * Cantidad, 0)
         UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + Precio
         
         If UserList(UserIndex).Stats.GLD > MAXORO Then _
@@ -227,26 +228,38 @@ End Function
 Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last Modified: 10/10/07
+'Last Modified: 04/04/08
 'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
 '*************************************************
     Dim Slot As Byte
     Dim val As Single
-    Dim pVenta As Long
     
     For Slot = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(Slot).ObjIndex > 0 Then
             Dim thisObj As Obj
             thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
             thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
-            val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex)
-            pVenta = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
+            val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).valor) / Descuento(UserIndex)
 
-            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, Round(val, 2), pVenta)
+            Call WriteChangeNPCInventorySlot(UserIndex, thisObj, Round(val, 2))
         Else
             Dim DummyObj As Obj
-            Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0, 0)
+            Call WriteChangeNPCInventorySlot(UserIndex, DummyObj, 0)
         End If
     Next Slot
 End Sub
 
+''
+' Devuelve el valor de venta del objeto
+'
+' @param valor  El valor de compra de objeto
+
+Public Function SalePrice(ByVal valor As Long) As Single
+'*************************************************
+'Author: Nicolás (NicoNZ)
+'
+'*************************************************
+
+    SalePrice = valor / REDUCTOR_PRECIOVENTA
+
+End Function

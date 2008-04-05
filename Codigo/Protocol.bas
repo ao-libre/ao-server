@@ -14763,7 +14763,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteLong(obData.Valor)
+        Call .WriteSingle(Round(SalePrice(obData.valor), 2))
     End With
 Exit Sub
 
@@ -14810,7 +14810,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteLong(obData.Valor)
+        Call .WriteLong(obData.valor)
     End With
 Exit Sub
 
@@ -15172,7 +15172,7 @@ End Sub
 ' @param    pVenta El valor de venta del item
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As Obj, ByVal price As Single, ByVal pVenta As Long)
+Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByRef Obj As Obj, ByVal price As Single)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -15197,7 +15197,6 @@ On Error GoTo Errhandler
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.def)
-        Call .WriteLong(pVenta)
     End With
 Exit Sub
 
@@ -16089,7 +16088,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
         Call .WriteInteger(ObjData(ObjIndex).MinHIT)
         Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(ObjData(ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
+        Call .WriteLong(SalePrice(ObjData(ObjIndex).valor))
     End With
 Exit Sub
 
