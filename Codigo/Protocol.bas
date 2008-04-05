@@ -14763,7 +14763,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteLong(obData.Valor \ REDUCTOR_PRECIOVENTA)
+        Call .WriteLong(obData.Valor)
     End With
 Exit Sub
 

@@ -233,4 +233,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 02/04/2008: Se corrigió un error ortográfico y se evitó sea posible tirarse hechizos negativos a uno mismo. (Maraxus)
  * 03/04/2008: Se volvió el comportamiento de cancelar salida al de siempre, con las condiciones nuevas agregadas en enero. Siguen siendo menos llamadas de todos modos y más organizado. (Maraxus)
  * 03/04/2008: Ya no se patea al líder del clan al aceptar un PJ offline. (Maraxus)
- * 04/04/2008: En las partys ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe (MarKoxX)
+ 

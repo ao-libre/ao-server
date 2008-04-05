@@ -241,7 +241,7 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
             val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex)
             pVenta = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / REDUCTOR_PRECIOVENTA)
-            
+
             Call WriteChangeNPCInventorySlot(UserIndex, thisObj, Round(val, 2), pVenta)
         Else
             Dim DummyObj As Obj
