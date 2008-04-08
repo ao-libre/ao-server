@@ -638,14 +638,14 @@ NpcImpactoNpc = (RandomNumber(1, 100) <= ProbExito)
 End Function
 
 Public Sub NpcDañoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
-Dim daño As Integer
-Dim ANpc As npc
-ANpc = Npclist(Atacante)
-
-daño = RandomNumber(ANpc.Stats.MinHIT, ANpc.Stats.MaxHIT)
-Npclist(Victima).Stats.MinHP = Npclist(Victima).Stats.MinHP - daño
-
-If Npclist(Victima).Stats.MinHP < 1 Then
+    Dim daño As Integer
+    Dim ANpc As npc
+    ANpc = Npclist(Atacante)
+    
+    daño = RandomNumber(ANpc.Stats.MinHIT, ANpc.Stats.MaxHIT)
+    Npclist(Victima).Stats.MinHP = Npclist(Victima).Stats.MinHP - daño
+    
+    If Npclist(Victima).Stats.MinHP < 1 Then
         
         If LenB(Npclist(Atacante).flags.AttackedBy) <> 0 Then
             Npclist(Atacante).Movement = Npclist(Atacante).flags.OldMovement
@@ -654,11 +654,12 @@ If Npclist(Victima).Stats.MinHP < 1 Then
             Npclist(Atacante).Movement = Npclist(Atacante).flags.OldMovement
         End If
         
-        Call FollowAmo(Atacante)
+        If Npclist(Atacante).MaestroUser > 0 Then
+            Call FollowAmo(Atacante)
+        End If
         
         Call MuereNpc(Victima, Npclist(Atacante).MaestroUser)
-End If
-
+    End If
 End Sub
 
 Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Optional ByVal cambiarMOvimiento As Boolean = True)
