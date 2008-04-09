@@ -366,7 +366,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 'fired every minute
 Static Minutos As Long
 Static MinutosLatsClean As Long
@@ -431,7 +431,7 @@ Close #N
 '<<<<<-------- Log the number of users online ------>>>
 
 Exit Sub
-errhandler:
+Errhandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
     Resume Next
 End Sub
@@ -592,24 +592,60 @@ On Error GoTo hayerror
                         
                         Call HambreYSed(iUserIndex, bEnviarAyS)
                         
-                        If Lloviendo Then
-                            If Not Intemperie(iUserIndex) Then
-                                If Not .flags.Descansar And .flags.Hambre = 0 And .flags.Sed = 0 Then
-                                'No esta descansando
-                                    Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                                    If bEnviarStats Then
-                                        Call WriteUpdateHP(iUserIndex)
-                                        bEnviarStats = False
-                                    End If
-                                    If .Invent.ArmourEqpObjIndex > 0 Then
+                        If .flags.Hambre <> 0 And .flags.Sed <> 0 Then
+                            If Lloviendo Then
+                                If Not Intemperie(iUserIndex) Then
+                                    If Not .flags.Descansar Then
+                                    'No esta descansando
+                                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
+                                        If bEnviarStats Then
+                                            Call WriteUpdateHP(iUserIndex)
+                                            bEnviarStats = False
+                                        End If
                                         Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
                                         If bEnviarStats Then
                                             Call WriteUpdateSta(iUserIndex)
                                             bEnviarStats = False
                                         End If
+                                    Else
+                                    'esta descansando
+                                        Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
+                                        If bEnviarStats Then
+                                            Call WriteUpdateHP(iUserIndex)
+                                            bEnviarStats = False
+                                        End If
+                                        Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
+                                        If bEnviarStats Then
+                                            Call WriteUpdateSta(iUserIndex)
+                                            bEnviarStats = False
+                                        End If
+                                        'termina de descansar automaticamente
+                                        If .Stats.MaxHP = .Stats.MinHP And .Stats.MaxSta = .Stats.MinSta Then
+                                            Call WriteRestOK(iUserIndex)
+                                            Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
+                                            .flags.Descansar = False
+                                        End If
+                                        
                                     End If
-                                ElseIf .flags.Descansar Then
+                                End If
+                            Else
+                                If Not .flags.Descansar Then
+                                'No esta descansando
+                                    
+                                    Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
+                                    If bEnviarStats Then
+                                        Call WriteUpdateHP(iUserIndex)
+                                        bEnviarStats = False
+                                    End If
+                                    Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
+                                    If bEnviarStats Then
+                                        Call WriteUpdateSta(iUserIndex)
+                                        bEnviarStats = False
+                                    End If
+                                    
+                                Else
                                 'esta descansando
+                                    
                                     Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
                                     If bEnviarStats Then
                                         Call WriteUpdateHP(iUserIndex)
@@ -627,44 +663,8 @@ On Error GoTo hayerror
                                         .flags.Descansar = False
                                     End If
                                     
-                                End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
+                                End If
                             End If
-                        Else
-                            If Not .flags.Descansar And .flags.Hambre = 0 And .flags.Sed = 0 Then
-                            'No esta descansando
-                                
-                                Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloSinDescansar)
-                                If bEnviarStats Then
-                                    Call WriteUpdateHP(iUserIndex)
-                                    bEnviarStats = False
-                                End If
-                                Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloSinDescansar)
-                                If bEnviarStats Then
-                                    Call WriteUpdateSta(iUserIndex)
-                                    bEnviarStats = False
-                                End If
-                                
-                            ElseIf .flags.Descansar Then
-                            'esta descansando
-                                
-                                Call Sanar(iUserIndex, bEnviarStats, SanaIntervaloDescansar)
-                                If bEnviarStats Then
-                                    Call WriteUpdateHP(iUserIndex)
-                                    bEnviarStats = False
-                                End If
-                                Call RecStamina(iUserIndex, bEnviarStats, StaminaIntervaloDescansar)
-                                If bEnviarStats Then
-                                    Call WriteUpdateSta(iUserIndex)
-                                    bEnviarStats = False
-                                End If
-                                'termina de descansar automaticamente
-                                If .Stats.MaxHP = .Stats.MinHP And .Stats.MaxSta = .Stats.MinSta Then
-                                    Call WriteRestOK(iUserIndex)
-                                    Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
-                                    .flags.Descansar = False
-                                End If
-                                
-                            End If 'Not UserList(UserIndex).Flags.Descansar And (UserList(UserIndex).Flags.Hambre = 0 And UserList(UserIndex).Flags.Sed = 0)
                         End If
                         
                         If bEnviarAyS Then Call WriteUpdateHungerAndThirst(iUserIndex)
@@ -762,7 +762,7 @@ Private Sub packetResend_Timer()
 'Last Modification: 04/01/07
 'Attempts to resend to the user all data that may be enqueued.
 '***************************************************
-On Error GoTo errhandler:
+On Error GoTo Errhandler:
     Dim i As Long
     
     For i = 1 To MaxUsers
@@ -775,7 +775,7 @@ On Error GoTo errhandler:
 
 Exit Sub
 
-errhandler:
+Errhandler:
     LogError ("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
     Resume Next
 End Sub
@@ -850,7 +850,7 @@ ErrorHandler:
 End Sub
 
 Private Sub tLluvia_Timer()
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim iCount As Long
 If Lloviendo Then
@@ -860,7 +860,7 @@ If Lloviendo Then
 End If
 
 Exit Sub
-errhandler:
+Errhandler:
 Call LogError("tLluvia " & Err.Number & ": " & Err.description)
 End Sub
 
@@ -905,7 +905,7 @@ Call LogError("Error tLluviaTimer")
 End Sub
 
 Private Sub tPiqueteC_Timer()
-On Error GoTo errhandler
+On Error GoTo Errhandler
 Static Segundos As Integer
 Dim NuevaA As Boolean
 Dim NuevoL As Boolean
@@ -963,7 +963,7 @@ If Segundos >= 18 Then Segundos = 0
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en tPiqueteC_Timer " & Err.Number & ": " & Err.description)
 End Sub
 

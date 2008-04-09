@@ -1127,15 +1127,16 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
 
 Dim massta As Integer
 If UserList(UserIndex).Stats.MinSta < UserList(UserIndex).Stats.MaxSta Then
-   If UserList(UserIndex).Counters.STACounter < Intervalo Then
-       UserList(UserIndex).Counters.STACounter = UserList(UserIndex).Counters.STACounter + 1
-   Else
-       EnviarStats = True
-       UserList(UserIndex).Counters.STACounter = 0
-       If UserList(UserIndex).flags.Desnudo Then Exit Sub 'Desnudo no sube energía. (ToxicWaste)
-       massta = RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
-       UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta + massta
-       If UserList(UserIndex).Stats.MinSta > UserList(UserIndex).Stats.MaxSta Then
+    If UserList(UserIndex).Counters.STACounter < Intervalo Then
+        UserList(UserIndex).Counters.STACounter = UserList(UserIndex).Counters.STACounter + 1
+    Else
+        EnviarStats = True
+        UserList(UserIndex).Counters.STACounter = 0
+        If UserList(UserIndex).flags.Desnudo Then Exit Sub 'Desnudo no sube energía. (ToxicWaste)
+       
+        massta = RandomNumber(1, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
+        UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta + massta
+        If UserList(UserIndex).Stats.MinSta > UserList(UserIndex).Stats.MaxSta Then
             UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MaxSta
         End If
     End If
@@ -1224,16 +1225,16 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
 Dim mashit As Integer
 'con el paso del tiempo va sanando....pero muy lentamente ;-)
 If UserList(UserIndex).Stats.MinHP < UserList(UserIndex).Stats.MaxHP Then
-   If UserList(UserIndex).Counters.HPCounter < Intervalo Then
-      UserList(UserIndex).Counters.HPCounter = UserList(UserIndex).Counters.HPCounter + 1
-   Else
-      mashit = RandomNumber(2, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
-                           
-      UserList(UserIndex).Counters.HPCounter = 0
-      UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit
-      If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-      Call WriteConsoleMsg(UserIndex, "Has sanado.", FontTypeNames.FONTTYPE_INFO)
-      EnviarStats = True
+    If UserList(UserIndex).Counters.HPCounter < Intervalo Then
+        UserList(UserIndex).Counters.HPCounter = UserList(UserIndex).Counters.HPCounter + 1
+    Else
+        mashit = RandomNumber(2, Porcentaje(UserList(UserIndex).Stats.MaxSta, 5))
+        
+        UserList(UserIndex).Counters.HPCounter = 0
+        UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP + mashit
+        If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
+        Call WriteConsoleMsg(UserIndex, "Has sanado.", FontTypeNames.FONTTYPE_INFO)
+        EnviarStats = True
     End If
 End If
 
