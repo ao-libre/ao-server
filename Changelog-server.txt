@@ -236,3 +236,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 04/04/2008: En las partys ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe (MarKoxX)
  * 05/04/2008: Cuando un npc mata a otro npc, se fija si este tiene dueño antes de llamar a FollowAmo (MarKoxX)
  * 08/04/2008: Se arregló un bug que permitía recuperar HP y stamina estando con hambre y/o sed. (Maraxus)
+ * 09/04/2008: Typo en el fix anterior. (Maraxus)

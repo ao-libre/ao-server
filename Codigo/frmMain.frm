@@ -592,7 +592,7 @@ On Error GoTo hayerror
                         
                         Call HambreYSed(iUserIndex, bEnviarAyS)
                         
-                        If .flags.Hambre <> 0 And .flags.Sed <> 0 Then
+                        If .flags.Hambre = 0 And .flags.Sed = 0 Then
                             If Lloviendo Then
                                 If Not Intemperie(iUserIndex) Then
                                     If Not .flags.Descansar Then
