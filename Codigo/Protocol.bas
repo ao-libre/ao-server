@@ -8773,6 +8773,32 @@ On Error GoTo Errhandler
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
                 With UserList(tUser)
+                    ' DESEQUIPA TODOS LOS OBJETOS
+                    'desequipar armadura
+                    If .Invent.ArmourEqpObjIndex > 0 Then
+                        Call Desequipar(tUser, .Invent.ArmourEqpSlot)
+                    End If
+                    'desequipar arma
+                    If .Invent.WeaponEqpObjIndex > 0 Then
+                        Call Desequipar(tUser, .Invent.WeaponEqpSlot)
+                    End If
+                    'desequipar casco
+                    If .Invent.CascoEqpObjIndex > 0 Then
+                        Call Desequipar(tUser, .Invent.CascoEqpSlot)
+                    End If
+                    'desequipar herramienta
+                    If .Invent.AnilloEqpSlot > 0 Then
+                        Call Desequipar(tUser, .Invent.AnilloEqpSlot)
+                    End If
+                    'desequipar municiones
+                    If UserList(UserIndex).Invent.MunicionEqpObjIndex > 0 Then
+                        Call Desequipar(tUser, .Invent.MunicionEqpSlot)
+                    End If
+                    'desequipar escudo
+                    If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
+                        Call Desequipar(tUser, .Invent.EscudoEqpSlot)
+                    End If
+                    
                     .flags.Muerto = 0
                     .Stats.MinHP = .Stats.MaxHP
                     
