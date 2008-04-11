@@ -14763,7 +14763,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteSingle(Round(SalePrice(obData.valor), 2))
+        Call .WriteSingle(Round(SalePrice(obData.Valor), 2))
     End With
 Exit Sub
 
@@ -14810,7 +14810,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteLong(obData.valor)
+        Call .WriteLong(obData.Valor)
     End With
 Exit Sub
 
@@ -16088,7 +16088,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
         Call .WriteInteger(ObjData(ObjIndex).MinHIT)
         Call .WriteInteger(ObjData(ObjIndex).def)
-        Call .WriteLong(SalePrice(ObjData(ObjIndex).valor))
+        Call .WriteLong(SalePrice(ObjData(ObjIndex).Valor))
     End With
 Exit Sub
 
