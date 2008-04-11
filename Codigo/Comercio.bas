@@ -33,7 +33,7 @@ Public Const REDUCTOR_PRECIOVENTA = 3
 Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal Slot As Integer, ByVal Cantidad As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last modified: 2/8/06
+'Last modified: 04/11/08 (NicoNZ)
 '*************************************************
     Dim Precio As Single
     Dim Objeto As Obj
@@ -61,7 +61,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         If Cantidad > Npclist(NpcIndex).Invent.Object(Slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(Slot).amount
         
-        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).valor / Descuento(UserIndex) * Cantidad, 0)
+        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad, 0)
             
         If UserList(UserIndex).Stats.GLD < Precio Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
@@ -70,7 +70,9 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         
         If MeterItemEnInventario(UserIndex, Objeto) = False Then
-            Call WriteConsoleMsg(UserIndex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Call WriteTradeOK(UserIndex)
             Exit Sub
         End If
         
@@ -104,18 +106,26 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Newbie = 1 Then
             Call WriteConsoleMsg(UserIndex, "Lo siento, no comercio objetos para newbies.", FontTypeNames.FONTTYPE_INFO)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Call WriteTradeOK(UserIndex)
             Exit Sub
         ElseIf (Npclist(NpcIndex).TipoItems <> ObjData(Objeto.ObjIndex).OBJType And Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera) Or Objeto.ObjIndex = iORO Then
             Call WriteConsoleMsg(UserIndex, "Lo siento, no estoy interesado en este tipo de objetos.", FontTypeNames.FONTTYPE_INFO)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Call WriteTradeOK(UserIndex)
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Real = 1 Then
             If Npclist(NpcIndex).name <> "SR" Then
                 Call WriteConsoleMsg(UserIndex, "Las armaduras de la Armada solo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
+                Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+                Call WriteTradeOK(UserIndex)
                 Exit Sub
             End If
         ElseIf ObjData(Objeto.ObjIndex).Caos = 1 Then
             If Npclist(NpcIndex).name <> "SC" Then
                 Call WriteConsoleMsg(UserIndex, "Las armaduras de la Legión solo pueden ser vendidas a los sastres del demonio.", FontTypeNames.FONTTYPE_INFO)
+                Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+                Call WriteTradeOK(UserIndex)
                 Exit Sub
             End If
         ElseIf UserList(UserIndex).Invent.Object(Slot).amount < 0 Or Cantidad = 0 Then
@@ -125,13 +135,15 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         ElseIf UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then
             Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
+            Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
+            Call WriteTradeOK(UserIndex)
             Exit Sub
         End If
         
         Call QuitarUserInvItem(UserIndex, Slot, Cantidad)
         
         'Precio = Round(ObjData(Objeto.ObjIndex).valor / REDUCTOR_PRECIOVENTA * Cantidad, 0)
-        Precio = Round(SalePrice(ObjData(Objeto.ObjIndex).valor) * Cantidad, 0)
+        Precio = Round(SalePrice(ObjData(Objeto.ObjIndex).Valor) * Cantidad, 0)
         UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + Precio
         
         If UserList(UserIndex).Stats.GLD > MAXORO Then _
@@ -239,7 +251,7 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             Dim thisObj As Obj
             thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
             thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
-            val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).valor) / Descuento(UserIndex)
+            val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex)
 
             Call WriteChangeNPCInventorySlot(UserIndex, thisObj, Round(val, 2))
         Else
@@ -254,12 +266,12 @@ End Sub
 '
 ' @param valor  El valor de compra de objeto
 
-Public Function SalePrice(ByVal valor As Long) As Single
+Public Function SalePrice(ByVal Valor As Long) As Single
 '*************************************************
 'Author: Nicolás (NicoNZ)
 '
 '*************************************************
 
-    SalePrice = valor / REDUCTOR_PRECIOVENTA
+    SalePrice = Valor / REDUCTOR_PRECIOVENTA
 
 End Function

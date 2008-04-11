@@ -239,3 +239,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 09/04/2008: Typo en el fix anterior. (Maraxus)
  * 11/04/2008: Arreglado el bug en el cual al mimetizarte con vos mismo y luego navegar, al irse el efecto quedabas sin la barca caminando por el agua. (NicoNZ)
  * 11/04/2008: Arregle el bug que al ejecutar el comando /revivir a un PJ vivo aparece desnudo y sigue con todos los items equipados. (NicoNZ)
+ * 11/04/2008: Arregle el bug que al querer vender/comprar y el npc no lo permita, no se volvian a cargar las listas. (NicoNZ)
