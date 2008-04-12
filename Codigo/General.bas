@@ -1048,55 +1048,56 @@ Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
 'Last Update: 04/11/2008 (NicoNZ)
 '
 '******************************************************
-Dim Barco As ObjData
-
-With UserList(UserIndex)
-If .Counters.Mimetismo < IntervaloInvisible Then
-    .Counters.Mimetismo = .Counters.Mimetismo + 1
-Else
-    'restore old char
-    Call WriteConsoleMsg(UserIndex, "Recuperas tu apariencia normal.", FontTypeNames.FONTTYPE_INFO)
+    Dim Barco As ObjData
     
-    If .flags.Navegando Then
-            If .flags.Muerto = 0 Then
-                If .Faccion.ArmadaReal = 1 Then
-                    .Char.body = iFragataReal
-                ElseIf .Faccion.FuerzasCaos = 1 Then
-                    .Char.body = iFragataCaos
-                Else
-                    Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
-                    If criminal(UserIndex) Then
-                        If Barco.Ropaje = iBarca Then .Char.body = iBarcaPk
-                        If Barco.Ropaje = iGalera Then .Char.body = iGaleraPk
-                        If Barco.Ropaje = iGaleon Then .Char.body = iGaleonPk
-                    Else
-                        If Barco.Ropaje = iBarca Then .Char.body = iBarcaCiuda
-                        If Barco.Ropaje = iGalera Then .Char.body = iGaleraCiuda
-                        If Barco.Ropaje = iGaleon Then .Char.body = iGaleonCiuda
-                    End If
-                End If
-            Else
-                .Char.body = iFragataFantasmal
-            End If
-    
-            .Char.ShieldAnim = NingunEscudo
-            .Char.WeaponAnim = NingunArma
-            .Char.CascoAnim = NingunCasco
-    Else
-            .Char.body = .CharMimetizado.body
-            .Char.Head = .CharMimetizado.Head
-            .Char.CascoAnim = .CharMimetizado.CascoAnim
-            .Char.ShieldAnim = .CharMimetizado.ShieldAnim
-            .Char.WeaponAnim = .CharMimetizado.WeaponAnim
-        With .Char
-            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
-        End With
-    End If
-        .Counters.Mimetismo = 0
-        .flags.Mimetizado = 0
-End If
-End With
+    With UserList(UserIndex)
+        If .Counters.Mimetismo < IntervaloInvisible Then
+            .Counters.Mimetismo = .Counters.Mimetismo + 1
+        Else
+            'restore old char
+            Call WriteConsoleMsg(UserIndex, "Recuperas tu apariencia normal.", FontTypeNames.FONTTYPE_INFO)
             
+            If .flags.Navegando Then
+                If .flags.Muerto = 0 Then
+                    If .Faccion.ArmadaReal = 1 Then
+                        .Char.body = iFragataReal
+                    ElseIf .Faccion.FuerzasCaos = 1 Then
+                        .Char.body = iFragataCaos
+                    Else
+                        Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+                        If criminal(UserIndex) Then
+                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaPk
+                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraPk
+                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonPk
+                        Else
+                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaCiuda
+                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraCiuda
+                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonCiuda
+                        End If
+                    End If
+                Else
+                    .Char.body = iFragataFantasmal
+                End If
+                
+                .Char.ShieldAnim = NingunEscudo
+                .Char.WeaponAnim = NingunArma
+                .Char.CascoAnim = NingunCasco
+            Else
+                .Char.body = .CharMimetizado.body
+                .Char.Head = .CharMimetizado.Head
+                .Char.CascoAnim = .CharMimetizado.CascoAnim
+                .Char.ShieldAnim = .CharMimetizado.ShieldAnim
+                .Char.WeaponAnim = .CharMimetizado.WeaponAnim
+            End If
+            
+            With .Char
+                Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+            End With
+            
+            .Counters.Mimetismo = 0
+            .flags.Mimetizado = 0
+        End If
+    End With
 End Sub
 
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)

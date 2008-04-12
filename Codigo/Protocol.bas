@@ -11707,7 +11707,7 @@ Public Sub HandleReloadNPCs(ByVal UserIndex As Integer)
     
         Call CargaNpcsDat
     
-        Call WriteConsoleMsg(UserIndex, "Npcs.dat y npcsHostiles.dat recargados.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Npcs.dat recargado.", FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
