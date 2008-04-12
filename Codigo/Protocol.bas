@@ -8773,43 +8773,23 @@ On Error GoTo Errhandler
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
                 With UserList(tUser)
-                    ' DESEQUIPA TODOS LOS OBJETOS
-                    'desequipar armadura
-                    If .Invent.ArmourEqpObjIndex > 0 Then
-                        Call Desequipar(tUser, .Invent.ArmourEqpSlot)
-                    End If
-                    'desequipar arma
-                    If .Invent.WeaponEqpObjIndex > 0 Then
-                        Call Desequipar(tUser, .Invent.WeaponEqpSlot)
-                    End If
-                    'desequipar casco
-                    If .Invent.CascoEqpObjIndex > 0 Then
-                        Call Desequipar(tUser, .Invent.CascoEqpSlot)
-                    End If
-                    'desequipar herramienta
-                    If .Invent.AnilloEqpSlot > 0 Then
-                        Call Desequipar(tUser, .Invent.AnilloEqpSlot)
-                    End If
-                    'desequipar municiones
-                    If UserList(UserIndex).Invent.MunicionEqpObjIndex > 0 Then
-                        Call Desequipar(tUser, .Invent.MunicionEqpSlot)
-                    End If
-                    'desequipar escudo
-                    If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
-                        Call Desequipar(tUser, .Invent.EscudoEqpSlot)
+                    'If dead, show him alive (naked).
+                    If .flags.Muerto = 1 Then
+                        .flags.Muerto = 0
+                        
+                        Call DarCuerpoDesnudo(tUser)
+                        
+                        Call ChangeUserChar(tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        
+                        Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call WriteConsoleMsg(tUser, .name & " te ha curado.", FontTypeNames.FONTTYPE_INFO)
                     End If
                     
-                    .flags.Muerto = 0
                     .Stats.MinHP = .Stats.MaxHP
-                    
-                    Call DarCuerpoDesnudo(tUser)
-                    
-                    Call ChangeUserChar(tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                 End With
                 
                 Call WriteUpdateHP(tUser)
-                
-                Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call FlushBuffer(tUser)
                 
