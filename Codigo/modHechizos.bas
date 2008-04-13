@@ -963,9 +963,10 @@ End Sub
 Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, ByVal hIndex As Integer, ByRef b As Boolean, ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 14/08/2007
+'Last Modification: 04/13/2008
 'Handles the Spells that afect the Stats of an NPC
-'14/08/2007 Pablo (ToxicWaste) - Orden general.
+'04/13/2008 NicoNZ - Guardias Faccionarios pueden ser
+'removidos por users de su misma faccion.
 '***************************************************
 If Hechizos(hIndex).Invisibilidad = 1 Then
     Call InfoHechizo(UserIndex)
@@ -1040,9 +1041,37 @@ If Hechizos(hIndex).RemoverParalisis = 1 Then
             Npclist(NpcIndex).Contadores.Paralisis = 0
             b = True
         Else
-            Call WriteConsoleMsg(UserIndex, "Solo puedes Remover la Parálisis de los NPCs que te consideren su amo", FontTypeNames.FONTTYPE_INFO)
-            b = False
-            Exit Sub
+            If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+                If esArmada(UserIndex) Then
+                    Call InfoHechizo(UserIndex)
+                    Npclist(NpcIndex).flags.Paralizado = 0
+                    Npclist(NpcIndex).Contadores.Paralisis = 0
+                    b = True
+                    Exit Sub
+                Else
+                    Call WriteConsoleMsg(UserIndex, "Solo puedes Remover la Parálisis de los Guardias si perteneces a su facción.", FontTypeNames.FONTTYPE_INFO)
+                    b = False
+                    Exit Sub
+                End If
+                
+                Call WriteConsoleMsg(UserIndex, "Solo puedes Remover la Parálisis de los NPCs que te consideren su amo", FontTypeNames.FONTTYPE_INFO)
+                b = False
+                Exit Sub
+            Else
+                If Npclist(NpcIndex).NPCtype = eNPCType.Guardiascaos Then
+                    If esCaos(UserIndex) Then
+                        Call InfoHechizo(UserIndex)
+                        Npclist(NpcIndex).flags.Paralizado = 0
+                        Npclist(NpcIndex).Contadores.Paralisis = 0
+                        b = True
+                        Exit Sub
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "Solo puedes Remover la Parálisis de los Guardias si perteneces a su facción.", FontTypeNames.FONTTYPE_INFO)
+                        b = False
+                        Exit Sub
+                    End If
+                End If
+            End If
         End If
    Else
       Call WriteConsoleMsg(UserIndex, "Este NPC no esta Paralizado", FontTypeNames.FONTTYPE_INFO)
