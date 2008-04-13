@@ -6766,8 +6766,9 @@ End Sub
 Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 04/13/2008 (NicoNZ)
+'Ya no se puede saber si esta ON o no un personaje
+'mediante este comando
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -6806,7 +6807,7 @@ On Error GoTo Errhandler
             
             'Don't allow users to spoof online GMs
             If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
-                Call WriteConsoleMsg(UserIndex, "El personaje no está online.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, UserName & " no ha solicitado ingresar a tu party.", FontTypeNames.FONTTYPE_PARTY)
             Else
                 Call WriteConsoleMsg(UserIndex, "No puedes incorporar a tu party a personajes de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
             End If
