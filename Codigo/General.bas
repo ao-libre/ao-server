@@ -137,7 +137,7 @@ Sub LimpiarMundo()
 'Last Modification: 01/14/2008
 '01/14/2008: Marcos Martinez (ByVal) - La funcion FOR estaba mal. En ves de i habia un 1.
 '***************************************************
-On Error Resume Next
+'On Error Resume Next
 
 Dim i As Integer
 

@@ -5097,8 +5097,9 @@ End Sub
 Private Sub HandleMeditate(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 04/15/08 (NicoNZ)
+'Arreglé un bug que mandaba un index de la meditacion diferente
+'al que decia el server.
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
@@ -5141,25 +5142,22 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
             
             'Show proper FX according to level
             If .Stats.ELV < 13 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARCHICO, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARCHICO
             
             ElseIf .Stats.ELV < 25 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARMEDIANO, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARMEDIANO
             
             ElseIf .Stats.ELV < 35 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARGRANDE, INFINITE_LOOPS))
                 .Char.FX = FXIDs.FXMEDITARGRANDE
             
             ElseIf .Stats.ELV < 42 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARGRANDE, INFINITE_LOOPS))
-                .Char.FX = FXIDs.FXMEDITARXGRANDE
-            
+                '.Char.FX = FXIDs.FXMEDITARXGRANDE
+                .Char.FX = FXIDs.FXMEDITARGRANDE
             Else
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXMEDITARXGRANDE, INFINITE_LOOPS))
-                .Char.FX = FXIDs.FXMEDITARXXGRANDE
+                '.Char.FX = FXIDs.FXMEDITARXXGRANDE
+                .Char.FX = FXIDs.FXMEDITARXGRANDE
             End If
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, .Char.FX, INFINITE_LOOPS))
         Else
             .Counters.bPuedeMeditar = False
             
