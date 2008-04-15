@@ -4788,10 +4788,10 @@ End Sub
 Private Sub HandleQuit(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 08/29/07 by Rapsodius
+'Last Modification: 04/15/2008 (NicoNZ)
 'If user is invisible, it automatically becomes
 'visible before doing the countdown to exit
-'
+'04/15/2008 - No se reseteaban lso contadores de invi ni de ocultar. (NicoNZ)
 '***************************************************
     Dim tUser As Integer
     Dim isNotVisible As Boolean
@@ -4824,6 +4824,8 @@ Private Sub HandleQuit(ByVal UserIndex As Integer)
         If isNotVisible Then
             .flags.Oculto = 0
             .flags.invisible = 0
+            .Counters.Invisibilidad = 0 'Reseteo el flag asi el invi que sigue dura lo que tiene que durar (NicoNZ) 15/04/2008
+            .Counters.TiempoOculto = 0
             Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
         End If
