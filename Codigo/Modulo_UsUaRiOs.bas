@@ -1048,7 +1048,18 @@ Sub SubirSkill(ByVal UserIndex As Integer, ByVal Skill As Integer)
 
 End Sub
 
+''
+' Muere un usuario
+'
+' @param UserIndex  Indice del usuario que muere
+'
+
 Sub UserDie(ByVal UserIndex As Integer)
+'************************************************
+'Author: Uknown
+'Last Modified: 04/15/2008 (NicoNZ)
+'Ahora se resetea el counter del invi
+'************************************************
 On Error GoTo ErrorHandler
     Dim i As Long
     Dim aN As Integer
@@ -1114,8 +1125,9 @@ On Error GoTo ErrorHandler
     '<<<< Invisible >>>>
     If UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then
         UserList(UserIndex).flags.Oculto = 0
-        UserList(UserIndex).Counters.TiempoOculto = 0
         UserList(UserIndex).flags.invisible = 0
+        UserList(UserIndex).Counters.TiempoOculto = 0
+        UserList(UserIndex).Counters.Invisibilidad = 0
         'no hace falta encriptar este NOVER
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If

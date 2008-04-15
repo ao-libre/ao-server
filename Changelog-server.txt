@@ -246,3 +246,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/04/2008: Al modificarse un slot del inventario de un NPC se envía el índice del mismo, no se asume nada. (Maraxus)
  * 13/04/2008: Ahora los guardias faccionarios pueden ser removidos por usuarios de su misma facción. (NicoNZ)
  * 13/04/2008: Ya no se puede saber si un usuario esta Online o no mediante el comando /acceptparty. (NicoNZ)
+ * 15/04/2008: Al morir, se resetea el contador de invisible. (NicoNZ)
