@@ -249,3 +249,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/04/2008: Al morir, se resetea el contador de invisible. (NicoNZ)
  * 15/04/2008: Habia un error que en la herreria, cualquier clase podia construir lo mismo que un herrero. (NicoNZ)
  * 15/04/2008: Arregle un bug que le daba al usuario un index al meditar en el server y le mandaba otro al cliente. (NicoNZ)
+ * 15/04/2008: Arreglado el FOR del sub LimpiarMundo que tiraba error de la forma en que se ejecutaba. Agregue que si hay un error en ese sub se logeara. (NicoNZ)
