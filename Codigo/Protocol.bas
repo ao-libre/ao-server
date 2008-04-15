@@ -2258,14 +2258,14 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-    Dim slot As Byte
+    Dim Slot As Byte
     Dim amount As Integer
     
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
 
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'low rank admins can't drop item. Neither can the dead nor those sailing.
@@ -2274,7 +2274,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
            ((.flags.Privilegios And PlayerType.Consejero) <> 0 And (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
 
         'Are we dropping gold or other items??
-        If slot = FLAGORO Then
+        If Slot = FLAGORO Then
             If amount > 10000 Then Exit Sub 'Don't drop too much gold
 
             Call TirarOro(amount, UserIndex)
@@ -2282,12 +2282,12 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
             Call WriteUpdateGold(UserIndex)
         Else
             'Only drop valid slots
-            If slot <= MAX_INVENTORY_SLOTS And slot > 0 Then
-                If .Invent.Object(slot).ObjIndex = 0 Then
+            If Slot <= MAX_INVENTORY_SLOTS And Slot > 0 Then
+                If .Invent.Object(Slot).ObjIndex = 0 Then
                     Exit Sub
                 End If
                 
-                Call DropObj(UserIndex, slot, amount, .Pos.map, .Pos.X, .Pos.Y)
+                Call DropObj(UserIndex, Slot, amount, .Pos.map, .Pos.X, .Pos.Y)
             End If
         End If
     End With
@@ -2495,19 +2495,19 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim slot As Byte
+        Dim Slot As Byte
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         
-        If slot <= MAX_INVENTORY_SLOTS And slot > 0 Then
-            If .Invent.Object(slot).ObjIndex = 0 Then Exit Sub
+        If Slot <= MAX_INVENTORY_SLOTS And Slot > 0 Then
+            If .Invent.Object(Slot).ObjIndex = 0 Then Exit Sub
         End If
         
         If .flags.Meditando Then
             Exit Sub    'The error message should have been provided by the client.
         End If
         
-        Call UseInvItem(UserIndex, slot)
+        Call UseInvItem(UserIndex, Slot)
     End With
 End Sub
 
@@ -3302,10 +3302,10 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim amount As Integer
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'Dead people can't commerce...
@@ -3330,7 +3330,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
         End If
         
         'User compra el item
-        Call Comercio(eModoComercio.Compra, UserIndex, .flags.TargetNPC, slot, amount)
+        Call Comercio(eModoComercio.Compra, UserIndex, .flags.TargetNPC, Slot, amount)
     End With
 End Sub
 
@@ -3354,10 +3354,10 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim amount As Integer
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'Dead people can't commerce
@@ -3375,7 +3375,7 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
         End If
         
         'User retira el item del slot
-        Call UserRetiraItem(UserIndex, slot, amount)
+        Call UserRetiraItem(UserIndex, Slot, amount)
     End With
 End Sub
 
@@ -3399,10 +3399,10 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim amount As Integer
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'Dead people can't commerce...
@@ -3421,7 +3421,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
         End If
         
         'User compra el item del slot
-        Call Comercio(eModoComercio.Venta, UserIndex, .flags.TargetNPC, slot, amount)
+        Call Comercio(eModoComercio.Venta, UserIndex, .flags.TargetNPC, Slot, amount)
     End With
 End Sub
 
@@ -3445,10 +3445,10 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim amount As Integer
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadInteger()
         
         'Dead people can't commerce...
@@ -3466,7 +3466,7 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
         End If
         
         'User deposita el item del slot rdata
-        Call UserDepositaItem(UserIndex, slot, amount)
+        Call UserDepositaItem(UserIndex, Slot, amount)
     End With
 End Sub
 
@@ -3657,17 +3657,17 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim amount As Long
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim tUser As Integer
         
-        slot = .incomingData.ReadByte()
+        Slot = .incomingData.ReadByte()
         amount = .incomingData.ReadLong()
         
         'Get the other player
         tUser = .ComUsu.DestUsu
         
         'If amount is invalid, or slot is invalid and it's not gold, then ignore it.
-        If ((slot < 1 Or slot > MAX_INVENTORY_SLOTS) And slot <> FLAGORO) _
+        If ((Slot < 1 Or Slot > MAX_INVENTORY_SLOTS) And Slot <> FLAGORO) _
                         Or amount <= 0 Then Exit Sub
         
         'Is the other player valid??
@@ -3691,7 +3691,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
             
             'Has he got enough??
-            If slot = FLAGORO Then
+            If Slot = FLAGORO Then
                 'gold
                 If amount > .Stats.GLD Then
                     Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
@@ -3699,7 +3699,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
                 End If
             Else
                 'inventory
-                If amount > .Invent.Object(slot).amount Then
+                If amount > .Invent.Object(Slot).amount Then
                     Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
@@ -3713,13 +3713,13 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             
             'Don't allow to sell boats if they are equipped (you can't take them off in the water and causes trouble)
             If .flags.Navegando = 1 Then
-                If .Invent.BarcoSlot = slot Then
+                If .Invent.BarcoSlot = Slot Then
                     Call WriteConsoleMsg(UserIndex, "No podés vender tu barco mientras lo estés usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
             
-            .ComUsu.Objeto = slot
+            .ComUsu.Objeto = Slot
             .ComUsu.cant = amount
             
             'If the other one had accepted, we turn that back and inform of the new offer (just to be cautious).
@@ -11512,19 +11512,19 @@ On Error GoTo Errhandler
         
         'Reads the UserName and Slot Packets
         Dim UserName As String
-        Dim slot As Byte
+        Dim Slot As Byte
         Dim tIndex As Integer
         
         UserName = buffer.ReadASCIIString() 'Que UserName?
-        slot = buffer.ReadByte() 'Que Slot?
+        Slot = buffer.ReadByte() 'Que Slot?
         tIndex = NameIndex(UserName)  'Que user index?
         
-        Call LogGM(.name, .name & " Checkeo el slot " & slot & " de " & UserName)
+        Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName)
            
         If tIndex > 0 Then
-            If slot > 0 And slot <= MAX_INVENTORY_SLOTS Then
-                If UserList(tIndex).Invent.Object(slot).ObjIndex > 0 Then
-                    Call WriteConsoleMsg(UserIndex, " Objeto " & slot & ") " & ObjData(UserList(tIndex).Invent.Object(slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(slot).amount, FontTypeNames.FONTTYPE_INFO)
+            If Slot > 0 And Slot <= MAX_INVENTORY_SLOTS Then
+                If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
+                    Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).amount, FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call WriteConsoleMsg(UserIndex, "No hay Objeto en slot seleccionado", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -14741,7 +14741,7 @@ End Sub
 ' @param    slot Inventory slot which needs to be updated.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal slot As Byte)
+Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -14750,12 +14750,12 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal slot As By
 On Error GoTo Errhandler
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeInventorySlot)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         
         Dim ObjIndex As Integer
         Dim obData As ObjData
         
-        ObjIndex = UserList(UserIndex).Invent.Object(slot).ObjIndex
+        ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
         If ObjIndex > 0 Then
             obData = ObjData(ObjIndex)
@@ -14763,8 +14763,8 @@ On Error GoTo Errhandler
         
         Call .WriteInteger(ObjIndex)
         Call .WriteASCIIString(obData.name)
-        Call .WriteInteger(UserList(UserIndex).Invent.Object(slot).amount)
-        Call .WriteBoolean(UserList(UserIndex).Invent.Object(slot).Equipped)
+        Call .WriteInteger(UserList(UserIndex).Invent.Object(Slot).amount)
+        Call .WriteBoolean(UserList(UserIndex).Invent.Object(Slot).Equipped)
         Call .WriteInteger(obData.GrhIndex)
         Call .WriteByte(obData.OBJType)
         Call .WriteInteger(obData.MaxHIT)
@@ -14788,7 +14788,7 @@ End Sub
 ' @param    slot Inventory slot which needs to be updated.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal slot As Byte)
+Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -14797,12 +14797,12 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal slot As Byte)
 On Error GoTo Errhandler
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeBankSlot)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         
         Dim ObjIndex As Integer
         Dim obData As ObjData
         
-        ObjIndex = UserList(UserIndex).BancoInvent.Object(slot).ObjIndex
+        ObjIndex = UserList(UserIndex).BancoInvent.Object(Slot).ObjIndex
         
         Call .WriteInteger(ObjIndex)
         
@@ -14811,7 +14811,7 @@ On Error GoTo Errhandler
         End If
         
         Call .WriteASCIIString(obData.name)
-        Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(slot).amount)
+        Call .WriteInteger(UserList(UserIndex).BancoInvent.Object(Slot).amount)
         Call .WriteInteger(obData.GrhIndex)
         Call .WriteByte(obData.OBJType)
         Call .WriteInteger(obData.MaxHIT)
@@ -14835,7 +14835,7 @@ End Sub
 ' @param    slot Spell slot to update.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal slot As Integer)
+Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal Slot As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -14844,11 +14844,11 @@ Public Sub WriteChangeSpellSlot(ByVal UserIndex As Integer, ByVal slot As Intege
 On Error GoTo Errhandler
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeSpellSlot)
-        Call .WriteByte(slot)
-        Call .WriteInteger(UserList(UserIndex).Stats.UserHechizos(slot))
+        Call .WriteByte(Slot)
+        Call .WriteInteger(UserList(UserIndex).Stats.UserHechizos(Slot))
         
-        If UserList(UserIndex).Stats.UserHechizos(slot) > 0 Then
-            Call .WriteASCIIString(Hechizos(UserList(UserIndex).Stats.UserHechizos(slot)).Nombre)
+        If UserList(UserIndex).Stats.UserHechizos(Slot) > 0 Then
+            Call .WriteASCIIString(Hechizos(UserList(UserIndex).Stats.UserHechizos(Slot)).Nombre)
         Else
             Call .WriteASCIIString("(None)")
         End If
@@ -14901,7 +14901,7 @@ End Sub
 Public Sub WriteBlacksmithWeapons(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 04/15/2008 (NicoNZ) Habia un error al fijarse los skills del personaje
 'Writes the "BlacksmithWeapons" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
@@ -14917,7 +14917,7 @@ On Error GoTo Errhandler
         
         For i = 1 To UBound(ArmasHerrero())
             ' Can the user create this object? If so add it to the list....
-            If ObjData(ArmasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
+            If ObjData(ArmasHerrero(i)).SkHerreria <= Round(UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).clase), 0) Then
                 Count = Count + 1
                 validIndexes(Count) = i
             End If
@@ -14954,7 +14954,7 @@ End Sub
 Public Sub WriteBlacksmithArmors(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 04/15/2008 (NicoNZ) Habia un error al fijarse los skills del personaje
 'Writes the "BlacksmithArmors" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
@@ -14970,7 +14970,7 @@ On Error GoTo Errhandler
         
         For i = 1 To UBound(ArmadurasHerrero())
             ' Can the user create this object? If so add it to the list....
-            If ObjData(ArmadurasHerrero(i)).SkHerreria <= UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) \ ModHerreriA(UserList(UserIndex).clase) Then
+            If ObjData(ArmadurasHerrero(i)).SkHerreria <= Round(UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).clase), 0) Then
                 Count = Count + 1
                 validIndexes(Count) = i
             End If
@@ -15024,6 +15024,7 @@ On Error GoTo Errhandler
         For i = 1 To UBound(ObjCarpintero())
             ' Can the user create this object? If so add it to the list....
             If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase) Then
+                If i = 1 Then Debug.Print UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase)
                 Count = Count + 1
                 validIndexes(Count) = i
             End If
@@ -15179,7 +15180,7 @@ End Sub
 ' @param    price       The value the NPC asks for the object.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal slot As Byte, ByRef Obj As Obj, ByVal price As Single)
+Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Obj As Obj, ByVal price As Single)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -15195,7 +15196,7 @@ On Error GoTo Errhandler
     
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeNPCInventorySlot)
-        Call .WriteByte(slot)
+        Call .WriteByte(Slot)
         Call .WriteASCIIString(ObjInfo.name)
         Call .WriteInteger(Obj.amount)
         Call .WriteSingle(price)

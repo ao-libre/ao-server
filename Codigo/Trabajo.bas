@@ -455,7 +455,7 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
     UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajando + 1
 End Sub
 
-Function ModNavegacion(ByVal clase As eClass) As Integer
+Function ModNavegacion(ByVal clase As eClass) As Single
 
 Select Case clase
     Case eClass.Pirat
@@ -469,7 +469,7 @@ End Select
 End Function
 
 
-Function ModFundicion(ByVal clase As eClass) As Integer
+Function ModFundicion(ByVal clase As eClass) As Single
 
 Select Case clase
     Case eClass.Miner
@@ -493,8 +493,7 @@ End Select
 
 End Function
 
-Function ModHerreriA(ByVal clase As eClass) As Integer
-
+Function ModHerreriA(ByVal clase As eClass) As Single
 Select Case clase
     Case eClass.Blacksmith
         ModHerreriA = 1
