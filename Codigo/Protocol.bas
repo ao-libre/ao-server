@@ -4824,7 +4824,7 @@ Private Sub HandleQuit(ByVal UserIndex As Integer)
         If isNotVisible Then
             .flags.Oculto = 0
             .flags.invisible = 0
-            .Counters.Invisibilidad = 0 'Reseteo el flag asi el invi que sigue dura lo que tiene que durar (NicoNZ) 15/04/2008
+            .Counters.Invisibilidad = 0
             .Counters.TiempoOculto = 0
             Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
@@ -5153,12 +5153,12 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
                 .Char.FX = FXIDs.FXMEDITARGRANDE
             
             ElseIf .Stats.ELV < 42 Then
-                '.Char.FX = FXIDs.FXMEDITARXGRANDE
-                .Char.FX = FXIDs.FXMEDITARGRANDE
-            Else
-                '.Char.FX = FXIDs.FXMEDITARXXGRANDE
                 .Char.FX = FXIDs.FXMEDITARXGRANDE
+            
+            Else
+                .Char.FX = FXIDs.FXMEDITARXXGRANDE
             End If
+            
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, .Char.FX, INFINITE_LOOPS))
         Else
             .Counters.bPuedeMeditar = False
