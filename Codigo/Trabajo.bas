@@ -1038,7 +1038,9 @@ End Sub
 Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
 '***************************************************
 'Autor: Nacho (Integer) & Unknown (orginal version)
-'Last Modification: 07/20/06
+'Last Modification: 04/17/08 - (NicoNZ)
+'Simplifique la cuenta que hacia para sacar la suerte
+'y arregle la cuenta que hacia para sacar el daño
 '***************************************************
 Dim Suerte As Integer
 Dim Skill As Integer
@@ -1047,14 +1049,14 @@ Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar)
 
 Select Case UserList(UserIndex).clase
     Case eClass.Assasin
-        Suerte = Int((((0.0000003 * Skill - 0.00002) * Skill + 0.00098) * Skill + 0.0425) * 100)
-    
+        'Suerte = Int((((0.0000003 * Skill - 0.00002) * Skill + 0.00098) * Skill + 0.0425) * 100)
+        Suerte = Int(((0.00003 * Skill - 0.002) * Skill + 0.098) * Skill + 4.25)
     Case eClass.Cleric, eClass.Paladin
-        Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
-    
+        'Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
+        Suerte = Int(((0.000003 * Skill + 0.0006) * Skill + 0.0107) * Skill + 4.93)
     Case eClass.Bard
-        Suerte = Int((((0.00000002 * Skill + 0.000002) * Skill + 0.00032) * Skill + 0.0481) * 100)
-    
+        'Suerte = Int((((0.00000002 * Skill + 0.000002) * Skill + 0.00032) * Skill + 0.0481) * 100)
+        Suerte = Int(((0.000002 * Skill + 0.0002) * Skill + 0.032) * Skill + 4.81)
     Case Else
         Suerte = Int((0.000361 * Skill + 0.0439) * 100)
 End Select
@@ -1063,9 +1065,9 @@ End Select
 If RandomNumber(0, 100) < Suerte Then
     If VictimUserIndex <> 0 Then
         If UserList(UserIndex).clase = eClass.Assasin Then
-            daño = Int(daño * 1.4)
+            daño = Round(daño * 1.4, 0)
         Else
-            daño = Int(daño * 1.5)
+            daño = Round(daño * 1.5, 0)
         End If
         
         UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - daño
