@@ -8782,9 +8782,9 @@ On Error GoTo Errhandler
                         
                         Call ChangeUserChar(tUser, .Char.body, .OrigChar.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                         
-                        Call WriteConsoleMsg(tUser, .name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(tUser, UserList(UserIndex).name & " te ha resucitado.", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call WriteConsoleMsg(tUser, .name & " te ha curado.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(tUser, UserList(UserIndex).name & " te ha curado.", FontTypeNames.FONTTYPE_INFO)
                     End If
                     
                     .Stats.MinHP = .Stats.MaxHP

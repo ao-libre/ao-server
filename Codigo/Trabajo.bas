@@ -1049,16 +1049,16 @@ Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar)
 
 Select Case UserList(UserIndex).clase
     Case eClass.Assasin
-        'Suerte = Int((((0.0000003 * Skill - 0.00002) * Skill + 0.00098) * Skill + 0.0425) * 100)
         Suerte = Int(((0.00003 * Skill - 0.002) * Skill + 0.098) * Skill + 4.25)
+    
     Case eClass.Cleric, eClass.Paladin
-        'Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0493) * 100)
         Suerte = Int(((0.000003 * Skill + 0.0006) * Skill + 0.0107) * Skill + 4.93)
+    
     Case eClass.Bard
-        'Suerte = Int((((0.00000002 * Skill + 0.000002) * Skill + 0.00032) * Skill + 0.0481) * 100)
         Suerte = Int(((0.000002 * Skill + 0.0002) * Skill + 0.032) * Skill + 4.81)
+    
     Case Else
-        Suerte = Int((0.000361 * Skill + 0.0439) * 100)
+        Suerte = Int(0.0361 * Skill + 4.39)
 End Select
 
 
@@ -1073,6 +1073,8 @@ If RandomNumber(0, 100) < Suerte Then
         UserList(VictimUserIndex).Stats.MinHP = UserList(VictimUserIndex).Stats.MinHP - daño
         Call WriteConsoleMsg(UserIndex, "Has apuñalado a " & UserList(VictimUserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
         Call WriteConsoleMsg(VictimUserIndex, "Te ha apuñalado " & UserList(UserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        
+        Call FlushBuffer(VictimUserIndex)
     Else
         Npclist(VictimNpcIndex).Stats.MinHP = Npclist(VictimNpcIndex).Stats.MinHP - Int(daño * 2)
         Call WriteConsoleMsg(UserIndex, "Has apuñalado la criatura por " & Int(daño * 2), FontTypeNames.FONTTYPE_FIGHT)
@@ -1084,8 +1086,6 @@ Else
     Call WriteConsoleMsg(UserIndex, "¡No has logrado apuñalar a tu enemigo!", FontTypeNames.FONTTYPE_FIGHT)
 End If
 
-'Pablo (ToxicWaste): Revisar, saque este porque hacía que se me cuelgue.
-'Call FlushBuffer(VictimUserIndex)
 End Sub
 
 Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
