@@ -252,4 +252,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/04/2008: Arreglado el FOR del sub LimpiarMundo que tiraba error de la forma en que se ejecutaba. Agregue que si hay un error en ese sub se logeara. (NicoNZ)
  * 15/04/2008: No se resteaban los counters de invisibilidad ni de ocultar al poner /salir. (NicoNZ)
  * 17/04/2008: Sub DoApuñalar: Simplifique la cuenta que hacia para sacar la suerte y arregle la cuenta que hacia para sacar el daño. (NicoNZ)
- * 18/04/2008: Fix en el nombre que aparece en los mensajes de /revivir. (NicoNZ)
+ * 18/04/2008: Fix en el nombre que aparece en los mensajes de /revivir. (NicoNZ) 
+ * 21/04/2008: Arreglado el bug que no cambiaba la barca al cambiar de status. (NicoNZ)

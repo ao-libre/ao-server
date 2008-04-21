@@ -114,8 +114,8 @@ UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlista
 Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al Ejercito Imperial!!!, aqui tienes tus vestimentas. Cumple bien tu labor exterminando Criminales y me encargaré de recompensarte.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
 
 If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
-    Dim MiObj As Obj
-    Dim MiObj2 As Obj
+    Dim MiObj As obj
+    Dim MiObj2 As obj
     MiObj.amount = 20
     MiObj2.amount = 10
         
@@ -165,6 +165,7 @@ If UserList(UserIndex).Faccion.RecibioExpInicialReal = 0 Then
     Call CheckUserLevel(UserIndex)
 End If
 
+If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 
 Call LogEjercitoReal(UserList(UserIndex).name & " ingresó el " & Date & " cuando era nivel " & UserList(UserIndex).Stats.ELV)
 
@@ -314,6 +315,8 @@ Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer)
     Call WriteConsoleMsg(UserIndex, "Has sido expulsado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
     'Desequipamos la armadura real si está equipada
     If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    
+    If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 End Sub
 
 Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
@@ -323,6 +326,8 @@ Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
     Call WriteConsoleMsg(UserIndex, "Has sido expulsado de la legión oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
     'Desequipamos la armadura real si está equipada
     If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    
+    If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 End Sub
 
 Public Function TituloReal(ByVal UserIndex As Integer) As String
@@ -442,8 +447,8 @@ UserList(UserIndex).Faccion.FuerzasCaos = 1
 
 Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al lado oscuro!!! Aqui tienes tus armaduras. Derrama sangre Ciudadana y Real y serás recompensado, lo prometo.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
 If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
-    Dim MiObj As Obj
-    Dim MiObj2 As Obj
+    Dim MiObj As obj
+    Dim MiObj2 As obj
     MiObj.amount = 20
     MiObj2.amount = 10
     
@@ -491,6 +496,7 @@ If UserList(UserIndex).Faccion.RecibioExpInicialCaos = 0 Then
     Call CheckUserLevel(UserIndex)
 End If
 
+If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 
 Call LogEjercitoCaos(UserList(UserIndex).name & " ingresó el " & Date & " cuando era nivel " & UserList(UserIndex).Stats.ELV)
 

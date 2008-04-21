@@ -101,8 +101,8 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
 End If
 
 If UserList(UserIndex).flags.Navegando = 1 Then
-    Dim Barco As ObjData
-    Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+    Dim barco As ObjData
+    barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
     UserList(UserIndex).Char.Head = 0
     
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
@@ -111,13 +111,13 @@ If UserList(UserIndex).flags.Navegando = 1 Then
         UserList(UserIndex).Char.body = iFragataCaos
     Else
         If criminal(UserIndex) Then
-            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
-            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
-            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+            If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+            If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+            If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
         Else
-            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
-            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
-            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+            If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+            If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+            If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
         End If
     End If
     
@@ -196,10 +196,12 @@ End Sub
 Sub RefreshCharStatus(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Tararira
-'Last modified: 6/04/2007
+'Last modified: 04/21/2008 (NicoNZ)
 'Refreshes the status and tag of UserIndex.
 '*************************************************
     Dim klan As String
+    Dim barco As ObjData
+    
     If UserList(UserIndex).guildIndex > 0 Then
         klan = modGuilds.GuildName(UserList(UserIndex).guildIndex)
         klan = " <" & klan & ">"
@@ -209,6 +211,29 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageUpdateTagAndStatus(UserIndex, criminal(UserIndex), UserList(UserIndex).name & klan))
     Else
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageUpdateTagAndStatus(UserIndex, criminal(UserIndex), vbNullString))
+    End If
+    
+    'Si esta navengando, se cambia la barca.
+    If UserList(UserIndex).flags.Navegando Then
+        barco = ObjData(UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex)
+        
+        If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
+            UserList(UserIndex).Char.body = iFragataReal
+        ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+            UserList(UserIndex).Char.body = iFragataCaos
+        Else
+            If criminal(UserIndex) Then
+                If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+                If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+                If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+            Else
+                If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+                If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+                If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+            End If
+        End If
+        
+        Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
     End If
 End Sub
 
@@ -626,9 +651,9 @@ Dim sailing As Boolean
         UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
 End Sub
 
-Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Object As UserOBJ)
-    UserList(UserIndex).Invent.Object(Slot) = Object
-    Call WriteChangeInventorySlot(UserIndex, Slot)
+Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal slot As Byte, ByRef Object As UserOBJ)
+    UserList(UserIndex).Invent.Object(slot) = Object
+    Call WriteChangeInventorySlot(UserIndex, slot)
 End Sub
 
 Function NextOpenCharIndex() As Integer
@@ -1254,7 +1279,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     End If
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef obj As obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
 '**************************************************************
 'Author: Unknown
 'Last Modify Date: 23/01/2007
@@ -1280,9 +1305,9 @@ Dim hayobj As Boolean
             
                 If LegalPos(nPos.map, tX, tY, Agua, Tierra) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
+                    hayobj = (MapData(nPos.map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.map, tX, tY).ObjInfo.ObjIndex <> obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.map, tX, tY).ObjInfo.amount + Obj.amount > MAX_INVENTORY_OBJS)
+                        hayobj = (MapData(nPos.map, tX, tY).ObjInfo.amount + obj.amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.map, tX, tY).TileExit.map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
