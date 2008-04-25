@@ -1189,7 +1189,6 @@ Errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
-
 Public Sub DoMineria(ByVal UserIndex As Integer)
 On Error GoTo Errhandler
 
@@ -1218,7 +1217,7 @@ If res <= 5 Then
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObj).MineralIndex
     
     If UserList(UserIndex).clase = eClass.Miner Then
-        MiObj.amount = RandomNumber(1, 5)
+        MiObj.amount = RandomNumber(1, 6) '(NicoNZ) 04/25/2008
     Else
         MiObj.amount = 1
     End If
