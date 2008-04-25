@@ -256,3 +256,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 21/04/2008: Arreglado el bug que no cambiaba la barca al cambiar de status. (NicoNZ)
  * 22/04/2008: Arreglado el bug que te echaba al poner 2 veces /rmata. (NicoNZ)
  * 25/04/2008: Ahora se mina de 1 a 6 (solo los mineros). (NicoNZ)
+ * 25/04/2008: Arreglé un par de mensajes al tirar hechizos. (NicoNZ)

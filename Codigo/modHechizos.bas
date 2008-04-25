@@ -214,7 +214,7 @@ If UserList(UserIndex).flags.Muerto = 0 Then
         If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
                 If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).StaffPower < Hechizos(HechizoIndex).NeedStaff Then
-                    Call WriteConsoleMsg(UserIndex, "Tu Báculo no es lo suficientemente poderoso para que puedas lanzar el conjuro.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No posees un báculo lo suficientemente poderoso para que puedas lanzar el conjuro.", FontTypeNames.FONTTYPE_INFO)
                     PuedeLanzar = False
                     Exit Function
                 End If
@@ -226,28 +226,29 @@ If UserList(UserIndex).flags.Muerto = 0 Then
         End If
     End If
         
-    If UserList(UserIndex).Stats.MinMAN >= Hechizos(HechizoIndex).ManaRequerido Then
-        If UserList(UserIndex).Stats.UserSkills(eSkill.Magia) >= Hechizos(HechizoIndex).MinSkill Then
-            If UserList(UserIndex).Stats.MinSta >= Hechizos(HechizoIndex).StaRequerido Then
-                PuedeLanzar = True
-            Else
-                Call WriteConsoleMsg(UserIndex, "Estás muy cansado para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
-                PuedeLanzar = False
-            End If
-                
-        Else
-            Call WriteConsoleMsg(UserIndex, "No tenes suficientes puntos de magia para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
-            PuedeLanzar = False
-        End If
-    Else
-            Call WriteConsoleMsg(UserIndex, "No tenes suficiente mana.", FontTypeNames.FONTTYPE_INFO)
-            PuedeLanzar = False
+    If UserList(UserIndex).Stats.UserSkills(eSkill.Magia) < Hechizos(HechizoIndex).MinSkill Then
+        Call WriteConsoleMsg(UserIndex, "No tenes suficientes puntos de magia para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+        PuedeLanzar = False
+        Exit Function
     End If
+    
+    If UserList(UserIndex).Stats.MinSta < Hechizos(HechizoIndex).StaRequerido Then
+        Call WriteConsoleMsg(UserIndex, "Estás muy cansado para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+        PuedeLanzar = False
+        Exit Function
+    End If
+    
+    If UserList(UserIndex).Stats.MinMAN < Hechizos(HechizoIndex).ManaRequerido Then
+        Call WriteConsoleMsg(UserIndex, "No tenes suficiente mana.", FontTypeNames.FONTTYPE_INFO)
+        PuedeLanzar = False
+        Exit Function
+    End If
+    
+    PuedeLanzar = True
 Else
    Call WriteConsoleMsg(UserIndex, "No podes lanzar hechizos porque estas muerto.", FontTypeNames.FONTTYPE_INFO)
    PuedeLanzar = False
 End If
-
 End Function
 
 Sub HechizoTerrenoEstado(ByVal UserIndex As Integer, ByRef b As Boolean)
