@@ -343,16 +343,12 @@ Sub HandleHechizoTerreno(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/01/08
-'Last Modified By: Nicolás Ezequiel Bouhid
-'Reseteo el intervalo del hechizo
+'
 '***************************************************
 If UserList(UserIndex).flags.ModoCombate = False Then
     Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
-
-Call IntervaloPermiteLanzarSpell(UserIndex)
-Call WriteResetCastSpellInterval(UserIndex)
 
 Dim b As Boolean
 
@@ -386,16 +382,12 @@ Sub HandleHechizoUsuario(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/01/08
-'Last Modified By: Nicolás Ezequiel Bouhid
-'Reseteo el intervalo del hechizo
+'
 '***************************************************
 If UserList(UserIndex).flags.ModoCombate = False Then
     Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
-
-Call IntervaloPermiteLanzarSpell(UserIndex)
-Call WriteResetCastSpellInterval(UserIndex)
 
 Dim b As Boolean
 Select Case Hechizos(uh).Tipo
@@ -424,13 +416,9 @@ Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/01/08
-'Last Modified By: Nicolás Ezequiel Bouhid
-'Reseteo el intervalo del hechizo
+'
 '***************************************************
 Dim b As Boolean
-
-Call IntervaloPermiteLanzarSpell(UserIndex)
-Call WriteResetCastSpellInterval(UserIndex)
 
 Select Case Hechizos(uh).Tipo
     Case TipoHechizo.uEstado ' Afectan estados (por ejem : Envenenamiento)
