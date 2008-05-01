@@ -150,6 +150,7 @@ Private Enum ServerPacketID
     SendNight               ' NOC
     Pong
     UpdateTagAndStatus
+    ResetCastSpellInterval
     
     'GM messages
     SpawnList               ' SPL
@@ -2744,10 +2745,11 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'Check bow's interval
                 If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
                 
+                
                 'Check Spell-Hit interval
                 If Not IntervaloPermiteGolpeMagia(UserIndex) Then
                     'Check Magic interval
-                    If Not IntervaloPermiteLanzarSpell(UserIndex) Then
+                    If Not IntervaloPermiteLanzarSpell(UserIndex, False) Then
                         Exit Sub
                     End If
                 End If
@@ -16317,6 +16319,29 @@ Public Sub WritePong(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo Errhandler
     Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.Pong)
+Exit Sub
+
+Errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
+End Sub
+
+''
+' Writes the "ResetCastSpellInterval" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteResetCastSpellInterval(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Nicolás Ezequiel Bouhid (NicoNZ)
+'Last Modification: 05/01/08
+'Writes the "ResetCastSpellInterval" message to the given user's outgoing data buffer.
+'***************************************************
+On Error GoTo Errhandler
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.ResetCastSpellInterval)
 Exit Sub
 
 Errhandler:

@@ -458,6 +458,7 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uUsuarios
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoUsuario(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -469,6 +470,7 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uNPC
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoNPC(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -480,12 +482,14 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uUsuariosYnpc
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoUsuario(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
             ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
+                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoNPC(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -495,6 +499,7 @@ If PuedeLanzar(UserIndex, uh) Then
             End If
         
         Case TargetType.uTerreno
+            Call IntervaloPermiteLanzarSpell(UserIndex)
             Call HandleHechizoTerreno(UserIndex, uh)
     End Select
     

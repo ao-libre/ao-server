@@ -257,3 +257,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 22/04/2008: Arreglado el bug que te echaba al poner 2 veces /rmata. (NicoNZ)
  * 25/04/2008: Ahora se mina de 1 a 6 (solo los mineros). (NicoNZ)
  * 25/04/2008: Arreglé un par de mensajes al tirar hechizos. (NicoNZ)
+ * 01/05/2008: Ahora no se resetea el intervalo al errar un hechizo. (NicoNZ)
