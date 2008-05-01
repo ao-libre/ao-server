@@ -342,15 +342,17 @@ End Sub
 Sub HandleHechizoTerreno(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 01/10/07
-'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
-'usuario
+'Last Modification: 05/01/08
+'Last Modified By: Nicolás Ezequiel Bouhid
+'Reseteo el intervalo del hechizo
 '***************************************************
 If UserList(UserIndex).flags.ModoCombate = False Then
     Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
+
+Call IntervaloPermiteLanzarSpell(UserIndex)
+Call WriteResetCastSpellInterval(UserIndex)
 
 Dim b As Boolean
 
@@ -383,15 +385,17 @@ End Sub
 Sub HandleHechizoUsuario(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 01/10/07
-'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
-'usuario
+'Last Modification: 05/01/08
+'Last Modified By: Nicolás Ezequiel Bouhid
+'Reseteo el intervalo del hechizo
 '***************************************************
 If UserList(UserIndex).flags.ModoCombate = False Then
     Call WriteConsoleMsg(UserIndex, "Debes estar en modo de combate para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
+
+Call IntervaloPermiteLanzarSpell(UserIndex)
+Call WriteResetCastSpellInterval(UserIndex)
 
 Dim b As Boolean
 Select Case Hechizos(uh).Tipo
@@ -419,12 +423,14 @@ End Sub
 Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 01/10/07
-'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-'Antes de procesar cualquier hechizo chequea de que este en modo de combate el
-'usuario
+'Last Modification: 05/01/08
+'Last Modified By: Nicolás Ezequiel Bouhid
+'Reseteo el intervalo del hechizo
 '***************************************************
 Dim b As Boolean
+
+Call IntervaloPermiteLanzarSpell(UserIndex)
+Call WriteResetCastSpellInterval(UserIndex)
 
 Select Case Hechizos(uh).Tipo
     Case TipoHechizo.uEstado ' Afectan estados (por ejem : Envenenamiento)
@@ -458,7 +464,6 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uUsuarios
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoUsuario(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -470,7 +475,6 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uNPC
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoNPC(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -482,14 +486,12 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uUsuariosYnpc
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoUsuario(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
             ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call IntervaloPermiteLanzarSpell(UserIndex)
                     Call HandleHechizoNPC(UserIndex, uh)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
@@ -499,7 +501,6 @@ If PuedeLanzar(UserIndex, uh) Then
             End If
         
         Case TargetType.uTerreno
-            Call IntervaloPermiteLanzarSpell(UserIndex)
             Call HandleHechizoTerreno(UserIndex, uh)
     End Select
     
