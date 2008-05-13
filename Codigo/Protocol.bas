@@ -10791,8 +10791,9 @@ End Sub
 Private Sub HandleBanIP(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/30/06
-'
+'Last Modification: 05/12/08
+'Agregado un CopyBuffer porque se producia un bucle
+'inifito al intentar banear una ip ya baneada. (NicoNZ)
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -10837,6 +10838,8 @@ On Error GoTo Errhandler
                 
                 If BanIpBuscar(bannedIP) > 0 Then
                     Call WriteConsoleMsg(UserIndex, "La IP " & bannedIP & " ya se encuentra en la lista de bans.", FontTypeNames.FONTTYPE_INFO)
+                    Call .incomingData.CopyBuffer(buffer) ' Agregado porque sino no se sacaba del
+                                                          ' buffer y se hacia un bucle infinito. (NicoNZ) 05/12/2008
                     Exit Sub
                 End If
                 
