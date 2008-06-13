@@ -14777,7 +14777,7 @@ On Error GoTo Errhandler
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
         Call .WriteInteger(obData.def)
-        Call .WriteSingle(Round(SalePrice(obData.Valor), 2))
+        Call .WriteLong(Round(SalePrice(obData.Valor), 0))
     End With
 Exit Sub
 
@@ -15187,10 +15187,10 @@ End Sub
 ' @param    price       The value the NPC asks for the object.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Obj As Obj, ByVal price As Single)
+Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Obj As Obj, ByVal price As Long)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 06/13/08
 'Last Modified by: Nicolas Ezequiel Bouhid (NicoNZ)
 'Writes the "ChangeNPCInventorySlot" message to the given user's outgoing data buffer
 '***************************************************
@@ -15206,7 +15206,7 @@ On Error GoTo Errhandler
         Call .WriteByte(Slot)
         Call .WriteASCIIString(ObjInfo.name)
         Call .WriteInteger(Obj.amount)
-        Call .WriteSingle(price)
+        Call .WriteLong(price)
         Call .WriteInteger(ObjInfo.GrhIndex)
         Call .WriteInteger(Obj.ObjIndex)
         Call .WriteByte(ObjInfo.OBJType)

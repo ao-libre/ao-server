@@ -30,22 +30,22 @@ End Enum
 
 Public Const REDUCTOR_PRECIOVENTA = 3
 
-Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal slot As Integer, ByVal Cantidad As Integer)
+Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal Slot As Integer, ByVal Cantidad As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last modified: 04/11/08 (NicoNZ)
+'Last modified: 06/13/08 (NicoNZ)
 '*************************************************
-    Dim Precio As Single
+    Dim Precio As Long
     Dim Objeto As Obj
     
-    If Cantidad < 1 Or slot < 1 Then Exit Sub
+    If Cantidad < 1 Or Slot < 1 Then Exit Sub
     
     If Modo = eModoComercio.Compra Then
         
         Objeto.amount = Cantidad
-        Objeto.ObjIndex = Npclist(NpcIndex).Invent.Object(slot).ObjIndex
+        Objeto.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
         
-        If slot > MAX_INVENTORY_SLOTS Then
+        If Slot > MAX_INVENTORY_SLOTS Then
             Exit Sub
         ElseIf Cantidad > MAX_INVENTORY_OBJS Then
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " ha sido baneado por el sistema anti-cheats.", FontTypeNames.FONTTYPE_FIGHT))
@@ -55,13 +55,13 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Call FlushBuffer(UserIndex)
             Call CloseSocket(UserIndex)
             Exit Sub
-        ElseIf Not Npclist(NpcIndex).Invent.Object(slot).amount > 0 Then
+        ElseIf Not Npclist(NpcIndex).Invent.Object(Slot).amount > 0 Then
             Exit Sub
         End If
         
-        If Cantidad > Npclist(NpcIndex).Invent.Object(slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(slot).amount
+        If Cantidad > Npclist(NpcIndex).Invent.Object(Slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(Slot).amount
         
-        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad, 0)
+        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad, 0)
             
         If UserList(UserIndex).Stats.GLD < Precio Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
@@ -78,7 +78,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - Precio
         
-        Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(slot), Cantidad)
+        Call QuitarNpcInvItem(UserList(UserIndex).flags.TargetNPC, CByte(Slot), Cantidad)
         
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
@@ -93,15 +93,15 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         'Agregado para que no se vuelvan a vender las llaves si se recargan los .dat.
         If ObjData(Objeto.ObjIndex).OBJType = otLlaves Then
-            Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & slot, Objeto.ObjIndex & "-0")
+            Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & Slot, Objeto.ObjIndex & "-0")
         End If
         
     ElseIf Modo = eModoComercio.Venta Then
         
-        If Cantidad > UserList(UserIndex).Invent.Object(slot).amount Then Cantidad = UserList(UserIndex).Invent.Object(slot).amount
+        If Cantidad > UserList(UserIndex).Invent.Object(Slot).amount Then Cantidad = UserList(UserIndex).Invent.Object(Slot).amount
         
         Objeto.amount = Cantidad
-        Objeto.ObjIndex = UserList(UserIndex).Invent.Object(slot).ObjIndex
+        Objeto.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         If Objeto.ObjIndex = 0 Then
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Newbie = 1 Then
@@ -128,9 +128,9 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
                 Call WriteTradeOK(UserIndex)
                 Exit Sub
             End If
-        ElseIf UserList(UserIndex).Invent.Object(slot).amount < 0 Or Cantidad = 0 Then
+        ElseIf UserList(UserIndex).Invent.Object(Slot).amount < 0 Or Cantidad = 0 Then
             Exit Sub
-        ElseIf slot < LBound(UserList(UserIndex).Invent.Object()) Or slot > UBound(UserList(UserIndex).Invent.Object()) Then
+        ElseIf Slot < LBound(UserList(UserIndex).Invent.Object()) Or Slot > UBound(UserList(UserIndex).Invent.Object()) Then
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         ElseIf UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then
@@ -140,7 +140,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         End If
         
-        Call QuitarUserInvItem(UserIndex, slot, Cantidad)
+        Call QuitarUserInvItem(UserIndex, Slot, Cantidad)
         
         'Precio = Round(ObjData(Objeto.ObjIndex).valor / REDUCTOR_PRECIOVENTA * Cantidad, 0)
         Precio = Round(SalePrice(ObjData(Objeto.ObjIndex).Valor) * Cantidad, 0)
@@ -243,22 +243,23 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 'Last Modified: 04/04/08
 'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
 '*************************************************
-    Dim slot As Byte
-    Dim val As Single
+    Dim Slot As Byte
+    Dim val As Long
     
-    For slot = 1 To MAX_INVENTORY_SLOTS
-        If Npclist(NpcIndex).Invent.Object(slot).ObjIndex > 0 Then
+    For Slot = 1 To MAX_INVENTORY_SLOTS
+        If Npclist(NpcIndex).Invent.Object(Slot).ObjIndex > 0 Then
             Dim thisObj As Obj
-            thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(slot).ObjIndex
-            thisObj.amount = Npclist(NpcIndex).Invent.Object(slot).amount
-            val = (ObjData(Npclist(NpcIndex).Invent.Object(slot).ObjIndex).Valor) / Descuento(UserIndex)
-
-            Call WriteChangeNPCInventorySlot(UserIndex, slot, thisObj, Round(val, 2))
+            thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
+            thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
+            val = Round((ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex), 0)
+            ' ^ saqué los numeros reales ^
+            
+            Call WriteChangeNPCInventorySlot(UserIndex, Slot, thisObj, val)
         Else
             Dim DummyObj As Obj
-            Call WriteChangeNPCInventorySlot(UserIndex, slot, DummyObj, 0)
+            Call WriteChangeNPCInventorySlot(UserIndex, Slot, DummyObj, 0)
         End If
-    Next slot
+    Next Slot
 End Sub
 
 ''
