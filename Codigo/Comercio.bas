@@ -240,7 +240,7 @@ End Function
 Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last Modified: 04/04/08
+'Last Modified: 06/14/08
 'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
 '*************************************************
     Dim Slot As Byte
@@ -251,8 +251,7 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             Dim thisObj As Obj
             thisObj.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
             thisObj.amount = Npclist(NpcIndex).Invent.Object(Slot).amount
-            val = Round((ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex), 0)
-            ' ^ saqué los numeros reales ^
+            val = (ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor) / Descuento(UserIndex)
             
             Call WriteChangeNPCInventorySlot(UserIndex, Slot, thisObj, val)
         Else
