@@ -156,7 +156,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -167,7 +167,7 @@ On Error GoTo Errhandler
     Next
 
 Exit Function
-Errhandler:
+errhandler:
 
 End Function
 
@@ -286,8 +286,18 @@ Dim TempY As Integer
 
 End Sub
 
-Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
+''
+' Le da propiedades al nuevo npc
+'
+' @param UserIndex  Indice del usuario que invoca.
+' @param b  Indica si se termino la operación.
 
+Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
+'***************************************************
+'Author: Uknown
+'Last modification: 06/15/2008 (NicoNZ)
+'Sale del sub si no hay una posición valida.
+'***************************************************
 If UserList(UserIndex).NroMascotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
@@ -324,6 +334,8 @@ For j = 1 To Hechizos(H).cant
             Npclist(ind).GiveGLD = 0
             
             Call FollowAmo(ind)
+        Else
+            Exit Sub
         End If
             
     Else
