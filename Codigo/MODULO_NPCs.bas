@@ -70,7 +70,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
-On Error GoTo Errhandler
+On Error GoTo errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
@@ -196,7 +196,7 @@ On Error GoTo Errhandler
     
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en MuereNpc - Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
@@ -336,7 +336,7 @@ End Sub
 
 Sub QuitarNPC(ByVal NpcIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
     Npclist(NpcIndex).flags.NPCActive = False
     
@@ -366,7 +366,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Npclist(NpcIndex).flags.NPCActive = False
     Call LogError("Error en QuitarNPC")
 
@@ -615,7 +615,7 @@ End Sub
 Function NextOpenNPC() As Integer
 'Call LogTarea("Sub NextOpenNPC")
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim LoopC As Integer
   
@@ -628,7 +628,7 @@ NextOpenNPC = LoopC
 
 
 Exit Function
-Errhandler:
+errhandler:
     Call LogError("Error en NextOpenNPC")
 End Function
 
@@ -646,8 +646,9 @@ End Sub
 Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolean, ByVal Respawn As Boolean) As Integer
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 23/01/2007
+'Last Modification: 06/15/2008
 '23/01/2007 -> Pablo (ToxicWaste): Creates an NPC of the type Npcindex
+'06/15/2008 -> Optimizé el codigo. (NicoNZ)
 '***************************************************
 Dim newpos As WorldPos
 Dim altpos As WorldPos
@@ -660,7 +661,7 @@ Dim PuedeTierra As Boolean
 Dim map As Integer
 Dim X As Integer
 Dim Y As Integer
-Dim it As Integer
+'Dim it As Integer
 
 nIndex = OpenNPC(NpcIndex, Respawn)   'Conseguimos un indice
 
@@ -670,11 +671,12 @@ If nIndex > MAXNPCS Then
 End If
 
 PuedeAgua = Npclist(nIndex).flags.AguaValida
-PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
+'PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
+PuedeTierra = Not Npclist(nIndex).flags.TierraInvalida = 1
 
-it = 0
+'it = 0
 
-Do While Not PosicionValida
+'Do While Not PosicionValida
         
         Call ClosestLegalPos(Pos, newpos, PuedeAgua, PuedeTierra)  'Nos devuelve la posicion valida mas cercana
         Call ClosestLegalPos(Pos, altpos, PuedeAgua)
@@ -697,15 +699,16 @@ Do While Not PosicionValida
             End If
         End If
         
-        it = it + 1
+        'it = it + 1
         
-        If it > MAXSPAWNATTEMPS Then
+        'If it > MAXSPAWNATTEMPS Then
+        If Not PosicionValida Then
             Call QuitarNPC(nIndex)
             SpawnNpc = 0
-            Call LogError("Mas de " & MAXSPAWNATTEMPS & " iteraciones en SpawnNpc Mapa:" & Pos.map & " Index:" & NpcIndex)
+            'Call LogError("Mas de " & MAXSPAWNATTEMPS & " iteraciones en SpawnNpc Mapa:" & Pos.map & " Index:" & NpcIndex)
             Exit Function
         End If
-Loop
+'Loop
 
 'asignamos las nuevas coordenas
 map = newpos.map

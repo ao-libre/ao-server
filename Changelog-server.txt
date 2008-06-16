@@ -261,3 +261,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 12/05/2008: Arreglado el bug que al intentar banear una ip ya baneada, se producia un bucle inifinito. (NicoNZ)
  * 14/06/2008: Ahora se ve el precio final a la hora de comerciar con un NPC. (NicoNZ)
  * 14/06/2008: Arreglé el bug que al invocar un npc en agua nos sacaba la energía y mana, pero el npc no se invocaba. (NicoNZ)
+ * 15/06/2008: Optimizado la funcion SpawnNpc que producía 60 iteraciones sin sentido. (NicoNZ)
