@@ -65,7 +65,7 @@ Public Const ExpX100 As Integer = 5000
 Public Sub EnlistarArmadaReal(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
-'Last Modification: 23/01/2007
+'Last Modification: 06/18/2008 (NicoNZ)
 'Handles the entrance of users to the "Armada Real"
 '***************************************************
 If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
@@ -114,8 +114,8 @@ UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlista
 Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al Ejercito Imperial!!!, aqui tienes tus vestimentas. Cumple bien tu labor exterminando Criminales y me encargaré de recompensarte.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
 
 If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
-    Dim MiObj As obj
-    Dim MiObj2 As obj
+    Dim MiObj As Obj
+    Dim MiObj2 As Obj
     MiObj.amount = 20
     MiObj2.amount = 10
         
@@ -163,6 +163,14 @@ If UserList(UserIndex).Faccion.RecibioExpInicialReal = 0 Then
     UserList(UserIndex).Faccion.RecompensasReal = 0
     UserList(UserIndex).Faccion.NextRecompensa = 70
     Call CheckUserLevel(UserIndex)
+End If
+
+'Agregado para que no hayan armadas en un clan Neutro
+If UserList(UserIndex).guildIndex > 0 Then
+    If modGuilds.GuildAlignment(UserList(UserIndex).guildIndex) = "Neutro" Then
+        Call modGuilds.m_EcharMiembroDeClan(-1, UserList(UserIndex).name)
+        Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan por tu nueva facción.", FontTypeNames.FONTTYPE_GUILD)
+    End If
 End If
 
 If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
@@ -392,7 +400,7 @@ End Function
 Public Sub EnlistarCaos(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
-'Last Modification: 23/01/2007
+'Last Modification: 06/18/2008 (NicoNZ)
 'Handles the entrance of users to the "Legión Oscura"
 '***************************************************
 If Not criminal(UserIndex) Then
@@ -447,8 +455,8 @@ UserList(UserIndex).Faccion.FuerzasCaos = 1
 
 Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al lado oscuro!!! Aqui tienes tus armaduras. Derrama sangre Ciudadana y Real y serás recompensado, lo prometo.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
 If UserList(UserIndex).Faccion.RecibioArmaduraCaos = 0 Then
-    Dim MiObj As obj
-    Dim MiObj2 As obj
+    Dim MiObj As Obj
+    Dim MiObj2 As Obj
     MiObj.amount = 20
     MiObj2.amount = 10
     
@@ -494,6 +502,14 @@ If UserList(UserIndex).Faccion.RecibioExpInicialCaos = 0 Then
     UserList(UserIndex).Faccion.RecompensasCaos = 0
     UserList(UserIndex).Faccion.NextRecompensa = 160
     Call CheckUserLevel(UserIndex)
+End If
+
+'Agregado para que no hayan armadas en un clan Neutro
+If UserList(UserIndex).guildIndex > 0 Then
+    If modGuilds.GuildAlignment(UserList(UserIndex).guildIndex) = "Neutro" Then
+        Call modGuilds.m_EcharMiembroDeClan(-1, UserList(UserIndex).name)
+        Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan por tu nueva facción.", FontTypeNames.FONTTYPE_GUILD)
+    End If
 End If
 
 If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
