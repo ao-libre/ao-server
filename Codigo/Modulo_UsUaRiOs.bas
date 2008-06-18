@@ -101,8 +101,8 @@ If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then
 End If
 
 If UserList(UserIndex).flags.Navegando = 1 Then
-    Dim barco As ObjData
-    barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+    Dim Barco As ObjData
+    Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
     UserList(UserIndex).Char.Head = 0
     
     If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
@@ -111,13 +111,13 @@ If UserList(UserIndex).flags.Navegando = 1 Then
         UserList(UserIndex).Char.body = iFragataCaos
     Else
         If criminal(UserIndex) Then
-            If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
-            If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
-            If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
         Else
-            If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
-            If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
-            If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+            If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+            If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+            If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
         End If
     End If
     
@@ -200,7 +200,7 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
 'Refreshes the status and tag of UserIndex.
 '*************************************************
     Dim klan As String
-    Dim barco As ObjData
+    Dim Barco As ObjData
     
     If UserList(UserIndex).guildIndex > 0 Then
         klan = modGuilds.GuildName(UserList(UserIndex).guildIndex)
@@ -215,7 +215,7 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
     
     'Si esta navengando, se cambia la barca.
     If UserList(UserIndex).flags.Navegando Then
-        barco = ObjData(UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex)
+        Barco = ObjData(UserList(UserIndex).Invent.Object(UserList(UserIndex).Invent.BarcoSlot).ObjIndex)
         
         If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
             UserList(UserIndex).Char.body = iFragataReal
@@ -223,13 +223,13 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
             UserList(UserIndex).Char.body = iFragataCaos
         Else
             If criminal(UserIndex) Then
-                If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
-                If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
-                If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaPk
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraPk
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonPk
             Else
-                If barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
-                If barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
-                If barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
+                If Barco.Ropaje = iBarca Then UserList(UserIndex).Char.body = iBarcaCiuda
+                If Barco.Ropaje = iGalera Then UserList(UserIndex).Char.body = iGaleraCiuda
+                If Barco.Ropaje = iGaleon Then UserList(UserIndex).Char.body = iGaleonCiuda
             End If
         End If
         
@@ -309,7 +309,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -602,7 +602,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -651,9 +651,9 @@ Dim sailing As Boolean
         UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
 End Sub
 
-Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal slot As Byte, ByRef Object As UserOBJ)
-    UserList(UserIndex).Invent.Object(slot) = Object
-    Call WriteChangeInventorySlot(UserIndex, slot)
+Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Object As UserOBJ)
+    UserList(UserIndex).Invent.Object(Slot) = Object
+    Call WriteChangeInventorySlot(UserIndex, Slot)
 End Sub
 
 Function NextOpenCharIndex() As Integer
@@ -1279,7 +1279,7 @@ Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     End If
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef obj As obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
 '**************************************************************
 'Author: Unknown
 'Last Modify Date: 23/01/2007
@@ -1305,9 +1305,9 @@ Dim hayobj As Boolean
             
                 If LegalPos(nPos.map, tX, tY, Agua, Tierra) Then
                     'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.map, tX, tY).ObjInfo.ObjIndex <> obj.ObjIndex)
+                    hayobj = (MapData(nPos.map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
                     If Not hayobj Then _
-                        hayobj = (MapData(nPos.map, tX, tY).ObjInfo.amount + obj.amount > MAX_INVENTORY_OBJS)
+                        hayobj = (MapData(nPos.map, tX, tY).ObjInfo.amount + Obj.amount > MAX_INVENTORY_OBJS)
                     If Not hayobj And MapData(nPos.map, tX, tY).TileExit.map = 0 Then
                         nPos.X = tX
                         nPos.Y = tY
@@ -1436,7 +1436,7 @@ InvocadosMatados = 0
             UserList(UserIndex).MascotasIndex(i) = SpawnNpc(PetTypes(i), UserList(UserIndex).Pos, False, PetRespawn(i))
             'Controlamos que se sumoneo OK
             If UserList(UserIndex).MascotasIndex(i) = 0 Then
-                Call WriteConsoleMsg(UserIndex, "No hay espacio aquí para tu mascota.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Tus mascotas no pueden transitar este mapa.", FontTypeNames.FONTTYPE_INFO)
                 Exit For
             End If
             Npclist(UserList(UserIndex).MascotasIndex(i)).MaestroUser = UserIndex
@@ -1446,7 +1446,7 @@ InvocadosMatados = 0
             Npclist(UserList(UserIndex).MascotasIndex(i)).Contadores.TiempoExistencia = PetTiempoDeVida(i)
             Call FollowAmo(UserList(UserIndex).MascotasIndex(i))
           Else
-            Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Estas te esperarán afuera.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Éstas te esperarán afuera.", FontTypeNames.FONTTYPE_INFO)
             Exit For
           End If
         End If
