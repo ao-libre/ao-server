@@ -56,7 +56,7 @@ End If
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -65,7 +65,7 @@ End Sub
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
 'Modifique la fórmula y ahora anda bien.
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Double
 Dim res As Integer
@@ -104,7 +104,7 @@ UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando 
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -531,12 +531,18 @@ End Function
 Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Nacho (Integer)
-'Last Modification: 18/08/07
+'Last Modification: 06/18/08 (NicoNZ)
 '
 '***************************************************
 
 Dim puntosDomar As Integer
 Dim puntosRequeridos As Integer
+
+
+If Npclist(NpcIndex).MaestroUser = UserIndex Then
+    Call WriteConsoleMsg(UserIndex, "Ya domaste a esa criatura.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
 
 If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
     
@@ -700,7 +706,7 @@ Call SubirSkill(UserIndex, Supervivencia)
 End Sub
 
 Public Sub DoPescar(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -753,12 +759,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoPescar")
 End Sub
 
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -819,7 +825,7 @@ End If
         
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
@@ -1128,7 +1134,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1185,12 +1191,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
 Public Sub DoMineria(ByVal UserIndex As Integer)
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1246,7 +1252,7 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
