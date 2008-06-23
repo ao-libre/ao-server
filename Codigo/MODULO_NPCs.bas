@@ -70,7 +70,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '********************************************************
-On Error GoTo errhandler
+On Error GoTo Errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
@@ -196,7 +196,7 @@ On Error GoTo errhandler
     
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en MuereNpc - Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
@@ -336,7 +336,7 @@ End Sub
 
 Sub QuitarNPC(ByVal NpcIndex As Integer)
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
     Npclist(NpcIndex).flags.NPCActive = False
     
@@ -366,7 +366,7 @@ On Error GoTo errhandler
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Npclist(NpcIndex).flags.NPCActive = False
     Call LogError("Error en QuitarNPC")
 
@@ -403,7 +403,7 @@ Dim Y As Integer
 
     nIndex = OpenNPC(NroNPC) 'Conseguimos un indice
     
-    If nIndex = 0 Then Exit Sub
+    If nIndex > MAXNPCS Then Exit Sub
     PuedeAgua = Npclist(nIndex).flags.AguaValida
     PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
     
@@ -615,7 +615,7 @@ End Sub
 Function NextOpenNPC() As Integer
 'Call LogTarea("Sub NextOpenNPC")
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim LoopC As Integer
   
@@ -628,7 +628,7 @@ NextOpenNPC = LoopC
 
 
 Exit Function
-errhandler:
+Errhandler:
     Call LogError("Error en NextOpenNPC")
 End Function
 

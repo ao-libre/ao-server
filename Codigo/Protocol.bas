@@ -7955,8 +7955,7 @@ Private Sub HandleKillNPC(ByVal UserIndex As Integer)
             auxNPC = Npclist(tNPC)
             Call QuitarNPC(tNPC)
             Call ReSpawnNpc(auxNPC)
-            ' NicoNZ: limpio el targuet porque si vuelve a
-            ' poner /rmata lo echa porque es un npc sin iniciar (04/22/08)
+            
             .flags.TargetNPC = 0
         Else
             Call WriteConsoleMsg(UserIndex, "Debes hacer click sobre el NPC antes", FontTypeNames.FONTTYPE_INFO)

@@ -1228,11 +1228,11 @@ On Error GoTo errh
                     Else
                         MapData(map, X, Y).NpcIndex = OpenNPC(MapData(map, X, Y).NpcIndex)
                     End If
-                            
+                    
                     Npclist(MapData(map, X, Y).NpcIndex).Pos.map = map
                     Npclist(MapData(map, X, Y).NpcIndex).Pos.X = X
                     Npclist(MapData(map, X, Y).NpcIndex).Pos.Y = Y
-                            
+                    
                     Call MakeNPCChar(True, 0, MapData(map, X, Y).NpcIndex, map, X, Y)
                 End If
             End If
