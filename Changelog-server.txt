@@ -266,3 +266,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/06/2008: Arreglado un bug que permitía tener un pj faccionario en un clan de alineación neutra. Además ese personaje no podía volver a loguear. (NicoNZ)
  * 22/06/2008: Bug fix en CrearNPC, aborta cuando OpenNPC devuelve valores mayor a MAXNPC y no 0, que era imposible. (Maraxus)
  * 28/06/2008: Los elementales al atacarlos por su amo no se paran más al lado de él sin hacer nada. (NicoNZ)
+ * 28/06/2008: Arreglado el bug que permitía cerrar invisible. (NicoNZ)

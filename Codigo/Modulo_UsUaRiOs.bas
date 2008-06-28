@@ -1476,10 +1476,32 @@ Dim MascotasReales As Integer
 
 End Sub
 
+''
+' Se inicia la salida de un usuario.
+'
+' @param    UserIndex   El index del usuario que va a salir
+
 Sub Cerrar_Usuario(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 06/28/08 (NicoNZ)
+'
+'***************************************************
+Dim isNotVisible As Boolean
+
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
         UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, IntervaloCerrarConexion, 0)
+        
+        isNotVisible = (UserList(UserIndex).flags.Oculto Or UserList(UserIndex).flags.invisible)
+        If isNotVisible Then
+            UserList(UserIndex).flags.Oculto = 0
+            UserList(UserIndex).flags.invisible = 0
+            UserList(UserIndex).Counters.Invisibilidad = 0
+            UserList(UserIndex).Counters.TiempoOculto = 0
+            Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+        End If
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
     End If
