@@ -1418,10 +1418,11 @@ End Sub
 Sub ResetUserFlags(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 03/29/2006
+'Last modified: 06/28/2008
 'Resetea todos los valores generales y las stats
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
 '03/29/2006 Maraxus - Reseteo el CentinelaOK también.
+'06/28/2008 NicoNZ - Agrego el flag Inmovilizado
 '*************************************************
     With UserList(UserIndex).flags
         .Comerciando = False
@@ -1450,6 +1451,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .Envenenado = 0
         .invisible = 0
         .Paralizado = 0
+        .Inmovilizado = 0
         .Maldicion = 0
         .Bendicion = 0
         .Meditando = 0

@@ -3152,9 +3152,10 @@ End Sub
 Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 10/01/08
-'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 06/28/2008
+'Last Modified By: NicoNZ
 ' 10/01/2008: Tavo - Se cancela la salida del juego si el user esta saliendo
+' 06/28/2008: NicoNZ - Sólo se puede cambiar si está inmovilizado
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -3170,9 +3171,11 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         heading = .incomingData.ReadByte()
         
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
-        If heading > 0 And heading < 5 Then
-            .Char.heading = heading
-            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        If .flags.Inmovilizado = 1 Then
+            If heading > 0 And heading < 5 Then
+                .Char.heading = heading
+                Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            End If
         End If
     End With
 End Sub
@@ -15030,7 +15033,6 @@ On Error GoTo Errhandler
         For i = 1 To UBound(ObjCarpintero())
             ' Can the user create this object? If so add it to the list....
             If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase) Then
-                If i = 1 Then Debug.Print UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase)
                 Count = Count + 1
                 validIndexes(Count) = i
             End If

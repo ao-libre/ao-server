@@ -156,7 +156,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -167,7 +167,7 @@ On Error GoTo errhandler
     Next
 
 Exit Function
-errhandler:
+Errhandler:
 
 End Function
 
@@ -517,12 +517,13 @@ End Sub
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 02/01/2008
+'Last Modification: 06/28/2008
 'Handles the Spells that afect the Stats of an User
 '24/01/2007 Pablo (ToxicWaste) - Invisibilidad no permitida en Mapas con InviSinEfecto
 '26/01/2007 Pablo (ToxicWaste) - Cambios que permiten mejor manejo de ataques en los rings.
 '26/01/2007 Pablo (ToxicWaste) - Revivir no permitido en Mapas con ResuSinEfecto
 '02/01/2008 Marcos (ByVal) - Curar Veneno no permitido en usuarios muertos.
+'06/28/2008 NicoNZ - Agregué que se le de valor al flag Inmovilizado.
 '***************************************************
 
 
@@ -744,13 +745,13 @@ If Hechizos(H).Paraliza = 1 Or Hechizos(H).Inmoviliza = 1 Then
                 Exit Sub
             End If
             
+            If Hechizos(H).Inmoviliza = 1 Then UserList(tU).flags.Inmovilizado = 1
             UserList(tU).flags.Paralizado = 1
             UserList(tU).Counters.Paralisis = IntervaloParalizado
             
             Call WriteParalizeOK(tU)
             Call FlushBuffer(tU)
-
-            
+      
     End If
 End If
 
@@ -775,6 +776,7 @@ If Hechizos(H).RemoverParalisis = 1 Then
             End If
         End If
         
+        UserList(tU).flags.Inmovilizado = 0
         UserList(tU).flags.Paralizado = 0
         'no need to crypt this
         Call WriteParalizeOK(tU)

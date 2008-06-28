@@ -936,6 +936,7 @@ Public Type UserFlags
     PuedeTrabajar As Byte
     Envenenado As Byte
     Paralizado As Byte
+    Inmovilizado As Byte
     Estupidez As Byte
     Ceguera As Byte
     invisible As Byte
