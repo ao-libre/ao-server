@@ -309,7 +309,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -602,7 +602,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -942,9 +942,10 @@ End Function
 Sub NPCAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '**********************************************
 'Author: Unknown
-'Last Modification: 24/07/2007
+'Last Modification: 06/28/2008
 '24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si corresponde.
 '24/07/2007 -> Pablo (ToxicWaste): Guardar primero que ataca NPC y el que atacas ahora.
+'06/28/2008 -> NicoNZ: Los elementales al atacarlos por su amo no se paran más al lado de él sin hacer nada.
 '**********************************************
 Dim EraCriminal As Boolean
 
@@ -977,7 +978,11 @@ ElseIf Npclist(NpcIndex).flags.AttackedFirstBy <> UserList(UserIndex).name Then
     End If
 End If
 
-If Npclist(NpcIndex).MaestroUser > 0 Then Call AllMascotasAtacanUser(UserIndex, Npclist(NpcIndex).MaestroUser)
+If Npclist(NpcIndex).MaestroUser > 0 Then
+    If Npclist(NpcIndex).MaestroUser <> UserIndex Then
+        Call AllMascotasAtacanUser(UserIndex, Npclist(NpcIndex).MaestroUser)
+    End If
+End If
 
 If EsMascotaCiudadano(NpcIndex, UserIndex) Then
             Call VolverCriminal(UserIndex)
@@ -1001,9 +1006,11 @@ Else
         UserList(UserIndex).Reputacion.PlebeRep = MAXREP
     End If
     
-    'hacemos que el npc se defienda
-    Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
-    Npclist(NpcIndex).Hostile = 1
+    If Npclist(NpcIndex).MaestroUser <> UserIndex Then
+        'hacemos que el npc se defienda
+        Npclist(NpcIndex).Movement = TipoAI.NPCDEFENSA
+        Npclist(NpcIndex).Hostile = 1
+    End If
     
     If EraCriminal And Not criminal(UserIndex) Then
         Call VolverCiudadano(UserIndex)
