@@ -290,9 +290,9 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
     
     Dim SignoNS As Integer
     Dim SignoEO As Integer
-    
+
     With Npclist(NpcIndex)
-        If .flags.Inmovilizado = 1 Then
+        If .flags.Paralizado = 1 Then
             Select Case .Char.heading
                 Case eHeading.NORTH
                     SignoNS = -1
@@ -310,14 +310,14 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                     SignoEO = -1
                     SignoNS = 0
             End Select
-            
+
             For i = 1 To ModAreas.ConnGroups(.Pos.map).CountEntrys
                 UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
-                
+
                 'Is it in it's range of vision??
                 If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X And Sgn(UserList(UI).Pos.X - .Pos.X) = SignoEO Then
                     If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y And Sgn(UserList(UI).Pos.Y - .Pos.Y) = SignoNS Then
-                        
+
                         If UserList(UI).name = .flags.AttackedBy Then
                             If .MaestroUser > 0 Then
                                 If Not criminal(.MaestroUser) And Not criminal(UI) And (UserList(.MaestroUser).flags.Seguro Or UserList(.MaestroUser).Faccion.ArmadaReal = 1) Then
@@ -327,10 +327,12 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                                     Exit Sub
                                 End If
                             End If
-                            
+                            Debug.Print "paso x aca"
                             If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
+                                 Else
+                                      Call NpcAtacaUser(NpcIndex, UI)
                                  End If
                                  Exit Sub
                             End If
@@ -362,6 +364,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                             If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
+                                 Else
+                                      Call NpcAtacaUser(NpcIndex, UI)
                                  End If
                                  
                                  tHeading = FindDirection(.Pos, UserList(UI).Pos)

@@ -3171,12 +3171,12 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         heading = .incomingData.ReadByte()
         
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
-        If .flags.Inmovilizado = 1 Then
+        If .flags.Paralizado = 1 And .flags.Inmovilizado = 0 Then Exit Sub
             If heading > 0 And heading < 5 Then
                 .Char.heading = heading
                 Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
             End If
-        End If
+
     End With
 End Sub
 
