@@ -3155,7 +3155,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 'Last Modification: 06/28/2008
 'Last Modified By: NicoNZ
 ' 10/01/2008: Tavo - Se cancela la salida del juego si el user esta saliendo
-' 06/28/2008: NicoNZ - Sólo se puede cambiar si está inmovilizado
+' 06/28/2008: NicoNZ - Sólo se puede cambiar si está inmovilizado.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -3167,16 +3167,33 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim heading As eHeading
-        
+        Dim posX As Integer
+        Dim posY As Integer
+                
         heading = .incomingData.ReadByte()
         
+        If .flags.Paralizado = 1 And .flags.Inmovilizado = 0 Then
+            Select Case heading
+                Case eHeading.NORTH
+                    posY = -1
+                Case eHeading.EAST
+                    posX = 1
+                Case eHeading.SOUTH
+                    posY = 1
+                Case eHeading.WEST
+                    posX = -1
+            End Select
+            
+                If LegalPos(.Pos.map, .Pos.X + posX, .Pos.Y + posY, CBool(.flags.Navegando), Not CBool(.flags.Navegando)) Then
+                    Exit Sub
+                End If
+        End If
+        
         'Validate heading (VB won't say invalid cast if not a valid index like .Net languages would do... *sigh*)
-        If .flags.Paralizado = 1 And .flags.Inmovilizado = 0 Then Exit Sub
-            If heading > 0 And heading < 5 Then
-                .Char.heading = heading
-                Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
-            End If
-
+        If heading > 0 And heading < 5 Then
+            .Char.heading = heading
+            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        End If
     End With
 End Sub
 
