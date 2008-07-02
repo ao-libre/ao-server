@@ -1071,9 +1071,8 @@ On Error GoTo man
     
     ReDim MapData(1 To NumMaps, XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     ReDim MapInfo(1 To NumMaps) As MapInfo
-      
+    
     For map = 1 To NumMaps
-        
         If val(GetVar(App.Path & MapPath & "Mapa" & map & ".Dat", "Mapa" & map, "BackUp")) <> 0 Then
             tFileName = App.Path & "\WorldBackUp\Mapa" & map
         Else
