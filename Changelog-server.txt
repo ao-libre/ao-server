@@ -269,3 +269,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/06/2008: Arreglado el bug que permitía cerrar invisible. (NicoNZ)
  * 28/06/2008: Ahora si estás inmovilizado, te podes mover sobre el mismo eje para las cuatro direcciones, si estás paralizado, no. (NicoNZ)
  * 28/06/2008: Arreglado el bug que las mascotas no atacaban. (NicoNZ)
+ * 01/07/2008: Cambio el mensaje del /APASS para que tenga más sentido. (Maraxus)

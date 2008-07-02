@@ -12575,7 +12575,7 @@ On Error GoTo Errhandler
                     Password = GetVar(CharPath & copyFrom & ".chr", "INIT", "Password")
                     Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
                     
-                    Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " cambiado a: " & Password, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " ha cambiado por la de " & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
