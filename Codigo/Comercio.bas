@@ -41,10 +41,6 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
     If Cantidad < 1 Or Slot < 1 Then Exit Sub
     
     If Modo = eModoComercio.Compra Then
-        
-        Objeto.amount = Cantidad
-        Objeto.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
-        
         If Slot > MAX_INVENTORY_SLOTS Then
             Exit Sub
         ElseIf Cantidad > MAX_INVENTORY_OBJS Then
@@ -60,6 +56,9 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         End If
         
         If Cantidad > Npclist(NpcIndex).Invent.Object(Slot).amount Then Cantidad = Npclist(UserList(UserIndex).flags.TargetNPC).Invent.Object(Slot).amount
+        
+        Objeto.amount = Cantidad
+        Objeto.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
         
         Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad, 0)
             
