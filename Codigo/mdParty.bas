@@ -61,6 +61,11 @@ Public Const PARTY_MAXDISTANCIA As Byte = 18
 Public Const CASTIGOS As Boolean = False
 
 ''
+'Numero al que elevamos el nivel de cada miembro de la party
+'Esto es usado para calcular la distribución de la experiencia entre los miembros
+Public Const EXPONENTENIVEL As Single = 1.75
+
+''
 'tPartyMember
 '
 ' @param UserIndex UserIndex

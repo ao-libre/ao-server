@@ -44,8 +44,8 @@ Private p_Fundador As Integer
 Private p_CantMiembros As Integer
 'cantidad de miembros
 
-Private p_SumaNiveles As Integer
-'suma de todos los niveles
+Private p_SumaNivelesElevados As Single
+'suma de todos los niveles elevados a la EXPONENTENIVEL > Esta variable se usa para calcular la experiencia repartida en la Party.
 
 'datos en los pjs: | indexParty(indice en p_members), partyLeader(userindex del lider) |
 
@@ -53,13 +53,14 @@ Private p_SumaNiveles As Integer
 Public Sub Class_Initialize()
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
-' - 09/29/07 p_SumaNiveles added
+'Last Modification: 07/04/08
+'Last Modification By: Marco Vanotti (MarKoxX)
+' - 09/29/07 p_SumaNiveles added (Tavo)
+' - 07/04/08 p_SumaNiveles changed to p_SumaNivelesElevados (MarKoxX)
 '***************************************************
     p_expTotal = 0
     p_CantMiembros = 0
-    p_SumaNiveles = 0
+    p_SumaNivelesElevados = 0
 End Sub
 
 'Destructor de clase
@@ -94,12 +95,13 @@ End Function
 Public Sub ObtenerExito(ByVal ExpGanada As Long, ByVal mapa As Integer, X As Integer, Y As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 04/04/08
+'Last Modification: 07/04/08
 'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 New formula for calculating the experience point of each user
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
-' - 04/04/08 Ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe
+' - 04/04/08 Ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe (MarKoxX)
+' - 07/04/08 New formula to calculate Experience for each user. (MarKoxX)
 '***************************************************
 'Se produjo un evento que da experiencia en la wp referenciada
 Dim i As Integer
@@ -111,8 +113,8 @@ p_expTotal = p_expTotal + ExpGanada
 For i = 1 To PARTY_MAXMEMBERS
     UI = p_members(i).UserIndex
     If UI > 0 Then
-        ' Formula: Exp*Nivel/sumadeNiveles
-        expThisUser = CDbl(ExpGanada * UserList(p_members(i).UserIndex).Stats.ELV / p_SumaNiveles)
+        ' Formula: Exp* (Nivel ^ EXPONENTENIVEL) / sumadeNivelesElevados
+        expThisUser = CDbl(ExpGanada * (UserList(p_members(i).UserIndex).Stats.ELV ^ EXPONENTENIVEL) / p_SumaNivelesElevados)
         
         If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
@@ -153,10 +155,12 @@ End Function
 Public Function NuevoMiembro(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
-' - 09/29/07 There is no level prohibition
+'Last Modification: 07/04/08
+'Last Modification By: Marco Vanotti (MarKoxX)
+' - 09/29/07 There is no level prohibition (Tavo)
+' - 07/04/08 Added const EXPONENTENIVEL. (MarKoxX)
 '***************************************************
+
 Dim i As Integer
 i = 1
 While i <= PARTY_MAXMEMBERS And p_members(i).UserIndex > 0
@@ -168,7 +172,7 @@ If i <= PARTY_MAXMEMBERS Then
     p_members(i).UserIndex = UserIndex
     NuevoMiembro = True
     p_CantMiembros = p_CantMiembros + 1
-    p_SumaNiveles = p_SumaNiveles + UserList(UserIndex).Stats.ELV
+    p_SumaNivelesElevados = p_SumaNivelesElevados + (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
 Else
     NuevoMiembro = False
 End If
@@ -178,10 +182,11 @@ End Function
 Public Function SaleMiembro(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 07/04/08
+'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 Experience is round to the biggest number less than that number
-' - 09/29/07 Now experience is a real-number
+' - 09/29/07 Now experience is a real-number (Tavo)
+' - 07/04/08 Added const EXPONENTENIVEL. (MarKoxX)
 '***************************************************
 'el valor de retorno representa si se disuelve la party
 Dim i As Integer
@@ -213,7 +218,7 @@ If i = 1 Then
             Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party.", "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
             p_CantMiembros = p_CantMiembros - 1
-            p_SumaNiveles = p_SumaNiveles - UserList(UserIndex).Stats.ELV
+            p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
             p_members(j).UserIndex = 0
             p_members(j).Experiencia = 0
         End If
@@ -231,7 +236,7 @@ Else
         'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
         Call WriteConsoleMsg(p_members(i).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(i).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
         p_CantMiembros = p_CantMiembros - 1
-        p_SumaNiveles = p_SumaNiveles - UserList(UserIndex).Stats.ELV
+        p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
         p_members(i).UserIndex = 0
         p_members(i).Experiencia = 0
         CompactMemberList
