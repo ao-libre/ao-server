@@ -549,6 +549,9 @@ Sub LoadBalance()
     
     'Extra
     PorcentajeRecuperoMana = val(GetVar(DatPath & "Balance.dat", "EXTRA", "PorcentajeRecuperoMana"))
+
+    'Party
+    ExponenteNivelParty = val(GetVar(DatPath & "Balance.dat", "PARTY", "ExponenteNivelParty"))
 End Sub
 
 Sub LoadObjCarpintero()

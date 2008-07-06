@@ -45,7 +45,7 @@ Private p_CantMiembros As Integer
 'cantidad de miembros
 
 Private p_SumaNivelesElevados As Single
-'suma de todos los niveles elevados a la EXPONENTENIVEL > Esta variable se usa para calcular la experiencia repartida en la Party.
+'suma de todos los niveles elevados a la ExponenteNivelParty > Esta variable se usa para calcular la experiencia repartida en la Party.
 
 'datos en los pjs: | indexParty(indice en p_members), partyLeader(userindex del lider) |
 
@@ -113,8 +113,8 @@ p_expTotal = p_expTotal + ExpGanada
 For i = 1 To PARTY_MAXMEMBERS
     UI = p_members(i).UserIndex
     If UI > 0 Then
-        ' Formula: Exp* (Nivel ^ EXPONENTENIVEL) / sumadeNivelesElevados
-        expThisUser = CDbl(ExpGanada * (UserList(p_members(i).UserIndex).Stats.ELV ^ EXPONENTENIVEL) / p_SumaNivelesElevados)
+        ' Formula: Exp* (Nivel ^ ExponenteNivelParty) / sumadeNivelesElevados
+        expThisUser = CDbl(ExpGanada * (UserList(p_members(i).UserIndex).Stats.ELV ^ ExponenteNivelParty) / p_SumaNivelesElevados)
         
         If mapa = UserList(UI).Pos.map And UserList(UI).flags.Muerto = 0 Then
             If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
@@ -158,7 +158,7 @@ Public Function NuevoMiembro(ByVal UserIndex As Integer) As Boolean
 'Last Modification: 07/04/08
 'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 There is no level prohibition (Tavo)
-' - 07/04/08 Added const EXPONENTENIVEL. (MarKoxX)
+' - 07/04/08 Added const ExponenteNivelParty. (MarKoxX)
 '***************************************************
 
 Dim i As Integer
@@ -172,7 +172,7 @@ If i <= PARTY_MAXMEMBERS Then
     p_members(i).UserIndex = UserIndex
     NuevoMiembro = True
     p_CantMiembros = p_CantMiembros + 1
-    p_SumaNivelesElevados = p_SumaNivelesElevados + (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
+    p_SumaNivelesElevados = p_SumaNivelesElevados + (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
 Else
     NuevoMiembro = False
 End If
@@ -186,7 +186,7 @@ Public Function SaleMiembro(ByVal UserIndex As Integer) As Boolean
 'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number (Tavo)
-' - 07/04/08 Added const EXPONENTENIVEL. (MarKoxX)
+' - 07/04/08 Added const ExponenteNivelParty. (MarKoxX)
 '***************************************************
 'el valor de retorno representa si se disuelve la party
 Dim i As Integer
@@ -218,7 +218,7 @@ If i = 1 Then
             Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party.", "Servidor")
             UserList(p_members(j).UserIndex).PartyIndex = 0
             p_CantMiembros = p_CantMiembros - 1
-            p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
+            p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
             p_members(j).UserIndex = 0
             p_members(j).Experiencia = 0
         End If
@@ -236,7 +236,7 @@ Else
         'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
         Call WriteConsoleMsg(p_members(i).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(i).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
         p_CantMiembros = p_CantMiembros - 1
-        p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ EXPONENTENIVEL)
+        p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
         p_members(i).UserIndex = 0
         p_members(i).Experiencia = 0
         CompactMemberList

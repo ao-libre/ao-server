@@ -53,9 +53,9 @@ Begin VB.Form frmServidor
       Begin VB.PictureBox picCont 
          BackColor       =   &H00C0C0C0&
          BorderStyle     =   0  'None
-         Height          =   5055
+         Height          =   5295
          Left            =   0
-         ScaleHeight     =   337
+         ScaleHeight     =   353
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   289
          TabIndex        =   7
@@ -75,7 +75,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   29
-            Top             =   4680
+            Top             =   4920
             Width           =   4095
          End
          Begin VB.CommandButton Command24 
@@ -92,7 +92,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   25
-            Top             =   4440
+            Top             =   4680
             Width           =   4095
          End
          Begin VB.CommandButton Command22 
@@ -109,7 +109,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   8
-            Top             =   4200
+            Top             =   4440
             Width           =   4095
          End
          Begin VB.CommandButton Command21 
@@ -126,7 +126,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   9
-            Top             =   3960
+            Top             =   4200
             Width           =   4095
          End
          Begin VB.CommandButton Command17 
@@ -143,7 +143,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   10
-            Top             =   3720
+            Top             =   3960
             Width           =   4095
          End
          Begin VB.CommandButton Command25 
@@ -160,7 +160,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   27
-            Top             =   3480
+            Top             =   3720
             Width           =   4095
          End
          Begin VB.CommandButton Command16 
@@ -177,6 +177,23 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   11
+            Top             =   3480
+            Width           =   4095
+         End
+         Begin VB.CommandButton Command28 
+            Caption         =   "Reload Balance.dat"
+            BeginProperty Font 
+               Name            =   "Tahoma"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Left            =   120
+            TabIndex        =   30
             Top             =   3240
             Width           =   4095
          End
@@ -722,6 +739,10 @@ End Sub
 Private Sub Command27_Click()
 frmUserList.Show
 
+End Sub
+
+Private Sub Command28_Click()
+    Call LoadBalance
 End Sub
 
 Private Sub Command3_Click()
