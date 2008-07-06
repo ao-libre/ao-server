@@ -292,7 +292,7 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
     Dim SignoEO As Integer
 
     With Npclist(NpcIndex)
-        If .flags.Paralizado = 1 Then
+        If .flags.Paralizado = 1 Or .flags.Inmovilizado = 1 Then
             Select Case .Char.heading
                 Case eHeading.NORTH
                     SignoNS = -1
@@ -327,7 +327,7 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                                     Exit Sub
                                 End If
                             End If
-                            Debug.Print "paso x aca"
+
                             If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
