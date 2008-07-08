@@ -972,10 +972,11 @@ End Sub
 Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, ByVal hIndex As Integer, ByRef b As Boolean, ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 04/13/2008
+'Last Modification: 07/07/2008
 'Handles the Spells that afect the Stats of an NPC
 '04/13/2008 NicoNZ - Guardias Faccionarios pueden ser
 'removidos por users de su misma faccion.
+'07/07/2008: NicoNZ - Solo se puede mimetizar con npcs si es druida
 '***************************************************
 If Hechizos(hIndex).Invisibilidad = 1 Then
     Call InfoHechizo(UserIndex)
@@ -1115,27 +1116,32 @@ If Hechizos(hIndex).Mimetiza = 1 Then
     
     If UserList(UserIndex).flags.AdminInvisible = 1 Then Exit Sub
     
-    'copio el char original al mimetizado
-    
-    With UserList(UserIndex)
-        .CharMimetizado.body = .Char.body
-        .CharMimetizado.Head = .Char.Head
-        .CharMimetizado.CascoAnim = .Char.CascoAnim
-        .CharMimetizado.ShieldAnim = .Char.ShieldAnim
-        .CharMimetizado.WeaponAnim = .Char.WeaponAnim
         
-        .flags.Mimetizado = 1
+    If UserList(UserIndex).clase = eClass.Druid Then
+        'copio el char original al mimetizado
+        With UserList(UserIndex)
+            .CharMimetizado.body = .Char.body
+            .CharMimetizado.Head = .Char.Head
+            .CharMimetizado.CascoAnim = .Char.CascoAnim
+            .CharMimetizado.ShieldAnim = .Char.ShieldAnim
+            .CharMimetizado.WeaponAnim = .Char.WeaponAnim
+            
+            .flags.Mimetizado = 1
+            
+            'ahora pongo lo del NPC.
+            .Char.body = Npclist(NpcIndex).Char.body
+            .Char.Head = Npclist(NpcIndex).Char.Head
+            .Char.CascoAnim = NingunCasco
+            .Char.ShieldAnim = NingunEscudo
+            .Char.WeaponAnim = NingunArma
         
-        'ahora pongo lo del NPC.
-        .Char.body = Npclist(NpcIndex).Char.body
-        .Char.Head = Npclist(NpcIndex).Char.Head
-        .Char.CascoAnim = NingunCasco
-        .Char.ShieldAnim = NingunEscudo
-        .Char.WeaponAnim = NingunArma
-    
-        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
-    End With
-   
+            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        End With
+    Else
+        Call WriteConsoleMsg(UserIndex, "Solo los druidas pueden mimetizarse con criaturas.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+
    Call InfoHechizo(UserIndex)
    b = True
 End If
