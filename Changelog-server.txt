@@ -275,3 +275,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 05/07/2008: La nueva fórmula de distribuir la experiencia en una party es: Exp*Nivel^(K)/Suma[Nivel^(K)]. (MarKoxX)
  * 06/07/2008: Ahora ExponenteNivelParty se carga de Balance.dat (MarKoxX)
  * 06/07/2008: Se agregó el boton "Reload Balance.Dat" en las opciones del server. (MarKoxX)
+ * 07/07/2008: Arreglado el bug que los elementales de agua atacaban usuarios. (NicoNZ)

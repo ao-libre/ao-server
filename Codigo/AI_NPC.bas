@@ -332,7 +332,10 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
                                  Else
+                                    ' TODO : Set this a separate AI for Elementals and Druid's pets
+                                    If Npclist(NpcIndex).Numero <> 92 Then
                                       Call NpcAtacaUser(NpcIndex, UI)
+                                    End If
                                  End If
                                  Exit Sub
                             End If
@@ -365,7 +368,10 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
                                  Else
+                                    ' TODO : Set this a separate AI for Elementals and Druid's pets
+                                    If Npclist(NpcIndex).Numero <> 92 Then
                                       Call NpcAtacaUser(NpcIndex, UI)
+                                    End If
                                  End If
                                  
                                  tHeading = FindDirection(.Pos, UserList(UI).Pos)
