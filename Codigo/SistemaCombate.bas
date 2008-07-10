@@ -880,18 +880,6 @@ If UserList(VictimaIndex).Invent.EscudoEqpObjIndex > 0 Then
     End If
 End If
     
-If UsuarioImpacto Then
-   If Arma > 0 Then
-           If Not proyectil Then
-                  Call SubirSkill(AtacanteIndex, Armas)
-           Else
-                  Call SubirSkill(AtacanteIndex, Proyectiles)
-           End If
-   Else
-        Call SubirSkill(AtacanteIndex, Wrestling)
-   End If
-End If
-
 Call FlushBuffer(VictimaIndex)
 End Function
 
@@ -960,30 +948,29 @@ End If
 Lugar = RandomNumber(1, 6)
 
 Select Case Lugar
-  
-  Case PartesCuerpo.bCabeza
+    Case PartesCuerpo.bCabeza
         'Si tiene casco absorbe el golpe
         If UserList(VictimaIndex).Invent.CascoEqpObjIndex > 0 Then
-           Obj = ObjData(UserList(VictimaIndex).Invent.CascoEqpObjIndex)
-           absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
-           absorbido = absorbido + defbarco - Resist
-           daño = daño - absorbido
-           If daño < 0 Then daño = 1
+        Obj = ObjData(UserList(VictimaIndex).Invent.CascoEqpObjIndex)
+        absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+        absorbido = absorbido + defbarco - Resist
+        daño = daño - absorbido
+        If daño < 0 Then daño = 1
         End If
-  Case Else
+    Case Else
         'Si tiene armadura absorbe el golpe
         If UserList(VictimaIndex).Invent.ArmourEqpObjIndex > 0 Then
-           Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
-           Dim Obj2 As ObjData
-           If UserList(VictimaIndex).Invent.EscudoEqpObjIndex Then
+            Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
+            Dim Obj2 As ObjData
+            If UserList(VictimaIndex).Invent.EscudoEqpObjIndex Then
                 Obj2 = ObjData(UserList(VictimaIndex).Invent.EscudoEqpObjIndex)
                 absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
-           Else
+            Else
                 absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
-           End If
-           absorbido = absorbido + defbarco - Resist
-           daño = daño - absorbido
-           If daño < 0 Then daño = 1
+            End If
+            absorbido = absorbido + defbarco - Resist
+            daño = daño - absorbido
+            If daño < 0 Then daño = 1
         End If
 End Select
 
@@ -991,6 +978,8 @@ Call WriteUserHittedUser(AtacanteIndex, Lugar, UserList(VictimaIndex).Char.CharI
 Call WriteUserHittedByUser(VictimaIndex, Lugar, UserList(AtacanteIndex).Char.CharIndex, daño)
 
 UserList(VictimaIndex).Stats.MinHP = UserList(VictimaIndex).Stats.MinHP - daño
+
+Call SubirSkill(VictimaIndex, Tacticas)
 
 If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Sed = 0 Then
         'Si usa un arma quizas suba "Combate con armas"
@@ -1004,15 +993,13 @@ If UserList(AtacanteIndex).flags.Hambre = 0 And UserList(AtacanteIndex).flags.Se
             End If
         Else
         'sino tal vez lucha libre
-                Call SubirSkill(AtacanteIndex, Wrestling)
+            Call SubirSkill(AtacanteIndex, Wrestling)
         End If
-        
-        Call SubirSkill(VictimaIndex, Tacticas)
-        
+                
         'Trata de apuñalar por la espalda al enemigo
         If PuedeApuñalar(AtacanteIndex) Then
-                Call DoApuñalar(AtacanteIndex, 0, VictimaIndex, daño)
-                Call SubirSkill(AtacanteIndex, Apuñalar)
+            Call DoApuñalar(AtacanteIndex, 0, VictimaIndex, daño)
+            Call SubirSkill(AtacanteIndex, Apuñalar)
         End If
         'e intenta dar un golpe crítico [Pablo (ToxicWaste)]
         Call DoGolpeCritico(AtacanteIndex, 0, VictimaIndex, daño)
