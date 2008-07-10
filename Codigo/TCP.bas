@@ -1048,7 +1048,8 @@ UserList(UserIndex).name = name
 UserList(UserIndex).showName = True 'Por default los nombres son visibles
 
 'If in the water, and has a boat, equip it!
-If UserList(UserIndex).Invent.BarcoObjIndex > 0 And HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+If UserList(UserIndex).Invent.BarcoObjIndex > 0 And _
+        (HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Or BodyIsBoat(UserList(UserIndex).Char.body)) Then
     Dim Barco As ObjData
     Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
     UserList(UserIndex).Char.Head = 0

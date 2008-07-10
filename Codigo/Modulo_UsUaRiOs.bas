@@ -1646,3 +1646,22 @@ Call RefreshCharStatus(UserIndex)
 
 End Sub
 
+''
+'Checks if a given body index is a boat or not.
+'
+'@param body    The body index to bechecked.
+'@return    True if the body is a boat, false otherwise.
+
+Public Function BodyIsBoat(ByVal body As Integer) As Boolean
+'**************************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modify Date: 10/07/2008
+'Checks if a given body index is a boat
+'**************************************************************
+'TODO : This should be checked somehow else. This is nasty....
+    If body = iFragataReal Or body = iFragataCaos Or body = iBarcaPk Or _
+            body = iGaleraPk Or body = iGaleonPk Or body = iBarcaCiuda Or _
+            body = iGaleraCiuda Or body = iGaleonCiuda Or body = iFragataFantasmal Then
+        BodyIsBoat = True
+    End If
+End Function

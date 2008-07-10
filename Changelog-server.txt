@@ -277,3 +277,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 06/07/2008: Se agregó el boton "Reload Balance.Dat" en las opciones del server. (MarKoxX)
  * 07/07/2008: Arreglado el bug que los elementales de agua atacaban usuarios. (NicoNZ)
  * 07/07/2008: Arreglado el bug que permitía a los no druidas mimetizarse con NPCS. (NicoNZ)
+ * 10/07/2008: Al loguear estando en la costa con la barca equipada ya no aparece tu cabeza. (Maraxus)
