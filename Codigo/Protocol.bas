@@ -4841,16 +4841,6 @@ Private Sub HandleQuit(ByVal UserIndex As Integer)
             Call FinComerciarUsu(UserIndex)
         End If
         
-        isNotVisible = (.flags.Oculto Or .flags.invisible)
-        If isNotVisible Then
-            .flags.Oculto = 0
-            .flags.invisible = 0
-            .Counters.Invisibilidad = 0
-            .Counters.TiempoOculto = 0
-            Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
-        End If
-        
         Call Cerrar_Usuario(UserIndex)
     End With
 End Sub

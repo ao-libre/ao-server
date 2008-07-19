@@ -333,8 +333,7 @@ WasNewbie = EsNewbie(UserIndex)
 
 Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     
-    'Checkea otra vez, esto sucede si tiene mas EXP y puede saltarse el maximo
-    'nivel
+    'Checkea otra vez, esto sucede si tiene mas EXP y puede saltarse el maximo nivel
     If UserList(UserIndex).Stats.ELV >= STAT_MAXELV Then
         UserList(UserIndex).Stats.Exp = 0
         UserList(UserIndex).Stats.ELU = 0
@@ -408,23 +407,23 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
         End If
         
         Else
-        DistVida(1) = DistribucionSemienteraVida(1)
-        DistVida(2) = DistVida(1) + DistribucionEnteraVida(2)
-        DistVida(3) = DistVida(2) + DistribucionEnteraVida(3)
-        DistVida(4) = DistVida(3) + DistribucionEnteraVida(4)
-        DistVida(5) = DistVida(4) + DistribucionEnteraVida(5)
-        
-        If aux <= DistVida(1) Then
-            AumentoHP = Promedio + 2
-        ElseIf aux <= DistVida(2) Then
-            AumentoHP = Promedio + 1
-        ElseIf aux <= DistVida(3) Then
-            AumentoHP = Promedio
-        ElseIf aux <= DistVida(4) Then
-            AumentoHP = Promedio - 1
-        Else
-            AumentoHP = Promedio - 2
-        End If
+            DistVida(1) = DistribucionSemienteraVida(1)
+            DistVida(2) = DistVida(1) + DistribucionEnteraVida(2)
+            DistVida(3) = DistVida(2) + DistribucionEnteraVida(3)
+            DistVida(4) = DistVida(3) + DistribucionEnteraVida(4)
+            DistVida(5) = DistVida(4) + DistribucionEnteraVida(5)
+            
+            If aux <= DistVida(1) Then
+                AumentoHP = Promedio + 2
+            ElseIf aux <= DistVida(2) Then
+                AumentoHP = Promedio + 1
+            ElseIf aux <= DistVida(3) Then
+                AumentoHP = Promedio
+            ElseIf aux <= DistVida(4) Then
+                AumentoHP = Promedio - 1
+            Else
+                AumentoHP = Promedio - 2
+            End If
         End If
     End If
 
@@ -1487,8 +1486,8 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
 'Last Modification: 06/28/08 (NicoNZ)
 '
 '***************************************************
-Dim isNotVisible As Boolean
-
+    Dim isNotVisible As Boolean
+    
     If UserList(UserIndex).flags.UserLogged And Not UserList(UserIndex).Counters.Saliendo Then
         UserList(UserIndex).Counters.Saliendo = True
         UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.map).Pk, IntervaloCerrarConexion, 0)

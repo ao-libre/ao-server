@@ -1544,13 +1544,9 @@ Sub CloseUser(ByVal UserIndex As Integer)
 On Error GoTo Errhandler
 
 Dim N As Integer
-Dim X As Integer
-Dim Y As Integer
 Dim LoopC As Integer
 Dim map As Integer
 Dim name As String
-Dim raza As eRaza
-Dim clase As eClass
 Dim i As Integer
 
 Dim aN As Integer
@@ -1570,14 +1566,8 @@ End If
 UserList(UserIndex).flags.AtacadoPorNpc = 0
 UserList(UserIndex).flags.NPCAtacado = 0
 
-
-'CHECK:: ACA SE GUARDAN UN MONTON DE COSAS QUE NO SE OCUPAN PARA NADA :S
 map = UserList(UserIndex).Pos.map
-X = UserList(UserIndex).Pos.X
-Y = UserList(UserIndex).Pos.Y
 name = UCase$(UserList(UserIndex).name)
-raza = UserList(UserIndex).raza
-clase = UserList(UserIndex).clase
 
 UserList(UserIndex).Char.FX = 0
 UserList(UserIndex).Char.loops = 0
