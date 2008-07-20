@@ -6265,17 +6265,17 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
 #If SeguridadAlkon Then
-        oldPass = buffer.ReadASCIIStringFixed(32)
-        newPass = buffer.ReadASCIIStringFixed(32)
+        oldPass = UCase$(buffer.ReadASCIIStringFixed(32))
+        newPass = UCase$(buffer.ReadASCIIStringFixed(32))
 #Else
-        oldPass = buffer.ReadASCIIString()
-        newPass = buffer.ReadASCIIString()
+        oldPass = UCase$(buffer.ReadASCIIString())
+        newPass = UCase$(buffer.ReadASCIIString())
 #End If
         
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debe especificar una contraseña nueva, inténtelo de nuevo", FontTypeNames.FONTTYPE_INFO)
         Else
-            oldPass2 = GetVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password")
+            oldPass2 = UCase$(GetVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Password"))
             
             If oldPass2 <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtelo de nuevo.", FontTypeNames.FONTTYPE_INFO)
