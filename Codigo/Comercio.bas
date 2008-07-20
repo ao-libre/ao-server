@@ -93,6 +93,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Agregado para que no se vuelvan a vender las llaves si se recargan los .dat.
         If ObjData(Objeto.ObjIndex).OBJType = otLlaves Then
             Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & Slot, Objeto.ObjIndex & "-0")
+            Call logVentaCasa(UserList(UserIndex).name & " compro " & ObjData(Objeto.ObjIndex).name)
         End If
         
     ElseIf Modo = eModoComercio.Venta Then
