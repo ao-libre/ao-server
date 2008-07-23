@@ -481,6 +481,12 @@ On Error Resume Next
         End If
     ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
         UserList(UserIndex).Counters.IdleCount = 0
+        
+        'Is the user logged?
+        If UserList(UserIndex).flags.UserLogged Then
+            Call CloseSocket(UserIndex)
+            Exit Sub
+        End If
     End If
     
     Select Case packetID
