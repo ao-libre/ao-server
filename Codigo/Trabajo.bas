@@ -56,7 +56,7 @@ End If
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -65,7 +65,7 @@ End Sub
 Public Sub DoOcultarse(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): No olvidar agregar IntervaloOculto=500 al Server.ini.
 'Modifique la fórmula y ahora anda bien.
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Double
 Dim res As Integer
@@ -104,7 +104,7 @@ UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando 
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -706,7 +706,7 @@ Call SubirSkill(UserIndex, Supervivencia)
 End Sub
 
 Public Sub DoPescar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -759,12 +759,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescar")
 End Sub
 
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -825,11 +825,17 @@ End If
         
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 24/07/028
+'Last Modification By: Marco Vanotti (MarKoxX)
+' - 24/07/08 Now it calls to WriteUpdateGold(VictimaIndex and LadrOnIndex) when the thief stoles gold. (MarKoxX)
+'*************************************************
 
 If Not MapInfo(UserList(VictimaIndex).Pos.map).Pk Then Exit Sub
 
@@ -928,6 +934,10 @@ If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
                     UserList(LadrOnIndex).Stats.GLD = MAXORO
                 
                 Call WriteConsoleMsg(LadrOnIndex, "Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name, FontTypeNames.FONTTYPE_INFO)
+                Call WriteUpdateGold(LadrOnIndex)
+                
+                Call WriteUpdateGold(VictimaIndex)
+                Call FlushBuffer(VictimaIndex)
             Else
                 Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).name & " no tiene oro.", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -1134,7 +1144,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 End Sub
 
 Public Sub DoTalar(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1191,12 +1201,12 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en DoTalar")
 
 End Sub
 Public Sub DoMineria(ByVal UserIndex As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1252,7 +1262,7 @@ UserList(UserIndex).Counters.Trabajando = UserList(UserIndex).Counters.Trabajand
 
 Exit Sub
 
-errhandler:
+Errhandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
