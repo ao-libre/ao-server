@@ -282,3 +282,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/07/2008: Arreglado un BUG en PvP que daba doble chance de subir combate, proyectiles o combate sin armas. (MarKoxX)
  * 20/07/2008: Fix post-parche para cambiar pass tras haber recuperado (no coincidian los cases). (Maraxus)
  * 24/07/2008: Cambio en DoRobar: Ahora cuando se roban oro se llama a WriteUpdateGold en LadrOnIndex y VictimaIndex. (MarKoxX)
+ * 27/07/2008: Arreglado que permitia que los criminales podian atacar las mascotas de los ciudadanos con el seguro puesto. (NicoNZ)
