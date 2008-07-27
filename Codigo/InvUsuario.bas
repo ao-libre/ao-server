@@ -915,6 +915,10 @@ Select Case Obj.OBJType
         
         
         If ObjData(ObjIndex).proyectil = 1 Then
+            If UserList(UserIndex).Invent.Object(Slot).Equipped = 0 Then
+                Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
             'liquid: muevo esto aca adentro, para que solo pida modo combate si estamos por usar el arco
             If Not UserList(UserIndex).flags.ModoCombate Then
                 Call WriteConsoleMsg(UserIndex, "No estás en modo de combate, presiona la tecla ""C"" para pasar al modo combate.", FontTypeNames.FONTTYPE_INFO)
@@ -924,17 +928,17 @@ Select Case Obj.OBJType
         Else
             If UserList(UserIndex).flags.TargetObj = Leña Then
                 If UserList(UserIndex).Invent.Object(Slot).ObjIndex = DAGA Then
+                    If UserList(UserIndex).Invent.Object(Slot).Equipped = 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
                     Call TratarDeHacerFogata(UserList(UserIndex).flags.TargetObjMap, _
                          UserList(UserIndex).flags.TargetObjX, UserList(UserIndex).flags.TargetObjY, UserIndex)
                 End If
             End If
         End If
-        
-        'Solo si es herramienta ;) (en realidad si no es ni proyectil ni daga)
-        If UserList(UserIndex).Invent.Object(Slot).Equipped = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        End If
+
         
         Select Case ObjIndex
             Case CAÑA_PESCA, RED_PESCA
