@@ -285,3 +285,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 27/07/2008: Arreglado que permitia que los criminales podian atacar las mascotas de los ciudadanos con el seguro puesto. (NicoNZ)
  * 27/07/2008: Arreglado un bug que al hacer doble clic sobre un arma nos mandaba un mensaje sobre que habia que equipar el item. (NicoNZ) 
  * 27/07/2008: Fix del bug 2027273 (MarKoxX) | Además arreglé el tema de comercio como pidio GD
+ * 28/07/2008: Arregle un error de NicoNZ al arreglar un tema del seguro. (Noich)

@@ -1352,7 +1352,7 @@ If Npclist(NpcIndex).MaestroUser > 0 Then
         Else
         'El atacante es criminal y quiere atacar un elemental ciuda,
         'pero tiene el seguro puesto (NicoNZ)
-            If UserList(UserIndex).flags.Seguro Then
+            If UserList(attackerIndex).flags.Seguro Then
                 Call WriteConsoleMsg(attackerIndex, "Para atacar mascotas de Ciudadanos debes quitar el seguro utilizando /seg", FontTypeNames.FONTTYPE_INFO)
                 PuedeAtacarNPC = False
                 Exit Function
