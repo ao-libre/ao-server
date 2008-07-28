@@ -1281,9 +1281,8 @@ If Npclist(NpcIndex).Hostile = 0 Then
             PuedeAtacarNPC = False
             Exit Function
         End If
-    End If
     'Es guardia Real?
-    If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+    ElseIf Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
         'Lo quiere atacar un Armada?
         If esArmada(attackerIndex) Then
             Call WriteConsoleMsg(attackerIndex, "No puedes atacar Guardias Reales siendo Armada Real", FontTypeNames.FONTTYPE_INFO)
@@ -1301,11 +1300,10 @@ If Npclist(NpcIndex).Hostile = 0 Then
             PuedeAtacarNPC = True
             Exit Function
         End If
-    End If
 
     'No era un Guardia, asi que es una criatura No-Hostil común.
     'Para asegurarnos que no sea una Mascota:
-    If Npclist(NpcIndex).MaestroUser = 0 Then
+    ElseIf Npclist(NpcIndex).MaestroUser = 0 Then
         'Si sos ciudadano tenes que quitar el seguro para atacarla.
         If Not criminal(attackerIndex) Then
             'Sos ciudadano, tenes el seguro puesto?

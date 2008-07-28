@@ -28,7 +28,7 @@ Enum eModoComercio
     Venta = 2
 End Enum
 
-Public Const REDUCTOR_PRECIOVENTA = 3
+Public Const REDUCTOR_PRECIOVENTA As Byte = 3
 
 ''
 ' Makes a trade. (Buy or Sell)
