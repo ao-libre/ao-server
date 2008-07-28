@@ -546,10 +546,7 @@ End If
 
 If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
     
-    If Npclist(NpcIndex).MaestroUser = UserIndex Then
-        Call WriteConsoleMsg(UserIndex, "La criatura ya te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
-        Exit Sub
-    ElseIf Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
+    If Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
         Call WriteConsoleMsg(UserIndex, "La criatura ya tiene amo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
@@ -570,11 +567,6 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
         
         Npclist(NpcIndex).MaestroUser = UserIndex
         
-        'Entreno domar. Es un 30% más dificil si no sos druida.
-        If UserList(UserIndex).clase = eClass.Druid Or (RandomNumber(1, 3) < 3) Then
-            Call SubirSkill(UserIndex, Domar)
-        End If
-        
         Call FollowAmo(NpcIndex)
         Call ReSpawnNpc(Npclist(NpcIndex))
         
@@ -585,12 +577,12 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
             Call WriteConsoleMsg(UserIndex, "No has logrado domar la criatura.", FontTypeNames.FONTTYPE_INFO)
             UserList(UserIndex).flags.UltimoMensaje = 5
         End If
-        'Entreno domar aunque no logue domar.
-        If UserList(UserIndex).clase = eClass.Druid Or (RandomNumber(1, 3) < 3) Then
-            Call SubirSkill(UserIndex, Domar)
-        End If
     End If
-
+    
+    'Entreno domar. Es un 30% más dificil si no sos druida.
+    If UserList(UserIndex).clase = eClass.Druid Or (RandomNumber(1, 3) < 3) Then
+        Call SubirSkill(UserIndex, Domar)
+    End If
 Else
     Call WriteConsoleMsg(UserIndex, "No puedes controlar más criaturas.", FontTypeNames.FONTTYPE_INFO)
 End If
@@ -829,6 +821,12 @@ Errhandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
+''
+' Try to steal an item / gold to another character
+'
+' @param LadrOnIndex Specifies reference to user that stoles
+' @param VictimaIndex Specifies reference to user that is being stolen
+
 Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 '*************************************************
 'Author: Unknown
@@ -934,9 +932,9 @@ If UserList(VictimaIndex).flags.Privilegios And PlayerType.User Then
                     UserList(LadrOnIndex).Stats.GLD = MAXORO
                 
                 Call WriteConsoleMsg(LadrOnIndex, "Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name, FontTypeNames.FONTTYPE_INFO)
-                Call WriteUpdateGold(LadrOnIndex)
+                Call WriteUpdateGold(LadrOnIndex) 'Le actualizamos la billetera al ladron
                 
-                Call WriteUpdateGold(VictimaIndex)
+                Call WriteUpdateGold(VictimaIndex) 'Le actualizamos la billetera a la victima
                 Call FlushBuffer(VictimaIndex)
             Else
                 Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).name & " no tiene oro.", FontTypeNames.FONTTYPE_INFO)
@@ -964,7 +962,12 @@ End If
 
 End Sub
 
-
+''
+' Check if one item is stealable
+'
+' @param VictimaIndex Specifies reference to victim
+' @param Slot Specifies reference to victim's inventory slot
+' @return If the item is stealable
 Public Function ObjEsRobable(ByVal VictimaIndex As Integer, ByVal Slot As Integer) As Boolean
 ' Agregué los barcos
 ' Esta funcion determina qué objetos son robables.
@@ -982,6 +985,11 @@ ObjData(OI).OBJType <> eOBJType.otBarcos
 
 End Function
 
+''
+' Try to steal an item to another character
+'
+' @param LadrOnIndex Specifies reference to user that stoles
+' @param VictimaIndex Specifies reference to user that is being stolen
 Public Sub RobarObjeto(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 'Call LogTarea("Sub RobarObjeto")
 Dim flag As Boolean

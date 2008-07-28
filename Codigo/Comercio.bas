@@ -30,10 +30,19 @@ End Enum
 
 Public Const REDUCTOR_PRECIOVENTA = 3
 
+''
+' Makes a trade. (Buy or Sell)
+'
+' @param Modo The trade type (sell or buy)
+' @param UserIndex Specifies the index of the user
+' @param NpcIndex specifies the index of the npc
+' @param Slot Specifies which slot are you trying to sell / buy
+' @param Cantidad Specifies how many items in that slot are you trying to sell / buy
 Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal Slot As Integer, ByVal Cantidad As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last modified: 06/13/08 (NicoNZ)
+'Last modified: 27/07/08 (MarKoxX) | New changes in the way of trading (now when you buy it rounds to ceil and when you sell it rounds to floor)
+'  - 06/13/08 (NicoNZ)
 '*************************************************
     Dim Precio As Long
     Dim Objeto As Obj
@@ -60,8 +69,11 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         Objeto.amount = Cantidad
         Objeto.ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
         
-        Precio = Round(ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad, 0)
-            
+        'El precio, cuando nos venden algo, lo tenemos que redondear para arriba.
+        'Es decir, 1.1 = 2, por lo cual se hace de la siguiente forma Precio = Clng(PrecioFinal + 0.5) Siempre va a darte el proximo numero. O el "Techo" (MarKoxX)
+        
+        Precio = CLng((ObjData(Npclist(NpcIndex).Invent.Object(Slot).ObjIndex).Valor / Descuento(UserIndex) * Cantidad) + 0.5)
+
         If UserList(UserIndex).Stats.GLD < Precio Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficiente dinero.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -143,7 +155,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         Call QuitarUserInvItem(UserIndex, Slot, Cantidad)
         
         'Precio = Round(ObjData(Objeto.ObjIndex).valor / REDUCTOR_PRECIOVENTA * Cantidad, 0)
-        Precio = Round(SalePrice(ObjData(Objeto.ObjIndex).Valor) * Cantidad, 0)
+        Precio = Fix(SalePrice(ObjData(Objeto.ObjIndex).Valor) * Cantidad)
         UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + Precio
         
         If UserList(UserIndex).Stats.GLD > MAXORO Then _
@@ -244,7 +256,7 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
 '*************************************************
     Dim Slot As Byte
-    Dim val As Long
+    Dim val As Single
     
     For Slot = 1 To MAX_INVENTORY_SLOTS
         If Npclist(NpcIndex).Invent.Object(Slot).ObjIndex > 0 Then
