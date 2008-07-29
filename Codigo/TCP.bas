@@ -1151,7 +1151,7 @@ End If
 If NumUsers > DayStats.MaxUsuarios Then DayStats.MaxUsuarios = NumUsers
 
 If NumUsers > recordusuarios Then
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaniamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
     recordusuarios = NumUsers
     Call WriteVar(IniPath & "Server.ini", "INIT", "Record", str(recordusuarios))
     
