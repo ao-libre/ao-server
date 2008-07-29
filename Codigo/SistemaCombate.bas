@@ -902,12 +902,12 @@ If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
         Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateFX(UserList(VictimaIndex).Char.CharIndex, FXSANGRE, 0))
     End If
     
-    Call UserDañoUser(AtacanteIndex, VictimaIndex)
     'Pablo (ToxicWaste): Guantes de Hurto del Bandido en acción
     If UserList(AtacanteIndex).clase = eClass.Bandit Then Call DoHurtar(AtacanteIndex, VictimaIndex)
     'y ahora, el ladrón puede llegar a paralizar con el golpe.
     If UserList(AtacanteIndex).clase = eClass.Thief Then Call DoHandInmo(AtacanteIndex, VictimaIndex)
     
+    Call UserDañoUser(AtacanteIndex, VictimaIndex)
 Else
     Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, UserList(AtacanteIndex).Pos.X, UserList(AtacanteIndex).Pos.Y))
     Call WriteUserSwing(AtacanteIndex)
