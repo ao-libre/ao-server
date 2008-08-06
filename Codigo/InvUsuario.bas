@@ -441,9 +441,7 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
         MiObj.amount = MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount
         MiObj.ObjIndex = MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex
         
-        If Not MeterItemEnInventario(UserIndex, MiObj) Then
-            'Call WriteConsoleMsg(UserIndex, "No puedo cargar mas objetos.", FontTypeNames.FONTTYPE_INFO)
-        Else
+        If MeterItemEnInventario(UserIndex, MiObj) Then
             'Quitamos el objeto
             Call EraseObj(MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
@@ -452,13 +450,12 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
             'Es un Objeto que tenemos que loguear?
             If ObjData(MiObj.ObjIndex).Log = 1 Then
                 Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
-            ElseIf MiObj.amount = 1000 Then 'Es mucha cantidad?
+            ElseIf MiObj.amount = MAX_INVENTORY_OBJS Then 'Es mucha cantidad?
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
                     Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
                 End If
             End If
-            
         End If
         
     End If
