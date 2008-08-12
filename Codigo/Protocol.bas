@@ -4917,7 +4917,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
         
         Select Case Npclist(.flags.TargetNPC).NPCtype
             Case eNPCType.Banquero
-                Call WriteChatOverHead(UserIndex, "Tenes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Tenés " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             
             Case eNPCType.Timbero
                 If Not .flags.Privilegios And PlayerType.User Then
