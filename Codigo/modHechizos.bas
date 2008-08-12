@@ -1265,6 +1265,10 @@ Dim tempChr As Integer
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
 tempChr = UserList(UserIndex).flags.TargetUser
       
+If UserList(tempChr).flags.Muerto Then
+    Call WriteConsoleMsg(UserIndex, "No podés lanzar ese hechizo a un muerto.", FontTypeNames.FONTTYPE_INFO)
+    Exit Sub
+End If
       
 'Hambre
 If Hechizos(H).SubeHam = 1 Then
