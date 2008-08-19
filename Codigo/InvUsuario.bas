@@ -326,11 +326,11 @@ If num > 0 Then
         'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Obj.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name)
-        ElseIf Obj.amount = 1000 Then 'Es mucha cantidad?
+            Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & map & " X: " & X & " Y: " & Y)
+        ElseIf Obj.amount > 5000 Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
         'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Obj.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " tiró del piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name)
+                Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & map & " X: " & X & " Y: " & Y)
             End If
         End If
   Else
@@ -426,6 +426,7 @@ Sub GetObj(ByVal UserIndex As Integer)
 
 Dim Obj As ObjData
 Dim MiObj As Obj
+Dim ObjPos As String
 
 '¿Hay algun obj?
 If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
@@ -449,11 +450,13 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
             'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
             'Es un Objeto que tenemos que loguear?
             If ObjData(MiObj.ObjIndex).Log = 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
-            ElseIf MiObj.amount = MAX_INVENTORY_OBJS Then 'Es mucha cantidad?
+                ObjPos = " Mapa: " & UserList(UserIndex).Pos.map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
+                Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
+            ElseIf MiObj.amount > MAX_INVENTORY_OBJS - 1000 Then 'Es mucha cantidad?
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
-                    Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name)
+                    ObjPos = " Mapa: " & UserList(UserIndex).Pos.map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
+                    Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
                 End If
             End If
         End If

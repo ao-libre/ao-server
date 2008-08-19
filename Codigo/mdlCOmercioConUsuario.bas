@@ -41,7 +41,7 @@ End Type
 'origen: origen de la transaccion, originador del comando
 'destino: receptor de la transaccion
 Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As Integer)
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 'Si ambos pusieron /comerciar entonces
 If UserList(Origen).ComUsu.DestUsu = Destino And _
@@ -69,7 +69,7 @@ End If
 Call FlushBuffer(Destino)
 
 Exit Sub
-errhandler:
+Errhandler:
     Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
 End Sub
 
@@ -222,8 +222,8 @@ If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     Call WriteUpdateUserStats(OtroUserIndex)
     'y se la doy al otro
     UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.cant
-    'If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
-    'Esta linea del log es al pedo.
+    If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
+    'Esta linea del log es al pedo. > Vuelvo a ponerla a pedido del CGMS
     Call WriteUpdateUserStats(UserIndex)
 Else
     'Quita el objeto y se lo da al otro

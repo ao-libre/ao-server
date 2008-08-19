@@ -7133,6 +7133,7 @@ On Error GoTo Errhandler
                                 If MapData(UserList(tIndex).Pos.map, X, Y).UserIndex = 0 Then
                                     If LegalPos(UserList(tIndex).Pos.map, X, Y, True, True) Then
                                         Call WarpUserChar(UserIndex, UserList(tIndex).Pos.map, X, Y, True)
+                                        Call LogGM(.name, "/IRCERCA " & UserName & " Mapa:" & UserList(tIndex).Pos.map & " X:" & UserList(tIndex).Pos.X & " Y:" & UserList(tIndex).Pos.Y)
                                         found = True
                                         Exit For
                                     End If
