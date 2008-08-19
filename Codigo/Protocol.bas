@@ -6730,15 +6730,15 @@ End Sub
 Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 19/08/08
+'Last Modification by: Franco Zeoli (Noich)
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
-On Error GoTo Errhandler
+'On Error GoTo Errhandler
     With UserList(UserIndex)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As New clsByteQueue
@@ -6749,14 +6749,25 @@ On Error GoTo Errhandler
         
         Dim UserName As String
         Dim tUser As Integer
+        Dim rank As Integer
+        rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
         
         tUser = NameIndex(UserName)
         If tUser > 0 Then
-            Call mdParty.TransformarEnLider(UserIndex, tUser)
+            'Don't allow users to spoof online GMs
+            If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
+                Call mdParty.TransformarEnLider(UserIndex, tUser)
+            Else
+                Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
+            End If
+            
         Else
-            Call WriteConsoleMsg(UserIndex, "El personaje no está online.", FontTypeNames.FONTTYPE_INFO)
+            If InStr(UserName, "+") Then
+                UserName = Replace(UserName, "+", " ")
+            End If
+            Call WriteConsoleMsg(UserIndex, UserName & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
