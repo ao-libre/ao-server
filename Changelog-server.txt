@@ -290,3 +290,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/07/2008: Fix del bug 2030008. (Noich)
  * 28/07/2008: Arreglado el bug que se podian tirar hechizos que modificaban stats (vida,mana,hambre,sed,sta) a los usuarios muertos. (NicoNZ)
  * 18/08/2008: Bug fixes varios, acepto algunos parches y realizo fixes propios par aaquellos que fueron rechazados. (Maraxus)
+ * 18/08/2008: Fix del bug 2044211 (MarKoxX)

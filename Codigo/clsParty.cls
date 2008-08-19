@@ -299,9 +299,10 @@ Public Sub ObtenerMiembrosOnline(ByRef MemberList As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification By: Marco Vanotti (MarKoxX)
 ' - 09/29/07 Experience is round to the biggest number less than that number
-' - 09/29/07 Now experience is a real-number
+' - 09/29/07 Now experience is a real-number (Tavo)
+' - 08/18/08 Now TotalExperience is fixed (MarKoxX)
 '***************************************************
 'esta funcion viola un poco la correcta forma de hacer la clase
 'pero bue...

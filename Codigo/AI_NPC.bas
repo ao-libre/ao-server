@@ -282,7 +282,19 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
     Call RestoreOldMovement(NpcIndex)
 End Sub
 
+''
+' Makes a Pet / Summoned Npc to Follow an enemy
+'
+' @param NpcIndex Specifies reference to the npc
 Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
+'**************************************************************
+'Author: Unknown
+'Last Modify by: Marco Vanotti (MarKoxX)
+'Last Modify Date: 08/16/2008
+'08/16/2008: MarKoxX - Now pets that do melé attacks have to be near the enemy to attack.
+'**************************************************************
+
+
     Dim tHeading As Byte
     Dim UI As Integer
     
@@ -332,9 +344,11 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                                  If .flags.LanzaSpells > 0 Then
                                       Call NpcLanzaUnSpell(NpcIndex, UI)
                                  Else
-                                    ' TODO : Set this a separate AI for Elementals and Druid's pets
-                                    If Npclist(NpcIndex).Numero <> 92 Then
-                                      Call NpcAtacaUser(NpcIndex, UI)
+                                    If Distancia(UserList(UI).Pos, Npclist(NpcIndex).Pos) <= 1 Then
+                                        ' TODO : Set this a separate AI for Elementals and Druid's pets
+                                        If Npclist(NpcIndex).Numero <> 92 Then
+                                            Call NpcAtacaUser(NpcIndex, UI)
+                                        End If
                                     End If
                                  End If
                                  Exit Sub
@@ -366,11 +380,13 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                             
                             If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.invisible = 0 And UserList(UI).flags.Oculto = 0 Then
                                  If .flags.LanzaSpells > 0 Then
-                                      Call NpcLanzaUnSpell(NpcIndex, UI)
+                                        Call NpcLanzaUnSpell(NpcIndex, UI)
                                  Else
-                                    ' TODO : Set this a separate AI for Elementals and Druid's pets
-                                    If Npclist(NpcIndex).Numero <> 92 Then
-                                      Call NpcAtacaUser(NpcIndex, UI)
+                                    If Distancia(UserList(UI).Pos, Npclist(NpcIndex).Pos) <= 1 Then
+                                        ' TODO : Set this a separate AI for Elementals and Druid's pets
+                                        If Npclist(NpcIndex).Numero <> 92 Then
+                                            Call NpcAtacaUser(NpcIndex, UI)
+                                        End If
                                     End If
                                  End If
                                  
