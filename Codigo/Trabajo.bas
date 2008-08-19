@@ -48,11 +48,11 @@ If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     End If
     UserList(UserIndex).Counters.TiempoOculto = 0
     UserList(UserIndex).flags.Oculto = 0
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
-    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+    If UserList(UserIndex).flags.invisible = 0 Then
+        Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+    End If
 End If
-
-
 
 Exit Sub
 

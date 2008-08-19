@@ -993,17 +993,27 @@ End If
 'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
 If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex <> 0 Or MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).NpcIndex <> 0 Then
     Dim FoundPlace As Boolean
+    Dim esAgua As Boolean
     Dim tX As Long
     Dim tY As Long
     
     FoundPlace = False
+    esAgua = HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
     
     For tY = UserList(UserIndex).Pos.Y - 1 To UserList(UserIndex).Pos.Y + 1
         For tX = UserList(UserIndex).Pos.X - 1 To UserList(UserIndex).Pos.X + 1
-            'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-            If LegalPos(UserList(UserIndex).Pos.map, tX, tY, False, True) Then
-                FoundPlace = True
-                Exit For
+            If esAgua Then
+                'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
+                If LegalPos(UserList(UserIndex).Pos.map, tX, tY, True, False) Then
+                    FoundPlace = True
+                    Exit For
+                End If
+            Else
+                'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
+                If LegalPos(UserList(UserIndex).Pos.map, tX, tY, False, True) Then
+                    FoundPlace = True
+                    Exit For
+                End If
             End If
         Next tX
         

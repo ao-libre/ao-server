@@ -965,9 +965,13 @@ Dim GIG As Integer
         refError = "No has seleccionado ningún clan"
         Exit Function
     End If
-
-    GIG = guildIndex(GuildGuerra)
     
+    GIG = guildIndex(GuildGuerra)
+    If guilds(GI).GetRelacion(GIG) = GUERRA Then
+        refError = "Tu clan ya está en guerra con " & GuildGuerra & "."
+        Exit Function
+    End If
+        
     If GI = GIG Then
         refError = "No puedes declarar la guerra a tu mismo clan"
         Exit Function
@@ -983,7 +987,7 @@ Dim GIG As Integer
     Call guilds(GIG).AnularPropuestas(GI)
     Call guilds(GI).SetRelacion(GIG, RELACIONES_GUILD.GUERRA)
     Call guilds(GIG).SetRelacion(GI, RELACIONES_GUILD.GUERRA)
-
+    
     r_DeclararGuerra = GIG
 
 End Function

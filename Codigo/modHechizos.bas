@@ -1258,7 +1258,7 @@ Sub HechizoPropUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '***************************************************
 
 Dim H As Integer
-Dim daño As Integer
+Dim daño As Long
 Dim tempChr As Integer
     
     

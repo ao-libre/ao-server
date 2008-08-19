@@ -281,6 +281,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/07/2008: Arreglado un BUG en PvP que no dejaba subir tácticas a menos que el atacante tuviera llenas las barras de hambre y sed. (MarKoxX)
  * 10/07/2008: Arreglado un BUG en PvP que daba doble chance de subir combate, proyectiles o combate sin armas. (MarKoxX)
  * 20/07/2008: Fix post-parche para cambiar pass tras haber recuperado (no coincidian los cases). (Maraxus)
+ * 21/07/2008: Arregle un bug que te permitia declararle la guerra a un clan con el que ya estabas en guerra. (Noich)
  * 24/07/2008: Cambio en DoRobar: Ahora cuando se roban oro se llama a WriteUpdateGold en LadrOnIndex y VictimaIndex. (MarKoxX)
  * 27/07/2008: Arreglado que permitia que los criminales podian atacar las mascotas de los ciudadanos con el seguro puesto. (NicoNZ)
  * 27/07/2008: Arreglado un bug que al hacer doble clic sobre un arma nos mandaba un mensaje sobre que habia que equipar el item. (NicoNZ) 
@@ -288,3 +289,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/07/2008: Arregle un error de NicoNZ al arreglar un tema del seguro. (Noich)
  * 28/07/2008: Fix del bug 2030008. (Noich)
  * 28/07/2008: Arreglado el bug que se podian tirar hechizos que modificaban stats (vida,mana,hambre,sed,sta) a los usuarios muertos. (NicoNZ)
+ * 18/08/2008: Bug fixes varios, acepto algunos parches y realizo fixes propios par aaquellos que fueron rechazados. (Maraxus)
