@@ -11527,7 +11527,7 @@ End Sub
 Public Sub HandleCheckSlot(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
-'Last Modification: 26/01/2007
+'Last Modification: 30/08/2008 (Noich)
 'Check one Users Slot in Particular from Inventory
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
@@ -11549,26 +11549,29 @@ On Error GoTo Errhandler
         Dim Slot As Byte
         Dim tIndex As Integer
         
-        UserName = buffer.ReadASCIIString() 'Que UserName?
-        Slot = buffer.ReadByte() 'Que Slot?
-        tIndex = NameIndex(UserName)  'Que user index?
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Dios) Then
         
-        Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName)
-           
-        If tIndex > 0 Then
-            If Slot > 0 And Slot <= MAX_INVENTORY_SLOTS Then
-                If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
-                    Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).amount, FontTypeNames.FONTTYPE_INFO)
+            UserName = buffer.ReadASCIIString() 'Que UserName?
+            Slot = buffer.ReadByte() 'Que Slot?
+            tIndex = NameIndex(UserName)  'Que user index?
+            
+            Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName)
+               
+            If tIndex > 0 Then
+                If Slot > 0 And Slot <= MAX_INVENTORY_SLOTS Then
+                    If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
+                        Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).amount, FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "No hay Objeto en slot seleccionado", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "No hay Objeto en slot seleccionado", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
                 End If
             Else
-                Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_TALK)
             End If
-        Else
-            Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_TALK)
         End If
-
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
