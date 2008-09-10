@@ -11548,13 +11548,15 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim Slot As Byte
         Dim tIndex As Integer
+
+        'Muevo esto aca arriba para sacar estos datos del buffer y que si no
+        'ejecuta el comando y no tiene los privilegios necesarios no me
+        'rompa todo el server.
+        UserName = buffer.ReadASCIIString() 'Que UserName?
+        Slot = buffer.ReadByte() 'Que Slot?
+        tIndex = NameIndex(UserName)  'Que user index?
         
         If .flags.Privilegios And (PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Dios) Then
-        
-            UserName = buffer.ReadASCIIString() 'Que UserName?
-            Slot = buffer.ReadByte() 'Que Slot?
-            tIndex = NameIndex(UserName)  'Que user index?
-            
             Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName)
                
             If tIndex > 0 Then

@@ -293,3 +293,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/08/2008: Fix del bug 2044211 (MarKoxX)
  * 19/08/2008: Ya no se puede saber si un usuario esta online mediante el comando /partylider. (Noich)
  * 19/08/2008: Agregado y modificado logs de desarrollo y gms. (NicoNZ)
+ * 09/09/2008: Arreglado el tema de /slot (NicoNz & Marty McFly & Doc)
