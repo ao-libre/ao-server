@@ -202,14 +202,27 @@ On Error Resume Next
     Exit Sub
 End Sub
 
+''
+' Check if an user can cast a certain spell
+'
+' @param UserIndex Specifies reference to user
+' @param HechizoIndex Specifies reference to spell
+' @return   True if the user can cast the spell, otherwise returns false
 Function PuedeLanzar(ByVal UserIndex As Integer, ByVal HechizoIndex As Integer) As Boolean
+'***************************************************
+'Author: Unknown
+'Last Modification: 11/09/08
+'Last Modification By: Marco Vanotti (Marco)
+' - 11/09/08 Now Druid have mana bonus while casting summoning spells having a magic flute equipped (Marco)
+'***************************************************
+Dim DruidManaBonus As Single
 
-If UserList(UserIndex).flags.Muerto = 0 Then
-    Dim wp2 As WorldPos
-    wp2.map = UserList(UserIndex).flags.TargetMap
-    wp2.X = UserList(UserIndex).flags.TargetX
-    wp2.Y = UserList(UserIndex).flags.TargetY
-    
+    If UserList(UserIndex).flags.Muerto Then
+        Call WriteConsoleMsg(UserIndex, "No podes lanzar hechizos porque estas muerto.", FontTypeNames.FONTTYPE_INFO)
+        PuedeLanzar = False
+        Exit Function
+    End If
+        
     If Hechizos(HechizoIndex).NeedStaff > 0 Then
         If UserList(UserIndex).clase = eClass.Mage Then
             If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
@@ -237,18 +250,25 @@ If UserList(UserIndex).flags.Muerto = 0 Then
         PuedeLanzar = False
         Exit Function
     End If
+
+    If Hechizos(HechizoIndex).Tipo = uInvocacion Then
+    'If it is a summoning spell and we are druids, having a magic flute equipped then we will need less mana
+        If UserList(UserIndex).clase = eClass.Druid And UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA Then
+            DruidManaBonus = 0.7
+        Else
+            DruidManaBonus = 1
+        End If
+    Else
+        DruidManaBonus = 1
+    End If
     
-    If UserList(UserIndex).Stats.MinMAN < Hechizos(HechizoIndex).ManaRequerido Then
+    If UserList(UserIndex).Stats.MinMAN < Hechizos(HechizoIndex).ManaRequerido * DruidManaBonus Then
         Call WriteConsoleMsg(UserIndex, "No tenes suficiente mana.", FontTypeNames.FONTTYPE_INFO)
         PuedeLanzar = False
         Exit Function
     End If
     
     PuedeLanzar = True
-Else
-   Call WriteConsoleMsg(UserIndex, "No podes lanzar hechizos porque estas muerto.", FontTypeNames.FONTTYPE_INFO)
-   PuedeLanzar = False
-End If
 End Function
 
 Sub HechizoTerrenoEstado(ByVal UserIndex As Integer, ByRef b As Boolean)
@@ -1260,8 +1280,7 @@ Sub HechizoPropUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 Dim H As Integer
 Dim daño As Long
 Dim tempChr As Integer
-    
-    
+
 H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
 tempChr = UserList(UserIndex).flags.TargetUser
       
@@ -1306,16 +1325,12 @@ ElseIf Hechizos(H).SubeHam = 2 Then
     
     UserList(tempChr).Stats.MinHam = UserList(tempChr).Stats.MinHam - daño
     
-    If UserList(tempChr).Stats.MinHam < 0 Then UserList(tempChr).Stats.MinHam = 0
-    
     If UserIndex <> tempChr Then
         Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de hambre a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
         Call WriteConsoleMsg(tempChr, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
     Else
         Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
     End If
-    
-    Call WriteUpdateHungerAndThirst(tempChr)
     
     b = True
     
@@ -1324,6 +1339,7 @@ ElseIf Hechizos(H).SubeHam = 2 Then
         UserList(tempChr).flags.Hambre = 1
     End If
     
+    Call WriteUpdateHungerAndThirst(tempChr)
 End If
 
 'Sed
@@ -1336,6 +1352,8 @@ If Hechizos(H).SubeSed = 1 Then
     UserList(tempChr).Stats.MinAGU = UserList(tempChr).Stats.MinAGU + daño
     If UserList(tempChr).Stats.MinAGU > UserList(tempChr).Stats.MaxAGU Then _
         UserList(tempChr).Stats.MinAGU = UserList(tempChr).Stats.MaxAGU
+    
+    Call WriteUpdateHungerAndThirst(tempChr)
          
     If UserIndex <> tempChr Then
       Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de sed a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
@@ -1368,9 +1386,11 @@ ElseIf Hechizos(H).SubeSed = 2 Then
     End If
     
     If UserList(tempChr).Stats.MinAGU < 1 Then
-            UserList(tempChr).Stats.MinAGU = 0
-            UserList(tempChr).flags.Sed = 1
+        UserList(tempChr).Stats.MinAGU = 0
+        UserList(tempChr).flags.Sed = 1
     End If
+    
+    Call WriteUpdateHungerAndThirst(tempChr)
     
     b = True
 End If
@@ -1514,6 +1534,8 @@ If Hechizos(H).SubeHP = 1 Then
     If UserList(tempChr).Stats.MinHP > UserList(tempChr).Stats.MaxHP Then _
         UserList(tempChr).Stats.MinHP = UserList(tempChr).Stats.MaxHP
     
+    Call WriteUpdateHP(tempChr)
+    
     If UserIndex <> tempChr Then
         Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de vida a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
         Call WriteConsoleMsg(tempChr, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
@@ -1569,6 +1591,8 @@ ElseIf Hechizos(H).SubeHP = 2 Then
     
     UserList(tempChr).Stats.MinHP = UserList(tempChr).Stats.MinHP - daño
     
+    Call WriteUpdateHP(tempChr)
+    
     Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de vida a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
     Call WriteConsoleMsg(tempChr, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
     
@@ -1593,6 +1617,8 @@ If Hechizos(H).SubeMana = 1 Then
     UserList(tempChr).Stats.MinMAN = UserList(tempChr).Stats.MinMAN + daño
     If UserList(tempChr).Stats.MinMAN > UserList(tempChr).Stats.MaxMAN Then _
         UserList(tempChr).Stats.MinMAN = UserList(tempChr).Stats.MaxMAN
+    
+    Call WriteUpdateMana(tempChr)
     
     If UserIndex <> tempChr Then
         Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de mana a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
@@ -1621,8 +1647,10 @@ ElseIf Hechizos(H).SubeMana = 2 Then
     
     UserList(tempChr).Stats.MinMAN = UserList(tempChr).Stats.MinMAN - daño
     If UserList(tempChr).Stats.MinMAN < 1 Then UserList(tempChr).Stats.MinMAN = 0
-    b = True
     
+    Call WriteUpdateMana(tempChr)
+    
+    b = True
 End If
 
 'Stamina
@@ -1631,6 +1659,9 @@ If Hechizos(H).SubeSta = 1 Then
     UserList(tempChr).Stats.MinSta = UserList(tempChr).Stats.MinSta + daño
     If UserList(tempChr).Stats.MinSta > UserList(tempChr).Stats.MaxSta Then _
         UserList(tempChr).Stats.MinSta = UserList(tempChr).Stats.MaxSta
+    
+    Call WriteUpdateSta(tempChr)
+    
     If UserIndex <> tempChr Then
         Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de vitalidad a " & UserList(tempChr).name, FontTypeNames.FONTTYPE_FIGHT)
         Call WriteConsoleMsg(tempChr, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de vitalidad.", FontTypeNames.FONTTYPE_FIGHT)
@@ -1638,7 +1669,7 @@ If Hechizos(H).SubeSta = 1 Then
         Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de vitalidad.", FontTypeNames.FONTTYPE_FIGHT)
     End If
     b = True
-ElseIf Hechizos(H).SubeMana = 2 Then
+ElseIf Hechizos(H).SubeSta = 2 Then
     If Not PuedeAtacar(UserIndex, tempChr) Then Exit Sub
     
     If UserIndex <> tempChr Then
@@ -1657,6 +1688,9 @@ ElseIf Hechizos(H).SubeMana = 2 Then
     UserList(tempChr).Stats.MinSta = UserList(tempChr).Stats.MinSta - daño
     
     If UserList(tempChr).Stats.MinSta < 1 Then UserList(tempChr).Stats.MinSta = 0
+    
+    Call WriteUpdateSta(tempChr)
+    
     b = True
 End If
 

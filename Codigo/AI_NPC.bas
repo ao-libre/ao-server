@@ -529,32 +529,25 @@ End Sub
 
 Private Sub SeguirAmo(ByVal NpcIndex As Integer)
     Dim tHeading As Byte
-    Dim i As Long
     Dim UI As Integer
     
     With Npclist(NpcIndex)
         If .Target = 0 And .TargetNPC = 0 Then
-            For i = 1 To ModAreas.ConnGroups(.Pos.map).CountEntrys
-                UI = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
-                
-                'Is it in it's range of vision??
-                If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
-                    If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
-                    
-                        If UserList(UI).flags.Muerto = 0 _
-                                And UserList(UI).flags.invisible = 0 _
-                                And UserList(UI).flags.Oculto = 0 _
-                                And UI = .MaestroUser _
-                                And Distancia(.Pos, UserList(UI).Pos) > 3 Then
-                            tHeading = FindDirection(.Pos, UserList(UI).Pos)
-                            Call MoveNPCChar(NpcIndex, tHeading)
-                            Exit Sub
-                        End If
-                        
+            UI = .MaestroUser
+            
+            'Is it in it's range of vision??
+            If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                If Abs(UserList(UI).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
+                    If UserList(UI).flags.Muerto = 0 _
+                            And UserList(UI).flags.invisible = 0 _
+                            And UserList(UI).flags.Oculto = 0 _
+                            And Distancia(.Pos, UserList(UI).Pos) > 3 Then
+                        tHeading = FindDirection(.Pos, UserList(UI).Pos)
+                        Call MoveNPCChar(NpcIndex, tHeading)
+                        Exit Sub
                     End If
                 End If
-                
-            Next i
+            End If
         End If
     End With
     
