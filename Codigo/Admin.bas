@@ -433,10 +433,6 @@ If Transcurrido >= 5 Then
             .BytesRecibidosXSEGMax = .BytesRecibidosXSEG
             .BytesRecibidosXSEGCuando = CDate(Now)
         End If
-        
-        If frmEstadisticas.Visible Then
-            Call frmEstadisticas.ActualizaStats
-        End If
     End With
 End If
 
