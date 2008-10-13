@@ -25,7 +25,7 @@ Begin VB.Form frmServidor
       EndProperty
       Height          =   255
       Left            =   1920
-      TabIndex        =   28
+      TabIndex        =   26
       Top             =   6180
       Width           =   1455
    End
@@ -33,9 +33,9 @@ Begin VB.Form frmServidor
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H80000008&
-      Height          =   4335
+      Height          =   4350
       Left            =   120
-      ScaleHeight     =   287
+      ScaleHeight     =   288
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   304
       TabIndex        =   6
@@ -46,16 +46,16 @@ Begin VB.Form frmServidor
          LargeChange     =   50
          Left            =   4320
          SmallChange     =   17
-         TabIndex        =   26
+         TabIndex        =   24
          Top             =   0
          Width           =   255
       End
       Begin VB.PictureBox picCont 
          BackColor       =   &H00C0C0C0&
          BorderStyle     =   0  'None
-         Height          =   5295
+         Height          =   4815
          Left            =   0
-         ScaleHeight     =   353
+         ScaleHeight     =   321
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   289
          TabIndex        =   7
@@ -74,25 +74,8 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   29
-            Top             =   4920
-            Width           =   4095
-         End
-         Begin VB.CommandButton Command24 
-            Caption         =   "Estadisticas"
-            BeginProperty Font 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   255
-            Left            =   120
-            TabIndex        =   25
-            Top             =   4680
+            TabIndex        =   27
+            Top             =   4440
             Width           =   4095
          End
          Begin VB.CommandButton Command22 
@@ -109,7 +92,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   8
-            Top             =   4440
+            Top             =   4200
             Width           =   4095
          End
          Begin VB.CommandButton Command21 
@@ -126,7 +109,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   9
-            Top             =   4200
+            Top             =   3960
             Width           =   4095
          End
          Begin VB.CommandButton Command17 
@@ -143,7 +126,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   10
-            Top             =   3960
+            Top             =   3720
             Width           =   4095
          End
          Begin VB.CommandButton Command25 
@@ -159,8 +142,8 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   27
-            Top             =   3720
+            TabIndex        =   25
+            Top             =   3480
             Width           =   4095
          End
          Begin VB.CommandButton Command16 
@@ -177,7 +160,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   11
-            Top             =   3480
+            Top             =   3240
             Width           =   4095
          End
          Begin VB.CommandButton Command28 
@@ -193,8 +176,8 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   30
-            Top             =   3240
+            TabIndex        =   28
+            Top             =   3000
             Width           =   4095
          End
          Begin VB.CommandButton Command14 
@@ -211,7 +194,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   12
-            Top             =   3000
+            Top             =   2760
             Width           =   4095
          End
          Begin VB.CommandButton Command19 
@@ -228,7 +211,7 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   13
-            Top             =   2760
+            Top             =   2520
             Width           =   4095
          End
          Begin VB.CommandButton Command15 
@@ -245,23 +228,6 @@ Begin VB.Form frmServidor
             Height          =   255
             Left            =   120
             TabIndex        =   14
-            Top             =   2520
-            Width           =   4095
-         End
-         Begin VB.CommandButton Command13 
-            Caption         =   "Debug listening socket"
-            BeginProperty Font 
-               Name            =   "Tahoma"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Height          =   255
-            Left            =   120
-            TabIndex        =   15
             Top             =   2280
             Width           =   4095
          End
@@ -278,7 +244,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   16
+            TabIndex        =   15
             Top             =   2040
             Width           =   4095
          End
@@ -295,7 +261,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   17
+            TabIndex        =   16
             Top             =   1800
             Width           =   4095
          End
@@ -312,7 +278,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   18
+            TabIndex        =   17
             Top             =   1560
             Width           =   4095
          End
@@ -329,7 +295,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   19
+            TabIndex        =   18
             Top             =   1320
             Width           =   4095
          End
@@ -346,7 +312,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   20
+            TabIndex        =   19
             Top             =   1080
             Width           =   4095
          End
@@ -363,7 +329,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   21
+            TabIndex        =   20
             Top             =   840
             Width           =   4095
          End
@@ -381,7 +347,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   22
+            TabIndex        =   21
             Top             =   600
             Width           =   4095
          End
@@ -398,7 +364,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   23
+            TabIndex        =   22
             Top             =   360
             Width           =   4095
          End
@@ -415,7 +381,7 @@ Begin VB.Form frmServidor
             EndProperty
             Height          =   255
             Left            =   120
-            TabIndex        =   24
+            TabIndex        =   23
             Top             =   120
             Width           =   4095
          End
@@ -527,7 +493,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -572,10 +538,6 @@ End Sub
 
 Private Sub Command12_Click()
 frmDebugNpc.Show
-End Sub
-
-Private Sub Command13_Click()
-frmDebugSocket.Visible = True
 End Sub
 
 Private Sub Command14_Click()
@@ -714,11 +676,6 @@ If MsgBox("Esta seguro que desea hacer WorldSave, guardar pjs y cerrar ?", vbYes
     'Chauuu
     Unload frmMain
 End If
-End Sub
-
-Private Sub Command24_Click()
-frmEstadisticas.Show
-
 End Sub
 
 Private Sub Command25_Click()

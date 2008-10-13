@@ -93,7 +93,7 @@ Private Sub GoToNextWorkingChar()
                 If CentinelaNPCIndex Then
                     'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas)
                     Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
-                    Call WriteConsoleMsg(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", FontTypeNames.FONTTYPE_CENTINELA)
+                    Call WriteConsoleMsg(LoopC, "El centinela intenta llamar tu atención. ¡Respondele rápido!", FontTypeNames.FONTTYPE_CENTINELA)
                     Call FlushBuffer(LoopC)
                 End If
                 Exit Sub
@@ -213,7 +213,7 @@ Public Sub CentinelaSendClave(ByVal UserIndex As Integer)
     If UserIndex = Centinela.RevisandoUserIndex Then
         If Not UserList(UserIndex).flags.CentinelaOK Then
             Call WriteChatOverHead(UserIndex, "¡La clave que te he dicho es /CENTINELA " & Centinela.clave & ", escríbelo rápido!", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
-            Call WriteConsoleMsg(UserIndex, "¡La clave correcta es /CENTINELA " & Centinela.clave & ", escríbelo rápido!", FontTypeNames.FONTTYPE_CENTINELA)
+            Call WriteConsoleMsg(UserIndex, "El centinela intenta llamar tu atención. ¡Respondele rápido!", FontTypeNames.FONTTYPE_CENTINELA)
         Else
             'Logueamos el evento
             Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " respondió más de una vez la contraseña correcta.")
@@ -246,7 +246,7 @@ Public Sub PasarMinutoCentinela()
             
             'El centinela habla y se manda a consola para que no quepan dudas
             Call WriteChatOverHead(Centinela.RevisandoUserIndex, "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & ".", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbRed)
-            Call WriteConsoleMsg(Centinela.RevisandoUserIndex, "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder! Debes escribir /CENTINELA " & Centinela.clave & ".", FontTypeNames.FONTTYPE_CENTINELA)
+            Call WriteConsoleMsg(Centinela.RevisandoUserIndex, "¡" & UserList(Centinela.RevisandoUserIndex).name & ", tienes un minuto más para responder!", FontTypeNames.FONTTYPE_CENTINELA)
             Call FlushBuffer(Centinela.RevisandoUserIndex)
         End If
     End If
