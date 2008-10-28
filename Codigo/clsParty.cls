@@ -67,6 +67,19 @@ End Sub
 Public Sub Class_Terminate()
 End Sub
 
+''
+' Sets the new p_sumaniveleselevados to the party.
+'
+' @param lvl Specifies reference to user level
+' @remarks When a user level up and he is in a party, we update p_sumaNivelesElavados so the formula still works.
+Public Sub UpdateSumaNivelesElevados(ByVal Lvl As Integer)
+'*************************************************
+'Author: Marco Vanotti (MarKoxX)
+'Last modified: 28/10/08
+'
+'*************************************************
+    p_SumaNivelesElevados = p_SumaNivelesElevados - ((Lvl - 1) ^ 1.75) + Lvl ^ 1.75
+End Sub
 
 Public Function MiExperiencia(ByVal UserIndex As Integer) As Long
 '***************************************************

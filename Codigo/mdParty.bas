@@ -364,3 +364,21 @@ If UserList(UserIndex).PartyIndex > 0 Then
 End If
 
 End Function
+
+''
+' Sets the new p_sumaniveleselevados to the party.
+'
+' @param UserInidex Specifies reference to user
+' @remarks When a user level up and he is in a party, we call this sub to don't desestabilice the party exp formula
+Public Sub ActualizarSumaNivelesElevados(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Marco Vanotti (MarKoxX)
+'Last modified: 28/10/08
+'
+'*************************************************
+    If UserList(UserIndex).PartyIndex > 0 Then
+        Call Parties(UserList(UserIndex).PartyIndex).UpdateSumaNivelesElevados(UserList(UserIndex).Stats.ELV)
+    End If
+End Sub
+
+

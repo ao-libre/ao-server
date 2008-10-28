@@ -577,6 +577,9 @@ Do While UserList(UserIndex).Stats.Exp >= UserList(UserIndex).Stats.ELU
     Call LogDesarrollo(UserList(UserIndex).name & " paso a nivel " & UserList(UserIndex).Stats.ELV & " gano HP: " & AumentoHP)
     
     UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
+    
+    'If user is in a party, we modify the variable p_sumaniveleselevados
+    Call mdParty.ActualizarSumaNivelesElevados(UserIndex)
 Loop
 
 'If it ceased to be a newbie, remove newbie items and get char away from newbie dungeon
