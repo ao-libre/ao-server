@@ -380,5 +380,3 @@ Public Sub ActualizarSumaNivelesElevados(ByVal UserIndex As Integer)
         Call Parties(UserList(UserIndex).PartyIndex).UpdateSumaNivelesElevados(UserList(UserIndex).Stats.ELV)
     End If
 End Sub
-
-
