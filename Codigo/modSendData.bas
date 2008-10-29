@@ -57,6 +57,7 @@ Public Enum SendTarget
     ToCriminalesYRMs
     ToRealYRMs
     ToCaosYRMs
+    ToHigherAdmins
 End Enum
 
 Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
@@ -78,6 +79,16 @@ On Error Resume Next
             For LoopC = 1 To LastUser
                 If UserList(LoopC).ConnID <> -1 Then
                     If UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
+                        Call EnviarDatosASlot(LoopC, sndData)
+                   End If
+                End If
+            Next LoopC
+            Exit Sub
+        
+        Case SendTarget.ToHigherAdmins
+            For LoopC = 1 To LastUser
+                If UserList(LoopC).ConnID <> -1 Then
+                    If (UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 And ((Not UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster)) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                    End If
                 End If
