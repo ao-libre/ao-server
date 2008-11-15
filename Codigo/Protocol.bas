@@ -461,6 +461,7 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error Resume Next
+    Static handledCount As Long
     Dim packetID As Byte
     
     packetID = UserList(UserIndex).incomingData.PeekByte()
@@ -1243,7 +1244,15 @@ On Error Resume Next
     'Done with this packet, move on to next one or send everything if no more packets found
     If UserList(UserIndex).incomingData.length > 0 And Err.Number = 0 Then
         Err.Clear
-        Call HandleIncomingData(UserIndex)
+        
+        handledCount = handledCount + 1
+        
+        If handledCount < 15 Then
+            Call HandleIncomingData(UserIndex)
+        Else
+            'Flush buffer - send everything that has been written
+            Call FlushBuffer(UserIndex)
+        End If
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
@@ -1257,6 +1266,8 @@ On Error Resume Next
         'Flush buffer - send everything that has been written
         Call FlushBuffer(UserIndex)
     End If
+    
+    handledCount = 0
 End Sub
 
 ''
@@ -1694,34 +1705,34 @@ On Error GoTo Errhandler
             If targetUserIndex = INVALID_INDEX Then
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Then
-                    'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
-                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
-                
-                ElseIf (.flags.Privilegios And PlayerType.User) <> 0 And (Not targetPriv And PlayerType.User) <> 0 Then
-                    'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
-                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
-                
-                ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
-                    Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
-                
-                Else
-                    '[Consejeros & GMs]
-                    If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
-                        Call LogGM(.name, "Le dijo a '" & UserList(targetUserIndex).name & "' " & chat)
-                    End If
+                If (.flags.Privilegios And PlayerType.User) = 0 Or (targetPriv And PlayerType.User) <> 0 Then
+                    'A los GMs no vale susurrarles si sos un PJ común.
                     
-                    If LenB(chat) <> 0 Then
-                        'Analize chat...
-                        Call Statistics.ParseChat(chat)
+                    If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Then
+                        'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
+                        Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
+                        Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    Else
+                        '[Consejeros & GMs]
+                        If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
+                            Call LogGM(.name, "Le dijo a '" & UserList(targetUserIndex).name & "' " & chat)
+                        End If
                         
-                        Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
-                        Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
-                        Call FlushBuffer(targetUserIndex)
-                        
-                        '[CDT 17-02-2004]
-                        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
-                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
+                        If LenB(chat) <> 0 Then
+                            'Analize chat...
+                            Call Statistics.ParseChat(chat)
+                            
+                            Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
+                            Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
+                            Call FlushBuffer(targetUserIndex)
+                            
+                            '[CDT 17-02-2004]
+                            If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
+                                Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
+                            End If
                         End If
                     End If
                 End If
