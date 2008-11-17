@@ -544,6 +544,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '26/01/2007 Pablo (ToxicWaste) - Revivir no permitido en Mapas con ResuSinEfecto
 '02/01/2008 Marcos (ByVal) - Curar Veneno no permitido en usuarios muertos.
 '06/28/2008 NicoNZ - Agregué que se le de valor al flag Inmovilizado.
+'17/11/2008: NicoNZ - Agregado para quitar la penalización de vida en el ring y cambio de ecuacion.
 '***************************************************
 
 
@@ -925,13 +926,15 @@ If Hechizos(H).Revivir = 1 Then
         Call InfoHechizo(UserIndex)
         UserList(tU).Stats.MinMAN = 0
         UserList(tU).Stats.MinSta = 0
-        Dim aux As Double
-        aux = UserList(tU).Stats.ELV / 100
-        aux = UserList(UserIndex).Stats.MaxHP * aux
-        'Solo saco vida si es User. no quiero que exploten GMs por ahi.
-        If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
-            UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - aux
+        
+        'Agregado para quitar la penalización de vida en el ring y cambio de ecuacion. (NicoNZ)
+        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+            'Solo saco vida si es User. no quiero que exploten GMs por ahi.
+            If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - UserList(tU).Stats.ELV * 1.5
+            End If
         End If
+        
         If (UserList(UserIndex).Stats.MinHP <= 0) Then
             Call UserDie(UserIndex)
             Call WriteConsoleMsg(UserIndex, "El esfuerzo de resucitar fue demasiado grande", FontTypeNames.FONTTYPE_INFO)
