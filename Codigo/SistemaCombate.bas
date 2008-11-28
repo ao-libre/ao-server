@@ -765,7 +765,7 @@ If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMin
 End If
     
 Dim index As Integer
-index = MapData(AttackPos.map, AttackPos.X, AttackPos.Y).UserIndex
+index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).UserIndex
     
 'Look for user
 If index > 0 Then
@@ -776,17 +776,17 @@ If index > 0 Then
 End If
     
 'Look for NPC
-If MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
+If MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex > 0 Then
     
-    If Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
+    If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Attackable Then
             
-        If Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
-            MapInfo(Npclist(MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.map).Pk = False Then
+        If Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).MaestroUser > 0 And _
+            MapInfo(Npclist(MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex).Pos.Map).Pk = False Then
                 Call WriteConsoleMsg(UserIndex, "No podés atacar mascotas en zonas seguras", FontTypeNames.FONTTYPE_FIGHT)
                 Exit Sub
         End If
 
-        Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.map, AttackPos.X, AttackPos.Y).NpcIndex)
+        Call UsuarioAtacaNpc(UserIndex, MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex)
             
     Else
         Call WriteConsoleMsg(UserIndex, "No podés atacar a este NPC", FontTypeNames.FONTTYPE_FIGHT)
@@ -1166,7 +1166,7 @@ End If
 
 'Sos un Armada atacando un ciudadano?
 If (Not criminal(VictimIndex)) And (esArmada(attackerIndex)) Then
-    Call WriteConsoleMsg(attackerIndex, "Los soldados del Ejercito Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
+    Call WriteConsoleMsg(attackerIndex, "Los soldados del Ejército Real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
 End If
@@ -1188,10 +1188,10 @@ If UserList(attackerIndex).flags.Seguro Then
 End If
 
 'Estas en un Mapa Seguro?
-If MapInfo(UserList(VictimIndex).Pos.map).Pk = False Then
+If MapInfo(UserList(VictimIndex).Pos.Map).Pk = False Then
     If esArmada(attackerIndex) Then
         If UserList(attackerIndex).Faccion.RecompensasReal > 11 Then
-            If UserList(VictimIndex).Pos.map = 58 Or UserList(VictimIndex).Pos.map = 59 Or UserList(VictimIndex).Pos.map = 60 Then
+            If UserList(VictimIndex).Pos.Map = 58 Or UserList(VictimIndex).Pos.Map = 59 Or UserList(VictimIndex).Pos.Map = 60 Then
             Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
             PuedeAtacar = True 'Beneficio de Armadas que atacan en su ciudad.
             Exit Function
@@ -1200,7 +1200,7 @@ If MapInfo(UserList(VictimIndex).Pos.map).Pk = False Then
     End If
     If esCaos(attackerIndex) Then
         If UserList(attackerIndex).Faccion.RecompensasCaos > 11 Then
-            If UserList(VictimIndex).Pos.map = 151 Or UserList(VictimIndex).Pos.map = 156 Then
+            If UserList(VictimIndex).Pos.Map = 151 Or UserList(VictimIndex).Pos.Map = 156 Then
             Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! estas siendo atacado y no podrás defenderte.", FontTypeNames.FONTTYPE_WARNING)
             PuedeAtacar = True 'Beneficio de Caos que atacan en su ciudad.
             Exit Function
@@ -1213,8 +1213,8 @@ If MapInfo(UserList(VictimIndex).Pos.map).Pk = False Then
 End If
 
 'Estas atacando desde un trigger seguro? o tu victima esta en uno asi?
-If MapData(UserList(VictimIndex).Pos.map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
-    MapData(UserList(attackerIndex).Pos.map, UserList(attackerIndex).Pos.X, UserList(attackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or _
+    MapData(UserList(attackerIndex).Pos.Map, UserList(attackerIndex).Pos.X, UserList(attackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(attackerIndex, "No podes pelear aqui.", FontTypeNames.FONTTYPE_WARNING)
     PuedeAtacar = False
     Exit Function
@@ -1373,7 +1373,7 @@ End If
 'Es el Rey Preatoriano?
 If esPretoriano(NpcIndex) = 4 Then
     If pretorianosVivos > 0 Then
-        Call WriteConsoleMsg(attackerIndex, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(attackerIndex, "Debes matar al resto del ejército antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
         PuedeAtacarNPC = False
         Exit Function
     End If
@@ -1415,7 +1415,7 @@ End If
 '[Nacho] Le damos la exp al user
 If ExpaDar > 0 Then
     If UserList(UserIndex).PartyIndex > 0 Then
-        Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
+        Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
     Else
         UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
         If UserList(UserIndex).Stats.Exp > MAXEXP Then _
@@ -1435,8 +1435,8 @@ On Error GoTo Errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
-    tOrg = MapData(UserList(Origen).Pos.map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
-    tDst = MapData(UserList(Destino).Pos.map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
+    tOrg = MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
+    tDst = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
     
     If tOrg = eTrigger.ZONAPELEA Or tDst = eTrigger.ZONAPELEA Then
         If tOrg = tDst Then

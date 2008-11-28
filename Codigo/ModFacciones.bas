@@ -79,7 +79,7 @@ If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
 End If
 
 If criminal(UserIndex) Then
-    Call WriteChatOverHead(UserIndex, "¡¡¡No se permiten criminales en el ejercito imperial!!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+    Call WriteChatOverHead(UserIndex, "¡¡¡No se permiten criminales en el ejército imperial!!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
     Exit Sub
 End If
 
@@ -104,14 +104,14 @@ If UserList(UserIndex).Faccion.Reenlistadas > 4 Then
 End If
 
 If UserList(UserIndex).Reputacion.NobleRep < 1000000 Then
-    Call WriteChatOverHead(UserIndex, "Necesitas ser aún más Noble para integrar el Ejercito del Rey, solo tienes " & UserList(UserIndex).Reputacion.NobleRep & "/1.000.000 Puntos de Nobleza", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+    Call WriteChatOverHead(UserIndex, "Necesitas ser aún más Noble para integrar el Ejército del Rey, solo tienes " & UserList(UserIndex).Reputacion.NobleRep & "/1.000.000 Puntos de Nobleza", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
     Exit Sub
 End If
 
 UserList(UserIndex).Faccion.ArmadaReal = 1
 UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlistadas + 1
 
-Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al Ejercito Imperial!!!, aqui tienes tus vestimentas. Cumple bien tu labor exterminando Criminales y me encargaré de recompensarte.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
+Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al Ejército Imperial!!!, aqui tienes tus vestimentas. Cumple bien tu labor exterminando Criminales y me encargaré de recompensarte.", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
 
 If UserList(UserIndex).Faccion.RecibioArmaduraReal = 0 Then
     Dim MiObj As Obj

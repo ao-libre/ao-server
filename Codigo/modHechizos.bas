@@ -933,7 +933,7 @@ If Hechizos(H).Revivir = 1 Then
         UserList(tU).Stats.MinSta = 0
         
         'Agregado para quitar la penalización de vida en el ring y cambio de ecuacion. (NicoNZ)
-        If (TriggerZonaPelea(UserList(UserIndex).Pos, UserList(tU).Pos) <> TRIGGER6_PERMITE) Then
+        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
             'Solo saco vida si es User. no quiero que exploten GMs por ahi.
             If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
                 UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - UserList(tU).Stats.ELV * 1.5
