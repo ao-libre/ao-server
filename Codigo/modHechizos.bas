@@ -321,7 +321,7 @@ Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 If UserList(UserIndex).NroMascotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
-If MapInfo(UserList(UserIndex).Pos.map).Pk = False Or MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(UserIndex, "En zona segura no puedes invocar criaturas.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -330,7 +330,7 @@ Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
 
 
-TargetPos.map = UserList(UserIndex).flags.TargetMap
+TargetPos.Map = UserList(UserIndex).flags.TargetMap
 TargetPos.X = UserList(UserIndex).flags.TargetX
 TargetPos.Y = UserList(UserIndex).flags.TargetY
 
@@ -579,7 +579,7 @@ If Hechizos(H).Invisibilidad = 1 Then
     End If
     
     'No usar invi mapas InviSinEfecto
-    If MapInfo(UserList(tU).Pos.map).InviSinEfecto > 0 Then
+    If MapInfo(UserList(tU).Pos.Map).InviSinEfecto > 0 Then
         Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
         b = False
         Exit Sub
@@ -852,7 +852,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
     
         'No usar resu en mapas con ResuSinEfecto
-        If MapInfo(UserList(tU).Pos.map).ResuSinEfecto > 0 Then
+        If MapInfo(UserList(tU).Pos.Map).ResuSinEfecto > 0 Then
             Call WriteConsoleMsg(UserIndex, "¡Revivir no está permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
             b = False
             Exit Sub
@@ -933,7 +933,7 @@ If Hechizos(H).Revivir = 1 Then
         UserList(tU).Stats.MinSta = 0
         
         'Agregado para quitar la penalización de vida en el ring y cambio de ecuacion. (NicoNZ)
-        If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
+        If (TriggerZonaPelea(UserList(UserIndex).Pos, UserList(tU).Pos) <> TRIGGER6_PERMITE) Then
             'Solo saco vida si es User. no quiero que exploten GMs por ahi.
             If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
                 UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - UserList(tU).Stats.ELV * 1.5
@@ -1806,7 +1806,7 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     EraCriminal = criminal(UserIndex)
     
     'Si estamos en la arena no hacemos nada
-    If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
     
 If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
     'pierdo nobleza...
