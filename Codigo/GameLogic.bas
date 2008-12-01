@@ -666,9 +666,9 @@ If InMapBounds(Map, X, Y) Then
                 End If
                 
                 If UserList(TempCharIndex).Faccion.ArmadaReal = 1 Then
-                    Stat = Stat & " <Ejército real> " & "<" & TituloReal(TempCharIndex) & ">"
+                    Stat = Stat & " <Ejército Real> " & "<" & TituloReal(TempCharIndex) & ">"
                 ElseIf UserList(TempCharIndex).Faccion.FuerzasCaos = 1 Then
-                    Stat = Stat & " <Legión oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
+                    Stat = Stat & " <Legión Oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
                 End If
                 
                 If UserList(TempCharIndex).guildIndex > 0 Then

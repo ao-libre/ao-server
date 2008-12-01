@@ -568,7 +568,7 @@ On Error GoTo hayerror
                     
                     .NumeroPaquetesPorMiliSec = 0
                     
-                    Call DoTileEvents(iUserIndex, .Pos.map, .Pos.X, .Pos.Y)
+                    Call DoTileEvents(iUserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                     
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -827,7 +827,7 @@ If Not haciendoBK And Not EnPausa Then
                        Call EfectoParalisisNpc(NpcIndex)
                     End If
                     
-                    mapa = Npclist(NpcIndex).Pos.map
+                    mapa = Npclist(NpcIndex).Pos.Map
                     
                     If mapa > 0 Then
                         If MapInfo(mapa).NumUsers > 0 Then
@@ -845,7 +845,7 @@ End If
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 
@@ -917,9 +917,9 @@ Dim i As Long
 
 For i = 1 To LastUser
     If UserList(i).flags.UserLogged Then
-        If MapData(UserList(i).Pos.map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+        If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
             UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-            Call WriteConsoleMsg(i, "Estás obstruyendo la via pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!", FontTypeNames.FONTTYPE_INFO)
             
             If UserList(i).Counters.PiqueteC > 23 Then
                 UserList(i).Counters.PiqueteC = 0

@@ -96,7 +96,7 @@ Next j
 
 '[Barrin 17-12-03] Si el usuario dejó de ser Newbie, y estaba en el Newbie Dungeon
 'es transportado a su hogar de origen ;)
-If UCase$(MapInfo(UserList(UserIndex).Pos.map).Restringir) = "NEWBIE" Then
+If UCase$(MapInfo(UserList(UserIndex).Pos.Map).Restringir) = "NEWBIE" Then
     
     Dim DeDonde As WorldPos
     
@@ -111,7 +111,7 @@ If UCase$(MapInfo(UserList(UserIndex).Pos.map).Restringir) = "NEWBIE" Then
             DeDonde = Nix
     End Select
     
-    Call WarpUserChar(UserIndex, DeDonde.map, DeDonde.X, DeDonde.Y, True)
+    Call WarpUserChar(UserIndex, DeDonde.Map, DeDonde.X, DeDonde.Y, True)
 
 End If
 '[/Barrin]
@@ -177,7 +177,7 @@ If (Cantidad > 0) And (Cantidad <= UserList(UserIndex).Stats.GLD) Then
             Dim k As Integer
             Dim M As Integer
             Dim Cercanos As String
-            M = UserList(UserIndex).Pos.map
+            M = UserList(UserIndex).Pos.Map
             For j = UserList(UserIndex).Pos.X - 10 To UserList(UserIndex).Pos.X + 10
                 For k = UserList(UserIndex).Pos.Y - 10 To UserList(UserIndex).Pos.Y + 10
                     If InMapBounds(M, j, k) Then
@@ -295,7 +295,7 @@ End If
 
 End Sub
 
-Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 Dim Obj As Obj
 
@@ -304,16 +304,16 @@ If num > 0 Then
   If num > UserList(UserIndex).Invent.Object(Slot).amount Then num = UserList(UserIndex).Invent.Object(Slot).amount
   
   'Check objeto en el suelo
-  If MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex = 0 Or MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex Then
+  If MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex = 0 Or MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex Then
         Obj.ObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
         
-        If num + MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount > MAX_INVENTORY_OBJS Then
-            num = MAX_INVENTORY_OBJS - MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount
+        If num + MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount > MAX_INVENTORY_OBJS Then
+            num = MAX_INVENTORY_OBJS - MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount
         End If
         
         Obj.amount = num
         
-        Call MakeObj(Obj, map, X, Y)
+        Call MakeObj(Obj, Map, X, Y)
         Call QuitarUserInvItem(UserIndex, Slot, num)
         Call UpdateUserInv(False, UserIndex, Slot)
         
@@ -326,11 +326,11 @@ If num > 0 Then
         'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Obj.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & map & " X: " & X & " Y: " & Y)
+            Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
         ElseIf Obj.amount > 5000 Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
         'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Obj.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & map & " X: " & X & " Y: " & Y)
+                Call LogDesarrollo(UserList(UserIndex).name & " tiró al piso " & Obj.amount & " " & ObjData(Obj.ObjIndex).name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
             End If
         End If
   Else
@@ -341,29 +341,29 @@ End If
 
 End Sub
 
-Sub EraseObj(ByVal num As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub EraseObj(ByVal num As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
-MapData(map, X, Y).ObjInfo.amount = MapData(map, X, Y).ObjInfo.amount - num
+MapData(Map, X, Y).ObjInfo.amount = MapData(Map, X, Y).ObjInfo.amount - num
 
-If MapData(map, X, Y).ObjInfo.amount <= 0 Then
-    MapData(map, X, Y).ObjInfo.ObjIndex = 0
-    MapData(map, X, Y).ObjInfo.amount = 0
+If MapData(Map, X, Y).ObjInfo.amount <= 0 Then
+    MapData(Map, X, Y).ObjInfo.ObjIndex = 0
+    MapData(Map, X, Y).ObjInfo.amount = 0
     
-    Call modSendData.SendToAreaByPos(map, X, Y, PrepareMessageObjectDelete(X, Y))
+    Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
 End If
 
 End Sub
 
-Sub MakeObj(ByRef Obj As Obj, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub MakeObj(ByRef Obj As Obj, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 
 If Obj.ObjIndex > 0 And Obj.ObjIndex <= UBound(ObjData) Then
 
-    If MapData(map, X, Y).ObjInfo.ObjIndex = Obj.ObjIndex Then
-        MapData(map, X, Y).ObjInfo.amount = MapData(map, X, Y).ObjInfo.amount + Obj.amount
+    If MapData(Map, X, Y).ObjInfo.ObjIndex = Obj.ObjIndex Then
+        MapData(Map, X, Y).ObjInfo.amount = MapData(Map, X, Y).ObjInfo.amount + Obj.amount
     Else
-        MapData(map, X, Y).ObjInfo = Obj
+        MapData(Map, X, Y).ObjInfo = Obj
         
-        Call modSendData.SendToAreaByPos(map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
+        Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(Obj.ObjIndex).GrhIndex, X, Y))
     End If
 End If
 
@@ -429,33 +429,33 @@ Dim MiObj As Obj
 Dim ObjPos As String
 
 '¿Hay algun obj?
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
     '¿Esta permitido agarrar este obj?
-    If ObjData(MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
+    If ObjData(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
         Dim X As Integer
         Dim Y As Integer
         Dim Slot As Byte
         
         X = UserList(UserIndex).Pos.X
         Y = UserList(UserIndex).Pos.Y
-        Obj = ObjData(MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex)
-        MiObj.amount = MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount
-        MiObj.ObjIndex = MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.ObjIndex
+        Obj = ObjData(MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex)
+        MiObj.amount = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount
+        MiObj.ObjIndex = MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.ObjIndex
         
         If MeterItemEnInventario(UserIndex, MiObj) Then
             'Quitamos el objeto
-            Call EraseObj(MapData(UserList(UserIndex).Pos.map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
+            Call EraseObj(MapData(UserList(UserIndex).Pos.Map, X, Y).ObjInfo.amount, UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y)
             If Not UserList(UserIndex).flags.Privilegios And PlayerType.User Then Call LogGM(UserList(UserIndex).name, "Agarro:" & MiObj.amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
             
             'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
             'Es un Objeto que tenemos que loguear?
             If ObjData(MiObj.ObjIndex).Log = 1 Then
-                ObjPos = " Mapa: " & UserList(UserIndex).Pos.map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
+                ObjPos = " Mapa: " & UserList(UserIndex).Pos.Map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
                 Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
             ElseIf MiObj.amount > MAX_INVENTORY_OBJS - 1000 Then 'Es mucha cantidad?
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
-                    ObjPos = " Mapa: " & UserList(UserIndex).Pos.map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
+                    ObjPos = " Mapa: " & UserList(UserIndex).Pos.Map & " X: " & UserList(UserIndex).Pos.X & " Y: " & UserList(UserIndex).Pos.Y
                     Call LogDesarrollo(UserList(UserIndex).name & " juntó del piso " & MiObj.amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
                 End If
             End If
@@ -463,7 +463,7 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
         
     End If
 Else
-    Call WriteConsoleMsg(UserIndex, "No hay nada aqui.", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "No hay nada aquí.", FontTypeNames.FONTTYPE_INFO)
 End If
 
 End Sub
@@ -962,7 +962,7 @@ Select Case Obj.OBJType
         End If
         
         If Not IntervaloPermiteAtacar(UserIndex, False) Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "¡¡Debes esperar unos momentos para tomar otra poción!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -1102,7 +1102,7 @@ Select Case Obj.OBJType
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-        If Not HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY) Then
+        If Not HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).flags.TargetX, UserList(UserIndex).flags.TargetY) Then
             Call WriteConsoleMsg(UserIndex, "No hay agua allí.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -1166,11 +1166,11 @@ Select Case Obj.OBJType
         
         If Obj.Real Then '¿Es el Cuerno Real?
             If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
-                If MapInfo(UserList(UserIndex).Pos.map).Pk = False Then
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
                 Exit Sub
             Else
                 Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Armada Real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
@@ -1178,11 +1178,11 @@ Select Case Obj.OBJType
             End If
         ElseIf Obj.Caos Then '¿Es el Cuerno Legión?
             If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
-                If MapInfo(UserList(UserIndex).Pos.map).Pk = False Then
+                If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Then
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessagePlayWave(Obj.Snd1, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+                Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessagePlayWave(Obj.Snd1, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
                 Exit Sub
             Else
                 Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Legión Oscura pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
@@ -1206,10 +1206,10 @@ Select Case Obj.OBJType
             End If
         End If
         
-        If ((LegalPos(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X - 1, UserList(UserIndex).Pos.Y, True, False) _
-                Or LegalPos(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y - 1, True, False) _
-                Or LegalPos(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X + 1, UserList(UserIndex).Pos.Y, True, False) _
-                Or LegalPos(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y + 1, True, False)) _
+        If ((LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X - 1, UserList(UserIndex).Pos.Y, True, False) _
+                Or LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y - 1, True, False) _
+                Or LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X + 1, UserList(UserIndex).Pos.Y, True, False) _
+                Or LegalPos(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y + 1, True, False)) _
                 And UserList(UserIndex).flags.Navegando = 0) _
                 Or UserList(UserIndex).flags.Navegando = 1 Then
             Call DoNavega(UserIndex, Obj, Slot)
@@ -1241,7 +1241,7 @@ End Sub
 Sub TirarTodo(ByVal UserIndex As Integer)
 On Error Resume Next
 
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 Call TirarTodosLosItems(UserIndex)
 
@@ -1289,7 +1289,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                 End If
                 
                 If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                    Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.map, NuevaPos.X, NuevaPos.Y)
+                    Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
                 End If
              End If
         End If
@@ -1308,7 +1308,7 @@ Dim NuevaPos As WorldPos
 Dim MiObj As Obj
 Dim ItemIndex As Integer
 
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
 
 For i = 1 To MAX_INVENTORY_SLOTS
     ItemIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
@@ -1324,7 +1324,7 @@ For i = 1 To MAX_INVENTORY_SLOTS
             'Tira los Items no newbies en todos lados.
             Tilelibre UserList(UserIndex).Pos, NuevaPos, MiObj, True, True
             If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                If MapData(NuevaPos.map, NuevaPos.X, NuevaPos.Y).ObjInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.map, NuevaPos.X, NuevaPos.Y)
+                If MapData(NuevaPos.Map, NuevaPos.X, NuevaPos.Y).ObjInfo.ObjIndex = 0 Then Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
             End If
         End If
     End If

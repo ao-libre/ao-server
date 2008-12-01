@@ -494,7 +494,7 @@ If PuedeLanzar(UserIndex, uh) Then
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
             Else
-                Call WriteConsoleMsg(UserIndex, "Este hechizo actua solo sobre usuarios.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Este hechizo actúa solo sobre usuarios.", FontTypeNames.FONTTYPE_INFO)
             End If
         
         Case TargetType.uNPC
@@ -1233,7 +1233,7 @@ ElseIf Hechizos(hIndex).SubeHP = 2 Then
     If daño < 0 Then daño = 0
     
     Npclist(NpcIndex).Stats.MinHP = Npclist(NpcIndex).Stats.MinHP - daño
-    Call WriteConsoleMsg(UserIndex, "Le has causado " & daño & " puntos de daño a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+    Call WriteConsoleMsg(UserIndex, "¡Le has causado " & daño & " puntos de daño a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
     Call CalcularDarExp(UserIndex, NpcIndex, daño)
 
     If Npclist(NpcIndex).Stats.MinHP < 1 Then

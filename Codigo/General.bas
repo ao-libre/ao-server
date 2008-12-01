@@ -96,13 +96,13 @@ End If
 End Sub
 
 
-Function HayAgua(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 
-If map > 0 And map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If ((MapData(map, X, Y).Graphic(1) >= 1505 And MapData(map, X, Y).Graphic(1) <= 1520) Or _
-    (MapData(map, X, Y).Graphic(1) >= 5665 And MapData(map, X, Y).Graphic(1) <= 5680) Or _
-    (MapData(map, X, Y).Graphic(1) >= 13547 And MapData(map, X, Y).Graphic(1) <= 13562)) And _
-       MapData(map, X, Y).Graphic(2) = 0 Then
+If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If ((MapData(Map, X, Y).Graphic(1) >= 1505 And MapData(Map, X, Y).Graphic(1) <= 1520) Or _
+    (MapData(Map, X, Y).Graphic(1) >= 5665 And MapData(Map, X, Y).Graphic(1) <= 5680) Or _
+    (MapData(Map, X, Y).Graphic(1) >= 13547 And MapData(Map, X, Y).Graphic(1) <= 13562)) And _
+       MapData(Map, X, Y).Graphic(2) = 0 Then
             HayAgua = True
     Else
             HayAgua = False
@@ -113,13 +113,13 @@ End If
 
 End Function
 
-Private Function HayLava(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Private Function HayLava(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
 '***************************************************
 'Autor: Nacho (Integer)
 'Last Modification: 03/12/07
 '***************************************************
-If map > 0 And map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-    If MapData(map, X, Y).Graphic(1) >= 5837 And MapData(map, X, Y).Graphic(1) <= 5852 Then
+If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+    If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
         HayLava = True
     Else
         HayLava = False
@@ -145,7 +145,7 @@ Dim d As New cGarbage
 
 For i = TrashCollector.Count To 1 Step -1
     Set d = TrashCollector(i)
-    Call EraseObj(1, d.map, d.X, d.Y)
+    Call EraseObj(1, d.Map, d.X, d.Y)
     Call TrashCollector.Remove(i)
     Set d = Nothing
 Next i
@@ -201,8 +201,8 @@ ChDrive App.Path
 Call LoadMotd
 Call BanIpCargar
 
-Prision.map = 66
-Libertad.map = 66
+Prision.Map = 66
+Libertad.Map = 66
 
 Prision.X = 75
 Prision.Y = 47
@@ -517,8 +517,8 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
     End If
 End Function
 
-Function MapaValido(ByVal map As Integer) As Boolean
-MapaValido = map >= 1 And map <= NumMaps
+Function MapaValido(ByVal Map As Integer) As Boolean
+MapaValido = Map >= 1 And Map <= NumMaps
 End Function
 
 Sub MostrarNumUsers()
@@ -941,10 +941,10 @@ End Sub
 
 Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
     
-    If MapInfo(UserList(UserIndex).Pos.map).Zona <> "DUNGEON" Then
-        If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 1 And _
-           MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 2 And _
-           MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 4 Then Intemperie = True
+    If MapInfo(UserList(UserIndex).Pos.Map).Zona <> "DUNGEON" Then
+        If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 1 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 2 And _
+           MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger <> 4 Then Intemperie = True
     Else
         Intemperie = False
     End If
@@ -990,7 +990,7 @@ Public Sub EfectoFrio(ByVal UserIndex As Integer)
     If UserList(UserIndex).Counters.Frio < IntervaloFrio Then
         UserList(UserIndex).Counters.Frio = UserList(UserIndex).Counters.Frio + 1
     Else
-        If MapInfo(UserList(UserIndex).Pos.map).Terreno = Nieve Then
+        If MapInfo(UserList(UserIndex).Pos.Map).Terreno = Nieve Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!.", FontTypeNames.FONTTYPE_INFO)
             modifi = Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - modifi
@@ -1021,7 +1021,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
     If UserList(UserIndex).Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
         UserList(UserIndex).Counters.Lava = UserList(UserIndex).Counters.Lava + 1
     Else
-        If HayLava(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+        If HayLava(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
             Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!.", FontTypeNames.FONTTYPE_INFO)
             UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - Porcentaje(UserList(UserIndex).Stats.MaxHP, 5)
             
@@ -1164,9 +1164,9 @@ End Sub
 
 Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
 
 
 Dim massta As Integer
@@ -1194,7 +1194,7 @@ Dim N As Integer
 If UserList(UserIndex).Counters.Veneno < IntervaloVeneno Then
   UserList(UserIndex).Counters.Veneno = UserList(UserIndex).Counters.Veneno + 1
 Else
-  Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas moriras.", FontTypeNames.FONTTYPE_VENENO)
+  Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas morirás.", FontTypeNames.FONTTYPE_VENENO)
   UserList(UserIndex).Counters.Veneno = 0
   N = RandomNumber(1, 5)
   UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - N
@@ -1262,9 +1262,9 @@ End Sub
 
 Public Sub Sanar(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
 
-If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
-   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
-   MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
+If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 1 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 2 And _
+   MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 4 Then Exit Sub
 
 Dim mashit As Integer
 'con el paso del tiempo va sanando....pero muy lentamente ;-)

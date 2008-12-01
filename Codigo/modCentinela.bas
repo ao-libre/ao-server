@@ -93,7 +93,7 @@ Private Sub GoToNextWorkingChar()
                 If CentinelaNPCIndex Then
                     'Mandamos el mensaje (el centinela habla y aparece en consola para que no haya dudas)
                     Call WriteChatOverHead(LoopC, "Saludos " & UserList(LoopC).name & ", soy el Centinela de estas tierras. Me gustaría que escribas /CENTINELA " & Centinela.clave & " en no más de dos minutos.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
-                    Call WriteConsoleMsg(LoopC, "El centinela intenta llamar tu atención. ¡Respondele rápido!", FontTypeNames.FONTTYPE_CENTINELA)
+                    Call WriteConsoleMsg(LoopC, "El centinela intenta llamar tu atención. ¡Respóndele rápido!", FontTypeNames.FONTTYPE_CENTINELA)
                     Call FlushBuffer(LoopC)
                 End If
                 Exit Sub
@@ -262,7 +262,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
         CentinelaNPCIndex = 0
     End If
     
-    If HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+    If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_AGUA, UserList(UserIndex).Pos, True, False)
     Else
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_TIERRA, UserList(UserIndex).Pos, True, False)
