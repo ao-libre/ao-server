@@ -627,22 +627,22 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
 End Sub
 
-Sub TratarDeHacerFogata(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 
 Dim Suerte As Byte
 Dim exito As Byte
 Dim Obj As Obj
 Dim posMadera As WorldPos
 
-If Not LegalPos(map, X, Y) Then Exit Sub
+If Not LegalPos(Map, X, Y) Then Exit Sub
 
 With posMadera
-    .map = map
+    .Map = Map
     .X = X
     .Y = Y
 End With
 
-If MapData(map, X, Y).ObjInfo.ObjIndex <> 58 Then
+If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas clickear sobre Leña para hacer ramitas", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -657,7 +657,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(map, X, Y).ObjInfo.amount < 3 Then
+If MapData(Map, X, Y).ObjInfo.amount < 3 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas por lo menos tres troncos para hacer una fogata.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -675,11 +675,11 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.amount = MapData(map, X, Y).ObjInfo.amount \ 3
+    Obj.amount = MapData(Map, X, Y).ObjInfo.amount \ 3
     
     Call WriteConsoleMsg(UserIndex, "Has hecho " & Obj.amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-    Call MakeObj(Obj, map, X, Y)
+    Call MakeObj(Obj, Map, X, Y)
     
     'Seteamos la fogata como el nuevo TargetObj del user
     UserList(UserIndex).flags.TargetObj = FOGATA_APAG
@@ -715,7 +715,7 @@ Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
 
 res = RandomNumber(1, Suerte)
 
-If res < 6 Then
+If res <= 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     
@@ -835,7 +835,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 ' - 24/07/08 Now it calls to WriteUpdateGold(VictimaIndex and LadrOnIndex) when the thief stoles gold. (MarKoxX)
 '*************************************************
 
-If Not MapInfo(UserList(VictimaIndex).Pos.map).Pk Then Exit Sub
+If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
 
 If UserList(LadrOnIndex).flags.Seguro Then
     Call WriteConsoleMsg(LadrOnIndex, "Debes quitar el seguro para robar", FontTypeNames.FONTTYPE_FIGHT)
@@ -1169,7 +1169,7 @@ Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
 
 res = RandomNumber(1, Suerte)
 
-If res < 6 Then
+If res <= 6 Then
     Dim nPos As WorldPos
     Dim MiObj As Obj
     

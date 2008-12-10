@@ -1374,18 +1374,18 @@ End Sub
 Private Sub HandleThrowDices(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
+'Last Modification: 12/10/08 (ZaMa: Dados más fáciles)
 '
 '***************************************************
     'Remove packet ID
     Call UserList(UserIndex).incomingData.ReadByte
     
     With UserList(UserIndex).Stats
-        .UserAtributos(eAtributos.Fuerza) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)
-        .UserAtributos(eAtributos.Agilidad) = 9 + RandomNumber(0, 4) + RandomNumber(0, 5)
-        .UserAtributos(eAtributos.Inteligencia) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
-        .UserAtributos(eAtributos.Carisma) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
-        .UserAtributos(eAtributos.Constitucion) = 12 + RandomNumber(0, 3) + RandomNumber(0, 3)
+        .UserAtributos(eAtributos.Fuerza) = MaximoInt(15, 14 + RandomNumber(0, 2) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Agilidad) = MaximoInt(15, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Inteligencia) = MaximoInt(16, 14 + RandomNumber(0, 2) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Carisma) = MaximoInt(15, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Constitucion) = 16 + RandomNumber(0, 1) + RandomNumber(0, 1)
     End With
     
     Call WriteDiceRoll(UserIndex)
