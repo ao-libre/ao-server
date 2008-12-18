@@ -6504,7 +6504,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
             'Quit the Chaos Legion??
            ElseIf .Faccion.FuerzasCaos = 1 Then
                If Npclist(.flags.TargetNPC).flags.Faccion = 1 Then
-                   Call ExpulsarFaccionCaos(UserIndex)
+                   Call ExpulsarFaccionCaos(UserIndex, False)
                    Call WriteChatOverHead(UserIndex, "Ya volverás arrastrandote.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                Else
                    Call WriteChatOverHead(UserIndex, "Sal de aquí maldito criminal", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)

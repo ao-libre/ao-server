@@ -316,24 +316,48 @@ Call CheckUserLevel(UserIndex)
 
 End Sub
 
-Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer)
+Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer, Optional expulsado As Boolean = True)
 
     UserList(UserIndex).Faccion.ArmadaReal = 0
     'Call PerderItemsFaccionarios(UserIndex)
-    Call WriteConsoleMsg(UserIndex, "Has sido expulsado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
-    'Desequipamos la armadura real si está equipada
-    If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    If expulsado Then
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
+    Else
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
+    End If
+    
+    If UserList(UserIndex).Invent.ArmourEqpObjIndex Then
+        'Desequipamos la armadura real si está equipada
+        If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    End If
+    
+    If UserList(UserIndex).Invent.EscudoEqpObjIndex Then
+        'Desequipamos el escudo de caos si está equipado
+        If ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.EscudoEqpObjIndex)
+    End If
     
     If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 End Sub
 
-Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer)
+Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer, Optional expulsado As Boolean = True)
 
     UserList(UserIndex).Faccion.FuerzasCaos = 0
     'Call PerderItemsFaccionarios(UserIndex)
-    Call WriteConsoleMsg(UserIndex, "Has sido expulsado de la legión oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
-    'Desequipamos la armadura real si está equipada
-    If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    If expulsado Then
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado de la Legión Oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
+    Else
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado de la Legión Oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
+    End If
+    
+    If UserList(UserIndex).Invent.ArmourEqpObjIndex Then
+        'Desequipamos la armadura de caos si está equipada
+        If ObjData(UserList(UserIndex).Invent.ArmourEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.ArmourEqpSlot)
+    End If
+    
+    If UserList(UserIndex).Invent.EscudoEqpObjIndex Then
+        'Desequipamos el escudo de caos si está equipado
+        If ObjData(UserList(UserIndex).Invent.EscudoEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, UserList(UserIndex).Invent.EscudoEqpObjIndex)
+    End If
     
     If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 End Sub
