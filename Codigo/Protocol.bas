@@ -5733,7 +5733,7 @@ On Error GoTo Errhandler
             If .guildIndex > 0 Then
                 Call SendData(SendTarget.ToDiosesYclan, .guildIndex, PrepareMessageGuildChat(.name & "> " & chat))
 'TODO : Con la 0.12.1 se debe definir si esto vuelve o se borra (/CMSG overhead)
-                Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
+                'Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
             End If
         End If
         
