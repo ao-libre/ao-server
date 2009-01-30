@@ -303,3 +303,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/12/2008: Arreglo bug en el cual los npcs pretorianos pisaban otros npcs. (NicoNZ)
  * 18/12/2008: Arreglado el bug en el cual te retirabas de una facción y no tenías nada puesto te pateaba. Se cambió el mensaje si te retirás y también desequipa el escudo. (NicoNZ)
  * 30/01/2009: Vuelven los mensajes de clan. (NicoNZ)
+ * 30/01/2009: Ya no se resetea el contador de invi al salir. (NicoNZ)

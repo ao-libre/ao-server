@@ -1499,8 +1499,6 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
         If isNotVisible Then
             UserList(UserIndex).flags.Oculto = 0
             UserList(UserIndex).flags.invisible = 0
-            UserList(UserIndex).Counters.Invisibilidad = 0
-            UserList(UserIndex).Counters.TiempoOculto = 0
             Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
         End If
