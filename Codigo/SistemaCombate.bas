@@ -1315,7 +1315,7 @@ If Npclist(NpcIndex).Hostile = 0 Then
             Else
             'No tiene seguro puesto. Puede atacar pero es penalizado.
                 Call WriteConsoleMsg(attackerIndex, "Atacaste un NPC No-Hostil. Continua haciendolo y serás Criminal.", FontTypeNames.FONTTYPE_INFO)
-                Call DisNobAuBan(attackerIndex, 10000, 1000)
+                Call DisNobAuBan(attackerIndex, 0, 1000)
                 PuedeAtacarNPC = True
                 Exit Function
             End If
@@ -1431,7 +1431,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo Errhandler
+On Error GoTo errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1449,7 +1449,7 @@ On Error GoTo Errhandler
     End If
 
 Exit Function
-Errhandler:
+errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
