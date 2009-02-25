@@ -309,7 +309,7 @@ Sub CheckUserLevel(ByVal UserIndex As Integer)
 '09/01/2008 Pablo (ToxicWaste) - Ahora el incremento de vida por Consitución se controla desde Balance.dat
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo errhandler
 
 Dim Pts As Integer
 Dim Constitucion As Integer
@@ -604,7 +604,7 @@ Call WriteUpdateUserStats(UserIndex)
 
 Exit Sub
 
-Errhandler:
+errhandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -997,10 +997,6 @@ Else
     If Npclist(NpcIndex).Stats.Alineacion = 0 Then
        If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
             Call VolverCriminal(UserIndex)
-       Else
-            If Not Npclist(NpcIndex).MaestroUser > 0 Then   'mascotas nooo!
-                Call VolverCriminal(UserIndex)
-            End If
        End If
     ElseIf Npclist(NpcIndex).Stats.Alineacion = 1 Then
        UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlCAZADOR / 2
