@@ -1,5 +1,5 @@
 Attribute VB_Name = "ModFacciones"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -65,7 +65,8 @@ Public Const ExpX100 As Integer = 5000
 Public Sub EnlistarArmadaReal(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
-'Last Modification: 06/18/2008 (NicoNZ)
+'Last Modification: 15/03/2009
+'15/03/2009: ZaMa - No se puede enlistar el fundador de un clan con alineación neutral.
 'Handles the entrance of users to the "Armada Real"
 '***************************************************
 If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
@@ -107,6 +108,17 @@ If UserList(UserIndex).Reputacion.NobleRep < 1000000 Then
     Call WriteChatOverHead(UserIndex, "Necesitas ser aún más Noble para integrar el Ejército del Rey, solo tienes " & UserList(UserIndex).Reputacion.NobleRep & "/1.000.000 Puntos de Nobleza", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
     Exit Sub
 End If
+
+With UserList(UserIndex)
+    If .GuildIndex > 0 Then
+        If modGuilds.GuildFounder(.GuildIndex) = .name Then
+            If modGuilds.GuildAlignment(.GuildIndex) = "Neutro" Then
+                Call WriteChatOverHead(UserIndex, "¡¡¡Eres el fundador de un clan neutro!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+                Exit Sub
+            End If
+        End If
+    End If
+End With
 
 UserList(UserIndex).Faccion.ArmadaReal = 1
 UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlistadas + 1
@@ -166,8 +178,8 @@ If UserList(UserIndex).Faccion.RecibioExpInicialReal = 0 Then
 End If
 
 'Agregado para que no hayan armadas en un clan Neutro
-If UserList(UserIndex).guildIndex > 0 Then
-    If modGuilds.GuildAlignment(UserList(UserIndex).guildIndex) = "Neutro" Then
+If UserList(UserIndex).GuildIndex > 0 Then
+    If modGuilds.GuildAlignment(UserList(UserIndex).GuildIndex) = "Neutro" Then
         Call modGuilds.m_EcharMiembroDeClan(-1, UserList(UserIndex).name)
         Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan por tu nueva facción.", FontTypeNames.FONTTYPE_GUILD)
     End If
@@ -316,11 +328,11 @@ Call CheckUserLevel(UserIndex)
 
 End Sub
 
-Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer, Optional expulsado As Boolean = True)
+Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer, Optional Expulsado As Boolean = True)
 
     UserList(UserIndex).Faccion.ArmadaReal = 0
     'Call PerderItemsFaccionarios(UserIndex)
-    If expulsado Then
+    If Expulsado Then
         Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
     Else
         Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado de las tropas reales!!!.", FontTypeNames.FONTTYPE_FIGHT)
@@ -339,11 +351,11 @@ Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer, Optional expulsado As
     If UserList(UserIndex).flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 End Sub
 
-Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer, Optional expulsado As Boolean = True)
+Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer, Optional Expulsado As Boolean = True)
 
     UserList(UserIndex).Faccion.FuerzasCaos = 0
     'Call PerderItemsFaccionarios(UserIndex)
-    If expulsado Then
+    If Expulsado Then
         Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado de la Legión Oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
     Else
         Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado de la Legión Oscura!!!.", FontTypeNames.FONTTYPE_FIGHT)
@@ -395,7 +407,7 @@ Select Case UserList(UserIndex).Faccion.RecompensasReal
     Case 3
         TituloReal = "Sargento"
     Case 4
-        TituloReal = "Caballero"
+        TituloReal = "Teniente"
     Case 5
         TituloReal = "Comandante"
     Case 6
@@ -424,7 +436,8 @@ End Function
 Public Sub EnlistarCaos(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
-'Last Modification: 06/18/2008 (NicoNZ)
+'Last Modification: 15/3/2009
+'15/03/2009: ZaMa - No se puede enlistar el fundador de un clan con alineación neutral.
 'Handles the entrance of users to the "Legión Oscura"
 '***************************************************
 If Not criminal(UserIndex) Then
@@ -463,6 +476,17 @@ If UserList(UserIndex).Stats.ELV < 25 Then
     Call WriteChatOverHead(UserIndex, "¡¡¡Para unirte a nuestras fuerzas debes ser al menos de nivel 25!!!", str(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex), vbWhite)
     Exit Sub
 End If
+
+With UserList(UserIndex)
+    If .GuildIndex > 0 Then
+        If modGuilds.GuildFounder(.GuildIndex) = .name Then
+            If modGuilds.GuildAlignment(.GuildIndex) = "Neutro" Then
+                Call WriteChatOverHead(UserIndex, "¡¡¡Eres el fundador de un clan neutro!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+                Exit Sub
+            End If
+        End If
+    End If
+End With
 
 
 If UserList(UserIndex).Faccion.Reenlistadas > 4 Then
@@ -529,8 +553,8 @@ If UserList(UserIndex).Faccion.RecibioExpInicialCaos = 0 Then
 End If
 
 'Agregado para que no hayan armadas en un clan Neutro
-If UserList(UserIndex).guildIndex > 0 Then
-    If modGuilds.GuildAlignment(UserList(UserIndex).guildIndex) = "Neutro" Then
+If UserList(UserIndex).GuildIndex > 0 Then
+    If modGuilds.GuildAlignment(UserList(UserIndex).GuildIndex) = "Neutro" Then
         Call modGuilds.m_EcharMiembroDeClan(-1, UserList(UserIndex).name)
         Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan por tu nueva facción.", FontTypeNames.FONTTYPE_GUILD)
     End If
@@ -721,3 +745,4 @@ Select Case UserList(UserIndex).Faccion.RecompensasCaos
 End Select
 
 End Function
+

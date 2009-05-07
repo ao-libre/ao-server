@@ -44,10 +44,10 @@ Begin VB.Form frmCargando
          BackStyle       =   0  'Transparent
          Caption         =   "Cargando, por favor espere..."
          BeginProperty Font 
-            Name            =   "Bookman Old Style"
+            Name            =   "MS Sans Serif"
             Size            =   8.25
             Charset         =   0
-            Weight          =   300
+            Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -89,7 +89,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify

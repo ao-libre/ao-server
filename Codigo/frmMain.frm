@@ -28,6 +28,12 @@ Begin VB.Form frmMain
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.Timer tPiqueteC 
+      Enabled         =   0   'False
+      Interval        =   6000
+      Left            =   480
+      Top             =   540
+   End
    Begin VB.Timer packetResend 
       Interval        =   10
       Left            =   480
@@ -72,12 +78,6 @@ Begin VB.Form frmMain
       Interval        =   40
       Left            =   1440
       Top             =   60
-   End
-   Begin VB.Timer tPiqueteC 
-      Enabled         =   0   'False
-      Interval        =   6000
-      Left            =   480
-      Top             =   540
    End
    Begin VB.Timer tLluviaEvent 
       Enabled         =   0   'False
@@ -241,7 +241,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -353,7 +353,6 @@ End If
 Call PasarSegundo 'sistema de desconexion de 10 segs
 
 Call ActualizaEstadisticasWeb
-Call ActualizaStatsES
 
 Exit Sub
 
@@ -375,23 +374,6 @@ Static MinsPjesSave As Long
 Dim i As Integer
 Dim num As Long
 
-MinsRunning = MinsRunning + 1
-
-If MinsRunning = 60 Then
-    Horas = Horas + 1
-    If Horas = 24 Then
-        Call SaveDayStats
-        DayStats.MaxUsuarios = 0
-        DayStats.Segundos = 0
-        DayStats.Promedio = 0
-        
-        Horas = 0
-        
-    End If
-    MinsRunning = 0
-End If
-
-    
 Minutos = Minutos + 1
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -566,9 +548,7 @@ On Error GoTo hayerror
                     bEnviarStats = False
                     bEnviarAyS = False
                     
-                    .NumeroPaquetesPorMiliSec = 0
-                    
-                    Call DoTileEvents(iUserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                    Call DoTileEvents(iUserIndex, .Pos.map, .Pos.X, .Pos.Y)
                     
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -748,7 +728,7 @@ End Sub
 Private Sub npcataca_Timer()
 
 On Error Resume Next
-Dim npc As Integer
+Dim npc As Long
 
 For npc = 1 To LastNPC
     Npclist(npc).CanAttack = 1
@@ -827,7 +807,7 @@ If Not haciendoBK And Not EnPausa Then
                        Call EfectoParalisisNpc(NpcIndex)
                     End If
                     
-                    mapa = Npclist(NpcIndex).Pos.Map
+                    mapa = Npclist(NpcIndex).Pos.map
                     
                     If mapa > 0 Then
                         If MapInfo(mapa).NumUsers > 0 Then
@@ -845,7 +825,7 @@ End If
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 
@@ -905,62 +885,54 @@ Call LogError("Error tLluviaTimer")
 End Sub
 
 Private Sub tPiqueteC_Timer()
-On Error GoTo Errhandler
-Static Segundos As Integer
-Dim NuevaA As Boolean
-Dim NuevoL As Boolean
-Dim GI As Integer
-
-Segundos = Segundos + 6
-
-Dim i As Long
-
-For i = 1 To LastUser
-    If UserList(i).flags.UserLogged Then
-        If MapData(UserList(i).Pos.Map, UserList(i).Pos.X, UserList(i).Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-            UserList(i).Counters.PiqueteC = UserList(i).Counters.PiqueteC + 1
-            Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!", FontTypeNames.FONTTYPE_INFO)
-            
-            If UserList(i).Counters.PiqueteC > 23 Then
-                UserList(i).Counters.PiqueteC = 0
-                Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
-            End If
-        Else
-            If UserList(i).Counters.PiqueteC > 0 Then UserList(i).Counters.PiqueteC = 0
-        End If
-
-        'ustedes se preguntaran que hace esto aca?
-        'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
-        'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
-        'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
-
-        GI = UserList(i).guildIndex
-        If GI > 0 Then
-            NuevaA = False
-            NuevoL = False
-            If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
-                Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
-            End If
-            If NuevaA Then
-                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
-                Call LogClanes("El clan cambio de alineacion!")
-            End If
-            If NuevoL Then
-                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
-                Call LogClanes("El clan tiene nuevo lider!")
-            End If
-        End If
-
-        If Segundos >= 18 Then
-            If Segundos >= 18 Then UserList(i).Counters.Pasos = 0
-        End If
-                Call FlushBuffer(i)
-    End If
+    Dim NuevaA As Boolean
+    Dim NuevoL As Boolean
+    Dim GI As Integer
     
-Next i
-
-If Segundos >= 18 Then Segundos = 0
-
+    Dim i As Long
+    
+On Error GoTo Errhandler
+    For i = 1 To LastUser
+        With UserList(i)
+            If .flags.UserLogged Then
+                If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+                    .Counters.PiqueteC = .Counters.PiqueteC + 1
+                    Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                    
+                    If .Counters.PiqueteC > 23 Then
+                        .Counters.PiqueteC = 0
+                        Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
+                    End If
+                Else
+                    .Counters.PiqueteC = 0
+                End If
+                
+                'ustedes se preguntaran que hace esto aca?
+                'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
+                'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
+                'huevos, asi que lo controlo aca, cada 6 segundos, lo cual es razonable
+        
+                GI = .GuildIndex
+                If GI > 0 Then
+                    NuevaA = False
+                    NuevoL = False
+                    If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
+                        Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
+                    End If
+                    If NuevaA Then
+                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
+                        Call LogClanes("El clan cambio de alineacion!")
+                    End If
+                    If NuevoL Then
+                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
+                        Call LogClanes("El clan tiene nuevo lider!")
+                    End If
+                End If
+                
+                Call FlushBuffer(i)
+            End If
+        End With
+    Next i
 Exit Sub
 
 Errhandler:

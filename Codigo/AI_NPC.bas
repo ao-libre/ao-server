@@ -1,5 +1,5 @@
 Attribute VB_Name = "AI"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -47,27 +47,6 @@ Public Const ELEMENTALAGUA As Integer = 92
 'Damos a los NPCs el mismo rango de visión que un PJ
 Public Const RANGO_VISION_X As Byte = 8
 Public Const RANGO_VISION_Y As Byte = 6
-
-Public Enum e_Alineacion
-    ninguna = 0
-    Real = 1
-    Caos = 2
-    Neutro = 3
-End Enum
-
-Public Enum e_Personalidad
-''Inerte: no tiene objetivos de ningun tipo (npcs vendedores, curas, etc)
-''Agresivo no magico: Su objetivo es acercarse a las victimas para atacarlas
-''Agresivo magico: Su objetivo es mantenerse lo mas lejos posible de sus victimas y atacarlas con magia
-''Mascota: Solo ataca a quien ataque a su amo.
-''Pacifico: No ataca.
-    ninguna = 0
-    Inerte = 1
-    AgresivoNoMagico = 2
-    AgresivoMagico = 3
-    Macota = 4
-    Pacifico = 5
-End Enum
 
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
@@ -133,7 +112,16 @@ Private Sub GuardiasAI(ByVal NpcIndex As Integer, ByVal DelCaos As Boolean)
     Call RestoreOldMovement(NpcIndex)
 End Sub
 
+''
+' Handles the evil npcs' artificial intelligency.
+'
+' @param NpcIndex Specifies reference to the npc
 Private Sub HostilMalvadoAI(ByVal NpcIndex As Integer)
+'**************************************************************
+'Author: Unknown
+'Last Modify Date: 28/04/2009
+'28/04/2009: ZaMa - Now those NPCs who doble attack, have 50% of posibility of casting a spell on user.
+'**************************************************************
     Dim nPos As WorldPos
     Dim headingloop As Byte
     Dim UI As Integer
@@ -153,10 +141,20 @@ Private Sub HostilMalvadoAI(ByVal NpcIndex As Integer)
                     If UI > 0 And Not atacoPJ Then
                         If UserList(UI).flags.Muerto = 0 And UserList(UI).flags.AdminPerseguible Then
                             atacoPJ = True
-                            If .flags.LanzaSpells <> 0 Then
+                            If .flags.LanzaSpells Then
+                                If .flags.AtacaDoble Then
+                                    If (RandomNumber(0, 1)) Then
+                                        If NpcAtacaUser(NpcIndex, UI) Then
+                                            Call ChangeNPCChar(NpcIndex, .Char.body, .Char.Head, headingloop)
+                                        End If
+                                        Exit Sub
+                                    End If
+                                End If
+                                
+                                Call ChangeNPCChar(NpcIndex, .Char.body, .Char.Head, headingloop)
                                 Call NpcLanzaUnSpell(NpcIndex, UI)
                             End If
-                            If NpcAtacaUser(NpcIndex, MapData(nPos.map, nPos.X, nPos.Y).UserIndex) Then
+                            If NpcAtacaUser(NpcIndex, UI) Then
                                 Call ChangeNPCChar(NpcIndex, .Char.body, .Char.Head, headingloop)
                             End If
                             Exit Sub
@@ -293,8 +291,6 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
 'Last Modify Date: 08/16/2008
 '08/16/2008: MarKoxX - Now pets that do melé attacks have to be near the enemy to attack.
 '**************************************************************
-
-
     Dim tHeading As Byte
     Dim UI As Integer
     

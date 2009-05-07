@@ -244,11 +244,13 @@ End Sub
 
 Public Sub AceptarNuevoMiembro(ByRef Nombre As String)
 Dim OldQ    As Integer
-Dim OldQs  As String
-    
-    If LenB(dir$(CharPath & Nombre & ".chr")) <> 0 Then
-        Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "GUILDINDEX", p_GuildNumber)
-        Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "AspiranteA", "0")
+Dim OldQs   As String
+Dim ruta    As String
+
+ruta = CharPath & Nombre & ".chr"
+    If FileExist(ruta) Then
+        Call WriteVar(ruta, "GUILD", "GUILDINDEX", p_GuildNumber)
+        Call WriteVar(ruta, "GUILD", "AspiranteA", "0")
         'CantPs = GetVar(CharPath & Nombre & ".chr", "GUILD", "ClanesParticipo")
         'If IsNumeric(CantPs) Then
         '    CantP = CInt(CantPs)
@@ -643,9 +645,9 @@ Public Function GetRelacion(ByVal OtroGuild As Integer) As RELACIONES_GUILD
     GetRelacion = p_Relaciones(OtroGuild)
 End Function
 
-Public Sub SetRelacion(ByVal guildIndex As Integer, ByVal Relacion As RELACIONES_GUILD)
-    p_Relaciones(guildIndex) = Relacion
-    Call WriteVar(RELACIONESFILE, "RELACIONES", guildIndex, Relacion2String(Relacion))
+Public Sub SetRelacion(ByVal GuildIndex As Integer, ByVal Relacion As RELACIONES_GUILD)
+    p_Relaciones(GuildIndex) = Relacion
+    Call WriteVar(RELACIONESFILE, "RELACIONES", GuildIndex, Relacion2String(Relacion))
 End Sub
 
 Public Sub SetPropuesta(ByVal Tipo As RELACIONES_GUILD, ByVal OtroGuild As Integer, ByRef Detalle As String)

@@ -57,7 +57,6 @@ Public Enum SendTarget
     ToCriminalesYRMs
     ToRealYRMs
     ToCaosYRMs
-    ToHigherAdmins
 End Enum
 
 Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
@@ -79,16 +78,6 @@ On Error Resume Next
             For LoopC = 1 To LastUser
                 If UserList(LoopC).ConnID <> -1 Then
                     If UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
-                        Call EnviarDatosASlot(LoopC, sndData)
-                   End If
-                End If
-            Next LoopC
-            Exit Sub
-        
-        Case SendTarget.ToHigherAdmins
-            For LoopC = 1 To LastUser
-                If UserList(LoopC).ConnID <> -1 Then
-                    If (UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 And ((Not UserList(LoopC).flags.Privilegios And PlayerType.RoleMaster)) <> 0 Then
                         Call EnviarDatosASlot(LoopC, sndData)
                    End If
                 End If
@@ -416,7 +405,7 @@ Private Sub SendToUserGuildArea(ByVal UserIndex As Integer, ByVal sdData As Stri
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(tempIndex).ConnIDValida And UserList(tempIndex).guildIndex = UserList(UserIndex).guildIndex Then
+                If UserList(tempIndex).ConnIDValida And (UserList(tempIndex).guildIndex = UserList(UserIndex).guildIndex Or ((UserList(tempIndex).flags.Privilegios And PlayerType.Dios) And (UserList(tempIndex).flags.Privilegios And PlayerType.RoleMaster) = 0)) Then
                     Call EnviarDatosASlot(tempIndex, sdData)
                 End If
             End If

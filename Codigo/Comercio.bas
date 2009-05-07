@@ -283,7 +283,5 @@ Public Function SalePrice(ByVal Valor As Long) As Single
 'Author: Nicolás (NicoNZ)
 '
 '*************************************************
-
     SalePrice = Valor / REDUCTOR_PRECIOVENTA
-
 End Function

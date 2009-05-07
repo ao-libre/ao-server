@@ -1,5 +1,5 @@
 Attribute VB_Name = "SecurityIp"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -226,23 +226,23 @@ Private Sub AddNewIpLimiteConexiones(ByVal ip As Long, ByVal index As Long)
 End Sub
 
 Public Sub IpRestarConexion(ByVal ip As Long)
-Dim Key As Long
+Dim key As Long
     Debug.Print "resta conexion a " & ip
     
-    Key = FindTableIp(ip, IP_LIMITECONEXIONES)
+    key = FindTableIp(ip, IP_LIMITECONEXIONES)
     
-    If Key >= 0 Then
-        If MaxConTables(Key + 1) > 0 Then
-            MaxConTables(Key + 1) = MaxConTables(Key + 1) - 1
+    If key >= 0 Then
+        If MaxConTables(key + 1) > 0 Then
+            MaxConTables(key + 1) = MaxConTables(key + 1) - 1
         End If
-        Call LogIP("restamos conexion a " & ip & " key=" & Key & ". Conexiones: " & MaxConTables(Key + 1))
-        If MaxConTables(Key + 1) <= 0 Then
+        Call LogIP("restamos conexion a " & ip & " key=" & key & ". Conexiones: " & MaxConTables(key + 1))
+        If MaxConTables(key + 1) <= 0 Then
             'la limpiamos
-            Call CopyMemory(MaxConTables(Key), MaxConTables(Key + 2), (MaxConTablesEntry - (Key \ 2) + 1) * 8)
+            Call CopyMemory(MaxConTables(key), MaxConTables(key + 2), (MaxConTablesEntry - (key \ 2) + 1) * 8)
             MaxConTablesEntry = MaxConTablesEntry - 1
         End If
     Else 'Key <= 0
-        Call LogIP("restamos conexion a " & ip & " key=" & Key & ". NEGATIVO!!")
+        Call LogIP("restamos conexion a " & ip & " key=" & key & ". NEGATIVO!!")
         'LogCriticEvent "SecurityIp.IpRestarconexion obtuvo un valor negativo en key"
     End If
 End Sub

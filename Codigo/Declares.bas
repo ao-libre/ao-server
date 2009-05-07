@@ -1,5 +1,5 @@
 Attribute VB_Name = "Declaraciones"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -32,14 +32,6 @@ Option Explicit
 ''
 ' Modulo de declaraciones. Aca hay de todo.
 '
-
-Type tEstadisticasDiarias
-    Segundos As Double
-    MaxUsuarios As Integer
-    Promedio As Integer
-End Type
-    
-Public DayStats As tEstadisticasDiarias
 
 #If SeguridadAlkon Then
 Public aDos As New clsAntiDoS
@@ -86,12 +78,6 @@ Public Enum iMinerales
     LingoteDePlata = 387
     LingoteDeOro = 388
 End Enum
-
-
-Public Type tLlamadaGM
-    Usuario As String * 255
-    desc As String * 255
-End Type
 
 Public Enum PlayerType
     User = &H1
@@ -225,12 +211,12 @@ Public Enum eTrigger6
 End Enum
 
 'TODO : Reemplazar por un enum
-Public Const Bosque = "BOSQUE"
-Public Const Nieve = "NIEVE"
-Public Const Desierto = "DESIERTO"
-Public Const Ciudad = "CIUDAD"
-Public Const Campo = "CAMPO"
-Public Const Dungeon = "DUNGEON"
+Public Const Bosque As String = "BOSQUE"
+Public Const Nieve As String = "NIEVE"
+Public Const Desierto As String = "DESIERTO"
+Public Const Ciudad As String = "CIUDAD"
+Public Const Campo As String = "CAMPO"
+Public Const Dungeon As String = "DUNGEON"
 
 ' <<<<<< Targets >>>>>>
 Public Enum TargetType
@@ -1039,7 +1025,6 @@ Public Type UserCounters
     PiqueteC As Long
     Pena As Long
     SendMapCounter As WorldPos
-    Pasos As Integer
     '[Gonzalo]
     Saliendo As Boolean
     Salir As Integer
@@ -1057,10 +1042,13 @@ Public Type UserCounters
     TimerUsar As Long
     TimerMagiaGolpe As Long
     TimerGolpeMagia As Long
+    TimerGolpeUsar As Long
     
     
     Trabajando As Long  ' Para el centinela
     Ocultando As Long   ' Unico trabajo no revisado por el centinela
+    
+    failedUsageAttempts As Long
 End Type
 
 'Cosas faccionarias.
@@ -1088,8 +1076,6 @@ Public Type User
     ID As Long
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
-    
-    modName As String
     
     Char As Char 'Define la apariencia
     CharMimetizado As Char
@@ -1123,9 +1109,6 @@ Public Type User
     
     Stats As UserStats
     flags As UserFlags
-    NumeroPaquetesPorMiliSec As Long
-    BytesTransmitidosUser As Long
-    BytesTransmitidosSvr As Long
     
     Reputacion As tReputacion
     
@@ -1148,7 +1131,7 @@ Public Type User
     
     EmpoCont As Byte
     
-    guildIndex As Integer   'puntero al array global de guilds
+    GuildIndex As Integer   'puntero al array global de guilds
     FundandoGuildAlineacion As ALINEACION_GUILD     'esto esta aca hasta que se parchee el cliente y se pongan cadenas de datos distintas para cada alineacion
     EscucheClan As Integer
     
@@ -1183,7 +1166,6 @@ Public Type NPCStats
     MinHIT As Integer
     def As Integer
     defM As Integer
-    UsuariosMatados As Integer
 End Type
 
 Public Type NpcCounters
@@ -1193,20 +1175,15 @@ End Type
 
 Public Type NPCFlags
     AfectaParalisis As Byte
-    GolpeExacto As Byte
     Domable As Integer
     Respawn As Byte
     NPCActive As Boolean '¿Esta vivo?
     Follow As Boolean
     Faccion As Byte
+    AtacaDoble As Byte
     LanzaSpells As Byte
     
-    '[KEVIN]
-    'DeQuest As Byte
-    
-    'ExpDada As Long
-    ExpCount As Long '[ALEJO]
-    '[/KEVIN]
+    ExpCount As Long
     
     OldMovement As TipoAI
     OldHostil As Byte
@@ -1214,16 +1191,9 @@ Public Type NPCFlags
     AguaValida As Byte
     TierraInvalida As Byte
     
-    UseAINow As Boolean
     Sound As Integer
-    Attacking As Integer
     AttackedBy As String
     AttackedFirstBy As String
-    Category1 As String
-    Category2 As String
-    Category3 As String
-    Category4 As String
-    Category5 As String
     BackUp As Byte
     RespawnOrigPos As Byte
     
@@ -1237,11 +1207,6 @@ Public Type NPCFlags
     Snd1 As Integer
     Snd2 As Integer
     Snd3 As Integer
-    
-    AtacaAPJ As Integer
-    AtacaANPC As Integer
-    AIAlineacion As e_Alineacion
-    AIPersonalidad As e_Personalidad
 End Type
 
 Public Type tCriaturasEntrenador
@@ -1273,12 +1238,9 @@ Public Type npc
     name As String
     Char As Char 'Define como se vera
     desc As String
-    DescExtra As String
 
     NPCtype As eNPCType
     Numero As Integer
-
-    level As Integer
 
     InvReSpawn As Byte
 
@@ -1404,12 +1366,6 @@ Public MaxXBorder As Byte
 Public MinYBorder As Byte
 Public MaxYBorder As Byte
 
-Public ResPos As WorldPos ' TODO: Se usa esta variable ?
-
-''
-'Posicion de comienzo
-Public StartPos As WorldPos ' TODO: Se usa esta variable ?
-
 ''
 'Numero de usuarios actual
 Public NumUsers As Integer
@@ -1429,10 +1385,7 @@ Public HideMe As Byte
 Public LastBackup As String
 Public Minutos As String
 Public haciendoBK As Boolean
-Public Oscuridad As Integer
-Public NocheDia As Integer
 Public PuedeCrearPersonajes As Integer
-Public CamaraLenta As Integer
 Public ServerSoloGMs As Integer
 
 ''
@@ -1442,7 +1395,6 @@ Public MD5ClientesActivado As Byte
 
 Public EnPausa As Boolean
 Public EnTesting As Boolean
-Public EncriptarProtocolosCriticos As Boolean
 
 
 '*****************ARRAYS PUBLICOS*************************

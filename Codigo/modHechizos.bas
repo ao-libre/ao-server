@@ -1,5 +1,5 @@
 Attribute VB_Name = "modHechizos"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -34,9 +34,16 @@ Public Const HELEMENTAL_TIERRA As Integer = 28
 Public Const SUPERANILLO As Integer = 700
 
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
-
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 13/02/2009
+'13/02/2009: ZaMa - Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla.
+'***************************************************
 If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
 If UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
+
+' Si no se peude usar magia en el mapa, no le deja hacerlo.
+If MapInfo(UserList(UserIndex).Pos.map).MagiaSinEfecto > 0 Then Exit Sub
 
 Npclist(NpcIndex).CanAttack = 0
 Dim daño As Integer
@@ -99,8 +106,29 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
     
 End If
 
-If Hechizos(Spell).Paraliza = 1 Then
-     If UserList(UserIndex).flags.Paralizado = 0 Then
+If Hechizos(Spell).Paraliza = 1 Or Hechizos(Spell).Inmoviliza = 1 Then
+    If UserList(UserIndex).flags.Paralizado = 0 Then
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
+          
+        If UserList(UserIndex).Invent.AnilloEqpObjIndex = SUPERANILLO Then
+            Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+            Exit Sub
+        End If
+        
+        If Hechizos(Spell).Inmoviliza = 1 Then
+            UserList(UserIndex).flags.Inmovilizado = 1
+        End If
+          
+        UserList(UserIndex).flags.Paralizado = 1
+        UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
+          
+        Call WriteParalizeOK(UserIndex)
+    End If
+End If
+
+If Hechizos(Spell).Estupidez = 1 Then   ' turbacion
+     If UserList(UserIndex).flags.Estupidez = 0 Then
           Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
           Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
           
@@ -108,16 +136,13 @@ If Hechizos(Spell).Paraliza = 1 Then
                 Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                 Exit Sub
             End If
-          UserList(UserIndex).flags.Paralizado = 1
-          UserList(UserIndex).Counters.Paralisis = IntervaloParalizado
           
-          Call WriteParalizeOK(UserIndex)
-
+          UserList(UserIndex).flags.Estupidez = 1
+          UserList(UserIndex).Counters.Ceguera = IntervaloInvisible
+                  
+        Call WriteDumb(UserIndex)
      End If
-     
-     
 End If
-
 
 End Sub
 
@@ -246,7 +271,11 @@ Dim DruidManaBonus As Single
     End If
     
     If UserList(UserIndex).Stats.MinSta < Hechizos(HechizoIndex).StaRequerido Then
-        Call WriteConsoleMsg(UserIndex, "Estás muy cansado para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+        If UserList(UserIndex).genero = eGenero.Hombre Then
+            Call WriteConsoleMsg(UserIndex, "Estás muy cansado para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+        Else
+            Call WriteConsoleMsg(UserIndex, "Estás muy cansada para lanzar este hechizo.", FontTypeNames.FONTTYPE_INFO)
+        End If
         PuedeLanzar = False
         Exit Function
     End If
@@ -267,7 +296,7 @@ Dim DruidManaBonus As Single
         PuedeLanzar = False
         Exit Function
     End If
-    
+        
     PuedeLanzar = True
 End Function
 
@@ -321,7 +350,7 @@ Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 If UserList(UserIndex).NroMascotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
-If MapInfo(UserList(UserIndex).Pos.Map).Pk = False Or MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
+If MapInfo(UserList(UserIndex).Pos.map).Pk = False Or MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
     Call WriteConsoleMsg(UserIndex, "En zona segura no puedes invocar criaturas.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -330,7 +359,7 @@ Dim H As Integer, j As Integer, ind As Integer, index As Integer
 Dim TargetPos As WorldPos
 
 
-TargetPos.Map = UserList(UserIndex).flags.TargetMap
+TargetPos.map = UserList(UserIndex).flags.TargetMap
 TargetPos.X = UserList(UserIndex).flags.TargetX
 TargetPos.Y = UserList(UserIndex).flags.TargetY
 
@@ -435,7 +464,7 @@ If b Then
     'If Hechizos(uh).Resis = 1 Then Call SubirSkill(UserList(UserIndex).Flags.TargetUser, Resis)
     'Agregado para que los druidas, al tener equipada la flauta magica, el coste de mana de mimetismo es de 50% menos.
     If UserList(UserIndex).clase = eClass.Druid And UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA And Hechizos(uh).Mimetiza = 1 Then
-        UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN * 0.5
+        UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido * 0.5
     Else
         UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido
     End If
@@ -452,8 +481,8 @@ End Sub
 Sub HandleHechizoNPC(ByVal UserIndex As Integer, ByVal uh As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 05/01/08
-'
+'Last Modification: 13/02/2009
+'13/02/2009: ZaMa - Agregada 50% bonificacion en coste de mana a mimetismo para druidas
 '***************************************************
 Dim b As Boolean
 
@@ -468,7 +497,14 @@ End Select
 If b Then
     Call SubirSkill(UserIndex, Magia)
     UserList(UserIndex).flags.TargetNPC = 0
-    UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido
+    
+    ' Bonificación para druidas.
+    If UserList(UserIndex).clase = eClass.Druid And UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA And Hechizos(uh).Mimetiza = 1 Then
+        UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido * 0.5
+    Else
+        UserList(UserIndex).Stats.MinMAN = UserList(UserIndex).Stats.MinMAN - Hechizos(uh).ManaRequerido
+    End If
+
     If UserList(UserIndex).Stats.MinMAN < 0 Then UserList(UserIndex).Stats.MinMAN = 0
     UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Hechizos(uh).StaRequerido
     If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
@@ -542,7 +578,7 @@ End Sub
 Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 06/28/2008
+'Last Modification: 13/02/2009
 'Handles the Spells that afect the Stats of an User
 '24/01/2007 Pablo (ToxicWaste) - Invisibilidad no permitida en Mapas con InviSinEfecto
 '26/01/2007 Pablo (ToxicWaste) - Cambios que permiten mejor manejo de ataques en los rings.
@@ -550,6 +586,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 '02/01/2008 Marcos (ByVal) - Curar Veneno no permitido en usuarios muertos.
 '06/28/2008 NicoNZ - Agregué que se le de valor al flag Inmovilizado.
 '17/11/2008: NicoNZ - Agregado para quitar la penalización de vida en el ring y cambio de ecuacion.
+'13/02/2009: ZaMa - Arreglada ecuacion para quitar vida tras resucitar en rings.
 '***************************************************
 
 
@@ -579,7 +616,7 @@ If Hechizos(H).Invisibilidad = 1 Then
     End If
     
     'No usar invi mapas InviSinEfecto
-    If MapInfo(UserList(tU).Pos.Map).InviSinEfecto > 0 Then
+    If MapInfo(UserList(tU).Pos.map).InviSinEfecto > 0 Then
         Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
         b = False
         Exit Sub
@@ -852,7 +889,7 @@ If Hechizos(H).Revivir = 1 Then
         End If
     
         'No usar resu en mapas con ResuSinEfecto
-        If MapInfo(UserList(tU).Pos.Map).ResuSinEfecto > 0 Then
+        If MapInfo(UserList(tU).Pos.map).ResuSinEfecto > 0 Then
             Call WriteConsoleMsg(UserIndex, "¡Revivir no está permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
             b = False
             Exit Sub
@@ -936,7 +973,7 @@ If Hechizos(H).Revivir = 1 Then
         If (TriggerZonaPelea(UserIndex, tU) <> TRIGGER6_PERMITE) Then
             'Solo saco vida si es User. no quiero que exploten GMs por ahi.
             If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
-                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP - UserList(tU).Stats.ELV * 1.5
+                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MinHP * (1 - UserList(tU).Stats.ELV * 0.015)
             End If
         End If
         
@@ -1806,7 +1843,7 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     EraCriminal = criminal(UserIndex)
     
     'Si estamos en la arena no hacemos nada
-    If MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
+    If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).trigger = 6 Then Exit Sub
     
 If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
     'pierdo nobleza...

@@ -412,6 +412,6 @@ Public Function KeyExists(ByVal name As String) As Boolean
 'Last Modify Date: 04/01/2008
 'Returns true of the key exists, false otherwise.
 '**************************************************************
-    KeyExists = FindMain(name) >= 0
+    KeyExists = FindMain(UCase$(name)) >= 0
 End Function
 

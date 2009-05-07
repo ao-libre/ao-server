@@ -40,7 +40,7 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 245
+Private Const LAST_CLIENT_PACKET_ID As Byte = 244
 
 ''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
@@ -95,6 +95,7 @@ Private Enum ServerPacketID
     CharacterCreate         ' CC
     CharacterRemove         ' BP
     CharacterMove           ' MP, +, * and _ '
+    ForceCharMove
     CharacterChange         ' CP
     ObjectCreate            ' HO
     ObjectDelete            ' BO
@@ -398,7 +399,6 @@ Private Enum ClientPacketID
     ShowServerForm          '/SHOW INT
     night                   '/NOCHE
     KickAllChars            '/ECHARTODOSPJS
-    RequestTCPStats         '/TCPESSTATS
     ReloadNPCs              '/RELOADNPCS
     ReloadServerIni         '/RELOADSINI
     ReloadSpells            '/RELOADHECHIZOS
@@ -430,6 +430,8 @@ Public Enum FontTypeNames
     FONTTYPE_GMMSG
     FONTTYPE_GM
     FONTTYPE_CITIZEN
+    FONTTYPE_CONSE
+    FONTTYPE_DIOS
 End Enum
 
 Public Enum eEditOptions
@@ -461,7 +463,6 @@ Public Sub HandleIncomingData(ByVal UserIndex As Integer)
 '
 '***************************************************
 On Error Resume Next
-    Static handledCount As Long
     Dim packetID As Byte
     
     packetID = UserList(UserIndex).incomingData.PeekByte()
@@ -1201,9 +1202,6 @@ On Error Resume Next
         Case ClientPacketID.KickAllChars            '/ECHARTODOSPJS
             Call HandleKickAllChars(UserIndex)
         
-        Case ClientPacketID.RequestTCPStats         '/TCPESSTATS
-            Call HandleRequestTCPStats(UserIndex)
-        
         Case ClientPacketID.ReloadNPCs              '/RELOADNPCS
             Call HandleReloadNPCs(UserIndex)
         
@@ -1244,15 +1242,7 @@ On Error Resume Next
     'Done with this packet, move on to next one or send everything if no more packets found
     If UserList(UserIndex).incomingData.length > 0 And Err.Number = 0 Then
         Err.Clear
-        
-        handledCount = handledCount + 1
-        
-        If handledCount < 15 Then
-            Call HandleIncomingData(UserIndex)
-        Else
-            'Flush buffer - send everything that has been written
-            Call FlushBuffer(UserIndex)
-        End If
+        Call HandleIncomingData(UserIndex)
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
@@ -1266,8 +1256,6 @@ On Error Resume Next
         'Flush buffer - send everything that has been written
         Call FlushBuffer(UserIndex)
     End If
-    
-    handledCount = 0
 End Sub
 
 ''
@@ -1283,12 +1271,12 @@ Private Sub HandleLoginExistingChar(ByVal UserIndex As Integer)
 '***************************************************
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 68 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
     If UserList(UserIndex).incomingData.length < 22 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #End If
@@ -1363,7 +1351,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -1374,17 +1362,17 @@ End Sub
 Private Sub HandleThrowDices(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/10/08 (ZaMa: Dados más fáciles)
+'Last Modification: 05/17/06
 '
 '***************************************************
     'Remove packet ID
     Call UserList(UserIndex).incomingData.ReadByte
     
     With UserList(UserIndex).Stats
-        .UserAtributos(eAtributos.Fuerza) = MaximoInt(15, 14 + RandomNumber(0, 2) + RandomNumber(0, 2))
-        .UserAtributos(eAtributos.Agilidad) = MaximoInt(15, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
-        .UserAtributos(eAtributos.Inteligencia) = MaximoInt(16, 14 + RandomNumber(0, 2) + RandomNumber(0, 2))
-        .UserAtributos(eAtributos.Carisma) = MaximoInt(15, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Fuerza) = MaximoInt(15, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Agilidad) = MaximoInt(15, 12 + RandomNumber(0, 3) + RandomNumber(0, 3))
+        .UserAtributos(eAtributos.Inteligencia) = MaximoInt(16, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
+        .UserAtributos(eAtributos.Carisma) = MaximoInt(15, 12 + RandomNumber(0, 3) + RandomNumber(0, 3))
         .UserAtributos(eAtributos.Constitucion) = 16 + RandomNumber(0, 1) + RandomNumber(0, 1)
     End With
     
@@ -1404,12 +1392,12 @@ Private Sub HandleLoginNewChar(ByVal UserIndex As Integer)
 '***************************************************
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 81 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
     If UserList(UserIndex).incomingData.length < 49 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #End If
@@ -1511,7 +1499,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -1526,7 +1514,7 @@ Private Sub HandleTalk(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1583,7 +1571,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -1598,7 +1586,7 @@ Private Sub HandleYell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1659,7 +1647,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -1674,7 +1662,7 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -1705,34 +1693,34 @@ On Error GoTo Errhandler
             If targetUserIndex = INVALID_INDEX Then
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (.flags.Privilegios And PlayerType.User) = 0 Or (targetPriv And PlayerType.User) <> 0 Then
-                    'A los GMs no vale susurrarles si sos un PJ común.
+                If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Then
+                    'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
+                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
+                
+                ElseIf (.flags.Privilegios And PlayerType.User) <> 0 And (Not targetPriv And PlayerType.User) <> 0 Then
+                    'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
+                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
+                
+                ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
+                
+                Else
+                    '[Consejeros & GMs]
+                    If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
+                        Call LogGM(.name, "Le dijo a '" & UserList(targetUserIndex).name & "' " & chat)
+                    End If
                     
-                    If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Then
-                        'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
-                        Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
-                    
-                    ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
-                        Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
-                    
-                    Else
-                        '[Consejeros & GMs]
-                        If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
-                            Call LogGM(.name, "Le dijo a '" & UserList(targetUserIndex).name & "' " & chat)
-                        End If
+                    If LenB(chat) <> 0 Then
+                        'Analize chat...
+                        Call Statistics.ParseChat(chat)
                         
-                        If LenB(chat) <> 0 Then
-                            'Analize chat...
-                            Call Statistics.ParseChat(chat)
-                            
-                            Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
-                            Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
-                            Call FlushBuffer(targetUserIndex)
-                            
-                            '[CDT 17-02-2004]
-                            If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
-                                Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
-                            End If
+                        Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
+                        Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
+                        Call FlushBuffer(targetUserIndex)
+                        
+                        '[CDT 17-02-2004]
+                        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
+                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
                         End If
                     End If
                 End If
@@ -1752,7 +1740,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -1767,7 +1755,7 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2271,7 +2259,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2304,7 +2292,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                Call DropObj(UserIndex, Slot, amount, .Pos.Map, .Pos.X, .Pos.Y)
+                Call DropObj(UserIndex, Slot, amount, .Pos.map, .Pos.X, .Pos.Y)
             End If
         End If
     End With
@@ -2322,7 +2310,7 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2361,7 +2349,7 @@ Private Sub HandleLeftClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2375,7 +2363,7 @@ Private Sub HandleLeftClick(ByVal UserIndex As Integer)
         X = .ReadByte()
         Y = .ReadByte()
         
-        Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
+        Call LookatTile(UserIndex, UserList(UserIndex).Pos.map, X, Y)
     End With
 End Sub
 
@@ -2391,7 +2379,7 @@ Private Sub HandleDoubleClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2405,7 +2393,7 @@ Private Sub HandleDoubleClick(ByVal UserIndex As Integer)
         X = .ReadByte()
         Y = .ReadByte()
         
-        Call Accion(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
+        Call Accion(UserIndex, UserList(UserIndex).Pos.map, X, Y)
     End With
 End Sub
 
@@ -2421,7 +2409,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2504,7 +2492,7 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2540,7 +2528,7 @@ Private Sub HandleCraftBlacksmith(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2572,7 +2560,7 @@ Private Sub HandleCraftCarpenter(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2604,7 +2592,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -2626,7 +2614,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         
         
         If .flags.Muerto = 1 Or .flags.Descansar Or .flags.Meditando _
-                        Or Not InMapBounds(.Pos.Map, X, Y) Then
+                        Or Not InMapBounds(.Pos.map, X, Y) Then
             Exit Sub
         End If
         
@@ -2682,11 +2670,15 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 If .Stats.MinSta >= 10 Then
                     Call QuitarSta(UserIndex, RandomNumber(1, 10))
                 Else
-                    Call WriteConsoleMsg(UserIndex, "Estás muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+                    If .genero = eGenero.Hombre Then
+                        Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "Estas muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
+                    End If
                     Exit Sub
                 End If
                 
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
+                Call LookatTile(UserIndex, .Pos.map, X, Y)
                 
                 tU = .flags.TargetUser
                 tN = .flags.TargetNPC
@@ -2744,17 +2736,17 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
             
             Case eSkill.Magia
                 'Check the map allows spells to be casted.
-                If MapInfo(.Pos.Map).MagiaSinEfecto > 0 Then
+                If MapInfo(.Pos.map).MagiaSinEfecto > 0 Then
                     Call WriteConsoleMsg(UserIndex, "Una fuerza oscura te impide canalizar tu energía", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
                 End If
                 
                 'Target whatever is in that tile
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
+                Call LookatTile(UserIndex, .Pos.map, X, Y)
                 
                 'If it's outside range log it and exit
                 If Abs(.Pos.X - X) > RANGO_VISION_X Or Abs(.Pos.Y - Y) > RANGO_VISION_Y Then
-                    Call LogCheating("Ataque fuera de rango de " & .name & "(" & .Pos.Map & "/" & .Pos.X & "/" & .Pos.Y & ") ip: " & .ip & " a la posicion (" & .Pos.Map & "/" & X & "/" & Y & ")")
+                    Call LogCheating("Ataque fuera de rango de " & .name & "(" & .Pos.map & "/" & .Pos.X & "/" & .Pos.Y & ") ip: " & .ip & " a la posicion (" & .Pos.map & "/" & X & "/" & Y & ")")
                     Exit Sub
                 End If
                 
@@ -2788,12 +2780,12 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 
                 'Basado en la idea de Barrin
                 'Comentario por Barrin: jah, "basado", caradura ! ^^
-                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 Then
+                If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = 1 Then
                     Call WriteConsoleMsg(UserIndex, "No puedes pescar desde donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
-                If HayAgua(.Pos.Map, X, Y) Then
+                If HayAgua(.Pos.map, X, Y) Then
                     Select Case DummyInt
                         Case CAÑA_PESCA
                             Call DoPescar(UserIndex)
@@ -2818,13 +2810,13 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
             
             Case eSkill.Robar
                 'Does the map allow us to steal here?
-                If MapInfo(.Pos.Map).Pk Then
+                If MapInfo(.Pos.map).Pk Then
                     
                     'Check interval
                     If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                     
                     'Target whatever is in that tile
-                    Call LookatTile(UserIndex, UserList(UserIndex).Pos.Map, X, Y)
+                    Call LookatTile(UserIndex, UserList(UserIndex).Pos.map, X, Y)
                     
                     tU = .flags.TargetUser
                     
@@ -2839,12 +2831,12 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                                  
                                  '17/09/02
                                  'Check the trigger
-                                 If MapData(UserList(tU).Pos.Map, X, Y).trigger = eTrigger.ZONASEGURA Then
+                                 If MapData(UserList(tU).Pos.map, X, Y).trigger = eTrigger.ZONASEGURA Then
                                      Call WriteConsoleMsg(UserIndex, "No podés robar aquí.", FontTypeNames.FONTTYPE_WARNING)
                                      Exit Sub
                                  End If
                                  
-                                 If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+                                 If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
                                      Call WriteConsoleMsg(UserIndex, "No podés robar aquí.", FontTypeNames.FONTTYPE_WARNING)
                                      Exit Sub
                                  End If
@@ -2873,7 +2865,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                DummyInt = MapData(.Pos.map, X, Y).ObjInfo.ObjIndex
                 
                 If DummyInt > 0 Then
                     If Abs(.Pos.X - X) + Abs(.Pos.Y - Y) > 2 Then
@@ -2907,9 +2899,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 End If
                 
                 'Target whatever is in the tile
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
+                Call LookatTile(UserIndex, .Pos.map, X, Y)
                 
-                DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                DummyInt = MapData(.Pos.map, X, Y).ObjInfo.ObjIndex
                 
                 If DummyInt > 0 Then
                     'Check distance
@@ -2918,7 +2910,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Exit Sub
                     End If
                     
-                    DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex 'CHECK
+                    DummyInt = MapData(.Pos.map, X, Y).ObjInfo.ObjIndex 'CHECK
                     '¿Hay un yacimiento donde clickeo?
                     If ObjData(DummyInt).OBJType = eOBJType.otYacimiento Then
                         Call DoMineria(UserIndex)
@@ -2935,7 +2927,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'criaturas hostiles.
                 
                 'Target whatever is that tile
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
+                Call LookatTile(UserIndex, .Pos.map, X, Y)
                 tN = .flags.TargetNPC
                 
                 If tN > 0 Then
@@ -2994,7 +2986,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
             
             Case eSkill.Herreria
                 'Target wehatever is in that tile
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
+                Call LookatTile(UserIndex, .Pos.map, X, Y)
                 
                 If .flags.TargetObj > 0 Then
                     If ObjData(.flags.TargetObj).OBJType = eOBJType.otYunque Then
@@ -3023,7 +3015,7 @@ Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 9 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3048,7 +3040,7 @@ On Error GoTo Errhandler
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
-            Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.guildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.GuildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
 
             
@@ -3071,7 +3063,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3086,7 +3078,7 @@ Private Sub HandleSpellInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3134,7 +3126,7 @@ Private Sub HandleEquipItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3175,7 +3167,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
 ' 06/28/2008: NicoNZ - Sólo se puede cambiar si está inmovilizado.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3201,7 +3193,7 @@ Private Sub HandleChangeHeading(ByVal UserIndex As Integer)
                     posX = -1
             End Select
             
-                If LegalPos(.Pos.Map, .Pos.X + posX, .Pos.Y + posY, CBool(.flags.Navegando), Not CBool(.flags.Navegando)) Then
+                If LegalPos(.Pos.map, .Pos.X + posX, .Pos.Y + posY, CBool(.flags.Navegando), Not CBool(.flags.Navegando)) Then
                     Exit Sub
                 End If
         End If
@@ -3226,7 +3218,7 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 1 + NUMSKILLS Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3287,7 +3279,7 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3332,7 +3324,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3384,7 +3376,7 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3429,7 +3421,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3475,7 +3467,7 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3520,7 +3512,7 @@ Private Sub HandleForumPost(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3590,7 +3582,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3605,7 +3597,7 @@ Private Sub HandleMoveSpell(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3637,7 +3629,7 @@ Private Sub HandleClanCodexUpdate(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3656,7 +3648,7 @@ On Error GoTo Errhandler
         desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(desc, codex, .guildIndex)
+        Call modGuilds.ChangeCodexAndDesc(desc, codex, .GuildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -3671,7 +3663,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3686,7 +3678,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3783,7 +3775,7 @@ Private Sub HandleGuildAcceptPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3807,8 +3799,8 @@ On Error GoTo Errhandler
         If otherClanIndex = 0 Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & guild, FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & modGuilds.GuildName(.guildIndex), FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & guild, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & modGuilds.GuildName(.GuildIndex), FontTypeNames.FONTTYPE_GUILD))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -3824,7 +3816,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3839,7 +3831,7 @@ Private Sub HandleGuildRejectAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3863,8 +3855,8 @@ On Error GoTo Errhandler
         If otherClanIndex = 0 Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("Tu clan rechazado la propuesta de alianza de " & guild, FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.guildIndex) & " ha rechazado nuestra propuesta de alianza con su clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("Tu clan rechazado la propuesta de alianza de " & guild, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.GuildIndex) & " ha rechazado nuestra propuesta de alianza con su clan.", FontTypeNames.FONTTYPE_GUILD))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -3880,7 +3872,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3895,7 +3887,7 @@ Private Sub HandleGuildRejectPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3919,8 +3911,8 @@ On Error GoTo Errhandler
         If otherClanIndex = 0 Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("Tu clan rechazado la propuesta de paz de " & guild, FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.guildIndex) & " ha rechazado nuestra propuesta de paz con su clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("Tu clan rechazado la propuesta de paz de " & guild, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.GuildIndex) & " ha rechazado nuestra propuesta de paz con su clan.", FontTypeNames.FONTTYPE_GUILD))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -3936,7 +3928,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -3951,7 +3943,7 @@ Private Sub HandleGuildAcceptAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -3975,8 +3967,8 @@ On Error GoTo Errhandler
         If otherClanIndex = 0 Then
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la alianza con " & guild, FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & modGuilds.GuildName(.guildIndex), FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la alianza con " & guild, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, otherClanIndex, PrepareMessageConsoleMsg("Tu clan ha firmado la paz con " & modGuilds.GuildName(.GuildIndex), FontTypeNames.FONTTYPE_GUILD))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -3992,7 +3984,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4007,7 +3999,7 @@ Private Sub HandleGuildOfferPeace(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4046,7 +4038,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4061,7 +4053,7 @@ Private Sub HandleGuildOfferAlliance(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4100,7 +4092,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4115,7 +4107,7 @@ Private Sub HandleGuildAllianceDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4155,7 +4147,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4170,7 +4162,7 @@ Private Sub HandleGuildPeaceDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4210,7 +4202,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4225,7 +4217,7 @@ Private Sub HandleGuildRequestJoinerInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4264,7 +4256,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4313,7 +4305,7 @@ Private Sub HandleGuildDeclareWar(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4338,9 +4330,9 @@ On Error GoTo Errhandler
             Call WriteConsoleMsg(UserIndex, errorStr, FontTypeNames.FONTTYPE_GUILD)
         Else
             'WAR shall be!
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("TU CLAN HA ENTRADO EN GUERRA CON " & guild, FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.guildIndex) & " LE DECLARA LA GUERRA A TU CLAN", FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("TU CLAN HA ENTRADO EN GUERRA CON " & guild, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessageConsoleMsg(modGuilds.GuildName(.GuildIndex) & " LE DECLARA LA GUERRA A TU CLAN", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
             Call SendData(SendTarget.ToGuildMembers, otherGuildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
@@ -4357,7 +4349,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4372,7 +4364,7 @@ Private Sub HandleGuildNewWebsite(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4400,7 +4392,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4415,7 +4407,7 @@ Private Sub HandleGuildAcceptNewMember(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4439,12 +4431,12 @@ On Error GoTo Errhandler
         Else
             tUser = NameIndex(UserName)
             If tUser > 0 Then
-                Call modGuilds.m_ConectarMiembroAClan(tUser, .guildIndex)
+                Call modGuilds.m_ConectarMiembroAClan(tUser, .GuildIndex)
                 Call RefreshCharStatus(tUser)
             End If
             
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessagePlayWave(43, NO_3D_SOUND, NO_3D_SOUND))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg(UserName & " ha sido aceptado como miembro del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessagePlayWave(43, NO_3D_SOUND, NO_3D_SOUND))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -4460,7 +4452,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4476,7 +4468,7 @@ Private Sub HandleGuildRejectNewMember(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4506,7 +4498,7 @@ On Error GoTo Errhandler
                 Call WriteConsoleMsg(tUser, errorStr & " : " & reason, FontTypeNames.FONTTYPE_GUILD)
             Else
                 'hay que grabar en el char su rechazo
-                Call modGuilds.a_RechazarAspiranteChar(UserName, .guildIndex, reason)
+                Call modGuilds.a_RechazarAspiranteChar(UserName, .GuildIndex, reason)
             End If
         End If
         
@@ -4523,7 +4515,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4538,7 +4530,7 @@ Private Sub HandleGuildKickMember(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4552,15 +4544,15 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
         Dim UserName As String
-        Dim guildIndex As Integer
+        Dim GuildIndex As Integer
         
         UserName = buffer.ReadASCIIString()
         
-        guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
+        GuildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
         
-        If guildIndex > 0 Then
-            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " fue expulsado del clan.", FontTypeNames.FONTTYPE_GUILD))
-            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
+        If GuildIndex > 0 Then
+            Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(UserName & " fue expulsado del clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessagePlayWave(45, NO_3D_SOUND, NO_3D_SOUND))
         Else
             Call WriteConsoleMsg(UserIndex, "No puedes expulsar ese personaje del clan.", FontTypeNames.FONTTYPE_GUILD)
         End If
@@ -4578,7 +4570,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4593,7 +4585,7 @@ Private Sub HandleGuildUpdateNews(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4621,7 +4613,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4636,7 +4628,7 @@ Private Sub HandleGuildMemberInfo(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4664,7 +4656,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4687,7 +4679,7 @@ Private Sub HandleGuildOpenElections(ByVal UserIndex As Integer)
         If Not modGuilds.v_AbrirElecciones(UserIndex, error) Then
             Call WriteConsoleMsg(UserIndex, error, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .guildIndex, PrepareMessageConsoleMsg("¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & .name, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & .name, FontTypeNames.FONTTYPE_GUILD))
         End If
     End With
 End Sub
@@ -4704,7 +4696,7 @@ Private Sub HandleGuildRequestMembership(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4743,7 +4735,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4758,7 +4750,7 @@ Private Sub HandleGuildRequestDetails(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -4786,7 +4778,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -4873,18 +4865,18 @@ Private Sub HandleGuildLeave(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
-    Dim guildIndex As Integer
+    Dim GuildIndex As Integer
     
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
         'obtengo el guildindex
-        guildIndex = m_EcharMiembroDeClan(UserIndex, .name)
+        GuildIndex = m_EcharMiembroDeClan(UserIndex, .name)
         
-        If guildIndex > 0 Then
+        If GuildIndex > 0 Then
             Call WriteConsoleMsg(UserIndex, "Dejas el clan.", FontTypeNames.FONTTYPE_GUILD)
-            Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(.name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(.name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
         Else
             Call WriteConsoleMsg(UserIndex, "Tu no puedes salir de ningún clan.", FontTypeNames.FONTTYPE_GUILD)
         End If
@@ -5705,11 +5697,11 @@ End Sub
 Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 02/03/09
+'02/03/09: ZaMa - Arreglado un indice mal pasado a la funcion de cartel de clanes overhead.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5730,10 +5722,9 @@ On Error GoTo Errhandler
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
-            If .guildIndex > 0 Then
-                Call SendData(SendTarget.ToDiosesYclan, .guildIndex, PrepareMessageGuildChat(.name & "> " & chat))
-'TODO : Con la 0.12.1 se debe definir si esto vuelve o se borra (/CMSG overhead)
-                'Call SendData(SendTarget.ToClanArea, UserIndex, UserList(UserIndex).Pos.Map, "||" & vbYellow & "°< " & rData & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
+            If .GuildIndex > 0 Then
+                Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.name & "> " & chat))
+                Call SendData(SendTarget.ToClanArea, UserIndex, PrepareMessageChatOverHead("< " & chat & " >", .Char.CharIndex, vbYellow))
             End If
         End If
         
@@ -5750,7 +5741,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -5765,7 +5756,7 @@ Private Sub HandlePartyMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5788,7 +5779,7 @@ On Error GoTo Errhandler
             
             Call mdParty.BroadCastParty(UserIndex, chat)
 'TODO : Con la 0.12.1 se debe definir si esto vuelve o se borra (/CMSG overhead)
-            'Call SendData(SendTarget.ToPartyArea, userindex, UserList(userindex).Pos.Map, "||" & vbYellow & "°< " & mid$(rData, 7) & " >°" & CStr(UserList(userindex).Char.CharIndex))
+            'Call SendData(SendTarget.ToPartyArea, UserIndex, UserList(UserIndex).Pos.map, "||" & vbYellow & "°< " & mid$(rData, 7) & " >°" & CStr(UserList(UserIndex).Char.CharIndex))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -5804,7 +5795,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -5819,7 +5810,7 @@ Private Sub HandleCentinelReport(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5848,9 +5839,9 @@ Private Sub HandleGuildOnline(ByVal UserIndex As Integer)
         
         Dim onlineList As String
         
-        onlineList = modGuilds.m_ListaDeMiembrosOnline(UserIndex, .guildIndex)
+        onlineList = modGuilds.m_ListaDeMiembrosOnline(UserIndex, .GuildIndex)
         
-        If .guildIndex <> 0 Then
+        If .GuildIndex <> 0 Then
             Call WriteConsoleMsg(UserIndex, "Compañeros de tu clan conectados: " & onlineList, FontTypeNames.FONTTYPE_GUILDMSG)
         Else
             Call WriteConsoleMsg(UserIndex, "No pertences a ningún clan.", FontTypeNames.FONTTYPE_GUILDMSG)
@@ -5887,7 +5878,7 @@ Private Sub HandleCouncilMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5928,7 +5919,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -5943,7 +5934,7 @@ Private Sub HandleRoleMasterRequest(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -5978,7 +5969,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6019,7 +6010,7 @@ Private Sub HandleBugReport(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6059,7 +6050,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6074,7 +6065,7 @@ Private Sub HandleChangeDescription(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6115,7 +6106,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6130,7 +6121,7 @@ Private Sub HandleGuildVote(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6167,7 +6158,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6182,7 +6173,7 @@ Private Sub HandlePunishments(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6242,7 +6233,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6258,12 +6249,12 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 '***************************************************
 #If SeguridadAlkon Then
     If UserList(UserIndex).incomingData.length < 65 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #Else
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 #End If
@@ -6315,7 +6306,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 
@@ -6331,7 +6322,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6394,7 +6385,7 @@ Private Sub HandleInquiryVote(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6422,7 +6413,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6528,7 +6519,7 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6583,7 +6574,7 @@ Private Sub HandleDenounce(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6621,7 +6612,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6636,7 +6627,7 @@ Private Sub HandleGuildFundate(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6684,11 +6675,12 @@ End Sub
 Private Sub HandlePartyKick(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 05/05/09
+'Last Modification by: Marco Vanotti (Marco)
+'- 05/05/09: Now it uses "UserPuedeEjecutarComandos" to check if the user can use party commands
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6706,15 +6698,18 @@ On Error GoTo Errhandler
         
         UserName = buffer.ReadASCIIString()
         
-        tUser = NameIndex(UserName)
-        If tUser > 0 Then
-            Call mdParty.ExpulsarDeParty(UserIndex, tUser)
-        Else
-            If InStr(UserName, "+") Then
-                UserName = Replace(UserName, "+", " ")
-            End If
+        If UserPuedeEjecutarComandos(UserIndex) Then
+            tUser = NameIndex(UserName)
             
-            Call WriteConsoleMsg(UserIndex, UserName & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
+            If tUser > 0 Then
+                Call mdParty.ExpulsarDeParty(UserIndex, tUser)
+            Else
+                If InStr(UserName, "+") Then
+                    UserName = Replace(UserName, "+", " ")
+                End If
+                
+                Call WriteConsoleMsg(UserIndex, LCase(UserName) & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -6730,7 +6725,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6741,11 +6736,12 @@ End Sub
 Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 19/08/08
-'Last Modification by: Franco Zeoli (Noich)
+'Last Modification: 05/05/09
+'Last Modification by: Marco Vanotti (MarKoxX)
+'- 05/05/09: Now it uses "UserPuedeEjecutarComandos" to check if the user can use party commands
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6764,21 +6760,22 @@ Private Sub HandlePartySetLeader(ByVal UserIndex As Integer)
         rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
-        
-        tUser = NameIndex(UserName)
-        If tUser > 0 Then
-            'Don't allow users to spoof online GMs
-            If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
-                Call mdParty.TransformarEnLider(UserIndex, tUser)
+        If UserPuedeEjecutarComandos(UserIndex) Then
+            tUser = NameIndex(UserName)
+            If tUser > 0 Then
+                'Don't allow users to spoof online GMs
+                If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
+                    Call mdParty.TransformarEnLider(UserIndex, tUser)
+                Else
+                    Call WriteConsoleMsg(UserIndex, LCase(UserList(tUser).name) & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
+                End If
+                
             Else
-                Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
+                If InStr(UserName, "+") Then
+                    UserName = Replace(UserName, "+", " ")
+                End If
+                Call WriteConsoleMsg(UserIndex, LCase(UserName) & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
             End If
-            
-        Else
-            If InStr(UserName, "+") Then
-                UserName = Replace(UserName, "+", " ")
-            End If
-            Call WriteConsoleMsg(UserIndex, UserName & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -6794,7 +6791,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6805,12 +6802,12 @@ End Sub
 Private Sub HandlePartyAcceptMember(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 04/13/2008 (NicoNZ)
-'Ya no se puede saber si esta ON o no un personaje
-'mediante este comando
+'Last Modification: 05/05/09
+'Last Modification by: Marco Vanotti (Marco)
+'- 05/05/09: Now it uses "UserPuedeEjecutarComandos" to check if the user can use party commands
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6826,29 +6823,37 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         Dim rank As Integer
+        Dim bUserVivo As Boolean
         
         rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
-        
-        tUser = NameIndex(UserName)
-        If tUser > 0 Then
-            'Validate administrative ranks - don't allow users to spoof online GMs
-            If (UserList(tUser).flags.Privilegios And rank) <= (.flags.Privilegios And rank) Then
-                Call mdParty.AprobarIngresoAParty(UserIndex, tUser)
-            Else
-                Call WriteConsoleMsg(UserIndex, "No puedes incorporar a tu party a personajes de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
-            End If
+        If UserList(UserIndex).flags.Muerto Then
+            Call WriteConsoleMsg(UserIndex, "¡Estás muerto!", FontTypeNames.FONTTYPE_PARTY)
         Else
-            If InStr(UserName, "+") Then
-                UserName = Replace(UserName, "+", " ")
-            End If
-            
-            'Don't allow users to spoof online GMs
-            If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
-                Call WriteConsoleMsg(UserIndex, UserName & " no ha solicitado ingresar a tu party.", FontTypeNames.FONTTYPE_PARTY)
+            bUserVivo = True
+        End If
+        
+        If mdParty.UserPuedeEjecutarComandos(UserIndex) And bUserVivo Then
+            tUser = NameIndex(UserName)
+            If tUser > 0 Then
+                'Validate administrative ranks - don't allow users to spoof online GMs
+                If (UserList(tUser).flags.Privilegios And rank) <= (.flags.Privilegios And rank) Then
+                    Call mdParty.AprobarIngresoAParty(UserIndex, tUser)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes incorporar a tu party a personajes de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
-                Call WriteConsoleMsg(UserIndex, "No puedes incorporar a tu party a personajes de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
+                If InStr(UserName, "+") Then
+                    UserName = Replace(UserName, "+", " ")
+                End If
+                
+                'Don't allow users to spoof online GMs
+                If (UserDarPrivilegioLevel(UserName) And rank) <= (.flags.Privilegios And rank) Then
+                    Call WriteConsoleMsg(UserIndex, LCase(UserName) & " no ha solicitado ingresar a tu party.", FontTypeNames.FONTTYPE_PARTY)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes incorporar a tu party a personajes de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -6865,7 +6870,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6880,7 +6885,7 @@ Private Sub HandleGuildMemberList(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6934,7 +6939,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -6949,7 +6954,7 @@ Private Sub HandleGMMessage(ByVal UserIndex As Integer)
 'Last Modification by: (liquid)
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -6990,7 +6995,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7106,7 +7111,7 @@ Private Sub HandleGoNearby(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7141,10 +7146,10 @@ On Error GoTo Errhandler
                     For i = 2 To 5 'esto for sirve ir cambiando la distancia destino
                         For X = UserList(tIndex).Pos.X - i To UserList(tIndex).Pos.X + i
                             For Y = UserList(tIndex).Pos.Y - i To UserList(tIndex).Pos.Y + i
-                                If MapData(UserList(tIndex).Pos.Map, X, Y).UserIndex = 0 Then
-                                    If LegalPos(UserList(tIndex).Pos.Map, X, Y, True, True) Then
-                                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.Map, X, Y, True)
-                                        Call LogGM(.name, "/IRCERCA " & UserName & " Mapa:" & UserList(tIndex).Pos.Map & " X:" & UserList(tIndex).Pos.X & " Y:" & UserList(tIndex).Pos.Y)
+                                If MapData(UserList(tIndex).Pos.map, X, Y).UserIndex = 0 Then
+                                    If LegalPos(UserList(tIndex).Pos.map, X, Y, True, True) Then
+                                        Call WarpUserChar(UserIndex, UserList(tIndex).Pos.map, X, Y, True)
+                                        Call LogGM(.name, "/IRCERCA " & UserName & " Mapa:" & UserList(tIndex).Pos.map & " X:" & UserList(tIndex).Pos.X & " Y:" & UserList(tIndex).Pos.Y)
                                         found = True
                                         Exit For
                                     End If
@@ -7178,7 +7183,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7193,7 +7198,7 @@ Private Sub HandleComment(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7227,7 +7232,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7265,7 +7270,7 @@ Private Sub HandleWhere(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7289,7 +7294,7 @@ On Error GoTo Errhandler
                 Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
                 If (UserList(tUser).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Or ((UserList(tUser).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) <> 0) And (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0) Then
-                    Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & ": " & UserList(tUser).Pos.Map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & ": " & UserList(tUser).Pos.map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
                     Call LogGM(.name, "/Donde " & UserName)
                 End If
             End If
@@ -7308,7 +7313,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7323,7 +7328,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): modificaciones generales para simplificar la visualización.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7331,7 +7336,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim Map As Integer
+        Dim map As Integer
         Dim i, j As Long
         Dim NPCcount1, NPCcount2 As Integer
         Dim NPCcant1() As Integer
@@ -7339,14 +7344,14 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
         Dim List1() As String
         Dim List2() As String
         
-        Map = .incomingData.ReadInteger()
+        map = .incomingData.ReadInteger()
         
         If .flags.Privilegios And PlayerType.User Then Exit Sub
         
-        If MapaValido(Map) Then
+        If MapaValido(map) Then
             For i = 1 To LastNPC
                 'VB isn't lazzy, so we put more restrictive condition first to speed up the process
-                If Npclist(i).Pos.Map = Map Then
+                If Npclist(i).Pos.map = map Then
                     '¿esta vivo?
                     If Npclist(i).flags.NPCActive And Npclist(i).Hostile = 1 And Npclist(i).Stats.Alineacion = 2 Then
                         If NPCcount1 = 0 Then
@@ -7414,7 +7419,7 @@ Private Sub HandleCreaturesInMap(ByVal UserIndex As Integer)
                     Call WriteConsoleMsg(UserIndex, NPCcant2(j) & " " & List2(j), FontTypeNames.FONTTYPE_INFO)
                 Next j
             End If
-            Call LogGM(.name, "Numero enemigos en mapa " & Map)
+            Call LogGM(.name, "Numero enemigos en mapa " & map)
         End If
     End With
 End Sub
@@ -7427,17 +7432,24 @@ End Sub
 Private Sub HandleWarpMeToTarget(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 26/03/09
+'26/03/06: ZaMa - Chequeo que no se teletransporte donde haya un char o npc
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
+        Dim X As Integer
+        Dim Y As Integer
+        
         If .flags.Privilegios And PlayerType.User Then Exit Sub
         
-        Call WarpUserChar(UserIndex, .flags.TargetMap, .flags.TargetX, .flags.TargetY, True)
-        Call LogGM(.name, "/TELEPLOC a x:" & .flags.TargetX & " Y:" & .flags.TargetY & " Map:" & .Pos.Map)
+        X = .flags.TargetX
+        Y = .flags.TargetY
+        
+        Call FindLegalPos(UserIndex, .flags.TargetMap, X, Y)
+        Call WarpUserChar(UserIndex, .flags.TargetMap, X, Y, True)
+        Call LogGM(.name, "/TELEPLOC a x:" & .flags.TargetX & " Y:" & .flags.TargetY & " Map:" & .Pos.map)
     End With
 End Sub
 
@@ -7449,11 +7461,11 @@ End Sub
 Private Sub HandleWarpChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 26/03/2009
+'26/03/2009: ZaMa -  Chequeo que no se teletransporte a un tile donde haya un char o npc.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 7 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7467,18 +7479,18 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
         Dim UserName As String
-        Dim Map As Integer
-        Dim X As Byte
-        Dim Y As Byte
+        Dim map As Integer
+        Dim X As Integer
+        Dim Y As Integer
         Dim tUser As Integer
         
         UserName = buffer.ReadASCIIString()
-        Map = buffer.ReadInteger()
+        map = buffer.ReadInteger()
         X = buffer.ReadByte()
         Y = buffer.ReadByte()
         
         If Not .flags.Privilegios And PlayerType.User Then
-            If MapaValido(Map) And LenB(UserName) <> 0 Then
+            If MapaValido(map) And LenB(UserName) <> 0 Then
                 If UCase$(UserName) <> "YO" Then
                     If Not .flags.Privilegios And PlayerType.Consejero Then
                         tUser = NameIndex(UserName)
@@ -7489,10 +7501,11 @@ On Error GoTo Errhandler
             
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-                ElseIf InMapBounds(Map, X, Y) Then
-                    Call WarpUserChar(tUser, Map, X, Y, True)
+                ElseIf InMapBounds(map, X, Y) Then
+                    Call FindLegalPos(tUser, map, X, Y)
+                    Call WarpUserChar(tUser, map, X, Y, True)
                     Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " transportado.", FontTypeNames.FONTTYPE_INFO)
-                    Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
+                    Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & map & " X:" & X & " Y:" & Y)
                 End If
             End If
         End If
@@ -7510,7 +7523,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7525,7 +7538,7 @@ Private Sub HandleSilence(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7578,7 +7591,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7613,7 +7626,7 @@ Private Sub HandleSOSRemove(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7645,7 +7658,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7656,11 +7669,11 @@ End Sub
 Private Sub HandleGoToChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 26/03/2009
+'26/03/2009: ZaMa -  Chequeo que no se teletransporte a un tile donde haya un char o npc.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7675,6 +7688,8 @@ On Error GoTo Errhandler
         
         Dim UserName As String
         Dim tUser As Integer
+        Dim X As Integer
+        Dim Y As Integer
         
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
@@ -7685,14 +7700,18 @@ On Error GoTo Errhandler
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Call WarpUserChar(UserIndex, UserList(tUser).Pos.Map, UserList(tUser).Pos.X, UserList(tUser).Pos.Y + 1, True)
+                    X = UserList(tUser).Pos.X
+                    Y = UserList(tUser).Pos.Y + 1
+                    Call FindLegalPos(UserIndex, UserList(tUser).Pos.map, X, Y)
+                    
+                    Call WarpUserChar(UserIndex, UserList(tUser).Pos.map, X, Y, True)
                     
                     If .flags.AdminInvisible = 0 Then
                         Call WriteConsoleMsg(tUser, .name & " se ha trasportado hacia donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
                         Call FlushBuffer(tUser)
                     End If
                     
-                    Call LogGM(.name, "/IRA " & UserName & " Mapa:" & UserList(tUser).Pos.Map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y)
+                    Call LogGM(.name, "/IRA " & UserName & " Mapa:" & UserList(tUser).Pos.map & " X:" & UserList(tUser).Pos.X & " Y:" & UserList(tUser).Pos.Y)
                 End If
             End If
         End If
@@ -7710,7 +7729,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7880,7 +7899,7 @@ Private Sub HandleJail(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -7955,7 +7974,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -7980,7 +7999,7 @@ Private Sub HandleKillNPC(ByVal UserIndex As Integer)
         
         'Los consejeros no pueden RMATAr a nada en el mapa pretoriano
         If .flags.Privilegios And PlayerType.Consejero Then
-            If .Pos.Map = MAPA_PRETORIANO Then
+            If .Pos.map = MAPA_PRETORIANO Then
                 Call WriteConsoleMsg(UserIndex, "Los consejeros no pueden usar este comando en el mapa pretoriano.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
@@ -8014,7 +8033,7 @@ Private Sub HandleWarnUser(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8076,7 +8095,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8087,11 +8106,11 @@ End Sub
 Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/28/06
-'
+'Last Modification: 02/03/2009
+'02/03/2009: ZaMa -  Cuando editas nivel, chequea si el pj peude permanecer en clan faccionario
 '***************************************************
     If UserList(UserIndex).incomingData.length < 8 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8172,13 +8191,14 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If val(Arg1) < 15995001 Then
-                            UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
-                            Call CheckUserLevel(tUser)
-                            Call WriteUpdateExp(tUser)
-                        Else
-                            Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores a mucho. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
+                        If val(Arg1) > 20000000 Then
+                            Arg1 = 20000000
                         End If
+                            
+                        UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
+                        Call CheckUserLevel(tUser)
+                        Call WriteUpdateExp(tUser)
+                        
                     End If
                 
                 Case eEditOptions.eo_Body
@@ -8229,6 +8249,25 @@ On Error GoTo Errhandler
                         End If
                         
                         UserList(tUser).Stats.ELV = val(Arg1)
+                        
+                        With UserList(tUser)
+                        
+                            ' Chequeamos si puede permanecer en el clan
+                            If .Stats.ELV >= 25 Then
+                                Dim GI As Integer
+                                GI = .GuildIndex
+                                If GI > 0 Then
+                                    If modGuilds.GuildAlignment(GI) = "Legión oscura" Or modGuilds.GuildAlignment(GI) = "Armada Real" Then
+                                        'We get here, so guild has factionary alignment, we have to expulse the user
+                                        Call modGuilds.m_EcharMiembroDeClan(-1, .name)
+                                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(.name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
+                                        Call WriteConsoleMsg(tUser, "¡Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearás! Por esta razón, hasta tanto no te enlistes en la Facción bajo la cual tu clan está alineado, estarás excluído del mismo.", FontTypeNames.FONTTYPE_GUILD)
+                                    End If
+                                End If
+                            End If
+                        
+                        End With
+
                     End If
                     
                     Call WriteUpdateUserStats(UserIndex)
@@ -8397,7 +8436,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8412,7 +8451,7 @@ Private Sub HandleRequestCharInfo(ByVal UserIndex As Integer)
 'Last Modification by: (liquid).. alto bug zapallo..
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8461,7 +8500,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8476,7 +8515,7 @@ Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8520,7 +8559,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8535,7 +8574,7 @@ Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8579,7 +8618,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8594,7 +8633,7 @@ Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8639,7 +8678,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8654,7 +8693,7 @@ Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8699,7 +8738,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8714,7 +8753,7 @@ Private Sub HandleRequestCharSkills(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8770,7 +8809,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8785,7 +8824,7 @@ Private Sub HandleReviveChar(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8853,7 +8892,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -8904,12 +8943,15 @@ End Sub
 Private Sub HandleOnlineMap(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 23/03/2009
+'23/03/2009: ZaMa - Ahora no requiere estar en el mapa, sino que por defecto se toma en el que esta, pero se puede especificar otro
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
+        
+        Dim map As Integer
+        map = .incomingData.ReadInteger
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then Exit Sub
         
@@ -8921,7 +8963,7 @@ Private Sub HandleOnlineMap(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then priv = priv + (PlayerType.Dios Or PlayerType.Admin)
         
         For LoopC = 1 To LastUser
-            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Pos.Map = .Pos.Map Then
+            If LenB(UserList(LoopC).name) <> 0 And UserList(LoopC).Pos.map = map Then
                 If UserList(LoopC).flags.Privilegios And priv Then _
                     list = list & UserList(LoopC).name & ", "
             End If
@@ -8945,7 +8987,7 @@ Private Sub HandleForgive(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -8989,7 +9031,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9004,7 +9046,7 @@ Private Sub HandleKick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9054,7 +9096,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9069,7 +9111,7 @@ Private Sub HandleExecute(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9116,7 +9158,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9131,7 +9173,7 @@ Private Sub HandleBanChar(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9167,7 +9209,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9182,7 +9224,7 @@ Private Sub HandleUnbanChar(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9240,7 +9282,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9277,11 +9319,11 @@ End Sub
 Private Sub HandleSummonChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 26/03/2009
+'26/03/2009: ZaMa - Chequeo que no se teletransporte donde haya un char o npc
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9296,6 +9338,8 @@ On Error GoTo Errhandler
         
         Dim UserName As String
         Dim tUser As Integer
+        Dim X As Integer
+        Dim Y As Integer
         
         UserName = buffer.ReadASCIIString()
         
@@ -9307,9 +9351,12 @@ On Error GoTo Errhandler
             Else
                 If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or _
                   (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) <> 0 Then
-                    Call WriteConsoleMsg(tUser, .name & " te há trasportado.", FontTypeNames.FONTTYPE_INFO)
-                    Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y + 1, True)
-                    Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y)
+                    Call WriteConsoleMsg(tUser, .name & " te ha trasportado.", FontTypeNames.FONTTYPE_INFO)
+                    X = .Pos.X
+                    Y = .Pos.Y + 1
+                    Call FindLegalPos(tUser, .Pos.map, X, Y)
+                    Call WarpUserChar(tUser, .Pos.map, X, Y, True)
+                    Call LogGM(.name, "/SUM " & UserName & " Map:" & .Pos.map & " X:" & .Pos.X & " Y:" & .Pos.Y)
                 Else
                     Call WriteConsoleMsg(UserIndex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -9329,7 +9376,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9365,7 +9412,7 @@ Private Sub HandleSpawnCreature(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9441,7 +9488,7 @@ Private Sub HandleServerMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9477,7 +9524,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9492,7 +9539,7 @@ Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): Agrego para uqe el /nick2ip tambien diga los nicks en esa ip por pedido de la DGM.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9558,7 +9605,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9573,7 +9620,7 @@ Private Sub HandleIPToNick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9628,7 +9675,7 @@ Private Sub HandleGuildOnlineMembers(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9651,7 +9698,7 @@ On Error GoTo Errhandler
         End If
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
-            tGuild = guildIndex(GuildName)
+            tGuild = GuildIndex(GuildName)
             
             If tGuild > 0 Then
                 Call WriteConsoleMsg(UserIndex, "Clan " & UCase(GuildName) & ": " & _
@@ -9672,7 +9719,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9687,7 +9734,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9710,10 +9757,10 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         If Not MapaValido(mapa) Or Not InMapBounds(mapa, X, Y) Then _
             Exit Sub
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
+        If MapData(.Pos.map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
             Exit Sub
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then _
+        If MapData(.Pos.map, .Pos.X, .Pos.Y - 1).TileExit.map > 0 Then _
             Exit Sub
         
         If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
@@ -9721,7 +9768,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If MapData(mapa, X, Y).TileExit.Map > 0 Then
+        If MapData(mapa, X, Y).TileExit.map > 0 Then
             Call WriteConsoleMsg(UserIndex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -9730,10 +9777,10 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.amount = 1
         ET.ObjIndex = 378
         
-        Call MakeObj(ET, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(ET, .Pos.map, .Pos.X, .Pos.Y - 1)
         
-        With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
-            .TileExit.Map = mapa
+        With MapData(.Pos.map, .Pos.X, .Pos.Y - 1)
+            .TileExit.map = mapa
             .TileExit.X = X
             .TileExit.Y = Y
         End With
@@ -9771,16 +9818,16 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         With MapData(mapa, X, Y)
             If .ObjInfo.ObjIndex = 0 Then Exit Sub
             
-            If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
+            If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.map > 0 Then
                 Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y)
                 
                 Call EraseObj(.ObjInfo.amount, mapa, X, Y)
                 
-                If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
-                    Call EraseObj(1, .TileExit.Map, .TileExit.X, .TileExit.Y)
+                If MapData(.TileExit.map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
+                    Call EraseObj(1, .TileExit.map, .TileExit.X, .TileExit.Y)
                 End If
                 
-                .TileExit.Map = 0
+                .TileExit.map = 0
                 .TileExit.X = 0
                 .TileExit.Y = 0
             End If
@@ -9824,7 +9871,7 @@ Private Sub HandleSetCharDescription(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9864,7 +9911,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -9879,7 +9926,7 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9897,12 +9944,12 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
             'Si el mapa no fue enviado tomo el actual
             If Not InMapBounds(mapa, 50, 50) Then
-                mapa = .Pos.Map
+                mapa = .Pos.map
             End If
         
             If midiID = 0 Then
                 'Ponemos el default del mapa
-                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
+                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.map).Music))
             Else
                 'Ponemos el pedido por el GM
                 Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(midiID))
@@ -9923,7 +9970,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -9945,7 +9992,7 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
         'Si el mapa no fue enviado tomo el actual
             If Not InMapBounds(mapa, X, Y) Then
-                mapa = .Pos.Map
+                mapa = .Pos.map
                 X = .Pos.X
                 Y = .Pos.Y
             End If
@@ -9968,7 +10015,7 @@ Private Sub HandleRoyalArmyMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10002,7 +10049,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10017,7 +10064,7 @@ Private Sub HandleChaosLegionMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10051,7 +10098,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10066,7 +10113,7 @@ Private Sub HandleCitizenMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10100,7 +10147,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10115,7 +10162,7 @@ Private Sub HandleCriminalMessage(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10149,7 +10196,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10164,7 +10211,7 @@ Private Sub HandleTalkAsNPC(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10203,7 +10250,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10229,9 +10276,9 @@ Private Sub HandleDestroyAllItemsInArea(ByVal UserIndex As Integer)
         For Y = .Pos.Y - MinYBorder + 1 To .Pos.Y + MinYBorder - 1
             For X = .Pos.X - MinXBorder + 1 To .Pos.X + MinXBorder - 1
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
-                    If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
-                        If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
-                            Call EraseObj(MAX_INVENTORY_OBJS, .Pos.Map, X, Y)
+                    If MapData(.Pos.map, X, Y).ObjInfo.ObjIndex > 0 Then
+                        If ItemNoEsDeMapa(MapData(.Pos.map, X, Y).ObjInfo.ObjIndex) Then
+                            Call EraseObj(MAX_INVENTORY_OBJS, .Pos.map, X, Y)
                         End If
                     End If
                 End If
@@ -10254,7 +10301,7 @@ Private Sub HandleAcceptRoyalCouncilMember(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10283,7 +10330,7 @@ On Error GoTo Errhandler
                     If .flags.Privilegios And PlayerType.ChaosCouncil Then .flags.Privilegios = .flags.Privilegios - PlayerType.ChaosCouncil
                     If Not .flags.Privilegios And PlayerType.RoyalCouncil Then .flags.Privilegios = .flags.Privilegios + PlayerType.RoyalCouncil
                     
-                    Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y, False)
+                    Call WarpUserChar(tUser, .Pos.map, .Pos.X, .Pos.Y, False)
                 End With
             End If
         End If
@@ -10301,7 +10348,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10316,7 +10363,7 @@ Private Sub HandleAcceptChaosCouncilMember(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10340,13 +10387,13 @@ On Error GoTo Errhandler
             If tUser <= 0 Then
                 Call WriteConsoleMsg(UserIndex, "Usuario offline", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue aceptado en el Consejo de la Legión Oscura.", FontTypeNames.FONTTYPE_CONSEJO))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue aceptado en el Concilio de las Sombras.", FontTypeNames.FONTTYPE_CONSEJO))
                 
                 With UserList(tUser)
                     If .flags.Privilegios And PlayerType.RoyalCouncil Then .flags.Privilegios = .flags.Privilegios - PlayerType.RoyalCouncil
                     If Not .flags.Privilegios And PlayerType.ChaosCouncil Then .flags.Privilegios = .flags.Privilegios + PlayerType.ChaosCouncil
 
-                    Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y, False)
+                    Call WarpUserChar(tUser, .Pos.map, .Pos.X, .Pos.Y, False)
                 End With
             End If
         End If
@@ -10364,7 +10411,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10391,7 +10438,7 @@ Private Sub HandleItemsInTheFloor(ByVal UserIndex As Integer)
         
         For X = 5 To 95
             For Y = 5 To 95
-                tObj = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                tObj = MapData(.Pos.map, X, Y).ObjInfo.ObjIndex
                 If tObj > 0 Then
                     If ObjData(tObj).OBJType <> eOBJType.otArboles Then
                         Call WriteConsoleMsg(UserIndex, "(" & X & "," & Y & ") " & ObjData(tObj).name, FontTypeNames.FONTTYPE_INFO)
@@ -10414,7 +10461,7 @@ Private Sub HandleMakeDumb(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10455,7 +10502,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10470,7 +10517,7 @@ Private Sub HandleMakeDumbNoMore(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10512,7 +10559,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10548,7 +10595,7 @@ Private Sub HandleCouncilKick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10582,16 +10629,16 @@ On Error GoTo Errhandler
                         Call WriteConsoleMsg(tUser, "Has sido echado del consejo de Banderbill", FontTypeNames.FONTTYPE_TALK)
                         .flags.Privilegios = .flags.Privilegios - PlayerType.RoyalCouncil
                         
-                        Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call WarpUserChar(tUser, .Pos.map, .Pos.X, .Pos.Y, False)
                         Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue expulsado del consejo de Banderbill", FontTypeNames.FONTTYPE_CONSEJO))
                     End If
                     
                     If .flags.Privilegios And PlayerType.ChaosCouncil Then
-                        Call WriteConsoleMsg(tUser, "Has sido echado del consejo de la Legión Oscura", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(tUser, "Has sido echado del Concilio de las Sombras", FontTypeNames.FONTTYPE_TALK)
                         .flags.Privilegios = .flags.Privilegios - PlayerType.ChaosCouncil
                         
-                        Call WarpUserChar(tUser, .Pos.Map, .Pos.X, .Pos.Y)
-                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue expulsado del consejo de la Legión Oscura", FontTypeNames.FONTTYPE_CONSEJO))
+                        Call WarpUserChar(tUser, .Pos.map, .Pos.X, .Pos.Y, False)
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserName & " fue expulsado del Concilio de las Sombras", FontTypeNames.FONTTYPE_CONSEJO))
                     End If
                 End With
             End If
@@ -10610,7 +10657,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10625,7 +10672,7 @@ Private Sub HandleSetTrigger(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10641,8 +10688,8 @@ Private Sub HandleSetTrigger(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
         If tTrigger >= 0 Then
-            MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = tTrigger
-            tLog = "Trigger " & tTrigger & " en mapa " & .Pos.Map & " " & .Pos.X & "," & .Pos.Y
+            MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = tTrigger
+            tLog = "Trigger " & tTrigger & " en mapa " & .Pos.map & " " & .Pos.X & "," & .Pos.Y
             
             Call LogGM(.name, tLog)
             Call WriteConsoleMsg(UserIndex, tLog, FontTypeNames.FONTTYPE_INFO)
@@ -10669,12 +10716,12 @@ Private Sub HandleAskTrigger(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
-        tTrigger = MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger
+        tTrigger = MapData(.Pos.map, .Pos.X, .Pos.Y).trigger
         
-        Call LogGM(.name, "Miro el trigger en " & .Pos.Map & "," & .Pos.X & "," & .Pos.Y & ". Era " & tTrigger)
+        Call LogGM(.name, "Miro el trigger en " & .Pos.map & "," & .Pos.X & "," & .Pos.Y & ". Era " & tTrigger)
         
         Call WriteConsoleMsg(UserIndex, _
-            "Trigger " & tTrigger & " en mapa " & .Pos.Map & " " & .Pos.X & ", " & .Pos.Y _
+            "Trigger " & tTrigger & " en mapa " & .Pos.map & " " & .Pos.X & ", " & .Pos.Y _
             , FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
@@ -10745,7 +10792,7 @@ Private Sub HandleGuildBan(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10818,7 +10865,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10834,7 +10881,7 @@ Private Sub HandleBanIP(ByVal UserIndex As Integer)
 'inifito al intentar banear una ip ya baneada. (NicoNZ)
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10908,7 +10955,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -10923,7 +10970,7 @@ Private Sub HandleUnbanIP(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10960,7 +11007,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -10975,10 +11022,10 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Call LogGM(.name, "/CI: " & tObj)
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
+        If MapData(.Pos.map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
             Exit Sub
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then _
+        If MapData(.Pos.map, .Pos.X, .Pos.Y - 1).TileExit.map > 0 Then _
             Exit Sub
         
         If tObj < 1 Or tObj > NumObjDatas Then _
@@ -10992,7 +11039,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Objeto.amount = 100
         Objeto.ObjIndex = tObj
-        Call MakeObj(Objeto, .Pos.Map, .Pos.X, .Pos.Y - 1)
+        Call MakeObj(Objeto, .Pos.map, .Pos.X, .Pos.Y - 1)
     End With
 End Sub
 
@@ -11013,16 +11060,16 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex = 0 Then Exit Sub
+        If MapData(.Pos.map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex = 0 Then Exit Sub
         
         Call LogGM(.name, "/DEST")
         
-        If ObjData(MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport Then
+        If ObjData(MapData(.Pos.map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport Then
             Call WriteConsoleMsg(UserIndex, "No puede destruir teleports así. Utilice /DT.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        Call EraseObj(10000, .Pos.Map, .Pos.X, .Pos.Y)
+        Call EraseObj(10000, .Pos.map, .Pos.X, .Pos.Y)
     End With
 End Sub
 
@@ -11038,7 +11085,7 @@ Private Sub HandleChaosLegionKick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11098,7 +11145,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -11113,7 +11160,7 @@ Private Sub HandleRoyalArmyKick(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11173,7 +11220,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -11188,7 +11235,7 @@ Private Sub HandleForceMIDIAll(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11219,7 +11266,7 @@ Private Sub HandleForceWAVEAll(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11248,7 +11295,7 @@ Private Sub HandleRemovePunishment(ByVal UserIndex As Integer)
 'Pablo (ToxicWaste): 1/05/07, You can now edit the punishment.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11305,7 +11352,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -11327,13 +11374,13 @@ Private Sub HandleTileBlockedToggle(ByVal UserIndex As Integer)
 
         Call LogGM(.name, "/BLOQ")
         
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked = 0 Then
-            MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked = 1
+        If MapData(.Pos.map, .Pos.X, .Pos.Y).Blocked = 0 Then
+            MapData(.Pos.map, .Pos.X, .Pos.Y).Blocked = 1
         Else
-            MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked = 0
+            MapData(.Pos.map, .Pos.X, .Pos.Y).Blocked = 0
         End If
         
-        Call Bloquear(True, .Pos.Map, .Pos.X, .Pos.Y, MapData(.Pos.Map, .Pos.X, .Pos.Y).Blocked)
+        Call Bloquear(True, .Pos.map, .Pos.X, .Pos.Y, MapData(.Pos.map, .Pos.X, .Pos.Y).Blocked)
     End With
 End Sub
 
@@ -11384,7 +11431,7 @@ Private Sub HandleKillAllNearbyNPCs(ByVal UserIndex As Integer)
         For Y = .Pos.Y - MinYBorder + 1 To .Pos.Y + MinYBorder - 1
             For X = .Pos.X - MinXBorder + 1 To .Pos.X + MinXBorder - 1
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
-                    If MapData(.Pos.Map, X, Y).NpcIndex > 0 Then Call QuitarNPC(MapData(.Pos.Map, X, Y).NpcIndex)
+                    If MapData(.Pos.map, X, Y).NpcIndex > 0 Then Call QuitarNPC(MapData(.Pos.map, X, Y).NpcIndex)
                 End If
             Next X
         Next Y
@@ -11404,7 +11451,7 @@ Private Sub HandleLastIP(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11475,7 +11522,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -11491,7 +11538,7 @@ Public Sub HandleChatColor(ByVal UserIndex As Integer)
 'Change the user`s chat color
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11538,11 +11585,11 @@ End Sub
 Public Sub HandleCheckSlot(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
-'Last Modification: 30/08/2008 (Noich)
+'Last Modification: 09/09/2008 (NicoNZ)
 'Check one Users Slot in Particular from Inventory
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
 
@@ -11559,15 +11606,13 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim Slot As Byte
         Dim tIndex As Integer
-
-        'Muevo esto aca arriba para sacar estos datos del buffer y que si no
-        'ejecuta el comando y no tiene los privilegios necesarios no me
-        'rompa todo el server.
+        
         UserName = buffer.ReadASCIIString() 'Que UserName?
         Slot = buffer.ReadByte() 'Que Slot?
-        tIndex = NameIndex(UserName)  'Que user index?
         
         If .flags.Privilegios And (PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Dios) Then
+            tIndex = NameIndex(UserName)  'Que user index?
+            
             Call LogGM(.name, .name & " Checkeo el slot " & Slot & " de " & UserName)
                
             If tIndex > 0 Then
@@ -11598,7 +11643,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -11743,55 +11788,6 @@ Public Sub HandleReloadNPCs(ByVal UserIndex As Integer)
 End Sub
 
 ''
-' Handle the "RequestTCPStats" message
-' @param userIndex The index of the user sending the message
-
-Public Sub HandleRequestTCPStats(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Lucas Tavolaro Ortiz (Tavo)
-'Last Modification: 12/23/06
-'Last modified by: Juan Martín Sotuyo Dodero (Maraxus)
-'Send the TCP`s stadistics
-'***************************************************
-    With UserList(UserIndex)
-        'Remove Packet ID
-        Call .incomingData.ReadByte
-        
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
-                
-        Dim list As String
-        Dim Count As Long
-        Dim i As Long
-        
-        Call LogGM(.name, .name & " ha pedido las estadisticas del TCP.")
-    
-        Call WriteConsoleMsg(UserIndex, "Los datos están en BYTES.", FontTypeNames.FONTTYPE_INFO)
-        
-        'Send the stats
-        With TCPESStats
-            Call WriteConsoleMsg(UserIndex, "IN/s: " & .BytesRecibidosXSEG & " OUT/s: " & .BytesEnviadosXSEG, FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(UserIndex, "IN/s MAX: " & .BytesRecibidosXSEGMax & " -> " & .BytesRecibidosXSEGCuando, FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(UserIndex, "OUT/s MAX: " & .BytesEnviadosXSEGMax & " -> " & .BytesEnviadosXSEGCuando, FontTypeNames.FONTTYPE_INFO)
-        End With
-        
-        'Search for users that are working
-        For i = 1 To LastUser
-            With UserList(i)
-                If .flags.UserLogged And .ConnID >= 0 And .ConnIDValida Then
-                    If .outgoingData.length > 0 Then
-                        list = list & .name & " (" & CStr(.outgoingData.length) & "), "
-                        Count = Count + 1
-                    End If
-                End If
-            End With
-        Next i
-        
-        Call WriteConsoleMsg(UserIndex, "Posibles pjs trabados: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(UserIndex, list, FontTypeNames.FONTTYPE_INFO)
-    End With
-End Sub
-
-''
 ' Handle the "KickAllChars" message
 '
 ' @param userIndex The index of the user sending the message
@@ -11927,7 +11923,7 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
 'Change the backup`s info of the map
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11945,15 +11941,15 @@ Public Sub HandleChangeMapInfoBackup(ByVal UserIndex As Integer)
         
         'Change the boolean to byte in a fast way
         If doTheBackUp Then
-            MapInfo(.Pos.Map).BackUp = 1
+            MapInfo(.Pos.map).BackUp = 1
         Else
-            MapInfo(.Pos.Map).BackUp = 0
+            MapInfo(.Pos.map).BackUp = 0
         End If
         
         'Change the boolean to string in a fast way
-        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.Map & ".dat", "Mapa" & .Pos.Map, "backup", MapInfo(.Pos.Map).BackUp)
+        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.map & ".dat", "Mapa" & .Pos.map, "backup", MapInfo(.Pos.map).BackUp)
         
-        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Backup: " & MapInfo(.Pos.Map).BackUp, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " Backup: " & MapInfo(.Pos.map).BackUp, FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -11970,7 +11966,7 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
 'Change the pk`s info of the  map
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -11986,12 +11982,12 @@ Public Sub HandleChangeMapInfoPK(ByVal UserIndex As Integer)
         
         Call LogGM(.name, .name & " ha cambiado la informacion sobre si es PK el mapa.")
         
-        MapInfo(.Pos.Map).Pk = isMapPk
+        MapInfo(.Pos.map).Pk = isMapPk
         
         'Change the boolean to string in a fast way
-        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.Map & ".dat", "Mapa" & .Pos.Map, "Pk", IIf(isMapPk, "1", "0"))
+        Call WriteVar(App.Path & MapPath & "mapa" & .Pos.map & ".dat", "Mapa" & .Pos.map, "Pk", IIf(isMapPk, "1", "0"))
 
-        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " PK: " & MapInfo(.Pos.Map).Pk, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " PK: " & MapInfo(.Pos.map).Pk, FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -12007,7 +12003,7 @@ Public Sub HandleChangeMapInfoRestricted(ByVal UserIndex As Integer)
 'Restringido -> Options: "NEWBIE", "NO", "ARMADA", "CAOS", "FACCION".
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12027,9 +12023,9 @@ On Error GoTo Errhandler
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "NEWBIE" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Or tStr = "FACCION" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion sobre si es Restringido el mapa.")
-                MapInfo(UserList(UserIndex).Pos.Map).Restringir = tStr
-                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Restringir", tStr)
-                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Restringido: " & MapInfo(.Pos.Map).Restringir, FontTypeNames.FONTTYPE_INFO)
+                MapInfo(UserList(UserIndex).Pos.map).Restringir = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "Restringir", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " Restringido: " & MapInfo(.Pos.map).Restringir, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para restringir: 'NEWBIE', 'NO', 'ARMADA', 'CAOS', 'FACCION'", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -12048,7 +12044,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12063,7 +12059,7 @@ Public Sub HandleChangeMapInfoNoMagic(ByVal UserIndex As Integer)
 'MagiaSinEfecto -> Options: "1" , "0".
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12077,9 +12073,9 @@ Public Sub HandleChangeMapInfoNoMagic(ByVal UserIndex As Integer)
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar la Magia el mapa.")
-            MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto = nomagic
-            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "MagiaSinEfecto", nomagic)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " MagiaSinEfecto: " & MapInfo(.Pos.Map).MagiaSinEfecto, FontTypeNames.FONTTYPE_INFO)
+            MapInfo(UserList(UserIndex).Pos.map).MagiaSinEfecto = nomagic
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "MagiaSinEfecto", nomagic)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " MagiaSinEfecto: " & MapInfo(.Pos.map).MagiaSinEfecto, FontTypeNames.FONTTYPE_INFO)
         End If
     End With
 End Sub
@@ -12096,7 +12092,7 @@ Public Sub HandleChangeMapInfoNoInvi(ByVal UserIndex As Integer)
 'InviSinEfecto -> Options: "1", "0"
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12110,9 +12106,9 @@ Public Sub HandleChangeMapInfoNoInvi(ByVal UserIndex As Integer)
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Invisibilidad el mapa.")
-            MapInfo(UserList(UserIndex).Pos.Map).InviSinEfecto = noinvi
-            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "InviSinEfecto", noinvi)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " InviSinEfecto: " & MapInfo(.Pos.Map).InviSinEfecto, FontTypeNames.FONTTYPE_INFO)
+            MapInfo(UserList(UserIndex).Pos.map).InviSinEfecto = noinvi
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "InviSinEfecto", noinvi)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " InviSinEfecto: " & MapInfo(.Pos.map).InviSinEfecto, FontTypeNames.FONTTYPE_INFO)
         End If
     End With
 End Sub
@@ -12129,7 +12125,7 @@ Public Sub HandleChangeMapInfoNoResu(ByVal UserIndex As Integer)
 'ResuSinEfecto -> Options: "1", "0"
 '***************************************************
     If UserList(UserIndex).incomingData.length < 2 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12143,9 +12139,9 @@ Public Sub HandleChangeMapInfoNoResu(ByVal UserIndex As Integer)
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             Call LogGM(.name, .name & " ha cambiado la informacion sobre si esta permitido usar Resucitar el mapa.")
-            MapInfo(UserList(UserIndex).Pos.Map).ResuSinEfecto = noresu
-            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "ResuSinEfecto", noresu)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " ResuSinEfecto: " & MapInfo(.Pos.Map).ResuSinEfecto, FontTypeNames.FONTTYPE_INFO)
+            MapInfo(UserList(UserIndex).Pos.map).ResuSinEfecto = noresu
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "ResuSinEfecto", noresu)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " ResuSinEfecto: " & MapInfo(.Pos.map).ResuSinEfecto, FontTypeNames.FONTTYPE_INFO)
         End If
     End With
 End Sub
@@ -12162,7 +12158,7 @@ Public Sub HandleChangeMapInfoLand(ByVal UserIndex As Integer)
 'Terreno -> Opciones: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12182,9 +12178,9 @@ On Error GoTo Errhandler
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion del Terreno del mapa.")
-                MapInfo(UserList(UserIndex).Pos.Map).Terreno = tStr
-                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Terreno", tStr)
-                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Terreno: " & MapInfo(.Pos.Map).Terreno, FontTypeNames.FONTTYPE_INFO)
+                MapInfo(UserList(UserIndex).Pos.map).Terreno = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "Terreno", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " Terreno: " & MapInfo(.Pos.map).Terreno, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'NIEVE' ya que al ingresarlo, la gente muere de frio en el Mapa", FontTypeNames.FONTTYPE_INFO)
@@ -12204,7 +12200,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12219,7 +12215,7 @@ Public Sub HandleChangeMapInfoZone(ByVal UserIndex As Integer)
 'Zona -> Opciones: "BOSQUE", "NIEVE", "DESIERTO", "CIUDAD", "CAMPO", "DUNGEON".
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12239,9 +12235,9 @@ On Error GoTo Errhandler
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.name, .name & " ha cambiado la informacion de la Zona del mapa.")
-                MapInfo(UserList(UserIndex).Pos.Map).Zona = tStr
-                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Zona", tStr)
-                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Zona: " & MapInfo(.Pos.Map).Zona, FontTypeNames.FONTTYPE_INFO)
+                MapInfo(UserList(UserIndex).Pos.map).Zona = tStr
+                Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.map & ".dat", "Mapa" & UserList(UserIndex).Pos.map, "Zona", tStr)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.map & " Zona: " & MapInfo(.Pos.map).Zona, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'DUNGEON' ya que al ingresarlo, NO se sentirá el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
@@ -12261,7 +12257,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12281,9 +12277,9 @@ Public Sub HandleSaveMap(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
-        Call LogGM(.name, .name & " ha guardado el mapa " & CStr(.Pos.Map))
+        Call LogGM(.name, .name & " ha guardado el mapa " & CStr(.Pos.map))
         
-        Call GrabarMapa(.Pos.Map, App.Path & "\WorldBackUp\Mapa" & .Pos.Map)
+        Call GrabarMapa(.Pos.map, App.Path & "\WorldBackUp\Mapa" & .Pos.map)
         
         Call WriteConsoleMsg(UserIndex, "Mapa Guardado", FontTypeNames.FONTTYPE_INFO)
     End With
@@ -12302,7 +12298,7 @@ Public Sub HandleShowGuildMessages(ByVal UserIndex As Integer)
 'Allows admins to read guild messages
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12336,7 +12332,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12413,7 +12409,7 @@ Public Sub HandleAlterName(ByVal UserIndex As Integer)
 'Change user name
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12430,7 +12426,7 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim newName As String
         Dim changeNameUI As Integer
-        Dim guildIndex As Integer
+        Dim GuildIndex As Integer
         
         UserName = buffer.ReadASCIIString()
         newName = buffer.ReadASCIIString()
@@ -12447,9 +12443,9 @@ On Error GoTo Errhandler
                     If Not FileExist(CharPath & UserName & ".chr") Then
                         Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        guildIndex = val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
+                        GuildIndex = val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
                         
-                        If guildIndex > 0 Then
+                        If GuildIndex > 0 Then
                             Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
                         Else
                             If Not FileExist(CharPath & newName & ".chr") Then
@@ -12490,7 +12486,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12505,7 +12501,7 @@ Public Sub HandleAlterMail(ByVal UserIndex As Integer)
 'Change user password
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12552,7 +12548,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12567,7 +12563,7 @@ Public Sub HandleAlterPassword(ByVal UserIndex As Integer)
 'Change user password
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12617,7 +12613,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12632,7 +12628,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12649,7 +12645,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
         
         If NpcIndex <> 0 Then
-            Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map)
+            Call LogGM(.name, "Sumoneo a " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
         End If
     End With
 End Sub
@@ -12667,7 +12663,7 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12684,7 +12680,7 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, True)
         
         If NpcIndex <> 0 Then
-            Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.Map)
+            Call LogGM(.name, "Sumoneo con respawn " & Npclist(NpcIndex).name & " en mapa " & .Pos.map)
         End If
     End With
 End Sub
@@ -12701,7 +12697,7 @@ Public Sub HandleImperialArmour(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12745,7 +12741,7 @@ Public Sub HandleChaosArmour(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12878,7 +12874,7 @@ Public Sub HandleTurnCriminal(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12917,7 +12913,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12932,7 +12928,7 @@ Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -12972,7 +12968,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -12987,7 +12983,7 @@ Public Sub HandleRemoveCharFromGuild(ByVal UserIndex As Integer)
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -13001,20 +12997,20 @@ On Error GoTo Errhandler
         Call buffer.ReadByte
         
         Dim UserName As String
-        Dim guildIndex As Integer
+        Dim GuildIndex As Integer
         
         UserName = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
             Call LogGM(.name, "/RAJARCLAN " & UserName)
             
-            guildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
+            GuildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
             
-            If guildIndex = 0 Then
+            If GuildIndex = 0 Then
                 Call WriteConsoleMsg(UserIndex, "No pertenece a ningún clan o es fundador.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Expulsado.", FontTypeNames.FONTTYPE_INFO)
-                Call SendData(SendTarget.ToGuildMembers, guildIndex, PrepareMessageConsoleMsg(UserName & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
+                Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(UserName & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
             End If
         End If
         
@@ -13031,7 +13027,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -13046,7 +13042,7 @@ Public Sub HandleRequestCharMail(ByVal UserIndex As Integer)
 'Request user mail
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -13085,7 +13081,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -13100,7 +13096,7 @@ Public Sub HandleSystemMessage(ByVal UserIndex As Integer)
 'Send a message to all the users
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -13135,7 +13131,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -13153,7 +13149,7 @@ Public Sub HandleSetMOTD(ByVal UserIndex As Integer)
 '   - Fixed a bug that caused the player to be kicked.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
-        Err.raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
     End If
     
@@ -13204,7 +13200,7 @@ On Error GoTo 0
     Set buffer = Nothing
     
     If error <> 0 Then _
-        Err.raise error
+        Err.Raise error
 End Sub
 
 ''
@@ -13976,7 +13972,7 @@ End Sub
 ' @param    version The version of the map in the server to check if client is properly updated.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteChangeMap(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal version As Integer)
+Public Sub WriteChangeMap(ByVal UserIndex As Integer, ByVal map As Integer, ByVal version As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
@@ -13985,7 +13981,7 @@ Public Sub WriteChangeMap(ByVal UserIndex As Integer, ByVal Map As Integer, ByVa
 On Error GoTo Errhandler
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.ChangeMap)
-        Call .WriteInteger(Map)
+        Call .WriteInteger(map)
         Call .WriteInteger(version)
     End With
 Exit Sub
@@ -14407,6 +14403,23 @@ Public Sub WriteCharacterMove(ByVal UserIndex As Integer, ByVal CharIndex As Int
 '***************************************************
 On Error GoTo Errhandler
     Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterMove(CharIndex, X, Y))
+Exit Sub
+
+Errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
+End Sub
+
+Public Sub WriteForceCharMove(ByVal UserIndex, ByVal Direccion As eHeading)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 26/03/2009
+'Writes the "ForceCharMove" message to the given user's outgoing data buffer
+'***************************************************
+On Error GoTo Errhandler
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageForceCharMove(Direccion))
 Exit Sub
 
 Errhandler:
@@ -16855,6 +16868,20 @@ Public Function PrepareMessageCharacterMove(ByVal CharIndex As Integer, ByVal X 
         Call .WriteByte(Y)
         
         PrepareMessageCharacterMove = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+Public Function PrepareMessageForceCharMove(ByVal Direccion As eHeading) As String
+'***************************************************
+'Author: ZaMa
+'Last Modification: 26/03/2009
+'Prepares the "ForceCharMove" message and returns it
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.ForceCharMove)
+        Call .WriteByte(Direccion)
+        
+        PrepareMessageForceCharMove = .ReadASCIIStringFixed(.length)
     End With
 End Function
 

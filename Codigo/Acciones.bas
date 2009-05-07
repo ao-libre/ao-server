@@ -1,5 +1,5 @@
 Attribute VB_Name = "Acciones"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -42,130 +42,131 @@ Option Explicit
 ' @param Y Y
 
 Sub Accion(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+    Dim tempIndex As Integer
+    
 On Error Resume Next
-
-'¿Rango Visión? (ToxicWaste)
-If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
-    Exit Sub
-End If
-
-'¿Posicion valida?
-If InMapBounds(map, X, Y) Then
-   
-    Dim FoundChar As Byte
-    Dim FoundSomething As Byte
-    Dim TempCharIndex As Integer
-       
-    If MapData(map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
-        'Set the target NPC
-        UserList(UserIndex).flags.TargetNPC = MapData(map, X, Y).NpcIndex
-        
-        If Npclist(MapData(map, X, Y).NpcIndex).Comercia = 1 Then
-            '¿Esta el user muerto? Si es asi no puede comerciar
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            'Is it already in commerce mode??
-            If UserList(UserIndex).flags.Comerciando Then
-                Exit Sub
-            End If
-            
-            If Distancia(Npclist(UserList(UserIndex).flags.TargetNPC).Pos, UserList(UserIndex).Pos) > 3 Then
-                Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            'Iniciamos la rutina pa' comerciar.
-            Call IniciarComercioNPC(UserIndex)
-        
-        ElseIf Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Banquero Then
-            '¿Esta el user muerto? Si es asi no puede comerciar
-            If UserList(UserIndex).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            'Is it already in commerce mode??
-            If UserList(UserIndex).flags.Comerciando Then
-                Exit Sub
-            End If
-            
-            If Distancia(Npclist(MapData(map, X, Y).NpcIndex).Pos, UserList(UserIndex).Pos) > 3 Then
-                Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            'A depositar de una
-            Call IniciarDeposito(UserIndex)
-        
-        ElseIf Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
-            If Distancia(UserList(UserIndex).Pos, Npclist(MapData(map, X, Y).NpcIndex).Pos) > 10 Then
-                Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
-            End If
-            
-            'Revivimos si es necesario
-            If UserList(UserIndex).flags.Muerto = 1 And (Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex)) Then
-                Call RevivirUsuario(UserIndex)
-            End If
-            
-            If Npclist(MapData(map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex) Then
-                'curamos totalmente
-                UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
-                Call WriteUpdateUserStats(UserIndex)
-            End If
-        End If
-        
-    '¿Es un obj?
-    ElseIf MapData(map, X, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(map, X, Y).ObjInfo.ObjIndex
-        
-        Select Case ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(map, X, Y, UserIndex)
-            Case eOBJType.otCarteles 'Es un cartel
-                Call AccionParaCartel(map, X, Y, UserIndex)
-            Case eOBJType.otForos 'Foro
-                Call AccionParaForo(map, X, Y, UserIndex)
-            Case eOBJType.otLeña    'Leña
-                If MapData(map, X, Y).ObjInfo.ObjIndex = FOGATA_APAG And UserList(UserIndex).flags.Muerto = 0 Then
-                    Call AccionParaRamita(map, X, Y, UserIndex)
-                End If
-        End Select
-    '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
-    ElseIf MapData(map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(map, X + 1, Y).ObjInfo.ObjIndex
-        
-        Select Case ObjData(MapData(map, X + 1, Y).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(map, X + 1, Y, UserIndex)
-            
-        End Select
-    ElseIf MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex
-
-        Select Case ObjData(MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(map, X + 1, Y + 1, UserIndex)
-            
-        End Select
-    ElseIf MapData(map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.TargetObj = MapData(map, X, Y + 1).ObjInfo.ObjIndex
-
-        Select Case ObjData(MapData(map, X, Y + 1).ObjInfo.ObjIndex).OBJType
-            
-            Case eOBJType.otPuertas 'Es una puerta
-                Call AccionParaPuerta(map, X, Y + 1, UserIndex)
-            
-        End Select
+    '¿Rango Visión? (ToxicWaste)
+    If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
+        Exit Sub
     End If
-End If
-
+    
+    '¿Posicion valida?
+    If InMapBounds(map, X, Y) Then
+        With UserList(UserIndex)
+            If MapData(map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
+                tempIndex = MapData(map, X, Y).NpcIndex
+                
+                'Set the target NPC
+                .flags.TargetNPC = tempIndex
+                
+                If Npclist(tempIndex).Comercia = 1 Then
+                    '¿Esta el user muerto? Si es asi no puede comerciar
+                    If .flags.Muerto = 1 Then
+                        Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    'Is it already in commerce mode??
+                    If .flags.Comerciando Then
+                        Exit Sub
+                    End If
+                    
+                    If Distancia(Npclist(tempIndex).Pos, .Pos) > 3 Then
+                        Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    'Iniciamos la rutina pa' comerciar.
+                    Call IniciarComercioNPC(UserIndex)
+                
+                ElseIf Npclist(tempIndex).NPCtype = eNPCType.Banquero Then
+                    '¿Esta el user muerto? Si es asi no puede comerciar
+                    If .flags.Muerto = 1 Then
+                        Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    'Is it already in commerce mode??
+                    If .flags.Comerciando Then
+                        Exit Sub
+                    End If
+                    
+                    If Distancia(Npclist(tempIndex).Pos, .Pos) > 3 Then
+                        Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    'A depositar de una
+                    Call IniciarDeposito(UserIndex)
+                
+                ElseIf Npclist(tempIndex).NPCtype = eNPCType.Revividor Or Npclist(tempIndex).NPCtype = eNPCType.ResucitadorNewbie Then
+                    If Distancia(.Pos, Npclist(tempIndex).Pos) > 10 Then
+                        Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    'Revivimos si es necesario
+                    If .flags.Muerto = 1 And (Npclist(tempIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex)) Then
+                        Call RevivirUsuario(UserIndex)
+                    End If
+                    
+                    If Npclist(tempIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex) Then
+                        'curamos totalmente
+                        .Stats.MinHP = .Stats.MaxHP
+                        Call WriteUpdateUserStats(UserIndex)
+                    End If
+                End If
+                
+            '¿Es un obj?
+            ElseIf MapData(map, X, Y).ObjInfo.ObjIndex > 0 Then
+                tempIndex = MapData(map, X, Y).ObjInfo.ObjIndex
+                
+                .flags.TargetObj = tempIndex
+                
+                Select Case ObjData(tempIndex).OBJType
+                    Case eOBJType.otPuertas 'Es una puerta
+                        Call AccionParaPuerta(map, X, Y, UserIndex)
+                    Case eOBJType.otCarteles 'Es un cartel
+                        Call AccionParaCartel(map, X, Y, UserIndex)
+                    Case eOBJType.otForos 'Foro
+                        Call AccionParaForo(map, X, Y, UserIndex)
+                    Case eOBJType.otLeña    'Leña
+                        If tempIndex = FOGATA_APAG And .flags.Muerto = 0 Then
+                            Call AccionParaRamita(map, X, Y, UserIndex)
+                        End If
+                End Select
+            '>>>>>>>>>>>OBJETOS QUE OCUPAM MAS DE UN TILE<<<<<<<<<<<<<
+            ElseIf MapData(map, X + 1, Y).ObjInfo.ObjIndex > 0 Then
+                tempIndex = MapData(map, X + 1, Y).ObjInfo.ObjIndex
+                .flags.TargetObj = tempIndex
+                
+                Select Case ObjData(tempIndex).OBJType
+                    
+                    Case eOBJType.otPuertas 'Es una puerta
+                        Call AccionParaPuerta(map, X + 1, Y, UserIndex)
+                    
+                End Select
+            
+            ElseIf MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex > 0 Then
+                tempIndex = MapData(map, X + 1, Y + 1).ObjInfo.ObjIndex
+                .flags.TargetObj = tempIndex
+        
+                Select Case ObjData(tempIndex).OBJType
+                    Case eOBJType.otPuertas 'Es una puerta
+                        Call AccionParaPuerta(map, X + 1, Y + 1, UserIndex)
+                End Select
+            
+            ElseIf MapData(map, X, Y + 1).ObjInfo.ObjIndex > 0 Then
+                tempIndex = MapData(map, X, Y + 1).ObjInfo.ObjIndex
+                .flags.TargetObj = tempIndex
+                
+                Select Case ObjData(tempIndex).OBJType
+                    Case eOBJType.otPuertas 'Es una puerta
+                        Call AccionParaPuerta(map, X, Y + 1, UserIndex)
+                End Select
+            End If
+        End With
+    End If
 End Sub
 
 Sub AccionParaForo(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
@@ -212,9 +213,6 @@ End Sub
 
 Sub AccionParaPuerta(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
-
-Dim MiObj As Obj
-Dim wp As WorldPos
 
 If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2) Then
     If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).Llave = 0 Then
@@ -270,9 +268,6 @@ End Sub
 Sub AccionParaCartel(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 
-
-Dim MiObj As Obj
-
 If ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).OBJType = 8 Then
   
   If Len(ObjData(MapData(map, X, Y).ObjInfo.ObjIndex).texto) > 0 Then
@@ -289,7 +284,6 @@ On Error Resume Next
 Dim Suerte As Byte
 Dim exito As Byte
 Dim Obj As Obj
-Dim raise As Integer
 
 Dim Pos As WorldPos
 Pos.map = map

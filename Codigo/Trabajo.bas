@@ -1,5 +1,5 @@
 Attribute VB_Name = "Trabajo"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -28,6 +28,10 @@ Attribute VB_Name = "Trabajo"
 'Pablo Ignacio Márquez
 
 Option Explicit
+
+Private Const ENERGIA_TRABAJO_HERRERO As Byte = 2
+Private Const ENERGIA_TRABAJO_NOHERRERO As Byte = 6
+
 
 Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
 '********************************************************
@@ -323,6 +327,28 @@ End Function
 Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 
 If PuedeConstruir(UserIndex, ItemIndex) And PuedeConstruirHerreria(ItemIndex) Then
+    
+    'Sacamos energía
+    If UserList(UserIndex).clase = eClass.Blacksmith Then
+        'Chequeamos que tenga los puntos antes de sacarselos
+        If UserList(UserIndex).Stats.MinSta >= ENERGIA_TRABAJO_HERRERO Then
+            UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - ENERGIA_TRABAJO_HERRERO
+            Call WriteUpdateSta(UserIndex)
+        Else
+            Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    Else
+        'Chequeamos que tenga los puntos antes de sacarselos
+        If UserList(UserIndex).Stats.MinSta >= ENERGIA_TRABAJO_NOHERRERO Then
+            UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - ENERGIA_TRABAJO_NOHERRERO
+            Call WriteUpdateSta(UserIndex)
+        Else
+            Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    End If
+    
     Call HerreroQuitarMateriales(UserIndex, ItemIndex)
     ' AGREGAR FX
     If ObjData(ItemIndex).OBJType = eOBJType.otWeapon Then
@@ -378,6 +404,27 @@ If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
    ObjData(ItemIndex).SkCarpinteria And _
    PuedeConstruirCarpintero(ItemIndex) And _
    UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
+   
+    'Sacamos energía
+    If UserList(UserIndex).clase = eClass.Carpenter Then
+        'Chequeamos que tenga los puntos antes de sacarselos
+        If UserList(UserIndex).Stats.MinSta >= ENERGIA_TRABAJO_HERRERO Then
+            UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - ENERGIA_TRABAJO_HERRERO
+            Call WriteUpdateSta(UserIndex)
+        Else
+            Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    Else
+        'Chequeamos que tenga los puntos antes de sacarselos
+        If UserList(UserIndex).Stats.MinSta >= ENERGIA_TRABAJO_NOHERRERO Then
+            UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - ENERGIA_TRABAJO_NOHERRERO
+            Call WriteUpdateSta(UserIndex)
+        Else
+            Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    End If
     
     Call CarpinteroQuitarMateriales(UserIndex, ItemIndex)
     Call WriteConsoleMsg(UserIndex, "Has construido el objeto!.", FontTypeNames.FONTTYPE_INFO)
@@ -519,9 +566,14 @@ Function ModDomar(ByVal clase As eClass) As Integer
 End Function
 
 Function FreeMascotaIndex(ByVal UserIndex As Integer) As Integer
+'***************************************************
+'Author: Unknown
+'Last Modification: 02/03/09
+'02/03/09: ZaMa - Busca un indice libre de mascotas, revisando los types y no los indices de los npcs
+'***************************************************
     Dim j As Integer
     For j = 1 To MAXMASCOTAS
-        If UserList(UserIndex).MascotasIndex(j) = 0 Then
+        If UserList(UserIndex).MascotasType(j) = 0 Then
             FreeMascotaIndex = j
             Exit Function
         End If
@@ -531,12 +583,16 @@ End Function
 Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Nacho (Integer)
-'Last Modification: 06/18/08 (NicoNZ)
-'
+'Last Modification: 02/03/2009
+'12/15/2008: ZaMa - Limits the number of the same type of pet to 2.
+'02/03/2009: ZaMa - Las criaturas domadas en zona segura, esperan afuera (desaparecen).
 '***************************************************
 
 Dim puntosDomar As Integer
 Dim puntosRequeridos As Integer
+Dim CanStay As Boolean
+Dim petType As Integer
+Dim NroPets As Integer
 
 
 If Npclist(NpcIndex).MaestroUser = UserIndex Then
@@ -548,6 +604,11 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
     
     If Npclist(NpcIndex).MaestroNpc > 0 Or Npclist(NpcIndex).MaestroUser > 0 Then
         Call WriteConsoleMsg(UserIndex, "La criatura ya tiene amo.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
+    If Not PuedeDomarMascota(UserIndex, NpcIndex) Then
+        Call WriteConsoleMsg(UserIndex, "No puedes domar mas de dos criaturas del mismo tipo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -572,6 +633,21 @@ If UserList(UserIndex).NroMascotas < MAXMASCOTAS Then
         
         Call WriteConsoleMsg(UserIndex, "La criatura te ha aceptado como su amo.", FontTypeNames.FONTTYPE_INFO)
         
+        ' Es zona segura?
+        CanStay = (MapInfo(UserList(UserIndex).Pos.map).Pk = True)
+        
+        If Not CanStay Then
+            petType = Npclist(NpcIndex).Numero
+            NroPets = UserList(UserIndex).NroMascotas
+            
+            Call QuitarNPC(NpcIndex)
+            
+            UserList(UserIndex).MascotasType(index) = petType
+            UserList(UserIndex).NroMascotas = NroPets
+            
+            Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Éstas te esperarán afuera.", FontTypeNames.FONTTYPE_INFO)
+        End If
+
     Else
         If Not UserList(UserIndex).flags.UltimoMensaje = 5 Then
             Call WriteConsoleMsg(UserIndex, "No has logrado domar la criatura.", FontTypeNames.FONTTYPE_INFO)
@@ -587,6 +663,32 @@ Else
     Call WriteConsoleMsg(UserIndex, "No puedes controlar más criaturas.", FontTypeNames.FONTTYPE_INFO)
 End If
 End Sub
+
+''
+' Checks if the user can tames a pet.
+'
+' @param integer userIndex The user id from who wants tame the pet.
+' @param integer NPCindex The index of the npc to tome.
+' @return boolean True if can, false if not.
+Private Function PuedeDomarMascota(ByVal UserIndex As Integer, ByVal NpcIndex As Integer) As Boolean
+'***************************************************
+'Author: ZaMa
+'This function checks how many NPCs of the same type have
+'been tamed by the user.
+'Returns True if that amount is less than two.
+'***************************************************
+    Dim i As Long
+    Dim numMascotas As Long
+    
+    For i = 1 To MAXMASCOTAS
+        If UserList(UserIndex).MascotasType(i) = Npclist(NpcIndex).Numero Then
+            numMascotas = numMascotas + 1
+        End If
+    Next i
+    
+    If numMascotas <= 1 Then PuedeDomarMascota = True
+    
+End Function
 
 Sub DoAdminInvisible(ByVal UserIndex As Integer)
     
@@ -627,22 +729,22 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
 End Sub
 
-Sub TratarDeHacerFogata(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
+Sub TratarDeHacerFogata(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
 
 Dim Suerte As Byte
 Dim exito As Byte
 Dim Obj As Obj
 Dim posMadera As WorldPos
 
-If Not LegalPos(Map, X, Y) Then Exit Sub
+If Not LegalPos(map, X, Y) Then Exit Sub
 
 With posMadera
-    .Map = Map
+    .map = map
     .X = X
     .Y = Y
 End With
 
-If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
+If MapData(map, X, Y).ObjInfo.ObjIndex <> 58 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas clickear sobre Leña para hacer ramitas", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -657,7 +759,7 @@ If UserList(UserIndex).flags.Muerto = 1 Then
     Exit Sub
 End If
 
-If MapData(Map, X, Y).ObjInfo.amount < 3 Then
+If MapData(map, X, Y).ObjInfo.amount < 3 Then
     Call WriteConsoleMsg(UserIndex, "Necesitas por lo menos tres troncos para hacer una fogata.", FontTypeNames.FONTTYPE_INFO)
     Exit Sub
 End If
@@ -675,11 +777,11 @@ exito = RandomNumber(1, Suerte)
 
 If exito = 1 Then
     Obj.ObjIndex = FOGATA_APAG
-    Obj.amount = MapData(Map, X, Y).ObjInfo.amount \ 3
+    Obj.amount = MapData(map, X, Y).ObjInfo.amount \ 3
     
     Call WriteConsoleMsg(UserIndex, "Has hecho " & Obj.amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-    Call MakeObj(Obj, Map, X, Y)
+    Call MakeObj(Obj, map, X, Y)
     
     'Seteamos la fogata como el nuevo TargetObj del user
     UserList(UserIndex).flags.TargetObj = FOGATA_APAG
@@ -835,7 +937,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 ' - 24/07/08 Now it calls to WriteUpdateGold(VictimaIndex and LadrOnIndex) when the thief stoles gold. (MarKoxX)
 '*************************************************
 
-If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
+If Not MapInfo(UserList(VictimaIndex).Pos.map).Pk Then Exit Sub
 
 If UserList(LadrOnIndex).flags.Seguro Then
     Call WriteConsoleMsg(LadrOnIndex, "Debes quitar el seguro para robar", FontTypeNames.FONTTYPE_FIGHT)
@@ -1104,7 +1206,7 @@ If RandomNumber(0, 100) < Suerte Then
         Call WriteConsoleMsg(UserIndex, "Has apuñalado la criatura por " & Int(daño * 2), FontTypeNames.FONTTYPE_FIGHT)
         Call SubirSkill(UserIndex, Apuñalar)
         '[Alejo]
-        Call CalcularDarExp(UserIndex, VictimNpcIndex, Int(daño * 2))
+        Call CalcularDarExp(UserIndex, VictimNpcIndex, daño * 2)
     End If
 Else
     Call WriteConsoleMsg(UserIndex, "¡No has logrado apuñalar a tu enemigo!", FontTypeNames.FONTTYPE_FIGHT)

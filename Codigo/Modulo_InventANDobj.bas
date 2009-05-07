@@ -1,5 +1,5 @@
 Attribute VB_Name = "InvNpc"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -97,18 +97,27 @@ End If
 QuedanItems = False
 End Function
 
+''
+' Gets the amount of a certain item that an npc has.
+'
+' @param npcIndex Specifies reference to npcmerchant
+' @param ObjIndex Specifies reference to object
+' @return   The amount of the item that the npc has
+' @remarks This function reads the Npc.dat file
 Function EncontrarCant(ByVal NpcIndex As Integer, ByVal ObjIndex As Integer) As Integer
+'***************************************************
+'Author: Unknown
+'Last Modification: 03/09/08
+'Last Modification By: Marco Vanotti (Marco)
+' - 03/09/08 EncontrarCant now returns 0 if the npc doesn't have it (Marco)
+'***************************************************
 On Error Resume Next
 'Devuelve la cantidad original del obj de un npc
 
 Dim ln As String, npcfile As String
 Dim i As Integer
 
-'If Npclist(NpcIndex).Numero > 499 Then
-'    npcfile = DatPath & "NPCs-HOSTILES.dat"
-'Else
-    npcfile = DatPath & "NPCs.dat"
-'End If
+npcfile = DatPath & "NPCs.dat"
  
 For i = 1 To MAX_INVENTORY_SLOTS
     ln = GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "Obj" & i)
@@ -118,7 +127,7 @@ For i = 1 To MAX_INVENTORY_SLOTS
     End If
 Next
                    
-EncontrarCant = 50
+EncontrarCant = 0
 
 End Function
 
@@ -138,11 +147,21 @@ Npclist(NpcIndex).InvReSpawn = 0
 
 End Sub
 
+''
+' Removes a certain amount of items from a slot of an npc's inventory
+'
+' @param npcIndex Specifies reference to npcmerchant
+' @param Slot Specifies reference to npc's inventory's slot
+' @param antidad Specifies amount of items that will be removed
 Sub QuitarNpcInvItem(ByVal NpcIndex As Integer, ByVal Slot As Byte, ByVal Cantidad As Integer)
-
-
-
+'***************************************************
+'Author: Unknown
+'Last Modification: 03/09/08
+'Last Modification By: Marco Vanotti (Marco)
+' - 03/09/08 Now this sub checks that te npc has an item before respawning it (Marco)
+'***************************************************
 Dim ObjIndex As Integer
+Dim iCant As Integer
 ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
 
     'Quita un Obj
@@ -166,11 +185,13 @@ ObjIndex = Npclist(NpcIndex).Invent.Object(Slot).ObjIndex
             Npclist(NpcIndex).Invent.Object(Slot).amount = 0
             
             If Not QuedanItems(NpcIndex, ObjIndex) Then
-                   
-                   Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = ObjIndex
-                   Npclist(NpcIndex).Invent.Object(Slot).amount = EncontrarCant(NpcIndex, ObjIndex)
-                   Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
-            
+                'Check if the item is in the npc's dat.
+                iCant = EncontrarCant(NpcIndex, ObjIndex)
+                If iCant Then
+                    Npclist(NpcIndex).Invent.Object(Slot).ObjIndex = ObjIndex
+                    Npclist(NpcIndex).Invent.Object(Slot).amount = iCant
+                    Npclist(NpcIndex).Invent.NroItems = Npclist(NpcIndex).Invent.NroItems + 1
+                End If
             End If
             
             If Npclist(NpcIndex).Invent.NroItems = 0 And Npclist(NpcIndex).InvReSpawn <> 1 Then
@@ -190,11 +211,7 @@ Dim LoopC As Integer
 Dim ln As String
 Dim npcfile As String
 
-'If Npclist(NpcIndex).Numero > 499 Then
-'    npcfile = DatPath & "NPCs-HOSTILES.dat"
-'Else
-    npcfile = DatPath & "NPCs.dat"
-'End If
+npcfile = DatPath & "NPCs.dat"
 
 Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & Npclist(NpcIndex).Numero, "NROITEMS"))
 

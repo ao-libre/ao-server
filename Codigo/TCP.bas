@@ -1,5 +1,5 @@
 Attribute VB_Name = "TCP"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -526,14 +526,12 @@ On Error GoTo Errhandler
     
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     
 Exit Sub
 
 Errhandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
 
     Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.description & " - UserIndex = " & UserIndex)
@@ -547,7 +545,6 @@ On Error GoTo Errhandler
     
     
     UserList(UserIndex).ConnID = -1
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
 
     If UserIndex = LastUser And LastUser > 1 Then
         Do Until UserList(LastUser).flags.UserLogged
@@ -569,7 +566,6 @@ Exit Sub
 
 Errhandler:
     UserList(UserIndex).ConnID = -1
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call ResetUserSlot(UserIndex)
 End Sub
 
@@ -597,7 +593,6 @@ Dim CoNnEcTiOnId As Long
     
   
     UserList(UserIndex).ConnID = -1 'inabilitamos operaciones en socket
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
 
     If UserIndex = LastUser And LastUser > 1 Then
         Do
@@ -625,7 +620,6 @@ Dim CoNnEcTiOnId As Long
 Exit Sub
 
 Errhandler:
-    UserList(UserIndex).NumeroPaquetesPorMiliSec = 0
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
     If Not NURestados Then
@@ -704,7 +698,6 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As Stri
 Exit Function
     
 Err:
-        'If frmMain.SUPERLOG.Value = 1 Then LogCustom ("EnviarDatosASlot:: ERR Handler. userindex=" & UserIndex & " datos=" & Datos & " UL?/CId/CIdV?=" & UserList(UserIndex).flags.UserLogged & "/" & UserList(UserIndex).ConnID & "/" & UserList(UserIndex).ConnIDValida & " ERR: " & Err.Description)
 
 #ElseIf UsarQueSocket = 0 Then '**********************************************
     
@@ -816,6 +809,11 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 End Function
 
 Sub ConnectUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String)
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 26/03/2009
+'26/03/2009: ZaMa - Agrego por default que el color de dialogo de los dioses, sea como el de su nick.
+'***************************************************
 Dim N As Integer
 Dim tStr As String
 
@@ -876,7 +874,7 @@ If CheckForSameName(name) Then
     If UserList(NameIndex(name)).Counters.Saliendo Then
         Call WriteErrorMsg(UserIndex, "El usuario está saliendo.")
     Else
-        Call WriteErrorMsg(UserIndex, "Perdon, un usuario con el mismo nombre se há logoeado.")
+        Call WriteErrorMsg(UserIndex, "Perdon, un usuario con el mismo nombre se ha logoeado.")
     End If
     Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
@@ -1096,7 +1094,9 @@ Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.map, MapInfo(UserList(UserIndex).Pos.map).MapVersion) 'Carga el mapa
 Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
 
-If UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
+If UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
+    UserList(UserIndex).flags.ChatColor = RGB(250, 250, 150)
+ElseIf UserList(UserIndex).flags.Privilegios <> PlayerType.User And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And UserList(UserIndex).flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 0)
 ElseIf UserList(UserIndex).flags.Privilegios = (PlayerType.User Or PlayerType.RoyalCouncil) Then
     UserList(UserIndex).flags.ChatColor = RGB(0, 255, 255)
@@ -1158,8 +1158,6 @@ If UserList(UserIndex).Stats.SkillPts > 0 Then
     Call WriteLevelUp(UserIndex, UserList(UserIndex).Stats.SkillPts)
 End If
 
-If NumUsers > DayStats.MaxUsuarios Then DayStats.MaxUsuarios = NumUsers
-
 If NumUsers > recordusuarios Then
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
     recordusuarios = NumUsers
@@ -1196,9 +1194,9 @@ Else
     Call WriteSafeModeOn(UserIndex)
 End If
 
-If UserList(UserIndex).guildIndex > 0 Then
+If UserList(UserIndex).GuildIndex > 0 Then
     'welcome to the show baby...
-    If Not modGuilds.m_ConectarMiembroAClan(UserIndex, UserList(UserIndex).guildIndex) Then
+    If Not modGuilds.m_ConectarMiembroAClan(UserIndex, UserList(UserIndex).GuildIndex) Then
         Call WriteConsoleMsg(UserIndex, "Tu estado no te permite entrar al clan.", FontTypeNames.FONTTYPE_GUILD)
     End If
 End If
@@ -1300,7 +1298,6 @@ Sub ResetContadores(ByVal UserIndex As Integer)
         .IdleCount = 0
         .Invisibilidad = 0
         .Paralisis = 0
-        .Pasos = 0
         .Pena = 0
         .PiqueteC = 0
         .STACounter = 0
@@ -1353,7 +1350,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '*************************************************
     With UserList(UserIndex)
         .name = vbNullString
-        .modName = vbNullString
         .desc = vbNullString
         .DescRM = vbNullString
         .Pos.map = 0
@@ -1420,10 +1416,10 @@ Sub ResetGuildInfo(ByVal UserIndex As Integer)
         Call modGuilds.GMDejaDeEscucharClan(UserIndex, UserList(UserIndex).EscucheClan)
         UserList(UserIndex).EscucheClan = 0
     End If
-    If UserList(UserIndex).guildIndex > 0 Then
-        Call modGuilds.m_DesconectarMiembroDelClan(UserIndex, UserList(UserIndex).guildIndex)
+    If UserList(UserIndex).GuildIndex > 0 Then
+        Call modGuilds.m_DesconectarMiembroDelClan(UserIndex, UserList(UserIndex).GuildIndex)
     End If
-    UserList(UserIndex).guildIndex = 0
+    UserList(UserIndex).GuildIndex = 0
 End Sub
 
 Sub ResetUserFlags(ByVal UserIndex As Integer)
@@ -1643,7 +1639,7 @@ Call MostrarNumUsers
 
 N = FreeFile(1)
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " há dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
 Close #N
 
 Exit Sub

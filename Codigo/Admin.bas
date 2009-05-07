@@ -1,5 +1,5 @@
 Attribute VB_Name = "Admin"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -44,15 +44,6 @@ Public Type tAPuestas
 End Type
 Public Apuestas As tAPuestas
 
-Public NPCs As Long
-Public DebugSocket As Boolean
-
-Public Horas As Long
-Public Dias As Long
-Public MinsRunning As Long
-
-Public ReiniciarServer As Long
-
 Public tInicioServer As Long
 Public EstadisticasWeb As New clsEstadisticasIPC
 
@@ -74,6 +65,7 @@ Public IntervaloNPCAI As Integer
 Public IntervaloInvocacion As Integer
 Public IntervaloOculto As Integer '[Nacho]
 Public IntervaloUserPuedeAtacar As Long
+Public IntervaloGolpeUsar As Long
 Public IntervaloMagiaGolpe As Long
 Public IntervaloGolpeMagia As Long
 Public IntervaloUserPuedeCastear As Long
@@ -90,29 +82,9 @@ Public PorcentajeRecuperoMana As Integer
 Public MinutosWs As Long
 Public Puerto As Integer
 
-Public MAXPASOS As Long
-
 Public BootDelBackUp As Byte
 Public Lloviendo As Boolean
 Public DeNoche As Boolean
-
-Public IpList As New Collection
-Public ClientsCommandsQueue As Byte
-
-Public Type TCPESStats
-    BytesEnviados As Double
-    BytesRecibidos As Double
-    BytesEnviadosXSEG As Long
-    BytesRecibidosXSEG As Long
-    BytesEnviadosXSEGMax As Long
-    BytesRecibidosXSEGMax As Long
-    BytesEnviadosXSEGCuando As Date
-    BytesRecibidosXSEGCuando As Date
-End Type
-
-Public TCPESStats As TCPESStats
-
-'Public ResetThread As New clsThreading
 
 Function VersionOK(ByVal Ver As String) As Boolean
 VersionOK = (Ver = ULTIMAVERSION)
@@ -405,35 +377,6 @@ If Contador >= 10 Then
     End If
     
     Andando = Tmp
-End If
-
-End Sub
-
-Public Sub ActualizaStatsES()
-
-Static TUlt As Single
-Dim Transcurrido As Single
-
-Transcurrido = Timer - TUlt
-
-If Transcurrido >= 5 Then
-    TUlt = Timer
-    With TCPESStats
-        .BytesEnviadosXSEG = CLng(.BytesEnviados / Transcurrido)
-        .BytesRecibidosXSEG = CLng(.BytesRecibidos / Transcurrido)
-        .BytesEnviados = 0
-        .BytesRecibidos = 0
-        
-        If .BytesEnviadosXSEG > .BytesEnviadosXSEGMax Then
-            .BytesEnviadosXSEGMax = .BytesEnviadosXSEG
-            .BytesEnviadosXSEGCuando = CDate(Now)
-        End If
-        
-        If .BytesRecibidosXSEG > .BytesRecibidosXSEGMax Then
-            .BytesRecibidosXSEGMax = .BytesRecibidosXSEG
-            .BytesRecibidosXSEGCuando = CDate(Now)
-        End If
-    End With
 End If
 
 End Sub

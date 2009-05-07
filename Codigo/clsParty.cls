@@ -78,7 +78,7 @@ Public Sub UpdateSumaNivelesElevados(ByVal Lvl As Integer)
 'Last modified: 28/10/08
 '
 '*************************************************
-    p_SumaNivelesElevados = p_SumaNivelesElevados - ((Lvl - 1) ^ ExponenteNivelParty) + Lvl ^ ExponenteNivelParty
+    p_SumaNivelesElevados = p_SumaNivelesElevados - ((Lvl - 1) ^ 1.75) + Lvl ^ 1.75
 End Sub
 
 Public Function MiExperiencia(ByVal UserIndex As Integer) As Long
@@ -220,7 +220,7 @@ If i = 1 Then
             Call WriteConsoleMsg(p_members(j).UserIndex, " Abandonas la party liderada por " & UserList(p_members(1).UserIndex).name, FontTypeNames.FONTTYPE_PARTY)
     
             Call WriteConsoleMsg(p_members(j).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(j).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
-            
+    
             If Not PARTY_EXPERIENCIAPORGOLPE Then
                 UserList(p_members(j).UserIndex).Stats.Exp = UserList(p_members(j).UserIndex).Stats.Exp + Fix(p_members(j).Experiencia)
                 If UserList(p_members(j).UserIndex).Stats.Exp > MAXEXP Then _

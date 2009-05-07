@@ -1,5 +1,5 @@
 Attribute VB_Name = "ES"
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -1027,9 +1027,9 @@ Next LoopC
 
 ln = UserFile.GetValue("Guild", "GUILDINDEX")
 If IsNumeric(ln) Then
-    UserList(UserIndex).guildIndex = CInt(ln)
+    UserList(UserIndex).GuildIndex = CInt(ln)
 Else
-    UserList(UserIndex).guildIndex = 0
+    UserList(UserIndex).GuildIndex = 0
 End If
 
 End Sub
@@ -1214,11 +1214,7 @@ On Error GoTo errh
                 Get FreeFileInf, , MapData(map, X, Y).NpcIndex
                 
                 If MapData(map, X, Y).NpcIndex > 0 Then
-                    'If MapData(Map, X, Y).NpcIndex > 499 Then
-                    '    npcfile = DatPath & "NPCs-HOSTILES.dat"
-                    'Else
-                        npcfile = DatPath & "NPCs.dat"
-                    'End If
+                    npcfile = DatPath & "NPCs.dat"
 
                     'Si el npc debe hacer respawn en la pos
                     'original la guardamos
@@ -1302,7 +1298,6 @@ IdleLimit = val(GetVar(IniPath & "Server.ini", "INIT", "IdleLimit"))
 ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "Version")
 
 PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
-CamaraLenta = val(GetVar(IniPath & "Server.ini", "INIT", "CamaraLenta"))
 ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
 
 ArmaduraImperial1 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial1"))
@@ -1335,12 +1330,6 @@ SacerdoteDemoniaco = val(GetVar(IniPath & "Server.ini", "INIT", "SacerdoteDemoni
 MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
 
 EnTesting = val(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
-EncriptarProtocolosCriticos = val(GetVar(IniPath & "Server.ini", "INIT", "Encriptar"))
-
-'Start pos
-StartPos.map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
-StartPos.X = val(ReadField(2, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
-StartPos.Y = val(ReadField(3, GetVar(IniPath & "Server.ini", "INIT", "StartPos"), 45))
 
 'Intervalos
 SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
@@ -1403,6 +1392,7 @@ FrmInterv.txtPuedeAtacar.Text = IntervaloUserPuedeAtacar
 'TODO : Agregar estos intervalos al form!!!
 IntervaloMagiaGolpe = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloMagiaGolpe"))
 IntervaloGolpeMagia = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeMagia"))
+IntervaloGolpeUsar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeUsar"))
 
 frmMain.tLluvia.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia"))
 FrmInterv.txtIntervaloPerdidaStaminaLluvia.Text = frmMain.tLluvia.Interval
@@ -1417,11 +1407,6 @@ IntervaloFlechasCazadores = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "In
 IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOculto"))
 
 '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
-
-'Ressurect pos
-ResPos.map = val(ReadField(1, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
-ResPos.X = val(ReadField(2, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
-ResPos.Y = val(ReadField(3, GetVar(IniPath & "Server.ini", "INIT", "ResPos"), 45))
   
 recordusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
   
@@ -1799,7 +1784,6 @@ Call WriteVar(npcfile, "NPC" & NpcNumero, "MaxHit", val(Npclist(NpcIndex).Stats.
 Call WriteVar(npcfile, "NPC" & NpcNumero, "MaxHp", val(Npclist(NpcIndex).Stats.MaxHP))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "MinHit", val(Npclist(NpcIndex).Stats.MinHIT))
 Call WriteVar(npcfile, "NPC" & NpcNumero, "MinHp", val(Npclist(NpcIndex).Stats.MinHP))
-Call WriteVar(npcfile, "NPC" & NpcNumero, "DEF", val(Npclist(NpcIndex).Stats.UsuariosMatados)) 'Que es ESTO?!!
 
 
 
@@ -1863,6 +1847,7 @@ Npclist(NpcIndex).Stats.def = val(GetVar(npcfile, "NPC" & NpcNumber, "DEF"))
 Npclist(NpcIndex).Stats.Alineacion = val(GetVar(npcfile, "NPC" & NpcNumber, "Alineacion"))
 
 
+
 Dim LoopC As Integer
 Dim ln As String
 Npclist(NpcIndex).Invent.NroItems = val(GetVar(npcfile, "NPC" & NpcNumber, "NROITEMS"))
@@ -1883,7 +1868,6 @@ End If
 
 
 Npclist(NpcIndex).flags.NPCActive = True
-Npclist(NpcIndex).flags.UseAINow = False
 Npclist(NpcIndex).flags.Respawn = val(GetVar(npcfile, "NPC" & NpcNumber, "ReSpawn"))
 Npclist(NpcIndex).flags.BackUp = val(GetVar(npcfile, "NPC" & NpcNumber, "BackUp"))
 Npclist(NpcIndex).flags.Domable = val(GetVar(npcfile, "NPC" & NpcNumber, "Domable"))

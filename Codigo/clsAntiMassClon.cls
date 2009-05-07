@@ -11,7 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'Argentum Online 0.11.6
+'Argentum Online 0.12.2
 'Copyright (C) 2002 Márquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
@@ -68,7 +68,7 @@ End Function
 
 Public Function VaciarColeccion()
 
-On Error GoTo errhandler
+On Error GoTo Errhandler
 
 Dim i As Integer
 
@@ -78,7 +78,7 @@ Next
 
 
 Exit Function
-errhandler:
+Errhandler:
     Call LogError("Error en RestarConexion " & Err.description)
 End Function
 
