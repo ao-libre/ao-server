@@ -1242,7 +1242,9 @@ If Hechizos(Spell).SubeHP = 1 Then
     If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
     
     Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-
+    
+    Call WriteUpdateHP(UserIndex)
+    
 ElseIf Hechizos(Spell).SubeHP = 2 Then
     
     daño = RandomNumber(Hechizos(Spell).MinHP, Hechizos(Spell).MaxHP)
@@ -1258,6 +1260,8 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
         UserList(UserIndex).Stats.MinHP = 0
         Call UserDie(UserIndex)
     End If
+    
+    Call WriteUpdateHP(UserIndex)
     
 End If
 

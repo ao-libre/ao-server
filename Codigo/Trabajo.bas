@@ -222,34 +222,34 @@ End If
         
 End Function
 
-Function QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 05/08/09
+'05/08/09: Pato - Cambie la funcion a procedimiento ya que se usa como procedimiento siempre, y fixie el bug 2788199
+'***************************************************
+
 'Call LogTarea("Sub QuitarObjetos")
 
 Dim i As Integer
 For i = 1 To MAX_INVENTORY_SLOTS
-    If UserList(UserIndex).Invent.Object(i).ObjIndex = ItemIndex Then
-        
-        Call Desequipar(UserIndex, i)
-        
-        UserList(UserIndex).Invent.Object(i).amount = UserList(UserIndex).Invent.Object(i).amount - cant
-        If (UserList(UserIndex).Invent.Object(i).amount <= 0) Then
-            cant = Abs(UserList(UserIndex).Invent.Object(i).amount)
-            UserList(UserIndex).Invent.Object(i).amount = 0
-            UserList(UserIndex).Invent.Object(i).ObjIndex = 0
-        Else
-            cant = 0
+    With UserList(UserIndex).Invent.Object(i)
+        If .ObjIndex = ItemIndex Then
+            If .amount <= cant And .Equipped = 1 Then Call Desequipar(UserIndex, i)
+            
+            .amount = .amount - cant
+            If .amount <= 0 Then
+                UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
+                .amount = 0
+                .ObjIndex = 0
+            End If
+            
+            Call UpdateUserInv(False, UserIndex, i)
         End If
-        
-        Call UpdateUserInv(False, UserIndex, i)
-        
-        If (cant = 0) Then
-            QuitarObjetos = True
-            Exit Function
-        End If
-    End If
+    End With
 Next i
 
-End Function
+End Sub
 
 Sub HerreroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
     If ObjData(ItemIndex).LingH > 0 Then Call QuitarObjetos(LingoteHierro, ObjData(ItemIndex).LingH, UserIndex)

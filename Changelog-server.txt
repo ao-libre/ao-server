@@ -357,5 +357,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/04/2009: Los NPCs que Atacan Doble, tienen un 50% de probabilidad de tirar hechizos, y no 100% como antes. (ZaMa)
  * 28/04/2009: Fix al commit anterior de Zama (Marco)
  * 05/05/2009: Ya no se puede ver si un usuario está online con /acceptparty, /echarparty ni /partyleader (Marco)
+ * 08/05/2009: Fix del bug 2788199 (Pato)
+ * 09/05/2009: Ahora cuando un pretoriano ataca se actualiza la vida del usuario (Pato)
 
 - 0.12.3
