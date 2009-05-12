@@ -3035,11 +3035,11 @@ On Error GoTo Errhandler
         Dim errorStr As String
         
         desc = buffer.ReadASCIIString()
-        GuildName = buffer.ReadASCIIString()
+        GuildName = Trim$(buffer.ReadASCIIString())
         site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(UserIndex, desc, Trim$(GuildName), site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.GuildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
 
