@@ -3011,8 +3011,8 @@ End Sub
 Private Sub HandleCreateNewGuild(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 05/11/09
+'05/11/09: Pato - Ahora se quitan los espacios del principio y del fin del nombre del clan
 '***************************************************
     If UserList(UserIndex).incomingData.length < 9 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -3039,7 +3039,7 @@ On Error GoTo Errhandler
         site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(UserIndex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(UserIndex, desc, Trim$(GuildName), site, codex, .FundandoGuildAlineacion, errorStr) Then
             Call SendData(SendTarget.ToAll, UserIndex, PrepareMessageConsoleMsg(.name & " fundó el clan " & GuildName & " de alineación " & modGuilds.GuildAlignment(.GuildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
 

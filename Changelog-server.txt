@@ -359,5 +359,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 05/05/2009: Ya no se puede ver si un usuario está online con /acceptparty, /echarparty ni /partyleader (Marco)
  * 08/05/2009: Fix del bug 2788199 (Pato)
  * 09/05/2009: Ahora cuando un pretoriano ataca se actualiza la vida del usuario (Pato)
+ * 11/05/2009: Fix del bug #2788361 (Pato)
 
 - 0.12.3
