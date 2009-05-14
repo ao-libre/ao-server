@@ -489,7 +489,6 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
         UserList(UserIndex).Invent.Object(Slot).ObjIndex = 0
     End If
     
-    Dim nPos As WorldPos
     Dim MiObj As Obj
     MiObj.amount = 1
     MiObj.ObjIndex = ObjData(UserList(UserIndex).flags.TargetObjInvIndex).LingoteIndex
@@ -818,7 +817,6 @@ Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
 res = RandomNumber(1, Suerte)
 
 If res <= 6 Then
-    Dim nPos As WorldPos
     Dim MiObj As Obj
     
     If UserList(UserIndex).clase = eClass.Fisher Then
@@ -884,7 +882,6 @@ If Suerte > 0 Then
     res = RandomNumber(1, Suerte)
     
     If res < 6 Then
-        Dim nPos As WorldPos
         Dim MiObj As Obj
         Dim PecesPosibles(1 To 4) As Integer
         
@@ -1272,7 +1269,6 @@ Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
 res = RandomNumber(1, Suerte)
 
 If res <= 6 Then
-    Dim nPos As WorldPos
     Dim MiObj As Obj
     
     If UserList(UserIndex).clase = eClass.Lumberjack Then
@@ -1320,7 +1316,6 @@ On Error GoTo Errhandler
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim metal As Integer
 
 If UserList(UserIndex).clase = eClass.Miner Then
     Call QuitarSta(UserIndex, EsfuerzoExcavarMinero)
@@ -1336,7 +1331,6 @@ res = RandomNumber(1, Suerte)
 
 If res <= 5 Then
     Dim MiObj As Obj
-    Dim nPos As WorldPos
     
     If UserList(UserIndex).flags.TargetObj = 0 Then Exit Sub
     
