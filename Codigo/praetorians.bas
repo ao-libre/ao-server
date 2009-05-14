@@ -1473,6 +1473,9 @@ mapa = map
                 If LegalPos(mapa, NPCx - 1, NPCy) Then  ''L
                     Call MoverIzq(npcorig)
                     Exit Sub
+                ElseIf LegalPos(mapa, NPCx, NPCy - 1) Then ''U
+                    Call MoverArr(npcorig)
+                    Exit Sub
                 ElseIf LegalPos(mapa, NPCx, NPCy + 1) Then  ''D
                     Call MoverAba(npcorig)
                     Exit Sub

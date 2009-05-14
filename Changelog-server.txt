@@ -360,5 +360,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 08/05/2009: Fix del bug 2788199 (Pato)
  * 09/05/2009: Ahora cuando un pretoriano ataca se actualiza la vida del usuario (Pato)
  * 11/05/2009: Fix del bug #2788361 (Pato)
+ * 14/05/2009: Fix del bug #2791530 (Pato)
 
 - 0.12.3

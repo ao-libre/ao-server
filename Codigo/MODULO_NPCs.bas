@@ -88,8 +88,12 @@ On Error GoTo Errhandler
                 
                     NPCI = MapData(Npclist(NpcIndex).Pos.map, i, j).NpcIndex
                     If NPCI > 0 Then
-                        If esPretoriano(NPCI) > 0 Then
-                            Npclist(NPCI).Invent.ArmourEqpSlot = IIf(Npclist(NpcIndex).Pos.X > 50, 1, 5)
+                        If esPretoriano(NPCI) > 0 And NPCI <> NpcIndex Then
+                            If Npclist(NpcIndex).Pos.X > 50 Then
+                                If Npclist(NPCI).Pos.X > 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 1
+                            Else
+                                If Npclist(NPCI).Pos.X <= 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 5
+                            End If
                         End If
                     End If
                 Next j
