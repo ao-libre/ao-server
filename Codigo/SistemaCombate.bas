@@ -330,7 +330,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                 If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
                     Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
                 End If
-                If .Stats.MaxHP > 100000 Then Call LogDesarrollo(UserList(UserIndex).name & " mató un dragón")
+                If .Stats.MaxHP > 100000 Then Call LogDesarrollo(UserList(UserIndex).Name & " mató un dragón")
             End If
             
             ' Para que las mascotas no sigan intentando luchar y
@@ -626,6 +626,9 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
 End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
+
+On Error GoTo Errhandler
+
     If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then
         Exit Sub
     End If
@@ -644,6 +647,11 @@ Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
         Call WriteUserSwing(UserIndex)
     End If
+Exit Sub
+    
+Errhandler:
+    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.Description)
+    
 End Sub
 
 Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
@@ -788,6 +796,8 @@ End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
 
+On Error GoTo Errhandler
+
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Sub
     
     With UserList(AtacanteIndex)
@@ -822,6 +832,10 @@ Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaInde
         
         If .clase = eClass.Thief Then Call Desarmar(AtacanteIndex, VictimaIndex)
     End With
+Exit Sub
+    
+Errhandler:
+    Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.Description)
 End Sub
 
 Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -1006,7 +1020,7 @@ Sub AllMascotasAtacanUser(ByVal victim As Integer, ByVal Maestro As Integer)
     
     For iCount = 1 To MAXMASCOTAS
         If UserList(Maestro).MascotasIndex(iCount) > 0 Then
-            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).name
+            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).Name
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Movement = TipoAI.NPCDEFENSA
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Hostile = 1
         End If
@@ -1021,6 +1035,8 @@ Public Function PuedeAtacar(ByVal attackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defensa en ciudad Armada y Caos.
 '24/02/2009: ZaMa - Los usuarios pueden atacarse entre si.
 '***************************************************
+On Error GoTo Errhandler
+
     'MUY importante el orden de estos "IF"...
     
     'Estas muerto no podes atacar
@@ -1113,6 +1129,10 @@ Public Function PuedeAtacar(ByVal attackerIndex As Integer, ByVal VictimIndex As
     End If
     
     PuedeAtacar = True
+Exit Function
+
+Errhandler:
+    Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.Description)
 End Function
 
 Public Function PuedeAtacarNPC(ByVal attackerIndex As Integer, ByVal NpcIndex As Integer) As Boolean
@@ -1336,7 +1356,7 @@ On Error GoTo Errhandler
 Exit Function
 Errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
-    LogError ("Error en TriggerZonaPelea - " & Err.description)
+    LogError ("Error en TriggerZonaPelea - " & Err.Description)
 End Function
 
 Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -1354,8 +1374,8 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
                 
                 If RandomNumber(1, 100) < 60 Then
                     UserList(VictimaIndex).flags.Envenenado = 1
-                    Call WriteConsoleMsg(VictimaIndex, UserList(AtacanteIndex).name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).name & "!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimaIndex, UserList(AtacanteIndex).Name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).Name & "!!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
             End If
         End If

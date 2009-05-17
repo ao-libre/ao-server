@@ -212,7 +212,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(mid$(cad, i, 1))
+    car = Asc(Mid$(cad, i, 1))
     
     If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
         AsciiValidos = False
@@ -232,7 +232,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(mid$(cad, i, 1))
+    car = Asc(Mid$(cad, i, 1))
     
     If (car < 48 Or car > 57) Then
         Numeric = False
@@ -534,7 +534,7 @@ Errhandler:
     UserList(UserIndex).ConnIDValida = False
     Call ResetUserSlot(UserIndex)
 
-    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.description & " - UserIndex = " & UserIndex)
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & UserIndex)
 End Sub
 
 #ElseIf UsarQueSocket = 0 Then
@@ -620,7 +620,7 @@ Dim CoNnEcTiOnId As Long
 Exit Sub
 
 Errhandler:
-    Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
+    Call LogError("CLOSESOCKETERR: " & Err.Description & " UI:" & UserIndex)
     
     If Not NURestados Then
         If UserList(UserIndex).flags.UserLogged Then
@@ -874,7 +874,7 @@ If CheckForSameName(name) Then
     If UserList(NameIndex(name)).Counters.Saliendo Then
         Call WriteErrorMsg(UserIndex, "El usuario está saliendo.")
     Else
-        Call WriteErrorMsg(UserIndex, "Perdon, un usuario con el mismo nombre se ha logoeado.")
+        Call WriteErrorMsg(UserIndex, "Perdón, un usuario con el mismo nombre se ha logueado.")
     End If
     Call FlushBuffer(UserIndex)
     Call CloseSocket(UserIndex)
@@ -1092,7 +1092,7 @@ End If
 'Info
 Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.map, MapInfo(UserList(UserIndex).Pos.map).MapVersion) 'Carga el mapa
-Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
+Call WritePlayMidi(UserIndex, Val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
 
 If UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
     UserList(UserIndex).flags.ChatColor = RGB(250, 250, 150)
@@ -1161,7 +1161,7 @@ End If
 If NumUsers > recordusuarios Then
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
     recordusuarios = NumUsers
-    Call WriteVar(IniPath & "Server.ini", "INIT", "Record", str(recordusuarios))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "Record", Str(recordusuarios))
     
     Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 End If
@@ -1238,7 +1238,7 @@ Close #N
 N = FreeFile
 'Log
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
+Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & Time & " " & Date
 Close #N
 
 End Sub
@@ -1350,7 +1350,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '*************************************************
     With UserList(UserIndex)
         .name = vbNullString
-        .desc = vbNullString
+        .Desc = vbNullString
         .DescRM = vbNullString
         .Pos.map = 0
         .Pos.X = 0
@@ -1639,13 +1639,13 @@ Call MostrarNumUsers
 
 N = FreeFile(1)
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & Time & " " & Date
 Close #N
 
 Exit Sub
 
 Errhandler:
-Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
+Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.Description)
 
 End Sub
 
@@ -1675,7 +1675,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 Errhandler:
-    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
+    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.Description)
 
 End Sub
 

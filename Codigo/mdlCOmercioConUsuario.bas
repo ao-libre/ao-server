@@ -32,9 +32,7 @@ Public Type tCOmercioUsuario
     
     'El tipo de datos de Cant ahora es Long (antes Integer)
     'asi se puede comerciar con oro > 32k
-    '[CORREGIDO]
     cant As Long 'Cuantos comerciar, cuantos objetos desea dar
-    '[/CORREGIDO]
     Acepto As Boolean
 End Type
 
@@ -210,7 +208,6 @@ End If
 
 Call FlushBuffer(OtroUserIndex)
 
-'[CORREGIDO]
 'Desde acá corregí el bug que cuando se ofrecian mas de
 '10k de oro no le llegaban al destinatario.
 
@@ -227,20 +224,23 @@ If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
     Call WriteUpdateUserStats(UserIndex)
 Else
     'Quita el objeto y se lo da al otro
-    If Not MeterItemEnInventario(UserIndex, Obj2) Then _
+    If Not MeterItemEnInventario(UserIndex, Obj2) Then
         Call TirarItemAlPiso(UserList(UserIndex).Pos, Obj2)
+    End If
 
     Call QuitarObjetos(Obj2.ObjIndex, Obj2.amount, OtroUserIndex)
     
     'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-    If ObjData(Obj2.ObjIndex).Log = 1 Then _
+    If ObjData(Obj2.ObjIndex).Log = 1 Then
         Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
+    End If
 
     'Es mucha cantidad?
     If Obj2.amount > MAX_OBJ_LOGUEABLE Then
     'Si no es de los prohibidos de loguear, lo logueamos.
-        If ObjData(Obj2.ObjIndex).NoLog <> 1 Then _
+        If ObjData(Obj2.ObjIndex).NoLog <> 1 Then
             Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
+        End If
     End If
 End If
 
@@ -257,26 +257,25 @@ If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
     Call WriteUpdateUserStats(OtroUserIndex)
 Else
     'Quita el objeto y se lo da al otro
-    If Not MeterItemEnInventario(OtroUserIndex, Obj1) Then _
+    If Not MeterItemEnInventario(OtroUserIndex, Obj1) Then
         Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, Obj1)
+    End If
 
     Call QuitarObjetos(Obj1.ObjIndex, Obj1.amount, UserIndex)
     
     'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-    If ObjData(Obj1.ObjIndex).Log = 1 Then _
+    If ObjData(Obj1.ObjIndex).Log = 1 Then
         Call LogDesarrollo(UserList(UserIndex).name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
+    End If
 
     'Es mucha cantidad?
     If Obj1.amount > MAX_OBJ_LOGUEABLE Then
     'Si no es de los prohibidos de loguear, lo logueamos.
-        If ObjData(Obj1.ObjIndex).NoLog <> 1 Then _
+        If ObjData(Obj1.ObjIndex).NoLog <> 1 Then
             Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
+        End If
     End If
-    
 End If
-
-'[/CORREGIDO] :p
-'ya no se actualizan los inventarios porque lo actualiza el sub QuitarObjetos (Pato)
 
 Call FinComerciarUsu(UserIndex)
 Call FinComerciarUsu(OtroUserIndex)

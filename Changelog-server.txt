@@ -359,8 +359,16 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 05/05/2009: Ya no se puede ver si un usuario está online con /acceptparty, /echarparty ni /partyleader (Marco)
  * 08/05/2009: Fix del bug 2788199 (Pato)
  * 09/05/2009: Ahora cuando un pretoriano ataca se actualiza la vida del usuario (Pato)
+ * 11/05/2009: Las mascotas no quedan trabados en posiciones invalidas, fixes bug #2788767. (ZaMa)
+ * 11/05/2009: Las mascotas actualizan sus stats solo si fueron creadas, fixes bugs #2788768 and #2788769. (ZaMa)
  * 11/05/2009: Fix del bug #2788361 (Pato)
+ * 12/05/2009: Se toman los privs del user al que se le susurra sólo después de validar el index, fixes bug #2788777. (Maraxus)
+ * 13/05/2009: Arreglado contador de muertes de usuarios. (ZaMa)
+ * 13/05/2009: Se arregla la forma de iterar sobre los miembros del clan al verificar permanencia, fixes bug #2788777. (Maraxus)
+ * 13/05/2009: La función Distance recibe Integers y no Variants. (Maraxus)
  * 14/05/2009: Fix del bug #2791530 (Pato)
  * 14/05/2009: Elimine variables locales que no se usaban en Trabajo.bas
+ * 17/05/2009: Agregué los error handlers y corregí algunos typos. (Budi)
+
 
 - 0.12.3

@@ -69,7 +69,7 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal map As Integer, ByVal 
     Dim nPos As WorldPos
     Dim FxFlag As Boolean
     
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     'Controla las salidas
     If InMapBounds(map, X, Y) Then
         With MapData(map, X, Y)
@@ -189,8 +189,8 @@ On Error GoTo Errhandler
     End If
 Exit Sub
 
-Errhandler:
-    Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.description)
+ErrHandler:
+    Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.Description)
 End Sub
 
 Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
@@ -556,7 +556,7 @@ Public Sub FindLegalPos(ByVal UserIndex As Integer, ByVal map As Integer, ByRef 
 
 End Sub
 
-Function LegalPosNPC(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte) As Boolean
+Function LegalPosNPC(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte, Optional ByVal IsPet As Boolean = False) As Boolean
 '***************************************************
 'Autor: Unkwnown
 'Last Modification: 27/04/2009
@@ -577,18 +577,18 @@ Dim UserIndex As Integer
     Else
         IsDeadChar = False
     End If
-    
+
     If AguaValida = 0 Then
         LegalPosNPC = (MapData(map, X, Y).Blocked <> 1) And _
         (MapData(map, X, Y).UserIndex = 0 Or IsDeadChar) And _
         (MapData(map, X, Y).NpcIndex = 0) And _
-        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA) _
+        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA Or IsPet) _
         And Not HayAgua(map, X, Y)
     Else
         LegalPosNPC = (MapData(map, X, Y).Blocked <> 1) And _
         (MapData(map, X, Y).UserIndex = 0 Or IsDeadChar) And _
         (MapData(map, X, Y).NpcIndex = 0) And _
-        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA)
+        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA Or IsPet)
     End If
 End Function
 
@@ -596,7 +596,7 @@ Sub SendHelp(ByVal index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
 
-NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
+NumHelpLines = Val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
     Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
@@ -619,6 +619,7 @@ Sub LookatTile(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Inte
 '13/02/2009: ZaMa - EL nombre del gm que aparece por consola al clickearlo, tiene el color correspondiente a su rango
 '***************************************************
 
+On Error GoTo ErrHandler
 
 'Responde al click del usuario sobre el mapa
 Dim FoundChar As Byte
@@ -723,8 +724,8 @@ If InMapBounds(map, X, Y) Then
                     Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).GuildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).desc) > 0 Then
-                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
+                If Len(UserList(TempCharIndex).Desc) > 0 Then
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
@@ -830,8 +831,8 @@ If InMapBounds(map, X, Y) Then
                 End If
             End If
             
-            If Len(Npclist(TempCharIndex).desc) > 1 Then
-                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+            If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).Desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)
@@ -885,6 +886,10 @@ Else
     End If
 End If
 
+Exit Sub
+
+ErrHandler:
+    Call LogError("Error en LookAtTile. Error " & Err.Number & " : " & Err.Description)
 
 End Sub
 

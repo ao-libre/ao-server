@@ -38,7 +38,7 @@ Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
     Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.map - wp2.map) * 100)
 End Function
 
-Function Distance(X1 As Variant, Y1 As Variant, X2 As Variant, Y2 As Variant) As Double
+Function Distance(ByVal X1 As Integer, ByVal Y1 As Integer, ByVal X2 As Integer, ByVal Y2 As Integer) As Double
 
 'Encuentra la distancia entre dos puntos
 

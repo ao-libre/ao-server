@@ -516,6 +516,8 @@ End Sub
 
 Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
+On Error GoTo Errhandler
+
 Dim uh As Integer
 
 uh = UserList(UserIndex).Stats.UserHechizos(index)
@@ -572,6 +574,11 @@ If UserList(UserIndex).Counters.Trabajando Then _
 
 If UserList(UserIndex).Counters.Ocultando Then _
     UserList(UserIndex).Counters.Ocultando = UserList(UserIndex).Counters.Ocultando - 1
+    
+Exit Sub
+
+Errhandler:
+    Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description)
     
 End Sub
 

@@ -1222,6 +1222,11 @@ errorh:
 End Sub
 
 Sub NpcLanzaSpellSobreUser2(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 05/09/09
+'05/09/09: Pato - Ahora actualiza la vida del usuario atacado
+'***************************************************
 On Error GoTo errorh
 ''  Igual a la otra pero ataca invisibles!!!
 '' (malditos controles de casos imposibles...)
@@ -1242,9 +1247,8 @@ If Hechizos(Spell).SubeHP = 1 Then
     If UserList(UserIndex).Stats.MinHP > UserList(UserIndex).Stats.MaxHP Then UserList(UserIndex).Stats.MinHP = UserList(UserIndex).Stats.MaxHP
     
     Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-    
+
     Call WriteUpdateHP(UserIndex)
-    
 ElseIf Hechizos(Spell).SubeHP = 2 Then
     
     daño = RandomNumber(Hechizos(Spell).MinHP, Hechizos(Spell).MaxHP)
@@ -1262,7 +1266,6 @@ ElseIf Hechizos(Spell).SubeHP = 2 Then
     End If
     
     Call WriteUpdateHP(UserIndex)
-    
 End If
 
 If Hechizos(Spell).Paraliza = 1 Then
