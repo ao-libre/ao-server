@@ -367,8 +367,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/05/2009: Se arregla la forma de iterar sobre los miembros del clan al verificar permanencia, fixes bug #2788777. (Maraxus)
  * 13/05/2009: La función Distance recibe Integers y no Variants. (Maraxus)
  * 14/05/2009: Fix del bug #2791530 (Pato)
- * 14/05/2009: Elimine variables locales que no se usaban en Trabajo.bas
+ * 14/05/2009: Elimine variables locales que no se usaban en Trabajo.bas (Budi)
  * 17/05/2009: Agregué los error handlers y corregí algunos typos. (Budi)
-
+ * 18/05/2009: Fix del bug #2793496 (Budi)
 
 - 0.12.3
