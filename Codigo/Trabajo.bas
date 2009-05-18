@@ -234,7 +234,6 @@ Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVa
 'Author: Unknown
 'Last Modification: 05/08/09
 '05/08/09: Pato - Cambie la funcion a procedimiento ya que se usa como procedimiento siempre, y fixie el bug 2788199
-'05/18/09: Budi - Fix del bug 2793496
 '***************************************************
 
 'Call LogTarea("Sub QuitarObjetos")
@@ -247,15 +246,17 @@ For i = 1 To MAX_INVENTORY_SLOTS
             
             .amount = .amount - cant
             If .amount <= 0 Then
+                cant = Abs(.amount)
                 UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
                 .amount = 0
                 .ObjIndex = 0
+            Else
+                cant = 0
             End If
             
             Call UpdateUserInv(False, UserIndex, i)
             
-            Exit Function
-            
+            If cant = 0 Then Exit Sub
         End If
     End With
 Next i
