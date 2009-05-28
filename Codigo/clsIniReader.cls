@@ -64,8 +64,8 @@ Option Base 0
 '
 
 Private Type ChildNode
-    key As String
-    value As String
+    Key As String
+    Value As String
 End Type
 
 ''
@@ -177,8 +177,8 @@ Public Sub Initialize(ByVal file As String)
                             'Add it to the main node's value
                             ReDim Preserve .values(.numValues) As ChildNode
                             
-                            .values(.numValues).value = Right$(Text, Len(Text) - Pos)
-                            .values(.numValues).key = UCase$(Left$(Text, Pos - 1))
+                            .values(.numValues).Value = Right$(Text, Len(Text) - Pos)
+                            .values(.numValues).Key = UCase$(Left$(Text, Pos - 1))
                             
                             .numValues = .numValues + 1
                         End With
@@ -227,13 +227,13 @@ Private Sub SortChildNodes(ByRef Node As MainNode, ByVal First As Integer, ByVal
     max = Last
     
     With Node
-        comp = .values((min + max) \ 2).key
+        comp = .values((min + max) \ 2).Key
     
         Do While min <= max
-            Do While .values(min).key < comp And min < Last
+            Do While .values(min).Key < comp And min < Last
                 min = min + 1
             Loop
-            Do While .values(max).key > comp And max > First
+            Do While .values(max).Key > comp And max > First
                 max = max - 1
             Loop
             If min <= max Then
@@ -300,7 +300,7 @@ End Sub
 ' @param    key The key of the value we are looking for.
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
-Public Function GetValue(ByVal Main As String, ByVal key As String) As String
+Public Function GetValue(ByVal Main As String, ByVal Key As String) As String
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
@@ -314,12 +314,40 @@ Public Function GetValue(ByVal Main As String, ByVal key As String) As String
     
     If i >= 0 Then
         'If valid, binary search among keys
-        j = FindKey(fileData(i), UCase$(key))
+        j = FindKey(fileData(i), UCase$(Key))
         
         'If we found it we return it
-        If j >= 0 Then GetValue = fileData(i).values(j).value
+        If j >= 0 Then GetValue = fileData(i).values(j).Value
     End If
 End Function
+
+''
+'Searches for a given key within a given main section and if it exists retrieves it's value, otherwise a null string
+'
+' @param    Main The name of the main section in which we will be searching.
+' @param    key The key of the value we are looking for.
+' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
+
+Public Sub ChangeValue(ByVal Main As String, ByVal Key As String, ByVal Value As Long)
+'**************************************************************
+'Author: ZaMa
+'Last Modify Date: 27/05/2009
+'If the key and main node exist, changes the value
+'**************************************************************
+    Dim i As Long
+    Dim j As Long
+    
+    'Search for the main node
+    i = FindMain(UCase$(Main))
+    
+    If i >= 0 Then
+        'If valid, binary search among keys
+        j = FindKey(fileData(i), UCase$(Key))
+        
+        'If we found it we change it
+        If j >= 0 Then fileData(i).values(j).Value = Value
+    End If
+End Sub
 
 ''
 'Searches for a given key within a given main node and returns the index in which it's stored or the negation of the index in which it should be if not found.
@@ -328,7 +356,7 @@ End Function
 ' @param    key The key of the value we are looking for.
 ' @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
 
-Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
+Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 5/01/2006
@@ -345,9 +373,9 @@ Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
     Do While min <= max
         mid = (min + max) \ 2
         
-        If Node.values(mid).key < key Then
+        If Node.values(mid).Key < Key Then
             min = mid + 1
-        ElseIf Node.values(mid).key > key Then
+        ElseIf Node.values(mid).Key > Key Then
             max = mid - 1
         Else
             'We found it
