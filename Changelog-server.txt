@@ -371,7 +371,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 17/05/2009: Agregué los error handlers y corregí algunos typos. (Budi)
  * 18/05/2009: Fix del bug #2793496 (Budi)
  * 18/05/2009: Fix al commit anterior de Budi. (Pato)
- * 28/05/2009: Agrego nuevo comando para dioses: /ModNpc. (ZaMa) 
  * 28/05/2009: Arreglo el color de nick de rms por consola. (ZaMa)
  * 28/02/2009: No aparece ningun mensaje cuando mandas privado a un admin invisible. (ZaMa)
  * 28/02/2009: Al morir en la arena, no se activa el seguro de resu. (ZaMa)  
