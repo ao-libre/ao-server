@@ -1675,8 +1675,8 @@ End Sub
 Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 28/05/2009
+'28/05/2009: ZaMa - Now it doesn't appear any message when private talking to an invisible admin
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1709,15 +1709,18 @@ On Error GoTo Errhandler
                 Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
             Else
                 targetPriv = UserList(targetUserIndex).flags.Privilegios
-                
+                'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
                 If (targetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Then
-                    'A los dioses y admins no vale susurrarles si no sos uno vos mismo (así no pueden ver si están conectados o no)
-                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
-                
+                    ' Controlamos que no este invisible
+                    If UserList(targetUserIndex).flags.AdminInvisible <> 1 Then
+                        Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Dioses y Admins.", FontTypeNames.FONTTYPE_INFO)
+                    End If
+                'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
                 ElseIf (.flags.Privilegios And PlayerType.User) <> 0 And (Not targetPriv And PlayerType.User) <> 0 Then
-                    'A los Consejeros y SemiDioses no vale susurrarles si sos un PJ común.
-                    Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
-                
+                    ' Controlamos que no este invisible
+                    If UserList(targetUserIndex).flags.AdminInvisible <> 1 Then
+                        Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los GMs.", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 ElseIf Not EstaPCarea(UserIndex, targetUserIndex) Then
                     Call WriteConsoleMsg(UserIndex, "Estas muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
                 
