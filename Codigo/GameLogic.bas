@@ -69,7 +69,7 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal map As Integer, ByVal 
     Dim nPos As WorldPos
     Dim FxFlag As Boolean
     
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
     'Controla las salidas
     If InMapBounds(map, X, Y) Then
         With MapData(map, X, Y)
@@ -189,8 +189,8 @@ On Error GoTo ErrHandler
     End If
 Exit Sub
 
-ErrHandler:
-    Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.Description)
+Errhandler:
+    Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
 Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
@@ -596,7 +596,7 @@ Sub SendHelp(ByVal index As Integer)
 Dim NumHelpLines As Integer
 Dim LoopC As Integer
 
-NumHelpLines = Val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
+NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
     Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
@@ -619,7 +619,7 @@ Sub LookatTile(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Inte
 '13/02/2009: ZaMa - EL nombre del gm que aparece por consola al clickearlo, tiene el color correspondiente a su rango
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
 'Responde al click del usuario sobre el mapa
 Dim FoundChar As Byte
@@ -724,8 +724,8 @@ If InMapBounds(map, X, Y) Then
                     Stat = Stat & " <" & modGuilds.GuildName(UserList(TempCharIndex).GuildIndex) & ">"
                 End If
                 
-                If Len(UserList(TempCharIndex).Desc) > 0 Then
-                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).Desc
+                If Len(UserList(TempCharIndex).desc) > 0 Then
+                    Stat = "Ves a " & UserList(TempCharIndex).name & Stat & " - " & UserList(TempCharIndex).desc
                 Else
                     Stat = "Ves a " & UserList(TempCharIndex).name & Stat
                 End If
@@ -741,13 +741,19 @@ If InMapBounds(map, X, Y) Then
                     If Not UserList(TempCharIndex).flags.Privilegios And PlayerType.User Then
                         Stat = Stat & " <GAME MASTER>"
                         
-                        ' Elijo el color segun el rango del GM
+                        ' Elijo el color segun el rango del GM:
+                        ' Dios
                         If UserList(TempCharIndex).flags.Privilegios = PlayerType.Dios Then
                             ft = FontTypeNames.FONTTYPE_DIOS
+                        ' Gm
                         ElseIf UserList(TempCharIndex).flags.Privilegios = PlayerType.SemiDios Then
                             ft = FontTypeNames.FONTTYPE_GM
+                        ' Conse
                         ElseIf UserList(TempCharIndex).flags.Privilegios = PlayerType.Consejero Then
                             ft = FontTypeNames.FONTTYPE_CONSE
+                        ' Rm o Dsrm
+                        ElseIf UserList(TempCharIndex).flags.Privilegios = (PlayerType.RoleMaster Or PlayerType.Consejero) Or UserList(TempCharIndex).flags.Privilegios = (PlayerType.RoleMaster Or PlayerType.Dios) Then
+                            ft = FontTypeNames.FONTTYPE_EJECUCION
                         End If
                         
                     ElseIf criminal(TempCharIndex) Then
@@ -831,8 +837,8 @@ If InMapBounds(map, X, Y) Then
                 End If
             End If
             
-            If Len(Npclist(TempCharIndex).Desc) > 1 Then
-                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).Desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+            If Len(Npclist(TempCharIndex).desc) > 1 Then
+                Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
             ElseIf TempCharIndex = CentinelaNPCIndex Then
                 'Enviamos nuevamente el texto del centinela según quien pregunta
                 Call modCentinela.CentinelaSendClave(UserIndex)
@@ -888,8 +894,8 @@ End If
 
 Exit Sub
 
-ErrHandler:
-    Call LogError("Error en LookAtTile. Error " & Err.Number & " : " & Err.Description)
+Errhandler:
+    Call LogError("Error en LookAtTile. Error " & Err.Number & " : " & Err.description)
 
 End Sub
 

@@ -408,6 +408,7 @@ Private Enum ClientPacketID
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
+    EditNpc                 '/MODNPC
 End Enum
 
 Public Enum FontTypeNames
@@ -450,6 +451,19 @@ Public Enum eEditOptions
     eo_Sex
     eo_Raza
 End Enum
+
+Public Enum eEditNpcOptions
+    Vida = 1
+    Oro
+    Experiencia
+    Punteria
+    Evasion
+    def
+    MagDef
+    DañoMax
+    DañoMin
+End Enum
+
 
 ''
 ' Handles incoming data.
@@ -1228,6 +1242,9 @@ On Error Resume Next
         
         Case ClientPacketID.CheckSlot               '/SLOT
             Call HandleCheckSlot(UserIndex)
+            
+        Case ClientPacketID.EditNpc
+            Call HandleEditNpc(UserIndex)
         
 #If SeguridadAlkon Then
         Case Else
@@ -1246,7 +1263,7 @@ On Error Resume Next
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
-        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.Source & _
+        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
                         vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & _
                         vbTab & " LastDllError: " & Err.LastDllError & vbTab & _
                         " - UserIndex: " & UserIndex & " - producido al manejar el paquete: " & CStr(packetID))
@@ -3541,7 +3558,7 @@ On Error GoTo Errhandler
             file = App.Path & "\foros\" & UCase$(ObjData(.flags.TargetObj).ForoID) & ".for"
             
             If FileExist(file, vbNormal) Then
-                Count = Val(GetVar(file, "INFO", "CantMSG"))
+                Count = val(GetVar(file, "INFO", "CantMSG"))
                 
                 'If there are too many messages, delete the forum
                 If Count > MAX_MENSAJES_FORO Then
@@ -6206,7 +6223,7 @@ On Error GoTo Errhandler
             End If
             
             If FileExist(CharPath & name & ".chr", vbNormal) Then
-                Count = Val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
+                Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
                 If Count = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Sin prontuario..", FontTypeNames.FONTTYPE_INFO)
                 Else
@@ -6916,7 +6933,7 @@ On Error GoTo Errhandler
             If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
                 Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
             Else
-                memberCount = Val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
+                memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
                 
                 For i = 1 To memberCount
                     UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
@@ -7949,7 +7966,7 @@ On Error GoTo Errhandler
                         End If
                         
                         If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                            Count = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                            Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
                         End If
@@ -8071,7 +8088,7 @@ On Error GoTo Errhandler
                     End If
                     
                     If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                        Count = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                        Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
                         
@@ -8130,7 +8147,7 @@ On Error GoTo Errhandler
         Dim Arg2 As String
         Dim valido As Boolean
         Dim LoopC As Byte
-        Dim commandString As String
+        Dim CommandString As String
         Dim N As Byte
         
         UserName = Replace(buffer.ReadASCIIString(), "+", " ")
@@ -8179,8 +8196,8 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) < 5000000 Then
-                            UserList(tUser).Stats.GLD = Val(Arg1)
+                        If val(Arg1) < 5000000 Then
+                            UserList(tUser).Stats.GLD = val(Arg1)
                             Call WriteUpdateGold(tUser)
                         Else
                             Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
@@ -8191,11 +8208,11 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > 20000000 Then
+                        If val(Arg1) > 20000000 Then
                             Arg1 = 20000000
                         End If
                             
-                        UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + Val(Arg1)
+                        UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
                         Call CheckUserLevel(tUser)
                         Call WriteUpdateExp(tUser)
                         
@@ -8206,7 +8223,7 @@ On Error GoTo Errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(tUser, Val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_Head
@@ -8214,17 +8231,17 @@ On Error GoTo Errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        Call ChangeUserChar(tUser, UserList(tUser).Char.body, Val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                        Call ChangeUserChar(tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                     End If
                 
                 Case eEditOptions.eo_CriminalsKilled
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > MAXUSERMATADOS Then
+                        If val(Arg1) > MAXUSERMATADOS Then
                             UserList(tUser).Faccion.CriminalesMatados = MAXUSERMATADOS
                         Else
-                            UserList(tUser).Faccion.CriminalesMatados = Val(Arg1)
+                            UserList(tUser).Faccion.CriminalesMatados = val(Arg1)
                         End If
                     End If
                 
@@ -8232,10 +8249,10 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > MAXUSERMATADOS Then
+                        If val(Arg1) > MAXUSERMATADOS Then
                             UserList(tUser).Faccion.CiudadanosMatados = MAXUSERMATADOS
                         Else
-                            UserList(tUser).Faccion.CiudadanosMatados = Val(Arg1)
+                            UserList(tUser).Faccion.CiudadanosMatados = val(Arg1)
                         End If
                     End If
                 
@@ -8243,12 +8260,12 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > STAT_MAXELV Then
+                        If val(Arg1) > STAT_MAXELV Then
                             Arg1 = CStr(STAT_MAXELV)
                             Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a " & STAT_MAXELV & ".", FONTTYPE_INFO)
                         End If
                         
-                        UserList(tUser).Stats.ELV = Val(Arg1)
+                        UserList(tUser).Stats.ELV = val(Arg1)
                         
                         With UserList(tUser)
                         
@@ -8299,7 +8316,7 @@ On Error GoTo Errhandler
                             Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & LoopC, Arg2)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.UserSkills(LoopC) = Val(Arg2)
+                            UserList(tUser).Stats.UserSkills(LoopC) = val(Arg2)
                         End If
                     End If
                 
@@ -8308,17 +8325,17 @@ On Error GoTo Errhandler
                         Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
                         Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        UserList(tUser).Stats.SkillPts = Val(Arg1)
+                        UserList(tUser).Stats.SkillPts = val(Arg1)
                     End If
                 
                 Case eEditOptions.eo_Nobleza
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > MAXREP Then
+                        If val(Arg1) > MAXREP Then
                             UserList(tUser).Reputacion.NobleRep = MAXREP
                         Else
-                            UserList(tUser).Reputacion.NobleRep = Val(Arg1)
+                            UserList(tUser).Reputacion.NobleRep = val(Arg1)
                         End If
                     End If
                 
@@ -8326,10 +8343,10 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If Val(Arg1) > MAXREP Then
+                        If val(Arg1) > MAXREP Then
                             UserList(tUser).Reputacion.AsesinoRep = MAXREP
                         Else
-                            UserList(tUser).Reputacion.AsesinoRep = Val(Arg1)
+                            UserList(tUser).Reputacion.AsesinoRep = val(Arg1)
                         End If
                     End If
                 
@@ -8369,59 +8386,312 @@ On Error GoTo Errhandler
         End If
         
         'Log it!
-        commandString = "/MOD "
+        CommandString = "/MOD "
         
         Select Case opcion
             Case eEditOptions.eo_Gold
-                commandString = commandString & "ORO "
+                CommandString = CommandString & "ORO "
             
             Case eEditOptions.eo_Experience
-                commandString = commandString & "EXP "
+                CommandString = CommandString & "EXP "
             
             Case eEditOptions.eo_Body
-                commandString = commandString & "BODY "
+                CommandString = CommandString & "BODY "
             
             Case eEditOptions.eo_Head
-                commandString = commandString & "HEAD "
+                CommandString = CommandString & "HEAD "
             
             Case eEditOptions.eo_CriminalsKilled
-                commandString = commandString & "CRI "
+                CommandString = CommandString & "CRI "
             
             Case eEditOptions.eo_CiticensKilled
-                commandString = commandString & "CIU "
+                CommandString = CommandString & "CIU "
             
             Case eEditOptions.eo_Level
-                commandString = commandString & "LEVEL "
+                CommandString = CommandString & "LEVEL "
             
             Case eEditOptions.eo_Class
-                commandString = commandString & "CLASE "
+                CommandString = CommandString & "CLASE "
             
             Case eEditOptions.eo_Skills
-                commandString = commandString & "SKILLS "
+                CommandString = CommandString & "SKILLS "
             
             Case eEditOptions.eo_SkillPointsLeft
-                commandString = commandString & "SKILLSLIBRES "
+                CommandString = CommandString & "SKILLSLIBRES "
                 
             Case eEditOptions.eo_Nobleza
-                commandString = commandString & "NOB "
+                CommandString = CommandString & "NOB "
                 
             Case eEditOptions.eo_Asesino
-                commandString = commandString & "ASE "
+                CommandString = CommandString & "ASE "
                 
             Case eEditOptions.eo_Sex
-                commandString = commandString & "SEX "
+                CommandString = CommandString & "SEX "
                 
             Case eEditOptions.eo_Raza
-                commandString = commandString & "RAZA "
+                CommandString = CommandString & "RAZA "
                 
             Case Else
-                commandString = commandString & "UNKOWN "
+                CommandString = CommandString & "UNKOWN "
         End Select
         
-        commandString = commandString & Arg1 & " " & Arg2
+        CommandString = CommandString & Arg1 & " " & Arg2
         
         If valido Then _
-            Call LogGM(.name, commandString & " " & UserName)
+            Call LogGM(.name, CommandString & " " & UserName)
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+Errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.Raise error
+End Sub
+
+''
+' Handles the "EditNpc" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleEditNpc(ByVal UserIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 26/05/2009
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 8 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+On Error GoTo Errhandler
+
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim opcion As Byte
+        Dim NroNpc As Integer
+        Dim NewVal As String
+        Dim NpcIndex As Long
+        Dim CommandString As String
+        Dim N As Byte
+        Dim Leer As clsIniReader
+        Dim ValidIndex, ValidVal As Boolean
+        
+    
+        NroNpc = buffer.ReadInteger()
+        opcion = buffer.ReadByte()
+        NewVal = buffer.ReadLong()
+        
+        Set Leer = LeerNPCs
+    
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+            
+            ValidIndex = Leer.KeyExists("NPC" & NroNpc)
+            
+            If ValidIndex Then
+                CommandString = "/MODNPC " & NroNpc & " "
+                
+                Select Case opcion
+                    
+                    Case eEditNpcOptions.Vida
+                        ValidVal = NewVal > 0 And NewVal < 100000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs Life
+                            For NpcIndex = 1 To LastNPC
+                                With Npclist(NpcIndex)
+                                    If .Numero = NroNpc Then
+                                        .Stats.MinHP = .Stats.MinHP + NewVal - .Stats.MaxHP
+                                        ' Si bajo demasiado la vida en la edicion, le dejo un minimo de 1 al npc
+                                        If .Stats.MinHP < 1 Then .Stats.MinHP = 1
+                                        .Stats.MaxHP = NewVal
+                                    End If
+                                End With
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "MaxHP", NewVal)
+                            Call Leer.ChangeValue("NPC" & NroNpc, "MinHP", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "VIDA " & NewVal
+                        End If
+                        
+                    Case eEditNpcOptions.DañoMax
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs MaxHit
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).Stats.MaxHIT = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "MaxHIT", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "DAÑOMAX " & NewVal
+                        End If
+                    
+                    Case eEditNpcOptions.DañoMin
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs MinHit
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).Stats.MinHIT = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "MinHIT", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "DAÑOMIN " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.def
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs def
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).Stats.def = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "DEF", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "DEF " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.Evasion
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs Evasion
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).PoderEvasion = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "PoderEvasion", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "EVASION " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.Experiencia
+                        ValidVal = NewVal > 0 And NewVal < 100000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs Exp
+                            For NpcIndex = 1 To LastNPC
+                                With Npclist(NpcIndex)
+                                    If .Numero = NroNpc Then
+                                        .flags.ExpCount = .flags.ExpCount + NewVal - .GiveEXP
+                                        .GiveEXP = NewVal
+                                    End If
+                                End With
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "GiveEXP", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "EXPERIENCIA " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.MagDef
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs MagDef
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).Stats.defM = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "DEFm", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "MAGDEF " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.Oro
+                        ValidVal = NewVal > 0 And NewVal < 100000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs Oro
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).GiveGLD = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "GiveGLD", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "ORO " & NewVal
+                        End If
+    
+                    Case eEditNpcOptions.Punteria
+                        ValidVal = NewVal > 0 And NewVal < 1000
+                        
+                        If ValidVal Then
+                            ' Update Spawned Npcs Aim
+                            For NpcIndex = 1 To LastNPC
+                                If Npclist(NpcIndex).Numero = NroNpc Then
+                                    Npclist(NpcIndex).PoderAtaque = NewVal
+                                End If
+                            Next NpcIndex
+                            
+                            ' Update Val in Npc Database
+                            Call Leer.ChangeValue("NPC" & NroNpc, "PoderAtaque", NewVal)
+                            
+                            ' For log
+                            CommandString = CommandString & "PUNTERIA " & NewVal
+                        End If
+    
+                    Case Else
+                        Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
+                        CommandString = CommandString & "UNKNOWN " & NewVal
+                End Select
+                
+                If ValidVal Then
+                    Call LogGM(.name, CommandString)
+                    Call WriteConsoleMsg(UserIndex, "Modificacion realizada con exito.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "Valores inválidos.", FontTypeNames.FONTTYPE_INFO)
+                End If
+            Else
+                Call WriteConsoleMsg(UserIndex, "Número de Npc incorrecto.", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -9253,11 +9523,11 @@ On Error GoTo Errhandler
             If Not FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 Call WriteConsoleMsg(UserIndex, "Charfile inexistente (no use +)", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (Val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1) Then
+                If (val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1) Then
                     Call UnBan(UserName)
                 
                     'penas
-                    cantPenas = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
                     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
                 
@@ -10826,7 +11096,7 @@ On Error GoTo Errhandler
                 'baneamos a los miembros
                 Call LogGM(.name, "BANCLAN a " & UCase$(GuildName))
                 
-                cantMembers = Val(GetVar(tFile, "INIT", "NroMembers"))
+                cantMembers = val(GetVar(tFile, "INIT", "NroMembers"))
                 
                 For LoopC = 1 To cantMembers
                     member = GetVar(tFile, "Members", "Member" & LoopC)
@@ -10845,7 +11115,7 @@ On Error GoTo Errhandler
                     'ponemos el flag de ban a 1
                     Call WriteVar(CharPath & member & ".chr", "FLAGS", "Ban", "1")
                     'ponemos la pena
-                    Count = Val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
+                    Count = val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
                     Call WriteVar(CharPath & member & ".chr", "PENAS", "Cant", Count + 1)
                     Call WriteVar(CharPath & member & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": BAN AL CLAN: " & GuildName & " " & Date & " " & time)
                 Next LoopC
@@ -12443,7 +12713,7 @@ On Error GoTo Errhandler
                     If Not FileExist(CharPath & UserName & ".chr") Then
                         Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        GuildIndex = Val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
+                        GuildIndex = val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
                         
                         If GuildIndex > 0 Then
                             Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
@@ -12457,7 +12727,7 @@ On Error GoTo Errhandler
                                 
                                 Dim cantPenas As Byte
                                 
-                                cantPenas = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                                 
                                 Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", CStr(cantPenas + 1))
                                 
