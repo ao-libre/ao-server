@@ -375,5 +375,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/02/2009: No aparece ningun mensaje cuando mandas privado a un admin invisible. (ZaMa)
  * 28/02/2009: Al morir en la arena, no se activa el seguro de resu. (ZaMa)  
  * 28/02/2009: Si te sacan de la arena, y tenes el seguro de resu desactivado, se activa. (ZaMa)
+ * 08/06/2009: Se agregó el comando /mod agregar oro
 
 - 0.12.3

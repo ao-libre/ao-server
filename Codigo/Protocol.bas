@@ -449,6 +449,7 @@ Public Enum eEditOptions
     eo_Asesino
     eo_Sex
     eo_Raza
+    eo_addGold
 End Enum
 
 
@@ -8138,6 +8139,7 @@ On Error GoTo Errhandler
         Dim CommandString As String
         Dim N As Byte
         
+        
         UserName = Replace(buffer.ReadASCIIString(), "+", " ")
         
         If UCase$(UserName) = "YO" Then
@@ -8171,7 +8173,8 @@ On Error GoTo Errhandler
                             opcion = eEditOptions.eo_CiticensKilled Or _
                             opcion = eEditOptions.eo_CriminalsKilled Or _
                             opcion = eEditOptions.eo_Class Or _
-                            opcion = eEditOptions.eo_Skills
+                            opcion = eEditOptions.eo_Skills Or _
+                            opcion = eEditOptions.eo_addGold
             End Select
             
         ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then   'Si no es RM debe ser dios para poder usar este comando
@@ -8184,7 +8187,7 @@ On Error GoTo Errhandler
                     If tUser <= 0 Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
                     Else
-                        If val(Arg1) < 5000000 Then
+                        If val(Arg1) < MAX_ORO_EDIT Then
                             UserList(tUser).Stats.GLD = val(Arg1)
                             Call WriteUpdateGold(tUser)
                         Else
@@ -8368,8 +8371,26 @@ On Error GoTo Errhandler
                         End If
                     End If
                 
+                Case eEditOptions.eo_addGold
+                
+                    Dim bankGold As Long
+                    
+                    If Abs(Arg1) > MAX_ORO_EDIT Then
+                        Call WriteConsoleMsg(UserIndex, "No está permitido utilizar valores mayores a " & MAX_ORO_EDIT & ".", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        If tUser <= 0 Then
+                            bankGold = GetVar(CharPath & UserName & ".chr", "STATS", "BANCO")
+                            Call WriteVar(CharPath & UserName & ".chr", "STATS", "BANCO", IIf(bankGold + val(Arg1) <= 0, 0, bankGold + val(Arg1)))
+                            Call WriteConsoleMsg(UserIndex, "Se le ha agregado " & Arg1 & " monedas de oro a " & UserName & ".", FONTTYPE_TALK)
+                        Else
+                            UserList(tUser).Stats.Banco = IIf(UserList(tUser).Stats.Banco + val(Arg1) <= 0, 0, UserList(tUser).Stats.Banco + val(Arg1))
+                            Call WriteConsoleMsg(tUser, STANDARD_BOUNTY_HUNTER_MESSAGE, FONTTYPE_TALK)
+                        End If
+                    End If
+                    
                 Case Else
                     Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
+                    
             End Select
         End If
         
@@ -8418,7 +8439,10 @@ On Error GoTo Errhandler
                 
             Case eEditOptions.eo_Raza
                 CommandString = CommandString & "RAZA "
-                
+            
+            Case eEditOptions.eo_addGold
+                CommandString = CommandString & "AGREGAR "
+            
             Case Else
                 CommandString = CommandString & "UNKOWN "
         End Select
