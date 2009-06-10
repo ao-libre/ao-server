@@ -12954,7 +12954,7 @@ End Sub
 Public Sub HandleResetFactions(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/26/06
+'Last Modification: 06/09/09
 '
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
@@ -12973,6 +12973,7 @@ On Error GoTo Errhandler
         
         Dim UserName As String
         Dim tUser As Integer
+        Dim Char As String
         
         UserName = buffer.ReadASCIIString()
         
@@ -12981,8 +12982,27 @@ On Error GoTo Errhandler
             
             tUser = NameIndex(UserName)
             
-            If tUser > 0 Then _
+            If tUser > 0 Then
                 Call ResetFacciones(tUser)
+            Else
+                Char = CharPath & UserName & ".chr"
+                
+                Call WriteVar(Char, "FACCIONES", "EjercitoReal", 0)
+                Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
+                Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
+                Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
+                Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
+                Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
+                Call WriteVar(Char, "FACCIONES", "rArReal", 0)
+                Call WriteVar(Char, "FACCIONES", "rExCaos", 0)
+                Call WriteVar(Char, "FACCIONES", "rExReal", 0)
+                Call WriteVar(Char, "FACCIONES", "recCaos", 0)
+                Call WriteVar(Char, "FACCIONES", "recReal", 0)
+                Call WriteVar(Char, "FACCIONES", "Reenlistadas", 0)
+                Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
+                Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
+                Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+            End If
         End If
         
         'If we got here then packet is complete, copy data back to original queue

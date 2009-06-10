@@ -376,5 +376,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/02/2009: Al morir en la arena, no se activa el seguro de resu. (ZaMa)  
  * 28/02/2009: Si te sacan de la arena, y tenes el seguro de resu desactivado, se activa. (ZaMa)
  * 08/06/2009: Se agregó el comando /mod agregar oro
+ * 09/06/2009: Ahora el comando /rajar funciona incluso cuando el usuario esta offline. (Pato)
 
 - 0.12.3
