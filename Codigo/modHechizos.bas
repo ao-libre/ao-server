@@ -236,9 +236,9 @@ End Sub
 Function PuedeLanzar(ByVal UserIndex As Integer, ByVal HechizoIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: 11/09/08
-'Last Modification By: Marco Vanotti (Marco)
-' - 11/09/08 Now Druid have mana bonus while casting summoning spells having a magic flute equipped (Marco)
+'Last Modification: 06/11/09
+'Last Modification By: Torres Patricio (Pato)
+' - 06/11/09 Corregida la bonificación de maná del mimetismo en el druida con flauta mágica equipada.
 '***************************************************
 Dim DruidManaBonus As Single
 
@@ -280,10 +280,15 @@ Dim DruidManaBonus As Single
         Exit Function
     End If
 
-    If Hechizos(HechizoIndex).Tipo = uInvocacion Then
-    'If it is a summoning spell and we are druids, having a magic flute equipped then we will need less mana
-        If UserList(UserIndex).clase = eClass.Druid And UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA Then
-            DruidManaBonus = 0.7
+    If UserList(UserIndex).clase = eClass.Druid Then
+        If UserList(UserIndex).Invent.AnilloEqpObjIndex = FLAUTAMAGICA Then
+            If Hechizos(HechizoIndex).Mimetiza Then
+                DruidManaBonus = 0.5
+            ElseIf Hechizos(HechizoIndex).Tipo = uInvocacion Then
+                DruidManaBonus = 0.7
+            Else
+                DruidManaBonus = 1
+            End If
         Else
             DruidManaBonus = 1
         End If
