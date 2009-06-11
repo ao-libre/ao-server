@@ -8101,8 +8101,9 @@ End Sub
 Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 02/03/2009
-'02/03/2009: ZaMa -  Cuando editas nivel, chequea si el pj peude permanecer en clan faccionario
+'Last Modification: 11/06/2009
+'02/03/2009: ZaMa - Cuando editas nivel, chequea si el pj puede permanecer en clan faccionario
+'11/06/2009: ZaMa - Todos los comandos se pueden usar aunque el pj este offline
 '***************************************************
     If UserList(UserIndex).incomingData.length < 8 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -8127,6 +8128,8 @@ On Error GoTo Errhandler
         Dim LoopC As Byte
         Dim CommandString As String
         Dim N As Byte
+        Dim UserCharPath As String
+        Dim Var As Long
         
         
         UserName = Replace(buffer.ReadASCIIString(), "+", " ")
@@ -8169,278 +8172,297 @@ On Error GoTo Errhandler
         ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then   'Si no es RM debe ser dios para poder usar este comando
             valido = True
         End If
-        
+
         If valido Then
-            Select Case opcion
-                Case eEditOptions.eo_Gold
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
+            UserCharPath = CharPath & UserName & ".chr"
+            If tUser <= 0 And Not FileExist(UserCharPath) Then
+                Call WriteConsoleMsg(UserIndex, "Esta intentando editar un usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
+                Call LogGM(.name, "Intento editar un usuario inexistente.")
+            Else
+                'For making the Log
+                CommandString = "/MOD "
+                
+                Select Case opcion
+                    Case eEditOptions.eo_Gold
                         If val(Arg1) < MAX_ORO_EDIT Then
-                            UserList(tUser).Stats.GLD = val(Arg1)
-                            Call WriteUpdateGold(tUser)
+                            If tUser <= 0 Then ' Esta offline?
+                                Call WriteVar(UserCharPath, "STATS", "GLD", val(Arg1))
+                                Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            Else ' Online
+                                UserList(tUser).Stats.GLD = val(Arg1)
+                                Call WriteUpdateGold(tUser)
+                            End If
                         Else
                             Call WriteConsoleMsg(UserIndex, "No esta permitido utilizar valores mayores. Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
                         End If
-                    End If
+                    
+                        ' Log it
+                        CommandString = CommandString & "ORO "
                 
-                Case eEditOptions.eo_Experience
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If val(Arg1) > 20000000 Then
-                            Arg1 = 20000000
-                        End If
+                    Case eEditOptions.eo_Experience
+                        If tUser <= 0 Then
+                            Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            If val(Arg1) > 20000000 Then
+                                Arg1 = 20000000
+                            End If
+                                
+                            UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
+                            Call CheckUserLevel(tUser)
+                            Call WriteUpdateExp(tUser)
                             
-                        UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
-                        Call CheckUserLevel(tUser)
-                        Call WriteUpdateExp(tUser)
+                        End If
                         
-                    End If
-                
-                Case eEditOptions.eo_Body
-                    If tUser <= 0 Then
-                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Body", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call ChangeUserChar(tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
-                    End If
-                
-                Case eEditOptions.eo_Head
-                    If tUser <= 0 Then
-                        Call WriteVar(CharPath & UserName & ".chr", "INIT", "Head", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call ChangeUserChar(tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
-                    End If
-                
-                Case eEditOptions.eo_CriminalsKilled
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If val(Arg1) > MAXUSERMATADOS Then
-                            UserList(tUser).Faccion.CriminalesMatados = MAXUSERMATADOS
+                        ' Log it
+                        CommandString = CommandString & "EXP "
+                    
+                    Case eEditOptions.eo_Body
+                        If tUser <= 0 Then
+                            Call WriteVar(UserCharPath, "INIT", "Body", Arg1)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Faccion.CriminalesMatados = val(Arg1)
+                            Call ChangeUserChar(tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                         End If
-                    End If
-                
-                Case eEditOptions.eo_CiticensKilled
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If val(Arg1) > MAXUSERMATADOS Then
-                            UserList(tUser).Faccion.CiudadanosMatados = MAXUSERMATADOS
+                        
+                        ' Log it
+                        CommandString = CommandString & "BODY "
+                    
+                    Case eEditOptions.eo_Head
+                        If tUser <= 0 Then
+                            Call WriteVar(UserCharPath, "INIT", "Head", Arg1)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Faccion.CiudadanosMatados = val(Arg1)
+                            Call ChangeUserChar(tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                         End If
-                    End If
-                
-                Case eEditOptions.eo_Level
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
+                        
+                        ' Log it
+                        CommandString = CommandString & "HEAD "
+                    
+                    Case eEditOptions.eo_CriminalsKilled
+                        Var = IIf(val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, val(Arg1))
+                        
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "FACCIONES", "CrimMatados", Var)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
+                            UserList(tUser).Faccion.CriminalesMatados = Var
+                        End If
+                        
+                        ' Log it
+                        CommandString = CommandString & "CRI "
+                    
+                    Case eEditOptions.eo_CiticensKilled
+                        Var = IIf(val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, val(Arg1))
+                        
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "FACCIONES", "CiudMatados", Var)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
+                            UserList(tUser).Faccion.CiudadanosMatados = Var
+                        End If
+                        
+                        ' Log it
+                        CommandString = CommandString & "CIU "
+                    
+                    Case eEditOptions.eo_Level
                         If val(Arg1) > STAT_MAXELV Then
                             Arg1 = CStr(STAT_MAXELV)
                             Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a " & STAT_MAXELV & ".", FONTTYPE_INFO)
                         End If
                         
-                        UserList(tUser).Stats.ELV = val(Arg1)
-                        
-                        With UserList(tUser)
-                        
-                            ' Chequeamos si puede permanecer en el clan
-                            If .Stats.ELV >= 25 Then
-                                Dim GI As Integer
-                                GI = .GuildIndex
-                                If GI > 0 Then
-                                    If modGuilds.GuildAlignment(GI) = "Legión oscura" Or modGuilds.GuildAlignment(GI) = "Armada Real" Then
-                                        'We get here, so guild has factionary alignment, we have to expulse the user
-                                        Call modGuilds.m_EcharMiembroDeClan(-1, .name)
-                                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(.name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
+                        ' Chequeamos si puede permanecer en el clan
+                        If val(Arg1) >= 25 Then
+                            
+                            Dim GI As Integer
+                            If tUser <= 0 Then
+                                GI = GetVar(UserCharPath, "GUILD", "GUILDINDEX")
+                            Else
+                                GI = UserList(tUser).GuildIndex
+                            End If
+                            
+                            If GI > 0 Then
+                                If modGuilds.GuildAlignment(GI) = "Legión oscura" Or modGuilds.GuildAlignment(GI) = "Armada Real" Then
+                                    'We get here, so guild has factionary alignment, we have to expulse the user
+                                    Call modGuilds.m_EcharMiembroDeClan(-1, UserName)
+                                    
+                                    Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(UserName & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
+                                    ' Si esta online le avisamos
+                                    If tUser > 0 Then _
                                         Call WriteConsoleMsg(tUser, "¡Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearás! Por esta razón, hasta tanto no te enlistes en la Facción bajo la cual tu clan está alineado, estarás excluído del mismo.", FontTypeNames.FONTTYPE_GUILD)
-                                    End If
                                 End If
                             End If
+                        End If
                         
-                        End With
-
-                    End If
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "STATS", "ELV", val(Arg1))
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
+                            UserList(tUser).Stats.ELV = val(Arg1)
+                            Call WriteUpdateUserStats(tUser)
+                        End If
                     
-                    Call WriteUpdateUserStats(UserIndex)
-                
-                Case eEditOptions.eo_Class
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
+                        ' Log it
+                        CommandString = CommandString & "LEVEL "
+                    
+                    Case eEditOptions.eo_Class
                         For LoopC = 1 To NUMCLASES
                             If UCase$(ListaClases(LoopC)) = UCase$(Arg1) Then Exit For
                         Next LoopC
-                        
+                            
                         If LoopC > NUMCLASES Then
                             Call WriteConsoleMsg(UserIndex, "Clase desconocida. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).clase = LoopC
+                            If tUser <= 0 Then ' Offline
+                                Call WriteVar(UserCharPath, "INIT", "Clase", LoopC)
+                                Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            Else ' Online
+                                UserList(tUser).clase = LoopC
+                            End If
                         End If
-                    End If
-                
-                Case eEditOptions.eo_Skills
-                    For LoopC = 1 To NUMSKILLS
-                        If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then Exit For
-                    Next LoopC
                     
-                    If LoopC > NUMSKILLS Then
-                        Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If tUser <= 0 Then
-                            Call WriteVar(CharPath & UserName & ".chr", "Skills", "SK" & LoopC, Arg2)
+                        ' Log it
+                        CommandString = CommandString & "CLASE "
+                        
+                    Case eEditOptions.eo_Skills
+                        For LoopC = 1 To NUMSKILLS
+                            If UCase$(Replace$(SkillsNames(LoopC), " ", "+")) = UCase$(Arg1) Then Exit For
+                        Next LoopC
+                        
+                        If LoopC > NUMSKILLS Then
+                            Call WriteConsoleMsg(UserIndex, "Skill Inexistente!", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            If tUser <= 0 Then ' Offline
+                                Call WriteVar(UserCharPath, "Skills", "SK" & LoopC, Arg2)
+                                Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            Else ' Online
+                                UserList(tUser).Stats.UserSkills(LoopC) = val(Arg2)
+                            End If
+                        End If
+                        
+                        ' Log it
+                        CommandString = CommandString & "SKILLS "
+                    
+                    Case eEditOptions.eo_SkillPointsLeft
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "STATS", "SkillPtsLibres", Arg1)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                        Else
-                            UserList(tUser).Stats.UserSkills(LoopC) = val(Arg2)
+                        Else ' Online
+                            UserList(tUser).Stats.SkillPts = val(Arg1)
                         End If
-                    End If
-                
-                Case eEditOptions.eo_SkillPointsLeft
-                    If tUser <= 0 Then
-                        Call WriteVar(CharPath & UserName & ".chr", "STATS", "SkillPtsLibres", Arg1)
-                        Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        UserList(tUser).Stats.SkillPts = val(Arg1)
-                    End If
-                
-                Case eEditOptions.eo_Nobleza
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If val(Arg1) > MAXREP Then
-                            UserList(tUser).Reputacion.NobleRep = MAXREP
-                        Else
-                            UserList(tUser).Reputacion.NobleRep = val(Arg1)
+                        
+                        ' Log it
+                        CommandString = CommandString & "SKILLSLIBRES "
+                    
+                    Case eEditOptions.eo_Nobleza
+                        Var = IIf(val(Arg1) > MAXREP, MAXREP, val(Arg1))
+                        
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "REP", "Nobles", Var)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
+                            UserList(tUser).Reputacion.NobleRep = Var
                         End If
-                    End If
-                
-                Case eEditOptions.eo_Asesino
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If val(Arg1) > MAXREP Then
-                            UserList(tUser).Reputacion.AsesinoRep = MAXREP
-                        Else
-                            UserList(tUser).Reputacion.AsesinoRep = val(Arg1)
+                    
+                        ' Log it
+                        CommandString = CommandString & "NOB "
+                        
+                    Case eEditOptions.eo_Asesino
+                        Var = IIf(val(Arg1) > MAXREP, MAXREP, val(Arg1))
+                        
+                        If tUser <= 0 Then ' Offline
+                            Call WriteVar(UserCharPath, "REP", "Asesino", Var)
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
+                            UserList(tUser).Reputacion.AsesinoRep = Var
                         End If
-                    End If
-                
-                Case eEditOptions.eo_Sex
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
+                        
+                        ' Log it
+                        CommandString = CommandString & "ASE "
+                    
+                    Case eEditOptions.eo_Sex
+                        Dim Sex As Byte
+                        Sex = IIf(UCase(Arg1) = "MUJER", eGenero.Mujer, 0) ' Mujer?
+                        Sex = IIf(UCase(Arg1) = "HOMBRE", eGenero.Hombre, Sex) ' Hombre?
+                        
+                        If Sex <> 0 Then ' Es Hombre o mujer?
+                            If tUser <= 0 Then ' OffLine
+                                Call WriteVar(UserCharPath, "INIT", "Genero", Sex)
+                                Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            Else ' Online
+                                UserList(tUser).genero = Sex
+                            End If
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "Genero desconocido. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                        
+                        ' Log it
+                        CommandString = CommandString & "SEX "
+                    
+                    Case eEditOptions.eo_Raza
+                        Dim Raza As Byte
+                        
                         Arg1 = UCase$(Arg1)
-                        If (Arg1 = "MUJER") Then
-                            UserList(tUser).genero = eGenero.Mujer
-                        ElseIf (Arg1 = "HOMBRE") Then
-                            UserList(tUser).genero = eGenero.Hombre
-                        End If
-                    End If
-                
-                Case eEditOptions.eo_Raza
-                    If tUser <= 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Arg1 = UCase$(Arg1)
-                        If (Arg1 = "HUMANO") Then
-                            UserList(tUser).raza = eRaza.Humano
-                        ElseIf (Arg1 = "ELFO") Then
-                            UserList(tUser).raza = eRaza.Elfo
-                        ElseIf (Arg1 = "DROW") Then
-                            UserList(tUser).raza = eRaza.Drow
-                        ElseIf (Arg1 = "ENANO") Then
-                            UserList(tUser).raza = eRaza.Enano
-                        ElseIf (Arg1 = "GNOMO") Then
-                            UserList(tUser).raza = eRaza.Gnomo
-                        End If
-                    End If
-                
-                Case eEditOptions.eo_addGold
-                
-                    Dim bankGold As Long
-                    
-                    If Abs(Arg1) > MAX_ORO_EDIT Then
-                        Call WriteConsoleMsg(UserIndex, "No está permitido utilizar valores mayores a " & MAX_ORO_EDIT & ".", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        If tUser <= 0 Then
-                            bankGold = GetVar(CharPath & UserName & ".chr", "STATS", "BANCO")
-                            Call WriteVar(CharPath & UserName & ".chr", "STATS", "BANCO", IIf(bankGold + val(Arg1) <= 0, 0, bankGold + val(Arg1)))
-                            Call WriteConsoleMsg(UserIndex, "Se le ha agregado " & Arg1 & " monedas de oro a " & UserName & ".", FONTTYPE_TALK)
+                        Select Case Arg1
+                            Case "HUMANO"
+                                Raza = eRaza.Humano
+                            Case "ELFO"
+                                Raza = eRaza.Elfo
+                            Case "DROW"
+                                Raza = eRaza.Drow
+                            Case "ENANO"
+                                Raza = eRaza.Enano
+                            Case "GNOMO"
+                                Raza = eRaza.Gnomo
+                            Case Else
+                                Raza = 0
+                        End Select
+                        
+                            
+                        If Raza = 0 Then
+                            Call WriteConsoleMsg(UserIndex, "Raza desconocida. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
                         Else
-                            UserList(tUser).Stats.Banco = IIf(UserList(tUser).Stats.Banco + val(Arg1) <= 0, 0, UserList(tUser).Stats.Banco + val(Arg1))
-                            Call WriteConsoleMsg(tUser, STANDARD_BOUNTY_HUNTER_MESSAGE, FONTTYPE_TALK)
+                            If tUser <= 0 Then
+                                Call WriteVar(UserCharPath, "INIT", "Raza", Raza)
+                                Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            Else
+                                UserList(tUser).Raza = Raza
+                            End If
                         End If
-                    End If
+                            
+                        ' Log it
+                        CommandString = CommandString & "RAZA "
+                        
+                    Case eEditOptions.eo_addGold
                     
-                Case Else
-                    Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
-                    
-            End Select
+                        Dim bankGold As Long
+                        
+                        If Abs(Arg1) > MAX_ORO_EDIT Then
+                            Call WriteConsoleMsg(UserIndex, "No está permitido utilizar valores mayores a " & MAX_ORO_EDIT & ".", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            If tUser <= 0 Then
+                                bankGold = GetVar(CharPath & UserName & ".chr", "STATS", "BANCO")
+                                Call WriteVar(UserCharPath, "STATS", "BANCO", IIf(bankGold + val(Arg1) <= 0, 0, bankGold + val(Arg1)))
+                                Call WriteConsoleMsg(UserIndex, "Se le ha agregado " & Arg1 & " monedas de oro a " & UserName & ".", FONTTYPE_TALK)
+                            Else
+                                UserList(tUser).Stats.Banco = IIf(UserList(tUser).Stats.Banco + val(Arg1) <= 0, 0, UserList(tUser).Stats.Banco + val(Arg1))
+                                Call WriteConsoleMsg(tUser, STANDARD_BOUNTY_HUNTER_MESSAGE, FONTTYPE_TALK)
+                            End If
+                        End If
+                        
+                        ' Log it
+                        CommandString = CommandString & "AGREGAR "
+                        
+                    Case Else
+                        Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
+                        CommandString = CommandString & "UNKOWN "
+                        
+                End Select
+                
+                CommandString = CommandString & Arg1 & " " & Arg2
+                Call LogGM(.name, CommandString & " " & UserName)
+                
+            End If
         End If
-        
-        'Log it!
-        CommandString = "/MOD "
-        
-        Select Case opcion
-            Case eEditOptions.eo_Gold
-                CommandString = CommandString & "ORO "
-            
-            Case eEditOptions.eo_Experience
-                CommandString = CommandString & "EXP "
-            
-            Case eEditOptions.eo_Body
-                CommandString = CommandString & "BODY "
-            
-            Case eEditOptions.eo_Head
-                CommandString = CommandString & "HEAD "
-            
-            Case eEditOptions.eo_CriminalsKilled
-                CommandString = CommandString & "CRI "
-            
-            Case eEditOptions.eo_CiticensKilled
-                CommandString = CommandString & "CIU "
-            
-            Case eEditOptions.eo_Level
-                CommandString = CommandString & "LEVEL "
-            
-            Case eEditOptions.eo_Class
-                CommandString = CommandString & "CLASE "
-            
-            Case eEditOptions.eo_Skills
-                CommandString = CommandString & "SKILLS "
-            
-            Case eEditOptions.eo_SkillPointsLeft
-                CommandString = CommandString & "SKILLSLIBRES "
-                
-            Case eEditOptions.eo_Nobleza
-                CommandString = CommandString & "NOB "
-                
-            Case eEditOptions.eo_Asesino
-                CommandString = CommandString & "ASE "
-                
-            Case eEditOptions.eo_Sex
-                CommandString = CommandString & "SEX "
-                
-            Case eEditOptions.eo_Raza
-                CommandString = CommandString & "RAZA "
-            
-            Case eEditOptions.eo_addGold
-                CommandString = CommandString & "AGREGAR "
-            
-            Case Else
-                CommandString = CommandString & "UNKOWN "
-        End Select
-        
-        CommandString = CommandString & Arg1 & " " & Arg2
-        
-        If valido Then _
-            Call LogGM(.name, CommandString & " " & UserName)
-        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
     End With
