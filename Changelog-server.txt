@@ -377,5 +377,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/02/2009: Si te sacan de la arena, y tenes el seguro de resu desactivado, se activa. (ZaMa)
  * 08/06/2009: Se agregó el comando /mod agregar oro
  * 09/06/2009: Ahora el comando /rajar funciona incluso cuando el usuario esta offline. (Pato)
+ * 11/06/2009: Agregados algunos checks en el cliente (para equipar, agarrar, tirar, domar, robar, ocultar, meditar)
 
 - 0.12.3

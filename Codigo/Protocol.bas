@@ -1957,10 +1957,7 @@ Private Sub HandlePickUp(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         'If dead, it can't pick up objects
-        If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Los muertos no pueden tomar objetos.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        End If
+        If .flags.Muerto = 1 Then Exit Sub
         
         'Lower rank administrators can't pick up items
         If .flags.Privilegios And PlayerType.Consejero Then
@@ -2427,10 +2424,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
         
         Skill = .incomingData.ReadByte()
         
-        If UserList(UserIndex).flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        End If
+        If UserList(UserIndex).flags.Muerto = 1 Then Exit Sub
         
         'If exiting, cancel
         Call CancelExit(UserIndex)
@@ -2620,10 +2614,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         
         
         If .flags.Muerto = 1 Or .flags.Descansar Or .flags.Meditando _
-                        Or Not InMapBounds(.Pos.map, X, Y) Then
-            Exit Sub
-        End If
-        
+        Or Not InMapBounds(.Pos.map, X, Y) Then Exit Sub
+
         If Not InRangoVision(UserIndex, X, Y) Then
             Call WritePosUpdate(UserIndex)
             Exit Sub
@@ -3145,10 +3137,7 @@ Private Sub HandleEquipItem(ByVal UserIndex As Integer)
         itemSlot = .incomingData.ReadByte()
         
         'Dead users can't equip items
-        If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Sólo podés usar items cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
-        End If
+        If .flags.Muerto = 1 Then Exit Sub
         
         'Validate item slot
         If itemSlot > MAX_INVENTORY_SLOTS Or itemSlot < 1 Then Exit Sub
