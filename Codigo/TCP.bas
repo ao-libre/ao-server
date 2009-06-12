@@ -212,7 +212,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(Mid$(cad, i, 1))
+    car = Asc(mid$(cad, i, 1))
     
     If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
         AsciiValidos = False
@@ -232,7 +232,7 @@ Dim i As Integer
 cad = LCase$(cad)
 
 For i = 1 To Len(cad)
-    car = Asc(Mid$(cad, i, 1))
+    car = Asc(mid$(cad, i, 1))
     
     If (car < 48 Or car > 57) Then
         Numeric = False
@@ -534,7 +534,7 @@ Errhandler:
     UserList(UserIndex).ConnIDValida = False
     Call ResetUserSlot(UserIndex)
 
-    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.Description & " - UserIndex = " & UserIndex)
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.description & " - UserIndex = " & UserIndex)
 End Sub
 
 #ElseIf UsarQueSocket = 0 Then
@@ -620,7 +620,7 @@ Dim CoNnEcTiOnId As Long
 Exit Sub
 
 Errhandler:
-    Call LogError("CLOSESOCKETERR: " & Err.Description & " UI:" & UserIndex)
+    Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
     If Not NURestados Then
         If UserList(UserIndex).flags.UserLogged Then
@@ -811,8 +811,9 @@ End Function
 Sub ConnectUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 26/03/2009
+'Last Modification: 12/06/2009
 '26/03/2009: ZaMa - Agrego por default que el color de dialogo de los dioses, sea como el de su nick.
+'12/06/2009: ZaMa - Agrego chequeo de nivel al loguear
 '***************************************************
 Dim N As Integer
 Dim tStr As String
@@ -1092,7 +1093,7 @@ End If
 'Info
 Call WriteUserIndexInServer(UserIndex) 'Enviamos el User index
 Call WriteChangeMap(UserIndex, UserList(UserIndex).Pos.map, MapInfo(UserList(UserIndex).Pos.map).MapVersion) 'Carga el mapa
-Call WritePlayMidi(UserIndex, Val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
+Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(UserList(UserIndex).Pos.map).Music, 45)))
 
 If UserList(UserIndex).flags.Privilegios = PlayerType.Dios Then
     UserList(UserIndex).flags.ChatColor = RGB(250, 250, 150)
@@ -1118,6 +1119,7 @@ Call MakeUserChar(True, UserList(UserIndex).Pos.map, UserIndex, UserList(UserInd
 Call WriteUserCharIndexInServer(UserIndex)
 ''[/el oso]
 
+Call CheckUserLevel(UserIndex)
 Call WriteUpdateUserStats(UserIndex)
 
 Call WriteUpdateHungerAndThirst(UserIndex)
@@ -1161,7 +1163,7 @@ End If
 If NumUsers > recordusuarios Then
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
     recordusuarios = NumUsers
-    Call WriteVar(IniPath & "Server.ini", "INIT", "Record", Str(recordusuarios))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "Record", str(recordusuarios))
     
     Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
 End If
@@ -1238,7 +1240,7 @@ Close #N
 N = FreeFile
 'Log
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & Time & " " & Date
+Print #N, UserList(UserIndex).name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
 Close #N
 
 End Sub
@@ -1350,7 +1352,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '*************************************************
     With UserList(UserIndex)
         .name = vbNullString
-        .Desc = vbNullString
+        .desc = vbNullString
         .DescRM = vbNullString
         .Pos.map = 0
         .Pos.X = 0
@@ -1639,13 +1641,13 @@ Call MostrarNumUsers
 
 N = FreeFile(1)
 Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & Time & " " & Date
+Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
 Close #N
 
 Exit Sub
 
 Errhandler:
-Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.Description)
+Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
 End Sub
 
@@ -1675,7 +1677,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 Errhandler:
-    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.Description)
+    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub
 

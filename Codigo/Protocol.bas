@@ -8200,17 +8200,18 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "ORO "
                 
                     Case eEditOptions.eo_Experience
-                        If tUser <= 0 Then
-                            Call WriteConsoleMsg(UserIndex, "Usuario offline: " & UserName, FontTypeNames.FONTTYPE_INFO)
-                        Else
-                            If val(Arg1) > 20000000 Then
+                        If val(Arg1) > 20000000 Then
                                 Arg1 = 20000000
-                            End If
-                                
+                        End If
+                        
+                        If tUser <= 0 Then ' Offline
+                            Var = GetVar(UserCharPath, "STATS", "EXP")
+                            Call WriteVar(UserCharPath, "STATS", "EXP", Var + val(Arg1))
+                            Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        Else ' Online
                             UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
                             Call CheckUserLevel(tUser)
                             Call WriteUpdateExp(tUser)
-                            
                         End If
                         
                         ' Log it
@@ -8399,33 +8400,33 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "SEX "
                     
                     Case eEditOptions.eo_Raza
-                        Dim Raza As Byte
+                        Dim raza As Byte
                         
                         Arg1 = UCase$(Arg1)
                         Select Case Arg1
                             Case "HUMANO"
-                                Raza = eRaza.Humano
+                                raza = eRaza.Humano
                             Case "ELFO"
-                                Raza = eRaza.Elfo
+                                raza = eRaza.Elfo
                             Case "DROW"
-                                Raza = eRaza.Drow
+                                raza = eRaza.Drow
                             Case "ENANO"
-                                Raza = eRaza.Enano
+                                raza = eRaza.Enano
                             Case "GNOMO"
-                                Raza = eRaza.Gnomo
+                                raza = eRaza.Gnomo
                             Case Else
-                                Raza = 0
+                                raza = 0
                         End Select
                         
                             
-                        If Raza = 0 Then
+                        If raza = 0 Then
                             Call WriteConsoleMsg(UserIndex, "Raza desconocida. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
                         Else
                             If tUser <= 0 Then
-                                Call WriteVar(UserCharPath, "INIT", "Raza", Raza)
+                                Call WriteVar(UserCharPath, "INIT", "Raza", raza)
                                 Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                             Else
-                                UserList(tUser).Raza = Raza
+                                UserList(tUser).raza = raza
                             End If
                         End If
                             
