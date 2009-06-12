@@ -380,5 +380,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 11/06/2009: Agregados algunos checks en el cliente (para equipar, agarrar, tirar, domar, robar, ocultar, meditar)
  * 11/06/2009: Todos los /mod se pueden usar incluso si el pj esta offline. (ZaMa)
  * 11/06/2009: Corregido el chequeo de mana del druida con flauta mágica equipada para el hechizo mimetismo. (Pato)
+ * 11/06/2009: Arreglado un chequeo de nivel al loguear. (ZaMa)
 
 - 0.12.3
