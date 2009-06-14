@@ -206,6 +206,7 @@ Private Enum ClientPacketID
     BankDeposit             'DEPO
     ForumPost               'DEMSG
     MoveSpell               'DESPHE
+    MoveBank
     ClanCodexUpdate         'DESCOD
     UserCommerceOffer       'OFRECER
     GuildAcceptPeace        'ACEPPEAT
@@ -629,6 +630,9 @@ On Error Resume Next
         
         Case ClientPacketID.MoveSpell               'DESPHE
             Call HandleMoveSpell(UserIndex)
+            
+        Case ClientPacketID.MoveBank
+            Call HandleMoveBank(UserIndex)
         
         Case ClientPacketID.ClanCodexUpdate         'DESCOD
             Call HandleClanCodexUpdate(UserIndex)
@@ -3610,6 +3614,59 @@ Private Sub HandleMoveSpell(ByVal UserIndex As Integer)
         
         Call DesplazarHechizo(UserIndex, dir, .ReadByte())
     End With
+End Sub
+
+''
+' Handles the "MoveBank" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleMoveBank(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 06/14/09
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    With UserList(UserIndex).incomingData
+        'Remove packet ID
+        Call .ReadByte
+        
+        Dim dir As Integer
+        Dim Slot As Byte
+        Dim TempItem As Obj
+        
+        If .ReadBoolean() Then
+            dir = 1
+        Else
+            dir = -1
+        End If
+        
+        Slot = .ReadByte()
+    End With
+        
+    With UserList(UserIndex)
+        TempItem.ObjIndex = .BancoInvent.Object(Slot).ObjIndex
+        TempItem.amount = .BancoInvent.Object(Slot).amount
+        
+        If dir = 1 Then 'Mover arriba
+            .BancoInvent.Object(Slot) = .BancoInvent.Object(Slot - 1)
+            .BancoInvent.Object(Slot - 1).ObjIndex = TempItem.ObjIndex
+            .BancoInvent.Object(Slot - 1).amount = TempItem.amount
+        Else 'mover abajo
+            .BancoInvent.Object(Slot) = .BancoInvent.Object(Slot + 1)
+            .BancoInvent.Object(Slot + 1).ObjIndex = TempItem.ObjIndex
+            .BancoInvent.Object(Slot + 1).amount = TempItem.amount
+        End If
+    End With
+    
+    Call UpdateBanUserInv(True, UserIndex, 0)
+    Call UpdateVentanaBanco(UserIndex)
+
 End Sub
 
 ''
