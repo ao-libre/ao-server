@@ -40,7 +40,7 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 244
+Private Const LAST_CLIENT_PACKET_ID As Byte = 246
 
 ''
 'Auxiliar ByteQueue used as buffer to generate messages not intended to be sent right away.
@@ -409,6 +409,7 @@ Private Enum ClientPacketID
     ChatColor               '/CHATCOLOR
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
+    SetIniVar               '/SETINIVAR LLAVE CLAVE VALOR
 End Enum
 
 Public Enum FontTypeNames
@@ -1235,6 +1236,9 @@ On Error Resume Next
         
         Case ClientPacketID.CheckSlot               '/SLOT
             Call HandleCheckSlot(UserIndex)
+            
+        Case ClientPacketID.SetIniVar               '/SETINIVAR LLAVE CLAVE VALOR
+            Call HandleSetIniVar(UserIndex)
             
 #If SeguridadAlkon Then
         Case Else
@@ -13375,6 +13379,71 @@ Public Sub HandlePing(ByVal UserIndex As Integer)
         
         Call WritePong(UserIndex)
     End With
+End Sub
+
+''
+' Handle the "SetIniVar" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleSetIniVar(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Brian Chaia (BrianPr)
+'Last Modification: 21/06/09
+'Modify server.ini
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 6 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+
+On Error GoTo Errhandler
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim sLlave As String
+        Dim sClave As String
+        Dim sValor As String
+        
+        'Obtengo los parámetros
+        sLlave = buffer.ReadASCIIString()
+        sClave = buffer.ReadASCIIString()
+        sValor = buffer.ReadASCIIString()
+    
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+            Dim sTmp As String
+            'Obtengo el valor según llave y clave
+            sTmp = GetVar(IniPath & "Server.ini", sLlave, sClave)
+            
+            'Si obtengo un valor escribo en el server.ini
+            If LenB(sTmp) Then
+                Call WriteVar(IniPath & "Server.ini", sLlave, sClave, sValor)
+                Call LogGM(.name, "Modificó en server.ini (" & sLlave & " " & sClave & ") el valor " & sTmp & " por " & sValor)
+                Call WriteConsoleMsg(UserIndex, "Modificó " & sLlave & " " & sClave & " a " & sValor & ". Valor anterior " & sTmp, FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "No existe la llave y/o clave", FontTypeNames.FONTTYPE_INFO)
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+
+Errhandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.Raise error
 End Sub
 
 ''
