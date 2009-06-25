@@ -684,7 +684,10 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
                     .Pos = CasPerPos
                     .Char.heading = CasperHeading
                     MapData(.Pos.map, CasPerPos.X, CasPerPos.Y).UserIndex = CasperIndex
+                
                 End With
+                
+                Call Empollando(CasperIndex)
             
                 'Actualizamos las áreas de ser necesario
                 Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
