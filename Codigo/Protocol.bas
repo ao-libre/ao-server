@@ -13060,21 +13060,25 @@ On Error GoTo Errhandler
             Else
                 Char = CharPath & UserName & ".chr"
                 
-                Call WriteVar(Char, "FACCIONES", "EjercitoReal", 0)
-                Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
-                Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
-                Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
-                Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
-                Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
-                Call WriteVar(Char, "FACCIONES", "rArReal", 0)
-                Call WriteVar(Char, "FACCIONES", "rExCaos", 0)
-                Call WriteVar(Char, "FACCIONES", "rExReal", 0)
-                Call WriteVar(Char, "FACCIONES", "recCaos", 0)
-                Call WriteVar(Char, "FACCIONES", "recReal", 0)
-                Call WriteVar(Char, "FACCIONES", "Reenlistadas", 0)
-                Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
-                Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
-                Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+                If FileExist(Char, vbNormal) Then
+                    Call WriteVar(Char, "FACCIONES", "EjercitoReal", 0)
+                    Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
+                    Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
+                    Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
+                    Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
+                    Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
+                    Call WriteVar(Char, "FACCIONES", "rArReal", 0)
+                    Call WriteVar(Char, "FACCIONES", "rExCaos", 0)
+                    Call WriteVar(Char, "FACCIONES", "rExReal", 0)
+                    Call WriteVar(Char, "FACCIONES", "recCaos", 0)
+                    Call WriteVar(Char, "FACCIONES", "recReal", 0)
+                    Call WriteVar(Char, "FACCIONES", "Reenlistadas", 0)
+                    Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
+                    Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
+                    Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "El personaje " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
