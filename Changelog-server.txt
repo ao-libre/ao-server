@@ -385,5 +385,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 21/06/2009: Agregué el comando /SETINIVAR (BrianPr)
  * 25/06/2009: Fix al bug #2811927 (Pato)
  * 30/06/2009: Cuando se usa el /rajar si el personaje no está online se fija que exista el char. (Pato)
+ * 02/07/2009: Ya no se puede saber si un gm está o no online con el comando /banip. (Pato)
 
 - 0.12.3

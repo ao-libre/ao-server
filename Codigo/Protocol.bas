@@ -10979,9 +10979,10 @@ End Sub
 Private Sub HandleBanIP(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/12/08
+'Last Modification: 07/02/09
 'Agregado un CopyBuffer porque se producia un bucle
 'inifito al intentar banear una ip ya baneada. (NicoNZ)
+'07/02/09 Pato - Ahora no es posible saber si un gm está o no online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -11011,37 +11012,33 @@ On Error GoTo Errhandler
         Else
             tUser = NameIndex(buffer.ReadASCIIString())
             
-            If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "El personaje no está online.", FontTypeNames.FONTTYPE_INFO)
-            Else
-                bannedIP = UserList(tUser).ip
-            End If
+            If tUser > 0 Then bannedIP = UserList(tUser).ip
         End If
         
         reason = buffer.ReadASCIIString()
         
-        If LenB(bannedIP) > 0 Then
-            If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+        
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+            If LenB(bannedIP) > 0 Then
                 Call LogGM(.name, "/BanIP " & bannedIP & " por " & reason)
                 
                 If BanIpBuscar(bannedIP) > 0 Then
                     Call WriteConsoleMsg(UserIndex, "La IP " & bannedIP & " ya se encuentra en la lista de bans.", FontTypeNames.FONTTYPE_INFO)
-                    Call .incomingData.CopyBuffer(buffer) ' Agregado porque sino no se sacaba del
-                                                          ' buffer y se hacia un bucle infinito. (NicoNZ) 05/12/2008
-                    Exit Sub
-                End If
-                
-                Call BanIpAgrega(bannedIP)
-                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " baneó la IP " & bannedIP & " por " & reason, FontTypeNames.FONTTYPE_FIGHT))
-                
-                'Find every player with that ip and ban him!
-                For i = 1 To LastUser
-                    If UserList(i).ConnIDValida Then
-                        If UserList(i).ip = bannedIP Then
-                            Call BanCharacter(UserIndex, UserList(i).name, "IP POR " & reason)
+                Else
+                    Call BanIpAgrega(bannedIP)
+                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.name & " baneó la IP " & bannedIP & " por " & reason, FontTypeNames.FONTTYPE_FIGHT))
+                    
+                    'Find every player with that ip and ban him!
+                    For i = 1 To LastUser
+                        If UserList(i).ConnIDValida Then
+                            If UserList(i).ip = bannedIP Then
+                                Call BanCharacter(UserIndex, UserList(i).name, "IP POR " & reason)
+                            End If
                         End If
-                    End If
-                Next i
+                    Next i
+                End If
+            ElseIf tUser <= 0 Then
+                Call WriteConsoleMsg(UserIndex, "El personaje no está online.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
