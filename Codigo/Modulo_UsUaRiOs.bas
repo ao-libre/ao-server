@@ -210,8 +210,9 @@ End Sub
 Sub RefreshCharStatus(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Tararira
-'Last modified: 04/21/2008 (NicoNZ)
+'Last modified: 04/07/2009
 'Refreshes the status and tag of UserIndex.
+'04/07/2009: ZaMa - Ahora mantenes la fragata fantasmal si estas muerto.
 '*************************************************
     Dim klan As String
     Dim Barco As ObjData
@@ -233,38 +234,41 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
         
         'Si esta navengando, se cambia la barca.
         If .flags.Navegando Then
-            Barco = ObjData(.Invent.Object(.Invent.BarcoSlot).ObjIndex)
-            
-            If .Faccion.ArmadaReal = 1 Then
-                .Char.body = iFragataReal
-            ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
-                .Char.body = iFragataCaos
+            If .flags.Muerto = 1 Then
+                .Char.body = iFragataFantasmal
             Else
-                If esCriminal Then
-                    Select Case Barco.Ropaje
-                        Case iBarca
-                            .Char.body = iBarcaPk
-                        
-                        Case iGalera
-                            .Char.body = iGaleraPk
-                        
-                        Case iGaleon
-                            .Char.body = iGaleonPk
-                    End Select
+                Barco = ObjData(.Invent.Object(.Invent.BarcoSlot).ObjIndex)
+                
+                If .Faccion.ArmadaReal = 1 Then
+                    .Char.body = iFragataReal
+                ElseIf UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+                    .Char.body = iFragataCaos
                 Else
-                    Select Case Barco.Ropaje
-                        Case iBarca
-                            .Char.body = iBarcaCiuda
-                        
-                        Case iGalera
-                            .Char.body = iGaleraCiuda
-                        
-                        Case iGaleon
-                            .Char.body = iGaleonCiuda
-                    End Select
+                    If esCriminal Then
+                        Select Case Barco.Ropaje
+                            Case iBarca
+                                .Char.body = iBarcaPk
+                            
+                            Case iGalera
+                                .Char.body = iGaleraPk
+                            
+                            Case iGaleon
+                                .Char.body = iGaleonPk
+                        End Select
+                    Else
+                        Select Case Barco.Ropaje
+                            Case iBarca
+                                .Char.body = iBarcaCiuda
+                            
+                            Case iGalera
+                                .Char.body = iGaleraCiuda
+                            
+                            Case iGaleon
+                                .Char.body = iGaleonCiuda
+                        End Select
+                    End If
                 End If
             End If
-            
             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
     End With
