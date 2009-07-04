@@ -386,5 +386,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 25/06/2009: Fix al bug #2811927 (Pato)
  * 30/06/2009: Cuando se usa el /rajar si el personaje no está online se fija que exista el char. (Pato)
  * 02/07/2009: Ya no se puede saber si un gm está o no online con el comando /banip. (Pato)
+ * 04/07/2009: Ya no se cambia la barca si estas muerto y se actualiza el char por un cambio de stat o alineacion, fixes bug #2816532. (ZaMa) 
 
 - 0.12.3
