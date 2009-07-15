@@ -440,12 +440,14 @@ End Function
 Function MoveToLegalPos(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False, Optional ByVal PuedeTierra As Boolean = True) As Boolean
 '***************************************************
 'Autor: ZaMa
-'Last Modification: 26/03/2009
+'Last Modification: 13/07/2009
 'Checks if the position is Legal, but considers that if there's a casper, it's a legal movement.
+'13/07/2009: ZaMa - Now it's also legal move where an invisible admin is.
 '***************************************************
 
 Dim UserIndex As Integer
 Dim IsDeadChar As Boolean
+Dim IsAdminInvisible As Boolean
 
 
 '¿Es un mapa valido?
@@ -456,22 +458,24 @@ If (map <= 0 Or map > NumMaps) Or _
         UserIndex = MapData(map, X, Y).UserIndex
         If UserIndex > 0 Then
             IsDeadChar = UserList(UserIndex).flags.Muerto = 1
+            IsAdminInvisible = UserList(UserIndex).flags.AdminInvisible = 1
         Else
             IsDeadChar = False
+            IsAdminInvisible = False
         End If
     
     If PuedeAgua And PuedeTierra Then
         MoveToLegalPos = (MapData(map, X, Y).Blocked <> 1) And _
-                   (UserIndex = 0 Or IsDeadChar) And _
+                   (UserIndex = 0 Or IsDeadChar Or IsAdminInvisible) And _
                    (MapData(map, X, Y).NpcIndex = 0)
     ElseIf PuedeTierra And Not PuedeAgua Then
         MoveToLegalPos = (MapData(map, X, Y).Blocked <> 1) And _
-                   (UserIndex = 0 Or IsDeadChar) And _
+                   (UserIndex = 0 Or IsDeadChar Or IsAdminInvisible) And _
                    (MapData(map, X, Y).NpcIndex = 0) And _
                    (Not HayAgua(map, X, Y))
     ElseIf PuedeAgua And Not PuedeTierra Then
         MoveToLegalPos = (MapData(map, X, Y).Blocked <> 1) And _
-                   (UserIndex = 0 Or IsDeadChar) And _
+                   (UserIndex = 0 Or IsDeadChar Or IsAdminInvisible) And _
                    (MapData(map, X, Y).NpcIndex = 0) And _
                    (HayAgua(map, X, Y))
     Else
@@ -479,7 +483,6 @@ If (map <= 0 Or map > NumMaps) Or _
     End If
   
 End If
-
 
 End Function
 

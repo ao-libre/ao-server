@@ -644,10 +644,11 @@ End Function
 Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
 '*************************************************
 'Author: Unknown
-'Last modified: 28/05/2009
+'Last modified: 13/07/2009
 'Moves the char, sending the message to everyone in range.
 '30/03/2009: ZaMa - Now it's legal to move where a casper is, changing its pos to where the moving char was.
-'28/05/2009: ZaMa - When you are moved out of an Arena, the resurrection safe is activated
+'28/05/2009: ZaMa - When you are moved out of an Arena, the resurrection safe is activated.
+'13/07/2009: ZaMa - Now all the clients don't know when an invisible admin moves, they force the admin to move.
 '*************************************************
     Dim nPos As WorldPos
     Dim sailing As Boolean
@@ -680,7 +681,9 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
 
                 With UserList(CasperIndex)
                     
-                    Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, CasPerPos.X, CasPerPos.Y))
+                    ' Si es un admin invisible, no se avisa a los demas clientes
+                    If Not .flags.AdminInvisible = 1 Then _
+                        Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, CasPerPos.X, CasPerPos.Y))
                     
                     Call WriteForceCharMove(CasperIndex, CasperHeading)
                         
@@ -699,8 +702,9 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
             End If
 
             
-            Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, _
-                    PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
+            ' Si es un admin invisible, no se avisa a los demas clientes
+            If Not UserList(UserIndex).flags.AdminInvisible = 1 Then _
+                Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
             
         End If
         
@@ -748,7 +752,6 @@ Public Function InvertHeading(ByVal nHeading As eHeading) As eHeading
             InvertHeading = SOUTH
     End Select
 End Function
-
 
 Sub ChangeUserInv(ByVal UserIndex As Integer, ByVal Slot As Byte, ByRef Object As UserOBJ)
     UserList(UserIndex).Invent.Object(Slot) = Object
@@ -1083,7 +1086,6 @@ Sub NPCAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
         End If
     End If
 End Sub
-
 Public Function PuedeApuñalar(ByVal UserIndex As Integer) As Boolean
 
     If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
