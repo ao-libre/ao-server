@@ -391,5 +391,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 17/07/2009: Los chars de los admins invisibles no existen mas que en su propio cliente. (ZaMa)
  * 17/07/2009: Ahora los usuarios patean a los admins invisibles (como si fueran caspers). (ZaMa)
  * 17/07/2009: Ahora todo tipo de mensajes de un admin invi, se muestra por consola. (ZaMa)
+ * 17/07/2009: Ahora se navega automaticamente al teletransportarse sobre agua y se desactiva al hacerlo sobre tierra. (ZaMa)
 
 - 0.12.3

@@ -1415,6 +1415,11 @@ Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, B
 End Sub
 
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal FX As Boolean)
+'**************************************************************
+'Author: Unknown
+'Last Modify Date: 15/07/2009
+'15/07/2009 - ZaMa: ' Automatic toogle navigate after warping to water.
+'**************************************************************
     Dim OldMap As Integer
     Dim OldX As Integer
     Dim OldY As Integer
@@ -1466,6 +1471,27 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
         End If
         
         If .NroMascotas Then Call WarpMascotas(UserIndex)
+        
+        
+        ' Automatic toogle navigate
+        If (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero)) = 0 Then
+            If HayAgua(.Pos.map, .Pos.X, .Pos.Y) Then
+                If .flags.Navegando = 0 Then
+                    .flags.Navegando = 1
+                        
+                    'Tell the client that we are navigating.
+                    Call WriteNavigateToggle(UserIndex)
+                End If
+            Else
+                If .flags.Navegando = 1 Then
+                    .flags.Navegando = 0
+                            
+                    'Tell the client that we are navigating.
+                    Call WriteNavigateToggle(UserIndex)
+                End If
+            End If
+        End If
+      
     End With
 End Sub
 
