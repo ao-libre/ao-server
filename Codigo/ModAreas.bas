@@ -132,8 +132,9 @@ End Sub
 Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
-'Last Modify Date: Unknow
+'Last Modify Date: 15/07/2009
 'Es la función clave del sistema de areas... Es llamada al mover un user
+'15/07/2009: ZaMa - Now it doesn't send an invisible admin char info
 '**************************************************************
     If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then Exit Sub
     
@@ -206,15 +207,24 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                     TempInt = MapData(map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
-                        Call MakeUserChar(False, UserIndex, TempInt, map, X, Y)
-                        Call MakeUserChar(False, TempInt, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
                         
-                        'Si el user estaba invisible le avisamos al nuevo cliente de eso
-                        If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                            Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
+                        ' Solo avisa al otro cliente si no es un admin invisible
+                        If Not (UserList(TempInt).flags.AdminInvisible = 1) Then
+                            Call MakeUserChar(False, UserIndex, TempInt, map, X, Y)
+                            
+                            'Si el user estaba invisible le avisamos al nuevo cliente de eso
+                            If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
+                                Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
+                            End If
                         End If
-                        If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
-                            Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
+                        
+                        ' Solo avisa al otro cliente si no es un admin invisible
+                        If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then
+                            Call MakeUserChar(False, TempInt, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
+                            
+                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
+                                Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
+                            End If
                         End If
                         
                         Call FlushBuffer(TempInt)

@@ -1521,8 +1521,8 @@ End Sub
 Private Sub HandleTalk(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 15/07/2009
+'15/07/2009: ZaMa - Now invisible admins talk by console.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1562,10 +1562,14 @@ On Error GoTo Errhandler
             'Analize chat...
             Call Statistics.ParseChat(chat)
             
-            If .flags.Muerto = 1 Then
-                Call SendData(SendTarget.ToDeadArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, CHAT_COLOR_DEAD_CHAR))
+            If Not (.flags.AdminInvisible = 1) Then
+                If .flags.Muerto = 1 Then
+                    Call SendData(SendTarget.ToDeadArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, CHAT_COLOR_DEAD_CHAR))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, .flags.ChatColor))
+                End If
             Else
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, .flags.ChatColor))
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg("Gm> " & chat, FontTypeNames.FONTTYPE_GM))
             End If
         End If
         
@@ -1593,8 +1597,8 @@ End Sub
 Private Sub HandleYell(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 15/07/2009
+'15/07/2009: ZaMa - Now invisible admins yell by console.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1615,35 +1619,41 @@ On Error GoTo Errhandler
         
         chat = buffer.ReadASCIIString()
         
-        If UserList(UserIndex).flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Los muertos no pueden comunicarse con el mundo de los vivos.", FontTypeNames.FONTTYPE_INFO)
-        Else
-            '[Consejeros & GMs]
-            If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
-                Call LogGM(.name, "Grito: " & chat)
-            End If
+
+        '[Consejeros & GMs]
+        If .flags.Privilegios And (PlayerType.Consejero Or PlayerType.SemiDios) Then
+            Call LogGM(.name, "Grito: " & chat)
+        End If
             
-            'I see you....
-            If .flags.Oculto > 0 Then
-                .flags.Oculto = 0
-                .Counters.TiempoOculto = 0
-                If .flags.invisible = 0 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
-                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
-                End If
+        'I see you....
+        If .flags.Oculto > 0 Then
+            .flags.Oculto = 0
+            .Counters.TiempoOculto = 0
+            If .flags.invisible = 0 Then
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
             End If
+        End If
             
-            If LenB(chat) <> 0 Then
-                'Analize chat...
-                Call Statistics.ParseChat(chat)
+        If LenB(chat) <> 0 Then
+            'Analize chat...
+            Call Statistics.ParseChat(chat)
                 
-                If .flags.Privilegios And PlayerType.User Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, vbRed))
+            If .flags.Privilegios And PlayerType.User Then
+                If UserList(UserIndex).flags.Muerto = 1 Then
+                    Call SendData(SendTarget.ToDeadArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, CHAT_COLOR_DEAD_CHAR))
                 Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, vbRed))
+                End If
+            Else
+                If Not (.flags.AdminInvisible = 1) Then
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, CHAT_COLOR_GM_YELL))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg("Gm> " & chat, FontTypeNames.FONTTYPE_GM))
                 End If
             End If
         End If
+        
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -1669,8 +1679,9 @@ End Sub
 Private Sub HandleWhisper(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 28/05/2009
+'Last Modification: 15/07/2009
 '28/05/2009: ZaMa - Now it doesn't appear any message when private talking to an invisible admin
+'15/07/2009: ZaMa - Now invisible admins wisper by console.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1728,13 +1739,22 @@ On Error GoTo Errhandler
                         'Analize chat...
                         Call Statistics.ParseChat(chat)
                         
-                        Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
-                        Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
-                        Call FlushBuffer(targetUserIndex)
-                        
-                        '[CDT 17-02-2004]
-                        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
-                            Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("a " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
+                        If Not (.flags.AdminInvisible = 1) Then
+                            Call WriteChatOverHead(UserIndex, chat, .Char.CharIndex, vbBlue)
+                            Call WriteChatOverHead(targetUserIndex, chat, .Char.CharIndex, vbBlue)
+                            Call FlushBuffer(targetUserIndex)
+                            
+                            '[CDT 17-02-2004]
+                            If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
+                                Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageChatOverHead("A " & UserList(targetUserIndex).name & "> " & chat, .Char.CharIndex, vbYellow))
+                            End If
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "Susurraste> " & chat, FontTypeNames.FONTTYPE_GM)
+                            If UserIndex <> targetUserIndex Then Call WriteConsoleMsg(targetUserIndex, "Gm susurra> " & chat, FontTypeNames.FONTTYPE_GM)
+                            
+                            If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
+                                Call SendData(SendTarget.ToAdminsAreaButConsejeros, UserIndex, PrepareMessageConsoleMsg("Gm dijo a " & UserList(targetUserIndex).name & "> " & chat, FontTypeNames.FONTTYPE_GM))
+                            End If
                         End If
                     End If
                 End If
@@ -5753,8 +5773,9 @@ End Sub
 Private Sub HandleGuildMessage(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 02/03/09
-'02/03/09: ZaMa - Arreglado un indice mal pasado a la funcion de cartel de clanes overhead.
+'Last Modification: 15/07/2009
+'02/03/2009: ZaMa - Arreglado un indice mal pasado a la funcion de cartel de clanes overhead.
+'15/07/2009: ZaMa - Now invisible admins only speak by console
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -5780,7 +5801,9 @@ On Error GoTo Errhandler
             
             If .GuildIndex > 0 Then
                 Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.name & "> " & chat))
-                Call SendData(SendTarget.ToClanArea, UserIndex, PrepareMessageChatOverHead("< " & chat & " >", .Char.CharIndex, vbYellow))
+                
+                If Not (.flags.AdminInvisible = 1) Then _
+                    Call SendData(SendTarget.ToClanArea, UserIndex, PrepareMessageChatOverHead("< " & chat & " >", .Char.CharIndex, vbYellow))
             End If
         End If
         

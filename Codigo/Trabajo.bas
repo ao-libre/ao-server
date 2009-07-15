@@ -710,42 +710,55 @@ Private Function PuedeDomarMascota(ByVal UserIndex As Integer, ByVal NpcIndex As
 End Function
 
 Sub DoAdminInvisible(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 13/07/2009
+'Makes an admin invisible o visible.
+'13/07/2009: ZaMa - Now invisible admins' chars are erased from all clients, except from themselves.
+'***************************************************
     
-    If UserList(UserIndex).flags.AdminInvisible = 0 Then
-        
-        ' Sacamos el mimetizmo
-        If UserList(UserIndex).flags.Mimetizado = 1 Then
-            UserList(UserIndex).Char.body = UserList(UserIndex).CharMimetizado.body
-            UserList(UserIndex).Char.Head = UserList(UserIndex).CharMimetizado.Head
-            UserList(UserIndex).Char.CascoAnim = UserList(UserIndex).CharMimetizado.CascoAnim
-            UserList(UserIndex).Char.ShieldAnim = UserList(UserIndex).CharMimetizado.ShieldAnim
-            UserList(UserIndex).Char.WeaponAnim = UserList(UserIndex).CharMimetizado.WeaponAnim
-            UserList(UserIndex).Counters.Mimetismo = 0
-            UserList(UserIndex).flags.Mimetizado = 0
+    With UserList(UserIndex)
+        If .flags.AdminInvisible = 0 Then
+            ' Sacamos el mimetizmo
+            If .flags.Mimetizado = 1 Then
+                .Char.body = .CharMimetizado.body
+                .Char.Head = .CharMimetizado.Head
+                .Char.CascoAnim = .CharMimetizado.CascoAnim
+                .Char.ShieldAnim = .CharMimetizado.ShieldAnim
+                .Char.WeaponAnim = .CharMimetizado.WeaponAnim
+                .Counters.Mimetismo = 0
+                .flags.Mimetizado = 0
+            End If
+            
+            .flags.AdminInvisible = 1
+            .flags.invisible = 1
+            .flags.Oculto = 1
+            .flags.OldBody = .Char.body
+            .flags.OldHead = .Char.Head
+            .Char.body = 0
+            .Char.Head = 0
+            
+            ' Solo el admin sabe que se hace invi
+            Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
+            'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+            Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+        Else
+            .flags.AdminInvisible = 0
+            .flags.invisible = 0
+            .flags.Oculto = 0
+            .Counters.TiempoOculto = 0
+            .Char.body = .flags.OldBody
+            .Char.Head = .flags.OldHead
+            
+            ' Solo el admin sabe que se hace visible
+            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, _
+                .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim))
+            Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+            'Le mandamos el mensaje para crear el personaje a los clientes que estén cerca
+            Call MakeUserChar(True, .Pos.map, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
         End If
-        
-        UserList(UserIndex).flags.AdminInvisible = 1
-        UserList(UserIndex).flags.invisible = 1
-        UserList(UserIndex).flags.Oculto = 1
-        UserList(UserIndex).flags.OldBody = UserList(UserIndex).Char.body
-        UserList(UserIndex).flags.OldHead = UserList(UserIndex).Char.Head
-        UserList(UserIndex).Char.body = 0
-        UserList(UserIndex).Char.Head = 0
-        
-    Else
-        
-        UserList(UserIndex).flags.AdminInvisible = 0
-        UserList(UserIndex).flags.invisible = 0
-        UserList(UserIndex).flags.Oculto = 0
-        UserList(UserIndex).Counters.TiempoOculto = 0
-        UserList(UserIndex).Char.body = UserList(UserIndex).flags.OldBody
-        UserList(UserIndex).Char.Head = UserList(UserIndex).flags.OldHead
-        
-    End If
+    End With
     
-    'vuelve a ser visible por la fuerza
-    Call ChangeUserChar(UserIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.CascoAnim)
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
 End Sub
 
 Sub TratarDeHacerFogata(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal UserIndex As Integer)
