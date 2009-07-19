@@ -728,17 +728,19 @@ Public Function Iterador_ProximaPropuesta(ByVal Tipo As RELACIONES_GUILD) As Int
             If p_IteradorPropuesta < p_PropuestasDeAlianza.Count Then
                 p_IteradorPropuesta = p_IteradorPropuesta + 1
                 Iterador_ProximaPropuesta = p_PropuestasDeAlianza.Item(p_IteradorPropuesta)
-            Else
+            End If
+            
+            If p_IteradorPropuesta >= p_PropuestasDeAlianza.Count Then
                 p_IteradorPropuesta = 0
-                Iterador_ProximaPropuesta = 0
             End If
         Case RELACIONES_GUILD.PAZ
             If p_IteradorPropuesta < p_PropuestasDePaz.Count Then
                 p_IteradorPropuesta = p_IteradorPropuesta + 1
                 Iterador_ProximaPropuesta = p_PropuestasDePaz.Item(p_IteradorPropuesta)
-            Else
+            End If
+            
+            If p_IteradorPropuesta >= p_PropuestasDePaz.Count Then
                 p_IteradorPropuesta = 0
-                Iterador_ProximaPropuesta = 0
             End If
     End Select
     
