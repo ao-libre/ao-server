@@ -1572,13 +1572,6 @@ Private Sub WarpMascotas(ByVal UserIndex As Integer)
                 Npclist(index).Contadores.TiempoExistencia = PetTiempoDeVida
                 Call FollowAmo(index)
             End If
-            
-            Npclist(index).MaestroUser = UserIndex
-            Npclist(index).Movement = TipoAI.SigueAmo
-            Npclist(index).Target = 0
-            Npclist(index).TargetNPC = 0
-            Npclist(index).Contadores.TiempoExistencia = PetTiempoDeVida
-            Call FollowAmo(index)
         End If
     Next i
     
