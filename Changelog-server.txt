@@ -394,5 +394,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 17/07/2009: Ahora se navega automaticamente al teletransportarse sobre agua y se desactiva al hacerlo sobre tierra. (ZaMa)
  * 19/07/2009: Fix de los bugs #2788770  y #2788769 (Marco)
  * 19/07/2009: Arreglado RT9 en verpropuestas de paz/alianza de clanes (Marco)
+ * 21/07/2009: Cuando un usuario muere se cierra el comercio seguro (Marco)
 
 - 0.12.3
