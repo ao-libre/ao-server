@@ -1150,10 +1150,11 @@ End Sub
 Sub UserDie(ByVal UserIndex As Integer)
 '************************************************
 'Author: Uknown
-'Last Modified: 27/05/2009
+'Last Modified: 21/07/2009
 '04/15/2008: NicoNZ - Ahora se resetea el counter del invi
 '13/02/2009: ZaMa - Ahora se borran las mascotas cuando moris en agua.
-'27/05/2009: ZaMa - El seguro de resu no se activa si estas en una arena
+'27/05/2009: ZaMa - El seguro de resu no se activa si estas en una arena.
+'21/07/2009: Marco - Al morir se desactiva el comercio seguro.
 '************************************************
 On Error GoTo ErrorHandler
     Dim i As Long
@@ -1328,6 +1329,9 @@ On Error GoTo ErrorHandler
         If .PartyIndex > 0 Then
             Call mdParty.ObtenerExito(UserIndex, .Stats.ELV * -10 * mdParty.CantMiembros(UserIndex), .Pos.map, .Pos.X, .Pos.Y)
         End If
+        
+        '<<Cerramos comercio seguro>>
+        Call LimpiarComercioSeguro(UserIndex)
     End With
 Exit Sub
 
