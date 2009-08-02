@@ -221,9 +221,15 @@ End If
 
 End Sub
             
-Sub DecirPalabrasMagicas(ByVal S As String, ByVal UserIndex As Integer)
+Sub DecirPalabrasMagicas(ByVal SpellWords As String, ByVal UserIndex As Integer)
+'***************************************************
+'Author: Unknown
+'Last Modification: 25/07/2009
+'25/07/2009: ZaMa - Invisible admins don't say any word when casting a spell
+'***************************************************
 On Error Resume Next
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(S, UserList(UserIndex).Char.CharIndex, vbCyan))
+    If UserList(UserIndex).flags.AdminInvisible <> 1 Then _
+        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(SpellWords, UserList(UserIndex).Char.CharIndex, vbCyan))
     Exit Sub
 End Sub
 
@@ -1294,36 +1300,52 @@ End If
 End Sub
 
 Sub InfoHechizo(ByVal UserIndex As Integer)
-
-
-    Dim H As Integer
-    H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+'***************************************************
+'Autor: Unknown (orginal version)
+'Last Modification: 25/07/2009
+'25/07/2009: ZaMa - Code improvements.
+'25/07/2009: ZaMa - Now invisible admins magic sounds are not sent to anyone but themselves
+'***************************************************
+    Dim SpellIndex As Integer
+    Dim tUser As Integer
+    Dim tNPC As Integer
     
-    
-    Call DecirPalabrasMagicas(Hechizos(H).PalabrasMagicas, UserIndex)
-    
-    If UserList(UserIndex).flags.TargetUser > 0 Then
-        Call SendData(SendTarget.ToPCArea, UserList(UserIndex).flags.TargetUser, PrepareMessageCreateFX(UserList(UserList(UserIndex).flags.TargetUser).Char.CharIndex, Hechizos(H).FXgrh, Hechizos(H).loops))
-        Call SendData(SendTarget.ToPCArea, UserList(UserIndex).flags.TargetUser, PrepareMessagePlayWave(Hechizos(H).WAV, UserList(UserList(UserIndex).flags.TargetUser).Pos.X, UserList(UserList(UserIndex).flags.TargetUser).Pos.Y)) 'Esta linea faltaba. Pablo (ToxicWaste)
-    ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
-        Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, PrepareMessageCreateFX(Npclist(UserList(UserIndex).flags.TargetNPC).Char.CharIndex, Hechizos(H).FXgrh, Hechizos(H).loops))
-        Call SendData(SendTarget.ToNPCArea, UserList(UserIndex).flags.TargetNPC, PrepareMessagePlayWave(Hechizos(H).WAV, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.X, Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y))
-    End If
-    
-    If UserList(UserIndex).flags.TargetUser > 0 Then
-        If UserIndex <> UserList(UserIndex).flags.TargetUser Then
-            If UserList(UserIndex).showName Then
-                Call WriteConsoleMsg(UserIndex, Hechizos(H).HechizeroMsg & " " & UserList(UserList(UserIndex).flags.TargetUser).name, FontTypeNames.FONTTYPE_FIGHT)
+    With UserList(UserIndex)
+        SpellIndex = .Stats.UserHechizos(.flags.Hechizo)
+        tUser = .flags.TargetUser
+        tNPC = .flags.TargetNPC
+        
+        Call DecirPalabrasMagicas(Hechizos(SpellIndex).PalabrasMagicas, UserIndex)
+        
+        If tUser > 0 Then
+            ' Los admins invisibles no producen sonidos ni fx's
+            If .flags.AdminInvisible = 1 And UserIndex = tUser Then
+                Call EnviarDatosASlot(UserIndex, PrepareMessageCreateFX(UserList(tUser).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
+                Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, UserList(tUser).Pos.X, UserList(tUser).Pos.Y))
             Else
-                Call WriteConsoleMsg(UserIndex, Hechizos(H).HechizeroMsg & " alguien.", FontTypeNames.FONTTYPE_FIGHT)
+                Call SendData(SendTarget.ToPCArea, tUser, PrepareMessageCreateFX(UserList(tUser).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
+                Call SendData(SendTarget.ToPCArea, tUser, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, UserList(tUser).Pos.X, UserList(tUser).Pos.Y)) 'Esta linea faltaba. Pablo (ToxicWaste)
             End If
-            Call WriteConsoleMsg(UserList(UserIndex).flags.TargetUser, UserList(UserIndex).name & " " & Hechizos(H).TargetMsg, FontTypeNames.FONTTYPE_FIGHT)
-        Else
-            Call WriteConsoleMsg(UserIndex, Hechizos(H).PropioMsg, FontTypeNames.FONTTYPE_FIGHT)
+        ElseIf tNPC > 0 Then
+            Call SendData(SendTarget.ToNPCArea, tNPC, PrepareMessageCreateFX(Npclist(tNPC).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
+            Call SendData(SendTarget.ToNPCArea, tNPC, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, Npclist(tNPC).Pos.X, Npclist(tNPC).Pos.Y))
         End If
-    ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
-        Call WriteConsoleMsg(UserIndex, Hechizos(H).HechizeroMsg & " " & "la criatura.", FontTypeNames.FONTTYPE_FIGHT)
-    End If
+        
+        If tUser > 0 Then
+            If UserIndex <> tUser Then
+                If .showName Then
+                    Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " " & UserList(tUser).name, FontTypeNames.FONTTYPE_FIGHT)
+                Else
+                    Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " alguien.", FontTypeNames.FONTTYPE_FIGHT)
+                End If
+                Call WriteConsoleMsg(tUser, .name & " " & Hechizos(SpellIndex).TargetMsg, FontTypeNames.FONTTYPE_FIGHT)
+            Else
+                Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).PropioMsg, FontTypeNames.FONTTYPE_FIGHT)
+            End If
+        ElseIf tNPC > 0 Then
+            Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " " & "la criatura.", FontTypeNames.FONTTYPE_FIGHT)
+        End If
+    End With
 
 End Sub
 

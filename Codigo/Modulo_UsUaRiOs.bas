@@ -178,7 +178,12 @@ Sub EnviarFama(ByVal UserIndex As Integer)
     Call WriteFame(UserIndex)
 End Sub
 
-Sub EraseUserChar(ByVal UserIndex As Integer)
+Sub EraseUserChar(ByVal UserIndex As Integer, ByVal IsAdminInvisible As Boolean)
+'*************************************************
+'Author: Unknown
+'Last modified: 08/01/2009
+'08/01/2009: ZaMa - No se borra el char de un admin invisible en todos los clientes excepto en su mismo cliente.
+'*************************************************
 
 On Error GoTo ErrorHandler
     
@@ -192,8 +197,14 @@ On Error GoTo ErrorHandler
             Loop
         End If
         
-        'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+        ' Si esta invisible, solo el sabe de su propia existencia, es innecesario borrarlo en los demas clientes
+        If IsAdminInvisible Then
+            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+        Else
+            'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+        End If
+        
         Call QuitarUser(UserIndex, .Pos.map)
         
         MapData(.Pos.map, .Pos.X, .Pos.Y).UserIndex = 0
@@ -649,6 +660,7 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
 '30/03/2009: ZaMa - Now it's legal to move where a casper is, changing its pos to where the moving char was.
 '28/05/2009: ZaMa - When you are moved out of an Arena, the resurrection safe is activated.
 '13/07/2009: ZaMa - Now all the clients don't know when an invisible admin moves, they force the admin to move.
+'13/07/2009: ZaMa - Invisible admins aren't allowed to force dead characater to move
 '*************************************************
     Dim nPos As WorldPos
     Dim sailing As Boolean
@@ -660,45 +672,47 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
     nPos = UserList(UserIndex).Pos
     Call HeadtoPos(nHeading, nPos)
         
-   If MoveToLegalPos(UserList(UserIndex).Pos.map, nPos.X, nPos.Y, sailing, Not sailing) Then
+    If MoveToLegalPos(UserList(UserIndex).Pos.map, nPos.X, nPos.Y, sailing, Not sailing) Then
         'si no estoy solo en el mapa...
         If MapInfo(UserList(UserIndex).Pos.map).NumUsers > 1 Then
                
             CasperIndex = MapData(UserList(UserIndex).Pos.map, nPos.X, nPos.Y).UserIndex
             'Si hay un usuario, y paso la validacion, entonces es un casper
             If CasperIndex > 0 Then
-            
-                If TriggerZonaPelea(UserIndex, CasperIndex) = TRIGGER6_PROHIBE Then
-                    If UserList(CasperIndex).flags.SeguroResu = False Then
-                        UserList(CasperIndex).flags.SeguroResu = True
-                        Call WriteResuscitationSafeOn(CasperIndex)
+                ' Los admins invisibles no pueden patear caspers
+                If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then
+                    
+                    If TriggerZonaPelea(UserIndex, CasperIndex) = TRIGGER6_PROHIBE Then
+                        If UserList(CasperIndex).flags.SeguroResu = False Then
+                            UserList(CasperIndex).flags.SeguroResu = True
+                            Call WriteResuscitationSafeOn(CasperIndex)
+                        End If
                     End If
-                End If
-
-                CasperHeading = InvertHeading(nHeading)
-                CasPerPos = UserList(CasperIndex).Pos
-                Call HeadtoPos(CasperHeading, CasPerPos)
-
-                With UserList(CasperIndex)
-                    
-                    ' Si es un admin invisible, no se avisa a los demas clientes
-                    If Not .flags.AdminInvisible = 1 Then _
-                        Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, CasPerPos.X, CasPerPos.Y))
-                    
-                    Call WriteForceCharMove(CasperIndex, CasperHeading)
+    
+                    CasperHeading = InvertHeading(nHeading)
+                    CasPerPos = UserList(CasperIndex).Pos
+                    Call HeadtoPos(CasperHeading, CasPerPos)
+    
+                    With UserList(CasperIndex)
                         
-                    'Update map and user pos
-                    .Pos = CasPerPos
-                    .Char.heading = CasperHeading
-                    MapData(.Pos.map, CasPerPos.X, CasPerPos.Y).UserIndex = CasperIndex
+                        ' Si es un admin invisible, no se avisa a los demas clientes
+                        If Not .flags.AdminInvisible = 1 Then _
+                            Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, CasPerPos.X, CasPerPos.Y))
+                        
+                        Call WriteForceCharMove(CasperIndex, CasperHeading)
+                            
+                        'Update map and user pos
+                        .Pos = CasPerPos
+                        .Char.heading = CasperHeading
+                        MapData(.Pos.map, CasPerPos.X, CasPerPos.Y).UserIndex = CasperIndex
+                    
+                    End With
+                    
+                    Call Empollando(CasperIndex)
                 
-                End With
-                
-                Call Empollando(CasperIndex)
-            
-                'Actualizamos las áreas de ser necesario
-                Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
-                
+                    'Actualizamos las áreas de ser necesario
+                    Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
+                End If
             End If
 
             
@@ -708,21 +722,26 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
             
         End If
         
-        Dim oldUserIndex As Integer
-        
-        oldUserIndex = MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex
-        
-        ' Si no hay intercambio de pos con nadie
-        If oldUserIndex = UserIndex Then
-            MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
+        ' Los admins invisibles no pueden patear caspers
+        If Not ((UserList(UserIndex).flags.AdminInvisible = 1) And CasperIndex <> 0) Then
+            Dim oldUserIndex As Integer
+            
+            oldUserIndex = MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex
+            
+            ' Si no hay intercambio de pos con nadie
+            If oldUserIndex = UserIndex Then
+                MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
+            End If
+            
+            UserList(UserIndex).Pos = nPos
+            UserList(UserIndex).Char.heading = nHeading
+            MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
+            
+            'Actualizamos las áreas de ser necesario
+            Call ModAreas.CheckUpdateNeededUser(UserIndex, nHeading)
+        Else
+            Call WritePosUpdate(UserIndex)
         End If
-        
-        UserList(UserIndex).Pos = nPos
-        UserList(UserIndex).Char.heading = nHeading
-        MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
-        
-        'Actualizamos las áreas de ser necesario
-        Call ModAreas.CheckUpdateNeededUser(UserIndex, nHeading)
 
     Else
         Call WritePosUpdate(UserIndex)
@@ -1422,7 +1441,7 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
 '**************************************************************
 'Author: Unknown
 'Last Modify Date: 15/07/2009
-'15/07/2009 - ZaMa: ' Automatic toogle navigate after warping to water.
+'15/07/2009 - ZaMa: Automatic toogle navigate after warping to water.
 '**************************************************************
     Dim OldMap As Integer
     Dim OldX As Integer
@@ -1437,8 +1456,8 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
         OldMap = .Pos.map
         OldX = .Pos.X
         OldY = .Pos.Y
-        
-        Call EraseUserChar(UserIndex)
+
+        Call EraseUserChar(UserIndex, .flags.AdminInvisible = 1)
         
         If OldMap <> map Then
             Call WriteChangeMap(UserIndex, map, MapInfo(.Pos.map).MapVersion)

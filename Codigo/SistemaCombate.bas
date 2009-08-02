@@ -330,7 +330,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                 If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
                     Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
                 End If
-                If .Stats.MaxHP > 100000 Then Call LogDesarrollo(UserList(UserIndex).Name & " mató un dragón")
+                If .Stats.MaxHP > 100000 Then Call LogDesarrollo(UserList(UserIndex).name & " mató un dragón")
             End If
             
             ' Para que las mascotas no sigan intentando luchar y
@@ -650,7 +650,7 @@ On Error GoTo Errhandler
 Exit Sub
     
 Errhandler:
-    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.Description)
+    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description)
     
 End Sub
 
@@ -825,7 +825,13 @@ On Error GoTo Errhandler
             
             Call UserDañoUser(AtacanteIndex, VictimaIndex)
         Else
-            Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
+            ' Invisible admins doesn't make sound to other clients except itself
+            If .flags.AdminInvisible = 1 Then
+                Call EnviarDatosASlot(AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
+            Else
+                Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
+            End If
+            
             Call WriteUserSwing(AtacanteIndex)
             Call WriteUserAttackedSwing(VictimaIndex, AtacanteIndex)
         End If
@@ -835,7 +841,7 @@ On Error GoTo Errhandler
 Exit Sub
     
 Errhandler:
-    Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.Description)
+    Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.description)
 End Sub
 
 Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -1020,7 +1026,7 @@ Sub AllMascotasAtacanUser(ByVal victim As Integer, ByVal Maestro As Integer)
     
     For iCount = 1 To MAXMASCOTAS
         If UserList(Maestro).MascotasIndex(iCount) > 0 Then
-            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).Name
+            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).name
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Movement = TipoAI.NPCDEFENSA
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Hostile = 1
         End If
@@ -1132,7 +1138,7 @@ On Error GoTo Errhandler
 Exit Function
 
 Errhandler:
-    Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.Description)
+    Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.description)
 End Function
 
 Public Function PuedeAtacarNPC(ByVal attackerIndex As Integer, ByVal NpcIndex As Integer) As Boolean
@@ -1144,6 +1150,7 @@ Public Function PuedeAtacarNPC(ByVal attackerIndex As Integer, ByVal NpcIndex As
 '14/08/2007 Pablo (ToxicWaste) - Reescribo y agrego TODOS los casos posibles cosa de usar
 'esta función para todo lo referente a ataque a un NPC. Ya sea Magia, Físico o a Distancia.
 '***************************************************
+
     'Estas muerto?
     If UserList(attackerIndex).flags.Muerto = 1 Then
         Call WriteConsoleMsg(attackerIndex, "No podés atacar porque estas muerto", FontTypeNames.FONTTYPE_INFO)
@@ -1356,7 +1363,7 @@ On Error GoTo Errhandler
 Exit Function
 Errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
-    LogError ("Error en TriggerZonaPelea - " & Err.Description)
+    LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
 
 Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -1374,8 +1381,8 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
                 
                 If RandomNumber(1, 100) < 60 Then
                     UserList(VictimaIndex).flags.Envenenado = 1
-                    Call WriteConsoleMsg(VictimaIndex, UserList(AtacanteIndex).Name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).Name & "!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimaIndex, UserList(AtacanteIndex).name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).name & "!!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
             End If
         End If
