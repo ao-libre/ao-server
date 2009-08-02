@@ -594,6 +594,12 @@ End If
 End Function
 
 Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
+'*************************************************
+'Author: Unknown
+'Last modified: 01/08/2009
+'01/08/2009: ZaMa - Now it's not sent any sound made by an invisible admin
+'*************************************************
+
 On Error GoTo Errhandler
 
 'Equipa un item del inventario
@@ -635,8 +641,9 @@ Select Case Obj.OBJType
             UserList(UserIndex).Invent.WeaponEqpObjIndex = UserList(UserIndex).Invent.Object(Slot).ObjIndex
             UserList(UserIndex).Invent.WeaponEqpSlot = Slot
             
-            'Sonido
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+            'El sonido solo se envia si no lo produce un admin invisible
+            If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then _
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
             
             If UserList(UserIndex).flags.Mimetizado = 1 Then
                 UserList(UserIndex).CharMimetizado.WeaponAnim = Obj.WeaponAnim
@@ -845,10 +852,11 @@ End Function
 Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '*************************************************
 'Author: Unknown
-'Last modified: 24/01/2007
+'Last modified: 01/08/2009
 'Handels the usage of items from inventory box.
 '24/01/2007 Pablo (ToxicWaste) - Agrego el Cuerno de la Armada y la Legión.
 '24/01/2007 Pablo (ToxicWaste) - Utilización nueva de Barco en lvl 20 por clase Pirata y Pescador.
+'01/08/2009: ZaMa - Now it's not sent any sound made by an invisible admin, except to its own client
 '*************************************************
 
 Dim Obj As ObjData
@@ -1012,7 +1020,13 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                End If
         
             Case 2 'Modif la fuerza
                 .flags.DuracionEfecto = Obj.DuracionEfecto
@@ -1026,7 +1040,13 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                End If
                 
             Case 3 'Pocion roja, restaura HP
                 'Usa el item
@@ -1036,7 +1056,13 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                End If
             
             Case 4 'Pocion azul, restaura MANA
                 'Usa el item
@@ -1047,7 +1073,13 @@ Select Case Obj.OBJType
                 
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                End If
                 
             Case 5 ' Pocion violeta
                 If .flags.Envenenado = 1 Then
@@ -1056,7 +1088,14 @@ Select Case Obj.OBJType
                 End If
                 'Quitamos del inv el item
                 Call QuitarUserInvItem(UserIndex, Slot, 1)
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                End If
+                
             Case 6  ' Pocion Negra
                 If .flags.Privilegios And PlayerType.User Then
                     Call QuitarUserInvItem(UserIndex, Slot, 1)
@@ -1081,7 +1120,12 @@ Select Case Obj.OBJType
         'Quitamos del inv el item
         Call QuitarUserInvItem(UserIndex, Slot, 1)
         
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+        ' Los admin invisibles solo producen sonidos a si mismos
+        If .flags.AdminInvisible = 1 Then
+            Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+        Else
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+        End If
         
         Call UpdateUserInv(False, UserIndex, Slot)
     
@@ -1201,7 +1245,14 @@ Select Case Obj.OBJType
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, .Pos.map, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.toMap, .Pos.map, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                End If
+                
                 Exit Sub
             Else
                 Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Armada Real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
@@ -1213,7 +1264,14 @@ Select Case Obj.OBJType
                     Call WriteConsoleMsg(UserIndex, "No hay Peligro aquí. Es Zona Segura ", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
-                Call SendData(SendTarget.toMap, .Pos.map, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                
+                ' Los admin invisibles solo producen sonidos a si mismos
+                If .flags.AdminInvisible = 1 Then
+                    Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                Else
+                    Call SendData(SendTarget.toMap, .Pos.map, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+                End If
+                
                 Exit Sub
             Else
                 Call WriteConsoleMsg(UserIndex, "Solo Miembros de la Legión Oscura pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
@@ -1221,7 +1279,12 @@ Select Case Obj.OBJType
             End If
         End If
         'Si llega aca es porque es o Laud o Tambor o Flauta
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+        ' Los admin invisibles solo producen sonidos a si mismos
+        If .flags.AdminInvisible = 1 Then
+            Call EnviarDatosASlot(UserIndex, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+        Else
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Obj.Snd1, .Pos.X, .Pos.Y))
+        End If
        
     Case eOBJType.otBarcos
         'Verifica si esta aproximado al agua antes de permitirle navegar

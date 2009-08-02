@@ -1614,7 +1614,7 @@ End If
 
 'Borrar el personaje
 If UserList(UserIndex).Char.CharIndex > 0 Then
-    Call EraseUserChar(UserIndex)
+    Call EraseUserChar(UserIndex, UserList(UserIndex).flags.AdminInvisible = 1)
 End If
 
 'Borrar mascotas

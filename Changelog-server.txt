@@ -387,14 +387,18 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 30/06/2009: Cuando se usa el /rajar si el personaje no está online se fija que exista el char. (Pato)
  * 02/07/2009: Ya no se puede saber si un gm está o no online con el comando /banip. (Pato)
  * 04/07/2009: Ya no se cambia la barca si estas muerto y se actualiza el char por un cambio de stat o alineacion, fixes bug #2816532. (ZaMa)
- * 11/07/2009: Fiz al bug #2819911
+ * 11/07/2009: Fix al bug #2819911
  * 17/07/2009: Los chars de los admins invisibles no existen mas que en su propio cliente. (ZaMa)
  * 17/07/2009: Ahora los usuarios patean a los admins invisibles (como si fueran caspers). (ZaMa)
  * 17/07/2009: Ahora todo tipo de mensajes de un admin invi, se muestra por consola. (ZaMa)
  * 17/07/2009: Ahora se navega automaticamente al teletransportarse sobre agua y se desactiva al hacerlo sobre tierra. (ZaMa)
- * 19/07/2009: Fix de los bugs #2788770  y #2788769 (Marco)
- * 19/07/2009: Arreglado RT9 en verpropuestas de paz/alianza de clanes (Marco)
- * 21/07/2009: Cuando un usuario muere se cierra el comercio seguro (Marco)
- * 26/07/2009: Un usuario no puede tirar / agarrar items mientras comercia (Marco)
+ * 19/07/2009: Fix de los bugs #2788770  y #2788769. (Marco)
+ * 19/07/2009: Arreglado RT9 en verpropuestas de paz/alianza de clanes. (Marco)
+ * 21/07/2009: Cuando un usuario muere se cierra el comercio seguro. (Marco)
+ * 26/07/2009: Un usuario no puede tirar / agarrar items mientras comercia. (Marco)
+ * 01/08/2009: Los admins invisibles ya no pueden cambiar posicion con caspers. (ZaMa)
+ * 01/08/2009: Los npcs ya no pueden forzar a un casper a cambiar de terreno. (ZaMa)
+ * 01/08/2009: Los admins invisibles solo producen sonidos en su propio cliente. (ZaMa)
+ * 01/08/2009: Ahora solo se borra el char del admin invisible en su propio cliente. (ZaMa)
 
 - 0.12.3
