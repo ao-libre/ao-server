@@ -666,7 +666,8 @@ If Hechizos(H).Invisibilidad = 1 Then
     End If
    
     UserList(tU).flags.invisible = 1
-    Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
+    Call SetInvisible(tU, UserList(tU).Char.CharIndex, True)
+    'Call SendData(SendTarget.ToPCArea, tU, PrepareMessageSetInvisible(UserList(tU).Char.CharIndex, True))
 
     Call InfoHechizo(UserIndex)
     b = True

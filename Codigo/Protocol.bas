@@ -94,6 +94,7 @@ Private Enum ServerPacketID
     UserCharIndexInServer   ' IP
     CharacterCreate         ' CC
     CharacterRemove         ' BP
+    CharacterChangeNick
     CharacterMove           ' MP, +, * and _ '
     ForceCharMove
     CharacterChange         ' CP
@@ -1257,7 +1258,7 @@ On Error Resume Next
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(UserIndex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
-        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.Source & _
+        Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
                         vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & _
                         vbTab & " LastDllError: " & Err.LastDllError & vbTab & _
                         " - UserIndex: " & UserIndex & " - producido al manejar el paquete: " & CStr(packetID))
@@ -1553,7 +1554,8 @@ On Error GoTo Errhandler
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             If .flags.invisible = 0 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                Call UsUaRiOs.SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
+                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
                 Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -1630,7 +1632,8 @@ On Error GoTo Errhandler
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             If .flags.invisible = 0 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -1879,7 +1882,8 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
                 'If not under a spell effect, show char
                 If .flags.invisible = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                    'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
             End If
         End If
@@ -1962,7 +1966,8 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             If .flags.invisible = 0 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -3571,7 +3576,7 @@ On Error GoTo Errhandler
             file = App.Path & "\foros\" & UCase$(ObjData(.flags.TargetObj).ForoID) & ".for"
             
             If FileExist(file, vbNormal) Then
-                Count = Val(GetVar(file, "INFO", "CantMSG"))
+                Count = val(GetVar(file, "INFO", "CantMSG"))
                 
                 'If there are too many messages, delete the forum
                 If Count > MAX_MENSAJES_FORO Then
@@ -6292,7 +6297,7 @@ On Error GoTo Errhandler
             End If
             
             If FileExist(CharPath & name & ".chr", vbNormal) Then
-                Count = Val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
+                Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
                 If Count = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Sin prontuario..", FontTypeNames.FONTTYPE_INFO)
                 Else
@@ -7002,7 +7007,7 @@ On Error GoTo Errhandler
             If Not FileExist(App.Path & "\guilds\" & guild & "-members.mem") Then
                 Call WriteConsoleMsg(UserIndex, "No existe el clan: " & guild, FontTypeNames.FONTTYPE_INFO)
             Else
-                memberCount = Val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
+                memberCount = val(GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "INIT", "NroMembers"))
                 
                 For i = 1 To memberCount
                     UserName = GetVar(App.Path & "\Guilds\" & guild & "-Members" & ".mem", "Members", "Member" & i)
@@ -8035,7 +8040,7 @@ On Error GoTo Errhandler
                         End If
                         
                         If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                            Count = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                            Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
                             Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": CARCEL " & jailTime & "m, MOTIVO: " & LCase$(reason) & " " & Date & " " & time)
                         End If
@@ -8157,7 +8162,7 @@ On Error GoTo Errhandler
                     End If
                     
                     If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                        Count = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                        Count = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Count + 1)
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": ADVERTENCIA por: " & LCase$(reason) & " " & Date & " " & time)
                         
@@ -8275,12 +8280,12 @@ On Error GoTo Errhandler
                 
                 Select Case opcion
                     Case eEditOptions.eo_Gold
-                        If Val(Arg1) < MAX_ORO_EDIT Then
+                        If val(Arg1) < MAX_ORO_EDIT Then
                             If tUser <= 0 Then ' Esta offline?
-                                Call WriteVar(UserCharPath, "STATS", "GLD", Val(Arg1))
+                                Call WriteVar(UserCharPath, "STATS", "GLD", val(Arg1))
                                 Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                             Else ' Online
-                                UserList(tUser).Stats.GLD = Val(Arg1)
+                                UserList(tUser).Stats.GLD = val(Arg1)
                                 Call WriteUpdateGold(tUser)
                             End If
                         Else
@@ -8291,16 +8296,16 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "ORO "
                 
                     Case eEditOptions.eo_Experience
-                        If Val(Arg1) > 20000000 Then
+                        If val(Arg1) > 20000000 Then
                                 Arg1 = 20000000
                         End If
                         
                         If tUser <= 0 Then ' Offline
                             Var = GetVar(UserCharPath, "STATS", "EXP")
-                            Call WriteVar(UserCharPath, "STATS", "EXP", Var + Val(Arg1))
+                            Call WriteVar(UserCharPath, "STATS", "EXP", Var + val(Arg1))
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else ' Online
-                            UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + Val(Arg1)
+                            UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
                             Call CheckUserLevel(tUser)
                             Call WriteUpdateExp(tUser)
                         End If
@@ -8313,7 +8318,7 @@ On Error GoTo Errhandler
                             Call WriteVar(UserCharPath, "INIT", "Body", Arg1)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            Call ChangeUserChar(tUser, Val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                            Call ChangeUserChar(tUser, val(Arg1), UserList(tUser).Char.Head, UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                         End If
                         
                         ' Log it
@@ -8324,14 +8329,14 @@ On Error GoTo Errhandler
                             Call WriteVar(UserCharPath, "INIT", "Head", Arg1)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            Call ChangeUserChar(tUser, UserList(tUser).Char.body, Val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
+                            Call ChangeUserChar(tUser, UserList(tUser).Char.body, val(Arg1), UserList(tUser).Char.heading, UserList(tUser).Char.WeaponAnim, UserList(tUser).Char.ShieldAnim, UserList(tUser).Char.CascoAnim)
                         End If
                         
                         ' Log it
                         CommandString = CommandString & "HEAD "
                     
                     Case eEditOptions.eo_CriminalsKilled
-                        Var = IIf(Val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, Val(Arg1))
+                        Var = IIf(val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, val(Arg1))
                         
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "FACCIONES", "CrimMatados", Var)
@@ -8344,7 +8349,7 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "CRI "
                     
                     Case eEditOptions.eo_CiticensKilled
-                        Var = IIf(Val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, Val(Arg1))
+                        Var = IIf(val(Arg1) > MAXUSERMATADOS, MAXUSERMATADOS, val(Arg1))
                         
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "FACCIONES", "CiudMatados", Var)
@@ -8357,13 +8362,13 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "CIU "
                     
                     Case eEditOptions.eo_Level
-                        If Val(Arg1) > STAT_MAXELV Then
+                        If val(Arg1) > STAT_MAXELV Then
                             Arg1 = CStr(STAT_MAXELV)
                             Call WriteConsoleMsg(UserIndex, "No puedes tener un nivel superior a " & STAT_MAXELV & ".", FONTTYPE_INFO)
                         End If
                         
                         ' Chequeamos si puede permanecer en el clan
-                        If Val(Arg1) >= 25 Then
+                        If val(Arg1) >= 25 Then
                             
                             Dim GI As Integer
                             If tUser <= 0 Then
@@ -8386,10 +8391,10 @@ On Error GoTo Errhandler
                         End If
                         
                         If tUser <= 0 Then ' Offline
-                            Call WriteVar(UserCharPath, "STATS", "ELV", Val(Arg1))
+                            Call WriteVar(UserCharPath, "STATS", "ELV", val(Arg1))
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else ' Online
-                            UserList(tUser).Stats.ELV = Val(Arg1)
+                            UserList(tUser).Stats.ELV = val(Arg1)
                             Call WriteUpdateUserStats(tUser)
                         End If
                     
@@ -8427,7 +8432,7 @@ On Error GoTo Errhandler
                                 Call WriteVar(UserCharPath, "Skills", "SK" & LoopC, Arg2)
                                 Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                             Else ' Online
-                                UserList(tUser).Stats.UserSkills(LoopC) = Val(Arg2)
+                                UserList(tUser).Stats.UserSkills(LoopC) = val(Arg2)
                             End If
                         End If
                         
@@ -8439,14 +8444,14 @@ On Error GoTo Errhandler
                             Call WriteVar(UserCharPath, "STATS", "SkillPtsLibres", Arg1)
                             Call WriteConsoleMsg(UserIndex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                         Else ' Online
-                            UserList(tUser).Stats.SkillPts = Val(Arg1)
+                            UserList(tUser).Stats.SkillPts = val(Arg1)
                         End If
                         
                         ' Log it
                         CommandString = CommandString & "SKILLSLIBRES "
                     
                     Case eEditOptions.eo_Nobleza
-                        Var = IIf(Val(Arg1) > MAXREP, MAXREP, Val(Arg1))
+                        Var = IIf(val(Arg1) > MAXREP, MAXREP, val(Arg1))
                         
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "REP", "Nobles", Var)
@@ -8459,7 +8464,7 @@ On Error GoTo Errhandler
                         CommandString = CommandString & "NOB "
                         
                     Case eEditOptions.eo_Asesino
-                        Var = IIf(Val(Arg1) > MAXREP, MAXREP, Val(Arg1))
+                        Var = IIf(val(Arg1) > MAXREP, MAXREP, val(Arg1))
                         
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "REP", "Asesino", Var)
@@ -8533,10 +8538,10 @@ On Error GoTo Errhandler
                         Else
                             If tUser <= 0 Then
                                 bankGold = GetVar(CharPath & UserName & ".chr", "STATS", "BANCO")
-                                Call WriteVar(UserCharPath, "STATS", "BANCO", IIf(bankGold + Val(Arg1) <= 0, 0, bankGold + Val(Arg1)))
+                                Call WriteVar(UserCharPath, "STATS", "BANCO", IIf(bankGold + val(Arg1) <= 0, 0, bankGold + val(Arg1)))
                                 Call WriteConsoleMsg(UserIndex, "Se le ha agregado " & Arg1 & " monedas de oro a " & UserName & ".", FONTTYPE_TALK)
                             Else
-                                UserList(tUser).Stats.Banco = IIf(UserList(tUser).Stats.Banco + Val(Arg1) <= 0, 0, UserList(tUser).Stats.Banco + Val(Arg1))
+                                UserList(tUser).Stats.Banco = IIf(UserList(tUser).Stats.Banco + val(Arg1) <= 0, 0, UserList(tUser).Stats.Banco + val(Arg1))
                                 Call WriteConsoleMsg(tUser, STANDARD_BOUNTY_HUNTER_MESSAGE, FONTTYPE_TALK)
                             End If
                         End If
@@ -9386,11 +9391,11 @@ On Error GoTo Errhandler
             If Not FileExist(CharPath & UserName & ".chr", vbNormal) Then
                 Call WriteConsoleMsg(UserIndex, "Charfile inexistente (no use +)", FontTypeNames.FONTTYPE_INFO)
             Else
-                If (Val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1) Then
+                If (val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1) Then
                     Call UnBan(UserName)
                 
                     'penas
-                    cantPenas = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
                     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.name) & ": UNBAN. " & Date & " " & time)
                 
@@ -10959,7 +10964,7 @@ On Error GoTo Errhandler
                 'baneamos a los miembros
                 Call LogGM(.name, "BANCLAN a " & UCase$(GuildName))
                 
-                cantMembers = Val(GetVar(tFile, "INIT", "NroMembers"))
+                cantMembers = val(GetVar(tFile, "INIT", "NroMembers"))
                 
                 For LoopC = 1 To cantMembers
                     member = GetVar(tFile, "Members", "Member" & LoopC)
@@ -10978,7 +10983,7 @@ On Error GoTo Errhandler
                     'ponemos el flag de ban a 1
                     Call WriteVar(CharPath & member & ".chr", "FLAGS", "Ban", "1")
                     'ponemos la pena
-                    Count = Val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
+                    Count = val(GetVar(CharPath & member & ".chr", "PENAS", "Cant"))
                     Call WriteVar(CharPath & member & ".chr", "PENAS", "Cant", Count + 1)
                     Call WriteVar(CharPath & member & ".chr", "PENAS", "P" & Count + 1, LCase$(.name) & ": BAN AL CLAN: " & GuildName & " " & Date & " " & time)
                 Next LoopC
@@ -12573,7 +12578,7 @@ On Error GoTo Errhandler
                     If Not FileExist(CharPath & UserName & ".chr") Then
                         Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " es inexistente ", FontTypeNames.FONTTYPE_INFO)
                     Else
-                        GuildIndex = Val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
+                        GuildIndex = val(GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX"))
                         
                         If GuildIndex > 0 Then
                             Call WriteConsoleMsg(UserIndex, "El pj " & UserName & " pertenece a un clan, debe salir del mismo con /salirclan para ser transferido.", FontTypeNames.FONTTYPE_INFO)
@@ -12587,7 +12592,7 @@ On Error GoTo Errhandler
                                 
                                 Dim cantPenas As Byte
                                 
-                                cantPenas = Val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
                                 
                                 Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", CStr(cantPenas + 1))
                                 
@@ -16648,6 +16653,22 @@ Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, ByVal inv
         Call .WriteBoolean(invisible)
         
         PrepareMessageSetInvisible = .ReadASCIIStringFixed(.length)
+    End With
+End Function
+
+Public Function PrepareMessageCharacterChangeNick(ByVal CharIndex As Integer, ByVal newNick As String) As String
+'***************************************************
+'Author: Budi
+'Last Modification: 07/23/09
+'Prepares the "Change Nick" message and returns it.
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.CharacterChangeNick)
+        
+        Call .WriteInteger(CharIndex)
+        Call .WriteASCIIString(newNick)
+        
+        PrepareMessageCharacterChangeNick = .ReadASCIIStringFixed(.length)
     End With
 End Function
 

@@ -286,54 +286,79 @@ Sub RefreshCharStatus(ByVal UserIndex As Integer)
 End Sub
 
 Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 23/07/2009
+'
+'23/07/2009: Budi - Ahora se envía el nick
+'*************************************************
 
 On Error GoTo hayerror
     Dim CharIndex As Integer
-
-    If InMapBounds(map, X, Y) Then
-        'If needed make a new character in list
-        If UserList(UserIndex).Char.CharIndex = 0 Then
-            CharIndex = NextOpenCharIndex
-            UserList(UserIndex).Char.CharIndex = CharIndex
-            CharList(CharIndex) = UserIndex
-        End If
-        
-        'Place character on map if needed
-        If toMap Then MapData(map, X, Y).UserIndex = UserIndex
-        
-        'Send make character command to clients
-        Dim klan As String
-        If UserList(UserIndex).GuildIndex > 0 Then
-            klan = modGuilds.GuildName(UserList(UserIndex).GuildIndex)
-        End If
-        
-        Dim bCr As Byte
-        
-        bCr = criminal(UserIndex)
-        
-        If LenB(klan) <> 0 Then
-            If Not toMap Then
-                If UserList(UserIndex).showName Then
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name & " <" & klan & ">", bCr, UserList(UserIndex).flags.Privilegios)
+    
+    With UserList(UserIndex)
+    
+        If InMapBounds(map, X, Y) Then
+            'If needed make a new character in list
+            If .Char.CharIndex = 0 Then
+                CharIndex = NextOpenCharIndex
+                .Char.CharIndex = CharIndex
+                CharList(CharIndex) = UserIndex
+            End If
+            
+            'Place character on map if needed
+            If toMap Then MapData(map, X, Y).UserIndex = UserIndex
+            
+            'Send make character command to clients
+            Dim klan As String
+            If .GuildIndex > 0 Then
+                klan = modGuilds.GuildName(.GuildIndex)
+            End If
+            
+            Dim bCr As Byte
+            Dim bNick As String
+            Dim bPriv As Byte
+            
+            bCr = criminal(UserIndex)
+            bPriv = .flags.Privilegios
+            'Preparo el nick
+            If .showName Then
+                If UserList(sndIndex).flags.Privilegios And (PlayerType.User Or PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil) Then
+                    If LenB(klan) <> 0 Then
+                        bNick = .name & " <" & klan & ">"
+                    Else
+                        bNick = .name
+                    End If
+'                    bPriv = .flags.Privilegios
                 Else
-                    'Hide the name and clan - set privs as normal user
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
+                    If .flags.invisible Then
+                        bNick = .name & " " & TAG_USER_INVISIBLE
+                    Else
+                        If LenB(klan) <> 0 Then
+                            bNick = .name & " <" & klan & ">"
+                        Else
+                            bNick = .name
+                        End If
+                    End If
+'                    bPriv = .flags.Privilegios
                 End If
             Else
-                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.map)
+                bNick = vbNullString
+'                bPriv = PlayerType.User
             End If
-        Else 'if tiene clan
+            
             If Not toMap Then
-                If UserList(UserIndex).showName Then
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, UserList(UserIndex).name, bCr, UserList(UserIndex).flags.Privilegios)
-                Else
-                    Call WriteCharacterCreate(sndIndex, UserList(UserIndex).Char.body, UserList(UserIndex).Char.Head, UserList(UserIndex).Char.heading, UserList(UserIndex).Char.CharIndex, X, Y, UserList(UserIndex).Char.WeaponAnim, UserList(UserIndex).Char.ShieldAnim, UserList(UserIndex).Char.FX, 999, UserList(UserIndex).Char.CascoAnim, vbNullString, bCr, PlayerType.User)
-                End If
+                Call WriteCharacterCreate(sndIndex, .Char.body, .Char.Head, .Char.heading, _
+                            .Char.CharIndex, X, Y, _
+                            .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, 999, .Char.CascoAnim, _
+                            bNick, bCr, bPriv)
             Else
-                Call AgregarUser(UserIndex, UserList(UserIndex).Pos.map)
+                'Hide the name and clan - set privs as normal user
+                 Call AgregarUser(UserIndex, .Pos.map)
             End If
-        End If 'if clan
-    End If
+            
+        End If
+    End With
 Exit Sub
 
 hayerror:
@@ -1251,7 +1276,8 @@ On Error GoTo ErrorHandler
             .Counters.TiempoOculto = 0
             .Counters.Invisibilidad = 0
             
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+            'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+            Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
         End If
         
         If TriggerZonaPelea(UserIndex, UserIndex) <> eTrigger6.TRIGGER6_PERMITE Then
@@ -1485,7 +1511,8 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal map As Integer, ByVal X As In
         
         'Seguis invisible al pasar de mapa
         If (.flags.invisible = 1 Or .flags.Oculto = 1) And (Not .flags.AdminInvisible = 1) Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
+            Call SetInvisible(UserIndex, .Char.CharIndex, True)
+            'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
         End If
         
         If FX And .flags.AdminInvisible = 0 Then 'FX
@@ -1631,7 +1658,8 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
             UserList(UserIndex).flags.Oculto = 0
             UserList(UserIndex).flags.invisible = 0
             Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+            Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
+            'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
         End If
         
         Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & UserList(UserIndex).Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
@@ -1788,3 +1816,20 @@ Public Function BodyIsBoat(ByVal body As Integer) As Boolean
         BodyIsBoat = True
     End If
 End Function
+
+Public Sub SetInvisible(ByVal UserIndex As Integer, ByVal userCharIndex As Integer, ByVal invisible As Boolean)
+Dim sndNick As String
+Dim klan As String
+Call SendData(SendTarget.ToUsersAreaButGMs, UserIndex, PrepareMessageSetInvisible(userCharIndex, invisible))
+
+If invisible Then
+    sndNick = UserList(UserIndex).name & " " & TAG_USER_INVISIBLE
+Else
+    sndNick = UserList(UserIndex).name
+    If UserList(UserIndex).GuildIndex > 0 Then
+        sndNick = sndNick & " <" & modGuilds.GuildName(UserList(UserIndex).GuildIndex) & ">"
+    End If
+End If
+
+Call SendData(SendTarget.ToGMsArea, UserIndex, PrepareMessageCharacterChangeNick(userCharIndex, sndNick))
+End Sub

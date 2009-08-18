@@ -52,9 +52,10 @@ If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     End If
     UserList(UserIndex).Counters.TiempoOculto = 0
     UserList(UserIndex).flags.Oculto = 0
-    If UserList(UserIndex).flags.invisible = 0 Then
+    If UserList(UserIndex).flags.Invisible = 0 Then
         Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
+        Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
+        'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
     End If
 End If
 
@@ -91,7 +92,8 @@ If res <= Suerte Then
     Suerte = Suerte * IntervaloOculto
     UserList(UserIndex).Counters.TiempoOculto = Suerte
   
-    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
+    Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, True)
+    'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, True))
 
     Call WriteConsoleMsg(UserIndex, "¡Te has escondido entre las sombras!", FontTypeNames.FONTTYPE_INFO)
     Call SubirSkill(UserIndex, Ocultarse)
@@ -731,7 +733,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             End If
             
             .flags.AdminInvisible = 1
-            .flags.invisible = 1
+            .flags.Invisible = 1
             .flags.Oculto = 1
             .flags.OldBody = .Char.body
             .flags.OldHead = .Char.Head
@@ -744,7 +746,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
         Else
             .flags.AdminInvisible = 0
-            .flags.invisible = 0
+            .flags.Invisible = 0
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             .Char.body = .flags.OldBody

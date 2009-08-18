@@ -14,7 +14,8 @@ UserList(UserIndex).flags.invisible = IIf(estado, 1, 0)
 UserList(UserIndex).flags.Oculto = IIf(estado, 1, 0)
 UserList(UserIndex).Counters.Invisibilidad = 0
 
-Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, Not estado))
+Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, Not estado)
+'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, Not estado))
 
 
 #Else
@@ -30,7 +31,7 @@ EstadoActual = (UserList(UserIndex).flags.invisible = 1)
         ' clientes un Borrar Char
         UserList(UserIndex).flags.invisible = 1
 '        'Call SendData(SendTarget.ToMap, 0, UserList(UserIndex).Pos.Map, "NOVER" & UserList(UserIndex).Char.CharIndex & ",1")
-        Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.Map, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
+        Call SendData(SendTarget.toMap, UserList(UserIndex).Pos.map, PrepareMessageCharacterRemove(UserList(UserIndex).Char.CharIndex))
     Else
         
     End If
