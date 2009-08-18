@@ -1205,7 +1205,8 @@ On Error GoTo errorh
     If UserList(PJEnInd).flags.Oculto = 1 Then
         UserList(PJEnInd).Counters.TiempoOculto = 0
         UserList(PJEnInd).flags.Oculto = 0
-        Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageSetInvisible(UserList(PJEnInd).Char.CharIndex, False))
+        Call SetInvisible(PJEnInd, UserList(PJEnInd).Char.CharIndex, False)
+        'Call SendData(SendTarget.ToPCArea, PJEnInd, PrepareMessageSetInvisible(UserList(PJEnInd).Char.CharIndex, False))
         Call WriteConsoleMsg(PJEnInd, "¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
     Else
     'sino, solo lo "iniciamos" en la sacada de invisibilidad.

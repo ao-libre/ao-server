@@ -214,7 +214,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                             
                             'Si el user estaba invisible le avisamos al nuevo cliente de eso
                             If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                                Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
+                                Call SetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
                             End If
                         End If
                         
@@ -223,7 +223,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                             Call MakeUserChar(False, TempInt, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
                             
                             If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
-                                Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
+                                Call SetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
                             End If
                         End If
                         
