@@ -401,5 +401,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 01/08/2009: Los admins invisibles solo producen sonidos en su propio cliente. (ZaMa)
  * 01/08/2009: Ahora solo se borra el char del admin invisible en su propio cliente. (ZaMa)
  * 18/08/2009: Ahora los GMs ven invis. (Budi)
+ * 24/08/2009: Ahora se valida si un pj reun los skills suficientes para construir un item, de acuerdo a su clase. (ZaMa)
 
 - 0.12.3
