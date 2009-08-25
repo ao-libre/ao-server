@@ -6260,8 +6260,8 @@ End Sub
 Private Sub HandlePunishments(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 25/08/2009
+'25/08/2009: ZaMa - Now only admins can see other admins' punishment list
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -6296,18 +6296,22 @@ On Error GoTo Errhandler
                 name = Replace(name, "|", "")
             End If
             
-            If FileExist(CharPath & name & ".chr", vbNormal) Then
-                Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
-                If Count = 0 Then
-                    Call WriteConsoleMsg(UserIndex, "Sin prontuario..", FontTypeNames.FONTTYPE_INFO)
-                Else
-                    While Count > 0
-                        Call WriteConsoleMsg(UserIndex, Count & " - " & GetVar(CharPath & name & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
-                        Count = Count - 1
-                    Wend
-                End If
+            If (EsAdmin(name) Or EsDios(name) Or EsSemiDios(name) Or EsConsejero(name) Or EsRolesMaster(name)) And (UserList(UserIndex).flags.Privilegios And PlayerType.User) Then
+                Call WriteConsoleMsg(UserIndex, "No puedes ver las penas de los administradores", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "Personaje """ & name & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
+                If FileExist(CharPath & name & ".chr", vbNormal) Then
+                    Count = val(GetVar(CharPath & name & ".chr", "PENAS", "Cant"))
+                    If Count = 0 Then
+                        Call WriteConsoleMsg(UserIndex, "Sin prontuario..", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        While Count > 0
+                            Call WriteConsoleMsg(UserIndex, Count & " - " & GetVar(CharPath & name & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
+                            Count = Count - 1
+                        Wend
+                    End If
+                Else
+                    Call WriteConsoleMsg(UserIndex, "Personaje """ & name & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
