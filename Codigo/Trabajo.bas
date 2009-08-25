@@ -52,7 +52,7 @@ If UserList(UserIndex).Counters.TiempoOculto <= 0 Then
     End If
     UserList(UserIndex).Counters.TiempoOculto = 0
     UserList(UserIndex).flags.Oculto = 0
-    If UserList(UserIndex).flags.Invisible = 0 Then
+    If UserList(UserIndex).flags.invisible = 0 Then
         Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
         Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
         'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, False))
@@ -315,8 +315,13 @@ Function HerreroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As I
 End Function
 
 Public Function PuedeConstruir(ByVal UserIndex As Integer, ByVal ItemIndex As Integer) As Boolean
-PuedeConstruir = HerreroTieneMateriales(UserIndex, ItemIndex) And UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) >= _
- ObjData(ItemIndex).SkHerreria
+'***************************************************
+'Author: Unknown
+'Last Modification: 24/08/2009
+'24/08/2008: ZaMa - Validates if the player has the required skill
+'***************************************************
+PuedeConstruir = HerreroTieneMateriales(UserIndex, ItemIndex) And _
+                    Round(UserList(UserIndex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(UserIndex).clase), 0) >= ObjData(ItemIndex).SkHerreria
 End Function
 
 Public Function PuedeConstruirHerreria(ByVal ItemIndex As Integer) As Boolean
@@ -412,9 +417,13 @@ PuedeConstruirCarpintero = False
 End Function
 
 Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
-
+'***************************************************
+'Author: Unknown
+'Last Modification: 24/08/2009
+'24/08/2008: ZaMa - Validates if the player has the required skill
+'***************************************************
 If CarpinteroTieneMateriales(UserIndex, ItemIndex) And _
-   UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) >= _
+   Round(UserList(UserIndex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(UserIndex).clase), 0) >= _
    ObjData(ItemIndex).SkCarpinteria And _
    PuedeConstruirCarpintero(ItemIndex) And _
    UserList(UserIndex).Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
@@ -733,7 +742,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             End If
             
             .flags.AdminInvisible = 1
-            .flags.Invisible = 1
+            .flags.invisible = 1
             .flags.Oculto = 1
             .flags.OldBody = .Char.body
             .flags.OldHead = .Char.Head
@@ -746,7 +755,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
         Else
             .flags.AdminInvisible = 0
-            .flags.Invisible = 0
+            .flags.invisible = 0
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
             .Char.body = .flags.OldBody
