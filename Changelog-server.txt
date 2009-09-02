@@ -387,7 +387,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 30/06/2009: Cuando se usa el /rajar si el personaje no está online se fija que exista el char. (Pato)
  * 02/07/2009: Ya no se puede saber si un gm está o no online con el comando /banip. (Pato)
  * 04/07/2009: Ya no se cambia la barca si estas muerto y se actualiza el char por un cambio de stat o alineacion, fixes bug #2816532. (ZaMa)
- * 11/07/2009: Fix al bug #2819911
+ * 11/07/2009: Fix al bug #2819911 (Pato)
  * 17/07/2009: Los chars de los admins invisibles no existen mas que en su propio cliente. (ZaMa)
  * 17/07/2009: Ahora los usuarios patean a los admins invisibles (como si fueran caspers). (ZaMa)
  * 17/07/2009: Ahora todo tipo de mensajes de un admin invi, se muestra por consola. (ZaMa)
@@ -403,5 +403,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/08/2009: Ahora los GMs ven invis. (Budi)
  * 24/08/2009: Ahora se valida si un pj reun los skills suficientes para construir un item, de acuerdo a su clase. (ZaMa)
  * 25/08/2009: Ahora solo los admins puedne ver las penas de otros admins. (ZaMa).
+ * 02/09/2009: Modificados los privilegios para realizar /ESTUPIDO, /NOESTUPIDO, y /MODMAPINFO. (Pato)
 
 - 0.12.3
