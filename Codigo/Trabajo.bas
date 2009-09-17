@@ -765,7 +765,6 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
             'Le mandamos el mensaje para crear el personaje a los clientes que estén cerca
             Call MakeUserChar(True, .Pos.map, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
-            Call WriteUserCharIndexInServer(UserIndex)
         End If
     End With
     
