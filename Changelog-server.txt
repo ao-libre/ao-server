@@ -405,5 +405,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 25/08/2009: Ahora solo los admins puedne ver las penas de otros admins. (ZaMa).
  * 02/09/2009: Modificados los privilegios para realizar /ESTUPIDO, /NOESTUPIDO, y /MODMAPINFO. (Pato)
  * 17/09/2009: Fix bug #2860203 (Pato)
+ * 17/09/2009: Saco el WriteUserCharIndexInServer de DoAdminInvisible ya que el CharIndex del GM nunca cambió, por lo tanto no hay que enviarlo. (Pato)
 
 - 0.12.3
