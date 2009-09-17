@@ -404,5 +404,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 24/08/2009: Ahora se valida si un pj reun los skills suficientes para construir un item, de acuerdo a su clase. (ZaMa)
  * 25/08/2009: Ahora solo los admins puedne ver las penas de otros admins. (ZaMa).
  * 02/09/2009: Modificados los privilegios para realizar /ESTUPIDO, /NOESTUPIDO, y /MODMAPINFO. (Pato)
+ * 17/09/2009: Fix bug #2860203 (Pato)
 
 - 0.12.3

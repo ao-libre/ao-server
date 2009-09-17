@@ -761,12 +761,11 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             .Char.body = .flags.OldBody
             .Char.Head = .flags.OldHead
             
-            ' Solo el admin sabe que se hace visible
-            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, _
-                .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim))
-            Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+            'Borramos el personaje en del cliente del GM
+            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
             'Le mandamos el mensaje para crear el personaje a los clientes que estén cerca
             Call MakeUserChar(True, .Pos.map, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
+            Call WriteUserCharIndexInServer(UserIndex)
         End If
     End With
     
