@@ -1887,13 +1887,6 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
                 End If
             End If
         End If
-        
-        If .flags.Muerto = 1 Then
-            Call Empollando(UserIndex)
-        Else
-            .flags.EstaEmpo = 0
-            .EmpoCont = 0
-        End If
     End With
 End Sub
 

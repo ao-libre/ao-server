@@ -1047,10 +1047,6 @@ If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(User
     End If
 End If
 
-If UserList(UserIndex).flags.Muerto = 1 Then
-    Call Empollando(UserIndex)
-End If
-
 'Nombre de sistema
 UserList(UserIndex).name = name
 
@@ -1364,7 +1360,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .Hogar = 0
         .raza = 0
         
-        .EmpoCont = 0
         .PartyIndex = 0
         .PartySolicitud = 0
         
@@ -1474,7 +1469,6 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .TimesWalk = 0
         .StartWalk = 0
         .CountSH = 0
-        .EstaEmpo = 0
         .Silenciado = 0
         .CentinelaOK = False
         .AdminPerseguible = False

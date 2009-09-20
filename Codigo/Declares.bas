@@ -913,7 +913,6 @@ End Type
 
 'Flags
 Public Type UserFlags
-    EstaEmpo As Byte    'Empollando (by yb)
     Muerto As Byte '¿Esta muerto?
     Escondido As Byte '¿Esta escondido?
     Comerciando As Boolean '¿Esta comerciando?
@@ -1134,8 +1133,6 @@ Public Type User
      '[Alejo]
     ComUsu As tCOmercioUsuario
     '[/Alejo]
-    
-    EmpoCont As Byte
     
     GuildIndex As Integer   'puntero al array global de guilds
     FundandoGuildAlineacion As ALINEACION_GUILD     'esto esta aca hasta que se parchee el cliente y se pongan cadenas de datos distintas para cada alineacion

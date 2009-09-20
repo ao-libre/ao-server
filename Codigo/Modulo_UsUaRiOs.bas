@@ -88,10 +88,6 @@ Sub RevivirUsuario(ByVal UserIndex As Integer)
         .flags.Muerto = 0
         .Stats.MinHP = .Stats.UserAtributos(eAtributos.Constitucion)
         
-        'No puede estar empollando
-        .flags.EstaEmpo = 0
-        .EmpoCont = 0
-        
         If .Stats.MinHP > .Stats.MaxHP Then
             .Stats.MinHP = .Stats.MaxHP
         End If
@@ -732,8 +728,6 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
                         MapData(.Pos.map, CasPerPos.X, CasPerPos.Y).UserIndex = CasperIndex
                     
                     End With
-                    
-                    Call Empollando(CasperIndex)
                 
                     'Actualizamos las áreas de ser necesario
                     Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
@@ -1706,15 +1700,6 @@ Public Sub CambiarNick(ByVal UserIndex As Integer, ByVal UserIndexDestino As Int
         'hace un backup del char
         ViejoCharBackup = CharPath & ViejoNick & ".chr.old-"
         Name CharPath & ViejoNick & ".chr" As ViejoCharBackup
-    End If
-End Sub
-
-Public Sub Empollando(ByVal UserIndex As Integer)
-    If MapData(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).ObjInfo.ObjIndex > 0 Then
-        UserList(UserIndex).flags.EstaEmpo = 1
-    Else
-        UserList(UserIndex).flags.EstaEmpo = 0
-        UserList(UserIndex).EmpoCont = 0
     End If
 End Sub
 
