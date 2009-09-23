@@ -562,37 +562,44 @@ End Sub
 Function LegalPosNPC(ByVal map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal AguaValida As Byte, Optional ByVal IsPet As Boolean = False) As Boolean
 '***************************************************
 'Autor: Unkwnown
-'Last Modification: 27/04/2009
+'Last Modification: 09/23/2009
 'Checks if it's a Legal pos for the npc to move to.
+'09/23/2009: Pato - If UserIndex is a AdminInvisible, then is a legal pos.
 '***************************************************
 Dim IsDeadChar As Boolean
 Dim UserIndex As Integer
-
+Dim IsAdminInvisible As Boolean
+    
+    
     If (map <= 0 Or map > NumMaps) Or _
         (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
         LegalPosNPC = False
         Exit Function
     End If
 
-    UserIndex = MapData(map, X, Y).UserIndex
-    If UserIndex > 0 Then
-        IsDeadChar = UserList(UserIndex).flags.Muerto = 1
-    Else
-        IsDeadChar = False
-    End If
-
-    If AguaValida = 0 Then
-        LegalPosNPC = (MapData(map, X, Y).Blocked <> 1) And _
-        (MapData(map, X, Y).UserIndex = 0 Or IsDeadChar) And _
-        (MapData(map, X, Y).NpcIndex = 0) And _
-        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA Or IsPet) _
-        And Not HayAgua(map, X, Y)
-    Else
-        LegalPosNPC = (MapData(map, X, Y).Blocked <> 1) And _
-        (MapData(map, X, Y).UserIndex = 0 Or IsDeadChar) And _
-        (MapData(map, X, Y).NpcIndex = 0) And _
-        (MapData(map, X, Y).trigger <> eTrigger.POSINVALIDA Or IsPet)
-    End If
+    With MapData(map, X, Y)
+        UserIndex = .UserIndex
+        If UserIndex > 0 Then
+            IsDeadChar = UserList(UserIndex).flags.Muerto = 1
+            IsAdminInvisible = (UserList(UserIndex).flags.AdminInvisible = 1)
+        Else
+            IsDeadChar = False
+            IsAdminInvisible = False
+        End If
+    
+        If AguaValida = 0 Then
+            LegalPosNPC = (.Blocked <> 1) And _
+            (.UserIndex = 0 Or IsDeadChar Or IsAdminInvisible) And _
+            (.NpcIndex = 0) And _
+            (.trigger <> eTrigger.POSINVALIDA Or IsPet) _
+            And Not HayAgua(map, X, Y)
+        Else
+            LegalPosNPC = (.Blocked <> 1) And _
+            (.UserIndex = 0 Or IsDeadChar Or IsAdminInvisible) And _
+            (.NpcIndex = 0) And _
+            (.trigger <> eTrigger.POSINVALIDA Or IsPet)
+        End If
+    End With
 End Function
 
 Sub SendHelp(ByVal index As Integer)
