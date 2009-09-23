@@ -1522,8 +1522,9 @@ End Sub
 Private Sub HandleTalk(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 15/07/2009
+'Last Modification: 23/09/2009
 '15/07/2009: ZaMa - Now invisible admins talk by console.
+'23/09/2009: ZaMa - Now invisible admins can't send empty chat.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -1571,7 +1572,9 @@ On Error GoTo Errhandler
                     Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(chat, .Char.CharIndex, .flags.ChatColor))
                 End If
             Else
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg("Gm> " & chat, FontTypeNames.FONTTYPE_GM))
+                If RTrim(chat) <> "" Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageConsoleMsg("Gm> " & chat, FontTypeNames.FONTTYPE_GM))
+                End If
             End If
         End If
         
