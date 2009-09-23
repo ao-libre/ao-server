@@ -408,4 +408,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 17/09/2009: Saco el WriteUserCharIndexInServer de DoAdminInvisible ya que el CharIndex del GM nunca cambió, por lo tanto no hay que enviarlo. (Pato)
  * 20/09/2009: Saco el sistema de empolles (Pato)
  * 23/09/2009: Si un gm invisible dice algo "vacio"(solo espacios) no se dice nada. (ZaMa)
+ * 23/09/2009: Fix bug #2860188 (Pato)
 - 0.12.3
