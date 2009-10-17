@@ -327,7 +327,7 @@ On Error GoTo hayerror
                     End If
 '                    bPriv = .flags.Privilegios
                 Else
-                    If .flags.invisible Then
+                    If .flags.invisible Or .flags.Oculto Then
                         bNick = .name & " " & TAG_USER_INVISIBLE
                     Else
                         If LenB(klan) <> 0 Then
