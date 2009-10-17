@@ -289,22 +289,13 @@ On Error Resume Next
             Exit Sub
             
         Case SendTarget.ToGMsArea
-            For LoopC = 1 To LastUser
-                If UserList(LoopC).ConnID <> -1 Then
-                    If UserList(LoopC).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
-                        Call EnviarDatosASlot(LoopC, sndData)
-                    End If
-                End If
-            Next LoopC
+            Call SendToGMsArea(sndIndex, sndData)
+            Exit Sub
             
         Case SendTarget.ToUsersAreaButGMs
-            For LoopC = 1 To LastUser
-                If UserList(LoopC).ConnID <> -1 Then
-                    If UserList(LoopC).flags.Privilegios And (PlayerType.User Or PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil) Then
-                        Call EnviarDatosASlot(LoopC, sndData)
-                    End If
-                End If
-            Next LoopC
+            Call SendToUsersAreaButGMs(sndIndex, sndData)
+            Exit Sub
+            
     End Select
 End Sub
 
@@ -615,6 +606,74 @@ Public Sub SendToMapButIndex(ByVal UserIndex As Integer, ByVal sdData As String)
         
         If tempIndex <> UserIndex And UserList(tempIndex).ConnIDValida Then
             Call EnviarDatosASlot(tempIndex, sdData)
+        End If
+    Next LoopC
+End Sub
+
+Private Sub SendToGMsArea(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Torres Patricio(Pato)
+'Last Modify Date: 10/17/2009
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim tempIndex As Integer
+    
+    Dim map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    map = UserList(UserIndex).Pos.map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(map) Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(map).CountEntrys
+        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+        
+        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(tempIndex).ConnIDValida Then
+                    If UserList(tempIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
+                        Call EnviarDatosASlot(tempIndex, sdData)
+                    End If
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
+Private Sub SendToUsersAreaButGMs(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Torres Patricio(Pato)
+'Last Modify Date: 10/17/2009
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim tempIndex As Integer
+    
+    Dim map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    map = UserList(UserIndex).Pos.map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(map) Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(map).CountEntrys
+        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+        
+        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(tempIndex).ConnIDValida Then
+                    If UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil) Then
+                        Call EnviarDatosASlot(tempIndex, sdData)
+                    End If
+                End If
+            End If
         End If
     Next LoopC
 End Sub
