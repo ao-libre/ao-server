@@ -410,4 +410,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/09/2009: Si un gm invisible dice algo "vacio"(solo espacios) no se dice nada. (ZaMa)
  * 23/09/2009: Fix bug #2860188 (Pato)
  * 17/10/2009: Fix bug #2860200 (Pato)
+ * 18/10/2009: Modifico unos checkeos de privilegios porque sino los GMs que sean miembros de alguno de los 2 consejos aveces no van a ver a los personajes invisibles. (Pato)
+
 - 0.12.3

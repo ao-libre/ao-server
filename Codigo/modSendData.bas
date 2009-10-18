@@ -669,7 +669,7 @@ Private Sub SendToUsersAreaButGMs(ByVal UserIndex As Integer, ByVal sdData As St
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
-                    If UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil) Then
+                    If UserList(tempIndex).flags.Privilegios And PlayerType.User Then
                         Call EnviarDatosASlot(tempIndex, sdData)
                     End If
                 End If

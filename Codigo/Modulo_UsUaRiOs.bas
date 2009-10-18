@@ -319,7 +319,7 @@ On Error GoTo hayerror
             bPriv = .flags.Privilegios
             'Preparo el nick
             If .showName Then
-                If UserList(sndIndex).flags.Privilegios And (PlayerType.User Or PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil) Then
+                If UserList(sndIndex).flags.Privilegios And PlayerType.User Then
                     If LenB(klan) <> 0 Then
                         bNick = .name & " <" & klan & ">"
                     Else
