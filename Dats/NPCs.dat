@@ -592,7 +592,6 @@ TipoItems=1000
 NROITEMS=1
 Obj1=534-1000 'Odre Vacía
 BackUp=1
-obj7=302-0
 
 #############################################
 
@@ -1369,8 +1368,51 @@ Domable=0
 Alineacion=0
 Comercia=0
 
+##############################################
 
+[NPC146] 'VendeBebidas Fiesta de la Cerveza
+Name=Unurbar Gorog
+NpcType=0
+Desc=¡Hola! Poseo las mejores y más extrañas bebidas de estas tierras, ¿Qué desea que le sirva?
+Head=304
+Heading=3
+Body=372
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=13
+NROITEMS=8
+Obj1=498-1000 'Sidra
+Obj2=522-1000 'Hipocrás
+Obj3=550-1000 'Porrón de cerveza
+Obj4=160-1000 'Cerveza
+Obj5=557-1000 'Vino de canela
+Obj6=612-1000 'Cerveza de los enanos
+Obj7=42-1000 'Vino
+Obj8=622-1000 'Barrilito de cerveza
+BackUp=1
 
+##############################################
+
+[NPC147]Pregonero Fiesta de la Cerveza.
+Name=Dugh Dhail
+NpcType=0
+Desc=¡Hola forastero! Pronto se celebrará un nuevo aniversario de la creación de la Cerveza. ¿Acudirás a los festejos?
+Head=0
+Heading=3
+Body=410
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=1 
 
 ##############################################################
 #####################NPCS ULLATHORPE##########################
