@@ -1,0 +1,95 @@
+[INIT]
+NumObjs=31
+
+[OBJ1] 'Flecha
+Index=480
+
+[OBJ2] 'Flecha +1
+Index=551
+
+[OBJ3] 'Flecha +2
+Index=552
+
+[OBJ4] 'Flecha +3
+Index=553
+
+[OBJ5] 'Laud Mágico
+Index=696
+
+[OBJ6] 'Flauta Mágica
+Index=208
+
+[OBJ7] 'Arco de Cazador
+Index=665
+
+[OBJ8] 'Arco Compuesto Reforzado
+Index=664
+
+[OBJ9] 'Arco compuesto
+Index=479
+
+[OBJ10] 'Arco Simple Reforzado
+Index=663
+
+[OBJ11] 'Arco simple
+Index=478
+
+[OBJ12] 'Barca
+Index=474
+
+[OBJ13] 'Galera
+Index=475
+
+[OBJ14] 'Galeón
+Index=476
+
+[OBJ15] 'Tambor
+Index=362
+
+[OBJ16] 'Laud
+Index=469
+
+[OBJ17] 'Flauta
+Index=540
+
+[OBJ18] 'Cuchara
+Index=163
+
+[OBJ19] 'Silla
+Index=168
+
+[OBJ20] 'Silla
+Index=162
+
+[OBJ21] 'Butaca
+Index=733
+
+[OBJ22] 'Banqueta
+Index=799
+
+[OBJ23] 'Mueble Rústico 
+Index=167
+
+[OBJ24] 'Mueble Rústico
+Index=756
+
+[OBJ25] 'Sillón
+Index=748
+
+[OBJ26] 'Sillón
+Index=788
+
+[OBJ27] 'Sillón
+Index=789
+
+[OBJ28] 'Sillón Azul
+Index=790
+
+[OBJ29] 'Sillón Azul Doble
+Index=791
+
+[OBJ30] 'Armario
+Index=800
+
+[OBJ31] 'Caña de Pescar
+Index=138
