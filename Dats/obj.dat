@@ -57,9 +57,8 @@
 'cuando se pueda hay que utilizarlos, intentando
 usar primero los nros más bajos.
 
-498, 522, 550, 557, 612, 622, 854, 
-855, 856, 857, 858, 859, 860, 861, 862, 863, 
-864, 907.
+854, 855, 856, 857, 858, 859, 860, 861, 862, 
+863, 864, 907.
 
 
 ##############################################
@@ -5958,6 +5957,15 @@ LingP=122
 LingO=0
 SkHerreria=85
 
+[OBJ498]
+Name=Sidra
+GrhIndex=20509
+ObjType=13
+Agarrable=0
+MinAgu=30
+Valor=30
+Crucial=1
+
 [OBJ499]
 Name=Cota de Mallas (H/E/EO-M)
 GrhIndex=775
@@ -6367,6 +6375,15 @@ LingP=0
 LingO=0
 SkHerreria=35
 
+[OBJ522]
+Name=Hipocrás
+GrhIndex=20507
+ObjType=13
+Agarrable=0
+MinAgu=40
+Valor=40
+Crucial=1
+
 [OBJ523]
 Name=Manto de Sacerdote Demoníaco
 GrhIndex=800
@@ -6671,6 +6688,15 @@ CP13=BARDO
 CP14=CARPINTERO
 CP15=LADRON
 
+[OBJ550]
+Name=Porrón de cerveza
+GrhIndex=20508
+ObjType=13
+Agarrable=0
+MinAgu=50
+Valor=50
+Crucial=1
+
 [OBJ551]
 Name=Flecha +1
 GrhIndex=755
@@ -6778,6 +6804,15 @@ LingH=500
 LingP=400
 LingO=300
 SkHerreria=1000
+
+[OBJ557]
+Name=Vino de canela
+GrhIndex=20504
+ObjType=13
+Agarrable=0
+MinAgu=70
+Valor=70
+Crucial=1
 
 [OBJ558]
 Name=Túnica de Mago Oscuro (E/G)
@@ -7353,6 +7388,15 @@ Clave=77
 Valor=1700000
 Crucial=0
 
+[OBJ612]
+Name=Cerveza de los enanos
+GrhIndex=20506
+ObjType=13
+Agarrable=0
+MinAgu=90
+Valor=90
+Crucial=1
+
 [OBJ613]
 Name=Gema Sagrada
 GrhIndex=700
@@ -7502,6 +7546,15 @@ VGrande=501
 ObjType=8
 Agarrable=1
 Texto=Teleport a las Catacumbas.
+
+[OBJ622]
+Name=Barrilito de cerveza
+GrhIndex=20505
+ObjType=13
+Agarrable=0
+MinAgu=100
+Valor=100
+Crucial=1 
 
 [OBJ623]
 Name=Foro
