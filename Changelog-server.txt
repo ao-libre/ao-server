@@ -413,3 +413,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/10/2009: Modifico unos checkeos de privilegios porque sino los GMs que sean miembros de alguno de los 2 consejos aveces no van a ver a los personajes invisibles. (Pato)
 
 - 0.12.3
+ * 16/11/2009: Implementacion de Npcs Objeto.
