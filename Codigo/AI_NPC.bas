@@ -670,7 +670,7 @@ Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
                 If Abs(UserList(UserIndex).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
                     
                     With UserList(UserIndex)
-                        UserProtected = Not IntervaloPermiteSerAtacado(UserIndex) And .flags.NoPuedeSerAtacado
+                        'UserProtected = Not IntervaloPermiteSerAtacado(UserIndex) And .flags.NoPuedeSerAtacado
                         
                         If .flags.Muerto = 0 And .flags.invisible = 0 And _
                             .flags.Oculto = 0 And .flags.AdminPerseguible And Not UserProtected Then
