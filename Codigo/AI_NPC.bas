@@ -35,6 +35,7 @@ Public Enum TipoAI
     NpcMaloAtacaUsersBuenos = 3
     NPCDEFENSA = 4
     GuardiasAtacanCriminales = 5
+    NpcObjeto = 6
     SigueAmo = 8
     NpcAtacaNpc = 9
     NpcPathfinding = 10
@@ -648,7 +649,58 @@ Private Sub AiNpcAtacaNpc(ByVal NpcIndex As Integer)
     End With
 End Sub
 
+Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
+'***************************************************
+'Autor: ZaMa
+'Last Modification: 14/09/2009 (ZaMa)
+'***************************************************
+    Dim UserIndex As Integer
+    Dim tHeading As Byte
+    Dim i As Long
+    Dim SignoNS As Integer
+    Dim SignoEO As Integer
+    Dim UserProtected As Boolean
+    
+    With Npclist(NpcIndex)
+        For i = 1 To ModAreas.ConnGroups(.Pos.map).CountEntrys
+            UserIndex = ModAreas.ConnGroups(.Pos.map).UserEntrys(i)
+            
+            'Is it in it's range of vision??
+            If Abs(UserList(UserIndex).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                If Abs(UserList(UserIndex).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
+                    
+                    With UserList(UserIndex)
+                        UserProtected = Not IntervaloPermiteSerAtacado(UserIndex) And .flags.NoPuedeSerAtacado
+                        
+                        If .flags.Muerto = 0 And .flags.invisible = 0 And _
+                            .flags.Oculto = 0 And .flags.AdminPerseguible And Not UserProtected Then
+                            
+                            ' No quiero que ataque siempre al primero
+                            If RandomNumber(1, 3) < 3 Then
+                                If Npclist(NpcIndex).flags.LanzaSpells > 0 Then
+                                     Call NpcLanzaUnSpell(NpcIndex, UserIndex)
+                                End If
+                            
+                                Exit Sub
+                            End If
+                        End If
+                    End With
+               End If
+            End If
+            
+        Next i
+    End With
+
+End Sub
+
 Sub NPCAI(ByVal NpcIndex As Integer)
+'**************************************************************
+'Author: Unknown
+'Last Modify by: ZaMa
+'Last Modify Date: 15/11/2009
+'08/16/2008: MarKoxX - Now pets that do melé attacks have to be near the enemy to attack.
+'15/11/2009: ZaMa - Implementacion de npc objetos ai.
+'**************************************************************
 On Error GoTo ErrorHandler
     With Npclist(NpcIndex)
         '<<<<<<<<<<< Ataques >>>>>>>>>>>>>>>>
@@ -713,6 +765,9 @@ On Error GoTo ErrorHandler
             Case TipoAI.NpcAtacaNpc
                 Call AiNpcAtacaNpc(NpcIndex)
             
+            Case TipoAI.NpcObjeto
+                Call AiNpcObjeto(NpcIndex)
+                
             Case TipoAI.NpcPathfinding
                 If .flags.Inmovilizado = 1 Then Exit Sub
                 If ReCalculatePath(NpcIndex) Then
