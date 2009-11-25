@@ -75,10 +75,10 @@ End Sub
 Public Sub UpdateSumaNivelesElevados(ByVal Lvl As Integer)
 '*************************************************
 'Author: Marco Vanotti (MarKoxX)
-'Last modified: 28/10/08
-'
+'Last modified: 11/24/09
+'11/24/09: Pato - Change the exponent to a variable with the exponent
 '*************************************************
-    p_SumaNivelesElevados = p_SumaNivelesElevados - ((Lvl - 1) ^ 1.75) + Lvl ^ 1.75
+    p_SumaNivelesElevados = p_SumaNivelesElevados - ((Lvl - 1) ^ ExponenteNivelParty) + Lvl ^ ExponenteNivelParty
 End Sub
 
 Public Function MiExperiencia(ByVal UserIndex As Integer) As Long

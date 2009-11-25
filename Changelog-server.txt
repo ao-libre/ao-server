@@ -411,6 +411,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/09/2009: Fix bug #2860188 (Pato)
  * 17/10/2009: Fix bug #2860200 (Pato)
  * 18/10/2009: Modifico unos checkeos de privilegios porque sino los GMs que sean miembros de alguno de los 2 consejos aveces no van a ver a los personajes invisibles. (Pato)
+ * 24/11/2009: Cambié en el método del clsParty que actualiza la suma de los niveles elevados un exponente explícito por la variable que contiene el exponente. (Pato)
 
 - 0.12.3
  * 16/11/2009: Implementacion de Npcs Objeto.
