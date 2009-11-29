@@ -84,14 +84,15 @@ End Sub
 Public Function MiExperiencia(ByVal UserIndex As Integer) As Long
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/29/07
-'Last Modification By: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 11/27/09
+'Last Modification By: Budi
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
+' - 11/27/09 Arreglé el Out of Range.
 '***************************************************
 'Me dice cuanta experiencia tengo colectada ya en la party
 Dim i As Integer
-i = 0
+i = 1
 
 While i <= PARTY_MAXMEMBERS And p_members(i).UserIndex <> UserIndex
     i = i + 1
@@ -308,7 +309,7 @@ p_Fundador = p_members(1).UserIndex
 End Function
 
 
-Public Sub ObtenerMiembrosOnline(ByRef MemberList As String)
+Public Sub ObtenerMiembrosOnline(ByRef MemberList As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 09/29/07
@@ -316,21 +317,39 @@ Public Sub ObtenerMiembrosOnline(ByRef MemberList As String)
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number (Tavo)
 ' - 08/18/08 Now TotalExperience is fixed (MarKoxX)
+' - 11/27/09
 '***************************************************
-'esta funcion viola un poco la correcta forma de hacer la clase
-'pero bue...
+
 Dim i As Integer
-MemberList = "Nombre(Exp): "
+
 For i = 1 To PARTY_MAXMEMBERS
     If p_members(i).UserIndex > 0 Then
-        MemberList = MemberList & " - " & UserList(p_members(i).UserIndex).name & " (" & CStr(Fix(p_members(i).Experiencia)) & ")"
+        MemberList(i) = p_members(i).UserIndex
     End If
 Next i
 
-MemberList = MemberList & ". Experiencia total: " & CStr(p_expTotal)
+'Original
+'ObtenerMiembrosOnline(ByRef MemberList As Integer)
+'esta funcion viola un poco la correcta forma de hacer la clase
+'pero bue...
+'MemberList = "Nombre(Exp): "
+'For i = 1 To PARTY_MAXMEMBERS
+'    If p_members(i).UserIndex > 0 Then
+'        MemberList = MemberList & " - " & UserList(p_members(i).UserIndex).name & " (" & CStr(Fix(p_members(i).Experiencia)) & ")"
+'    End If
+'Next i
+'MemberList = MemberList & ". Experiencia total: " & CStr(p_expTotal)
 
 End Sub
 
+Public Function ObtenerExperienciaTotal() As Long
+'***************************************************
+'Author: Budi
+'Last Modification: 11/27/09
+'Retrieves the total experience acumulated in the party
+'***************************************************
+ObtenerExperienciaTotal = p_expTotal
+End Function
 
 Public Function PuedeEntrar(ByVal UserIndex As Integer, ByRef razon As String) As Boolean
 '***************************************************
@@ -430,9 +449,6 @@ If Not PARTY_EXPERIENCIAPORGOLPE Then   'esto sirve SOLO cuando acumulamos la ex
 End If
 
 End Sub
-
-
-
 
 Private Sub CompactMemberList()
 Dim i As Integer
