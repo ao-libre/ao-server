@@ -309,7 +309,7 @@ p_Fundador = p_members(1).UserIndex
 End Function
 
 
-Public Sub ObtenerMiembrosOnline(ByRef MemberList As Integer)
+Public Sub ObtenerMiembrosOnline(ByRef MemberList() As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 09/29/07
@@ -317,7 +317,7 @@ Public Sub ObtenerMiembrosOnline(ByRef MemberList As Integer)
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number (Tavo)
 ' - 08/18/08 Now TotalExperience is fixed (MarKoxX)
-' - 11/27/09
+' - 11/27/09 Rehice la función, ahora devuelve el array con los UI online (Budi)
 '***************************************************
 
 Dim i As Integer
@@ -327,18 +327,6 @@ For i = 1 To PARTY_MAXMEMBERS
         MemberList(i) = p_members(i).UserIndex
     End If
 Next i
-
-'Original
-'ObtenerMiembrosOnline(ByRef MemberList As Integer)
-'esta funcion viola un poco la correcta forma de hacer la clase
-'pero bue...
-'MemberList = "Nombre(Exp): "
-'For i = 1 To PARTY_MAXMEMBERS
-'    If p_members(i).UserIndex > 0 Then
-'        MemberList = MemberList & " - " & UserList(p_members(i).UserIndex).name & " (" & CStr(Fix(p_members(i).Experiencia)) & ")"
-'    End If
-'Next i
-'MemberList = MemberList & ". Experiencia total: " & CStr(p_expTotal)
 
 End Sub
 
