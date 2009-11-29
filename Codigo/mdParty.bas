@@ -283,17 +283,29 @@ Dim PI As Integer
 End Sub
 
 Public Sub OnlineParty(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Unknown
+'Last modified: 11/27/09 (Budi)
+'Adapt
+'*************************************************
+Dim i As Integer
 Dim PI As Integer
-Dim texto As String
-
+Dim Text As String
+Dim MembersOnline(1 To PARTY_MAXMEMBERS) As Integer
     PI = UserList(UserIndex).PartyIndex
     
     If PI > 0 Then
-        Call Parties(PI).ObtenerMiembrosOnline(texto)
-        Call WriteConsoleMsg(UserIndex, texto, FontTypeNames.FONTTYPE_PARTY)
+        Call Parties(PI).ObtenerMiembrosOnline(MembersOnline)
+        Text = "Nombre(Exp): "
+        For i = 1 To PARTY_MAXMEMBERS
+            If MembersOnline(i) > 0 Then
+                Text = Text & " - " & UserList(MembersOnline(i)).name & " (" & Fix(Parties(PI).MiExperiencia(MembersOnline(i))) & ")"
+            End If
+        Next i
+        Text = Text & ". Experiencia total: " & Parties(PI).ObtenerExperienciaTotal
+        Call WriteConsoleMsg(UserIndex, Text, FontTypeNames.FONTTYPE_PARTY)
     End If
     
-
 End Sub
 
 
