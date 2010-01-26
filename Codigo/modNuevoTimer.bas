@@ -160,27 +160,33 @@ End Function
 
 ' USAR OBJETOS
 Public Function IntervaloPermiteUsar(ByVal UserIndex As Integer, Optional ByVal Actualizar As Boolean = True) As Boolean
-Dim TActual As Long
+'***************************************************
+'Author: Unknown
+'Last Modification: 25/01/2010 (ZaMa)
+'25/01/2010: ZaMa - General adjustments.
+'***************************************************
 
-TActual = GetTickCount() And &H7FFFFFFF
-
-If TActual - UserList(UserIndex).Counters.TimerUsar >= IntervaloUserPuedeUsar Then
-    If Actualizar Then
-        UserList(UserIndex).Counters.TimerUsar = TActual
-        UserList(UserIndex).Counters.failedUsageAttempts = 0
-    End If
-    IntervaloPermiteUsar = True
-Else
-    IntervaloPermiteUsar = False
+    Dim TActual As Long
     
-    UserList(UserIndex).Counters.failedUsageAttempts = UserList(UserIndex).Counters.failedUsageAttempts + 1
+    TActual = GetTickCount() And &H7FFFFFFF
     
-    'Tolerancia arbitraria - 20 es MUY alta, la está chiteando zarpado
-    If UserList(UserIndex).Counters.failedUsageAttempts = 20 Then
-        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " kicked by the server por posible modificación de intervalos.", FontTypeNames.FONTTYPE_FIGHT))
-        Call CloseSocket(UserIndex)
+    If TActual - UserList(UserIndex).Counters.TimerUsar >= IntervaloUserPuedeUsar Then
+        If Actualizar Then
+            UserList(UserIndex).Counters.TimerUsar = TActual
+          '  UserList(UserIndex).Counters.failedUsageAttempts = 0
+        End If
+        IntervaloPermiteUsar = True
+    Else
+        IntervaloPermiteUsar = False
+        
+      '  UserList(UserIndex).Counters.failedUsageAttempts = UserList(UserIndex).Counters.failedUsageAttempts + 1
+        
+        'Tolerancia arbitraria - 20 es MUY alta, la está chiteando zarpado
+      '  If UserList(UserIndex).Counters.failedUsageAttempts = 20 Then
+      '      Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " kicked by the server por posible modificación de intervalos.", FontTypeNames.FONTTYPE_FIGHT))
+      '      Call CloseSocket(UserIndex)
+      '  End If
     End If
-End If
 
 End Function
 
