@@ -10013,6 +10013,7 @@ MaxDef=0
 MinDef=0
 Valor=10000
 Crucial=0
+NoSeCae=1
 
 [OBJ852]
 Name=Tonel
