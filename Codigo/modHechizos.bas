@@ -181,7 +181,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -192,7 +192,7 @@ On Error GoTo Errhandler
     Next
 
 Exit Function
-Errhandler:
+ErrHandler:
 
 End Function
 
@@ -527,7 +527,7 @@ End Sub
 
 Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim uh As Integer
 
@@ -588,8 +588,12 @@ If UserList(UserIndex).Counters.Ocultando Then _
     
 Exit Sub
 
-Errhandler:
-    Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description)
+ErrHandler:
+    Dim UserNick As String
+    
+    If UserIndex > 0 Then UserNick = UserList(UserIndex).name
+
+    Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & " UserIndex: " & UserIndex & " Nick: " & UserNick)
     
 End Sub
 
