@@ -627,7 +627,7 @@ End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then
         Exit Sub
@@ -649,7 +649,7 @@ On Error GoTo Errhandler
     End If
 Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -731,6 +731,9 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 End Sub
 
 Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer) As Boolean
+    
+On Error GoTo ErrHandler
+
     Dim ProbRechazo As Long
     Dim Rechazo As Boolean
     Dim ProbExito As Long
@@ -792,11 +795,16 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, ByVal VictimaInde
     End If
     
     Call FlushBuffer(VictimaIndex)
+    
+    Exit Function
+    
+ErrHandler:
+    Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description)
 End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Sub
     
@@ -840,11 +848,14 @@ On Error GoTo Errhandler
     End With
 Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.description)
 End Sub
 
 Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
+    
+On Error GoTo ErrHandler
+
     Dim daño As Long
     Dim Lugar As Integer
     Dim absorbido As Long
@@ -962,6 +973,16 @@ Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     Call CheckUserLevel(AtacanteIndex)
     
     Call FlushBuffer(VictimaIndex)
+    
+ErrHandler:
+    Dim AtacanteNick As String
+    Dim VictimaNick As String
+    
+    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).name
+    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).name
+    
+    Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
+             AtacanteIndex & " Nick: " & AtacanteNick & " VictimaIndex: " & VictimaIndex & " Nick: " & VictimaNick)
 End Sub
 
 Sub UsuarioAtacadoPorUsuario(ByVal attackerIndex As Integer, ByVal VictimIndex As Integer)
@@ -1041,7 +1062,7 @@ Public Function PuedeAtacar(ByVal attackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defensa en ciudad Armada y Caos.
 '24/02/2009: ZaMa - Los usuarios pueden atacarse entre si.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     'MUY importante el orden de estos "IF"...
     
@@ -1137,7 +1158,7 @@ On Error GoTo Errhandler
     PuedeAtacar = True
 Exit Function
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.description)
 End Function
 
@@ -1343,7 +1364,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1361,7 +1382,7 @@ On Error GoTo Errhandler
     End If
 
 Exit Function
-Errhandler:
+ErrHandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
