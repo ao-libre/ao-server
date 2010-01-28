@@ -57,8 +57,7 @@
 'cuando se pueda hay que utilizarlos, intentando
 usar primero los nros más bajos.
 
-854, 855, 856, 857, 858, 859, 860, 861, 862, 
-863, 864, 907.
+859, 860, 861, 862, 863, 864, 907.
 
 
 ##############################################
@@ -8970,14 +8969,15 @@ Name=Anillo de los Dioses
 GrhIndex=4903
 ObjType=18
 Agarrable=0
-DefensaMagicaMax=210
-DefensaMagicaMin=200
+DefensaMagicaMax=50
+DefensaMagicaMin=25
 Valor=1500000
 Crucial=0
 LingH=3000
 LingP=2000
 LingO=3000
 SkHerreria=101
+NoSeCae=1
 
 [OBJ701]
 Name=Armadura Infame
@@ -10024,6 +10024,71 @@ Agarrable=1
 [OBJ853]
 Name=Tonel
 GrhIndex=4489
+ObjType=20
+Agarrable=1
+
+[OBJ854]
+Name=Arco Mallorn
+GrhIndex=18998
+ObjType=2
+Agarrable=0
+Anim=35
+Proyectil=1
+Municiones=1
+Refuerzo=20
+MinHit=10
+MaxHit=15
+Valor=0
+Crucial=0
+CP1=MAGO
+CP2=DRUIDA
+Madera=100000
+SkCarpinteria=101
+
+[OBJ855]
+Name=Espada Argentum
+GrhIndex=19473
+ObjType=2
+Agarrable=0
+Anim=36
+MinHit=20
+MaxHit=25
+Valor=0
+Crucial=0
+CP1=MAGO
+CP2=DRUIDA
+LingH=10000
+LingP=10000
+LingO=10000
+SkHerreria=101
+
+[OBJ856]
+Name=Espada de los Cielos
+GrhIndex=18997
+ObjType=2
+Agarrable=0
+Anim=34
+MinHit=20
+MaxHit=25
+Valor=0
+Crucial=0
+CP1=MAGO
+CP2=DRUIDA
+LingH=10000
+LingP=10000
+LingO=10000
+SkHerreria=101
+
+[OBJ857]
+Name=Libro Sagrado
+GrhIndex=539
+ObjType=12
+Agarrable=0
+Crucial=0 
+
+[OBJ858]
+Name=Enseña Demoníaca
+GrhIndex=12708
 ObjType=20
 Agarrable=1
 
