@@ -627,7 +627,7 @@ End Sub
 
 Public Sub UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then
         Exit Sub
@@ -649,7 +649,7 @@ On Error GoTo ErrHandler
     End If
 Exit Sub
     
-ErrHandler:
+Errhandler:
     Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -732,7 +732,7 @@ End Sub
 
 Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer) As Boolean
     
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     Dim ProbRechazo As Long
     Dim Rechazo As Boolean
@@ -798,13 +798,13 @@ On Error GoTo ErrHandler
     
     Exit Function
     
-ErrHandler:
+Errhandler:
     Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description)
 End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Sub
     
@@ -848,13 +848,13 @@ On Error GoTo ErrHandler
     End With
 Exit Sub
     
-ErrHandler:
+Errhandler:
     Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.description)
 End Sub
 
 Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
     
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     Dim daño As Long
     Dim Lugar As Integer
@@ -974,7 +974,9 @@ On Error GoTo ErrHandler
     
     Call FlushBuffer(VictimaIndex)
     
-ErrHandler:
+    Exit Sub
+    
+Errhandler:
     Dim AtacanteNick As String
     Dim VictimaNick As String
     
@@ -1062,7 +1064,7 @@ Public Function PuedeAtacar(ByVal attackerIndex As Integer, ByVal VictimIndex As
 '24/01/2007 Pablo (ToxicWaste) - Ordeno todo y agrego situacion de Defensa en ciudad Armada y Caos.
 '24/02/2009: ZaMa - Los usuarios pueden atacarse entre si.
 '***************************************************
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     'MUY importante el orden de estos "IF"...
     
@@ -1158,7 +1160,7 @@ On Error GoTo ErrHandler
     PuedeAtacar = True
 Exit Function
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.description)
 End Function
 
@@ -1364,7 +1366,7 @@ End Sub
 Public Function TriggerZonaPelea(ByVal Origen As Integer, ByVal Destino As Integer) As eTrigger6
 'TODO: Pero que rebuscado!!
 'Nigo:  Te lo rediseñe, pero no te borro el TODO para que lo revises.
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
     Dim tOrg As eTrigger
     Dim tDst As eTrigger
     
@@ -1382,7 +1384,7 @@ On Error GoTo ErrHandler
     End If
 
 Exit Function
-ErrHandler:
+Errhandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 End Function
