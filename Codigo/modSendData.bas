@@ -613,8 +613,8 @@ End Sub
 Private Sub SendToGMsArea(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
 'Author: Torres Patricio(Pato)
-'Last Modify Date: 10/17/2009
-'
+'Last Modify Date: 12/02/2010
+'12/02/2010: ZaMa - Restrinjo solo a dioses, admins y gms.
 '**************************************************************
     Dim LoopC As Long
     Dim tempIndex As Integer
@@ -632,11 +632,15 @@ Private Sub SendToGMsArea(ByVal UserIndex As Integer, ByVal sdData As String)
     For LoopC = 1 To ConnGroups(map).CountEntrys
         tempIndex = ConnGroups(map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(tempIndex).ConnIDValida Then
-                    If UserList(tempIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
-                        Call EnviarDatosASlot(tempIndex, sdData)
+        With UserList(tempIndex)
+            If .AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+                If .AreasInfo.AreaReciveY And AreaY Then
+                    If .ConnIDValida Then
+                        ' Exclusivo para dioses, admins y gms
+                        If (.flags.Privilegios And Not PlayerType.User And Not PlayerType.Consejero _
+                            And Not PlayerType.RoleMaster) = .flags.Privilegios Then
+                            Call EnviarDatosASlot(tempIndex, sdData)
+                        End If
                     End If
                 End If
             End If

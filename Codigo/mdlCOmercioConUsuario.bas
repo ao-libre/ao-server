@@ -121,11 +121,11 @@ On Error GoTo Errhandler
     
     TerminarAhora = False
     
-    If UserList(UserIndex).ComUsu.DestUsu <= 0 Or UserList(UserIndex).ComUsu.DestUsu > MaxUsers Then
+    OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
+    
+    If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
         TerminarAhora = True
     End If
-    
-    OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
     
     If Not TerminarAhora Then
         If UserList(OtroUserIndex).flags.UserLogged = False Or UserList(UserIndex).flags.UserLogged = False Then
