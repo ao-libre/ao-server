@@ -1805,7 +1805,7 @@ End Function
 Public Sub SetInvisible(ByVal UserIndex As Integer, ByVal userCharIndex As Integer, ByVal invisible As Boolean)
 Dim sndNick As String
 Dim klan As String
-Call SendData(SendTarget.ToUsersAreaButGMs, UserIndex, PrepareMessageSetInvisible(userCharIndex, invisible))
+Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, UserIndex, PrepareMessageSetInvisible(userCharIndex, invisible))
 
 If invisible Then
     sndNick = UserList(UserIndex).name & " " & TAG_USER_INVISIBLE
@@ -1816,5 +1816,5 @@ Else
     End If
 End If
 
-Call SendData(SendTarget.ToGMsArea, UserIndex, PrepareMessageCharacterChangeNick(userCharIndex, sndNick))
+Call SendData(SendTarget.ToGMsAreaButRmsOrCounselors, UserIndex, PrepareMessageCharacterChangeNick(userCharIndex, sndNick))
 End Sub

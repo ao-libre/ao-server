@@ -799,7 +799,14 @@ On Error GoTo Errhandler
     Exit Function
     
 Errhandler:
-    Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description)
+    Dim AtacanteNick As String
+    Dim VictimaNick As String
+    
+    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).name
+    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).name
+    
+    Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
+             AtacanteIndex & " Nick: " & AtacanteNick & " VictimaIndex: " & VictimaIndex & " Nick: " & VictimaNick)
 End Function
 
 Public Sub UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
@@ -983,7 +990,7 @@ Errhandler:
     If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).name
     If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).name
     
-    Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
+    Call LogError("Error en UserDañoUser. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
              AtacanteIndex & " Nick: " & AtacanteNick & " VictimaIndex: " & VictimaIndex & " Nick: " & VictimaNick)
 End Sub
 

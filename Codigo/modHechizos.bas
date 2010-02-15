@@ -181,7 +181,7 @@ End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -192,7 +192,7 @@ On Error GoTo ErrHandler
     Next
 
 Exit Function
-ErrHandler:
+Errhandler:
 
 End Function
 
@@ -358,6 +358,7 @@ Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef b As Boolean)
 'Last modification: 06/15/2008 (NicoNZ)
 'Sale del sub si no hay una posición valida.
 '***************************************************
+On Error GoTo error
 If UserList(UserIndex).NroMascotas >= MAXMASCOTAS Then Exit Sub
 
 'No permitimos se invoquen criaturas en zonas seguras
@@ -407,8 +408,14 @@ Next j
 
 Call InfoHechizo(UserIndex)
 b = True
+Exit Sub
 
-
+error:
+    With UserList(UserIndex)
+    LogError ("[" & Err.Number & "] " & Err.description & " por el usuario " & .name & "(" & UserIndex & _
+            ") en (" & .Pos.map & ", " & .Pos.X & ", " & .Pos.Y & "). Tratando de tirar el hechizo " & _
+            Hechizos(H).Nombre & "(" & H & ") en la posicion ( " & .flags.TargetX & ", " & .flags.TargetY & ")")
+    End With
 End Sub
 
 Sub HandleHechizoTerreno(ByVal UserIndex As Integer, ByVal uh As Integer)
@@ -527,7 +534,7 @@ End Sub
 
 Sub LanzarHechizo(index As Integer, UserIndex As Integer)
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
 Dim uh As Integer
 
@@ -588,12 +595,17 @@ If UserList(UserIndex).Counters.Ocultando Then _
     
 Exit Sub
 
-ErrHandler:
-    Dim UserNick As String
-    
-    If UserIndex > 0 Then UserNick = UserList(UserIndex).name
+Errhandler:
 
-    Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & " UserIndex: " & UserIndex & " Nick: " & UserNick)
+    If (index <= MAXUSERHECHIZOS) Then
+        Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
+                " Hechizo: " & Hechizos(uh).Nombre & "(" & uh & _
+                "). Casteado por: " & UserList(UserIndex).name & "(" & UserIndex & "). Ubicado en su posicion " & index)
+    Else
+        Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
+                " El usuario " & UserList(UserIndex).name & "(" & UserIndex & ") Trató de tirar un hechizo invalido (" & index & ")")
+    End If
+
     
 End Sub
 

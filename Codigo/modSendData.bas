@@ -58,8 +58,9 @@ Public Enum SendTarget
     ToRealYRMs
     ToCaosYRMs
     ToHigherAdmins
-    ToGMsArea
+    ToGMsAreaButRmsOrCounselors
     ToUsersAreaButGMs
+    ToUsersAndRmsAndCounselorsAreaButGMs
 End Enum
 
 Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String)
@@ -288,14 +289,16 @@ On Error Resume Next
             Next LoopC
             Exit Sub
             
-        Case SendTarget.ToGMsArea
-            Call SendToGMsArea(sndIndex, sndData)
+        Case SendTarget.ToGMsAreaButRmsOrCounselors
+            Call SendToGMsAreaButRmsOrCounselors(sndIndex, sndData)
             Exit Sub
             
         Case SendTarget.ToUsersAreaButGMs
             Call SendToUsersAreaButGMs(sndIndex, sndData)
             Exit Sub
-            
+        Case SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs
+            Call SendToUsersAndRmsAndCounselorsAreaButGMs(sndIndex, sndData)
+            Exit Sub
     End Select
 End Sub
 
@@ -610,11 +613,12 @@ Public Sub SendToMapButIndex(ByVal UserIndex As Integer, ByVal sdData As String)
     Next LoopC
 End Sub
 
-Private Sub SendToGMsArea(ByVal UserIndex As Integer, ByVal sdData As String)
+Private Sub SendToGMsAreaButRmsOrCounselors(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
 'Author: Torres Patricio(Pato)
 'Last Modify Date: 12/02/2010
 '12/02/2010: ZaMa - Restrinjo solo a dioses, admins y gms.
+'15/02/2010: ZaMa - Cambio el nombre de la funcion (viejo: ToGmsArea, nuevo: ToGmsAreaButRMsOrCounselors)
 '**************************************************************
     Dim LoopC As Long
     Dim tempIndex As Integer
@@ -644,7 +648,7 @@ Private Sub SendToGMsArea(ByVal UserIndex As Integer, ByVal sdData As String)
                     End If
                 End If
             End If
-        End If
+        End With
     Next LoopC
 End Sub
 
@@ -674,6 +678,40 @@ Private Sub SendToUsersAreaButGMs(ByVal UserIndex As Integer, ByVal sdData As St
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
                     If UserList(tempIndex).flags.Privilegios And PlayerType.User Then
+                        Call EnviarDatosASlot(tempIndex, sdData)
+                    End If
+                End If
+            End If
+        End If
+    Next LoopC
+End Sub
+
+Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal UserIndex As Integer, ByVal sdData As String)
+'**************************************************************
+'Author: Torres Patricio(Pato)
+'Last Modify Date: 10/17/2009
+'
+'**************************************************************
+    Dim LoopC As Long
+    Dim tempIndex As Integer
+    
+    Dim map As Integer
+    Dim AreaX As Integer
+    Dim AreaY As Integer
+    
+    map = UserList(UserIndex).Pos.map
+    AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
+    AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
+    
+    If Not MapaValido(map) Then Exit Sub
+    
+    For LoopC = 1 To ConnGroups(map).CountEntrys
+        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+        
+        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+                If UserList(tempIndex).ConnIDValida Then
+                    If UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
                         Call EnviarDatosASlot(tempIndex, sdData)
                     End If
                 End If
