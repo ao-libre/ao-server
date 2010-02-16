@@ -417,4 +417,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/01/2010: Ahora los Dioses no pueden tocar los privilegios de otros dioses con el /setinivar (Marco)
  * 15/02/2010: Los RMS y Dioses no ven más users invi. (Marco)
  * 15/02/2010: Se arreglaron algunos logs de errores. (UserImpacto, UserDaño, LanzarHechizo) (Marco)
+ * 16/02/2010: Ya no se puede atacar admins invisibles en la arena. (ZaMa)
 
