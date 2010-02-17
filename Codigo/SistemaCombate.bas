@@ -1092,7 +1092,7 @@ On Error GoTo Errhandler
     'Estamos en una Arena? o un trigger zona segura?
     Select Case TriggerZonaPelea(attackerIndex, VictimIndex)
         Case eTrigger6.TRIGGER6_PERMITE
-            PuedeAtacar = (UserList(vitimindex).flags.AdminInvisible = 0)
+            PuedeAtacar = (UserList(VictimIndex).flags.AdminInvisible = 0)
             Exit Function
         
         Case eTrigger6.TRIGGER6_PROHIBE

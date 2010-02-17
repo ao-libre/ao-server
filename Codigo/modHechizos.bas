@@ -324,7 +324,7 @@ Dim TempY As Integer
     PosCasteadaY = UserList(UserIndex).flags.TargetY
     PosCasteadaM = UserList(UserIndex).flags.TargetMap
     
-    H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+    H = UserList(UserIndex).flags.Hechizo
     
     If Hechizos(H).RemueveInvisibilidadParcial = 1 Then
         b = True
@@ -375,7 +375,7 @@ TargetPos.map = UserList(UserIndex).flags.TargetMap
 TargetPos.X = UserList(UserIndex).flags.TargetX
 TargetPos.Y = UserList(UserIndex).flags.TargetY
 
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+H = UserList(UserIndex).flags.Hechizo
     
     
 For j = 1 To Hechizos(H).cant
@@ -533,19 +533,19 @@ End Sub
 
 
 Sub LanzarHechizo(index As Integer, UserIndex As Integer)
-
+'***************************************************
+'Author: Unknown
+'Last Modification: 02/16/2010
+'02/16/2010: Marco - Now .flags.hechizo makes reference to global spell index instead of user's spell index
+'***************************************************
 On Error GoTo Errhandler
 
-Dim uh As Integer
-
-uh = UserList(UserIndex).Stats.UserHechizos(index)
-
-If PuedeLanzar(UserIndex, uh) Then
-    Select Case Hechizos(uh).Target
+If PuedeLanzar(UserIndex, index) Then
+    Select Case Hechizos(index).Target
         Case TargetType.uUsuarios
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call HandleHechizoUsuario(UserIndex, uh)
+                    Call HandleHechizoUsuario(UserIndex, index)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
@@ -556,7 +556,7 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uNPC
             If UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call HandleHechizoNPC(UserIndex, uh)
+                    Call HandleHechizoNPC(UserIndex, index)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
@@ -567,13 +567,13 @@ If PuedeLanzar(UserIndex, uh) Then
         Case TargetType.uUsuariosYnpc
             If UserList(UserIndex).flags.TargetUser > 0 Then
                 If Abs(UserList(UserList(UserIndex).flags.TargetUser).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call HandleHechizoUsuario(UserIndex, uh)
+                    Call HandleHechizoUsuario(UserIndex, index)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
             ElseIf UserList(UserIndex).flags.TargetNPC > 0 Then
                 If Abs(Npclist(UserList(UserIndex).flags.TargetNPC).Pos.Y - UserList(UserIndex).Pos.Y) <= RANGO_VISION_Y Then
-                    Call HandleHechizoNPC(UserIndex, uh)
+                    Call HandleHechizoNPC(UserIndex, index)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para lanzar este hechizo.", FontTypeNames.FONTTYPE_WARNING)
                 End If
@@ -582,7 +582,7 @@ If PuedeLanzar(UserIndex, uh) Then
             End If
         
         Case TargetType.uTerreno
-            Call HandleHechizoTerreno(UserIndex, uh)
+            Call HandleHechizoTerreno(UserIndex, index)
     End Select
     
 End If
@@ -596,16 +596,10 @@ If UserList(UserIndex).Counters.Ocultando Then _
 Exit Sub
 
 Errhandler:
-
-    If (index <= MAXUSERHECHIZOS) Then
-        Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
-                " Hechizo: " & Hechizos(uh).Nombre & "(" & uh & _
-                "). Casteado por: " & UserList(UserIndex).name & "(" & UserIndex & "). Ubicado en su posicion " & index)
-    Else
-        Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
-                " El usuario " & UserList(UserIndex).name & "(" & UserIndex & ") Trató de tirar un hechizo invalido (" & index & ")")
-    End If
-
+    
+    Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
+        " Hechizo: " & Hechizos(index).Nombre & "(" & index & _
+        "). Casteado por: " & UserList(UserIndex).name & "(" & UserIndex & ").")
     
 End Sub
 
@@ -625,7 +619,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef b As Boolean)
 
 
 Dim H As Integer, tU As Integer
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+H = UserList(UserIndex).flags.Hechizo
 tU = UserList(UserIndex).flags.TargetUser
 
 
@@ -1328,7 +1322,7 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
     Dim tNPC As Integer
     
     With UserList(UserIndex)
-        SpellIndex = .Stats.UserHechizos(.flags.Hechizo)
+        SpellIndex = .flags.Hechizo
         tUser = .flags.TargetUser
         tNPC = .flags.TargetNPC
         
@@ -1377,7 +1371,7 @@ Dim H As Integer
 Dim daño As Long
 Dim tempChr As Integer
 
-H = UserList(UserIndex).Stats.UserHechizos(UserList(UserIndex).flags.Hechizo)
+H = UserList(UserIndex).flags.Hechizo
 tempChr = UserList(UserIndex).flags.TargetUser
       
 If UserList(tempChr).flags.Muerto Then
@@ -1864,11 +1858,6 @@ If Dire = 1 Then 'Mover arriba
         TempHechizo = UserList(UserIndex).Stats.UserHechizos(CualHechizo)
         UserList(UserIndex).Stats.UserHechizos(CualHechizo) = UserList(UserIndex).Stats.UserHechizos(CualHechizo - 1)
         UserList(UserIndex).Stats.UserHechizos(CualHechizo - 1) = TempHechizo
-
-        'Prevent the user from casting other spells than the one he had selected when he hitted "cast".
-        If UserList(UserIndex).flags.Hechizo > 0 Then
-            UserList(UserIndex).flags.Hechizo = UserList(UserIndex).flags.Hechizo - 1
-        End If
     End If
 Else 'mover abajo
     If CualHechizo = MAXUSERHECHIZOS Then
@@ -1878,11 +1867,6 @@ Else 'mover abajo
         TempHechizo = UserList(UserIndex).Stats.UserHechizos(CualHechizo)
         UserList(UserIndex).Stats.UserHechizos(CualHechizo) = UserList(UserIndex).Stats.UserHechizos(CualHechizo + 1)
         UserList(UserIndex).Stats.UserHechizos(CualHechizo + 1) = TempHechizo
-
-        'Prevent the user from casting other spells than the one he had selected when he hitted "cast".
-        If UserList(UserIndex).flags.Hechizo > 0 Then
-            UserList(UserIndex).flags.Hechizo = UserList(UserIndex).flags.Hechizo + 1
-        End If
     End If
 End If
 End Sub
