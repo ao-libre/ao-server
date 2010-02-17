@@ -319,13 +319,12 @@ On Error GoTo hayerror
             bPriv = .flags.Privilegios
             'Preparo el nick
             If .showName Then
-                If UserList(sndIndex).flags.Privilegios And PlayerType.User Then
+                If bPriv And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
                     If LenB(klan) <> 0 Then
                         bNick = .name & " <" & klan & ">"
                     Else
                         bNick = .name
                     End If
-'                    bPriv = .flags.Privilegios
                 Else
                     If .flags.invisible Or .flags.Oculto Then
                         bNick = .name & " " & TAG_USER_INVISIBLE
@@ -336,11 +335,9 @@ On Error GoTo hayerror
                             bNick = .name
                         End If
                     End If
-'                    bPriv = .flags.Privilegios
                 End If
             Else
                 bNick = vbNullString
-'                bPriv = PlayerType.User
             End If
             
             If Not toMap Then
