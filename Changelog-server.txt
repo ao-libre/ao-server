@@ -418,4 +418,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/02/2010: Los RMS y Dioses no ven más users invi. (Marco)
  * 15/02/2010: Se arreglaron algunos logs de errores. (UserImpacto, UserDaño, LanzarHechizo) (Marco)
  * 16/02/2010: Ya no se puede atacar admins invisibles en la arena. (ZaMa)
-
+ * 16/02/2010: Ahora .flags.Hechizo hace referencia al index del hechizo global en vez de al index de los hechizos del user. (Marco)
