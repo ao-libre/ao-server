@@ -100,9 +100,9 @@ For i = 1 To MaxUsers
 Next i
 
 If c = MaxUsers Then
-    Label1.Caption = "No hay slots vacios!"
+    Label1.Caption = "¡No hay slots vacios!"
 Else
-    Label1.Caption = "Hay " & MaxUsers - c & " slots vacios!"
+    Label1.Caption = "¡Hay " & MaxUsers - c & " slots vacios!"
 End If
 
 End Sub

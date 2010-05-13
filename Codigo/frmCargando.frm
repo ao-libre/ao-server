@@ -43,15 +43,6 @@ Begin VB.Form frmCargando
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "Cargando, por favor espere..."
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          ForeColor       =   &H000000FF&
          Height          =   225
          Index           =   3

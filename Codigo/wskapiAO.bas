@@ -206,7 +206,7 @@ Public Function WndProc(ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As L
 On Error Resume Next
 
     Dim Ret As Long
-    Dim tmp() As Byte
+    Dim Tmp() As Byte
     Dim S As Long
     Dim E As Long
     Dim N As Integer
@@ -261,9 +261,9 @@ On Error Resume Next
                     End If
                     
                     'create appropiate sized buffer
-                    ReDim Preserve tmp(SIZE_RCVBUF - 1) As Byte
+                    ReDim Preserve Tmp(SIZE_RCVBUF - 1) As Byte
                     
-                    Ret = recv(S, tmp(0), SIZE_RCVBUF, 0)
+                    Ret = recv(S, Tmp(0), SIZE_RCVBUF, 0)
                     ' Comparo por = 0 ya que esto es cuando se cierra
                     ' "gracefully". (mas abajo)
                     If Ret < 0 Then
@@ -287,9 +287,9 @@ On Error Resume Next
                         Call Cerrar_Usuario(N)
                     End If
                     
-                    ReDim Preserve tmp(Ret - 1) As Byte
+                    ReDim Preserve Tmp(Ret - 1) As Byte
                     
-                    Call EventoSockRead(N, tmp)
+                    Call EventoSockRead(N, Tmp)
                 
                 Case FD_CLOSE
                     N = BuscaSlotSock(S)
@@ -479,7 +479,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         Dim str As String
         Dim data() As Byte
         
-        str = Protocol.PrepareMessageErrorMsg("El server se encuentra lleno en este momento. Disculpe las molestias ocasionadas.")
+        str = Protocol.PrepareMessageErrorMsg("El servidor se encuentra lleno en este momento. Disculpe las molestias ocasionadas.")
         
         ReDim Preserve data(Len(str) - 1) As Byte
         

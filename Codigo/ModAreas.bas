@@ -129,7 +129,7 @@ Public Sub AreasOptimizacion()
     End If
 End Sub
 
-Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
+Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte, Optional ByVal ButIndex As Boolean = False)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: 15/07/2009
@@ -139,7 +139,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
     If UserList(UserIndex).AreasInfo.AreaID = AreasInfo(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then Exit Sub
     
     Dim MinX As Long, MaxX As Long, MinY As Long, MaxY As Long, X As Long, Y As Long
-    Dim TempInt As Long, map As Long
+    Dim TempInt As Long, Map As Long
     
     With UserList(UserIndex)
         MinX = .AreasInfo.MinX
@@ -192,7 +192,7 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
         If MaxY > 100 Then MaxY = 100
         If MaxX > 100 Then MaxX = 100
         
-        map = UserList(UserIndex).Pos.map
+        Map = .Pos.Map
         
         'Esto es para ke el cliente elimine lo "fuera de area..."
         Call WriteAreaChanged(UserIndex)
@@ -202,31 +202,31 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
             For Y = MinY To MaxY
                 
                 '<<< User >>>
-                If MapData(map, X, Y).UserIndex Then
+                If MapData(Map, X, Y).UserIndex Then
                     
-                    TempInt = MapData(map, X, Y).UserIndex
+                    TempInt = MapData(Map, X, Y).UserIndex
                     
                     If UserIndex <> TempInt Then
                         
                         ' Solo avisa al otro cliente si no es un admin invisible
                         If Not (UserList(TempInt).flags.AdminInvisible = 1) Then
-                            Call MakeUserChar(False, UserIndex, TempInt, map, X, Y)
+                            Call MakeUserChar(False, UserIndex, TempInt, Map, X, Y)
                             
                             'Si el user estaba invisible le avisamos al nuevo cliente de eso
                             If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                                If UserList(UserIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
+                                If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
                                     Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
                                 End If
                             End If
                         End If
                         
                         ' Solo avisa al otro cliente si no es un admin invisible
-                        If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then
-                            Call MakeUserChar(False, TempInt, UserIndex, .Pos.map, .Pos.X, .Pos.Y)
+                        If Not (.flags.AdminInvisible = 1) Then
+                            Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                             
-                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
-                                If UserList(TempInt).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
-                                    Call WriteSetInvisible(TempInt, UserList(UserIndex).Char.CharIndex, True)
+                            If .flags.invisible Or .flags.Oculto Then
+                                If UserList(TempInt).flags.Privilegios And PlayerType.User Then
+                                    Call WriteSetInvisible(TempInt, .Char.CharIndex, True)
                                 End If
                             End If
                         End If
@@ -234,24 +234,26 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte)
                         Call FlushBuffer(TempInt)
                     
                     ElseIf Head = USER_NUEVO Then
-                        Call MakeUserChar(False, UserIndex, UserIndex, map, X, Y)
+                        If Not ButIndex Then
+                            Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)
+                        End If
                     End If
                 End If
                 
                 '<<< Npc >>>
-                If MapData(map, X, Y).NpcIndex Then
-                    Call MakeNPCChar(False, UserIndex, MapData(map, X, Y).NpcIndex, map, X, Y)
-                 End If
+                If MapData(Map, X, Y).NpcIndex Then
+                    Call MakeNPCChar(False, UserIndex, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                End If
                  
                 '<<< Item >>>
-                If MapData(map, X, Y).ObjInfo.ObjIndex Then
-                    TempInt = MapData(map, X, Y).ObjInfo.ObjIndex
+                If MapData(Map, X, Y).ObjInfo.ObjIndex Then
+                    TempInt = MapData(Map, X, Y).ObjInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(TempInt).OBJType) Then
                         Call WriteObjectCreate(UserIndex, ObjData(TempInt).GrhIndex, X, Y)
                         
                         If ObjData(TempInt).OBJType = eOBJType.otPuertas Then
-                            Call Bloquear(False, UserIndex, X, Y, MapData(map, X, Y).Blocked)
-                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(map, X - 1, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X, Y, MapData(Map, X, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                         End If
                     End If
                 End If
@@ -336,11 +338,11 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
 
         
         'Actualizamos!!!
-        If MapInfo(.Pos.map).NumUsers <> 0 Then
+        If MapInfo(.Pos.Map).NumUsers <> 0 Then
             For X = MinX To MaxX
                 For Y = MinY To MaxY
-                    If MapData(.Pos.map, X, Y).UserIndex Then _
-                        Call MakeNPCChar(False, MapData(.Pos.map, X, Y).UserIndex, NpcIndex, .Pos.map, .Pos.X, .Pos.Y)
+                    If MapData(.Pos.Map, X, Y).UserIndex Then _
+                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).UserIndex, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
                 Next Y
             Next X
         End If
@@ -358,7 +360,7 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Head As Byte)
     End With
 End Sub
 
-Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal map As Integer)
+Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
@@ -368,28 +370,28 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal map As Integer)
     Dim LoopC As Long
     
     'Search for the user
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        If ConnGroups(map).UserEntrys(LoopC) = UserIndex Then Exit For
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        If ConnGroups(Map).UserEntrys(LoopC) = UserIndex Then Exit For
     Next LoopC
     
     'Char not found
-    If LoopC > ConnGroups(map).CountEntrys Then Exit Sub
+    If LoopC > ConnGroups(Map).CountEntrys Then Exit Sub
     
     'Remove from old map
-    ConnGroups(map).CountEntrys = ConnGroups(map).CountEntrys - 1
-    TempVal = ConnGroups(map).CountEntrys
+    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
+    TempVal = ConnGroups(Map).CountEntrys
     
     'Move list back
     For LoopC = LoopC To TempVal
-        ConnGroups(map).UserEntrys(LoopC) = ConnGroups(map).UserEntrys(LoopC + 1)
+        ConnGroups(Map).UserEntrys(LoopC) = ConnGroups(Map).UserEntrys(LoopC + 1)
     Next LoopC
     
-    If TempVal > ConnGroups(map).OptValue Then 'Nescesito Redim?
-        ReDim Preserve ConnGroups(map).UserEntrys(1 To TempVal) As Long
+    If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim?
+        ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
     End If
 End Sub
 
-Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal map As Integer)
+Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: 04/01/2007
@@ -401,13 +403,13 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal map As Integer)
     Dim EsNuevo As Boolean
     Dim i As Long
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
     EsNuevo = True
     
     'Prevent adding repeated users
-    For i = 1 To ConnGroups(map).CountEntrys
-        If ConnGroups(map).UserEntrys(i) = UserIndex Then
+    For i = 1 To ConnGroups(Map).CountEntrys
+        If ConnGroups(Map).UserEntrys(i) = UserIndex Then
             EsNuevo = False
             Exit For
         End If
@@ -415,25 +417,27 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal map As Integer)
     
     If EsNuevo Then
         'Update map and connection groups data
-        ConnGroups(map).CountEntrys = ConnGroups(map).CountEntrys + 1
-        TempVal = ConnGroups(map).CountEntrys
+        ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys + 1
+        TempVal = ConnGroups(Map).CountEntrys
         
-        If TempVal > ConnGroups(map).OptValue Then 'Nescesito Redim
-            ReDim Preserve ConnGroups(map).UserEntrys(1 To TempVal) As Long
+        If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim
+            ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
         End If
         
-        ConnGroups(map).UserEntrys(TempVal) = UserIndex
+        ConnGroups(Map).UserEntrys(TempVal) = UserIndex
     End If
     
-    'Update user
-    UserList(UserIndex).AreasInfo.AreaID = 0
+    With UserList(UserIndex)
+        'Update user
+        .AreasInfo.AreaID = 0
+        
+        .AreasInfo.AreaPerteneceX = 0
+        .AreasInfo.AreaPerteneceY = 0
+        .AreasInfo.AreaReciveX = 0
+        .AreasInfo.AreaReciveY = 0
+    End With
     
-    UserList(UserIndex).AreasInfo.AreaPerteneceX = 0
-    UserList(UserIndex).AreasInfo.AreaPerteneceY = 0
-    UserList(UserIndex).AreasInfo.AreaReciveX = 0
-    UserList(UserIndex).AreasInfo.AreaReciveY = 0
-    
-    Call CheckUpdateNeededUser(UserIndex, USER_NUEVO)
+    Call CheckUpdateNeededUser(UserIndex, USER_NUEVO, ButIndex)
 End Sub
 
 Public Sub AgregarNpc(ByVal NpcIndex As Integer)
@@ -442,12 +446,14 @@ Public Sub AgregarNpc(ByVal NpcIndex As Integer)
 'Last Modify Date: Unknow
 '
 '**************************************************************
-    Npclist(NpcIndex).AreasInfo.AreaID = 0
-    
-    Npclist(NpcIndex).AreasInfo.AreaPerteneceX = 0
-    Npclist(NpcIndex).AreasInfo.AreaPerteneceY = 0
-    Npclist(NpcIndex).AreasInfo.AreaReciveX = 0
-    Npclist(NpcIndex).AreasInfo.AreaReciveY = 0
+    With Npclist(NpcIndex)
+        .AreasInfo.AreaID = 0
+        
+        .AreasInfo.AreaPerteneceX = 0
+        .AreasInfo.AreaPerteneceY = 0
+        .AreasInfo.AreaReciveX = 0
+        .AreasInfo.AreaReciveY = 0
+    End With
     
     Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
 End Sub

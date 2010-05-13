@@ -58,6 +58,12 @@ Public Const WM_CREATE = &H1
 Public hHook As Long
 
 Public Function AppHook(ByVal idHook As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
+
     Dim CWP As CWPSTRUCT
     CopyMemory CWP, ByVal lParam, Len(CWP)
     Select Case CWP.message

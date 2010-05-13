@@ -3,7 +3,7 @@ Begin VB.Form frmMain
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Argentum Online"
-   ClientHeight    =   1785
+   ClientHeight    =   4845
    ClientLeft      =   1950
    ClientTop       =   1815
    ClientWidth     =   5190
@@ -24,10 +24,18 @@ Begin VB.Form frmMain
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   1785
+   ScaleHeight     =   4845
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.TextBox txtChat 
+      Height          =   2775
+      Left            =   120
+      MultiLine       =   -1  'True
+      TabIndex        =   10
+      Top             =   1920
+      Width           =   4935
+   End
    Begin VB.Timer tPiqueteC 
       Enabled         =   0   'False
       Interval        =   6000
@@ -95,7 +103,7 @@ Begin VB.Form frmMain
       Enabled         =   0   'False
       Interval        =   60000
       Left            =   480
-      Top             =   1020
+      Top             =   1080
    End
    Begin VB.Timer npcataca 
       Enabled         =   0   'False
@@ -314,26 +322,31 @@ Sub CheckIdleUser()
     Dim iUserIndex As Long
     
     For iUserIndex = 1 To MaxUsers
-       'Conexion activa? y es un usuario loggeado?
-       If UserList(iUserIndex).ConnID <> -1 And UserList(iUserIndex).flags.UserLogged Then
-            'Actualiza el contador de inactividad
-            UserList(iUserIndex).Counters.IdleCount = UserList(iUserIndex).Counters.IdleCount + 1
-            If UserList(iUserIndex).Counters.IdleCount >= IdleLimit Then
-                Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado..")
-                'mato los comercios seguros
-                If UserList(iUserIndex).ComUsu.DestUsu > 0 Then
-                    If UserList(UserList(iUserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                        If UserList(UserList(iUserIndex).ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
-                            Call WriteConsoleMsg(UserList(iUserIndex).ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
-                            Call FinComerciarUsu(UserList(iUserIndex).ComUsu.DestUsu)
-                            Call FlushBuffer(UserList(iUserIndex).ComUsu.DestUsu) 'flush the buffer to send the message right away
-                        End If
-                    End If
-                    Call FinComerciarUsu(iUserIndex)
+        With UserList(iUserIndex)
+            'Conexion activa? y es un usuario loggeado?
+            If .ConnID <> -1 And .flags.UserLogged Then
+                'Actualiza el contador de inactividad
+                If .flags.Traveling = 0 Then
+                    .Counters.IdleCount = .Counters.IdleCount + 1
                 End If
-                Call Cerrar_Usuario(iUserIndex)
+                
+                If .Counters.IdleCount >= IdleLimit Then
+                    Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
+                    'mato los comercios seguros
+                    If .ComUsu.DestUsu > 0 Then
+                        If UserList(.ComUsu.DestUsu).flags.UserLogged Then
+                            If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
+                                Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
+                                Call FinComerciarUsu(.ComUsu.DestUsu)
+                                Call FlushBuffer(.ComUsu.DestUsu) 'flush the buffer to send the message right away
+                            End If
+                        End If
+                        Call FinComerciarUsu(iUserIndex)
+                    End If
+                    Call Cerrar_Usuario(iUserIndex)
+                End If
             End If
-        End If
+        End With
     Next iUserIndex
 End Sub
 
@@ -388,7 +401,7 @@ If Minutos = MinutosWs - 1 Then
 End If
 
 If Minutos >= MinutosWs Then
-    Call DoBackUp
+    Call ES.DoBackUp
     Call aClon.VaciarColeccion
     Minutos = 0
 End If
@@ -432,6 +445,9 @@ End Sub
 
 Private Sub Command1_Click()
 Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(BroadMsg.Text))
+''''''''''''''''SOLO PARA EL TESTEO'''''''
+''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
+txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
 End Sub
 
 Public Sub InitMain(ByVal f As Byte)
@@ -446,6 +462,9 @@ End Sub
 
 Private Sub Command2_Click()
 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & BroadMsg.Text, FontTypeNames.FONTTYPE_SERVER))
+''''''''''''''''SOLO PARA EL TESTEO'''''''
+''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
+txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -529,6 +548,10 @@ hayerror:
 End Sub
 
 Private Sub GameTimer_Timer()
+'********************************************************
+'Author: Unknown
+'Last Modify Date: -
+'********************************************************
     Dim iUserIndex As Long
     Dim bEnviarStats As Boolean
     Dim bEnviarAyS As Boolean
@@ -548,7 +571,7 @@ On Error GoTo hayerror
                     bEnviarStats = False
                     bEnviarAyS = False
                     
-                    Call DoTileEvents(iUserIndex, .Pos.map, .Pos.X, .Pos.Y)
+                    Call DoTileEvents(iUserIndex, .Pos.Map, .Pos.X, .Pos.Y)
                     
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
@@ -559,14 +582,21 @@ On Error GoTo hayerror
                         
                         '[Consejeros]
                         If (.flags.Privilegios And PlayerType.User) Then Call EfectoLava(iUserIndex)
+                        
                         If .flags.Desnudo <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoFrio(iUserIndex)
+                        
                         If .flags.Meditando Then Call DoMeditar(iUserIndex)
+                        
                         If .flags.Envenenado <> 0 And (.flags.Privilegios And PlayerType.User) <> 0 Then Call EfectoVeneno(iUserIndex)
+                        
                         If .flags.AdminInvisible <> 1 Then
                             If .flags.invisible = 1 Then Call EfectoInvisibilidad(iUserIndex)
                             If .flags.Oculto = 1 Then Call DoPermanecerOculto(iUserIndex)
                         End If
+                        
                         If .flags.Mimetizado = 1 Then Call EfectoMimetismo(iUserIndex)
+                        
+                        If .flags.AtacablePor > 0 Then Call EfectoEstadoAtacable(iUserIndex)
                         
                         Call DuracionPociones(iUserIndex)
                         
@@ -600,7 +630,7 @@ On Error GoTo hayerror
                                             bEnviarStats = False
                                         End If
                                         'termina de descansar automaticamente
-                                        If .Stats.MaxHP = .Stats.MinHP And .Stats.MaxSta = .Stats.MinSta Then
+                                        If .Stats.MaxHp = .Stats.MinHp And .Stats.MaxSta = .Stats.MinSta Then
                                             Call WriteRestOK(iUserIndex)
                                             Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
                                             .flags.Descansar = False
@@ -637,7 +667,7 @@ On Error GoTo hayerror
                                         bEnviarStats = False
                                     End If
                                     'termina de descansar automaticamente
-                                    If .Stats.MaxHP = .Stats.MinHP And .Stats.MaxSta = .Stats.MinSta Then
+                                    If .Stats.MaxHp = .Stats.MinHp And .Stats.MaxSta = .Stats.MinSta Then
                                         Call WriteRestOK(iUserIndex)
                                         Call WriteConsoleMsg(iUserIndex, "Has terminado de descansar.", FontTypeNames.FONTTYPE_INFO)
                                         .flags.Descansar = False
@@ -783,49 +813,55 @@ If Not haciendoBK And Not EnPausa Then
     'Update NPCs
     For NpcIndex = 1 To LastNPC
         
-        If Npclist(NpcIndex).flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
-            If Npclist(NpcIndex).flags.Paralizado = 1 Then
-                Call EfectoParalisisNpc(NpcIndex)
-            Else
-                e_p = esPretoriano(NpcIndex)
-                If e_p > 0 Then
-                    Select Case e_p
-                        Case 1  ''clerigo
-                            Call PRCLER_AI(NpcIndex)
-                        Case 2  ''mago
-                            Call PRMAGO_AI(NpcIndex)
-                        Case 3  ''cazador
-                            Call PRCAZA_AI(NpcIndex)
-                        Case 4  ''rey
-                            Call PRREY_AI(NpcIndex)
-                        Case 5  ''guerre
-                            Call PRGUER_AI(NpcIndex)
-                    End Select
+        With Npclist(NpcIndex)
+            If .flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
+            
+                ' Chequea si contiua teniendo dueño
+                If .Owner > 0 Then Call ValidarPermanenciaNpc(NpcIndex)
+            
+                If .flags.Paralizado = 1 Then
+                    Call EfectoParalisisNpc(NpcIndex)
                 Else
-                    'Usamos AI si hay algun user en el mapa
-                    If Npclist(NpcIndex).flags.Inmovilizado = 1 Then
-                       Call EfectoParalisisNpc(NpcIndex)
-                    End If
-                    
-                    mapa = Npclist(NpcIndex).Pos.map
-                    
-                    If mapa > 0 Then
-                        If MapInfo(mapa).NumUsers > 0 Then
-                            If Npclist(NpcIndex).Movement <> TipoAI.ESTATICO Then
-                                Call NPCAI(NpcIndex)
+                    e_p = esPretoriano(NpcIndex)
+                    If e_p > 0 Then
+                        Select Case e_p
+                            Case 1  ''clerigo
+                                Call PRCLER_AI(NpcIndex)
+                            Case 2  ''mago
+                                Call PRMAGO_AI(NpcIndex)
+                            Case 3  ''cazador
+                                Call PRCAZA_AI(NpcIndex)
+                            Case 4  ''rey
+                                Call PRREY_AI(NpcIndex)
+                            Case 5  ''guerre
+                                Call PRGUER_AI(NpcIndex)
+                        End Select
+                    Else
+                        'Usamos AI si hay algun user en el mapa
+                        If .flags.Inmovilizado = 1 Then
+                           Call EfectoParalisisNpc(NpcIndex)
+                        End If
+                        
+                        mapa = .Pos.Map
+                        
+                        If mapa > 0 Then
+                            If MapInfo(mapa).NumUsers > 0 Then
+                                If .Movement <> TipoAI.ESTATICO Then
+                                    Call NPCAI(NpcIndex)
+                                End If
                             End If
                         End If
                     End If
                 End If
             End If
-        End If
+        End With
     Next NpcIndex
 End If
 
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 
@@ -853,28 +889,28 @@ Static MinutosSinLluvia As Long
 If Not Lloviendo Then
     MinutosSinLluvia = MinutosSinLluvia + 1
     If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
-            If RandomNumber(1, 100) <= 2 Then
-                Lloviendo = True
-                MinutosSinLluvia = 0
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-            End If
+        If RandomNumber(1, 100) <= 2 Then
+            Lloviendo = True
+            MinutosSinLluvia = 0
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+        End If
     ElseIf MinutosSinLluvia >= 1440 Then
-                Lloviendo = True
-                MinutosSinLluvia = 0
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+        Lloviendo = True
+        MinutosSinLluvia = 0
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
     End If
 Else
     MinutosLloviendo = MinutosLloviendo + 1
     If MinutosLloviendo >= 5 Then
-            Lloviendo = False
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-            MinutosLloviendo = 0
+        Lloviendo = False
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+        MinutosLloviendo = 0
     Else
-            If RandomNumber(1, 100) <= 2 Then
-                Lloviendo = False
-                MinutosLloviendo = 0
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-            End If
+        If RandomNumber(1, 100) <= 2 Then
+            Lloviendo = False
+            MinutosLloviendo = 0
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+        End If
     End If
 End If
 
@@ -886,16 +922,18 @@ End Sub
 
 Private Sub tPiqueteC_Timer()
     Dim NuevaA As Boolean
-    Dim NuevoL As Boolean
+   ' Dim NuevoL As Boolean
     Dim GI As Integer
-    
+    Dim tX As Integer
+    Dim tY As Integer
+    Dim tMap As Integer
     Dim i As Long
     
 On Error GoTo Errhandler
     For i = 1 To LastUser
         With UserList(i)
             If .flags.UserLogged Then
-                If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
                     .Counters.PiqueteC = .Counters.PiqueteC + 1
                     Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                     
@@ -907,6 +945,24 @@ On Error GoTo Errhandler
                     .Counters.PiqueteC = 0
                 End If
                 
+                If .flags.Muerto = 1 Then
+                    If .flags.Traveling = 1 Then
+                        If .Counters.goHome <= 0 Then
+                            tX = Ciudades(.Hogar).X
+                            tY = Ciudades(.Hogar).Y
+                            tMap = Ciudades(.Hogar).Map
+                            
+                            Call FindLegalPos(i, tMap, tX, tY)
+                            Call WarpUserChar(i, tMap, tX, tY, True)
+                            
+                            Call WriteMultiMessage(i, eMessages.FinishHome)
+                            .flags.Traveling = 0
+                        Else
+                            .Counters.goHome = .Counters.goHome - 1
+                        End If
+                    End If
+                End If
+                
                 'ustedes se preguntaran que hace esto aca?
                 'bueno la respuesta es simple: el codigo de AO es una mierda y encontrar
                 'todos los puntos en los cuales la alineacion puede cambiar es un dolor de
@@ -915,18 +971,18 @@ On Error GoTo Errhandler
                 GI = .GuildIndex
                 If GI > 0 Then
                     NuevaA = False
-                    NuevoL = False
-                    If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA, NuevoL) Then
+                   ' NuevoL = False
+                    If Not modGuilds.m_ValidarPermanencia(i, True, NuevaA) Then
                         Call WriteConsoleMsg(i, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifacción!", FontTypeNames.FONTTYPE_GUILD)
                     End If
                     If NuevaA Then
-                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación neutral!", FontTypeNames.FONTTYPE_GUILD))
-                        Call LogClanes("El clan cambio de alineacion!")
+                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineación " & GuildAlignment(GI) & "!", FontTypeNames.FONTTYPE_GUILD))
+                        Call LogClanes("¡El clan cambio de alineación!")
                     End If
-                    If NuevoL Then
-                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
-                        Call LogClanes("El clan tiene nuevo lider!")
-                    End If
+'                    If NuevoL Then
+'                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan tiene un nuevo líder!", FontTypeNames.FONTTYPE_GUILD))
+'                        Call LogClanes("¡El clan tiene nuevo lider!")
+'                    End If
                 End If
                 
                 Call FlushBuffer(i)

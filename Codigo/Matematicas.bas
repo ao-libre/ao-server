@@ -30,15 +30,32 @@ Attribute VB_Name = "Matematicas"
 Option Explicit
 
 Public Function Porcentaje(ByVal Total As Long, ByVal Porc As Long) As Long
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
+
     Porcentaje = (Total * Porc) / 100
 End Function
 
 Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
+
     'Encuentra la distancia entre dos WorldPos
     Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.map - wp2.map) * 100)
 End Function
 
 Function Distance(ByVal X1 As Integer, ByVal Y1 As Integer, ByVal X2 As Integer, ByVal Y2 As Integer) As Double
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
 
 'Encuentra la distancia entre dos puntos
 

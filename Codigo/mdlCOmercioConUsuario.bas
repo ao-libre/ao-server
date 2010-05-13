@@ -25,133 +25,318 @@ Option Explicit
 Private Const MAX_ORO_LOGUEABLE As Long = 50000
 Private Const MAX_OBJ_LOGUEABLE As Long = 1000
 
+Public Const MAX_OFFER_SLOTS As Integer = 20
+Public Const GOLD_OFFER_SLOT As Integer = MAX_OFFER_SLOTS + 1
+
 Public Type tCOmercioUsuario
     DestUsu As Integer 'El otro Usuario
     DestNick As String
-    Objeto As Integer 'Indice del inventario a comerciar, que objeto desea dar
+    Objeto(1 To MAX_OFFER_SLOTS) As Integer 'Indice de los objetos que se desea dar
+    GoldAmount As Long
     
-    'El tipo de datos de Cant ahora es Long (antes Integer)
-    'asi se puede comerciar con oro > 32k
-    cant As Long 'Cuantos comerciar, cuantos objetos desea dar
+    cant(1 To MAX_OFFER_SLOTS) As Long 'Cuantos objetos desea dar
     Acepto As Boolean
+    Confirmo As Boolean
 End Type
 
 'origen: origen de la transaccion, originador del comando
 'destino: receptor de la transaccion
 Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As Integer)
-On Error GoTo Errhandler
-
-'Si ambos pusieron /comerciar entonces
-If UserList(Origen).ComUsu.DestUsu = Destino And _
-   UserList(Destino).ComUsu.DestUsu = Origen Then
-    'Actualiza el inventario del usuario
-    Call UpdateUserInv(True, Origen, 0)
-    'Decirle al origen que abra la ventanita.
-    Call WriteUserCommerceInit(Origen)
-    UserList(Origen).flags.Comerciando = True
-
-    'Actualiza el inventario del usuario
-    Call UpdateUserInv(True, Destino, 0)
-    'Decirle al origen que abra la ventanita.
-    Call WriteUserCommerceInit(Destino)
-    UserList(Destino).flags.Comerciando = True
-
-    'Call EnviarObjetoTransaccion(Origen)
-Else
-    'Es el primero que comercia ?
-    Call WriteConsoleMsg(Destino, UserList(Origen).name & " desea comerciar. Si deseas aceptar, Escribe /COMERCIAR.", FontTypeNames.FONTTYPE_TALK)
-    UserList(Destino).flags.TargetUser = Origen
+'***************************************************
+'Autor: Unkown
+'Last Modification: 25/11/2009
+'
+'***************************************************
+    On Error GoTo Errhandler
     
-End If
-
-Call FlushBuffer(Destino)
-
-Exit Sub
+    'Si ambos pusieron /comerciar entonces
+    If UserList(Origen).ComUsu.DestUsu = Destino And _
+       UserList(Destino).ComUsu.DestUsu = Origen Then
+        'Actualiza el inventario del usuario
+        Call UpdateUserInv(True, Origen, 0)
+        'Decirle al origen que abra la ventanita.
+        Call WriteUserCommerceInit(Origen)
+        UserList(Origen).flags.Comerciando = True
+    
+        'Actualiza el inventario del usuario
+        Call UpdateUserInv(True, Destino, 0)
+        'Decirle al origen que abra la ventanita.
+        Call WriteUserCommerceInit(Destino)
+        UserList(Destino).flags.Comerciando = True
+    
+        'Call EnviarObjetoTransaccion(Origen)
+    Else
+        'Es el primero que comercia ?
+        Call WriteConsoleMsg(Destino, UserList(Origen).name & " desea comerciar. Si deseas aceptar, escribe /COMERCIAR.", FontTypeNames.FONTTYPE_TALK)
+        UserList(Destino).flags.TargetUser = Origen
+        
+    End If
+    
+    Call FlushBuffer(Destino)
+    
+    Exit Sub
 Errhandler:
-    Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
+        Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
 End Sub
 
-'envia a AQuien el objeto del otro
-Public Sub EnviarObjetoTransaccion(ByVal AQuien As Integer)
-Dim ObjInd As Integer
-Dim ObjCant As Long
-
-'[Alejo]: En esta funcion se centralizaba el problema
-'         de no poder comerciar con mas de 32k de oro.
-'         Ahora si funciona!!!
-
-ObjCant = UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.cant
-If UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto = FLAGORO Then
-    ObjInd = iORO
-Else
-    ObjInd = UserList(UserList(AQuien).ComUsu.DestUsu).Invent.Object(UserList(UserList(AQuien).ComUsu.DestUsu).ComUsu.Objeto).ObjIndex
-End If
-
-If ObjCant <= 0 Or ObjInd <= 0 Then Exit Sub
-
-If ObjInd > 0 And ObjCant > 0 Then
-    Call WriteChangeUserTradeSlot(AQuien, ObjInd, ObjCant)
-    Call FlushBuffer(AQuien)
-End If
+Public Sub EnviarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte)
+'***************************************************
+'Autor: Unkown
+'Last Modification: 25/11/2009
+'Sends the offer change to the other trading user
+'25/11/2009: ZaMa - Implementado nuevo sistema de comercio con ofertas variables.
+'***************************************************
+    Dim ObjIndex As Integer
+    Dim ObjAmount As Long
+    
+    With UserList(UserIndex)
+        If OfferSlot = GOLD_OFFER_SLOT Then
+            ObjIndex = iORO
+            ObjAmount = UserList(.ComUsu.DestUsu).ComUsu.GoldAmount
+        Else
+            ObjIndex = UserList(.ComUsu.DestUsu).ComUsu.Objeto(OfferSlot)
+            ObjAmount = UserList(.ComUsu.DestUsu).ComUsu.cant(OfferSlot)
+        End If
+    End With
+   
+    Call WriteChangeUserTradeSlot(UserIndex, OfferSlot, ObjIndex, ObjAmount)
+    Call FlushBuffer(UserIndex)
 
 End Sub
 
 Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
+'***************************************************
+'Autor: Unkown
+'Last Modification: 25/11/2009
+'25/11/2009: ZaMa - Limpio los arrays (por el nuevo sistema)
+'***************************************************
+    Dim i As Long
+    
     With UserList(UserIndex)
         If .ComUsu.DestUsu > 0 Then
             Call WriteUserCommerceEnd(UserIndex)
         End If
         
         .ComUsu.Acepto = False
-        .ComUsu.cant = 0
+        .ComUsu.Confirmo = False
         .ComUsu.DestUsu = 0
-        .ComUsu.Objeto = 0
+        
+        For i = 1 To MAX_OFFER_SLOTS
+            .ComUsu.cant(i) = 0
+            .ComUsu.Objeto(i) = 0
+        Next i
+        
+        .ComUsu.GoldAmount = 0
         .ComUsu.DestNick = vbNullString
         .flags.Comerciando = False
     End With
 End Sub
 
 Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
-
-On Error GoTo Errhandler
-
-    Dim Obj1 As Obj, Obj2 As Obj
+'***************************************************
+'Autor: Unkown
+'Last Modification: 25/11/2009
+'25/11/2009: ZaMa - Ahora se traspasan hasta 5 items + oro al comerciar
+'***************************************************
+    Dim TradingObj As Obj
     Dim OtroUserIndex As Integer
     Dim TerminarAhora As Boolean
-    
-    TerminarAhora = False
+    Dim OfferSlot As Integer
+
+    UserList(UserIndex).ComUsu.Acepto = True
     
     OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
     
-    If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
-        TerminarAhora = True
+    If UserList(OtroUserIndex).ComUsu.Acepto = False Then
+        Exit Sub
     End If
     
-    If Not TerminarAhora Then
-        If UserList(OtroUserIndex).flags.UserLogged = False Or UserList(UserIndex).flags.UserLogged = False Then
-            TerminarAhora = True
+    ' Envio los items a quien corresponde
+    For OfferSlot = 1 To MAX_OFFER_SLOTS + 1
+        
+        ' Items del 1er usuario
+        With UserList(UserIndex)
+            ' Le pasa el oro
+            If OfferSlot = GOLD_OFFER_SLOT Then
+                ' Quito la cantidad de oro ofrecida
+                .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
+                ' Log
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & .ComUsu.GoldAmount)
+                ' Update Usuario
+                Call WriteUpdateUserStats(UserIndex)
+                ' Se la doy al otro
+                UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + .ComUsu.GoldAmount
+                ' Update Otro Usuario
+                Call WriteUpdateUserStats(OtroUserIndex)
+                
+            ' Le pasa lo ofertado de los slots con items
+            ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
+                TradingObj.ObjIndex = .ComUsu.Objeto(OfferSlot)
+                TradingObj.Amount = .ComUsu.cant(OfferSlot)
+                
+                'Quita el objeto y se lo da al otro
+                If Not MeterItemEnInventario(OtroUserIndex, TradingObj) Then
+                    Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, TradingObj)
+                End If
+            
+                Call QuitarObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex)
+                
+                'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
+                If ObjData(TradingObj.ObjIndex).Log = 1 Then
+                    Call LogDesarrollo(.name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).name)
+                End If
+            
+                'Es mucha cantidad?
+                If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
+                'Si no es de los prohibidos de loguear, lo logueamos.
+                    If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
+                        Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & .name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).name)
+                    End If
+                End If
+            End If
+        End With
+        
+        ' Items del 2do usuario
+        With UserList(OtroUserIndex)
+            ' Le pasa el oro
+            If OfferSlot = GOLD_OFFER_SLOT Then
+                ' Quito la cantidad de oro ofrecida
+                .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
+                ' Log
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.name & " soltó oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & .ComUsu.GoldAmount)
+                ' Update Usuario
+                Call WriteUpdateUserStats(OtroUserIndex)
+                'y se la doy al otro
+                UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + .ComUsu.GoldAmount
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibió oro en comercio seguro con " & .name & ". Cantidad: " & .ComUsu.GoldAmount)
+                ' Update Otro Usuario
+                Call WriteUpdateUserStats(UserIndex)
+                
+            ' Le pasa la oferta de los slots con items
+            ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
+                TradingObj.ObjIndex = .ComUsu.Objeto(OfferSlot)
+                TradingObj.Amount = .ComUsu.cant(OfferSlot)
+                
+                'Quita el objeto y se lo da al otro
+                If Not MeterItemEnInventario(UserIndex, TradingObj) Then
+                    Call TirarItemAlPiso(UserList(UserIndex).Pos, TradingObj)
+                End If
+            
+                Call QuitarObjetos(TradingObj.ObjIndex, TradingObj.Amount, OtroUserIndex)
+                
+                'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
+                If ObjData(TradingObj.ObjIndex).Log = 1 Then
+                    Call LogDesarrollo(.name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).name)
+                End If
+            
+                'Es mucha cantidad?
+                If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
+                'Si no es de los prohibidos de loguear, lo logueamos.
+                    If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
+                        Call LogDesarrollo(.name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).name)
+                    End If
+                End If
+            End If
+        End With
+        
+    Next OfferSlot
+
+    ' End Trade
+    Call FinComerciarUsu(UserIndex)
+    Call FinComerciarUsu(OtroUserIndex)
+ 
+End Sub
+
+Public Sub AgregarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte, ByVal ObjIndex As Integer, ByVal Amount As Long, ByVal IsGold As Boolean)
+'***************************************************
+'Autor: ZaMa
+'Last Modification: 24/11/2009
+'Adds gold or items to the user's offer
+'***************************************************
+
+    If PuedeSeguirComerciando(UserIndex) Then
+        With UserList(UserIndex).ComUsu
+            ' Si ya confirmo su oferta, no puede cambiarla!
+            If Not .Confirmo Then
+                If IsGold Then
+                ' Agregamos (o quitamos) mas oro a la oferta
+                    .GoldAmount = .GoldAmount + Amount
+                    
+                    ' Imposible que pase, pero por las dudas..
+                    If .GoldAmount < 0 Then .GoldAmount = 0
+                Else
+                ' Agreamos (o quitamos) el item y su cantidad en el slot correspondiente
+                    ' Si es 0 estoy modificando la cantidad, no agregando
+                    If ObjIndex > 0 Then .Objeto(OfferSlot) = ObjIndex
+                    .cant(OfferSlot) = .cant(OfferSlot) + Amount
+                    
+                    'Quitó todos los items de ese tipo
+                    If .cant(OfferSlot) <= 0 Then
+                        ' Removemos el objeto para evitar conflictos
+                        .Objeto(OfferSlot) = 0
+                        .cant(OfferSlot) = 0
+                    End If
+                End If
+            End If
+        End With
+    End If
+
+End Sub
+
+Public Function PuedeSeguirComerciando(ByVal UserIndex As Integer) As Boolean
+'***************************************************
+'Autor: ZaMa
+'Last Modification: 24/11/2009
+'Validates wether the conditions for the commerce to keep going are satisfied
+'***************************************************
+Dim OtroUserIndex As Integer
+Dim ComercioInvalido As Boolean
+
+With UserList(UserIndex)
+    ' Usuario valido?
+    If .ComUsu.DestUsu <= 0 Or .ComUsu.DestUsu > MaxUsers Then
+        ComercioInvalido = True
+    End If
+    
+    OtroUserIndex = .ComUsu.DestUsu
+    
+    If Not ComercioInvalido Then
+        ' Estan logueados?
+        If UserList(OtroUserIndex).flags.UserLogged = False Or .flags.UserLogged = False Then
+            ComercioInvalido = True
         End If
     End If
     
-    If Not TerminarAhora Then
+    If Not ComercioInvalido Then
+        ' Se estan comerciando el uno al otro?
         If UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex Then
-            TerminarAhora = True
+            ComercioInvalido = True
         End If
     End If
     
-    If Not TerminarAhora Then
-        If UserList(OtroUserIndex).name <> UserList(UserIndex).ComUsu.DestNick Then
-            TerminarAhora = True
+    If Not ComercioInvalido Then
+        ' El nombre del otro es el mismo que al que le comercio?
+        If UserList(OtroUserIndex).name <> .ComUsu.DestNick Then
+            ComercioInvalido = True
         End If
     End If
     
-    If Not TerminarAhora Then
-        If UserList(UserIndex).name <> UserList(OtroUserIndex).ComUsu.DestNick Then
-            TerminarAhora = True
+    If Not ComercioInvalido Then
+        ' Mi nombre  es el mismo que al que el le comercia?
+        If .name <> UserList(OtroUserIndex).ComUsu.DestNick Then
+            ComercioInvalido = True
         End If
     End If
     
-    If TerminarAhora = True Then
+    If Not ComercioInvalido Then
+        ' Esta vivo?
+        If UserList(OtroUserIndex).flags.Muerto = 1 Then
+            ComercioInvalido = True
+        End If
+    End If
+    
+    ' Fin del comercio
+    If ComercioInvalido = True Then
         Call FinComerciarUsu(UserIndex)
         
         If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
@@ -159,140 +344,10 @@ On Error GoTo Errhandler
             Call Protocol.FlushBuffer(OtroUserIndex)
         End If
         
-        Exit Sub
+        Exit Function
     End If
-    
-    UserList(UserIndex).ComUsu.Acepto = True
-    TerminarAhora = False
-    
-    If UserList(OtroUserIndex).ComUsu.Acepto = False Then
-        Call WriteConsoleMsg(UserIndex, "El otro usuario aun no ha aceptado tu oferta.", FontTypeNames.FONTTYPE_TALK)
-        Exit Sub
-    End If
-    
-    If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
-        Obj1.ObjIndex = iORO
-        If UserList(UserIndex).ComUsu.cant > UserList(UserIndex).Stats.GLD Then
-            Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
-            TerminarAhora = True
-        End If
-    Else
-        Obj1.amount = UserList(UserIndex).ComUsu.cant
-        Obj1.ObjIndex = UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).ObjIndex
-        If Obj1.amount > UserList(UserIndex).Invent.Object(UserList(UserIndex).ComUsu.Objeto).amount Then
-            Call WriteConsoleMsg(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
-            TerminarAhora = True
-        End If
-    End If
-    
-    If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
-        Obj2.ObjIndex = iORO
-        If UserList(OtroUserIndex).ComUsu.cant > UserList(OtroUserIndex).Stats.GLD Then
-            Call WriteConsoleMsg(OtroUserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
-            TerminarAhora = True
-        End If
-    Else
-        Obj2.amount = UserList(OtroUserIndex).ComUsu.cant
-        Obj2.ObjIndex = UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).ObjIndex
-        If Obj2.amount > UserList(OtroUserIndex).Invent.Object(UserList(OtroUserIndex).ComUsu.Objeto).amount Then
-            Call WriteConsoleMsg(OtroUserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
-            TerminarAhora = True
-        End If
-    End If
-    
-    'Por si las moscas...
-    If TerminarAhora = True Then
-        Call FinComerciarUsu(UserIndex)
-        
-        Call FinComerciarUsu(OtroUserIndex)
-        Call FlushBuffer(OtroUserIndex)
-        Exit Sub
-    End If
-    
-    Call FlushBuffer(OtroUserIndex)
-    
-    'Desde acá corregí el bug que cuando se ofrecian mas de
-    '10k de oro no le llegaban al destinatario.
-    
-    'pone el oro directamente en la billetera
-    If UserList(OtroUserIndex).ComUsu.Objeto = FLAGORO Then
-        'quito la cantidad de oro ofrecida
-        UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD - UserList(OtroUserIndex).ComUsu.cant
-        If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(OtroUserIndex).name & " solto oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
-        Call WriteUpdateUserStats(OtroUserIndex)
-        'y se la doy al otro
-        UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + UserList(OtroUserIndex).ComUsu.cant
-        If UserList(OtroUserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " recibio oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(OtroUserIndex).ComUsu.cant)
-        'Esta linea del log es al pedo. > Vuelvo a ponerla a pedido del CGMS
-        Call WriteUpdateUserStats(UserIndex)
-    Else
-        'Quita el objeto y se lo da al otro
-        If Not MeterItemEnInventario(UserIndex, Obj2) Then
-            Call TirarItemAlPiso(UserList(UserIndex).Pos, Obj2)
-        End If
-    
-        Call QuitarObjetos(Obj2.ObjIndex, Obj2.amount, OtroUserIndex)
-        
-        'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-        If ObjData(Obj2.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
-        End If
-    
-        'Es mucha cantidad?
-        If Obj2.amount > MAX_OBJ_LOGUEABLE Then
-        'Si no es de los prohibidos de loguear, lo logueamos.
-            If ObjData(Obj2.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj2.amount & " " & ObjData(Obj2.ObjIndex).name)
-            End If
-        End If
-    End If
-    
-    'pone el oro directamente en la billetera
-    If UserList(UserIndex).ComUsu.Objeto = FLAGORO Then
-        'quito la cantidad de oro ofrecida
-        UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD - UserList(UserIndex).ComUsu.cant
-        If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
-        Call WriteUpdateUserStats(UserIndex)
-        'y se la doy al otro
-        UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + UserList(UserIndex).ComUsu.cant
-        'If UserList(UserIndex).ComUsu.cant > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(OtroUserIndex).name & " recibio oro en comercio seguro con " & UserList(UserIndex).name & ". Cantidad: " & UserList(UserIndex).ComUsu.cant)
-        'Esta linea del log es al pedo.
-        Call WriteUpdateUserStats(OtroUserIndex)
-    Else
-        'Quita el objeto y se lo da al otro
-        If Not MeterItemEnInventario(OtroUserIndex, Obj1) Then
-            Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, Obj1)
-        End If
-    
-        Call QuitarObjetos(Obj1.ObjIndex, Obj1.amount, UserIndex)
-        
-        'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-        If ObjData(Obj1.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
-        End If
-    
-        'Es mucha cantidad?
-        If Obj1.amount > MAX_OBJ_LOGUEABLE Then
-        'Si no es de los prohibidos de loguear, lo logueamos.
-            If ObjData(Obj1.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(OtroUserIndex).name & " le pasó en comercio seguro a " & UserList(UserIndex).name & " " & Obj1.amount & " " & ObjData(Obj1.ObjIndex).name)
-            End If
-        End If
-    End If
-    
-    Call FinComerciarUsu(UserIndex)
-    Call FinComerciarUsu(OtroUserIndex)
-    
-    Exit Sub
+End With
 
-Errhandler:
-    Dim UserNick As String
-    Dim OtroUSerNick As String
+PuedeSeguirComerciando = True
 
-    If UserIndex > 0 Then UserNick = UserList(UserIndex).name
-    If OtroUserIndex > 0 Then OtroUSerNick = UserList(OtroUserIndex).name
-    
-    Call LogError("Error en AceptarComercioUsu. Error " & Err.Number & " : " & Err.description & " Userindex: " & UserIndex & _
-       " Nick: " & UserNick & " OtroUserIndex: " & OtroUserIndex & " Nick: " & OtroUSerNick)
-End Sub
-'[/Alejo]
+End Function

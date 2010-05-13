@@ -201,61 +201,87 @@ Public Function SaleMiembro(ByVal UserIndex As Integer) As Boolean
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number (Tavo)
 ' - 07/04/08 Added const ExponenteNivelParty. (MarKoxX)
+'11/03/2010: ZaMa - Ahora no le dice al lider que salio de su propia party, y optimice con with.
 '***************************************************
 'el valor de retorno representa si se disuelve la party
-Dim i As Integer
-Dim j As Integer
-i = 1
-SaleMiembro = False
-While i <= PARTY_MAXMEMBERS And p_members(i).UserIndex <> UserIndex
-    i = i + 1
-Wend
-
-If i = 1 Then
-    'sale el founder, la party se disuelve
-    SaleMiembro = True
-    Call MandarMensajeAConsola("El lider disuelve la party.", "Servidor")
-    For j = PARTY_MAXMEMBERS To 1 Step -1
-        If p_members(j).UserIndex > 0 Then
+    Dim i As Integer
+    Dim j As Integer
+    Dim MemberIndex As Integer
+    
+    i = 1
+    SaleMiembro = False
+    While i <= PARTY_MAXMEMBERS And p_members(i).UserIndex <> UserIndex
+        i = i + 1
+    Wend
+    
+    If i = 1 Then
+        'sale el founder, la party se disuelve
+        SaleMiembro = True
+        Call MandarMensajeAConsola("El líder disuelve la party.", "Servidor")
+        
+        For j = PARTY_MAXMEMBERS To 1 Step -1
             
-            Call WriteConsoleMsg(p_members(j).UserIndex, " Abandonas la party liderada por " & UserList(p_members(1).UserIndex).name, FontTypeNames.FONTTYPE_PARTY)
-    
-            Call WriteConsoleMsg(p_members(j).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(j).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
-    
-            If Not PARTY_EXPERIENCIAPORGOLPE Then
-                UserList(p_members(j).UserIndex).Stats.Exp = UserList(p_members(j).UserIndex).Stats.Exp + Fix(p_members(j).Experiencia)
-                If UserList(p_members(j).UserIndex).Stats.Exp > MAXEXP Then _
-                    UserList(p_members(j).UserIndex).Stats.Exp = MAXEXP
-                Call CheckUserLevel(p_members(j).UserIndex)
-                Call WriteUpdateUserStats(p_members(j).UserIndex)
-            End If
-            Call MandarMensajeAConsola(UserList(p_members(j).UserIndex).name & " abandona la party.", "Servidor")
-            UserList(p_members(j).UserIndex).PartyIndex = 0
-            p_CantMiembros = p_CantMiembros - 1
-            p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
-            p_members(j).UserIndex = 0
-            p_members(j).Experiencia = 0
+            With p_members(j)
+            
+                If .UserIndex > 0 Then
+                    
+                    ' No envia el mensaje al lider
+                    If j <> 1 Then
+                        Call WriteConsoleMsg(.UserIndex, "Abandonas la party liderada por " & _
+                            UserList(p_members(1).UserIndex).name & ".", FontTypeNames.FONTTYPE_PARTY)
+                    End If
+                    
+                    Call WriteConsoleMsg(.UserIndex, "Durante la misma has conseguido " & CStr(Fix(.Experiencia)) & " puntos de experiencia.", FontTypeNames.FONTTYPE_PARTY)
+            
+                    If Not PARTY_EXPERIENCIAPORGOLPE Then
+                        UserList(.UserIndex).Stats.Exp = UserList(.UserIndex).Stats.Exp + Fix(.Experiencia)
+                        If UserList(.UserIndex).Stats.Exp > MAXEXP Then _
+                            UserList(.UserIndex).Stats.Exp = MAXEXP
+                        Call CheckUserLevel(.UserIndex)
+                        Call WriteUpdateUserStats(.UserIndex)
+                    End If
+                    
+                    Call MandarMensajeAConsola(UserList(.UserIndex).name & " abandona la party.", "Servidor")
+                    
+                    UserList(.UserIndex).PartyIndex = 0
+                    p_CantMiembros = p_CantMiembros - 1
+                    p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
+                    .UserIndex = 0
+                    .Experiencia = 0
+                    
+                End If
+                
+            End With
+            
+        Next j
+    Else
+        If i <= PARTY_MAXMEMBERS Then
+            
+            MemberIndex = p_members(i).UserIndex
+            
+            With UserList(MemberIndex)
+                If Not PARTY_EXPERIENCIAPORGOLPE Then
+                    .Stats.Exp = .Stats.Exp + Fix(p_members(i).Experiencia)
+                    If .Stats.Exp > MAXEXP Then .Stats.Exp = MAXEXP
+                    
+                    Call CheckUserLevel(MemberIndex)
+                    Call WriteUpdateUserStats(MemberIndex)
+                End If
+                
+                Call MandarMensajeAConsola(.name & " abandona la party.", "Servidor")
+                'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
+                Call WriteConsoleMsg(MemberIndex, "Durante la misma has conseguido " & _
+                    CStr(Fix(p_members(i).Experiencia)) & " puntos de experiencia.", FontTypeNames.FONTTYPE_PARTY)
+                
+                p_CantMiembros = p_CantMiembros - 1
+                p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
+                MemberIndex = 0
+                p_members(i).Experiencia = 0
+                p_members(i).UserIndex = 0
+                CompactMemberList
+            End With
         End If
-    Next j
-Else
-    If i <= PARTY_MAXMEMBERS Then
-        If Not PARTY_EXPERIENCIAPORGOLPE Then
-            UserList(p_members(i).UserIndex).Stats.Exp = UserList(p_members(i).UserIndex).Stats.Exp + Fix(p_members(i).Experiencia)
-            If UserList(p_members(i).UserIndex).Stats.Exp > MAXEXP Then _
-                UserList(p_members(i).UserIndex).Stats.Exp = MAXEXP
-            Call CheckUserLevel(p_members(i).UserIndex)
-            Call WriteUpdateUserStats(p_members(i).UserIndex)
-        End If
-        Call MandarMensajeAConsola(UserList(p_members(i).UserIndex).name & " abandona la party.", "Servidor")
-        'TODO: Revisar que esto este bien, y no este faltando/sobrando un mensaje, ahora solo los estoy corrigiendo
-        Call WriteConsoleMsg(p_members(i).UserIndex, " Durante la misma has conseguido " & CStr(Fix(p_members(i).Experiencia)) & " puntos de experiencia!", FontTypeNames.FONTTYPE_PARTY)
-        p_CantMiembros = p_CantMiembros - 1
-        p_SumaNivelesElevados = p_SumaNivelesElevados - (UserList(UserIndex).Stats.ELV ^ ExponenteNivelParty)
-        p_members(i).UserIndex = 0
-        p_members(i).Experiencia = 0
-        CompactMemberList
     End If
-End If
 
 End Function
 
@@ -287,7 +313,7 @@ If Not HacerLeader Then Exit Function
 If UserIndexIndex = 0 Then
     'catastrofe! esto no deberia pasar nunca! pero como es AO.... :p
     Call LogError("INCONSISTENCIA DE PARTIES")
-    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(" Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!", FontTypeNames.FONTTYPE_GUILD))
+    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("¡¡¡Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!", FontTypeNames.FONTTYPE_GUILD))
     HacerLeader = False
     Exit Function
 End If
@@ -369,7 +395,7 @@ If rv Then
             'aspirante armada en party crimi
             If UI > 0 Then
                 If esArmada And criminal(UI) Then
-                    razon = "Los miembros de la armada no entran a una party con criminales."
+                    razon = "Los miembros del ejército real no entran a una party con criminales."
                     rv = False
                 End If
                 'aspirante caos en party ciuda
@@ -379,12 +405,12 @@ If rv Then
                 End If
                 'aspirante crimi en party armada
                 If UserList(UI).Faccion.ArmadaReal = 1 And criminal(UserIndex) Then
-                    razon = "Los criminales no entran a partys con miembros de la armada real."
+                    razon = "Los criminales no entran a parties con miembros del ejército real."
                     rv = False
                 End If
                 'aspirante ciuda en party caos
                 If UserList(UI).Faccion.FuerzasCaos = 1 And Not criminal(UserIndex) Then
-                    razon = "Los miembros de la legión oscura no entran a una party con ciudadanos."
+                    razon = "Los ciudadanos no entran a parties con miembros de la legión oscura."
                     rv = False
                 End If
             
@@ -395,7 +421,8 @@ If rv Then
         razon = "La mayor cantidad de miembros es " & PARTY_MAXMEMBERS
     End If
 Else
-    razon = "Te encuentras muy lejos del fundador."
+    '¿Con o sin nombre?
+    razon = "El usuario " & UserList(UserIndex).name & " se encuentra muy lejos."
 End If
 
 PuedeEntrar = rv
