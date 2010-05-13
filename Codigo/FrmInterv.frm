@@ -705,7 +705,7 @@ Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", 
 Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia", frmMain.tLluvia.Interval)
 
 
-MsgBox "Los intervalos se han guardado sin problemas"
+MsgBox "Los intervalos se han guardado sin problemas."
 
 Exit Sub
 Err:

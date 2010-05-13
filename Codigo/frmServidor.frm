@@ -524,6 +524,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+Call ResetForums
 Call LoadOBJData
 
 End Sub
@@ -553,7 +554,7 @@ Dim N As Integer, k As Integer
 
 Dim sENtrada As String
 
-sENtrada = InputBox("Escribe ""estoy DE acuerdo"" entre comillas y con distición de mayusculas minusculas para desbanear a todos los personajes", "UnBan", "hola")
+sENtrada = InputBox("Escribe ""estoy DE acuerdo"" entre comillas y con distinción de mayúsculas minúsculas para desbanear a todos los personajes.", "UnBan", "hola")
 If sENtrada = "estoy DE acuerdo" Then
 
     Fn = App.Path & "\logs\GenteBanned.log"
@@ -596,7 +597,7 @@ Dim i As Long, N As Long
 
 Dim sENtrada As String
 
-sENtrada = InputBox("Escribe ""estoy DE acuerdo"" sin comillas y con distición de mayusculas minusculas para desbanear a todos los personajes", "UnBan", "hola")
+sENtrada = InputBox("Escribe ""estoy DE acuerdo"" sin comillas y con distinción de mayúsculas minúsculas para desbanear a todos los personajes", "UnBan", "hola")
 If sENtrada = "estoy DE acuerdo" Then
     
     N = BanIps.Count
@@ -616,7 +617,7 @@ End Sub
 Private Sub Command20_Click()
 #If UsarQueSocket = 1 Then
 
-If MsgBox("Esta seguro que desea reiniciar los sockets ? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+If MsgBox("¿Está seguro que desea reiniciar los sockets? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
     Call WSApiReiniciarSockets
 End If
 
@@ -624,7 +625,7 @@ End If
 
 Dim LoopC As Integer
 
-If MsgBox("Esta seguro que desea reiniciar los sockets ? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+If MsgBox("¿Está seguro que desea reiniciar los sockets? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
     For LoopC = 1 To MaxUsers
         If UserList(LoopC).ConnID <> -1 And UserList(LoopC).ConnIDValida Then
             Call CloseSocket(LoopC)
@@ -659,13 +660,13 @@ Private Sub Command22_Click()
 End Sub
 
 Private Sub Command23_Click()
-If MsgBox("Esta seguro que desea hacer WorldSave, guardar pjs y cerrar ?", vbYesNo, "Apagar Magicamente") = vbYes Then
+If MsgBox("¿Está seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, "Apagar Magicamente") = vbYes Then
     Me.MousePointer = 11
     
     FrmStat.Show
    
     'WorldSave
-    Call DoBackUp
+    Call ES.DoBackUp
 
     'commit experiencia
     Call mdParty.ActualizaExperiencias
@@ -703,9 +704,9 @@ Private Sub Command28_Click()
 End Sub
 
 Private Sub Command3_Click()
-If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la perdida de datos de los usarios. ¿Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbYes Then
+If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la pérdida de datos de los usarios. ¿Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbYes Then
     Me.Visible = False
-    Call Restart
+    Call General.Restart
 End If
 End Sub
 
@@ -713,7 +714,7 @@ Private Sub Command4_Click()
 On Error GoTo eh
     Me.MousePointer = 11
     FrmStat.Show
-    Call DoBackUp
+    Call ES.DoBackUp
     Me.MousePointer = 0
     MsgBox "WORLDSAVE OK!!"
 Exit Sub

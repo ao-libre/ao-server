@@ -109,7 +109,7 @@ Dim tIndex As Long
 
 tIndex = NameIndex(cboPjs.Text)
 If tIndex > 0 Then
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & UserList(tIndex).name & " ha sido hechado. ", FontTypeNames.FONTTYPE_SERVER))
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & UserList(tIndex).name & " ha sido echado.", FontTypeNames.FONTTYPE_SERVER))
     Call CloseSocket(tIndex)
 End If
 

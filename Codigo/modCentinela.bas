@@ -122,7 +122,7 @@ On Error GoTo Error_Handler
     
     If Not UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK Then
         'Logueamos el evento
-        Call LogCentinela("Centinela baneo a " & UserList(Centinela.RevisandoUserIndex).name & " por uso de macro inasistido")
+        Call LogCentinela("Centinela baneo a " & UserList(Centinela.RevisandoUserIndex).name & " por uso de macro inasistido.")
         
         'Ponemos el ban
         UserList(Centinela.RevisandoUserIndex).flags.Ban = 1
@@ -176,7 +176,7 @@ Public Sub CentinelaCheckClave(ByVal UserIndex As Integer, ByVal clave As Intege
 '############################################################
     If clave = Centinela.clave And UserIndex = Centinela.RevisandoUserIndex Then
         UserList(Centinela.RevisandoUserIndex).flags.CentinelaOK = True
-        Call WriteChatOverHead(UserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "¡Muchas gracias " & UserList(Centinela.RevisandoUserIndex).name & "! Espero no haber sido una molestia.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
         Centinela.RevisandoUserIndex = 0
         Call FlushBuffer(UserIndex)
     Else
@@ -220,7 +220,7 @@ Public Sub CentinelaSendClave(ByVal UserIndex As Integer)
             Call WriteChatOverHead(UserIndex, "Te agradezco, pero ya me has respondido. Me retiraré pronto.", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbGreen)
         End If
     Else
-        Call WriteChatOverHead(UserIndex, "No es a ti a quien estoy hablando, ¿no ves?", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "No es a ti a quien estoy hablando, ¿No ves?", CStr(Npclist(CentinelaNPCIndex).Char.CharIndex), vbWhite)
     End If
 End Sub
 
@@ -262,7 +262,7 @@ Private Sub WarpCentinela(ByVal UserIndex As Integer)
         CentinelaNPCIndex = 0
     End If
     
-    If HayAgua(UserList(UserIndex).Pos.map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
+    If HayAgua(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y) Then
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_AGUA, UserList(UserIndex).Pos, True, False)
     Else
         CentinelaNPCIndex = SpawnNpc(NPC_CENTINELA_TIERRA, UserList(UserIndex).Pos, True, False)
@@ -279,7 +279,7 @@ Public Sub CentinelaUserLogout()
 '############################################################
     If Centinela.RevisandoUserIndex Then
         'Logueamos el evento
-        Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " se desolgueó al pedirsele la contraseña")
+        Call LogCentinela("El usuario " & UserList(Centinela.RevisandoUserIndex).name & " se desolgueó al pedirsele la contraseña.")
         
         'Reseteamos y esperamos a otro PasarMinuto para ir al siguiente user
         Centinela.clave = 0

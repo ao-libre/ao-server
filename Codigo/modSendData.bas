@@ -71,7 +71,7 @@ Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByV
 '**************************************************************
 On Error Resume Next
     Dim LoopC As Long
-    Dim map As Integer
+    Dim Map As Integer
     
     Select Case sndRoute
         Case SendTarget.ToPCArea
@@ -311,18 +311,18 @@ Private Sub SendToUserArea(ByVal UserIndex As Integer, ByVal sdData As String)
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -344,18 +344,18 @@ Private Sub SendToUserAreaButindex(ByVal UserIndex As Integer, ByVal sdData As S
     Dim TempInt As Integer
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
 
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
             
         TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
         If TempInt Then  'Esta en el area?
@@ -380,18 +380,18 @@ Private Sub SendToDeadUserArea(ByVal UserIndex As Integer, ByVal sdData As Strin
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -413,20 +413,20 @@ Private Sub SendToUserGuildArea(ByVal UserIndex As Integer, ByVal sdData As Stri
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
     If UserList(UserIndex).GuildIndex = 0 Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -447,20 +447,20 @@ Private Sub SendToUserPartyArea(ByVal UserIndex As Integer, ByVal sdData As Stri
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
     If UserList(UserIndex).PartyIndex = 0 Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -481,18 +481,18 @@ Private Sub SendToAdminsButConsejerosArea(ByVal UserIndex As Integer, ByVal sdDa
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -515,18 +515,18 @@ Private Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
     Dim TempInt As Integer
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = Npclist(NpcIndex).Pos.map
+    Map = Npclist(NpcIndex).Pos.Map
     AreaX = Npclist(NpcIndex).AreasInfo.AreaPerteneceX
     AreaY = Npclist(NpcIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
         If TempInt Then  'Esta en el area?
@@ -540,7 +540,7 @@ Private Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
     Next LoopC
 End Sub
 
-Public Sub SendToAreaByPos(ByVal map As Integer, ByVal AreaX As Integer, ByVal AreaY As Integer, ByVal sdData As String)
+Public Sub SendToAreaByPos(ByVal Map As Integer, ByVal AreaX As Integer, ByVal AreaY As Integer, ByVal sdData As String)
 '**************************************************************
 'Author: Lucio N. Tourrilhes (DuNga)
 'Last Modify Date: Unknow
@@ -553,10 +553,10 @@ Public Sub SendToAreaByPos(ByVal map As Integer, ByVal AreaX As Integer, ByVal A
     AreaX = 2 ^ (AreaX \ 9)
     AreaY = 2 ^ (AreaY \ 9)
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
             
         TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
         If TempInt Then  'Esta en el area?
@@ -570,7 +570,7 @@ Public Sub SendToAreaByPos(ByVal map As Integer, ByVal AreaX As Integer, ByVal A
     Next LoopC
 End Sub
 
-Public Sub SendToMap(ByVal map As Integer, ByVal sdData As String)
+Public Sub SendToMap(ByVal Map As Integer, ByVal sdData As String)
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 5/24/2007
@@ -579,10 +579,10 @@ Public Sub SendToMap(ByVal map As Integer, ByVal sdData As String)
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).ConnIDValida Then
             Call EnviarDatosASlot(tempIndex, sdData)
@@ -597,15 +597,15 @@ Public Sub SendToMapButIndex(ByVal UserIndex As Integer, ByVal sdData As String)
 '
 '**************************************************************
     Dim LoopC As Long
-    Dim map As Integer
+    Dim Map As Integer
     Dim tempIndex As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If tempIndex <> UserIndex And UserList(tempIndex).ConnIDValida Then
             Call EnviarDatosASlot(tempIndex, sdData)
@@ -623,18 +623,18 @@ Private Sub SendToGMsAreaButRmsOrCounselors(ByVal UserIndex As Integer, ByVal sd
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         With UserList(tempIndex)
             If .AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
@@ -661,18 +661,18 @@ Private Sub SendToUsersAreaButGMs(ByVal UserIndex As Integer, ByVal sdData As St
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -695,18 +695,18 @@ Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal UserIndex As Integer,
     Dim LoopC As Long
     Dim tempIndex As Integer
     
-    Dim map As Integer
+    Dim Map As Integer
     Dim AreaX As Integer
     Dim AreaY As Integer
     
-    map = UserList(UserIndex).Pos.map
+    Map = UserList(UserIndex).Pos.Map
     AreaX = UserList(UserIndex).AreasInfo.AreaPerteneceX
     AreaY = UserList(UserIndex).AreasInfo.AreaPerteneceY
     
-    If Not MapaValido(map) Then Exit Sub
+    If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(map).CountEntrys
-        tempIndex = ConnGroups(map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
         If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
             If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
@@ -718,4 +718,42 @@ Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal UserIndex As Integer,
             End If
         End If
     Next LoopC
+End Sub
+
+Public Sub AlertarFaccionarios(ByVal UserIndex As Integer)
+'**************************************************************
+'Author: ZaMa
+'Last Modify Date: 17/11/2009
+'Alerta a los faccionarios, dandoles una orientacion
+'**************************************************************
+    Dim LoopC As Long
+    Dim tempIndex As Integer
+    Dim Map As Integer
+    Dim Font As FontTypeNames
+    
+    If esCaos(UserIndex) Then
+        Font = FontTypeNames.FONTTYPE_CONSEJOCAOS
+    Else
+        Font = FontTypeNames.FONTTYPE_CONSEJO
+    End If
+    
+    Map = UserList(UserIndex).Pos.Map
+    
+    If Not MapaValido(Map) Then Exit Sub
+
+    For LoopC = 1 To ConnGroups(Map).CountEntrys
+        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+        
+        If UserList(tempIndex).ConnIDValida Then
+            If tempIndex <> UserIndex Then
+                ' Solo se envia a los de la misma faccion
+                If SameFaccion(UserIndex, tempIndex) Then
+                    Call EnviarDatosASlot(tempIndex, _
+                         PrepareMessageConsoleMsg("Escuchas el llamado de un compañero que proviene del " & _
+                         GetDireccion(UserIndex, tempIndex), Font))
+                End If
+            End If
+        End If
+    Next LoopC
+
 End Sub

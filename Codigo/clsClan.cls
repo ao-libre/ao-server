@@ -86,10 +86,12 @@ Public Property Let PuntosAntifaccion(ByVal p As Integer)
     Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Antifaccion", CStr(p))
 End Property
 
-Public Sub CambiarAlineacion(ByVal NuevaAlineacion As ALINEACION_GUILD)
+Public Function CambiarAlineacion(ByVal NuevaAlineacion As ALINEACION_GUILD) As Boolean
     p_Alineacion = NuevaAlineacion
     Call WriteVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Alineacion", Alineacion2String(p_Alineacion))
-End Sub
+    
+    If p_Alineacion = ALINEACION_NEUTRO Then CambiarAlineacion = True
+End Function
 
 '
 'INICIALIZADORES
@@ -230,6 +232,10 @@ End Function
 
 Public Sub ConectarMiembro(ByVal UserIndex As Integer)
     p_OnlineMembers.Add UserIndex
+
+    With UserList(UserIndex)
+        Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.name & " se ha conectado."))
+    End With
 End Sub
 
 Public Sub DesConectarMiembro(ByVal UserIndex As Integer)
@@ -237,9 +243,16 @@ Dim i   As Integer
     For i = 1 To p_OnlineMembers.Count
         If p_OnlineMembers.Item(i) = UserIndex Then
             p_OnlineMembers.Remove i
+            
+            With UserList(UserIndex)
+                Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.name & " se ha desconectado."))
+            End With
+
             Exit Sub
         End If
     Next i
+    
+
 End Sub
 
 Public Sub AceptarNuevoMiembro(ByRef Nombre As String)
@@ -475,8 +488,6 @@ Public Function GetDesc() As String
     GetDesc = GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "Desc")
 End Function
 
-
-
 '
 '
 'ELECCIONES
@@ -581,7 +592,7 @@ Dim i               As Long
 
             If CantGanadores > 1 Then
                 'empate en la votacion
-                Call SetGuildNews("*Empate en la votación. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan")
+                Call SetGuildNews("*Empate en la votación. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan.")
             ElseIf CantGanadores = 1 Then
                 list = Me.GetMemberList()
                 
@@ -822,6 +833,3 @@ Private Sub ReplaceInvalidChars(ByRef S As String)
         S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
     End If
 End Sub
-
-
-
