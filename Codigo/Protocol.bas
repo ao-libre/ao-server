@@ -2675,7 +2675,7 @@ Private Sub HandleInitCrafting(ByVal UserIndex As Integer)
         If TotalItems > 0 Then
             
             .Construir.Cantidad = TotalItems
-            .Construir.PorCiclo = MinimoInt(MaxItemsConstruibles(UserIndex), ItemsPorCiclo)
+            .Construir.PorCiclo = MinimoInt(MaxItemsConstruibles(.Stats.ELV), ItemsPorCiclo)
             
         End If
     End With
@@ -3084,7 +3084,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         'Can't steal administrative players
                         If UserList(tU).flags.Privilegios And PlayerType.User Then
                             If UserList(tU).flags.Muerto = 0 Then
-                                 If Abs(.Pos.X - X) + Abs(.Pos.Y - Y) > 1 Then
+                                 If Abs(.Pos.X - X) + Abs(.Pos.Y - Y) > 2 Then
                                      Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
                                      Exit Sub
                                  End If

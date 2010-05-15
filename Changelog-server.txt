@@ -475,3 +475,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/04/2010 : Agrego restricciones a la hroa de lanzar hechizos para los caos. (ZaMa)
  * 23/04/2010 : Ahora no se puede robar sin energia. (ZaMa)
  * 23/04/2010 : Solo se peude robar a 1 tile de distancia. (ZaMa)
+ * 15/05/2010 : El ladron puede robar a 2 tiles de distancia. (ZaMa)
+ * 15/05/2010 : Arreglo formula para extraccion/construccion. (ZaMa)
+ * 15/05/2010 : Ya no se peude robar usuarios en consulta. (ZaMa)
