@@ -1408,7 +1408,7 @@ With UserList(UserIndex)
         Dim MiObj As Obj
         
         If .clase = eClass.Worker Then
-            CantidadItems = 1 + MaximoInt(1, CInt((.Stats.ELV - 2) / 5))
+            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
             
             MiObj.Amount = RandomNumber(1, CantidadItems)
         Else
@@ -1541,6 +1541,11 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 On Error GoTo Errhandler
 
     If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
+    
+    If UserList(VictimaIndex).flags.EnConsulta Then
+        Call WriteConsoleMsg(LadrOnIndex, "¡¡¡No puedes robar a usuarios en consulta!!!", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
     
     If UserList(LadrOnIndex).flags.Seguro Then
         If Not criminal(VictimaIndex) Then
@@ -1959,7 +1964,7 @@ With UserList(UserIndex)
         Dim MiObj As Obj
         
         If .clase = eClass.Worker Then
-            CantidadItems = 1 + MaximoInt(1, CInt((.Stats.ELV - 2) / 5))
+            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
             
             MiObj.Amount = RandomNumber(1, CantidadItems)
         Else
@@ -2034,7 +2039,7 @@ With UserList(UserIndex)
         MiObj.ObjIndex = ObjData(.flags.TargetObj).MineralIndex
         
         If .clase = eClass.Worker Then
-            CantidadItems = 1 + MaximoInt(1, CInt((.Stats.ELV - 2) / 5))
+            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
             
             MiObj.Amount = RandomNumber(1, CantidadItems)
         Else
@@ -2344,7 +2349,7 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
     
 End Sub
 
-Public Function MaxItemsConstruibles(ByVal UserIndex As Integer) As Integer
+Public Function MaxItemsConstruibles(ByVal UserLevel As Integer) As Integer
 '***************************************************
 'Author: ZaMa
 'Last Modification: 29/01/2010
@@ -2352,5 +2357,15 @@ Public Function MaxItemsConstruibles(ByVal UserIndex As Integer) As Integer
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '***************************************************
     
-    MaxItemsConstruibles = MaximoInt(1, CInt((.Stats.ELV - 2) / 5))
+    MaxItemsConstruibles = MaximoInt(1, CInt((UserLevel - 2) * 0.2))
 End Function
+
+Public Function MaxItemsExtraibles(ByVal UserLevel As Integer) As Integer
+'***************************************************
+'Author: ZaMa
+'Last Modification: 14/05/2010
+'***************************************************
+    
+    MaxItemsExtraibles = MaximoInt(1, CInt((UserLevel - 2) * 0.2)) + 1
+End Function
+
