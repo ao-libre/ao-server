@@ -494,12 +494,14 @@ On Error GoTo Errhandler
                 .Stats.ELU = .Stats.ELU * 1.4
             ElseIf .Stats.ELV < 21 Then
                 .Stats.ELU = .Stats.ELU * 1.35
-            ElseIf .Stats.ELV < 33 Then
+            ElseIf .Stats.ELV < 26 Then
                 .Stats.ELU = .Stats.ELU * 1.3
-            ElseIf .Stats.ELV < 41 Then
-                .Stats.ELU = .Stats.ELU * 1.225
+            ElseIf .Stats.ELV < 35 Then
+                .Stats.ELU = .Stats.ELU * 1.2
+            ElseIf .Stats.ELV < 40 Then
+                .Stats.ELU = .Stats.ELU * 1.3
             Else
-                .Stats.ELU = .Stats.ELU * 1.25
+                .Stats.ELU = .Stats.ELU * 1.375
             End If
             
             'Calculo subida de vida
