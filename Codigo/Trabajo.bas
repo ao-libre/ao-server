@@ -186,12 +186,10 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
             
                 Call ToogleBoatBody(UserIndex)
                 
-                If .clase = eClass.Pirat Then
-                    If .flags.Oculto = 1 Then
-                        .flags.Oculto = 0
-                        Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                        Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
-                    End If
+                If .flags.Oculto = 1 Then
+                    .flags.Oculto = 0
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
                 
             ' Esta muerto

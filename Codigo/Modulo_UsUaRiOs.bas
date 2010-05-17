@@ -508,7 +508,6 @@ On Error GoTo Errhandler
             Promedio = ModVida(.clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
             aux = RandomNumber(0, 100)
             
-        
             If Promedio - Int(Promedio) = 0.5 Then
                 'Es promedio semientero
                 DistVida(1) = DistribucionSemienteraVida(1)
