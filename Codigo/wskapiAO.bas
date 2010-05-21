@@ -380,7 +380,8 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     Dim Tam As Long, sa As sockaddr
     Dim NuevoSock As Long
     Dim i As Long
-    Dim tStr As String
+    Dim str As String
+    Dim data() As Byte
     
     Tam = sockaddr_size
     
@@ -396,11 +397,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     If Ret = INVALID_SOCKET Then
         i = Err.LastDllError
         Call LogCriticEvent("Error en Accept() API " & i & ": " & GetWSAErrorString(i))
-        Exit Sub
-    End If
-    
-    If Not SecurityIp.IpSecurityAceptarNuevaConexion(sa.sin_addr) Then
-        Call WSApiCloseSocket(NuevoSock)
         Exit Sub
     End If
 
@@ -419,6 +415,29 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 
     NuevoSock = Ret
     
+    Call setsockopt(NuevoSock, SOL_SOCKET, SO_LINGER, 0, 4)
+    
+    If Not SecurityIp.IpSecurityAceptarNuevaConexion(sa.sin_addr) Then
+        Call WSApiCloseSocket(NuevoSock)
+        Exit Sub
+    End If
+    
+    If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
+        str = Protocol.PrepareMessageErrorMsg("Limite de conexiones para su IP alcanzado.")
+        
+        ReDim Preserve data(Len(str) - 1) As Byte
+        
+        data = StrConv(str, vbFromUnicode)
+        
+#If SeguridadAlkon Then
+        Call Security.DataSent(Security.NO_SLOT, data)
+#End If
+        
+        Call send(ByVal NuevoSock, data(0), ByVal UBound(data()) + 1, ByVal 0)
+        Call WSApiCloseSocket(NuevoSock)
+        Exit Sub
+    End If
+    
     'Seteamos el tamaño del buffer de entrada
     If setsockopt(NuevoSock, SOL_SOCKET, SO_RCVBUFFER, SIZE_RCVBUF, 4) <> 0 Then
         i = Err.LastDllError
@@ -429,13 +448,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         i = Err.LastDllError
         Call LogCriticEvent("Error al setear el tamaño del buffer de salida " & i & ": " & GetWSAErrorString(i))
     End If
-
-    'If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
-        'tStr = "Limite de conexiones para su IP alcanzado."
-        'Call send(ByVal NuevoSock, ByVal tStr, ByVal Len(tStr), ByVal 0)
-        'Call WSApiCloseSocket(NuevoSock)
-        'Exit Sub
-    'End If
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -463,7 +475,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
                 'Call apiclosesocket(NuevoSock)
                 Call WriteErrorMsg(NewIndex, "Su IP se encuentra bloqueada en este servidor.")
                 Call FlushBuffer(NewIndex)
-                'Call SecurityIp.IpRestarConexion(sa.sin_addr)
+                Call SecurityIp.IpRestarConexion(sa.sin_addr)
                 Call WSApiCloseSocket(NuevoSock)
                 Exit Sub
             End If
@@ -476,9 +488,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         
         Call AgregaSlotSock(NuevoSock, NewIndex)
     Else
-        Dim str As String
-        Dim data() As Byte
-        
         str = Protocol.PrepareMessageErrorMsg("El servidor se encuentra lleno en este momento. Disculpe las molestias ocasionadas.")
         
         ReDim Preserve data(Len(str) - 1) As Byte

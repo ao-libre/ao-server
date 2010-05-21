@@ -615,52 +615,52 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 '***************************************************
 
 On Error GoTo Errhandler
-    
-    If UserIndex = LastUser Then
-        Do Until UserList(LastUser).flags.UserLogged
-            LastUser = LastUser - 1
-            If LastUser < 1 Then Exit Do
-        Loop
-    End If
-    
-    'Call SecurityIp.IpRestarConexion(GetLongIp(UserList(UserIndex).ip))
-    
-    If UserList(UserIndex).ConnID <> -1 Then
-        Call CloseSocketSL(UserIndex)
-    End If
-    
-    'Es el mismo user al que está revisando el centinela??
-    'IMPORTANTE!!! hacerlo antes de resetear así todavía sabemos el nombre del user
-    ' y lo podemos loguear
-    If Centinela.RevisandoUserIndex = UserIndex Then _
-        Call modCentinela.CentinelaUserLogout
-    
-    'mato los comercios seguros
-    If UserList(UserIndex).ComUsu.DestUsu > 0 Then
-        If UserList(UserList(UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-            If UserList(UserList(UserIndex).ComUsu.DestUsu).ComUsu.DestUsu = UserIndex Then
-                Call WriteConsoleMsg(UserList(UserIndex).ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_TALK)
-                Call FinComerciarUsu(UserList(UserIndex).ComUsu.DestUsu)
-                Call FlushBuffer(UserList(UserIndex).ComUsu.DestUsu)
+    With UserList(UserIndex)
+        If UserIndex = LastUser Then
+            Do Until UserList(LastUser).flags.UserLogged
+                LastUser = LastUser - 1
+                If LastUser < 1 Then Exit Do
+            Loop
+        End If
+        
+        Call SecurityIp.IpRestarConexion(GetLongIp(.ip))
+        
+        If .ConnID <> -1 Then
+            Call CloseSocketSL(UserIndex)
+        End If
+        
+        'Es el mismo user al que está revisando el centinela??
+        'IMPORTANTE!!! hacerlo antes de resetear así todavía sabemos el nombre del user
+        ' y lo podemos loguear
+        If Centinela.RevisandoUserIndex = UserIndex Then _
+            Call modCentinela.CentinelaUserLogout
+        
+        'mato los comercios seguros
+        If .ComUsu.DestUsu > 0 Then
+            If UserList(.ComUsu.DestUsu).flags.UserLogged Then
+                If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = UserIndex Then
+                    Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_TALK)
+                    Call FinComerciarUsu(.ComUsu.DestUsu)
+                    Call FlushBuffer(.ComUsu.DestUsu)
+                End If
             End If
         End If
-    End If
-    
-    'Empty buffer for reuse
-    Call UserList(UserIndex).incomingData.ReadASCIIStringFixed(UserList(UserIndex).incomingData.length)
-    
-    If UserList(UserIndex).flags.UserLogged Then
-        If NumUsers > 0 Then NumUsers = NumUsers - 1
-        Call CloseUser(UserIndex)
         
-        Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
-    Else
-        Call ResetUserSlot(UserIndex)
-    End If
-    
-    UserList(UserIndex).ConnID = -1
-    UserList(UserIndex).ConnIDValida = False
-    
+        'Empty buffer for reuse
+        Call .incomingData.ReadASCIIStringFixed(.incomingData.length)
+        
+        If .flags.UserLogged Then
+            If NumUsers > 0 Then NumUsers = NumUsers - 1
+            Call CloseUser(UserIndex)
+            
+            Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
+        Else
+            Call ResetUserSlot(UserIndex)
+        End If
+        
+        .ConnID = -1
+        .ConnIDValida = False
+    End With
 Exit Sub
 
 Errhandler:
