@@ -45,7 +45,7 @@ Private IpTables()      As Long 'USAMOS 2 LONGS: UNO DE LA IP, SEGUIDO DE UNO DE
 Private EntrysCounter   As Long
 Private MaxValue        As Long
 Private Multiplicado    As Long 'Cuantas veces multiplike el EntrysCounter para que me entren?
-Private Const IntervaloEntreConexiones As Long = 1000
+Private Const IntervaloEntreConexiones As Long = 5000
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'Declaraciones para maximas conexiones por usuario
@@ -69,7 +69,7 @@ Public Sub InitIpTables(ByVal OptCountersValue As Long)
     EntrysCounter = OptCountersValue
     Multiplicado = 1
 
-    ReDim IpTables(EntrysCounter * 2) As Long
+    ReDim IpTables(EntrysCounter * 2 - 1) As Long
     MaxValue = 0
 
     ReDim MaxConTables(Declaraciones.MaxUsers * 2 - 1) As Long
@@ -92,7 +92,7 @@ Public Sub IpSecurityMantenimientoLista()
     'Las borro todas cada 1 hora, asi se "renuevan"
     EntrysCounter = EntrysCounter \ Multiplicado
     Multiplicado = 1
-    ReDim IpTables(EntrysCounter * 2) As Long
+    ReDim IpTables(EntrysCounter * 2 - 1) As Long
     MaxValue = 0
 End Sub
 
@@ -142,7 +142,7 @@ Private Sub AddNewIpIntervalo(ByVal ip As Long, ByVal index As Long)
         Multiplicado = Multiplicado + 1
         EntrysCounter = EntrysCounter * Multiplicado
         
-        ReDim Preserve IpTables(EntrysCounter * 2) As Long
+        ReDim Preserve IpTables(EntrysCounter * 2 - 1) As Long
     End If
     
     '4) Corro todo el array para arriba
@@ -192,37 +192,17 @@ End Function
 Private Sub AddNewIpLimiteConexiones(ByVal ip As Long, ByVal index As Long)
 '*************************************************  *************
 'Author: (EL OSO)
-'Last Modify Date: Unknow
-'
+'Last Modify Date: 16/2/2006
+'05/21/10 - Pato: Saco el uso de buffer auxiliar
 '*************************************************  *************
     'Debug.Print "agrega conexion a " & ip
     'Debug.Print "(Declaraciones.MaxUsers - index) = " & (Declaraciones.MaxUsers - Index)
     '4) Corro todo el array para arriba
-    'Call CopyMemory(MaxConTables(Index + 2), MaxConTables(Index), (MaxConTablesEntry - Index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
-    'MaxConTables(Index) = ip
-
-    '3) Subo el indicador de el maximo valor almacenado y listo :)
-    'MaxConTablesEntry = MaxConTablesEntry + 1
-
-
-'*************************************************    *************
-'Author: (EL OSO)
-'Last Modify Date: 16/2/2006
-'Modified by Juan Martín Sotuyo Dodero (Maraxus)
-'*************************************************    *************
-    Debug.Print "agrega conexion a " & ip
-    Debug.Print "(Declaraciones.MaxUsers - index) = " & (Declaraciones.MaxUsers - index)
-    Debug.Print "Agrega conexion a nueva IP " & ip
-    '4) Corro todo el array para arriba
-    Dim temp() As Long
-    ReDim temp((MaxConTablesEntry - index \ 2) * 2) As Long  'VB no deja inicializar con rangos variables...
-    Call CopyMemory(temp(0), MaxConTables(index), (MaxConTablesEntry - index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
-    Call CopyMemory(MaxConTables(index + 2), temp(0), (MaxConTablesEntry - index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
+    Call CopyMemory(MaxConTables(index + 2), MaxConTables(index), (MaxConTablesEntry - index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
     MaxConTables(index) = ip
 
     '3) Subo el indicador de el maximo valor almacenado y listo :)
     MaxConTablesEntry = MaxConTablesEntry + 1
-
 End Sub
 
 Public Sub IpRestarConexion(ByVal ip As Long)
@@ -233,7 +213,7 @@ Public Sub IpRestarConexion(ByVal ip As Long)
 '***************************************************
 
 Dim key As Long
-    Debug.Print "resta conexion a " & ip
+    'Debug.Print "resta conexion a " & ip
     
     key = FindTableIp(ip, IP_LIMITECONEXIONES)
     
@@ -241,13 +221,17 @@ Dim key As Long
         If MaxConTables(key + 1) > 0 Then
             MaxConTables(key + 1) = MaxConTables(key + 1) - 1
         End If
-        Call LogIP("restamos conexion a " & ip & " key=" & key & ". Conexiones: " & MaxConTables(key + 1))
+        'Call LogIP("restamos conexion a " & ip & " key=" & key & ". Conexiones: " & MaxConTables(key + 1))
+        'Comento esto, sino se nos va el HD en logs, jaja
         If MaxConTables(key + 1) <= 0 Then
             'la limpiamos
-            Call CopyMemory(MaxConTables(key), MaxConTables(key + 2), (MaxConTablesEntry - (key \ 2) + 1) * 8)
             MaxConTablesEntry = MaxConTablesEntry - 1
+            
+            If key + 2 < UBound(MaxConTables) Then
+                Call CopyMemory(MaxConTables(key), MaxConTables(key + 2), (MaxConTablesEntry - (key \ 2)) * 8)
+            End If
         End If
-    Else 'Key <= 0
+    Else 'Key < 0
         Call LogIP("restamos conexion a " & ip & " key=" & key & ". NEGATIVO!!")
         'LogCriticEvent "SecurityIp.IpRestarconexion obtuvo un valor negativo en key"
     End If
@@ -275,7 +259,7 @@ Dim Middle As Long
     Select Case Tabla
         Case e_SecurityIpTabla.IP_INTERVALOS
             First = 0
-            Last = MaxValue
+            Last = MaxValue - 1
             Do While First <= Last
                 Middle = (First + Last) \ 2
                 
@@ -288,12 +272,12 @@ Dim Middle As Long
                     Exit Function
                 End If
             Loop
-            FindTableIp = Not (Middle * 2)
+            FindTableIp = Not (First * 2)
         
         Case e_SecurityIpTabla.IP_LIMITECONEXIONES
             
             First = 0
-            Last = MaxConTablesEntry
+            Last = MaxConTablesEntry - 1
 
             Do While First <= Last
                 Middle = (First + Last) \ 2
@@ -307,7 +291,7 @@ Dim Middle As Long
                     Exit Function
                 End If
             Loop
-            FindTableIp = Not (Middle * 2)
+            FindTableIp = Not (First * 2)
     End Select
 End Function
 
