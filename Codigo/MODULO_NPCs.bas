@@ -81,6 +81,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 'Last Modify Date: 24/01/2007
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
+'22/05/2010: Los caos ya no suben nobleza ni plebe al atacar npcs.
 '********************************************************
 On Error GoTo Errhandler
     Dim MiNPC As npc
@@ -182,21 +183,24 @@ On Error GoTo Errhandler
                     If .Reputacion.AsesinoRep > MAXREP Then _
                         .Reputacion.AsesinoRep = MAXREP
                 End If
-            ElseIf MiNPC.Stats.Alineacion = 1 Then
-                .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlCAZADOR
-                If .Reputacion.PlebeRep > MAXREP Then _
-                    .Reputacion.PlebeRep = MAXREP
-                    
-            ElseIf MiNPC.Stats.Alineacion = 2 Then
-                .Reputacion.NobleRep = .Reputacion.NobleRep + vlASESINO / 2
-                If .Reputacion.NobleRep > MAXREP Then _
-                    .Reputacion.NobleRep = MAXREP
-                    
-            ElseIf MiNPC.Stats.Alineacion = 4 Then
-                .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlCAZADOR
-                If .Reputacion.PlebeRep > MAXREP Then _
-                    .Reputacion.PlebeRep = MAXREP
-                    
+                
+            ElseIf Not esCaos(UserIndex) Then
+                If MiNPC.Stats.Alineacion = 1 Then
+                    .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlCAZADOR
+                    If .Reputacion.PlebeRep > MAXREP Then _
+                        .Reputacion.PlebeRep = MAXREP
+                        
+                ElseIf MiNPC.Stats.Alineacion = 2 Then
+                    .Reputacion.NobleRep = .Reputacion.NobleRep + vlASESINO / 2
+                    If .Reputacion.NobleRep > MAXREP Then _
+                        .Reputacion.NobleRep = MAXREP
+                        
+                ElseIf MiNPC.Stats.Alineacion = 4 Then
+                    .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlCAZADOR
+                    If .Reputacion.PlebeRep > MAXREP Then _
+                        .Reputacion.PlebeRep = MAXREP
+                        
+                End If
             End If
             
             If criminal(UserIndex) And esArmada(UserIndex) Then Call ExpulsarFaccionReal(UserIndex)

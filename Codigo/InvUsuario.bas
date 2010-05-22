@@ -33,7 +33,7 @@ Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'
+' 22/05/2010: Los items newbies ya no son robables.
 '***************************************************
 
 '17/09/02
@@ -48,7 +48,8 @@ For i = 1 To UserList(UserIndex).CurrentInventorySlots
     ObjIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
     If ObjIndex > 0 Then
             If (ObjData(ObjIndex).OBJType <> eOBJType.otLlaves And _
-                ObjData(ObjIndex).OBJType <> eOBJType.otBarcos) Then
+                ObjData(ObjIndex).OBJType <> eOBJType.otBarcos And _
+                Not ItemNewbie(ObjIndex)) Then
                   TieneObjetosRobables = True
                   Exit Function
             End If

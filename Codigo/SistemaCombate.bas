@@ -113,16 +113,20 @@ Private Function PoderAtaqueProyectil(ByVal UserIndex As Integer) As Long
 '***************************************************
 
     Dim PoderAtaqueTemp As Long
+    Dim SkillProyectiles As Integer
     
     With UserList(UserIndex)
-        If .Stats.UserSkills(eSkill.Proyectiles) < 31 Then
-            PoderAtaqueTemp = .Stats.UserSkills(eSkill.Proyectiles) * ModClase(.clase).AtaqueProyectiles
-        ElseIf .Stats.UserSkills(eSkill.Proyectiles) < 61 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Proyectiles) + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
-        ElseIf .Stats.UserSkills(eSkill.Proyectiles) < 91 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Proyectiles) + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+     
+        SkillProyectiles = .Stats.UserSkills(eSkill.Proyectiles)
+    
+        If SkillProyectiles < 31 Then
+            PoderAtaqueTemp = SkillProyectiles * ModClase(.clase).AtaqueProyectiles
+        ElseIf SkillProyectiles < 61 Then
+            PoderAtaqueTemp = (SkillProyectiles + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+        ElseIf SkillProyectiles < 91 Then
+            PoderAtaqueTemp = (SkillProyectiles + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
         Else
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Proyectiles) + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+            PoderAtaqueTemp = (SkillProyectiles + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
         End If
         
         PoderAtaqueProyectil = (PoderAtaqueTemp + (2.5 * MaximoInt(.Stats.ELV - 12, 0)))
@@ -137,16 +141,20 @@ Private Function PoderAtaqueWrestling(ByVal UserIndex As Integer) As Long
 '***************************************************
 
     Dim PoderAtaqueTemp As Long
+    Dim WrestlingSkill As Integer
     
     With UserList(UserIndex)
-        If .Stats.UserSkills(eSkill.Wrestling) < 31 Then
-            PoderAtaqueTemp = .Stats.UserSkills(eSkill.Wrestling) * ModClase(.clase).AtaqueWrestling
-        ElseIf .Stats.UserSkills(eSkill.Wrestling) < 61 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Wrestling) + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
-        ElseIf .Stats.UserSkills(eSkill.Wrestling) < 91 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Wrestling) + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+    
+        WrestlingSkill = .Stats.UserSkills(eSkill.Wrestling)
+    
+        If WrestlingSkill < 31 Then
+            PoderAtaqueTemp = WrestlingSkill * ModClase(.clase).AtaqueWrestling
+        ElseIf WrestlingSkill < 61 Then
+            PoderAtaqueTemp = (WrestlingSkill + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+        ElseIf WrestlingSkill < 91 Then
+            PoderAtaqueTemp = (WrestlingSkill + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
         Else
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Wrestling) + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+            PoderAtaqueTemp = (WrestlingSkill + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
         End If
         
         PoderAtaqueWrestling = (PoderAtaqueTemp + (2.5 * MaximoInt(.Stats.ELV - 12, 0)))
@@ -878,8 +886,8 @@ End Sub
 Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 21/05/2010
+'21/05/2010: ZaMa - Evito division por cero.
 '***************************************************
 
 On Error GoTo Errhandler
@@ -896,72 +904,81 @@ On Error GoTo Errhandler
     Dim ProbEvadir As Long
     Dim Skill As eSkill
     
-    SkillTacticas = UserList(VictimaIndex).Stats.UserSkills(eSkill.Tacticas)
-    SkillDefensa = UserList(VictimaIndex).Stats.UserSkills(eSkill.Defensa)
+    With UserList(VictimaIndex)
     
-    Arma = UserList(AtacanteIndex).Invent.WeaponEqpObjIndex
-    
-    'Calculamos el poder de evasion...
-    UserPoderEvasion = PoderEvasion(VictimaIndex)
-    
-    If UserList(VictimaIndex).Invent.EscudoEqpObjIndex > 0 Then
-       UserPoderEvasionEscudo = PoderEvasionEscudo(VictimaIndex)
-       UserPoderEvasion = UserPoderEvasion + UserPoderEvasionEscudo
-    Else
-        UserPoderEvasionEscudo = 0
-    End If
-    
-    'Esta usando un arma ???
-    If UserList(AtacanteIndex).Invent.WeaponEqpObjIndex > 0 Then
-        If ObjData(Arma).proyectil = 1 Then
-            PoderAtaque = PoderAtaqueProyectil(AtacanteIndex)
-            Skill = eSkill.Proyectiles
+        SkillTacticas = .Stats.UserSkills(eSkill.Tacticas)
+        SkillDefensa = .Stats.UserSkills(eSkill.Defensa)
+        
+        Arma = UserList(AtacanteIndex).Invent.WeaponEqpObjIndex
+        
+        'Calculamos el poder de evasion...
+        UserPoderEvasion = PoderEvasion(VictimaIndex)
+        
+        If .Invent.EscudoEqpObjIndex > 0 Then
+           UserPoderEvasionEscudo = PoderEvasionEscudo(VictimaIndex)
+           UserPoderEvasion = UserPoderEvasion + UserPoderEvasionEscudo
         Else
-            PoderAtaque = PoderAtaqueArma(AtacanteIndex)
-            Skill = eSkill.Armas
+            UserPoderEvasionEscudo = 0
         End If
-    Else
-        PoderAtaque = PoderAtaqueWrestling(AtacanteIndex)
-        Skill = eSkill.Wrestling
-    End If
-    
-    ' Chances are rounded
-    ProbExito = MaximoInt(10, MinimoInt(90, 50 + (PoderAtaque - UserPoderEvasion) * 0.4))
-    
-    ' Se reduce la evasion un 25%
-    If UserList(VictimaIndex).flags.Meditando = True Then
-        ProbEvadir = (100 - ProbExito) * 0.75
-        ProbExito = MinimoInt(90, 100 - ProbEvadir)
-    End If
-    
-    UsuarioImpacto = (RandomNumber(1, 100) <= ProbExito)
-    
-    ' el usuario esta usando un escudo ???
-    If UserList(VictimaIndex).Invent.EscudoEqpObjIndex > 0 Then
-        'Fallo ???
-        If Not UsuarioImpacto Then
-            ' Chances are rounded
-            ProbRechazo = MaximoInt(10, MinimoInt(90, 100 * SkillDefensa / (SkillDefensa + SkillTacticas)))
-            Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
-            If Rechazo Then
-                'Se rechazo el ataque con el escudo
-                Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessagePlayWave(SND_ESCUDO, UserList(VictimaIndex).Pos.X, UserList(VictimaIndex).Pos.Y))
-                  
-                Call WriteMultiMessage(AtacanteIndex, eMessages.BlockedWithShieldother)
-                Call WriteMultiMessage(VictimaIndex, eMessages.BlockedWithShieldUser)
-                
-                Call SubirSkill(VictimaIndex, eSkill.Defensa, True)
+        
+        'Esta usando un arma ???
+        If UserList(AtacanteIndex).Invent.WeaponEqpObjIndex > 0 Then
+            If ObjData(Arma).proyectil = 1 Then
+                PoderAtaque = PoderAtaqueProyectil(AtacanteIndex)
+                Skill = eSkill.Proyectiles
             Else
-                Call SubirSkill(VictimaIndex, eSkill.Defensa, False)
+                PoderAtaque = PoderAtaqueArma(AtacanteIndex)
+                Skill = eSkill.Armas
+            End If
+        Else
+            PoderAtaque = PoderAtaqueWrestling(AtacanteIndex)
+            Skill = eSkill.Wrestling
+        End If
+        
+        ' Chances are rounded
+        ProbExito = MaximoInt(10, MinimoInt(90, 50 + (PoderAtaque - UserPoderEvasion) * 0.4))
+        
+        ' Se reduce la evasion un 25%
+        If .flags.Meditando Then
+            ProbEvadir = (100 - ProbExito) * 0.75
+            ProbExito = MinimoInt(90, 100 - ProbEvadir)
+        End If
+        
+        UsuarioImpacto = (RandomNumber(1, 100) <= ProbExito)
+        
+        ' el usuario esta usando un escudo ???
+        If .Invent.EscudoEqpObjIndex > 0 Then
+            'Fallo ???
+            If Not UsuarioImpacto Then
+                
+                Dim SumaSkills As Integer
+                
+                ' Para evitar division por 0
+                SumaSkills = MaximoInt(1, SkillDefensa + SkillTacticas)
+                
+                ' Chances are rounded
+                ProbRechazo = MaximoInt(10, MinimoInt(90, 100 * SkillDefensa / SumaSkills))
+                Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
+                If Rechazo Then
+                    'Se rechazo el ataque con el escudo
+                    Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessagePlayWave(SND_ESCUDO, .Pos.X, .Pos.Y))
+                      
+                    Call WriteMultiMessage(AtacanteIndex, eMessages.BlockedWithShieldother)
+                    Call WriteMultiMessage(VictimaIndex, eMessages.BlockedWithShieldUser)
+                    
+                    Call SubirSkill(VictimaIndex, eSkill.Defensa, True)
+                Else
+                    Call SubirSkill(VictimaIndex, eSkill.Defensa, False)
+                End If
             End If
         End If
-    End If
-    
-    If Not UsuarioImpacto Then
-        Call SubirSkill(AtacanteIndex, Skill, False)
-    End If
-    
-    Call FlushBuffer(VictimaIndex)
+        
+        If Not UsuarioImpacto Then
+            Call SubirSkill(AtacanteIndex, Skill, False)
+        End If
+        
+        Call FlushBuffer(VictimaIndex)
+    End With
     
     Exit Function
     
@@ -1055,32 +1072,53 @@ On Error GoTo Errhandler
     Dim Obj As ObjData
     Dim Resist As Byte
     
+    Dim BarcaIndex As Integer
+    Dim ArmaIndex As Integer
+    Dim CascoIndex As Integer
+    Dim ArmaduraIndex As Integer
+    
     daño = CalcularDaño(AtacanteIndex)
     
     Call UserEnvenena(AtacanteIndex, VictimaIndex)
     
     With UserList(AtacanteIndex)
-        If .flags.Navegando = 1 And .Invent.BarcoObjIndex > 0 Then
-             Obj = ObjData(.Invent.BarcoObjIndex)
-             daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
+        
+        ' Aumento de daño por barca (atacante)
+        If .flags.Navegando = 1 Then
+            
+            BarcaIndex = .Invent.BarcoObjIndex
+            If BarcaIndex > 0 Then
+                Obj = ObjData(BarcaIndex)
+                daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
+            End If
         End If
         
-        If UserList(VictimaIndex).flags.Navegando = 1 And UserList(VictimaIndex).Invent.BarcoObjIndex > 0 Then
-             Obj = ObjData(UserList(VictimaIndex).Invent.BarcoObjIndex)
-             defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
+        ' Aumento de defensa por barca (vistima)
+        If UserList(VictimaIndex).flags.Navegando = 1 Then
+            
+            BarcaIndex = UserList(VictimaIndex).Invent.BarcoObjIndex
+            If BarcaIndex > 0 Then
+                Obj = ObjData(BarcaIndex)
+                defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
+            End If
         End If
         
-        If .Invent.WeaponEqpObjIndex > 0 Then
-            Resist = ObjData(.Invent.WeaponEqpObjIndex).Refuerzo
+        ' Refuerzo arma (atacante)
+        ArmaIndex = .Invent.WeaponEqpObjIndex
+        If ArmaIndex > 0 Then
+            Resist = ObjData(ArmaIndex).Refuerzo
         End If
         
         Lugar = RandomNumber(PartesCuerpo.bCabeza, PartesCuerpo.bTorso)
         
         Select Case Lugar
+        
             Case PartesCuerpo.bCabeza
+            
                 'Si tiene casco absorbe el golpe
-                If UserList(VictimaIndex).Invent.CascoEqpObjIndex > 0 Then
-                    Obj = ObjData(UserList(VictimaIndex).Invent.CascoEqpObjIndex)
+                CascoIndex = UserList(VictimaIndex).Invent.CascoEqpObjIndex
+                If CascoIndex > 0 Then
+                    Obj = ObjData(CascoIndex)
                     absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
                     absorbido = absorbido + defbarco - Resist
                     daño = daño - absorbido
@@ -1088,12 +1126,17 @@ On Error GoTo Errhandler
                 End If
             
             Case Else
+            
                 'Si tiene armadura absorbe el golpe
-                If UserList(VictimaIndex).Invent.ArmourEqpObjIndex > 0 Then
-                    Obj = ObjData(UserList(VictimaIndex).Invent.ArmourEqpObjIndex)
+                ArmaduraIndex = UserList(VictimaIndex).Invent.ArmourEqpObjIndex
+                If ArmaduraIndex > 0 Then
+                    Obj = ObjData(ArmaduraIndex)
                     Dim Obj2 As ObjData
-                    If UserList(VictimaIndex).Invent.EscudoEqpObjIndex Then
-                        Obj2 = ObjData(UserList(VictimaIndex).Invent.EscudoEqpObjIndex)
+                    Dim EscudoIndex As Integer
+                    
+                    EscudoIndex = UserList(VictimaIndex).Invent.EscudoEqpObjIndex
+                    If EscudoIndex Then
+                        Obj2 = ObjData(EscudoIndex)
                         absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
                     Else
                         absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
@@ -1111,17 +1154,14 @@ On Error GoTo Errhandler
         
         If .flags.Hambre = 0 And .flags.Sed = 0 Then
             'Si usa un arma quizas suba "Combate con armas"
-            If .Invent.WeaponEqpObjIndex > 0 Then
-                If ObjData(.Invent.WeaponEqpObjIndex).proyectil Then
+            If ArmaIndex > 0 Then
+                If ObjData(ArmaIndex).proyectil Then
                     'es un Arco. Sube Armas a Distancia
                     Call SubirSkill(AtacanteIndex, eSkill.Proyectiles, True)
                     
-                    ' Si es arma arrojadiza..
-                    If ObjData(.Invent.WeaponEqpObjIndex).Municion = 0 Then
-                        ' Si acuchilla
-                        If ObjData(.Invent.WeaponEqpObjIndex).Acuchilla = 1 Then
-                            Call DoAcuchillar(AtacanteIndex, 0, VictimaIndex, daño)
-                        End If
+                    ' Si acuchilla
+                    If PuedeAcuchillar(AtacanteIndex) Then
+                        Call DoAcuchillar(AtacanteIndex, 0, VictimaIndex, daño)
                     End If
                 Else
                     'Sube combate con armas.

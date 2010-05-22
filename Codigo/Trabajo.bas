@@ -561,7 +561,8 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
 '***************************************************
 'Author: Unknown
 'Last Modification: 16/11/2009
-'16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items
+'16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items.
+'22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '***************************************************
 Dim CantidadItems As Integer
 Dim TieneMateriales As Boolean
@@ -646,11 +647,13 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Herreria, True)
         Call UpdateUserInv(True, UserIndex, 0)
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
-    
-        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-        If .Reputacion.PlebeRep > MAXREP Then _
-            .Reputacion.PlebeRep = MAXREP
-    
+        
+        If Not esCaos(UserIndex) Then
+            .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+            If .Reputacion.PlebeRep > MAXREP Then _
+                .Reputacion.PlebeRep = MAXREP
+        End If
+        
         .Counters.Trabajando = .Counters.Trabajando + 1
     End If
 End With
@@ -680,6 +683,7 @@ Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex A
 'Last Modification: 16/11/2009
 '24/08/2008: ZaMa - Validates if the player has the required skill
 '16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items
+'22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -768,11 +772,13 @@ On Error GoTo Errhandler
             Call SubirSkill(UserIndex, eSkill.Carpinteria, True)
             Call UpdateUserInv(True, UserIndex, 0)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
-        
-            .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-            If .Reputacion.PlebeRep > MAXREP Then _
-                .Reputacion.PlebeRep = MAXREP
-        
+            
+            If Not esCaos(UserIndex) Then
+                .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+                If .Reputacion.PlebeRep > MAXREP Then _
+                    .Reputacion.PlebeRep = MAXREP
+            End If
+            
             .Counters.Trabajando = .Counters.Trabajando + 1
         End If
     End With
@@ -1389,6 +1395,7 @@ Public Sub DoPescar(ByVal UserIndex As Integer)
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
+'22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -1441,9 +1448,11 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Pesca, False)
     End If
     
-    .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-    If .Reputacion.PlebeRep > MAXREP Then _
-        .Reputacion.PlebeRep = MAXREP
+    If Not esCaos(UserIndex) Then
+        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+        If .Reputacion.PlebeRep > MAXREP Then _
+            .Reputacion.PlebeRep = MAXREP
+    End If
     
     .Counters.Trabajando = .Counters.Trabajando + 1
 End With
@@ -1711,6 +1720,7 @@ Public Function ObjEsRobable(ByVal VictimaIndex As Integer, ByVal Slot As Intege
 'Last Modification: -
 ' Agregué los barcos
 ' Esta funcion determina qué objetos son robables.
+' 22/05/2010: Los items newbies ya no son robables.
 '***************************************************
 
 Dim OI As Integer
@@ -1722,7 +1732,8 @@ ObjData(OI).OBJType <> eOBJType.otLlaves And _
 UserList(VictimaIndex).Invent.Object(Slot).Equipped = 0 And _
 ObjData(OI).Real = 0 And _
 ObjData(OI).Caos = 0 And _
-ObjData(OI).OBJType <> eOBJType.otBarcos
+ObjData(OI).OBJType <> eOBJType.otBarcos And _
+Not ItemNewbie(OI)
 
 End Function
 
@@ -1805,7 +1816,7 @@ Call CancelExit(VictimaIndex)
 
 End Sub
 
-Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
+Public Sub DoApuñalar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Long)
 '***************************************************
 'Autor: Nacho (Integer) & Unknown (orginal version)
 'Last Modification: 04/17/08 - (NicoNZ)
@@ -1840,9 +1851,11 @@ If RandomNumber(0, 100) < Suerte Then
             daño = Round(daño * 1.5, 0)
         End If
         
-        UserList(VictimUserIndex).Stats.MinHp = UserList(VictimUserIndex).Stats.MinHp - daño
-        Call WriteConsoleMsg(UserIndex, "Has apuñalado a " & UserList(VictimUserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(VictimUserIndex, "Te ha apuñalado " & UserList(UserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        With UserList(VictimUserIndex)
+            .Stats.MinHp = .Stats.MinHp - daño
+            Call WriteConsoleMsg(UserIndex, "Has apuñalado a " & .name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(VictimUserIndex, "Te ha apuñalado " & UserList(UserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        End With
         
         Call FlushBuffer(VictimUserIndex)
     Else
@@ -1866,55 +1879,66 @@ Public Sub DoAcuchillar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Inte
 'Last Modification: 12/01/2010
 '***************************************************
 
-    If UserList(UserIndex).clase <> eClass.Pirat Then Exit Sub
-    If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then Exit Sub
-
     If RandomNumber(0, 100) < PROB_ACUCHILLAR Then
         daño = Int(daño * DAÑO_ACUCHILLAR)
         
         If VictimUserIndex <> 0 Then
-            UserList(VictimUserIndex).Stats.MinHp = UserList(VictimUserIndex).Stats.MinHp - daño
-            Call WriteConsoleMsg(UserIndex, "Has acuchillado a " & UserList(VictimUserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha acuchillado por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+        
+            With UserList(VictimUserIndex)
+                .Stats.MinHp = .Stats.MinHp - daño
+                Call WriteConsoleMsg(UserIndex, "Has acuchillado a " & .name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha acuchillado por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+            End With
+            
         Else
+        
             Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - daño
             Call WriteConsoleMsg(UserIndex, "Has acuchillado a la criatura por " & daño, FontTypeNames.FONTTYPE_FIGHT)
             Call CalcularDarExp(UserIndex, VictimNpcIndex, daño)
+        
         End If
     End If
     
 End Sub
 
-Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Integer)
+Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Integer, ByVal VictimUserIndex As Integer, ByVal daño As Long)
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 28/01/2007
 '***************************************************
-Dim Suerte As Integer
-Dim Skill As Integer
-
-If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
-If UserList(UserIndex).Invent.WeaponEqpSlot = 0 Then Exit Sub
-If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).name <> "Espada Vikinga" Then Exit Sub
-
-
-Skill = UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling)
-
-Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0893) * 100)
-
-If RandomNumber(0, 100) < Suerte Then
-    daño = Int(daño * 0.75)
-    If VictimUserIndex <> 0 Then
-        UserList(VictimUserIndex).Stats.MinHp = UserList(VictimUserIndex).Stats.MinHp - daño
-        Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a " & UserList(VictimUserIndex).name & " por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha golpeado críticamente por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
-    Else
-        Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - daño
-        Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a la criatura por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
-        '[Alejo]
-        Call CalcularDarExp(UserIndex, VictimNpcIndex, daño)
+    Dim Suerte As Integer
+    Dim Skill As Integer
+    
+    With UserList(UserIndex)
+        If .clase <> eClass.Bandit Then Exit Sub
+        If ObjData(.Invent.WeaponEqpObjIndex).name <> "Espada Vikinga" Then Exit Sub
+    
+        Skill = .Stats.UserSkills(eSkill.Wrestling)
+    End With
+    
+    Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0893) * 100)
+    
+    If RandomNumber(0, 100) < Suerte Then
+    
+        daño = Int(daño * 0.75)
+        
+        If VictimUserIndex <> 0 Then
+            
+            With UserList(VictimUserIndex)
+                .Stats.MinHp = .Stats.MinHp - daño
+                Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a " & .name & " por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha golpeado críticamente por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
+            End With
+            
+        Else
+        
+            Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - daño
+            Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a la criatura por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call CalcularDarExp(UserIndex, VictimNpcIndex, daño)
+            
+        End If
+        
     End If
-End If
 
 End Sub
 
@@ -1946,6 +1970,7 @@ Public Sub DoTalar(ByVal UserIndex As Integer, Optional ByVal DarMaderaElfica As
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
+'22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -1996,9 +2021,11 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Talar, False)
     End If
     
-    .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-    If .Reputacion.PlebeRep > MAXREP Then _
-        .Reputacion.PlebeRep = MAXREP
+    If Not esCaos(UserIndex) Then
+        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+        If .Reputacion.PlebeRep > MAXREP Then _
+            .Reputacion.PlebeRep = MAXREP
+    End If
     
     .Counters.Trabajando = .Counters.Trabajando + 1
 End With
@@ -2017,6 +2044,7 @@ Public Sub DoMineria(ByVal UserIndex As Integer)
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
+'22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -2068,9 +2096,11 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Mineria, False)
     End If
     
-    .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-    If .Reputacion.PlebeRep > MAXREP Then _
-        .Reputacion.PlebeRep = MAXREP
+    If Not esCaos(UserIndex) Then
+        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+        If .Reputacion.PlebeRep > MAXREP Then _
+            .Reputacion.PlebeRep = MAXREP
+    End If
     
     .Counters.Trabajando = .Counters.Trabajando + 1
 End With
