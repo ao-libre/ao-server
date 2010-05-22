@@ -948,6 +948,19 @@ On Error GoTo Errhandler
                 If .flags.Muerto = 1 Then
                     If .flags.Traveling = 1 Then
                         If .Counters.goHome <= 0 Then
+                            'Antes de que el pj llegue a la ciudad, lo hacemos dejar de navegar para que no se buguee.
+                            If .flags.Navegando = 1 Then
+                                .Char.body = iCuerpoMuerto
+                                .Char.Head = iCabezaMuerto
+                                .Char.ShieldAnim = NingunEscudo
+                                .Char.WeaponAnim = NingunArma
+                                .Char.CascoAnim = NingunCasco
+                                
+                                .flags.Navegando = 0
+                                
+                                Call WriteNavigateToggle(i)
+                                'Le sacamos el navegando, pero no le mostramos a los demás porque va a ser sumoneado hasta ulla.
+                            End If
                             tX = Ciudades(.Hogar).X
                             tY = Ciudades(.Hogar).Y
                             tMap = Ciudades(.Hogar).Map
@@ -957,6 +970,7 @@ On Error GoTo Errhandler
                             
                             Call WriteMultiMessage(i, eMessages.FinishHome)
                             .flags.Traveling = 0
+                            
                         Else
                             .Counters.goHome = .Counters.goHome - 1
                         End If
