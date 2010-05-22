@@ -479,3 +479,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 15/05/2010 : Arreglo formula para extraccion/construccion. (ZaMa)
  * 15/05/2010 : Ya no se peude robar usuarios en consulta. (ZaMa)
  * 17/05/2010 : Ahora se va el ocultar al equipar barca. (ZaMa)
+ * 22/05/2010 : Fix del bug #3001669 (Marco)
