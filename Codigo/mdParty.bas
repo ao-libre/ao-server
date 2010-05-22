@@ -98,14 +98,17 @@ End Function
 Public Function PuedeCrearParty(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 05/22/2010 (Marco)
+' - 05/22/2010 : staff members aren't allowed to party anyone. (Marco)
 '***************************************************
-
-    PuedeCrearParty = True
-'    If UserList(UserIndex).Stats.ELV < MINPARTYLEVEL Then
     
-    If CInt(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma)) * UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) < 100 Then
+    PuedeCrearParty = True
+    
+    If (UserList(UserIndex).flags.Privilegios And PlayerType.User) = 0 Then
+    'staff members aren't allowed to party anyone.
+        Call WriteConsoleMsg(UserIndex, "¡Los miembros del staff no pueden crear partys!", FontTypeNames.FONTTYPE_PARTY)
+        PuedeCrearParty = False
+    ElseIf CInt(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma)) * UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) < 100 Then
         Call WriteConsoleMsg(UserIndex, "Tu carisma y liderazgo no son suficientes para liderar una party.", FontTypeNames.FONTTYPE_PARTY)
         PuedeCrearParty = False
     ElseIf UserList(UserIndex).flags.Muerto = 1 Then
@@ -163,14 +166,21 @@ End Sub
 Public Sub SolicitarIngresoAParty(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 05/22/2010 (Marco)
+' - 05/22/2010 : staff members aren't allowed to party anyone. (Marco)
 '***************************************************
 
 'ESTO ES enviado por el PJ para solicitar el ingreso a la party
 Dim tInt As Integer
 
     With UserList(UserIndex)
+    
+        'staff members aren't allowed to party anyone
+        If (.flags.Privilegios And PlayerType.User) = 0 Then
+            Call WriteConsoleMsg(UserIndex, "¡Los miembros del staff no pueden unirse a partys!", FontTypeNames.FONTTYPE_PARTY)
+            Exit Sub
+        End If
+        
         If .PartyIndex > 0 Then
             'si ya esta en una party
             Call WriteConsoleMsg(UserIndex, "Ya perteneces a una party, escribe /SALIRPARTY para abandonarla", FontTypeNames.FONTTYPE_PARTY)
