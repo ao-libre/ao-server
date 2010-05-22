@@ -681,97 +681,105 @@ Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex A
 '24/08/2008: ZaMa - Validates if the player has the required skill
 '16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items
 '***************************************************
-Dim CantidadItems As Integer
-Dim TieneMateriales As Boolean
+On Error GoTo Errhandler
 
-With UserList(UserIndex)
-    CantidadItems = .Construir.PorCiclo
+    Dim CantidadItems As Integer
+    Dim TieneMateriales As Boolean
     
-    If .Construir.Cantidad < CantidadItems Then _
-        CantidadItems = .Construir.Cantidad
-        
-    If .Construir.Cantidad > 0 Then _
-        .Construir.Cantidad = .Construir.Cantidad - CantidadItems
-        
-    If CantidadItems = 0 Then
-        Call WriteStopWorking(UserIndex)
-        Exit Sub
-    End If
-
-    If Round(.Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(.clase), 0) >= _
-       ObjData(ItemIndex).SkCarpinteria And _
-       PuedeConstruirCarpintero(ItemIndex) And _
-       .Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
-       
-        ' Calculo cuantos item puede construir
-        While CantidadItems > 0 And Not TieneMateriales
-            If CarpinteroTieneMateriales(UserIndex, ItemIndex, CantidadItems) Then
-                TieneMateriales = True
-            Else
-                CantidadItems = CantidadItems - 1
-            End If
-        Wend
-        
-        ' No tiene los materiales ni para construir 1 item?
-        If Not TieneMateriales Then
-            ' Para que muestre el mensaje
-            Call CarpinteroTieneMateriales(UserIndex, ItemIndex, 1, True)
+    With UserList(UserIndex)
+        If .Invent.WeaponEqpObjIndex <> SERRUCHO_CARPINTERO Then
+            Call WriteConsoleMsg(UserIndex, "Debes tener equipado el serrucho para trabajar.", FontTypeNames.FONTTYPE_INFO)
             Call WriteStopWorking(UserIndex)
             Exit Sub
         End If
-       
-        'Sacamos energía
-        If .clase = eClass.Worker Then
-            'Chequeamos que tenga los puntos antes de sacarselos
-            If .Stats.MinSta >= GASTO_ENERGIA_TRABAJADOR Then
-                .Stats.MinSta = .Stats.MinSta - GASTO_ENERGIA_TRABAJADOR
-                Call WriteUpdateSta(UserIndex)
-            Else
-                Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+        
+        CantidadItems = .Construir.PorCiclo
+        
+        If .Construir.Cantidad < CantidadItems Then _
+            CantidadItems = .Construir.Cantidad
+            
+        If .Construir.Cantidad > 0 Then _
+            .Construir.Cantidad = .Construir.Cantidad - CantidadItems
+            
+        If CantidadItems = 0 Then
+            Call WriteStopWorking(UserIndex)
+            Exit Sub
+        End If
+    
+        If Round(.Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(.clase), 0) >= _
+           ObjData(ItemIndex).SkCarpinteria And _
+           PuedeConstruirCarpintero(ItemIndex) And _
+           .Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
+           
+            ' Calculo cuantos item puede construir
+            While CantidadItems > 0 And Not TieneMateriales
+                If CarpinteroTieneMateriales(UserIndex, ItemIndex, CantidadItems) Then
+                    TieneMateriales = True
+                Else
+                    CantidadItems = CantidadItems - 1
+                End If
+            Wend
+            
+            ' No tiene los materiales ni para construir 1 item?
+            If Not TieneMateriales Then
+                ' Para que muestre el mensaje
+                Call CarpinteroTieneMateriales(UserIndex, ItemIndex, 1, True)
+                Call WriteStopWorking(UserIndex)
                 Exit Sub
             End If
-        Else
-            'Chequeamos que tenga los puntos antes de sacarselos
-            If .Stats.MinSta >= GASTO_ENERGIA_NO_TRABAJADOR Then
-                .Stats.MinSta = .Stats.MinSta - GASTO_ENERGIA_NO_TRABAJADOR
-                Call WriteUpdateSta(UserIndex)
+           
+            'Sacamos energía
+            If .clase = eClass.Worker Then
+                'Chequeamos que tenga los puntos antes de sacarselos
+                If .Stats.MinSta >= GASTO_ENERGIA_TRABAJADOR Then
+                    .Stats.MinSta = .Stats.MinSta - GASTO_ENERGIA_TRABAJADOR
+                    Call WriteUpdateSta(UserIndex)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
             Else
-                Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
-                Exit Sub
+                'Chequeamos que tenga los puntos antes de sacarselos
+                If .Stats.MinSta >= GASTO_ENERGIA_NO_TRABAJADOR Then
+                    .Stats.MinSta = .Stats.MinSta - GASTO_ENERGIA_NO_TRABAJADOR
+                    Call WriteUpdateSta(UserIndex)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No tienes suficiente energía.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
             End If
+            
+            Call CarpinteroQuitarMateriales(UserIndex, ItemIndex, CantidadItems)
+            Call WriteConsoleMsg(UserIndex, "Has construido " & CantidadItems & _
+                                IIf(CantidadItems = 1, " objeto!", " objetos!"), FontTypeNames.FONTTYPE_INFO)
+            
+            Dim MiObj As Obj
+            MiObj.Amount = CantidadItems
+            MiObj.ObjIndex = ItemIndex
+            If Not MeterItemEnInventario(UserIndex, MiObj) Then
+                Call TirarItemAlPiso(.Pos, MiObj)
+            End If
+            
+            'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
+            If ObjData(MiObj.ObjIndex).Log = 1 Then
+                Call LogDesarrollo(.name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name)
+            End If
+            
+            Call SubirSkill(UserIndex, eSkill.Carpinteria, True)
+            Call UpdateUserInv(True, UserIndex, 0)
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
+        
+            .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+            If .Reputacion.PlebeRep > MAXREP Then _
+                .Reputacion.PlebeRep = MAXREP
+        
+            .Counters.Trabajando = .Counters.Trabajando + 1
         End If
-        
-        Call CarpinteroQuitarMateriales(UserIndex, ItemIndex, CantidadItems)
-        Call WriteConsoleMsg(UserIndex, "Has construido " & CantidadItems & _
-                            IIf(CantidadItems = 1, " objeto!", " objetos!"), FontTypeNames.FONTTYPE_INFO)
-        
-        Dim MiObj As Obj
-        MiObj.Amount = CantidadItems
-        MiObj.ObjIndex = ItemIndex
-        If Not MeterItemEnInventario(UserIndex, MiObj) Then
-            Call TirarItemAlPiso(.Pos, MiObj)
-        End If
-        
-        'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
-        If ObjData(MiObj.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(.name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name)
-        End If
-        
-        Call SubirSkill(UserIndex, eSkill.Carpinteria, True)
-        Call UpdateUserInv(True, UserIndex, 0)
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
+    End With
     
-    
-        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
-        If .Reputacion.PlebeRep > MAXREP Then _
-            .Reputacion.PlebeRep = MAXREP
-    
-        .Counters.Trabajando = .Counters.Trabajando + 1
-    
-    ElseIf .Invent.WeaponEqpObjIndex <> SERRUCHO_CARPINTERO Then
-        Call WriteConsoleMsg(UserIndex, "Debes tener equipado el serrucho para trabajar.", FontTypeNames.FONTTYPE_INFO)
-    End If
-End With
+    Exit Sub
+Errhandler:
+    Call LogError("Error en CarpinteroConstruirItem. Error " & Err.Number & " : " & Err.description & ". UserIndex:" & UserIndex & ". ItemIndex:" & ItemIndex)
 End Sub
 
 Private Function MineralesParaLingote(ByVal Lingote As iMinerales) As Integer
