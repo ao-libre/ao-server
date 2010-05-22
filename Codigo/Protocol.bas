@@ -4045,6 +4045,12 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
                 Call WriteCommerceChat(UserIndex, "No tienes esa cantidad de oro para agregar a la oferta.", FontTypeNames.FONTTYPE_TALK)
                 Exit Sub
             End If
+            
+            If Amount < 0 Then
+                If Abs(Amount) > .ComUsu.GoldAmount Then
+                    Amount = .ComUsu.GoldAmount * (-1)
+                End If
+            End If
         Else
             'If modifing a filled offerSlot, we already got the objIndex, then we don't need to know it
             If Slot <> 0 Then ObjIndex = .Invent.Object(Slot).ObjIndex
@@ -4056,6 +4062,12 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
                 Exit Sub
             End If
             
+            If Amount < 0 Then
+                If Abs(Amount) > .ComUsu.cant(OfferSlot) Then
+                    Amount = .ComUsu.cant(OfferSlot) * (-1)
+                End If
+            End If
+        
             If ItemNewbie(ObjIndex) Then
                 Call WriteCancelOfferItem(UserIndex, OfferSlot)
                 Exit Sub
@@ -4077,10 +4089,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             End If
         End If
         
-        
-                
         Call AgregarOferta(UserIndex, OfferSlot, ObjIndex, Amount, Slot = FLAGORO)
-        
         Call EnviarOferta(tUser, OfferSlot)
     End With
 End Sub
