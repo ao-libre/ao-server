@@ -417,7 +417,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     
     If setsockopt(NuevoSock, SOL_SOCKET, SO_LINGER, 0, 4) <> 0 Then
         i = Err.LastDllError
-        Call LogCriticEvento("Error al setear lingers." & i & ": " & GetWSAErrorString(i))
+        Call LogCriticEvent("Error al setear lingers." & i & ": " & GetWSAErrorString(i))
     End If
     
     If Not SecurityIp.IpSecurityAceptarNuevaConexion(sa.sin_addr) Then
