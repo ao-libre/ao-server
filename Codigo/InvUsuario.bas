@@ -468,14 +468,12 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
 '***************************************************
 
 On Error GoTo Errhandler
-
-    Dim X As Integer
-    Dim Y As Integer
     Dim Slot As Byte
     
     With UserList(UserIndex)
         '¿el user ya tiene un objeto del mismo tipo?
         Slot = 1
+        
         Do Until .Invent.Object(Slot).ObjIndex = MiObj.ObjIndex And _
                  .Invent.Object(Slot).Amount + MiObj.Amount <= MAX_INVENTORY_OBJS
            Slot = Slot + 1
@@ -498,7 +496,7 @@ On Error GoTo Errhandler
            .Invent.NroItems = .Invent.NroItems + 1
         End If
     
-        If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot < MAX_INVENTORY_SLOTS Then
+        If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
             If Not ItemSeCae(MiObj.ObjIndex) Then
                 Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).name & ".", FontTypeNames.FONTTYPE_FIGHT)
                 MeterItemEnInventario = False
