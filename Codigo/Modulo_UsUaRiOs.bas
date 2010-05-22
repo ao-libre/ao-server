@@ -1216,13 +1216,22 @@ Public Function PuedeApuñalar(ByVal UserIndex As Integer) As Boolean
 'Last Modification: -
 '
 '***************************************************
-
-    If UserList(UserIndex).Invent.WeaponEqpObjIndex > 0 Then
-        If ObjData(UserList(UserIndex).Invent.WeaponEqpObjIndex).Apuñala = 1 Then
-            PuedeApuñalar = UserList(UserIndex).Stats.UserSkills(eSkill.Apuñalar) >= MIN_APUÑALAR _
-                        Or UserList(UserIndex).clase = eClass.Assasin
+    
+    Dim WeaponIndex As Integer
+     
+    With UserList(UserIndex)
+        
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+        
+        If WeaponIndex > 0 Then
+            If ObjData(WeaponIndex).Apuñala = 1 Then
+                PuedeApuñalar = .Stats.UserSkills(eSkill.Apuñalar) >= MIN_APUÑALAR _
+                                Or .clase = eClass.Assasin
+            End If
         End If
-    End If
+        
+    End With
+    
 End Function
 
 Public Function PuedeAcuchillar(ByVal UserIndex As Integer) As Boolean
@@ -1232,10 +1241,14 @@ Public Function PuedeAcuchillar(ByVal UserIndex As Integer) As Boolean
 '
 '***************************************************
     
+    Dim WeaponIndex As Integer
+    
     With UserList(UserIndex)
         If .clase = eClass.Pirat Then
-            If .Invent.WeaponEqpObjIndex > 0 Then
-                PuedeAcuchillar = (ObjData(.Invent.WeaponEqpObjIndex).Acuchilla = 1)
+        
+            WeaponIndex = .Invent.WeaponEqpObjIndex
+            If WeaponIndex > 0 Then
+                PuedeAcuchillar = (ObjData(WeaponIndex).Acuchilla = 1)
             End If
         End If
     End With
