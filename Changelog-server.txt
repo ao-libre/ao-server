@@ -487,3 +487,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 22/05/2010 : Los caos ya no suben plebe al realizar tareas de contruccion o extraccion. (ZaMa)
  * 22/05/2010 : Los caos ya no suben nobleza ni plebe al matar npcs. (zaMa)
  * 22/05/2010 : Ahora ya no se pueden robar los items newbies. (zaMa)
+ * 22/05/2010 : Ya no se peude banear admins de mayor rango si estan online. (ZaMa)
