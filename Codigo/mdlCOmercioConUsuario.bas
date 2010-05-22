@@ -339,7 +339,7 @@ With UserList(UserIndex)
     If ComercioInvalido = True Then
         Call FinComerciarUsu(UserIndex)
         
-        If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
+        If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
             Call FinComerciarUsu(OtroUserIndex)
             Call Protocol.FlushBuffer(OtroUserIndex)
         End If
