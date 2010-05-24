@@ -710,7 +710,10 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
 'Author: Unknown
 'Last modified: 01/03/2009
 '01/03/2009: ZaMa - Las mascotas no pueden atacar al rey si quedan pretorianos vivos.
+'23/05/2010: ZaMa - Ahora los elementales renuevan el tiempo de pertencia del npc que atacan si pertenece a su amo.
 '*************************************************
+    
+    Dim MasterIndex As Integer
     
     With Npclist(Atacante)
         
@@ -738,6 +741,18 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
             Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(.flags.Snd1, .Pos.X, .Pos.Y))
         End If
         
+        MasterIndex = .MaestroUser
+        
+        ' Tiene maestro?
+        If MasterIndex > 0 Then
+            ' Su maestro es dueño del npc al que ataca?
+            If Npclist(Victima).Owner = MasterIndex Then
+                ' Renuevo el timer de pertenencia
+                Call IntervaloPerdioNpc(MasterIndex, True)
+            End If
+        End If
+        
+        
         If NpcImpactoNpc(Atacante, Victima) Then
             If Npclist(Victima).flags.Snd2 > 0 Then
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(Npclist(Victima).flags.Snd2, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
@@ -745,7 +760,7 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO2, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
             End If
         
-            If .MaestroUser > 0 Then
+            If MasterIndex > 0 Then
                 Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_IMPACTO, .Pos.X, .Pos.Y))
             Else
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
@@ -753,7 +768,7 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
             
             Call NpcDañoNpc(Atacante, Victima)
         Else
-            If .MaestroUser > 0 Then
+            If MasterIndex > 0 Then
                 Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
             Else
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
