@@ -297,6 +297,12 @@ Public Const HACHA_LEÑADOR As Integer = 127
 Public Const HACHA_LEÑA_ELFICA As Integer = 1005
 Public Const PIQUETE_MINERO As Integer = 187
 
+Public Const HACHA_LEÑADOR_NEWBIE As Integer = 561
+Public Const PIQUETE_MINERO_NEWBIE As Integer = 562
+Public Const CAÑA_PESCA_NEWBIE As Integer = 563
+Public Const SERRUCHO_CARPINTERO_NEWBIE As Integer = 564
+Public Const MARTILLO_HERRERO_NEWBIE As Integer = 565
+
 Public Const DAGA As Integer = 15
 Public Const FOGATA_APAG As Integer = 136
 Public Const FOGATA As Integer = 63

@@ -82,6 +82,7 @@ Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
 '22/05/2010: Los caos ya no suben nobleza ni plebe al atacar npcs.
+'23/05/2010: El usuario pierde la pertenencia del npc.
 '********************************************************
 On Error GoTo Errhandler
     Dim MiNPC As npc
@@ -214,12 +215,13 @@ On Error GoTo Errhandler
             
             Call CheckUserLevel(UserIndex)
             
+            ' Pierde el npc que tenia
+            .flags.OwnedNpc = 0
+            
         End With
     End If ' Userindex > 0
    
     If MiNPC.MaestroUser = 0 Then
-        'Tiramos el oro
-       ' Call NPCTirarOro(MiNPC)
         'Tiramos el inventario
         Call NPC_TIRAR_ITEMS(MiNPC, IsPretoriano)
         'ReSpawn o no
@@ -345,7 +347,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'
+'22/05/2010: ZaMa - Ahora se resetea el dueño del npc también.
 '***************************************************
 
     With Npclist(NpcIndex)
@@ -382,7 +384,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         .TipoItems = 0
         .Veneno = 0
         .desc = vbNullString
-        
+        .Owner = 0
         
         Dim j As Long
         For j = 1 To .NroSpells

@@ -621,15 +621,19 @@ With UserList(UserIndex)
         
         Call HerreroQuitarMateriales(UserIndex, ItemIndex, CantidadItems)
         ' AGREGAR FX
-        If ObjData(ItemIndex).OBJType = eOBJType.otWeapon Then
-            Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armas!", "el arma!"), FontTypeNames.FONTTYPE_INFO)
-        ElseIf ObjData(ItemIndex).OBJType = eOBJType.otESCUDO Then
-            Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " escudos!", "el escudo!"), FontTypeNames.FONTTYPE_INFO)
-        ElseIf ObjData(ItemIndex).OBJType = eOBJType.otCASCO Then
-            Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " cascos!", "el casco!"), FontTypeNames.FONTTYPE_INFO)
-        ElseIf ObjData(ItemIndex).OBJType = eOBJType.otArmadura Then
-            Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armaduras", "la armadura!"), FontTypeNames.FONTTYPE_INFO)
-        End If
+        
+        Select Case ObjData(ItemIndex).OBJType
+        
+            Case eOBJType.otWeapon
+                Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armas!", "el arma!"), FontTypeNames.FONTTYPE_INFO)
+            Case eOBJType.otESCUDO
+                Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " escudos!", "el escudo!"), FontTypeNames.FONTTYPE_INFO)
+            Case Is = eOBJType.otCASCO
+                Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " cascos!", "el casco!"), FontTypeNames.FONTTYPE_INFO)
+            Case eOBJType.otArmadura
+                Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armaduras", "la armadura!"), FontTypeNames.FONTTYPE_INFO)
+        
+        End Select
         
         Dim MiObj As Obj
         
@@ -689,9 +693,13 @@ On Error GoTo Errhandler
 
     Dim CantidadItems As Integer
     Dim TieneMateriales As Boolean
+    Dim WeaponIndex As Integer
     
     With UserList(UserIndex)
-        If .Invent.WeaponEqpObjIndex <> SERRUCHO_CARPINTERO Then
+        
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+    
+        If WeaponIndex <> SERRUCHO_CARPINTERO And WeaponIndex <> SERRUCHO_CARPINTERO_NEWBIE Then
             Call WriteConsoleMsg(UserIndex, "Debes tener equipado el serrucho para trabajar.", FontTypeNames.FONTTYPE_INFO)
             Call WriteStopWorking(UserIndex)
             Exit Sub
@@ -712,8 +720,7 @@ On Error GoTo Errhandler
     
         If Round(.Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(.clase), 0) >= _
            ObjData(ItemIndex).SkCarpinteria And _
-           PuedeConstruirCarpintero(ItemIndex) And _
-           .Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
+           PuedeConstruirCarpintero(ItemIndex) Then
            
             ' Calculo cuantos item puede construir
             While CantidadItems > 0 And Not TieneMateriales
@@ -918,6 +925,7 @@ Public Sub DoUpgrade(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 '12/08/2009: Pato - Implementado nuevo sistema de mejora de items
 '***************************************************
 Dim ItemUpgrade As Integer
+Dim WeaponIndex As Integer
 
 ItemUpgrade = ObjData(ItemIndex).Upgrade
 
@@ -947,10 +955,14 @@ With UserList(UserIndex)
     If Not TieneMaterialesUpgrade(UserIndex, ItemIndex) Then Exit Sub
     
     If PuedeConstruirHerreria(ItemUpgrade) Then
-        If .Invent.WeaponEqpObjIndex <> MARTILLO_HERRERO Then
+        
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+    
+        If WeaponIndex <> MARTILLO_HERRERO And WeaponIndex <> MARTILLO_HERRERO_NEWBIE Then
             Call WriteConsoleMsg(UserIndex, "Debes equiparte el martillo de herrero.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
+        
         If Round(.Stats.UserSkills(eSkill.Herreria) / ModHerreriA(.clase), 0) < ObjData(ItemUpgrade).SkHerreria Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficientes skills.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
@@ -974,10 +986,13 @@ With UserList(UserIndex)
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
     
     ElseIf PuedeConstruirCarpintero(ItemUpgrade) Then
-        If .Invent.WeaponEqpObjIndex <> SERRUCHO_CARPINTERO Then
-            Call WriteConsoleMsg(UserIndex, "Debes equiparte el serrucho.", FontTypeNames.FONTTYPE_INFO)
+        
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+        If WeaponIndex <> SERRUCHO_CARPINTERO And WeaponIndex <> SERRUCHO_CARPINTERO_NEWBIE Then
+            Call WriteConsoleMsg(UserIndex, "Debes equiparte un serrucho.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
+        
         If Round(.Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(.clase), 0) < ObjData(ItemUpgrade).SkCarpinteria Then
             Call WriteConsoleMsg(UserIndex, "No tienes suficientes skills.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub

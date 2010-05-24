@@ -1159,38 +1159,49 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                             .flags.TargetObjX, .flags.TargetObjY, UserIndex)
                     End If
                 Else
-                
+                    
                     Select Case ObjIndex
-                        Case CAÑA_PESCA, RED_PESCA
-                            If .Invent.WeaponEqpObjIndex = CAÑA_PESCA Or .Invent.WeaponEqpObjIndex = RED_PESCA Then
+                    
+                        Case CAÑA_PESCA, RED_PESCA, CAÑA_PESCA_NEWBIE
+                            
+                            ' Lo tiene equipado?
+                            If .Invent.WeaponEqpObjIndex = ObjIndex Then
                                 Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Pesca)  'Call WriteWorkRequestTarget(UserIndex, eSkill.Pesca)
                             Else
                                  Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
                             End If
                             
-                        Case HACHA_LEÑADOR, HACHA_LEÑA_ELFICA
-                            If .Invent.WeaponEqpObjIndex = HACHA_LEÑADOR Or .Invent.WeaponEqpObjIndex = HACHA_LEÑA_ELFICA Then
+                        Case HACHA_LEÑADOR, HACHA_LEÑA_ELFICA, HACHA_LEÑADOR_NEWBIE
+                            
+                            ' Lo tiene equipado?
+                            If .Invent.WeaponEqpObjIndex = ObjIndex Then
                                 Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Talar)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
                             End If
                             
-                        Case PIQUETE_MINERO
-                            If .Invent.WeaponEqpObjIndex = PIQUETE_MINERO Then
+                        Case PIQUETE_MINERO, PIQUETE_MINERO_NEWBIE
+                        
+                            ' Lo tiene equipado?
+                            If .Invent.WeaponEqpObjIndex = ObjIndex Then
                                 Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Mineria)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
                             End If
                             
-                        Case MARTILLO_HERRERO
-                            If .Invent.WeaponEqpObjIndex = MARTILLO_HERRERO Then
+                        Case MARTILLO_HERRERO, MARTILLO_HERRERO_NEWBIE
+                        
+                            ' Lo tiene equipado?
+                            If .Invent.WeaponEqpObjIndex = ObjIndex Then
                                 Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Herreria)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
                             End If
                             
-                        Case SERRUCHO_CARPINTERO
-                            If .Invent.WeaponEqpObjIndex = SERRUCHO_CARPINTERO Then
+                        Case SERRUCHO_CARPINTERO, SERRUCHO_CARPINTERO_NEWBIE
+                            
+                            ' Lo tiene equipado?
+                            If .Invent.WeaponEqpObjIndex = ObjIndex Then
                                 Call EnivarObjConstruibles(UserIndex)
                                 Call WriteShowCarpenterForm(UserIndex)
                             Else
