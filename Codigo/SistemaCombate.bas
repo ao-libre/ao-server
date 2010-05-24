@@ -1476,6 +1476,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
 'esta función para todo lo referente a ataque a un NPC. Ya sea Magia, Físico o a Distancia.
 '16/11/2009: ZaMa - Agrego validacion de pertenencia de npc.
 '02/04/2010: ZaMa - Los armadas ya no peuden atacar npcs no hotiles.
+'23/05/2010: ZaMa - El inmo/para renuevan el timer de pertenencia si el ataque fue a un npc propio.
 '***************************************************
     
     Dim OwnerUserIndex As Integer
@@ -1709,10 +1710,15 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
                     Else
                         ' Si no tiene dueño, puede apropiarselo
                         If OwnerUserIndex = 0 Then
+                        
                             ' Siempre que no posea uno ya (el inmo/para no cambia pertenencia de npcs).
                             If UserList(AttackerIndex).flags.OwnedNpc = 0 Then
                                 Call ApropioNpc(AttackerIndex, NpcIndex)
                             End If
+                            
+                        ' Si inmobiliza a su propio npc, renueva el timer
+                        ElseIf OwnerUserIndex = AttackerIndex Then
+                            Call IntervaloPerdioNpc(OwnerUserIndex, True) ' Renuevo el timer
                         End If
                         
                         ' Siempre se pueden paralizar/inmobilizar npcs con o sin dueño

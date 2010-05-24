@@ -2832,6 +2832,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         Dim tU As Integer   'Target user
         Dim tN As Integer   'Target NPC
         
+        Dim WeaponIndex As Integer
+        
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
@@ -3032,8 +3034,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 End If
             
             Case eSkill.Pesca
-                DummyInt = .Invent.WeaponEqpObjIndex
-                If DummyInt = 0 Then Exit Sub
+                WeaponIndex = .Invent.WeaponEqpObjIndex
+                If WeaponIndex = 0 Then Exit Sub
                 
                 'Check interval
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
@@ -3046,8 +3048,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 End If
                 
                 If HayAgua(.Pos.Map, X, Y) Then
-                    Select Case DummyInt
-                        Case CAÑA_PESCA
+                    Select Case WeaponIndex
+                        Case CAÑA_PESCA, CAÑA_PESCA_NEWBIE
                             Call DoPescar(UserIndex)
                         
                         Case RED_PESCA
@@ -3115,13 +3117,16 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'Check interval
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                 
-                If .Invent.WeaponEqpObjIndex = 0 Then
+                WeaponIndex = .Invent.WeaponEqpObjIndex
+                
+                If WeaponIndex = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Deberías equiparte el hacha.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
-                If .Invent.WeaponEqpObjIndex <> HACHA_LEÑADOR And _
-                    .Invent.WeaponEqpObjIndex <> HACHA_LEÑA_ELFICA Then
+                If WeaponIndex <> HACHA_LEÑADOR And _
+                   WeaponIndex <> HACHA_LEÑA_ELFICA And _
+                   WeaponIndex <> HACHA_LEÑADOR_NEWBIE Then
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
                 End If
@@ -3140,12 +3145,19 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Exit Sub
                     End If
                     
-                    '¿Hay un arbol donde clickeo?
-                    If ObjData(DummyInt).OBJType = eOBJType.otArboles And .Invent.WeaponEqpObjIndex = HACHA_LEÑADOR Then
-                        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.X, .Pos.Y))
-                        Call DoTalar(UserIndex)
-                    ElseIf ObjData(DummyInt).OBJType = eOBJType.otArbolElfico And .Invent.WeaponEqpObjIndex = HACHA_LEÑA_ELFICA Then
-                        If .Invent.WeaponEqpObjIndex = HACHA_LEÑA_ELFICA Then
+                    '¿Hay un arbol normal donde clickeo?
+                    If ObjData(DummyInt).OBJType = eOBJType.otArboles Then
+                        If WeaponIndex = HACHA_LEÑADOR Or WeaponIndex = HACHA_LEÑADOR_NEWBIE Then
+                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.X, .Pos.Y))
+                            Call DoTalar(UserIndex)
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "No puedes extraer leña de éste árbol con éste hacha.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                        
+                    ' Arbol Elfico?
+                    ElseIf ObjData(DummyInt).OBJType = eOBJType.otArbolElfico Then
+                    
+                        If WeaponIndex = HACHA_LEÑA_ELFICA Then
                             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.X, .Pos.Y))
                             Call DoTalar(UserIndex, True)
                         Else
@@ -3159,9 +3171,11 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
             Case eSkill.Mineria
                 If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
                                 
-                If .Invent.WeaponEqpObjIndex = 0 Then Exit Sub
+                WeaponIndex = .Invent.WeaponEqpObjIndex
+                                
+                If WeaponIndex = 0 Then Exit Sub
                 
-                If .Invent.WeaponEqpObjIndex <> PIQUETE_MINERO Then
+                If WeaponIndex <> PIQUETE_MINERO And WeaponIndex <> PIQUETE_MINERO_NEWBIE Then
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
                 End If
@@ -3178,7 +3192,6 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Exit Sub
                     End If
                     
-                    DummyInt = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex 'CHECK
                     '¿Hay un yacimiento donde clickeo?
                     If ObjData(DummyInt).OBJType = eOBJType.otYacimiento Then
                         Call DoMineria(UserIndex)
