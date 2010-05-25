@@ -492,3 +492,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/05/2010 : Ahora se resetean los flags de pertenencia tanto de npc como de usuario. (ZaMa)
  * 23/05/2010 : Ahora al inmobilizar un npc se renueva el timer, y se puede aduñarse del mismo. (ZaMa)
  * 23/05/2010 : Ahora los elementales renuevan el tiempo de pertencia del npc que atacan si pertenece a su amo. (ZaMa)
+ * 24/05/2010 : Fix del bug # 3000697 (Budi)
