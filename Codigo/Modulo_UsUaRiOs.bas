@@ -1903,6 +1903,8 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
             
             If .flags.Traveling = 1 Then
                 Call WriteMultiMessage(UserIndex, eMessages.CancelHome)
+                .flags.Traveling = 0
+                .Counters.goHome = 0
             End If
             
             Call WriteConsoleMsg(UserIndex, "Cerrando...Se cerrará el juego en " & .Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
