@@ -812,7 +812,12 @@ On Error GoTo Errhandler
     Exit Function
     
 Errhandler:
-    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description)
+    Dim UserName As String
+    
+    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+    
+    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description & ". User: " & _
+                   UserIndex & "-> " & UserName & ".")
     
 End Function
 
@@ -1493,7 +1498,9 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
 '02/04/2010: ZaMa - Los armadas ya no peuden atacar npcs no hotiles.
 '23/05/2010: ZaMa - El inmo/para renuevan el timer de pertenencia si el ataque fue a un npc propio.
 '***************************************************
-    
+
+On Error GoTo Errhandler
+
     Dim OwnerUserIndex As Integer
     
     'Estas muerto?
@@ -1854,6 +1861,19 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
     End If
     
     PuedeAtacarNPC = True
+        
+    Exit Function
+        
+Errhandler:
+    
+    Dim AtckName As String
+    Dim OwnerName As String
+
+    If AttackerIndex > 0 Then AtckName = UserList(AttackerIndex).name
+    If OwnerIndex > 0 Then OwnerName = UserList(OwnerIndex).name
+    
+    Call LogError("Error en PuedeAtacarNpc. Erorr: " & Err.Number & " - " & Err.description & " Atacante: " & _
+                   AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerIndex & "-> " & OwnerName)
 End Function
 
 Private Function SameClan(ByVal UserIndex As Integer, ByVal OtherUserIndex As Integer) As Boolean
