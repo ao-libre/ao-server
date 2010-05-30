@@ -496,3 +496,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/05/2010 : Ahora no avisa cuando loguea/desloguea un dios o admin en un clan. (ZaMa)
  * 28/05/2010 : Solo dioses pueden ver otros dioses online con /onlineclan, /onclan, /onlinecaos, /onlinereal. (ZaMa)
  * 28/05/2010 : El /rmsg no dice el nombre del que envia el mensaje. (ZaMa)
+ * 30/05/2010 : Los criminales ya no suben plebe al realizar un trabajo. (ZaMa)

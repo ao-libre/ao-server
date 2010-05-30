@@ -560,9 +560,10 @@ End Function
 Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 16/11/2009
+'Last Modification: 30/05/2010
 '16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
+'30/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
 Dim CantidadItems As Integer
 Dim TieneMateriales As Boolean
@@ -652,7 +653,7 @@ With UserList(UserIndex)
         Call UpdateUserInv(True, UserIndex, 0)
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
         
-        If Not esCaos(UserIndex) Then
+        If Not criminal(UserIndex) Then
             .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
             If .Reputacion.PlebeRep > MAXREP Then _
                 .Reputacion.PlebeRep = MAXREP
@@ -684,10 +685,11 @@ End Function
 Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 16/11/2009
+'Last Modification: 28/05/2010
 '24/08/2008: ZaMa - Validates if the player has the required skill
 '16/11/2009: ZaMa - Implementado nuevo sistema de construccion de items
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
+'28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -780,7 +782,7 @@ On Error GoTo Errhandler
             Call UpdateUserInv(True, UserIndex, 0)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
             
-            If Not esCaos(UserIndex) Then
+            If Not criminal(UserIndex) Then
                 .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
                 If .Reputacion.PlebeRep > MAXREP Then _
                     .Reputacion.PlebeRep = MAXREP
@@ -1406,11 +1408,12 @@ End Sub
 Public Sub DoPescar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 16/11/2009
+'Last Modification: 28/05/2010
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
+'28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -1463,7 +1466,7 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Pesca, False)
     End If
     
-    If Not esCaos(UserIndex) Then
+    If Not criminal(UserIndex) Then
         .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
         If .Reputacion.PlebeRep > MAXREP Then _
             .Reputacion.PlebeRep = MAXREP
@@ -1980,12 +1983,13 @@ End Sub
 Public Sub DoTalar(ByVal UserIndex As Integer, Optional ByVal DarMaderaElfica As Boolean = False)
 '***************************************************
 'Autor: Unknown
-'Last Modification: 16/11/2009
+'Last Modification: 28/05/2010
 '16/11/2009: ZaMa - Ahora Se puede dar madera elfica.
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
+'28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -2036,7 +2040,7 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Talar, False)
     End If
     
-    If Not esCaos(UserIndex) Then
+    If Not criminal(UserIndex) Then
         .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
         If .Reputacion.PlebeRep > MAXREP Then _
             .Reputacion.PlebeRep = MAXREP
@@ -2055,11 +2059,12 @@ End Sub
 Public Sub DoMineria(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Unknown
-'Last Modification: 16/11/2009
+'Last Modification: 28/05/2010
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
+'28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
 On Error GoTo Errhandler
 
@@ -2111,7 +2116,7 @@ With UserList(UserIndex)
         Call SubirSkill(UserIndex, eSkill.Mineria, False)
     End If
     
-    If Not esCaos(UserIndex) Then
+    If Not criminal(UserIndex) Then
         .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
         If .Reputacion.PlebeRep > MAXREP Then _
             .Reputacion.PlebeRep = MAXREP
