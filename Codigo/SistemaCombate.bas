@@ -1870,10 +1870,10 @@ Errhandler:
     Dim OwnerName As String
 
     If AttackerIndex > 0 Then AtckName = UserList(AttackerIndex).name
-    If OwnerIndex > 0 Then OwnerName = UserList(OwnerIndex).name
+    If OwnerUserIndex > 0 Then OwnerName = UserList(OwnerUserIndex).name
     
     Call LogError("Error en PuedeAtacarNpc. Erorr: " & Err.Number & " - " & Err.description & " Atacante: " & _
-                   AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerIndex & "-> " & OwnerName)
+                   AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerUserIndex & "-> " & OwnerName)
 End Function
 
 Private Function SameClan(ByVal UserIndex As Integer, ByVal OtherUserIndex As Integer) As Boolean
