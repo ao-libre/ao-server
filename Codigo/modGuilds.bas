@@ -1023,21 +1023,36 @@ End Function
 Public Function m_ListaDeMiembrosOnline(ByVal UserIndex As Integer, ByVal GuildIndex As Integer) As String
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 28/05/2010
+'28/05/2010: ZaMa - Solo dioses pueden ver otros dioses online.
 '***************************************************
 
-Dim i As Integer
+    Dim i As Integer
+    Dim priv As PlayerType
+
+    priv = PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios
+    
+    ' Solo dioses pueden ver otros dioses online
+    If UserList(UserIndex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+        priv = priv Or PlayerType.Dios Or PlayerType.Admin
+    End If
     
     If GuildIndex > 0 And GuildIndex <= CANTIDADDECLANES Then
+        
+        ' Horrible, tengo que decirlo..
         i = guilds(GuildIndex).m_Iterador_ProximoUserIndex
+        
         While i > 0
+        
             'No mostramos dioses y admins
-            If i <> UserIndex And ((UserList(i).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Or (UserList(UserIndex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) <> 0)) Then _
+            If i <> UserIndex And (UserList(i).flags.Privilegios And priv) Then
                 m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
+            End If
+            
             i = guilds(GuildIndex).m_Iterador_ProximoUserIndex
         Wend
     End If
+    
     If Len(m_ListaDeMiembrosOnline) > 0 Then
         m_ListaDeMiembrosOnline = Left$(m_ListaDeMiembrosOnline, Len(m_ListaDeMiembrosOnline) - 1)
     End If

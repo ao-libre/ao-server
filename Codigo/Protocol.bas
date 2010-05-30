@@ -7729,8 +7729,8 @@ End Sub
 Private Sub HandleOnlineRoyalArmy(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 28/05/2010
+'28/05/2010: ZaMa - Ahora solo dioses pueden ver otros dioses online.
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
@@ -7740,12 +7740,19 @@ Private Sub HandleOnlineRoyalArmy(ByVal UserIndex As Integer)
     
         Dim i As Long
         Dim list As String
+        Dim priv As PlayerType
 
+        priv = PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios
+        
+        ' Solo dioses pueden ver otros dioses online
+        If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+            priv = priv Or PlayerType.Dios Or PlayerType.Admin
+        End If
+     
         For i = 1 To LastUser
             If UserList(i).ConnID <> -1 Then
                 If UserList(i).Faccion.ArmadaReal = 1 Then
-                    If UserList(i).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Or _
-                      .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+                    If UserList(i).flags.Privilegios And priv Then
                         list = list & UserList(i).name & ", "
                     End If
                 End If
@@ -7768,8 +7775,8 @@ End Sub
 Private Sub HandleOnlineChaosLegion(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 28/05/2010
+'28/05/2010: ZaMa - Ahora solo dioses pueden ver otros dioses online.
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
@@ -7779,12 +7786,19 @@ Private Sub HandleOnlineChaosLegion(ByVal UserIndex As Integer)
     
         Dim i As Long
         Dim list As String
+        Dim priv As PlayerType
 
+        priv = PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios
+        
+        ' Solo dioses pueden ver otros dioses online
+        If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+            priv = priv Or PlayerType.Dios Or PlayerType.Admin
+        End If
+     
         For i = 1 To LastUser
             If UserList(i).ConnID <> -1 Then
                 If UserList(i).Faccion.FuerzasCaos = 1 Then
-                    If UserList(i).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Or _
-                      .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+                    If UserList(i).flags.Privilegios And priv Then
                         list = list & UserList(i).name & ", "
                     End If
                 End If
@@ -10306,8 +10320,8 @@ End Sub
 Private Sub HandleServerMessage(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 28/05/2010
+'28/05/2010: ZaMa - Ahora no dice el nombre del gm que lo dice.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -10329,10 +10343,10 @@ On Error GoTo Errhandler
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If LenB(message) <> 0 Then
                 Call LogGM(.name, "Mensaje Broadcast:" & message)
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & "> " & message, FontTypeNames.FONTTYPE_TALK))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
                 ''''''''''''''''SOLO PARA EL TESTEO'''''''
                 ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
-                frmMain.txtChat.Text = frmMain.txtChat.Text & vbNewLine & UserList(UserIndex).name & " > " & message
+                'frmMain.txtChat.Text = frmMain.txtChat.Text & vbNewLine & UserList(UserIndex).name & " > " & message
             End If
         End If
         

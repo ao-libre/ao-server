@@ -493,3 +493,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 23/05/2010 : Ahora al inmobilizar un npc se renueva el timer, y se puede aduñarse del mismo. (ZaMa)
  * 23/05/2010 : Ahora los elementales renuevan el tiempo de pertencia del npc que atacan si pertenece a su amo. (ZaMa)
  * 24/05/2010 : Fix del bug # 3000697 (Budi)
+ * 28/05/2010 : Ahora no avisa cuando loguea/desloguea un dios o admin en un clan. (ZaMa)
+ * 28/05/2010 : Solo dioses pueden ver otros dioses online con /onlineclan, /onclan, /onlinecaos, /onlinereal. (ZaMa)
+ * 28/05/2010 : El /rmsg no dice el nombre del que envia el mensaje. (ZaMa)
