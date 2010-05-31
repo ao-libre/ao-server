@@ -817,7 +817,7 @@ Errhandler:
     If UserIndex > 0 Then UserName = UserList(UserIndex).name
     
     Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description & ". User: " & _
-                   UserIndex & "-> " & UserName & ".")
+                   UserIndex & "-> " & UserName & ". NpcIndex: " & NpcIndex & ".")
     
 End Function
 
