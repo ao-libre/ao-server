@@ -1873,7 +1873,8 @@ Errhandler:
     If OwnerUserIndex > 0 Then OwnerName = UserList(OwnerUserIndex).name
     
     Call LogError("Error en PuedeAtacarNpc. Erorr: " & Err.Number & " - " & Err.description & " Atacante: " & _
-                   AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerUserIndex & "-> " & OwnerName)
+                   AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerUserIndex & "-> " & OwnerName & _
+                   ". NpcIndex: " & NpcIndex & ".")
 End Function
 
 Private Function SameClan(ByVal UserIndex As Integer, ByVal OtherUserIndex As Integer) As Boolean
