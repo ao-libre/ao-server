@@ -498,3 +498,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 28/05/2010 : El /rmsg no dice el nombre del que envia el mensaje. (ZaMa)
  * 30/05/2010 : Los criminales ya no suben plebe al realizar un trabajo. (ZaMa)
  * 30/05/2010 : Ahora el /est te dice cuanto te falta para llegar a tu hogar. (ZaMa)
+ * 01/06/2010 : Valido si tiene arma equipada antes de preguntar si es vikinga. (ZaMa)

@@ -1923,13 +1923,23 @@ Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As In
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 28/01/2007
+'01/06/2010: ZaMa - Valido si tiene arma equipada antes de preguntar si es vikinga.
 '***************************************************
     Dim Suerte As Integer
     Dim Skill As Integer
+    Dim WeaponIndex As Integer
     
     With UserList(UserIndex)
+        ' Es bandido?
         If .clase <> eClass.Bandit Then Exit Sub
-        If ObjData(.Invent.WeaponEqpObjIndex).name <> "Espada Vikinga" Then Exit Sub
+        
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+        
+        ' Tiene arma equipada?
+        If WeaponIndex = 0 Then Exit Sub
+        
+        ' Es una espada vikinga?
+        If ObjData(WeaponIndex).name <> "Espada Vikinga" Then Exit Sub
     
         Skill = .Stats.UserSkills(eSkill.Wrestling)
     End With
