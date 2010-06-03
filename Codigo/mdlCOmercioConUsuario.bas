@@ -175,9 +175,9 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 If .ComUsu.GoldAmount > .Stats.GLD Then
                     Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar " & .ComUsu.GoldAmount & " y tenía " & .Stats.GLD)
                     
-                    .Invent.Object = invBackUp
+                    Call RestoreInv(UserIndex, invBackUp)
+                    Call RestoreInv(OtroUserIndex, invBackUp2)
                     .Stats.GLD = gldBackUp
-                    UserList(OtroUserIndex).Invent.Object = invBackUp2
                     UserList(OtroUserIndex).Stats.GLD = gldBackUp2
     
                     Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
@@ -210,9 +210,9 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 If Not TieneObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex) Then
                     Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar una cantidad de objetos que no tenía.")
                     
-                    .Invent.Object = invBackUp
+                    Call RestoreInv(UserIndex, invBackUp)
+                    Call RestoreInv(OtroUserIndex, invBackUp2)
                     .Stats.GLD = gldBackUp
-                    UserList(OtroUserIndex).Invent.Object = invBackUp2
                     UserList(OtroUserIndex).Stats.GLD = gldBackUp2
                     
                     Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
@@ -255,10 +255,10 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 If .ComUsu.GoldAmount > .Stats.GLD Then
                     Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar " & .ComUsu.GoldAmount & " y tenía " & .Stats.GLD)
                     
-                    UserList(UserIndex).Invent.Object = invBackUp
-                    UserList(UserIndex).Stats.GLD = gldBackUp
-                    .Invent.Object = invBackUp2
-                    .Stats.GLD = gldBackUp2
+                    Call RestoreInv(UserIndex, invBackUp)
+                    Call RestoreInv(OtroUserIndex, invBackUp2)
+                    .Stats.GLD = gldBackUp
+                    UserList(UserIndex).Stats.GLD = gldBackUp2
                     
                     Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
                     Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
@@ -291,10 +291,10 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 If Not TieneObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex) Then
                     Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar una cantidad de objetos que no tenía.")
                     
-                    UserList(UserIndex).Invent.Object = invBackUp
-                    UserList(UserIndex).Stats.GLD = gldBackUp
-                    .Invent.Object = invBackUp2
-                    .Stats.GLD = gldBackUp2
+                    Call RestoreInv(UserIndex, invBackUp)
+                    Call RestoreInv(OtroUserIndex, invBackUp2)
+                    .Stats.GLD = gldBackUp
+                    UserList(UserIndex).Stats.GLD = gldBackUp2
                     
                     Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
                     Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
@@ -442,3 +442,11 @@ End With
 PuedeSeguirComerciando = True
 
 End Function
+
+Private Sub RestoreInv(ByVal UserIndex As Integer, ByRef invBackUp() As UserOBJ)
+Dim i As Long
+
+For i = 1 To MAX_INVENTORY_SLOTS
+    UserList(UserIndex).Invent.Object(i) = invBackUp(i)
+Next i
+End Sub
