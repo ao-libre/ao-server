@@ -52,6 +52,17 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
     'Si ambos pusieron /comerciar entonces
     If UserList(Origen).ComUsu.DestUsu = Destino And _
        UserList(Destino).ComUsu.DestUsu = Origen Then
+       
+       If UserList(Origen).flags.Comerciando Then
+            Call WriteConsoleMsg(Origen, "No puedes comerciar en este momento.", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(Destino, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
+            Exit Sub
+        ElseIf UserList(Destino).flags.Comerciando Then
+            Call WriteConsoleMsg(Destino, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(Origen, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
+            Exit Sub
+        End If
+        
         'Actualiza el inventario del usuario
         Call UpdateUserInv(True, Origen, 0)
         'Decirle al origen que abra la ventanita.
@@ -142,11 +153,6 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     Dim OtroUserIndex As Integer
     Dim TerminarAhora As Boolean
     Dim OfferSlot As Integer
-    Dim invBackUp() As UserOBJ
-    Dim invBackUp2() As UserOBJ
-    Dim gldBackUp As Long
-    Dim gldBackUp2 As Long
-    Dim i As Long
 
     UserList(UserIndex).ComUsu.Acepto = True
     
@@ -161,11 +167,6 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
-    invBackUp = UserList(UserIndex).Invent.Object
-    invBackUp2 = UserList(OtroUserIndex).Invent.Object
-    gldBackUp = UserList(UserIndex).Stats.GLD
-    gldBackUp2 = UserList(OtroUserIndex).Stats.GLD
-    
     ' Envio los items a quien corresponde
     For OfferSlot = 1 To MAX_OFFER_SLOTS + 1
         
@@ -173,28 +174,6 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         With UserList(UserIndex)
             ' Le pasa el oro
             If OfferSlot = GOLD_OFFER_SLOT Then
-                If .ComUsu.GoldAmount > .Stats.GLD Then
-                    Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar " & .ComUsu.GoldAmount & " y tenía " & .Stats.GLD)
-                    
-                    For i = 1 To MAX_INVENTORY_SLOTS
-                        .Invent.Object(i) = invBackUp(i)
-                        UserList(OtroUserIndex).Invent.Object(i) = invBackUp2(i)
-                    Next i
-                    
-                    .Stats.GLD = gldBackUp
-                    UserList(OtroUserIndex).Stats.GLD = gldBackUp2
-    
-                    Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    
-                    Call FinComerciarUsu(UserIndex)
-                    
-                    Call FinComerciarUsu(OtroUserIndex)
-                    Call Protocol.FlushBuffer(OtroUserIndex)
-                    
-                    Exit Sub
-                End If
-                
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
@@ -210,29 +189,7 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
             ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
                 TradingObj.ObjIndex = .ComUsu.Objeto(OfferSlot)
                 TradingObj.Amount = .ComUsu.cant(OfferSlot)
-                
-                If Not TieneObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex) Then
-                    Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar una cantidad de objetos que no tenía.")
-                    
-                    For i = 1 To MAX_INVENTORY_SLOTS
-                        .Invent.Object(i) = invBackUp(i)
-                        UserList(OtroUserIndex).Invent.Object(i) = invBackUp2(i)
-                    Next i
-                    
-                    .Stats.GLD = gldBackUp
-                    UserList(OtroUserIndex).Stats.GLD = gldBackUp2
-                    
-                    Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    
-                    Call FinComerciarUsu(UserIndex)
-                    
-                    Call FinComerciarUsu(OtroUserIndex)
-                    Call Protocol.FlushBuffer(OtroUserIndex)
-                    
-                    Exit Sub
-                End If
-                
+                                
                 'Quita el objeto y se lo da al otro
                 If Not MeterItemEnInventario(OtroUserIndex, TradingObj) Then
                     Call TirarItemAlPiso(UserList(OtroUserIndex).Pos, TradingObj)
@@ -259,28 +216,6 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         With UserList(OtroUserIndex)
             ' Le pasa el oro
             If OfferSlot = GOLD_OFFER_SLOT Then
-                If .ComUsu.GoldAmount > .Stats.GLD Then
-                    Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar " & .ComUsu.GoldAmount & " y tenía " & .Stats.GLD)
-                    
-                    For i = 1 To MAX_INVENTORY_SLOTS
-                        .Invent.Object(i) = invBackUp2(i)
-                        UserList(UserIndex).Invent.Object(i) = invBackUp(i)
-                    Next i
-                    
-                    .Stats.GLD = gldBackUp2
-                    UserList(UserIndex).Stats.GLD = gldBackUp
-                    
-                    Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    
-                    Call FinComerciarUsu(OtroUserIndex)
-                    Call Protocol.FlushBuffer(OtroUserIndex)
-                    
-                    Call FinComerciarUsu(UserIndex)
-                    
-                    Exit Sub
-                End If
-                
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
@@ -297,29 +232,7 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
             ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
                 TradingObj.ObjIndex = .ComUsu.Objeto(OfferSlot)
                 TradingObj.Amount = .ComUsu.cant(OfferSlot)
-                
-                If Not TieneObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex) Then
-                    Call LogHackAttemp(.name & " IP:" & .ip & " intentó comerciar una cantidad de objetos que no tenía.")
-                    
-                    For i = 1 To MAX_INVENTORY_SLOTS
-                        .Invent.Object(i) = invBackUp2(i)
-                        UserList(UserIndex).Invent.Object(i) = invBackUp(i)
-                    Next i
-                    
-                    .Stats.GLD = gldBackUp2
-                    UserList(UserIndex).Stats.GLD = gldBackUp
-                    
-                    Call WriteConsoleMsg(UserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    Call WriteConsoleMsg(OtroUserIndex, "Comercio terminado.", FontTypeNames.FONTTYPE_TALK)
-                    
-                    Call FinComerciarUsu(OtroUserIndex)
-                    Call Protocol.FlushBuffer(OtroUserIndex)
-                    
-                    Call FinComerciarUsu(UserIndex)
-                    
-                    Exit Sub
-                End If
-                
+                                
                 'Quita el objeto y se lo da al otro
                 If Not MeterItemEnInventario(UserIndex, TradingObj) Then
                     Call TirarItemAlPiso(UserList(UserIndex).Pos, TradingObj)
