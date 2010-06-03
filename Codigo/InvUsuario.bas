@@ -1520,8 +1520,12 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
-                        If .Stats.ELV < 20 Then
-                            Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
+                        If .Stats.ELV < 20 Or UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <> 100 Then
+                            If .clase = eClass.Worker Then
+                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior a menos que tu skill en pesca sea 100.", FontTypeNames.FONTTYPE_INFO)
+                            Else
+                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
+                            End If
                             Exit Sub
                         End If
                     End If
