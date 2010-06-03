@@ -650,7 +650,6 @@ With UserList(UserIndex)
         End If
         
         Call SubirSkill(UserIndex, eSkill.Herreria, True)
-        Call UpdateUserInv(True, UserIndex, 0)
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
         
         If Not criminal(UserIndex) Then
@@ -779,7 +778,6 @@ On Error GoTo Errhandler
             End If
             
             Call SubirSkill(UserIndex, eSkill.Carpinteria, True)
-            Call UpdateUserInv(True, UserIndex, 0)
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
             
             If Not criminal(UserIndex) Then
@@ -859,6 +857,7 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
         If Not MeterItemEnInventario(UserIndex, MiObj) Then
             Call TirarItemAlPiso(.Pos, MiObj)
         End If
+        
         Call UpdateUserInv(False, UserIndex, Slot)
         Call WriteConsoleMsg(UserIndex, "¡Has obtenido " & CantidadItems & " lingote" & _
                             IIf(CantidadItems = 1, "", "s") & "!", FontTypeNames.FONTTYPE_INFO)
@@ -899,24 +898,24 @@ Dim Lingotes(2) As Integer
         Lingotes(1) = (ObjData(.flags.TargetObjInvIndex).LingP * num) * 0.01
         Lingotes(2) = (ObjData(.flags.TargetObjInvIndex).LingO * num) * 0.01
     
-    Dim MiObj(2) As Obj
-    
-    For i = 0 To 2
-        MiObj(i).Amount = Lingotes(i)
-        MiObj(i).ObjIndex = LingoteHierro + i 'Una gran negrada pero práctica
-        If MiObj(i).Amount > 0 Then
-            If Not MeterItemEnInventario(UserIndex, MiObj(i)) Then
-                Call TirarItemAlPiso(.Pos, MiObj(i))
+        Dim MiObj(2) As Obj
+        
+        For i = 0 To 2
+            MiObj(i).Amount = Lingotes(i)
+            MiObj(i).ObjIndex = LingoteHierro + i 'Una gran negrada pero práctica
+            
+            If MiObj(i).Amount > 0 Then
+                If Not MeterItemEnInventario(UserIndex, MiObj(i)) Then
+                    Call TirarItemAlPiso(.Pos, MiObj(i))
+                End If
             End If
-            Call UpdateUserInv(True, UserIndex, Slot)
-        End If
-    Next i
+        Next i
+        
+        Call UpdateUserInv(False, UserIndex, Slot)
+        Call WriteConsoleMsg(UserIndex, "¡Has obtenido el " & num & "% de los lingotes utilizados para la construcción del objeto!", FontTypeNames.FONTTYPE_INFO)
     
-    Call WriteConsoleMsg(UserIndex, "¡Has obtenido el " & num & "% de los lingotes utilizados para la construcción del objeto!", FontTypeNames.FONTTYPE_INFO)
-
-    .Counters.Trabajando = .Counters.Trabajando + 1
-
-End With
+        .Counters.Trabajando = .Counters.Trabajando + 1
+    End With
 
 End Sub
 
@@ -1029,9 +1028,7 @@ With UserList(UserIndex)
     
     If ObjData(ItemIndex).Log = 1 Then _
         Call LogDesarrollo(.name & " ha mejorado el ítem " & ObjData(ItemIndex).name & " a " & ObjData(ItemUpgrade).name)
-    
-    Call UpdateUserInv(True, UserIndex, 0)
-    
+        
     .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
     If .Reputacion.PlebeRep > MAXREP Then _
         .Reputacion.PlebeRep = MAXREP
