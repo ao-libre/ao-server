@@ -1584,8 +1584,10 @@ On Error GoTo Errhandler
         End If
     Else
         If UserList(LadrOnIndex).Faccion.ArmadaReal = 1 Then
-            Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejército real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
-            Exit Sub
+            If Not criminal(VictimaIndex) Then
+                Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejército real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
         End If
     End If
     
@@ -1626,27 +1628,27 @@ On Error GoTo Errhandler
             
             RobarSkill = .Stats.UserSkills(eSkill.Robar)
                 
-            If RobarSkill <= 10 And RobarSkill >= -1 Then
+            If RobarSkill <= 10 Then
                 Suerte = 35
-            ElseIf RobarSkill <= 20 And RobarSkill >= 11 Then
+            ElseIf RobarSkill <= 20 Then
                 Suerte = 30
-            ElseIf RobarSkill <= 30 And RobarSkill >= 21 Then
+            ElseIf RobarSkill <= 30 Then
                 Suerte = 28
-            ElseIf RobarSkill <= 40 And RobarSkill >= 31 Then
+            ElseIf RobarSkill <= 40 Then
                 Suerte = 24
-            ElseIf RobarSkill <= 50 And RobarSkill >= 41 Then
+            ElseIf RobarSkill <= 50 Then
                 Suerte = 22
-            ElseIf RobarSkill <= 60 And RobarSkill >= 51 Then
+            ElseIf RobarSkill <= 60 Then
                 Suerte = 20
-            ElseIf RobarSkill <= 70 And RobarSkill >= 61 Then
+            ElseIf RobarSkill <= 70 Then
                 Suerte = 18
-            ElseIf RobarSkill <= 80 And RobarSkill >= 71 Then
+            ElseIf RobarSkill <= 80 Then
                 Suerte = 15
-            ElseIf RobarSkill <= 90 And RobarSkill >= 81 Then
+            ElseIf RobarSkill <= 90 Then
                 Suerte = 10
-            ElseIf RobarSkill < 100 And RobarSkill >= 91 Then
+            ElseIf RobarSkill < 100 Then
                 Suerte = 7
-            ElseIf RobarSkill = 100 Then
+            Else
                 Suerte = 5
             End If
             
@@ -1780,7 +1782,7 @@ If RandomNumber(1, 12) < 6 Then 'Comenzamos por el principio o el final?
         If Not flag Then i = i + 1
     Loop
 Else
-    i = 20
+    i = UserList(VictimaIndex).CurrentInventorySlots
     Do While Not flag And i > 0
       'Hay objeto en este slot?
       If UserList(VictimaIndex).Invent.Object(i).ObjIndex > 0 Then
@@ -1894,7 +1896,7 @@ Public Sub DoAcuchillar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Inte
 'Last Modification: 12/01/2010
 '***************************************************
 
-    If RandomNumber(0, 100) < PROB_ACUCHILLAR Then
+    If RandomNumber(1, 100) <= PROB_ACUCHILLAR Then
         daño = Int(daño * DAÑO_ACUCHILLAR)
         
         If VictimUserIndex <> 0 Then
@@ -2179,27 +2181,27 @@ Public Sub DoMeditar(ByVal UserIndex As Integer)
         
         MeditarSkill = .Stats.UserSkills(eSkill.Meditar)
         
-        If MeditarSkill <= 10 And MeditarSkill >= -1 Then
+        If MeditarSkill <= 10 Then
             Suerte = 35
-        ElseIf MeditarSkill <= 20 And MeditarSkill >= 11 Then
+        ElseIf MeditarSkill <= 20 Then
             Suerte = 30
-        ElseIf MeditarSkill <= 30 And MeditarSkill >= 21 Then
+        ElseIf MeditarSkill <= 30 Then
             Suerte = 28
-        ElseIf MeditarSkill <= 40 And MeditarSkill >= 31 Then
+        ElseIf MeditarSkill <= 40 Then
             Suerte = 24
-        ElseIf MeditarSkill <= 50 And MeditarSkill >= 41 Then
+        ElseIf MeditarSkill <= 50 Then
             Suerte = 22
-        ElseIf MeditarSkill <= 60 And MeditarSkill >= 51 Then
+        ElseIf MeditarSkill <= 60 Then
             Suerte = 20
-        ElseIf MeditarSkill <= 70 And MeditarSkill >= 61 Then
+        ElseIf MeditarSkill <= 70 Then
             Suerte = 18
-        ElseIf MeditarSkill <= 80 And MeditarSkill >= 71 Then
+        ElseIf MeditarSkill <= 80 Then
             Suerte = 15
-        ElseIf MeditarSkill <= 90 And MeditarSkill >= 81 Then
+        ElseIf MeditarSkill <= 90 Then
             Suerte = 10
-        ElseIf MeditarSkill < 100 And MeditarSkill >= 91 Then
+        ElseIf MeditarSkill < 100 Then
             Suerte = 7
-        ElseIf MeditarSkill = 100 Then
+        Else
             Suerte = 5
         End If
         res = RandomNumber(1, Suerte)
