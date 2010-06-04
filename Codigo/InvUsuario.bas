@@ -1662,7 +1662,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                         ' Si tiene galeon equipado
                         If .Invent.BarcoObjIndex = 476 Then
                             ' Limitación por nivel, después dropea normalmente
-                            If .Stats.ELV >= 20 And .Stats.ELV <= 25 Then
+                            If .Stats.ELV = 20 Then
                                 ' No dropea en agua
                                 DropAgua = False
                             End If
