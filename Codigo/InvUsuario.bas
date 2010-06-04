@@ -1516,17 +1516,30 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             Case eOBJType.otBarcos
                 'Verifica si esta aproximado al agua antes de permitirle navegar
                 If .Stats.ELV < 25 Then
+                    ' Solo pirata y trabajador pueden navegar antes
                     If .clase <> eClass.Worker And .clase <> eClass.Pirat Then
                         Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
-                        If .Stats.ELV < 20 Or UserList(UserIndex).Stats.UserSkills(eSkill.Pesca) <> 100 Then
-                            If .clase = eClass.Worker Then
-                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior a menos que tu skill en pesca sea 100.", FontTypeNames.FONTTYPE_INFO)
+                        ' Pero a partir de 20
+                        If .Stats.ELV < 20 Then
+                            
+                            If .clase = eClass.Worker And .Stats.UserSkills(eSkill.Pesca) <> 100 Then
+                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 y además tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
                             End If
+                            
                             Exit Sub
+                        Else
+                            ' Esta entre 20 y 25, si es trabajador necesita tener 100 en pesca
+                            If .clase = eClass.Worker Then
+                                If .Stats.UserSkills(eSkill.Pesca) <> 100 Then
+                                    Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior y además tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
+                                    Exit Sub
+                                End If
+                            End If
+
                         End If
                     End If
                 End If
