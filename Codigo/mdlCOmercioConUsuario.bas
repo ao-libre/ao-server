@@ -53,13 +53,9 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
     If UserList(Origen).ComUsu.DestUsu = Destino And _
        UserList(Destino).ComUsu.DestUsu = Origen Then
        
-       If UserList(Origen).flags.Comerciando Then
-            Call WriteConsoleMsg(Origen, "No puedes comerciar en este momento.", FontTypeNames.FONTTYPE_TALK)
-            Call WriteConsoleMsg(Destino, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
-            Exit Sub
-        ElseIf UserList(Destino).flags.Comerciando Then
-            Call WriteConsoleMsg(Destino, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
+       If UserList(Origen).flags.Comerciando Or UserList(Destino).flags.Comerciando Then
             Call WriteConsoleMsg(Origen, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(Destino, "No puedes comerciar en este momento", FontTypeNames.FONTTYPE_TALK)
             Exit Sub
         End If
         
