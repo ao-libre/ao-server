@@ -567,8 +567,21 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
 '***************************************************
 Dim CantidadItems As Integer
 Dim TieneMateriales As Boolean
+Dim OtroUserIndex As Integer
 
 With UserList(UserIndex)
+    If .flags.Comerciando Then
+        OtroUserIndex = .ComUsu.DestUsu
+            
+        If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+            
+            Call LimpiarComercioSeguro(UserIndex)
+            Call Protocol.FlushBuffer(OtroUserIndex)
+        End If
+    End If
+        
     CantidadItems = .Construir.PorCiclo
     
     If .Construir.Cantidad < CantidadItems Then _
@@ -695,8 +708,20 @@ On Error GoTo Errhandler
     Dim CantidadItems As Integer
     Dim TieneMateriales As Boolean
     Dim WeaponIndex As Integer
+    Dim OtroUserIndex As Integer
     
     With UserList(UserIndex)
+        If .flags.Comerciando Then
+            OtroUserIndex = .ComUsu.DestUsu
+                
+            If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                
+                Call LimpiarComercioSeguro(UserIndex)
+                Call Protocol.FlushBuffer(OtroUserIndex)
+            End If
+        End If
         
         WeaponIndex = .Invent.WeaponEqpObjIndex
     
@@ -825,8 +850,21 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
     Dim obji As Integer
     Dim CantidadItems As Integer
     Dim TieneMinerales As Boolean
-
+    Dim OtroUserIndex As Integer
+    
     With UserList(UserIndex)
+        If .flags.Comerciando Then
+            OtroUserIndex = .ComUsu.DestUsu
+                
+            If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                
+                Call LimpiarComercioSeguro(UserIndex)
+                Call Protocol.FlushBuffer(OtroUserIndex)
+            End If
+        End If
+        
         CantidadItems = MaximoInt(1, CInt((.Stats.ELV - 4) / 5))
 
         Slot = .flags.TargetObjInvSlot
@@ -877,8 +915,21 @@ Dim i As Integer
 Dim num As Integer
 Dim Slot As Byte
 Dim Lingotes(2) As Integer
+Dim OtroUserIndex As Integer
 
     With UserList(UserIndex)
+        If .flags.Comerciando Then
+            OtroUserIndex = .ComUsu.DestUsu
+                
+            If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                
+                Call LimpiarComercioSeguro(UserIndex)
+                Call Protocol.FlushBuffer(OtroUserIndex)
+            End If
+        End If
+        
         Slot = .flags.TargetObjInvSlot
         
         With .Invent.Object(Slot)
@@ -927,10 +978,23 @@ Public Sub DoUpgrade(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
 '***************************************************
 Dim ItemUpgrade As Integer
 Dim WeaponIndex As Integer
+Dim OtroUserIndex As Integer
 
 ItemUpgrade = ObjData(ItemIndex).Upgrade
 
 With UserList(UserIndex)
+    If .flags.Comerciando Then
+        OtroUserIndex = .ComUsu.DestUsu
+            
+        If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+            Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+            
+            Call LimpiarComercioSeguro(UserIndex)
+            Call Protocol.FlushBuffer(OtroUserIndex)
+        End If
+    End If
+        
     'Sacamos energía
     If .clase = eClass.Worker Then
         'Chequeamos que tenga los puntos antes de sacarselos
@@ -1570,6 +1634,8 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
 On Error GoTo Errhandler
 
+    Dim OtroUserIndex As Integer
+
     If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
     
     If UserList(VictimaIndex).flags.EnConsulta Then
@@ -1655,6 +1721,17 @@ On Error GoTo Errhandler
             res = RandomNumber(1, Suerte)
                 
             If res < 3 Then 'Exito robo
+                If UserList(VictimaIndex).flags.Comerciando Then
+                    OtroUserIndex = UserList(VictimaIndex).ComUsu.DestUsu
+                        
+                    If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                        Call WriteConsoleMsg(VictimaIndex, "¡¡Comercio cancelado, te están robando!!", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                        
+                        Call LimpiarComercioSeguro(VictimaIndex)
+                        Call Protocol.FlushBuffer(OtroUserIndex)
+                    End If
+                End If
                
                 If (RandomNumber(1, 50) < 25) And (.clase = eClass.Thief) Then
                     If TieneObjetosRobables(VictimaIndex) Then
@@ -1768,68 +1845,71 @@ Public Sub RobarObjeto(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integ
 
 Dim flag As Boolean
 Dim i As Integer
+
 flag = False
 
-If RandomNumber(1, 12) < 6 Then 'Comenzamos por el principio o el final?
-    i = 1
-    Do While Not flag And i <= UserList(VictimaIndex).CurrentInventorySlots
-        'Hay objeto en este slot?
-        If UserList(VictimaIndex).Invent.Object(i).ObjIndex > 0 Then
-           If ObjEsRobable(VictimaIndex, i) Then
-                 If RandomNumber(1, 10) < 4 Then flag = True
-           End If
-        End If
-        If Not flag Then i = i + 1
-    Loop
-Else
-    i = UserList(VictimaIndex).CurrentInventorySlots
-    Do While Not flag And i > 0
-      'Hay objeto en este slot?
-      If UserList(VictimaIndex).Invent.Object(i).ObjIndex > 0 Then
-         If ObjEsRobable(VictimaIndex, i) Then
-               If RandomNumber(1, 10) < 4 Then flag = True
-         End If
-      End If
-      If Not flag Then i = i - 1
-    Loop
-End If
-
-If flag Then
-    Dim MiObj As Obj
-    Dim num As Byte
-    Dim ObjAmount As Integer
-    
-    ObjAmount = UserList(VictimaIndex).Invent.Object(i).Amount
-    
-    'Cantidad al azar entre el 5% y el 10% del total, con minimo 1.
-    num = MaximoInt(1, RandomNumber(ObjAmount * 0.05, ObjAmount * 0.1))
-                                
-    MiObj.Amount = num
-    MiObj.ObjIndex = UserList(VictimaIndex).Invent.Object(i).ObjIndex
-    
-    UserList(VictimaIndex).Invent.Object(i).Amount = ObjAmount - num
-                
-    If UserList(VictimaIndex).Invent.Object(i).Amount <= 0 Then
-          Call QuitarUserInvItem(VictimaIndex, CByte(i), 1)
-    End If
-            
-    Call UpdateUserInv(False, VictimaIndex, CByte(i))
-                
-    If Not MeterItemEnInventario(LadrOnIndex, MiObj) Then
-        Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
-    End If
-    
-    If UserList(LadrOnIndex).clase = eClass.Thief Then
-        Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+With UserList(VictimaIndex)
+    If RandomNumber(1, 12) < 6 Then 'Comenzamos por el principio o el final?
+        i = 1
+        Do While Not flag And i <= .CurrentInventorySlots
+            'Hay objeto en este slot?
+            If .Invent.Object(i).ObjIndex > 0 Then
+               If ObjEsRobable(VictimaIndex, i) Then
+                     If RandomNumber(1, 10) < 4 Then flag = True
+               End If
+            End If
+            If Not flag Then i = i + 1
+        Loop
     Else
-        Call WriteConsoleMsg(LadrOnIndex, "Has hurtado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+        i = .CurrentInventorySlots
+        Do While Not flag And i > 0
+          'Hay objeto en este slot?
+          If .Invent.Object(i).ObjIndex > 0 Then
+             If ObjEsRobable(VictimaIndex, i) Then
+                   If RandomNumber(1, 10) < 4 Then flag = True
+             End If
+          End If
+          If Not flag Then i = i - 1
+        Loop
     End If
-Else
-    Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
-End If
+    
+    If flag Then
+        Dim MiObj As Obj
+        Dim num As Byte
+        Dim ObjAmount As Integer
+        
+        ObjAmount = .Invent.Object(i).Amount
+        
+        'Cantidad al azar entre el 5% y el 10% del total, con minimo 1.
+        num = MaximoInt(1, RandomNumber(ObjAmount * 0.05, ObjAmount * 0.1))
+                                    
+        MiObj.Amount = num
+        MiObj.ObjIndex = .Invent.Object(i).ObjIndex
+        
+        .Invent.Object(i).Amount = ObjAmount - num
+                    
+        If .Invent.Object(i).Amount <= 0 Then
+              Call QuitarUserInvItem(VictimaIndex, CByte(i), 1)
+        End If
+                
+        Call UpdateUserInv(False, VictimaIndex, CByte(i))
+                    
+        If Not MeterItemEnInventario(LadrOnIndex, MiObj) Then
+            Call TirarItemAlPiso(UserList(LadrOnIndex).Pos, MiObj)
+        End If
+        
+        If UserList(LadrOnIndex).clase = eClass.Thief Then
+            Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+        Else
+            Call WriteConsoleMsg(LadrOnIndex, "Has hurtado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+        End If
+    Else
+        Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
+    End If
 
-'If exiting, cancel de quien es robado
-Call CancelExit(VictimaIndex)
+    'If exiting, cancel de quien es robado
+    Call CancelExit(VictimaIndex)
+End With
 
 End Sub
 
@@ -2339,6 +2419,8 @@ Public Sub DoHurtar(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
 'Implements the pick pocket skill of the Bandit :)
 '03/03/2010 - Pato: Sólo se puede hurtar si no está en trigger 6 :)
 '***************************************************
+Dim OtroUserIndex As Integer
+
 If TriggerZonaPelea(UserIndex, VictimaIndex) <> TRIGGER6_AUSENTE Then Exit Sub
 
 If UserList(UserIndex).clase <> eClass.Bandit Then Exit Sub
@@ -2351,6 +2433,19 @@ Dim res As Integer
 res = RandomNumber(1, 100)
 If (res < 20) Then
     If TieneObjetosRobables(VictimaIndex) Then
+    
+        If UserList(VictimaIndex).flags.Comerciando Then
+            OtroUserIndex = UserList(VictimaIndex).ComUsu.DestUsu
+                
+            If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                Call WriteConsoleMsg(VictimaIndex, "¡¡Comercio cancelado, te están robando!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                
+                Call LimpiarComercioSeguro(VictimaIndex)
+                Call Protocol.FlushBuffer(OtroUserIndex)
+            End If
+        End If
+                
         Call RobarObjeto(UserIndex, VictimaIndex)
         Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
     Else
