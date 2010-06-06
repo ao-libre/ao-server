@@ -179,8 +179,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     ' Aceptaron ambos, chequeo que tengan los items que ofertaron
     If Not HasOfferedItems(UserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).name & " no posee los items que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
         
         Call FinComerciarUsu(UserIndex)
         
@@ -188,8 +188,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         
     ElseIf Not HasOfferedItems(OtroUserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).name & " no posee los items que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
         
         Call FinComerciarUsu(OtroUserIndex)
         
@@ -406,7 +406,7 @@ Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
 'Checks whether the user has the offered items in his inventory or not.
 '***************************************************
 
-    Dim OfferedItems(MAX_OFFER_SLOTS) As tOfferItem
+    Dim OfferedItems(MAX_OFFER_SLOTS - 1) As tOfferItem
     Dim Slot As Long
     Dim SlotAux As Long
     Dim SlotCount As Long
@@ -422,7 +422,7 @@ Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
             
             If ObjIndex > 0 Then
             
-                For SlotAux = 0 To SlotCount
+                For SlotAux = 0 To SlotCount - 1
                     
                     If ObjIndex = OfferedItems(SlotAux).ObjIndex Then
                         ' Son iguales, aumento la cantidad
