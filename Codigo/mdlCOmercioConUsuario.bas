@@ -445,7 +445,7 @@ Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
         Next Slot
         
         ' Chequeo que tengan la cantidad en el inventario
-        For Slot = 1 To MAX_OFFER_SLOTS
+        For Slot = 1 To SlotCount - 1
             If Not HasEnoughItems(UserIndex, OfferedItems(Slot).ObjIndex, OfferedItems(Slot).Amount) Then Exit Function
         Next Slot
         
