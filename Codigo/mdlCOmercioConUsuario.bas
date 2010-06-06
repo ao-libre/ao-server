@@ -39,6 +39,11 @@ Public Type tCOmercioUsuario
     Confirmo As Boolean
 End Type
 
+Private Type tOfferItem
+    ObjIndex As Integer
+    Amount As Long
+End Type
+
 'origen: origen de la transaccion, originador del comando
 'destino: receptor de la transaccion
 Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As Integer)
@@ -95,14 +100,18 @@ Public Sub EnviarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte)
 '***************************************************
     Dim ObjIndex As Integer
     Dim ObjAmount As Long
+    Dim OtherUserIndex As Integer
     
-    With UserList(UserIndex)
+    
+    OtherUserIndex = UserList(UserIndex).ComUsu.DestUsu
+    
+    With UserList(OtherUserIndex)
         If OfferSlot = GOLD_OFFER_SLOT Then
             ObjIndex = iORO
-            ObjAmount = UserList(.ComUsu.DestUsu).ComUsu.GoldAmount
+            ObjAmount = .ComUsu.GoldAmount
         Else
-            ObjIndex = UserList(.ComUsu.DestUsu).ComUsu.Objeto(OfferSlot)
-            ObjAmount = UserList(.ComUsu.DestUsu).ComUsu.cant(OfferSlot)
+            ObjIndex = .ComUsu.Objeto(OfferSlot)
+            ObjAmount = .ComUsu.cant(OfferSlot)
         End If
     End With
    
@@ -142,8 +151,9 @@ End Sub
 Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Unkown
-'Last Modification: 25/11/2009
+'Last Modification: 06/05/2010
 '25/11/2009: ZaMa - Ahora se traspasan hasta 5 items + oro al comerciar
+'06/05/2010: ZaMa - Ahora valida si los usuarios tienen los items que ofertan.
 '***************************************************
     Dim TradingObj As Obj
     Dim OtroUserIndex As Integer
@@ -154,13 +164,37 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     
     OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
     
+    ' Acepto el otro?
     If UserList(OtroUserIndex).ComUsu.Acepto = False Then
         Exit Sub
     End If
     
+    ' User valido?
     If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
         Call FinComerciarUsu(UserIndex)
         Exit Sub
+    End If
+    
+    
+    ' Aceptaron ambos, chequeo que tengan los items que ofertaron
+    If Not HasOfferedItems(UserIndex) Then
+        
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).name & " no posee los items que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
+        
+        Call FinComerciarUsu(UserIndex)
+        
+        Exit Sub
+        
+    ElseIf Not HasOfferedItems(OtroUserIndex) Then
+        
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).name & " no posee los items que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
+        
+        Call FinComerciarUsu(OtroUserIndex)
+        
+        Exit Sub
+        
     End If
     
     ' Envio los items a quien corresponde
@@ -362,5 +396,64 @@ With UserList(UserIndex)
 End With
 
 PuedeSeguirComerciando = True
+
+End Function
+
+Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
+'***************************************************
+'Autor: ZaMa
+'Last Modification: 05/06/2010
+'Checks whether the user has the offered items in his inventory or not.
+'***************************************************
+
+    Dim OfferedItems(MAX_OFFER_SLOTS) As tOfferItem
+    Dim Slot As Long
+    Dim SlotAux As Long
+    Dim SlotCount As Long
+    
+    Dim ObjIndex As Integer
+    
+    With UserList(UserIndex).ComUsu
+        
+        ' Agrupo los items que son iguales
+        For Slot = 1 To MAX_OFFER_SLOTS
+                    
+            ObjIndex = .Objeto(Slot)
+            
+            If ObjIndex > 0 Then
+            
+                For SlotAux = 0 To SlotCount
+                    
+                    If ObjIndex = OfferedItems(SlotAux).ObjIndex Then
+                        ' Son iguales, aumento la cantidad
+                        OfferedItems(SlotAux).Amount = OfferedItems(SlotAux).Amount + .cant(Slot)
+                        Exit For
+                    End If
+                    
+                Next SlotAux
+                
+                ' No encontro otro igual, lo agrego
+                If SlotAux = SlotCount Then
+                    OfferedItems(SlotCount).ObjIndex = ObjIndex
+                    OfferedItems(SlotCount).Amount = .cant(Slot)
+                    
+                    SlotCount = SlotCount + 1
+                End If
+                
+            End If
+            
+        Next Slot
+        
+        ' Chequeo que tengan la cantidad en el inventario
+        For Slot = 1 To MAX_OFFER_SLOTS
+            If Not HasEnoughItems(UserIndex, OfferedItems(Slot).ObjIndex, OfferedItems(Slot).Amount) Then Exit Function
+        Next Slot
+        
+        ' Compruebo que tenga el oro que oferta
+        If UserList(UserIndex).Stats.GLD < .GoldAmount Then Exit Function
+        
+    End With
+    
+    HasOfferedItems = True
 
 End Function
