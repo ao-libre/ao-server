@@ -939,7 +939,7 @@ Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integ
         Call WriteConsoleMsg(sendIndex, "Total: " & TempStr, FontTypeNames.FONTTYPE_INFO)
 #End If
         If .flags.Traveling = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Tiempo restante para llegar a tu hogar: " & .Counters.goHome * 6 & " segundos.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Tiempo restante para llegar a tu hogar: " & GetHomeArrivalTime(UserIndex) & " segundos.", FontTypeNames.FONTTYPE_INFO)
         End If
         
         Call WriteConsoleMsg(sendIndex, "Oro: " & .Stats.GLD & "  Posición: " & .Pos.X & "," & .Pos.Y & " en mapa " & .Pos.Map, FontTypeNames.FONTTYPE_INFO)
@@ -2375,7 +2375,7 @@ Public Sub goHome(ByVal UserIndex As Integer)
 '01/06/2010: ZaMa - Ahora usa otro tipo de intervalo (lo saque de tPiquetec)
 '***************************************************
 
-    Dim Distance As Integer
+    Dim Distance As Long
     Dim Tiempo As Long
     
     With UserList(UserIndex)
@@ -2390,7 +2390,7 @@ Public Sub goHome(ByVal UserIndex As Integer)
             
             Call IntervaloGoHome(UserIndex, Tiempo, True)
                 
-            Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, Tiempo, , MapInfo(Ciudades(.Hogar).Map).name)
+            Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, Tiempo / 1000, , MapInfo(Ciudades(.Hogar).Map).name)
         Else
             Call WriteConsoleMsg(UserIndex, "Debes estar muerto para poder utilizar este comando.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -2479,7 +2479,7 @@ Public Function GetHomeArrivalTime(ByVal UserIndex As Integer) As Integer
     TActual = GetTickCount() And &H7FFFFFFF
     
     With UserList(UserIndex)
-        GetHomeArrivalTime = .Counters.goHome - TActual
+        GetHomeArrivalTime = (.Counters.goHome - TActual) * 0.001
     End With
 
 End Function

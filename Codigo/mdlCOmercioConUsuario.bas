@@ -179,19 +179,23 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     ' Aceptaron ambos, chequeo que tengan los items que ofertaron
     If Not HasOfferedItems(UserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_FIGHT)
         
         Call FinComerciarUsu(UserIndex)
+        Call FinComerciarUsu(OtroUserIndex)
+        Call Protocol.FlushBuffer(OtroUserIndex)
         
         Exit Sub
         
     ElseIf Not HasOfferedItems(OtroUserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_WARNING)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_WARNING)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
         
+        Call FinComerciarUsu(UserIndex)
         Call FinComerciarUsu(OtroUserIndex)
+        Call Protocol.FlushBuffer(OtroUserIndex)
         
         Exit Sub
         
@@ -445,7 +449,7 @@ Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
         Next Slot
         
         ' Chequeo que tengan la cantidad en el inventario
-        For Slot = 1 To SlotCount - 1
+        For Slot = 0 To SlotCount - 1
             If Not HasEnoughItems(UserIndex, OfferedItems(Slot).ObjIndex, OfferedItems(Slot).Amount) Then Exit Function
         Next Slot
         

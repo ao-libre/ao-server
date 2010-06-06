@@ -348,4 +348,3 @@ Public Function IntervaloGoHome(ByVal UserIndex As Integer, Optional ByVal TimeI
     End With
 
 End Function
-
