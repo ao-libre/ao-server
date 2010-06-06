@@ -323,3 +323,29 @@ Public Function IntervaloEstadoAtacable(ByVal UserIndex As Integer, Optional ByV
     End With
 
 End Function
+
+Public Function IntervaloGoHome(ByVal UserIndex As Integer, Optional ByVal TimeInterval As Long, Optional ByVal Actualizar As Boolean = False) As Boolean
+'**************************************************************
+'Author: ZaMa
+'Last Modify by: ZaMa
+'Last Modify Date: 01/06/2010
+'01/06/2010: ZaMa - Add the Timer which determines wether the user can be teleported to its home or not
+'**************************************************************
+    Dim TActual As Long
+    
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    With UserList(UserIndex)
+        ' Inicializa el timer
+        If Actualizar Then
+            .flags.Traveling = 1
+            .Counters.goHome = TActual + TimeInterval
+        Else
+            If TActual >= .Counters.goHome Then
+                IntervaloGoHome = True
+            End If
+        End If
+    End With
+
+End Function
+

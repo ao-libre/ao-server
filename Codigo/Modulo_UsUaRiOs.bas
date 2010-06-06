@@ -2323,14 +2323,16 @@ Public Function HasEnoughItems(ByVal UserIndex As Integer, ByVal ObjIndex As Int
     Dim Slot As Long
     Dim ItemInvAmount As Long
     
-    For Slot = 1 To UserList(UserIndex).CurrentInventorySlots
-        ' Si es el item que busco
-        If UserList(UserIndex).Invent.Object(Slot).ObjIndex = ObjIndex Then
-            ' Lo sumo a la cantidad total
-            ItemInvAmount = ItemInvAmount + UserList(UserIndex).Invent.Object(Slot).Amount
-        End If
-    Next Slot
-
+    With UserList(UserIndex)
+        For Slot = 1 To .CurrentInventorySlots
+            ' Si es el item que busco
+            If .Invent.Object(Slot).ObjIndex = ObjIndex Then
+                ' Lo sumo a la cantidad total
+                ItemInvAmount = ItemInvAmount + .Invent.Object(Slot).Amount
+            End If
+        Next Slot
+    End With
+    
     HasEnoughItems = Amount <= ItemInvAmount
 End Function
 
@@ -2367,28 +2369,34 @@ End If
 End Function
 
 Public Sub goHome(ByVal UserIndex As Integer)
-Dim Distance As Integer
-Dim tiempo As Long
+'***************************************************
+'Author: Budi
+'Last Modification: 01/06/2010
+'01/06/2010: ZaMa - Ahora usa otro tipo de intervalo (lo saque de tPiquetec)
+'***************************************************
 
-With UserList(UserIndex)
-    If .flags.Muerto = 1 Then
-        If .flags.lastMap = 0 Then
-            Distance = distanceToCities(.Pos.Map).distanceToCity(.Hogar)
+    Dim Distance As Integer
+    Dim Tiempo As Long
+    
+    With UserList(UserIndex)
+        If .flags.Muerto = 1 Then
+            If .flags.lastMap = 0 Then
+                Distance = distanceToCities(.Pos.Map).distanceToCity(.Hogar)
+            Else
+                Distance = distanceToCities(.flags.lastMap).distanceToCity(.Hogar) + GOHOME_PENALTY
+            End If
+            
+            Tiempo = (Distance + 1) * 30000 'ms
+            
+            Call IntervaloGoHome(UserIndex, Tiempo, True)
+                
+            Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, Tiempo, , MapInfo(Ciudades(.Hogar).Map).name)
         Else
-            Distance = distanceToCities(.flags.lastMap).distanceToCity(.Hogar) + GOHOME_PENALTY
+            Call WriteConsoleMsg(UserIndex, "Debes estar muerto para poder utilizar este comando.", FontTypeNames.FONTTYPE_FIGHT)
         End If
         
-        tiempo = (Distance + 1) * 30 'segundos
-        
-        .Counters.goHome = tiempo / 6 'Se va a chequear cada 6 segundos.
-        
-        .flags.Traveling = 1
-
-        Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, tiempo, , MapInfo(Ciudades(.Hogar).Map).name)
-    Else
-        Call WriteConsoleMsg(UserIndex, "Debes estar muerto para poder utilizar este comando.", FontTypeNames.FONTTYPE_FIGHT)
-    End If
-End With
+    End With
+    
 End Sub
 
 Public Function ToogleToAtackable(ByVal UserIndex As Integer, ByVal OwnerIndex As Integer, Optional ByVal StealingNpc As Boolean = True) As Boolean
@@ -2443,11 +2451,79 @@ End Function
 Public Sub setHome(ByVal UserIndex As Integer, ByVal newHome As eCiudad, ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Budi
-'Last Modification: 30/04/2010
+'Last Modification: 01/06/2010
 '30/04/2010: ZaMa - Ahora el npc avisa que se cambio de hogar.
+'01/06/2010: ZaMa - Ahora te avisa si ya tenes ese hogar.
 '***************************************************
     If newHome < eCiudad.cUllathorpe Or newHome > cArghal Then Exit Sub
-    UserList(UserIndex).Hogar = newHome
     
-    Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido a nuestra humilde comunidad, este es ahora tu nuevo hogar!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+    If UserList(UserIndex).Hogar <> newHome Then
+        UserList(UserIndex).Hogar = newHome
+    
+        Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido a nuestra humilde comunidad, este es ahora tu nuevo hogar!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+    Else
+        Call WriteChatOverHead(UserIndex, "¡¡¡Ya eres miembro de nuestra humilde comunidad!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+    End If
+
+End Sub
+
+Public Function GetHomeArrivalTime(ByVal UserIndex As Integer) As Integer
+'**************************************************************
+'Author: ZaMa
+'Last Modify by: ZaMa
+'Last Modify Date: 01/06/2010
+'Calculates the time left to arrive home.
+'**************************************************************
+    Dim TActual As Long
+    
+    TActual = GetTickCount() And &H7FFFFFFF
+    
+    With UserList(UserIndex)
+        GetHomeArrivalTime = .Counters.goHome - TActual
+    End With
+
+End Function
+
+Public Sub HomeArrival(ByVal UserIndex As Integer)
+'**************************************************************
+'Author: ZaMa
+'Last Modify by: ZaMa
+'Last Modify Date: 01/06/2010
+'Teleports user to its home.
+'**************************************************************
+    
+    Dim tX As Integer
+    Dim tY As Integer
+    Dim tMap As Integer
+
+    With UserList(UserIndex)
+
+        'Antes de que el pj llegue a la ciudad, lo hacemos dejar de navegar para que no se buguee.
+        If .flags.Navegando = 1 Then
+            .Char.body = iCuerpoMuerto
+            .Char.Head = iCabezaMuerto
+            .Char.ShieldAnim = NingunEscudo
+            .Char.WeaponAnim = NingunArma
+            .Char.CascoAnim = NingunCasco
+            
+            .flags.Navegando = 0
+            
+            Call WriteNavigateToggle(UserIndex)
+            'Le sacamos el navegando, pero no le mostramos a los demás porque va a ser sumoneado hasta ulla.
+        End If
+        
+        tX = Ciudades(.Hogar).X
+        tY = Ciudades(.Hogar).Y
+        tMap = Ciudades(.Hogar).Map
+        
+        Call FindLegalPos(UserIndex, tMap, tX, tY)
+        Call WarpUserChar(UserIndex, tMap, tX, tY, True)
+        
+        Call WriteMultiMessage(UserIndex, eMessages.FinishHome)
+        
+        .flags.Traveling = 0
+        .Counters.goHome = 0
+        
+    End With
+    
 End Sub
