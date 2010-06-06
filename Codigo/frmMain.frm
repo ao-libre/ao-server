@@ -598,8 +598,6 @@ On Error GoTo hayerror
                         
                         If .flags.AtacablePor <> 0 Then Call EfectoEstadoAtacable(iUserIndex)
                         
-                        If .flags.Traveling <> 0 Then Call TravelingEffect(iUserIndex)
-                        
                         Call DuracionPociones(iUserIndex)
                         
                         Call HambreYSed(iUserIndex, bEnviarAyS)
@@ -682,6 +680,8 @@ On Error GoTo hayerror
                         If bEnviarAyS Then Call WriteUpdateHungerAndThirst(iUserIndex)
                         
                         If .NroMascotas > 0 Then Call TiempoInvocacion(iUserIndex)
+                    Else
+                        If .flags.Traveling <> 0 Then Call TravelingEffect(iUserIndex)
                     End If 'Muerto
                 Else 'no esta logeado?
                     'Inactive players will be removed!

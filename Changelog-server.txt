@@ -501,3 +501,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 01/06/2010 : Valido si tiene arma equipada antes de preguntar si es vikinga. (ZaMa)
  * 03/06/2010 : Fix a bug en el sistema de fundición, cuando el objeto fundido no daba ningún lingote(dagas comunes y horquillas por ej) no se actualizaba el inventario, además, saqué unas actualizaciones innecesarias de inventario. (Pato)
  * 03/06/2010 : Ahora los piratas no dropean en agua sólo si son nivel 20. (Pato)
+ * 06/06/2010 : Ahora se valida si los usuarios tienen los items que ofertan en comercio seguro. (ZaMa)
+ * 06/06/2010 : Optimizaciones en el /hogar. (ZaMa)
