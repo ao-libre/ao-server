@@ -121,6 +121,31 @@ Function EsSemiDios(ByVal name As String) As Boolean
 
 End Function
 
+Function EsGmEspecial(ByVal name As String) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: 07/06/2010
+'
+'***************************************************
+
+    Dim NumWizs As Integer
+    Dim WizNum As Integer
+    Dim NomB As String
+    
+    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Especiales"))
+    For WizNum = 1 To NumWizs
+        NomB = UCase$(GetVar(IniPath & "Server.ini", "Especiales", "Especial" & WizNum))
+        
+        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
+        If UCase$(name) = NomB Then
+            EsGmEspecial = True
+            Exit Function
+        End If
+    Next WizNum
+
+End Function
+
+
 Function EsConsejero(ByVal name As String) As Boolean
 '***************************************************
 'Author: Unknown

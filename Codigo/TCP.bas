@@ -1058,6 +1058,9 @@ With UserList(UserIndex)
         Call LogGM(name, "Se conecto con ip:" & .ip)
     ElseIf EsSemiDios(name) Then
         .flags.Privilegios = .flags.Privilegios Or PlayerType.SemiDios
+        
+        .flags.PrivEspecial = EsGmEspecial(name)
+        
         Call LogGM(name, "Se conecto con ip:" & .ip)
     ElseIf EsConsejero(name) Then
         .flags.Privilegios = .flags.Privilegios Or PlayerType.Consejero
@@ -1628,6 +1631,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .Bendicion = 0
         .Meditando = 0
         .Privilegios = 0
+        .PrivEspecial = False
         .PuedeMoverse = 0
         .OldBody = 0
         .OldHead = 0

@@ -1075,6 +1075,7 @@ Public Type UserFlags
     
     StatsChanged As Byte
     Privilegios As PlayerType
+    PrivEspecial As Boolean
     
     ValCoDe As Integer
     

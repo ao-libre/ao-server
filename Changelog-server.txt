@@ -503,3 +503,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 03/06/2010 : Ahora los piratas no dropean en agua sólo si son nivel 20. (Pato)
  * 06/06/2010 : Ahora se valida si los usuarios tienen los items que ofertan en comercio seguro. (ZaMa)
  * 06/06/2010 : Optimizaciones en el /hogar. (ZaMa)
+ * 07/06/2010 : Ahora se puede configurar privilegios a gms "especiales" que pueden usar /aname y /lastemail. (ZaMa)
