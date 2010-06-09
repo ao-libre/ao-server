@@ -859,12 +859,12 @@ With UserList(UserIndex)
         .Char.Head = UserList(TargetIndex).Char.Head
         .Char.CascoAnim = UserList(TargetIndex).Char.CascoAnim
         .Char.ShieldAnim = UserList(TargetIndex).Char.ShieldAnim
-        .Char.WeaponAnim = GetWeaponAnim(UserIndex, UserList(TargetIndex).Invent.WeaponEqpObjIndex)
+        .Char.WeaponAnim = UserList(TargetIndex).Char.WeaponAnim
         
         Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
        
-       Call InfoHechizo(UserIndex)
-       HechizoCasteado = True
+        Call InfoHechizo(UserIndex)
+        HechizoCasteado = True
     End If
     
     ' <-------- Agrega Envenenamiento ---------->
