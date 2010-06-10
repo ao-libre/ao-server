@@ -388,6 +388,7 @@ Dim i As Integer
 Dim num As Long
 
 Minutos = Minutos + 1
+MinsPjesSave = MinsPjesSave + 1
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 Call ModAreas.AreasOptimizacion
@@ -404,6 +405,14 @@ If Minutos >= MinutosWs Then
     Call ES.DoBackUp
     Call aClon.VaciarColeccion
     Minutos = 0
+End If
+
+If MinsPjesSave = MinutosGuardarUsuarios - 1 Then
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Grabado de personajes en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+ElseIf MinsPjesSave >= MinutosGuardarUsuarios Then
+    Call mdParty.ActualizaExperiencias
+    Call GuardarUsuarios
+    MinsPjesSave = 0
 End If
 
 If MinutosLatsClean >= 15 Then
