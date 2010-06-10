@@ -1096,6 +1096,7 @@ With UserList(UserIndex)
     
     If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
+        Call ResetUserSlot(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If

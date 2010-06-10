@@ -504,3 +504,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 06/06/2010 : Ahora se valida si los usuarios tienen los items que ofertan en comercio seguro. (ZaMa)
  * 06/06/2010 : Optimizaciones en el /hogar. (ZaMa)
  * 07/06/2010 : Ahora se puede configurar privilegios a gms "especiales" que pueden usar /aname y /lastemail. (ZaMa)
+ * 10/06/2010 : Agrego un ResetUserSlot muy crítico que por falta de él podían aparecer PJs con inventarios y bóvedas de GMS. (Pato)
