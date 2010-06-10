@@ -83,6 +83,7 @@ Public IntervaloOwnedNpc As Long
 Public PorcentajeRecuperoMana As Integer
 
 Public MinutosWs As Long
+Public MinutosGuardarUsuarios As Long
 Public Puerto As Integer
 
 Public BootDelBackUp As Byte
