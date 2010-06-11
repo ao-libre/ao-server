@@ -1267,6 +1267,8 @@ With UserList(UserIndex)
         .LogOnTime = Now
     #End If
     
+    Call DoAdminInvisible(UserIndex)
+    
     'Crea  el personaje del usuario
     Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
     
@@ -1777,90 +1779,92 @@ Dim i As Integer
 
 Dim aN As Integer
 
-aN = UserList(UserIndex).flags.AtacadoPorNpc
-If aN > 0 Then
-      Npclist(aN).Movement = Npclist(aN).flags.OldMovement
-      Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
-      Npclist(aN).flags.AttackedBy = vbNullString
-End If
-aN = UserList(UserIndex).flags.NPCAtacado
-If aN > 0 Then
-    If Npclist(aN).flags.AttackedFirstBy = UserList(UserIndex).name Then
-        Npclist(aN).flags.AttackedFirstBy = vbNullString
+With UserList(UserIndex)
+    aN = .flags.AtacadoPorNpc
+    If aN > 0 Then
+          Npclist(aN).Movement = Npclist(aN).flags.OldMovement
+          Npclist(aN).Hostile = Npclist(aN).flags.OldHostil
+          Npclist(aN).flags.AttackedBy = vbNullString
     End If
-End If
-UserList(UserIndex).flags.AtacadoPorNpc = 0
-UserList(UserIndex).flags.NPCAtacado = 0
-
-Map = UserList(UserIndex).Pos.Map
-name = UCase$(UserList(UserIndex).name)
-
-UserList(UserIndex).Char.FX = 0
-UserList(UserIndex).Char.loops = 0
-Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(UserList(UserIndex).Char.CharIndex, 0, 0))
-
-
-UserList(UserIndex).flags.UserLogged = False
-UserList(UserIndex).Counters.Saliendo = False
-
-'Le devolvemos el body y head originales
-If UserList(UserIndex).flags.AdminInvisible = 1 Then Call DoAdminInvisible(UserIndex)
-
-'si esta en party le devolvemos la experiencia
-If UserList(UserIndex).PartyIndex > 0 Then Call mdParty.SalirDeParty(UserIndex)
-
-'Save statistics
-Call Statistics.UserDisconnected(UserIndex)
-
-' Grabamos el personaje del usuario
-Call SaveUser(UserIndex, CharPath & name & ".chr")
-
-'usado para borrar Pjs
-Call WriteVar(CharPath & UserList(UserIndex).name & ".chr", "INIT", "Logged", "0")
-
-
-'Quitar el dialogo
-'If MapInfo(Map).NumUsers > 0 Then
-'    Call SendToUserArea(UserIndex, "QDL" & UserList(UserIndex).Char.charindex)
-'End If
-
-If MapInfo(Map).NumUsers > 0 Then
-    Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageRemoveCharDialog(UserList(UserIndex).Char.CharIndex))
-End If
-
-
-
-'Borrar el personaje
-If UserList(UserIndex).Char.CharIndex > 0 Then
-    Call EraseUserChar(UserIndex, UserList(UserIndex).flags.AdminInvisible = 1)
-End If
-
-'Borrar mascotas
-For i = 1 To MAXMASCOTAS
-    If UserList(UserIndex).MascotasIndex(i) > 0 Then
-        If Npclist(UserList(UserIndex).MascotasIndex(i)).flags.NPCActive Then _
-            Call QuitarNPC(UserList(UserIndex).MascotasIndex(i))
+    
+    aN = .flags.NPCAtacado
+    If aN > 0 Then
+        If Npclist(aN).flags.AttackedFirstBy = .name Then
+            Npclist(aN).flags.AttackedFirstBy = vbNullString
+        End If
     End If
-Next i
-
-'Update Map Users
-MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
-
-If MapInfo(Map).NumUsers < 0 Then
-    MapInfo(Map).NumUsers = 0
-End If
-
-' Si el usuario habia dejado un msg en la gm's queue lo borramos
-If Ayuda.Existe(UserList(UserIndex).name) Then Call Ayuda.Quitar(UserList(UserIndex).name)
-
-Call ResetUserSlot(UserIndex)
-
-Call MostrarNumUsers
-
-N = FreeFile(1)
-Open App.Path & "\logs\Connect.log" For Append Shared As #N
-Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
-Close #N
+    .flags.AtacadoPorNpc = 0
+    .flags.NPCAtacado = 0
+    
+    Map = .Pos.Map
+    name = UCase$(.name)
+    
+    .Char.FX = 0
+    .Char.loops = 0
+    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
+    
+    .flags.UserLogged = False
+    .Counters.Saliendo = False
+    
+    'Le devolvemos el body y head originales
+    If .flags.AdminInvisible = 1 Then
+        .Char.body = .flags.OldBody
+        .Char.Head = .flags.OldHead
+    End If
+    
+    'si esta en party le devolvemos la experiencia
+    If .PartyIndex > 0 Then Call mdParty.SalirDeParty(UserIndex)
+    
+    'Save statistics
+    Call Statistics.UserDisconnected(UserIndex)
+    
+    ' Grabamos el personaje del usuario
+    Call SaveUser(UserIndex, CharPath & name & ".chr")
+    
+    'usado para borrar Pjs
+    Call WriteVar(CharPath & .name & ".chr", "INIT", "Logged", "0")
+    
+    'Quitar el dialogo
+    'If MapInfo(Map).NumUsers > 0 Then
+    '    Call SendToUserArea(UserIndex, "QDL" & .Char.charindex)
+    'End If
+    
+    If MapInfo(Map).NumUsers > 0 Then
+        Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
+    End If
+    
+    'Borrar el personaje
+    If .Char.CharIndex > 0 Then
+        Call EraseUserChar(UserIndex, .flags.AdminInvisible = 1)
+    End If
+    
+    'Borrar mascotas
+    For i = 1 To MAXMASCOTAS
+        If .MascotasIndex(i) > 0 Then
+            If Npclist(.MascotasIndex(i)).flags.NPCActive Then _
+                Call QuitarNPC(.MascotasIndex(i))
+        End If
+    Next i
+    
+    'Update Map Users
+    MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
+    
+    If MapInfo(Map).NumUsers < 0 Then
+        MapInfo(Map).NumUsers = 0
+    End If
+    
+    ' Si el usuario habia dejado un msg en la gm's queue lo borramos
+    If Ayuda.Existe(.name) Then Call Ayuda.Quitar(.name)
+    
+    Call ResetUserSlot(UserIndex)
+    
+    Call MostrarNumUsers
+    
+    N = FreeFile(1)
+    Open App.Path & "\logs\Connect.log" For Append Shared As #N
+        Print #N, name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+    Close #N
+End With
 
 Exit Sub
 

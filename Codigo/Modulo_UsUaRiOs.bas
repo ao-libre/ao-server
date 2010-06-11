@@ -1901,7 +1901,6 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
                 If Not HiddenPirat Then Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call SetInvisible(UserIndex, .Char.CharIndex, False)
-
             End If
             
             If .flags.Traveling = 1 Then
