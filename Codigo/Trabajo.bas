@@ -1643,30 +1643,30 @@ On Error GoTo Errhandler
         Exit Sub
     End If
     
-    If UserList(LadrOnIndex).flags.Seguro Then
-        If Not criminal(VictimaIndex) Then
-            Call WriteConsoleMsg(LadrOnIndex, "Debes quitarte el seguro para robarle a un ciudadano.", FontTypeNames.FONTTYPE_FIGHT)
-            Exit Sub
-        End If
-    Else
-        If UserList(LadrOnIndex).Faccion.ArmadaReal = 1 Then
-            If Not criminal(VictimaIndex) Then
-                Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejército real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
-                Exit Sub
-            End If
-        End If
-    End If
-    
-    If TriggerZonaPelea(LadrOnIndex, VictimaIndex) <> TRIGGER6_AUSENTE Then Exit Sub
-    
-    
     With UserList(LadrOnIndex)
     
+        If .flags.Seguro Then
+            If Not criminal(VictimaIndex) Then
+                Call WriteConsoleMsg(LadrOnIndex, "Debes quitarte el seguro para robarle a un ciudadano.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+        Else
+            If .Faccion.ArmadaReal = 1 Then
+                If Not criminal(VictimaIndex) Then
+                    Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejército real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
+                    Exit Sub
+                End If
+            End If
+        End If
+        
         ' Caos robando a caos?
         If UserList(VictimaIndex).Faccion.FuerzasCaos = 1 And .Faccion.FuerzasCaos = 1 Then
             Call WriteConsoleMsg(LadrOnIndex, "No puedes robar a otros miembros de la legión oscura.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Sub
         End If
+        
+        If TriggerZonaPelea(LadrOnIndex, VictimaIndex) <> TRIGGER6_AUSENTE Then Exit Sub
+    
         
         ' Tiene energia?
         If .Stats.MinSta < 15 Then
@@ -1741,7 +1741,7 @@ On Error GoTo Errhandler
                     End If
                 Else 'Roba oro
                     If UserList(VictimaIndex).Stats.GLD > 0 Then
-                        Dim N As Integer
+                        Dim N As Long
                         
                         If .clase = eClass.Thief Then
                         ' Si no tine puestos los guantes de hurto roba un 50% menos. Pablo (ToxicWaste)
@@ -1774,7 +1774,6 @@ On Error GoTo Errhandler
             Else
                 Call WriteConsoleMsg(LadrOnIndex, "¡No has logrado robar nada!", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(VictimaIndex, "¡" & .name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(VictimaIndex, "¡" & .name & " es un criminal!", FontTypeNames.FONTTYPE_INFO)
                 Call FlushBuffer(VictimaIndex)
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, False)
@@ -1875,7 +1874,7 @@ With UserList(VictimaIndex)
     
     If flag Then
         Dim MiObj As Obj
-        Dim num As Byte
+        Dim num As Integer
         Dim ObjAmount As Integer
         
         ObjAmount = .Invent.Object(i).Amount
