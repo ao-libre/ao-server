@@ -945,12 +945,16 @@ On Error GoTo Errhandler
         With UserList(i)
             If .flags.UserLogged Then
                 If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-                    .Counters.PiqueteC = .Counters.PiqueteC + 1
-                    Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
-                    
-                    If .Counters.PiqueteC > 23 Then
+                    If .flags.Muerto = 0 Then
+                        .Counters.PiqueteC = .Counters.PiqueteC + 1
+                        Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                        
+                        If .Counters.PiqueteC > 23 Then
+                            .Counters.PiqueteC = 0
+                            Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
+                        End If
+                    Else
                         .Counters.PiqueteC = 0
-                        Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
                     End If
                 Else
                     .Counters.PiqueteC = 0
