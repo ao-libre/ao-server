@@ -507,5 +507,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/06/2010 : Agrego un ResetUserSlot muy crítico que por falta de él podían aparecer PJs con inventarios y bóvedas de GMS. (Pato)
  * 10/06/2010 : Agrego grabado de personajes según el tiempo establecido en el Server.ini en INTERVALOS, IntervaloGuardarUsuarios (Pato)
  * 10/06/2010 : Ahora los caspers no son encarcelados por piquete. (Pato)
- * 10/06/2010 : Arreglo un overflow en doRobar, generado por robar mas de 256 (era byte) items de un mismo slot. (zaMa)
+ * 10/06/2010 : Arreglo un overflow en doRobar, generado por robar mas de 256 (era byte) items de un mismo slot. (ZaMa)
  * 10/06/2010 : Los GMs loguean invisibles, y si están invisibles al desloguear no se hacen visibles primero. (Pato)
+ * 12/06/2010 : Ahora se pueden comerciar mas de 32k de items por comercio seguro. (ZaMa)

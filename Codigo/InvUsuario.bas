@@ -41,21 +41,21 @@ Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
 
 On Error Resume Next
 
-Dim i As Integer
-Dim ObjIndex As Integer
-
-For i = 1 To UserList(UserIndex).CurrentInventorySlots
-    ObjIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
-    If ObjIndex > 0 Then
+    Dim i As Integer
+    Dim ObjIndex As Integer
+    
+    For i = 1 To UserList(UserIndex).CurrentInventorySlots
+        ObjIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
+        If ObjIndex > 0 Then
             If (ObjData(ObjIndex).OBJType <> eOBJType.otLlaves And _
                 ObjData(ObjIndex).OBJType <> eOBJType.otBarcos And _
                 Not ItemNewbie(ObjIndex)) Then
                   TieneObjetosRobables = True
                   Exit Function
             End If
-    
-    End If
-Next i
+        End If
+    Next i
+
 End Function
 
 Function ClasePuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, Optional ByRef sMotivo As String) As Boolean

@@ -306,11 +306,11 @@ Errhandler:
     Call LogError("Error en FundirArmas. Error " & Err.Number & " : " & Err.description)
 End Sub
 
-Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer) As Boolean
+Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Long, ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 10/07/2010
+'10/07/2010: ZaMa - Ahora cant es long para evitar un overflow.
 '***************************************************
 
     Dim i As Integer
