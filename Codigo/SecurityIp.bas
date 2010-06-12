@@ -212,6 +212,8 @@ Public Sub IpRestarConexion(ByVal ip As Long)
 '
 '***************************************************
 
+On Error GoTo Errhandler
+
 Dim key As Long
     'Debug.Print "resta conexion a " & ip
     
@@ -235,6 +237,11 @@ Dim key As Long
         Call LogIP("restamos conexion a " & ip & " key=" & key & ". NEGATIVO!!")
         'LogCriticEvent "SecurityIp.IpRestarconexion obtuvo un valor negativo en key"
     End If
+    
+    Exit Sub
+
+Errhandler:
+    Call LogError("Error en IpRestarConexion. Error: " & Err.Number & " - " & Err.description & ". Ip: " & GetAscIP(ip) & " Key:" & key)
 End Sub
 
 

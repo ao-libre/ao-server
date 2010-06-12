@@ -41,8 +41,10 @@ Public Const REDUCTOR_PRECIOVENTA As Byte = 3
 Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal Slot As Integer, ByVal Cantidad As Integer)
 '*************************************************
 'Author: Nacho (Integer)
-'Last modified: 27/07/08 (MarKoxX) | New changes in the way of trading (now when you buy it rounds to ceil and when you sell it rounds to floor)
+'Last modified: 07/06/2010
+'27/07/08 (MarKoxX) | New changes in the way of trading (now when you buy it rounds to ceil and when you sell it rounds to floor)
 '  - 06/13/08 (NicoNZ)
+'07/06/2010: ZaMa - Los objetos se loguean si superan la cantidad de 1k (antes era solo si eran 1k).
 '*************************************************
     Dim Precio As Long
     Dim Objeto As Obj
@@ -94,8 +96,8 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
-        ElseIf Objeto.Amount = 1000 Then 'Es mucha cantidad?
+            Call LgDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+        ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
                 Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
@@ -173,7 +175,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
             Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
-        ElseIf Objeto.Amount = 1000 Then 'Es mucha cantidad?
+        ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
                 Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
