@@ -510,3 +510,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/06/2010 : Arreglo un overflow en doRobar, generado por robar mas de 256 (era byte) items de un mismo slot. (ZaMa)
  * 10/06/2010 : Los GMs loguean invisibles, y si están invisibles al desloguear no se hacen visibles primero. (Pato)
  * 12/06/2010 : Ahora se pueden comerciar mas de 32k de items por comercio seguro. (ZaMa)
+ * 12/06/2010 : Fix al logueo de GMs invis(Me había comido el chequeo de privilegios :(). (Pato)

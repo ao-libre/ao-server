@@ -1267,7 +1267,9 @@ With UserList(UserIndex)
         .LogOnTime = Now
     #End If
     
-    Call DoAdminInvisible(UserIndex)
+    If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
+        Call DoAdminInvisible(UserIndex)
+    End If
     
     'Crea  el personaje del usuario
     Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
