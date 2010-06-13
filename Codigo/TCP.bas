@@ -1267,12 +1267,12 @@ With UserList(UserIndex)
         .LogOnTime = Now
     #End If
     
+    'Crea  el personaje del usuario
+    Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+    
     If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
         Call DoAdminInvisible(UserIndex)
     End If
-    
-    'Crea  el personaje del usuario
-    Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
     
     Call WriteUserCharIndexInServer(UserIndex)
     ''[/el oso]
@@ -1812,6 +1812,7 @@ With UserList(UserIndex)
     If .flags.AdminInvisible = 1 Then
         .Char.body = .flags.OldBody
         .Char.Head = .flags.OldHead
+        .flags.AdminInvisible = 0
     End If
     
     'si esta en party le devolvemos la experiencia
