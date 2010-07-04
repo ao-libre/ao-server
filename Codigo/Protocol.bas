@@ -4068,8 +4068,8 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             'If modifing a filled offerSlot, we already got the objIndex, then we don't need to know it
             If Slot <> 0 Then ObjIndex = .Invent.Object(Slot).ObjIndex
             ' Can't offer more than he has
-            If Not TieneObjetos(ObjIndex, _
-                TotalOfferItems(ObjIndex, UserIndex) + Amount, UserIndex) Then
+            If Not HasEnoughItems(UserIndex, ObjIndex, _
+                TotalOfferItems(ObjIndex, UserIndex) + Amount) Then
                 
                 Call WriteCommerceChat(UserIndex, "No tienes esa cantidad.", FontTypeNames.FONTTYPE_TALK)
                 Exit Sub
@@ -5394,18 +5394,18 @@ Private Sub HandleReleasePet(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar una mascota, haz click izquierdo sobre ella.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
+        
+        'Make usre it's the user's pet
+        If Npclist(.flags.TargetNPC).MaestroUser <> UserIndex Then Exit Sub
         
         'Make sure it's close enough
         If Distancia(Npclist(.flags.TargetNPC).Pos, .Pos) > 10 Then
             Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-        
-        'Make usre it's the user's pet
-        If Npclist(.flags.TargetNPC).MaestroUser <> UserIndex Then Exit Sub
         
         'Do it
         Call QuitarPet(UserIndex, .flags.TargetNPC)
@@ -7980,8 +7980,8 @@ End Sub
 Private Sub HandleWhere(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -8005,7 +8005,13 @@ On Error GoTo Errhandler
         If Not .flags.Privilegios And PlayerType.User Then
             tUser = NameIndex(UserName)
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                
+                ' Solo le avisa a dioses
+                ElseIf .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
                 If (UserList(tUser).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Or ((UserList(tUser).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) <> 0) And (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0) Then
                     Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & ": " & UserList(tUser).Pos.Map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
@@ -8214,12 +8220,24 @@ On Error GoTo Errhandler
                 End If
             
                 If tUser <= 0 Then
-                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
-                ElseIf InMapBounds(Map, X, Y) Then
-                    Call FindLegalPos(tUser, Map, X, Y)
-                    Call WarpUserChar(tUser, Map, X, Y, True, True)
-                    Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " transportado.", FontTypeNames.FONTTYPE_INFO)
-                    Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
+                    If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
+                        Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "No puedes transportar dioses o admins.", FontTypeNames.FONTTYPE_INFO)
+                    End If
+                    
+                ElseIf Not ((UserList(tUser).flags.Privilegios And PlayerType.Dios) <> 0 Or _
+                            (UserList(tUser).flags.Privilegios And PlayerType.Admin) <> 0) Or _
+                           tUser = UserIndex Then
+                            
+                    If InMapBounds(Map, X, Y) Then
+                        Call FindLegalPos(tUser, Map, X, Y)
+                        Call WarpUserChar(tUser, Map, X, Y, True, True)
+                        Call WriteConsoleMsg(UserIndex, UserList(tUser).name & " transportado.", FontTypeNames.FONTTYPE_INFO)
+                        Call LogGM(.name, "Transportó a " & UserList(tUser).name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
+                    End If
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes transportar dioses o admins.", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -8658,8 +8676,8 @@ End Sub
 Private Sub HandleJail(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 6 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -8697,7 +8715,11 @@ On Error GoTo Errhandler
                 tUser = NameIndex(UserName)
                 
                 If tUser <= 0 Then
-                    Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
+                    If (EsDios(UserName) Or EsAdmin(UserName)) Then
+                        Call WriteConsoleMsg(UserIndex, "No puedes encarcelar a administradores.", FontTypeNames.FONTTYPE_INFO)
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 Else
                     If Not UserList(tUser).flags.Privilegios And PlayerType.User Then
                         Call WriteConsoleMsg(UserIndex, "No puedes encarcelar a administradores.", FontTypeNames.FONTTYPE_INFO)
@@ -9330,8 +9352,8 @@ End Sub
 Private Sub HandleRequestCharStats(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9349,19 +9371,35 @@ On Error GoTo Errhandler
         
         Dim UserName As String
         Dim tUser As Integer
-        UserName = buffer.ReadASCIIString()
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
+        Dim UserIsAdmin As Boolean
+        Dim OtherUserIsAdmin As Boolean
+        
+        UserName = buffer.ReadASCIIString()
+         
+        UserIsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
+        
+        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And ((.flags.Privilegios And PlayerType.SemiDios) <> 0 Or UserIsAdmin) Then
             Call LogGM(.name, "/STAT " & UserName)
             
             tUser = NameIndex(UserName)
             
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_INFO)
-                
-                Call SendUserMiniStatsTxtFromChar(UserIndex, UserName)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_INFO)
+                    
+                    Call SendUserMiniStatsTxtFromChar(UserIndex, UserName)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver los stats de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
-                Call SendUserMiniStatsTxt(UserIndex, tUser)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call SendUserMiniStatsTxt(UserIndex, tUser)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver los stats de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -9389,8 +9427,8 @@ End Sub
 Private Sub HandleRequestCharGold(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9409,18 +9447,34 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = buffer.ReadASCIIString()
-        tUser = NameIndex(UserName)
+        Dim UserIsAdmin As Boolean
+        Dim OtherUserIsAdmin As Boolean
         
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+        UserName = buffer.ReadASCIIString()
+        
+        UserIsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
+        
+        If (.flags.Privilegios And PlayerType.SemiDios) Or UserIsAdmin Then
+            
             Call LogGM(.name, "/BAL " & UserName)
             
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
-                
-                Call SendUserOROTxtFromChar(UserIndex, UserName)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+                    
+                    Call SendUserOROTxtFromChar(UserIndex, UserName)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver el oro de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
-                Call WriteConsoleMsg(UserIndex, "El usuario " & UserName & " tiene " & UserList(tUser).Stats.Banco & " en el banco.", FontTypeNames.FONTTYPE_TALK)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "El usuario " & UserName & " tiene " & UserList(tUser).Stats.Banco & " en el banco.", FontTypeNames.FONTTYPE_TALK)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver el oro de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -9448,8 +9502,8 @@ End Sub
 Private Sub HandleRequestCharInventory(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9468,19 +9522,33 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         
-        UserName = buffer.ReadASCIIString()
-        tUser = NameIndex(UserName)
+        Dim UserIsAdmin As Boolean
+        Dim OtherUserIsAdmin As Boolean
         
+        UserName = buffer.ReadASCIIString()
+        
+        UserIsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             Call LogGM(.name, "/INV " & UserName)
             
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
-                
-                Call SendUserInvTxtFromChar(UserIndex, UserName)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
+                    
+                    Call SendUserInvTxtFromChar(UserIndex, UserName)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver el inventario de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
-                Call SendUserInvTxt(UserIndex, tUser)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call SendUserInvTxt(UserIndex, tUser)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver el inventario de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -9508,8 +9576,8 @@ End Sub
 Private Sub HandleRequestCharBank(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9528,19 +9596,33 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         
+        Dim UserIsAdmin As Boolean
+        Dim OtherUserIsAdmin As Boolean
+
         UserName = buffer.ReadASCIIString()
-        tUser = NameIndex(UserName)
         
+        UserIsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
         
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+        If (.flags.Privilegios And PlayerType.SemiDios) <> 0 Or UserIsAdmin Then
             Call LogGM(.name, "/BOV " & UserName)
             
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
                 
-                Call SendUserBovedaTxtFromChar(UserIndex, UserName)
+                    Call SendUserBovedaTxtFromChar(UserIndex, UserName)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver la bóveda de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
-                Call SendUserBovedaTxt(UserIndex, tUser)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call SendUserBovedaTxt(UserIndex, tUser)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver la bóveda de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -9819,8 +9901,8 @@ End Sub
 Private Sub HandleForgive(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9849,7 +9931,10 @@ On Error GoTo Errhandler
                     Call VolverCiudadano(tUser)
                 Else
                     Call LogGM(.name, "Intento perdonar un personaje de nivel avanzado.")
-                    Call WriteConsoleMsg(UserIndex, "Sólo se permite perdonar newbies.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
+                        Call WriteConsoleMsg(UserIndex, "Sólo se permite perdonar newbies.", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 End If
             End If
         End If
@@ -9878,8 +9963,8 @@ End Sub
 Private Sub HandleKick(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9898,16 +9983,22 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         Dim rank As Integer
+        Dim IsAdmin As Boolean
         
         rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
         
         UserName = buffer.ReadASCIIString()
+        IsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
         
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+        If (.flags.Privilegios And PlayerType.SemiDios) Or IsAdmin Then
             tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
+                If Not (EsDios(UserName) Or EsAdmin(UserName)) Or IsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes echar a alguien con jerarquía mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
+                End If
             Else
                 If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(UserIndex, "No puedes echar a alguien con jerarquía mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
@@ -9943,8 +10034,8 @@ End Sub
 Private Sub HandleExecute(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 12/29/06
-'
+'Last Modification: 07/06/2010
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -9977,7 +10068,11 @@ On Error GoTo Errhandler
                     Call LogGM(.name, " ejecuto a " & UserName)
                 End If
             Else
-                Call WriteConsoleMsg(UserIndex, "No está online.", FontTypeNames.FONTTYPE_INFO)
+                If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
+                    Call WriteConsoleMsg(UserIndex, "No está online.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "¿¿Estás loco?? ¿¿Cómo vas a piñatear un gm?? :@", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -10183,7 +10278,12 @@ On Error GoTo Errhandler
             tUser = NameIndex(UserName)
             
             If tUser <= 0 Then
-                Call WriteConsoleMsg(UserIndex, "El jugador no está online.", FontTypeNames.FONTTYPE_INFO)
+                If EsDios(UserName) Or EsAdmin(UserName) Then
+                    Call WriteConsoleMsg(UserIndex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "El jugador no está online.", FontTypeNames.FONTTYPE_INFO)
+                End If
+                
             Else
                 If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or _
                   (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) <> 0 Then
@@ -10374,8 +10474,9 @@ End Sub
 Private Sub HandleNickToIP(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 24/07/07
-'Pablo (ToxicWaste): Agrego para uqe el /nick2ip tambien diga los nicks en esa ip por pedido de la DGM.
+'Last Modification: 07/06/2010
+'Pablo (ToxicWaste): Agrego para que el /nick2ip tambien diga los nicks en esa ip por pedido de la DGM.
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -10394,14 +10495,16 @@ On Error GoTo Errhandler
         Dim UserName As String
         Dim tUser As Integer
         Dim priv As PlayerType
+        Dim IsAdmin As Boolean
         
         UserName = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
             tUser = NameIndex(UserName)
             Call LogGM(.name, "NICK2IP Solicito la IP de " & UserName)
-
-            If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+            
+            IsAdmin = (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0
+            If IsAdmin Then
                 priv = PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin
             Else
                 priv = PlayerType.User
@@ -10427,7 +10530,9 @@ On Error GoTo Errhandler
                     Call WriteConsoleMsg(UserIndex, "Los personajes con ip " & ip & " son: " & lista, FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
-                Call WriteConsoleMsg(UserIndex, "No hay ningún personaje con ese nick.", FontTypeNames.FONTTYPE_INFO)
+                If Not (EsDios(UserName) Or EsAdmin(UserName)) Or IsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "No hay ningún personaje con ese nick.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
@@ -12432,8 +12537,9 @@ End Sub
 Public Sub HandleCheckSlot(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Pablo (ToxicWaste)
-'Last Modification: 09/09/2008 (NicoNZ)
+'Last Modification: 07/06/2010
 'Check one Users Slot in Particular from Inventory
+'07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 4 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -12454,26 +12560,41 @@ On Error GoTo Errhandler
         Dim Slot As Byte
         Dim tIndex As Integer
         
+        Dim UserIsAdmin As Boolean
+        Dim OtherUserIsAdmin As Boolean
+                
         UserName = buffer.ReadASCIIString() 'Que UserName?
         Slot = buffer.ReadByte() 'Que Slot?
         
-        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Dios) Then
-            tIndex = NameIndex(UserName)  'Que user index?
+        UserIsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
+
+        If (.flags.Privilegios And PlayerType.SemiDios) <> 0 Or UserIsAdmin Then
             
             Call LogGM(.name, .name & " Checkeó el slot " & Slot & " de " & UserName)
-               
+            
+            tIndex = NameIndex(UserName)  'Que user index?
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tIndex > 0 Then
-                If Slot > 0 And Slot <= UserList(tIndex).CurrentInventorySlots Then
-                    If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
-                        Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).Amount, FontTypeNames.FONTTYPE_INFO)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    If Slot > 0 And Slot <= UserList(tIndex).CurrentInventorySlots Then
+                        If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
+                            Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).Amount, FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            Call WriteConsoleMsg(UserIndex, "No hay ningún objeto en slot seleccionado.", FontTypeNames.FONTTYPE_INFO)
+                        End If
                     Else
-                        Call WriteConsoleMsg(UserIndex, "No hay ningún objeto en slot seleccionado.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver slots de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
                 End If
             Else
-                Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_TALK)
+                If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_TALK)
+                Else
+                    Call WriteConsoleMsg(UserIndex, "No puedes ver slots de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
+                End If
             End If
         End If
         
