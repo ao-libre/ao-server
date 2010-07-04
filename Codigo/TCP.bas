@@ -1655,11 +1655,18 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .AtacadoPorNpc = 0
         .AtacadoPorUser = 0
         .NoPuedeSerAtacado = False
-        .OwnedNpc = 0
         .ShareNpcWith = 0
         .EnConsulta = False
         .Ignorado = False
+        
+        If .OwnedNpc <> 0 Then
+            Call PerdioNpc(UserIndex)
+        End If
+        
     End With
+    
+    
+    
 End Sub
 
 Sub ResetUserSpells(ByVal UserIndex As Integer)
@@ -1762,8 +1769,6 @@ With UserList(UserIndex).ComUsu
     .DestNick = vbNullString
     .DestUsu = 0
 End With
-
-Call PerdioNpc(UserIndex)
  
 End Sub
 
