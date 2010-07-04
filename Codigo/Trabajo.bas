@@ -2508,7 +2508,7 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
     
 End Sub
 
-Public Function MaxItemsConstruibles(ByVal UserLevel As Integer) As Integer
+Public Function MaxItemsConstruibles(ByVal UserIndex As Integer) As Integer
 '***************************************************
 'Author: ZaMa
 'Last Modification: 29/01/2010
@@ -2516,7 +2516,13 @@ Public Function MaxItemsConstruibles(ByVal UserLevel As Integer) As Integer
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '***************************************************
     
-    MaxItemsConstruibles = MaximoInt(1, CInt((UserLevel - 2) * 0.2))
+    With UserList(UserIndex)
+        If .clase = eClass.Worker Then
+            MaxItemsConstruibles = MaximoInt(1, CInt((.Stats.ELV - 2) * 0.2))
+        Else
+            MaxItemsConstruibles = 1
+        End If
+    End With
 End Function
 
 Public Function MaxItemsExtraibles(ByVal UserLevel As Integer) As Integer

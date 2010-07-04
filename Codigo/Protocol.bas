@@ -2675,8 +2675,7 @@ Private Sub HandleInitCrafting(ByVal UserIndex As Integer)
         If TotalItems > 0 Then
             
             .Construir.Cantidad = TotalItems
-            .Construir.PorCiclo = MinimoInt(MaxItemsConstruibles(.Stats.ELV), ItemsPorCiclo)
-            
+            .Construir.PorCiclo = MinimoInt(MaxItemsConstruibles(UserIndex), ItemsPorCiclo)
         End If
     End With
 End Sub
@@ -2767,6 +2766,7 @@ Private Sub HandleCraftBlacksmith(ByVal UserIndex As Integer)
         
         If ObjData(Item).SkHerreria = 0 Then Exit Sub
         
+        If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
         Call HerreroConstruirItem(UserIndex, Item)
     End With
 End Sub
@@ -2799,6 +2799,7 @@ Private Sub HandleCraftCarpenter(ByVal UserIndex As Integer)
         
         If ObjData(Item).SkCarpinteria = 0 Then Exit Sub
         
+        If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
         Call CarpinteroConstruirItem(UserIndex, Item)
     End With
 End Sub
@@ -8391,6 +8392,7 @@ Private Sub HandleItemUpgrade(ByVal UserIndex As Integer)
         If ItemIndex <= 0 Then Exit Sub
         If Not TieneObjetos(ItemIndex, 1, UserIndex) Then Exit Sub
         
+        If Not IntervaloPermiteTrabajar(UserIndex) Then Exit Sub
         Call DoUpgrade(UserIndex, ItemIndex)
     End With
 End Sub
