@@ -1749,6 +1749,7 @@ Call LimpiarInventario(UserIndex)
 Call ResetUserSpells(UserIndex)
 Call ResetUserPets(UserIndex)
 Call ResetUserBanco(UserIndex)
+
 With UserList(UserIndex).ComUsu
     .Acepto = False
     
@@ -1761,6 +1762,8 @@ With UserList(UserIndex).ComUsu
     .DestNick = vbNullString
     .DestUsu = 0
 End With
+
+Call PerdioNpc(UserIndex)
  
 End Sub
 
