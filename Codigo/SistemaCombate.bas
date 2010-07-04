@@ -1490,13 +1490,14 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, ByVal NpcIndex As
 '***************************************************
 'Autor: Unknown Author (Original version)
 'Returns True if AttackerIndex can attack the NpcIndex
-'Last Modification: 16/11/2009
+'Last Modification: 04/07/2010
 '24/01/2007 Pablo (ToxicWaste) - Orden y corrección de ataque sobre una mascota y guardias
 '14/08/2007 Pablo (ToxicWaste) - Reescribo y agrego TODOS los casos posibles cosa de usar
 'esta función para todo lo referente a ataque a un NPC. Ya sea Magia, Físico o a Distancia.
 '16/11/2009: ZaMa - Agrego validacion de pertenencia de npc.
 '02/04/2010: ZaMa - Los armadas ya no peuden atacar npcs no hotiles.
 '23/05/2010: ZaMa - El inmo/para renuevan el timer de pertenencia si el ataque fue a un npc propio.
+'04/07/2010: ZaMa - Ahora no se puede apropiar del dragon de dd.
 '***************************************************
 
 On Error GoTo Errhandler
@@ -1836,15 +1837,18 @@ On Error GoTo Errhandler
             If Not criminal(AttackerIndex) Or esCaos(AttackerIndex) Then
                 ' No puede apropiarse de los pretos!
                 If Not (esPretoriano(NpcIndex) <> 0) Then
-                    ' Si es una mascota atacando, no se apropia del npc
-                    If Not IsPet Then
-                        ' No es dueño de ningun npc => Se lo apropia.
-                        If UserList(AttackerIndex).flags.OwnedNpc = 0 Then
-                            Call ApropioNpc(AttackerIndex, NpcIndex)
-                        ' Es dueño de un npc, pero no puede ser de este porque no tiene propietario.
-                        Else
-                            ' Se va a adueñar del npc (y perder el otro) solo si no inmobiliza/paraliza
-                            If Not Paraliza Then Call ApropioNpc(AttackerIndex, NpcIndex)
+                    ' No puede apropiarse del dragon de dd!
+                    If Npclist(NpcIndex).NPCtype <> DRAGON Then
+                        ' Si es una mascota atacando, no se apropia del npc
+                        If Not IsPet Then
+                            ' No es dueño de ningun npc => Se lo apropia.
+                            If UserList(AttackerIndex).flags.OwnedNpc = 0 Then
+                                Call ApropioNpc(AttackerIndex, NpcIndex)
+                            ' Es dueño de un npc, pero no puede ser de este porque no tiene propietario.
+                            Else
+                                ' Se va a adueñar del npc (y perder el otro) solo si no inmobiliza/paraliza
+                                If Not Paraliza Then Call ApropioNpc(AttackerIndex, NpcIndex)
+                            End If
                         End If
                     End If
                 End If
