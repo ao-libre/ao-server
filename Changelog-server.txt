@@ -515,3 +515,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 04/07/2010 : Agrego validaciones para no permitir que semis o conses sepan cuando hay dioses online. (ZaMa)
  * 04/07/2010 : Ahora no se puede adueñar del dragon de dd. (ZaMa)
  * 04/07/2010 : Ahora cuando se mata un dragón estando en party se listan listan lis miembros. (Pato)
+ * 04/07/2010 : Sólo el trabajador puede contruir de a más de 1 ítem por ciclo y agregué intervalos al trabajador. (Pato)
