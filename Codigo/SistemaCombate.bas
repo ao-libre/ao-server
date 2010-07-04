@@ -365,13 +365,18 @@ End Function
 Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 07/04/2010 (ZaMa)
+'Last Modification: 07/04/2010 (Pato)
 '25/01/2010: ZaMa - Agrego poder acuchillar npcs.
 '07/04/2010: ZaMa - Los asesinos apuñalan acorde al daño base sin descontar la defensa del npc.
+'07/04/2010: Pato - Si se mata al dragón en party se loguean los miembros de la misma.
 '***************************************************
 
     Dim daño As Long
     Dim DañoBase As Long
+    Dim PI As Integer
+    Dim MembersOnline(1 To PARTY_MAXMEMBERS) As Integer
+    Dim Text As String
+    Dim i As Integer
     
     DañoBase = CalcularDaño(UserIndex, NpcIndex)
     
@@ -415,20 +420,37 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                 If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
                     Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
                 End If
-                If .Stats.MaxHp > 100000 Then Call LogDesarrollo(UserList(UserIndex).name & " mató un dragón")
+                If .Stats.MaxHp > 100000 Then
+                    Text = UserList(UserIndex).name & " mató un dragón"
+                    PI = UserList(UserIndex).PartyIndex
+                    
+                    If PI > 0 Then
+                        Call Parties(PI).ObtenerMiembrosOnline(MembersOnline())
+                        Text = Text & " estando en party "
+                        
+                        For i = 1 To PARTY_MAXMEMBERS
+                            If MembersOnline(i) > 0 Then
+                                Text = Text & UserList(MembersOnline(i)).name & ", "
+                            End If
+                        Next i
+                        
+                        Text = Left$(Text, Len(Text) - 2) & ")"
+                    End If
+                    
+                    Call LogDesarrollo(Text & ".")
+                End If
             End If
             
             ' Para que las mascotas no sigan intentando luchar y
             ' comiencen a seguir al amo
-            Dim j As Integer
-            For j = 1 To MAXMASCOTAS
-                If UserList(UserIndex).MascotasIndex(j) > 0 Then
-                    If Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = NpcIndex Then
-                        Npclist(UserList(UserIndex).MascotasIndex(j)).TargetNPC = 0
-                        Npclist(UserList(UserIndex).MascotasIndex(j)).Movement = TipoAI.SigueAmo
+            For i = 1 To MAXMASCOTAS
+                If UserList(UserIndex).MascotasIndex(i) > 0 Then
+                    If Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = NpcIndex Then
+                        Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = 0
+                        Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
                     End If
                 End If
-            Next j
+            Next i
             
             Call MuereNpc(NpcIndex, UserIndex)
         End If
