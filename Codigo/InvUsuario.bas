@@ -1602,7 +1602,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo ErrHanlder
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
