@@ -247,24 +247,29 @@ Sub DecirPalabrasMagicas(ByVal SpellWords As String, ByVal UserIndex As Integer)
 '25/07/2009: ZaMa - Invisible admins don't say any word when casting a spell
 '17/11/2009: ZaMa - Now the user become visible when casting a spell, if it is hidden
 '***************************************************
-On Error Resume Next
-With UserList(UserIndex)
-    If .flags.AdminInvisible <> 1 Then
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(SpellWords, .Char.CharIndex, vbCyan))
-        
-        ' Si estaba oculto, se vuelve visible
-        If .flags.Oculto = 1 Then
-            .flags.Oculto = 0
-            .Counters.TiempoOculto = 0
+On Error GoTo Errhandler
+
+    With UserList(UserIndex)
+        If .flags.AdminInvisible <> 1 Then
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead(SpellWords, .Char.CharIndex, vbCyan))
             
-            If .flags.invisible = 0 Then
-                Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                Call SetInvisible(UserIndex, .Char.CharIndex, False)
+            ' Si estaba oculto, se vuelve visible
+            If .flags.Oculto = 1 Then
+                .flags.Oculto = 0
+                .Counters.TiempoOculto = 0
+                
+                If .flags.invisible = 0 Then
+                    Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                End If
             End If
         End If
-    End If
-End With
+    End With
+    
     Exit Sub
+    
+Errhandler:
+    Call LogError("Error en DecirPalabrasMagicas. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
 ''
