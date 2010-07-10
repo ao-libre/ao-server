@@ -774,17 +774,22 @@ End Function
 Sub NpcEnvenenarUser(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 10/07/2010
+'10/07/2010: ZaMa - Now npcs can't poison dead users.
 '***************************************************
 
-Dim N As Integer
-N = RandomNumber(1, 100)
-If N < 30 Then
-    UserList(UserIndex).flags.Envenenado = 1
-    Call WriteConsoleMsg(UserIndex, "¡¡La criatura te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
-End If
-
+    Dim N As Integer
+    
+    With UserList(UserIndex)
+        If .flags.Muerto = 1 Then Exit Sub
+        
+        N = RandomNumber(1, 100)
+        If N < 30 Then
+            .flags.Envenenado = 1
+            Call WriteConsoleMsg(UserIndex, "¡¡La criatura te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+        End If
+    End With
+    
 End Sub
 
 Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolean, ByVal Respawn As Boolean) As Integer
