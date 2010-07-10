@@ -900,15 +900,18 @@ With UserList(UserIndex)
                     estatus = "(" & MinHp & "/" & MaxHp & ") "
                 Else
                     If .Muerto = 0 Then
-                        If SupervivenciaSkill >= 0 And SupervivenciaSkill <= 10 Then
+                    
+                        If SupervivenciaSkill <= 10 Then
                             estatus = "(Dudoso) "
-                        ElseIf SupervivenciaSkill > 10 And SupervivenciaSkill <= 20 Then
+                            
+                        ElseIf SupervivenciaSkill <= 20 Then
                             If MinHp < (MaxHp / 2) Then
                                 estatus = "(Herido) "
                             Else
                                 estatus = "(Sano) "
                             End If
-                        ElseIf SupervivenciaSkill > 20 And SupervivenciaSkill <= 30 Then
+                            
+                        ElseIf SupervivenciaSkill <= 30 Then
                             If MinHp < (MaxHp * 0.5) Then
                                 estatus = "(Malherido) "
                             ElseIf MinHp < (MaxHp * 0.75) Then
@@ -916,7 +919,8 @@ With UserList(UserIndex)
                             Else
                                 estatus = "(Sano) "
                             End If
-                        ElseIf SupervivenciaSkill > 30 And SupervivenciaSkill <= 40 Then
+                            
+                        ElseIf SupervivenciaSkill <= 40 Then
                             If MinHp < (MaxHp * 0.25) Then
                                 estatus = "(Muy malherido) "
                             ElseIf MinHp < (MaxHp * 0.5) Then
@@ -926,7 +930,8 @@ With UserList(UserIndex)
                             Else
                                 estatus = "(Sano) "
                             End If
-                        ElseIf SupervivenciaSkill > 40 And SupervivenciaSkill < 60 Then
+                            
+                        ElseIf SupervivenciaSkill < 60 Then
                             If MinHp < (MaxHp * 0.05) Then
                                 estatus = "(Agonizando) "
                             ElseIf MinHp < (MaxHp * 0.1) Then
@@ -942,10 +947,8 @@ With UserList(UserIndex)
                             Else
                                 estatus = "(Intacto) "
                             End If
-                        ElseIf SupervivenciaSkill >= 60 Then
-                            estatus = "(" & MinHp & "/" & MaxHp & ") "
                         Else
-                            estatus = "¡Error!"
+                            estatus = "(" & MinHp & "/" & MaxHp & ") "
                         End If
                     End If
                 End If

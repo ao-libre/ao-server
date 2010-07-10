@@ -1429,11 +1429,11 @@ Dim SupervivenciaSkill As Byte
 
 SupervivenciaSkill = UserList(UserIndex).Stats.UserSkills(eSkill.Supervivencia)
 
-If SupervivenciaSkill >= 0 And SupervivenciaSkill < 6 Then
+If SupervivenciaSkill < 6 Then
     Suerte = 3
-ElseIf SupervivenciaSkill >= 6 And SupervivenciaSkill <= 34 Then
+ElseIf SupervivenciaSkill <= 34 Then
     Suerte = 2
-ElseIf SupervivenciaSkill >= 35 Then
+Else
     Suerte = 1
 End If
 
