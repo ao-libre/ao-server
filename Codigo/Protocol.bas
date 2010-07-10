@@ -2854,7 +2854,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
         
         Select Case Skill
             Case eSkill.Proyectiles
-            
+                
                 'Check attack interval
                 If Not IntervaloPermiteAtacar(UserIndex, False) Then Exit Sub
                 'Check Magic interval
@@ -2862,141 +2862,8 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 'Check bow's interval
                 If Not IntervaloPermiteUsarArcos(UserIndex) Then Exit Sub
                 
-                Dim Atacked As Boolean
-                Atacked = True
-                
-                'Make sure the item is valid and there is ammo equipped.
-                With .Invent
-                    ' Tiene arma equipada?
-                    If .WeaponEqpObjIndex = 0 Then
-                        DummyInt = 1
-                    ' En un slot válido?
-                    ElseIf .WeaponEqpSlot < 1 Or .WeaponEqpSlot > UserList(UserIndex).CurrentInventorySlots Then
-                        DummyInt = 1
-                    ' Usa munición? (Si no la usa, puede ser un arma arrojadiza)
-                    ElseIf ObjData(.WeaponEqpObjIndex).Municion = 1 Then
-                        ' La municion esta equipada en un slot valido?
-                        If .MunicionEqpSlot < 1 Or .MunicionEqpSlot > UserList(UserIndex).CurrentInventorySlots Then
-                            DummyInt = 1
-                        ' Tiene munición?
-                        ElseIf .MunicionEqpObjIndex = 0 Then
-                            DummyInt = 1
-                        ' Son flechas?
-                        ElseIf ObjData(.MunicionEqpObjIndex).OBJType <> eOBJType.otFlechas Then
-                            DummyInt = 1
-                        ' Tiene suficientes?
-                        ElseIf .Object(.MunicionEqpSlot).Amount < 1 Then
-                            DummyInt = 1
-                        End If
-                    ' Es un arma de proyectiles?
-                    ElseIf ObjData(.WeaponEqpObjIndex).proyectil <> 1 Then
-                        DummyInt = 2
-                    End If
-                    
-                    If DummyInt <> 0 Then
-                        If DummyInt = 1 Then
-                            Call WriteConsoleMsg(UserIndex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
+                Call LanzarProyectil(UserIndex, X, Y)
                             
-                            Call Desequipar(UserIndex, .WeaponEqpSlot)
-                        End If
-                        
-                        Call Desequipar(UserIndex, .MunicionEqpSlot)
-                        Exit Sub
-                    End If
-                End With
-                
-                'Quitamos stamina
-                If .Stats.MinSta >= 10 Then
-                    Call QuitarSta(UserIndex, RandomNumber(1, 10))
-                Else
-                    If .Genero = eGenero.Hombre Then
-                        Call WriteConsoleMsg(UserIndex, "Estás muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
-                    Else
-                        Call WriteConsoleMsg(UserIndex, "Estás muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
-                    End If
-                    Exit Sub
-                End If
-                
-                Call LookatTile(UserIndex, .Pos.Map, X, Y)
-                
-                tU = .flags.TargetUser
-                tN = .flags.TargetNPC
-                
-                'Validate target
-                If tU > 0 Then
-                    'Only allow to atack if the other one can retaliate (can see us)
-                    If Abs(UserList(tU).Pos.Y - .Pos.Y) > RANGO_VISION_Y Then
-                        Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
-                        Exit Sub
-                    End If
-                    
-                    'Prevent from hitting self
-                    If tU = UserIndex Then
-                        Call WriteConsoleMsg(UserIndex, "¡No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
-                        Exit Sub
-                    End If
-                    
-                    'Attack!
-                    Atacked = UsuarioAtacaUsuario(UserIndex, tU)
-                    
-                ElseIf tN > 0 Then
-                    'Only allow to atack if the other one can retaliate (can see us)
-                    If Abs(Npclist(tN).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(tN).Pos.X - .Pos.X) > RANGO_VISION_X Then
-                        Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
-                        Exit Sub
-                    End If
-                    
-                    'Is it attackable???
-                    If Npclist(tN).Attackable <> 0 Then
-                        
-                        'Attack!
-                        Atacked = UsuarioAtacaNpc(UserIndex, tN)
-                    End If
-                End If
-                
-                ' Solo pierde la munición si pudo atacar al target, o tiro al aire
-                If Atacked Then
-                    With .Invent
-                        ' Tiene equipado arco y flecha?
-                        If ObjData(.WeaponEqpObjIndex).Municion = 1 Then
-                            DummyInt = .MunicionEqpSlot
-                        
-                            
-                            'Take 1 arrow away - we do it AFTER hitting, since if Ammo Slot is 0 it gives a rt9 and kicks players
-                            Call QuitarUserInvItem(UserIndex, DummyInt, 1)
-                            
-                            If .Object(DummyInt).Amount > 0 Then
-                                'QuitarUserInvItem unequips the ammo, so we equip it again
-                                .MunicionEqpSlot = DummyInt
-                                .MunicionEqpObjIndex = .Object(DummyInt).ObjIndex
-                                .Object(DummyInt).Equipped = 1
-                            Else
-                                .MunicionEqpSlot = 0
-                                .MunicionEqpObjIndex = 0
-                            End If
-                        ' Tiene equipado un arma arrojadiza
-                        Else
-                            DummyInt = .WeaponEqpSlot
-                            
-                            'Take 1 knife away
-                            Call QuitarUserInvItem(UserIndex, DummyInt, 1)
-                            
-                            If .Object(DummyInt).Amount > 0 Then
-                                'QuitarUserInvItem unequips the weapon, so we equip it again
-                                .WeaponEqpSlot = DummyInt
-                                .WeaponEqpObjIndex = .Object(DummyInt).ObjIndex
-                                .Object(DummyInt).Equipped = 1
-                            Else
-                                .WeaponEqpSlot = 0
-                                .WeaponEqpObjIndex = 0
-                            End If
-                            
-                        End If
-                        
-                        Call UpdateUserInv(False, UserIndex, DummyInt)
-                    End With
-               End If
-            
             Case eSkill.Magia
                 'Check the map allows spells to be casted.
                 If MapInfo(.Pos.Map).MagiaSinEfecto > 0 Then

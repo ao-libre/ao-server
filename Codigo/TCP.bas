@@ -1449,43 +1449,49 @@ End Sub
 Sub ResetContadores(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 03/15/2006
+'Last modified: 10/07/2010
 'Resetea todos los valores generales y las stats
 '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
 '05/20/2007 Integer - Agregue todas las variables que faltaban.
+'10/07/2010: ZaMa - Agrego los counters que faltaban.
 '*************************************************
     With UserList(UserIndex).Counters
         .AGUACounter = 0
+        .AsignedSkills = 0
         .AttackCounter = 0
+        .bPuedeMeditar = True
         .Ceguera = 0
         .COMCounter = 0
         .Estupidez = 0
+        .failedUsageAttempts = 0
         .Frio = 0
+        .goHome = 0
         .HPCounter = 0
         .IdleCount = 0
         .Invisibilidad = 0
+        .Lava = 0
+        .Mimetismo = 0
+        .Ocultando = 0
         .Paralisis = 0
         .Pena = 0
         .PiqueteC = 0
-        .STACounter = 0
-        .Veneno = 0
-        .Trabajando = 0
-        .Ocultando = 0
-        .bPuedeMeditar = False
-        .Lava = 0
-        .Mimetismo = 0
         .Saliendo = False
         .Salir = 0
+        .STACounter = 0
         .TiempoOculto = 0
-        .TimerMagiaGolpe = 0
+        .TimerEstadoAtacable = 0
         .TimerGolpeMagia = 0
+        .TimerGolpeUsar = 0
         .TimerLanzarSpell = 0
+        .TimerMagiaGolpe = 0
+        .TimerPerteneceNpc = 0
         .TimerPuedeAtacar = 0
-        .TimerPuedeUsarArco = 0
+        .TimerPuedeSerAtacado = 0
         .TimerPuedeTrabajar = 0
+        .TimerPuedeUsarArco = 0
         .TimerUsar = 0
-        .goHome = 0
-        .AsignedSkills = 0
+        .Trabajando = 0
+        .Veneno = 0
     End With
 End Sub
 
