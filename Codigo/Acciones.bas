@@ -293,6 +293,8 @@ Dim Suerte As Byte
 Dim exito As Byte
 Dim Obj As Obj
 
+Dim SkillSupervivencia As Byte
+
 Dim Pos As WorldPos
 Pos.Map = Map
 Pos.X = X
@@ -309,11 +311,15 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    If .Stats.UserSkills(Supervivencia) > 1 And .Stats.UserSkills(Supervivencia) < 6 Then
+    SkillSupervivencia = .Stats.UserSkills(eSkill.Supervivencia)
+    
+    If SkillSupervivencia < 6 Then
         Suerte = 3
-    ElseIf .Stats.UserSkills(Supervivencia) >= 6 And .Stats.UserSkills(Supervivencia) <= 10 Then
+        
+    ElseIf SkillSupervivencia <= 10 Then
         Suerte = 2
-    ElseIf .Stats.UserSkills(Supervivencia) >= 10 And .Stats.UserSkills(Supervivencia) Then
+        
+    Else
         Suerte = 1
     End If
     
