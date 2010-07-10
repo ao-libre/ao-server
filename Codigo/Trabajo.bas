@@ -39,7 +39,6 @@ Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
 'Last Modif: 11/19/2009
 'Chequea si ya debe mostrarse
 'Pablo (ToxicWaste): Cambie los ordenes de prioridades porque sino no andaba.
-'11/19/2009: Pato - Ahora el bandido se oculta la mitad del tiempo de las demás clases.
 '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
 '13/01/2010: ZaMa - Arreglo condicional para que el bandido camine oculto.
 '********************************************************
@@ -47,15 +46,9 @@ On Error GoTo Errhandler
     With UserList(UserIndex)
         .Counters.TiempoOculto = .Counters.TiempoOculto - 1
         If .Counters.TiempoOculto <= 0 Then
-            
-            If .clase = eClass.Bandit Then
-                .Counters.TiempoOculto = Int(IntervaloOculto / 2)
-            Else
-                .Counters.TiempoOculto = IntervaloOculto
-            End If
-            
             If .clase = eClass.Hunter And .Stats.UserSkills(eSkill.Ocultarse) > 90 Then
                 If .Invent.ArmourEqpObjIndex = 648 Or .Invent.ArmourEqpObjIndex = 360 Then
+                    .Counters.TiempoOculto = IntervaloOculto
                     Exit Sub
                 End If
             End If
@@ -117,7 +110,12 @@ On Error GoTo Errhandler
             Suerte = Suerte + (-0.0088 * (100 - Skill))
             Suerte = Suerte + (0.9571)
             Suerte = Suerte * IntervaloOculto
-            .Counters.TiempoOculto = Suerte
+            
+            If .clase = eClass.Bandit Then
+                .Counters.TiempoOculto = Int(Suerte / 2)
+            Else
+                .Counters.TiempoOculto = Suerte
+            End If
             
             ' No es pirata o es uno sin barca
             If .flags.Navegando = 0 Then
