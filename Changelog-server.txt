@@ -517,3 +517,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 04/07/2010 : Ahora cuando se mata un dragón estando en party se listan listan lis miembros. (Pato)
  * 04/07/2010 : Sólo el trabajador puede contruir de a más de 1 ítem por ciclo y agregué intervalos al trabajador. (Pato)
  * 10/07/2010 : Limpio algunos contadores que no se reseteaban al desloguear, y agrego algunos ErrHandlers. (ZaMa)
+ * 10/07/2010 : Ahora los npcs normales y pretos no responden al "/apostar". (ZaMa)
+ * 10/07/2010 : Ahora los npcs no envenenan mas si estas muerto. (ZaMa)
