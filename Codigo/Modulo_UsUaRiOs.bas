@@ -287,7 +287,12 @@ On Error GoTo ErrorHandler
 Exit Sub
     
 ErrorHandler:
-    Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description)
+    
+    Dim UserName As String
+    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+
+    Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description & _
+                  ". User: " & UserName & "(" & UserIndex & ")")
 End Sub
 
 Public Sub RefreshCharStatus(ByVal UserIndex As Integer)
@@ -2385,11 +2390,11 @@ Public Sub goHome(ByVal UserIndex As Integer)
                 Distance = distanceToCities(.flags.lastMap).distanceToCity(.Hogar) + GOHOME_PENALTY
             End If
             
-            Tiempo = (Distance + 1) * 30000 'ms
+            Tiempo = (Distance + 1) * 30 'seg
             
-            Call IntervaloGoHome(UserIndex, Tiempo, True)
+            Call IntervaloGoHome(UserIndex, Tiempo * 1000, True)
                 
-            Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, Tiempo / 1000, , MapInfo(Ciudades(.Hogar).Map).name)
+            Call WriteMultiMessage(UserIndex, eMessages.Home, Distance, Tiempo, , MapInfo(Ciudades(.Hogar).Map).name)
         Else
             Call WriteConsoleMsg(UserIndex, "Debes estar muerto para poder utilizar este comando.", FontTypeNames.FONTTYPE_FIGHT)
         End If

@@ -366,6 +366,8 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
 'Last Modify Date: Unknow
 '
 '**************************************************************
+On Error GoTo ErrorHandler
+
     Dim TempVal As Long
     Dim LoopC As Long
     
@@ -389,6 +391,17 @@ Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
     If TempVal > ConnGroups(Map).OptValue Then 'Nescesito Redim?
         ReDim Preserve ConnGroups(Map).UserEntrys(1 To TempVal) As Long
     End If
+    
+    Exit Sub
+    
+ErrorHandler:
+    
+    Dim UserName As String
+    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+
+    Call LogError("Error en QuitarUser " & Err.Number & ": " & Err.description & _
+                  ". User: " & UserName & "(" & UserIndex & ")")
+
 End Sub
 
 Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)

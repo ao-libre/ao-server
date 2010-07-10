@@ -2028,3 +2028,165 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
     
     Call FlushBuffer(VictimaIndex)
 End Sub
+
+Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal X As Byte, ByVal Y As Byte)
+'***************************************************
+'Autor: ZaMa
+'Last Modification: 10/07/2010
+'Throws an arrow or knive to target user/npc.
+'***************************************************
+On Error GoTo Errhandler
+
+    Dim MunicionSlot As Byte
+    Dim MunicionIndex As Integer
+    Dim WeaponSlot As Byte
+    Dim WeaponIndex As Integer
+
+    Dim TargetUserIndex As Integer
+    Dim TargetNpcIndex As Integer
+
+    Dim DummyInt As Integer
+    
+    Dim Threw As Boolean
+    Threw = True
+    
+    'Make sure the item is valid and there is ammo equipped.
+    With UserList(UserIndex)
+        
+        With .Invent
+            MunicionSlot = .MunicionEqpSlot
+            MunicionIndex = .MunicionEqpObjIndex
+            WeaponSlot = .WeaponEqpSlot
+            WeaponIndex = .WeaponEqpObjIndex
+        End With
+        
+        ' Tiene arma equipada?
+        If WeaponIndex = 0 Then
+            DummyInt = 1
+            Call WriteConsoleMsg(UserIndex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
+            
+        ' En un slot válido?
+        ElseIf WeaponSlot < 1 Or WeaponSlot > .CurrentInventorySlots Then
+            DummyInt = 1
+            Call WriteConsoleMsg(UserIndex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
+            
+        ' Usa munición? (Si no la usa, puede ser un arma arrojadiza)
+        ElseIf ObjData(WeaponIndex).Municion = 1 Then
+        
+            ' La municion esta equipada en un slot valido?
+            If MunicionSlot < 1 Or MunicionSlot > .CurrentInventorySlots Then
+                DummyInt = 1
+                Call WriteConsoleMsg(UserIndex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
+                
+            ' Tiene munición?
+            ElseIf MunicionIndex = 0 Then
+                DummyInt = 1
+                Call WriteConsoleMsg(UserIndex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
+                
+            ' Son flechas?
+            ElseIf ObjData(MunicionIndex).OBJType <> eOBJType.otFlechas Then
+                DummyInt = 1
+                Call WriteConsoleMsg(UserIndex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
+                
+            ' Tiene suficientes?
+            ElseIf .Invent.Object(MunicionSlot).Amount < 1 Then
+                DummyInt = 1
+                Call WriteConsoleMsg(UserIndex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
+            End If
+            
+        ' Es un arma de proyectiles?
+        ElseIf ObjData(WeaponIndex).proyectil <> 1 Then
+            DummyInt = 2
+        End If
+        
+        If DummyInt <> 0 Then
+            If DummyInt = 1 Then
+                Call Desequipar(UserIndex, WeaponSlot)
+            End If
+            
+            Call Desequipar(UserIndex, MunicionSlot)
+            Exit Sub
+        End If
+    
+        'Quitamos stamina
+        If .Stats.MinSta >= 10 Then
+            Call QuitarSta(UserIndex, RandomNumber(1, 10))
+        Else
+            If .Genero = eGenero.Hombre Then
+                Call WriteConsoleMsg(UserIndex, "Estás muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Estás muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
+            End If
+            Exit Sub
+        End If
+        
+        Call LookatTile(UserIndex, .Pos.Map, X, Y)
+        
+        TargetUserIndex = .flags.TargetUser
+        TargetNpcIndex = .flags.TargetNPC
+        
+        'Validate target
+        If TargetUserIndex > 0 Then
+            'Only allow to atack if the other one can retaliate (can see us)
+            If Abs(UserList(TargetUserIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y Then
+                Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
+                Exit Sub
+            End If
+            
+            'Prevent from hitting self
+            If TargetUserIndex = UserIndex Then
+                Call WriteConsoleMsg(UserIndex, "¡No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+            
+            'Attack!
+            Threw = UsuarioAtacaUsuario(UserIndex, TargetUserIndex)
+            
+        ElseIf TargetNpcIndex > 0 Then
+            'Only allow to atack if the other one can retaliate (can see us)
+            If Abs(Npclist(TargetNpcIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(TargetNpcIndex).Pos.X - .Pos.X) > RANGO_VISION_X Then
+                Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
+                Exit Sub
+            End If
+            
+            'Is it attackable???
+            If Npclist(TargetNpcIndex).Attackable <> 0 Then
+                'Attack!
+                Threw = UsuarioAtacaNpc(UserIndex, TargetNpcIndex)
+            End If
+        End If
+        
+        ' Solo pierde la munición si pudo atacar al target, o tiro al aire
+        If Threw Then
+            
+            Dim Slot As Byte
+            
+            ' Tiene equipado arco y flecha?
+            If ObjData(WeaponIndex).Municion = 1 Then
+                Slot = MunicionSlot
+            ' Tiene equipado un arma arrojadiza
+            Else
+                Slot = WeaponSlot
+            End If
+            
+            'Take 1 knife/arrow away
+            Call QuitarUserInvItem(UserIndex, Slot, 1)
+            Call UpdateUserInv(False, UserIndex, Slot)
+            
+        End If
+        
+    End With
+    
+    Exit Sub
+
+Errhandler:
+
+    Dim UserName As String
+    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+
+    Call LogError("Error en LanzarProyectil " & Err.Number & ": " & Err.description & _
+                  ". User: " & UserName & "(" & UserIndex & ")")
+
+End Sub
+
+
