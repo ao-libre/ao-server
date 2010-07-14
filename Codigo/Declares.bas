@@ -1787,3 +1787,5 @@ Public Const GNOMO_M_ULTIMA_CABEZA As Integer = 484
 ' Por ahora la dejo constante.. SI se quisiera extender la propiedad de paralziar, se podria hacer
 ' una nueva variable en el dat.
 Public Const GUANTE_HURTO As Integer = 873
+
+Public Const ESPADA_VIKINGA As Integer = 123

@@ -36,8 +36,9 @@ Public Const SUPERANILLO As Integer = 700
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 13/02/2009
+'Last Modification: 13/07/2010
 '13/02/2009: ZaMa - Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla.
+'13/07/2010: ZaMa - Ahora no se contabiliza la muerte de un atacable.
 '***************************************************
 If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
 If UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
@@ -91,16 +92,27 @@ With UserList(UserIndex)
                 If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
                     RestarCriminalidad (UserIndex)
                 End If
-                Call UserDie(UserIndex)
+                
+                Dim MasterIndex As Integer
+                MasterIndex = Npclist(NpcIndex).MaestroUser
+                
                 '[Barrin 1-12-03]
-                If Npclist(NpcIndex).MaestroUser > 0 Then
-                    'Store it!
-                    Call Statistics.StoreFrag(Npclist(NpcIndex).MaestroUser, UserIndex)
+                If MasterIndex > 0 Then
                     
-                    Call ContarMuerte(UserIndex, Npclist(NpcIndex).MaestroUser)
-                    Call ActStats(UserIndex, Npclist(NpcIndex).MaestroUser)
+                    ' No son frags los muertos atacables
+                    If .flags.AtacablePor <> MasterIndex Then
+                        'Store it!
+                        Call Statistics.StoreFrag(MasterIndex, UserIndex)
+                        
+                        Call ContarMuerte(UserIndex, MasterIndex)
+                    End If
+                    
+                    Call ActStats(UserIndex, MasterIndex)
                 End If
                 '[/Barrin]
+                
+                Call UserDie(UserIndex)
+                
             End If
         
         End If

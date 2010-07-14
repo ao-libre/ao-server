@@ -70,22 +70,20 @@ Public Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer
                     End If
                 End With
                 
-                If criminal(AttackerIndex) Then
-                    If Not EraCriminal Then Call RefreshCharStatus(AttackerIndex)
-                Else
-                    If EraCriminal Then Call RefreshCharStatus(AttackerIndex)
+                Dim EsCriminal As Boolean
+                EsCriminal = criminal(AttackerIndex)
+                
+                If EraCriminal <> EsCriminal Then
+                    Call RefreshCharStatus(AttackerIndex)
                 End If
+                
             End If
         End If
         
         'Lo mata
-        'Call WriteConsoleMsg(attackerIndex, "Has matado a " & UserList(VictimIndex).name & "!", FontTypeNames.FONTTYPE_FIGHT)
-        'Call WriteConsoleMsg(attackerIndex, "Has ganado " & DaExp & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
-        'Call WriteConsoleMsg(VictimIndex, "¡" & .name & " te ha matado!", FontTypeNames.FONTTYPE_FIGHT)
         Call WriteMultiMessage(AttackerIndex, eMessages.HaveKilledUser, VictimIndex, DaExp)
         Call WriteMultiMessage(VictimIndex, eMessages.UserKill, AttackerIndex)
         
-        'Call UserDie(VictimIndex)
         Call FlushBuffer(VictimIndex)
         
         'Log
@@ -1320,7 +1318,7 @@ End Sub
 ' @param UserIndex  Indice del usuario que muere
 '
 
-Sub UserDie(ByVal UserIndex As Integer)
+Public Sub UserDie(ByVal UserIndex As Integer)
 '************************************************
 'Author: Uknown
 'Last Modified: 12/01/2010 (ZaMa)
@@ -1376,7 +1374,8 @@ On Error GoTo ErrorHandler
         End If
         .flags.AtacadoPorNpc = 0
         .flags.NPCAtacado = 0
-        Call PerdioNpc(UserIndex)
+        
+        Call PerdioNpc(UserIndex, False)
         
         '<<<< Atacable >>>>
         If .flags.AtacablePor > 0 Then
@@ -1525,15 +1524,15 @@ ErrorHandler:
     Call LogError("Error en SUB USERDIE. Error: " & Err.Number & " Descripción: " & Err.description)
 End Sub
 
-Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
+Public Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 13/07/2010
+'13/07/2010: ZaMa - Los matados en estado atacable ya no suman frag.
 '***************************************************
 
     If EsNewbie(Muerto) Then Exit Sub
-    
+        
     With UserList(Atacante)
         If TriggerZonaPelea(Muerto, Atacante) = TRIGGER6_PERMITE Then Exit Sub
         
@@ -1697,7 +1696,7 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
         Call IntervaloPermiteSerAtacado(UserIndex, True)
         
         ' Perdes el npc al cambiar de mapa
-        Call PerdioNpc(UserIndex)
+        Call PerdioNpc(UserIndex, False)
         
         ' Automatic toogle navigate
         If (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero)) = 0 Then
@@ -2142,27 +2141,47 @@ Public Function IsArena(ByVal UserIndex As Integer) As Boolean
     IsArena = (TriggerZonaPelea(UserIndex, UserIndex) = TRIGGER6_PERMITE)
 End Function
 
-Public Sub PerdioNpc(ByVal UserIndex As Integer)
+Public Sub PerdioNpc(ByVal UserIndex As Integer, Optional ByVal CheckPets As Boolean = True)
 '**************************************************************
 'Author: ZaMa
-'Last Modify Date: 18/01/2010 (ZaMa)
+'Last Modify Date: 11/07/2010 (ZaMa)
 'The user loses his owned npc
 '18/01/2010: ZaMa - Las mascotas dejan de atacar al npc que se perdió.
+'11/07/2010: ZaMa - Coloco el indice correcto de las mascotas y ahora siguen al amo si existen.
+'13/07/2010: ZaMa - Ahora solo dejan de atacar las mascotas si estan atacando al npc que pierde su amo.
 '**************************************************************
 
-    Dim PetIndex As Long
+    Dim PetCounter As Long
+    Dim PetIndex As Integer
+    Dim NpcIndex As Integer
     
     With UserList(UserIndex)
-        If .flags.OwnedNpc > 0 Then
-            Npclist(.flags.OwnedNpc).Owner = 0
-            .flags.OwnedNpc = 0
+        
+        NpcIndex = .flags.OwnedNpc
+        If NpcIndex > 0 Then
             
-            ' Dejan de atacar las mascotas
-            If .NroMascotas > 0 Then
-                For PetIndex = 1 To MAXMASCOTAS
-                    If .MascotasType(PetIndex) > 0 Then Call FollowAmo(PetIndex)
-                Next PetIndex
+            If CheckPets Then
+                ' Dejan de atacar las mascotas
+                If .NroMascotas > 0 Then
+                    For PetCounter = 1 To MAXMASCOTAS
+                    
+                        PetIndex = .MascotasIndex(PetCounter)
+                        
+                        If PetIndex > 0 Then
+                            ' Si esta atacando al npc deja de hacerlo
+                            If Npclist(PetIndex).TargetNPC = NpcIndex Then
+                                Call FollowAmo(PetIndex)
+                            End If
+                        End If
+                        
+                    Next PetCounter
+                End If
             End If
+            
+            ' Reset flags
+            Npclist(NpcIndex).Owner = 0
+            .flags.OwnedNpc = 0
+
         End If
     End With
 End Sub
