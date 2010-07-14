@@ -3449,7 +3449,7 @@ Private Sub HandleTrain(ByVal UserIndex As Integer)
         
         If .flags.TargetNPC = 0 Then Exit Sub
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Entrenador Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Entrenador Then Exit Sub
         
         If Npclist(.flags.TargetNPC).Mascotas < MAXMASCOTASENTRENADOR Then
             If PetIndex > 0 And PetIndex < Npclist(.flags.TargetNPC).NroCriaturas + 1 Then
@@ -3555,7 +3555,7 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
         If .flags.TargetNPC < 1 Then Exit Sub
         
         '¿Es el banquero?
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Banquero Then
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Banquero Then
             Exit Sub
         End If
         
@@ -3646,7 +3646,7 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
         If .flags.TargetNPC < 1 Then Exit Sub
         
         '¿El NPC puede comerciar?
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Banquero Then
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Banquero Then
             Exit Sub
         End If
         
@@ -5130,7 +5130,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        Select Case Npclist(.flags.TargetNPC).NpcType
+        Select Case Npclist(.flags.TargetNPC).NPCtype
             Case eNPCType.Banquero
                 Call WriteChatOverHead(UserIndex, "Tienes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             
@@ -5315,7 +5315,7 @@ Private Sub HandleTrainList(ByVal UserIndex As Integer)
         End If
         
         'Make sure it's the trainer
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Entrenador Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Entrenador Then Exit Sub
         
         Call WriteTrainerCreatureList(UserIndex, .flags.TargetNPC)
     End With
@@ -5467,8 +5467,8 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
         End If
         
         'Validate NPC and make sure player is dead
-        If (Npclist(.flags.TargetNPC).NpcType <> eNPCType.Revividor _
-            And (Npclist(.flags.TargetNPC).NpcType <> eNPCType.ResucitadorNewbie Or Not EsNewbie(UserIndex))) _
+        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
+            And (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie Or Not EsNewbie(UserIndex))) _
             Or .flags.Muerto = 0 Then Exit Sub
         
         'Make sure it's close enough
@@ -5579,8 +5579,8 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If (Npclist(.flags.TargetNPC).NpcType <> eNPCType.Revividor _
-            And Npclist(.flags.TargetNPC).NpcType <> eNPCType.ResucitadorNewbie) _
+        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor _
+            And Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie) _
             Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then
@@ -5764,7 +5764,7 @@ Private Sub HandleBankStart(ByVal UserIndex As Integer)
             End If
             
             'If it's the banker....
-            If Npclist(.flags.TargetNPC).NpcType = eNPCType.Banquero Then
+            If Npclist(.flags.TargetNPC).NPCtype = eNPCType.Banquero Then
                 Call IniciarDeposito(UserIndex)
             End If
         Else
@@ -5794,7 +5794,7 @@ Private Sub HandleEnlist(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Noble _
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Noble _
             Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 4 Then
@@ -5835,7 +5835,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Noble _
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Noble _
                 Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 4 Then
@@ -5899,7 +5899,7 @@ Private Sub HandleReward(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Noble _
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Noble _
             Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 4 Then
@@ -6840,9 +6840,11 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
             Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
         
         ' Validate NpcType
-        ElseIf Npclist(.flags.TargetNPC).NpcType <> eNPCType.Timbero Then
+        ElseIf Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Timbero Then
             
-            TargetNpcType = Npclist(.flags.TargetNPC).NpcType
+            
+            Dim TargetNpcType As eNPCType
+            TargetNpcType = Npclist(.flags.TargetNPC).NPCtype
             
             ' Normal npcs don't speak
             If TargetNpcType <> eNPCType.Comun And TargetNpcType <> eNPCType.DRAGON And TargetNpcType <> eNPCType.Pretoriano Then
@@ -6949,7 +6951,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
              Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Banquero Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Banquero Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then
             Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
@@ -6999,7 +7001,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
         NpcIndex = .flags.TargetNPC
         If NpcIndex <> 0 Then
             ' Es rey o domonio?
-            If Npclist(NpcIndex).NpcType = eNPCType.Noble Then
+            If Npclist(NpcIndex).NPCtype = eNPCType.Noble Then
                 'Rey?
                 If Npclist(NpcIndex).flags.Faccion = 0 Then
                     TalkToKing = True
@@ -7101,7 +7103,7 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
             Exit Sub
         End If
         
-        If Npclist(.flags.TargetNPC).NpcType <> eNPCType.Banquero Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Banquero Then Exit Sub
         
         If Amount > 0 And Amount <= .Stats.GLD Then
             .Stats.Banco = .Stats.Banco + Amount
