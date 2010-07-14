@@ -74,59 +74,69 @@ Sub QuitarMascotaNpc(ByVal Maestro As Integer)
     Npclist(Maestro).Mascotas = Npclist(Maestro).Mascotas - 1
 End Sub
 
-Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '********************************************************
 'Author: Unknown
 'Llamado cuando la vida de un NPC llega a cero.
-'Last Modify Date: 24/01/2007
+'Last Modify Date: 13/07/2010
 '22/06/06: (Nacho) Chequeamos si es pretoriano
 '24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
-'22/05/2010: Los caos ya no suben nobleza ni plebe al atacar npcs.
-'23/05/2010: El usuario pierde la pertenencia del npc.
+'22/05/2010: ZaMa - Los caos ya no suben nobleza ni plebe al atacar npcs.
+'23/05/2010: ZaMa - El usuario pierde la pertenencia del npc.
+'13/07/2010: ZaMa - Optimizaciones de logica en la seleccion de pretoriano, y el posible cambio de alencion del usuario.
 '********************************************************
 On Error GoTo Errhandler
+
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
     Dim IsPretoriano As Boolean
+    Dim PretorianoIndex As Integer
    
-    If (esPretoriano(NpcIndex) = 4) Then
-        'Solo nos importa si fue matado en el mapa pretoriano.
-        IsPretoriano = True
-        If Npclist(NpcIndex).Pos.Map = MAPA_PRETORIANO Then
-            'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
-            Dim i As Integer
-            Dim j As Integer
-            Dim NPCI As Integer
+    ' Pretoriano?
+    PretorianoIndex = esPretoriano(NpcIndex)
+    If PretorianoIndex <> 0 Then
         
-            For i = 8 To 90
-                For j = 8 To 90
-                
-                    NPCI = MapData(Npclist(NpcIndex).Pos.Map, i, j).NpcIndex
-                    If NPCI > 0 Then
-                        If esPretoriano(NPCI) > 0 And NPCI <> NpcIndex Then
-                            If Npclist(NpcIndex).Pos.X > 50 Then
-                                If Npclist(NPCI).Pos.X > 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 1
-                            Else
-                                If Npclist(NPCI).Pos.X <= 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 5
+        IsPretoriano = True
+        
+        'Solo nos importa si fue matado en el mapa pretoriano.
+        If Npclist(NpcIndex).Pos.Map = MAPA_PRETORIANO Then
+            
+            ' Es el rey?
+            If (PretorianoIndex = 4) Then
+            
+                'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
+                Dim i As Integer
+                Dim j As Integer
+                Dim NPCI As Integer
+            
+                For i = 8 To 90
+                    For j = 8 To 90
+                    
+                        NPCI = MapData(Npclist(NpcIndex).Pos.Map, i, j).NpcIndex
+                        If NPCI > 0 Then
+                            If esPretoriano(NPCI) > 0 And NPCI <> NpcIndex Then
+                                If Npclist(NpcIndex).Pos.X > 50 Then
+                                    If Npclist(NPCI).Pos.X > 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 1
+                                Else
+                                    If Npclist(NPCI).Pos.X <= 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 5
+                                End If
                             End If
                         End If
-                    End If
-                Next j
-            Next i
-            Call CrearClanPretoriano(Npclist(NpcIndex).Pos.X)
-        End If
-    ElseIf esPretoriano(NpcIndex) > 0 Then
-        IsPretoriano = True
-        If Npclist(NpcIndex).Pos.Map = MAPA_PRETORIANO Then
-            Npclist(NpcIndex).Invent.ArmourEqpSlot = 0
-            pretorianosVivos = pretorianosVivos - 1
+                    Next j
+                Next i
+                Call CrearClanPretoriano(Npclist(NpcIndex).Pos.X)
+                
+            ' Vasallo del rey
+            Else
+                Npclist(NpcIndex).Invent.ArmourEqpSlot = 0
+                pretorianosVivos = pretorianosVivos - 1
+            End If
         End If
     End If
    
     'Quitamos el npc
     Call QuitarNPC(NpcIndex)
-    
     
     If UserIndex > 0 Then ' Lo mato un usuario?
         With UserList(UserIndex)
@@ -204,19 +214,25 @@ On Error GoTo Errhandler
                 End If
             End If
             
-            If criminal(UserIndex) And esArmada(UserIndex) Then Call ExpulsarFaccionReal(UserIndex)
-            If Not criminal(UserIndex) And esCaos(UserIndex) Then Call ExpulsarFaccionCaos(UserIndex)
+            Dim EsCriminal As Boolean
+            EsCriminal = criminal(UserIndex)
             
-            If EraCriminal And Not criminal(UserIndex) Then
-                Call RefreshCharStatus(UserIndex)
-            ElseIf Not EraCriminal And criminal(UserIndex) Then
+            ' Cambio de alienacion?
+            If EraCriminal <> EsCriminal Then
+                
+                ' Se volvio pk?
+                If EsCriminal Then
+                    If esArmada(UserIndex) Then Call ExpulsarFaccionReal(UserIndex)
+                
+                ' Se volvio ciuda
+                Else
+                    If esCaos(UserIndex) Then Call ExpulsarFaccionCaos(UserIndex)
+                End If
+                
                 Call RefreshCharStatus(UserIndex)
             End If
-            
+                        
             Call CheckUserLevel(UserIndex)
-            
-            ' Pierde el npc que tenia
-            .flags.OwnedNpc = 0
             
         End With
     End If ' Userindex > 0
@@ -227,8 +243,6 @@ On Error GoTo Errhandler
         'ReSpawn o no
         Call ReSpawnNpc(MiNPC)
     End If
-   
-    
     
 Exit Sub
 
@@ -361,9 +375,11 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         
         If .MaestroUser > 0 Then Call QuitarMascota(.MaestroUser, NpcIndex)
         If .MaestroNpc > 0 Then Call QuitarMascotaNpc(.MaestroNpc)
+        If .Owner > 0 Then Call PerdioNpc(.Owner)
         
         .MaestroUser = 0
         .MaestroNpc = 0
+        .Owner = 0
         
         .Mascotas = 0
         .Movement = 0
@@ -384,7 +400,6 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         .TipoItems = 0
         .Veneno = 0
         .desc = vbNullString
-        .Owner = 0
         
         Dim j As Long
         For j = 1 To .NroSpells
@@ -407,8 +422,6 @@ On Error GoTo Errhandler
 
     With Npclist(NpcIndex)
         .flags.NPCActive = False
-        
-        .Owner = 0 ' Murio, no necesita mas dueños :P.
         
         If InMapBounds(.Pos.Map, .Pos.X, .Pos.Y) Then
             Call EraseNPCChar(NpcIndex)

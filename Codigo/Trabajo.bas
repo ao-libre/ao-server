@@ -2011,18 +2011,15 @@ Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As In
         
         WeaponIndex = .Invent.WeaponEqpObjIndex
         
-        ' Tiene arma equipada?
-        If WeaponIndex = 0 Then Exit Sub
-        
         ' Es una espada vikinga?
-        If ObjData(WeaponIndex).name <> "Espada Vikinga" Then Exit Sub
+        If WeaponIndex <> ESPADA_VIKINGA Then Exit Sub
     
         Skill = .Stats.UserSkills(eSkill.Wrestling)
     End With
     
     Suerte = Int((((0.00000003 * Skill + 0.000006) * Skill + 0.000107) * Skill + 0.0893) * 100)
     
-    If RandomNumber(0, 100) < Suerte Then
+    If RandomNumber(1, 100) <= Suerte Then
     
         daño = Int(daño * 0.75)
         

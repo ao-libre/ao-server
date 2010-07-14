@@ -413,9 +413,11 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/10/2009: Modifico unos checkeos de privilegios porque sino los GMs que sean miembros de alguno de los 2 consejos aveces no van a ver a los personajes invisibles. (Pato)
  * 24/11/2009: Cambié en el método del clsParty que actualiza la suma de los niveles elevados un exponente explícito por la variable que contiene el exponente. (Pato)
  * 29/11/2009: Fixié un Out of Range, modifiqué la función ObtenerMiembrosOnline de clsParty y agregué el método ObtenerExperienciaTotal en clsParty (Budi)
+ 
+- 0.13.0
+
  * 13/11/2009 : Estado no atacable al entrar a un mapa. (ZaMa)
  * 13/11/2009 : Random de pos al entrar en un telep, determinado por un radio. (ZaMa)
-	 -> Nota: Puedo hacer teleports ya dateados con distintos radios, pero deberia haber un limite.. (ZaMa)
  * 14/11/2009 : Los guardias del caos ya no persiguen mas admins ciudas no perseguibles. (ZaMa)
  * 14/11/2009 : Ahora el usuario esta protegido del ataque de npcs al loguear. (ZaMa)
  * 15/11/2009 : Mensaje de clan al conectarse/desconectarse. (ZaMa)
@@ -519,3 +521,11 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 10/07/2010 : Limpio algunos contadores que no se reseteaban al desloguear, y agrego algunos ErrHandlers. (ZaMa)
  * 10/07/2010 : Ahora los npcs normales y pretos no responden al "/apostar". (ZaMa)
  * 10/07/2010 : Ahora los npcs no envenenan mas si estas muerto. (ZaMa)
+ * 11/07/2010 : Ahora la defensa al apuñalar npcs es solo ignorada para asesinos. (ZaMa)
+ * 11/07/2010 : Arreglo la probabilidad de dar golpe critico (a 19%, antes era 18.8%). (ZaMa)
+ * 11/07/2010 : Ahora cuando valida el arma que hace critico, no pregunta por el nombre, sino por el nro de item. (ZaMa)
+ * 11/07/2010 : Arreglos varios en el sistema de pertenencia (se resetean flags que anets no). (ZaMa)
+ * 11/07/2010 : Ahora solo dejan de atacar las mascotas si estan atacando al npc que pierde su amo. (ZaMa)
+ * 11/07/2010 : Ahora se puede atacar mascotas/invocaciones de personajes en estado atacable. (ZaMa)
+ * 13/07/2010 : Optimizaciones varias en la logica de MuereNpc (evite repeticiones de logica innecesarias). (ZaMa)
+ * 13/07/2010 : Los matados en estado atacable ya no suman frag. (ZaMa)
