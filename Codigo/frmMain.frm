@@ -408,7 +408,7 @@ If Minutos >= MinutosWs Then
 End If
 
 If MinsPjesSave = MinutosGuardarUsuarios - 1 Then
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Grabado de personajes en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("CharSave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
 ElseIf MinsPjesSave >= MinutosGuardarUsuarios Then
     Call mdParty.ActualizaExperiencias
     Call GuardarUsuarios

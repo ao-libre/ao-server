@@ -1709,7 +1709,7 @@ writeprivateprofilestring Main, Var, Value, file
     
 End Sub
 
-Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String)
+Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVal SaveTimeOnline As Boolean = True)
 '*************************************************
 'Author: Unknown
 'Last modified: 12/01/2010 (ZaMa)
@@ -1831,14 +1831,17 @@ With UserList(UserIndex)
     Call WriteVar(UserFile, "INIT", "Escudo", CStr(.Char.ShieldAnim))
     Call WriteVar(UserFile, "INIT", "Casco", CStr(.Char.CascoAnim))
     
-    #If ConUpTime Then
+#If ConUpTime Then
+    
+    If SaveTimeOnline Then
         Dim TempDate As Date
         TempDate = Now - .LogOnTime
         .LogOnTime = Now
         .UpTime = .UpTime + (Abs(Day(TempDate) - 30) * 24 * 3600) + Hour(TempDate) * 3600 + Minute(TempDate) * 60 + Second(TempDate)
         .UpTime = .UpTime
         Call WriteVar(UserFile, "INIT", "UpTime", .UpTime)
-    #End If
+    End If
+#End If
     
     'First time around?
     If GetVar(UserFile, "INIT", "LastIP1") = vbNullString Then
