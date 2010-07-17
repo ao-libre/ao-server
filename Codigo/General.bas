@@ -1643,7 +1643,7 @@ Sub GuardarUsuarios()
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharPath & UCase$(UserList(i).name) & ".chr")
+            Call SaveUser(i, CharPath & UCase$(UserList(i).name) & ".chr", False)
         End If
     Next i
     
