@@ -529,3 +529,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 11/07/2010 : Ahora se puede atacar mascotas/invocaciones de personajes en estado atacable. (ZaMa)
  * 13/07/2010 : Optimizaciones varias en la logica de MuereNpc (evite repeticiones de logica innecesarias). (ZaMa)
  * 13/07/2010 : Los matados en estado atacable ya no suman frag. (ZaMa)
+ * 17/07/2010 : Corrijo la cantidad de energia subida por lvl de los bandidos. (ZaMa)

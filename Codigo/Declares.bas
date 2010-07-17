@@ -445,7 +445,7 @@ Public Const AdicionalHPGuerrero As Byte = 2 'HP adicionales cuando sube de nive
 Public Const AdicionalHPCazador As Byte = 1 'HP adicionales cuando sube de nivel
 
 Public Const AumentoSTDef As Byte = 15
-Public Const AumentoStBandido As Byte = AumentoSTDef + 23
+Public Const AumentoStBandido As Byte = AumentoSTDef + 3
 Public Const AumentoSTLadron As Byte = AumentoSTDef + 3
 Public Const AumentoSTMago As Byte = AumentoSTDef - 1
 Public Const AumentoSTTrabajador As Byte = AumentoSTDef + 25
