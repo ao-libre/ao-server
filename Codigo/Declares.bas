@@ -110,6 +110,8 @@ Public Enum eCiudad
     cBanderbill
     cLindos
     cArghal
+    cArkhein
+    cLastCity
 End Enum
 
 Public Enum eRaza
@@ -357,7 +359,7 @@ Public Const MAXSKILLPOINTS As Byte = 100
 
 ''
 ' Cantidad de Ciudades
-Public Const NUMCIUDADES As Byte = 5
+Public Const NUMCIUDADES As Byte = 6
 
 
 ''
@@ -1558,7 +1560,7 @@ Public distanceToCities() As HomeDistance
 '*********************************************************
 
 Type HomeDistance
-    distanceToCity(1 To 5) As Integer
+    distanceToCity(1 To NUMCIUDADES) As Integer
 End Type
 
 Public Nix As WorldPos
@@ -1566,6 +1568,8 @@ Public Ullathorpe As WorldPos
 Public Banderbill As WorldPos
 Public Lindos As WorldPos
 Public Arghal As WorldPos
+Public Arkhein As WorldPos
+Public Nemahuak As WorldPos
 
 Public Prision As WorldPos
 Public Libertad As WorldPos
