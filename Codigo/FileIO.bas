@@ -1682,11 +1682,21 @@ Sub LoadSini()
     Arghal.X = GetVar(DatPath & "Ciudades.dat", "Arghal", "X")
     Arghal.Y = GetVar(DatPath & "Ciudades.dat", "Arghal", "Y")
     
+    Arkhein.Map = GetVar(DatPath & "Ciudades.dat", "Arkhein", "Mapa")
+    Arkhein.X = GetVar(DatPath & "Ciudades.dat", "Arkhein", "X")
+    Arkhein.Y = GetVar(DatPath & "Ciudades.dat", "Arkhein", "Y")
+    
+    Nemahuak.Map = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Mapa")
+    Nemahuak.X = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "X")
+    Nemahuak.Y = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Y")
+
+    
     Ciudades(eCiudad.cUllathorpe) = Ullathorpe
     Ciudades(eCiudad.cNix) = Nix
     Ciudades(eCiudad.cBanderbill) = Banderbill
     Ciudades(eCiudad.cLindos) = Lindos
     Ciudades(eCiudad.cArghal) = Arghal
+    Ciudades(eCiudad.cArkhein) = Arkhein
     
     Call MD5sCarga
     

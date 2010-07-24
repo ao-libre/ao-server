@@ -972,12 +972,13 @@ End Function
 Sub ConnectUser(ByVal UserIndex As Integer, ByRef name As String, ByRef Password As String)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 3/12/2009 (Budi)
+'Last Modification: 24/07/2010 (ZaMa)
 '26/03/2009: ZaMa - Agrego por default que el color de dialogo de los dioses, sea como el de su nick.
 '12/06/2009: ZaMa - Agrego chequeo de nivel al loguear
 '14/09/2009: ZaMa - Ahora el usuario esta protegido del ataque de npcs al loguear
 '11/27/2009: Budi - Se envian los InvStats del personaje y su Fuerza y Agilidad
 '03/12/2009: Budi - Optimización del código
+'24/07/2010: ZaMa - La posicion de comienzo es namehuak, como se habia definido inicialmente.
 '***************************************************
 Dim N As Integer
 Dim tStr As String
@@ -1137,21 +1138,9 @@ With UserList(UserIndex)
     
     'Posicion de comienzo
     If .Pos.Map = 0 Then
-        Select Case .Hogar
-            Case eCiudad.cNix
-                .Pos = Nix
-            Case eCiudad.cUllathorpe
-                .Pos = Ullathorpe
-            Case eCiudad.cBanderbill
-                .Pos = Banderbill
-            Case eCiudad.cLindos
-                .Pos = Lindos
-            Case eCiudad.cArghal
-                .Pos = Arghal
-            Case Else
-                .Hogar = eCiudad.cUllathorpe
-                .Pos = Ullathorpe
-        End Select
+        
+        .Pos = Nemahuak
+        
     Else
         If Not MapaValido(.Pos.Map) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")

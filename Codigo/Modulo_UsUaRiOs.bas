@@ -2478,7 +2478,7 @@ Public Sub setHome(ByVal UserIndex As Integer, ByVal newHome As eCiudad, ByVal N
 '30/04/2010: ZaMa - Ahora el npc avisa que se cambio de hogar.
 '01/06/2010: ZaMa - Ahora te avisa si ya tenes ese hogar.
 '***************************************************
-    If newHome < eCiudad.cUllathorpe Or newHome > cArghal Then Exit Sub
+    If newHome < eCiudad.cUllathorpe Or newHome > eCiudad.cLastCity - 1 Then Exit Sub
     
     If UserList(UserIndex).Hogar <> newHome Then
         UserList(UserIndex).Hogar = newHome

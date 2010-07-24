@@ -531,3 +531,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 13/07/2010 : Los matados en estado atacable ya no suman frag. (ZaMa)
  * 17/07/2010 : Corrijo la cantidad de energia subida por lvl de los bandidos. (ZaMa)
  * 17/07/2010 : Ahora no se resetea  el tiempo online del usuario en cada "CharSave". (ZaMa)
+ * 24/07/2010 : LA ciudad inicial al crear un personaje pasa a ser namehuak, como estaba definido. (ZaMa)
+ * 24/07/2010 : Ahora se puede tener como hogar la ciudad arkhein. (ZaMa)
