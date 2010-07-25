@@ -534,3 +534,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 24/07/2010 : LA ciudad inicial al crear un personaje pasa a ser namehuak, como estaba definido. (ZaMa)
  * 24/07/2010 : Ahora se puede tener como hogar la ciudad arkhein. (ZaMa)
  * 25/07/2010 : Agrego diferenciacion entre barcas neutrales/faccionarias, atacables.. (zaMa)
+ * 25/07/2010 : Agrego una validacion temporal para evitar que los npcs ataquen a usuarios de mapas diferentes. (ZaMa)

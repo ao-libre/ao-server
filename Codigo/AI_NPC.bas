@@ -255,9 +255,10 @@ End Sub
 Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 12/01/2010 (ZaMa)
+'Last Modification: 25/07/2010 (ZaMa)
 '14/09/2009: ZaMa - Now npcs don't follow protected users.
 '12/01/2010: ZaMa - Los npcs no atacan druidas mimetizados con npcs
+'25/07/2010: ZaMa - Agrego una validacion temporal para evitar que los npcs ataquen a usuarios de mapas difernetes.
 '***************************************************
     Dim tHeading As Byte
     Dim UserIndex As Integer
@@ -315,20 +316,31 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
             
             OwnerIndex = .Owner
             If OwnerIndex > 0 Then
-            
-                'Is it in it's range of vision??
-                If Abs(UserList(OwnerIndex).Pos.X - .Pos.X) <= RANGO_VISION_X Then
-                    If Abs(UserList(OwnerIndex).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
-                        
-                        ' va hacia el si o esta invi ni oculto
-                        If UserList(OwnerIndex).flags.invisible = 0 And UserList(OwnerIndex).flags.Oculto = 0 And Not UserList(OwnerIndex).flags.EnConsulta And Not UserList(OwnerIndex).flags.Ignorado Then
-                            If .flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, OwnerIndex)
-                                
-                            tHeading = FindDirection(.Pos, UserList(OwnerIndex).Pos)
-                            Call MoveNPCChar(NpcIndex, tHeading)
-                            Exit Sub
+                
+                ' TODO: Es temporal hatsa reparar un bug que hace que ataquen a usuarios de otros mapas
+                If UserList(OwnerIndex).Pos.Map = .Pos.Map Then
+                    
+                    'Is it in it's range of vision??
+                    If Abs(UserList(OwnerIndex).Pos.X - .Pos.X) <= RANGO_VISION_X Then
+                        If Abs(UserList(OwnerIndex).Pos.Y - .Pos.Y) <= RANGO_VISION_Y Then
+                            
+                            ' va hacia el si o esta invi ni oculto
+                            If UserList(OwnerIndex).flags.invisible = 0 And UserList(OwnerIndex).flags.Oculto = 0 And Not UserList(OwnerIndex).flags.EnConsulta And Not UserList(OwnerIndex).flags.Ignorado Then
+                                If .flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, OwnerIndex)
+                                    
+                                tHeading = FindDirection(.Pos, UserList(OwnerIndex).Pos)
+                                Call MoveNPCChar(NpcIndex, tHeading)
+                                Exit Sub
+                            End If
                         End If
                     End If
+                
+                ' Esto significa que esta bugueado.. Lo logueo, y "reparo" el error a mano (Todo temporal)
+                Else
+                    Call LogError("El npc: " & .name & "(" & NpcIndex & "), intenta atacar a " & _
+                                  UserList(OwnerIndex).name & "(Index: " & OwnerIndex & ", Mapa: " & _
+                                  UserList(OwnerIndex).Pos.Map & ") desde el mapa " & .Pos.Map)
+                    .Owner = 0
                 End If
                 
             End If
