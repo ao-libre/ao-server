@@ -39,7 +39,7 @@ Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
 '17/09/02
 'Agregue que la función se asegure que el objeto no es un barco
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     Dim i As Integer
     Dim ObjIndex As Integer
@@ -58,7 +58,7 @@ On Error GoTo ErrHandler
     
     Exit Function
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en TieneObjetosRobables. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -191,7 +191,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
 'Last Modification: 23/01/2007
 '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
 '***************************************************
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
 'If Cantidad > 100000 Then Exit Sub
 
@@ -275,7 +275,7 @@ End With
 
 Exit Sub
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 End Sub
 
@@ -286,7 +286,7 @@ Sub QuitarUserInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Cant
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     If Slot < 1 Or Slot > UserList(UserIndex).CurrentInventorySlots Then Exit Sub
     
@@ -307,7 +307,7 @@ On Error GoTo ErrHandler
 
 Exit Sub
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en QuitarUserInvItem. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -319,7 +319,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal 
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
 Dim NullObj As UserOBJ
 Dim LoopC As Long
@@ -351,7 +351,7 @@ With UserList(UserIndex)
     Exit Sub
 End With
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en UpdateUserInv. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -472,7 +472,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
     Dim Slot As Byte
     
     With UserList(UserIndex)
@@ -524,7 +524,7 @@ On Error GoTo ErrHandler
     
     
     Exit Function
-ErrHandler:
+Errhandler:
     Call LogError("Error en MeterItemEnInventario. Error " & Err.Number & " : " & Err.description)
 End Function
 
@@ -574,7 +574,7 @@ Sub GetObj(ByVal UserIndex As Integer)
                         If ObjData(MiObj.ObjIndex).Log = 1 Then
                             ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
                             Call LogDesarrollo(.name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
-                        ElseIf MiObj.Amount > MAX_INVENTORY_OBJS - 1000 Then 'Es mucha cantidad?
+                        ElseIf MiObj.Amount > 5000 Then 'Es mucha cantidad?
                             'Si no es de los prohibidos de loguear, lo logueamos.
                             If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
                                 ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
@@ -598,7 +598,7 @@ Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     'Desequipa el item slot del inventario
     Dim Obj As ObjData
@@ -700,7 +700,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en Desquipar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -712,7 +712,7 @@ Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer
 '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
     
     If ObjData(ObjIndex).Mujer = 1 Then
         SexoPuedeUsarItem = UserList(UserIndex).Genero <> eGenero.Hombre
@@ -725,7 +725,7 @@ On Error GoTo ErrHandler
     If Not SexoPuedeUsarItem Then sMotivo = "Tu género no puede usar este objeto."
     
     Exit Function
-ErrHandler:
+Errhandler:
     Call LogError("SexoPuedeUsarItem")
 End Function
 
@@ -765,7 +765,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '14/01/2010: ZaMa - Agrego el motivo especifico por el que no puede equipar/usar el item.
 '*************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     'Equipa un item del inventario
     Dim Obj As ObjData
@@ -1009,7 +1009,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
     
-ErrHandler:
+Errhandler:
     Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 End Sub
 
@@ -1020,7 +1020,7 @@ Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integ
 '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     With UserList(UserIndex)
         'Verifica si la raza puede usar la ropa
@@ -1042,7 +1042,7 @@ On Error GoTo ErrHandler
     
     Exit Function
     
-ErrHandler:
+Errhandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function
@@ -1602,7 +1602,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo Errhandler
 
     With UserList(UserIndex)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
@@ -1618,7 +1618,7 @@ On Error GoTo ErrHandler
 
     Exit Sub
 
-ErrHandler:
+Errhandler:
     Call LogError("Error en TirarTodo. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
