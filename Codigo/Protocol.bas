@@ -1224,6 +1224,9 @@ With UserList(UserIndex)
         Case eGMCommands.ChangeMapInfoZone       '/MODMAPINFO ZONA
             Call HandleChangeMapInfoZone(UserIndex)
         
+        Case eGMCommands.ChangeMapInfoStealNpc   '/MODMAPINFO ROBONPC
+            Call HandleChangeMapInfoStealNpc(UserIndex)
+            
         Case eGMCommands.SaveChars               '/GRABAR
             Call HandleSaveChars(UserIndex)
         
@@ -13117,6 +13120,41 @@ On Error GoTo 0
     
     If error <> 0 Then _
         Err.Raise error
+End Sub
+            
+''
+' Handle the "ChangeMapInfoStealNp" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleChangeMapInfoStealNpc(ByVal UserIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 25/07/2010
+'RoboNpcsPermitido -> Options: "1", "0"
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 2 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    Dim RoboNpc As Byte
+    
+    With UserList(UserIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        RoboNpc = val(IIf(.incomingData.ReadBoolean(), 1, 0))
+        
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
+            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido robar npcs en el mapa.")
+            
+            MapInfo(UserList(UserIndex).Pos.Map).RoboNpcsPermitido = RoboNpc
+            
+            Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "RoboNpcsPermitido", RoboNpc)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " RoboNpcsPermitido: " & MapInfo(.Pos.Map).RoboNpcsPermitido, FontTypeNames.FONTTYPE_INFO)
+        End If
+    End With
 End Sub
 
 ''
