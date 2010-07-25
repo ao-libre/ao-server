@@ -128,54 +128,111 @@ End Sub
 Public Sub ToogleBoatBody(ByVal UserIndex As Integer)
 '***************************************************
 'Author: ZaMa
-'Last Modification: 13/01/2010
+'Last Modification: 25/07/2010
 'Gives boat body depending on user alignment.
+'25/07/2010: ZaMa - Now makes difference depending on faccion and atacable status.
 '***************************************************
 
     Dim Ropaje As Integer
+    Dim EsFaccionario As Boolean
+    Dim NewBody As Integer
     
     With UserList(UserIndex)
-        
  
         .Char.Head = 0
         
-        ' Barco de armada
-        If .Faccion.ArmadaReal = 1 Then
-            .Char.body = iFragataReal
-            
-        ' Barco de caos
-        ElseIf .Faccion.FuerzasCaos = 1 Then
-            .Char.body = iFragataCaos
+        Ropaje = ObjData(.Invent.BarcoObjIndex).Ropaje
         
-        'Barcos neutrales
-        Else
-            Ropaje = ObjData(.Invent.BarcoObjIndex).Ropaje
+        ' Criminales y caos
+        If criminal(UserIndex) Then
             
-            If criminal(UserIndex) Then
+            EsFaccionario = esCaos(UserIndex)
+            
+            Select Case Ropaje
+                Case iBarca
+                    If EsFaccionario Then
+                        NewBody = iBarcaCaos
+                    Else
+                        NewBody = iBarcaPk
+                    End If
+                
+                Case iGalera
+                    If EsFaccionario Then
+                        NewBody = iGaleraCaos
+                    Else
+                        NewBody = iGaleraPk
+                    End If
+                    
+                Case iGaleon
+                    If EsFaccionario Then
+                        NewBody = iGaleonCaos
+                    Else
+                        NewBody = iGaleonPk
+                    End If
+            End Select
+        
+        ' Ciudas y Armadas
+        Else
+            
+            EsFaccionario = esArmada(UserIndex)
+            
+            ' Atacable
+            If .flags.AtacablePor <> 0 Then
+                
                 Select Case Ropaje
                     Case iBarca
-                        .Char.body = iBarcaPk
+                        If EsFaccionario Then
+                            NewBody = iBarcaRealAtacable
+                        Else
+                            NewBody = iBarcaCiudaAtacable
+                        End If
                     
                     Case iGalera
-                        .Char.body = iGaleraPk
-                    
+                        If EsFaccionario Then
+                            NewBody = iGaleraRealAtacable
+                        Else
+                            NewBody = iGaleraCiudaAtacable
+                        End If
+                        
                     Case iGaleon
-                        .Char.body = iGaleonPk
+                        If EsFaccionario Then
+                            NewBody = iGaleonRealAtacable
+                        Else
+                            NewBody = iGaleonCiudaAtacable
+                        End If
                 End Select
+            
+            ' Normal
             Else
+            
                 Select Case Ropaje
                     Case iBarca
-                        .Char.body = iBarcaCiuda
+                        If EsFaccionario Then
+                            NewBody = iBarcaReal
+                        Else
+                            NewBody = iBarcaCiuda
+                        End If
                     
                     Case iGalera
-                        .Char.body = iGaleraCiuda
-                    
+                        If EsFaccionario Then
+                            NewBody = iGaleraReal
+                        Else
+                            NewBody = iGaleraCiuda
+                        End If
+                        
                     Case iGaleon
-                        .Char.body = iGaleonCiuda
+                        If EsFaccionario Then
+                            NewBody = iGaleonReal
+                        Else
+                            NewBody = iGaleonCiuda
+                        End If
                 End Select
+            
             End If
+            
         End If
         
+        .Char.body = NewBody
         .Char.ShieldAnim = NingunEscudo
         .Char.WeaponAnim = NingunArma
         .Char.CascoAnim = NingunCasco
@@ -287,10 +344,15 @@ Exit Sub
 ErrorHandler:
     
     Dim UserName As String
-    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+    Dim CharIndex As Integer
+    
+    If UserIndex > 0 Then
+        UserName = UserList(UserIndex).name
+        CharIndex = UserList(UserIndex).Char.CharIndex
+    End If
 
     Call LogError("Error en EraseUserchar " & Err.Number & ": " & Err.description & _
-                  ". User: " & UserName & "(" & UserIndex & ")")
+                  ". User: " & UserName & "(UI: " & UserIndex & " - CI: " & CharIndex & ")")
 End Sub
 
 Public Sub RefreshCharStatus(ByVal UserIndex As Integer)
