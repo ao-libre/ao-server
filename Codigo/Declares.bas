@@ -62,12 +62,33 @@ Public Const iFragataCaos = 189
 Public Const iBarca = 84
 Public Const iGalera = 85
 Public Const iGaleon = 86
+
+' Embarcaciones ciudas
 Public Const iBarcaCiuda = 395
-Public Const iBarcaPk = 396
+Public Const iBarcaCiudaAtacable = 552
 Public Const iGaleraCiuda = 397
-Public Const iGaleraPk = 398
+Public Const iGaleraCiudaAtacable = 560
 Public Const iGaleonCiuda = 399
+Public Const iGaleonCiudaAtacable = 556
+
+' Embarcaciones reales
+Public Const iBarcaReal = 550
+Public Const iBarcaRealAtacable = 553
+Public Const iGaleraReal = 558
+Public Const iGaleraRealAtacable = 561
+Public Const iGaleonReal = 554
+Public Const iGaleonRealAtacable = 557
+
+' Embarcaciones pk
+Public Const iBarcaPk = 396
+Public Const iGaleraPk = 398
 Public Const iGaleonPk = 400
+
+' Embarcaciones caos
+Public Const iBarcaCaos = 551
+Public Const iGaleraCaos = 559
+Public Const iGaleonCaos = 555
+
 
 Public Enum iMinerales
     HierroCrudo = 192
