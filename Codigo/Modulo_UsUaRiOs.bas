@@ -2251,21 +2251,28 @@ End Sub
 Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '**************************************************************
 'Author: ZaMa
-'Last Modify Date: 18/01/2010 (zaMa)
+'Last Modify Date: 27/07/2010 (zaMa)
 'The user owns a new npc
 '18/01/2010: ZaMa - El sistema no aplica a zonas seguras.
 '19/04/2010: ZaMa - Ahora los admins no se pueden apropiar de npcs.
+'27/07/2010: ZaMa - El sistema no aplica a mapas seguros.
 '**************************************************************
 
     With UserList(UserIndex)
         ' Los admins no se pueden apropiar de npcs
         If EsGM(UserIndex) Then Exit Sub
         
-        'No aplica a zonas seguras
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        Dim Mapa As Integer
+        Mapa = .Pos.Map
+        
+        ' No aplica a triggers seguras
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        
+        ' No se aplica a mapas seguros
+        If MapInfo(Mapa, .Pos.X, .Pos.Y).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(.Pos.Map).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
