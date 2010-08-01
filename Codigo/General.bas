@@ -356,9 +356,6 @@ On Error Resume Next
     frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
     IniPath = App.Path & "\"
     CharPath = App.Path & "\Charfile\"
-    CharTmpPath = App.Path & "\CharTMP\"
-    CharTmpOld = App.Path & "\CharTMPOld\"
-    Name CharTmpPath As CharTmpOld
     
     'Bordes del mapa
     MinXBorder = XMinMapSize + (XWindow \ 2)
@@ -1641,26 +1638,14 @@ Sub GuardarUsuarios()
     haciendoBK = True
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
-    
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Grabando Personajes", FontTypeNames.FONTTYPE_SERVER))
     
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharTmpPath & UCase$(UserList(i).name) & ".chr", False)
+            Call SaveUser(i, CharPath & UCase$(UserList(i).name) & ".chr", False)
         End If
     Next i
-    
-    
-    'Move all the characters from CharTmpPath to CharPath
-    Dim tmpStr As String
-    
-    tmpStr = dir$(CharTmpPath & "\*.chr", vbArchive)
-    While (LenB(tmpStr))
-        Name CharTmpPath & "\" & tmpStr As CharPath & "\" & tmpStr
-        
-        tmpStr = dir$(CharTmpPath & "\*.chr", vbArchive)
-    Wend
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Personajes Grabados", FontTypeNames.FONTTYPE_SERVER))
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())

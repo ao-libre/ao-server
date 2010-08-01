@@ -1506,8 +1506,6 @@ Public IniPath As String
 ''
 'Ruta base para guardar los chars
 Public CharPath As String
-Public CharTmpPath As String
-Public CharTmpOld As String
 
 ''
 'Ruta base para los archivos de mapas
