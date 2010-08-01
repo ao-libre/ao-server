@@ -368,7 +368,7 @@ With UserList(UserIndex)
     End If
     
     '¿Existe el personaje?
-    If FileExist(CharPath & UCase$(name) & ".chr", vbNormal) = True Then
+    If FileExist(CharPath & UCase$(name) & ".chr", vbNormal) Or FileExist(CharTmpPath & UCase$(name) & ".chr", vbNormal) Then
         Call WriteErrorMsg(UserIndex, "Ya existe el personaje.")
         Exit Sub
     End If
@@ -596,9 +596,9 @@ End With
 'Valores Default de facciones al Activar nuevo usuario
 Call ResetFacciones(UserIndex)
 
-Call WriteVar(CharPath & UCase$(name) & ".chr", "INIT", "Password", Password) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
+Call WriteVar(CharTmpPath & UCase$(name) & ".chr", "INIT", "Password", Password) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
 
-Call SaveUser(UserIndex, CharPath & UCase$(name) & ".chr")
+Call SaveUser(UserIndex, CharTmpPath & UCase$(name) & ".chr")
   
 'Open User
 Call ConnectUser(UserIndex, name, Password)
@@ -1019,16 +1019,31 @@ With UserList(UserIndex)
         End If
     End If
     
+    
+    
     '¿Existe el personaje?
-    If Not FileExist(CharPath & UCase$(name) & ".chr", vbNormal) Then
+    
+    Dim tmpFile As String
+    
+    If (FileExist(CharTmpPath & UCase$(name) & ".chr", vbNormal)) Then
+        tmpFile = CharTmpPath & UCase$(name) & ".chr"
+    ElseIf (FileExist(CharPath & UCase$(name) & ".chr", vbNormal)) Then
+        tmpFile = CharPath & UCase$(name) & ".chr"
+    Else
+        tmpFile = vbNullString
+    End If
+    
+    If tmpFile = vbNullString Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
     
+
+    
     '¿Es el passwd valido?
-    If UCase$(Password) <> UCase$(GetVar(CharPath & UCase$(name) & ".chr", "INIT", "Password")) Then
+    If UCase$(Password) <> UCase$(GetVar(tmpFile, "INIT", "Password")) Then
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1088,7 +1103,7 @@ With UserList(UserIndex)
     'Cargamos el personaje
     Dim Leer As New clsIniReader
     
-    Call Leer.Initialize(CharPath & UCase$(name) & ".chr")
+    Call Leer.Initialize(tmpFile)
     
     'Cargamos los datos del personaje
     Call LoadUserInit(UserIndex, Leer)
@@ -1297,6 +1312,7 @@ With UserList(UserIndex)
     .flags.UserLogged = True
     
     'usado para borrar Pjs
+    Call WriteVar(CharTmpPath & .name & ".chr", "INIT", "Logged", "1")
     Call WriteVar(CharPath & .name & ".chr", "INIT", "Logged", "1")
     
     Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
@@ -1825,10 +1841,11 @@ With UserList(UserIndex)
     Call Statistics.UserDisconnected(UserIndex)
     
     ' Grabamos el personaje del usuario
-    Call SaveUser(UserIndex, CharPath & name & ".chr")
+    Call SaveUser(UserIndex, CharTmpPath & UCase(name) & ".chr")
     
     'usado para borrar Pjs
-    Call WriteVar(CharPath & .name & ".chr", "INIT", "Logged", "0")
+    Call WriteVar(CharTmpPath & UCase(.name) & ".chr", "INIT", "Logged", "0")
+    Call WriteVar(CharPath & UCase(.name) & ".chr", "INIT", "Logged", "0")
     
     'Quitar el dialogo
     'If MapInfo(Map).NumUsers > 0 Then

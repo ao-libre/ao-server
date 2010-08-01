@@ -1724,9 +1724,9 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVa
 'Author: Unknown
 'Last modified: 12/01/2010 (ZaMa)
 'Saves the Users records
-'23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
+'01/23/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '11/19/2009: Pato - Save the EluSkills and ExpSkills
-'12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
+'01/12/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
 '*************************************************
 
 On Error GoTo Errhandler
