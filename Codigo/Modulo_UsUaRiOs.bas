@@ -265,14 +265,14 @@ Public Function GetWeaponAnim(ByVal UserIndex As Integer, ByVal ObjIndex As Inte
 'Last Modification: 03/29/10
 '
 '***************************************************
-    Dim tmp As Integer
+    Dim Tmp As Integer
 
     With UserList(UserIndex)
-        tmp = ObjData(ObjIndex).WeaponRazaEnanaAnim
+        Tmp = ObjData(ObjIndex).WeaponRazaEnanaAnim
             
-        If tmp > 0 Then
+        If Tmp > 0 Then
             If .raza = eRaza.Enano Or .raza = eRaza.Gnomo Then
-                GetWeaponAnim = tmp
+                GetWeaponAnim = Tmp
                 Exit Function
             End If
         End If
@@ -1066,8 +1066,6 @@ Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal charName As S
     Dim BanDetailPath As String
     
     BanDetailPath = App.Path & "\logs\" & "BanDetail.dat"
-    
-    
     CharFile = CharPath & charName & ".chr"
     
     If FileExist(CharFile) Then
@@ -1146,26 +1144,21 @@ Sub SendUserInvTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 '***************************************************
 
 On Error Resume Next
+
     Dim j As Long
-    Dim CharFile As String, tmp As String
+    Dim CharFile As String, Tmp As String
     Dim ObjInd As Long, ObjCant As Long
     
-    If FileExist(CharTmpPath & UCase(charName) & ".chr", vbArchive) Then
-        CharFile = CharTmpPath & UCase(charName) & ".chr"
-    ElseIf FileExist(CharPath & UCase(charName) & ".chr", vbArchive) Then
-        CharFile = CharPath & UCase(charName) & ".chr"
-    Else
-        CharFile = vbNullString
-    End If
+    CharFile = CharPath & charName & ".chr"
     
-    If CharFile <> vbNullString Then
+    If FileExist(CharFile, vbNormal) Then
         Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "Inventory", "CantidadItems") & " objetos.", FontTypeNames.FONTTYPE_INFO)
         
         For j = 1 To MAX_INVENTORY_SLOTS
-            tmp = GetVar(CharFile, "Inventory", "Obj" & j)
-            ObjInd = ReadField(1, tmp, Asc("-"))
-            ObjCant = ReadField(2, tmp, Asc("-"))
+            Tmp = GetVar(CharFile, "Inventory", "Obj" & j)
+            ObjInd = ReadField(1, Tmp, Asc("-"))
+            ObjCant = ReadField(2, Tmp, Asc("-"))
             If ObjInd > 0 Then
                 Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
             End If
@@ -2022,7 +2015,7 @@ Public Sub CambiarNick(ByVal UserIndex As Integer, ByVal UserIndexDestino As Int
 'Last Modification: -
 '
 '***************************************************
-'TODO REVISAR ESTA FUNCION (Marco)
+
     Dim ViejoNick As String
     Dim ViejoCharBackup As String
     
@@ -2039,35 +2032,26 @@ End Sub
 Sub SendUserStatsTxtOFF(ByVal sendIndex As Integer, ByVal Nombre As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: 07/31/2010 (Marco)
-' - 07/31/2010 - Modified to allow Rollbacks.
+'Last Modification: -
+'
 '***************************************************
-    Dim tmpFile As String
-    
-    If FileExist(CharTmpPath & UCase(Nombre) & ".chr", vbArchive) Then
-        tmpFile = CharTmpPath & UCase(Nombre) & ".chr"
-    ElseIf FileExist(CharPath & UCase(Nombre) & ".chr", vbArchive) Then
-        tmpFile = CharPath & UCase(Nombre) & ".chr"
-    Else
-        tmpFile = vbNullString
-    End If
 
-    If tmpFile = vbNullString Then
+    If FileExist(CharPath & Nombre & ".chr", vbArchive) = False Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & Nombre, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Nivel: " & GetVar(tmpFile, "stats", "elv") & "  EXP: " & GetVar(tmpFile, "stats", "Exp") & "/" & GetVar(tmpFile, "stats", "elu"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Energía: " & GetVar(tmpFile, "stats", "minsta") & "/" & GetVar(tmpFile, "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(tmpFile, "stats", "MinHP") & "/" & GetVar(tmpFile, "Stats", "MaxHP") & "  Maná: " & GetVar(tmpFile, "Stats", "MinMAN") & "/" & GetVar(tmpFile, "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Nivel: " & GetVar(CharPath & Nombre & ".chr", "stats", "elv") & "  EXP: " & GetVar(CharPath & Nombre & ".chr", "stats", "Exp") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "elu"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Energía: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Maná: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
         
-        Call WriteConsoleMsg(sendIndex, "Menor Golpe/Mayor Golpe: " & GetVar(tmpFile, "stats", "MaxHIT"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Menor Golpe/Mayor Golpe: " & GetVar(CharPath & Nombre & ".chr", "stats", "MaxHIT"), FontTypeNames.FONTTYPE_INFO)
         
-        Call WriteConsoleMsg(sendIndex, "Oro: " & GetVar(tmpFile, "stats", "GLD"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Oro: " & GetVar(CharPath & Nombre & ".chr", "stats", "GLD"), FontTypeNames.FONTTYPE_INFO)
         
 #If ConUpTime Then
         Dim TempSecs As Long
         Dim TempStr As String
-        TempSecs = GetVar(tmpFile, "INIT", "UpTime")
+        TempSecs = GetVar(CharPath & Nombre & ".chr", "INIT", "UpTime")
         TempStr = (TempSecs \ 86400) & " Días, " & ((TempSecs Mod 86400) \ 3600) & " Horas, " & ((TempSecs Mod 86400) Mod 3600) \ 60 & " Minutos, " & (((TempSecs Mod 86400) Mod 3600) Mod 60) & " Segundos."
         Call WriteConsoleMsg(sendIndex, "Tiempo Logeado: " & TempStr, FontTypeNames.FONTTYPE_INFO)
 #End If
@@ -2078,21 +2062,16 @@ End Sub
 Sub SendUserOROTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: 07/31/2010 (Marco)
-' - 07/31/2010 - Modified to allow Rollbacks.
+'Last Modification: -
+'
 '***************************************************
-On Error Resume Next
+
     Dim CharFile As String
     
-    If FileExist(CharTmpPath & UCase(charName) & ".chr", vbArchive) Then
-        CharFile = CharTmpPath & UCase(charName) & ".chr"
-    ElseIf FileExist(CharPath & UCase(charName) & ".chr", vbArchive) Then
-        CharFile = CharPath & UCase(charName) & ".chr"
-    Else
-        CharFile = vbNullString
-    End If
-  
-    If CharFile <> vbNullString Then
+On Error Resume Next
+    CharFile = CharPath & charName & ".chr"
+    
+    If FileExist(CharFile, vbNormal) Then
         Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "STATS", "BANCO") & " en el banco.", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -2283,17 +2262,17 @@ Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGM(UserIndex) Then Exit Sub
         
-        Dim mapa As Integer
-        mapa = .Pos.Map
+        Dim Mapa As Integer
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa, .Pos.X, .Pos.Y).Pk = False Then Exit Sub
+        If MapInfo(Mapa, .Pos.X, .Pos.Y).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
