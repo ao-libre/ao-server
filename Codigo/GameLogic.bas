@@ -286,44 +286,103 @@ Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
     
     End Function
 
-Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True)
+Private Function rhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, ByVal Distance As Long, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False) As Boolean
+'***************************************************
+'Author: Marco Vanotti (Marco)
+'Last Modification: -
+' walks all the perimeter of a rhomb of side  "distance + 1",
+' which starts at Pos.x - Distance and Pos.y
+'***************************************************
+
+Dim i As Long
+
+vX = Pos.X - Distance
+vY = Pos.Y
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX + i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX + i
+        vY = vY - i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+vX = Pos.X
+vY = Pos.Y - Distance
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX + i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX + i
+        vY = vY + i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+vX = Pos.X + Distance
+vY = Pos.Y
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX - i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX - i
+        vY = vY + i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+vX = Pos.X
+vY = Pos.Y + Distance
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX - i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX - i
+        vY = vY - i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+rhombLegalPos = False
+End Function
+
+Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False)
 '*****************************************************************
 'Author: Unknown (original version)
-'Last Modification: 24/01/2007 (ToxicWaste)
+'Last Modification: 09/14/2010 (Marco)
+'History:
+' - 01/24/2007 (ToxicWaste)
 'Encuentra la posicion legal mas cercana y la guarda en nPos
 '*****************************************************************
 
-Dim Notfound As Boolean
+Dim found As Boolean
 Dim LoopC As Integer
 Dim tX As Long
 Dim tY As Long
+Dim tPos As WorldPos
 
-nPos.Map = Pos.Map
+nPos = Pos
+tX = Pos.X
+tY = Pos.Y
 
-Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra)
-    If LoopC > 12 Then
-        Notfound = True
-        Exit Do
+LoopC = 1
+
+If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, CheckExitTile) Then
+    found = True
+End If
+
+While (Not found) And LoopC <= 12
+    If rhombLegalPos(Pos, tX, tY, LoopC, PuedeAgua, PuedeTierra, CheckExitTile) Then
+        nPos.X = tX
+        nPos.Y = tY
+        found = True
     End If
-    
-    For tY = Pos.Y - LoopC To Pos.Y + LoopC
-        For tX = Pos.X - LoopC To Pos.X + LoopC
-            
-            If LegalPos(nPos.Map, tX, tY, PuedeAgua, PuedeTierra) Then
-                nPos.X = tX
-                nPos.Y = tY
-                '¿Hay objeto?
-                
-                tX = Pos.X + LoopC
-                tY = Pos.Y + LoopC
-            End If
-        Next tX
-    Next tY
-    
-    LoopC = LoopC + 1
-Loop
 
-If Notfound = True Then
+    LoopC = LoopC + 1
+Wend
+
+If Not found Then
     nPos.X = 0
     nPos.Y = 0
 End If
@@ -333,44 +392,11 @@ End Sub
 Private Sub ClosestStablePos(Pos As WorldPos, ByRef nPos As WorldPos)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
+'Last Modification: 09/14/2010
 'Encuentra la posicion legal mas cercana que no sea un portal y la guarda en nPos
 '*****************************************************************
 
-    Dim Notfound As Boolean
-    Dim LoopC As Integer
-    Dim tX As Long
-    Dim tY As Long
-    
-    nPos.Map = Pos.Map
-    
-    Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y)
-        If LoopC > 12 Then
-            Notfound = True
-            Exit Do
-        End If
-        
-        For tY = Pos.Y - LoopC To Pos.Y + LoopC
-            For tX = Pos.X - LoopC To Pos.X + LoopC
-                
-                If LegalPos(nPos.Map, tX, tY) And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
-                    nPos.X = tX
-                    nPos.Y = tY
-                    '¿Hay objeto?
-                    
-                    tX = Pos.X + LoopC
-                    tY = Pos.Y + LoopC
-                End If
-            Next tX
-        Next tY
-        
-        LoopC = LoopC + 1
-    Loop
-    
-    If Notfound = True Then
-        nPos.X = 0
-        nPos.Y = 0
-    End If
+Call ClosestLegalPos(Pos, nPos, , , True)
 
 End Sub
 
@@ -479,7 +505,7 @@ Sub HeadtoPos(ByVal Head As eHeading, ByRef Pos As WorldPos)
     End Select
 End Sub
 
-Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False, Optional ByVal PuedeTierra As Boolean = True) As Boolean
+Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal PuedeAgua As Boolean = False, Optional ByVal PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False) As Boolean
 '***************************************************
 'Autor: Pablo (ToxicWaste) & Unknown (orginal version)
 'Last Modification: 23/01/2007
@@ -510,6 +536,10 @@ Else
             LegalPos = False
         End If
     End With
+End If
+
+If CheckExitTile Then
+    LegalPos = LegalPos And (MapData(Map, X, Y).TileExit.Map = 0)
 End If
 
 End Function
