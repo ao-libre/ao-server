@@ -807,10 +807,7 @@ Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
 '14/09/2009: ZaMa - Now npcs don't follow protected users.
 '***************************************************
     Dim UserIndex As Integer
-    Dim tHeading As Byte
     Dim i As Long
-    Dim SignoNS As Integer
-    Dim SignoEO As Integer
     Dim UserProtected As Boolean
     
     With Npclist(NpcIndex)

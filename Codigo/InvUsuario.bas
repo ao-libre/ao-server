@@ -71,7 +71,6 @@ Function ClasePuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Intege
 
 On Error GoTo manejador
 
-    Dim flag As Boolean
     
     'Admins can use ANYTHING!
     If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
@@ -198,7 +197,6 @@ On Error GoTo Errhandler
 With UserList(UserIndex)
     'SI EL Pjta TIENE ORO LO TIRAMOS
     If (Cantidad > 0) And (Cantidad <= .Stats.GLD) Then
-            Dim i As Byte
             Dim MiObj As Obj
             'info debug
             Dim loops As Integer
@@ -365,8 +363,6 @@ Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer
 
 Dim DropObj As Obj
 Dim MapObj As Obj
-Dim ObjIndex As Integer
-Dim ObjAmount As Integer
 
 With UserList(UserIndex)
     If num > 0 Then
@@ -546,7 +542,6 @@ Sub GetObj(ByVal UserIndex As Integer)
             If ObjData(MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
                 Dim X As Integer
                 Dim Y As Integer
-                Dim Slot As Byte
                 
                 X = .Pos.X
                 Y = .Pos.Y

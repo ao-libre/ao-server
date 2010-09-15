@@ -939,7 +939,6 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
     Dim Leer As clsIniReader
     Dim LoopC As Long
     Dim ln As String
-    Dim aux As String
     
     Set Leer = LeerNPCs
     

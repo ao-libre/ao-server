@@ -142,7 +142,6 @@ Sub WorldSave()
 On Error Resume Next
 
     Dim loopX As Integer
-    Dim Porc As Long
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Iniciando WorldSave", FontTypeNames.FONTTYPE_SERVER))
     

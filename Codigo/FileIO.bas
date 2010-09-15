@@ -403,7 +403,6 @@ Public Sub DoBackUp()
 '***************************************************
 
     haciendoBK = True
-    Dim i As Integer
     
     
     
@@ -1216,7 +1215,6 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
         End If
         
         .NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
-        Dim NpcIndex As Integer
         For LoopC = 1 To MAXMASCOTAS
             .MascotasType(LoopC) = val(UserFile.GetValue("MASCOTAS", "MAS" & LoopC))
         Next LoopC
@@ -1263,9 +1261,7 @@ Sub CargarBackUp()
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando backup."
     
     Dim Map As Integer
-    Dim TempInt As Integer
     Dim tFileName As String
-    Dim npcfile As String
     
     On Error GoTo man
         
@@ -1317,9 +1313,7 @@ Sub LoadMapData()
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando mapas..."
     
     Dim Map As Integer
-    Dim TempInt As Integer
     Dim tFileName As String
-    Dim npcfile As String
     
     On Error GoTo man
         
@@ -2250,8 +2244,6 @@ Public Sub generateMatrix(ByVal mapa As Integer)
 
 Dim i As Integer
 Dim j As Integer
-Dim X As Integer
-Dim Y As Integer
 
 ReDim distanceToCities(1 To NumMaps) As HomeDistance
 
@@ -2322,7 +2314,8 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
 'Retrieves the limit in the given side in the given map.
 'TODO: This should be set in the .inf map file.
 '***************************************************
-Dim i, X, Y As Integer
+Dim X As Long
+Dim Y As Long
 
 If mapa <= 0 Then Exit Function
 
@@ -2351,7 +2344,6 @@ Public Sub LoadArmadurasFaccion()
 '
 '***************************************************
     Dim ClassIndex As Long
-    Dim RaceIndex As Long
     
     Dim ArmaduraIndex As Integer
     

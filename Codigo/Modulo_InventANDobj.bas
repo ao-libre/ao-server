@@ -313,7 +313,6 @@ Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos)
 On Error GoTo Errhandler
 
     If Cantidad > 0 Then
-        Dim i As Byte
         Dim MiObj As Obj
         Dim RemainingGold As Long
         

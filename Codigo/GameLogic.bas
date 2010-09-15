@@ -360,7 +360,6 @@ Dim found As Boolean
 Dim LoopC As Integer
 Dim tX As Long
 Dim tY As Long
-Dim tPos As WorldPos
 
 nPos = Pos
 tX = Pos.X

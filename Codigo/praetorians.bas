@@ -726,7 +726,6 @@ On Error GoTo errorh
     Dim NPCPosX As Integer
     Dim NPCPosY As Integer
     Dim NPCPosM As Integer
-    Dim NPCAlInd As Integer
     Dim UI As Integer
     Dim PJEnInd As Integer
     Dim BestTarget As Integer
