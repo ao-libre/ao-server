@@ -157,7 +157,6 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
 '***************************************************
     Dim TradingObj As Obj
     Dim OtroUserIndex As Integer
-    Dim TerminarAhora As Boolean
     Dim OfferSlot As Integer
 
     UserList(UserIndex).ComUsu.Acepto = True

@@ -384,8 +384,6 @@ Static Minutos As Long
 Static MinutosLatsClean As Long
 Static MinsPjesSave As Long
 
-Dim i As Integer
-Dim num As Long
 
 Minutos = Minutos + 1
 MinsPjesSave = MinsPjesSave + 1
@@ -813,9 +811,6 @@ Private Sub TIMER_AI_Timer()
 
 On Error GoTo ErrorHandler
 Dim NpcIndex As Long
-Dim X As Integer
-Dim Y As Integer
-Dim UseAI As Integer
 Dim mapa As Integer
 Dim e_p As Integer
 
@@ -935,9 +930,6 @@ Private Sub tPiqueteC_Timer()
     Dim NuevaA As Boolean
    ' Dim NuevoL As Boolean
     Dim GI As Integer
-    Dim tX As Integer
-    Dim tY As Integer
-    Dim tMap As Integer
     Dim i As Long
     
 On Error GoTo Errhandler

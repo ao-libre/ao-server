@@ -225,7 +225,6 @@ Sub Main()
 '***************************************************
 
 On Error Resume Next
-    Dim f As Date
     
     ChDir App.Path
     ChDrive App.Path

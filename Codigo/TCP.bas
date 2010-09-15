@@ -877,7 +877,6 @@ Err:
 
 #ElseIf UsarQueSocket = 3 Then
     'THIS SOCKET DOESN`T USE THE BYTE QUEUE CLASS
-    Dim rv As Long
     'al carajo, esto encola solo!!! che, me aprobará los
     'parciales también?, este control hace todo solo!!!!
     On Error GoTo ErrorHandler
@@ -1777,7 +1776,6 @@ Sub CloseUser(ByVal UserIndex As Integer)
 On Error GoTo Errhandler
 
 Dim N As Integer
-Dim LoopC As Integer
 Dim Map As Integer
 Dim name As String
 Dim i As Integer

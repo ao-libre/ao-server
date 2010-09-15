@@ -71,7 +71,6 @@ Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByV
 '**************************************************************
 On Error Resume Next
     Dim LoopC As Long
-    Dim Map As Integer
     
     Select Case sndRoute
         Case SendTarget.ToPCArea
