@@ -14266,7 +14266,11 @@ Public Sub WriteLoggedMessage(ByVal UserIndex As Integer)
 'Writes the "Logged" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
-    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.Logged)
+    With UserList(UserIndex)
+        Call .outgoingData.WriteByte(ServerPacketID.Logged)
+        
+        Call .outgoingData.WriteByte(.clase)
+    End With
 Exit Sub
 
 Errhandler:
@@ -16374,7 +16378,6 @@ On Error GoTo Errhandler
     
     With UserList(UserIndex)
         Call .outgoingData.WriteByte(ServerPacketID.SendSkills)
-        Call .outgoingData.WriteByte(.clase)
         
         For i = 1 To NUMSKILLS
             Call .outgoingData.WriteByte(UserList(UserIndex).Stats.UserSkills(i))
