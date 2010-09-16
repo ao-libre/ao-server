@@ -1242,8 +1242,9 @@ End Sub
 Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
 '******************************************************
 'Author: Unknown
-'Last Update: 12/01/2010 (ZaMa)
+'Last Update: 16/09/2010 (ZaMa)
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
+'16/09/2010: ZaMa - Se recupera la apariencia de la barca correspondiente despues de terminado el mimetismo.
 '******************************************************
     Dim Barco As ObjData
     
@@ -1256,29 +1257,13 @@ Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
             
             If .flags.Navegando Then
                 If .flags.Muerto = 0 Then
-                    If .Faccion.ArmadaReal = 1 Then
-                        .Char.body = iFragataReal
-                    ElseIf .Faccion.FuerzasCaos = 1 Then
-                        .Char.body = iFragataCaos
-                    Else
-                        Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
-                        If criminal(UserIndex) Then
-                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaPk
-                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraPk
-                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonPk
-                        Else
-                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaCiuda
-                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraCiuda
-                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonCiuda
-                        End If
-                    End If
+                    Call ToogleBoatBody(UserIndex)
                 Else
                     .Char.body = iFragataFantasmal
+                    .Char.ShieldAnim = NingunEscudo
+                    .Char.WeaponAnim = NingunArma
+                    .Char.CascoAnim = NingunCasco
                 End If
-                
-                .Char.ShieldAnim = NingunEscudo
-                .Char.WeaponAnim = NingunArma
-                .Char.CascoAnim = NingunCasco
             Else
                 .Char.body = .CharMimetizado.body
                 .Char.Head = .CharMimetizado.Head
