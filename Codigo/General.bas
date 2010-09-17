@@ -1287,8 +1287,8 @@ End Sub
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 16/09/2010 (ZaMa)
+'16/09/2010: ZaMa - Al perder el invi cuando navegas, no se manda el mensaje de sacar invi (ya estas visible).
 '***************************************************
 
     With UserList(UserIndex)
@@ -1299,8 +1299,12 @@ Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
             .flags.invisible = 0
             If .flags.Oculto = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                
+                ' Si navega ya esta visible..
+                If Not .flags.Navegando = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                End If
+                
             End If
         End If
     End With

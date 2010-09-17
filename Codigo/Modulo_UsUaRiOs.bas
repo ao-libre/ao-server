@@ -1673,9 +1673,10 @@ End Sub
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
 '**************************************************************
 'Author: Unknown
-'Last Modify Date: 13/11/2009
+'Last Modify Date: 16/09/2010
 '15/07/2009 - ZaMa: Automatic toogle navigate after warping to water.
 '13/11/2009 - ZaMa: Now it's activated the timer which determines if the npc can atacak the user.
+'16/09/2010 - ZaMa: No se pierde la visibilidad al cambiar de mapa al estar navegando invisible.
 '**************************************************************
     Dim OldMap As Integer
     Dim OldX As Integer
@@ -1735,8 +1736,11 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
         
         'Seguis invisible al pasar de mapa
         If (.flags.invisible = 1 Or .flags.Oculto = 1) And (Not .flags.AdminInvisible = 1) Then
-            Call SetInvisible(UserIndex, .Char.CharIndex, True)
-            'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
+            
+            ' No si estas navegando
+            If .flags.Navegando = 0 Then
+                Call SetInvisible(UserIndex, .Char.CharIndex, True)
+            End If
         End If
         
         If Teletransported Then
@@ -1933,8 +1937,8 @@ End Sub
 Sub Cerrar_Usuario(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 09/04/08 (NicoNZ)
-'
+'Last Modification: 16/09/2010
+'16/09/2010 - ZaMa: Cuando se va el invi estando navegando, no se saca el invi (ya esta visible).
 '***************************************************
     Dim isNotVisible As Boolean
     Dim HiddenPirat As Boolean
@@ -1966,7 +1970,10 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
                 ' Para no repetir mensajes
                 If Not HiddenPirat Then Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
                 
-                Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                ' Si esta navegando ya esta visible
+                If .flags.Navegando = 0 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                End If
             End If
             
             If .flags.Traveling = 1 Then

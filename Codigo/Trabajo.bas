@@ -158,6 +158,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 'Author: Unknown
 'Last Modification: 13/01/2010 (ZaMa)
 '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
+'16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
 '***************************************************
 
     Dim ModNave As Single
@@ -184,10 +185,16 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
             
                 Call ToogleBoatBody(UserIndex)
                 
+                ' Pierde el ocultar
                 If .flags.Oculto = 1 Then
                     .flags.Oculto = 0
                     Call SetInvisible(UserIndex, .Char.CharIndex, False)
                     Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                End If
+               
+                ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
+                If .flags.invisible = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
                 
             ' Esta muerto
@@ -228,7 +235,13 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                     .Char.WeaponAnim = GetWeaponAnim(UserIndex, .Invent.WeaponEqpObjIndex)
                 If .Invent.CascoEqpObjIndex > 0 Then _
                     .Char.CascoAnim = ObjData(.Invent.CascoEqpObjIndex).CascoAnim
-                    
+                
+                
+                ' Al dejar de navegar, si estaba invisible actualizo los clientes
+                If .flags.invisible = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, True)
+                End If
+                
             ' Esta muerto
             Else
                 .Char.body = iCuerpoMuerto
