@@ -5496,6 +5496,7 @@ Private Sub HandleConsultation(ByVal UserIndex As String)
 'Last Modification: 01/05/2010
 'Habilita/Deshabilita el modo consulta.
 '01/05/2010: ZaMa - Agrego validaciones.
+'16/09/2010: ZaMa - No se hace visible en los clientes si estaba navegando (porque ya lo estaba).
 '***************************************************
     
     Dim UserConsulta As Integer
@@ -5551,7 +5552,9 @@ Private Sub HandleConsultation(ByVal UserIndex As String)
                     .Counters.TiempoOculto = 0
                     .Counters.Invisibilidad = 0
                     
-                    Call UsUaRiOs.SetInvisible(UserConsulta, UserList(UserConsulta).Char.CharIndex, False)
+                    If UserList(UserConsulta).flags.Navegando = 0 Then
+                        Call UsUaRiOs.SetInvisible(UserConsulta, UserList(UserConsulta).Char.CharIndex, False)
+                    End If
                 End If
             End With
         End If

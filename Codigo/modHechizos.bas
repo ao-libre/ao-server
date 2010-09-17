@@ -778,6 +778,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
 '13/02/2009: ZaMa - Arreglada ecuacion para quitar vida tras resucitar en rings.
 '23/11/2009: ZaMa - Optimizacion de codigo.
 '28/04/2010: ZaMa - Agrego Restricciones para ciudas respecto al estado atacable.
+'16/09/2010: ZaMa - Solo se hace invi para los clientes si no esta navegando.
 '***************************************************
 
 
@@ -828,8 +829,12 @@ With UserList(UserIndex)
         End If
        
         UserList(TargetIndex).flags.invisible = 1
-        Call SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
-    
+        
+        ' Solo se hace invi para los clientes si no esta navegando
+        If UserList(TargetIndex).flags.Navegando = 0 Then
+            Call SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
+        End If
+        
         Call InfoHechizo(UserIndex)
         HechizoCasteado = True
     End If
