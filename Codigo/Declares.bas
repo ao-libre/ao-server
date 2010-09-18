@@ -292,6 +292,7 @@ End Enum
 Public Const Guardias As Integer = 6
 
 Public Const MAX_ORO_EDIT As Long = 5000000
+Public Const MAX_VIDA_EDIT As Long = 30000
 
 
 Public Const STANDARD_BOUNTY_HUNTER_MESSAGE As String = "Se te ha otorgado un premio por ayudar al proyecto reportando bugs, el mismo está disponible en tu bóveda."
