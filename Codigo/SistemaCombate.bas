@@ -372,7 +372,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '11/07/2010: ZaMa - Ahora la defensa es solo ignorada para asesinos.
 '***************************************************
 
-    Dim Daño As Long
+    Dim daño As Long
     Dim DañoBase As Long
     Dim PI As Integer
     Dim MembersOnline(1 To PARTY_MAXMEMBERS) As Integer
@@ -393,13 +393,13 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     End If
     
     With Npclist(NpcIndex)
-        Daño = DañoBase - .Stats.def
+        daño = DañoBase - .Stats.def
         
-        If Daño < 0 Then Daño = 0
+        If daño < 0 Then daño = 0
         
-        Call WriteMultiMessage(UserIndex, eMessages.UserHitNPC, Daño)
-        Call CalcularDarExp(UserIndex, NpcIndex, Daño)
-        .Stats.MinHp = .Stats.MinHp - Daño
+        Call WriteMultiMessage(UserIndex, eMessages.UserHitNPC, daño)
+        Call CalcularDarExp(UserIndex, NpcIndex, daño)
+        .Stats.MinHp = .Stats.MinHp - daño
         
         If .Stats.MinHp > 0 Then
             'Trata de apuñalar por la espalda al enemigo
@@ -407,7 +407,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                 
                 ' La defensa se ignora solo en asesinos
                 If UserList(UserIndex).clase <> eClass.Assasin Then
-                    DañoBase = Daño
+                    DañoBase = daño
                 End If
                 
                 Call DoApuñalar(UserIndex, NpcIndex, 0, DañoBase)
@@ -415,10 +415,10 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             End If
             
             'trata de dar golpe crítico
-            Call DoGolpeCritico(UserIndex, NpcIndex, 0, Daño)
+            Call DoGolpeCritico(UserIndex, NpcIndex, 0, daño)
             
             If PuedeAcuchillar(UserIndex) Then
-                Call DoAcuchillar(UserIndex, NpcIndex, 0, Daño)
+                Call DoAcuchillar(UserIndex, NpcIndex, 0, daño)
             End If
         End If
         
@@ -474,7 +474,7 @@ Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '18/09/2010: ZaMa - Ahora se considera siempre la defensa del barco y el escudo.
 '***************************************************
 
-    Dim Daño As Integer
+    Dim daño As Integer
     Dim Lugar As Integer
     Dim Obj As ObjData
     
@@ -487,7 +487,7 @@ Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
     Dim ArmourIndex As Integer
     Dim ShieldIndex As Integer
     
-    Daño = RandomNumber(Npclist(NpcIndex).Stats.MinHIT, Npclist(NpcIndex).Stats.MaxHIT)
+    daño = RandomNumber(Npclist(NpcIndex).Stats.MinHIT, Npclist(NpcIndex).Stats.MaxHIT)
     
     With UserList(UserIndex)
         ' Navega?
@@ -539,15 +539,15 @@ Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
         End Select
         
         ' Daño final
-        Daño = Daño - HeadDefense - BodyDefense - BoatDefense
-        If Daño < 1 Then Daño = 1
+        daño = daño - HeadDefense - BodyDefense - BoatDefense
+        If daño < 1 Then daño = 1
         
-        Call WriteMultiMessage(UserIndex, eMessages.NPCHitUser, Lugar, Daño)
+        Call WriteMultiMessage(UserIndex, eMessages.NPCHitUser, Lugar, daño)
         
-        If .flags.Privilegios And PlayerType.User Then .Stats.MinHp = .Stats.MinHp - Daño
+        If .flags.Privilegios And PlayerType.User Then .Stats.MinHp = .Stats.MinHp - daño
         
         If .flags.Meditando Then
-            If Daño > Fix(.Stats.MinHp / 100 * .Stats.UserAtributos(eAtributos.Inteligencia) * .Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
+            If daño > Fix(.Stats.MinHp / 100 * .Stats.UserAtributos(eAtributos.Inteligencia) * .Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
                 .flags.Meditando = False
                 Call WriteMeditateToggle(UserIndex)
                 Call WriteConsoleMsg(UserIndex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
@@ -750,12 +750,12 @@ Public Sub NpcDañoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
 '
 '***************************************************
 
-    Dim Daño As Integer
+    Dim daño As Integer
     Dim MasterIndex As Integer
     
     With Npclist(Atacante)
-        Daño = RandomNumber(.Stats.MinHIT, .Stats.MaxHIT)
-        Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - Daño
+        daño = RandomNumber(.Stats.MinHIT, .Stats.MaxHIT)
+        Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - daño
         
         If Npclist(Victima).Stats.MinHp < 1 Then
             .Movement = .flags.OldMovement
@@ -1155,7 +1155,7 @@ Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     
 On Error GoTo Errhandler
 
-    Dim Daño As Long
+    Dim daño As Long
     Dim Lugar As Byte
     Dim Obj As ObjData
     
@@ -1170,7 +1170,7 @@ On Error GoTo Errhandler
     Dim ArmourIndex As Integer
     Dim ShieldIndex As Integer
     
-    Daño = CalcularDaño(AtacanteIndex)
+    daño = CalcularDaño(AtacanteIndex)
     
     Call UserEnvenena(AtacanteIndex, VictimaIndex)
     
@@ -1183,7 +1183,7 @@ On Error GoTo Errhandler
             
             If BoatIndex > 0 Then
                 Obj = ObjData(BoatIndex)
-                Daño = Daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
+                daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
             End If
             
         End If
@@ -1244,13 +1244,13 @@ On Error GoTo Errhandler
                 
         End Select
         
-        Daño = Daño + WeaponBoost - HeadDefense - BodyDefense - BoatDefense
-        If Daño < 0 Then Daño = 1
+        daño = daño + WeaponBoost - HeadDefense - BodyDefense - BoatDefense
+        If daño < 0 Then daño = 1
         
-        Call WriteMultiMessage(AtacanteIndex, eMessages.UserHittedUser, UserList(VictimaIndex).Char.CharIndex, Lugar, Daño)
-        Call WriteMultiMessage(VictimaIndex, eMessages.UserHittedByUser, .Char.CharIndex, Lugar, Daño)
+        Call WriteMultiMessage(AtacanteIndex, eMessages.UserHittedUser, UserList(VictimaIndex).Char.CharIndex, Lugar, daño)
+        Call WriteMultiMessage(VictimaIndex, eMessages.UserHittedByUser, .Char.CharIndex, Lugar, daño)
         
-        UserList(VictimaIndex).Stats.MinHp = UserList(VictimaIndex).Stats.MinHp - Daño
+        UserList(VictimaIndex).Stats.MinHp = UserList(VictimaIndex).Stats.MinHp - daño
         
         If .flags.Hambre = 0 And .flags.Sed = 0 Then
             'Si usa un arma quizas suba "Combate con armas"
@@ -1261,7 +1261,7 @@ On Error GoTo Errhandler
                     
                     ' Si acuchilla
                     If PuedeAcuchillar(AtacanteIndex) Then
-                        Call DoAcuchillar(AtacanteIndex, 0, VictimaIndex, Daño)
+                        Call DoAcuchillar(AtacanteIndex, 0, VictimaIndex, daño)
                     End If
                 Else
                     'Sube combate con armas.
@@ -1274,10 +1274,10 @@ On Error GoTo Errhandler
                     
             'Trata de apuñalar por la espalda al enemigo
             If PuedeApuñalar(AtacanteIndex) Then
-                Call DoApuñalar(AtacanteIndex, 0, VictimaIndex, Daño)
+                Call DoApuñalar(AtacanteIndex, 0, VictimaIndex, daño)
             End If
             'e intenta dar un golpe crítico [Pablo (ToxicWaste)]
-            Call DoGolpeCritico(AtacanteIndex, 0, VictimaIndex, Daño)
+            Call DoGolpeCritico(AtacanteIndex, 0, VictimaIndex, daño)
         End If
         
         If UserList(VictimaIndex).Stats.MinHp <= 0 Then
