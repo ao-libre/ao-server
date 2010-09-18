@@ -541,3 +541,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 14/09/2010 : Arreglo rt9 en ApropioNpc. (ZaMa)
  * 16/09/2010 : Se recupera la apariencia de la barca correspondiente despues de terminado el mimetismo. (ZaMa)
  * 16/09/2010 : Ahora al empezar a navegar te haces visible si estas invisible en los clientes. (ZaMa)
+ * 18/09/2010 : Ahora le avisa al funda de la party cuando alguien quiere ingresar a la misma. (ZaMa)

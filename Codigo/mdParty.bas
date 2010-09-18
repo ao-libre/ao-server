@@ -168,10 +168,11 @@ Public Sub SolicitarIngresoAParty(ByVal UserIndex As Integer)
 'Author: Unknown
 'Last Modification: 05/22/2010 (Marco)
 ' - 05/22/2010 : staff members aren't allowed to party anyone. (Marco)
+'18/09/2010: ZaMa - Ahora le avisa al funda de la party cuando alguien quiere ingresar a la misma.
 '***************************************************
 
 'ESTO ES enviado por el PJ para solicitar el ingreso a la party
-Dim tInt As Integer
+Dim TargetUserIndex As Integer
 
     With UserList(UserIndex)
     
@@ -187,18 +188,26 @@ Dim tInt As Integer
             .PartySolicitud = 0
             Exit Sub
         End If
+        
+        ' Muerto?
         If .flags.Muerto = 1 Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             .PartySolicitud = 0
             Exit Sub
         End If
-        tInt = .flags.TargetUser
-        If tInt > 0 Then
-            If UserList(tInt).PartyIndex > 0 Then
-                .PartySolicitud = UserList(tInt).PartyIndex
+        
+        TargetUserIndex = .flags.TargetUser
+        
+        ' Target valido?
+        If TargetUserIndex > 0 Then
+        
+            ' Tiene party?
+            If UserList(TargetUserIndex).PartyIndex > 0 Then
+                .PartySolicitud = UserList(TargetUserIndex).PartyIndex
                 Call WriteConsoleMsg(UserIndex, "El fundador decidirá si te acepta en la party.", FontTypeNames.FONTTYPE_PARTY)
+                Call WriteConsoleMsg(TargetUserIndex, .name & " solicita ingresar a tu party.", FontTypeNames.FONTTYPE_PARTY)
             Else
-                Call WriteConsoleMsg(UserIndex, UserList(tInt).name & " no es fundador de ninguna party.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, UserList(TargetUserIndex).name & " no es fundador de ninguna party.", FontTypeNames.FONTTYPE_INFO)
                 .PartySolicitud = 0
                 Exit Sub
             End If
@@ -206,6 +215,7 @@ Dim tInt As Integer
             Call WriteConsoleMsg(UserIndex, "Para ingresar a una party debes hacer click sobre el fundador y luego escribir /PARTY", FontTypeNames.FONTTYPE_PARTY)
             .PartySolicitud = 0
         End If
+        
     End With
 
 End Sub
