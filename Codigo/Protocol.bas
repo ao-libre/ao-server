@@ -330,6 +330,7 @@ Public Enum eEditOptions
     eo_Sex
     eo_Raza
     eo_addGold
+    eo_Vida
 End Enum
 
 
@@ -8804,9 +8805,10 @@ End Sub
 Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 11/06/2009
+'Last Modification: 18/09/2010
 '02/03/2009: ZaMa - Cuando editas nivel, chequea si el pj puede permanecer en clan faccionario
 '11/06/2009: ZaMa - Todos los comandos se pueden usar aunque el pj este offline
+'18/09/2010: ZaMa - Ahora se puede editar la vida del propio pj (cualquier rm o dios).
 '***************************************************
     If UserList(UserIndex).incomingData.length < 8 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -8850,19 +8852,23 @@ On Error GoTo Errhandler
         If .flags.Privilegios And PlayerType.RoleMaster Then
             Select Case .flags.Privilegios And (PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)
                 Case PlayerType.Consejero
-                    ' Los RMs consejeros sólo se pueden editar su head, body y level
+                    ' Los RMs consejeros sólo se pueden editar su head, body, level y vida
                     valido = tUser = UserIndex And _
-                            (opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or opcion = eEditOptions.eo_Level)
+                            (opcion = eEditOptions.eo_Body Or _
+                             opcion = eEditOptions.eo_Head Or _
+                             opcion = eEditOptions.eo_Level Or _
+                             opcion = eEditOptions.eo_Vida)
                 
                 Case PlayerType.SemiDios
-                    ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
-                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) _
-                            Or opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head
-                
+                    ' Los RMs sólo se pueden editar su level o vida y el head y body de cualquiera
+                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = UserIndex) Or _
+                              opcion = eEditOptions.eo_Body Or _
+                              opcion = eEditOptions.eo_Head
+
                 Case PlayerType.Dios
                     ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
-                    ' pero si quiere modificar el level sólo lo puede hacer sobre sí mismo
-                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
+                    ' pero si quiere modificar el level o vida sólo lo puede hacer sobre sí mismo
+                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = UserIndex) Or _
                             opcion = eEditOptions.eo_Body Or _
                             opcion = eEditOptions.eo_Head Or _
                             opcion = eEditOptions.eo_CiticensKilled Or _
@@ -8871,9 +8877,17 @@ On Error GoTo Errhandler
                             opcion = eEditOptions.eo_Skills Or _
                             opcion = eEditOptions.eo_addGold
             End Select
+        
+        'Si no es RM debe ser dios para poder usar este comando
+        ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
             
-        ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then   'Si no es RM debe ser dios para poder usar este comando
-            valido = True
+            If opcion = eEditOptions.eo_Vida Then
+                '  Por ahora dejo para que los dioses no puedan editar la vida de otros
+                valido = (tUser = UserIndex)
+            Else
+                valido = True
+            End If
+            
         End If
 
         If valido Then
@@ -9164,6 +9178,22 @@ On Error GoTo Errhandler
                         
                         ' Log it
                         CommandString = CommandString & "AGREGAR "
+                    
+                    Case eEditOptions.eo_Vida
+                    
+                        If val(Arg1) > MAX_VIDA_EDIT Then
+                            Arg1 = CStr(MAX_VIDA_EDIT)
+                            Call WriteConsoleMsg(UserIndex, "No puedes tener vida superior a " & MAX_VIDA_EDIT & ".", FONTTYPE_INFO)
+                        End If
+                        
+                        ' No valido si esta offline, porque solo se puede editar a si mismo
+                        UserList(tUser).Stats.MaxHp = val(Arg1)
+                        UserList(tUser).Stats.MinHp = val(Arg1)
+                        
+                        Call WriteUpdateUserStats(tUser)
+                        
+                        ' Log it
+                        CommandString = CommandString & "VIDA "
                         
                     Case Else
                         Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
@@ -9176,8 +9206,10 @@ On Error GoTo Errhandler
                 
             End If
         End If
+        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
+        
     End With
 
 Errhandler:
@@ -10600,12 +10632,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim Mapa As Integer
+        Dim mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         Dim Radio As Byte
         
-        Mapa = .incomingData.ReadInteger()
+        mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         Radio = .incomingData.ReadByte()
@@ -10614,9 +10646,9 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call LogGM(.name, "/CT " & Mapa & "," & X & "," & Y & "," & Radio)
+        Call LogGM(.name, "/CT " & mapa & "," & X & "," & Y & "," & Radio)
         
-        If Not MapaValido(Mapa) Or Not InMapBounds(Mapa, X, Y) Then _
+        If Not MapaValido(mapa) Or Not InMapBounds(mapa, X, Y) Then _
             Exit Sub
         
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
@@ -10625,12 +10657,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then _
             Exit Sub
         
-        If MapData(Mapa, X, Y).ObjInfo.ObjIndex > 0 Then
+        If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
             Call WriteConsoleMsg(UserIndex, "Hay un objeto en el piso en ese lugar.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        If MapData(Mapa, X, Y).TileExit.Map > 0 Then
+        If MapData(mapa, X, Y).TileExit.Map > 0 Then
             Call WriteConsoleMsg(UserIndex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -10641,7 +10673,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.ObjIndex = TELEP_OBJ_INDEX + Radio
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
-            .TileExit.Map = Mapa
+            .TileExit.Map = mapa
             .TileExit.X = X
             .TileExit.Y = Y
         End With
@@ -10662,7 +10694,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
 '
 '***************************************************
     With UserList(UserIndex)
-        Dim Mapa As Integer
+        Dim mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
@@ -10672,19 +10704,19 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         '/dt
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Mapa = .flags.TargetMap
+        mapa = .flags.TargetMap
         X = .flags.TargetX
         Y = .flags.TargetY
         
-        If Not InMapBounds(Mapa, X, Y) Then Exit Sub
+        If Not InMapBounds(mapa, X, Y) Then Exit Sub
         
-        With MapData(Mapa, X, Y)
+        With MapData(mapa, X, Y)
             If .ObjInfo.ObjIndex = 0 Then Exit Sub
             
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(UserIndex).name, "/DT: " & Mapa & "," & X & "," & Y)
+                Call LogGM(UserList(UserIndex).name, "/DT: " & mapa & "," & X & "," & Y)
                 
-                Call EraseObj(.ObjInfo.Amount, Mapa, X, Y)
+                Call EraseObj(.ObjInfo.Amount, mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
                     Call EraseObj(1, .TileExit.Map, .TileExit.X, .TileExit.Y)
@@ -10798,24 +10830,24 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim midiID As Byte
-        Dim Mapa As Integer
+        Dim mapa As Integer
         
         midiID = .incomingData.ReadByte
-        Mapa = .incomingData.ReadInteger
+        mapa = .incomingData.ReadInteger
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
             'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(Mapa, 50, 50) Then
-                Mapa = .Pos.Map
+            If Not InMapBounds(mapa, 50, 50) Then
+                mapa = .Pos.Map
             End If
         
             If midiID = 0 Then
                 'Ponemos el default del mapa
-                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
+                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
             Else
                 'Ponemos el pedido por el GM
-                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(midiID))
+                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(midiID))
             End If
         End If
     End With
@@ -10842,26 +10874,26 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim waveID As Byte
-        Dim Mapa As Integer
+        Dim mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
         waveID = .incomingData.ReadByte()
-        Mapa = .incomingData.ReadInteger()
+        mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
         'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(Mapa, X, Y) Then
-                Mapa = .Pos.Map
+            If Not InMapBounds(mapa, X, Y) Then
+                mapa = .Pos.Map
                 X = .Pos.X
                 Y = .Pos.Y
             End If
             
             'Ponemos el pedido por el GM
-            Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayWave(waveID, X, Y))
+            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID, X, Y))
         End If
     End With
 End Sub
@@ -13193,7 +13225,7 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
     End If
     
     Dim NoOcultar As Byte
-    Dim Mapa As Integer
+    Dim mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13204,14 +13236,14 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            Mapa = .Pos.Map
+            mapa = .Pos.Map
             
-            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & Mapa & ".")
+            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & mapa & ".")
             
-            MapInfo(Mapa).OcultarSinEfecto = NoOcultar
+            MapInfo(mapa).OcultarSinEfecto = NoOcultar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "OcultarSinEfecto", NoOcultar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "OcultarSinEfecto", NoOcultar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
@@ -13235,7 +13267,7 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
     End If
     
     Dim NoInvocar As Byte
-    Dim Mapa As Integer
+    Dim mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13246,14 +13278,14 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            Mapa = .Pos.Map
+            mapa = .Pos.Map
             
-            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido invocar en el mapa " & Mapa & ".")
+            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido invocar en el mapa " & mapa & ".")
             
-            MapInfo(Mapa).InvocarSinEfecto = NoInvocar
+            MapInfo(mapa).InvocarSinEfecto = NoInvocar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "InvocarSinEfecto", NoInvocar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "InvocarSinEfecto", NoInvocar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
