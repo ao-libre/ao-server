@@ -425,17 +425,28 @@ End Sub
 Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef HechizoCasteado As Boolean)
 '***************************************************
 'Author: Uknown
-'Last modification: 18/11/2009
+'Last modification: 18/09/2010
 'Sale del sub si no hay una posición valida.
 '18/11/2009: Optimizacion de codigo.
+'18/09/2010: ZaMa - No se permite invocar en mapas con InvocarSinEfecto.
 '***************************************************
 
 On Error GoTo error
 
 With UserList(UserIndex)
+
+    Dim Mapa As Integer
+    Mapa = .Pos.Map
+    
     'No permitimos se invoquen criaturas en zonas seguras
-    If MapInfo(.Pos.Map).Pk = False Or MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+    If MapInfo(Mapa).Pk = False Or MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
         Call WriteConsoleMsg(UserIndex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
+    'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
+    If MapInfo(Mapa).InvocarSinEfecto = 1 Then
+        Call WriteConsoleMsg(UserIndex, "Invocar no está permitido aquí! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     

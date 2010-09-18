@@ -1469,8 +1469,12 @@ Type MapInfo
     Pk As Boolean
     MagiaSinEfecto As Byte
     NoEncriptarMP As Byte
+    
+    ' Anti Magias/Habilidades
     InviSinEfecto As Byte
     ResuSinEfecto As Byte
+    OcultarSinEfecto As Byte
+    InvocarSinEfecto As Byte
     
     RoboNpcsPermitido As Byte
     
@@ -1756,6 +1760,8 @@ Public Enum eGMCommands
     ChangeMapInfoLand       '/MODMAPINFO TERRENO
     ChangeMapInfoZone       '/MODMAPINFO ZONA
     ChangeMapInfoStealNpc   '/MODMAPINFO ROBONPC
+    ChangeMapInfoNoOcultar  '/MODMAPINFO OCULTARSINEFECTO
+    ChangeMapInfoNoInvocar  '/MODMAPINFO INVOCARSINEFECTO
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
     ShowServerForm          '/SHOW INT
