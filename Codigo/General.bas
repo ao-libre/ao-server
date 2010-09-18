@@ -1202,16 +1202,24 @@ End Sub
 Public Sub EfectoEstadoAtacable(ByVal UserIndex As Integer)
 '******************************************************
 'Author: ZaMa
-'Last Update: 13/01/2010 (ZaMa)
+'Last Update: 18/09/2010 (ZaMa)
+'18/09/2010: ZaMa - Ahora se activa el seguro cuando dejas de ser atacable.
 '******************************************************
 
     ' Si ya paso el tiempo de penalizacion
     If Not IntervaloEstadoAtacable(UserIndex) Then
         ' Deja de poder ser atacado
         UserList(UserIndex).flags.AtacablePor = 0
+        
+        ' Activo el seguro si deja de estar atacable
+        If Not UserList(UserIndex).flags.Seguro Then
+            Call WriteMultiMessage(UserIndex, eMessages.SafeModeOn)
+        End If
+        
         ' Send nick normal
         Call RefreshCharStatus(UserIndex)
     End If
+    
 End Sub
 
 ''
