@@ -1623,51 +1623,54 @@ Public Sub ContarMuerte(ByVal Muerto As Integer, ByVal Atacante As Integer)
     End With
 End Sub
 
-Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, ByRef Agua As Boolean, ByRef Tierra As Boolean)
+Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, _
+              ByRef PuedeAgua As Boolean, ByRef PuedeTierra As Boolean)
 '**************************************************************
 'Author: Unknown
-'Last Modify Date: 23/01/2007
+'Last Modify Date: 18/09/2010
 '23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
+'18/09/2010: ZaMa - Aplico optimizacion de busqueda de tile libre en forma de rombo.
 '**************************************************************
+    
+    Dim Found As Boolean
     Dim LoopC As Integer
     Dim tX As Long
     Dim tY As Long
-    Dim hayobj As Boolean
     
-    hayobj = False
-    nPos.Map = Pos.Map
-    nPos.X = 0
-    nPos.Y = 0
+    nPos = Pos
+    tX = Pos.X
+    tY = Pos.Y
     
-    Do While Not LegalPos(Pos.Map, nPos.X, nPos.Y, Agua, Tierra) Or hayobj
+    LoopC = 1
+    
+    ' La primera posicion es valida?
+    If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, True) Then
         
-        If LoopC > 15 Then
-            Exit Do
+        If Not HayObjeto(Pos.Map, nPos.X, nPos.Y, Obj.ObjIndex, Obj.Amount) Then
+            Found = True
         End If
         
-        For tY = Pos.Y - LoopC To Pos.Y + LoopC
-            For tX = Pos.X - LoopC To Pos.X + LoopC
-                
-                If LegalPos(nPos.Map, tX, tY, Agua, Tierra) Then
-                    'We continue if: a - the item is different from 0 and the dropped item or b - the amount dropped + amount in map exceeds MAX_INVENTORY_OBJS
-                    hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex > 0 And MapData(nPos.Map, tX, tY).ObjInfo.ObjIndex <> Obj.ObjIndex)
-                    If Not hayobj Then _
-                        hayobj = (MapData(nPos.Map, tX, tY).ObjInfo.Amount + Obj.Amount > MAX_INVENTORY_OBJS)
-                    If Not hayobj And MapData(nPos.Map, tX, tY).TileExit.Map = 0 Then
-                        nPos.X = tX
-                        nPos.Y = tY
-                        
-                        'break both fors
-                        tX = Pos.X + LoopC
-                        tY = Pos.Y + LoopC
-                    End If
-                End If
-            
-            Next tX
-        Next tY
+    End If
+    
+    ' Busca en las demas posiciones, en forma de "rombo"
+    If Not Found Then
+        While (Not Found) And LoopC <= 16
+            If RhombLegalTilePos(Pos, tX, tY, LoopC, Obj.ObjIndex, Obj.Amount, PuedeAgua, PuedeTierra) Then
+                nPos.X = tX
+                nPos.Y = tY
+                Found = True
+            End If
         
-        LoopC = LoopC + 1
-    Loop
+            LoopC = LoopC + 1
+        Wend
+        
+    End If
+    
+    If Not Found Then
+        nPos.X = 0
+        nPos.Y = 0
+    End If
+    
 End Sub
 
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
@@ -2269,17 +2272,17 @@ Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGM(UserIndex) Then Exit Sub
         
-        Dim mapa As Integer
-        mapa = .Pos.Map
+        Dim Mapa As Integer
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa).Pk = False Then Exit Sub
+        If MapInfo(Mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
