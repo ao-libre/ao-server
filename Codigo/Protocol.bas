@@ -330,7 +330,6 @@ Public Enum eEditOptions
     eo_Sex
     eo_Raza
     eo_addGold
-    eo_Vida
 End Enum
 
 
@@ -1203,7 +1202,7 @@ With UserList(UserIndex)
         
         Case eGMCommands.ChangeMapInfoPK         '/MODMAPINFO PK
             Call HandleChangeMapInfoPK(UserIndex)
-            
+        
         Case eGMCommands.ChangeMapInfoBackup     '/MODMAPINFO BACKUP
             Call HandleChangeMapInfoBackup(UserIndex)
         
@@ -1227,12 +1226,6 @@ With UserList(UserIndex)
         
         Case eGMCommands.ChangeMapInfoStealNpc   '/MODMAPINFO ROBONPC
             Call HandleChangeMapInfoStealNpc(UserIndex)
-            
-        Case eGMCommands.ChangeMapInfoNoOcultar  '/MODMAPINFO OCULTARSINEFECTO
-            Call HandleChangeMapInfoNoOcultar(UserIndex)
-            
-        Case eGMCommands.ChangeMapInfoNoInvocar  '/MODMAPINFO INVOCARSINEFECTO
-            Call HandleChangeMapInfoNoInvocar(UserIndex)
             
         Case eGMCommands.SaveChars               '/GRABAR
             Call HandleSaveChars(UserIndex)
@@ -2625,18 +2618,10 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
         Call CancelExit(UserIndex)
         
         Select Case Skill
-        
             Case Robar, Magia, Domar
-                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, Skill)
-                
+                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, Skill) 'Call WriteWorkRequestTarget(UserIndex, Skill)
             Case Ocultarse
-                
-                ' Verifico si se peude ocultar en este mapa
-                If MapInfo(.Pos.Map).OcultarSinEfecto = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "¡Ocultarse no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
-                End If
-                
+            
                 If .flags.EnConsulta Then
                     Call WriteConsoleMsg(UserIndex, "No puedes ocultarte si estás en consulta.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
@@ -2665,9 +2650,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
                 End If
                 
                 Call DoOcultarse(UserIndex)
-                
         End Select
-        
     End With
 End Sub
 
@@ -5513,7 +5496,6 @@ Private Sub HandleConsultation(ByVal UserIndex As String)
 'Last Modification: 01/05/2010
 'Habilita/Deshabilita el modo consulta.
 '01/05/2010: ZaMa - Agrego validaciones.
-'16/09/2010: ZaMa - No se hace visible en los clientes si estaba navegando (porque ya lo estaba).
 '***************************************************
     
     Dim UserConsulta As Integer
@@ -5569,9 +5551,7 @@ Private Sub HandleConsultation(ByVal UserIndex As String)
                     .Counters.TiempoOculto = 0
                     .Counters.Invisibilidad = 0
                     
-                    If UserList(UserConsulta).flags.Navegando = 0 Then
-                        Call UsUaRiOs.SetInvisible(UserConsulta, UserList(UserConsulta).Char.CharIndex, False)
-                    End If
+                    Call UsUaRiOs.SetInvisible(UserConsulta, UserList(UserConsulta).Char.CharIndex, False)
                 End If
             End With
         End If
@@ -8805,10 +8785,9 @@ End Sub
 Private Sub HandleEditChar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Nicolas Matias Gonzalez (NIGO)
-'Last Modification: 18/09/2010
+'Last Modification: 11/06/2009
 '02/03/2009: ZaMa - Cuando editas nivel, chequea si el pj puede permanecer en clan faccionario
 '11/06/2009: ZaMa - Todos los comandos se pueden usar aunque el pj este offline
-'18/09/2010: ZaMa - Ahora se puede editar la vida del propio pj (cualquier rm o dios).
 '***************************************************
     If UserList(UserIndex).incomingData.length < 8 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -8852,23 +8831,19 @@ On Error GoTo Errhandler
         If .flags.Privilegios And PlayerType.RoleMaster Then
             Select Case .flags.Privilegios And (PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)
                 Case PlayerType.Consejero
-                    ' Los RMs consejeros sólo se pueden editar su head, body, level y vida
+                    ' Los RMs consejeros sólo se pueden editar su head, body y level
                     valido = tUser = UserIndex And _
-                            (opcion = eEditOptions.eo_Body Or _
-                             opcion = eEditOptions.eo_Head Or _
-                             opcion = eEditOptions.eo_Level Or _
-                             opcion = eEditOptions.eo_Vida)
+                            (opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or opcion = eEditOptions.eo_Level)
                 
                 Case PlayerType.SemiDios
-                    ' Los RMs sólo se pueden editar su level o vida y el head y body de cualquiera
-                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = UserIndex) Or _
-                              opcion = eEditOptions.eo_Body Or _
-                              opcion = eEditOptions.eo_Head
-
+                    ' Los RMs sólo se pueden editar su level y el head y body de cualquiera
+                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) _
+                            Or opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head
+                
                 Case PlayerType.Dios
                     ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
-                    ' pero si quiere modificar el level o vida sólo lo puede hacer sobre sí mismo
-                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = UserIndex) Or _
+                    ' pero si quiere modificar el level sólo lo puede hacer sobre sí mismo
+                    valido = (opcion = eEditOptions.eo_Level And tUser = UserIndex) Or _
                             opcion = eEditOptions.eo_Body Or _
                             opcion = eEditOptions.eo_Head Or _
                             opcion = eEditOptions.eo_CiticensKilled Or _
@@ -8877,17 +8852,9 @@ On Error GoTo Errhandler
                             opcion = eEditOptions.eo_Skills Or _
                             opcion = eEditOptions.eo_addGold
             End Select
-        
-        'Si no es RM debe ser dios para poder usar este comando
-        ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
             
-            If opcion = eEditOptions.eo_Vida Then
-                '  Por ahora dejo para que los dioses no puedan editar la vida de otros
-                valido = (tUser = UserIndex)
-            Else
-                valido = True
-            End If
-            
+        ElseIf .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then   'Si no es RM debe ser dios para poder usar este comando
+            valido = True
         End If
 
         If valido Then
@@ -9178,22 +9145,6 @@ On Error GoTo Errhandler
                         
                         ' Log it
                         CommandString = CommandString & "AGREGAR "
-                    
-                    Case eEditOptions.eo_Vida
-                    
-                        If val(Arg1) > MAX_VIDA_EDIT Then
-                            Arg1 = CStr(MAX_VIDA_EDIT)
-                            Call WriteConsoleMsg(UserIndex, "No puedes tener vida superior a " & MAX_VIDA_EDIT & ".", FONTTYPE_INFO)
-                        End If
-                        
-                        ' No valido si esta offline, porque solo se puede editar a si mismo
-                        UserList(tUser).Stats.MaxHp = val(Arg1)
-                        UserList(tUser).Stats.MinHp = val(Arg1)
-                        
-                        Call WriteUpdateUserStats(tUser)
-                        
-                        ' Log it
-                        CommandString = CommandString & "VIDA "
                         
                     Case Else
                         Call WriteConsoleMsg(UserIndex, "Comando no permitido.", FontTypeNames.FONTTYPE_INFO)
@@ -9206,10 +9157,8 @@ On Error GoTo Errhandler
                 
             End If
         End If
-        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
-        
     End With
 
 Errhandler:
@@ -13207,90 +13156,6 @@ Public Sub HandleChangeMapInfoStealNpc(ByVal UserIndex As Integer)
         End If
     End With
 End Sub
-            
-''
-' Handle the "ChangeMapInfoNoOcultar" message
-'
-' @param userIndex The index of the user sending the message
-
-Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 18/09/2010
-'OcultarSinEfecto -> Options: "1", "0"
-'***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then
-        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    Dim NoOcultar As Byte
-    Dim mapa As Integer
-    
-    With UserList(UserIndex)
-    
-        'Remove Packet ID
-        Call .incomingData.ReadByte
-        
-        NoOcultar = val(IIf(.incomingData.ReadBoolean(), 1, 0))
-        
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
-            
-            mapa = .Pos.Map
-            
-            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & mapa & ".")
-            
-            MapInfo(mapa).OcultarSinEfecto = NoOcultar
-            
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "OcultarSinEfecto", NoOcultar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
-        End If
-        
-    End With
-    
-End Sub
-           
-''
-' Handle the "ChangeMapInfoNoInvocar" message
-'
-' @param userIndex The index of the user sending the message
-
-Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 18/09/2010
-'InvocarSinEfecto -> Options: "1", "0"
-'***************************************************
-    If UserList(UserIndex).incomingData.length < 2 Then
-        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    Dim NoInvocar As Byte
-    Dim mapa As Integer
-    
-    With UserList(UserIndex)
-    
-        'Remove Packet ID
-        Call .incomingData.ReadByte
-        
-        NoInvocar = val(IIf(.incomingData.ReadBoolean(), 1, 0))
-        
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
-            
-            mapa = .Pos.Map
-            
-            Call LogGM(.name, .name & " ha cambiado la información sobre si está permitido invocar en el mapa " & mapa & ".")
-            
-            MapInfo(mapa).InvocarSinEfecto = NoInvocar
-            
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "InvocarSinEfecto", NoInvocar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
-        End If
-        
-    End With
-    
-End Sub
 
 ''
 ' Handle the "SaveMap" message
@@ -14401,11 +14266,7 @@ Public Sub WriteLoggedMessage(ByVal UserIndex As Integer)
 'Writes the "Logged" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
-    With UserList(UserIndex)
-        Call .outgoingData.WriteByte(ServerPacketID.Logged)
-        
-        Call .outgoingData.WriteByte(.clase)
-    End With
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.Logged)
 Exit Sub
 
 Errhandler:
@@ -16513,6 +16374,7 @@ On Error GoTo Errhandler
     
     With UserList(UserIndex)
         Call .outgoingData.WriteByte(ServerPacketID.SendSkills)
+        Call .outgoingData.WriteByte(.clase)
         
         For i = 1 To NUMSKILLS
             Call .outgoingData.WriteByte(UserList(UserIndex).Stats.UserSkills(i))

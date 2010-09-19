@@ -1202,24 +1202,16 @@ End Sub
 Public Sub EfectoEstadoAtacable(ByVal UserIndex As Integer)
 '******************************************************
 'Author: ZaMa
-'Last Update: 18/09/2010 (ZaMa)
-'18/09/2010: ZaMa - Ahora se activa el seguro cuando dejas de ser atacable.
+'Last Update: 13/01/2010 (ZaMa)
 '******************************************************
 
     ' Si ya paso el tiempo de penalizacion
     If Not IntervaloEstadoAtacable(UserIndex) Then
         ' Deja de poder ser atacado
         UserList(UserIndex).flags.AtacablePor = 0
-        
-        ' Activo el seguro si deja de estar atacable
-        If Not UserList(UserIndex).flags.Seguro Then
-            Call WriteMultiMessage(UserIndex, eMessages.SafeModeOn)
-        End If
-        
         ' Send nick normal
         Call RefreshCharStatus(UserIndex)
     End If
-    
 End Sub
 
 ''
@@ -1250,9 +1242,8 @@ End Sub
 Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
 '******************************************************
 'Author: Unknown
-'Last Update: 16/09/2010 (ZaMa)
+'Last Update: 12/01/2010 (ZaMa)
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
-'16/09/2010: ZaMa - Se recupera la apariencia de la barca correspondiente despues de terminado el mimetismo.
 '******************************************************
     Dim Barco As ObjData
     
@@ -1265,13 +1256,29 @@ Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
             
             If .flags.Navegando Then
                 If .flags.Muerto = 0 Then
-                    Call ToogleBoatBody(UserIndex)
+                    If .Faccion.ArmadaReal = 1 Then
+                        .Char.body = iFragataReal
+                    ElseIf .Faccion.FuerzasCaos = 1 Then
+                        .Char.body = iFragataCaos
+                    Else
+                        Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
+                        If criminal(UserIndex) Then
+                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaPk
+                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraPk
+                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonPk
+                        Else
+                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaCiuda
+                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraCiuda
+                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonCiuda
+                        End If
+                    End If
                 Else
                     .Char.body = iFragataFantasmal
-                    .Char.ShieldAnim = NingunEscudo
-                    .Char.WeaponAnim = NingunArma
-                    .Char.CascoAnim = NingunCasco
                 End If
+                
+                .Char.ShieldAnim = NingunEscudo
+                .Char.WeaponAnim = NingunArma
+                .Char.CascoAnim = NingunCasco
             Else
                 .Char.body = .CharMimetizado.body
                 .Char.Head = .CharMimetizado.Head
@@ -1295,8 +1302,8 @@ End Sub
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 16/09/2010 (ZaMa)
-'16/09/2010: ZaMa - Al perder el invi cuando navegas, no se manda el mensaje de sacar invi (ya estas visible).
+'Last Modification: -
+'
 '***************************************************
 
     With UserList(UserIndex)
@@ -1307,12 +1314,8 @@ Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
             .flags.invisible = 0
             If .flags.Oculto = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                
-                ' Si navega ya esta visible..
-                If Not .flags.Navegando = 1 Then
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                End If
-                
+                Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
             End If
         End If
     End With
