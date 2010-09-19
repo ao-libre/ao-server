@@ -548,3 +548,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 18/09/2010 : Ahora se activa el seguro cuando dejas de ser atacable. (ZaMa)
  * 18/09/2010 : Agrego comando /mod Yo Vida xxx solo para rms(todos) o dioses. (ZaMa)
  * 18/09/2010 : Ahora TileLibre busca en forma de rombo y no repite tile (optimizado). (ZaMa)
+ * 18/09/2010 : Los faccionarios ya no pueden curar npcs pertenecientes a miembros de su faccion, y los ciudas sin seguro se vuelven atacables. (ZaMa)
