@@ -286,10 +286,7 @@ Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
     
     End Function
 
-Private Function RhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, _
-                               ByVal Distance As Long, Optional PuedeAgua As Boolean = False, _
-                               Optional PuedeTierra As Boolean = True, _
-                               Optional ByVal CheckExitTile As Boolean = False) As Boolean
+Private Function rhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, ByVal Distance As Long, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False) As Boolean
 '***************************************************
 'Author: Marco Vanotti (Marco)
 'Last Modification: -
@@ -297,193 +294,60 @@ Private Function RhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY
 ' which starts at Pos.x - Distance and Pos.y
 '***************************************************
 
-    Dim i As Long
-    
-    vX = Pos.X - Distance
-    vY = Pos.Y
-    
-    For i = 0 To Distance
-        If (LegalPos(Pos.Map, vX + i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-            vX = vX + i
-            vY = vY - i
-            RhombLegalPos = True
-            Exit Function
-        End If
-    Next
-    
-    vX = Pos.X
-    vY = Pos.Y - Distance
-    
-    For i = 0 To Distance
-        If (LegalPos(Pos.Map, vX + i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-            vX = vX + i
-            vY = vY + i
-            RhombLegalPos = True
-            Exit Function
-        End If
-    Next
-    
-    vX = Pos.X + Distance
-    vY = Pos.Y
-    
-    For i = 0 To Distance
-        If (LegalPos(Pos.Map, vX - i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-            vX = vX - i
-            vY = vY + i
-            RhombLegalPos = True
-            Exit Function
-        End If
-    Next
-    
-    vX = Pos.X
-    vY = Pos.Y + Distance
-    
-    For i = 0 To Distance
-        If (LegalPos(Pos.Map, vX - i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-            vX = vX - i
-            vY = vY - i
-            RhombLegalPos = True
-            Exit Function
-        End If
-    Next
-    
-    RhombLegalPos = False
-    
-End Function
+Dim i As Long
 
-Public Function RhombLegalTilePos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, _
-                                  ByVal Distance As Long, ByVal ObjIndex As Integer, ByVal ObjAmount As Long, _
-                                  ByVal PuedeAgua As Boolean, ByVal PuedeTierra As Boolean) As Boolean
-'***************************************************
-'Author: ZaMa
-'Last Modification: -
-' walks all the perimeter of a rhomb of side  "distance + 1",
-' which starts at Pos.x - Distance and Pos.y
-' and searchs for a valid position to drop items
-'***************************************************
+vX = Pos.X - Distance
+vY = Pos.Y
 
-    Dim i As Long
-    Dim HayObj As Boolean
-    
-    Dim X As Integer
-    Dim Y As Integer
-    Dim MapObjIndex As Integer
-    
-    vX = Pos.X - Distance
-    vY = Pos.Y
-    
-    For i = 0 To Distance
-        
-        X = vX + i
-        Y = vY - i
-        
-        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
-            
-            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
-            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
-                vX = X
-                vY = Y
-                
-                RhombLegalTilePos = True
-                Exit Function
-            End If
-            
-        End If
-    Next
-    
-    vX = Pos.X
-    vY = Pos.Y - Distance
-    
-    For i = 0 To Distance
-        
-        X = vX + i
-        Y = vY + i
-        
-        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
-            
-            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
-            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
-                vX = X
-                vY = Y
-                
-                RhombLegalTilePos = True
-                Exit Function
-            End If
-        End If
-    Next
-    
-    vX = Pos.X + Distance
-    vY = Pos.Y
-    
-    For i = 0 To Distance
-        
-        X = vX - i
-        Y = vY + i
-    
-        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
-        
-            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
-            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
-                vX = X
-                vY = Y
-                
-                RhombLegalTilePos = True
-                Exit Function
-            End If
-        End If
-    Next
-    
-    vX = Pos.X
-    vY = Pos.Y + Distance
-    
-    For i = 0 To Distance
-        
-        X = vX - i
-        Y = vY - i
-    
-        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
-            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
-            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
-                vX = X
-                vY = Y
-                
-                RhombLegalTilePos = True
-                Exit Function
-            End If
-        End If
-    Next
-    
-    RhombLegalTilePos = False
-    
-End Function
-
-Public Function HayObjeto(ByVal Mapa As Integer, ByVal X As Long, ByVal Y As Long, _
-                          ByVal ObjIndex As Integer, ByVal ObjAmount As Long) As Boolean
-'***************************************************
-'Author: ZaMa
-'Last Modification: -
-'Checks if there's space in a tile to add an itemAmount
-'***************************************************
-    Dim MapObjIndex As Integer
-    MapObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
-            
-    ' Hay un objeto tirado?
-    If MapObjIndex <> 0 Then
-        ' Es el mismo objeto?
-        If MapObjIndex = ObjIndex Then
-            ' La suma es menor a 10k?
-            HayObjeto = (MapData(Mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
-        Else
-            HayObjeto = True
-        End If
-    Else
-        HayObjeto = False
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX + i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX + i
+        vY = vY - i
+        rhombLegalPos = True
+        Exit Function
     End If
+Next
 
+vX = Pos.X
+vY = Pos.Y - Distance
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX + i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX + i
+        vY = vY + i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+vX = Pos.X + Distance
+vY = Pos.Y
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX - i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX - i
+        vY = vY + i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+vX = Pos.X
+vY = Pos.Y + Distance
+
+For i = 0 To Distance
+    If (LegalPos(Pos.Map, vX - i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+        vX = vX - i
+        vY = vY - i
+        rhombLegalPos = True
+        Exit Function
+    End If
+Next
+
+rhombLegalPos = False
 End Function
 
-Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, _
-                    Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False)
+Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False)
 '*****************************************************************
 'Author: Unknown (original version)
 'Last Modification: 09/14/2010 (Marco)
@@ -492,39 +356,35 @@ Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua 
 'Encuentra la posicion legal mas cercana y la guarda en nPos
 '*****************************************************************
 
-    Dim Found As Boolean
-    Dim LoopC As Integer
-    Dim tX As Long
-    Dim tY As Long
-    
-    nPos = Pos
-    tX = Pos.X
-    tY = Pos.Y
-    
-    LoopC = 1
-    
-    ' La primera posicion es valida?
-    If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, CheckExitTile) Then
-        Found = True
-    
-    ' Busca en las demas posiciones, en forma de "rombo"
-    Else
-        While (Not Found) And LoopC <= 12
-            If RhombLegalPos(Pos, tX, tY, LoopC, PuedeAgua, PuedeTierra, CheckExitTile) Then
-                nPos.X = tX
-                nPos.Y = tY
-                Found = True
-            End If
-        
-            LoopC = LoopC + 1
-        Wend
-        
+Dim found As Boolean
+Dim LoopC As Integer
+Dim tX As Long
+Dim tY As Long
+
+nPos = Pos
+tX = Pos.X
+tY = Pos.Y
+
+LoopC = 1
+
+If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, CheckExitTile) Then
+    found = True
+End If
+
+While (Not found) And LoopC <= 12
+    If rhombLegalPos(Pos, tX, tY, LoopC, PuedeAgua, PuedeTierra, CheckExitTile) Then
+        nPos.X = tX
+        nPos.Y = tY
+        found = True
     End If
-    
-    If Not Found Then
-        nPos.X = 0
-        nPos.Y = 0
-    End If
+
+    LoopC = LoopC + 1
+Wend
+
+If Not found Then
+    nPos.X = 0
+    nPos.Y = 0
+End If
 
 End Sub
 
