@@ -29,7 +29,7 @@ Attribute VB_Name = "General"
 
 Option Explicit
 
-Global LeerNPCs As New clsIniReader
+Global LeerNPCs As New clsIniManager
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 '***************************************************
@@ -495,7 +495,7 @@ On Error Resume Next
     Dim N As Integer
     N = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+    Print #N, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
     Close #N
     
     'Ocultar
@@ -510,12 +510,12 @@ On Error Resume Next
 
 End Sub
 
-Function FileExist(ByVal file As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
+Function FileExist(ByVal File As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
 '*****************************************************************
 'Se fija si existe el archivo
 '*****************************************************************
 
-    FileExist = LenB(dir$(file, FileType)) <> 0
+    FileExist = LenB(dir$(File, FileType)) <> 0
 End Function
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
@@ -527,21 +527,21 @@ Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As
 '*****************************************************************
 
     Dim i As Long
-    Dim LastPos As Long
+    Dim lastPos As Long
     Dim CurrentPos As Long
     Dim delimiter As String * 1
     
     delimiter = Chr$(SepASCII)
     
     For i = 1 To Pos
-        LastPos = CurrentPos
-        CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
+        lastPos = CurrentPos
+        CurrentPos = InStr(lastPos + 1, Text, delimiter, vbBinaryCompare)
     Next i
     
     If CurrentPos = 0 Then
-        ReadField = mid$(Text, LastPos + 1, Len(Text) - LastPos)
+        ReadField = mid$(Text, lastPos + 1, Len(Text) - lastPos)
     Else
-        ReadField = mid$(Text, LastPos + 1, CurrentPos - LastPos - 1)
+        ReadField = mid$(Text, lastPos + 1, CurrentPos - lastPos - 1)
     End If
 End Function
 
@@ -579,7 +579,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & Time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -643,7 +643,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & Time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -665,7 +665,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & Time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -686,7 +686,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & Time & " " & desc
     Close #nfile
 
 Exit Sub
@@ -707,7 +707,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile(1) ' obtenemos un canal
     Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & Time & " " & desc
     Close #nfile
 
 Exit Sub
@@ -728,7 +728,7 @@ Public Sub LogClanes(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\clanes.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & Time & " " & str
     Close #nfile
 
 End Sub
@@ -743,7 +743,7 @@ Public Sub LogIP(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\IP.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & Time & " " & str
     Close #nfile
 
 End Sub
@@ -759,7 +759,7 @@ Public Sub LogDesarrollo(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\desarrollo" & Month(Date) & Year(Date) & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+    Print #nfile, Date & " " & Time & " " & str
     Close #nfile
 
 End Sub
@@ -777,7 +777,7 @@ On Error GoTo Errhandler
     nfile = FreeFile ' obtenemos un canal
     'Guardamos todo en el mismo lugar. Pablo (ToxicWaste) 18/05/07
     Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -799,7 +799,7 @@ On Error GoTo Errhandler
     nfile = FreeFile ' obtenemos un canal
     
     Open App.Path & "\logs\asesinatos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -821,7 +821,7 @@ On Error GoTo Errhandler
     
     Open App.Path & "\logs\propiedades.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
@@ -843,7 +843,7 @@ On Error GoTo Errhandler
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\HackAttemps.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
@@ -865,7 +865,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\CH.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -888,7 +888,7 @@ On Error GoTo Errhandler
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\CriticalHackAttemps.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
@@ -910,7 +910,7 @@ On Error GoTo Errhandler
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\AntiCheat.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+    Print #nfile, Date & " " & Time & " " & texto
     Print #nfile, ""
     Close #nfile
     
@@ -1046,7 +1046,7 @@ On Error Resume Next
     Dim N As Integer
     N = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " servidor reiniciado."
+    Print #N, Date & " " & Time & " servidor reiniciado."
     Close #N
     
     'Ocultar
@@ -1202,16 +1202,24 @@ End Sub
 Public Sub EfectoEstadoAtacable(ByVal UserIndex As Integer)
 '******************************************************
 'Author: ZaMa
-'Last Update: 13/01/2010 (ZaMa)
+'Last Update: 18/09/2010 (ZaMa)
+'18/09/2010: ZaMa - Ahora se activa el seguro cuando dejas de ser atacable.
 '******************************************************
 
     ' Si ya paso el tiempo de penalizacion
     If Not IntervaloEstadoAtacable(UserIndex) Then
         ' Deja de poder ser atacado
         UserList(UserIndex).flags.AtacablePor = 0
+        
+        ' Activo el seguro si deja de estar atacable
+        If Not UserList(UserIndex).flags.Seguro Then
+            Call WriteMultiMessage(UserIndex, eMessages.SafeModeOn)
+        End If
+        
         ' Send nick normal
         Call RefreshCharStatus(UserIndex)
     End If
+    
 End Sub
 
 ''
@@ -1242,8 +1250,9 @@ End Sub
 Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
 '******************************************************
 'Author: Unknown
-'Last Update: 12/01/2010 (ZaMa)
+'Last Update: 16/09/2010 (ZaMa)
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
+'16/09/2010: ZaMa - Se recupera la apariencia de la barca correspondiente despues de terminado el mimetismo.
 '******************************************************
     Dim Barco As ObjData
     
@@ -1256,29 +1265,13 @@ Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
             
             If .flags.Navegando Then
                 If .flags.Muerto = 0 Then
-                    If .Faccion.ArmadaReal = 1 Then
-                        .Char.body = iFragataReal
-                    ElseIf .Faccion.FuerzasCaos = 1 Then
-                        .Char.body = iFragataCaos
-                    Else
-                        Barco = ObjData(UserList(UserIndex).Invent.BarcoObjIndex)
-                        If criminal(UserIndex) Then
-                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaPk
-                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraPk
-                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonPk
-                        Else
-                            If Barco.Ropaje = iBarca Then .Char.body = iBarcaCiuda
-                            If Barco.Ropaje = iGalera Then .Char.body = iGaleraCiuda
-                            If Barco.Ropaje = iGaleon Then .Char.body = iGaleonCiuda
-                        End If
-                    End If
+                    Call ToogleBoatBody(UserIndex)
                 Else
                     .Char.body = iFragataFantasmal
+                    .Char.ShieldAnim = NingunEscudo
+                    .Char.WeaponAnim = NingunArma
+                    .Char.CascoAnim = NingunCasco
                 End If
-                
-                .Char.ShieldAnim = NingunEscudo
-                .Char.WeaponAnim = NingunArma
-                .Char.CascoAnim = NingunCasco
             Else
                 .Char.body = .CharMimetizado.body
                 .Char.Head = .CharMimetizado.Head
@@ -1302,8 +1295,8 @@ End Sub
 Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 16/09/2010 (ZaMa)
+'16/09/2010: ZaMa - Al perder el invi cuando navegas, no se manda el mensaje de sacar invi (ya estas visible).
 '***************************************************
 
     With UserList(UserIndex)
@@ -1314,8 +1307,12 @@ Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
             .flags.invisible = 0
             If .flags.Oculto = 0 Then
                 Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+                
+                ' Si navega ya esta visible..
+                If Not .flags.Navegando = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                End If
+                
             End If
         End If
     End With
@@ -1642,7 +1639,7 @@ Sub GuardarUsuarios()
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharPath & UCase$(UserList(i).name) & ".chr", False)
+            Call SaveUser(i, CharPath & UCase$(UserList(i).Name) & ".chr", False)
         End If
     Next i
     

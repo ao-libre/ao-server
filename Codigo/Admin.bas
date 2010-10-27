@@ -142,6 +142,8 @@ Sub WorldSave()
 On Error Resume Next
 
     Dim loopX As Integer
+    Dim hFile As Integer
+    
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Iniciando WorldSave", FontTypeNames.FONTTYPE_SERVER))
     
@@ -165,28 +167,31 @@ On Error Resume Next
         'DoEvents
         
         If MapInfo(loopX).BackUp = 1 Then
-        
-                Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
-                FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
+            Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
+            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
         End If
     
     Next loopX
     
     FrmStat.Visible = False
     
-    If FileExist(DatPath & "\bkNpc.dat", vbNormal) Then Kill (DatPath & "bkNpc.dat")
-    'If FileExist(DatPath & "\bkNPCs-HOSTILES.dat", vbNormal) Then Kill (DatPath & "bkNPCs-HOSTILES.dat")
+    If FileExist(DatPath & "\bkNpcs.dat") Then Kill (DatPath & "bkNpcs.dat")
     
-    For loopX = 1 To LastNPC
-        If Npclist(loopX).flags.BackUp = 1 Then
-                Call BackUPnPc(loopX)
-        End If
-    Next
+    hFile = FreeFile()
+    
+    Open DatPath & "\bkNpcs.dat" For Output As hFile
+    
+        For loopX = 1 To LastNPC
+            If Npclist(loopX).flags.BackUp = 1 Then
+                Call BackUPnPc(loopX, hFile)
+            End If
+        Next loopX
+        
+    Close hFile
     
     Call SaveForums
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave ha concluído.", FontTypeNames.FONTTYPE_SERVER))
-
 End Sub
 
 Public Sub PurgarPenas()

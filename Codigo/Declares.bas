@@ -292,6 +292,7 @@ End Enum
 Public Const Guardias As Integer = 6
 
 Public Const MAX_ORO_EDIT As Long = 5000000
+Public Const MAX_VIDA_EDIT As Long = 30000
 
 
 Public Const STANDARD_BOUNTY_HUNTER_MESSAGE As String = "Se te ha otorgado un premio por ayudar al proyecto reportando bugs, el mismo está disponible en tu bóveda."
@@ -1130,7 +1131,8 @@ Public Type UserFlags
     
     Mimetizado As Byte
     
-    CentinelaOK As Boolean 'Centinela
+    CentinelaIndex As Byte ' Indice del centinela que lo revisa
+    CentinelaOK As Boolean
     
     lastMap As Integer
     Traveling As Byte 'Travelin Band ¿?
@@ -1469,8 +1471,12 @@ Type MapInfo
     Pk As Boolean
     MagiaSinEfecto As Byte
     NoEncriptarMP As Byte
+    
+    ' Anti Magias/Habilidades
     InviSinEfecto As Byte
     ResuSinEfecto As Byte
+    OcultarSinEfecto As Byte
+    InvocarSinEfecto As Byte
     
     RoboNpcsPermitido As Byte
     
@@ -1756,6 +1762,8 @@ Public Enum eGMCommands
     ChangeMapInfoLand       '/MODMAPINFO TERRENO
     ChangeMapInfoZone       '/MODMAPINFO ZONA
     ChangeMapInfoStealNpc   '/MODMAPINFO ROBONPC
+    ChangeMapInfoNoOcultar  '/MODMAPINFO OCULTARSINEFECTO
+    ChangeMapInfoNoInvocar  '/MODMAPINFO INVOCARSINEFECTO
     SaveChars               '/GRABAR
     CleanSOS                '/BORRAR SOS
     ShowServerForm          '/SHOW INT

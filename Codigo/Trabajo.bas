@@ -158,6 +158,8 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
 'Author: Unknown
 'Last Modification: 13/01/2010 (ZaMa)
 '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
+'16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
+'10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la última barca que equipo era el galeón no explotaba(Y capaz no la tenía equipada :P).
 '***************************************************
 
     Dim ModNave As Single
@@ -171,11 +173,10 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
             Exit Sub
         End If
         
-        .Invent.BarcoObjIndex = .Invent.Object(Slot).ObjIndex
-        .Invent.BarcoSlot = Slot
-        
         ' No estaba navegando
         If .flags.Navegando = 0 Then
+            .Invent.BarcoObjIndex = .Invent.Object(Slot).ObjIndex
+            .Invent.BarcoSlot = Slot
             
             .Char.Head = 0
             
@@ -184,10 +185,16 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
             
                 Call ToogleBoatBody(UserIndex)
                 
+                ' Pierde el ocultar
                 If .flags.Oculto = 1 Then
                     .flags.Oculto = 0
                     Call SetInvisible(UserIndex, .Char.CharIndex, False)
                     Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                End If
+               
+                ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
+                If .flags.invisible = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
                 
             ' Esta muerto
@@ -203,6 +210,9 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
         
         ' Estaba navegando
         Else
+            .Invent.BarcoObjIndex = 0
+            .Invent.BarcoSlot = 0
+        
             ' No esta muerto
             If .flags.Muerto = 0 Then
                 .Char.Head = .OrigChar.Head
@@ -228,7 +238,13 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                     .Char.WeaponAnim = GetWeaponAnim(UserIndex, .Invent.WeaponEqpObjIndex)
                 If .Invent.CascoEqpObjIndex > 0 Then _
                     .Char.CascoAnim = ObjData(.Invent.CascoEqpObjIndex).CascoAnim
-                    
+                
+                
+                ' Al dejar de navegar, si estaba invisible actualizo los clientes
+                If .flags.invisible = 1 Then
+                    Call SetInvisible(UserIndex, .Char.CharIndex, True)
+                End If
+                
             ' Esta muerto
             Else
                 .Char.body = iCuerpoMuerto
@@ -657,7 +673,7 @@ With UserList(UserIndex)
         
         'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
         If ObjData(MiObj.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(.name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name)
+            Call LogDesarrollo(.Name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name)
         End If
         
         Call SubirSkill(UserIndex, eSkill.Herreria, True)
@@ -797,7 +813,7 @@ On Error GoTo Errhandler
             
             'Log de construcción de Items. Pablo (ToxicWaste) 10/09/07
             If ObjData(MiObj.ObjIndex).Log = 1 Then
-                Call LogDesarrollo(.name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name)
+                Call LogDesarrollo(.Name & " ha construído " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name)
             End If
             
             Call SubirSkill(UserIndex, eSkill.Carpinteria, True)
@@ -1089,7 +1105,7 @@ With UserList(UserIndex)
     End If
     
     If ObjData(ItemIndex).Log = 1 Then _
-        Call LogDesarrollo(.name & " ha mejorado el ítem " & ObjData(ItemIndex).name & " a " & ObjData(ItemUpgrade).name)
+        Call LogDesarrollo(.Name & " ha mejorado el ítem " & ObjData(ItemIndex).Name & " a " & ObjData(ItemUpgrade).Name)
         
     .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
     If .Reputacion.PlebeRep > MAXREP Then _
@@ -1735,7 +1751,7 @@ On Error GoTo Errhandler
                     If TieneObjetosRobables(VictimaIndex) Then
                         Call RobarObjeto(LadrOnIndex, VictimaIndex)
                     Else
-                        Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).Name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else 'Roba oro
                     If UserList(VictimaIndex).Stats.GLD > 0 Then
@@ -1758,20 +1774,20 @@ On Error GoTo Errhandler
                         If .Stats.GLD > MAXORO Then _
                             .Stats.GLD = MAXORO
                         
-                        Call WriteConsoleMsg(LadrOnIndex, "Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).name, FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(LadrOnIndex, "Le has robado " & N & " monedas de oro a " & UserList(VictimaIndex).Name, FontTypeNames.FONTTYPE_INFO)
                         Call WriteUpdateGold(LadrOnIndex) 'Le actualizamos la billetera al ladron
                         
                         Call WriteUpdateGold(VictimaIndex) 'Le actualizamos la billetera a la victima
                         Call FlushBuffer(VictimaIndex)
                     Else
-                        Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).name & " no tiene oro.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).Name & " no tiene oro.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 End If
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, True)
             Else
                 Call WriteConsoleMsg(LadrOnIndex, "¡No has logrado robar nada!", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(VictimaIndex, "¡" & .name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(VictimaIndex, "¡" & .Name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
                 Call FlushBuffer(VictimaIndex)
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, False)
@@ -1896,9 +1912,9 @@ With UserList(VictimaIndex)
         End If
         
         If UserList(LadrOnIndex).clase = eClass.Thief Then
-            Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(LadrOnIndex, "Has robado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name, FontTypeNames.FONTTYPE_INFO)
         Else
-            Call WriteConsoleMsg(LadrOnIndex, "Has hurtado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(LadrOnIndex, "Has hurtado " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name, FontTypeNames.FONTTYPE_INFO)
         End If
     Else
         Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -1947,8 +1963,8 @@ If RandomNumber(0, 100) < Suerte Then
         
         With UserList(VictimUserIndex)
             .Stats.MinHp = .Stats.MinHp - daño
-            Call WriteConsoleMsg(UserIndex, "Has apuñalado a " & .name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(VictimUserIndex, "Te ha apuñalado " & UserList(UserIndex).name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Has apuñalado a " & .Name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(VictimUserIndex, "Te ha apuñalado " & UserList(UserIndex).Name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
         End With
         
         Call FlushBuffer(VictimUserIndex)
@@ -1980,8 +1996,8 @@ Public Sub DoAcuchillar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Inte
         
             With UserList(VictimUserIndex)
                 .Stats.MinHp = .Stats.MinHp - daño
-                Call WriteConsoleMsg(UserIndex, "Has acuchillado a " & .name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
-                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha acuchillado por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, "Has acuchillado a " & .Name & " por " & daño, FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).Name & " te ha acuchillado por " & daño, FontTypeNames.FONTTYPE_FIGHT)
             End With
             
         Else
@@ -2027,8 +2043,8 @@ Public Sub DoGolpeCritico(ByVal UserIndex As Integer, ByVal VictimNpcIndex As In
             
             With UserList(VictimUserIndex)
                 .Stats.MinHp = .Stats.MinHp - daño
-                Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a " & .name & " por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
-                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).name & " te ha golpeado críticamente por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, "Has golpeado críticamente a " & .Name & " por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimUserIndex, UserList(UserIndex).Name & " te ha golpeado críticamente por " & daño & ".", FontTypeNames.FONTTYPE_FIGHT)
             End With
             
         Else
@@ -2441,9 +2457,9 @@ If (res < 20) Then
         End If
                 
         Call RobarObjeto(UserIndex, VictimaIndex)
-        Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).Name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
     Else
-        Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).Name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
 End If
 

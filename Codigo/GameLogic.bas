@@ -286,7 +286,10 @@ Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
     
     End Function
 
-Private Function rhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, ByVal Distance As Long, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False) As Boolean
+Private Function RhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, _
+                               ByVal Distance As Long, Optional PuedeAgua As Boolean = False, _
+                               Optional PuedeTierra As Boolean = True, _
+                               Optional ByVal CheckExitTile As Boolean = False) As Boolean
 '***************************************************
 'Author: Marco Vanotti (Marco)
 'Last Modification: -
@@ -294,60 +297,193 @@ Private Function rhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY
 ' which starts at Pos.x - Distance and Pos.y
 '***************************************************
 
-Dim i As Long
-
-vX = Pos.X - Distance
-vY = Pos.Y
-
-For i = 0 To Distance
-    If (LegalPos(Pos.Map, vX + i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-        vX = vX + i
-        vY = vY - i
-        rhombLegalPos = True
-        Exit Function
-    End If
-Next
-
-vX = Pos.X
-vY = Pos.Y - Distance
-
-For i = 0 To Distance
-    If (LegalPos(Pos.Map, vX + i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-        vX = vX + i
-        vY = vY + i
-        rhombLegalPos = True
-        Exit Function
-    End If
-Next
-
-vX = Pos.X + Distance
-vY = Pos.Y
-
-For i = 0 To Distance
-    If (LegalPos(Pos.Map, vX - i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-        vX = vX - i
-        vY = vY + i
-        rhombLegalPos = True
-        Exit Function
-    End If
-Next
-
-vX = Pos.X
-vY = Pos.Y + Distance
-
-For i = 0 To Distance
-    If (LegalPos(Pos.Map, vX - i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
-        vX = vX - i
-        vY = vY - i
-        rhombLegalPos = True
-        Exit Function
-    End If
-Next
-
-rhombLegalPos = False
+    Dim i As Long
+    
+    vX = Pos.X - Distance
+    vY = Pos.Y
+    
+    For i = 0 To Distance - 1
+        If (LegalPos(Pos.Map, vX + i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+            vX = vX + i
+            vY = vY - i
+            RhombLegalPos = True
+            Exit Function
+        End If
+    Next
+    
+    vX = Pos.X
+    vY = Pos.Y - Distance
+    
+    For i = 0 To Distance - 1
+        If (LegalPos(Pos.Map, vX + i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+            vX = vX + i
+            vY = vY + i
+            RhombLegalPos = True
+            Exit Function
+        End If
+    Next
+    
+    vX = Pos.X + Distance
+    vY = Pos.Y
+    
+    For i = 0 To Distance - 1
+        If (LegalPos(Pos.Map, vX - i, vY + i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+            vX = vX - i
+            vY = vY + i
+            RhombLegalPos = True
+            Exit Function
+        End If
+    Next
+    
+    vX = Pos.X
+    vY = Pos.Y + Distance
+    
+    For i = 0 To Distance - 1
+        If (LegalPos(Pos.Map, vX - i, vY - i, PuedeAgua, PuedeTierra, CheckExitTile)) Then
+            vX = vX - i
+            vY = vY - i
+            RhombLegalPos = True
+            Exit Function
+        End If
+    Next
+    
+    RhombLegalPos = False
+    
 End Function
 
-Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False)
+Public Function RhombLegalTilePos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, _
+                                  ByVal Distance As Long, ByVal ObjIndex As Integer, ByVal ObjAmount As Long, _
+                                  ByVal PuedeAgua As Boolean, ByVal PuedeTierra As Boolean) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: -
+' walks all the perimeter of a rhomb of side  "distance + 1",
+' which starts at Pos.x - Distance and Pos.y
+' and searchs for a valid position to drop items
+'***************************************************
+
+    Dim i As Long
+    Dim HayObj As Boolean
+    
+    Dim X As Integer
+    Dim Y As Integer
+    Dim MapObjIndex As Integer
+    
+    vX = Pos.X - Distance
+    vY = Pos.Y
+    
+    For i = 0 To Distance - 1
+        
+        X = vX + i
+        Y = vY - i
+        
+        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
+            
+            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
+            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
+                vX = X
+                vY = Y
+                
+                RhombLegalTilePos = True
+                Exit Function
+            End If
+            
+        End If
+    Next
+    
+    vX = Pos.X
+    vY = Pos.Y - Distance
+    
+    For i = 0 To Distance - 1
+        
+        X = vX + i
+        Y = vY + i
+        
+        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
+            
+            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
+            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
+                vX = X
+                vY = Y
+                
+                RhombLegalTilePos = True
+                Exit Function
+            End If
+        End If
+    Next
+    
+    vX = Pos.X + Distance
+    vY = Pos.Y
+    
+    For i = 0 To Distance - 1
+        
+        X = vX - i
+        Y = vY + i
+    
+        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
+        
+            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
+            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
+                vX = X
+                vY = Y
+                
+                RhombLegalTilePos = True
+                Exit Function
+            End If
+        End If
+    Next
+    
+    vX = Pos.X
+    vY = Pos.Y + Distance
+    
+    For i = 0 To Distance - 1
+        
+        X = vX - i
+        Y = vY - i
+    
+        If (LegalPos(Pos.Map, X, Y, PuedeAgua, PuedeTierra, True)) Then
+            ' No hay obj tirado o la suma de lo que hay + lo nuevo <= 10k
+            If Not HayObjeto(Pos.Map, X, Y, ObjIndex, ObjAmount) Then
+                vX = X
+                vY = Y
+                
+                RhombLegalTilePos = True
+                Exit Function
+            End If
+        End If
+    Next
+    
+    RhombLegalTilePos = False
+    
+End Function
+
+Public Function HayObjeto(ByVal mapa As Integer, ByVal X As Long, ByVal Y As Long, _
+                          ByVal ObjIndex As Integer, ByVal ObjAmount As Long) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: -
+'Checks if there's space in a tile to add an itemAmount
+'***************************************************
+    Dim MapObjIndex As Integer
+    MapObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
+            
+    ' Hay un objeto tirado?
+    If MapObjIndex <> 0 Then
+        ' Es el mismo objeto?
+        If MapObjIndex = ObjIndex Then
+            ' La suma es menor a 10k?
+            HayObjeto = (MapData(mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
+        Else
+            HayObjeto = True
+        End If
+    Else
+        HayObjeto = False
+    End If
+
+End Function
+
+Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua As Boolean = False, _
+                    Optional PuedeTierra As Boolean = True, Optional ByVal CheckExitTile As Boolean = False)
 '*****************************************************************
 'Author: Unknown (original version)
 'Last Modification: 09/14/2010 (Marco)
@@ -356,35 +492,39 @@ Sub ClosestLegalPos(Pos As WorldPos, ByRef nPos As WorldPos, Optional PuedeAgua 
 'Encuentra la posicion legal mas cercana y la guarda en nPos
 '*****************************************************************
 
-Dim found As Boolean
-Dim LoopC As Integer
-Dim tX As Long
-Dim tY As Long
-
-nPos = Pos
-tX = Pos.X
-tY = Pos.Y
-
-LoopC = 1
-
-If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, CheckExitTile) Then
-    found = True
-End If
-
-While (Not found) And LoopC <= 12
-    If rhombLegalPos(Pos, tX, tY, LoopC, PuedeAgua, PuedeTierra, CheckExitTile) Then
-        nPos.X = tX
-        nPos.Y = tY
-        found = True
+    Dim Found As Boolean
+    Dim LoopC As Integer
+    Dim tX As Long
+    Dim tY As Long
+    
+    nPos = Pos
+    tX = Pos.X
+    tY = Pos.Y
+    
+    LoopC = 1
+    
+    ' La primera posicion es valida?
+    If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, CheckExitTile) Then
+        Found = True
+    
+    ' Busca en las demas posiciones, en forma de "rombo"
+    Else
+        While (Not Found) And LoopC <= 12
+            If RhombLegalPos(Pos, tX, tY, LoopC, PuedeAgua, PuedeTierra, CheckExitTile) Then
+                nPos.X = tX
+                nPos.Y = tY
+                Found = True
+            End If
+        
+            LoopC = LoopC + 1
+        Wend
+        
     End If
-
-    LoopC = LoopC + 1
-Wend
-
-If Not found Then
-    nPos.X = 0
-    nPos.Y = 0
-End If
+    
+    If Not Found Then
+        nPos.X = 0
+        nPos.Y = 0
+    End If
 
 End Sub
 
@@ -710,7 +850,7 @@ Dim IsAdminInvisible As Boolean
     End With
 End Function
 
-Sub SendHelp(ByVal index As Integer)
+Sub SendHelp(ByVal Index As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -723,7 +863,7 @@ Dim LoopC As Integer
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(Index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
 Next LoopC
 
 End Sub
@@ -746,7 +886,8 @@ Sub LookatTile(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Inte
 '***************************************************
 'Autor: Unknown (orginal version)
 'Last Modification: 26/03/2009
-'13/02/2009: ZaMa - EL nombre del gm que aparece por consola al clickearlo, tiene el color correspondiente a su rango
+'13/02/2009: ZaMa - El nombre del gm que aparece por consola al clickearlo, tiene el color correspondiente a su rango
+'07/10/2010: ZaMa - Adaptado para que funcione mas de un centinela en paralelo.
 '***************************************************
 
 On Error GoTo Errhandler
@@ -984,21 +1125,27 @@ With UserList(UserIndex)
                 
                 If Len(Npclist(TempCharIndex).desc) > 1 Then
                     Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
-                ElseIf TempCharIndex = CentinelaNPCIndex Then
-                    'Enviamos nuevamente el texto del centinela según quien pregunta
-                    Call modCentinela.CentinelaSendClave(UserIndex)
                 Else
-                    If Npclist(TempCharIndex).MaestroUser > 0 Then
-                        Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & ".", FontTypeNames.FONTTYPE_INFO)
+                
+                    Dim CentinelaIndex As Integer
+                    CentinelaIndex = EsCentinela(TempCharIndex)
+                    
+                    If CentinelaIndex <> 0 Then
+                        'Enviamos nuevamente el texto del centinela según quien pregunta
+                        Call modCentinela.CentinelaSendClave(UserIndex, CentinelaIndex)
                     Else
-                        sDesc = estatus & Npclist(TempCharIndex).name
-                        If Npclist(TempCharIndex).Owner > 0 Then sDesc = sDesc & " le pertenece a " & UserList(Npclist(TempCharIndex).Owner).name
-                        sDesc = sDesc & "."
-                        
-                        Call WriteConsoleMsg(UserIndex, sDesc, FontTypeNames.FONTTYPE_INFO)
-                        
-                        If .Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
-                            Call WriteConsoleMsg(UserIndex, "Le pegó primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+                        If Npclist(TempCharIndex).MaestroUser > 0 Then
+                            Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & ".", FontTypeNames.FONTTYPE_INFO)
+                        Else
+                            sDesc = estatus & Npclist(TempCharIndex).name
+                            If Npclist(TempCharIndex).Owner > 0 Then sDesc = sDesc & " le pertenece a " & UserList(Npclist(TempCharIndex).Owner).name
+                            sDesc = sDesc & "."
+                            
+                            Call WriteConsoleMsg(UserIndex, sDesc, FontTypeNames.FONTTYPE_INFO)
+                            
+                            If .Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+                                Call WriteConsoleMsg(UserIndex, "Le pegó primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+                            End If
                         End If
                     End If
                 End If
@@ -1122,14 +1269,14 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
 
 End Function
 
-Public Function ItemNoEsDeMapa(ByVal index As Integer, ByVal bIsExit As Boolean) As Boolean
+Public Function ItemNoEsDeMapa(ByVal Index As Integer, ByVal bIsExit As Boolean) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    With ObjData(index)
+    With ObjData(Index)
         ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And _
                     .OBJType <> eOBJType.otForos And _
                     .OBJType <> eOBJType.otCarteles And _
@@ -1141,14 +1288,14 @@ Public Function ItemNoEsDeMapa(ByVal index As Integer, ByVal bIsExit As Boolean)
 
 End Function
 
-Public Function MostrarCantidad(ByVal index As Integer) As Boolean
+Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    With ObjData(index)
+    With ObjData(Index)
         MostrarCantidad = .OBJType <> eOBJType.otPuertas And _
                     .OBJType <> eOBJType.otForos And _
                     .OBJType <> eOBJType.otCarteles And _
