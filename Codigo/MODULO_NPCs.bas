@@ -383,7 +383,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         
         .Mascotas = 0
         .Movement = 0
-        .name = vbNullString
+        .Name = vbNullString
         .NPCtype = 0
         .Numero = 0
         .Orig.Map = 0
@@ -930,13 +930,13 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
 '
 'El que ose desafiar esta LEY, se las tendrá que ver
 'conmigo. Para leer los NPCS se deberá usar la
-'nueva clase clsIniReader.
+'nueva clase clsIniManager.
 '
 'Alejo
 '
 '###################################################
     Dim NpcIndex As Integer
-    Dim Leer As clsIniReader
+    Dim Leer As clsIniManager
     Dim LoopC As Long
     Dim ln As String
     
@@ -957,7 +957,7 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
     
     With Npclist(NpcIndex)
         .Numero = NpcNumber
-        .name = Leer.GetValue("NPC" & NpcNumber, "Name")
+        .Name = Leer.GetValue("NPC" & NpcNumber, "Name")
         .desc = Leer.GetValue("NPC" & NpcNumber, "Desc")
         
         .Movement = val(Leer.GetValue("NPC" & NpcNumber, "Movement"))

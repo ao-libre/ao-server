@@ -425,17 +425,28 @@ End Sub
 Sub HechizoInvocacion(ByVal UserIndex As Integer, ByRef HechizoCasteado As Boolean)
 '***************************************************
 'Author: Uknown
-'Last modification: 18/11/2009
+'Last modification: 18/09/2010
 'Sale del sub si no hay una posición valida.
 '18/11/2009: Optimizacion de codigo.
+'18/09/2010: ZaMa - No se permite invocar en mapas con InvocarSinEfecto.
 '***************************************************
 
 On Error GoTo error
 
 With UserList(UserIndex)
+
+    Dim mapa As Integer
+    mapa = .Pos.Map
+    
     'No permitimos se invoquen criaturas en zonas seguras
-    If MapInfo(.Pos.Map).Pk = False Or MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+    If MapInfo(mapa).Pk = False Or MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
         Call WriteConsoleMsg(UserIndex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
+        Exit Sub
+    End If
+    
+    'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
+    If MapInfo(mapa).InvocarSinEfecto = 1 Then
+        Call WriteConsoleMsg(UserIndex, "Invocar no está permitido aquí! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -778,6 +789,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
 '13/02/2009: ZaMa - Arreglada ecuacion para quitar vida tras resucitar en rings.
 '23/11/2009: ZaMa - Optimizacion de codigo.
 '28/04/2010: ZaMa - Agrego Restricciones para ciudas respecto al estado atacable.
+'16/09/2010: ZaMa - Solo se hace invi para los clientes si no esta navegando.
 '***************************************************
 
 
@@ -828,8 +840,12 @@ With UserList(UserIndex)
         End If
        
         UserList(TargetIndex).flags.invisible = 1
-        Call SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
-    
+        
+        ' Solo se hace invi para los clientes si no esta navegando
+        If UserList(TargetIndex).flags.Navegando = 0 Then
+            Call SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
+        End If
+        
         Call InfoHechizo(UserIndex)
         HechizoCasteado = True
     End If
@@ -1368,12 +1384,14 @@ End If
 
 End Sub
 
-Sub HechizoPropNPC(ByVal SpellIndex As Integer, ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByRef HechizoCasteado As Boolean)
+Sub HechizoPropNPC(ByVal SpellIndex As Integer, ByVal NpcIndex As Integer, ByVal UserIndex As Integer, _
+                   ByRef HechizoCasteado As Boolean)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 14/08/2007
+'Last Modification: 18/09/2010
 'Handles the Spells that afect the Life NPC
 '14/08/2007 Pablo (ToxicWaste) - Orden general.
+'18/09/2010: ZaMa - Ahora valida si podes ayudar a un npc.
 '***************************************************
 
 Dim daño As Long
@@ -1381,15 +1399,19 @@ Dim daño As Long
 With Npclist(NpcIndex)
     'Salud
     If Hechizos(SpellIndex).SubeHP = 1 Then
-        daño = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
-        daño = daño + Porcentaje(daño, 3 * UserList(UserIndex).Stats.ELV)
         
-        Call InfoHechizo(UserIndex)
-        .Stats.MinHp = .Stats.MinHp + daño
-        If .Stats.MinHp > .Stats.MaxHp Then _
-            .Stats.MinHp = .Stats.MaxHp
-        Call WriteConsoleMsg(UserIndex, "Has curado " & daño & " puntos de vida a la criatura.", FontTypeNames.FONTTYPE_FIGHT)
-        HechizoCasteado = True
+        HechizoCasteado = CanSupportNpc(UserIndex, NpcIndex)
+        
+        If HechizoCasteado Then
+            daño = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
+            daño = daño + Porcentaje(daño, 3 * UserList(UserIndex).Stats.ELV)
+            
+            Call InfoHechizo(UserIndex)
+            .Stats.MinHp = .Stats.MinHp + daño
+            If .Stats.MinHp > .Stats.MaxHp Then _
+                .Stats.MinHp = .Stats.MaxHp
+            Call WriteConsoleMsg(UserIndex, "Has curado " & daño & " puntos de vida a la criatura.", FontTypeNames.FONTTYPE_FIGHT)
+        End If
         
     ElseIf Hechizos(SpellIndex).SubeHP = 2 Then
         If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then
@@ -2013,6 +2035,106 @@ End With
 
 End Sub
 
+Public Function CanSupportNpc(ByVal CasterIndex As Integer, ByVal TargetIndex As Integer) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: 18/09/2010
+'Checks if caster can cast support magic on target Npc.
+'***************************************************
+     
+ On Error GoTo Errhandler
+ 
+    Dim OwnerIndex As Integer
+ 
+    With UserList(CasterIndex)
+        
+        OwnerIndex = Npclist(TargetIndex).Owner
+        
+        ' Si no tiene dueño puede
+        If OwnerIndex = 0 Then
+            CanSupportNpc = True
+            Exit Function
+        End If
+        
+        ' Puede hacerlo si es su propio npc
+        If CasterIndex = OwnerIndex Then
+            CanSupportNpc = True
+            Exit Function
+        End If
+        
+         ' No podes ayudar si estas en consulta
+        If .flags.EnConsulta Then
+            Call WriteConsoleMsg(CasterIndex, "No puedes ayudar npcs mientras estas en consulta.", FontTypeNames.FONTTYPE_INFO)
+            Exit Function
+        End If
+        
+        ' Si estas en la arena, esta todo permitido
+        If TriggerZonaPelea(CasterIndex, OwnerIndex) = TRIGGER6_PERMITE Then
+            CanSupportNpc = True
+            Exit Function
+        End If
+     
+        ' Victima criminal?
+        If criminal(OwnerIndex) Then
+            ' Victima caos?
+            If esCaos(OwnerIndex) Then
+                ' Atacante caos?
+                If esCaos(CasterIndex) Then
+                    ' No podes ayudar a un npc de un caos si sos caos
+                    Call WriteConsoleMsg(CasterIndex, "No puedes ayudar npcs que están luchando contra un miembro de tu facción.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Function
+                End If
+            End If
+        
+            ' Uno es caos y el otro no, o la victima es pk, entonces puede ayudar al npc
+            CanSupportNpc = True
+            Exit Function
+                
+        ' Victima ciuda
+        Else
+            ' Atacante ciuda?
+            If Not criminal(CasterIndex) Then
+                ' Atacante armada?
+                If esArmada(CasterIndex) Then
+                    ' Victima armada?
+                    If esArmada(OwnerIndex) Then
+                        ' No podes ayudar a un npc de un armada si sos armada
+                        Call WriteConsoleMsg(CasterIndex, "No puedes ayudar npcs que están luchando contra un miembro de tu facción.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Function
+                    End If
+                End If
+                
+                ' Uno es armada y el otro ciuda, o los dos ciudas, puede atacar si no tiene seguro
+                If .flags.Seguro Then
+                    Call WriteConsoleMsg(CasterIndex, "Para ayudar a criaturas que luchan contra ciudadanos debes sacarte el seguro.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Function
+                    
+                ' ayudo al npc sin seguro, se convierte en atacable
+                Else
+                    Call ToogleToAtackable(CasterIndex, OwnerIndex, True)
+                    CanSupportNpc = True
+                    Exit Function
+                End If
+                
+            End If
+            
+            ' Atacante criminal y victima ciuda, entonces puede ayudar al npc
+            CanSupportNpc = True
+            Exit Function
+            
+        End If
+    
+    End With
+    
+    CanSupportNpc = True
+
+    Exit Function
+    
+Errhandler:
+    Call LogError("Error en CanSupportNpc, Error: " & Err.Number & " - " & Err.description & _
+                  " CasterIndex: " & CasterIndex & ", OwnerIndex: " & OwnerIndex)
+
+End Function
 Sub ChangeUserHechizo(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Hechizo As Integer)
 '***************************************************
 'Author: Unknown

@@ -534,8 +534,12 @@ Public Sub EventoSockClose(ByVal Slot As Integer)
 
     'Es el mismo user al que está revisando el centinela??
     'Si estamos acá es porque se cerró la conexión, no es un /salir, y no queremos banearlo....
-    If Centinela.RevisandoUserIndex = Slot Then _
-        Call modCentinela.CentinelaUserLogout
+    Dim CentinelaIndex As Byte
+    CentinelaIndex = UserList(Slot).flags.CentinelaIndex
+        
+    If CentinelaIndex <> 0 Then
+        Call modCentinela.CentinelaUserLogout(CentinelaIndex)
+    End If
     
 #If SeguridadAlkon Then
     Call Security.UserDisconnected(Slot)

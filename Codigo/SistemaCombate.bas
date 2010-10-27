@@ -379,13 +379,16 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     Dim Text As String
     Dim i As Integer
     
+    Dim BoatIndex As Integer
+    
     DañoBase = CalcularDaño(UserIndex, NpcIndex)
     
     'esta navegando? si es asi le sumamos el daño del barco
     If UserList(UserIndex).flags.Navegando = 1 Then
-        If UserList(UserIndex).Invent.BarcoObjIndex > 0 Then
-            DañoBase = DañoBase + RandomNumber(ObjData(UserList(UserIndex).Invent.BarcoObjIndex).MinHIT, _
-                                        ObjData(UserList(UserIndex).Invent.BarcoObjIndex).MaxHIT)
+    
+        BoatIndex = UserList(UserIndex).Invent.BarcoObjIndex
+        If BoatIndex > 0 Then
+            DañoBase = DañoBase + RandomNumber(ObjData(BoatIndex).MinHIT, ObjData(BoatIndex).MaxHIT)
         End If
     End If
     
@@ -394,7 +397,6 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         
         If daño < 0 Then daño = 0
         
-        'Call WriteUserHitNPC(UserIndex, daño)
         Call WriteMultiMessage(UserIndex, eMessages.UserHitNPC, daño)
         Call CalcularDarExp(UserIndex, NpcIndex, daño)
         .Stats.MinHp = .Stats.MinHp - daño
@@ -468,53 +470,79 @@ End Sub
 Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 18/09/2010 (ZaMa)
+'18/09/2010: ZaMa - Ahora se considera siempre la defensa del barco y el escudo.
 '***************************************************
 
     Dim daño As Integer
     Dim Lugar As Integer
-    Dim absorbido As Integer
-    Dim defbarco As Integer
     Dim Obj As ObjData
+    
+    Dim BoatDefense As Integer
+    Dim HeadDefense As Integer
+    Dim BodyDefense As Integer
+    
+    Dim BoatIndex As Integer
+    Dim HelmetIndex As Integer
+    Dim ArmourIndex As Integer
+    Dim ShieldIndex As Integer
     
     daño = RandomNumber(Npclist(NpcIndex).Stats.MinHIT, Npclist(NpcIndex).Stats.MaxHIT)
     
     With UserList(UserIndex)
-        If .flags.Navegando = 1 And .Invent.BarcoObjIndex > 0 Then
-            Obj = ObjData(.Invent.BarcoObjIndex)
-            defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
+        ' Navega?
+        If .flags.Navegando = 1 Then
+            ' En barca suma defensa
+            BoatIndex = .Invent.BarcoObjIndex
+            If BoatIndex > 0 Then
+                Obj = ObjData(BoatIndex)
+                BoatDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
+            End If
         End If
         
         Lugar = RandomNumber(PartesCuerpo.bCabeza, PartesCuerpo.bTorso)
         
         Select Case Lugar
+        
             Case PartesCuerpo.bCabeza
+            
                 'Si tiene casco absorbe el golpe
-                If .Invent.CascoEqpObjIndex > 0 Then
-                   Obj = ObjData(.Invent.CascoEqpObjIndex)
-                   absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
+                HelmetIndex = .Invent.CascoEqpObjIndex
+                If HelmetIndex > 0 Then
+                   Obj = ObjData(HelmetIndex)
+                   HeadDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
                 End If
-          Case Else
+                
+            Case Else
+                
+                Dim MinDef As Integer
+                Dim MaxDef As Integer
+            
                 'Si tiene armadura absorbe el golpe
-                If .Invent.ArmourEqpObjIndex > 0 Then
-                    Dim Obj2 As ObjData
-                    Obj = ObjData(.Invent.ArmourEqpObjIndex)
-                    If .Invent.EscudoEqpObjIndex Then
-                        Obj2 = ObjData(.Invent.EscudoEqpObjIndex)
-                        absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
-                    Else
-                        absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
-                   End If
+                ArmourIndex = .Invent.ArmourEqpObjIndex
+                If ArmourIndex > 0 Then
+                    Obj = ObjData(ArmourIndex)
+                    MinDef = Obj.MinDef
+                    MaxDef = Obj.MaxDef
                 End If
+                
+                ' Si tiene casco absorbe el golpe
+                ShieldIndex = .Invent.EscudoEqpObjIndex
+                If ShieldIndex > 0 Then
+                    Obj = ObjData(ShieldIndex)
+                    MinDef = MinDef + Obj.MinDef
+                    MaxDef = MaxDef + Obj.MaxDef
+                End If
+                
+                BodyDefense = RandomNumber(MinDef, MaxDef)
+        
         End Select
         
-        absorbido = absorbido + defbarco
-        daño = daño - absorbido
+        ' Daño final
+        daño = daño - HeadDefense - BodyDefense - BoatDefense
         If daño < 1 Then daño = 1
         
         Call WriteMultiMessage(UserIndex, eMessages.NPCHitUser, Lugar, daño)
-        'Call WriteNPCHitUser(UserIndex, Lugar, daño)
         
         If .flags.Privilegios And PlayerType.User Then .Stats.MinHp = .Stats.MinHp - daño
         
@@ -531,7 +559,7 @@ Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
         
         'Muere el usuario
         If .Stats.MinHp <= 0 Then
-            Call WriteMultiMessage(UserIndex, eMessages.NPCKillUser) 'Call WriteNPCKillUser(UserIndex) ' Le informamos que ha muerto ;)
+            Call WriteMultiMessage(UserIndex, eMessages.NPCKillUser)  'Le informamos que ha muerto ;)
             
             'Si lo mato un guardia
             If criminal(UserIndex) Then
@@ -544,11 +572,14 @@ Public Sub NpcDaño(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
                 Call AllFollowAmo(Npclist(NpcIndex).MaestroUser)
             Else
                 'Al matarlo no lo sigue mas
-                If Npclist(NpcIndex).Stats.Alineacion = 0 Then
-                    Npclist(NpcIndex).Movement = Npclist(NpcIndex).flags.OldMovement
-                    Npclist(NpcIndex).Hostile = Npclist(NpcIndex).flags.OldHostil
-                    Npclist(NpcIndex).flags.AttackedBy = vbNullString
-                End If
+                With Npclist(NpcIndex)
+                    If .Stats.Alineacion = 0 Then
+                        .Movement = .flags.OldMovement
+                        .Hostile = .flags.OldHostil
+                        .flags.AttackedBy = vbNullString
+                    End If
+                End With
+                
             End If
             
             Call UserDie(UserIndex)
@@ -1117,23 +1148,27 @@ Public Sub UserDañoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
 '***************************************************
 'Author: Unknown
 'Last Modification: 12/01/2010 (ZaMa)
-'12/01/2010: ZaMa - Implemento armas arrojadizas y probabilidad de acuchillar
-'11/03/2010: ZaMa - Ahora no cuenta la muerte si estaba en estado atacable, y no se vuelve criminal
+'12/01/2010: ZaMa - Implemento armas arrojadizas y probabilidad de acuchillar.
+'11/03/2010: ZaMa - Ahora no cuenta la muerte si estaba en estado atacable, y no se vuelve criminal.
+'18/09/2010: ZaMa - Ahora se cosidera la defensa de los barcos siempre.
 '***************************************************
     
 On Error GoTo Errhandler
 
     Dim daño As Long
     Dim Lugar As Byte
-    Dim absorbido As Long
-    Dim defbarco As Integer
     Dim Obj As ObjData
-    Dim Resist As Byte
     
-    Dim BarcaIndex As Integer
-    Dim ArmaIndex As Integer
-    Dim CascoIndex As Integer
-    Dim ArmaduraIndex As Integer
+    Dim BoatDefense As Integer
+    Dim BodyDefense As Integer
+    Dim HeadDefense As Integer
+    Dim WeaponBoost As Integer
+    
+    Dim BoatIndex As Integer
+    Dim WeaponIndex As Integer
+    Dim HelmetIndex As Integer
+    Dim ArmourIndex As Integer
+    Dim ShieldIndex As Integer
     
     daño = CalcularDaño(AtacanteIndex)
     
@@ -1144,27 +1179,31 @@ On Error GoTo Errhandler
         ' Aumento de daño por barca (atacante)
         If .flags.Navegando = 1 Then
             
-            BarcaIndex = .Invent.BarcoObjIndex
-            If BarcaIndex > 0 Then
-                Obj = ObjData(BarcaIndex)
+            BoatIndex = .Invent.BarcoObjIndex
+            
+            If BoatIndex > 0 Then
+                Obj = ObjData(BoatIndex)
                 daño = daño + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
             End If
+            
         End If
         
-        ' Aumento de defensa por barca (vistima)
+        ' Aumento de defensa por barca (victima)
         If UserList(VictimaIndex).flags.Navegando = 1 Then
             
-            BarcaIndex = UserList(VictimaIndex).Invent.BarcoObjIndex
-            If BarcaIndex > 0 Then
-                Obj = ObjData(BarcaIndex)
-                defbarco = RandomNumber(Obj.MinDef, Obj.MaxDef)
+            BoatIndex = UserList(VictimaIndex).Invent.BarcoObjIndex
+            
+            If BoatIndex > 0 Then
+                Obj = ObjData(BoatIndex)
+                BoatDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
             End If
+            
         End If
         
         ' Refuerzo arma (atacante)
-        ArmaIndex = .Invent.WeaponEqpObjIndex
-        If ArmaIndex > 0 Then
-            Resist = ObjData(ArmaIndex).Refuerzo
+        WeaponIndex = .Invent.WeaponEqpObjIndex
+        If WeaponIndex > 0 Then
+            WeaponBoost = ObjData(WeaponIndex).Refuerzo
         End If
         
         Lugar = RandomNumber(PartesCuerpo.bCabeza, PartesCuerpo.bTorso)
@@ -1174,36 +1213,39 @@ On Error GoTo Errhandler
             Case PartesCuerpo.bCabeza
             
                 'Si tiene casco absorbe el golpe
-                CascoIndex = UserList(VictimaIndex).Invent.CascoEqpObjIndex
-                If CascoIndex > 0 Then
-                    Obj = ObjData(CascoIndex)
-                    absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
-                    absorbido = absorbido + defbarco - Resist
-                    daño = daño - absorbido
-                    If daño < 0 Then daño = 1
+                HelmetIndex = UserList(VictimaIndex).Invent.CascoEqpObjIndex
+                If HelmetIndex > 0 Then
+                    Obj = ObjData(HelmetIndex)
+                    HeadDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
                 End If
             
             Case Else
-            
+                
+                Dim MinDef As Integer
+                Dim MaxDef As Integer
+                
                 'Si tiene armadura absorbe el golpe
-                ArmaduraIndex = UserList(VictimaIndex).Invent.ArmourEqpObjIndex
-                If ArmaduraIndex > 0 Then
-                    Obj = ObjData(ArmaduraIndex)
-                    Dim Obj2 As ObjData
-                    Dim EscudoIndex As Integer
-                    
-                    EscudoIndex = UserList(VictimaIndex).Invent.EscudoEqpObjIndex
-                    If EscudoIndex Then
-                        Obj2 = ObjData(EscudoIndex)
-                        absorbido = RandomNumber(Obj.MinDef + Obj2.MinDef, Obj.MaxDef + Obj2.MaxDef)
-                    Else
-                        absorbido = RandomNumber(Obj.MinDef, Obj.MaxDef)
-                    End If
-                    absorbido = absorbido + defbarco - Resist
-                    daño = daño - absorbido
-                    If daño < 0 Then daño = 1
+                ArmourIndex = UserList(VictimaIndex).Invent.ArmourEqpObjIndex
+                If ArmourIndex > 0 Then
+                    Obj = ObjData(ArmourIndex)
+                    MinDef = Obj.MinDef
+                    MaxDef = Obj.MaxDef
                 End If
+                
+                ' Si tiene escudo, tambien absorbe el golpe
+                ShieldIndex = UserList(VictimaIndex).Invent.EscudoEqpObjIndex
+                If ShieldIndex > 0 Then
+                    Obj = ObjData(ShieldIndex)
+                    MinDef = MinDef + Obj.MinDef
+                    MaxDef = MaxDef + Obj.MaxDef
+                End If
+                
+                BodyDefense = RandomNumber(MinDef, MaxDef)
+                
         End Select
+        
+        daño = daño + WeaponBoost - HeadDefense - BodyDefense - BoatDefense
+        If daño < 0 Then daño = 1
         
         Call WriteMultiMessage(AtacanteIndex, eMessages.UserHittedUser, UserList(VictimaIndex).Char.CharIndex, Lugar, daño)
         Call WriteMultiMessage(VictimaIndex, eMessages.UserHittedByUser, .Char.CharIndex, Lugar, daño)
@@ -1212,8 +1254,8 @@ On Error GoTo Errhandler
         
         If .flags.Hambre = 0 And .flags.Sed = 0 Then
             'Si usa un arma quizas suba "Combate con armas"
-            If ArmaIndex > 0 Then
-                If ObjData(ArmaIndex).proyectil Then
+            If WeaponIndex > 0 Then
+                If ObjData(WeaponIndex).proyectil Then
                     'es un Arco. Sube Armas a Distancia
                     Call SubirSkill(AtacanteIndex, eSkill.Proyectiles, True)
                     

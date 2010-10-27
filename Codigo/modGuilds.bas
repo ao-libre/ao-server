@@ -155,8 +155,8 @@ Dim GuildIndex  As Integer
     If Not m_EstadoPermiteEntrar(UserIndex, GuildIndex) Then
         
         ' Es el lider, bajamos 1 rango de alineacion
-        If GuildLeader(GuildIndex) = UserList(UserIndex).name Then
-            Call LogClanes(UserList(UserIndex).name & ", líder de " & guilds(GuildIndex).GuildName & " hizo bajar la alienación de su clan.")
+        If GuildLeader(GuildIndex) = UserList(UserIndex).Name Then
+            Call LogClanes(UserList(UserIndex).Name & ", líder de " & guilds(GuildIndex).GuildName & " hizo bajar la alienación de su clan.")
         
             CambioAlineacion = True
             
@@ -165,17 +165,17 @@ Dim GuildIndex  As Integer
                 Call UpdateGuildMembers(GuildIndex)
             Loop Until m_EstadoPermiteEntrar(UserIndex, GuildIndex)
         Else
-            Call LogClanes(UserList(UserIndex).name & " de " & guilds(GuildIndex).GuildName & " es expulsado en validar permanencia.")
+            Call LogClanes(UserList(UserIndex).Name & " de " & guilds(GuildIndex).GuildName & " es expulsado en validar permanencia.")
         
             m_ValidarPermanencia = False
             If SumaAntifaccion Then guilds(GuildIndex).PuntosAntifaccion = guilds(GuildIndex).PuntosAntifaccion + 1
             
             CambioAlineacion = guilds(GuildIndex).PuntosAntifaccion = MAXANTIFACCION
             
-            Call LogClanes(UserList(UserIndex).name & " de " & guilds(GuildIndex).GuildName & _
+            Call LogClanes(UserList(UserIndex).Name & " de " & guilds(GuildIndex).GuildName & _
                 IIf(CambioAlineacion, " SI ", " NO ") & "provoca cambio de alineación. MAXANT:" & CambioAlineacion)
             
-            Call m_EcharMiembroDeClan(-1, UserList(UserIndex).name)
+            Call m_EcharMiembroDeClan(-1, UserList(UserIndex).Name)
             
             ' Llegamos a la maxima cantidad de antifacciones permitidas, bajamos un grado de alineación
             If CambioAlineacion Then
@@ -361,7 +361,7 @@ Dim GI As Integer
     GI = UserList(UserIndex).GuildIndex
     If GI <= 0 Or GI > CANTIDADDECLANES Then Exit Sub
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then Exit Sub
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then Exit Sub
     
     Call guilds(GI).SetURL(Web)
     
@@ -406,11 +406,11 @@ Public Sub ActualizarNoticias(ByVal UserIndex As Integer, ByRef Datos As String)
         
         If GI <= 0 Or GI > CANTIDADDECLANES Then Exit Sub
         
-        If Not m_EsGuildLeader(.name, GI) Then Exit Sub
+        If Not m_EsGuildLeader(.Name, GI) Then Exit Sub
         
         Call guilds(GI).SetGuildNews(Datos)
         
-        Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.name & " ha actualizado las noticias del clan!"))
+        Call SendData(SendTarget.ToDiosesYclan, .GuildIndex, PrepareMessageGuildChat(.Name & " ha actualizado las noticias del clan!"))
     End With
 End Sub
 
@@ -455,7 +455,7 @@ Dim DummyString     As String
             Call .Inicializar(GuildName, CANTIDADDECLANES, Alineacion)
             
             'Damos de alta al clan como nuevo inicializando sus archivos
-            Call .InicializarNuevoClan(UserList(FundadorIndex).name)
+            Call .InicializarNuevoClan(UserList(FundadorIndex).Name)
             
             'seteamos codex y descripcion
             For i = 1 To CantCodex
@@ -463,11 +463,11 @@ Dim DummyString     As String
             Next i
             Call .SetDesc(desc)
             Call .SetGuildNews("Clan creado con alineación: " & Alineacion2String(Alineacion))
-            Call .SetLeader(UserList(FundadorIndex).name)
+            Call .SetLeader(UserList(FundadorIndex).Name)
             Call .SetURL(URL)
             
             '"conectamos" al nuevo miembro a la lista de la clase
-            Call .AceptarNuevoMiembro(UserList(FundadorIndex).name)
+            Call .AceptarNuevoMiembro(UserList(FundadorIndex).Name)
             Call .ConectarMiembro(FundadorIndex)
         End With
         
@@ -566,8 +566,8 @@ Public Function m_PuedeSalirDeClan(ByRef Nombre As String, ByVal GuildIndex As I
     'cuando UI no puede echar a nombre?
     'si no es gm Y no es lider del clan del pj Y no es el mismo que se va voluntariamente
     If UserList(QuienLoEchaUI).flags.Privilegios And PlayerType.User Then
-        If Not m_EsGuildLeader(UCase$(UserList(QuienLoEchaUI).name), GuildIndex) Then
-            If UCase$(UserList(QuienLoEchaUI).name) <> UCase$(Nombre) Then      'si no sale voluntariamente...
+        If Not m_EsGuildLeader(UCase$(UserList(QuienLoEchaUI).Name), GuildIndex) Then
+            If UCase$(UserList(QuienLoEchaUI).Name) <> UCase$(Nombre) Then      'si no sale voluntariamente...
                 Exit Function
             End If
         End If
@@ -856,12 +856,12 @@ Public Function HasFound(ByRef UserName As String) As Boolean
 'Returns true if it's already the founder of other guild
 '***************************************************
 Dim i As Long
-Dim name As String
+Dim Name As String
 
-name = UCase$(UserName)
+Name = UCase$(UserName)
 
 For i = 1 To CANTIDADDECLANES
-    HasFound = (UCase$(guilds(i).Fundador) = name)
+    HasFound = (UCase$(guilds(i).Fundador) = Name)
     If HasFound Then Exit Function
 Next i
 
@@ -884,7 +884,7 @@ Dim GuildIndex      As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GuildIndex) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GuildIndex) Then
         refError = "No eres el líder de tu clan"
         Exit Function
     End If
@@ -936,12 +936,12 @@ Dim i As Long
         End If
         
         
-        If .YaVoto(UserList(UserIndex).name) Then
+        If .YaVoto(UserList(UserIndex).Name) Then
             refError = "Ya has votado, no puedes cambiar tu voto."
             Exit Function
         End If
         
-        Call .ContabilizarVoto(UserList(UserIndex).name, Votado)
+        Call .ContabilizarVoto(UserList(UserIndex).Name, Votado)
         v_UsuarioVota = True
     End With
 
@@ -1046,7 +1046,7 @@ Public Function m_ListaDeMiembrosOnline(ByVal UserIndex As Integer, ByVal GuildI
         
             'No mostramos dioses y admins
             If i <> UserIndex And (UserList(i).flags.Privilegios And priv) Then
-                m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).name & ","
+                m_ListaDeMiembrosOnline = m_ListaDeMiembrosOnline & UserList(i).Name & ","
             End If
             
             i = guilds(GuildIndex).m_Iterador_ProximoUserIndex
@@ -1131,7 +1131,7 @@ Public Sub SendGuildLeaderInfo(ByVal UserIndex As Integer)
         
         MemberList = guilds(GI).GetMemberList()
         
-        If Not m_EsGuildLeader(.name, GI) Then
+        If Not m_EsGuildLeader(.Name, GI) Then
             'Send the guild list instead
             Call WriteGuildMemberInfo(UserIndex, guildList, MemberList)
             Exit Sub
@@ -1258,7 +1258,7 @@ Dim GIG As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1312,7 +1312,7 @@ Dim GIG     As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1367,7 +1367,7 @@ Dim GIG     As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1417,7 +1417,7 @@ Dim GIG     As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1465,7 +1465,7 @@ Dim GIG     As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1538,7 +1538,7 @@ Dim GI              As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1582,7 +1582,7 @@ Dim GI              As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan."
         Exit Function
     End If
@@ -1717,7 +1717,7 @@ Public Function a_DetallesAspirante(ByVal UserIndex As Integer, ByRef Nombre As 
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         Exit Function
     End If
     
@@ -1738,7 +1738,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
     Dim GI          As Integer
     Dim NroAsp      As Integer
     Dim GuildName   As String
-    Dim UserFile    As clsIniReader
+    Dim UserFile    As clsIniManager
     Dim Miembro     As String
     Dim GuildActual As Integer
     Dim list()      As String
@@ -1754,7 +1754,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
         Exit Sub
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         Call Protocol.WriteConsoleMsg(UserIndex, "No eres el líder de tu clan.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
@@ -1786,7 +1786,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
     
     'ahora traemos la info
     
-    Set UserFile = New clsIniReader
+    Set UserFile = New clsIniManager
     
     With UserFile
         .Initialize (CharPath & Personaje & ".chr")
@@ -1818,11 +1818,11 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
 error:
     Set UserFile = Nothing
     If Not (FileExist(CharPath & Personaje & ".chr", vbArchive)) Then
-        Call LogError("El usuario " & UserList(UserIndex).name & " (" & UserIndex & _
+        Call LogError("El usuario " & UserList(UserIndex).Name & " (" & UserIndex & _
                     " ) ha pedido los detalles del personaje " & Personaje & " que no se encuentra.")
     Else
         Call LogError("[" & Err.Number & "] " & Err.description & " En la rutina SendDetallesPersonaje, por el usuario " & _
-                    UserList(UserIndex).name & " (" & UserIndex & " ), pidiendo información sobre el personaje " & Personaje)
+                    UserList(UserIndex).Name & " (" & UserIndex & " ), pidiendo información sobre el personaje " & Personaje)
     End If
 End Sub
 
@@ -1866,15 +1866,15 @@ Dim NuevoGuildIndex     As Integer
         Exit Function
     End If
 
-    ViejoSolicitado = GetVar(CharPath & UserList(UserIndex).name & ".chr", "GUILD", "ASPIRANTEA")
+    ViejoSolicitado = GetVar(CharPath & UserList(UserIndex).Name & ".chr", "GUILD", "ASPIRANTEA")
 
     If LenB(ViejoSolicitado) <> 0 Then
         'borramos la vieja solicitud
         ViejoGuildINdex = CInt(ViejoSolicitado)
         If ViejoGuildINdex <> 0 Then
-            ViejoNroAspirante = guilds(ViejoGuildINdex).NumeroDeAspirante(UserList(UserIndex).name)
+            ViejoNroAspirante = guilds(ViejoGuildINdex).NumeroDeAspirante(UserList(UserIndex).Name)
             If ViejoNroAspirante > 0 Then
-                Call guilds(ViejoGuildINdex).RetirarAspirante(UserList(UserIndex).name, ViejoNroAspirante)
+                Call guilds(ViejoGuildINdex).RetirarAspirante(UserList(UserIndex).Name, ViejoNroAspirante)
             End If
         Else
             'RefError = "Inconsistencia en los clanes, avise a un administrador"
@@ -1882,7 +1882,7 @@ Dim NuevoGuildIndex     As Integer
         End If
     End If
     
-    Call guilds(NuevoGuildIndex).NuevoAspirante(UserList(UserIndex).name, Solicitud)
+    Call guilds(NuevoGuildIndex).NuevoAspirante(UserList(UserIndex).Name, Solicitud)
     a_NuevoAspirante = True
 End Function
 
@@ -1907,7 +1907,7 @@ Dim AspiranteUI     As Integer
         Exit Function
     End If
     
-    If Not m_EsGuildLeader(UserList(UserIndex).name, GI) Then
+    If Not m_EsGuildLeader(UserList(UserIndex).Name, GI) Then
         refError = "No eres el líder de tu clan"
         Exit Function
     End If

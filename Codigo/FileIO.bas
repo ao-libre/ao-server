@@ -46,7 +46,7 @@ Public Sub CargarSpawnList()
     
 End Sub
 
-Function EsAdmin(ByVal name As String) As Boolean
+Function EsAdmin(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -63,7 +63,7 @@ Function EsAdmin(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "Admines", "Admin" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsAdmin = True
             Exit Function
         End If
@@ -72,7 +72,7 @@ Function EsAdmin(ByVal name As String) As Boolean
 
 End Function
 
-Function EsDios(ByVal name As String) As Boolean
+Function EsDios(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -88,7 +88,7 @@ Function EsDios(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "Dioses", "Dios" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsDios = True
             Exit Function
         End If
@@ -96,7 +96,7 @@ Function EsDios(ByVal name As String) As Boolean
     EsDios = False
 End Function
 
-Function EsSemiDios(ByVal name As String) As Boolean
+Function EsSemiDios(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -112,7 +112,7 @@ Function EsSemiDios(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "SemiDioses", "SemiDios" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsSemiDios = True
             Exit Function
         End If
@@ -121,7 +121,7 @@ Function EsSemiDios(ByVal name As String) As Boolean
 
 End Function
 
-Function EsGmEspecial(ByVal name As String) As Boolean
+Function EsGmEspecial(ByVal Name As String) As Boolean
 '***************************************************
 'Author: ZaMa
 'Last Modification: 07/06/2010
@@ -137,7 +137,7 @@ Function EsGmEspecial(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "Especiales", "Especial" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsGmEspecial = True
             Exit Function
         End If
@@ -146,7 +146,7 @@ Function EsGmEspecial(ByVal name As String) As Boolean
 End Function
 
 
-Function EsConsejero(ByVal name As String) As Boolean
+Function EsConsejero(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -162,7 +162,7 @@ Function EsConsejero(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "Consejeros", "Consejero" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsConsejero = True
             Exit Function
         End If
@@ -170,7 +170,7 @@ Function EsConsejero(ByVal name As String) As Boolean
     EsConsejero = False
 End Function
 
-Function EsRolesMaster(ByVal name As String) As Boolean
+Function EsRolesMaster(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -186,7 +186,7 @@ Function EsRolesMaster(ByVal name As String) As Boolean
         NomB = UCase$(GetVar(IniPath & "Server.ini", "RolesMasters", "RM" & WizNum))
         
         If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(name) = NomB Then
+        If UCase$(Name) = NomB Then
             EsRolesMaster = True
             Exit Function
         End If
@@ -194,8 +194,7 @@ Function EsRolesMaster(ByVal name As String) As Boolean
     EsRolesMaster = False
 End Function
 
-
-Public Function TxtDimension(ByVal name As String) As Long
+Public Function TxtDimension(ByVal Name As String) As Long
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -204,7 +203,7 @@ Public Function TxtDimension(ByVal name As String) As Long
 
     Dim N As Integer, cad As String, Tam As Long
     N = FreeFile(1)
-    Open name For Input As #N
+    Open Name For Input As #N
     Tam = 0
     Do While Not EOF(N)
         Tam = Tam + 1
@@ -260,7 +259,7 @@ On Error GoTo Errhandler
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
     Dim Hechizo As Integer
-    Dim Leer As New clsIniReader
+    Dim Leer As New clsIniManager
     
     Call Leer.Initialize(DatPath & "Hechizos.dat")
     
@@ -271,7 +270,7 @@ On Error GoTo Errhandler
     
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumeroHechizos
-    frmCargando.cargar.Value = 0
+    frmCargando.cargar.value = 0
     
     'Llena la lista
     For Hechizo = 1 To NumeroHechizos
@@ -360,7 +359,7 @@ On Error GoTo Errhandler
             .StaRequerido = val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
             
             .Target = val(Leer.GetValue("Hechizo" & Hechizo, "Target"))
-            frmCargando.cargar.Value = frmCargando.cargar.Value + 1
+            frmCargando.cargar.value = frmCargando.cargar.value + 1
             
             .NeedStaff = val(Leer.GetValue("Hechizo" & Hechizo, "NeedStaff"))
             .StaffAffected = CBool(val(Leer.GetValue("Hechizo" & Hechizo, "StaffAffected")))
@@ -425,7 +424,7 @@ Public Sub DoBackUp()
     Call LimpiarMundo
     Call WorldSave
     Call modGuilds.v_RutinaElecciones
-    Call ResetCentinelaInfo     'Reseteamos al centinela
+    'Call ResetCentinelaInfo     'Reseteamos al centinela 'Lo saco porque ahora el reset lo maneja el modCentinela [C4b3z0n]
     
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
@@ -439,15 +438,15 @@ Public Sub DoBackUp()
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\BackUps.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time
+    Print #nfile, Date & " " & Time
     Close #nfile
 End Sub
 
-Public Sub GrabarMapa(ByVal Map As Long, ByVal MAPFILE As String)
+Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 10/08/2010
+'10/08/2010 - Pato: Implemento el clsByteBuffer para el grabado de mapas
 '***************************************************
 
 On Error Resume Next
@@ -456,8 +455,14 @@ On Error Resume Next
     Dim Y As Long
     Dim X As Long
     Dim ByFlags As Byte
-    Dim TempInt As Integer
     Dim LoopC As Long
+    Dim MapWriter As clsByteBuffer
+    Dim InfWriter As clsByteBuffer
+    Dim IniManager As clsIniManager
+    
+    Set MapWriter = New clsByteBuffer
+    Set InfWriter = New clsByteBuffer
+    Set IniManager = New clsIniManager
     
     If FileExist(MAPFILE & ".map", vbNormal) Then
         Kill MAPFILE & ".map"
@@ -470,27 +475,27 @@ On Error Resume Next
     'Open .map file
     FreeFileMap = FreeFile
     Open MAPFILE & ".Map" For Binary As FreeFileMap
-    Seek FreeFileMap, 1
+    
+    Call MapWriter.initializeWriter(FreeFileMap)
     
     'Open .inf file
     FreeFileInf = FreeFile
     Open MAPFILE & ".Inf" For Binary As FreeFileInf
-    Seek FreeFileInf, 1
+    
+    Call InfWriter.initializeWriter(FreeFileInf)
+    
     'map Header
-            
-    Put FreeFileMap, , MapInfo(Map).MapVersion
-    Put FreeFileMap, , MiCabecera
-    Put FreeFileMap, , TempInt
-    Put FreeFileMap, , TempInt
-    Put FreeFileMap, , TempInt
-    Put FreeFileMap, , TempInt
+    Call MapWriter.putInteger(MapInfo(Map).MapVersion)
+        
+    Call MapWriter.putString(MiCabecera.desc, False)
+    Call MapWriter.putLong(MiCabecera.crc)
+    Call MapWriter.putLong(MiCabecera.MagicWord)
+    
+    Call MapWriter.putDouble(0)
     
     'inf Header
-    Put FreeFileInf, , TempInt
-    Put FreeFileInf, , TempInt
-    Put FreeFileInf, , TempInt
-    Put FreeFileInf, , TempInt
-    Put FreeFileInf, , TempInt
+    Call InfWriter.putDouble(0)
+    Call InfWriter.putInteger(0)
     
     'Write .map file
     For Y = YMinMapSize To YMaxMapSize
@@ -504,20 +509,19 @@ On Error Resume Next
                 If .Graphic(4) Then ByFlags = ByFlags Or 8
                 If .trigger Then ByFlags = ByFlags Or 16
                 
-                Put FreeFileMap, , ByFlags
+                Call MapWriter.putByte(ByFlags)
                 
-                Put FreeFileMap, , .Graphic(1)
+                Call MapWriter.putInteger(.Graphic(1))
                 
                 For LoopC = 2 To 4
                     If .Graphic(LoopC) Then _
-                        Put FreeFileMap, , .Graphic(LoopC)
+                        Call MapWriter.putInteger(.Graphic(LoopC))
                 Next LoopC
                 
                 If .trigger Then _
-                    Put FreeFileMap, , CInt(.trigger)
+                    Call MapWriter.putInteger(CInt(.trigger))
                 
                 '.inf file
-                
                 ByFlags = 0
                 
                 If .ObjInfo.ObjIndex > 0 Then
@@ -531,55 +535,69 @@ On Error Resume Next
                 If .NpcIndex Then ByFlags = ByFlags Or 2
                 If .ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
                 
-                Put FreeFileInf, , ByFlags
+                Call InfWriter.putByte(ByFlags)
                 
                 If .TileExit.Map Then
-                    Put FreeFileInf, , .TileExit.Map
-                    Put FreeFileInf, , .TileExit.X
-                    Put FreeFileInf, , .TileExit.Y
+                    Call InfWriter.putInteger(.TileExit.Map)
+                    Call InfWriter.putInteger(.TileExit.X)
+                    Call InfWriter.putInteger(.TileExit.Y)
                 End If
                 
                 If .NpcIndex Then _
-                    Put FreeFileInf, , Npclist(.NpcIndex).Numero
+                    Call InfWriter.putInteger(Npclist(.NpcIndex).Numero)
                 
                 If .ObjInfo.ObjIndex Then
-                    Put FreeFileInf, , .ObjInfo.ObjIndex
-                    Put FreeFileInf, , .ObjInfo.Amount
+                    Call InfWriter.putInteger(.ObjInfo.ObjIndex)
+                    Call InfWriter.putInteger(.ObjInfo.Amount)
                 End If
             End With
         Next X
     Next Y
+    
+    Call MapWriter.saveBuffer
+    Call InfWriter.saveBuffer
     
     'Close .map file
     Close FreeFileMap
 
     'Close .inf file
     Close FreeFileInf
+    
+    Set MapWriter = Nothing
+    Set InfWriter = Nothing
 
     With MapInfo(Map)
-    
         'write .dat file
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Name", .name)
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "MusicNum", .Music)
-        Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "MagiaSinefecto", .MagiaSinEfecto)
-        Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "InviSinEfecto", .InviSinEfecto)
-        Call WriteVar(MAPFILE & ".dat", "mapa" & Map, "ResuSinEfecto", .ResuSinEfecto)
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.X & "-" & .StartPos.Y)
+        Call IniManager.ChangeValue("Mapa" & Map, "Name", .Name)
+        Call IniManager.ChangeValue("Mapa" & Map, "MusicNum", .Music)
+        Call IniManager.ChangeValue("Mapa" & Map, "MagiaSinefecto", .MagiaSinEfecto)
+        Call IniManager.ChangeValue("Mapa" & Map, "InviSinEfecto", .InviSinEfecto)
+        Call IniManager.ChangeValue("Mapa" & Map, "ResuSinEfecto", .ResuSinEfecto)
+        Call IniManager.ChangeValue("Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.X & "-" & .StartPos.Y)
         
     
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Terreno", .Terreno)
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Zona", .Zona)
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Restringir", .Restringir)
-        Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "BackUp", str(.BackUp))
+        Call IniManager.ChangeValue("Mapa" & Map, "Terreno", .Terreno)
+        Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
+        Call IniManager.ChangeValue("Mapa" & Map, "Restringir", .Restringir)
+        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", str(.BackUp))
     
         If .Pk Then
-            Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "0")
+            Call IniManager.ChangeValue("Mapa" & Map, "Pk", "0")
         Else
-            Call WriteVar(MAPFILE & ".dat", "Mapa" & Map, "Pk", "1")
+            Call IniManager.ChangeValue("Mapa" & Map, "Pk", "1")
         End If
+        
+        Call IniManager.ChangeValue("Mapa" & Map, "OcultarSinEfecto", .OcultarSinEfecto)
+        Call IniManager.ChangeValue("Mapa" & Map, "InvocarSinEfecto", .InvocarSinEfecto)
+        Call IniManager.ChangeValue("Mapa" & Map, "NoEncriptarMP", .NoEncriptarMP)
+        Call IniManager.ChangeValue("Mapa" & Map, "RoboNpcsPermitido", .RoboNpcsPermitido)
+    
+        Call IniManager.DumpFile(MAPFILE & ".dat")
     End With
-
+    
+    Set IniManager = Nothing
 End Sub
+
 Sub LoadArmasHerreria()
 '***************************************************
 'Author: Unknown
@@ -730,7 +748,7 @@ On Error GoTo Errhandler
     'Carga la lista de objetos
     '*****************************************************************
     Dim Object As Integer
-    Dim Leer As New clsIniReader
+    Dim Leer As New clsIniManager
     
     Call Leer.Initialize(DatPath & "Obj.dat")
     
@@ -739,7 +757,7 @@ On Error GoTo Errhandler
     
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumObjDatas
-    frmCargando.cargar.Value = 0
+    frmCargando.cargar.value = 0
     
     
     ReDim Preserve ObjData(1 To NumObjDatas) As ObjData
@@ -748,7 +766,7 @@ On Error GoTo Errhandler
     'Llena la lista
     For Object = 1 To NumObjDatas
         With ObjData(Object)
-            .name = Leer.GetValue("OBJ" & Object, "Name")
+            .Name = Leer.GetValue("OBJ" & Object, "Name")
             
             'Pablo (ToxicWaste) Log de Objetos.
             .Log = val(Leer.GetValue("OBJ" & Object, "Log"))
@@ -942,7 +960,7 @@ On Error GoTo Errhandler
             
             .Upgrade = val(Leer.GetValue("OBJ" & Object, "Upgrade"))
             
-            frmCargando.cargar.Value = frmCargando.cargar.Value + 1
+            frmCargando.cargar.value = frmCargando.cargar.value + 1
         End With
     Next Object
     
@@ -961,7 +979,7 @@ Errhandler:
 
 End Sub
 
-Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
+Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 '*************************************************
 'Author: Unknown
 'Last modified: 11/19/2009
@@ -977,9 +995,9 @@ With UserList(UserIndex)
         Next LoopC
         
         For LoopC = 1 To NUMSKILLS
-            .UserSkills(LoopC) = CInt(UserFile.GetValue("SKILLS", "SK" & LoopC))
-            .EluSkills(LoopC) = CInt(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
-            .ExpSkills(LoopC) = CInt(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
+            .UserSkills(LoopC) = val(UserFile.GetValue("SKILLS", "SK" & LoopC))
+            .EluSkills(LoopC) = val(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
+            .ExpSkills(LoopC) = val(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
         Next LoopC
         
         For LoopC = 1 To MAXUSERHECHIZOS
@@ -1028,7 +1046,7 @@ With UserList(UserIndex)
 End With
 End Sub
 
-Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
+Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -1047,7 +1065,7 @@ Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniReade
     
 End Sub
 
-Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
+Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 '*************************************************
 'Author: Unknown
 'Last modified: 19/11/2006
@@ -1089,7 +1107,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
             .Paralizado = CByte(UserFile.GetValue("FLAGS", "Paralizado"))
             
             'Matrix
-            .lastMap = CInt(UserFile.GetValue("FLAGS", "LastMap"))
+            .lastMap = val(UserFile.GetValue("FLAGS", "LastMap"))
         End With
         
         If .flags.Paralizado = 1 Then
@@ -1158,9 +1176,9 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
         'Lista de objetos
         For LoopC = 1 To MAX_INVENTORY_SLOTS
             ln = UserFile.GetValue("Inventory", "Obj" & LoopC)
-            .Invent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-            .Invent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
-            .Invent.Object(LoopC).Equipped = CByte(ReadField(3, ln, 45))
+            .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
+            .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
+            .Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
         Next LoopC
         
         'Obtiene el indice-objeto del arma
@@ -1209,7 +1227,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
             .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
         End If
         
-        .Invent.MochilaEqpSlot = CByte(UserFile.GetValue("Inventory", "MochilaSlot"))
+        .Invent.MochilaEqpSlot = val(UserFile.GetValue("Inventory", "MochilaSlot"))
         If .Invent.MochilaEqpSlot > 0 Then
             .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
         End If
@@ -1229,7 +1247,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniReader)
 
 End Sub
 
-Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String, Optional EmptySpaces As Long = 1024) As String
+Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String, Optional EmptySpaces As Long = 1024) As String
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -1244,7 +1262,7 @@ Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String,
     sSpaces = Space$(EmptySpaces) ' This tells the computer how long the longest string can be
       
       
-    GetPrivateProfileString Main, Var, szReturn, sSpaces, EmptySpaces, file
+    GetPrivateProfileString Main, Var, szReturn, sSpaces, EmptySpaces, File
       
     GetVar = RTrim$(sSpaces)
     GetVar = Left$(GetVar, Len(GetVar) - 1)
@@ -1270,7 +1288,7 @@ Sub CargarBackUp()
         
         frmCargando.cargar.min = 0
         frmCargando.cargar.max = NumMaps
-        frmCargando.cargar.Value = 0
+        frmCargando.cargar.value = 0
         
         MapPath = GetVar(DatPath & "Map.dat", "INIT", "MapPath")
         
@@ -1291,7 +1309,7 @@ Sub CargarBackUp()
             
             Call CargarMapa(Map, tFileName)
             
-            frmCargando.cargar.Value = frmCargando.cargar.Value + 1
+            frmCargando.cargar.value = frmCargando.cargar.value + 1
             DoEvents
         Next Map
     
@@ -1322,7 +1340,7 @@ Sub LoadMapData()
         
         frmCargando.cargar.min = 0
         frmCargando.cargar.max = NumMaps
-        frmCargando.cargar.Value = 0
+        frmCargando.cargar.value = 0
         
         MapPath = GetVar(DatPath & "Map.dat", "INIT", "MapPath")
         
@@ -1335,7 +1353,7 @@ Sub LoadMapData()
             tFileName = App.Path & MapPath & "Mapa" & Map
             Call CargarMapa(Map, tFileName)
             
-            frmCargando.cargar.Value = frmCargando.cargar.Value + 1
+            frmCargando.cargar.value = frmCargando.cargar.value + 1
             DoEvents
         Next Map
     
@@ -1347,92 +1365,102 @@ man:
 
 End Sub
 
-Public Sub CargarMapa(ByVal Map As Long, ByVal MAPFl As String)
+Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 10/08/2010
+'10/08/2010 - Pato: Implemento el clsByteBuffer y el clsIniManager para la carga de mapa
 '***************************************************
 
 On Error GoTo errh
-    Dim FreeFileMap As Long
-    Dim FreeFileInf As Long
-    Dim Y As Long
+    Dim hFile As Integer
     Dim X As Long
+    Dim Y As Long
     Dim ByFlags As Byte
     Dim npcfile As String
-    Dim TempInt As Integer
+    Dim Leer As clsIniManager
+    Dim MapReader As clsByteBuffer
+    Dim InfReader As clsByteBuffer
+    Dim Buff() As Byte
+    
+    Set MapReader = New clsByteBuffer
+    Set InfReader = New clsByteBuffer
+    Set Leer = New clsIniManager
+    
+    npcfile = DatPath & "NPCs.dat"
+    
+    hFile = FreeFile
 
-    FreeFileMap = FreeFile
+    Open MAPFl & ".map" For Binary As #hFile
+        Seek hFile, 1
 
-    Open MAPFl & ".map" For Binary As #FreeFileMap
-    Seek FreeFileMap, 1
-
-    FreeFileInf = FreeFile
+        ReDim Buff(LOF(hFile) - 1) As Byte
+    
+        Get #hFile, , Buff
+    Close hFile
+    
+    Call MapReader.initializeReader(Buff)
 
     'inf
-    Open MAPFl & ".inf" For Binary As #FreeFileInf
-    Seek FreeFileInf, 1
+    Open MAPFl & ".inf" For Binary As #hFile
+        Seek hFile, 1
 
+        ReDim Buff(LOF(hFile) - 1) As Byte
+    
+        Get #hFile, , Buff
+    Close hFile
+    
+    Call InfReader.initializeReader(Buff)
+    
     'map Header
-    Get #FreeFileMap, , MapInfo(Map).MapVersion
-    Get #FreeFileMap, , MiCabecera
-    Get #FreeFileMap, , TempInt
-    Get #FreeFileMap, , TempInt
-    Get #FreeFileMap, , TempInt
-    Get #FreeFileMap, , TempInt
+    MapInfo(Map).MapVersion = MapReader.getInteger
+    
+    MiCabecera.desc = MapReader.getString(Len(MiCabecera.desc))
+    MiCabecera.crc = MapReader.getLong
+    MiCabecera.MagicWord = MapReader.getLong
+    
+    Call MapReader.getDouble
 
     'inf Header
-    Get #FreeFileInf, , TempInt
-    Get #FreeFileInf, , TempInt
-    Get #FreeFileInf, , TempInt
-    Get #FreeFileInf, , TempInt
-    Get #FreeFileInf, , TempInt
+    Call InfReader.getDouble
+    Call InfReader.getInteger
 
     For Y = YMinMapSize To YMaxMapSize
         For X = XMinMapSize To XMaxMapSize
             With MapData(Map, X, Y)
+                '.map file
+                ByFlags = MapReader.getByte
 
-                '.dat file
-                Get FreeFileMap, , ByFlags
+                If ByFlags And 1 Then .Blocked = 1
 
-                If ByFlags And 1 Then
-                    .Blocked = 1
-                End If
-
-                Get FreeFileMap, , .Graphic(1)
+                .Graphic(1) = MapReader.getInteger
 
                 'Layer 2 used?
-                If ByFlags And 2 Then Get FreeFileMap, , .Graphic(2)
+                If ByFlags And 2 Then .Graphic(2) = MapReader.getInteger
 
                 'Layer 3 used?
-                If ByFlags And 4 Then Get FreeFileMap, , .Graphic(3)
+                If ByFlags And 4 Then .Graphic(3) = MapReader.getInteger
 
                 'Layer 4 used?
-                If ByFlags And 8 Then Get FreeFileMap, , .Graphic(4)
+                If ByFlags And 8 Then .Graphic(4) = MapReader.getInteger
 
                 'Trigger used?
-                If ByFlags And 16 Then
-                    'Enums are 4 byte long in VB, so we make sure we only read 2
-                    Get FreeFileMap, , TempInt
-                    .trigger = TempInt
-                End If
+                If ByFlags And 16 Then .trigger = MapReader.getInteger
 
-                Get FreeFileInf, , ByFlags
+                '.inf file
+                ByFlags = InfReader.getByte
 
                 If ByFlags And 1 Then
-                    Get FreeFileInf, , .TileExit.Map
-                    Get FreeFileInf, , .TileExit.X
-                    Get FreeFileInf, , .TileExit.Y
+                    .TileExit.Map = InfReader.getInteger
+                    .TileExit.X = InfReader.getInteger
+                    .TileExit.Y = InfReader.getInteger
                 End If
 
                 If ByFlags And 2 Then
                     'Get and make NPC
-                    Get FreeFileInf, , .NpcIndex
+                     .NpcIndex = InfReader.getInteger
 
                     If .NpcIndex > 0 Then
-                        npcfile = DatPath & "NPCs.dat"
-
                         'Si el npc debe hacer respawn en la pos
                         'original la guardamos
                         If val(GetVar(npcfile, "NPC" & .NpcIndex, "PosOrig")) = 1 Then
@@ -1454,46 +1482,57 @@ On Error GoTo errh
 
                 If ByFlags And 4 Then
                     'Get and make Object
-                    Get FreeFileInf, , .ObjInfo.ObjIndex
-                    Get FreeFileInf, , .ObjInfo.Amount
+                    .ObjInfo.ObjIndex = InfReader.getInteger
+                    .ObjInfo.Amount = InfReader.getInteger
                 End If
             End With
         Next X
     Next Y
-
-
-    Close FreeFileMap
-    Close FreeFileInf
-
+    
+    Call Leer.Initialize(MAPFl & ".dat")
+    
     With MapInfo(Map)
-        .name = GetVar(MAPFl & ".dat", "Mapa" & Map, "Name")
-        .Music = GetVar(MAPFl & ".dat", "Mapa" & Map, "MusicNum")
-        .StartPos.Map = val(ReadField(1, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-        .StartPos.X = val(ReadField(2, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-        .StartPos.Y = val(ReadField(3, GetVar(MAPFl & ".dat", "Mapa" & Map, "StartPos"), Asc("-")))
-        .MagiaSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "MagiaSinEfecto"))
-        .InviSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "InviSinEfecto"))
-        .ResuSinEfecto = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "ResuSinEfecto"))
-        .NoEncriptarMP = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "NoEncriptarMP"))
-
-        .RoboNpcsPermitido = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "RoboNpcsPermitido"))
+        .Name = Leer.GetValue("Mapa" & Map, "Name")
+        .Music = Leer.GetValue("Mapa" & Map, "MusicNum")
+        .StartPos.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
+        .StartPos.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
+        .StartPos.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         
-        If val(GetVar(MAPFl & ".dat", "Mapa" & Map, "Pk")) = 0 Then
+        .MagiaSinEfecto = val(Leer.GetValue("Mapa" & Map, "MagiaSinEfecto"))
+        .InviSinEfecto = val(Leer.GetValue("Mapa" & Map, "InviSinEfecto"))
+        .ResuSinEfecto = val(Leer.GetValue("Mapa" & Map, "ResuSinEfecto"))
+        .OcultarSinEfecto = val(Leer.GetValue("Mapa" & Map, "OcultarSinEfecto"))
+        .InvocarSinEfecto = val(Leer.GetValue("Mapa" & Map, "InvocarSinEfecto"))
+        
+        .NoEncriptarMP = val(Leer.GetValue("Mapa" & Map, "NoEncriptarMP"))
+
+        .RoboNpcsPermitido = val(Leer.GetValue("Mapa" & Map, "RoboNpcsPermitido"))
+        
+        If val(Leer.GetValue("Mapa" & Map, "Pk")) = 0 Then
             .Pk = True
         Else
             .Pk = False
         End If
-
         
-        .Terreno = GetVar(MAPFl & ".dat", "Mapa" & Map, "Terreno")
-        .Zona = GetVar(MAPFl & ".dat", "Mapa" & Map, "Zona")
-        .Restringir = GetVar(MAPFl & ".dat", "Mapa" & Map, "Restringir")
-        .BackUp = val(GetVar(MAPFl & ".dat", "Mapa" & Map, "BACKUP"))
+        .Terreno = Leer.GetValue("Mapa" & Map, "Terreno")
+        .Zona = Leer.GetValue("Mapa" & Map, "Zona")
+        .Restringir = Leer.GetValue("Mapa" & Map, "Restringir")
+        .BackUp = val(Leer.GetValue("Mapa" & Map, "BACKUP"))
     End With
+    
+    Set MapReader = Nothing
+    Set InfReader = Nothing
+    Set Leer = Nothing
+    
+    Erase Buff
 Exit Sub
 
 errh:
     Call LogError("Error cargando mapa: " & Map & " - Pos: " & X & "," & Y & "." & Err.description)
+
+    Set MapReader = Nothing
+    Set InfReader = Nothing
+    Set Leer = Nothing
 End Sub
 
 Sub LoadSini()
@@ -1702,40 +1741,52 @@ Sub LoadSini()
 
 End Sub
 
-Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 'Escribe VAR en un archivo
 '***************************************************
 
-writeprivateprofilestring Main, Var, Value, file
+writeprivateprofilestring Main, Var, value, File
     
 End Sub
 
 Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVal SaveTimeOnline As Boolean = True)
 '*************************************************
 'Author: Unknown
-'Last modified: 12/01/2010 (ZaMa)
+'Last modified: 10/10/2010 (Pato)
 'Saves the Users records
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '11/19/2009: Pato - Save the EluSkills and ExpSkills
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
+'10/10/2010: Pato - Saco el WriteVar e implemento la clase clsIniManager
 '*************************************************
 
 On Error GoTo Errhandler
 
-Dim OldUserHead As Long
+Dim Manager As clsIniManager
+Dim Existe As Boolean
 
 With UserList(UserIndex)
 
     'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
     'clase=0 es el error, porq el enum empieza de 1!!
     If .clase = 0 Or .Stats.ELV = 0 Then
-        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .name)
+        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
         Exit Sub
     End If
     
+    Set Manager = New clsIniManager
+    
+    If FileExist(UserFile) Then
+        Call Manager.Initialize(UserFile)
+        
+        If FileExist(UserFile & ".bk") Then Call Kill(UserFile & ".bk")
+        Name UserFile As UserFile & ".bk"
+        
+        Existe = True
+    End If
     
     If .flags.Mimetizado = 1 Then
         .Char.body = .CharMimetizado.body
@@ -1749,10 +1800,9 @@ With UserList(UserIndex)
         .flags.Ignorado = False
     End If
     
-    If FileExist(UserFile, vbNormal) Then
+    If Existe Then
         If .flags.Muerto = 1 Then
-            OldUserHead = .Char.Head
-            .Char.Head = GetVar(UserFile, "INIT", "Head")
+            .Char.Head = Manager.GetValue("INIT", "Head")
         End If
     '       Kill UserFile
     End If
@@ -1760,80 +1810,80 @@ With UserList(UserIndex)
     Dim LoopC As Integer
     
     
-    Call WriteVar(UserFile, "FLAGS", "Muerto", CStr(.flags.Muerto))
-    Call WriteVar(UserFile, "FLAGS", "Escondido", CStr(.flags.Escondido))
-    Call WriteVar(UserFile, "FLAGS", "Hambre", CStr(.flags.Hambre))
-    Call WriteVar(UserFile, "FLAGS", "Sed", CStr(.flags.Sed))
-    Call WriteVar(UserFile, "FLAGS", "Desnudo", CStr(.flags.Desnudo))
-    Call WriteVar(UserFile, "FLAGS", "Ban", CStr(.flags.Ban))
-    Call WriteVar(UserFile, "FLAGS", "Navegando", CStr(.flags.Navegando))
-    Call WriteVar(UserFile, "FLAGS", "Envenenado", CStr(.flags.Envenenado))
-    Call WriteVar(UserFile, "FLAGS", "Paralizado", CStr(.flags.Paralizado))
+    Call Manager.ChangeValue("FLAGS", "Muerto", CStr(.flags.Muerto))
+    Call Manager.ChangeValue("FLAGS", "Escondido", CStr(.flags.Escondido))
+    Call Manager.ChangeValue("FLAGS", "Hambre", CStr(.flags.Hambre))
+    Call Manager.ChangeValue("FLAGS", "Sed", CStr(.flags.Sed))
+    Call Manager.ChangeValue("FLAGS", "Desnudo", CStr(.flags.Desnudo))
+    Call Manager.ChangeValue("FLAGS", "Ban", CStr(.flags.Ban))
+    Call Manager.ChangeValue("FLAGS", "Navegando", CStr(.flags.Navegando))
+    Call Manager.ChangeValue("FLAGS", "Envenenado", CStr(.flags.Envenenado))
+    Call Manager.ChangeValue("FLAGS", "Paralizado", CStr(.flags.Paralizado))
     'Matrix
-    Call WriteVar(UserFile, "FLAGS", "LastMap", CStr(.flags.lastMap))
+    Call Manager.ChangeValue("FLAGS", "LastMap", CStr(.flags.lastMap))
     
-    Call WriteVar(UserFile, "CONSEJO", "PERTENECE", IIf(.flags.Privilegios And PlayerType.RoyalCouncil, "1", "0"))
-    Call WriteVar(UserFile, "CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
+    Call Manager.ChangeValue("CONSEJO", "PERTENECE", IIf(.flags.Privilegios And PlayerType.RoyalCouncil, "1", "0"))
+    Call Manager.ChangeValue("CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
     
     
-    Call WriteVar(UserFile, "COUNTERS", "Pena", CStr(.Counters.Pena))
-    Call WriteVar(UserFile, "COUNTERS", "SkillsAsignados", CStr(.Counters.AsignedSkills))
+    Call Manager.ChangeValue("COUNTERS", "Pena", CStr(.Counters.Pena))
+    Call Manager.ChangeValue("COUNTERS", "SkillsAsignados", CStr(.Counters.AsignedSkills))
     
-    Call WriteVar(UserFile, "FACCIONES", "EjercitoReal", CStr(.Faccion.ArmadaReal))
-    Call WriteVar(UserFile, "FACCIONES", "EjercitoCaos", CStr(.Faccion.FuerzasCaos))
-    Call WriteVar(UserFile, "FACCIONES", "CiudMatados", CStr(.Faccion.CiudadanosMatados))
-    Call WriteVar(UserFile, "FACCIONES", "CrimMatados", CStr(.Faccion.CriminalesMatados))
-    Call WriteVar(UserFile, "FACCIONES", "rArCaos", CStr(.Faccion.RecibioArmaduraCaos))
-    Call WriteVar(UserFile, "FACCIONES", "rArReal", CStr(.Faccion.RecibioArmaduraReal))
-    Call WriteVar(UserFile, "FACCIONES", "rExCaos", CStr(.Faccion.RecibioExpInicialCaos))
-    Call WriteVar(UserFile, "FACCIONES", "rExReal", CStr(.Faccion.RecibioExpInicialReal))
-    Call WriteVar(UserFile, "FACCIONES", "recCaos", CStr(.Faccion.RecompensasCaos))
-    Call WriteVar(UserFile, "FACCIONES", "recReal", CStr(.Faccion.RecompensasReal))
-    Call WriteVar(UserFile, "FACCIONES", "Reenlistadas", CStr(.Faccion.Reenlistadas))
-    Call WriteVar(UserFile, "FACCIONES", "NivelIngreso", CStr(.Faccion.NivelIngreso))
-    Call WriteVar(UserFile, "FACCIONES", "FechaIngreso", .Faccion.FechaIngreso)
-    Call WriteVar(UserFile, "FACCIONES", "MatadosIngreso", CStr(.Faccion.MatadosIngreso))
-    Call WriteVar(UserFile, "FACCIONES", "NextRecompensa", CStr(.Faccion.NextRecompensa))
+    Call Manager.ChangeValue("FACCIONES", "EjercitoReal", CStr(.Faccion.ArmadaReal))
+    Call Manager.ChangeValue("FACCIONES", "EjercitoCaos", CStr(.Faccion.FuerzasCaos))
+    Call Manager.ChangeValue("FACCIONES", "CiudMatados", CStr(.Faccion.CiudadanosMatados))
+    Call Manager.ChangeValue("FACCIONES", "CrimMatados", CStr(.Faccion.CriminalesMatados))
+    Call Manager.ChangeValue("FACCIONES", "rArCaos", CStr(.Faccion.RecibioArmaduraCaos))
+    Call Manager.ChangeValue("FACCIONES", "rArReal", CStr(.Faccion.RecibioArmaduraReal))
+    Call Manager.ChangeValue("FACCIONES", "rExCaos", CStr(.Faccion.RecibioExpInicialCaos))
+    Call Manager.ChangeValue("FACCIONES", "rExReal", CStr(.Faccion.RecibioExpInicialReal))
+    Call Manager.ChangeValue("FACCIONES", "recCaos", CStr(.Faccion.RecompensasCaos))
+    Call Manager.ChangeValue("FACCIONES", "recReal", CStr(.Faccion.RecompensasReal))
+    Call Manager.ChangeValue("FACCIONES", "Reenlistadas", CStr(.Faccion.Reenlistadas))
+    Call Manager.ChangeValue("FACCIONES", "NivelIngreso", CStr(.Faccion.NivelIngreso))
+    Call Manager.ChangeValue("FACCIONES", "FechaIngreso", .Faccion.FechaIngreso)
+    Call Manager.ChangeValue("FACCIONES", "MatadosIngreso", CStr(.Faccion.MatadosIngreso))
+    Call Manager.ChangeValue("FACCIONES", "NextRecompensa", CStr(.Faccion.NextRecompensa))
     
     
     '¿Fueron modificados los atributos del usuario?
     If Not .flags.TomoPocion Then
         For LoopC = 1 To UBound(.Stats.UserAtributos)
-            Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(.Stats.UserAtributos(LoopC)))
+            Call Manager.ChangeValue("ATRIBUTOS", "AT" & LoopC, CStr(.Stats.UserAtributos(LoopC)))
         Next LoopC
     Else
         For LoopC = 1 To UBound(.Stats.UserAtributos)
             '.Stats.UserAtributos(LoopC) = .Stats.UserAtributosBackUP(LoopC)
-            Call WriteVar(UserFile, "ATRIBUTOS", "AT" & LoopC, CStr(.Stats.UserAtributosBackUP(LoopC)))
+            Call Manager.ChangeValue("ATRIBUTOS", "AT" & LoopC, CStr(.Stats.UserAtributosBackUP(LoopC)))
         Next LoopC
     End If
     
     For LoopC = 1 To UBound(.Stats.UserSkills)
-        Call WriteVar(UserFile, "SKILLS", "SK" & LoopC, CStr(.Stats.UserSkills(LoopC)))
-        Call WriteVar(UserFile, "SKILLS", "ELUSK" & LoopC, CStr(.Stats.EluSkills(LoopC)))
-        Call WriteVar(UserFile, "SKILLS", "EXPSK" & LoopC, CStr(.Stats.ExpSkills(LoopC)))
+        Call Manager.ChangeValue("SKILLS", "SK" & LoopC, CStr(.Stats.UserSkills(LoopC)))
+        Call Manager.ChangeValue("SKILLS", "ELUSK" & LoopC, CStr(.Stats.EluSkills(LoopC)))
+        Call Manager.ChangeValue("SKILLS", "EXPSK" & LoopC, CStr(.Stats.ExpSkills(LoopC)))
     Next LoopC
     
     
-    Call WriteVar(UserFile, "CONTACTO", "Email", .email)
+    Call Manager.ChangeValue("CONTACTO", "Email", .email)
     
-    Call WriteVar(UserFile, "INIT", "Genero", .Genero)
-    Call WriteVar(UserFile, "INIT", "Raza", .raza)
-    Call WriteVar(UserFile, "INIT", "Hogar", .Hogar)
-    Call WriteVar(UserFile, "INIT", "Clase", .clase)
-    Call WriteVar(UserFile, "INIT", "Desc", .desc)
+    Call Manager.ChangeValue("INIT", "Genero", .Genero)
+    Call Manager.ChangeValue("INIT", "Raza", .raza)
+    Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
+    Call Manager.ChangeValue("INIT", "Clase", .clase)
+    Call Manager.ChangeValue("INIT", "Desc", .desc)
     
-    Call WriteVar(UserFile, "INIT", "Heading", CStr(.Char.heading))
+    Call Manager.ChangeValue("INIT", "Heading", CStr(.Char.heading))
     
-    Call WriteVar(UserFile, "INIT", "Head", CStr(.OrigChar.Head))
+    Call Manager.ChangeValue("INIT", "Head", CStr(.OrigChar.Head))
     
     If .flags.Muerto = 0 Then
-        Call WriteVar(UserFile, "INIT", "Body", CStr(.Char.body))
+        Call Manager.ChangeValue("INIT", "Body", CStr(.Char.body))
     End If
     
-    Call WriteVar(UserFile, "INIT", "Arma", CStr(.Char.WeaponAnim))
-    Call WriteVar(UserFile, "INIT", "Escudo", CStr(.Char.ShieldAnim))
-    Call WriteVar(UserFile, "INIT", "Casco", CStr(.Char.CascoAnim))
+    Call Manager.ChangeValue("INIT", "Arma", CStr(.Char.WeaponAnim))
+    Call Manager.ChangeValue("INIT", "Escudo", CStr(.Char.ShieldAnim))
+    Call Manager.ChangeValue("INIT", "Casco", CStr(.Char.CascoAnim))
     
 #If ConUpTime Then
     
@@ -1843,98 +1893,98 @@ With UserList(UserIndex)
         .LogOnTime = Now
         .UpTime = .UpTime + (Abs(Day(TempDate) - 30) * 24 * 3600) + Hour(TempDate) * 3600 + Minute(TempDate) * 60 + Second(TempDate)
         .UpTime = .UpTime
-        Call WriteVar(UserFile, "INIT", "UpTime", .UpTime)
+        Call Manager.ChangeValue("INIT", "UpTime", .UpTime)
     End If
 #End If
     
     'First time around?
-    If GetVar(UserFile, "INIT", "LastIP1") = vbNullString Then
-        Call WriteVar(UserFile, "INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+    If Manager.GetValue("INIT", "LastIP1") = vbNullString Then
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
     'Is it a different ip from last time?
-    ElseIf .ip <> Left$(GetVar(UserFile, "INIT", "LastIP1"), InStr(1, GetVar(UserFile, "INIT", "LastIP1"), " ") - 1) Then
+    ElseIf .ip <> Left$(Manager.GetValue("INIT", "LastIP1"), InStr(1, Manager.GetValue("INIT", "LastIP1"), " ") - 1) Then
         Dim i As Integer
         For i = 5 To 2 Step -1
-            Call WriteVar(UserFile, "INIT", "LastIP" & i, GetVar(UserFile, "INIT", "LastIP" & CStr(i - 1)))
+            Call Manager.ChangeValue("INIT", "LastIP" & i, Manager.GetValue("INIT", "LastIP" & CStr(i - 1)))
         Next i
-        Call WriteVar(UserFile, "INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
     'Same ip, just update the date
     Else
-        Call WriteVar(UserFile, "INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
     End If
     
     
     
-    Call WriteVar(UserFile, "INIT", "Position", .Pos.Map & "-" & .Pos.X & "-" & .Pos.Y)
+    Call Manager.ChangeValue("INIT", "Position", .Pos.Map & "-" & .Pos.X & "-" & .Pos.Y)
     
     
-    Call WriteVar(UserFile, "STATS", "GLD", CStr(.Stats.GLD))
-    Call WriteVar(UserFile, "STATS", "BANCO", CStr(.Stats.Banco))
+    Call Manager.ChangeValue("STATS", "GLD", CStr(.Stats.GLD))
+    Call Manager.ChangeValue("STATS", "BANCO", CStr(.Stats.Banco))
     
-    Call WriteVar(UserFile, "STATS", "MaxHP", CStr(.Stats.MaxHp))
-    Call WriteVar(UserFile, "STATS", "MinHP", CStr(.Stats.MinHp))
+    Call Manager.ChangeValue("STATS", "MaxHP", CStr(.Stats.MaxHp))
+    Call Manager.ChangeValue("STATS", "MinHP", CStr(.Stats.MinHp))
     
-    Call WriteVar(UserFile, "STATS", "MaxSTA", CStr(.Stats.MaxSta))
-    Call WriteVar(UserFile, "STATS", "MinSTA", CStr(.Stats.MinSta))
+    Call Manager.ChangeValue("STATS", "MaxSTA", CStr(.Stats.MaxSta))
+    Call Manager.ChangeValue("STATS", "MinSTA", CStr(.Stats.MinSta))
     
-    Call WriteVar(UserFile, "STATS", "MaxMAN", CStr(.Stats.MaxMAN))
-    Call WriteVar(UserFile, "STATS", "MinMAN", CStr(.Stats.MinMAN))
+    Call Manager.ChangeValue("STATS", "MaxMAN", CStr(.Stats.MaxMAN))
+    Call Manager.ChangeValue("STATS", "MinMAN", CStr(.Stats.MinMAN))
     
-    Call WriteVar(UserFile, "STATS", "MaxHIT", CStr(.Stats.MaxHIT))
-    Call WriteVar(UserFile, "STATS", "MinHIT", CStr(.Stats.MinHIT))
+    Call Manager.ChangeValue("STATS", "MaxHIT", CStr(.Stats.MaxHIT))
+    Call Manager.ChangeValue("STATS", "MinHIT", CStr(.Stats.MinHIT))
     
-    Call WriteVar(UserFile, "STATS", "MaxAGU", CStr(.Stats.MaxAGU))
-    Call WriteVar(UserFile, "STATS", "MinAGU", CStr(.Stats.MinAGU))
+    Call Manager.ChangeValue("STATS", "MaxAGU", CStr(.Stats.MaxAGU))
+    Call Manager.ChangeValue("STATS", "MinAGU", CStr(.Stats.MinAGU))
     
-    Call WriteVar(UserFile, "STATS", "MaxHAM", CStr(.Stats.MaxHam))
-    Call WriteVar(UserFile, "STATS", "MinHAM", CStr(.Stats.MinHam))
+    Call Manager.ChangeValue("STATS", "MaxHAM", CStr(.Stats.MaxHam))
+    Call Manager.ChangeValue("STATS", "MinHAM", CStr(.Stats.MinHam))
     
-    Call WriteVar(UserFile, "STATS", "SkillPtsLibres", CStr(.Stats.SkillPts))
+    Call Manager.ChangeValue("STATS", "SkillPtsLibres", CStr(.Stats.SkillPts))
       
-    Call WriteVar(UserFile, "STATS", "EXP", CStr(.Stats.Exp))
-    Call WriteVar(UserFile, "STATS", "ELV", CStr(.Stats.ELV))
+    Call Manager.ChangeValue("STATS", "EXP", CStr(.Stats.Exp))
+    Call Manager.ChangeValue("STATS", "ELV", CStr(.Stats.ELV))
     
     
-    Call WriteVar(UserFile, "STATS", "ELU", CStr(.Stats.ELU))
-    Call WriteVar(UserFile, "MUERTES", "UserMuertes", CStr(.Stats.UsuariosMatados))
-    'Call WriteVar(UserFile, "MUERTES", "CrimMuertes", CStr(.Stats.CriminalesMatados))
-    Call WriteVar(UserFile, "MUERTES", "NpcsMuertes", CStr(.Stats.NPCsMuertos))
+    Call Manager.ChangeValue("STATS", "ELU", CStr(.Stats.ELU))
+    Call Manager.ChangeValue("MUERTES", "UserMuertes", CStr(.Stats.UsuariosMatados))
+    'Call Manager.ChangeValue( "MUERTES", "CrimMuertes", CStr(.Stats.CriminalesMatados))
+    Call Manager.ChangeValue("MUERTES", "NpcsMuertes", CStr(.Stats.NPCsMuertos))
       
     '[KEVIN]----------------------------------------------------------------------------
     '*******************************************************************************************
-    Call WriteVar(UserFile, "BancoInventory", "CantidadItems", val(.BancoInvent.NroItems))
+    Call Manager.ChangeValue("BancoInventory", "CantidadItems", val(.BancoInvent.NroItems))
     Dim loopd As Integer
     For loopd = 1 To MAX_BANCOINVENTORY_SLOTS
-        Call WriteVar(UserFile, "BancoInventory", "Obj" & loopd, .BancoInvent.Object(loopd).ObjIndex & "-" & .BancoInvent.Object(loopd).Amount)
+        Call Manager.ChangeValue("BancoInventory", "Obj" & loopd, .BancoInvent.Object(loopd).ObjIndex & "-" & .BancoInvent.Object(loopd).Amount)
     Next loopd
     '*******************************************************************************************
     '[/KEVIN]-----------
       
     'Save Inv
-    Call WriteVar(UserFile, "Inventory", "CantidadItems", val(.Invent.NroItems))
+    Call Manager.ChangeValue("Inventory", "CantidadItems", val(.Invent.NroItems))
     
     For LoopC = 1 To MAX_INVENTORY_SLOTS
-        Call WriteVar(UserFile, "Inventory", "Obj" & LoopC, .Invent.Object(LoopC).ObjIndex & "-" & .Invent.Object(LoopC).Amount & "-" & .Invent.Object(LoopC).Equipped)
+        Call Manager.ChangeValue("Inventory", "Obj" & LoopC, .Invent.Object(LoopC).ObjIndex & "-" & .Invent.Object(LoopC).Amount & "-" & .Invent.Object(LoopC).Equipped)
     Next LoopC
     
-    Call WriteVar(UserFile, "Inventory", "WeaponEqpSlot", CStr(.Invent.WeaponEqpSlot))
-    Call WriteVar(UserFile, "Inventory", "ArmourEqpSlot", CStr(.Invent.ArmourEqpSlot))
-    Call WriteVar(UserFile, "Inventory", "CascoEqpSlot", CStr(.Invent.CascoEqpSlot))
-    Call WriteVar(UserFile, "Inventory", "EscudoEqpSlot", CStr(.Invent.EscudoEqpSlot))
-    Call WriteVar(UserFile, "Inventory", "BarcoSlot", CStr(.Invent.BarcoSlot))
-    Call WriteVar(UserFile, "Inventory", "MunicionSlot", CStr(.Invent.MunicionEqpSlot))
-    Call WriteVar(UserFile, "Inventory", "MochilaSlot", CStr(.Invent.MochilaEqpSlot))
+    Call Manager.ChangeValue("Inventory", "WeaponEqpSlot", CStr(.Invent.WeaponEqpSlot))
+    Call Manager.ChangeValue("Inventory", "ArmourEqpSlot", CStr(.Invent.ArmourEqpSlot))
+    Call Manager.ChangeValue("Inventory", "CascoEqpSlot", CStr(.Invent.CascoEqpSlot))
+    Call Manager.ChangeValue("Inventory", "EscudoEqpSlot", CStr(.Invent.EscudoEqpSlot))
+    Call Manager.ChangeValue("Inventory", "BarcoSlot", CStr(.Invent.BarcoSlot))
+    Call Manager.ChangeValue("Inventory", "MunicionSlot", CStr(.Invent.MunicionEqpSlot))
+    Call Manager.ChangeValue("Inventory", "MochilaSlot", CStr(.Invent.MochilaEqpSlot))
     '/Nacho
     
-    Call WriteVar(UserFile, "Inventory", "AnilloSlot", CStr(.Invent.AnilloEqpSlot))
+    Call Manager.ChangeValue("Inventory", "AnilloSlot", CStr(.Invent.AnilloEqpSlot))
     
     
     'Reputacion
-    Call WriteVar(UserFile, "REP", "Asesino", CStr(.Reputacion.AsesinoRep))
-    Call WriteVar(UserFile, "REP", "Bandido", CStr(.Reputacion.BandidoRep))
-    Call WriteVar(UserFile, "REP", "Burguesia", CStr(.Reputacion.BurguesRep))
-    Call WriteVar(UserFile, "REP", "Ladrones", CStr(.Reputacion.LadronesRep))
-    Call WriteVar(UserFile, "REP", "Nobles", CStr(.Reputacion.NobleRep))
-    Call WriteVar(UserFile, "REP", "Plebe", CStr(.Reputacion.PlebeRep))
+    Call Manager.ChangeValue("REP", "Asesino", CStr(.Reputacion.AsesinoRep))
+    Call Manager.ChangeValue("REP", "Bandido", CStr(.Reputacion.BandidoRep))
+    Call Manager.ChangeValue("REP", "Burguesia", CStr(.Reputacion.BurguesRep))
+    Call Manager.ChangeValue("REP", "Ladrones", CStr(.Reputacion.LadronesRep))
+    Call Manager.ChangeValue("REP", "Nobles", CStr(.Reputacion.NobleRep))
+    Call Manager.ChangeValue("REP", "Plebe", CStr(.Reputacion.PlebeRep))
     
     Dim L As Long
     L = (-.Reputacion.AsesinoRep) + _
@@ -1944,13 +1994,13 @@ With UserList(UserIndex)
         .Reputacion.NobleRep + _
         .Reputacion.PlebeRep
     L = L / 6
-    Call WriteVar(UserFile, "REP", "Promedio", CStr(L))
+    Call Manager.ChangeValue("REP", "Promedio", CStr(L))
     
     Dim cad As String
     
     For LoopC = 1 To MAXUSERHECHIZOS
         cad = .Stats.UserHechizos(LoopC)
-        Call WriteVar(UserFile, "HECHIZOS", "H" & LoopC, cad)
+        Call Manager.ChangeValue("HECHIZOS", "H" & LoopC, cad)
     Next
     
     Dim NroMascotas As Long
@@ -1966,15 +2016,15 @@ With UserList(UserIndex)
                 cad = "0"
                 NroMascotas = NroMascotas - 1
             End If
-            Call WriteVar(UserFile, "MASCOTAS", "MAS" & LoopC, cad)
+            Call Manager.ChangeValue("MASCOTAS", "MAS" & LoopC, cad)
         Else
             cad = .MascotasType(LoopC)
-            Call WriteVar(UserFile, "MASCOTAS", "MAS" & LoopC, cad)
+            Call Manager.ChangeValue("MASCOTAS", "MAS" & LoopC, cad)
         End If
     
     Next
     
-    Call WriteVar(UserFile, "MASCOTAS", "NroMascotas", CStr(NroMascotas))
+    Call Manager.ChangeValue("MASCOTAS", "NroMascotas", CStr(NroMascotas))
     
     'Devuelve el head de muerto
     If .flags.Muerto = 1 Then
@@ -1982,10 +2032,17 @@ With UserList(UserIndex)
     End If
 End With
 
+Call Manager.DumpFile(UserFile)
+
+Set Manager = Nothing
+
+If Existe Then Call Kill(UserFile & ".bk")
+
 Exit Sub
 
 Errhandler:
 Call LogError("Error en SaveUser")
+Set Manager = Nothing
 
 End Sub
 
@@ -2011,73 +2068,61 @@ Function criminal(ByVal UserIndex As Integer) As Boolean
 
 End Function
 
-Sub BackUPnPc(NpcIndex As Integer)
+Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 10/09/2010
+'10/09/2010 - Pato: Optimice el BackUp de NPCs
 '***************************************************
 
-    Dim NpcNumero As Integer
-    Dim npcfile As String
     Dim LoopC As Integer
     
-    
-    NpcNumero = Npclist(NpcIndex).Numero
-    
-    'If NpcNumero > 499 Then
-    '    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
-    'Else
-        npcfile = DatPath & "bkNPCs.dat"
-    'End If
+    Print #hFile, "[NPC" & Npclist(NpcIndex).Numero & "]"
     
     With Npclist(NpcIndex)
         'General
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Name", .name)
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Desc", .desc)
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Head", val(.Char.Head))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Body", val(.Char.body))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Heading", val(.Char.heading))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Movement", val(.Movement))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Attackable", val(.Attackable))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Comercia", val(.Comercia))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "TipoItems", val(.TipoItems))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Hostil", val(.Hostile))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "GiveEXP", val(.GiveEXP))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "GiveGLD", val(.GiveGLD))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Hostil", val(.Hostile))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "InvReSpawn", val(.InvReSpawn))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "NpcType", val(.NPCtype))
-        
+        Print #hFile, "Name=" & .Name
+        Print #hFile, "Desc=" & .desc
+        Print #hFile, "Head=" & val(.Char.Head)
+        Print #hFile, "Body=" & val(.Char.body)
+        Print #hFile, "Heading=" & val(.Char.heading)
+        Print #hFile, "Movement=" & val(.Movement)
+        Print #hFile, "Attackable=" & val(.Attackable)
+        Print #hFile, "Comercia=" & val(.Comercia)
+        Print #hFile, "TipoItems=" & val(.TipoItems)
+        Print #hFile, "Hostil=" & val(.Hostile)
+        Print #hFile, "GiveEXP=" & val(.GiveEXP)
+        Print #hFile, "GiveGLD=" & val(.GiveGLD)
+        Print #hFile, "InvReSpawn=" & val(.InvReSpawn)
+        Print #hFile, "NpcType=" & val(.NPCtype)
         
         'Stats
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Alineacion", val(.Stats.Alineacion))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "DEF", val(.Stats.def))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "MaxHit", val(.Stats.MaxHIT))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "MaxHp", val(.Stats.MaxHp))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "MinHit", val(.Stats.MinHIT))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "MinHp", val(.Stats.MinHp))
-        
-        
-        
+        Print #hFile, "Alineacion=" & val(.Stats.Alineacion)
+        Print #hFile, "DEF=" & val(.Stats.def)
+        Print #hFile, "MaxHit=" & val(.Stats.MaxHIT)
+        Print #hFile, "MaxHp=" & val(.Stats.MaxHp)
+        Print #hFile, "MinHit=" & val(.Stats.MinHIT)
+        Print #hFile, "MinHp=" & val(.Stats.MinHp)
         
         'Flags
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "ReSpawn", val(.flags.Respawn))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "BackUp", val(.flags.BackUp))
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "Domable", val(.flags.Domable))
+        Print #hFile, "ReSpawn=" & val(.flags.Respawn)
+        Print #hFile, "BackUp=" & val(.flags.BackUp)
+        Print #hFile, "Domable=" & val(.flags.Domable)
         
         'Inventario
-        Call WriteVar(npcfile, "NPC" & NpcNumero, "NroItems", val(.Invent.NroItems))
+        Print #hFile, "NroItems=" & val(.Invent.NroItems)
         If .Invent.NroItems > 0 Then
-           For LoopC = 1 To MAX_INVENTORY_SLOTS
-                Call WriteVar(npcfile, "NPC" & NpcNumero, "Obj" & LoopC, .Invent.Object(LoopC).ObjIndex & "-" & .Invent.Object(LoopC).Amount)
+           For LoopC = 1 To .Invent.NroItems
+                Print #hFile, "Obj" & LoopC & "=" & .Invent.Object(LoopC).ObjIndex & "-" & .Invent.Object(LoopC).Amount
            Next LoopC
         End If
+        
+        Print #hFile, ""
     End With
 
 End Sub
 
-Sub CargarNpcBackUp(NpcIndex As Integer, ByVal NpcNumber As Integer)
+Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2098,7 +2143,7 @@ Sub CargarNpcBackUp(NpcIndex As Integer, ByVal NpcNumber As Integer)
     With Npclist(NpcIndex)
     
         .Numero = NpcNumber
-        .name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
+        .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
         .desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
         .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
         .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
@@ -2169,14 +2214,14 @@ Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motiv
 '
 '***************************************************
 
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "BannedBy", UserList(UserIndex).name)
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).name, "Reason", motivo)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "BannedBy", UserList(UserIndex).Name)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "Reason", motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
     mifile = FreeFile
     Open App.Path & "\logs\GenteBanned.log" For Append Shared As #mifile
-    Print #mifile, UserList(BannedIndex).name
+    Print #mifile, UserList(BannedIndex).Name
     Close #mifile
 
 End Sub
@@ -2189,7 +2234,7 @@ Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal
 '
 '***************************************************
 
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).name)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).Name)
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned

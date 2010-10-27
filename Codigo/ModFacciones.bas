@@ -417,7 +417,7 @@ Public Sub ExpulsarFaccionReal(ByVal UserIndex As Integer, Optional Expulsado As
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'
+' 09/28/2010 C4b3z0n - Arreglado RT6 Overflow, el Desequipar() del escudo, ponía de parametro el ObjIndex del escudo en vez del EqpSlot.
 '***************************************************
 
 With UserList(UserIndex)
@@ -436,7 +436,7 @@ With UserList(UserIndex)
     
     If .Invent.EscudoEqpObjIndex <> 0 Then
         'Desequipamos el escudo de caos si está equipado
-        If ObjData(.Invent.EscudoEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpObjIndex)
+        If ObjData(.Invent.EscudoEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
     End If
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
@@ -448,7 +448,7 @@ Public Sub ExpulsarFaccionCaos(ByVal UserIndex As Integer, Optional Expulsado As
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'
+' 09/28/2010 C4b3z0n - Arreglado RT6 Overflow, el Desequipar() del escudo, ponía de parametro el ObjIndex del escudo en vez del EqpSlot.
 '***************************************************
 
 With UserList(UserIndex)
@@ -467,7 +467,7 @@ With UserList(UserIndex)
     
     If .Invent.EscudoEqpObjIndex <> 0 Then
         'Desequipamos el escudo de caos si está equipado
-        If ObjData(.Invent.EscudoEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpObjIndex)
+        If ObjData(.Invent.EscudoEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
     End If
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
