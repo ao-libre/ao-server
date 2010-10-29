@@ -559,3 +559,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 12/10/2010 : Fix a un rt 9 cuando un gm que no tenía barca le hacía /revivir a un user que estaba navegando. (Pato)
  * 12/10/2010 : Limpio las variables del inventario que hacen referencia a la barca en DoNavega, sino el pirata que la última barca que equipo era el galeón no explotaba(Y capaz no la tenía equipada :P). (Pato)
  * 26/10/2010 : Ahora las mascotas rapswnean de forma aleatoria. (ZaMa)
+ * 28/10/2010 : Ahora no se manda el mensaje de invi cuando se actualizan las areas y esta navegando el char. (ZaMa)
