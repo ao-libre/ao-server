@@ -237,16 +237,19 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
             If SkillDefensa + SkillTacticas > 0 Then  'Evitamos división por cero
                 ' Chances are rounded
                 ProbRechazo = MaximoInt(10, MinimoInt(90, 100 * SkillDefensa / (SkillDefensa + SkillTacticas)))
-                Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
+            Else
+                ProbRechazo = 10 'Si no tiene skills le dejamos el 10% mínimo
+            End If
+            
+            Rechazo = (RandomNumber(1, 100) <= ProbRechazo)
                 
-                If Rechazo Then
-                    'Se rechazo el ataque con el escudo
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_ESCUDO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
-                    Call WriteMultiMessage(UserIndex, eMessages.BlockedWithShieldUser) 'Call WriteBlockedWithShieldUser(UserIndex)
-                    Call SubirSkill(UserIndex, eSkill.Defensa, True)
-                Else
-                    Call SubirSkill(UserIndex, eSkill.Defensa, False)
-                End If
+            If Rechazo Then
+                'Se rechazo el ataque con el escudo
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_ESCUDO, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y))
+                Call WriteMultiMessage(UserIndex, eMessages.BlockedWithShieldUser) 'Call WriteBlockedWithShieldUser(UserIndex)
+                Call SubirSkill(UserIndex, eSkill.Defensa, True)
+            Else
+                Call SubirSkill(UserIndex, eSkill.Defensa, False)
             End If
         End If
     End If
@@ -431,7 +434,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                     Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
                 End If
                 If .Stats.MaxHp > 100000 Then
-                    Text = UserList(UserIndex).name & " mató un dragón"
+                    Text = UserList(UserIndex).Name & " mató un dragón"
                     PI = UserList(UserIndex).PartyIndex
                     
                     If PI > 0 Then
@@ -440,7 +443,7 @@ Public Sub UserDañoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
                         
                         For i = 1 To PARTY_MAXMEMBERS
                             If MembersOnline(i) > 0 Then
-                                Text = Text & UserList(MembersOnline(i)).name & ", "
+                                Text = Text & UserList(MembersOnline(i)).Name & ", "
                             End If
                         Next i
                         
@@ -883,7 +886,7 @@ On Error GoTo Errhandler
 Errhandler:
     Dim UserName As String
     
-    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
     
     Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description & ". User: " & _
                    UserIndex & "-> " & UserName & ". NpcIndex: " & NpcIndex & ".")
@@ -1075,8 +1078,8 @@ Errhandler:
     Dim AtacanteNick As String
     Dim VictimaNick As String
     
-    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).name
-    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).name
+    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).Name
+    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).Name
     
     Call LogError("Error en UsuarioImpacto. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
              AtacanteIndex & " Nick: " & AtacanteNick & " VictimaIndex: " & VictimaIndex & " Nick: " & VictimaNick)
@@ -1321,8 +1324,8 @@ Errhandler:
     Dim AtacanteNick As String
     Dim VictimaNick As String
     
-    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).name
-    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).name
+    If AtacanteIndex > 0 Then AtacanteNick = UserList(AtacanteIndex).Name
+    If VictimaIndex > 0 Then VictimaNick = UserList(VictimaIndex).Name
     
     Call LogError("Error en UserDañoUser. Error " & Err.Number & " : " & Err.description & " AtacanteIndex: " & _
              AtacanteIndex & " Nick: " & AtacanteNick & " VictimaIndex: " & VictimaIndex & " Nick: " & VictimaNick)
@@ -1406,7 +1409,7 @@ Sub AllMascotasAtacanUser(ByVal victim As Integer, ByVal Maestro As Integer)
     
     For iCount = 1 To MAXMASCOTAS
         If UserList(Maestro).MascotasIndex(iCount) > 0 Then
-            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).name
+            Npclist(UserList(Maestro).MascotasIndex(iCount)).flags.AttackedBy = UserList(victim).Name
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Movement = TipoAI.NPCDEFENSA
             Npclist(UserList(Maestro).MascotasIndex(iCount)).Hostile = 1
         End If
@@ -1966,8 +1969,8 @@ Errhandler:
     Dim AtckName As String
     Dim OwnerName As String
 
-    If AttackerIndex > 0 Then AtckName = UserList(AttackerIndex).name
-    If OwnerUserIndex > 0 Then OwnerName = UserList(OwnerUserIndex).name
+    If AttackerIndex > 0 Then AtckName = UserList(AttackerIndex).Name
+    If OwnerUserIndex > 0 Then OwnerName = UserList(OwnerUserIndex).Name
     
     Call LogError("Error en PuedeAtacarNpc. Erorr: " & Err.Number & " - " & Err.description & " Atacante: " & _
                    AttackerIndex & "-> " & AtckName & ". Owner: " & OwnerUserIndex & "-> " & OwnerName & _
@@ -2090,8 +2093,8 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
                 
                 If RandomNumber(1, 100) < 60 Then
                     UserList(VictimaIndex).flags.Envenenado = 1
-                    Call WriteConsoleMsg(VictimaIndex, "¡¡" & UserList(AtacanteIndex).name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(AtacanteIndex, "¡¡Has envenenado a " & UserList(VictimaIndex).name & "!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimaIndex, "¡¡" & UserList(AtacanteIndex).Name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(AtacanteIndex, "¡¡Has envenenado a " & UserList(VictimaIndex).Name & "!!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
             End If
         End If
@@ -2253,7 +2256,7 @@ On Error GoTo Errhandler
 Errhandler:
 
     Dim UserName As String
-    If UserIndex > 0 Then UserName = UserList(UserIndex).name
+    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
 
     Call LogError("Error en LanzarProyectil " & Err.Number & ": " & Err.description & _
                   ". User: " & UserName & "(" & UserIndex & ")")
