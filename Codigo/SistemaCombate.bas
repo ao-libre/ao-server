@@ -790,8 +790,8 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
     With Npclist(Atacante)
         
         'Es el Rey Preatoriano?
-        If Npclist(Victima).Numero = PRKING_NPC Then
-            If pretorianosVivos > 0 Then
+        If Npclist(Victima).NPCtype = eNPCType.Pretoriano Then
+            If Not ClanPretoriano(Npclist(Victima).ClanIndex).CanAtackMember(Victima) Then
                 Call WriteConsoleMsg(.MaestroUser, "Debes matar al resto del ejército antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
                 .TargetNPC = 0
                 Exit Sub
@@ -1172,6 +1172,11 @@ On Error GoTo Errhandler
     Dim HelmetIndex As Integer
     Dim ArmourIndex As Integer
     Dim ShieldIndex As Integer
+    
+    Dim BarcaIndex As Integer
+    Dim ArmaIndex As Integer
+    Dim CascoIndex As Integer
+    Dim ArmaduraIndex As Integer
     
     daño = CalcularDaño(AtacanteIndex)
     
@@ -1932,7 +1937,7 @@ On Error GoTo Errhandler
             ' Solo pueden apropiarse de npcs los caos, armadas o ciudas.
             If Not criminal(AttackerIndex) Or esCaos(AttackerIndex) Then
                 ' No puede apropiarse de los pretos!
-                If Not (esPretoriano(NpcIndex) <> 0) Then
+                If Npclist(NpcIndex).NPCtype <> eNPCType.Pretoriano Then
                     ' No puede apropiarse del dragon de dd!
                     If Npclist(NpcIndex).NPCtype <> DRAGON Then
                         ' Si es una mascota atacando, no se apropia del npc
@@ -1953,8 +1958,8 @@ On Error GoTo Errhandler
     End With
     
     'Es el Rey Preatoriano?
-    If esPretoriano(NpcIndex) = 4 Then
-        If pretorianosVivos > 0 Then
+    If Npclist(NpcIndex).NPCtype = eNPCType.Pretoriano Then
+        If Not ClanPretoriano(Npclist(NpcIndex).ClanIndex).CanAtackMember(NpcIndex) Then
             Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejército antes de atacar al rey.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Function
         End If

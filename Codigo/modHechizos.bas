@@ -33,167 +33,283 @@ Public Const HELEMENTAL_FUEGO As Integer = 26
 Public Const HELEMENTAL_TIERRA As Integer = 28
 Public Const SUPERANILLO As Integer = 700
 
-Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer)
+Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer, ByVal Spell As Integer, _
+                           Optional ByVal DecirPalabras As Boolean = False, _
+                           Optional ByVal IgnoreVisibilityCheck As Boolean = False)
 '***************************************************
 'Autor: Unknown (orginal version)
 'Last Modification: 13/07/2010
 '13/02/2009: ZaMa - Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla.
 '13/07/2010: ZaMa - Ahora no se contabiliza la muerte de un atacable.
+'21/09/2010: ZaMa - Amplio los tipos de hechizos que pueden lanzar los npcs.
+'21/09/2010: ZaMa - Permito que se ignore el chequeo de visibilidad (pueden atacar a invis u ocultos).
 '***************************************************
-If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
-If UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
 
-' Si no se peude usar magia en el mapa, no le deja hacerlo.
-If MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto > 0 Then Exit Sub
-
-Npclist(NpcIndex).CanAttack = 0
-Dim daño As Integer
-
-With UserList(UserIndex)
-    If Hechizos(Spell).SubeHP = 1 Then
+    If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
     
-        daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
+    With UserList(UserIndex)
     
-        .Stats.MinHp = .Stats.MinHp + daño
-        If .Stats.MinHp > .Stats.MaxHp Then .Stats.MinHp = .Stats.MaxHp
+        ' Doesn't consider if the user is hidden/invisible or not.
+        If Not IgnoreVisibilityCheck Then
+            If UserList(UserIndex).flags.invisible = 1 Or UserList(UserIndex).flags.Oculto = 1 Then Exit Sub
+        End If
         
-        Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteUpdateUserStats(UserIndex)
-    
-    ElseIf Hechizos(Spell).SubeHP = 2 Then
+        ' Si no se peude usar magia en el mapa, no le deja hacerlo.
+        If MapInfo(UserList(UserIndex).Pos.Map).MagiaSinEfecto > 0 Then Exit Sub
         
-        If .flags.Privilegios And PlayerType.User Then
+        Npclist(NpcIndex).CanAttack = 0
+        Dim daño As Integer
+    
+        ' Spell Wav
+        Call SendData(SendTarget.ToPCArea, UserIndex, _
+            PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
+            
+        ' Spell FX
+        Call SendData(SendTarget.ToPCArea, UserIndex, _
+            PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
+
+        ' Spell Words
+        If DecirPalabras Then
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, _
+                PrepareMessageChatOverHead(Hechizos(Spell).PalabrasMagicas, Npclist(NpcIndex).Char.CharIndex, vbCyan))
+        End If
+    
+        ' Heal HP
+        If Hechizos(Spell).SubeHP = 1 Then
         
             daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
-            
-            If .Invent.CascoEqpObjIndex > 0 Then
-                daño = daño - RandomNumber(ObjData(.Invent.CascoEqpObjIndex).DefensaMagicaMin, ObjData(.Invent.CascoEqpObjIndex).DefensaMagicaMax)
-            End If
-            
-            If .Invent.AnilloEqpObjIndex > 0 Then
-                daño = daño - RandomNumber(ObjData(.Invent.AnilloEqpObjIndex).DefensaMagicaMin, ObjData(.Invent.AnilloEqpObjIndex).DefensaMagicaMax)
-            End If
-            
-            If daño < 0 Then daño = 0
-            
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
         
-            .Stats.MinHp = .Stats.MinHp - daño
+            .Stats.MinHp = .Stats.MinHp + daño
+            If .Stats.MinHp > .Stats.MaxHp Then .Stats.MinHp = .Stats.MaxHp
             
             Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
             Call WriteUpdateUserStats(UserIndex)
+        
+        ' Damage
+        ElseIf Hechizos(Spell).SubeHP = 2 Then
             
-            'Muere
-            If .Stats.MinHp < 1 Then
-                .Stats.MinHp = 0
-                If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-                    RestarCriminalidad (UserIndex)
+            If .flags.Privilegios And PlayerType.User Then
+            
+                daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
+                
+                If .Invent.CascoEqpObjIndex > 0 Then
+                    daño = daño - RandomNumber(ObjData(.Invent.CascoEqpObjIndex).DefensaMagicaMin, ObjData(.Invent.CascoEqpObjIndex).DefensaMagicaMax)
                 End If
                 
-                Dim MasterIndex As Integer
-                MasterIndex = Npclist(NpcIndex).MaestroUser
+                If .Invent.AnilloEqpObjIndex > 0 Then
+                    daño = daño - RandomNumber(ObjData(.Invent.AnilloEqpObjIndex).DefensaMagicaMin, ObjData(.Invent.AnilloEqpObjIndex).DefensaMagicaMax)
+                End If
                 
-                '[Barrin 1-12-03]
-                If MasterIndex > 0 Then
-                    
-                    ' No son frags los muertos atacables
-                    If .flags.AtacablePor <> MasterIndex Then
-                        'Store it!
-                        Call Statistics.StoreFrag(MasterIndex, UserIndex)
-                        
-                        Call ContarMuerte(UserIndex, MasterIndex)
+                If daño < 0 Then daño = 0
+            
+                .Stats.MinHp = .Stats.MinHp - daño
+                
+                Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteUpdateUserStats(UserIndex)
+                
+                'Muere
+                If .Stats.MinHp < 1 Then
+                    .Stats.MinHp = 0
+                    If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
+                        RestarCriminalidad (UserIndex)
                     End If
                     
-                    Call ActStats(UserIndex, MasterIndex)
+                    Dim MasterIndex As Integer
+                    MasterIndex = Npclist(NpcIndex).MaestroUser
+                    
+                    '[Barrin 1-12-03]
+                    If MasterIndex > 0 Then
+                        
+                        ' No son frags los muertos atacables
+                        If .flags.AtacablePor <> MasterIndex Then
+                            'Store it!
+                            Call Statistics.StoreFrag(MasterIndex, UserIndex)
+                            
+                            Call ContarMuerte(UserIndex, MasterIndex)
+                        End If
+                        
+                        Call ActStats(UserIndex, MasterIndex)
+                    End If
+                    '[/Barrin]
+                    
+                    Call UserDie(UserIndex)
+                    
                 End If
-                '[/Barrin]
-                
-                Call UserDie(UserIndex)
-                
-            End If
-        
-        End If
-        
-    End If
-    
-    If Hechizos(Spell).Paraliza = 1 Or Hechizos(Spell).Inmoviliza = 1 Then
-        If .flags.Paralizado = 0 Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
-              
-            If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
-                Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                Exit Sub
+            
             End If
             
-            If Hechizos(Spell).Inmoviliza = 1 Then
-                .flags.Inmovilizado = 1
-            End If
-              
-            .flags.Paralizado = 1
-            .Counters.Paralisis = IntervaloParalizado
-              
-            Call WriteParalizeOK(UserIndex)
         End If
-    End If
-    
-    If Hechizos(Spell).Estupidez = 1 Then   ' turbacion
-         If .flags.Estupidez = 0 Then
-              Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
-              Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
-              
+        
+        ' Paralisis/Inmobilize
+        If Hechizos(Spell).Paraliza = 1 Or Hechizos(Spell).Inmoviliza = 1 Then
+        
+            If .flags.Paralizado = 0 Then
+                
                 If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
                     Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
                 End If
-              
-              .flags.Estupidez = 1
-              .Counters.Ceguera = IntervaloInvisible
-                      
-            Call WriteDumb(UserIndex)
-         End If
-    End If
-End With
+                
+                If Hechizos(Spell).Inmoviliza = 1 Then
+                    .flags.Inmovilizado = 1
+                End If
+                  
+                .flags.Paralizado = 1
+                .Counters.Paralisis = IntervaloParalizado
+                  
+                Call WriteParalizeOK(UserIndex)
+                
+            End If
+            
+        End If
+        
+        ' Stupidity
+        If Hechizos(Spell).Estupidez = 1 Then
+             
+            If .flags.Estupidez = 0 Then
+            
+                If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
+                    Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                    Exit Sub
+                End If
+                  
+                .flags.Estupidez = 1
+                .Counters.Estupidez = IntervaloInvisible
+                          
+                Call WriteDumb(UserIndex)
+                
+            End If
+        End If
+        
+        ' Blind
+        If Hechizos(Spell).Ceguera = 1 Then
+             
+            If .flags.Ceguera = 0 Then
+            
+                If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
+                    Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                    Exit Sub
+                End If
+                  
+                .flags.Ceguera = 1
+                .Counters.Ceguera = IntervaloInvisible
+                          
+                Call WriteBlind(UserIndex)
+                
+            End If
+        End If
+        
+        ' Remove Invisibility/Hidden
+        If Hechizos(Spell).RemueveInvisibilidadParcial = 1 Then
+             
+            'Sacamos el efecto de ocultarse
+            If .flags.Oculto = 1 Then
+                .Counters.TiempoOculto = 0
+                .flags.Oculto = 0
+                Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                Call WriteConsoleMsg(UserIndex, "¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
+            Else
+                'sino, solo lo "iniciamos" en la sacada de invisibilidad.
+                Call WriteConsoleMsg(UserIndex, "Comienzas a hacerte visible.", FontTypeNames.FONTTYPE_VENENO)
+                .Counters.Invisibilidad = IntervaloInvisible - 1
+            End If
+        
+        End If
+        
+    End With
 
 End Sub
 
-Sub NpcLanzaSpellSobreNpc(ByVal NpcIndex As Integer, ByVal TargetNPC As Integer, ByVal Spell As Integer)
+Public Sub NpcLanzaSpellSobreNpc(ByVal NpcIndex As Integer, ByVal TargetNPC As Integer, _
+                                 ByVal SpellIndex As Integer, Optional ByVal DecirPalabras As Boolean = False)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 21/09/2010
+'21/09/2010: ZaMa - Now npcs can cast a wider range of spells.
 '***************************************************
 
-'solo hechizos ofensivos!
-
-If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
-Npclist(NpcIndex).CanAttack = 0
-
-Dim daño As Integer
-
-If Hechizos(Spell).SubeHP = 2 Then
+    If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
+    Npclist(NpcIndex).CanAttack = 0
     
-    daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
-    Call SendData(SendTarget.ToNPCArea, TargetNPC, PrepareMessagePlayWave(Hechizos(Spell).WAV, Npclist(TargetNPC).Pos.X, Npclist(TargetNPC).Pos.Y))
-    Call SendData(SendTarget.ToNPCArea, TargetNPC, PrepareMessageCreateFX(Npclist(TargetNPC).Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
+    Dim Danio As Integer
     
-    Npclist(TargetNPC).Stats.MinHp = Npclist(TargetNPC).Stats.MinHp - daño
+    With Npclist(TargetNPC)
     
-    'Muere
-    If Npclist(TargetNPC).Stats.MinHp < 1 Then
-        Npclist(TargetNPC).Stats.MinHp = 0
-        If Npclist(NpcIndex).MaestroUser > 0 Then
-            Call MuereNpc(TargetNPC, Npclist(NpcIndex).MaestroUser)
-        Else
-            Call MuereNpc(TargetNPC, 0)
+    
+        ' Spell sound and FX
+        Call SendData(SendTarget.ToNPCArea, TargetNPC, _
+            PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, .Pos.X, .Pos.Y))
+            
+        Call SendData(SendTarget.ToNPCArea, TargetNPC, _
+            PrepareMessageCreateFX(.Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
+    
+        ' Decir las palabras magicas?
+        If DecirPalabras Then
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, _
+                PrepareMessageChatOverHead(Hechizos(SpellIndex).PalabrasMagicas, Npclist(NpcIndex).Char.CharIndex, vbCyan))
         End If
-    End If
+
     
-End If
+        ' Spell deals damage??
+        If Hechizos(SpellIndex).SubeHP = 2 Then
+            
+            Danio = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
+            
+            ' Deal damage
+            .Stats.MinHp = .Stats.MinHp - Danio
+            
+            'Muere?
+            If .Stats.MinHp < 1 Then
+                .Stats.MinHp = 0
+                If Npclist(NpcIndex).MaestroUser > 0 Then
+                    Call MuereNpc(TargetNPC, Npclist(NpcIndex).MaestroUser)
+                Else
+                    Call MuereNpc(TargetNPC, 0)
+                End If
+            End If
+            
+        ' Spell recovers health??
+        ElseIf Hechizos(SpellIndex).SubeHP = 1 Then
+            
+            Danio = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
+            
+            ' Recovers health
+            .Stats.MinHp = .Stats.MinHp + Danio
+            
+            If .Stats.MinHp > .Stats.MaxHp Then
+                .Stats.MinHp = .Stats.MaxHp
+            End If
+            
+        End If
+        
+        ' Spell Adds/Removes poison?
+        If Hechizos(SpellIndex).Envenena = 1 Then
+            .flags.Envenenado = 1
+        ElseIf Hechizos(SpellIndex).CuraVeneno = 1 Then
+            .flags.Envenenado = 0
+        End If
+
+        ' Spells Adds/Removes Paralisis/Inmobility?
+        If Hechizos(SpellIndex).Paraliza = 1 Then
+            .flags.Paralizado = 1
+            .flags.Inmovilizado = 0
+            .Contadores.Paralisis = IntervaloParalizado
+            
+        ElseIf Hechizos(SpellIndex).Inmoviliza = 1 Then
+            .flags.Inmovilizado = 1
+            .flags.Paralizado = 0
+            .Contadores.Paralisis = IntervaloParalizado
+            
+        ElseIf Hechizos(SpellIndex).RemoverParalisis = 1 Then
+            If .flags.Paralizado = 1 Or .flags.Inmovilizado = 1 Then
+                .flags.Paralizado = 0
+                .flags.Inmovilizado = 0
+                .Contadores.Paralisis = 0
+            End If
+        End If
     
+    End With
+
 End Sub
 
 Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean

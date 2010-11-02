@@ -761,7 +761,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    name As String 'Nombre del obj
+    Name As String 'Nombre del obj
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
@@ -1216,7 +1216,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    name As String
+    Name As String
     ID As Long
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
@@ -1385,7 +1385,7 @@ End Type
 Public Const MAX_NPC_DROPS As Byte = 5
 
 Public Type npc
-    name As String
+    Name As String
     Char As Char 'Define como se vera
     desc As String
 
@@ -1443,6 +1443,9 @@ Public Type npc
     
     'Hogar
     Ciudad As Byte
+    
+    'Para diferenciar entre clanes
+    ClanIndex As Integer
 End Type
 
 '**********************************************************
@@ -1465,7 +1468,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    name As String
+    Name As String
     StartPos As WorldPos
     MapVersion As Integer
     Pk As Boolean
@@ -1779,6 +1782,8 @@ Public Enum eGMCommands
     Ignored                 '/IGNORADO
     CheckSlot               '/SLOT
     SetIniVar               '/SETINIVAR LLAVE CLAVE VALOR
+    CreatePretorianClan     '/CREARPRETORIANOS
+    RemovePretorianClan     '/ELIMINARPRETORIANOS
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1
@@ -1823,3 +1828,7 @@ Public Const GNOMO_M_ULTIMA_CABEZA As Integer = 484
 Public Const GUANTE_HURTO As Integer = 873
 
 Public Const ESPADA_VIKINGA As Integer = 123
+'''''''
+'' Pretorianos
+'''''''
+Public ClanPretoriano() As clsClanPretoriano

@@ -445,8 +445,9 @@ End Sub
 Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: 10/08/2010
+'Last Modification: 28/10/2010
 '10/08/2010 - Pato: Implemento el clsByteBuffer para el grabado de mapas
+'28/10/2010:ZaMa - Ahora no se hace backup de los pretorianos.
 '***************************************************
 
 On Error Resume Next
@@ -459,6 +460,7 @@ On Error Resume Next
     Dim MapWriter As clsByteBuffer
     Dim InfWriter As clsByteBuffer
     Dim IniManager As clsIniManager
+    Dim esPretoriano As Boolean
     
     Set MapWriter = New clsByteBuffer
     Set InfWriter = New clsByteBuffer
@@ -532,7 +534,14 @@ On Error Resume Next
                 End If
     
                 If .TileExit.Map Then ByFlags = ByFlags Or 1
-                If .NpcIndex Then ByFlags = ByFlags Or 2
+                
+                ' No hacer backup de los pretos
+                If .NpcIndex Then
+                    esPretoriano = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano)
+                    
+                    If Not esPretoriano Then ByFlags = ByFlags Or 2
+                End If
+                
                 If .ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
                 
                 Call InfWriter.putByte(ByFlags)
@@ -543,13 +552,15 @@ On Error Resume Next
                     Call InfWriter.putInteger(.TileExit.Y)
                 End If
                 
-                If .NpcIndex Then _
+                If .NpcIndex And Not esPretoriano Then _
                     Call InfWriter.putInteger(Npclist(.NpcIndex).Numero)
                 
                 If .ObjInfo.ObjIndex Then
                     Call InfWriter.putInteger(.ObjInfo.ObjIndex)
                     Call InfWriter.putInteger(.ObjInfo.Amount)
                 End If
+                
+                esPretoriano = False
             End With
         Next X
     Next Y
@@ -1899,17 +1910,17 @@ With UserList(UserIndex)
     
     'First time around?
     If Manager.GetValue("INIT", "LastIP1") = vbNullString Then
-        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
     'Is it a different ip from last time?
     ElseIf .ip <> Left$(Manager.GetValue("INIT", "LastIP1"), InStr(1, Manager.GetValue("INIT", "LastIP1"), " ") - 1) Then
         Dim i As Integer
         For i = 5 To 2 Step -1
             Call Manager.ChangeValue("INIT", "LastIP" & i, Manager.GetValue("INIT", "LastIP" & CStr(i - 1)))
         Next i
-        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
     'Same ip, just update the date
     Else
-        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & Time)
+        Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
     End If
     
     

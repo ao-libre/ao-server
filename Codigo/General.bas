@@ -403,6 +403,9 @@ On Error Resume Next
     frmCargando.Label1(2).Caption = "Cargando ArmadurasFaccionarias.dat"
     Call LoadArmadurasFaccion
     
+    frmCargando.Label1(2).Caption = "Cargando Pretorianos.dat"
+    Call LoadPretorianData
+    
     If BootDelBackUp Then
         
         frmCargando.Label1(2).Caption = "Cargando BackUp"
@@ -508,6 +511,11 @@ On Error Resume Next
     tInicioServer = GetTickCount() And &H7FFFFFFF
     Call InicializaEstadisticas
 
+    ' Inicializa los clanes pretorianos
+    ReDim ClanPretoriano(1 To 2) As clsClanPretoriano
+    Set ClanPretoriano(1) = New clsClanPretoriano ' Clan default
+    Set ClanPretoriano(2) = New clsClanPretoriano ' Invocable por gms
+    
 End Sub
 
 Function FileExist(ByVal File As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
@@ -631,7 +639,7 @@ Errhandler:
 End Sub
 
 
-Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
+Public Sub LogIndex(ByVal Index As Integer, ByVal desc As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -642,8 +650,8 @@ On Error GoTo Errhandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & desc
+    Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
