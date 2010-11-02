@@ -814,9 +814,9 @@ Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
 'Checks if it's a Legal pos for the npc to move to.
 '09/23/2009: Pato - If UserIndex is a AdminInvisible, then is a legal pos.
 '***************************************************
-Dim IsDeadChar As Boolean
-Dim UserIndex As Integer
-Dim IsAdminInvisible As Boolean
+    Dim IsDeadChar As Boolean
+    Dim UserIndex As Integer
+    Dim IsAdminInvisible As Boolean
     
     
     If (Map <= 0 Or Map > NumMaps) Or _

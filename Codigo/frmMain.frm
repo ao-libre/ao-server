@@ -443,7 +443,7 @@ On Error Resume Next
 
 Dim i As Integer
 For i = 1 To MaxUsers
-    Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).name & " UserLogged: " & UserList(i).flags.UserLogged)
+    Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & " UserLogged: " & UserList(i).flags.UserLogged)
 Next i
 
 Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
@@ -828,20 +828,9 @@ If Not haciendoBK And Not EnPausa Then
                 If .flags.Paralizado = 1 Then
                     Call EfectoParalisisNpc(NpcIndex)
                 Else
-                    e_p = esPretoriano(NpcIndex)
-                    If e_p > 0 Then
-                        Select Case e_p
-                            Case 1  ''clerigo
-                                Call PRCLER_AI(NpcIndex)
-                            Case 2  ''mago
-                                Call PRMAGO_AI(NpcIndex)
-                            Case 3  ''cazador
-                                Call PRCAZA_AI(NpcIndex)
-                            Case 4  ''rey
-                                Call PRREY_AI(NpcIndex)
-                            Case 5  ''guerre
-                                Call PRGUER_AI(NpcIndex)
-                        End Select
+                    ' Preto? Tienen ai especial
+                    If .NPCtype = eNPCType.Pretoriano Then
+                        Call ClanPretoriano(.ClanIndex).PerformPretorianAI(NpcIndex)
                     Else
                         'Usamos AI si hay algun user en el mapa
                         If .flags.Inmovilizado = 1 Then
@@ -867,7 +856,7 @@ End If
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).name & " mapa:" & Npclist(NpcIndex).Pos.Map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).Name & " mapa:" & Npclist(NpcIndex).Pos.Map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 

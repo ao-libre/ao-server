@@ -834,11 +834,11 @@ Public Function EnviarDatosASlot(ByVal UserIndex As Integer, ByRef Datos As Stri
 #If UsarQueSocket = 1 Then '**********************************************
     On Error GoTo Err
     
-    Dim Ret As Long
+    Dim ret As Long
     
-    Ret = WsApiEnviar(UserIndex, Datos)
+    ret = WsApiEnviar(UserIndex, Datos)
     
-    If Ret <> 0 And Ret <> WSAEWOULDBLOCK Then
+    If ret <> 0 And ret <> WSAEWOULDBLOCK Then
         ' Close the socket avoiding any critical error
         Call CloseSocketSL(UserIndex)
         Call Cerrar_Usuario(UserIndex)
@@ -865,14 +865,14 @@ Err:
     '--1) WSAEWOULDBLOCK
     '--2) ERROR
     
-    Dim Ret As Long
+    Dim ret As Long
 
-    Ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
+    ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
             
-    If Ret = 1 Then
+    If ret = 1 Then
         ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
         Call .outgoingData.WriteASCIIStringFixed(Datos)
-    ElseIf Ret = 2 Then
+    ElseIf ret = 2 Then
         'Close socket avoiding any critical error
         Call CloseSocketSL(UserIndex)
         Call Cerrar_Usuario(UserIndex)
@@ -1390,7 +1390,7 @@ With UserList(UserIndex)
     N = FreeFile
     'Log
     Open App.Path & "\logs\Connect.log" For Append Shared As #N
-    Print #N, .Name & " ha entrado al juego. UserIndex:" & UserIndex & " " & Time & " " & Date
+    Print #N, .Name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
     Close #N
 
 End With
@@ -1871,7 +1871,7 @@ With UserList(UserIndex)
     
     N = FreeFile(1)
     Open App.Path & "\logs\Connect.log" For Append Shared As #N
-        Print #N, Name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & Time & " " & Date
+        Print #N, Name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
     Close #N
 End With
 

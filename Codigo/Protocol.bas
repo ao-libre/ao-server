@@ -1278,6 +1278,13 @@ With UserList(UserIndex)
         
         Case eGMCommands.SetIniVar               '/SETINIVAR LLAVE CLAVE VALOR
             Call HandleSetIniVar(UserIndex)
+            
+        Case eGMCommands.CreatePretorianClan     '/CREARPRETORIANOS
+            Call HandleCreatePretorianClan(UserIndex)
+         
+        Case eGMCommands.RemovePretorianClan     '/ELIMINARPRETORIANOS
+            Call HandleDeletePretorianClan(UserIndex)
+            
     End Select
 End With
 
@@ -9412,6 +9419,9 @@ On Error GoTo Errhandler
             tUser = NameIndex(UserName)
             OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
             
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
@@ -9486,6 +9496,9 @@ On Error GoTo Errhandler
             tUser = NameIndex(UserName)
             OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
             
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
+            
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo del charfile...", FontTypeNames.FONTTYPE_TALK)
@@ -9556,6 +9569,9 @@ On Error GoTo Errhandler
         
         If (.flags.Privilegios And PlayerType.SemiDios) <> 0 Or UserIsAdmin Then
             Call LogGM(.Name, "/BOV " & UserName)
+            
+            tUser = NameIndex(UserName)
+            OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
             
             tUser = NameIndex(UserName)
             OtherUserIsAdmin = EsDios(UserName) Or EsAdmin(UserName)
@@ -10638,12 +10654,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         Dim Radio As Byte
         
-        mapa = .incomingData.ReadInteger()
+        Mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         Radio = .incomingData.ReadByte()
@@ -10652,9 +10668,9 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call LogGM(.Name, "/CT " & mapa & "," & X & "," & Y & "," & Radio)
+        Call LogGM(.Name, "/CT " & Mapa & "," & X & "," & Y & "," & Radio)
         
-        If Not MapaValido(mapa) Or Not InMapBounds(mapa, X, Y) Then _
+        If Not MapaValido(Mapa) Or Not InMapBounds(Mapa, X, Y) Then _
             Exit Sub
         
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
@@ -10663,12 +10679,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then _
             Exit Sub
         
-        If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
+        If MapData(Mapa, X, Y).ObjInfo.ObjIndex > 0 Then
             Call WriteConsoleMsg(UserIndex, "Hay un objeto en el piso en ese lugar.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        If MapData(mapa, X, Y).TileExit.Map > 0 Then
+        If MapData(Mapa, X, Y).TileExit.Map > 0 Then
             Call WriteConsoleMsg(UserIndex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -10679,7 +10695,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.ObjIndex = TELEP_OBJ_INDEX + Radio
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
-            .TileExit.Map = mapa
+            .TileExit.Map = Mapa
             .TileExit.X = X
             .TileExit.Y = Y
         End With
@@ -10700,7 +10716,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
 '
 '***************************************************
     With UserList(UserIndex)
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
@@ -10710,19 +10726,19 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         '/dt
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        mapa = .flags.TargetMap
+        Mapa = .flags.TargetMap
         X = .flags.TargetX
         Y = .flags.TargetY
         
-        If Not InMapBounds(mapa, X, Y) Then Exit Sub
+        If Not InMapBounds(Mapa, X, Y) Then Exit Sub
         
-        With MapData(mapa, X, Y)
+        With MapData(Mapa, X, Y)
             If .ObjInfo.ObjIndex = 0 Then Exit Sub
             
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(UserIndex).Name, "/DT: " & mapa & "," & X & "," & Y)
+                Call LogGM(UserList(UserIndex).Name, "/DT: " & Mapa & "," & X & "," & Y)
                 
-                Call EraseObj(.ObjInfo.Amount, mapa, X, Y)
+                Call EraseObj(.ObjInfo.Amount, Mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
                     Call EraseObj(1, .TileExit.Map, .TileExit.X, .TileExit.Y)
@@ -10836,24 +10852,24 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim midiID As Byte
-        Dim mapa As Integer
+        Dim Mapa As Integer
         
         midiID = .incomingData.ReadByte
-        mapa = .incomingData.ReadInteger
+        Mapa = .incomingData.ReadInteger
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
             'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(mapa, 50, 50) Then
-                mapa = .Pos.Map
+            If Not InMapBounds(Mapa, 50, 50) Then
+                Mapa = .Pos.Map
             End If
         
             If midiID = 0 Then
                 'Ponemos el default del mapa
-                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
             Else
                 'Ponemos el pedido por el GM
-                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(midiID))
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(midiID))
             End If
         End If
     End With
@@ -10880,26 +10896,26 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim waveID As Byte
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
         waveID = .incomingData.ReadByte()
-        mapa = .incomingData.ReadInteger()
+        Mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
         'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(mapa, X, Y) Then
-                mapa = .Pos.Map
+            If Not InMapBounds(Mapa, X, Y) Then
+                Mapa = .Pos.Map
                 X = .Pos.X
                 Y = .Pos.Y
             End If
             
             'Ponemos el pedido por el GM
-            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID, X, Y))
+            Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayWave(waveID, X, Y))
         End If
     End With
 End Sub
@@ -13231,7 +13247,7 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
     End If
     
     Dim NoOcultar As Byte
-    Dim mapa As Integer
+    Dim Mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13242,14 +13258,14 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            mapa = .Pos.Map
+            Mapa = .Pos.Map
             
-            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & mapa & ".")
+            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & Mapa & ".")
             
-            MapInfo(mapa).OcultarSinEfecto = NoOcultar
+            MapInfo(Mapa).OcultarSinEfecto = NoOcultar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "OcultarSinEfecto", NoOcultar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "OcultarSinEfecto", NoOcultar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
@@ -13273,7 +13289,7 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
     End If
     
     Dim NoInvocar As Byte
-    Dim mapa As Integer
+    Dim Mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13284,14 +13300,14 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            mapa = .Pos.Map
+            Mapa = .Pos.Map
             
-            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido invocar en el mapa " & mapa & ".")
+            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido invocar en el mapa " & Mapa & ".")
             
-            MapInfo(mapa).InvocarSinEfecto = NoInvocar
+            MapInfo(Mapa).InvocarSinEfecto = NoInvocar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "InvocarSinEfecto", NoInvocar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "InvocarSinEfecto", NoInvocar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
@@ -13653,8 +13669,8 @@ End Sub
 Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/24/06
-'
+'Last Modification: 26/09/2010
+'26/09/2010: ZaMa - Ya no se pueden crear npcs pretorianos.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -13670,6 +13686,11 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         NpcIndex = .incomingData.ReadInteger()
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        If NpcIndex >= 900 Then
+            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CrearClanPretoriano.", FontTypeNames.FONTTYPE_WARNING)
+            Exit Sub
+        End If
         
         NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
         
@@ -13688,8 +13709,8 @@ End Sub
 Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 12/24/06
-'
+'Last Modification: 26/09/2010
+'26/09/2010: ZaMa - Ya no se pueden crear npcs pretorianos.
 '***************************************************
     If UserList(UserIndex).incomingData.length < 3 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -13703,6 +13724,11 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         Dim NpcIndex As Integer
         
         NpcIndex = .incomingData.ReadInteger()
+        
+        If NpcIndex >= 900 Then
+            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CrearClanPretoriano.", FontTypeNames.FONTTYPE_WARNING)
+            Exit Sub
+        End If
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
@@ -14386,6 +14412,119 @@ On Error GoTo 0
 End Sub
 
 ''
+' Handle the "CreatePretorianClan" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleCreatePretorianClan(ByVal UserIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 29/10/2010
+'***************************************************
+
+On Error GoTo Errhandler
+
+    Dim Map As Integer
+    Dim X As Byte
+    Dim Y As Byte
+    Dim index As Long
+    
+    With UserList(UserIndex)
+        
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Map = .incomingData.ReadInteger()
+        X = .incomingData.ReadByte()
+        Y = .incomingData.ReadByte()
+        
+        ' User Admin?
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) = 0 Then Exit Sub
+        
+        ' Valid pos?
+        If Not InMapBounds(Map, X, Y) Then
+            Call WriteConsoleMsg(UserIndex, "Posición inválida.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
+        ' Choose pretorian clan index
+        If Map = MAPA_PRETORIANO Then
+            index = 1 ' Default clan
+        Else
+            index = 2 ' Custom Clan
+        End If
+            
+        ' Is already active any clan?
+        If Not ClanPretoriano(index).Active Then
+            
+            If Not ClanPretoriano(index).SpawnClan(Map, X, Y, index) Then
+                Call WriteConsoleMsg(UserIndex, "La posición no es apropiada para crear el clan", FontTypeNames.FONTTYPE_INFO)
+            End If
+        
+        Else
+            Call WriteConsoleMsg(UserIndex, "El clan pretoriano se encuentra activo en el mapa " & _
+                ClanPretoriano(index).ClanMap & ". Utilice /EliminarPretorianos MAPA y reintente.", FontTypeNames.FONTTYPE_INFO)
+        End If
+    
+    End With
+
+    Exit Sub
+
+Errhandler:
+    Call LogError("Error en HandleCreatePretorianClan. Error: " & Err.Number & " - " & Err.description)
+End Sub
+
+''
+' Handle the "CreatePretorianClan" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleDeletePretorianClan(ByVal UserIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 29/10/2010
+'***************************************************
+
+On Error GoTo Errhandler
+    
+    Dim Map As Integer
+    Dim index As Long
+    
+    With UserList(UserIndex)
+        
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Map = .incomingData.ReadInteger()
+        
+        ' User Admin?
+        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) = 0 Then Exit Sub
+        
+        ' Valid map?
+        If Map < 1 Or Map > NumMaps Then
+            Call WriteConsoleMsg(UserIndex, "Mapa inválido.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+    
+        For index = 1 To UBound(ClanPretoriano)
+         
+            ' Search for the clan to be deleted
+            If ClanPretoriano(index).ClanMap = Map Then
+                ClanPretoriano(index).DeleteClan
+                Exit For
+            End If
+        
+        Next index
+    
+    End With
+
+    Exit Sub
+
+Errhandler:
+    Call LogError("Error en HandleDeletePretorianClan. Error: " & Err.Number & " - " & Err.description)
+End Sub
+
+''
 ' Writes the "Logged" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -14398,7 +14537,11 @@ Public Sub WriteLoggedMessage(ByVal UserIndex As Integer)
 'Writes the "Logged" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo Errhandler
-    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.Logged)
+    With UserList(UserIndex)
+        Call .outgoingData.WriteByte(ServerPacketID.Logged)
+    
+        Call .outgoingData.WriteByte(.clase)
+    End With
 Exit Sub
 
 Errhandler:
@@ -16506,7 +16649,6 @@ On Error GoTo Errhandler
     
     With UserList(UserIndex)
         Call .outgoingData.WriteByte(ServerPacketID.SendSkills)
-        Call .outgoingData.WriteByte(.clase)
         
         For i = 1 To NUMSKILLS
             Call .outgoingData.WriteByte(UserList(UserIndex).Stats.UserSkills(i))

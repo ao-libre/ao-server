@@ -90,51 +90,13 @@ On Error GoTo Errhandler
     Dim MiNPC As npc
     MiNPC = Npclist(NpcIndex)
     Dim EraCriminal As Boolean
-    Dim IsPretoriano As Boolean
     Dim PretorianoIndex As Integer
    
-    ' Pretoriano?
-    PretorianoIndex = esPretoriano(NpcIndex)
-    If PretorianoIndex <> 0 Then
-        
-        IsPretoriano = True
-        
-        'Solo nos importa si fue matado en el mapa pretoriano.
-        If Npclist(NpcIndex).Pos.Map = MAPA_PRETORIANO Then
-            
-            ' Es el rey?
-            If (PretorianoIndex = 4) Then
-            
-                'seteamos todos estos 'flags' acorde para que cambien solos de alcoba
-                Dim i As Integer
-                Dim j As Integer
-                Dim NPCI As Integer
-            
-                For i = 8 To 90
-                    For j = 8 To 90
-                    
-                        NPCI = MapData(Npclist(NpcIndex).Pos.Map, i, j).NpcIndex
-                        If NPCI > 0 Then
-                            If esPretoriano(NPCI) > 0 And NPCI <> NpcIndex Then
-                                If Npclist(NpcIndex).Pos.X > 50 Then
-                                    If Npclist(NPCI).Pos.X > 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 1
-                                Else
-                                    If Npclist(NPCI).Pos.X <= 50 Then Npclist(NPCI).Invent.ArmourEqpSlot = 5
-                                End If
-                            End If
-                        End If
-                    Next j
-                Next i
-                Call CrearClanPretoriano(Npclist(NpcIndex).Pos.X)
-                
-            ' Vasallo del rey
-            Else
-                Npclist(NpcIndex).Invent.ArmourEqpSlot = 0
-                pretorianosVivos = pretorianosVivos - 1
-            End If
-        End If
+   ' Es pretoriano?
+    If MiNPC.NPCtype = eNPCType.Pretoriano Then
+        Call ClanPretoriano(MiNPC.ClanIndex).MuerePretoriano(NpcIndex)
     End If
-   
+      
     'Quitamos el npc
     Call QuitarNPC(NpcIndex)
     
@@ -239,7 +201,7 @@ On Error GoTo Errhandler
    
     If MiNPC.MaestroUser = 0 Then
         'Tiramos el inventario
-        Call NPC_TIRAR_ITEMS(MiNPC, IsPretoriano)
+        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano)
         'ReSpawn o no
         Call ReSpawnNpc(MiNPC)
     End If
@@ -401,6 +363,8 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         .Veneno = 0
         .desc = vbNullString
         
+        .ClanIndex = 0
+        
         Dim j As Long
         For j = 1 To .NroSpells
             .Spells(j) = 0
@@ -505,7 +469,8 @@ Private Function TestSpawnTrigger(Pos As WorldPos, Optional PuedeAgua As Boolean
     
 End Function
 
-Sub CrearNPC(NroNPC As Integer, mapa As Integer, OrigPos As WorldPos)
+Public Function CrearNPC(NroNPC As Integer, mapa As Integer, OrigPos As WorldPos, _
+                         Optional ByVal CustomHead As Integer) As Integer
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -530,7 +495,11 @@ Dim Y As Integer
 
     nIndex = OpenNPC(NroNPC) 'Conseguimos un indice
     
-    If nIndex > MAXNPCS Then Exit Sub
+    If nIndex > MAXNPCS Then Exit Function
+    
+    ' Cabeza customizada
+    If CustomHead <> 0 Then Npclist(nIndex).Char.Head = CustomHead
+    
     PuedeAgua = Npclist(nIndex).flags.AguaValida
     PuedeTierra = IIf(Npclist(nIndex).flags.TierraInvalida = 1, False, True)
     
@@ -590,7 +559,7 @@ Dim Y As Integer
                     Npclist(nIndex).Pos.X = X
                     Npclist(nIndex).Pos.Y = Y
                     Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
-                    Exit Sub
+                    Exit Function
                 Else
                     altpos.X = 50
                     altpos.Y = 50
@@ -600,11 +569,11 @@ Dim Y As Integer
                         Npclist(nIndex).Pos.X = newpos.X
                         Npclist(nIndex).Pos.Y = newpos.Y
                         Call MakeNPCChar(True, newpos.Map, nIndex, newpos.Map, newpos.X, newpos.Y)
-                        Exit Sub
+                        Exit Function
                     Else
                         Call QuitarNPC(nIndex)
                         Call LogError(MAXSPAWNATTEMPS & " iteraciones en CrearNpc Mapa:" & mapa & " NroNpc:" & NroNPC)
-                        Exit Sub
+                        Exit Function
                     End If
                 End If
             End If
@@ -618,8 +587,10 @@ Dim Y As Integer
             
     'Crea el NPC
     Call MakeNPCChar(True, Map, nIndex, Map, X, Y)
-            
-End Sub
+    
+    CrearNPC = nIndex
+    
+End Function
 
 Public Sub MakeNPCChar(ByVal toMap As Boolean, sndIndex As Integer, NpcIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
 '***************************************************
@@ -696,15 +667,17 @@ NumChars = NumChars - 1
 
 End Sub
 
-Public Sub MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte)
+Public Function MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte) As Boolean
 '***************************************************
 'Autor: Unknown (orginal version)
 'Last Modification: 06/04/2009
 '06/04/2009: ZaMa - Now npcs can force to change position with dead character
 '01/08/2009: ZaMa - Now npcs can't force to chance position with a dead character if that means to change the terrain the character is in
+'26/09/2010: ZaMa - Turn sub into function to know if npc has moved or not.
 '***************************************************
 
 On Error GoTo errh
+
     Dim nPos As WorldPos
     Dim UserIndex As Integer
     
@@ -713,19 +686,19 @@ On Error GoTo errh
         Call HeadtoPos(nHeading, nPos)
         
         ' es una posicion legal
-        If LegalPosNPC(.Pos.Map, nPos.X, nPos.Y, .flags.AguaValida = 1, .MaestroUser <> 0) Then
+        If LegalPosNPC(nPos.Map, nPos.X, nPos.Y, .flags.AguaValida = 1, .MaestroUser <> 0) Then
             
-            If .flags.AguaValida = 0 And HayAgua(.Pos.Map, nPos.X, nPos.Y) Then Exit Sub
-            If .flags.TierraInvalida = 1 And Not HayAgua(.Pos.Map, nPos.X, nPos.Y) Then Exit Sub
+            If .flags.AguaValida = 0 And HayAgua(.Pos.Map, nPos.X, nPos.Y) Then Exit Function
+            If .flags.TierraInvalida = 1 And Not HayAgua(.Pos.Map, nPos.X, nPos.Y) Then Exit Function
             
             UserIndex = MapData(.Pos.Map, nPos.X, nPos.Y).UserIndex
             ' Si hay un usuario a donde se mueve el npc, entonces esta muerto
             If UserIndex > 0 Then
                 
                 ' No se traslada caspers de agua a tierra
-                If HayAgua(.Pos.Map, nPos.X, nPos.Y) And Not HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then Exit Sub
+                If HayAgua(.Pos.Map, nPos.X, nPos.Y) And Not HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then Exit Function
                 ' No se traslada caspers de tierra a agua
-                If Not HayAgua(.Pos.Map, nPos.X, nPos.Y) And HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then Exit Sub
+                If Not HayAgua(.Pos.Map, nPos.X, nPos.Y) And HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then Exit Function
                 
                 With UserList(UserIndex)
                     ' Actualizamos posicion y mapa
@@ -749,6 +722,9 @@ On Error GoTo errh
             MapData(.Pos.Map, nPos.X, nPos.Y).NpcIndex = NpcIndex
             Call CheckUpdateNeededNpc(NpcIndex, nHeading)
         
+            ' Npc has moved
+            MoveNPCChar = True
+        
         ElseIf .MaestroUser = 0 Then
             If .Movement = TipoAI.NpcPathfinding Then
                 'Someone has blocked the npc's way, we must to seek a new path!
@@ -756,11 +732,12 @@ On Error GoTo errh
             End If
         End If
     End With
-Exit Sub
+    
+    Exit Function
 
 errh:
-    LogError ("Error en move npc " & NpcIndex)
-End Sub
+    LogError ("Error en move npc " & NpcIndex & ". Error: " & Err.Number & " - " & Err.description)
+End Function
 
 Function NextOpenNPC() As Integer
 '***************************************************
@@ -824,7 +801,7 @@ Dim Map As Integer
 Dim X As Integer
 Dim Y As Integer
 
-nIndex = OpenNPC(NpcIndex, Respawn)   'Conseguimos un indice
+nIndex = OpenNPC(NpcIndex, Respawn)    'Conseguimos un indice
 
 If nIndex > MAXNPCS Then
     SpawnNpc = 0

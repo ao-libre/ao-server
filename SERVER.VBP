@@ -62,6 +62,7 @@ Module=Protocol; Codigo\Protocol.bas
 Module=modSendData; Codigo\modSendData.bas
 Module=Characters; Codigo\Characters.bas
 Module=modForum; Codigo\modForum.bas
+Class=clsClanPretoriano; Codigo\clsClanPretoriano.cls
 Class=clsByteBuffer; Codigo\clsByteBuffer.cls
 Class=clsIniManager; Codigo\clsIniManager.cls
 IconForm="frmMain"
