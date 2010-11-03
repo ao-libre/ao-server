@@ -1632,7 +1632,8 @@ Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, _
 '23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
 '18/09/2010: ZaMa - Aplico optimizacion de busqueda de tile libre en forma de rombo.
 '**************************************************************
-    
+On Error GoTo Errhandler
+
     Dim Found As Boolean
     Dim LoopC As Integer
     Dim tX As Long
@@ -1672,6 +1673,10 @@ Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, _
         nPos.Y = 0
     End If
     
+    Exit Sub
+    
+Errhandler:
+    Call LogError("Error en Tilelibre. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
 Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
@@ -2281,17 +2286,17 @@ Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGM(UserIndex) Then Exit Sub
         
-        Dim mapa As Integer
-        mapa = .Pos.Map
+        Dim Mapa As Integer
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa).Pk = False Then Exit Sub
+        If MapInfo(Mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0

@@ -29,7 +29,7 @@ Sub IniciarDeposito(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 'Hacemos un Update del inventario del usuario
 Call UpdateBanUserInv(True, UserIndex, 0)
@@ -39,7 +39,7 @@ Call WriteUpdateUserStats(UserIndex)
 Call WriteBankInit(UserIndex)
 UserList(UserIndex).flags.Comerciando = True
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -97,7 +97,7 @@ Sub UserRetiraItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantida
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 
 If Cantidad < 1 Then Exit Sub
@@ -117,7 +117,7 @@ Call WriteUpdateUserStats(UserIndex)
         'Actualizamos la ventana de comercio
         Call UpdateVentanaBanco(UserIndex)
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -220,7 +220,7 @@ Sub UserDepositaItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Ca
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     If UserList(UserIndex).Invent.Object(Item).Amount > 0 And Cantidad > 0 Then
         If Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
         
@@ -236,7 +236,7 @@ On Error GoTo Errhandler
     
     'Actualizamos la ventana del banco
     Call UpdateVentanaBanco(UserIndex)
-Errhandler:
+ErrHandler:
 End Sub
 
 Sub UserDejaObj(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal Cantidad As Integer)
@@ -306,12 +306,12 @@ Sub SendUserBovedaTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
 On Error Resume Next
 Dim j As Integer
 
-Call WriteConsoleMsg(sendIndex, UserList(UserIndex).name, FontTypeNames.FONTTYPE_INFO)
+Call WriteConsoleMsg(sendIndex, UserList(UserIndex).Name, FontTypeNames.FONTTYPE_INFO)
 Call WriteConsoleMsg(sendIndex, "Tiene " & UserList(UserIndex).BancoInvent.NroItems & " objetos.", FontTypeNames.FONTTYPE_INFO)
 
 For j = 1 To MAX_BANCOINVENTORY_SLOTS
     If UserList(UserIndex).BancoInvent.Object(j).ObjIndex > 0 Then
-        Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(UserList(UserIndex).BancoInvent.Object(j).ObjIndex).name & " Cantidad:" & UserList(UserIndex).BancoInvent.Object(j).Amount, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(UserList(UserIndex).BancoInvent.Object(j).ObjIndex).Name & " Cantidad:" & UserList(UserIndex).BancoInvent.Object(j).Amount, FontTypeNames.FONTTYPE_INFO)
     End If
 Next
 
@@ -339,7 +339,7 @@ If FileExist(CharFile, vbNormal) Then
         ObjInd = ReadField(1, Tmp, Asc("-"))
         ObjCant = ReadField(2, Tmp, Asc("-"))
         If ObjInd > 0 Then
-            Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).Name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
         End If
     Next
 Else

@@ -221,7 +221,7 @@ On Error GoTo Errhandler
             
                 aN = UserList(UserIndex).flags.NPCAtacado
                 If aN > 0 Then
-                    If Npclist(aN).flags.AttackedFirstBy = UserList(UserIndex).name Then
+                    If Npclist(aN).flags.AttackedFirstBy = UserList(UserIndex).Name Then
                         Npclist(aN).flags.AttackedFirstBy = vbNullString
                     End If
                 End If
@@ -361,6 +361,7 @@ Public Function RhombLegalTilePos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef
 ' which starts at Pos.x - Distance and Pos.y
 ' and searchs for a valid position to drop items
 '***************************************************
+On Error GoTo Errhandler
 
     Dim i As Long
     Dim HayObj As Boolean
@@ -455,9 +456,13 @@ Public Function RhombLegalTilePos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef
     
     RhombLegalTilePos = False
     
+    Exit Function
+    
+Errhandler:
+    Call LogError("Error en RhombLegalTilePos. Error: " & Err.Number & " - " & Err.description)
 End Function
 
-Public Function HayObjeto(ByVal mapa As Integer, ByVal X As Long, ByVal Y As Long, _
+Public Function HayObjeto(ByVal Mapa As Integer, ByVal X As Long, ByVal Y As Long, _
                           ByVal ObjIndex As Integer, ByVal ObjAmount As Long) As Boolean
 '***************************************************
 'Author: ZaMa
@@ -465,14 +470,14 @@ Public Function HayObjeto(ByVal mapa As Integer, ByVal X As Long, ByVal Y As Lon
 'Checks if there's space in a tile to add an itemAmount
 '***************************************************
     Dim MapObjIndex As Integer
-    MapObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
+    MapObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
             
     ' Hay un objeto tirado?
     If MapObjIndex <> 0 Then
         ' Es el mismo objeto?
         If MapObjIndex = ObjIndex Then
             ' La suma es menor a 10k?
-            HayObjeto = (MapData(mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
+            HayObjeto = (MapData(Mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
         Else
             HayObjeto = True
         End If
@@ -539,7 +544,7 @@ Call ClosestLegalPos(Pos, nPos, , , True)
 
 End Sub
 
-Function NameIndex(ByVal name As String) As Integer
+Function NameIndex(ByVal Name As String) As Integer
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -549,17 +554,17 @@ Function NameIndex(ByVal name As String) As Integer
     Dim UserIndex As Long
     
     '¿Nombre valido?
-    If LenB(name) = 0 Then
+    If LenB(Name) = 0 Then
         NameIndex = 0
         Exit Function
     End If
     
-    If InStrB(name, "+") <> 0 Then
-        name = UCase$(Replace(name, "+", " "))
+    If InStrB(Name, "+") <> 0 Then
+        Name = UCase$(Replace(Name, "+", " "))
     End If
     
     UserIndex = 1
-    Do Until UCase$(UserList(UserIndex).name) = UCase$(name)
+    Do Until UCase$(UserList(UserIndex).Name) = UCase$(Name)
         
         UserIndex = UserIndex + 1
         
@@ -593,7 +598,7 @@ Function CheckForSameIP(ByVal UserIndex As Integer, ByVal UserIP As String) As B
     CheckForSameIP = False
 End Function
 
-Function CheckForSameName(ByVal name As String) As Boolean
+Function CheckForSameName(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -612,7 +617,7 @@ Function CheckForSameName(ByVal name As String) As Boolean
             'ESE EVENTO NO DISPARA UN SAVE USER, LO QUE PUEDE SER UTILIZADO PARA DUPLICAR ITEMS
             'ESTE BUG EN ALKON PRODUJO QUE EL SERVIDOR ESTE CAIDO DURANTE 3 DIAS. ATENTOS.
             
-            If UCase$(UserList(LoopC).name) = UCase$(name) Then
+            If UCase$(UserList(LoopC).Name) = UCase$(Name) Then
                 CheckForSameName = True
                 Exit Function
             End If
@@ -850,7 +855,7 @@ Function LegalPosNPC(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
     End With
 End Function
 
-Sub SendHelp(ByVal Index As Integer)
+Sub SendHelp(ByVal index As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -863,7 +868,7 @@ Dim LoopC As Integer
 NumHelpLines = val(GetVar(DatPath & "Help.dat", "INIT", "NumLines"))
 
 For LoopC = 1 To NumHelpLines
-    Call WriteConsoleMsg(Index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(index, GetVar(DatPath & "Help.dat", "Help", "Line" & LoopC), FontTypeNames.FONTTYPE_INFO)
 Next LoopC
 
 End Sub
@@ -947,9 +952,9 @@ With UserList(UserIndex)
             If FoundSomething = 1 Then
                 .TargetObj = MapData(Map, .TargetObjX, .TargetObjY).ObjInfo.ObjIndex
                 If MostrarCantidad(.TargetObj) Then
-                    Call WriteConsoleMsg(UserIndex, ObjData(.TargetObj).name & " - " & MapData(.TargetObjMap, .TargetObjX, .TargetObjY).ObjInfo.Amount & "", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, ObjData(.TargetObj).Name & " - " & MapData(.TargetObjMap, .TargetObjX, .TargetObjY).ObjInfo.Amount & "", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Call WriteConsoleMsg(UserIndex, ObjData(.TargetObj).name, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, ObjData(.TargetObj).Name, FontTypeNames.FONTTYPE_INFO)
                 End If
             
             End If
@@ -998,9 +1003,9 @@ With UserList(UserIndex)
                         End If
                         
                         If Len(.desc) > 0 Then
-                            Stat = "Ves a " & .name & Stat & " - " & .desc
+                            Stat = "Ves a " & .Name & Stat & " - " & .desc
                         Else
-                            Stat = "Ves a " & .name & Stat
+                            Stat = "Ves a " & .Name & Stat
                         End If
                         
                                         
@@ -1135,10 +1140,10 @@ With UserList(UserIndex)
                         Call modCentinela.CentinelaSendClave(UserIndex, CentinelaIndex)
                     Else
                         If Npclist(TempCharIndex).MaestroUser > 0 Then
-                            Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).name & ".", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & ".", FontTypeNames.FONTTYPE_INFO)
                         Else
-                            sDesc = estatus & Npclist(TempCharIndex).name
-                            If Npclist(TempCharIndex).Owner > 0 Then sDesc = sDesc & " le pertenece a " & UserList(Npclist(TempCharIndex).Owner).name
+                            sDesc = estatus & Npclist(TempCharIndex).Name
+                            If Npclist(TempCharIndex).Owner > 0 Then sDesc = sDesc & " le pertenece a " & UserList(Npclist(TempCharIndex).Owner).Name
                             sDesc = sDesc & "."
                             
                             Call WriteConsoleMsg(UserIndex, sDesc, FontTypeNames.FONTTYPE_INFO)
@@ -1269,14 +1274,14 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
 
 End Function
 
-Public Function ItemNoEsDeMapa(ByVal Index As Integer, ByVal bIsExit As Boolean) As Boolean
+Public Function ItemNoEsDeMapa(ByVal index As Integer, ByVal bIsExit As Boolean) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    With ObjData(Index)
+    With ObjData(index)
         ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And _
                     .OBJType <> eOBJType.otForos And _
                     .OBJType <> eOBJType.otCarteles And _
@@ -1288,14 +1293,14 @@ Public Function ItemNoEsDeMapa(ByVal Index As Integer, ByVal bIsExit As Boolean)
 
 End Function
 
-Public Function MostrarCantidad(ByVal Index As Integer) As Boolean
+Public Function MostrarCantidad(ByVal index As Integer) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    With ObjData(Index)
+    With ObjData(index)
         MostrarCantidad = .OBJType <> eOBJType.otPuertas And _
                     .OBJType <> eOBJType.otForos And _
                     .OBJType <> eOBJType.otCarteles And _

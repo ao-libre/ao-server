@@ -527,7 +527,7 @@ Private Sub LogCentinela(ByVal texto As String)
 'Last modified: 03/15/2006
 'Loguea un evento del centinela
 '*************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -537,7 +537,7 @@ On Error GoTo Errhandler
     Close #nfile
 Exit Sub
 
-Errhandler:
+ErrHandler:
 End Sub
 
 Public Sub ResetCentinelas()

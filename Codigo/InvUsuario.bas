@@ -39,7 +39,7 @@ Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
 '17/09/02
 'Agregue que la función se asegure que el objeto no es un barco
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim i As Integer
     Dim ObjIndex As Integer
@@ -58,7 +58,7 @@ On Error GoTo Errhandler
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en TieneObjetosRobables. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -190,7 +190,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
 'Last Modification: 23/01/2007
 '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 'If Cantidad > 100000 Then Exit Sub
 
@@ -212,12 +212,12 @@ With UserList(UserIndex)
                     For k = .Pos.Y - 10 To .Pos.Y + 10
                         If InMapBounds(M, j, k) Then
                             If MapData(M, j, k).UserIndex > 0 Then
-                                Cercanos = Cercanos & UserList(MapData(M, j, k).UserIndex).name & ","
+                                Cercanos = Cercanos & UserList(MapData(M, j, k).UserIndex).Name & ","
                             End If
                         End If
                     Next k
                 Next j
-                Call LogDesarrollo(.name & " tira oro. Cercanos: " & Cercanos)
+                Call LogDesarrollo(.Name & " tira oro. Cercanos: " & Cercanos)
             End If
             '/Seguridad
             Dim Extra As Long
@@ -240,7 +240,7 @@ With UserList(UserIndex)
     
                 MiObj.ObjIndex = iORO
                 
-                If EsGM(UserIndex) Then Call LogGM(.name, "Tiró cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
+                If EsGM(UserIndex) Then Call LogGM(.Name, "Tiró cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
                 Dim AuxPos As WorldPos
                 
                 If .clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
@@ -273,7 +273,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 End Sub
 
@@ -284,7 +284,7 @@ Sub QuitarUserInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal Cant
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If Slot < 1 Or Slot > UserList(UserIndex).CurrentInventorySlots Then Exit Sub
     
@@ -305,7 +305,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en QuitarUserInvItem. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -317,7 +317,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal 
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim NullObj As UserOBJ
 Dim LoopC As Long
@@ -349,7 +349,7 @@ With UserList(UserIndex)
     Exit Sub
 End With
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en UpdateUserInv. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -399,16 +399,16 @@ With UserList(UserIndex)
                 Call WriteConsoleMsg(UserIndex, "¡¡ATENCIÓN!! ¡ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
             End If
             
-            If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.name, "Tiró cantidad:" & num & " Objeto:" & ObjData(DropObj.ObjIndex).name)
+            If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiró cantidad:" & num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
             
             'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
             'Es un Objeto que tenemos que loguear?
             If ObjData(DropObj.ObjIndex).Log = 1 Then
-                Call LogDesarrollo(.name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
             ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-                    Call LogDesarrollo(.name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                    Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
                 End If
             End If
         Else
@@ -468,7 +468,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     Dim Slot As Byte
     
     With UserList(UserIndex)
@@ -499,7 +499,7 @@ On Error GoTo Errhandler
     
         If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
             If Not ItemSeCae(MiObj.ObjIndex) Then
-                Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).name & ".", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_FIGHT)
                 MeterItemEnInventario = False
                 Exit Function
             End If
@@ -520,7 +520,7 @@ On Error GoTo Errhandler
     
     
     Exit Function
-Errhandler:
+ErrHandler:
     Call LogError("Error en MeterItemEnInventario. Error " & Err.Number & " : " & Err.description)
 End Function
 
@@ -562,18 +562,18 @@ Sub GetObj(ByVal UserIndex As Integer)
                     
                         'Quitamos el objeto
                         Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
-                        If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.name, "Agarro:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).name)
+                        If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Agarro:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
         
                         'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
                         'Es un Objeto que tenemos que loguear?
                         If ObjData(MiObj.ObjIndex).Log = 1 Then
                             ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
-                            Call LogDesarrollo(.name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
+                            Call LogDesarrollo(.Name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
                         ElseIf MiObj.Amount > 5000 Then 'Es mucha cantidad?
                             'Si no es de los prohibidos de loguear, lo logueamos.
                             If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
                                 ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
-                                Call LogDesarrollo(.name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).name & ObjPos)
+                                Call LogDesarrollo(.Name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
                             End If
                         End If
                     End If
@@ -593,7 +593,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     'Desequipa el item slot del inventario
     Dim Obj As ObjData
@@ -695,7 +695,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en Desquipar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -707,7 +707,7 @@ Function SexoPuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer
 '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     If ObjData(ObjIndex).Mujer = 1 Then
         SexoPuedeUsarItem = UserList(UserIndex).Genero <> eGenero.Hombre
@@ -720,7 +720,7 @@ On Error GoTo Errhandler
     If Not SexoPuedeUsarItem Then sMotivo = "Tu género no puede usar este objeto."
     
     Exit Function
-Errhandler:
+ErrHandler:
     Call LogError("SexoPuedeUsarItem")
 End Function
 
@@ -760,7 +760,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 '14/01/2010: ZaMa - Agrego el motivo especifico por el que no puede equipar/usar el item.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     'Equipa un item del inventario
     Dim Obj As ObjData
@@ -1004,7 +1004,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 End Sub
 
@@ -1015,7 +1015,7 @@ Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, ItemIndex As Integ
 '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         'Verifica si la raza puede usar la ropa
@@ -1037,7 +1037,7 @@ On Error GoTo Errhandler
     
     Exit Function
     
-Errhandler:
+ErrHandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function
@@ -1597,7 +1597,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
@@ -1613,7 +1613,7 @@ On Error GoTo Errhandler
 
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en TirarTodo. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1640,6 +1640,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
 'Last Modification: 12/01/2010 (ZaMa)
 '12/01/2010: ZaMa - Ahora los piratas no explotan items solo si estan entre 20 y 25
 '***************************************************
+On Error GoTo ErrHandler
 
     Dim i As Byte
     Dim NuevaPos As WorldPos
@@ -1681,6 +1682,11 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
             End If
         Next i
     End With
+    
+    Exit Sub
+    
+ErrHandler:
+    Call LogError("Error en TirarTodosLosItems. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
 Function ItemNewbie(ByVal ItemIndex As Integer) As Boolean

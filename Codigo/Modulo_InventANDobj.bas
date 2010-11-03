@@ -47,7 +47,7 @@ Public Function TirarItemAlPiso(Pos As WorldPos, Obj As Obj, Optional NotPirata 
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim NuevaPos As WorldPos
     NuevaPos.X = 0
@@ -60,7 +60,7 @@ On Error GoTo Errhandler
     TirarItemAlPiso = NuevaPos
 
     Exit Function
-Errhandler:
+ErrHandler:
 
 End Function
 
@@ -310,7 +310,7 @@ Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos)
 'Autor: ZaMa
 'Last Modification: 13/02/2010
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If Cantidad > 0 Then
         Dim MiObj As Obj
@@ -339,7 +339,7 @@ On Error GoTo Errhandler
 
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 End Sub
 

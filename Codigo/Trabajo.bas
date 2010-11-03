@@ -42,7 +42,7 @@ Public Sub DoPermanecerOculto(ByVal UserIndex As Integer)
 '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
 '13/01/2010: ZaMa - Arreglo condicional para que el bandido camine oculto.
 '********************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     With UserList(UserIndex)
         .Counters.TiempoOculto = .Counters.TiempoOculto - 1
         If .Counters.TiempoOculto <= 0 Then
@@ -74,7 +74,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 
@@ -89,7 +89,7 @@ Public Sub DoOcultarse(ByVal UserIndex As Integer)
 '13/01/2010: ZaMa - El pirata se transforma en galeon fantasmal cuando se oculta en agua.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim Suerte As Double
     Dim res As Integer
@@ -148,7 +148,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -273,7 +273,7 @@ Public Sub FundirMineral(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         If .flags.TargetObjInvIndex > 0 Then
@@ -290,7 +290,7 @@ On Error GoTo Errhandler
 
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en FundirMineral. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -302,7 +302,7 @@ Public Sub FundirArmas(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     With UserList(UserIndex)
         If .flags.TargetObjInvIndex > 0 Then
             If ObjData(.flags.TargetObjInvIndex).OBJType = eOBJType.otWeapon Then
@@ -316,7 +316,7 @@ On Error GoTo Errhandler
     End With
     
     Exit Sub
-Errhandler:
+ErrHandler:
     Call LogError("Error en FundirArmas. Error " & Err.Number & " : " & Err.description)
 End Sub
 
@@ -717,7 +717,7 @@ Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex A
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim CantidadItems As Integer
     Dim TieneMateriales As Boolean
@@ -830,7 +830,7 @@ On Error GoTo Errhandler
     End With
     
     Exit Sub
-Errhandler:
+ErrHandler:
     Call LogError("Error en CarpinteroConstruirItem. Error " & Err.Number & " : " & Err.description & ". UserIndex:" & UserIndex & ". ItemIndex:" & ItemIndex)
 End Sub
 
@@ -1227,7 +1227,7 @@ Sub DoDomar(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '01/05/2010: ZaMa - Agrego bonificacion 11% para domar con flauta magica.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim puntosDomar As Integer
     Dim puntosRequeridos As Integer
@@ -1314,7 +1314,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DoDomar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1490,7 +1490,7 @@ Public Sub DoPescar(ByVal UserIndex As Integer)
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -1552,7 +1552,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DoPescar. Error " & Err.Number & " : " & Err.description)
 End Sub
 
@@ -1562,7 +1562,7 @@ Public Sub DoPescarRed(ByVal UserIndex As Integer)
 'Last Modification: -
 '
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim iSkill As Integer
 Dim Suerte As Integer
@@ -1622,7 +1622,7 @@ End If
         
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DoPescarRed")
 End Sub
 
@@ -1646,7 +1646,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 '23/04/2010: ZaMa - El alcance de robo pasa a ser de 1 tile.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim OtroUserIndex As Integer
 
@@ -1810,7 +1810,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DoRobar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -2066,7 +2066,7 @@ Public Sub QuitarSta(ByVal UserIndex As Integer, ByVal Cantidad As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     UserList(UserIndex).Stats.MinSta = UserList(UserIndex).Stats.MinSta - Cantidad
     If UserList(UserIndex).Stats.MinSta < 0 Then UserList(UserIndex).Stats.MinSta = 0
@@ -2074,7 +2074,7 @@ On Error GoTo Errhandler
     
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en QuitarSta. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -2090,7 +2090,7 @@ Public Sub DoTalar(ByVal UserIndex As Integer, Optional ByVal DarMaderaElfica As
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -2150,7 +2150,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DoTalar")
 
 End Sub
@@ -2165,7 +2165,7 @@ Public Sub DoMineria(ByVal UserIndex As Integer)
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
@@ -2226,7 +2226,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
