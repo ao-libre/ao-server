@@ -811,7 +811,7 @@ Private Sub TIMER_AI_Timer()
 
 On Error GoTo ErrorHandler
 Dim NpcIndex As Long
-Dim mapa As Integer
+Dim Mapa As Integer
 Dim e_p As Integer
 
 'Barrin 29/9/03
@@ -837,10 +837,10 @@ If Not haciendoBK And Not EnPausa Then
                            Call EfectoParalisisNpc(NpcIndex)
                         End If
                         
-                        mapa = .Pos.Map
+                        Mapa = .Pos.Map
                         
-                        If mapa > 0 Then
-                            If MapInfo(mapa).NumUsers > 0 Then
+                        If Mapa > 0 Then
+                            If MapInfo(Mapa).NumUsers > 0 Then
                                 If .Movement <> TipoAI.ESTATICO Then
                                     Call NPCAI(NpcIndex)
                                 End If
