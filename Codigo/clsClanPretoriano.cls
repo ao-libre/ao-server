@@ -655,7 +655,7 @@ On Error GoTo ErrHandler
                 Call NpcLanzaSpellSobreNpc(NpcIndex, BestTarget, .Spells(eKingSpells.HealPoison), True)
             
             Case eKingAction.HealAlly
-                Call NpcLanzaSpellSobreNpc(NpcIndex, BestTarget, .Spells(eKingSpells.LittleHeal))
+                Call NpcLanzaSpellSobreNpc(NpcIndex, BestTarget, .Spells(eKingSpells.LittleHeal), True)
                 
                 ' If time for respawning an ally has passed, then try to do it
                 If KingIdleTime > ALLY_RESPAWN_TIME Then Call KingReviveAlly(NpcIndex)
@@ -681,7 +681,7 @@ On Error GoTo ErrHandler
             Case eKingAction.RetreatAndHeal
                 Call ReturnToCenter(NpcIndex)
                 If .Stats.MinHp <> .Stats.MaxHp Then
-                    Call NpcLanzaSpellSobreNpc(NpcIndex, NpcIndex, .Spells(eKingSpells.LittleHeal))
+                    Call NpcLanzaSpellSobreNpc(NpcIndex, NpcIndex, .Spells(eKingSpells.LittleHeal), True)
                 End If
                 Debug.Assert IdleTime <> ALLY_RESPAWN_TIME
                 ' If time for respawning an ally has passed, then try to do it
