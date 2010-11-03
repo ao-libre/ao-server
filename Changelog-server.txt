@@ -565,3 +565,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 29/10/2010 : Ahora no se hace backup de los pretorianos. (ZaMa)
  * 29/10/2010 : Ahora el ladron ya no roba ni arrebata a un admin. (ZaMa)
  * 30/10/2010 : Agrego los comandos "/CrearPretorianos MAPA X Y" y "/EliminarPretorianos MAPA". (ZaMA)
+ * 02/11/2010 : Arreglo un bug del centinela que te pedia la clave al loguear, aunque no estes trabajando. (ZaMa).
+ * 02/11/2010 : Ahora el centinela no te agrega una pena cuando te ejecuta. (ZaMa)

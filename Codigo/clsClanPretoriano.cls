@@ -962,7 +962,7 @@ Private Sub HealerPerformAction(ByVal NpcIndex As Integer, ByVal BestTarget As I
             Case eHealerAction.ParalizeUser
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, _
                     PrepareMessageChatOverHead(Hechizos(.Spells(eHealerSpells.ParalizeUser)).PalabrasMagicas, .Char.CharIndex, vbCyan))
-                Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eHealerSpells.ParalizeUser))
+                Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eHealerSpells.ParalizeUser), True)
                 CanMove = False
                 
             Case eHealerAction.AttackUser

@@ -82,7 +82,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
             .Stats.MinHp = .Stats.MinHp + daño
             If .Stats.MinHp > .Stats.MaxHp Then .Stats.MinHp = .Stats.MaxHp
             
-            Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).Name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
             Call WriteUpdateUserStats(UserIndex)
         
         ' Damage
@@ -104,7 +104,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
             
                 .Stats.MinHp = .Stats.MinHp - daño
                 
-                Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, Npclist(NpcIndex).Name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteUpdateUserStats(UserIndex)
                 
                 'Muere
@@ -551,17 +551,17 @@ On Error GoTo error
 
 With UserList(UserIndex)
 
-    Dim mapa As Integer
-    mapa = .Pos.Map
+    Dim Mapa As Integer
+    Mapa = .Pos.Map
     
     'No permitimos se invoquen criaturas en zonas seguras
-    If MapInfo(mapa).Pk = False Or MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+    If MapInfo(Mapa).Pk = False Or MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
         Call WriteConsoleMsg(UserIndex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
     'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
-    If MapInfo(mapa).InvocarSinEfecto = 1 Then
+    If MapInfo(Mapa).InvocarSinEfecto = 1 Then
         Call WriteConsoleMsg(UserIndex, "Invocar no está permitido aquí! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
@@ -626,7 +626,7 @@ Exit Sub
 
 error:
     With UserList(UserIndex)
-        LogError ("[" & Err.Number & "] " & Err.description & " por el usuario " & .name & "(" & UserIndex & _
+        LogError ("[" & Err.Number & "] " & Err.description & " por el usuario " & .Name & "(" & UserIndex & _
                 ") en (" & .Pos.Map & ", " & .Pos.X & ", " & .Pos.Y & "). Tratando de tirar el hechizo " & _
                 Hechizos(SpellIndex).Nombre & "(" & SpellIndex & ") en la posicion ( " & .flags.TargetX & ", " & .flags.TargetY & ")")
     End With
@@ -887,7 +887,7 @@ Exit Sub
 Errhandler:
     Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
         " Hechizo: " & Hechizos(SpellIndex).Nombre & "(" & SpellIndex & _
-        "). Casteado por: " & UserList(UserIndex).name & "(" & UserIndex & ").")
+        "). Casteado por: " & UserList(UserIndex).Name & "(" & UserIndex & ").")
     
 End Sub
 
@@ -1612,11 +1612,11 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
         If tUser > 0 Then
             If UserIndex <> tUser Then
                 If .showName Then
-                    Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " " & UserList(tUser).name, FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " " & UserList(tUser).Name, FontTypeNames.FONTTYPE_FIGHT)
                 Else
                     Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).HechizeroMsg & " alguien.", FontTypeNames.FONTTYPE_FIGHT)
                 End If
-                Call WriteConsoleMsg(tUser, .name & " " & Hechizos(SpellIndex).TargetMsg, FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(tUser, .Name & " " & Hechizos(SpellIndex).TargetMsg, FontTypeNames.FONTTYPE_FIGHT)
             Else
                 Call WriteConsoleMsg(UserIndex, Hechizos(SpellIndex).PropioMsg, FontTypeNames.FONTTYPE_FIGHT)
             End If
@@ -1660,8 +1660,8 @@ With UserList(TargetIndex)
             .Stats.MinHam = .Stats.MaxHam
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de hambre a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de hambre a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha restaurado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1685,8 +1685,8 @@ With UserList(TargetIndex)
         .Stats.MinHam = .Stats.MinHam - daño
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de hambre a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de hambre a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de hambre.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1713,8 +1713,8 @@ With UserList(TargetIndex)
         Call WriteUpdateHungerAndThirst(TargetIndex)
              
         If UserIndex <> TargetIndex Then
-          Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de sed a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-          Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
+          Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de sed a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+          Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha restaurado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
         Else
           Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1736,8 +1736,8 @@ With UserList(TargetIndex)
         .Stats.MinAGU = .Stats.MinAGU - daño
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de sed a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de sed a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha quitado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de sed.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1851,8 +1851,8 @@ With UserList(TargetIndex)
         Call WriteUpdateHP(TargetIndex)
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de vida a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de vida a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha restaurado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1907,8 +1907,8 @@ With UserList(TargetIndex)
         
         Call WriteUpdateHP(TargetIndex)
         
-        Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de vida a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de vida a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha quitado " & daño & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
         
         'Muere
         If .Stats.MinHp < 1 Then
@@ -1937,8 +1937,8 @@ With UserList(TargetIndex)
         Call WriteUpdateMana(TargetIndex)
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de maná a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de maná a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha restaurado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1955,8 +1955,8 @@ With UserList(TargetIndex)
         Call InfoHechizo(UserIndex)
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de maná a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de maná a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha quitado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de maná.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1978,8 +1978,8 @@ With UserList(TargetIndex)
         Call WriteUpdateSta(TargetIndex)
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de energía a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha restaurado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has restaurado " & daño & " puntos de energía a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha restaurado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has restaurado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
         End If
@@ -1995,8 +1995,8 @@ With UserList(TargetIndex)
         Call InfoHechizo(UserIndex)
         
         If UserIndex <> TargetIndex Then
-            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de energía a " & .name & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).name & " te ha quitado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Le has quitado " & daño & " puntos de energía a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(TargetIndex, UserList(UserIndex).Name & " te ha quitado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
         Else
             Call WriteConsoleMsg(UserIndex, "Te has quitado " & daño & " puntos de energía.", FontTypeNames.FONTTYPE_FIGHT)
         End If
