@@ -614,7 +614,7 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     With UserList(UserIndex)
         If UserIndex = LastUser Then
             Do Until UserList(LastUser).flags.UserLogged
@@ -667,7 +667,7 @@ On Error GoTo Errhandler
     End With
 Exit Sub
 
-Errhandler:
+ErrHandler:
     UserList(UserIndex).ConnID = -1
     UserList(UserIndex).ConnIDValida = False
     Call ResetUserSlot(UserIndex)
@@ -684,7 +684,7 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     
     
@@ -708,7 +708,7 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     UserList(UserIndex).ConnID = -1
     Call ResetUserSlot(UserIndex)
 End Sub
@@ -722,7 +722,7 @@ Sub CloseSocket(ByVal UserIndex As Integer, Optional ByVal cerrarlo As Boolean =
 'Last Modification: -
 '
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim NURestados As Boolean
 Dim CoNnEcTiOnId As Long
@@ -762,7 +762,7 @@ Dim CoNnEcTiOnId As Long
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & UserIndex)
     
     If Not NURestados Then
@@ -1778,7 +1778,7 @@ Sub CloseUser(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim N As Integer
 Dim Map As Integer
@@ -1877,7 +1877,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
 Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
 
 End Sub
@@ -1889,7 +1889,7 @@ Sub ReloadSokcet()
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 #If UsarQueSocket = 1 Then
 
     Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
@@ -1913,7 +1913,7 @@ On Error GoTo Errhandler
 #End If
 
 Exit Sub
-Errhandler:
+ErrHandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub

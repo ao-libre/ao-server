@@ -154,7 +154,7 @@ Sub LimpiarMundo()
 '01/14/2008: Marcos Martinez (ByVal) - La funcion FOR estaba mal. En ves de i habia un 1.
 '04/15/2008: (NicoNZ) - La funcion FOR estaba mal, de la forma que se hacia tiraba error.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim i As Integer
     Dim d As New cGarbage
@@ -170,7 +170,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error producido en el sub LimpiarMundo: " & Err.description)
 End Sub
 
@@ -498,7 +498,7 @@ On Error Resume Next
     Dim N As Integer
     N = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & Time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+    Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
     Close #N
     
     'Ocultar
@@ -582,17 +582,17 @@ Public Sub LogCriticEvent(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -603,7 +603,7 @@ Public Sub LogEjercitoReal(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -613,7 +613,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -624,7 +624,7 @@ Public Sub LogEjercitoCaos(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -634,29 +634,29 @@ On Error GoTo Errhandler
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
+    Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
     Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -668,17 +668,17 @@ Public Sub LogError(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -689,17 +689,17 @@ Public Sub LogStatic(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -710,17 +710,17 @@ Public Sub LogTarea(desc As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile(1) ' obtenemos un canal
     Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
 
 
 End Sub
@@ -736,7 +736,7 @@ Public Sub LogClanes(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\clanes.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & str
+    Print #nfile, Date & " " & time & " " & str
     Close #nfile
 
 End Sub
@@ -751,7 +751,7 @@ Public Sub LogIP(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\IP.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & str
+    Print #nfile, Date & " " & time & " " & str
     Close #nfile
 
 End Sub
@@ -767,7 +767,7 @@ Public Sub LogDesarrollo(ByVal str As String)
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\desarrollo" & Month(Date) & Year(Date) & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & str
+    Print #nfile, Date & " " & time & " " & str
     Close #nfile
 
 End Sub
@@ -779,18 +779,18 @@ Public Sub LogGM(Nombre As String, texto As String)
 '
 '***************************************************ç
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     'Guardamos todo en el mismo lugar. Pablo (ToxicWaste) 18/05/07
     Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -801,18 +801,18 @@ Public Sub LogAsesinato(texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     Dim nfile As Integer
     
     nfile = FreeFile ' obtenemos un canal
     
     Open App.Path & "\logs\asesinatos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 Public Sub logVentaCasa(ByVal texto As String)
@@ -822,20 +822,20 @@ Public Sub logVentaCasa(ByVal texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     
     Open App.Path & "\logs\propiedades.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 Public Sub LogHackAttemp(texto As String)
@@ -845,19 +845,19 @@ Public Sub LogHackAttemp(texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\HackAttemps.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -868,17 +868,17 @@ Public Sub LogCheating(texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\CH.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -890,19 +890,19 @@ Public Sub LogCriticalHackAttemp(texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\CriticalHackAttemps.log" For Append Shared As #nfile
     Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -913,18 +913,18 @@ Public Sub LogAntiCheat(texto As String)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\AntiCheat.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time & " " & texto
+    Print #nfile, Date & " " & time & " " & texto
     Print #nfile, ""
     Close #nfile
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
 
 End Sub
 
@@ -1054,7 +1054,7 @@ On Error Resume Next
     Dim N As Integer
     N = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & Time & " servidor reiniciado."
+    Print #N, Date & " " & time & " servidor reiniciado."
     Close #N
     
     'Ocultar
@@ -1098,7 +1098,7 @@ Public Sub EfectoLluvia(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If UserList(UserIndex).flags.UserLogged Then
         If Intemperie(UserIndex) Then
@@ -1110,7 +1110,7 @@ On Error GoTo Errhandler
     End If
     
     Exit Sub
-Errhandler:
+ErrHandler:
     LogError ("Error en EfectoLluvia")
 End Sub
 
@@ -1572,7 +1572,7 @@ Sub PasarSegundo()
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     Dim i As Long
     
     For i = 1 To LastUser
@@ -1592,7 +1592,7 @@ On Error GoTo Errhandler
     Next i
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
     Resume Next
 End Sub

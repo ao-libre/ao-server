@@ -198,7 +198,7 @@ End Sub
 '
 '
 'Public Function esPretoriano(ByVal NpcIndex As Integer) As Boolean
-'On Error GoTo Errhandler
+'On Error GoTo ErrHandler
 '
 '    esPretoriano = (Npclist(NpcIndex).Numero <= 925 And Npclist(NpcIndex).Numero >= 900)
 '    Exit Function
@@ -217,7 +217,7 @@ End Sub
 '    End Select
 'Exit Function
 '
-'Errhandler:
+'ErrHandler:
 '    LogError ("Error en NPCAI.EsPretoriano? " & Npclist(NpcIndex).Name)
 'End Function
 '
@@ -227,7 +227,7 @@ End Sub
 ''Inicializa el clan Pretoriano.
 ''Last Modify Date: 22/6/06: (Nacho) Seteamos cuantos NPCs creamos
 ''********************************************************
-'On Error GoTo Errhandler
+'On Error GoTo ErrHandler
 '
 '    ''------------------------------------------------------
 '    ''recibe el X,Y donde EL REY ANTERIOR ESTABA POSICIONADO.
@@ -336,7 +336,7 @@ End Sub
 '
 '    PretoIndex = PretoIndex + 1
 '    Pretorianos(PretoIndex) = NpcIndex
-'Errhandler:
+'ErrHandler:
 'End Sub
 '
 'Sub PRREY_AI(ByVal npcind As Integer)
@@ -928,7 +928,7 @@ End Sub
 '
 'Exit Sub
 '
-'Errhandler:
+'ErrHandler:
 '    LogError ("Error en NPCAI.CrearClanPretoriano. Error: " & Err.Number & " - " & Err.description)
 'End Sub
 '

@@ -68,7 +68,7 @@ End Function
 
 Public Function VaciarColeccion()
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim i As Integer
 
@@ -78,7 +78,7 @@ Next
 
 
 Exit Function
-Errhandler:
+ErrHandler:
     Call LogError("Error en RestarConexion " & Err.description)
 End Function
 

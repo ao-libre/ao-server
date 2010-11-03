@@ -150,7 +150,7 @@ Public Function SpawnClan(ByVal Mapa As Integer, ByVal X As Integer, ByVal Y As 
 '22/06/2006: (Nacho) - Seteamos cuantos NPCs creamos
 '21/09/2010: ZaMa - Reescribi la funcion, ahora se le pasa las coordenadas de respawn
 '********************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim nPos As WorldPos
     Dim PretoIndex As Integer
@@ -237,7 +237,7 @@ On Error GoTo Errhandler
 
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en CrearClanPretoriano. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -492,7 +492,7 @@ Public Sub AI_King(ByVal NpcIndex As Integer)
 'Author: ZaMa
 'Last Modification: 19/09/2010
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
     Dim Action As Byte
@@ -503,7 +503,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_King. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -517,7 +517,7 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, ByRef Accion As Byte)
 '3) If a user tries to run, then blind and make him stupid
 '4) if no one is near, then heal himself.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
 
@@ -631,7 +631,7 @@ On Error GoTo Errhandler
 
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en KingBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -641,7 +641,7 @@ Private Sub KingPerformAction(ByVal NpcIndex As Integer, ByVal BestTarget As Int
 'Last Modification: 05/07/2010
 'Performs the required action.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim IdleTime As Long
 
@@ -697,7 +697,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en KingPerformAction. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -707,7 +707,7 @@ Private Sub KingMeleeAttack(NpcIndex)
 'Last Modification: 19/09/2010
 'King performes a melee attack ignoring attack intervals
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim headingloop As Byte
     Dim nPos As WorldPos
@@ -743,7 +743,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en KingMeleeAttack. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -787,7 +787,7 @@ Public Sub AI_Healer(ByVal NpcIndex As Integer)
 'Author: Unkown
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
     Dim Accion As Byte
@@ -840,7 +840,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_Healer. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -854,7 +854,7 @@ Private Function HealerBestTarget(ByVal NpcIndex As Integer, ByRef Accion As Byt
 '3) party healing if no threats
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -936,7 +936,7 @@ On Error GoTo Errhandler
         
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en HealerBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1017,7 +1017,7 @@ Public Sub AI_SpellCaster(ByVal NpcIndex As Integer)
 'Author: ZaMa
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
     Dim Accion As Byte
@@ -1038,7 +1038,7 @@ On Error GoTo Errhandler
     
 Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_SpellCaster. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1089,7 +1089,7 @@ Private Function SpellCasterBestTarget(ByVal NpcIndex As Integer, ByRef Accion A
 '2) A wizard's mission is background spellcasting attack
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -1176,7 +1176,7 @@ On Error GoTo Errhandler
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en SpellCasterBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1233,7 +1233,7 @@ Private Sub SpellCasterDestroyWand(ByVal NpcIndex As Integer, ByVal SpellIndex A
 'Author: Unkown
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     ''sonidos: 30 y 32, y no los cambien sino termina siendo muy chistoso...
     ''Para el FX utiliza el del hechizos(SpellIndex)
     
@@ -1265,7 +1265,7 @@ On Error GoTo Errhandler
     
 Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en SpellCasterDestroyWand. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1275,7 +1275,7 @@ Private Sub DealWandDamage(ByVal NpcIndex As Integer, ByVal SpellIndex As Intege
 'Last Modification: 05/07/2010
 'Deals massive wand damage.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -1332,7 +1332,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en DealWandDamage. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1342,7 +1342,7 @@ Private Sub DealWandDamageToPets(ByVal NpcIndex As Integer, ByVal UserIndex As I
 'Last Modification: 26/09/2010
 'Deals massive wand damage to user pets.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim PetIndex As Integer
     Dim PetCounter As Long
@@ -1382,7 +1382,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en DealWandDamageToPets. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1391,7 +1391,7 @@ Public Sub AI_SwordMaster(ByVal NpcIndex As Integer)
 'Author: ZaMa
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
     
@@ -1406,7 +1406,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_SwordMaster. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1418,7 +1418,7 @@ Private Function SwordMasterBestTarget(ByVal NpcIndex As Integer) As Integer
 '1) The nearest enemy will be attacked.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -1488,7 +1488,7 @@ On Error GoTo Errhandler
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en SwordMasterBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1501,7 +1501,7 @@ Private Sub SwordMasterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integ
 'sale del area de combate (tipica forma de separar un clan)
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With Npclist(NpcIndex)
     
@@ -1533,7 +1533,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en SwordMasterMove. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1544,7 +1544,7 @@ Private Sub SwordMasterAttack(ByVal NpcIndex As Integer)
 'Searchs and Attacks the sorrounding target
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim headingloop As Byte
     Dim NpcPos As WorldPos
@@ -1575,7 +1575,7 @@ On Error GoTo Errhandler
 
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en SwordMasterAttack. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1600,7 +1600,7 @@ Public Sub AI_Shooter(ByVal NpcIndex As Integer)
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_Shooter. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1614,7 +1614,7 @@ Private Function ShooterBestTarget(ByVal NpcIndex As Integer) As Integer
 '2) in any other case, our nearest enemy will be attacked
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -1687,7 +1687,7 @@ On Error GoTo Errhandler
         
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en ShooterBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1701,7 +1701,7 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
 'clerigos o rey. A menos q este paralizado, claro
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With Npclist(NpcIndex)
     
@@ -1756,7 +1756,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     LogError ("Error en ShooterMove. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1765,7 +1765,7 @@ Private Sub AI_Thief(ByVal NpcIndex As Integer)
 'Author: ZaMa
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
     Dim Action As Byte
@@ -1778,7 +1778,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en AI_Thief. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1791,7 +1791,7 @@ Private Function ThiefBestTarget(ByVal NpcIndex As Integer, ByRef Action As Byte
 '2) Targets the nearer user.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim UserIndex As Integer
     Dim Counter As Long
@@ -1882,7 +1882,7 @@ On Error GoTo Errhandler
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en ThiefBestTarget. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1892,7 +1892,7 @@ Private Sub ThiefPerfomAction(ByVal NpcIndex As Integer, ByVal BestTarget As Int
 'Last Modification: 28/10/2010
 '28/10/2010: ZaMa - Now thief doesn't steal/snatch admins.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim WeaponEqpSlot As Byte
     Dim MunicionEqpSlot As Byte
@@ -1988,7 +1988,7 @@ On Error GoTo Errhandler
 
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en ThiefPerfomAction. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1998,7 +1998,7 @@ Private Function SnatchItem(ByVal NpcIndex As Integer, ByVal TargetIndex As Inte
 'Last Modification: 25/09/2010
 'Snatchs slot items from user. No validations are made bacause it's either weapon or munition.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim DropObj As Obj
     Dim nPos As WorldPos
@@ -2024,7 +2024,7 @@ On Error GoTo Errhandler
     
     Exit Function
     
-Errhandler:
+ErrHandler:
     LogError ("Error en SnatchItem. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -2169,7 +2169,7 @@ Private Function EsClaseMagica(ByVal UserIndex As Integer) As Boolean
 'Author: Unkown
 'Last Modification: -
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         EsClaseMagica = .clase = eClass.Mage Or _
@@ -2180,7 +2180,7 @@ On Error GoTo Errhandler
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en EsClaseMagica. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -2199,7 +2199,7 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, ByVal TargetMap As Integer, 
 'Rapsodius - Changed Mod by And for speed
 '26/09/2010: ZaMa - Now make movements as normal npcs, which allows to kick caspers and invisible admins.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim NpcX As Integer
     Dim NpcY As Integer
@@ -2409,7 +2409,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("Error en GreedyWalkTo. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -2457,7 +2457,7 @@ Private Function FarFromTeam(ByVal NpcIndex) As Boolean
     
     Exit Function
 
-Errhandler:
+ErrHandler:
     LogError ("Error en FarFromTeam. Error: " & Err.Number & " - " & Err.description)
 End Function
 
@@ -2467,7 +2467,7 @@ Private Function UserReachable(ByVal NpcIndex As Integer, ByVal UserIndex As Int
 'Last Modification: 19/09/2010
 'Ignores users who are too far in order to avoid being separated from the rest of the team.
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
         
     If Npclist(NpcIndex).Pos.Map <> CenterPos.Map Then Exit Function
 
@@ -2477,7 +2477,7 @@ On Error GoTo Errhandler
     
     Exit Function
     
-Errhandler:
+ErrHandler:
     LogError ("Error en UserReachable. Error: " & Err.Number & " - " & Err.description)
 End Function
 

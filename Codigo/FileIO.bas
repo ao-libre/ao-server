@@ -254,7 +254,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
@@ -370,7 +370,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -438,7 +438,7 @@ Public Sub DoBackUp()
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\BackUps.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & Time
+    Print #nfile, Date & " " & time
     Close #nfile
 End Sub
 
@@ -751,7 +751,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
     
@@ -984,7 +984,7 @@ On Error GoTo Errhandler
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -1774,7 +1774,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVa
 '10/10/2010: Pato - Saco el WriteVar e implemento la clase clsIniManager
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim Manager As clsIniManager
 Dim Existe As Boolean
@@ -2051,7 +2051,7 @@ If Existe Then Call Kill(UserFile & ".bk")
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
 Call LogError("Error en SaveUser")
 Set Manager = Nothing
 
@@ -2291,7 +2291,7 @@ Public Sub CargaApuestas()
 
 End Sub
 
-Public Sub generateMatrix(ByVal mapa As Integer)
+Public Sub generateMatrix(ByVal Mapa As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2326,7 +2326,7 @@ Next j
 
 End Sub
 
-Public Sub setDistance(ByVal mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal X As Integer = 0, Optional ByVal Y As Integer = 0)
+Public Sub setDistance(ByVal Mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal X As Integer = 0, Optional ByVal Y As Integer = 0)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2336,18 +2336,18 @@ Public Sub setDistance(ByVal mapa As Integer, ByVal city As Byte, ByVal side As 
 Dim i As Integer
 Dim lim As Integer
 
-If mapa <= 0 Or mapa > NumMaps Then Exit Sub
+If Mapa <= 0 Or Mapa > NumMaps Then Exit Sub
 
-If distanceToCities(mapa).distanceToCity(city) >= 0 Then Exit Sub
+If distanceToCities(Mapa).distanceToCity(city) >= 0 Then Exit Sub
 
-If mapa = Ciudades(city).Map Then
-    distanceToCities(mapa).distanceToCity(city) = 0
+If Mapa = Ciudades(city).Map Then
+    distanceToCities(Mapa).distanceToCity(city) = 0
 Else
-    distanceToCities(mapa).distanceToCity(city) = Abs(X) + Abs(Y)
+    distanceToCities(Mapa).distanceToCity(city) = Abs(X) + Abs(Y)
 End If
 
 For i = 1 To 4
-    lim = getLimit(mapa, i)
+    lim = getLimit(Mapa, i)
     If lim > 0 Then
         Select Case i
             Case eHeading.NORTH
@@ -2363,7 +2363,7 @@ For i = 1 To 4
 Next i
 End Sub
 
-Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
+Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
 '***************************************************
 'Author: Budi
 'Last Modification: 31/01/2010
@@ -2373,19 +2373,19 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
 Dim X As Long
 Dim Y As Long
 
-If mapa <= 0 Then Exit Function
+If Mapa <= 0 Then Exit Function
 
 For X = 15 To 87
     For Y = 0 To 3
         Select Case side
             Case eHeading.NORTH
-                getLimit = MapData(mapa, X, 7 + Y).TileExit.Map
+                getLimit = MapData(Mapa, X, 7 + Y).TileExit.Map
             Case eHeading.EAST
-                getLimit = MapData(mapa, 92 - Y, X).TileExit.Map
+                getLimit = MapData(Mapa, 92 - Y, X).TileExit.Map
             Case eHeading.SOUTH
-                getLimit = MapData(mapa, X, 94 - Y).TileExit.Map
+                getLimit = MapData(Mapa, X, 94 - Y).TileExit.Map
             Case eHeading.WEST
-                getLimit = MapData(mapa, 9 + Y, X).TileExit.Map
+                getLimit = MapData(Mapa, 9 + Y, X).TileExit.Map
         End Select
         If getLimit > 0 Then Exit Function
     Next Y

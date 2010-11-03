@@ -212,7 +212,7 @@ Public Sub IpRestarConexion(ByVal ip As Long)
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 Dim key As Long
     'Debug.Print "resta conexion a " & ip
@@ -240,7 +240,7 @@ Dim key As Long
     
     Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en IpRestarConexion. Error: " & Err.Number & " - " & Err.description & ". Ip: " & GetAscIP(ip) & " Key:" & key)
 End Sub
 

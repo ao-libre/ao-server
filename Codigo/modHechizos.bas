@@ -319,7 +319,7 @@ Function TieneHechizo(ByVal i As Integer, ByVal UserIndex As Integer) As Boolean
 '
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim j As Integer
     For j = 1 To MAXUSERHECHIZOS
@@ -330,7 +330,7 @@ On Error GoTo Errhandler
     Next
 
 Exit Function
-Errhandler:
+ErrHandler:
 
 End Function
 
@@ -375,7 +375,7 @@ Sub DecirPalabrasMagicas(ByVal SpellWords As String, ByVal UserIndex As Integer)
 '25/07/2009: ZaMa - Invisible admins don't say any word when casting a spell
 '17/11/2009: ZaMa - Now the user become visible when casting a spell, if it is hidden
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     With UserList(UserIndex)
         If .flags.AdminInvisible <> 1 Then
@@ -396,7 +396,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en DecirPalabrasMagicas. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -818,7 +818,7 @@ Sub LanzarHechizo(ByVal SpellIndex As Integer, ByVal UserIndex As Integer)
 '24/01/2007 ZaMa - Optimizacion de codigo.
 '02/16/2010: Marco - Now .flags.hechizo makes reference to global spell index instead of user's spell index
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 With UserList(UserIndex)
     
@@ -884,7 +884,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en LanzarHechizo. Error " & Err.Number & " : " & Err.description & _
         " Hechizo: " & Hechizos(SpellIndex).Nombre & "(" & SpellIndex & _
         "). Casteado por: " & UserList(UserIndex).Name & "(" & UserIndex & ").")
@@ -2024,7 +2024,7 @@ Public Function CanSupportUser(ByVal CasterIndex As Integer, ByVal TargetIndex A
 'Checks if caster can cast support magic on target user.
 '***************************************************
      
- On Error GoTo Errhandler
+ On Error GoTo ErrHandler
  
     With UserList(CasterIndex)
         
@@ -2112,7 +2112,7 @@ Public Function CanSupportUser(ByVal CasterIndex As Integer, ByVal TargetIndex A
 
     Exit Function
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en CanSupportUser, Error: " & Err.Number & " - " & Err.description & _
                   " CasterIndex: " & CasterIndex & ", TargetIndex: " & TargetIndex)
 
@@ -2158,7 +2158,7 @@ Public Function CanSupportNpc(ByVal CasterIndex As Integer, ByVal TargetIndex As
 'Checks if caster can cast support magic on target Npc.
 '***************************************************
      
- On Error GoTo Errhandler
+ On Error GoTo ErrHandler
  
     Dim OwnerIndex As Integer
  
@@ -2246,7 +2246,7 @@ Public Function CanSupportNpc(ByVal CasterIndex As Integer, ByVal TargetIndex As
 
     Exit Function
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en CanSupportNpc, Error: " & Err.Number & " - " & Err.description & _
                   " CasterIndex: " & CasterIndex & ", OwnerIndex: " & OwnerIndex)
 
