@@ -188,6 +188,23 @@ Public Sub LoadPretorianData()
     PretorianAIOffset(ePretorianAI.Last) = PretorianIndex
 
 End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '
 ''/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 ''/\/\/\/\/\/\/\/\ MODULO DE COMBATE PRETORIANO /\/\/\/\/\/\/\/\/\
