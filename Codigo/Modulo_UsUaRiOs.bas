@@ -422,7 +422,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal
 '15/01/2010: ZaMa - Ahora se envia el color del nick.
 '*************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim CharIndex As Integer
     Dim ClanTag As String
@@ -485,7 +485,7 @@ On Error GoTo Errhandler
     End With
 Exit Sub
 
-Errhandler:
+ErrHandler:
     LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description)
     'Resume Next
     Call CloseSocket(UserIndex)
@@ -524,7 +524,7 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer)
     Dim DistVida(1 To 5) As Integer
     Dim GI As Integer 'Guild Index
     
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     WasNewbie = EsNewbie(UserIndex)
     
@@ -766,7 +766,7 @@ On Error GoTo Errhandler
     Call WriteUpdateUserStats(UserIndex)
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 End Sub
 
@@ -1413,6 +1413,9 @@ On Error GoTo ErrorHandler
         .flags.AtacadoPorUser = 0
         .flags.Envenenado = 0
         .flags.Muerto = 1
+        
+        .Counters.Trabajando = 0
+        
         ' No se activa en arenas
         If TriggerZonaPelea(UserIndex, UserIndex) <> TRIGGER6_PERMITE Then
             .flags.SeguroResu = True
@@ -1632,7 +1635,7 @@ Sub Tilelibre(ByRef Pos As WorldPos, ByRef nPos As WorldPos, ByRef Obj As Obj, _
 '23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
 '18/09/2010: ZaMa - Aplico optimizacion de busqueda de tile libre en forma de rombo.
 '**************************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim Found As Boolean
     Dim LoopC As Integer
@@ -1675,7 +1678,7 @@ On Error GoTo Errhandler
     
     Exit Sub
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en Tilelibre. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -2358,7 +2361,7 @@ Public Function FarthestPet(ByVal UserIndex As Integer) As Integer
 'Last Modify Date: 18/11/2009
 'Devuelve el indice de la mascota mas lejana.
 '**************************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     
     Dim PetIndex As Integer
     Dim Distancia As Integer
@@ -2394,7 +2397,7 @@ On Error GoTo Errhandler
 
     Exit Function
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en FarthestPet")
 End Function
 
