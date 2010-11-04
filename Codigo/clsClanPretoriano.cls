@@ -116,7 +116,7 @@ Private Const START_COUNTDOWN_MIN_HP As Integer = 750
 ' Time in which the king hasn't done anything
 Private KingIdleTime As Long
 ' Time needed for respawning an ally (Aprox 5 min)
-Private Const ALLY_RESPAWN_TIME As Long = 3000
+Private Const ALLY_RESPAWN_TIME As Long = 2000
 
 ' Max distance to follow a user, or separate from team
 Private Const MAX_DISTANCE As Integer = 14
@@ -141,7 +141,7 @@ Private ClanIndex As Integer
 ' Contiene los index de los miembros del clan.
 Private Pretorianos() As tPretorianData
 
-Public Function SpawnClan(ByVal Mapa As Integer, ByVal X As Integer, ByVal Y As Integer, _
+Public Function SpawnClan(ByVal mapa As Integer, ByVal X As Integer, ByVal Y As Integer, _
                           ByVal PretoClanIndex As Integer, Optional ByVal Respawning As Boolean = False) As Boolean
 '********************************************************
 'Author: EL OSO
@@ -156,7 +156,7 @@ On Error GoTo ErrHandler
     Dim PretoIndex As Integer
     
     ' Initial pos
-    CenterPos.Map = Mapa
+    CenterPos.Map = mapa
     CenterPos.X = X
     CenterPos.Y = Y
     
@@ -167,7 +167,7 @@ On Error GoTo ErrHandler
     ' Check valid spawn place only if it's the first time
     If Not Respawning Then
         ' The clan only respawns on pretorian map
-        If Mapa = MAPA_PRETORIANO Then
+        If mapa = MAPA_PRETORIANO Then
             RespawnClan = True
             Call InitializePretoriansVars
             
@@ -551,7 +551,7 @@ On Error GoTo ErrHandler
     ' King's alone
     Else
         
-        Dim Mapa As Integer
+        Dim mapa As Integer
         Dim NPCPosX As Integer
         Dim NPCPosY As Integer
         
@@ -562,7 +562,7 @@ On Error GoTo ErrHandler
         Dim Distance As Integer
         
         With Npclist(NpcIndex).Pos
-            Mapa = .Map
+            mapa = .Map
             NPCPosX = .X
             NPCPosY = .Y
         End With
@@ -575,9 +575,9 @@ On Error GoTo ErrHandler
         CounterStep = RandomNumber(0, 1)
         If CounterStep = 1 Then
             CounterStart = 1
-            CounterEnd = ModAreas.ConnGroups(Mapa).CountEntrys
+            CounterEnd = ModAreas.ConnGroups(mapa).CountEntrys
         Else
-            CounterStart = ModAreas.ConnGroups(Mapa).CountEntrys
+            CounterStart = ModAreas.ConnGroups(mapa).CountEntrys
             CounterEnd = 1
             CounterStep = -1
         End If
@@ -585,12 +585,12 @@ On Error GoTo ErrHandler
         ' Search for the best user target
         For Counter = CounterStart To CounterEnd Step CounterStep
         
-            UserIndex = ModAreas.ConnGroups(Mapa).UserEntrys(Counter)
+            UserIndex = ModAreas.ConnGroups(mapa).UserEntrys(Counter)
             
             'Is it in it's range of vision??
             If InVisionRange(UserIndex, NPCPosX, NPCPosY) Then
-                ' Can be atacked?
-                If UserAtacable(UserIndex) Then
+                ' Can be atacked? If it's blinded, doesn't count.
+                If UserAtacable(UserIndex) And UserList(UserIndex).flags.Ceguera = 0 Then
                     ' if previous user choosen, select the better
                     If BestTarget <> 0 Then
                         ' Has priority to attack the nearest
@@ -668,6 +668,7 @@ On Error GoTo ErrHandler
                                       UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
                 Else
                     Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eKingSpells.StupidityAttack), True, True)
+                    .CanAttack = 1 ' So it can make double attack
                     Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eKingSpells.BlindAttack), True, True)
                     
                     ' King Message
@@ -683,7 +684,7 @@ On Error GoTo ErrHandler
                 If .Stats.MinHp <> .Stats.MaxHp Then
                     Call NpcLanzaSpellSobreNpc(NpcIndex, NpcIndex, .Spells(eKingSpells.LittleHeal), True)
                 End If
-                Debug.Assert IdleTime <> ALLY_RESPAWN_TIME
+                
                 ' If time for respawning an ally has passed, then try to do it
                 If KingIdleTime > ALLY_RESPAWN_TIME Then Call KingReviveAlly(NpcIndex)
                 IdleTime = KingIdleTime + 1
@@ -694,7 +695,7 @@ On Error GoTo ErrHandler
     
     ' Resets if anyone is around, else increases
     KingIdleTime = IdleTime
-    
+    Debug.Print KingIdleTime
     Exit Sub
 
 ErrHandler:
@@ -2482,7 +2483,7 @@ ErrHandler:
 End Function
 
 Private Function InVisionRange(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer, _
-                               Optional ByVal ExtendedRange As Boolean) As Boolean
+                               Optional ByVal ExtendedRange As Boolean = False) As Boolean
 '***************************************************
 'Author: ZaMa
 'Last Modification: 24/06/2010
