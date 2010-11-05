@@ -141,7 +141,7 @@ Private ClanIndex As Integer
 ' Contiene los index de los miembros del clan.
 Private Pretorianos() As tPretorianData
 
-Public Function SpawnClan(ByVal mapa As Integer, ByVal X As Integer, ByVal Y As Integer, _
+Public Function SpawnClan(ByVal Mapa As Integer, ByVal X As Integer, ByVal Y As Integer, _
                           ByVal PretoClanIndex As Integer, Optional ByVal Respawning As Boolean = False) As Boolean
 '********************************************************
 'Author: EL OSO
@@ -156,7 +156,7 @@ On Error GoTo ErrHandler
     Dim PretoIndex As Integer
     
     ' Initial pos
-    CenterPos.Map = mapa
+    CenterPos.Map = Mapa
     CenterPos.X = X
     CenterPos.Y = Y
     
@@ -167,7 +167,7 @@ On Error GoTo ErrHandler
     ' Check valid spawn place only if it's the first time
     If Not Respawning Then
         ' The clan only respawns on pretorian map
-        If mapa = MAPA_PRETORIANO Then
+        If Mapa = MAPA_PRETORIANO Then
             RespawnClan = True
             Call InitializePretoriansVars
             
@@ -551,7 +551,7 @@ On Error GoTo ErrHandler
     ' King's alone
     Else
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim NPCPosX As Integer
         Dim NPCPosY As Integer
         
@@ -562,7 +562,7 @@ On Error GoTo ErrHandler
         Dim Distance As Integer
         
         With Npclist(NpcIndex).Pos
-            mapa = .Map
+            Mapa = .Map
             NPCPosX = .X
             NPCPosY = .Y
         End With
@@ -575,9 +575,9 @@ On Error GoTo ErrHandler
         CounterStep = RandomNumber(0, 1)
         If CounterStep = 1 Then
             CounterStart = 1
-            CounterEnd = ModAreas.ConnGroups(mapa).CountEntrys
+            CounterEnd = ModAreas.ConnGroups(Mapa).CountEntrys
         Else
-            CounterStart = ModAreas.ConnGroups(mapa).CountEntrys
+            CounterStart = ModAreas.ConnGroups(Mapa).CountEntrys
             CounterEnd = 1
             CounterStep = -1
         End If
@@ -585,7 +585,7 @@ On Error GoTo ErrHandler
         ' Search for the best user target
         For Counter = CounterStart To CounterEnd Step CounterStep
         
-            UserIndex = ModAreas.ConnGroups(mapa).UserEntrys(Counter)
+            UserIndex = ModAreas.ConnGroups(Mapa).UserEntrys(Counter)
             
             'Is it in it's range of vision??
             If InVisionRange(UserIndex, NPCPosX, NPCPosY) Then
@@ -1721,9 +1721,14 @@ On Error GoTo ErrHandler
         ' If has attacked someone, then go close to him
         If BestTarget > 0 Then
             
-            Call GreedyWalkTo(NpcIndex, CenterPos.Map, _
-                              CenterPos.X + ((UserList(BestTarget).Pos.X - CenterPos.X) / 2), _
-                              CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
+            If Abs(CenterPos.X - .Pos.X) > 7 Or Abs(CenterPos.Y - .Pos.Y) > 7 Then
+                Call ReturnToCenter(NpcIndex)
+            Else
+                
+                Call GreedyWalkTo(NpcIndex, CenterPos.Map, _
+                                  CenterPos.X + ((UserList(BestTarget).Pos.X - CenterPos.X) / 2), _
+                                  CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
+            End If
             
             Exit Sub
         End If
