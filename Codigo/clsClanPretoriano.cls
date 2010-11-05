@@ -1721,7 +1721,7 @@ On Error GoTo ErrHandler
         ' If has attacked someone, then go close to him
         If BestTarget > 0 Then
             
-            If Abs(CenterPos.X - .Pos.X) > 7 Or Abs(CenterPos.Y - .Pos.Y) > 7 Then
+            If Abs(CenterPos.X - .Pos.X) > 4 Or Abs(CenterPos.Y - .Pos.Y) > 4 Then
                 Call ReturnToCenter(NpcIndex)
             Else
                 
