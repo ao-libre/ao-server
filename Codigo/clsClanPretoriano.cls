@@ -1300,7 +1300,7 @@ On Error GoTo ErrHandler
             
                 With UserList(UserIndex)
                     
-                    If UserAtacable(UserIndex, False) Then
+                    If UserAtacable(UserIndex, False, False) Then
                         
                         Distancia = UserDistance(UserIndex, X, Y)
                         Danio = Abs(Int(880 / (Distancia ^ (3 / 7))))
@@ -1718,42 +1718,45 @@ On Error GoTo ErrHandler
             Exit Sub
         End If
         
-        ' If has attacked someone, then go close to him
-        If BestTarget > 0 Then
-            
-            If Abs(CenterPos.X - .Pos.X) > 4 Or Abs(CenterPos.Y - .Pos.Y) > 4 Then
-                Call ReturnToCenter(NpcIndex)
-            Else
-                
-                Call GreedyWalkTo(NpcIndex, CenterPos.Map, _
-                                  CenterPos.X + ((UserList(BestTarget).Pos.X - CenterPos.X) / 2), _
-                                  CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
-            End If
-            
+        ' Don't go too far from center
+        If Abs(CenterPos.X - .Pos.X) > 4 Or Abs(CenterPos.Y - .Pos.Y) > 4 Then
+            Call ReturnToCenter(NpcIndex)
             Exit Sub
         End If
         
-        ' Search for aproaching enemies
-        Dim Counter As Long
-        Dim UserIndex As Integer
-        
-        For Counter = 1 To ModAreas.ConnGroups(CenterPos.Map).CountEntrys
-        
-            UserIndex = ModAreas.ConnGroups(CenterPos.Map).UserEntrys(Counter)
+        ' If has attacked someone, then go close to him
+        If BestTarget > 0 Then
             
-            'Is it in extended range of vision from center position??
-            If InVisionRange(UserIndex, CenterPos.X, CenterPos.Y, True) Then
+            Call GreedyWalkTo(NpcIndex, CenterPos.Map, _
+                              CenterPos.X + ((UserList(BestTarget).Pos.X - CenterPos.X) / 2), _
+                              CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
+            Exit Sub
+        Else
+        
+            ' Search for aproaching enemies
+            Dim Counter As Long
+            Dim UserIndex As Integer
+            
+            For Counter = 1 To ModAreas.ConnGroups(CenterPos.Map).CountEntrys
+            
+                UserIndex = ModAreas.ConnGroups(CenterPos.Map).UserEntrys(Counter)
                 
-                ' Can be atacked?
-                If UserAtacable(UserIndex) Then
-                    With UserList(UserIndex)
-                        Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.X, .Pos.Y)
+                'Is it in extended range of vision from center position??
+                If InVisionRange(UserIndex, CenterPos.X, CenterPos.Y, True) Then
+                    
+                    ' Can be atacked?
+                    If UserAtacable(UserIndex) Then
+                        
+                        With UserList(UserIndex)
+                            Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.X, .Pos.Y)
+                        End With
+                        
                         Exit Sub
-                    End With
+                    End If
+                    
                 End If
-                
-            End If
-        Next Counter
+            Next Counter
+        End If
         
         'Returns to center if no target found
         If .CanAttack = 1 Then Call ReturnToCenter(NpcIndex)
@@ -2523,11 +2526,13 @@ Private Function InVisionRangeNpc(ByVal NpcIndex As Integer, ByVal X As Integer,
     
 End Function
 
-Private Function UserAtacable(ByVal UserIndex As Integer, Optional ByVal CheckVisibility As Boolean = True) As Boolean
+Private Function UserAtacable(ByVal UserIndex As Integer, Optional ByVal CheckVisibility As Boolean = True, _
+                              Optional ByVal AttackAdmin As Boolean = True) As Boolean
 '***************************************************
 'Author: ZaMa
-'Last Modification: 24/06/2010
+'Last Modification: 05/10/2010
 'DEtermines whether the user can be atacked or not
+'05/10/2010: ZaMa - Now doesn't allow to attack admins sometimes.
 '***************************************************
 
     With UserList(UserIndex).flags
@@ -2541,6 +2546,11 @@ Private Function UserAtacable(ByVal UserIndex As Integer, Optional ByVal CheckVi
                            .Oculto = 0 And _
                            .invisible = 0
         End If
+        
+        If Not AttackAdmin Then
+            UserAtacable = UserAtacable And (Not EsGM(UserIndex))
+        End If
+        
     End With
                         
 End Function
