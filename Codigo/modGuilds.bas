@@ -155,7 +155,7 @@ Dim GuildIndex  As Integer
     If Not m_EstadoPermiteEntrar(UserIndex, GuildIndex) Then
         
         ' Es el lider, bajamos 1 rango de alineacion
-        If GuildLeader(GuildIndex) = UserList(UserIndex).Name Then
+        If m_EsGuildLeader(UserList(UserIndex).Name, GuildIndex) Then
             Call LogClanes(UserList(UserIndex).Name & ", líder de " & guilds(GuildIndex).GuildName & " hizo bajar la alienación de su clan.")
         
             CambioAlineacion = True

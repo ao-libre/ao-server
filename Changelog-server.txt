@@ -567,3 +567,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 30/10/2010 : Agrego los comandos "/CrearPretorianos MAPA X Y" y "/EliminarPretorianos MAPA". (ZaMA)
  * 02/11/2010 : Arreglo un bug del centinela que te pedia la clave al loguear, aunque no estes trabajando. (ZaMa).
  * 02/11/2010 : Ahora el centinela no te agrega una pena cuando te ejecuta. (ZaMa)
+ * 08/11/2010 : Fix al bug de clanes que podia expulsar al lider. (Amraphen)
