@@ -38,11 +38,12 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
                            Optional ByVal IgnoreVisibilityCheck As Boolean = False)
 '***************************************************
 'Autor: Unknown (orginal version)
-'Last Modification: 13/07/2010
+'Last Modification: 11/11/2010
 '13/02/2009: ZaMa - Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla.
 '13/07/2010: ZaMa - Ahora no se contabiliza la muerte de un atacable.
 '21/09/2010: ZaMa - Amplio los tipos de hechizos que pueden lanzar los npcs.
 '21/09/2010: ZaMa - Permito que se ignore el chequeo de visibilidad (pueden atacar a invis u ocultos).
+'11/11/2010: ZaMa - No se envian los efectos del hechizo si no lo castea.
 '***************************************************
 
     If Npclist(NpcIndex).CanAttack = 0 Then Exit Sub
@@ -60,22 +61,10 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
         Npclist(NpcIndex).CanAttack = 0
         Dim daño As Integer
     
-        ' Spell Wav
-        Call SendData(SendTarget.ToPCArea, UserIndex, _
-            PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
-            
-        ' Spell FX
-        Call SendData(SendTarget.ToPCArea, UserIndex, _
-            PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
-
-        ' Spell Words
-        If DecirPalabras Then
-            Call SendData(SendTarget.ToNPCArea, NpcIndex, _
-                PrepareMessageChatOverHead(Hechizos(Spell).PalabrasMagicas, Npclist(NpcIndex).Char.CharIndex, vbCyan))
-        End If
-    
         ' Heal HP
         If Hechizos(Spell).SubeHP = 1 Then
+        
+            Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
         
             daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
         
@@ -89,6 +78,8 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
         ElseIf Hechizos(Spell).SubeHP = 2 Then
             
             If .flags.Privilegios And PlayerType.User Then
+            
+                Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
             
                 daño = RandomNumber(Hechizos(Spell).MinHp, Hechizos(Spell).MaxHp)
                 
@@ -145,6 +136,8 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
         
             If .flags.Paralizado = 0 Then
                 
+                Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
+                
                 If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
                     Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
@@ -168,6 +161,8 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
              
             If .flags.Estupidez = 0 Then
             
+                Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
+            
                 If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
                     Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
@@ -186,6 +181,8 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
              
             If .flags.Ceguera = 0 Then
             
+                Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
+            
                 If .Invent.AnilloEqpObjIndex = SUPERANILLO Then
                     Call WriteConsoleMsg(UserIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
@@ -201,7 +198,9 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
         
         ' Remove Invisibility/Hidden
         If Hechizos(Spell).RemueveInvisibilidadParcial = 1 Then
-             
+                 
+            Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
+                 
             'Sacamos el efecto de ocultarse
             If .flags.Oculto = 1 Then
                 .Counters.TiempoOculto = 0
@@ -218,6 +217,30 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
         
     End With
     
+End Sub
+
+Private Sub SendSpellEffects(ByVal UserIndex As Integer, ByVal NpcIndex As Integer, ByVal Spell As Integer, _
+                             ByVal DecirPalabras As Boolean)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 11/11/2010
+'Sends spell's wav, fx and mgic words to users.
+'***************************************************
+    With UserList(UserIndex)
+        ' Spell Wav
+        Call SendData(SendTarget.ToPCArea, UserIndex, _
+            PrepareMessagePlayWave(Hechizos(Spell).WAV, .Pos.X, .Pos.Y))
+            
+        ' Spell FX
+        Call SendData(SendTarget.ToPCArea, UserIndex, _
+            PrepareMessageCreateFX(.Char.CharIndex, Hechizos(Spell).FXgrh, Hechizos(Spell).loops))
+    
+        ' Spell Words
+        If DecirPalabras Then
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, _
+                PrepareMessageChatOverHead(Hechizos(Spell).PalabrasMagicas, Npclist(NpcIndex).Char.CharIndex, vbCyan))
+        End If
+    End With
 End Sub
 
 Public Sub NpcLanzaSpellSobreNpc(ByVal NpcIndex As Integer, ByVal TargetNPC As Integer, _
