@@ -568,3 +568,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 02/11/2010 : Arreglo un bug del centinela que te pedia la clave al loguear, aunque no estes trabajando. (ZaMa).
  * 02/11/2010 : Ahora el centinela no te agrega una pena cuando te ejecuta. (ZaMa)
  * 08/11/2010 : Fix al bug de clanes que podia expulsar al lider. (Amraphen)
+ * 11/11/2010 : No se envian los efectos de un hechizo casteado pro un npc, hasta que se valida que efectivamente lo puede castear. (ZaMa)
+ * 11/11/2010 : El rey Pretoriano ya no ataca usuarios muertos.
