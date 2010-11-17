@@ -57,7 +57,7 @@
 'cuando se pueda hay que utilizarlos, intentando
 usar primero los nros más bajos.
 
-907.
+(Todos usados)
 
 
 ##############################################
@@ -1495,6 +1495,7 @@ CP5=PIRATA
 CP6=ASESINO
 CP7=CAZADOR
 CP8=TRABAJADOR
+CP9=BANDIDO
 LingH=85
 LingP=0
 LingO=0
@@ -4587,6 +4588,7 @@ GrhIndex=708
 ObjType=2
 Agarrable=0
 Anim=28
+RazaEnanaAnim=77
 MinHit=6
 MaxHit=11
 Valor=2310
@@ -4620,6 +4622,7 @@ LingH=500
 LingP=400
 LingO=300
 SkHerreria=100
+Log=1
 
 [OBJ403]
 Name=Espada de Plata
@@ -6348,6 +6351,7 @@ Agarrable=0
 Valor=1200000
 Crucial=1
 HechizoIndex=23
+Log=1
 
 [OBJ532]
 Name=Apocalipsis
@@ -6357,6 +6361,7 @@ Agarrable=0
 Valor=2400000
 Crucial=1
 HechizoIndex=25
+Log=1
 
 [OBJ533]
 Name=Odre
@@ -6405,6 +6410,7 @@ Agarrable=0
 Valor=350000
 Crucial=1
 HechizoIndex=27
+Log=1
 
 [OBJ538]
 Name=Invocar Elemental de Tierra
@@ -10582,6 +10588,18 @@ LingP=1100
 LingO=1200
 SkHerreria=100
 
+[OBJ907]
+Name=Túnica Real Pretoriana (E/G)
+GrhIndex=13282
+ObjType=3
+NumRopaje=180
+Agarrable=0
+MaxDef=0
+MinDef=0
+Valor=675000
+RazaEnana=1
+Crucial=0
+
 [OBJ908] 'gnomo
 Name=Vestimentas de Pescador (E/G)
 GrhIndex=15276
@@ -11993,7 +12011,6 @@ MinDef=3
 Valor=4200
 Crucial=1
 CP1=MAGO
-CP2=PIRATA
 
 [OBJ1003]
 Name=Casco de Oso
@@ -12094,7 +12111,7 @@ Proyectil=1
 MinHit=7
 MaxHit=16
 Valor=50
-Crucial=0
+Crucial=1
 Acuchilla=1
 LingH=1
 SkHerreria=10
@@ -12121,7 +12138,7 @@ MinDef=2
 DefensaMagicaMin=5
 DefensaMagicaMax=9
 Valor=25000
-Crucial=0
+Crucial=1
 CP1=MAGO
 CP2=PALADIN
 CP3=LADRON
@@ -12359,7 +12376,7 @@ Caos=1
 MaxDef=1
 MinDef=1
 Valor=350
-Crucial=0
+Crucial=1
 CP1=MAGO
 CP2=DRUIDA
 CP3=PIRATA
@@ -12380,7 +12397,7 @@ Real=1
 MaxDef=1
 MinDef=1
 Valor=350
-Crucial=0
+Crucial=1
 CP1=MAGO
 CP2=DRUIDA
 CP3=PIRATA
@@ -12623,7 +12640,7 @@ Anim=1
 MaxDef=1
 MinDef=1
 Valor=120
-Crucial=0
+Crucial=1
 Newbie=1
 CP1=MAGO
 CP2=DRUIDA
@@ -12639,7 +12656,7 @@ Anim=9
 MaxDef=1
 MinDef=1
 Valor=125
-Crucial=0
+Crucial=1
 Newbie=1
 CP1=PIRATA
 CP2=MAGO

@@ -72,7 +72,7 @@ Actual Npc con Nro más alto: 616
 [INIT]
 'aca va el número de NPC más alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=904
+NumNPCs=923
 
 
 
@@ -660,30 +660,50 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=23
+NROITEMS=13
 Obj1=675-1000 'Vestimenta Imperial
-Obj2=676-1000 'Vestimenta Imperial (E/G)
-Obj3=516-1000 'Túnica de Maga del Imperio (H/E/EO-M)
-Obj4=517-1000 'Túnica de Mago del Imperio
+Obj2=516-1000 'Túnica de Maga del Imperio (H/E/EO-M)
+Obj3=517-1000 'Túnica de Mago del Imperio
+Obj4=372-1000 'Manto de Sacerdote del Imperio
 Obj5=521-1000 'Armadura Real
-Obj6=372-1000 'Manto de Sacerdote del Imperio
-Obj7=1039-1000 'Manto de Sacerdote del Imperio (E/G)
-Obj8=492-1000 'Armadura Real (E/G)
-Obj9=549-1000 'Túnica de Mago del Imperio (E/G)
-Obj10=679-1000 'Túnica Conspicua de Mago Imperial
-Obj11=629-1000 'Armadura Nobilísima
-Obj12=680-1000 'Armadura de Gran Sacerdote Imperial
-Obj13=1040-1000 'Armadura de Gran Sacerdote Imperial (E/G)
-Obj14=520-1000 'Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
-Obj15=521-1000 'Armadura Real
-Obj16=681-1000 'Armadura Nobilísima (E/G)
-Obj17=682-1000 'Túnica Conspicua de Mago Imperial (E/G)
-Obj18=687-1000 'Túnica Palatina
-Obj19=688-1000 'Pequeña Túnica Palatina (E/G)
-Obj20=691-1000 'Armadura de Ilustre Caballero
-Obj21=693-1000 'Armadura Magna (H/E/EO-M)
-Obj22=694-1000 'Armadura de Ilustre Caballero (E/G)
-Obj23=1038-1000 'Escudo Real
+Obj6=679-1000 'Túnica Conspicua de Mago Imperial
+Obj7=520-1000 'Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
+Obj8=680-1000 'Armadura de Gran Sacerdote Imperial
+Obj9=629-1000 'Armadura Nobilísima
+Obj10=687-1000 'Túnica Palatina
+Obj11=691-1000 'Armadura de Ilustre Caballero
+Obj12=693-1000 'Armadura Magna (H/E/EO-M)
+Obj13=1038-1000 'Escudo Real
+BackUp=1
+
+#############################################
+
+[NPC159]'Sastre Armada Real Bajos. NO CAMBIAR EL NAME=SR
+Name=SR
+NpcType=0
+Desc=Bienvenido a la Sastrería Real.
+Head=309
+Heading=3
+Body=175
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=3
+NROITEMS=10
+Obj1=676-1000 'Vestimenta Imperial (E/G)
+Obj2=549-1000 'Túnica de Mago del Imperio (E/G)
+Obj3=1039-1000 'Manto de Sacerdote del Imperio (E/G)
+Obj4=492-1000 'Armadura Real (E/G)
+Obj5=682-1000 'Túnica Conspicua de Mago Imperial (E/G)
+Obj6=1040-1000 'Armadura de Gran Sacerdote Imperial (E/G)
+Obj7=681-1000 'Armadura Nobilísima (E/G)
+Obj8=688-1000 'Pequeña Túnica Palatina (E/G)
+Obj9=694-1000 'Armadura de Ilustre Caballero (E/G)
+Obj10=1038-1000 'Escudo Real
 BackUp=1
 
 #############################################
@@ -703,28 +723,49 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=21
+NROITEMS=12
 Obj1=677-1000 'Vestimenta Legionaria
-Obj2=678-1000 'Vestimenta Legionaria (E/G)
-Obj3=509-1000 'Túnica de Maga Oscura (H/E/EO-M)
-Obj4=518-1000 'Túnica de Mago Oscuro
+Obj2=509-1000 'Túnica de Maga Oscura (H/E/EO-M)
+Obj3=518-1000 'Túnica de Mago Oscuro
+Obj4=523-1000 'Manto de Sacerdote Demoníaco
 Obj5=369-1000 'Armadura Legionaria
-Obj6=523-1000 'Manto de Sacerdote Demoníaco
-Obj7=1041-1000 'Manto de Sacerdote Demoníaco (E/G)
-Obj8=379-1000 'Armadura Legionaria (E/G)
-Obj9=558-1000 'Túnica de Mago Oscuro (E/G)
-Obj10=634-1000 'Túnica Egregia de Mago Oscuro
-Obj11=635-1000 'Armadura Lóbrega (H/E/EO-M)
-Obj12=683-1000 'Armadura Lóbrega
-Obj13=684-1000 'Armadura de Gran Sacerdote Demoníaco
-Obj14=1042-1000 'Armadura de Gran Sacerdote Demoníaco (E/G)
-Obj15=685-1000 'Armadura Lóbrega (E/G)
-Obj16=686-1000 'Túnica Egregia de Mago Oscuro (E/G)
-Obj17=689-1000 'Túnica Avernal
-Obj18=690-1000 'Pequeña Túnica Avernal (E/G)
-Obj19=701-1000 'Armadura Infame
-Obj20=695-1000 'Armadura de Pequeño Pandemonium (E/G)
-Obj21=1037-1000 'Escudo Legionario
+Obj6=634-1000 'Túnica Egregia de Mago Oscuro
+Obj7=684-1000 'Armadura de Gran Sacerdote Demoníaco
+Obj8=635-1000 'Armadura Lóbrega (H/E/EO-M)
+Obj9=683-1000 'Armadura Lóbrega
+Obj10=689-1000 'Túnica Avernal
+Obj11=701-1000 'Armadura Infame
+Obj12=1037-1000 'Escudo Legionario
+BackUp=1
+
+##############################################
+
+[NPC160] 'Sastre Legión Oscura. NO CAMBIAR EL NAME=SC
+Name=SC
+NpcType=0
+Desc=¡AQUÍ OBTENDRÁS TU ARMADURA LEGIONARIA!
+Head=318
+Heading=3
+Body=177
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=3
+NROITEMS=10
+Obj1=678-1000 'Vestimenta Legionaria (E/G)
+Obj2=558-1000 'Túnica de Mago Oscuro (E/G)
+Obj3=1041-1000 'Manto de Sacerdote Demoníaco (E/G)
+Obj4=379-1000 'Armadura Legionaria (E/G)
+Obj5=686-1000 'Túnica Egregia de Mago Oscuro (E/G)
+Obj6=1042-1000 'Armadura de Gran Sacerdote Demoníaco (E/G)
+Obj7=685-1000 'Armadura Lóbrega (E/G)
+Obj8=690-1000 'Pequeña Túnica Avernal (E/G)
+Obj9=695-1000 'Armadura de Pequeño Pandemonium (E/G)
+Obj10=1037-1000 'Escudo Legionario
 BackUp=1
 
 ##############################################
@@ -1466,15 +1507,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=8
+NROITEMS=9
 Obj1=15-1000 'Daga
 Obj2=619-1000 'Daga Envenenada
 Obj3=165-1000 'Daga +1
 Obj4=9-1000 'Horquilla
 Obj5=2-1000 'Espada Larga
 Obj6=125-1000 'Sable
-Obj7=389-1000 'Martillo de Herrero
-Obj8=990-1000 'Mazo del Juicio
+Obj7=123-1000 'Vikinga
+Obj8=389-1000 'Martillo de Herrero
+Obj9=124-1000 'Katana
 BackUp=1
 
 #############################################
@@ -1529,6 +1571,7 @@ Obj5=501-1000 'Ropa de Campesino
 Obj6=135-1000 'Túnica Roja Burda
 obj7=238-1000 'Túnica Azul
 obj8=239-1000 'Túnica Roja
+obj9=873-1000 'Guantes de hurto
 BackUp=1
 
 #############################################
@@ -1652,13 +1695,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=6
+NROITEMS=9
 Obj1=15-1000 'Daga
 Obj2=619-1000 'Daga Envenenada
 Obj3=165-1000 'Daga +1
-Obj4=3-1000 'Hacha
-Obj5=2-1000 'Espada Larga
-Obj6=398-1000 'Garrote
+Obj4=389-1000 'Martillo de Herrero
+Obj5=3-1000 'Hacha
+Obj6=2-1000 'Espada Larga
+Obj7=398-1000 'Garrote
+Obj8=990-1000 'Mazo del Juicio
+Obj9=1009-1000 'Cuchillas
 BackUp=1
 
 #############################################
@@ -1678,7 +1724,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=7
+NROITEMS=9
 Obj1=201-1000 'Aura Sanadora
 Obj2=204-1000 'Flecha Eléctrica
 Obj3=364-1000 'Terrible Hambre de Igôr
@@ -1686,6 +1732,8 @@ Obj4=205-1000 'Proyectil Etéreo
 Obj5=380-1000 'Invocación de Ultratumba
 Obj6=661-1000 'Sombrero de Aprendiz
 Obj7=383-1000 'Sombrero de Aprendiz Avanzado
+Obj8=658-1000 'Vara de Fresno
+Obj9=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -1715,6 +1763,7 @@ Obj6=501-1000 'Ropa de Campesino
 Obj7=135-1000 'Túnica Roja Burda
 obj8=238-1000 'Túnica Azul
 obj9=239-1000 'Túnica Roja
+obj10=1036-1000 'Guantes de lucha
 BackUp=1
 
 #############################################
@@ -1847,15 +1896,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=8
+NROITEMS=9
 Obj1=164-1000 'Espada Corta
 Obj2=2-1000 'Espada Larga
 Obj3=19-1000 'Espada Dos Manos
 Obj4=123-1000 'Espada Vikinga
-Obj5=401-1000 'Martillo de Guerra
-Obj6=124-1000 'Katana
+Obj5=389-1000 'Martillo de Herrero
+Obj6=401-1000 'Martillo de Guerra
 Obj7=478-1000 'Arco Simple
 Obj8=990-1000 'Mazo del Juicio
+Obj9=1009-1000 'Cuchillas
 BackUp=1
 
 #############################################
@@ -1875,7 +1925,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=11
+NROITEMS=13
 Obj1=394-1000 'Llamado a la Naturaleza
 Obj2=203-1000 'Aura Sanadora Avanzada
 Obj3=207-1000 'Devolver Movilidad
@@ -1887,6 +1937,8 @@ Obj8=531-1000 'Descarga Eléctrica
 Obj9=318-1000 'Invisibilidad
 Obj10=537-1000 'Invocar Elemental de Agua
 Obj11=662-1000 'Sombrero de Mago
+Obj12=658-1000 'Vara de Fresno
+Obj13=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -1906,7 +1958,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=9
+NROITEMS=11
 Obj1=501-1000 'Ropa de Campesino
 Obj2=135-1000 'Túnica Roja Burda
 Obj3=238-1000 'Túnica Azul
@@ -1915,6 +1967,9 @@ Obj5=381-1000 'Túnica de Monje
 Obj6=196-1000 'Túnica de Mago
 Obj7=357-1000 'Túnica de Monje
 Obj8=986-1000 'Túnica de Druida
+Obj9=873-1000 'Guantes de Hurto
+Obj10=1036-1000 'Guantes de Lucha
+Obj11=1010-1000 'Sombrero de Pirata
 BackUp=1
 
 #############################################
@@ -2067,7 +2122,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=13
+NROITEMS=15
 Obj1=530-1000 'Inmovilizar
 Obj2=396-1000 'Celeridad
 Obj3=397-1000 'Torpeza
@@ -2081,6 +2136,8 @@ Obj10=538-1000 'Invocar Elemental de Tierra
 Obj11=536-1000 'Invocar Elemental de Fuego
 Obj12=532-1000 'Apocalipsis
 Obj13=542-1000 'Turbación
+Obj14=658-1000 'Vara de Fresno
+Obj15=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -2100,7 +2157,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=10
+NROITEMS=11
 Obj1=31-1000 'Vestimentas Comunes
 Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
@@ -2110,6 +2167,8 @@ Obj6=239-1000 'Túnica Roja
 Obj7=381-1000 'Túnica de Monje
 Obj8=196-1000 'Túnica de Mago
 Obj9=986-1000 'Túnica de Druida
+Obj10=873-1000 'Guantes de Hurto
+Obj11=1010-1000 'Sombrero de Pirata
 BackUp=1
 
 #############################################
@@ -2266,14 +2325,15 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=7
+NROITEMS=8
 Obj1=15-1000 'Daga
 Obj2=619-1000 'Daga Envenenada
 Obj3=165-1000 'Daga +1
-Obj4=9-1000 'Horquilla
-Obj5=2-1000 'Espada Larga
-Obj6=125-1000 'Sable
-Obj7=389-1000 'Martillo de Herrero
+Obj4=389-1000 'Martillo de Herrero
+Obj5=9-1000 'Horquilla
+Obj6=2-1000 'Espada Larga
+Obj7=125-1000 'Sable
+Obj8=123-1000 'Espada Vikinga
 BackUp=1
 
 #############################################
@@ -2292,12 +2352,14 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=5
+NROITEMS=7
 Obj1=199-1000 'Dardo Mágico
 Obj2=200-1000 'Antídoto Mágico
 Obj3=201-1000 'Aura Sanadora
 Obj4=202-1000 'Toxina
 Obj5=204-1000 'Flecha Eléctrica
+Obj6=658-1000 'Vara de Fresno
+Obj7=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -2317,7 +2379,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=9
+NROITEMS=10
 Obj1=31-1000 'Vestimentas Comunes
 Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
@@ -2326,6 +2388,8 @@ Obj5=501-1000 'Ropa de Campesino
 Obj6=135-1000 'Túnica Roja Burda
 obj7=238-1000 'Túnica Azul
 obj8=239-1000 'Túnica Roja
+obj9=873-1000 'Guantes de Hurto
+obj10=1036-1000 'Guantes de Lucha
 BackUp=1
 
 #############################################
@@ -2450,14 +2514,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=7
+NROITEMS=9
 Obj1=164-1000 'Espada Corta
 Obj2=2-1000 'Espada Larga
 Obj3=19-1000 'Espada Dos Manos
 Obj4=123-1000 'Espada Vikinga
-Obj5=401-1000 'Martillo de Guerra
-Obj6=478-1000 'Arco Simple
-Obj7=990-1000 'Mazo del Juicio
+Obj5=389-1000 'Martillo de Herrero
+Obj6=401-1000 'Martillo de Guerra
+Obj7=478-1000 'Arco Simple
+Obj8=990-1000 'Mazo del Juicio
+Obj9=1009-1000 'Cuchillas
 BackUp=1
 
 #############################################
@@ -2476,7 +2542,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=12
+NROITEMS=14
 Obj1=395-1000 'Llamado Nigromante
 Obj2=203-1000 'Aura Sanadora Avanzada
 obj3=207-1000 'Devolver Movilidad
@@ -2489,6 +2555,8 @@ Obj9=531-1000 'Descarga Eléctrica
 Obj10=318-1000 'Invisibilidad
 Obj11=537-1000 'Invocar Elemental de Agua
 Obj12=662-1000 'Sombrero de Mago
+Obj13=658-1000 'Vara de Fresno
+Obj14=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -2508,7 +2576,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=13
+NROITEMS=14
 Obj1=45-1000 'Ropa de Clan
 Obj2=80-1000 'Ropa de Clan
 Obj3=641-1000 'Ropa de Pordiosero
@@ -2518,9 +2586,11 @@ Obj6=238-1000 'Túnica Azul
 Obj7=239-1000 'Túnica Roja
 Obj8=381-1000 'Túnica de Monje
 Obj9=196-1000 'Túnica de Mago
-Obj10=357-1000 'Túnica de Monje
-Obj11=873-1000 'Guantes de Hurto
-Obj12=986-1000 'Túnica de Druida
+Obj10=357-1000 'Túnica de Druida
+Obj11=986-1000 'Túnica de Druida
+Obj12=873-1000 'Guantes de Hurto
+Obj13=1036-1000 'Guantes de Lucha
+Obj14=1010-1000 'Sombrero de Pirata
 BackUp=1
 
 #############################################
@@ -2653,13 +2723,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=2
-NROITEMS=7
+NROITEMS=9
 Obj1=164-1000 'Espada Corta
 Obj2=19-1000 'Espada Dos Manos
 Obj3=123-1000 'Espada Vikinga
-Obj4=401-1000 'Martillo de Guerra
-Obj5=125-1000 'Sable
-Obj6=753-1000 'Mayal Triple
+Obj4=124-1000 'Katana
+Obj5=401-1000 'Martillo de Guerra
+Obj6=125-1000 'Sable
+Obj7=753-1000 'Mayal Triple
+Obj8=990-1000 'Mazo del Juicio
+Obj9=1009-1000 'Cuchillas
 BackUp=1
 
 #############################################
@@ -2679,9 +2752,11 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=2
+NROITEMS=4
 Obj1=542-1000 'Turbación
 Obj2=532-1000 'Apocalipsis
+Obj3=658-1000 'Vara de Fresno
+Obj4=659-1000 'Bastón nudoso
 BackUp=1
 
 #############################################
@@ -2701,7 +2776,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=7
+NROITEMS=10
 Obj1=515-1000 'Ropa Legendaria
 Obj2=490-1000 'Ropa de Minero
 Obj3=381-1000 'Túnica de Monje
@@ -2709,6 +2784,9 @@ Obj4=196-1000 'Túnica de Mago
 Obj5=357-1000 'Túnica de Monje
 Obj6=519-1000 'Túnica Legendaria
 Obj7=986-1000 'Túnica de Druida
+Obj8=873-1000 'Guantes de Hurto
+Obj9=1036-1000 'Guantes de Lucha
+Obj10=1010-1000 'Sombrero de pirata
 BackUp=1
 
 #############################################
@@ -3262,6 +3340,25 @@ Heading=3
 Body=4
 Movement=1
 Ciudad=5
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+#############################################
+
+[NPC158] 'npc gobernador de Arkhein
+Name=Gobernador
+NpcType=11
+Desc=Hola, soy el gobernador de Arkhein ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Head=0
+Heading=3
+Body=4
+Movement=1
+Ciudad=6
 Attackable=0
 ReSpawn=0
 Hostile=0
@@ -4926,8 +5023,12 @@ MinHIT=5
 DEF=30
 PoderAtaque=100
 PoderEvasion=75
-NROITEMS=1
-Drop1=3-1
+NROITEMS=5
+Drop1=12-114 'Oro
+Drop2=3-1 'Hacha
+Drop3=39-10 'Poción Verde
+Drop4=990-2 'Mazos de Juicio
+Drop5=359-2 'Cotas de Malla
 BackUp=0
 
 ############################################
@@ -6014,8 +6115,8 @@ NROITEMS=5
 Drop1=12-15  'Oro
 Drop2=12-20  'Oro
 Drop3=12-100 'Oro
-Drop3=12-250 'Oro
-Drop3=12-750 'Oro
+Drop4=12-250 'Oro
+Drop5=12-750 'Oro
 
 ############################################
 
@@ -7141,7 +7242,7 @@ NROITEMS=5
 Drop1=12-75 'Oro
 Drop2=978-2 'Harapos de la Cueva
 Drop4=697-2 'Anillos Mágicos
-Drop5=531-1 'Vestido de Bruja
+Drop5=513-1 'Vestido de Bruja
 
 ############################################
 
@@ -7239,7 +7340,7 @@ Drop5=1002-5 'Cascos de Lobo
 ############################################
 
 [NPC602]
-Name=Piraña 
+Name=Piraña
 NpcType=0
 Head=0
 Heading=3
@@ -7305,7 +7406,7 @@ Drop5=542-1 'Turbación
 ############################################
 
 [NPC604]
-Name=Manta raya 
+Name=Manta raya
 NpcType=0
 Head=0
 Heading=3
@@ -7336,7 +7437,7 @@ Drop3=36-4 'Pociones Amarillas
 ############################################
 
 [NPC605]
-Name=Lutra 
+Name=Lutra
 NpcType=0
 Head=0
 Heading=3
@@ -7369,7 +7470,7 @@ Drop4=12-13500 'Oro
 ############################################
 
 [NPC606]
-Name=Tiburón  
+Name=Tiburón
 NpcType=0
 Head=0
 Heading=3
@@ -7402,7 +7503,7 @@ Drop4=12-2100 'Oro
 ############################################
 
 [NPC607]
-Name=Capitán Pirata 
+Name=Capitán Pirata
 NpcType=0
 Head=512
 Heading=3
@@ -7434,7 +7535,7 @@ Drop4=474-1 'Barca
 ############################################
 
 [NPC608]
-Name=Guardián de las Profundidades 
+Name=Guardián de las Profundidades
 NpcType=0
 Head=0
 Heading=3
@@ -7467,7 +7568,7 @@ Drop4=361-1 'Tormenta de Fuego
 ############################################
 
 [NPC609]
-Name=Elemental de Agua Anciano 
+Name=Elemental de Agua Anciano
 NpcType=0
 Head=0
 Heading=3
@@ -7505,7 +7606,7 @@ Drop5=537-1 'Invocar Elemental de Agua
 ############################################
 
 [NPC610]
-Name=Kraken 
+Name=Kraken
 NpcType=0
 Head=0
 Heading=3
@@ -7543,7 +7644,7 @@ Drop5=475-1 'Galera
 ############################################
 
 [NPC611]
-Name=Fango 
+Name=Fango
 NpcType=0
 Head=0
 Heading=3
@@ -7877,7 +7978,7 @@ Drop5=30-1   ' Armadura de cuero
 ############################################
 
 [NPC621]
-Name=Piraña 
+Name=Piraña
 NpcType=0
 Head=0
 Heading=3
@@ -8659,153 +8760,7 @@ BackUp=0
 ##############################################################
 ###############no cambiar los índices asignados###############
 
-[NPC900]
-Name=Sacerdote Pretoriano
-NpcType=10
-Head=74
-Heading=3
-Body=38
-Movement=20
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=10000
-GiveGLD=5000
-MinHP=8000
-MaxHP=8000
-MaxHIT=140
-MinHIT=70
-DEF=10
-PoderAtaque=100
-PoderEvasion=120
-LanzaSpells=5
-Sp1=9
-Sp2=10
-Sp3=39
-Sp4=5
-Sp5=36
-NROITEMS=4
-Obj1=986-1
-Obj2=37-300
-Obj3=38-300
-Obj4=361-1
-BackUp=0
-
-############################################
-
-[NPC901]
-Name=Guerrero Pretoriano
-NpcType=10
-Head=7
-Heading=3
-Body=45
-Movement=21
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=5000
-GiveGLD=5000
-MinHP=15000
-MaxHP=15000
-MaxHIT=200
-MinHIT=180
-DEF=20
-PoderAtaque=600
-PoderEvasion=250
-LanzaSpells=0
-NROITEMS=7
-Obj1=129-1
-Obj2=195-1
-Obj3=131-1
-Obj4=128-1
-Obj5=36-30
-Obj6=39-30
-Obj7=38-300
-BackUp=0
-
-############################################
-
-[NPC902]
-Name=Mago Pretoriano
-NpcType=10
-Head=104
-Heading=3
-Body=49
-Movement=22
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=10000
-GiveGLD=10000
-MinHP=5000
-MaxHP=5000
-MaxHIT=60
-MinHIT=30
-DEF=10
-PoderAtaque=100
-PoderEvasion=80
-LanzaSpells=2
-Sp1=25
-Sp2=38
-NROITEMS=4
-Obj1=238-1
-Obj2=37-400
-Obj3=660-1
-Obj4=662-1
-BackUp=0
-
-############################################
-
-[NPC903]
-Name=Cazador Pretoriano
-NpcType=10
-Head=301
-Heading=3
-Body=110
-Movement=23
-AguaValida=0
-Attackable=1
-ReSpawn=1
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=5000
-GiveGLD=5000
-MinHP=10000
-MaxHP=10000
-MaxHIT=150
-MinHIT=100
-DEF=10
-PoderAtaque=350
-PoderEvasion=220
-LanzaSpells=1
-Sp1=37
-NROITEMS=7
-Obj1=665-1
-Obj2=553-125
-Obj3=648-1
-Obj4=131-1
-Obj5=128-1
-Obj6=36-20
-Obj7=39-20
-BackUp=0
-
-############################################
-
-[NPC904]
+[NPC900] ' Alto
 Name=Rey Pretoriano
 NpcType=10
 Head=14
@@ -8842,13 +8797,13 @@ BackUp=0
 
 ############################################
 
-[NPC905] ' Bardo Alto
-Name=Bardo Pretoriano 
+[NPC901] ' Bajo (Asignar cabeza default)
+Name=Rey Pretoriano
 NpcType=10
-Head=74
+Head=14
 Heading=3
-Body=38
-Movement=20
+Body=180
+Movement=24
 AguaValida=0
 Attackable=1
 ReSpawn=1
@@ -8856,37 +8811,35 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-GiveGLD=5000
-MinHP=8000
-MaxHP=8000
-MaxHIT=140
-MinHIT=70
-DEF=10
-PoderAtaque=100
-PoderEvasion=120
+GiveEXP=35000
+GiveGLD=30000
+MinHP=12000
+MaxHP=12000
+MaxHIT=50
+MinHIT=30
+DEF=30
+PoderAtaque=1000
+PoderEvasion=270
 LanzaSpells=5
-Sp1=9
+Sp1=3
 Sp2=10
-Sp3=39
-Sp4=5
-Sp5=36
-NROITEMS=5
-Obj1=519-1  ' Túnica Legendaria
-Obj2=132-1  ' Casco de Hierro
-Obj3=37-300 ' Poción Azul
-Obj4=38-300 ' Poción Roja
-Obj5=696-3  ' Laúd Mágico
+Sp3=30
+Sp4=31
+Sp5=1
+NROITEMS=2
+Obj1=907-1
+Obj2=403-1
+AfectaParalisis=1
 BackUp=0
 
 ############################################
 
-[NPC905] ' Bardo Bajo
-Name=Bardo Pretoriano 
+[NPC902]
+Name=Clerigo Pretoriano
 NpcType=10
 Head=74
 Heading=3
-Body=38      '*************** Cambiar por body enano
+Body=130
 Movement=20
 AguaValida=0
 Attackable=1
@@ -8896,7 +8849,6 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=10000
-GiveGLD=5000
 MinHP=8000
 MaxHP=8000
 MaxHIT=140
@@ -8910,22 +8862,23 @@ Sp2=10
 Sp3=39
 Sp4=5
 Sp5=36
-NROITEMS=5
-Obj1=525-1  ' Túnica Combinada (E/G)
-Obj2=132-1  ' Casco de Hierro
-Obj3=37-300 ' Poción Azul
-Obj4=38-300 ' Poción Roja
-Obj5=696-3  ' Laúd Mágico
+NROITEMS=6
+Obj1=12-5000 ' Oro
+Obj2=519-1   ' Tunica legendaria
+Obj3=37-300  ' Pocion Azul
+Obj4=38-300  ' Pocion Roja
+Obj5=361-1   ' Tormenta de Fuego
+Obj6=697-1   ' Anillo Magico
 BackUp=0
 
 ############################################
 
-[NPC906] ' Sacerdote Bajo
-Name=Sacerdote Pretoriano
+[NPC903] ' Bajo (Asignar cabeza default)
+Name=Clerigo Pretoriano
 NpcType=10
 Head=74
 Heading=3
-Body=38
+Body=136
 Movement=20
 AguaValida=0
 Attackable=1
@@ -8935,7 +8888,6 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=10000
-GiveGLD=5000
 MinHP=8000
 MaxHP=8000
 MaxHIT=140
@@ -8949,9 +8901,727 @@ Sp2=10
 Sp3=39
 Sp4=5
 Sp5=36
-NROITEMS=4
-Obj1=986-1
-Obj2=37-300
-Obj3=38-300
-Obj4=361-1
+NROITEMS=6
+Obj1=12-5000 ' Oro
+Obj2=525-1   ' Tunica Combinada
+Obj3=37-300  ' Pocion Azul
+Obj4=38-300  ' Pocion Roja
+Obj5=361-1   ' Tormenta de Fuego
+Obj6=697-1   ' Anillo Magico
+BackUp=0
+
+############################################
+
+[NPC904]
+Name=Bardo Pretoriano
+NpcType=10
+Head=74
+Heading=3
+Body=130
+Movement=20
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=8000
+MaxHP=8000
+MaxHIT=140
+MinHIT=70
+DEF=10
+PoderAtaque=100
+PoderEvasion=120
+LanzaSpells=5
+Sp1=9
+Sp2=10
+Sp3=39
+Sp4=5
+Sp5=36
+NROITEMS=6
+Obj1=12-5000 ' Oro
+Obj2=519-1   ' Tunica legendaria
+Obj3=37-300  ' Pocion Azul
+Obj4=38-300  ' Pocion Roja
+Obj5=132-1   ' Casco de Hierro
+Obj6=1049-1  ' Laud Élfico
+BackUp=0
+
+############################################
+
+[NPC905] ' Bajo (Asignar cabeza default)
+Name=Bardo Pretoriano
+NpcType=10
+Head=74
+Heading=3
+Body=136
+Movement=20
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=8000
+MaxHP=8000
+MaxHIT=140
+MinHIT=70
+DEF=10
+PoderAtaque=100
+PoderEvasion=120
+LanzaSpells=5
+Sp1=9
+Sp2=10
+Sp3=39
+Sp4=5
+Sp5=36
+NROITEMS=6
+Obj1=12-5000 ' Oro
+Obj2=525-1   ' Tunica Combinada
+Obj3=37-300  ' Pocion Azul
+Obj4=38-300  ' Pocion Roja
+Obj5=132-1   ' Casco de Hierro
+Obj6=1049-1  ' Laud Élfico
+BackUp=0
+
+############################################
+
+[NPC906]
+Name=Mago Pretoriano
+NpcType=10
+Head=104
+Heading=3
+Body=49
+Movement=22
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=5000
+MaxHP=5000
+MaxHIT=60
+MinHIT=30
+DEF=10
+PoderAtaque=100
+PoderEvasion=80
+LanzaSpells=2
+Sp1=25
+Sp2=38
+NROITEMS=5
+Obj1=12-10000 ' Oro
+Obj2=238-1    ' Tunica Azul
+Obj3=37-400   ' Pocion Azul
+Obj4=660-1    ' Baculo Engarzado
+Obj5=662-1    ' Sombrero de Mago
+BackUp=0
+
+############################################
+
+[NPC907] ' Bajo (Asignar cabeza default)
+Name=Mago Pretoriano
+NpcType=10
+Head=104
+Heading=3
+Body=159
+Movement=22
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=5000
+MaxHP=5000
+MaxHIT=60
+MinHIT=30
+DEF=10
+PoderAtaque=100
+PoderEvasion=80
+LanzaSpells=2
+Sp1=25
+Sp2=38
+NROITEMS=5
+Obj1=12-10000 ' Oro
+Obj2=670-1    ' Túnica de mago 
+Obj3=37-400   ' Pocion Azul
+Obj4=660-1    ' Baculo Engarzado
+Obj5=662-1    ' Sombrero de Mago
+BackUp=0
+
+############################################
+
+[NPC908]
+Name=Druida Pretoriano
+NpcType=10
+Head=104
+Heading=3
+Body=56
+Movement=22
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=5000
+MaxHP=5000
+MaxHIT=60
+MinHIT=30
+DEF=10
+PoderAtaque=100
+PoderEvasion=80
+LanzaSpells=2
+Sp1=25
+Sp2=38
+NROITEMS=5
+Obj1=12-10000 ' Oro
+Obj2=986-1    ' Tunica de Druida
+Obj3=37-400   ' Pocion Azul
+Obj4=1050-1   ' Flauta Élfica
+Obj5=1004-1   ' Casco de Tigre
+BackUp=0
+
+############################################
+
+[NPC909] ' Bajo (Asignar cabeza default)
+Name=Druida Pretoriano
+NpcType=10
+Head=104
+Heading=3
+Body=135
+Movement=22
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=10000
+MinHP=5000
+MaxHP=5000
+MaxHIT=60
+MinHIT=30
+DEF=10
+PoderAtaque=100
+PoderEvasion=80
+LanzaSpells=2
+Sp1=25
+Sp2=38
+NROITEMS=5
+Obj1=12-10000 ' Oro
+Obj2=524-1    ' Túnica roja especial
+Obj3=37-400   ' Pocion Azul
+Obj4=1050-1   ' Flauta Élfica
+Obj5=1004-1   ' Casco de Tigre
+BackUp=0
+
+############################################
+
+[NPC910]
+Name=Cazador Pretoriano
+NpcType=10
+Head=301
+Heading=3
+Body=58
+Movement=23
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=10000
+MaxHP=10000
+MaxHIT=150
+MinHIT=100
+DEF=10
+PoderAtaque=350
+PoderEvasion=220
+LanzaSpells=1
+Sp1=37
+NROITEMS=8
+Obj1=12-5000  ' Oro
+Obj2=665-1    ' Arco de Cazador
+Obj3=553-125  ' Flecha +3
+Obj4=360-1    ' Armadura de Cazador 
+Obj5=370-1    ' Capucha de Cazador 
+Obj6=128-1    ' Escudo de Hierro
+Obj7=36-20    ' Poción Amarilla
+Obj8=39-20    ' Poción Verde
+BackUp=0
+
+############################################
+ 
+[NPC911] ' Bajo (Asignar cabeza default)
+Name=Cazador Pretoriano
+NpcType=10
+Head=301
+Heading=3
+Body=155
+Movement=23
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=10000
+MaxHP=10000
+MaxHIT=150
+MinHIT=100
+DEF=10
+PoderAtaque=350
+PoderEvasion=220
+LanzaSpells=1
+Sp1=37
+NROITEMS=8
+Obj1=12-5000  ' Oro
+Obj2=665-1    ' Arco de Cazador(E/G)
+Obj3=553-125  ' Flecha +3
+Obj4=648-1    ' Armadura de Cazador (E/G) 
+Obj5=370-1    ' Capucha de Cazador 
+Obj6=128-1    ' Escudo de Hierro
+Obj7=36-20    ' Poción Amarilla
+Obj8=39-20    ' Poción Verde
+BackUp=0
+
+############################################
+
+[NPC912]
+Name=Pirata Pretoriano
+NpcType=10
+Head=301
+Heading=3
+Body=130
+Movement=23
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=10000
+MaxHP=10000
+MaxHIT=150
+MinHIT=100
+DEF=10
+PoderAtaque=350
+PoderEvasion=220
+LanzaSpells=1
+Sp1=37
+NROITEMS=6
+Obj1=12-8000  ' Oro
+Obj2=1009-125 ' Cuchillas
+Obj3=519-1    ' Tunica Legendaria
+Obj4=1010-1   ' Sombrero Pirata 
+Obj5=36-20    ' Poción Amarilla
+Obj6=39-20    ' Poción Verde
+BackUp=0
+
+############################################
+
+[NPC913] ' Bajo (Asignar cabeza default)
+Name=Pirata Pretoriano
+NpcType=10
+Head=301
+Heading=3
+Body=136
+Movement=23
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=10000
+MaxHP=10000
+MaxHIT=150
+MinHIT=100
+DEF=10
+PoderAtaque=350
+PoderEvasion=220
+LanzaSpells=1
+Sp1=37
+NROITEMS=6
+Obj1=12-8000  ' Oro
+Obj2=1009-125 ' Cuchillas
+Obj3=525-1    ' Túnica Combinada (E/G)
+Obj4=1010-1   ' Sombrero Pirata 
+Obj5=36-20    ' Poción Amarilla
+Obj6=39-20    ' Poción Verde
+BackUp=0
+
+############################################
+
+[NPC914]
+Name=Guerrero Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=45
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=129-1   ' Hacha de Guerra Dos Filos
+Obj3=195-1   ' Armadura de Placas Completa
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=36-30   ' Poción Amarilla
+Obj7=39-30   ' Poción Verde
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC915] ' Bajo (Asignar cabeza default)
+Name=Guerrero Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=54
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=129-1   ' Hacha de Guerra Dos Filos
+Obj3=243-1   ' Armadura de Placas Completa (E/G)
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=36-30   ' Poción Amarilla
+Obj7=39-30   ' Poción Verde
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC916]
+Name=Paladin Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=45
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=7
+Obj1=12-5000 ' Oro
+Obj2=129-1   ' Hacha de Guerra Dos Filos
+Obj3=195-1   ' Armadura de Placas Completa
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=37-450  ' Poción Azul
+Obj7=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC917] ' Bajo (Asignar cabeza default)
+Name=Paladin Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=54
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=7
+Obj1=12-5000 ' Oro
+Obj2=129-1   ' Hacha de Guerra Dos Filos
+Obj3=243-1   ' Armadura de Placas Completa (E/G)
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=37-450  ' Poción Azul
+Obj7=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC918]
+Name=Asesino Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=48
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=367-2   ' Daga +4
+Obj3=356-1   ' Armadura de las sombras
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=404-1   ' Escudo de Tortuga
+Obj6=697-1   ' Anillo mágico
+Obj7=37-450  ' Poción Azul
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC919] ' Bajo (Asignar cabeza default)
+Name=Asesino Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=539
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=367-2   ' Daga +4
+Obj3=854-1   ' Armadura de las sombras (E/G)
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=404-1   ' Escudo de Tortuga
+Obj6=697-1   ' Anillo mágico
+Obj7=37-450  ' Poción Azul
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC920]
+Name=Bandido Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=45
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=123-2   ' Espada Vikinga
+Obj3=195-1   ' Armadura de Placas Completa
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=873-1   ' Guantes de hurto
+Obj7=37-450  ' Poción Azul
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC921] ' Bajo (Asignar cabeza default)
+Name=Bandido Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=54
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=15000
+MaxHP=15000
+MaxHIT=200
+MinHIT=180
+DEF=20
+PoderAtaque=600
+PoderEvasion=250
+LanzaSpells=0
+NROITEMS=8
+Obj1=12-5000 ' Oro
+Obj2=123-2   ' Espada Vikinga
+Obj3=243-1   ' Armadura de Placas Completa (E/G)
+Obj4=131-1   ' Casco de Hierro Completo
+Obj5=128-1   ' Escudo de Hierro
+Obj6=873-1   ' Guantes de hurto
+Obj7=37-450  ' Poción Azul
+Obj8=38-300  ' Poción Roja
+BackUp=0
+
+############################################
+
+[NPC922]
+Name=Ladrón Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=47
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=3000
+MaxHP=3000
+MaxHIT=50
+MinHIT=65
+DEF=10
+PoderAtaque=150
+PoderEvasion=300
+AfectaParalisis=1
+LanzaSpells=2
+Sp1=47 ' Flecha
+Sp2=39 ' Paralisis
+NROITEMS=3
+Obj1=12-10000 ' Oro
+Obj2=873-1    ' Guantes de hurto
+Obj3=132-1    ' Casco de Hierro
+BackUp=0
+
+############################################
+
+[NPC923] ' Bajo (Asignar cabeza default)
+Name=Ladrón Pretoriano
+NpcType=10
+Head=7
+Heading=3
+Body=374
+Movement=21
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=5000
+MinHP=3000
+MaxHP=3000
+MaxHIT=50
+MinHIT=65
+DEF=10
+PoderAtaque=150
+PoderEvasion=300
+AfectaParalisis=1
+LanzaSpells=2
+Sp1=47 ' Flecha
+Sp2=39 ' Paralisis
+NROITEMS=3
+Obj1=12-10000 ' Oro
+Obj2=873-1    ' Guantes de hurto
+Obj3=132-1    ' Casco de Hierro
 BackUp=0

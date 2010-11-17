@@ -22,3 +22,13 @@ MAPA=62
 X=52
 Y=75
 MAPA=196
+
+[Nemahuak]
+X=50
+Y=65
+MAPA=286
+
+[Arkhein]
+X=40
+Y=48
+MAPA=151
