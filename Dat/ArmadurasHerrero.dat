@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=59
+NumArmaduras=61
 
 
 [Armadura1] ' Casco de hierro
@@ -20,161 +20,167 @@ Index=128
 [Armadura6] ' Escudo de plata
 Index=130
 
-[Armadura7] ' Escudo imperial
+[Armadura7] ' Escudo Real
+Index=1038
+
+[Armadura8] ' Escudo imperial
 Index=133
 
-[Armadura8] ' Escudo infernal
+[Armadura9] ' Escudo Legionario
+Index=1037
+
+[Armadura10] ' Escudo infernal
 Index=708
 
-[Armadura9] ' Manto de Noble
+[Armadura11] ' Manto de Noble
 Index=484
 
-[Armadura10] ' Cota de Mallas
+[Armadura12] ' Cota de Mallas
 Index=359
 
-[Armadura11] ' Cota de Mallas (Mujer)
+[Armadura13] ' Cota de Mallas (Mujer)
 Index=499
 
-[Armadura12] ' Cota de Mallas (E/G)
+[Armadura14] ' Cota de Mallas (E/G)
 Index=667
 
-[Armadura13] ' Cota de Mallas Larga (E/G)
+[Armadura15] ' Cota de Mallas Larga (E/G)
 Index=975
 
-[Armadura14] ' Armadura de Campeón
+[Armadura16] ' Armadura de Campeón
 Index=903
 
-[Armadura15] ' Armadura placas
+[Armadura17] ' Armadura placas
 Index=195
 
-[Armadura16] ' Armadura placas + 1
+[Armadura18] ' Armadura placas + 1
 Index=390
 
-[Armadura17] ' Armadura placas + 2
+[Armadura19] ' Armadura placas + 2
 Index=391
 
-[Armadura18] ' Armadura placas enanos
+[Armadura20] ' Armadura placas enanos
 Index=243
 
-[Armadura19] ' Armadura placas enanos + 1
+[Armadura21] ' Armadura placas enanos + 1
 Index=392
 
-[Armadura20] ' Armadura placas enanos + 2
+[Armadura22] ' Armadura placas enanos + 2
 Index=393
 
-[Armadura21] ' Armadura de Placas Rojas
+[Armadura23] ' Armadura de Placas Rojas
 Index=493
 
-[Armadura22] ' Armadura de Placas Azul
+[Armadura24] ' Armadura de Placas Azul
 Index=489
 
-[Armadura23] ' Armadura de Placas de Gala
+[Armadura25] ' Armadura de Placas de Gala
 Index=497
 
-[Armadura24] ' Trampa Visual (H/E/EO-M)
+[Armadura26] ' Trampa Visual (H/E/EO-M)
 Index=503
 
-[Armadura25] ' Placas Combinadas (H/E/EO-M)
+[Armadura27] ' Placas Combinadas (H/E/EO-M)
 Index=904
 
-[Armadura26] ' Suprema Armadura Dorada (H/E/EO-M)
+[Armadura28] ' Suprema Armadura Dorada (H/E/EO-M)
 Index=905
 
-[Armadura27] ' Armadura de las Sombras
+[Armadura29] ' Armadura de las Sombras
 Index=356
 
-[Armadura28] ' Armadura de Elite (E/G)
+[Armadura30] ' Armadura de Elite (E/G)
 Index=672
 
-[Armadura29] ' Armadura Bruñida (E/G)
+[Armadura31] ' Armadura Bruñida (E/G)
 Index=500
 
-[Armadura30] ' Armadura Pesada de Hierro y Bronce (E/G)
+[Armadura32] ' Armadura Pesada de Hierro y Bronce (E/G)
 Index=976
 
-[Armadura31] ' Cienaga
+[Armadura33] ' Cienaga
 Index=496
 
-[Armadura32] ' Escarlata
+[Armadura34] ' Escarlata
 Index=495
 
-[Armadura33] ' Dama de las tinieblas
+[Armadura35] ' Dama de las tinieblas
 Index=487
 
-[Armadura34] ' Armadura Legendaria
+[Armadura36] ' Armadura Legendaria
 Index=485
 
-[Armadura35] ' Armadura de Dragón (Hombre)
+[Armadura37] ' Armadura de Dragón (Hombre)
 Index=481
 
-[Armadura36] ' Armadura de Dragón (Mujer)
+[Armadura38] ' Armadura de Dragón (Mujer)
 Index=482
 
-[Armadura37] ' Armadura de Dragón (Enano/Enana)
+[Armadura39] ' Armadura de Dragón (Enano/Enana)
 Index=483
 
-[Armadura38] ' Manto del Dragón (H/E/EO)
+[Armadura40] ' Manto del Dragón (H/E/EO)
 Index=906
 
-[Armadura39] ' Anillo Mágico
+[Armadura41] ' Anillo Mágico
 Index=697
 
-[Armadura40] ' Anillo de resistencia Mágica
+[Armadura42] ' Anillo de resistencia Mágica
 Index=698
 
-[Armadura41] ' Anillo de Disolución Mágica
+[Armadura43] ' Anillo de Disolución Mágica
 Index=699
 
-[Armadura42] ' Armadura Real
+[Armadura44] ' Armadura Real
 Index=521
 
-[Armadura43] ' Armadura Real (E/G)
+[Armadura45] ' Armadura Real (E/G)
 Index=492
 
-[Armadura44] ' Armadura de Gran Sacerdote Imperial
+[Armadura46] ' Armadura de Gran Sacerdote Imperial
 Index=680
 
-[Armadura45] ' Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
+[Armadura47] ' Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
 Index=520
 
-[Armadura46] ' Armadura Nobilísima
+[Armadura48] ' Armadura Nobilísima
 Index=629
 
-[Armadura47] ' Armadura Nobilísima (E/G)
+[Armadura49] ' Armadura Nobilísima (E/G)
 Index=681
 
-[Armadura48] ' Armadura de Ilustre Caballero
+[Armadura50] ' Armadura de Ilustre Caballero
 Index=691
 
-[Armadura49] ' Armadura de Ilustre Caballero (E/G)
+[Armadura51] ' Armadura de Ilustre Caballero (E/G)
 Index=694
 
-[Armadura50] ' Armadura de las Sombras (E/G)
+[Armadura52] ' Armadura de las Sombras (E/G)
 Index=854
 
-[Armadura51] ' Armadura Magna (H/E/EO-M)
+[Armadura53] ' Armadura Magna (H/E/EO-M)
 Index=693
 
-[Armadura52] ' Armadura Legionaria
+[Armadura54] ' Armadura Legionaria
 Index=369
 
-[Armadura53] ' Armadura Legionaria (E/G)
+[Armadura55] ' Armadura Legionaria (E/G)
 Index=379
 
-[Armadura54] ' Armadura de Gran Sacerdote Demoníaco
+[Armadura56] ' Armadura de Gran Sacerdote Demoníaco
 Index=684
 
-[Armadura55] ' Armadura Lóbrega
+[Armadura57] ' Armadura Lóbrega
 Index=683
 
-[Armadura56] ' Armadura Lóbrega (H/E/EO-M)
+[Armadura58] ' Armadura Lóbrega (H/E/EO-M)
 Index=635
 
-[Armadura57] ' Armadura Lóbrega (E/G)
+[Armadura59] ' Armadura Lóbrega (E/G)
 Index=685
 
-[Armadura58] ' Armadura de Pequeño Pandemonium (E/G)
+[Armadura60] ' Armadura de Pequeño Pandemonium (E/G)
 Index=695
 
-[Armadura59] ' Armadura Infame
+[Armadura61] ' Armadura Infame
 Index=701

@@ -93,7 +93,7 @@ ManaRequerido=10
 StaRequerido=1
 Target=3
 SubeHP=2
-MinHP=3
+MinHP=2
 MaxHP=5
 SubeMana=0
 MinMana=0
@@ -2339,6 +2339,7 @@ Desc=Hechizo invocado por el mago pretoriano unicamente
 PalabrasMagicas=AN ROHL ÙX MAÏO
 WAV=16
 FXgrh=2
+RemueveInvisibilidadParcial=1
 Loops=2
 MinSkill=101
 
