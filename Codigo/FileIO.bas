@@ -1811,13 +1811,6 @@ With UserList(UserIndex)
         .flags.Ignorado = False
     End If
     
-    If Existe Then
-        If .flags.Muerto = 1 Then
-            .Char.Head = Manager.GetValue("INIT", "Head")
-        End If
-    '       Kill UserFile
-    End If
-    
     Dim LoopC As Integer
     
     
@@ -1886,10 +1879,10 @@ With UserList(UserIndex)
     
     Call Manager.ChangeValue("INIT", "Heading", CStr(.Char.heading))
     
-    Call Manager.ChangeValue("INIT", "Head", CStr(.OrigChar.Head))
-    
     If .flags.Muerto = 0 Then
-        Call Manager.ChangeValue("INIT", "Body", CStr(.Char.body))
+        If .Char.body <> 0 Then
+            Call Manager.ChangeValue("INIT", "Body", CStr(.Char.body))
+        End If
     End If
     
     Call Manager.ChangeValue("INIT", "Arma", CStr(.Char.WeaponAnim))
@@ -2291,7 +2284,7 @@ Public Sub CargaApuestas()
 
 End Sub
 
-Public Sub generateMatrix(ByVal Mapa As Integer)
+Public Sub generateMatrix(ByVal mapa As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2326,7 +2319,7 @@ Next j
 
 End Sub
 
-Public Sub setDistance(ByVal Mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal X As Integer = 0, Optional ByVal Y As Integer = 0)
+Public Sub setDistance(ByVal mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal X As Integer = 0, Optional ByVal Y As Integer = 0)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2336,18 +2329,18 @@ Public Sub setDistance(ByVal Mapa As Integer, ByVal city As Byte, ByVal side As 
 Dim i As Integer
 Dim lim As Integer
 
-If Mapa <= 0 Or Mapa > NumMaps Then Exit Sub
+If mapa <= 0 Or mapa > NumMaps Then Exit Sub
 
-If distanceToCities(Mapa).distanceToCity(city) >= 0 Then Exit Sub
+If distanceToCities(mapa).distanceToCity(city) >= 0 Then Exit Sub
 
-If Mapa = Ciudades(city).Map Then
-    distanceToCities(Mapa).distanceToCity(city) = 0
+If mapa = Ciudades(city).Map Then
+    distanceToCities(mapa).distanceToCity(city) = 0
 Else
-    distanceToCities(Mapa).distanceToCity(city) = Abs(X) + Abs(Y)
+    distanceToCities(mapa).distanceToCity(city) = Abs(X) + Abs(Y)
 End If
 
 For i = 1 To 4
-    lim = getLimit(Mapa, i)
+    lim = getLimit(mapa, i)
     If lim > 0 Then
         Select Case i
             Case eHeading.NORTH
@@ -2363,7 +2356,7 @@ For i = 1 To 4
 Next i
 End Sub
 
-Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
+Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
 '***************************************************
 'Author: Budi
 'Last Modification: 31/01/2010
@@ -2373,19 +2366,19 @@ Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
 Dim X As Long
 Dim Y As Long
 
-If Mapa <= 0 Then Exit Function
+If mapa <= 0 Then Exit Function
 
 For X = 15 To 87
     For Y = 0 To 3
         Select Case side
             Case eHeading.NORTH
-                getLimit = MapData(Mapa, X, 7 + Y).TileExit.Map
+                getLimit = MapData(mapa, X, 7 + Y).TileExit.Map
             Case eHeading.EAST
-                getLimit = MapData(Mapa, 92 - Y, X).TileExit.Map
+                getLimit = MapData(mapa, 92 - Y, X).TileExit.Map
             Case eHeading.SOUTH
-                getLimit = MapData(Mapa, X, 94 - Y).TileExit.Map
+                getLimit = MapData(mapa, X, 94 - Y).TileExit.Map
             Case eHeading.WEST
-                getLimit = MapData(Mapa, 9 + Y, X).TileExit.Map
+                getLimit = MapData(mapa, 9 + Y, X).TileExit.Map
         End Select
         If getLimit > 0 Then Exit Function
     Next Y
