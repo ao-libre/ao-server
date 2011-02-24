@@ -1100,7 +1100,6 @@ With UserList(UserIndex)
     
     If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
-        Call ResetUserSlot(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
@@ -1147,7 +1146,6 @@ With UserList(UserIndex)
     Else
         If Not MapaValido(.Pos.Map) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
-            Call FlushBuffer(UserIndex)
             Call CloseSocket(UserIndex)
             Exit Sub
         End If
