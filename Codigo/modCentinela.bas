@@ -55,7 +55,10 @@ Private Type tCentinela
 End Type
 
 Public centinelaActivado As Boolean
-Private ResetCentinelaTime As Long 'Guardo cuando voy a resetear a la lista de usuarios del centinela
+
+'Guardo cuando voy a resetear a la lista de usuarios del centinela
+Private centinelaStartTime As Long
+Private centinelaInterval As Long
 
 Private DetenerAsignacion As Boolean
 
@@ -430,11 +433,11 @@ On Error GoTo ErrHandler
     'Verificamos si ya debemos resetear la lista
     Dim TActual As Long
     TActual = GetTickCount() And &H7FFFFFFF
-    If TActual > ResetCentinelaTime Then 'Es tiempo de resetear la lista
+    
+    If checkInterval(centinelaStartTime, TActual, centinelaInterval) Then
         DetenerAsignacion = True ' Espero a que terminen de controlar todos los centinelas
     End If
 
-    
     ' Si hay algun centinela libre, se fija si no hay trabajadores disponibles para chequear
     If IdleCount <> 0 Then
     
@@ -621,5 +624,5 @@ Private Sub RenovarResetTimer()
     Dim TActual As Long
     TActual = GetTickCount() And &H7FFFFFFF
     
-    ResetCentinelaTime = TActual + (RandomNumber(0, TIEMPO_PASAR_RANDOM) + TIEMPO_PASAR_BASE) * 60 * 1000
+    centinelaInterval = (RandomNumber(0, TIEMPO_PASAR_RANDOM) + TIEMPO_PASAR_BASE) * 60 * 1000
 End Sub
