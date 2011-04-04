@@ -29,7 +29,7 @@ Attribute VB_Name = "General"
 
 Option Explicit
 
-Global LeerNPCs As New clsIniManager
+Global LeerNPCs As clsIniManager
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
 '***************************************************
@@ -157,7 +157,8 @@ Sub LimpiarMundo()
 On Error GoTo ErrHandler
 
     Dim i As Integer
-    Dim d As New cGarbage
+    Dim d As cGarbage
+    Set d = New cGarbage
     
     For i = TrashCollector.Count To 1 Step -1
         Set d = TrashCollector(i)
@@ -220,8 +221,8 @@ End Sub
 Sub Main()
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 15/03/2011
+'15/03/2011: ZaMa - Modularice todo, para que quede mas claro.
 '***************************************************
 
 On Error Resume Next
@@ -232,23 +233,118 @@ On Error Resume Next
     Call LoadMotd
     Call BanIpCargar
     
-    Prision.Map = 66
-    Libertad.Map = 66
+    frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
     
-    Prision.X = 75
-    Prision.Y = 47
-    Libertad.X = 75
-    Libertad.Y = 65
+    ' Start loading..
+    frmCargando.Show
     
+    ' Constants & vars
+    frmCargando.Label1(2).Caption = "Cargando constantes..."
+    Call LoadConstants
+    DoEvents
     
+    ' Arrays
+    frmCargando.Label1(2).Caption = "Iniciando Arrays..."
+    Call LoadArrays
+    
+    ' Server.ini & Apuestas.dat
+    frmCargando.Label1(2).Caption = "Cargando Server.ini"
+    Call LoadSini
+    Call CargaApuestas
+    
+    ' Npcs.dat
+    frmCargando.Label1(2).Caption = "Cargando NPCs.Dat"
+    Call CargaNpcsDat
+
+    ' Obj.dat
+    frmCargando.Label1(2).Caption = "Cargando Obj.Dat"
+    Call LoadOBJData
+    
+    ' Hechizos.dat
+    frmCargando.Label1(2).Caption = "Cargando Hechizos.Dat"
+    Call CargarHechizos
+        
+    ' Objetos de Herreria
+    frmCargando.Label1(2).Caption = "Cargando Objetos de Herrería"
+    Call LoadArmasHerreria
+    Call LoadArmadurasHerreria
+    
+    ' Objetos de Capinteria
+    frmCargando.Label1(2).Caption = "Cargando Objetos de Carpintería"
+    Call LoadObjCarpintero
+    
+    ' Balance.dat
+    frmCargando.Label1(2).Caption = "Cargando Balance.Dat"
+    Call LoadBalance
+    
+    ' Armaduras faccionarias
+    frmCargando.Label1(2).Caption = "Cargando ArmadurasFaccionarias.dat"
+    Call LoadArmadurasFaccion
+    
+    ' Pretorianos
+    frmCargando.Label1(2).Caption = "Cargando Pretorianos.dat"
+    Call LoadPretorianData
+
+    ' Mapas
+    If BootDelBackUp Then
+        frmCargando.Label1(2).Caption = "Cargando BackUp"
+        Call CargarBackUp
+    Else
+        frmCargando.Label1(2).Caption = "Cargando Mapas"
+        Call LoadMapData
+    End If
+    
+    ' Map Sounds
+    Set SonidosMapas = New SoundMapInfo
+    Call SonidosMapas.LoadSoundMapInfo
+    
+    ' Home distance
+    Call generateMatrix(MATRIX_INITIAL_MAP)
+    
+    ' Connections
+    Call ResetUsersConnections
+    
+    ' Timers
+    Call InitMainTimers
+    
+    ' Sockets
+    Call SocketConfig
+    
+    ' End loading..
+    Unload frmCargando
+    
+    'Log start time
+    LogServerStartTime
+    
+    'Ocultar
+    If HideMe = 1 Then
+        Call frmMain.InitMain(1)
+    Else
+        Call frmMain.InitMain(0)
+    End If
+    
+    tInicioServer = GetTickCount() And &H7FFFFFFF
+    Call InicializaEstadisticas
+
+End Sub
+
+Private Sub LoadConstants()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Loads all constants and general parameters.
+'*****************************************************************
+On Error Resume Next
+   
     LastBackup = Format(Now, "Short Time")
     Minutos = Format(Now, "Short Time")
     
+    ' Paths
     IniPath = App.Path & "\"
     DatPath = App.Path & "\Dat\"
+    CharPath = App.Path & "\Charfile\"
     
-    
-    
+    ' Skills by level
     LevelSkill(1).LevelValue = 3
     LevelSkill(2).LevelValue = 5
     LevelSkill(3).LevelValue = 7
@@ -300,13 +396,14 @@ On Error Resume Next
     LevelSkill(49).LevelValue = 100
     LevelSkill(50).LevelValue = 100
     
-    
+    ' Races
     ListaRazas(eRaza.Humano) = "Humano"
     ListaRazas(eRaza.Elfo) = "Elfo"
     ListaRazas(eRaza.Drow) = "Drow"
     ListaRazas(eRaza.Gnomo) = "Gnomo"
     ListaRazas(eRaza.Enano) = "Enano"
     
+    ' Classes
     ListaClases(eClass.Mage) = "Mago"
     ListaClases(eClass.Cleric) = "Clerigo"
     ListaClases(eClass.Warrior) = "Guerrero"
@@ -320,6 +417,7 @@ On Error Resume Next
     ListaClases(eClass.Worker) = "Trabajador"
     ListaClases(eClass.Pirat) = "Pirata"
     
+    ' Skills
     SkillsNames(eSkill.Magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
     SkillsNames(eSkill.Tacticas) = "Evasión en combate"
@@ -341,92 +439,81 @@ On Error Resume Next
     SkillsNames(eSkill.Wrestling) = "Combate sin armas"
     SkillsNames(eSkill.Navegacion) = "Navegacion"
     
+    ' Attributes
     ListaAtributos(eAtributos.Fuerza) = "Fuerza"
     ListaAtributos(eAtributos.Agilidad) = "Agilidad"
     ListaAtributos(eAtributos.Inteligencia) = "Inteligencia"
     ListaAtributos(eAtributos.Carisma) = "Carisma"
     ListaAtributos(eAtributos.Constitucion) = "Constitucion"
     
-    
-    frmCargando.Show
-    
-    'Call PlayWaveAPI(App.Path & "\wav\harp3.wav")
-    
-    frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
-    IniPath = App.Path & "\"
-    CharPath = App.Path & "\Charfile\"
-    
+    ' Fishes
+    ListaPeces(1) = PECES_POSIBLES.PESCADO1
+    ListaPeces(2) = PECES_POSIBLES.PESCADO2
+    ListaPeces(3) = PECES_POSIBLES.PESCADO3
+    ListaPeces(4) = PECES_POSIBLES.PESCADO4
+
     'Bordes del mapa
     MinXBorder = XMinMapSize + (XWindow \ 2)
     MaxXBorder = XMaxMapSize - (XWindow \ 2)
     MinYBorder = YMinMapSize + (YWindow \ 2)
     MaxYBorder = YMaxMapSize - (YWindow \ 2)
-    DoEvents
     
-    frmCargando.Label1(2).Caption = "Iniciando Arrays..."
-    
-    Call LoadGuildsDB
-    
-    
-    Call CargarSpawnList
-    Call CargarForbidenWords
-    '¿?¿?¿?¿?¿?¿?¿?¿ CARGAMOS DATOS DESDE ARCHIVOS ¿??¿?¿?¿?¿?¿?¿?¿
-    frmCargando.Label1(2).Caption = "Cargando Server.ini"
-    
-    MaxUsers = 0
-    Call LoadSini
-    Call CargaApuestas
-    
-    '*************************************************
-    frmCargando.Label1(2).Caption = "Cargando NPCs.Dat"
-    Call CargaNpcsDat
-    '*************************************************
-    
-    frmCargando.Label1(2).Caption = "Cargando Obj.Dat"
-    'Call LoadOBJData
-    Call LoadOBJData
-        
-    frmCargando.Label1(2).Caption = "Cargando Hechizos.Dat"
-    Call CargarHechizos
-        
-        
-    frmCargando.Label1(2).Caption = "Cargando Objetos de Herrería"
-    Call LoadArmasHerreria
-    Call LoadArmadurasHerreria
-    
-    frmCargando.Label1(2).Caption = "Cargando Objetos de Carpintería"
-    Call LoadObjCarpintero
-    
-    frmCargando.Label1(2).Caption = "Cargando Balance.Dat"
-    Call LoadBalance    '4/01/08 Pablo ToxicWaste
-    
-    frmCargando.Label1(2).Caption = "Cargando ArmadurasFaccionarias.dat"
-    Call LoadArmadurasFaccion
-    
-    frmCargando.Label1(2).Caption = "Cargando Pretorianos.dat"
-    Call LoadPretorianData
-    
-    If BootDelBackUp Then
-        
-        frmCargando.Label1(2).Caption = "Cargando BackUp"
-        Call CargarBackUp
-    Else
-        frmCargando.Label1(2).Caption = "Cargando Mapas"
-        Call LoadMapData
-    End If
-    
-    
-    Call SonidosMapas.LoadSoundMapInfo
+    Set Ayuda = New cCola
+    Set Denuncias = New cCola
+    Denuncias.MaxLenght = MAX_DENOUNCES
 
-    Call generateMatrix(MATRIX_INITIAL_MAP)
+    With Prision
+        .Map = 66
+        .X = 75
+        .Y = 47
+    End With
     
-    'Comentado porque hay worldsave en ese mapa!
-    'Call CrearClanPretoriano(MAPA_PRETORIANO, ALCOBA2_X, ALCOBA2_Y)
-    '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-    
-    Dim LoopC As Integer
-    
-    'Resetea las conexiones de los usuarios
+    With Libertad
+        .Map = 66
+        .X = 75
+        .Y = 65
+    End With
+
+    MaxUsers = 0
+
+    ' Initialize classes
+    Set WSAPISock2Usr = New Collection
+    Protocol.InitAuxiliarBuffer
+#If SeguridadAlkon Then
+    Set aDos = New clsAntiDoS
+#End If
+
+    Set aClon = New clsAntiMassClon
+    Set TrashCollector = New Collection
+
+End Sub
+
+Private Sub LoadArrays()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Loads all arrays
+'*****************************************************************
+On Error Resume Next
+    ' Load Records
+    Call LoadRecords
+    ' Load guilds info
+    Call LoadGuildsDB
+    ' Load spawn list
+    Call CargarSpawnList
+    ' Load forbidden words
+    Call CargarForbidenWords
+End Sub
+
+Private Sub ResetUsersConnections()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Resets Users Connections.
+'*****************************************************************
+On Error Resume Next
+
+    Dim LoopC As Long
     For LoopC = 1 To MaxUsers
         UserList(LoopC).ConnID = -1
         UserList(LoopC).ConnIDValida = False
@@ -434,8 +521,16 @@ On Error Resume Next
         Set UserList(LoopC).outgoingData = New clsByteQueue
     Next LoopC
     
-    '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-    
+End Sub
+
+Private Sub InitMainTimers()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Initializes Main Timers.
+'*****************************************************************
+On Error Resume Next
+
     With frmMain
         .AutoSave.Enabled = True
         .tLluvia.Enabled = True
@@ -453,9 +548,16 @@ On Error Resume Next
 #End If
     End With
     
-    '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-    'Configuracion de los sockets
-    
+End Sub
+
+Private Sub SocketConfig()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Sets socket config.
+'*****************************************************************
+On Error Resume Next
+
     Call SecurityIp.InitIpTables(1000)
     
 #If UsarQueSocket = 1 Then
@@ -490,32 +592,21 @@ On Error Resume Next
 #End If
     
     If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
-    '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
     
-    Unload frmCargando
-    
-    'Log
+End Sub
+
+Private Sub LogServerStartTime()
+'*****************************************************************
+'Author: ZaMa
+'Last Modify Date: 15/03/2011
+'Logs Server Start Time.
+'*****************************************************************
     Dim N As Integer
     N = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #N
     Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
     Close #N
-    
-    'Ocultar
-    If HideMe = 1 Then
-        Call frmMain.InitMain(1)
-    Else
-        Call frmMain.InitMain(0)
-    End If
-    
-    tInicioServer = GetTickCount() And &H7FFFFFFF
-    Call InicializaEstadisticas
 
-    ' Inicializa los clanes pretorianos
-    ReDim ClanPretoriano(1 To 2) As clsClanPretoriano
-    Set ClanPretoriano(1) = New clsClanPretoriano ' Clan default
-    Set ClanPretoriano(2) = New clsClanPretoriano ' Invocable por gms
-    
 End Sub
 
 Function FileExist(ByVal File As String, Optional FileType As VbFileAttribute = vbNormal) As Boolean
@@ -528,7 +619,6 @@ End Function
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
 '*****************************************************************
-'Gets a field from a string
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modify Date: 11/15/2004
 'Gets a field from a delimited string
@@ -570,7 +660,7 @@ Sub MostrarNumUsers()
 '
 '***************************************************
 
-    frmMain.CantUsuarios.Caption = "Número de usuarios jugando: " & NumUsers
+    frmMain.txtNumUsers.Text = NumUsers
 
 End Sub
 
@@ -1273,7 +1363,7 @@ Public Sub EfectoMimetismo(ByVal UserIndex As Integer)
             
             If .flags.Navegando Then
                 If .flags.Muerto = 0 Then
-                    Call ToogleBoatBody(UserIndex)
+                    Call ToggleBoatBody(UserIndex)
                 Else
                     .Char.body = iFragataFantasmal
                     .Char.ShieldAnim = NingunEscudo
@@ -1375,21 +1465,65 @@ End Sub
 Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 02/12/2010
+'02/12/2010: ZaMa - Now non-magic clases lose paralisis effect under certain circunstances.
 '***************************************************
 
     With UserList(UserIndex)
+    
         If .Counters.Paralisis > 0 Then
+        
+            Dim CasterIndex As Integer
+            CasterIndex = .flags.ParalizedByIndex
+        
+            ' Only aplies to non-magic clases
+            If .Stats.MaxMAN = 0 Then
+                ' Paralized by user?
+                If CasterIndex <> 0 Then
+                
+                    ' Close? => Remove Paralisis
+                    If UserList(CasterIndex).Name <> .flags.ParalizedBy Then
+                        Call RemoveParalisis(UserIndex)
+                        Exit Sub
+                        
+                    ' Caster dead? => Remove Paralisis
+                    ElseIf UserList(CasterIndex).flags.Muerto = 1 Then
+                        Call RemoveParalisis(UserIndex)
+                        Exit Sub
+                    
+                    ElseIf .Counters.Paralisis > IntervaloParalizadoReducido Then
+                        ' Out of vision range? => Reduce paralisis counter
+                        If Not InVisionRangeAndMap(UserIndex, UserList(CasterIndex).Pos) Then
+                            ' Aprox. 1500 ms
+                            .Counters.Paralisis = IntervaloParalizadoReducido
+                            Exit Sub
+                        End If
+                    End If
+                End If
+            End If
+            
             .Counters.Paralisis = .Counters.Paralisis - 1
+
         Else
-            .flags.Paralizado = 0
-            .flags.Inmovilizado = 0
-            '.Flags.AdministrativeParalisis = 0
-            Call WriteParalizeOK(UserIndex)
+            Call RemoveParalisis(UserIndex)
         End If
     End With
 
+End Sub
+
+Private Sub RemoveParalisis(ByVal UserIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 20/11/2010
+'Removes paralisis effect from user.
+'***************************************************
+    With UserList(UserIndex)
+        .flags.Paralizado = 0
+        .flags.Inmovilizado = 0
+        .flags.ParalizedBy = vbNullString
+        .flags.ParalizedByIndex = 0
+        Call WriteParalizeOK(UserIndex)
+    End With
 End Sub
 
 Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal Intervalo As Integer)
@@ -1562,6 +1696,7 @@ Public Sub CargaNpcsDat()
     Dim npcfile As String
     
     npcfile = DatPath & "NPCs.dat"
+    Set LeerNPCs = New clsIniManager
     Call LeerNPCs.Initialize(npcfile)
 End Sub
 
@@ -1668,11 +1803,12 @@ Sub InicializaEstadisticas()
     Dim Ta As Long
     Ta = GetTickCount() And &H7FFFFFFF
     
+    Set EstadisticasWeb = New clsEstadisticasIPC
     Call EstadisticasWeb.Inicializa(frmMain.hWnd)
     Call EstadisticasWeb.Informar(CANTIDAD_MAPAS, NumMaps)
     Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
     Call EstadisticasWeb.Informar(UPTIME_SERVER, (Ta - tInicioServer) / 1000)
-    Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
+    Call EstadisticasWeb.Informar(RECORD_USUARIOS, RECORDusuarios)
 
 End Sub
 

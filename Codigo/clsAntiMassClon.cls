@@ -41,7 +41,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Const MaximoPersonajesPorIP = 15
-Private m_coleccion As New Collection
+Private m_coleccion As Collection
 
 Public Function MaxPersonajes(sIp As String) As Boolean
     Dim i As Long
@@ -56,7 +56,8 @@ Public Function MaxPersonajes(sIp As String) As Boolean
     Next i
 
 #If SeguridadAlkon Then
-    Dim oIp As New UserIpAdress
+    Dim oIp As UserIpAdress
+    Set oIp = New UserIpAdress
     oIp.ip = sIp
     oIp.PersonajesCreados = 1
     m_coleccion.Add oIp
@@ -83,3 +84,6 @@ ErrHandler:
 End Function
 
 
+Private Sub Class_Initialize()
+    Set m_coleccion = New Collection
+End Sub

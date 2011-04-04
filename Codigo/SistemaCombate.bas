@@ -852,9 +852,10 @@ End Sub
 Public Function UsuarioAtacaNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: 14/01/2010 (ZaMa)
+'Last Modification: 13/02/2011 (Amraphen)
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados por npcs cuando los atacan.
 '14/01/2010: ZaMa - Lo transformo en función, para que no se pierdan municiones al atacar targets inválidos.
+'13/02/2011: Amraphen - Ahora la stamina es quitada cuando efectivamente se ataca al NPC.
 '***************************************************
 
 On Error GoTo ErrHandler
@@ -876,6 +877,9 @@ On Error GoTo ErrHandler
         Call WriteMultiMessage(UserIndex, eMessages.UserSwing)
     End If
     
+    'Quitamos stamina
+    Call QuitarSta(UserIndex, RandomNumber(1, 10))
+    
     ' Reveló su condición de usuario al atacar, los npcs lo van a atacar
     UserList(UserIndex).flags.Ignorado = False
     
@@ -896,8 +900,8 @@ End Function
 Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 13/02/2011 (Amraphen)
+'13/02/2011: Amraphen - Ahora se quita la stamina en el sub UsuarioAtacaNPC.
 '***************************************************
 
     Dim index As Integer
@@ -915,10 +919,8 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
     End If
     
     With UserList(UserIndex)
-        'Quitamos stamina
-        If .Stats.MinSta >= 10 Then
-            Call QuitarSta(UserIndex, RandomNumber(1, 10))
-        Else
+        'Chequeamos que tenga por lo menos 10 de stamina.
+        If .Stats.MinSta < 10 Then
             If .Genero = eGenero.Hombre Then
                 Call WriteConsoleMsg(UserIndex, "Estás muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
             Else

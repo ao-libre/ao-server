@@ -1,8 +1,9 @@
 VERSION 5.00
 Begin VB.Form frmTrafic 
+   BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Trafico"
-   ClientHeight    =   3195
+   ClientHeight    =   2850
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   4680
@@ -10,19 +11,41 @@ Begin VB.Form frmTrafic
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3195
+   ScaleHeight     =   2850
    ScaleWidth      =   4680
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command1 
-      Caption         =   "Cerrar"
-      Height          =   585
+      BackColor       =   &H00FFC0C0&
+      Cancel          =   -1  'True
+      Caption         =   "Salir (Esc)"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   465
       Left            =   90
+      Style           =   1  'Graphical
       TabIndex        =   1
-      Top             =   2250
-      Width           =   960
+      Top             =   2280
+      Width           =   1440
    End
    Begin VB.ListBox lstTrafico 
-      Height          =   2010
+      BackColor       =   &H00C0FFFF&
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1815
       Left            =   60
       TabIndex        =   0
       Top             =   135
@@ -65,5 +88,5 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
-Me.Visible = False
+    Me.Visible = False
 End Sub

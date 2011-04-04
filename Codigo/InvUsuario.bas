@@ -1785,3 +1785,69 @@ Public Function getObjType(ByVal ObjIndex As Integer) As eOBJType
     End If
     
 End Function
+
+
+Public Sub moveItem(ByVal UserIndex As Integer, ByVal originalSlot As Integer, ByVal newSlot As Integer)
+
+Dim tmpObj As UserOBJ
+Dim newObjIndex As Integer, originalObjIndex As Integer
+If originalSlot <= 0 Or newSlot <= 0 Then Exit Sub
+
+With UserList(UserIndex)
+    tmpObj = .Invent.Object(originalSlot)
+    .Invent.Object(originalSlot) = .Invent.Object(newSlot)
+    .Invent.Object(newSlot) = tmpObj
+    
+    'Viva VB6 y sus putas deficiencias.
+    If .Invent.AnilloEqpSlot = originalSlot Then
+        .Invent.AnilloEqpSlot = newSlot
+    ElseIf .Invent.AnilloEqpSlot = newSlot Then
+        .Invent.AnilloEqpSlot = originalSlot
+    End If
+    
+    If .Invent.ArmourEqpSlot = originalSlot Then
+        .Invent.ArmourEqpSlot = newSlot
+    ElseIf .Invent.ArmourEqpSlot = newSlot Then
+        .Invent.ArmourEqpSlot = originalSlot
+    End If
+    
+    If .Invent.BarcoSlot = originalSlot Then
+        .Invent.BarcoSlot = newSlot
+    ElseIf .Invent.BarcoSlot = newSlot Then
+        .Invent.BarcoSlot = originalSlot
+    End If
+    
+    If .Invent.CascoEqpSlot = originalSlot Then
+         .Invent.CascoEqpSlot = newSlot
+    ElseIf .Invent.CascoEqpSlot = newSlot Then
+         .Invent.CascoEqpSlot = originalSlot
+    End If
+    
+    If .Invent.EscudoEqpSlot = originalSlot Then
+        .Invent.EscudoEqpSlot = newSlot
+    ElseIf .Invent.EscudoEqpSlot = newSlot Then
+        .Invent.EscudoEqpSlot = originalSlot
+    End If
+    
+    If .Invent.MochilaEqpSlot = originalSlot Then
+        .Invent.MochilaEqpSlot = newSlot
+    ElseIf .Invent.MochilaEqpSlot = newSlot Then
+        .Invent.MochilaEqpSlot = originalSlot
+    End If
+    
+    If .Invent.MunicionEqpSlot = originalSlot Then
+        .Invent.MunicionEqpSlot = newSlot
+    ElseIf .Invent.MunicionEqpSlot = newSlot Then
+        .Invent.MunicionEqpSlot = originalSlot
+    End If
+    
+    If .Invent.WeaponEqpSlot = originalSlot Then
+        .Invent.WeaponEqpSlot = newSlot
+    ElseIf .Invent.WeaponEqpSlot = newSlot Then
+        .Invent.WeaponEqpSlot = originalSlot
+    End If
+
+    Call UpdateUserInv(False, UserIndex, originalSlot)
+    Call UpdateUserInv(False, UserIndex, newSlot)
+End With
+End Sub

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
@@ -43,13 +43,22 @@ Begin VB.Form frmCargando
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "Cargando, por favor espere..."
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H000000FF&
-         Height          =   225
+         Height          =   195
          Index           =   3
-         Left            =   2280
+         Left            =   2235
          TabIndex        =   2
          Top             =   2040
-         Width           =   2445
+         Width           =   2535
       End
    End
    Begin VB.Label Label1 

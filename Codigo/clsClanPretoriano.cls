@@ -1274,8 +1274,9 @@ End Sub
 Private Sub DealWandDamage(ByVal NpcIndex As Integer, ByVal SpellIndex As Integer)
 '***************************************************
 'Author: ZaMa
-'Last Modification: 05/07/2010
-'Deals massive wand damage.
+'Last Modification: 17/06/2011
+'Description: Deals massive wand damage.
+'17/06/2011: Amraphen - User's hp is updated once he gets hit by wand damage.
 '***************************************************
 On Error GoTo ErrHandler
 
@@ -1316,6 +1317,8 @@ On Error GoTo ErrHandler
                             .Stats.MinHp = 0
                             Call UserDie(UserIndex)
                         Else
+                            'Updates user's hp:
+                            Call WriteUpdateHP(UserIndex)
                             ' Also hit pets
                             If .NroMascotas > 0 Then _
                                 Call DealWandDamageToPets(NpcIndex, UserIndex, SpellIndex)

@@ -33,11 +33,11 @@ Option Explicit
 ' Modulo de declaraciones. Aca hay de todo.
 '
 #If SeguridadAlkon Then
-Public aDos As New clsAntiDoS
+Public aDos As clsAntiDoS
 #End If
 
-Public aClon As New clsAntiMassClon
-Public TrashCollector As New Collection
+Public aClon As clsAntiMassClon
+Public TrashCollector As Collection
 
 
 Public Const MAXSPAWNATTEMPS = 60
@@ -108,6 +108,15 @@ Public Enum PlayerType
     RoleMaster = &H20
     ChaosCouncil = &H40
     RoyalCouncil = &H80
+End Enum
+
+Public Enum ePrivileges
+    Admin = 1
+    Dios
+    Especial
+    SemiDios
+    Consejero
+    RoleMaster
 End Enum
 
 Public Enum eClass
@@ -426,6 +435,10 @@ Public Enum PECES_POSIBLES
     PESCADO4 = 546
 End Enum
 
+Public Const NUM_PECES As Integer = 4
+Public ListaPeces(1 To NUM_PECES) As Integer
+
+
 '%%%%%%%%%% CONSTANTES DE INDICES %%%%%%%%%%%%%%%
 Public Enum eSkill
     Magia = 1
@@ -563,6 +576,7 @@ Public Enum eOBJType
     otManchas = 35          'No se usa
     otArbolElfico = 36
     otMochilas = 37
+    otYacimientoPez = 38
     otCualquiera = 1000
 End Enum
 
@@ -602,6 +616,23 @@ Public Const EXP_FALLO_SKILL As Byte = 20
 ' ************************ TIPOS *******************************
 ' **************************************************************
 ' **************************************************************
+
+Public Type tObservacion
+    Creador As String
+    Fecha As Date
+    
+    Detalles As String
+End Type
+
+Public Type tRecord
+    Usuario As String
+    Motivo As String
+    Creador As String
+    Fecha As Date
+    
+    NumObs As Byte
+    Obs() As tObservacion
+End Type
 
 Public Type tHechizo
     Nombre As String
@@ -1096,6 +1127,7 @@ Public Type UserFlags
     Ignorado As Boolean
     
     EnConsulta As Boolean
+    SendDenounces As Boolean
     
     StatsChanged As Byte
     Privilegios As PlayerType
@@ -1136,6 +1168,9 @@ Public Type UserFlags
     
     lastMap As Integer
     Traveling As Byte 'Travelin Band ¿?
+    
+    ParalizedBy As String
+    ParalizedByIndex As Integer
 End Type
 
 Public Type UserCounters
@@ -1470,6 +1505,8 @@ Type MapInfo
     Music As String
     Name As String
     StartPos As WorldPos
+    OnDeathGoTo As WorldPos
+    
     MapVersion As Integer
     Pk As Boolean
     MagiaSinEfecto As Byte
@@ -1489,7 +1526,6 @@ Type MapInfo
     BackUp As Byte
 End Type
 
-
 '********** V A R I A B L E S     P U B L I C A S ***********
 
 Public SERVERONLINE As Boolean
@@ -1502,7 +1538,7 @@ Public ListaClases(1 To NUMCLASES) As String
 Public ListaAtributos(1 To NUMATRIBUTOS) As String
 
 
-Public recordusuarios As Long
+Public RECORDusuarios As Long
 
 '
 'Directorios
@@ -1552,6 +1588,7 @@ Public Minutos As String
 Public haciendoBK As Boolean
 Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
+Public NumRecords As Integer
 
 ''
 'Esta activada la verificacion MD5 ?
@@ -1578,7 +1615,7 @@ Public ArmasHerrero() As Integer
 Public ArmadurasHerrero() As Integer
 Public ObjCarpintero() As Integer
 Public MD5s() As String
-Public BanIps As New Collection
+Public BanIps As Collection
 Public Parties(1 To MAX_PARTIES) As clsParty
 Public ModClase(1 To NUMCLASES) As ModClase
 Public ModRaza(1 To NUMRAZAS) As ModRaza
@@ -1587,6 +1624,7 @@ Public DistribucionEnteraVida(1 To 5) As Integer
 Public DistribucionSemienteraVida(1 To 4) As Integer
 Public Ciudades(1 To NUMCIUDADES) As WorldPos
 Public distanceToCities() As HomeDistance
+Public Records() As tRecord
 '*********************************************************
 
 Type HomeDistance
@@ -1604,9 +1642,10 @@ Public Nemahuak As WorldPos
 Public Prision As WorldPos
 Public Libertad As WorldPos
 
-Public Ayuda As New cCola
-Public ConsultaPopular As New ConsultasPopulares
-Public SonidosMapas As New SoundMapInfo
+Public Ayuda As cCola
+Public Denuncias As cCola
+Public ConsultaPopular As ConsultasPopulares
+Public SonidosMapas As SoundMapInfo
 
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
@@ -1784,6 +1823,17 @@ Public Enum eGMCommands
     SetIniVar               '/SETINIVAR LLAVE CLAVE VALOR
     CreatePretorianClan     '/CREARPRETORIANOS
     RemovePretorianClan     '/ELIMINARPRETORIANOS
+    EnableDenounces         '/DENUNCIAS
+    ShowDenouncesList       '/SHOW DENUNCIAS
+    MapMessage              '/MAPMSG
+    SetDialog               '/SETDIALOG
+    Impersonate             '/IMPERSONAR
+    Imitate                 '/MIMETIZAR
+    RecordAdd
+    RecordRemove
+    RecordAddObs
+    RecordListRequest
+    RecordDetailsRequest
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1
@@ -1832,3 +1882,16 @@ Public Const ESPADA_VIKINGA As Integer = 123
 '' Pretorianos
 '''''''
 Public ClanPretoriano() As clsClanPretoriano
+
+Public Const MAX_DENOUNCES As Integer = 20
+
+'Mensajes de los NPCs enlistadores (Nobles):
+Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a él!"
+Public Const MENSAJE_REY_CRIMINAL_NOENLISTABLE As String = "Tus pecados son grandes, pero aún así puedes redimirte. El pasado deja huellas, pero aún puedes limpiar tu alma."
+Public Const MENSAJE_REY_CRIMINAL_ENLISTABLE As String = "Limpia tu reputación y paga por los delitos cometidos. Un miembro de la Armada Real debe tener un comportamiento ejemplar."
+
+Public Const MENSAJE_DEMONIO_REAL As String = "Lacayo de Tancredo, ve y dile a tu gente que nadie pisará estas tierras si no se arrodilla ante mi."
+Public Const MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE As String = "Tu indecisión te ha condenado a una vida sin sentido, aún tienes elección... Pero ten mucho cuidado, mis hordas nunca descansan."
+Public Const MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE As String = "Siento el miedo por tus venas. Deja de ser escoria y únete a mis filas, sabrás que es el mejor camino."
+
+Public Administradores As clsIniManager

@@ -1,23 +1,47 @@
 VERSION 5.00
 Begin VB.Form frmUserList 
-   Caption         =   "Form1"
+   BackColor       =   &H00FFC0C0&
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "Debug de Userlist"
    ClientHeight    =   4665
-   ClientLeft      =   60
-   ClientTop       =   345
+   ClientLeft      =   45
+   ClientTop       =   330
    ClientWidth     =   5520
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
    ScaleHeight     =   4665
    ScaleWidth      =   5520
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Echar todos los no Logged"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
-      Left            =   120
+      Left            =   2400
+      Style           =   1  'Graphical
       TabIndex        =   4
       Top             =   4200
-      Width           =   2175
+      Width           =   3015
    End
    Begin VB.TextBox Text2 
+      BackColor       =   &H00C0FFFF&
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1095
       Left            =   2400
       Locked          =   -1  'True
@@ -28,6 +52,16 @@ Begin VB.Form frmUserList
       Width           =   3015
    End
    Begin VB.TextBox Text1 
+      BackColor       =   &H00C0FFFF&
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   2775
       Left            =   2400
       Locked          =   -1  'True
@@ -38,15 +72,36 @@ Begin VB.Form frmUserList
       Width           =   3015
    End
    Begin VB.CommandButton Command1 
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Actualiza"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
       Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   1
-      Top             =   3720
+      Top             =   4200
       Width           =   2175
    End
    Begin VB.ListBox List1 
-      Height          =   3570
+      BackColor       =   &H00C0FFFF&
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   3960
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -90,7 +145,7 @@ Text2.Text = Text2.Text & "NumUsers: " & NumUsers & vbCrLf
 List1.Clear
 
 For LoopC = 1 To MaxUsers
-    List1.AddItem Format(LoopC, "000") & " " & IIf(UserList(LoopC).flags.UserLogged, UserList(LoopC).name, "")
+    List1.AddItem Format(LoopC, "000") & " " & IIf(UserList(LoopC).flags.UserLogged, UserList(LoopC).Name, "")
     List1.ItemData(List1.NewIndex) = LoopC
 Next LoopC
 

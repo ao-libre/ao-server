@@ -55,6 +55,8 @@ Public Enum e_SoundIndex
     CONVERSION_BARCO = 55
     MORFAR_MANZANA = 82
     SOUND_COMIDA = 7
+    MUERTE_MUJER_AGUA = 211
+    MUERTE_HOMBRE_AGUA = 212
 End Enum
 
 Private Sub Class_Initialize()

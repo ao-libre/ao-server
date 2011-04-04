@@ -187,6 +187,11 @@ Public Sub LoadPretorianData()
     ' Last
     PretorianAIOffset(ePretorianAI.Last) = PretorianIndex
 
+    ' Inicializa los clanes pretorianos
+    ReDim ClanPretoriano(1 To 2) As clsClanPretoriano
+    Set ClanPretoriano(1) = New clsClanPretoriano ' Clan default
+    Set ClanPretoriano(2) = New clsClanPretoriano ' Invocable por gms
+
 End Sub
 
 
