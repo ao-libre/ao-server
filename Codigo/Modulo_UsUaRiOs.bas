@@ -107,7 +107,7 @@ Public Sub RevivirUsuario(ByVal UserIndex As Integer)
         End If
         
         If .flags.Navegando = 1 Then
-            Call ToogleBoatBody(UserIndex)
+            Call ToggleBoatBody(UserIndex)
         Else
             Call DarCuerpoDesnudo(UserIndex)
             
@@ -125,7 +125,7 @@ Public Sub RevivirUsuario(ByVal UserIndex As Integer)
     End With
 End Sub
 
-Public Sub ToogleBoatBody(ByVal UserIndex As Integer)
+Public Sub ToggleBoatBody(ByVal UserIndex As Integer)
 '***************************************************
 'Author: ZaMa
 'Last Modification: 25/07/2010
@@ -385,7 +385,7 @@ Public Sub RefreshCharStatus(ByVal UserIndex As Integer)
             If .flags.Muerto = 1 Then
                 .Char.body = iFragataFantasmal
             Else
-                Call ToogleBoatBody(UserIndex)
+                Call ToggleBoatBody(UserIndex)
             End If
             
             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
@@ -1397,13 +1397,25 @@ On Error GoTo ErrorHandler
     Dim i As Long
     Dim aN As Integer
     
+    Dim iSoundDeath As Integer
+    
     With UserList(UserIndex)
         'Sonido
         If .Genero = eGenero.Mujer Then
-            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MUERTE_MUJER)
+            If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
+                iSoundDeath = e_SoundIndex.MUERTE_MUJER_AGUA
+            Else
+                iSoundDeath = e_SoundIndex.MUERTE_MUJER
+            End If
         Else
-            Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MUERTE_HOMBRE)
+            If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
+                iSoundDeath = e_SoundIndex.MUERTE_HOMBRE_AGUA
+            Else
+                iSoundDeath = e_SoundIndex.MUERTE_HOMBRE
+            End If
         End If
+        
+        Call SonidosMapas.ReproducirSonido(SendTarget.ToPCArea, UserIndex, iSoundDeath)
         
         'Quitar el dialogo del user muerto
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
@@ -1583,6 +1595,19 @@ On Error GoTo ErrorHandler
         
         '<<Cerramos comercio seguro>>
         Call LimpiarComercioSeguro(UserIndex)
+        
+        ' Hay que teletransportar?
+        Dim mapa As Integer
+        mapa = .Pos.Map
+        Dim MapaTelep As Integer
+        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
+        
+        If MapaTelep <> 0 Then
+            Call WriteConsoleMsg(UserIndex, "¡¡¡Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WarpUserChar(UserIndex, MapaTelep, MapInfo(mapa).OnDeathGoTo.X, _
+                MapInfo(mapa).OnDeathGoTo.Y, True, True)
+        End If
+        
     End With
 Exit Sub
 
@@ -1682,13 +1707,15 @@ ErrHandler:
     Call LogError("Error en Tilelibre. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
-Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
+Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, _
+ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
 '**************************************************************
 'Author: Unknown
-'Last Modify Date: 16/09/2010
+'Last Modify Date: 11/23/2010
 '15/07/2009 - ZaMa: Automatic toogle navigate after warping to water.
 '13/11/2009 - ZaMa: Now it's activated the timer which determines if the npc can atacak the user.
 '16/09/2010 - ZaMa: No se pierde la visibilidad al cambiar de mapa al estar navegando invisible.
+'11/23/2010 - C4b3z0n: Ahora si no se permite Invi o Ocultar en el mapa al que cambias, te lo saca
 '**************************************************************
     Dim OldMap As Integer
     Dim OldX As Integer
@@ -1698,8 +1725,6 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
         'Quitar el dialogo
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
         
-        Call WriteRemoveAllDialogs(UserIndex)
-        
         OldMap = .Pos.Map
         OldX = .Pos.X
         OldY = .Pos.Y
@@ -1708,6 +1733,34 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
         
         If OldMap <> Map Then
             Call WriteChangeMap(UserIndex, Map, MapInfo(.Pos.Map).MapVersion)
+            
+            If .flags.Privilegios And PlayerType.User Then 'El chequeo de invi/ocultar solo afecta a Usuarios (C4b3z0n)
+                Dim AhoraVisible As Boolean 'Para enviar el mensaje de invi y hacer visible (C4b3z0n)
+                Dim WasInvi As Boolean
+                'Chequeo de flags de mapa por invisibilidad (C4b3z0n)
+                If MapInfo(Map).InviSinEfecto > 0 And .flags.invisible = 1 Then
+                    .flags.invisible = 0
+                    .Counters.Invisibilidad = 0
+                    AhoraVisible = True
+                    WasInvi = True 'si era invi, para el string
+                End If
+                'Chequeo de flags de mapa por ocultar (C4b3z0n)
+                If MapInfo(Map).OcultarSinEfecto > 0 And .flags.Oculto = 1 Then
+                    AhoraVisible = True
+                    .flags.Oculto = 0
+                    .Counters.TiempoOculto = 0
+                End If
+                
+                If AhoraVisible Then 'Si no era visible y ahora es, le avisa. (C4b3z0n)
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    If WasInvi Then 'era invi
+                        Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible ya que no esta permitida la invisibilidad en este mapa.", FontTypeNames.FONTTYPE_INFO)
+                    Else 'estaba oculto
+                        Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible ya que no esta permitido ocultarse en este mapa.", FontTypeNames.FONTTYPE_INFO)
+                    End If
+                End If
+            End If
+            
             Call WritePlayMidi(UserIndex, val(ReadField(1, MapInfo(Map).Music, 45)))
             
             'Update new Map Users
@@ -1733,7 +1786,8 @@ Sub WarpUserChar(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As In
             ElseIf Not previousMap And Not nextMap Then '140 => 141 (Ninguno es superficial, el ultimo mapa es el mismo de antes)
                 .flags.lastMap = .flags.lastMap
             End If
-        
+            
+            Call WriteRemoveAllDialogs(UserIndex)
         End If
         
         .Pos.X = X
@@ -1976,7 +2030,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
                     If .flags.Navegando = 1 Then
                         If .clase = eClass.Pirat Then
                             ' Pierde la apariencia de fragata fantasmal
-                            Call ToogleBoatBody(UserIndex)
+                            Call ToggleBoatBody(UserIndex)
                             Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                                 NingunEscudo, NingunCasco)
@@ -2083,6 +2137,7 @@ Sub SendUserStatsTxtOFF(ByVal sendIndex As Integer, ByVal Nombre As String)
         Call WriteConsoleMsg(sendIndex, "Tiempo Logeado: " & TempStr, FontTypeNames.FONTTYPE_INFO)
 #End If
     
+        Call WriteConsoleMsg(sendIndex, "Dados: " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT1") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT2") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT3") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT4") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT5"), FontTypeNames.FONTTYPE_INFO)
     End If
 End Sub
 
@@ -2289,17 +2344,17 @@ Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGM(UserIndex) Then Exit Sub
         
-        Dim Mapa As Integer
-        Mapa = .Pos.Map
+        Dim mapa As Integer
+        mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(Mapa).Pk = False Then Exit Sub
+        If MapInfo(mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0

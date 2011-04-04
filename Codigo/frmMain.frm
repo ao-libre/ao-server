@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin VB.Form frmMain 
-   BackColor       =   &H00C0C0C0&
+   BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Argentum Online"
-   ClientHeight    =   4845
+   ClientHeight    =   6390
    ClientLeft      =   1950
-   ClientTop       =   1815
+   ClientTop       =   1515
    ClientWidth     =   5190
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
@@ -24,169 +24,213 @@ Begin VB.Form frmMain
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   4845
+   ScaleHeight     =   6390
    ScaleWidth      =   5190
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
-   Begin VB.TextBox txtChat 
-      Height          =   2775
+   Begin VB.CheckBox chkServerHabilitado 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Server Habilitado Solo Gms"
+      Height          =   255
       Left            =   120
-      MultiLine       =   -1  'True
+      TabIndex        =   13
+      Top             =   4440
+      Width           =   2775
+   End
+   Begin VB.TextBox txtNumUsers 
+      Alignment       =   2  'Center
+      BackColor       =   &H00C0FFFF&
+      Height          =   315
+      Left            =   2640
+      Locked          =   -1  'True
+      TabIndex        =   12
+      Text            =   "0"
+      Top             =   240
+      Width           =   975
+   End
+   Begin VB.CommandButton cmdSystray 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Systray"
+      Height          =   375
+      Left            =   120
+      Style           =   1  'Graphical
       TabIndex        =   10
-      Top             =   1920
+      Top             =   5880
+      Width           =   1335
+   End
+   Begin VB.CommandButton cmdCerrarServer 
+      BackColor       =   &H00C0C0FF&
+      Caption         =   "Cerrar Servidor"
+      Height          =   375
+      Left            =   1560
+      Style           =   1  'Graphical
+      TabIndex        =   9
+      Top             =   5880
+      Width           =   3495
+   End
+   Begin VB.CommandButton cmdConfiguracion 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Configuración General"
+      Height          =   375
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   8
+      Top             =   5400
       Width           =   4935
    End
    Begin VB.Timer tPiqueteC 
       Enabled         =   0   'False
       Interval        =   6000
-      Left            =   480
-      Top             =   540
+      Left            =   3000
+      Top             =   2580
    End
    Begin VB.Timer packetResend 
       Interval        =   10
-      Left            =   480
-      Top             =   60
+      Left            =   3000
+      Top             =   2100
    End
    Begin VB.Timer securityTimer 
       Enabled         =   0   'False
       Interval        =   10000
-      Left            =   960
-      Top             =   60
+      Left            =   3480
+      Top             =   2100
    End
-   Begin VB.CheckBox SUPERLOG 
-      Caption         =   "log"
-      Height          =   255
-      Left            =   3120
-      TabIndex        =   9
-      Top             =   480
-      Width           =   615
-   End
-   Begin VB.CommandButton CMDDUMP 
-      Caption         =   "dump"
-      Height          =   255
-      Left            =   3720
-      TabIndex        =   8
-      Top             =   480
-      Width           =   1215
+   Begin VB.CommandButton cmdDump 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Crear Log Crítico de Usuarios"
+      Height          =   375
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      Top             =   4920
+      Width           =   4935
    End
    Begin VB.Timer FX 
       Enabled         =   0   'False
       Interval        =   4000
-      Left            =   1440
-      Top             =   540
+      Left            =   3960
+      Top             =   2580
    End
    Begin VB.Timer Auditoria 
       Enabled         =   0   'False
       Interval        =   1000
-      Left            =   1440
-      Top             =   1020
+      Left            =   3960
+      Top             =   3060
    End
    Begin VB.Timer GameTimer 
       Enabled         =   0   'False
       Interval        =   40
-      Left            =   1440
-      Top             =   60
+      Left            =   3960
+      Top             =   2100
    End
    Begin VB.Timer tLluviaEvent 
       Enabled         =   0   'False
       Interval        =   60000
-      Left            =   960
-      Top             =   1020
+      Left            =   3480
+      Top             =   3060
    End
    Begin VB.Timer tLluvia 
       Enabled         =   0   'False
       Interval        =   500
-      Left            =   960
-      Top             =   540
+      Left            =   3480
+      Top             =   2580
    End
    Begin VB.Timer AutoSave 
       Enabled         =   0   'False
       Interval        =   60000
-      Left            =   480
-      Top             =   1080
+      Left            =   3000
+      Top             =   3060
    End
    Begin VB.Timer npcataca 
       Enabled         =   0   'False
       Interval        =   4000
-      Left            =   1920
-      Top             =   1020
+      Left            =   4440
+      Top             =   3060
    End
    Begin VB.Timer KillLog 
       Enabled         =   0   'False
       Interval        =   60000
-      Left            =   1920
-      Top             =   60
+      Left            =   4440
+      Top             =   2100
    End
    Begin VB.Timer TIMER_AI 
       Enabled         =   0   'False
       Interval        =   100
-      Left            =   1935
-      Top             =   540
+      Left            =   4455
+      Top             =   2580
    End
    Begin VB.Frame Frame1 
-      Caption         =   "BroadCast"
-      Height          =   1095
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Mensajea todos los clientes (Solo testeo)"
+      Height          =   3615
       Left            =   120
       TabIndex        =   2
-      Top             =   600
+      Top             =   720
       Width           =   4935
-      Begin VB.CommandButton Command2 
-         Caption         =   "Broadcast consola"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   2520
-         TabIndex        =   6
-         Top             =   720
-         Width           =   2295
-      End
-      Begin VB.CommandButton Command1 
-         Caption         =   "Broadcast clientes"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
+      Begin VB.TextBox txtChat 
+         BackColor       =   &H00C0FFFF&
+         Height          =   2175
          Left            =   120
+         MultiLine       =   -1  'True
+         TabIndex        =   11
+         Top             =   1320
+         Width           =   4695
+      End
+      Begin VB.CommandButton Command2 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Enviar por Consola"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   2520
+         Style           =   1  'Graphical
          TabIndex        =   5
          Top             =   720
          Width           =   2295
       End
-      Begin VB.TextBox BroadMsg 
-         Height          =   315
-         Left            =   1080
+      Begin VB.CommandButton Command1 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Enviar por Pop-Up"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   120
+         Style           =   1  'Graphical
          TabIndex        =   4
-         Top             =   240
-         Width           =   3735
+         Top             =   720
+         Width           =   2295
       End
-      Begin VB.Label Label1 
-         Caption         =   "Mensaje"
-         Height          =   255
-         Index           =   0
+      Begin VB.TextBox BroadMsg 
+         BackColor       =   &H00C0FFFF&
+         Height          =   315
          Left            =   120
          TabIndex        =   3
          Top             =   240
-         Width           =   855
+         Width           =   4695
       End
    End
    Begin VB.Label Escuch 
+      BackStyle       =   0  'Transparent
       Caption         =   "Label2"
       Height          =   255
-      Left            =   3240
-      TabIndex        =   7
-      Top             =   240
+      Left            =   3840
+      TabIndex        =   6
+      Top             =   0
+      Visible         =   0   'False
       Width           =   1335
    End
    Begin VB.Label CantUsuarios 
@@ -194,7 +238,7 @@ Begin VB.Form frmMain
       AutoSize        =   -1  'True
       BackColor       =   &H00C0C0C0&
       BackStyle       =   0  'Transparent
-      Caption         =   "Numero de usuarios:"
+      Caption         =   "Número de usuarios jugando:"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -208,30 +252,18 @@ Begin VB.Form frmMain
       Height          =   195
       Left            =   120
       TabIndex        =   1
-      Top             =   240
-      Width           =   1725
+      Top             =   360
+      Width           =   2460
    End
    Begin VB.Label txStatus 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       ForeColor       =   &H000000FF&
       Height          =   210
-      Left            =   120
+      Left            =   240
       TabIndex        =   0
-      Top             =   5520
-      Width           =   45
-   End
-   Begin VB.Menu mnuControles 
-      Caption         =   "Argentum"
-      Begin VB.Menu mnuServidor 
-         Caption         =   "Configuracion"
-      End
-      Begin VB.Menu mnuSystray 
-         Caption         =   "Systray Servidor"
-      End
-      Begin VB.Menu mnuCerrar 
-         Caption         =   "Cerrar Servidor"
-      End
+      Top             =   0
+      Width           =   15
    End
    Begin VB.Menu mnuPopUp 
       Caption         =   "PopUpMenu"
@@ -438,16 +470,41 @@ ErrHandler:
     Resume Next
 End Sub
 
+Private Sub chkServerHabilitado_Click()
+    ServerSoloGMs = chkServerHabilitado.value
+End Sub
+
+Private Sub cmdCerrarServer_Click()
+    If MsgBox("¡¡Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & _
+        "¿Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
+        
+        Dim f
+        For Each f In Forms
+            Unload f
+        Next
+    End If
+End Sub
+
+Private Sub cmdConfiguracion_Click()
+    frmServidor.Visible = True
+End Sub
+
 Private Sub CMDDUMP_Click()
 On Error Resume Next
 
-Dim i As Integer
-For i = 1 To MaxUsers
-    Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & " UserLogged: " & UserList(i).flags.UserLogged)
-Next i
+    Dim i As Integer
+    For i = 1 To MaxUsers
+        Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & _
+            ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & _
+            " UserLogged: " & UserList(i).flags.UserLogged)
+    Next i
+    
+    Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
 
-Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
+End Sub
 
+Private Sub cmdSystray_Click()
+    SetSystray
 End Sub
 
 Private Sub Command1_Click()
@@ -460,7 +517,7 @@ End Sub
 Public Sub InitMain(ByVal f As Byte)
 
 If f = 1 Then
-    Call mnuSystray_Click
+    Call SetSystray
 Else
     frmMain.Show
 End If
@@ -710,20 +767,8 @@ hayerror:
     LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
 End Sub
 
-Private Sub mnuCerrar_Click()
-
-
-If MsgBox("¡¡Atencion!! Si cierra el servidor puede provocar la perdida de datos. ¿Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
-    Dim f
-    For Each f In Forms
-        Unload f
-    Next
-End If
-
-End Sub
-
 Private Sub mnusalir_Click()
-    Call mnuCerrar_Click
+    Call cmdCerrarServer_Click
 End Sub
 
 Public Sub mnuMostrar_Click()
@@ -745,33 +790,29 @@ End If
 
 End Sub
 
-Private Sub mnuServidor_Click()
-frmServidor.Visible = True
-End Sub
+Private Sub SetSystray()
 
-Private Sub mnuSystray_Click()
-
-Dim i As Integer
-Dim S As String
-Dim nid As NOTIFYICONDATA
-
-S = "ARGENTUM-ONLINE"
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
-i = Shell_NotifyIconA(NIM_ADD, nid)
+    Dim i As Integer
+    Dim S As String
+    Dim nid As NOTIFYICONDATA
     
-If WindowState <> vbMinimized Then WindowState = vbMinimized
-Visible = False
+    S = "ARGENTUM-ONLINE"
+    nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, WM_MOUSEMOVE, frmMain.Icon, S)
+    i = Shell_NotifyIconA(NIM_ADD, nid)
+        
+    If WindowState <> vbMinimized Then WindowState = vbMinimized
+    Visible = False
 
 End Sub
 
 Private Sub npcataca_Timer()
 
 On Error Resume Next
-Dim npc As Long
-
-For npc = 1 To LastNPC
-    Npclist(npc).CanAttack = 1
-Next npc
+    Dim npc As Long
+    
+    For npc = 1 To LastNPC
+        Npclist(npc).CanAttack = 1
+    Next npc
 
 End Sub
 
@@ -810,53 +851,54 @@ End Sub
 Private Sub TIMER_AI_Timer()
 
 On Error GoTo ErrorHandler
-Dim NpcIndex As Long
-Dim Mapa As Integer
-Dim e_p As Integer
-
-'Barrin 29/9/03
-If Not haciendoBK And Not EnPausa Then
-    'Update NPCs
-    For NpcIndex = 1 To LastNPC
-        
-        With Npclist(NpcIndex)
-            If .flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
+    Dim NpcIndex As Long
+    Dim mapa As Integer
+    Dim e_p As Integer
+    
+    'Barrin 29/9/03
+    If Not haciendoBK And Not EnPausa Then
+        'Update NPCs
+        For NpcIndex = 1 To LastNPC
             
-                ' Chequea si contiua teniendo dueño
-                If .Owner > 0 Then Call ValidarPermanenciaNpc(NpcIndex)
-            
-                If .flags.Paralizado = 1 Then
-                    Call EfectoParalisisNpc(NpcIndex)
-                Else
-                    ' Preto? Tienen ai especial
-                    If .NPCtype = eNPCType.Pretoriano Then
-                        Call ClanPretoriano(.ClanIndex).PerformPretorianAI(NpcIndex)
+            With Npclist(NpcIndex)
+                If .flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
+                
+                    ' Chequea si contiua teniendo dueño
+                    If .Owner > 0 Then Call ValidarPermanenciaNpc(NpcIndex)
+                
+                    If .flags.Paralizado = 1 Then
+                        Call EfectoParalisisNpc(NpcIndex)
                     Else
-                        'Usamos AI si hay algun user en el mapa
-                        If .flags.Inmovilizado = 1 Then
-                           Call EfectoParalisisNpc(NpcIndex)
-                        End If
-                        
-                        Mapa = .Pos.Map
-                        
-                        If Mapa > 0 Then
-                            If MapInfo(Mapa).NumUsers > 0 Then
-                                If .Movement <> TipoAI.ESTATICO Then
-                                    Call NPCAI(NpcIndex)
+                        ' Preto? Tienen ai especial
+                        If .NPCtype = eNPCType.Pretoriano Then
+                            Call ClanPretoriano(.ClanIndex).PerformPretorianAI(NpcIndex)
+                        Else
+                            'Usamos AI si hay algun user en el mapa
+                            If .flags.Inmovilizado = 1 Then
+                               Call EfectoParalisisNpc(NpcIndex)
+                            End If
+                            
+                            mapa = .Pos.Map
+                            
+                            If mapa > 0 Then
+                                If MapInfo(mapa).NumUsers > 0 Then
+                                    If .Movement <> TipoAI.ESTATICO Then
+                                        Call NPCAI(NpcIndex)
+                                    End If
                                 End If
                             End If
                         End If
                     End If
                 End If
-            End If
-        End With
-    Next NpcIndex
-End If
-
-Exit Sub
+            End With
+        Next NpcIndex
+    End If
+    
+    Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).Name & " mapa:" & Npclist(NpcIndex).Pos.Map)
+    Call LogError("Error en TIMER_AI_Timer " & Npclist(NpcIndex).Name & " mapa:" & _
+    Npclist(NpcIndex).Pos.Map)
     Call MuereNpc(NpcIndex, 0)
 End Sub
 

@@ -58,7 +58,7 @@ On Error GoTo ErrHandler
             If .flags.Navegando = 1 Then
                 If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
-                    Call ToogleBoatBody(UserIndex)
+                    Call ToggleBoatBody(UserIndex)
                     Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
@@ -183,7 +183,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
             ' No esta muerto
             If .flags.Muerto = 0 Then
             
-                Call ToogleBoatBody(UserIndex)
+                Call ToggleBoatBody(UserIndex)
                 
                 ' Pierde el ocultar
                 If .flags.Oculto = 1 Then
@@ -1564,63 +1564,68 @@ Public Sub DoPescarRed(ByVal UserIndex As Integer)
 '***************************************************
 On Error GoTo ErrHandler
 
-Dim iSkill As Integer
-Dim Suerte As Integer
-Dim res As Integer
-Dim EsPescador As Boolean
-
-If UserList(UserIndex).clase = eClass.Worker Then
-    Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
-    EsPescador = True
-Else
-    Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
-    EsPescador = False
-End If
-
-iSkill = UserList(UserIndex).Stats.UserSkills(eSkill.Pesca)
-
-' m = (60-11)/(1-10)
-' y = mx - m*10 + 11
-
-Suerte = Int(-0.00125 * iSkill * iSkill - 0.3 * iSkill + 49)
-
-If Suerte > 0 Then
-    res = RandomNumber(1, Suerte)
+    Dim iSkill As Integer
+    Dim Suerte As Integer
+    Dim res As Integer
+    Dim EsPescador As Boolean
+    Dim CantidadItems As Integer
     
-    If res < 6 Then
-        Dim MiObj As Obj
-        Dim PecesPosibles(1 To 4) As Integer
-        
-        PecesPosibles(1) = PESCADO1
-        PecesPosibles(2) = PESCADO2
-        PecesPosibles(3) = PESCADO3
-        PecesPosibles(4) = PESCADO4
-        
-        If EsPescador = True Then
-            MiObj.Amount = RandomNumber(1, 5)
+    With UserList(UserIndex)
+    
+        If .clase = eClass.Worker Then
+            Call QuitarSta(UserIndex, EsfuerzoPescarPescador)
+            EsPescador = True
         Else
-            MiObj.Amount = 1
-        End If
-        MiObj.ObjIndex = PecesPosibles(RandomNumber(LBound(PecesPosibles), UBound(PecesPosibles)))
-        
-        If Not MeterItemEnInventario(UserIndex, MiObj) Then
-            Call TirarItemAlPiso(UserList(UserIndex).Pos, MiObj)
+            Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
+            EsPescador = False
         End If
         
-        Call WriteConsoleMsg(UserIndex, "¡Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
+        iSkill = .Stats.UserSkills(eSkill.Pesca)
         
-        Call SubirSkill(UserIndex, eSkill.Pesca, True)
-    Else
-        Call WriteConsoleMsg(UserIndex, "¡No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
-        Call SubirSkill(UserIndex, eSkill.Pesca, False)
-    End If
-End If
+        ' m = (60-11)/(1-10)
+        ' y = mx - m*10 + 11
+        
+        Suerte = Int(-0.00125 * iSkill * iSkill - 0.3 * iSkill + 49)
 
-    UserList(UserIndex).Reputacion.PlebeRep = UserList(UserIndex).Reputacion.PlebeRep + vlProleta
-    If UserList(UserIndex).Reputacion.PlebeRep > MAXREP Then _
-        UserList(UserIndex).Reputacion.PlebeRep = MAXREP
+        If Suerte > 0 Then
+            res = RandomNumber(1, Suerte)
+            
+            If res <= 6 Then
+            
+                Dim MiObj As Obj
+                
+                If EsPescador Then
+                    CantidadItems = MaxItemsExtraibles(.Stats.ELV)
+                    MiObj.Amount = RandomNumber(1, CantidadItems)
+                Else
+                    MiObj.Amount = 1
+                End If
+                
+                MiObj.ObjIndex = ListaPeces(RandomNumber(1, NUM_PECES))
+                
+                If Not MeterItemEnInventario(UserIndex, MiObj) Then
+                    Call TirarItemAlPiso(.Pos, MiObj)
+                End If
+                
+                Call WriteConsoleMsg(UserIndex, "¡Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
+                
+                Call SubirSkill(UserIndex, eSkill.Pesca, True)
+            Else
+                If Not .flags.UltimoMensaje = 6 Then
+                  Call WriteConsoleMsg(UserIndex, "¡No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
+                  .flags.UltimoMensaje = 6
+                End If
+                
+                Call SubirSkill(UserIndex, eSkill.Pesca, False)
+            End If
+        End If
         
-Exit Sub
+        .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
+        If .Reputacion.PlebeRep > MAXREP Then .Reputacion.PlebeRep = MAXREP
+    
+    End With
+    
+    Exit Sub
 
 ErrHandler:
     Call LogError("Error en DoPescarRed")
@@ -2541,7 +2546,39 @@ Public Function MaxItemsExtraibles(ByVal UserLevel As Integer) As Integer
 'Author: ZaMa
 'Last Modification: 14/05/2010
 '***************************************************
-    
     MaxItemsExtraibles = MaximoInt(1, CInt((UserLevel - 2) * 0.2)) + 1
 End Function
+
+Public Sub ImitateNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
+'***************************************************
+'Author: ZaMa
+'Last Modification: 20/11/2010
+'Copies body, head and desc from previously clicked npc.
+'***************************************************
+    
+    With UserList(UserIndex)
+        
+        ' Copy desc
+        .DescRM = Npclist(NpcIndex).Name
+        
+        ' Remove Anims (Npcs don't use equipment anims yet)
+        .Char.CascoAnim = NingunCasco
+        .Char.ShieldAnim = NingunEscudo
+        .Char.WeaponAnim = NingunArma
+        
+        ' If admin is invisible the store it in old char
+        If .flags.AdminInvisible = 1 Or .flags.invisible = 1 Or .flags.Oculto = 1 Then
+            
+            .flags.OldBody = Npclist(NpcIndex).Char.body
+            .flags.OldHead = Npclist(NpcIndex).Char.Head
+        Else
+            .Char.body = Npclist(NpcIndex).Char.body
+            .Char.Head = Npclist(NpcIndex).Char.Head
+            
+            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        End If
+    
+    End With
+    
+End Sub
 

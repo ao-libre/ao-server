@@ -516,11 +516,11 @@ End Function
 End Function
 
 Sub EndWinsock()
-    Dim Ret&
+    Dim ret&
     If WSAIsBlocking() Then
-        Ret = WSACancelBlockingCall()
+        ret = WSACancelBlockingCall()
     End If
-    Ret = WSACleanup()
+    ret = WSACleanup()
     WSAStartedUp = False
 End Sub
 
@@ -678,11 +678,11 @@ End Function
 #If Win16 Then
     Function GetSockAddress(ByVal S%) As String
     Dim AddrLen%
-    Dim Ret%
+    Dim ret%
 #ElseIf Win32 Then
     Function GetSockAddress(ByVal S&) As String
     Dim AddrLen&
-    Dim Ret&
+    Dim ret&
 #End If
     Dim sa As sockaddr
     Dim szRet$
@@ -749,7 +749,7 @@ Function GetWSAErrorString(ByVal errnum&) As String
         Case 11001: GetWSAErrorString = "Host not found."
         Case 11002: GetWSAErrorString = "Nonauthoritative host not found."
         Case 11003: GetWSAErrorString = "Nonrecoverable error."
-        Case 11004: GetWSAErrorString = "Valid name, no data record of requested type."
+        Case 11004: GetWSAErrorString = "Valid name, no data RECORD of requested type."
         Case Else:
     End Select
 End Function
@@ -859,13 +859,13 @@ Public Function ListenForConnect(ByVal Port&, ByVal HWndToMsg&, ByVal Enlazar As
     End If
     
 'Agregado por Maraxus
-    'If setsockopt(s, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, True, 2) Then
-    '    LogApiSock ("Error seteando conditional accept")
-    '    Debug.Print "Error seteando conditional accept"
-    'Else
-    '    LogApiSock ("Conditional accept seteado")
-    '    Debug.Print "Conditional accept seteado ^^"
-    'End If
+    If setsockopt(S, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, True, 2) Then
+        LogApiSock ("Error seteando conditional accept")
+        Debug.Print "Error seteando conditional accept"
+    Else
+        LogApiSock ("Conditional accept seteado")
+        Debug.Print "Conditional accept seteado ^^"
+    End If
     
     If bind(S, sockin, sockaddr_size) Then
         If S > 0 Then

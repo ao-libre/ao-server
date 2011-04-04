@@ -65,6 +65,7 @@ Module=modForum; Codigo\modForum.bas
 Class=clsClanPretoriano; Codigo\clsClanPretoriano.cls
 Class=clsByteBuffer; Codigo\clsByteBuffer.cls
 Class=clsIniManager; Codigo\clsIniManager.cls
+Module=modUserRecords; Codigo\modUserRecords.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

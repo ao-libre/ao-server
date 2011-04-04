@@ -376,7 +376,8 @@ Public Sub PasarMinutoCentinela()
 'Control del timer. Llamado cada un minuto.
 '03/10/2010: ZaMa - Adaptado para que funcione mas de un centinela en paralelo.
 '*************************************************
-    
+On Error GoTo ErrHandler
+
     Dim index As Long
     Dim UserIndex As Integer
     Dim IdleCount As Integer
@@ -398,7 +399,7 @@ Public Sub PasarMinutoCentinela()
                     
                     UserIndex = .RevisandoUserIndex
                 
-                    'Recordamos al user que debe escribir
+                    'RECORDamos al user que debe escribir
                     If Matematicas.Distancia(Npclist(.NpcIndex).Pos, UserList(UserIndex).Pos) > 5 Then
                         Call WarpCentinela(UserIndex, index)
                     End If
@@ -456,6 +457,9 @@ Public Sub PasarMinutoCentinela()
         
     End If
     
+    Exit Sub
+ErrHandler:
+    Call LogError("Error en PasarMinutoCentinela. Error: " & Err.Number & " - " & Err.description)
 End Sub
 
 Private Sub WarpCentinela(ByVal UserIndex As Integer, ByVal CentinelaIndex As Byte)

@@ -57,13 +57,13 @@ Public Function esCaos(ByVal UserIndex As Integer) As Boolean
     esCaos = (UserList(UserIndex).Faccion.FuerzasCaos = 1)
 End Function
 
-Public Function EsGM(ByVal UserIndex As Integer) As Boolean
+Public Function EsGm(ByVal UserIndex As Integer) As Boolean
 '***************************************************
 'Autor: Pablo (ToxicWaste)
 'Last Modification: 23/01/2007
 '***************************************************
 
-    EsGM = (UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero))
+    EsGm = (UserList(UserIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero))
 End Function
 
 Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
@@ -82,7 +82,7 @@ Public Sub DoTileEvents(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal 
     Dim TelepRadio As Integer
     Dim DestPos As WorldPos
     
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
     'Controla las salidas
     If InMapBounds(Map, X, Y) Then
         With MapData(Map, X, Y)
@@ -121,10 +121,31 @@ On Error GoTo Errhandler
                 
                 DestPos.Map = .TileExit.Map
                 
+                If EsGm(UserIndex) Then
+                    Call LogGM(UserList(UserIndex).Name, "Utilizó un teleport hacia el mapa " & _
+                        DestPos.Map & " (" & DestPos.X & "," & DestPos.Y & ")")
+                End If
+                
+                ' Si es un mapa que no admite muertos
+                If MapInfo(DestPos.Map).OnDeathGoTo.Map <> 0 Then
+                    ' Si esta muerto no puede entrar
+                    If UserList(UserIndex).flags.Muerto = 1 Then
+                        Call WriteConsoleMsg(UserIndex, "Solo se permite entrar al mapa a los personajes vivos.", FontTypeNames.FONTTYPE_INFO)
+                        Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
+                        
+                        If nPos.X <> 0 And nPos.Y <> 0 Then
+                            Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, FxFlag)
+                        End If
+                        
+                        Exit Sub
+                    End If
+                End If
+                
+                
                 '¿Es mapa de newbies?
                 If UCase$(MapInfo(DestPos.Map).Restringir) = "NEWBIE" Then
                     '¿El usuario es un newbie?
-                    If EsNewbie(UserIndex) Or EsGM(UserIndex) Then
+                    If EsNewbie(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
                         Else
@@ -143,7 +164,7 @@ On Error GoTo Errhandler
                     End If
                 ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "ARMADA" Then '¿Es mapa de Armadas?
                     '¿El usuario es Armada?
-                    If esArmada(UserIndex) Or EsGM(UserIndex) Then
+                    If esArmada(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
                         Else
@@ -162,7 +183,7 @@ On Error GoTo Errhandler
                     End If
                 ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "CAOS" Then '¿Es mapa de Caos?
                     '¿El usuario es Caos?
-                    If esCaos(UserIndex) Or EsGM(UserIndex) Then
+                    If esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
                         Else
@@ -181,7 +202,7 @@ On Error GoTo Errhandler
                     End If
                 ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "FACCION" Then '¿Es mapa de faccionarios?
                     '¿El usuario es Armada o Caos?
-                    If esArmada(UserIndex) Or esCaos(UserIndex) Or EsGM(UserIndex) Then
+                    If esArmada(UserIndex) Or esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
                         Else
@@ -208,7 +229,7 @@ On Error GoTo Errhandler
                         End If
                     End If
                 End If
-                
+
                 'Te fusite del mapa. La criatura ya no es más tuya ni te reconoce como que vos la atacaste.
                 Dim aN As Integer
                 
@@ -232,7 +253,7 @@ On Error GoTo Errhandler
     End If
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en DotileEvents. Error: " & Err.Number & " - Desc: " & Err.description)
 End Sub
 
@@ -251,6 +272,29 @@ Function InRangoVision(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y A
     End If
     InRangoVision = False
 
+End Function
+
+Public Function InVisionRangeAndMap(ByVal UserIndex As Integer, ByRef OtherUserPos As WorldPos) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: 20/11/2010
+'
+'***************************************************
+    
+    With UserList(UserIndex)
+        
+        ' Same map?
+        If .Pos.Map <> OtherUserPos.Map Then Exit Function
+    
+        ' In x range?
+        If OtherUserPos.X < .Pos.X - MinXBorder Or OtherUserPos.X > .Pos.X + MinXBorder Then Exit Function
+        
+        ' In y range?
+        If OtherUserPos.Y < .Pos.Y - MinYBorder And OtherUserPos.Y > .Pos.Y + MinYBorder Then Exit Function
+    End With
+
+    InVisionRangeAndMap = True
+    
 End Function
 
 Function InRangoVisionNPC(ByVal NpcIndex As Integer, X As Integer, Y As Integer) As Boolean
@@ -361,7 +405,7 @@ Public Function RhombLegalTilePos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef
 ' which starts at Pos.x - Distance and Pos.y
 ' and searchs for a valid position to drop items
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
     Dim i As Long
     Dim HayObj As Boolean
@@ -458,11 +502,11 @@ On Error GoTo Errhandler
     
     Exit Function
     
-Errhandler:
+ErrHandler:
     Call LogError("Error en RhombLegalTilePos. Error: " & Err.Number & " - " & Err.description)
 End Function
 
-Public Function HayObjeto(ByVal Mapa As Integer, ByVal X As Long, ByVal Y As Long, _
+Public Function HayObjeto(ByVal mapa As Integer, ByVal X As Long, ByVal Y As Long, _
                           ByVal ObjIndex As Integer, ByVal ObjAmount As Long) As Boolean
 '***************************************************
 'Author: ZaMa
@@ -470,14 +514,14 @@ Public Function HayObjeto(ByVal Mapa As Integer, ByVal X As Long, ByVal Y As Lon
 'Checks if there's space in a tile to add an itemAmount
 '***************************************************
     Dim MapObjIndex As Integer
-    MapObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
+    MapObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
             
     ' Hay un objeto tirado?
     If MapObjIndex <> 0 Then
         ' Es el mismo objeto?
         If MapObjIndex = ObjIndex Then
             ' La suma es menor a 10k?
-            HayObjeto = (MapData(Mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
+            HayObjeto = (MapData(mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
         Else
             HayObjeto = True
         End If
@@ -656,35 +700,36 @@ Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, 
 'Checks if the position is Legal.
 '***************************************************
 
-'¿Es un mapa valido?
-If (Map <= 0 Or Map > NumMaps) Or _
-   (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
-            LegalPos = False
-Else
-    With MapData(Map, X, Y)
-        If PuedeAgua And PuedeTierra Then
-            LegalPos = (.Blocked <> 1) And _
-                       (.UserIndex = 0) And _
-                       (.NpcIndex = 0)
-        ElseIf PuedeTierra And Not PuedeAgua Then
-            LegalPos = (.Blocked <> 1) And _
-                       (.UserIndex = 0) And _
-                       (.NpcIndex = 0) And _
-                       (Not HayAgua(Map, X, Y))
-        ElseIf PuedeAgua And Not PuedeTierra Then
-            LegalPos = (.Blocked <> 1) And _
-                       (.UserIndex = 0) And _
-                       (.NpcIndex = 0) And _
-                       (HayAgua(Map, X, Y))
-        Else
-            LegalPos = False
+    '¿Es un mapa valido?
+    If (Map <= 0 Or Map > NumMaps) Or _
+       (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
+                LegalPos = False
+    Else
+        With MapData(Map, X, Y)
+            If PuedeAgua And PuedeTierra Then
+                LegalPos = (.Blocked <> 1) And _
+                           (.UserIndex = 0) And _
+                           (.NpcIndex = 0)
+            ElseIf PuedeTierra And Not PuedeAgua Then
+                LegalPos = (.Blocked <> 1) And _
+                           (.UserIndex = 0) And _
+                           (.NpcIndex = 0) And _
+                           (Not HayAgua(Map, X, Y))
+            ElseIf PuedeAgua And Not PuedeTierra Then
+                LegalPos = (.Blocked <> 1) And _
+                           (.UserIndex = 0) And _
+                           (.NpcIndex = 0) And _
+                           (HayAgua(Map, X, Y))
+            Else
+                LegalPos = False
+            End If
+        End With
+        
+        If CheckExitTile Then
+            LegalPos = LegalPos And (MapData(Map, X, Y).TileExit.Map = 0)
         End If
-    End With
-End If
-
-If CheckExitTile Then
-    LegalPos = LegalPos And (MapData(Map, X, Y).TileExit.Map = 0)
-End If
+        
+    End If
 
 End Function
 
@@ -895,7 +940,7 @@ Sub LookatTile(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Inte
 '07/10/2010: ZaMa - Adaptado para que funcione mas de un centinela en paralelo.
 '***************************************************
 
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
 'Responde al click del usuario sobre el mapa
 Dim FoundChar As Byte
@@ -1129,7 +1174,43 @@ With UserList(UserIndex)
                 End If
                 
                 If Len(Npclist(TempCharIndex).desc) > 1 Then
-                    Call WriteChatOverHead(UserIndex, Npclist(TempCharIndex).desc, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
+                    Stat = Npclist(TempCharIndex).desc
+                    
+                    '¿Es el rey o el demonio?
+                    If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
+                        If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
+                            'Si es de la Legión Oscura mostramos el mensaje correspondiente y lo ejecutamos:
+                            If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
+                                Stat = MENSAJE_REY_CAOS
+                                Call UserDie(UserIndex)
+                            ElseIf criminal(UserIndex) Then
+                            'Nos fijamos si es criminal enlistable o no enlistable:
+                                If UserList(UserIndex).Faccion.CiudadanosMatados > 0 Or _
+                                UserList(UserIndex).Faccion.Reenlistadas > 4 Then 'Es criminal no enlistable.
+                                    Stat = MENSAJE_REY_CRIMINAL_NOENLISTABLE
+                                Else 'Es criminal enlistable.
+                                    Stat = MENSAJE_REY_CRIMINAL_ENLISTABLE
+                                End If
+                            End If
+                        Else 'Es el demonio
+                            'Si es de la Armada Real mostramos el mensaje correspondiente y lo ejecutamos:
+                            If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
+                                Stat = MENSAJE_DEMONIO_REAL
+                                Call UserDie(UserIndex)
+                            ElseIf Not criminal(UserIndex) Then
+                            'Nos fijamos si es ciudadano enlistable o no enlistable:
+                                If UserList(UserIndex).Faccion.RecibioExpInicialReal = 1 Or _
+                                UserList(UserIndex).Faccion.Reenlistadas > 4 Then 'Es ciudadano no enlistable.
+                                    Stat = MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE
+                                Else 'Es ciudadano enlistable.
+                                    Stat = MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE
+                                End If
+                            End If
+                        End If
+                    End If
+                    
+                    'Enviamos el mensaje propiamente dicho:
+                    Call WriteChatOverHead(UserIndex, Stat, Npclist(TempCharIndex).Char.CharIndex, vbWhite)
                 Else
                 
                     Dim CentinelaIndex As Integer
@@ -1199,7 +1280,7 @@ End With
 
 Exit Sub
 
-Errhandler:
+ErrHandler:
     Call LogError("Error en LookAtTile. Error " & Err.Number & " : " & Err.description)
 
 End Sub

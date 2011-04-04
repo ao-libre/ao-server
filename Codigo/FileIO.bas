@@ -46,152 +46,214 @@ Public Sub CargarSpawnList()
     
 End Sub
 
-Function EsAdmin(ByVal Name As String) As Boolean
+Function EsAdmin(ByRef Name As String) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
-    
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Admines"))
-    
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "Admines", "Admin" & WizNum))
-        
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsAdmin = True
-            Exit Function
-        End If
-    Next WizNum
-    EsAdmin = False
-
+    EsAdmin = (val(Administradores.GetValue("Admin", Name)) = 1)
 End Function
 
-Function EsDios(ByVal Name As String) As Boolean
+Function EsDios(ByRef Name As String) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
-    
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Dioses"))
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "Dioses", "Dios" & WizNum))
-        
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsDios = True
-            Exit Function
-        End If
-    Next WizNum
-    EsDios = False
+    EsDios = (val(Administradores.GetValue("Dios", Name)) = 1)
 End Function
 
-Function EsSemiDios(ByVal Name As String) As Boolean
+Function EsSemiDios(ByRef Name As String) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
-    
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "SemiDioses"))
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "SemiDioses", "SemiDios" & WizNum))
-        
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsSemiDios = True
-            Exit Function
-        End If
-    Next WizNum
-    EsSemiDios = False
-
+    EsSemiDios = (val(Administradores.GetValue("SemiDios", Name)) = 1)
 End Function
 
-Function EsGmEspecial(ByVal Name As String) As Boolean
+Function EsGmEspecial(ByRef Name As String) As Boolean
 '***************************************************
 'Author: ZaMa
-'Last Modification: 07/06/2010
-'
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
+    EsGmEspecial = (val(Administradores.GetValue("Especial", Name)) = 1)
+End Function
 
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
+Function EsConsejero(ByRef Name As String) As Boolean
+'***************************************************
+'Author: Unknown
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
+'***************************************************
+    EsConsejero = (val(Administradores.GetValue("Consejero", Name)) = 1)
+End Function
+
+Function EsRolesMaster(ByRef Name As String) As Boolean
+'***************************************************
+'Author: Unknown
+'Last Modification: 27/03/2011
+'27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
+'***************************************************
+    EsRolesMaster = (val(Administradores.GetValue("RM", Name)) = 1)
+End Function
+
+Public Function EsGmChar(ByRef Name As String) As Boolean
+'***************************************************
+'Author: ZaMa
+'Last Modification: 27/03/2011
+'Returns true if char is administrative user.
+'***************************************************
     
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Especiales"))
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "Especiales", "Especial" & WizNum))
-        
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsGmEspecial = True
-            Exit Function
-        End If
-    Next WizNum
+    Dim EsGm As Boolean
+    
+    ' Admin?
+    EsGm = EsAdmin(Name)
+    ' Dios?
+    If Not EsGm Then EsGm = EsDios(Name)
+    ' Semidios?
+    If Not EsGm Then EsGm = EsSemiDios(Name)
+    ' Consejero?
+    If Not EsGm Then EsGm = EsConsejero(Name)
+
+    EsGmChar = EsGm
 
 End Function
 
 
-Function EsConsejero(ByVal Name As String) As Boolean
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+Public Sub loadAdministrativeUsers()
+'Admines     => Admin
+'Dioses      => Dios
+'SemiDioses  => SemiDios
+'Especiales  => Especial
+'Consejeros  => Consejero
+'RoleMasters => RM
 
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
+    'Si esta mierda tuviese array asociativos el código sería tan lindo.
+    Dim buf As Integer
+    Dim i As Long
+    Dim Name As String
+       
+    ' Public container
+    Set Administradores = New clsIniManager
     
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "Consejeros"))
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "Consejeros", "Consejero" & WizNum))
-        
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsConsejero = True
-            Exit Function
-        End If
-    Next WizNum
-    EsConsejero = False
-End Function
-
-Function EsRolesMaster(ByVal Name As String) As Boolean
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    Dim NumWizs As Integer
-    Dim WizNum As Integer
-    Dim NomB As String
+    ' Server ini info file
+    Dim ServerIni As clsIniManager
+    Set ServerIni = New clsIniManager
     
-    NumWizs = val(GetVar(IniPath & "Server.ini", "INIT", "RolesMasters"))
-    For WizNum = 1 To NumWizs
-        NomB = UCase$(GetVar(IniPath & "Server.ini", "RolesMasters", "RM" & WizNum))
+    Call ServerIni.Initialize(IniPath & "Server.ini")
+    
+       
+    ' Admines
+    buf = val(ServerIni.GetValue("INIT", "Admines"))
+    
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("Admines", "Admin" & i))
         
-        If Left$(NomB, 1) = "*" Or Left$(NomB, 1) = "+" Then NomB = Right$(NomB, Len(NomB) - 1)
-        If UCase$(Name) = NomB Then
-            EsRolesMaster = True
-            Exit Function
-        End If
-    Next WizNum
-    EsRolesMaster = False
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("Admin", Name, "1")
+
+    Next i
+    
+    ' Dioses
+    buf = val(ServerIni.GetValue("INIT", "Dioses"))
+    
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("Dioses", "Dios" & i))
+        
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("Dios", Name, "1")
+        
+    Next i
+    
+    ' Especiales
+    buf = val(ServerIni.GetValue("INIT", "Especiales"))
+    
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("Especiales", "Especial" & i))
+        
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("Especial", Name, "1")
+        
+    Next i
+    
+    ' SemiDioses
+    buf = val(ServerIni.GetValue("INIT", "SemiDioses"))
+    
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("SemiDioses", "SemiDios" & i))
+        
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("SemiDios", Name, "1")
+        
+    Next i
+    
+    ' Consejeros
+    buf = val(ServerIni.GetValue("INIT", "Consejeros"))
+        
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("Consejeros", "Consejero" & i))
+        
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("Consejero", Name, "1")
+        
+    Next i
+    
+    ' RolesMasters
+    buf = val(ServerIni.GetValue("INIT", "RolesMasters"))
+        
+    For i = 1 To buf
+        Name = UCase$(ServerIni.GetValue("RolesMasters", "RM" & i))
+        
+        If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
+        
+        ' Add key
+        Call Administradores.ChangeValue("RM", Name, "1")
+    Next i
+    
+    Set ServerIni = Nothing
+    
+End Sub
+
+Public Function GetCharPrivs(ByRef UserName As String) As PlayerType
+'****************************************************
+'Author: ZaMa
+'Last Modification: 18/11/2010
+'Reads the user's charfile and retrieves its privs.
+'***************************************************
+
+    Dim Privs As PlayerType
+
+    If EsAdmin(UserName) Then
+        Privs = PlayerType.Admin
+        
+    ElseIf EsDios(UserName) Then
+        Privs = PlayerType.Dios
+
+    ElseIf EsSemiDios(UserName) Then
+        Privs = PlayerType.SemiDios
+        
+    ElseIf EsConsejero(UserName) Then
+        Privs = PlayerType.Consejero
+    
+    Else
+        Privs = PlayerType.User
+    End If
+
+    GetCharPrivs = Privs
+
 End Function
 
 Public Function TxtDimension(ByVal Name As String) As Long
@@ -259,7 +321,8 @@ On Error GoTo ErrHandler
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
     Dim Hechizo As Integer
-    Dim Leer As New clsIniManager
+    Dim Leer As clsIniManager
+    Set Leer = New clsIniManager
     
     Call Leer.Initialize(DatPath & "Hechizos.dat")
     
@@ -445,9 +508,10 @@ End Sub
 Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: 28/10/2010
+'Last Modification: 12/01/2011
 '10/08/2010 - Pato: Implemento el clsByteBuffer para el grabado de mapas
 '28/10/2010:ZaMa - Ahora no se hace backup de los pretorianos.
+'12/01/2011 - Amraphen: Ahora no se hace backup de NPCs prohibidos (Pretorianos, Mascotas, Invocados y Centinela)
 '***************************************************
 
 On Error Resume Next
@@ -460,7 +524,7 @@ On Error Resume Next
     Dim MapWriter As clsByteBuffer
     Dim InfWriter As clsByteBuffer
     Dim IniManager As clsIniManager
-    Dim esPretoriano As Boolean
+    Dim NpcInvalido As Boolean
     
     Set MapWriter = New clsByteBuffer
     Set InfWriter = New clsByteBuffer
@@ -535,11 +599,11 @@ On Error Resume Next
     
                 If .TileExit.Map Then ByFlags = ByFlags Or 1
                 
-                ' No hacer backup de los pretos
+                ' No hacer backup de los NPCs inválidos (Pretorianos, Mascotas, Invocados y Centinela)
                 If .NpcIndex Then
-                    esPretoriano = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano)
+                    NpcInvalido = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano) Or (Npclist(.NpcIndex).MaestroUser > 0) Or EsCentinela(.NpcIndex)
                     
-                    If Not esPretoriano Then ByFlags = ByFlags Or 2
+                    If Not NpcInvalido Then ByFlags = ByFlags Or 2
                 End If
                 
                 If .ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
@@ -552,7 +616,7 @@ On Error Resume Next
                     Call InfWriter.putInteger(.TileExit.Y)
                 End If
                 
-                If .NpcIndex And Not esPretoriano Then _
+                If .NpcIndex And Not NpcInvalido Then _
                     Call InfWriter.putInteger(Npclist(.NpcIndex).Numero)
                 
                 If .ObjInfo.ObjIndex Then
@@ -560,7 +624,7 @@ On Error Resume Next
                     Call InfWriter.putInteger(.ObjInfo.Amount)
                 End If
                 
-                esPretoriano = False
+                NpcInvalido = False
             End With
         Next X
     Next Y
@@ -585,7 +649,8 @@ On Error Resume Next
         Call IniManager.ChangeValue("Mapa" & Map, "InviSinEfecto", .InviSinEfecto)
         Call IniManager.ChangeValue("Mapa" & Map, "ResuSinEfecto", .ResuSinEfecto)
         Call IniManager.ChangeValue("Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.X & "-" & .StartPos.Y)
-        
+        Call IniManager.ChangeValue("Mapa" & Map, "OnDeathGoTo", .OnDeathGoTo.Map & "-" & .OnDeathGoTo.X & "-" & .OnDeathGoTo.Y)
+
     
         Call IniManager.ChangeValue("Mapa" & Map, "Terreno", .Terreno)
         Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
@@ -759,7 +824,8 @@ On Error GoTo ErrHandler
     'Carga la lista de objetos
     '*****************************************************************
     Dim Object As Integer
-    Dim Leer As New clsIniManager
+    Dim Leer As clsIniManager
+    Set Leer = New clsIniManager
     
     Call Leer.Initialize(DatPath & "Obj.dat")
     
@@ -1012,7 +1078,7 @@ With UserList(UserIndex)
         Next LoopC
         
         For LoopC = 1 To MAXUSERHECHIZOS
-            .UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
+            .UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
         Next LoopC
         
         .GLD = CLng(UserFile.GetValue("STATS", "GLD"))
@@ -1080,7 +1146,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 '*************************************************
 'Author: Unknown
 'Last modified: 19/11/2006
-'Loads the Users records
+'Loads the Users RECORDs
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '23/01/2007 Pablo (ToxicWaste) - Quito CriminalesMatados de Stats porque era redundante.
 '*************************************************
@@ -1509,6 +1575,10 @@ On Error GoTo errh
         .StartPos.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         .StartPos.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         
+        .OnDeathGoTo.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
+        .OnDeathGoTo.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
+        .OnDeathGoTo.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
+        
         .MagiaSinEfecto = val(Leer.GetValue("Mapa" & Map, "MagiaSinEfecto"))
         .InviSinEfecto = val(Leer.GetValue("Mapa" & Map, "InviSinEfecto"))
         .ResuSinEfecto = val(Leer.GetValue("Mapa" & Map, "ResuSinEfecto"))
@@ -1690,7 +1760,7 @@ Sub LoadSini()
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
-    recordusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
+    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
@@ -1744,12 +1814,16 @@ Sub LoadSini()
     
     Call MD5sCarga
     
+    Set ConsultaPopular = New ConsultasPopulares
     Call ConsultaPopular.LoadData
 
 #If SeguridadAlkon Then
     Encriptacion.StringValidacion = Encriptacion.ArmarStringValidacion
 #End If
-
+    
+    ' Admins
+    Call loadAdministrativeUsers
+    
 End Sub
 
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
@@ -1767,7 +1841,7 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVa
 '*************************************************
 'Author: Unknown
 'Last modified: 10/10/2010 (Pato)
-'Saves the Users records
+'Saves the Users RECORDs
 '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
 '11/19/2009: Pato - Save the EluSkills and ExpSkills
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
@@ -2211,7 +2285,7 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
 End Sub
 
 
-Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motivo As String)
+Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal Motivo As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2219,7 +2293,7 @@ Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motiv
 '***************************************************
 
     Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "BannedBy", UserList(UserIndex).Name)
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "Reason", motivo)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.log", UserList(BannedIndex).Name, "Reason", Motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
@@ -2231,7 +2305,7 @@ Sub LogBan(ByVal BannedIndex As Integer, ByVal UserIndex As Integer, ByVal motiv
 End Sub
 
 
-Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal motivo As String)
+Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal Motivo As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2239,7 +2313,7 @@ Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal
 '***************************************************
 
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", UserList(UserIndex).Name)
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", motivo)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", Motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
@@ -2251,7 +2325,7 @@ Sub LogBanFromName(ByVal BannedName As String, ByVal UserIndex As Integer, ByVal
 End Sub
 
 
-Sub Ban(ByVal BannedName As String, ByVal Baneador As String, ByVal motivo As String)
+Sub Ban(ByVal BannedName As String, ByVal Baneador As String, ByVal Motivo As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2259,7 +2333,7 @@ Sub Ban(ByVal BannedName As String, ByVal Baneador As String, ByVal motivo As St
 '***************************************************
 
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", Baneador)
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", motivo)
+    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", Motivo)
     
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
@@ -2291,31 +2365,31 @@ Public Sub generateMatrix(ByVal mapa As Integer)
 '
 '***************************************************
 
-Dim i As Integer
-Dim j As Integer
-
-ReDim distanceToCities(1 To NumMaps) As HomeDistance
-
-For j = 1 To NUMCIUDADES
-    For i = 1 To NumMaps
-        distanceToCities(i).distanceToCity(j) = -1
-    Next i
-Next j
-
-For j = 1 To NUMCIUDADES
-    For i = 1 To 4
-        Select Case i
-            Case eHeading.NORTH
-                Call setDistance(getLimit(Ciudades(j).Map, eHeading.NORTH), j, i, 0, 1)
-            Case eHeading.EAST
-                Call setDistance(getLimit(Ciudades(j).Map, eHeading.EAST), j, i, 1, 0)
-            Case eHeading.SOUTH
-                Call setDistance(getLimit(Ciudades(j).Map, eHeading.SOUTH), j, i, 0, 1)
-            Case eHeading.WEST
-                Call setDistance(getLimit(Ciudades(j).Map, eHeading.WEST), j, i, -1, 0)
-        End Select
-    Next i
-Next j
+    Dim i As Integer
+    Dim j As Integer
+    
+    ReDim distanceToCities(1 To NumMaps) As HomeDistance
+    
+    For j = 1 To NUMCIUDADES
+        For i = 1 To NumMaps
+            distanceToCities(i).distanceToCity(j) = -1
+        Next i
+    Next j
+    
+    For j = 1 To NUMCIUDADES
+        For i = 1 To 4
+            Select Case i
+                Case eHeading.NORTH
+                    Call setDistance(getLimit(Ciudades(j).Map, eHeading.NORTH), j, i, 0, 1)
+                Case eHeading.EAST
+                    Call setDistance(getLimit(Ciudades(j).Map, eHeading.EAST), j, i, 1, 0)
+                Case eHeading.SOUTH
+                    Call setDistance(getLimit(Ciudades(j).Map, eHeading.SOUTH), j, i, 0, 1)
+                Case eHeading.WEST
+                    Call setDistance(getLimit(Ciudades(j).Map, eHeading.WEST), j, i, -1, 0)
+            End Select
+        Next i
+    Next j
 
 End Sub
 
@@ -2482,4 +2556,3 @@ Public Sub LoadArmadurasFaccion()
     Next ClassIndex
     
 End Sub
-

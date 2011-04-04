@@ -1089,7 +1089,8 @@ With UserList(UserIndex)
     End If
     
     'Cargamos el personaje
-    Dim Leer As New clsIniManager
+    Dim Leer As clsIniManager
+    Set Leer = New clsIniManager
     
     Call Leer.Initialize(CharPath & UCase$(Name) & ".chr")
     
@@ -1119,10 +1120,10 @@ With UserList(UserIndex)
     End If
     If (.flags.Muerto = 0) Then
         .flags.SeguroResu = False
-        Call WriteMultiMessage(UserIndex, eMessages.ResuscitationSafeOff) 'Call WriteResuscitationSafeOff(UserIndex)
+        Call WriteMultiMessage(UserIndex, eMessages.ResuscitationSafeOff)
     Else
         .flags.SeguroResu = True
-        Call WriteMultiMessage(UserIndex, eMessages.ResuscitationSafeOn) 'Call WriteResuscitationSafeOn(UserIndex)
+        Call WriteMultiMessage(UserIndex, eMessages.ResuscitationSafeOn)
     End If
     
     Call UpdateUserInv(True, UserIndex, 0)
@@ -1132,47 +1133,55 @@ With UserList(UserIndex)
         Call WriteParalizeOK(UserIndex)
     End If
     
-    ''
-    'TODO : Feo, esto tiene que ser parche cliente
-    If .flags.Estupidez = 0 Then
-        Call WriteDumbNoMore(UserIndex)
-    End If
+    Dim mapa As Integer
+    mapa = .Pos.Map
     
     'Posicion de comienzo
-    If .Pos.Map = 0 Then
-        
+    If mapa = 0 Then
         .Pos = Nemahuak
-        
+        mapa = Nemahuak.Map
     Else
-        If Not MapaValido(.Pos.Map) Then
+    
+        If Not MapaValido(mapa) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
             Call CloseSocket(UserIndex)
             Exit Sub
         End If
+        
+        ' If map has different initial coords, update it
+        Dim StartMap As Integer
+        StartMap = MapInfo(mapa).StartPos.Map
+        If StartMap <> 0 Then
+            If MapaValido(StartMap) Then
+                .Pos = MapInfo(mapa).StartPos
+                mapa = StartMap
+            End If
+        End If
+        
     End If
     
     'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
     'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
-    If MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex <> 0 Or MapData(.Pos.Map, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
+    If MapData(mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Or MapData(mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
         Dim FoundPlace As Boolean
         Dim esAgua As Boolean
         Dim tX As Long
         Dim tY As Long
         
         FoundPlace = False
-        esAgua = HayAgua(.Pos.Map, .Pos.X, .Pos.Y)
+        esAgua = HayAgua(mapa, .Pos.X, .Pos.Y)
         
         For tY = .Pos.Y - 1 To .Pos.Y + 1
             For tX = .Pos.X - 1 To .Pos.X + 1
                 If esAgua Then
                     'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                    If LegalPos(.Pos.Map, tX, tY, True, False) Then
+                    If LegalPos(mapa, tX, tY, True, False) Then
                         FoundPlace = True
                         Exit For
                     End If
                 Else
                     'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                    If LegalPos(.Pos.Map, tX, tY, False, True) Then
+                    If LegalPos(mapa, tX, tY, False, True) Then
                         FoundPlace = True
                         Exit For
                     End If
@@ -1188,24 +1197,24 @@ With UserList(UserIndex)
             .Pos.Y = tY
         Else
             'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex <> 0 Then
+            If MapData(mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Then
                'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                If UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
+                If UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
                     'Le avisamos al que estaba comerciando que se tuvo que ir.
-                    If UserList(UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                        Call FinComerciarUsu(UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
-                        Call WriteConsoleMsg(UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                        Call FlushBuffer(UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
+                    If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
+                        Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
+                        Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                        Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
                     End If
                     'Lo sacamos.
-                    If UserList(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex).flags.UserLogged Then
-                        Call FinComerciarUsu(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex)
-                        Call WriteErrorMsg(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
-                        Call FlushBuffer(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex)
+                    If UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).flags.UserLogged Then
+                        Call FinComerciarUsu(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
+                        Call WriteErrorMsg(MapData(mapa, .Pos.X, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call FlushBuffer(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
                     End If
                 End If
                 
-                Call CloseSocket(MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex)
+                Call CloseSocket(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
             End If
         End If
     End If
@@ -1217,12 +1226,11 @@ With UserList(UserIndex)
     
     'If in the water, and has a boat, equip it!
     If .Invent.BarcoObjIndex > 0 And _
-            (HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
-        Dim Barco As ObjData
-        Barco = ObjData(.Invent.BarcoObjIndex)
+            (HayAgua(mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+
         .Char.Head = 0
         If .flags.Muerto = 0 Then
-            Call ToogleBoatBody(UserIndex)
+            Call ToggleBoatBody(UserIndex)
         Else
             .Char.body = iFragataFantasmal
             .Char.ShieldAnim = NingunEscudo
@@ -1262,6 +1270,7 @@ With UserList(UserIndex)
     
     If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
         Call DoAdminInvisible(UserIndex)
+        .flags.SendDenounces = True
     End If
     
     Call WriteUserCharIndexInServer(UserIndex)
@@ -1309,12 +1318,12 @@ With UserList(UserIndex)
         Call WriteLevelUp(UserIndex, .Stats.SkillPts)
     End If
     
-    If NumUsers > recordusuarios Then
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
-        recordusuarios = NumUsers
-        Call WriteVar(IniPath & "Server.ini", "INIT", "Record", str(recordusuarios))
+    If NumUsers > RECORDusuarios Then
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("RECORD de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
+        RECORDusuarios = NumUsers
+        Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RECORDusuarios))
         
-        Call EstadisticasWeb.Informar(RECORD_USUARIOS, recordusuarios)
+        Call EstadisticasWeb.Informar(RECORD_USUARIOS, RECORDusuarios)
     End If
     
     If .NroMascotas > 0 And MapInfo(.Pos.Map).Pk Then
@@ -1655,6 +1664,9 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .ShareNpcWith = 0
         .EnConsulta = False
         .Ignorado = False
+        .SendDenounces = False
+        .ParalizedBy = vbNullString
+        .ParalizedByIndex = 0
         
         If .OwnedNpc <> 0 Then
             Call PerdioNpc(UserIndex)

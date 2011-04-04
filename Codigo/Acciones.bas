@@ -335,7 +335,8 @@ With UserList(UserIndex)
             Call MakeObj(Obj, Map, X, Y)
             
             'Las fogatas prendidas se deben eliminar
-            Dim Fogatita As New cGarbage
+            Dim Fogatita As cGarbage
+            Set Fogatita = New cGarbage
             Fogatita.Map = Map
             Fogatita.X = X
             Fogatita.Y = Y
