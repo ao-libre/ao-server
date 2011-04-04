@@ -348,3 +348,21 @@ Public Function IntervaloGoHome(ByVal UserIndex As Integer, Optional ByVal TimeI
     End With
 
 End Function
+
+Public Function checkInterval(ByRef startTime As Long, ByVal timeNow As Long, ByVal interval As Long) As Boolean
+Dim lInterval As Long
+
+If timeNow < startTime Then
+    lInterval = &H7FFFFFFF - startTime + timeNow + 1
+Else
+    lInterval = timeNow - startTime
+End If
+
+If lInterval >= interval Then
+    startTime = timeNow
+    checkInterval = True
+Else
+    checkInterval = False
+End If
+End Function
+
