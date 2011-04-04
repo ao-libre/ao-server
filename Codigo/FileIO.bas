@@ -1952,6 +1952,7 @@ With UserList(UserIndex)
     Call Manager.ChangeValue("INIT", "Desc", .desc)
     
     Call Manager.ChangeValue("INIT", "Heading", CStr(.Char.heading))
+    Call Manager.ChangeValue("INIT", "Head", CStr(.OrigChar.Head))
     
     If .flags.Muerto = 0 Then
         If .Char.body <> 0 Then
