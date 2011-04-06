@@ -196,6 +196,10 @@ On Error GoTo ErrHandler
                         
             Call CheckUserLevel(UserIndex)
             
+            If NpcIndex = .flags.ParalizedByNpcIndex Then
+                Call RemoveParalisis(UserIndex)
+            End If
+            
         End With
     End If ' Userindex > 0
    
@@ -469,7 +473,7 @@ Private Function TestSpawnTrigger(Pos As WorldPos, Optional PuedeAgua As Boolean
     
 End Function
 
-Public Function CrearNPC(NroNPC As Integer, Mapa As Integer, OrigPos As WorldPos, _
+Public Function CrearNPC(NroNPC As Integer, mapa As Integer, OrigPos As WorldPos, _
                          Optional ByVal CustomHead As Integer) As Integer
 '***************************************************
 'Author: Unknown
@@ -514,8 +518,8 @@ Dim Y As Integer
        
     Else
         
-        Pos.Map = Mapa 'mapa
-        altpos.Map = Mapa
+        Pos.Map = mapa 'mapa
+        altpos.Map = mapa
         
         Do While Not PosicionValida
             Pos.X = RandomNumber(MinXBorder, MaxXBorder)    'Obtenemos posicion al azar en x
@@ -572,7 +576,7 @@ Dim Y As Integer
                         Exit Function
                     Else
                         Call QuitarNPC(nIndex)
-                        Call LogError(MAXSPAWNATTEMPS & " iteraciones en CrearNpc Mapa:" & Mapa & " NroNpc:" & NroNPC)
+                        Call LogError(MAXSPAWNATTEMPS & " iteraciones en CrearNpc Mapa:" & mapa & " NroNpc:" & NroNPC)
                         Exit Function
                     End If
                 End If

@@ -1667,6 +1667,7 @@ Sub ResetUserFlags(ByVal UserIndex As Integer)
         .SendDenounces = False
         .ParalizedBy = vbNullString
         .ParalizedByIndex = 0
+        .ParalizedByNpcIndex = 0
         
         If .OwnedNpc <> 0 Then
             Call PerdioNpc(UserIndex)

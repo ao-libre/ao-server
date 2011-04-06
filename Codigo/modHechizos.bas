@@ -1138,6 +1138,9 @@ With UserList(UserIndex)
             UserList(TargetIndex).flags.Paralizado = 1
             UserList(TargetIndex).Counters.Paralisis = IntervaloParalizado
             
+            UserList(TargetIndex).flags.ParalizedByIndex = UserIndex
+            UserList(TargetIndex).flags.ParalizedBy = UserList(UserIndex).Name
+            
             Call WriteParalizeOK(TargetIndex)
             Call FlushBuffer(TargetIndex)
         End If
@@ -1153,11 +1156,7 @@ With UserList(UserIndex)
             HechizoCasteado = CanSupportUser(UserIndex, TargetIndex, True)
             If Not HechizoCasteado Then Exit Sub
             
-            UserList(TargetIndex).flags.Inmovilizado = 0
-            UserList(TargetIndex).flags.Paralizado = 0
-            
-            'no need to crypt this
-            Call WriteParalizeOK(TargetIndex)
+            Call RemoveParalisis(TargetIndex)
             Call InfoHechizo(UserIndex)
         
         End If
