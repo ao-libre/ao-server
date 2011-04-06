@@ -1499,6 +1499,24 @@ Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
                             Exit Sub
                         End If
                     End If
+                
+                ' Npc?
+                Else
+                    CasterIndex = .flags.ParalizedByNpcIndex
+                    
+                    ' Paralized by npc?
+                    If CasterIndex <> 0 Then
+                    
+                        If .Counters.Paralisis > IntervaloParalizadoReducido Then
+                            ' Out of vision range? => Reduce paralisis counter
+                            If Not InVisionRangeAndMap(UserIndex, Npclist(CasterIndex).Pos) Then
+                                ' Aprox. 1500 ms
+                                .Counters.Paralisis = IntervaloParalizadoReducido
+                                Exit Sub
+                            End If
+                        End If
+                    End If
+                    
                 End If
             End If
             
@@ -1511,7 +1529,7 @@ Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
 
 End Sub
 
-Private Sub RemoveParalisis(ByVal UserIndex As Integer)
+Public Sub RemoveParalisis(ByVal UserIndex As Integer)
 '***************************************************
 'Author: ZaMa
 'Last Modification: 20/11/2010
@@ -1522,6 +1540,8 @@ Private Sub RemoveParalisis(ByVal UserIndex As Integer)
         .flags.Inmovilizado = 0
         .flags.ParalizedBy = vbNullString
         .flags.ParalizedByIndex = 0
+        .flags.ParalizedByNpcIndex = 0
+        .Counters.Paralisis = 0
         Call WriteParalizeOK(UserIndex)
     End With
 End Sub

@@ -2476,21 +2476,25 @@ Public Sub DoHandInmo(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
 'Last Modif: 17/02/2007
 'Implements the special Skill of the Thief
 '***************************************************
-If UserList(VictimaIndex).flags.Paralizado = 1 Then Exit Sub
-If UserList(UserIndex).clase <> eClass.Thief Then Exit Sub
+    If UserList(VictimaIndex).flags.Paralizado = 1 Then Exit Sub
+    If UserList(UserIndex).clase <> eClass.Thief Then Exit Sub
+        
     
-
-If UserList(UserIndex).Invent.AnilloEqpObjIndex <> GUANTE_HURTO Then Exit Sub
-    
-Dim res As Integer
-res = RandomNumber(0, 100)
-If res < (UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) / 4) Then
-    UserList(VictimaIndex).flags.Paralizado = 1
-    UserList(VictimaIndex).Counters.Paralisis = IntervaloParalizado / 2
-    Call WriteParalizeOK(VictimaIndex)
-    Call WriteConsoleMsg(UserIndex, "Tu golpe ha dejado inmóvil a tu oponente", FontTypeNames.FONTTYPE_INFO)
-    Call WriteConsoleMsg(VictimaIndex, "¡El golpe te ha dejado inmóvil!", FontTypeNames.FONTTYPE_INFO)
-End If
+    If UserList(UserIndex).Invent.AnilloEqpObjIndex <> GUANTE_HURTO Then Exit Sub
+        
+    Dim res As Integer
+    res = RandomNumber(0, 100)
+    If res < (UserList(UserIndex).Stats.UserSkills(eSkill.Wrestling) / 4) Then
+        UserList(VictimaIndex).flags.Paralizado = 1
+        UserList(VictimaIndex).Counters.Paralisis = IntervaloParalizado / 2
+        
+        UserList(VictimaIndex).flags.ParalizedByIndex = UserIndex
+        UserList(VictimaIndex).flags.ParalizedBy = UserList(UserIndex).Name
+        
+        Call WriteParalizeOK(VictimaIndex)
+        Call WriteConsoleMsg(UserIndex, "Tu golpe ha dejado inmóvil a tu oponente", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "¡El golpe te ha dejado inmóvil!", FontTypeNames.FONTTYPE_INFO)
+    End If
 
 End Sub
 

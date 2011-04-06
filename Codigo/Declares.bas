@@ -1171,6 +1171,7 @@ Public Type UserFlags
     
     ParalizedBy As String
     ParalizedByIndex As Integer
+    ParalizedByNpcIndex As Integer
 End Type
 
 Public Type UserCounters
