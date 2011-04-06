@@ -859,13 +859,13 @@ Public Function ListenForConnect(ByVal Port&, ByVal HWndToMsg&, ByVal Enlazar As
     End If
     
 'Agregado por Maraxus
-    If setsockopt(S, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, True, 2) Then
-        LogApiSock ("Error seteando conditional accept")
-        Debug.Print "Error seteando conditional accept"
-    Else
-        LogApiSock ("Conditional accept seteado")
-        Debug.Print "Conditional accept seteado ^^"
-    End If
+    'If setsockopt(S, SOL_SOCKET, SO_CONDITIONAL_ACCEPT, True, 2) Then
+    '    LogApiSock ("Error seteando conditional accept")
+    '    Debug.Print "Error seteando conditional accept"
+    'Else
+    '    LogApiSock ("Conditional accept seteado")
+    '    Debug.Print "Conditional accept seteado ^^"
+    'End If
     
     If bind(S, sockin, sockaddr_size) Then
         If S > 0 Then

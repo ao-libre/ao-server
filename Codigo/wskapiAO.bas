@@ -391,27 +391,27 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     'socket de la nueva conn
     
 'Modificado por Maraxus
-    ret = WSAAccept(SockID, sa, Tam, AddressOf CondicionSocket, 0)
-    'ret = accept(SockID, sa, Tam)
-
-'    If ret = INVALID_SOCKET Then
-'        i = Err.LastDllError
-'        Call LogCriticEvent("Error en Accept() API " & i & ": " & GetWSAErrorString(i))
-'        Exit Sub
-'    End If
+    'ret = WSAAccept(SockID, sa, Tam, AddressOf CondicionSocket, 0)
+    ret = accept(SockID, sa, Tam)
 
     If ret = INVALID_SOCKET Then
-        If Err.LastDllError = 11002 Then
-            ' We couldn't decide if to accept or reject the connection
-            'Force reject so we can get it out of the queue
-            ret = WSAAccept(SockID, sa, Tam, AddressOf CondicionSocket, 1)
-            Call LogCriticEvent("Error en WSAAccept() API 11002: No se pudo decidir si aceptar o rechazar la conexión.")
-        Else
-            i = Err.LastDllError
-            Call LogCriticEvent("Error en WSAAccept() API " & i & ": " & GetWSAErrorString(i))
-            Exit Sub
-        End If
+        i = Err.LastDllError
+        Call LogCriticEvent("Error en Accept() API " & i & ": " & GetWSAErrorString(i))
+        Exit Sub
     End If
+
+    'If ret = INVALID_SOCKET Then
+    '    If Err.LastDllError = 11002 Then
+    '        ' We couldn't decide if to accept or reject the connection
+    '        'Force reject so we can get it out of the queue
+    '        ret = WSAAccept(SockID, sa, Tam, AddressOf CondicionSocket, 1)
+    '        Call LogCriticEvent("Error en WSAAccept() API 11002: No se pudo decidir si aceptar o rechazar la conexión.")
+    '    Else
+    '        i = Err.LastDllError
+    '        Call LogCriticEvent("Error en WSAAccept() API " & i & ": " & GetWSAErrorString(i))
+    '        Exit Sub
+    '    End If
+    'End If
 
     NuevoSock = ret
     
@@ -420,10 +420,10 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         Call LogCriticEvent("Error al setear lingers." & i & ": " & GetWSAErrorString(i))
     End If
     
-'    If Not SecurityIp.IpSecurityAceptarNuevaConexion(sa.sin_addr) Then
-'        Call WSApiCloseSocket(NuevoSock)
-'        Exit Sub
-'    End If
+    If Not SecurityIp.IpSecurityAceptarNuevaConexion(sa.sin_addr) Then
+        Call WSApiCloseSocket(NuevoSock)
+        Exit Sub
+    End If
     
     If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
         str = Protocol.PrepareMessageErrorMsg("Limite de conexiones para su IP alcanzado.")
