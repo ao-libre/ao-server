@@ -1846,6 +1846,7 @@ On Error GoTo ErrHandler
         TargetName = buffer.ReadASCIIString()
         Chat = buffer.ReadASCIIString()
         
+        UserPriv = .flags.Privilegios
         
         If .flags.Muerto Then
             Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. ", FontTypeNames.FONTTYPE_INFO)
@@ -1856,8 +1857,8 @@ On Error GoTo ErrHandler
                 ' Admin?
                 If EsGmChar(TargetName) Then
                     Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Administradores.", FontTypeNames.FONTTYPE_INFO)
-                ' User
-                Else
+                ' Whisperer admin? (Else say nothing)
+                ElseIf (UserPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
                 End If
                 
@@ -1865,7 +1866,6 @@ On Error GoTo ErrHandler
             Else
                 ' Privilegios
                 TargetPriv = UserList(TargetUserIndex).flags.Privilegios
-                UserPriv = .flags.Privilegios
                 
                 ' Consejeros, semis y usuarios no pueden susurrar a dioses (Salvo en consulta)
                 If (TargetPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 And _
@@ -1890,7 +1890,9 @@ On Error GoTo ErrHandler
                     ' No se puede susurrar a admins fuera de su rango
                     If (TargetPriv And (PlayerType.User)) = 0 And (UserPriv And (PlayerType.Dios Or PlayerType.Admin)) = 0 Then
                         Call WriteConsoleMsg(UserIndex, "No puedes susurrarle a los Administradores.", FontTypeNames.FONTTYPE_INFO)
-                    Else
+                    
+                    ' Whisperer admin? (Else say nothing)
+                    ElseIf (UserPriv And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
                         Call WriteConsoleMsg(UserIndex, "Estás muy lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
