@@ -602,3 +602,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 27/03/2011 : Modificos algunos logs de gms. (ZaMa)
  * 31/03/2011 : Arreglo rt9 en legalPos. (ZaMa)
  * 31/03/2011 : Ahora los muertos no pueden entrar en mapas que utilicen la propiedad OnDeathGoTo. (ZaMa)
+ * 06/04/2011 : Agrego validación en el drag and drop. (Pato)

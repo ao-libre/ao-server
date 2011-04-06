@@ -240,7 +240,7 @@ With UserList(UserIndex)
     
                 MiObj.ObjIndex = iORO
                 
-                If EsGM(UserIndex) Then Call LogGM(.Name, "Tiró cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
+                If EsGm(UserIndex) Then Call LogGM(.Name, "Tiró cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
                 Dim AuxPos As WorldPos
                 
                 If .clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
@@ -1786,14 +1786,15 @@ Public Function getObjType(ByVal ObjIndex As Integer) As eOBJType
     
 End Function
 
-
 Public Sub moveItem(ByVal UserIndex As Integer, ByVal originalSlot As Integer, ByVal newSlot As Integer)
 
 Dim tmpObj As UserOBJ
 Dim newObjIndex As Integer, originalObjIndex As Integer
-If originalSlot <= 0 Or newSlot <= 0 Then Exit Sub
+If (originalSlot <= 0) Or (newSlot <= 0) Then Exit Sub
 
 With UserList(UserIndex)
+    If (originalSlot > .CurrentInventorySlots) Or (newSlot > .CurrentInventorySlots) Then Exit Sub
+    
     tmpObj = .Invent.Object(originalSlot)
     .Invent.Object(originalSlot) = .Invent.Object(newSlot)
     .Invent.Object(newSlot) = tmpObj
