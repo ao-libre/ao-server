@@ -18583,16 +18583,13 @@ On Error GoTo ErrHandler
         
         Call .incomingData.CopyBuffer(buffer)
         
-        If .flags.TargetNPC < 1 Then Exit Sub
-        
-        ' Dsgm/Dsrm/Rm
-        If (.flags.Privilegios And PlayerType.Dios) = 0 And _
-           (.flags.Privilegios And (PlayerType.SemiDios Or PlayerType.RoleMaster)) <> (PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
-
-        
-        'Replace the NPC's dialog.
-        Npclist(.flags.TargetNPC).desc = NewDialog
-        
+        If .flags.TargetNPC > 0 Then
+            ' Dsgm/Dsrm/Rm
+            If Not ((.flags.Privilegios And PlayerType.Dios) = 0 And (.flags.Privilegios And (PlayerType.SemiDios Or PlayerType.RoleMaster)) <> (PlayerType.SemiDios Or PlayerType.RoleMaster)) Then
+                'Replace the NPC's dialog.
+                Npclist(.flags.TargetNPC).desc = NewDialog
+            End If
+        End If
     End With
 
 ErrHandler:
@@ -18715,22 +18712,21 @@ On Error GoTo ErrHandler
         
         UserName = buffer.ReadASCIIString
         Reason = buffer.ReadASCIIString
-        
-        Call .incomingData.CopyBuffer(buffer)
-        
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
-        
-        'Verificamos que exista el personaje
-        If Not FileExist(CharPath & UCase$(UserName) & ".chr") Then
-            Call WriteShowMessageBox(UserIndex, "El personaje no existe")
-            Exit Sub
+    
+        If Not (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster)) Then
+            'Verificamos que exista el personaje
+            If Not FileExist(CharPath & UCase$(UserName) & ".chr") Then
+                Call WriteShowMessageBox(UserIndex, "El personaje no existe")
+            Else
+                'Agregamos el seguimiento
+                Call AddRecord(UserIndex, UserName, Reason)
+                
+                'Enviamos la nueva lista de personajes
+                Call WriteRecordList(UserIndex)
+            End If
         End If
-        
-        'Agregamos el seguimiento
-        Call AddRecord(UserIndex, UserName, Reason)
-        
-        'Enviamos la nueva lista de personajes
-        Call WriteRecordList(UserIndex)
+
+        Call .incomingData.CopyBuffer(buffer)
     End With
         
 ErrHandler:
@@ -18776,16 +18772,16 @@ On Error GoTo ErrHandler
         
         RecordIndex = buffer.ReadByte
         Obs = buffer.ReadASCIIString
+        
+        If Not (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster)) Then
+            'Agregamos la observación
+            Call AddObs(UserIndex, RecordIndex, Obs)
+            
+            'Actualizamos la información
+            Call WriteRecordDetails(UserIndex, RecordIndex)
+        End If
 
         Call .incomingData.CopyBuffer(buffer)
-        
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
-        
-        'Agregamos la observación
-        Call AddObs(UserIndex, RecordIndex, Obs)
-        
-        'Actualizamos la información
-        Call WriteRecordDetails(UserIndex, RecordIndex)
     End With
         
 ErrHandler:
