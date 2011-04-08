@@ -499,7 +499,7 @@ End Sub
 Public Sub CheckUserLevel(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
-'Last modified: 11/19/2009
+'Last modified: 08/04/2011
 'Chequea que el usuario no halla alcanzado el siguiente nivel,
 'de lo contrario le da la vida, mana, etc, correspodiente.
 '07/08/2006 Integer - Modificacion de los valores
@@ -512,6 +512,7 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer)
 '02/03/2009 ZaMa - Arreglada la validacion de expulsion para miembros de clanes faccionarios que llegan a 25.
 '11/19/2009 Pato - Modifico la nueva fórmula de maná ganada para el bandido y se la limito a 499
 '02/04/2010: ZaMa - Modifico la ganancia de hit por nivel del ladron.
+'08/04/2011: Amraphen - Arreglada la distribución de probabilidades para la vida en el caso de promedio entero.
 '*************************************************
     Dim Pts As Integer
     Dim AumentoHIT As Integer
@@ -592,8 +593,7 @@ On Error GoTo ErrHandler
                 End If
             Else
                 'Es promedio entero
-                
-                DistVida(1) = DistribucionSemienteraVida(1)
+                DistVida(1) = DistribucionEnteraVida(1)
                 DistVida(2) = DistVida(1) + DistribucionEnteraVida(2)
                 DistVida(3) = DistVida(2) + DistribucionEnteraVida(3)
                 DistVida(4) = DistVida(3) + DistribucionEnteraVida(4)
@@ -2342,7 +2342,7 @@ Public Sub ApropioNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
     With UserList(UserIndex)
         ' Los admins no se pueden apropiar de npcs
-        If EsGM(UserIndex) Then Exit Sub
+        If EsGm(UserIndex) Then Exit Sub
         
         Dim mapa As Integer
         mapa = .Pos.Map
