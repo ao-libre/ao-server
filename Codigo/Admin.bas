@@ -192,9 +192,6 @@ On Error Resume Next
     
     Call SaveForums
     
-    'Guarda los RECORDs
-    Call SaveRecords
-    
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave ha concluído.", FontTypeNames.FONTTYPE_SERVER))
 End Sub
 
@@ -507,7 +504,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
 '***************************************************
 
     Dim tUser As Integer
-    Dim userPriv As Byte
+    Dim UserPriv As Byte
     Dim cantPenas As Byte
     Dim rank As Integer
     
@@ -524,9 +521,9 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
             Call WriteConsoleMsg(bannerUserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_TALK)
             
             If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                userPriv = UserDarPrivilegioLevel(UserName)
+                UserPriv = UserDarPrivilegioLevel(UserName)
                 
-                If (userPriv And rank) > (.flags.Privilegios And rank) Then
+                If (UserPriv And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     If GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban") <> "0" Then
@@ -542,7 +539,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
                         Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
                         
-                        If (userPriv And rank) = (.flags.Privilegios And rank) Then
+                        If (UserPriv And rank) = (.flags.Privilegios And rank) Then
                             .flags.Ban = 1
                             Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                             Call CloseSocket(bannerUserIndex)

@@ -1806,6 +1806,9 @@ Sub GuardarUsuarios()
         End If
     Next i
     
+    'se guardan los seguimientos
+    Call SaveRecords
+    
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Personajes Grabados", FontTypeNames.FONTTYPE_SERVER))
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
 
