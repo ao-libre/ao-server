@@ -18712,12 +18712,13 @@ On Error GoTo ErrHandler
         
         Dim UserName As String
         Dim Reason As String
-        Dim tIndex As Integer
         
         UserName = buffer.ReadASCIIString
         Reason = buffer.ReadASCIIString
         
         Call .incomingData.CopyBuffer(buffer)
+        
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
         
         'Verificamos que exista el personaje
         If Not FileExist(CharPath & UCase$(UserName) & ".chr") Then
@@ -18775,8 +18776,10 @@ On Error GoTo ErrHandler
         
         RecordIndex = buffer.ReadByte
         Obs = buffer.ReadASCIIString
-        
+
         Call .incomingData.CopyBuffer(buffer)
+        
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
         
         'Agregamos la observación
         Call AddObs(UserIndex, RecordIndex, Obs)
@@ -18814,13 +18817,14 @@ Dim RecordIndex As Integer
         'Remove packet ID
         Call .incomingData.ReadByte
     
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
-        
         RecordIndex = .incomingData.ReadByte
         
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
+        
+        'Sólo dioses pueden remover los seguimientos, los otros reciben una advertencia:
         If (.flags.Privilegios And PlayerType.Dios) Then
             Call RemoveRecord(RecordIndex)
-            Call WriteShowMessageBox(UserIndex, "Se ha eliminado el seguimiento")
+            Call WriteShowMessageBox(UserIndex, "Se ha eliminado el seguimiento.")
             Call WriteRecordList(UserIndex)
         Else
             Call WriteShowMessageBox(UserIndex, "Sólo los dioses pueden eliminar seguimientos.")
@@ -18842,8 +18846,8 @@ Public Sub HandleRecordListRequest(ByVal UserIndex As Integer)
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
-        
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
+
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
 
         Call WriteRecordList(UserIndex)
     End With
@@ -18876,14 +18880,14 @@ On Error GoTo ErrHandler
         
         tIndex = NameIndex(Records(RecordIndex).Usuario)
         
-        'Status del pj. Online = TRUE
+        'Status del pj (online?)
         Call .WriteBoolean(tIndex > 0)
         
         'Escribo la IP según el estado del personaje
         If tIndex > 0 Then
             'La IP Actual
             tmpStr = UserList(tIndex).ip
-        Else
+        Else 'String nulo
             tmpStr = vbNullString
         End If
         Call .WriteASCIIString(tmpStr)
@@ -18898,14 +18902,15 @@ On Error GoTo ErrHandler
             tmpStr = vbNullString
         End If
         Call .WriteASCIIString(tmpStr)
-        
+
         'Escribo observaciones:
+        tmpStr = vbNullString
         If Records(RecordIndex).NumObs Then
             For i = 1 To Records(RecordIndex).NumObs
                 tmpStr = tmpStr & Records(RecordIndex).Obs(i).Creador & "> " & Records(RecordIndex).Obs(i).Detalles & vbCrLf
             Next i
-        Else
-            tmpStr = vbNullString
+            
+            tmpStr = Left$(tmpStr, Len(tmpStr) - 1)
         End If
         Call .WriteASCIIString(tmpStr)
     End With
@@ -18959,16 +18964,20 @@ End Sub
 Public Sub HandleRecordDetailsRequest(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Amraphen
-'Last Modification: 29/11/2010
-'
+'Last Modification: 07/04/2011
+'Handles the "RecordListRequest" message
 '***************************************************
+Dim RecordIndex As Byte
+
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
+        RecordIndex = .incomingData.ReadByte
         
-        Call WriteRecordDetails(UserIndex, .incomingData.ReadByte)
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then Exit Sub
+        
+        Call WriteRecordDetails(UserIndex, RecordIndex)
     End With
 End Sub
 
