@@ -12234,6 +12234,12 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         Objeto.Amount = 100
         Objeto.ObjIndex = tObj
         Call MakeObj(Objeto, mapa, X, Y - 1)
+        
+        If ObjData(tObj).Log = 1 Then
+            Call LogDesarrollo(.Name & " /CI: [" & tObj & "]" & ObjData(tObj).Name & " en mapa " & _
+                mapa & " (" & X & "," & Y & ")")
+        End If
+        
     End With
 End Sub
 

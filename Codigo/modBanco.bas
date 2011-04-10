@@ -99,23 +99,35 @@ Sub UserRetiraItem(ByVal UserIndex As Integer, ByVal i As Integer, ByVal Cantida
 
 On Error GoTo ErrHandler
 
+    Dim ObjIndex As Integer
 
-If Cantidad < 1 Then Exit Sub
+    If Cantidad < 1 Then Exit Sub
+    
+    Call WriteUpdateUserStats(UserIndex)
 
-Call WriteUpdateUserStats(UserIndex)
-
-       If UserList(UserIndex).BancoInvent.Object(i).Amount > 0 Then
-            If Cantidad > UserList(UserIndex).BancoInvent.Object(i).Amount Then Cantidad = UserList(UserIndex).BancoInvent.Object(i).Amount
-            'Agregamos el obj que compro al inventario
-            Call UserReciveObj(UserIndex, CInt(i), Cantidad)
-            'Actualizamos el inventario del usuario
-            Call UpdateUserInv(True, UserIndex, 0)
-            'Actualizamos el banco
-            Call UpdateBanUserInv(True, UserIndex, 0)
-       End If
-       
-        'Actualizamos la ventana de comercio
-        Call UpdateVentanaBanco(UserIndex)
+    If UserList(UserIndex).BancoInvent.Object(i).Amount > 0 Then
+    
+        If Cantidad > UserList(UserIndex).BancoInvent.Object(i).Amount Then _
+            Cantidad = UserList(UserIndex).BancoInvent.Object(i).Amount
+            
+        ObjIndex = UserList(UserIndex).BancoInvent.Object(i).ObjIndex
+        
+        'Agregamos el obj que compro al inventario
+        Call UserReciveObj(UserIndex, CInt(i), Cantidad)
+        
+        If ObjData(ObjIndex).Log = 1 Then
+            Call LogDesarrollo(UserList(UserIndex).Name & " retiró " & Cantidad & " " & _
+                ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+        End If
+        
+        'Actualizamos el inventario del usuario
+        Call UpdateUserInv(True, UserIndex, 0)
+        'Actualizamos el banco
+        Call UpdateBanUserInv(True, UserIndex, 0)
+    End If
+    
+    'Actualizamos la ventana de comercio
+    Call UpdateVentanaBanco(UserIndex)
 
 ErrHandler:
 
@@ -221,11 +233,23 @@ Sub UserDepositaItem(ByVal UserIndex As Integer, ByVal Item As Integer, ByVal Ca
 '***************************************************
 
 On Error GoTo ErrHandler
+
+    Dim ObjIndex As Integer
+
     If UserList(UserIndex).Invent.Object(Item).Amount > 0 And Cantidad > 0 Then
-        If Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
+    
+        If Cantidad > UserList(UserIndex).Invent.Object(Item).Amount Then _
+            Cantidad = UserList(UserIndex).Invent.Object(Item).Amount
+        
+        ObjIndex = UserList(UserIndex).Invent.Object(Item).ObjIndex
         
         'Agregamos el obj que deposita al banco
         Call UserDejaObj(UserIndex, CInt(Item), Cantidad)
+        
+        If ObjData(ObjIndex).Log = 1 Then
+            Call LogDesarrollo(UserList(UserIndex).Name & " depositó " & Cantidad & " " & _
+                ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+        End If
         
         'Actualizamos el inventario del usuario
         Call UpdateUserInv(True, UserIndex, 0)

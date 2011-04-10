@@ -71,6 +71,7 @@ Public Sub NPC_TIRAR_ITEMS(ByRef npc As npc, ByVal IsPretoriano As Boolean)
 'Give away npc's items.
 '28/11/2009: ZaMa - Implementado drops complejos
 '02/04/2010: ZaMa - Los pretos vuelven a tirar oro.
+'10/04/2011: ZaMa - Logueo los objetos logueables dropeados.
 '***************************************************
 On Error Resume Next
 
@@ -128,9 +129,15 @@ On Error Resume Next
                     Call TirarOroNpc(.Drop(NroDrop).Amount, npc.Pos)
                 Else
                     MiObj.Amount = .Drop(NroDrop).Amount
-                    MiObj.ObjIndex = .Drop(NroDrop).ObjIndex
+                    MiObj.ObjIndex = ObjIndex
                     
                     Call TirarItemAlPiso(.Pos, MiObj)
+                    
+                    If ObjData(ObjIndex).Log = 1 Then
+                        Call LogDesarrollo(npc.Name & " dropeó " & MiObj.Amount & " " & _
+                            ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+                    End If
+                    
                 End If
             End If
 
