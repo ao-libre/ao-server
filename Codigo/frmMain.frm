@@ -635,12 +635,8 @@ On Error GoTo hayerror
                     bEnviarStats = False
                     bEnviarAyS = False
                     
-                    Call DoTileEvents(iUserIndex, .Pos.Map, .Pos.X, .Pos.Y)
-                    
-                    
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
                     If .flags.Ceguera = 1 Or .flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
-                    
                     
                     If .flags.Muerto = 0 Then
                         

@@ -1362,7 +1362,7 @@ With UserList(UserIndex)
     Else
         If .flags.Muerto = 1 Then
             'Si es un mapa común y no está en cana
-            If UCase$(MapInfo(.Pos.Map).Restringir) = "NO" And .Counters.Pena = 0 Then
+            If (MapInfo(.Pos.Map).Restringir = eRestrict.restrict_no) And (.Counters.Pena = 0) Then
                 If .flags.Traveling = 0 Then
                     If Ciudades(.Hogar).Map <> .Pos.Map Then
                         Call goHome(UserIndex)
@@ -13261,9 +13261,11 @@ On Error GoTo ErrHandler
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "NEWBIE" Or tStr = "NO" Or tStr = "ARMADA" Or tStr = "CAOS" Or tStr = "FACCION" Then
                 Call LogGM(.Name, .Name & " ha cambiado la información sobre si es restringido el mapa.")
-                MapInfo(UserList(UserIndex).Pos.Map).Restringir = tStr
+                
+                MapInfo(UserList(UserIndex).Pos.Map).Restringir = RestrictStringToByte(tStr)
+                
                 Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Restringir", tStr)
-                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Restringido: " & MapInfo(.Pos.Map).Restringir, FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Restringido: " & RestrictByteToString(MapInfo(.Pos.Map).Restringir), FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para restringir: 'NEWBIE', 'NO', 'ARMADA', 'CAOS', 'FACCION'", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -13416,9 +13418,11 @@ On Error GoTo ErrHandler
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             If tStr = "BOSQUE" Or tStr = "NIEVE" Or tStr = "DESIERTO" Or tStr = "CIUDAD" Or tStr = "CAMPO" Or tStr = "DUNGEON" Then
                 Call LogGM(.Name, .Name & " ha cambiado la información del terreno del mapa.")
-                MapInfo(UserList(UserIndex).Pos.Map).Terreno = tStr
+                
+                MapInfo(UserList(UserIndex).Pos.Map).Terreno = TerrainStringToByte(tStr)
+                
                 Call WriteVar(App.Path & MapPath & "mapa" & UserList(UserIndex).Pos.Map & ".dat", "Mapa" & UserList(UserIndex).Pos.Map, "Terreno", tStr)
-                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Terreno: " & MapInfo(.Pos.Map).Terreno, FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Terreno: " & TerrainByteToString(MapInfo(.Pos.Map).Terreno), FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'NIEVE' ya que al ingresarlo, la gente muere de frío en el mapa.", FontTypeNames.FONTTYPE_INFO)

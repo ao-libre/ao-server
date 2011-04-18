@@ -130,7 +130,7 @@ On Error GoTo ErrHandler
                 If MapInfo(DestPos.Map).OnDeathGoTo.Map <> 0 Then
                     ' Si esta muerto no puede entrar
                     If UserList(UserIndex).flags.Muerto = 1 Then
-                        Call WriteConsoleMsg(UserIndex, "Solo se permite entrar al mapa a los personajes vivos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Sólo se permite entrar al mapa a los personajes vivos.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -143,7 +143,7 @@ On Error GoTo ErrHandler
                 
                 
                 '¿Es mapa de newbies?
-                If UCase$(MapInfo(DestPos.Map).Restringir) = "NEWBIE" Then
+                If MapInfo(DestPos.Map).Restringir = eRestrict.restrict_newbie Then
                     '¿El usuario es un newbie?
                     If EsNewbie(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
@@ -162,7 +162,7 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, False)
                         End If
                     End If
-                ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "ARMADA" Then '¿Es mapa de Armadas?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_armada Then '¿Es mapa de Armadas?
                     '¿El usuario es Armada?
                     If esArmada(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
@@ -181,7 +181,7 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, FxFlag)
                         End If
                     End If
-                ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "CAOS" Then '¿Es mapa de Caos?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_caos Then '¿Es mapa de Caos?
                     '¿El usuario es Caos?
                     If esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
@@ -200,7 +200,7 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, FxFlag)
                         End If
                     End If
-                ElseIf UCase$(MapInfo(DestPos.Map).Restringir) = "FACCION" Then '¿Es mapa de faccionarios?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_faccion Then '¿Es mapa de faccionarios?
                     '¿El usuario es Armada o Caos?
                     If esArmada(UserIndex) Or esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
@@ -1403,4 +1403,110 @@ Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean
                    OBJType = eOBJType.otCarteles Or _
                    OBJType = eOBJType.otArboles Or _
                    OBJType = eOBJType.otYacimiento
+End Function
+
+Public Function RestrictStringToByte(ByRef restrict As String) As Byte
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 04/18/2011
+'
+'***************************************************
+restrict = UCase$(restrict)
+
+Select Case restrict
+    Case "NEWBIE"
+        RestrictStringToByte = 1
+        
+    Case "ARMADA"
+        RestrictStringToByte = 2
+        
+    Case "CAOS"
+        RestrictStringToByte = 3
+        
+    Case "FACCION"
+        RestrictStringToByte = 4
+        
+    Case Else
+        RestrictStringToByte = 0
+End Select
+End Function
+
+Public Function RestrictByteToString(ByVal restrict As Byte) As String
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 04/18/2011
+'
+'***************************************************
+Select Case restrict
+    Case 1
+        RestrictByteToString = "NEWBIE"
+        
+    Case 2
+        RestrictByteToString = "ARMADA"
+        
+    Case 3
+        RestrictByteToString = "CAOS"
+        
+    Case 4
+        RestrictByteToString = "FACCION"
+        
+    Case 0
+        RestrictByteToString = "NO"
+End Select
+End Function
+
+Public Function TerrainStringToByte(ByRef restrict As String) As Byte
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 04/18/2011
+'
+'***************************************************
+restrict = UCase$(restrict)
+
+Select Case restrict
+    Case "NIEVE"
+        TerrainStringToByte = 1
+        
+    Case "DESIERTO"
+        TerrainStringToByte = 2
+        
+    Case "CIUDAD"
+        TerrainStringToByte = 3
+        
+    Case "CAMPO"
+        TerrainStringToByte = 4
+        
+    Case "DUNGEON"
+        TerrainStringToByte = 5
+        
+    Case Else
+        TerrainStringToByte = 0
+End Select
+End Function
+
+Public Function TerrainByteToString(ByVal restrict As Byte) As String
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 04/18/2011
+'
+'***************************************************
+Select Case restrict
+    Case 1
+        TerrainByteToString = "NIEVE"
+        
+    Case 2
+        TerrainByteToString = "DESIERTO"
+        
+    Case 3
+        TerrainByteToString = "CIUDAD"
+        
+    Case 4
+        TerrainByteToString = "CAMPO"
+        
+    Case 5
+        TerrainByteToString = "DUNGEON"
+        
+    Case 0
+        TerrainByteToString = "BOSQUE"
+End Select
 End Function
