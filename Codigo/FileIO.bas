@@ -652,9 +652,9 @@ On Error Resume Next
         Call IniManager.ChangeValue("Mapa" & Map, "OnDeathGoTo", .OnDeathGoTo.Map & "-" & .OnDeathGoTo.X & "-" & .OnDeathGoTo.Y)
 
     
-        Call IniManager.ChangeValue("Mapa" & Map, "Terreno", .Terreno)
+        Call IniManager.ChangeValue("Mapa" & Map, "Terreno", TerrainByteToString(.Terreno))
         Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
-        Call IniManager.ChangeValue("Mapa" & Map, "Restringir", .Restringir)
+        Call IniManager.ChangeValue("Mapa" & Map, "Restringir", RestrictByteToString(.Restringir))
         Call IniManager.ChangeValue("Mapa" & Map, "BackUp", str(.BackUp))
     
         If .Pk Then
@@ -1595,9 +1595,9 @@ On Error GoTo errh
             .Pk = False
         End If
         
-        .Terreno = Leer.GetValue("Mapa" & Map, "Terreno")
+        .Terreno = TerrainStringToByte(Leer.GetValue("Mapa" & Map, "Terreno"))
         .Zona = Leer.GetValue("Mapa" & Map, "Zona")
-        .Restringir = Leer.GetValue("Mapa" & Map, "Restringir")
+        .Restringir = RestrictStringToByte(Leer.GetValue("Mapa" & Map, "Restringir"))
         .BackUp = val(Leer.GetValue("Mapa" & Map, "BACKUP"))
     End With
     
@@ -1727,11 +1727,11 @@ Sub LoadSini()
     IntervaloUserPuedeCastear = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo"))
     FrmInterv.txtIntervaloLanzaHechizo.Text = IntervaloUserPuedeCastear
     
-    frmMain.TIMER_AI.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcAI"))
-    FrmInterv.txtAI.Text = frmMain.TIMER_AI.Interval
+    frmMain.TIMER_AI.interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcAI"))
+    FrmInterv.txtAI.Text = frmMain.TIMER_AI.interval
     
-    frmMain.npcataca.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcPuedeAtacar"))
-    FrmInterv.txtNPCPuedeAtacar.Text = frmMain.npcataca.Interval
+    frmMain.npcataca.interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloNpcPuedeAtacar"))
+    FrmInterv.txtNPCPuedeAtacar.Text = frmMain.npcataca.interval
     
     IntervaloUserPuedeTrabajar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo"))
     FrmInterv.txtTrabajo.Text = IntervaloUserPuedeTrabajar
@@ -1744,8 +1744,8 @@ Sub LoadSini()
     IntervaloGolpeMagia = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeMagia"))
     IntervaloGolpeUsar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeUsar"))
     
-    frmMain.tLluvia.Interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia"))
-    FrmInterv.txtIntervaloPerdidaStaminaLluvia.Text = frmMain.tLluvia.Interval
+    frmMain.tLluvia.interval = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloPerdidaStaminaLluvia"))
+    FrmInterv.txtIntervaloPerdidaStaminaLluvia.Text = frmMain.tLluvia.interval
     
     MinutosWs = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWS"))
     If MinutosWs < 60 Then MinutosWs = 180

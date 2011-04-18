@@ -116,7 +116,7 @@ With UserList(UserIndex)
     
     '[Barrin 17-12-03] Si el usuario dejó de ser Newbie, y estaba en el Newbie Dungeon
     'es transportado a su hogar de origen ;)
-    If UCase$(MapInfo(.Pos.Map).Restringir) = "NEWBIE" Then
+    If MapInfo(.Pos.Map).Restringir = eRestrict.restrict_newbie Then
         
         Dim DeDonde As WorldPos
         

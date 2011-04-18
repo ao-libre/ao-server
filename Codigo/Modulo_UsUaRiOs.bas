@@ -746,7 +746,7 @@ On Error GoTo ErrHandler
         'If it ceased to be a newbie, remove newbie items and get char away from newbie dungeon
         If Not EsNewbie(UserIndex) And WasNewbie Then
             Call QuitarNewbieObj(UserIndex)
-            If UCase$(MapInfo(.Pos.Map).Restringir) = "NEWBIE" Then
+            If MapInfo(.Pos.Map).Restringir = eRestrict.restrict_newbie Then
                 Call WarpUserChar(UserIndex, 1, 50, 50, True)
                 Call WriteConsoleMsg(UserIndex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -795,12 +795,14 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
     Dim sailing As Boolean
     Dim CasperIndex As Integer
     Dim CasperHeading As eHeading
-    Dim CasPerPos As WorldPos
+    Dim isAdminInvi As Boolean
     
     sailing = PuedeAtravesarAgua(UserIndex)
     nPos = UserList(UserIndex).Pos
     Call HeadtoPos(nHeading, nPos)
         
+    isAdminInvi = (UserList(UserIndex).flags.AdminInvisible = 1)
+    
     If MoveToLegalPos(UserList(UserIndex).Pos.Map, nPos.X, nPos.Y, sailing, Not sailing) Then
         'si no estoy solo en el mapa...
         If MapInfo(UserList(UserIndex).Pos.Map).NumUsers > 1 Then
@@ -809,7 +811,7 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
             'Si hay un usuario, y paso la validacion, entonces es un casper
             If CasperIndex > 0 Then
                 ' Los admins invisibles no pueden patear caspers
-                If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then
+                If Not isAdminInvi Then
                     
                     If TriggerZonaPelea(UserIndex, CasperIndex) = TRIGGER6_PROHIBE Then
                         If UserList(CasperIndex).flags.SeguroResu = False Then
@@ -818,58 +820,56 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
                         End If
                     End If
     
-                    CasperHeading = InvertHeading(nHeading)
-                    CasPerPos = UserList(CasperIndex).Pos
-                    Call HeadtoPos(CasperHeading, CasPerPos)
-    
                     With UserList(CasperIndex)
-                        
+                        CasperHeading = InvertHeading(nHeading)
+                        Call HeadtoPos(CasperHeading, .Pos)
+                    
                         ' Si es un admin invisible, no se avisa a los demas clientes
                         If Not .flags.AdminInvisible = 1 Then _
-                            Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, CasPerPos.X, CasPerPos.Y))
+                            Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, .Pos.X, .Pos.Y))
                         
                         Call WriteForceCharMove(CasperIndex, CasperHeading)
                             
-                        'Update map and user pos
-                        .Pos = CasPerPos
+                        'Update map and char
                         .Char.heading = CasperHeading
-                        MapData(.Pos.Map, CasPerPos.X, CasPerPos.Y).UserIndex = CasperIndex
-                    
+                        MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex = CasperIndex
                     End With
                 
                     'Actualizamos las áreas de ser necesario
                     Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
                 End If
             End If
-
             
             ' Si es un admin invisible, no se avisa a los demas clientes
-            If Not UserList(UserIndex).flags.AdminInvisible = 1 Then _
+            If Not isAdminInvi Then _
                 Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterMove(UserList(UserIndex).Char.CharIndex, nPos.X, nPos.Y))
             
         End If
         
         ' Los admins invisibles no pueden patear caspers
-        If Not ((UserList(UserIndex).flags.AdminInvisible = 1) And CasperIndex <> 0) Then
+        If Not (isAdminInvi And (CasperIndex <> 0)) Then
             Dim oldUserIndex As Integer
             
-            oldUserIndex = MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex
-            
-            ' Si no hay intercambio de pos con nadie
-            If oldUserIndex = UserIndex Then
-                MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = 0
-            End If
-            
-            UserList(UserIndex).Pos = nPos
-            UserList(UserIndex).Char.heading = nHeading
-            MapData(UserList(UserIndex).Pos.Map, UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y).UserIndex = UserIndex
+            With UserList(UserIndex)
+                oldUserIndex = MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex
+                
+                ' Si no hay intercambio de pos con nadie
+                If oldUserIndex = UserIndex Then
+                    MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex = 0
+                End If
+                
+                .Pos = nPos
+                .Char.heading = nHeading
+                MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex = UserIndex
+                
+                Call DoTileEvents(UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+            End With
             
             'Actualizamos las áreas de ser necesario
             Call ModAreas.CheckUpdateNeededUser(UserIndex, nHeading)
         Else
             Call WritePosUpdate(UserIndex)
         End If
-
     Else
         Call WritePosUpdate(UserIndex)
     End If
@@ -1796,6 +1796,8 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
         
         Call MakeUserChar(True, Map, UserIndex, Map, X, Y)
         Call WriteUserCharIndexInServer(UserIndex)
+        
+        Call DoTileEvents(UserIndex, Map, X, Y)
         
         'Force a flush, so user index is in there before it's destroyed for teleporting
         Call FlushBuffer(UserIndex)

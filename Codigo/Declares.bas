@@ -255,6 +255,22 @@ Public Const Ciudad As String = "CIUDAD"
 Public Const Campo As String = "CAMPO"
 Public Const Dungeon As String = "DUNGEON"
 
+Public Enum eTerrain
+    terrain_bosque = 0
+    terrain_nieve = 1
+    terrain_desierto = 2
+    terrain_ciudad = 3
+    terrain_campo = 4
+    terrain_dungeon = 5
+End Enum
+
+Public Enum eRestrict
+    restrict_no = 0
+    restrict_newbie = 1
+    restrict_armada = 2
+    restrict_caos = 3
+    restrict_faccion = 4
+End Enum
 ' <<<<<< Targets >>>>>>
 Public Enum TargetType
     uUsuarios = 1
@@ -1523,7 +1539,7 @@ Type MapInfo
     
     Terreno As String
     Zona As String
-    Restringir As String
+    Restringir As Byte
     BackUp As Byte
 End Type
 

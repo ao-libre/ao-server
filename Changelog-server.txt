@@ -605,3 +605,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 06/04/2011 : Agrego validación en el drag and drop. (Pato)
  * 07/04/2011 : Arregladas ciertas cuestiones con los seguimientos. (Amraphen)
  * 08/04/2011 : Arreglada la distribución de probabilidades para la vida en el caso de promedio entero. (Amraphen)
+ * 18/04/2011 : Saco el DoTileEvents del timer asqueroso de 40ms y pongo las llamadas en los lugares puntuales donde en verdad va. (Pato)
