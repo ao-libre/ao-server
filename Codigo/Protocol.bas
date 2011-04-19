@@ -9005,10 +9005,6 @@ On Error GoTo ErrHandler
                               opcion = eEditOptions.eo_Body Or _
                               opcion = eEditOptions.eo_Head
                     
-                    If .flags.PrivEspecial Then
-                        valido = valido Or _
-                                 (opcion = eEditOptions.eo_CiticensKilled) Or _
-                                 (opcion = eEditOptions.eo_CriminalsKilled)
                     End If
                     
                 Case PlayerType.Dios
@@ -9033,6 +9029,10 @@ On Error GoTo ErrHandler
             Else
                 valido = True
             End If
+            
+        ElseIf .flags.PrivEspecial Then
+            valido = (opcion = eEditOptions.eo_CiticensKilled) Or _
+                     (opcion = eEditOptions.eo_CriminalsKilled)
             
         End If
 
