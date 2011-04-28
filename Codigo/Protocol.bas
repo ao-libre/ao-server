@@ -9005,8 +9005,6 @@ On Error GoTo ErrHandler
                               opcion = eEditOptions.eo_Body Or _
                               opcion = eEditOptions.eo_Head
                     
-                    End If
-                    
                 Case PlayerType.Dios
                     ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
                     ' pero si quiere modificar el level o vida sólo lo puede hacer sobre sí mismo
