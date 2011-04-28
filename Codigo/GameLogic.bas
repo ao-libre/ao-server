@@ -1179,10 +1179,12 @@ With UserList(UserIndex)
                     '¿Es el rey o el demonio?
                     If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
                         If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
-                            'Si es de la Legión Oscura mostramos el mensaje correspondiente y lo ejecutamos:
+                            'Si es de la Legión Oscura y usuario común mostramos el mensaje correspondiente y lo ejecutamos:
                             If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
                                 Stat = MENSAJE_REY_CAOS
-                                Call UserDie(UserIndex)
+                                If .Privilegios And PlayerType.User Then
+                                    If .Muerto = 0 Then Call UserDie(UserIndex)
+                                End If
                             ElseIf criminal(UserIndex) Then
                             'Nos fijamos si es criminal enlistable o no enlistable:
                                 If UserList(UserIndex).Faccion.CiudadanosMatados > 0 Or _
@@ -1193,10 +1195,13 @@ With UserList(UserIndex)
                                 End If
                             End If
                         Else 'Es el demonio
-                            'Si es de la Armada Real mostramos el mensaje correspondiente y lo ejecutamos:
+                            'Si es de la Armada Real y usuario común mostramos el mensaje correspondiente y lo ejecutamos:
                             If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
                                 Stat = MENSAJE_DEMONIO_REAL
-                                Call UserDie(UserIndex)
+                                '
+                                If .Privilegios And PlayerType.User Then
+                                    If .Muerto = 0 Then Call UserDie(UserIndex)
+                                End If
                             ElseIf Not criminal(UserIndex) Then
                             'Nos fijamos si es ciudadano enlistable o no enlistable:
                                 If UserList(UserIndex).Faccion.RecibioExpInicialReal = 1 Or _
