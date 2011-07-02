@@ -14746,7 +14746,7 @@ On Error GoTo ErrHandler
         Y = .incomingData.ReadByte()
         
         ' User Admin?
-        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) = 0 Then Exit Sub
+        If ((.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) = 0) Or ((.flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
         
         ' Valid pos?
         If Not InMapBounds(Map, X, Y) Then
@@ -14773,6 +14773,7 @@ On Error GoTo ErrHandler
                 ClanPretoriano(index).ClanMap & ". Utilice /EliminarPretorianos MAPA y reintente.", FontTypeNames.FONTTYPE_INFO)
         End If
     
+        Call LogGM(.Name, "Utilizó el comando /CREARPRETORIANOS " & Map & " " & X & " " & Y)
     End With
 
     Exit Sub
@@ -14805,7 +14806,7 @@ On Error GoTo ErrHandler
         Map = .incomingData.ReadInteger()
         
         ' User Admin?
-        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) = 0 Then Exit Sub
+        If ((.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) = 0) Or ((.flags.Privilegios And PlayerType.RoleMaster) <> 0) Then Exit Sub
         
         ' Valid map?
         If Map < 1 Or Map > NumMaps Then
@@ -14823,6 +14824,7 @@ On Error GoTo ErrHandler
         
         Next index
     
+        Call LogGM(.Name, "Utilizó el comando /ELIMINARPRETORIANOS " & Map)
     End With
 
     Exit Sub
