@@ -607,3 +607,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 08/04/2011 : Arreglada la distribución de probabilidades para la vida en el caso de promedio entero. (Amraphen)
  * 18/04/2011 : Saco el DoTileEvents del timer asqueroso de 40ms y pongo las llamadas en los lugares puntuales donde en verdad va. (Pato)
  * 27/04/2011 : Arreglo el comportamiento de los NPC's enlistadores. (Amraphen)
+ * 03/07/2011 : Agrego y modifico logs de ítems. (Pato)

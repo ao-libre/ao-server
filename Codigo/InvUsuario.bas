@@ -202,7 +202,7 @@ With UserList(UserIndex)
             Dim loops As Integer
             
             'Seguridad Alkon (guardo el oro tirado si supera los 50k)
-            If Cantidad > 50000 Then
+            If Cantidad >= MIN_GOLD_AMOUNT_LOG Then
                 Dim j As Integer
                 Dim k As Integer
                 Dim M As Integer
@@ -217,7 +217,9 @@ With UserList(UserIndex)
                         End If
                     Next k
                 Next j
-                Call LogDesarrollo(.Name & " tira oro. Cercanos: " & Cercanos)
+                
+                Cercanos = Left$(Cercanos, Len(Cercanos) - 1)
+                Call LogDesarrollo(.Name & " tiró " & Cantidad & " monedas de oro. Cercanos: " & Cercanos)
             End If
             '/Seguridad
             Dim Extra As Long
@@ -403,9 +405,14 @@ With UserList(UserIndex)
             
             'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
             'Es un Objeto que tenemos que loguear?
-            If ObjData(DropObj.ObjIndex).Log = 1 Then
+            If ((ObjData(DropObj.ObjIndex).Log = 1) Or (ObjData(DropObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
                 Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
-            ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
+            ElseIf DropObj.Amount >= MIN_AMOUNT_LOG Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
+                'Si no es de los prohibidos de loguear, lo logueamos.
+                If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
+                    Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                End If
+            ElseIf (DropObj.Amount * ObjData(DropObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
                     Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
@@ -557,19 +564,31 @@ Sub GetObj(ByVal UserIndex As Integer)
                     Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
                         
                     Call WriteUpdateGold(UserIndex)
+                    
+                    If MiObj.Amount >= MIN_GOLD_AMOUNT_LOG Then
+                        ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
+                        Call LogDesarrollo(.Name & " juntó del piso " & MiObj.Amount & " monedas de oro" & ObjData(MiObj.ObjIndex).Name & ObjPos)
+                    End If
                 Else
                     If MeterItemEnInventario(UserIndex, MiObj) Then
                     
                         'Quitamos el objeto
                         Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
-                        If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Agarro:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
+                        'Si no es un usuario común logueamos
+                        If ((.flags.Privilegios And PlayerType.User) = 0) Then Call LogGM(.Name, "Agarro:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
         
                         'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
                         'Es un Objeto que tenemos que loguear?
-                        If ObjData(MiObj.ObjIndex).Log = 1 Then
+                        If ((ObjData(MiObj.ObjIndex).Log = 1) Or (ObjData(MiObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
                             ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
                             Call LogDesarrollo(.Name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
-                        ElseIf MiObj.Amount > 5000 Then 'Es mucha cantidad?
+                        ElseIf MiObj.Amount >= MIN_AMOUNT_LOG Then 'Es mucha cantidad?
+                            'Si no es de los prohibidos de loguear, lo logueamos.
+                            If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
+                                ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
+                                Call LogDesarrollo(.Name & " juntó del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
+                            End If
+                        ElseIf (MiObj.Amount * ObjData(MiObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
                             'Si no es de los prohibidos de loguear, lo logueamos.
                             If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
                                 ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y

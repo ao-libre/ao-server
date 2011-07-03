@@ -22,9 +22,6 @@ Attribute VB_Name = "mdlCOmercioConUsuario"
 '[Alejo]
 Option Explicit
 
-Private Const MAX_ORO_LOGUEABLE As Long = 50000
-Private Const MAX_OBJ_LOGUEABLE As Long = 1000
-
 Public Const MAX_OFFER_SLOTS As Integer = 20
 Public Const GOLD_OFFER_SLOT As Integer = MAX_OFFER_SLOTS + 1
 
@@ -210,13 +207,13 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                If .ComUsu.GoldAmount >= MIN_GOLD_AMOUNT_LOG Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
                 ' Update Usuario
-                Call WriteUpdateUserStats(UserIndex)
+                Call WriteUpdateGold(UserIndex)
                 ' Se la doy al otro
                 UserList(OtroUserIndex).Stats.GLD = UserList(OtroUserIndex).Stats.GLD + .ComUsu.GoldAmount
                 ' Update Otro Usuario
-                Call WriteUpdateUserStats(OtroUserIndex)
+                Call WriteUpdateGold(OtroUserIndex)
                 
             ' Le pasa lo ofertado de los slots con items
             ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
@@ -231,13 +228,16 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 Call QuitarObjetos(TradingObj.ObjIndex, TradingObj.Amount, UserIndex)
                 
                 'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-                If ObjData(TradingObj.ObjIndex).Log = 1 Then
+                If ((ObjData(TradingObj.ObjIndex).Log = 1) Or (ObjData(TradingObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
                     Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
-                End If
-            
                 'Es mucha cantidad?
-                If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
-                'Si no es de los prohibidos de loguear, lo logueamos.
+                ElseIf TradingObj.Amount >= MIN_AMOUNT_LOG Then
+                    'Si no es de los prohibidos de loguear, lo logueamos.
+                    If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
+                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                    End If
+                ElseIf (TradingObj.Amount * ObjData(TradingObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
+                    'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
                         Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
@@ -252,14 +252,14 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(UserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                If .ComUsu.GoldAmount >= MIN_GOLD_AMOUNT_LOG Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(UserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
                 ' Update Usuario
-                Call WriteUpdateUserStats(OtroUserIndex)
+                Call WriteUpdateGold(OtroUserIndex)
                 'y se la doy al otro
                 UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + .ComUsu.GoldAmount
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).Name & " recibió oro en comercio seguro con " & .Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                
                 ' Update Otro Usuario
-                Call WriteUpdateUserStats(UserIndex)
+                Call WriteUpdateGold(UserIndex)
                 
             ' Le pasa la oferta de los slots con items
             ElseIf .ComUsu.Objeto(OfferSlot) > 0 Then
@@ -274,15 +274,18 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 Call QuitarObjetos(TradingObj.ObjIndex, TradingObj.Amount, OtroUserIndex)
                 
                 'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
-                If ObjData(TradingObj.ObjIndex).Log = 1 Then
-                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
-                End If
-            
+                If ((ObjData(TradingObj.ObjIndex).Log = 1) Or (ObjData(TradingObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
+                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                 'Es mucha cantidad?
-                If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
-                'Si no es de los prohibidos de loguear, lo logueamos.
+                ElseIf TradingObj.Amount >= MIN_AMOUNT_LOG Then
+                    'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                    End If
+                ElseIf (TradingObj.Amount * ObjData(TradingObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
+                    'Si no es de los prohibidos de loguear, lo logueamos.
+                    If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
+                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 End If
             End If
