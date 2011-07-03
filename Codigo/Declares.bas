@@ -1912,3 +1912,7 @@ Public Const MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE As String = "Tu indecisión t
 Public Const MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE As String = "Siento el miedo por tus venas. Deja de ser escoria y únete a mis filas, sabrás que es el mejor camino."
 
 Public Administradores As clsIniManager
+
+Public Const MIN_AMOUNT_LOG As Integer = 1000
+Public Const MIN_VALUE_LOG As Long = 50000
+Public Const MIN_GOLD_AMOUNT_LOG As Long = 10000
