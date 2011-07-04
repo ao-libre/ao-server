@@ -52,7 +52,7 @@ Function EsAdmin(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsAdmin = (val(Administradores.GetValue("Admin", Name)) = 1)
+    EsAdmin = (val(Administradores.GetValue("Admin", Replace(Name, "+", " "))) = 1)
 End Function
 
 Function EsDios(ByRef Name As String) As Boolean
@@ -61,7 +61,7 @@ Function EsDios(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsDios = (val(Administradores.GetValue("Dios", Name)) = 1)
+    EsDios = (val(Administradores.GetValue("Dios", Replace(Name, "+", " "))) = 1)
 End Function
 
 Function EsSemiDios(ByRef Name As String) As Boolean
@@ -70,7 +70,7 @@ Function EsSemiDios(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsSemiDios = (val(Administradores.GetValue("SemiDios", Name)) = 1)
+    EsSemiDios = (val(Administradores.GetValue("SemiDios", Replace(Name, "+", " "))) = 1)
 End Function
 
 Function EsGmEspecial(ByRef Name As String) As Boolean
@@ -79,7 +79,7 @@ Function EsGmEspecial(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsGmEspecial = (val(Administradores.GetValue("Especial", Name)) = 1)
+    EsGmEspecial = (val(Administradores.GetValue("Especial", Replace(Name, "+", " "))) = 1)
 End Function
 
 Function EsConsejero(ByRef Name As String) As Boolean
@@ -88,7 +88,7 @@ Function EsConsejero(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsConsejero = (val(Administradores.GetValue("Consejero", Name)) = 1)
+    EsConsejero = (val(Administradores.GetValue("Consejero", Replace(Name, "+", " "))) = 1)
 End Function
 
 Function EsRolesMaster(ByRef Name As String) As Boolean
@@ -97,7 +97,7 @@ Function EsRolesMaster(ByRef Name As String) As Boolean
 'Last Modification: 27/03/2011
 '27/03/2011 - ZaMa: Utilizo la clase para saber los datos.
 '***************************************************
-    EsRolesMaster = (val(Administradores.GetValue("RM", Name)) = 1)
+    EsRolesMaster = (val(Administradores.GetValue("RM", Replace(Name, "+", " "))) = 1)
 End Function
 
 Public Function EsGmChar(ByRef Name As String) As Boolean
