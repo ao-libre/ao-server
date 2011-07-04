@@ -1833,7 +1833,7 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
         Call PerdioNpc(UserIndex, False)
         
         ' Automatic toogle navigate
-        If (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero)) = 0 Then
+        If (.flags.Privilegios And (PlayerType.User)) = 0 Then
             If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
                 If .flags.Navegando = 0 Then
                     .flags.Navegando = 1
