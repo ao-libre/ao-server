@@ -1744,7 +1744,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
     Dim list()      As String
     Dim i           As Long
     
-    On Error GoTo error
+On Error GoTo error
     GI = UserList(UserIndex).GuildIndex
     
     Personaje = UCase$(Personaje)
@@ -1820,6 +1820,10 @@ error:
     If Not (FileExist(CharPath & Personaje & ".chr", vbArchive)) Then
         Call LogError("El usuario " & UserList(UserIndex).Name & " (" & UserIndex & _
                     " ) ha pedido los detalles del personaje " & Personaje & " que no se encuentra.")
+
+On Error Resume Next
+        ' Fuerzo el borrado de la lista, lo deberia hacer el programa que borra pjs..
+        Call guilds(GI).RemoveMemberName(Personaje)
     Else
         Call LogError("[" & Err.Number & "] " & Err.description & " En la rutina SendDetallesPersonaje, por el usuario " & _
                     UserList(UserIndex).Name & " (" & UserIndex & " ), pidiendo información sobre el personaje " & Personaje)
