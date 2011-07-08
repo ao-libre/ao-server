@@ -801,7 +801,7 @@ On Error Resume Next
         Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & _
                         vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & _
                         vbTab & " LastDllError: " & Err.LastDllError & vbTab & _
-                        " - UserIndex: " & UserIndex & " - producido al manejar el paquete: " & CStr(packetID))
+                        " - UserIndex: " & UserIndex & "(" & UserList(UserIndex).Name & ") - producido al manejar el paquete: " & CStr(packetID))
         Call CloseSocket(UserIndex)
     
     Else
@@ -4035,7 +4035,7 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             ' Finish the trade
             Call FinComerciarUsu(UserIndex)
         
-            If tUser <= 0 Or tUser > MaxUsers Then
+            If tUser > 0 And tUser < MaxUsers Then
                 Call FinComerciarUsu(tUser)
                 Call Protocol.FlushBuffer(tUser)
             End If
@@ -5589,6 +5589,7 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
 'Last Modification: 05/17/06
 '
 '***************************************************
+On Error GoTo ErrHandler
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
@@ -5613,6 +5614,13 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
         Call RevivirUsuario(UserIndex)
         Call WriteConsoleMsg(UserIndex, "¡¡Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
     End With
+    
+    Exit Sub
+    
+ErrHandler:
+    
+    Call LogError("Error en HandleResucitate. Error: " & Err.Number & " - " & _
+        Err.description & ". Usuario: " & UserList(UserIndex).Name & "(" & UserIndex & ")")
 End Sub
 
 ''

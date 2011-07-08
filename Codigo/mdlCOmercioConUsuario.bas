@@ -160,18 +160,17 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     
     OtroUserIndex = UserList(UserIndex).ComUsu.DestUsu
     
-    ' Acepto el otro?
-    If UserList(OtroUserIndex).ComUsu.Acepto = False Then
-        Exit Sub
-    End If
-    
     ' User valido?
     If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
         Call FinComerciarUsu(UserIndex)
         Exit Sub
     End If
     
-    
+    ' Acepto el otro?
+    If UserList(OtroUserIndex).ComUsu.Acepto = False Then
+        Exit Sub
+    End If
+
     ' Aceptaron ambos, chequeo que tengan los items que ofertaron
     If Not HasOfferedItems(UserIndex) Then
         

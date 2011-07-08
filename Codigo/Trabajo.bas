@@ -342,7 +342,7 @@ Function TieneObjetos(ByVal ItemIndex As Integer, ByVal cant As Long, ByVal User
         
 End Function
 
-Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVal UserIndex As Integer)
+Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Long, ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/08/09
@@ -374,7 +374,7 @@ Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Integer, ByVa
 
 End Sub
 
-Sub HerreroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, ByVal CantidadItems As Integer)
+Sub HerreroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, ByVal CantidadItems As Long)
 '***************************************************
 'Author: Unknown
 'Last Modification: 16/11/2009
@@ -387,7 +387,8 @@ Sub HerreroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integ
     End With
 End Sub
 
-Sub CarpinteroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, ByVal CantidadItems As Integer)
+Sub CarpinteroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, _
+    ByVal CantidadItems As Long)
 '***************************************************
 'Author: Unknown
 'Last Modification: 16/11/2009
@@ -399,7 +400,8 @@ Sub CarpinteroQuitarMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As In
     End With
 End Sub
 
-Function CarpinteroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, ByVal Cantidad As Integer, Optional ByVal ShowMsg As Boolean = False) As Boolean
+Function CarpinteroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, _
+    ByVal Cantidad As Long, Optional ByVal ShowMsg As Boolean = False) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: 16/11/2009
@@ -537,7 +539,8 @@ Sub QuitarMaterialesUpgrade(ByVal UserIndex As Integer, ByVal ItemIndex As Integ
     Call QuitarObjetos(ItemIndex, 1, UserIndex)
 End Sub
 
-Public Function PuedeConstruir(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, ByVal CantidadItems As Integer) As Boolean
+Public Function PuedeConstruir(ByVal UserIndex As Integer, ByVal ItemIndex As Integer, _
+    ByVal CantidadItems As Long) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: 24/08/2009
@@ -579,7 +582,7 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '30/05/2010: ZaMa - Los pks no suben plebe al trabajar.
 '***************************************************
-Dim CantidadItems As Integer
+Dim CantidadItems As Long
 Dim TieneMateriales As Boolean
 Dim OtroUserIndex As Integer
 
@@ -719,7 +722,7 @@ Public Sub CarpinteroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex A
 '***************************************************
 On Error GoTo ErrHandler
 
-    Dim CantidadItems As Integer
+    Dim CantidadItems As Long
     Dim TieneMateriales As Boolean
     Dim WeaponIndex As Integer
     Dim OtroUserIndex As Integer

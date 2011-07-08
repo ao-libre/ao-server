@@ -88,9 +88,10 @@ End Sub
 
 Public Function doVotar(ByVal UserIndex As Integer, ByVal opcion As Integer) As String
 On Error GoTo errorh
-Dim YaVoto As Boolean
-Dim CharFile As String
-Dim sufragio As Integer
+
+    Dim YaVoto As Boolean
+    Dim CharFile As String
+    Dim sufragio As Integer
 
     'revisar q no haya votado
     'grabar en el charfile el numero de encuesta
@@ -154,28 +155,30 @@ Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer)
     Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "CONSULTAS", "Voto", str(pEncuestaActualNum))
 End Sub
 
-
 Private Function MailYaVoto(ByVal email As String) As Boolean
-'abro el archivo, while not eof levnato 1 linea y comparo. Si da true, cierro
-Dim ArchN As Integer
-Dim Tmp As String
-
-MailYaVoto = False
-
-ArchN = FreeFile()
-
-Open App.Path & ARCHIVOMAILS For Input As #ArchN
-
-Do While Not EOF(ArchN)
-    Line Input #ArchN, Tmp
-    If email = Tmp Then
-        MailYaVoto = True
-        Close #ArchN
-        Exit Function
-    End If
-Loop
-
-Close #ArchN
+    'abro el archivo, while not eof levnato 1 linea y comparo. Si da true, cierro
+    Dim ArchN As Integer
+    Dim Tmp As String
+    
+    MailYaVoto = False
+    
+    ' Si no existe no voto.
+    If Not FileExist(App.Path & ARCHIVOMAILS) Then Exit Function
+    
+    ArchN = FreeFile()
+    
+    Open App.Path & ARCHIVOMAILS For Input As #ArchN
+    
+    Do While Not EOF(ArchN)
+        Line Input #ArchN, Tmp
+        If email = Tmp Then
+            MailYaVoto = True
+            Close #ArchN
+            Exit Function
+        End If
+    Loop
+    
+    Close #ArchN
 End Function
 
 

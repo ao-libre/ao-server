@@ -340,6 +340,35 @@ Dim MiembroDe   As String
 
 End Sub
 
+Public Sub RemoveMemberName(ByRef Nombre As String)
+    Dim OldQ        As Integer
+    Dim Temps       As String
+    Dim i           As Integer
+    Dim EsMiembro   As Boolean
+
+    
+    OldQ = CInt(GetVar(MEMBERSFILE, "INIT", "NroMembers"))
+    i = 1
+    Nombre = UCase$(Nombre)
+    While i <= OldQ And UCase$(Trim$(GetVar(MEMBERSFILE, "Members", "Member" & i))) <> Nombre
+        i = i + 1
+    Wend
+    EsMiembro = i <= OldQ
+    
+    If EsMiembro Then
+        While i < OldQ
+            Temps = GetVar(MEMBERSFILE, "Members", "Member" & i + 1)
+            Call WriteVar(MEMBERSFILE, "Members", "Member" & i, Temps)
+            i = i + 1
+        Wend
+        
+        Call WriteVar(MEMBERSFILE, "Members", "Member" & OldQ, vbNullString)
+        'seteo la cantidad de miembros nueva
+        Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", OldQ - 1)
+    End If
+
+End Sub
+
 '
 'ASPIRANTES
 '
