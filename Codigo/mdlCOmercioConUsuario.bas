@@ -233,12 +233,12 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 ElseIf TradingObj.Amount >= MIN_AMOUNT_LOG Then
                     'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 ElseIf (TradingObj.Amount * ObjData(TradingObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
                     'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 End If
             End If
@@ -274,17 +274,17 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 
                 'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
                 If ((ObjData(TradingObj.ObjIndex).Log = 1) Or (ObjData(TradingObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
-                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                 'Es mucha cantidad?
                 ElseIf TradingObj.Amount >= MIN_AMOUNT_LOG Then
                     'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 ElseIf (TradingObj.Amount * ObjData(TradingObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
                     'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 End If
             End If
