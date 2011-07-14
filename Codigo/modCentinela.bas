@@ -95,7 +95,7 @@ Public Sub CallUserAttention()
                 ' Esta revisando un usuario?
                 If UserIndex <> 0 Then
                     
-                    If TActual - .SpawnTime >= 5000 Then
+                    If getInterval(TActual, .SpawnTime) >= 5000 Then
                     
                         If Not UserList(UserIndex).flags.CentinelaOK Then
                             Call WritePlayWave(UserIndex, SND_WARP, Npclist(.NpcIndex).Pos.X, Npclist(.NpcIndex).Pos.Y)
@@ -620,9 +620,5 @@ Private Sub RenovarResetTimer()
 'Last modified: 07/10/2010
 'Renueva el timer que resetea el flag "CentinelaOk" de todos los usuarios.
 '*************************************************
-
-    Dim TActual As Long
-    TActual = GetTickCount() And &H7FFFFFFF
-    
     centinelaInterval = (RandomNumber(0, TIEMPO_PASAR_RANDOM) + TIEMPO_PASAR_BASE) * 60 * 1000
 End Sub
