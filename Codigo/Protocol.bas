@@ -1984,12 +1984,12 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
         'Prevent SpeedHack
         If .flags.TimesWalk >= 30 Then
             TempTick = GetTickCount And &H7FFFFFFF
-            dummy = (TempTick - .flags.StartWalk)
+            dummy = getInterval(TempTick, .flags.StartWalk)
             
             ' 5800 is actually less than what would be needed in perfect conditions to take 30 steps
             '(it's about 193 ms per step against the over 200 needed in perfect conditions)
             If dummy < 5800 Then
-                If TempTick - .flags.CountSH > 30000 Then
+                If getInterval(TempTick, .flags.CountSH) > 30000 Then
                     .flags.CountSH = 0
                 End If
                 
@@ -6102,7 +6102,7 @@ Private Sub HandleUpTime(ByVal UserIndex As Integer)
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    time = getInterval((GetTickCount() And &H7FFFFFFF), tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
     UpTimeStr = (time Mod 60) & " segundos."

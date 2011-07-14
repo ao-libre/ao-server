@@ -2655,7 +2655,7 @@ Public Function GetHomeArrivalTime(ByVal UserIndex As Integer) As Integer
     TActual = GetTickCount() And &H7FFFFFFF
     
     With UserList(UserIndex)
-        GetHomeArrivalTime = (.Counters.goHome - TActual) * 0.001
+        GetHomeArrivalTime = getInterval(.Counters.goHome, TActual) * 0.001
     End With
 
 End Function

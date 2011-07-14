@@ -1830,7 +1830,7 @@ Sub InicializaEstadisticas()
     Call EstadisticasWeb.Inicializa(frmMain.hWnd)
     Call EstadisticasWeb.Informar(CANTIDAD_MAPAS, NumMaps)
     Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
-    Call EstadisticasWeb.Informar(UPTIME_SERVER, (Ta - tInicioServer) / 1000)
+    Call EstadisticasWeb.Informar(UPTIME_SERVER, getInterval(Ta, tInicioServer) / 1000)
     Call EstadisticasWeb.Informar(RECORD_USUARIOS, RECORDusuarios)
 
 End Sub
