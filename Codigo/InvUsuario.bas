@@ -219,7 +219,7 @@ With UserList(UserIndex)
                 Next j
                 
                 Cercanos = Left$(Cercanos, Len(Cercanos) - 1)
-                Call LogDesarrollo(.Name & " tiró " & Cantidad & " monedas de oro. Cercanos: " & Cercanos)
+                Call LogDesarrollo(.Name & " tiró " & Cantidad & " monedas de oro en " & .Pos.Map & ", " & .Pos.X & ", " & .Pos.Y & ". Cercanos: " & Cercanos)
             End If
             '/Seguridad
             Dim Extra As Long
