@@ -928,12 +928,14 @@ Public Sub DoFundir(ByVal UserIndex As Integer)
 '03/06/2010 - Pato: Si es el último ítem a fundir y está equipado lo desequipamos.
 '11/03/2010 - ZaMa: Reemplazo división por producto para uan mejor performanse.
 '***************************************************
-Dim i As Integer
-Dim num As Integer
-Dim Slot As Byte
-Dim Lingotes(2) As Integer
-Dim OtroUserIndex As Integer
-
+    Dim i As Integer
+    Dim num As Integer
+    Dim Slot As Byte
+    Dim Lingotes(2) As Integer
+    Dim OtroUserIndex As Integer
+    
+    Dim ItemIndex As Integer
+    
     With UserList(UserIndex)
         If .flags.Comerciando Then
             OtroUserIndex = .ComUsu.DestUsu
@@ -950,6 +952,7 @@ Dim OtroUserIndex As Integer
         Slot = .flags.TargetObjInvSlot
         
         With .Invent.Object(Slot)
+            ItemIndex = .ObjIndex
             .Amount = .Amount - 1
             
             If .Amount < 1 Then
@@ -981,6 +984,10 @@ Dim OtroUserIndex As Integer
         
         Call UpdateUserInv(False, UserIndex, Slot)
         Call WriteConsoleMsg(UserIndex, "¡Has obtenido el " & num & "% de los lingotes utilizados para la construcción del objeto!", FontTypeNames.FONTTYPE_INFO)
+    
+        If ObjData(ItemIndex).Log = 1 Then _
+            Call LogDesarrollo(.Name & " ha fundido el ítem " & ObjData(ItemIndex).Name)
+
     
         .Counters.Trabajando = .Counters.Trabajando + 1
     End With

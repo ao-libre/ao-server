@@ -9035,10 +9035,15 @@ On Error GoTo ErrHandler
             Else
                 valido = True
             End If
+        
+        ElseIf (.flags.Privilegios And PlayerType.SemiDios) Then
             
-        ElseIf .flags.PrivEspecial Then
-            valido = (opcion = eEditOptions.eo_CiticensKilled) Or _
-                     (opcion = eEditOptions.eo_CriminalsKilled)
+            valido = (opcion = eEditOptions.eo_Poss)
+            
+            If .flags.PrivEspecial Then
+                valido = valido Or (opcion = eEditOptions.eo_CiticensKilled) Or _
+                         (opcion = eEditOptions.eo_CriminalsKilled)
+            End If
             
         End If
 
