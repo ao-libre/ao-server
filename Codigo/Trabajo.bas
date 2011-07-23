@@ -66,7 +66,7 @@ On Error GoTo ErrHandler
             Else
                 If .flags.invisible = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
             End If
         End If
@@ -119,7 +119,7 @@ On Error GoTo ErrHandler
             
             ' No es pirata o es uno sin barca
             If .flags.Navegando = 0 Then
-                Call SetInvisible(UserIndex, .Char.CharIndex, True)
+                Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, True)
         
                 Call WriteConsoleMsg(UserIndex, "¡Te has escondido entre las sombras!", FontTypeNames.FONTTYPE_INFO)
             ' Es un pirata navegando
@@ -188,13 +188,13 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                 ' Pierde el ocultar
                 If .flags.Oculto = 1 Then
                     .flags.Oculto = 0
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                     Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
                
                 ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
                 If .flags.invisible = 1 Then
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
                 
             ' Esta muerto
@@ -242,7 +242,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                 
                 ' Al dejar de navegar, si estaba invisible actualizo los clientes
                 If .flags.invisible = 1 Then
-                    Call SetInvisible(UserIndex, .Char.CharIndex, True)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, True)
                 End If
                 
             ' Esta muerto

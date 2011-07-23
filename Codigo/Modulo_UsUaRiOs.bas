@@ -1493,7 +1493,7 @@ On Error GoTo ErrorHandler
             .Counters.Invisibilidad = 0
             
             'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
-            Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
+            Call UsUaRiOs.SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
         End If
         
         If TriggerZonaPelea(UserIndex, UserIndex) <> eTrigger6.TRIGGER6_PERMITE Then
@@ -1752,7 +1752,7 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
                 End If
                 
                 If AhoraVisible Then 'Si no era visible y ahora es, le avisa. (C4b3z0n)
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                     If WasInvi Then 'era invi
                         Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible ya que no esta permitida la invisibilidad en este mapa.", FontTypeNames.FONTTYPE_INFO)
                     Else 'estaba oculto
@@ -1807,7 +1807,7 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
             
             ' No si estas navegando
             If .flags.Navegando = 0 Then
-                Call SetInvisible(UserIndex, .Char.CharIndex, True)
+                Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, True)
             End If
         End If
         
@@ -2048,7 +2048,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
                 
                 ' Si esta navegando ya esta visible
                 If .flags.Navegando = 0 Then
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
             End If
             

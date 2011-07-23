@@ -1783,7 +1783,7 @@ With UserList(UserIndex).ComUsu
 End With
  
 #If SeguridadAlkon Then
-Call ResetSecurity
+Call ResetSecurity(UserIndex)
 #End If
 End Sub
 

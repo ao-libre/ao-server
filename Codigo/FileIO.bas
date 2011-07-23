@@ -38,10 +38,10 @@ Public Sub CargarSpawnList()
 
     Dim N As Integer, LoopC As Integer
     N = val(GetVar(App.Path & "\Dat\Invokar.dat", "INIT", "NumNPCs"))
-    ReDim SpawnList(N) As tCriaturasEntrenador
+    ReDim Declaraciones.SpawnList(N) As tCriaturasEntrenador
     For LoopC = 1 To N
-        SpawnList(LoopC).NpcIndex = val(GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NI" & LoopC))
-        SpawnList(LoopC).NpcName = GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NN" & LoopC)
+        Declaraciones.SpawnList(LoopC).NpcIndex = val(GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NI" & LoopC))
+        Declaraciones.SpawnList(LoopC).NpcName = GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NN" & LoopC)
     Next LoopC
     
 End Sub

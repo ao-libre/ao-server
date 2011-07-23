@@ -43,7 +43,7 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 'Specially usefull to create a message once and send it over to several clients.
 Private auxiliarBuffer As clsByteQueue
 
-
+#If SeguridadAlkon = 0 Then
 Private Enum ServerPacketID
     Logged                  ' LOGGED
     RemoveDialogs           ' QTDL
@@ -289,7 +289,7 @@ Private Enum ClientPacketID
     Consultation
     moveItem
 End Enum
-
+#End If
 ''
 'The last existing client packet id.
 Private Const LAST_CLIENT_PACKET_ID As Byte = 128
