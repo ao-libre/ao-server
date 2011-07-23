@@ -2848,6 +2848,10 @@ Private Sub HandleUseItem(ByVal UserIndex As Integer)
             Exit Sub    'The error message should have been provided by the client.
         End If
         
+        #If SeguridadAlkon Then
+            Call checkSecurity(UserIndex, 0)
+        #End If
+        
         Call UseInvItem(UserIndex, Slot)
     End With
 End Sub

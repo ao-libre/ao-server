@@ -1188,6 +1188,10 @@ Public Type UserFlags
     ParalizedBy As String
     ParalizedByIndex As Integer
     ParalizedByNpcIndex As Integer
+    
+    #If SeguridadAlkon Then
+    SecurityFlags As tSecurityFlags
+    #End If
 End Type
 
 Public Type UserCounters
@@ -1240,6 +1244,9 @@ Public Type UserCounters
     
     goHome As Long
     AsignedSkills As Byte
+    #If SeguridadAlkon Then
+    SecurityCounters As tSecurityCounters
+    #End If
 End Type
 
 'Cosas faccionarias.
