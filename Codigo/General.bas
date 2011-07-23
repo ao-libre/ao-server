@@ -185,10 +185,10 @@ Sub EnviarSpawnList(ByVal UserIndex As Integer)
     Dim k As Long
     Dim npcNames() As String
     
-    ReDim npcNames(1 To UBound(SpawnList)) As String
+    ReDim npcNames(1 To UBound(Declaraciones.SpawnList)) As String
     
-    For k = 1 To UBound(SpawnList)
-        npcNames(k) = SpawnList(k).NpcName
+    For k = 1 To UBound(Declaraciones.SpawnList)
+        npcNames(k) = Declaraciones.SpawnList(k).NpcName
     Next k
     
     Call WriteSpawnList(UserIndex, npcNames())
@@ -1408,7 +1408,7 @@ Public Sub EfectoInvisibilidad(ByVal UserIndex As Integer)
                 
                 ' Si navega ya esta visible..
                 If Not .flags.Navegando = 1 Then
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
                 
             End If

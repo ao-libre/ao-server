@@ -14,7 +14,7 @@ UserList(UserIndex).flags.invisible = IIf(estado, 1, 0)
 UserList(UserIndex).flags.Oculto = IIf(estado, 1, 0)
 UserList(UserIndex).Counters.Invisibilidad = 0
 
-Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, Not estado)
+Call UsUaRiOs.SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, Not estado)
 'Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageSetInvisible(UserList(UserIndex).Char.CharIndex, Not estado))
 
 

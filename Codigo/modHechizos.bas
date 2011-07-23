@@ -205,7 +205,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
             If .flags.Oculto = 1 Then
                 .Counters.TiempoOculto = 0
                 .flags.Oculto = 0
-                Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 Call WriteConsoleMsg(UserIndex, "¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
             Else
                 'sino, solo lo "iniciamos" en la sacada de invisibilidad.
@@ -411,7 +411,7 @@ On Error GoTo ErrHandler
                 
                 If .flags.invisible = 0 Then
                     Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
-                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
                 End If
             End If
         End If
@@ -982,7 +982,7 @@ With UserList(UserIndex)
         
         ' Solo se hace invi para los clientes si no esta navegando
         If UserList(TargetIndex).flags.Navegando = 0 Then
-            Call SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
+            Call UsUaRiOs.SetInvisible(TargetIndex, UserList(TargetIndex).Char.CharIndex, True)
         End If
         
         Call InfoHechizo(UserIndex)
