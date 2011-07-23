@@ -1782,6 +1782,9 @@ With UserList(UserIndex).ComUsu
     .DestUsu = 0
 End With
  
+#If SeguridadAlkon Then
+Call ResetSecurity
+#End If
 End Sub
 
 Sub CloseUser(ByVal UserIndex As Integer)
