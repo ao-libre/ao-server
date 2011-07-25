@@ -62,6 +62,7 @@ Public Enum SendTarget
     ToUsersAreaButGMs
     ToUsersAndRmsAndCounselorsAreaButGMs
     ToAdminsButCounselorsAndRms
+    ToHigherAdminsButRMs
 End Enum
 
 Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String, _
@@ -305,6 +306,7 @@ On Error Resume Next
         Case SendTarget.ToUsersAreaButGMs
             Call SendToUsersAreaButGMs(sndIndex, sndData)
             Exit Sub
+            
         Case SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs
             Call SendToUsersAndRmsAndCounselorsAreaButGMs(sndIndex, sndData)
             Exit Sub
@@ -323,6 +325,19 @@ On Error Resume Next
             Next LoopC
             Exit Sub
             
+        Case SendTarget.ToHigherAdminsButRMs
+            For LoopC = 1 To LastUser
+                With UserList(LoopC)
+                    If .ConnID <> -1 Then
+                        If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios) Then
+                            If (.flags.Privilegios And (PlayerType.RoleMaster)) = 0 Then
+                                Call EnviarDatosASlot(LoopC, sndData)
+                            End If
+                       End If
+                    End If
+                End With
+            Next LoopC
+            Exit Sub
     End Select
 End Sub
 
