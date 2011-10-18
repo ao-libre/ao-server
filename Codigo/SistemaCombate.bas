@@ -2182,10 +2182,10 @@ On Error GoTo ErrHandler
         
         If DummyInt <> 0 Then
             If DummyInt = 1 Then
-                Call Desequipar(UserIndex, WeaponSlot)
+                Call Desequipar(UserIndex, WeaponSlot, False)
             End If
             
-            Call Desequipar(UserIndex, MunicionSlot)
+            Call Desequipar(UserIndex, MunicionSlot, True)
             Exit Sub
         End If
     

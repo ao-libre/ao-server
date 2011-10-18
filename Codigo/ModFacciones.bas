@@ -270,7 +270,7 @@ With UserList(UserIndex)
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
     
-    Call LogEjercitoReal(.name & " ingresó el " & Date & " cuando era nivel " & .Stats.ELV)
+    Call LogEjercitoReal(.Name & " ingresó el " & Date & " cuando era nivel " & .Stats.ELV)
 End With
 
 End Sub
@@ -429,14 +429,29 @@ With UserList(UserIndex)
         Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado del ejército real!!!", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
+    Dim bRefresh As Boolean
+    
     If .Invent.ArmourEqpObjIndex <> 0 Then
         'Desequipamos la armadura real si está equipada
-        If ObjData(.Invent.ArmourEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, .Invent.ArmourEqpSlot)
+        If ObjData(.Invent.ArmourEqpObjIndex).Real = 1 Then
+            Call Desequipar(UserIndex, .Invent.ArmourEqpSlot, False)
+            bRefresh = True
+        End If
     End If
     
     If .Invent.EscudoEqpObjIndex <> 0 Then
         'Desequipamos el escudo de caos si está equipado
-        If ObjData(.Invent.EscudoEqpObjIndex).Real = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
+        If ObjData(.Invent.EscudoEqpObjIndex).Real = 1 Then
+            Call Desequipar(UserIndex, .Invent.EscudoEqpSlot, False)
+            bRefresh = True
+        End If
+    End If
+    
+    If bRefresh Then
+        With .Char
+            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+        End With
+        Call WriteUpdateUserStats(UserIndex)
     End If
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
@@ -460,14 +475,29 @@ With UserList(UserIndex)
         Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado de la Legión Oscura!!!", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
+    Dim bRefresh As Boolean
+    
     If .Invent.ArmourEqpObjIndex <> 0 Then
         'Desequipamos la armadura de caos si está equipada
-        If ObjData(.Invent.ArmourEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, .Invent.ArmourEqpSlot)
+        If ObjData(.Invent.ArmourEqpObjIndex).Caos = 1 Then
+            Call Desequipar(UserIndex, .Invent.ArmourEqpSlot, False)
+            bRefresh = True
+        End If
     End If
     
     If .Invent.EscudoEqpObjIndex <> 0 Then
         'Desequipamos el escudo de caos si está equipado
-        If ObjData(.Invent.EscudoEqpObjIndex).Caos = 1 Then Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
+        If ObjData(.Invent.EscudoEqpObjIndex).Caos = 1 Then
+            Call Desequipar(UserIndex, .Invent.EscudoEqpSlot, False)
+            bRefresh = True
+        End If
+    End If
+    
+    If bRefresh Then
+        With .Char
+            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+        End With
+        Call WriteUpdateUserStats(UserIndex)
     End If
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
@@ -620,7 +650,7 @@ With UserList(UserIndex)
     
     If .flags.Navegando Then Call RefreshCharStatus(UserIndex) 'Actualizamos la barca si esta navegando (NicoNZ)
 
-    Call LogEjercitoCaos(.name & " ingresó el " & Date & " cuando era nivel " & .Stats.ELV)
+    Call LogEjercitoCaos(.Name & " ingresó el " & Date & " cuando era nivel " & .Stats.ELV)
 End With
 
 End Sub

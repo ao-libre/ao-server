@@ -1508,32 +1508,32 @@ On Error GoTo ErrorHandler
         ' DESEQUIPA TODOS LOS OBJETOS
         'desequipar armadura
         If .Invent.ArmourEqpObjIndex > 0 Then
-            Call Desequipar(UserIndex, .Invent.ArmourEqpSlot)
+            Call Desequipar(UserIndex, .Invent.ArmourEqpSlot, False)
         End If
         
         'desequipar arma
         If .Invent.WeaponEqpObjIndex > 0 Then
-            Call Desequipar(UserIndex, .Invent.WeaponEqpSlot)
+            Call Desequipar(UserIndex, .Invent.WeaponEqpSlot, False)
         End If
         
         'desequipar casco
         If .Invent.CascoEqpObjIndex > 0 Then
-            Call Desequipar(UserIndex, .Invent.CascoEqpSlot)
+            Call Desequipar(UserIndex, .Invent.CascoEqpSlot, False)
         End If
         
         'desequipar herramienta
         If .Invent.AnilloEqpSlot > 0 Then
-            Call Desequipar(UserIndex, .Invent.AnilloEqpSlot)
+            Call Desequipar(UserIndex, .Invent.AnilloEqpSlot, False)
         End If
         
         'desequipar municiones
         If .Invent.MunicionEqpObjIndex > 0 Then
-            Call Desequipar(UserIndex, .Invent.MunicionEqpSlot)
+            Call Desequipar(UserIndex, .Invent.MunicionEqpSlot, False)
         End If
         
         'desequipar escudo
         If .Invent.EscudoEqpObjIndex > 0 Then
-            Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
+            Call Desequipar(UserIndex, .Invent.EscudoEqpSlot, False)
         End If
         
         ' << Reseteamos los posibles FX sobre el personaje >>
@@ -2562,7 +2562,7 @@ Public Sub goHome(ByVal UserIndex As Integer)
                 Distance = distanceToCities(.flags.lastMap).distanceToCity(.Hogar) + GOHOME_PENALTY
             End If
             
-            Tiempo = (Distance + 1) * 30 'seg
+            Tiempo = (Distance + 1) * MaximoInt((.Stats.ELV - 25), 0) * 1.5 ' [TEMPORAL]  30 'seg
             
             Call IntervaloGoHome(UserIndex, Tiempo * 1000, True)
                 

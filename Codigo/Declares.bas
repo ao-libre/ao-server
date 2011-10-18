@@ -1613,6 +1613,8 @@ Public haciendoBK As Boolean
 Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
 Public NumRecords As Integer
+Public HappyHour As Integer
+Public HappyHourActivated As Boolean
 
 ''
 'Esta activada la verificacion MD5 ?

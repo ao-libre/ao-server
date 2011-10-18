@@ -292,7 +292,7 @@ On Error GoTo ErrHandler
     
     With UserList(UserIndex).Invent.Object(Slot)
         If .Amount <= Cantidad And .Equipped = 1 Then
-            Call Desequipar(UserIndex, Slot)
+            Call Desequipar(UserIndex, Slot, True)
         End If
         
         'Quita un objeto
@@ -605,7 +605,7 @@ Sub GetObj(ByVal UserIndex As Integer)
 
 End Sub
 
-Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
+Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal RefreshChar As Boolean)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -639,7 +639,10 @@ On Error GoTo ErrHandler
                 If Not .flags.Mimetizado = 1 Then
                     With .Char
                         .WeaponAnim = NingunArma
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        
+                        If RefreshChar And UserList(UserIndex).flags.Navegando <> 1 Then
+                            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        End If
                     End With
                 End If
             
@@ -664,11 +667,14 @@ On Error GoTo ErrHandler
                     .ArmourEqpSlot = 0
                 End With
                 
-                Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
-                With .Char
-                    Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
-                End With
-                 
+                If .flags.Navegando <> 1 Then Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
+                
+                If RefreshChar Then
+                    With .Char
+                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                    End With
+                End If
+                
             Case eOBJType.otCASCO
                 With .Invent
                     .Object(Slot).Equipped = 0
@@ -679,7 +685,10 @@ On Error GoTo ErrHandler
                 If Not .flags.Mimetizado = 1 Then
                     With .Char
                         .CascoAnim = NingunCasco
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        
+                        If RefreshChar Then
+                            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        End If
                     End With
                 End If
             
@@ -693,7 +702,10 @@ On Error GoTo ErrHandler
                 If Not .flags.Mimetizado = 1 Then
                     With .Char
                         .ShieldAnim = NingunEscudo
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        
+                        If RefreshChar Then
+                            Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        End If
                     End With
                 End If
             
@@ -709,7 +721,10 @@ On Error GoTo ErrHandler
         End Select
     End With
     
-    Call WriteUpdateUserStats(UserIndex)
+    If RefreshChar Then
+        Call WriteUpdateUserStats(UserIndex)
+    End If
+    
     Call UpdateUserInv(False, UserIndex, Slot)
     
     Exit Sub
@@ -802,7 +817,7 @@ On Error GoTo ErrHandler
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         'Quitamos del inv el item
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(UserIndex, Slot, False)
                         'Animacion por defecto
                         If .flags.Mimetizado = 1 Then
                             .CharMimetizado.WeaponAnim = NingunArma
@@ -815,7 +830,7 @@ On Error GoTo ErrHandler
                     
                     'Quitamos el elemento anterior
                     If .Invent.WeaponEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.WeaponEqpSlot)
+                        Call Desequipar(UserIndex, .Invent.WeaponEqpSlot, False)
                     End If
                     
                     .Invent.Object(Slot).Equipped = 1
@@ -842,13 +857,13 @@ On Error GoTo ErrHandler
                         'Si esta equipado lo quita
                         If .Invent.Object(Slot).Equipped Then
                             'Quitamos del inv el item
-                            Call Desequipar(UserIndex, Slot)
+                            Call Desequipar(UserIndex, Slot, True)
                             Exit Sub
                         End If
                         
                         'Quitamos el elemento anterior
                         If .Invent.AnilloEqpObjIndex > 0 Then
-                            Call Desequipar(UserIndex, .Invent.AnilloEqpSlot)
+                            Call Desequipar(UserIndex, .Invent.AnilloEqpSlot, True)
                         End If
                 
                         .Invent.Object(Slot).Equipped = 1
@@ -866,13 +881,13 @@ On Error GoTo ErrHandler
                         'Si esta equipado lo quita
                         If .Invent.Object(Slot).Equipped Then
                             'Quitamos del inv el item
-                            Call Desequipar(UserIndex, Slot)
+                            Call Desequipar(UserIndex, Slot, True)
                             Exit Sub
                         End If
                         
                         'Quitamos el elemento anterior
                         If .Invent.MunicionEqpObjIndex > 0 Then
-                            Call Desequipar(UserIndex, .Invent.MunicionEqpSlot)
+                            Call Desequipar(UserIndex, .Invent.MunicionEqpSlot, True)
                         End If
                 
                         .Invent.Object(Slot).Equipped = 1
@@ -884,7 +899,7 @@ On Error GoTo ErrHandler
                End If
             
             Case eOBJType.otArmadura
-                If .flags.Navegando = 1 Then Exit Sub
+                ' [TEMPORAL] If .flags.Navegando = 1 Then Exit Sub
                 
                 'Nos aseguramos que puede usarla
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And _
@@ -894,17 +909,20 @@ On Error GoTo ErrHandler
                    
                    'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
-                        Call Desequipar(UserIndex, Slot)
-                        Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
-                        If Not .flags.Mimetizado = 1 Then
+                        Call Desequipar(UserIndex, Slot, False)
+                        'Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
+                        If .flags.Mimetizado = 0 And .flags.Navegando = 0 Then
                             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                         End If
+                        
+                        Call WriteUpdateUserStats(UserIndex)
+                        
                         Exit Sub
                     End If
             
                     'Quita el anterior
                     If .Invent.ArmourEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.ArmourEqpSlot)
+                        Call Desequipar(UserIndex, .Invent.ArmourEqpSlot, True)
                     End If
             
                     'Lo equipa
@@ -915,8 +933,10 @@ On Error GoTo ErrHandler
                     If .flags.Mimetizado = 1 Then
                         .CharMimetizado.body = Obj.Ropaje
                     Else
-                        .Char.body = Obj.Ropaje
-                        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        If .flags.Navegando = 0 Then
+                            .Char.body = Obj.Ropaje
+                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        End If
                     End If
                     .flags.Desnudo = 0
                 Else
@@ -924,14 +944,15 @@ On Error GoTo ErrHandler
                 End If
             
             Case eOBJType.otCASCO
-                If .flags.Navegando = 1 Then Exit Sub
+                ' [TEMPORAL] If .flags.Navegando = 1 Then Exit Sub
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(UserIndex, Slot, False)
                         If .flags.Mimetizado = 1 Then
                             .CharMimetizado.CascoAnim = NingunCasco
-                        Else
+                        
+                        ElseIf .flags.Navegando = 0 Then
                             .Char.CascoAnim = NingunCasco
                             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                         End If
@@ -940,49 +961,53 @@ On Error GoTo ErrHandler
             
                     'Quita el anterior
                     If .Invent.CascoEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.CascoEqpSlot)
+                        Call Desequipar(UserIndex, .Invent.CascoEqpSlot, False)
                     End If
             
                     'Lo equipa
-                    
                     .Invent.Object(Slot).Equipped = 1
                     .Invent.CascoEqpObjIndex = ObjIndex
                     .Invent.CascoEqpSlot = Slot
                     If .flags.Mimetizado = 1 Then
                         .CharMimetizado.CascoAnim = Obj.CascoAnim
-                    Else
+                    ElseIf .flags.Navegando = 0 Then
                         .Char.CascoAnim = Obj.CascoAnim
                         Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                     End If
+                    
+                    Call WriteUpdateUserStats(UserIndex)
                 Else
                     Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case eOBJType.otESCUDO
-                If .flags.Navegando = 1 Then Exit Sub
+                ' [TEMPORAL] If .flags.Navegando = 1 Then Exit Sub
                 
                  If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And _
                      FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
         
                      'Si esta equipado lo quita
                      If .Invent.Object(Slot).Equipped Then
-                         Call Desequipar(UserIndex, Slot)
+                         Call Desequipar(UserIndex, Slot, False)
                          If .flags.Mimetizado = 1 Then
                              .CharMimetizado.ShieldAnim = NingunEscudo
-                         Else
-                             .Char.ShieldAnim = NingunEscudo
-                             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                         
+                         ElseIf .flags.Navegando = 0 Then
+                            .Char.ShieldAnim = NingunEscudo
+                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
                          End If
+                         
+                         Call WriteUpdateUserStats(UserIndex)
+                         
                          Exit Sub
                      End If
              
                      'Quita el anterior
                      If .Invent.EscudoEqpObjIndex > 0 Then
-                         Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
+                         Call Desequipar(UserIndex, .Invent.EscudoEqpSlot, False)
                      End If
              
                      'Lo equipa
-                     
                      .Invent.Object(Slot).Equipped = 1
                      .Invent.EscudoEqpObjIndex = ObjIndex
                      .Invent.EscudoEqpSlot = Slot
@@ -990,9 +1015,12 @@ On Error GoTo ErrHandler
                      If .flags.Mimetizado = 1 Then
                          .CharMimetizado.ShieldAnim = Obj.ShieldAnim
                      Else
-                         .Char.ShieldAnim = Obj.ShieldAnim
-                         
-                         Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        If .flags.Navegando = 0 Then
+                            .Char.ShieldAnim = Obj.ShieldAnim
+                             
+                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        End If
+                        Call WriteUpdateUserStats(UserIndex)
                      End If
                  Else
                      Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
@@ -1004,11 +1032,11 @@ On Error GoTo ErrHandler
                     Exit Sub
                 End If
                 If .Invent.Object(Slot).Equipped Then
-                    Call Desequipar(UserIndex, Slot)
+                    Call Desequipar(UserIndex, Slot, True)
                     Exit Sub
                 End If
                 If .Invent.MochilaEqpObjIndex > 0 Then
-                    Call Desequipar(UserIndex, .Invent.MochilaEqpSlot)
+                    Call Desequipar(UserIndex, .Invent.MochilaEqpSlot, True)
                 End If
                 .Invent.Object(Slot).Equipped = 1
                 .Invent.MochilaEqpObjIndex = ObjIndex
