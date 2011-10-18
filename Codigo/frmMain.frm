@@ -323,6 +323,8 @@ Private Type NOTIFYICONDATA
     szTip As String * 64
 End Type
    
+Private iDay As Integer
+   
 Const NIM_ADD = 0
 Const NIM_DELETE = 2
 Const NIF_MESSAGE = 1
@@ -408,6 +410,17 @@ Resume Next
 
 End Sub
 
+Public Sub UpdateNpcsExp(ByVal Multiplicador As Single)
+    
+    Dim NpcIndex As Long
+    For NpcIndex = 1 To LastNPC
+        With Npclist(NpcIndex)
+            .GiveEXP = .GiveEXP * Multiplicador
+            .flags.ExpCount = .flags.ExpCount * Multiplicador
+        End With
+    Next NpcIndex
+End Sub
+
 Private Sub AutoSave_Timer()
 
 On Error GoTo ErrHandler
@@ -419,6 +432,25 @@ Static MinsPjesSave As Long
 
 Minutos = Minutos + 1
 MinsPjesSave = MinsPjesSave + 1
+
+' HappyHour
+If iDay <> Weekday(Date) Then
+    
+    iDay = Weekday(Date)
+    
+    ' Sabado/Domingo
+    If iDay = 7 Or iDay = 1 Then
+        If Not HappyHourActivated And (HappyHour <> 0) Then
+            UpdateNpcsExp HappyHour
+            HappyHourActivated = True
+        End If
+    Else
+        If HappyHourActivated Then
+            UpdateNpcsExp (1 / HappyHour)
+            HappyHourActivated = False
+        End If
+    End If
+End If
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 Call ModAreas.AreasOptimizacion
@@ -900,6 +932,8 @@ End Sub
 
 Private Sub tLluvia_Timer()
 On Error GoTo ErrHandler
+
+Exit Sub ' [TEMPORAL]
 
 Dim iCount As Long
 If Lloviendo Then

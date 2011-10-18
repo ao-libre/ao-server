@@ -1932,12 +1932,12 @@ On Error GoTo ErrHandler
                         ElseIf RandomNumber(1, 100) < 22 Then
                             
                             WeaponEqpSlot = UserList(BestTarget).Invent.WeaponEqpSlot
-                            If WeaponEqpSlot <> 0 Then Call Desequipar(BestTarget, WeaponEqpSlot)
+                            If WeaponEqpSlot <> 0 Then Call Desequipar(BestTarget, WeaponEqpSlot, True)
                             
                         End If
                         
                     ' Try to snatch/Steal (except for admins)
-                    ElseIf Not EsGM(BestTarget) Then
+                    ElseIf Not EsGm(BestTarget) Then
                         
                         ' Can snatch weapon or arrows
                         If RandomNumber(1, 100) < 16 Then
@@ -2552,7 +2552,7 @@ Private Function UserAtacable(ByVal UserIndex As Integer, Optional ByVal CheckVi
         End If
         
         If Not AttackAdmin Then
-            UserAtacable = UserAtacable And (Not EsGM(UserIndex))
+            UserAtacable = UserAtacable And (Not EsGm(UserIndex))
         End If
         
     End With

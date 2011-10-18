@@ -353,7 +353,7 @@ Public Sub QuitarObjetos(ByVal ItemIndex As Integer, ByVal cant As Long, ByVal U
     For i = 1 To UserList(UserIndex).CurrentInventorySlots
         With UserList(UserIndex).Invent.Object(i)
             If .ObjIndex = ItemIndex Then
-                If .Amount <= cant And .Equipped = 1 Then Call Desequipar(UserIndex, i)
+                If .Amount <= cant And .Equipped = 1 Then Call Desequipar(UserIndex, i, True)
                 
                 .Amount = .Amount - cant
                 If .Amount <= 0 Then
@@ -956,7 +956,7 @@ Public Sub DoFundir(ByVal UserIndex As Integer)
             .Amount = .Amount - 1
             
             If .Amount < 1 Then
-                If .Equipped = 1 Then Call Desequipar(UserIndex, Slot)
+                If .Equipped = 1 Then Call Desequipar(UserIndex, Slot, True)
                 
                 .Amount = 0
                 .ObjIndex = 0
@@ -2266,7 +2266,10 @@ Public Sub DoMeditar(ByVal UserIndex As Integer)
         'Esperamos a que se termine de concentrar
         Dim TActual As Long
         TActual = GetTickCount() And &H7FFFFFFF
-        If getInterval(TActual, .Counters.tInicioMeditar) < TIEMPO_INICIOMEDITAR Then
+        
+        Dim iInterval As Integer
+        iInterval = Int(.Stats.ELV / 17)
+        If getInterval(TActual, .Counters.tInicioMeditar) < iInterval Then  ' [TEMPORAL] TIEMPO_INICIOMEDITAR Then
             Exit Sub
         End If
         
@@ -2364,7 +2367,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
             
             If Resultado <= Probabilidad Then
                 ' Se lo desequipo
-                Call Desequipar(VictimIndex, .Invent.EscudoEqpSlot)
+                Call Desequipar(VictimIndex, .Invent.EscudoEqpSlot, True)
                 
                 Call WriteConsoleMsg(UserIndex, "Has logrado desequipar el escudo de tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
@@ -2387,7 +2390,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
             
             If Resultado <= Probabilidad Then
                 ' Se lo desequipo
-                Call Desequipar(VictimIndex, .Invent.WeaponEqpSlot)
+                Call Desequipar(VictimIndex, .Invent.WeaponEqpSlot, True)
                 
                 Call WriteConsoleMsg(UserIndex, "Has logrado desarmar a tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
@@ -2410,7 +2413,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
             
             If Resultado <= Probabilidad Then
                 ' Se lo desequipo
-                Call Desequipar(VictimIndex, .Invent.CascoEqpSlot)
+                Call Desequipar(VictimIndex, .Invent.CascoEqpSlot, True)
                 
                 Call WriteConsoleMsg(UserIndex, "Has logrado desequipar el casco de tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
@@ -2527,7 +2530,7 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
         Resultado = RandomNumber(1, 100)
         
         If Resultado <= Probabilidad Then
-            Call Desequipar(VictimIndex, UserList(VictimIndex).Invent.WeaponEqpSlot)
+            Call Desequipar(VictimIndex, UserList(VictimIndex).Invent.WeaponEqpSlot, True)
             Call WriteConsoleMsg(UserIndex, "Has logrado desarmar a tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
             If UserList(VictimIndex).Stats.ELV < 20 Then
                 Call WriteConsoleMsg(VictimIndex, "¡Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)

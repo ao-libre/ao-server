@@ -1497,7 +1497,7 @@ Private Sub HandleThrowDices(ByVal UserIndex As Integer)
         .UserAtributos(eAtributos.Agilidad) = MaximoInt(15, 12 + RandomNumber(0, 3) + RandomNumber(0, 3))
         .UserAtributos(eAtributos.Inteligencia) = MaximoInt(16, 13 + RandomNumber(0, 3) + RandomNumber(0, 2))
         .UserAtributos(eAtributos.Carisma) = MaximoInt(15, 12 + RandomNumber(0, 3) + RandomNumber(0, 3))
-        .UserAtributos(eAtributos.Constitucion) = 16 + RandomNumber(0, 1) + RandomNumber(0, 1)
+        .UserAtributos(eAtributos.Constitucion) = 18 ' [TEMPORAL] 16 + RandomNumber(0, 1) + RandomNumber(0, 1)
     End With
     
     Call WriteDiceRoll(UserIndex)
@@ -4016,6 +4016,8 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
+On Error GoTo ErrHandler
+
     With UserList(UserIndex)
         'Remove packet ID
         Call .incomingData.ReadByte
@@ -4110,6 +4112,12 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
         Call AgregarOferta(UserIndex, OfferSlot, ObjIndex, Amount, Slot = FLAGORO)
         Call EnviarOferta(tUser, OfferSlot)
     End With
+    
+    Exit Sub
+    
+ErrHandler:
+    Call LogError("Error en HandleUserCommerceOffer. Error: " & Err.description & ". User: " & UserList(UserIndex).Name & "(" & UserIndex & ")" & _
+        ". tUser: " & tUser & ". Slot: " & Slot & ". Amount: " & Amount & ". OfferSlot: " & OfferSlot)
 End Sub
 
 ''
@@ -10635,7 +10643,9 @@ On Error GoTo ErrHandler
         Dim message As String
         message = buffer.ReadASCIIString()
         
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios) <> 0) Or _
+           ((.flags.Privilegios And PlayerType.Consejero) <> 0 And (.flags.Privilegios And PlayerType.RoleMaster) <> 0) Then
+            
             If LenB(message) <> 0 Then
                 
                 Dim mapa As Integer

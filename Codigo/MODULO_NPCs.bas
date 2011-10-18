@@ -961,6 +961,7 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
         .flags.OldHostil = .Hostile
         
         .GiveEXP = val(Leer.GetValue("NPC" & NpcNumber, "GiveEXP"))
+        If HappyHourActivated And (HappyHour <> 0) Then .GiveEXP = .GiveEXP * HappyHour
         
         .flags.ExpCount = .GiveEXP
         
