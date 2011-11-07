@@ -616,13 +616,6 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 
 On Error GoTo ErrHandler
     With UserList(UserIndex)
-        If UserIndex = LastUser Then
-            Do Until UserList(LastUser).flags.UserLogged
-                LastUser = LastUser - 1
-                If LastUser < 1 Then Exit Do
-            Loop
-        End If
-        
         Call SecurityIp.IpRestarConexion(GetLongIp(.ip))
         
         If .ConnID <> -1 Then
@@ -664,6 +657,13 @@ On Error GoTo ErrHandler
         
         .ConnID = -1
         .ConnIDValida = False
+        
+        If UserIndex = LastUser Then
+            Do Until UserList(LastUser).ConnID <> -1
+                LastUser = LastUser - 1
+                If LastUser < 1 Then Exit Do
+            Loop
+        End If
     End With
 Exit Sub
 
@@ -672,6 +672,13 @@ ErrHandler:
     UserList(UserIndex).ConnIDValida = False
     Call ResetUserSlot(UserIndex)
 
+    If UserIndex = LastUser Then
+        Do Until UserList(LastUser).ConnID <> -1
+            LastUser = LastUser - 1
+            If LastUser < 1 Then Exit Do
+        Loop
+    End If
+        
     Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.description & " - UserIndex = " & UserIndex)
 End Sub
 
