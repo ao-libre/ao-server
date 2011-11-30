@@ -356,7 +356,7 @@ ErrHandler:
 
 End Sub
 
-Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer)
+Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer, ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal isDrop As Boolean = False)
 '***************************************************
 'Author: Unknown
 'Last Modification: 11/5/2010
@@ -365,6 +365,7 @@ Sub DropObj(ByVal UserIndex As Integer, ByVal Slot As Byte, ByVal num As Integer
 
 Dim DropObj As Obj
 Dim MapObj As Obj
+Dim str As String
 
 With UserList(UserIndex)
     If num > 0 Then
@@ -414,16 +415,16 @@ With UserList(UserIndex)
             'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
             'Es un Objeto que tenemos que loguear?
             If ((ObjData(DropObj.ObjIndex).Log = 1) Or (ObjData(DropObj.ObjIndex).OBJType = eOBJType.otLlaves)) Then
-                Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                Call LogDesarrollo(.Name & " tiró al piso " & IIf(isDrop, "", "al morir ") & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
             ElseIf DropObj.Amount >= MIN_AMOUNT_LOG Then 'Es mucha cantidad? > Subí a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-                    Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                    Call LogDesarrollo(.Name & " tiró al piso " & IIf(isDrop, "", "al morir ") & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
                 End If
             ElseIf (DropObj.Amount * ObjData(DropObj.ObjIndex).Valor) >= MIN_VALUE_LOG Then
                 'Si no es de los prohibidos de loguear, lo logueamos.
                 If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-                    Call LogDesarrollo(.Name & " tiró al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                    Call LogDesarrollo(.Name & " tiró al piso " & IIf(isDrop, "", "al morir ") & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
                 End If
             End If
         Else
