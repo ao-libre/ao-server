@@ -126,7 +126,7 @@ Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
     Dim i As Long
     
     With UserList(UserIndex)
-        If .ComUsu.DestUsu > 0 Then
+        If .ComUsu.DestUsu > 0 And .ComUsu.DestUsu < MaxUsers Then
             Call WriteUserCommerceEnd(UserIndex)
         End If
         

@@ -1845,18 +1845,20 @@ Public Function ObjEsRobable(ByVal VictimaIndex As Integer, ByVal Slot As Intege
 ' 22/05/2010: Los items newbies ya no son robables.
 '***************************************************
 
-Dim OI As Integer
-
-OI = UserList(VictimaIndex).Invent.Object(Slot).ObjIndex
-
-ObjEsRobable = _
-ObjData(OI).OBJType <> eOBJType.otLlaves And _
-UserList(VictimaIndex).Invent.Object(Slot).Equipped = 0 And _
-ObjData(OI).Real = 0 And _
-ObjData(OI).Caos = 0 And _
-ObjData(OI).OBJType <> eOBJType.otBarcos And _
-Not ItemNewbie(OI)
-
+    Dim OI As Integer
+    
+    OI = UserList(VictimaIndex).Invent.Object(Slot).ObjIndex
+    
+    With ObjData(OI)
+        ObjEsRobable = _
+            .OBJType <> eOBJType.otLlaves And _
+            UserList(VictimaIndex).Invent.Object(Slot).Equipped = 0 And _
+            .Real = 0 And _
+            .Caos = 0 And _
+            .OBJType <> eOBJType.otBarcos And _
+            Not ItemNewbie(OI) And _
+            .Intransferible = 0
+    End With
 End Function
 
 ''

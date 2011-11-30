@@ -55,8 +55,8 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         If Slot > MAX_INVENTORY_SLOTS Then
             Exit Sub
         ElseIf Cantidad > MAX_INVENTORY_OBJS Then
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " ha sido baneado por el sistema anti-cheats.", FontTypeNames.FONTTYPE_FIGHT))
-            Call Ban(UserList(UserIndex).name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio. Quiso comprar demasiados ítems:" & Cantidad)
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).Name & " ha sido baneado por el sistema anti-cheats.", FontTypeNames.FONTTYPE_FIGHT))
+            Call Ban(UserList(UserIndex).Name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio. Quiso comprar demasiados ítems:" & Cantidad)
             UserList(UserIndex).flags.Ban = 1
             Call WriteErrorMsg(UserIndex, "Has sido baneado por el Sistema AntiCheat.")
             Call FlushBuffer(UserIndex)
@@ -96,18 +96,18 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+            Call LogDesarrollo(UserList(UserIndex).Name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).Name)
         ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+                Call LogDesarrollo(UserList(UserIndex).Name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).Name)
             End If
         End If
         
         'Agregado para que no se vuelvan a vender las llaves si se recargan los .dat.
         If ObjData(Objeto.ObjIndex).OBJType = otLlaves Then
             Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & Slot, Objeto.ObjIndex & "-0")
-            Call logVentaCasa(UserList(UserIndex).name & " compró " & ObjData(Objeto.ObjIndex).name)
+            Call logVentaCasa(UserList(UserIndex).Name & " compró " & ObjData(Objeto.ObjIndex).Name)
         End If
         
     ElseIf Modo = eModoComercio.Venta Then
@@ -119,20 +119,24 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         
         If Objeto.ObjIndex = 0 Then
             Exit Sub
+            
+        ElseIf ObjData(Objeto.ObjIndex).Intransferible = 1 Then
+            Call WriteConsoleMsg(UserIndex, "No se pueden vender los objetos intrasferibles.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
         ElseIf (Npclist(NpcIndex).TipoItems <> ObjData(Objeto.ObjIndex).OBJType And Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera) Or Objeto.ObjIndex = iORO Then
             Call WriteConsoleMsg(UserIndex, "Lo siento, no estoy interesado en este tipo de objetos.", FontTypeNames.FONTTYPE_INFO)
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Call WriteTradeOK(UserIndex)
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Real = 1 Then
-            If Npclist(NpcIndex).name <> "SR" Then
+            If Npclist(NpcIndex).Name <> "SR" Then
                 Call WriteConsoleMsg(UserIndex, "Las armaduras del ejército real sólo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
                 Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
                 Call WriteTradeOK(UserIndex)
                 Exit Sub
             End If
         ElseIf ObjData(Objeto.ObjIndex).Caos = 1 Then
-            If Npclist(NpcIndex).name <> "SC" Then
+            If Npclist(NpcIndex).Name <> "SC" Then
                 Call WriteConsoleMsg(UserIndex, "Las armaduras de la legión oscura sólo pueden ser vendidas a los sastres del demonio.", FontTypeNames.FONTTYPE_INFO)
                 Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
                 Call WriteTradeOK(UserIndex)
@@ -174,11 +178,11 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+            Call LogDesarrollo(UserList(UserIndex).Name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).Name)
         ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+                Call LogDesarrollo(UserList(UserIndex).Name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).Name)
             End If
         End If
         

@@ -1034,6 +1034,7 @@ On Error GoTo ErrHandler
             .MinSta = val(Leer.GetValue("OBJ" & Object, "MinST"))
             
             .NoSeCae = val(Leer.GetValue("OBJ" & Object, "NoSeCae"))
+            .Intransferible = val(Leer.GetValue("OBJ" & Object, "Intransferible"))
             
             .Upgrade = val(Leer.GetValue("OBJ" & Object, "Upgrade"))
             

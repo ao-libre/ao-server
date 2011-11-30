@@ -376,6 +376,14 @@ With UserList(UserIndex)
             Exit Sub
         End If
         
+        ' Users can't drop non-transferible items
+        If ObjData(DropObj.ObjIndex).Intransferible = 1 Then
+            If ((.flags.Privilegios And PlayerType.User) <> 0) Then
+                Call WriteConsoleMsg(UserIndex, "¡¡¡No puedes tirar este tipo de objeto!!!", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+        End If
+        
         DropObj.Amount = MinimoInt(num, .Invent.Object(Slot).Amount)
 
         'Check objeto en el suelo
@@ -1676,7 +1684,8 @@ Public Function ItemSeCae(ByVal index As Integer) As Boolean
                     (.Caos <> 1 Or .NoSeCae = 0) And _
                     .OBJType <> eOBJType.otLlaves And _
                     .OBJType <> eOBJType.otBarcos And _
-                    .NoSeCae = 0
+                    .NoSeCae = 0 And _
+                    .Intransferible = 0
     End With
 
 End Function
