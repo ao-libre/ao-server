@@ -919,6 +919,7 @@ Public Type ObjData
     Caos As Integer
     
     NoSeCae As Integer
+    Intransferible As Integer
     
     StaffPower As Integer
     StaffDamageBonus As Integer

@@ -4035,16 +4035,19 @@ On Error GoTo ErrHandler
         'Get the other player
         tUser = .ComUsu.DestUsu
         
-        ' If he's already confirmed his offer, but now tries to change it, then he's cheating
-        If UserList(UserIndex).ComUsu.Confirmo = True Then
+        ' valid Dest. User?
+        If tUser <= 0 Or tUser > MaxUsers Then
             
             ' Finish the trade
             Call FinComerciarUsu(UserIndex)
-        
-            If tUser > 0 And tUser < MaxUsers Then
-                Call FinComerciarUsu(tUser)
-                Call Protocol.FlushBuffer(tUser)
-            End If
+            
+        ' If he's already confirmed his offer, but now tries to change it, then he's cheating
+        ElseIf UserList(UserIndex).ComUsu.Confirmo = True Then
+            
+            ' Finish the trade
+            Call FinComerciarUsu(UserIndex)
+            Call FinComerciarUsu(tUser)
+            Call Protocol.FlushBuffer(tUser)
         
             Exit Sub
         End If
@@ -4074,6 +4077,15 @@ On Error GoTo ErrHandler
         Else
             'If modifing a filled offerSlot, we already got the objIndex, then we don't need to know it
             If Slot <> 0 Then ObjIndex = .Invent.Object(Slot).ObjIndex
+            
+            ' Non-Transferible?
+            If ObjIndex <> 0 Then
+                If ObjData(ObjIndex).Intransferible = 1 Then
+                    Call WriteCommerceChat(UserIndex, "No puedes comerciar un item instrasferible.", FontTypeNames.FONTTYPE_TALK)
+                    Exit Sub
+                End If
+            End If
+            
             ' Can't offer more than he has
             If Not HasEnoughItems(UserIndex, ObjIndex, _
                 TotalOfferItems(ObjIndex, UserIndex) + Amount) Then

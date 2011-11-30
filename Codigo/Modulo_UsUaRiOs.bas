@@ -316,21 +316,25 @@ Public Sub EraseUserChar(ByVal UserIndex As Integer, ByVal IsAdminInvisible As B
 On Error GoTo ErrorHandler
     
     With UserList(UserIndex)
-        CharList(.Char.CharIndex) = 0
-        
-        If .Char.CharIndex = LastChar Then
-            Do Until CharList(LastChar) > 0
-                LastChar = LastChar - 1
-                If LastChar <= 1 Then Exit Do
-            Loop
-        End If
-        
-        ' Si esta invisible, solo el sabe de su propia existencia, es innecesario borrarlo en los demas clientes
-        If IsAdminInvisible Then
-            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
-        Else
-            'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+    
+        If .Char.CharIndex > 0 And .Char.CharIndex <= LastChar Then
+    
+            CharList(.Char.CharIndex) = 0
+            
+            If .Char.CharIndex = LastChar Then
+                Do Until CharList(LastChar) > 0
+                    LastChar = LastChar - 1
+                    If LastChar <= 1 Then Exit Do
+                Loop
+            End If
+            
+            ' Si esta invisible, solo el sabe de su propia existencia, es innecesario borrarlo en los demas clientes
+            If IsAdminInvisible Then
+                Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            Else
+                'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            End If
         End If
         
         Call QuitarUser(UserIndex, .Pos.Map)
