@@ -12,7 +12,7 @@
 '4.....Terreno.
 
 [INIT]
-NumeroHechizos=46
+NumeroHechizos=50
 
 
 [HECHIZO1]
@@ -2917,3 +2917,94 @@ itemindex=0
 StaffAffected=0
 NeedStaff=0
 Resis=0
+
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+[HECHIZO47]
+Nombre=Flecha Ladrón Pretoriano
+Desc=Flecha Ladrón Pretoriano
+PalabrasMagicas= 
+HechizeroMsg=Has lanzado una flecha sobre 
+TargetMsg=lanzó un flechazo sobre vos.
+PropioMsg=Has lanzado un flechazo sobre ti.
+Tipo=1
+WAV=10
+FXgrh=14
+Loops=0
+MinSkill=101
+ManaRequerido=3000
+StaRequerido=0
+Target=3
+SubeHP=2
+MinHP=30
+MaxHP=60
+
+
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+[HECHIZO48]
+Nombre=Granize cel
+Desc=Fuego artificial.
+PalabrasMagicas=
+HechizeroMsg=Has lanzado un fuego artificial sobre 
+TargetMsg=te ha lanzado un fuego artificial.
+PropioMsg=Te has lanzado un fuego artificial.
+Tipo=1
+WAV=18
+FXgrh=37
+SubeHP=1
+MinHP=0
+MaxHP=0
+Loops=0
+MinSkill=101
+ManaRequerido=0
+StaRequerido=5
+Target=3
+
+
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+[HECHIZO49]
+Nombre=Fuego cel
+Desc=Fuego artificial.
+PalabrasMagicas=
+HechizeroMsg=Has lanzado un fuego artificial sobre 
+TargetMsg=te ha lanzado un fuego artificial.
+PropioMsg=Te has lanzado un fuego artificial.
+Tipo=1
+WAV=18
+FXgrh=38
+SubeHP=1
+MinHP=0
+MaxHP=0
+Loops=0
+MinSkill=101
+ManaRequerido=0
+StaRequerido=5
+Target=3
+
+
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+'&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+[HECHIZO50]
+Nombre=Fuego coliris
+Desc=Fuego artificial.
+PalabrasMagicas=
+HechizeroMsg=Has lanzado un fuego artificial sobre 
+TargetMsg=te ha lanzado un fuego artificial.
+PropioMsg=Te has lanzado un fuego artificial.
+Tipo=1
+WAV=18
+FXgrh=36
+SubeHP=1
+MinHP=0
+MaxHP=0
+Loops=0
+MinSkill=101
+ManaRequerido=0
+StaRequerido=5
+Target=3

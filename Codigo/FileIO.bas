@@ -1034,6 +1034,9 @@ On Error GoTo ErrHandler
             .MinSta = val(Leer.GetValue("OBJ" & Object, "MinST"))
             
             .NoSeCae = val(Leer.GetValue("OBJ" & Object, "NoSeCae"))
+            .NoSeTira = val(Leer.GetValue("OBJ" & Object, "NoSeTira"))
+            .NoRobable = val(Leer.GetValue("OBJ" & Object, "NoRobable"))
+            .NoComerciable = val(Leer.GetValue("OBJ" & Object, "NoComerciable"))
             .Intransferible = val(Leer.GetValue("OBJ" & Object, "Intransferible"))
             
             .Upgrade = val(Leer.GetValue("OBJ" & Object, "Upgrade"))
@@ -1648,6 +1651,14 @@ Sub LoadSini()
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
     HappyHour = val(GetVar(IniPath & "Server.ini", "init", "HappyHour"))
+    
+    lNumHappyDays = 0
+    Dim lDay As Long
+    For lDay = 1 To val(GetVar(IniPath & "Server.ini", "init", "HappyDays"))
+        lNumHappyDays = lNumHappyDays + 1
+        ReDim Preserve HappyHourDays(1 To lNumHappyDays)
+        HappyHourDays(lDay) = val(GetVar(IniPath & "Server.ini", "init", "HappyDay" & lNumHappyDays))
+    Next lDay
     
     ArmaduraImperial1 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial1"))
     ArmaduraImperial2 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial2"))

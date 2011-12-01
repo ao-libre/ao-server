@@ -438,16 +438,17 @@ If iDay <> Weekday(Date) Then
     
     iDay = Weekday(Date)
     
-    ' Sabado/Domingo
-    If iDay = 7 Or iDay = 1 Then
+    If isHappyDay(iDay) Then
         If Not HappyHourActivated And (HappyHour <> 0) Then
             UpdateNpcsExp HappyHour
             HappyHourActivated = True
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha comenzado la HappyHour!", FontTypeNames.FONTTYPE_DIOS))
         End If
     Else
         If HappyHourActivated Then
             UpdateNpcsExp (1 / HappyHour)
             HappyHourActivated = False
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la HappyHour!", FontTypeNames.FONTTYPE_DIOS))
         End If
     End If
 End If
@@ -501,6 +502,17 @@ ErrHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
     Resume Next
 End Sub
+
+Private Function isHappyDay(ByVal iDay As Integer) As Boolean
+    
+    Dim lDay As Long
+    For lDay = 1 To lNumHappyDays
+        If HappyHourDays(lDay) = iDay Then
+            isHappyDay = True
+            Exit Function
+        End If
+    Next lDay
+End Function
 
 Private Sub chkServerHabilitado_Click()
     ServerSoloGMs = chkServerHabilitado.value

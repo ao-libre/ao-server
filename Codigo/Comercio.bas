@@ -120,8 +120,8 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         If Objeto.ObjIndex = 0 Then
             Exit Sub
             
-        ElseIf ObjData(Objeto.ObjIndex).Intransferible = 1 Then
-            Call WriteConsoleMsg(UserIndex, "No se pueden vender los objetos intrasferibles.", FontTypeNames.FONTTYPE_INFO)
+        ElseIf ObjData(Objeto.ObjIndex).Intransferible = 1 Or ObjData(Objeto.ObjIndex).NoComerciable = 1 Then
+            Call WriteConsoleMsg(UserIndex, "No puedes vender este tipo de objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         ElseIf (Npclist(NpcIndex).TipoItems <> ObjData(Objeto.ObjIndex).OBJType And Npclist(NpcIndex).TipoItems <> eOBJType.otCualquiera) Or Objeto.ObjIndex = iORO Then
             Call WriteConsoleMsg(UserIndex, "Lo siento, no estoy interesado en este tipo de objetos.", FontTypeNames.FONTTYPE_INFO)

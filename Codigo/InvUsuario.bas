@@ -378,7 +378,7 @@ With UserList(UserIndex)
         End If
         
         ' Users can't drop non-transferible items
-        If ObjData(DropObj.ObjIndex).Intransferible = 1 Then
+        If ObjData(DropObj.ObjIndex).Intransferible = 1 Or ObjData(DropObj.ObjIndex).NoSeTira = 1 Then
             If ((.flags.Privilegios And PlayerType.User) <> 0) Then
                 Call WriteConsoleMsg(UserIndex, "¡¡¡No puedes tirar este tipo de objeto!!!", FontTypeNames.FONTTYPE_FIGHT)
                 Exit Sub
@@ -677,6 +677,7 @@ On Error GoTo ErrHandler
                 End With
                 
                 If .flags.Navegando <> 1 Then Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
+                .flags.Desnudo = 1 '[TEMPORAL]
                 
                 If RefreshChar Then
                     With .Char

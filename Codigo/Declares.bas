@@ -919,6 +919,9 @@ Public Type ObjData
     Caos As Integer
     
     NoSeCae As Integer
+    NoSeTira As Integer
+    NoRobable As Integer
+    NoComerciable As Integer
     Intransferible As Integer
     
     StaffPower As Integer
@@ -1614,8 +1617,10 @@ Public haciendoBK As Boolean
 Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
 Public NumRecords As Integer
-Public HappyHour As Integer
+Public HappyHour As Double
 Public HappyHourActivated As Boolean
+Public HappyHourDays() As Integer
+Public lNumHappyDays As Long
 
 ''
 'Esta activada la verificacion MD5 ?
