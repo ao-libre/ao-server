@@ -533,10 +533,10 @@ On Error Resume Next
 
     With frmMain
         .AutoSave.Enabled = True
-        .tLluvia.Enabled = True
+        '.tLluvia.Enabled = True ' [TEMPORAL]
         .tPiqueteC.Enabled = True
         .GameTimer.Enabled = True
-        .tLluviaEvent.Enabled = True
+        '.tLluviaEvent.Enabled = True ' [TEMPORAL]
         .FX.Enabled = True
         .Auditoria.Enabled = True
         .KillLog.Enabled = True

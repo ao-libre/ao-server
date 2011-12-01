@@ -2579,7 +2579,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                Call DropObj(UserIndex, Slot, Amount, .Pos.Map, .Pos.X, .Pos.Y, True)
+                Call DropObj(UserIndex, Slot, Amount, .Pos.Map, .Pos.X, .Pos.Y)
             End If
         End If
     End With
@@ -4078,10 +4078,10 @@ On Error GoTo ErrHandler
             'If modifing a filled offerSlot, we already got the objIndex, then we don't need to know it
             If Slot <> 0 Then ObjIndex = .Invent.Object(Slot).ObjIndex
             
-            ' Non-Transferible?
+            ' Non-Transferible or commerciable?
             If ObjIndex <> 0 Then
-                If ObjData(ObjIndex).Intransferible = 1 Then
-                    Call WriteCommerceChat(UserIndex, "No puedes comerciar un item instrasferible.", FontTypeNames.FONTTYPE_TALK)
+                If (ObjData(ObjIndex).Intransferible = 1 Or ObjData(ObjIndex).NoComerciable = 1) Then
+                    Call WriteCommerceChat(UserIndex, "No puedes comerciar este ítem.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
@@ -5570,7 +5570,8 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         If .flags.Meditando Then
             .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
             
-            Call WriteConsoleMsg(UserIndex, "Te estás concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzarás a meditar.", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Te estás concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzarás a meditar.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Te estás concentrando. En " & Int(.Stats.ELV / 17) & " segundos comenzarás a meditar.", FontTypeNames.FONTTYPE_INFO) ' [TEMPORAL]
             
             .Char.loops = INFINITE_LOOPS
             

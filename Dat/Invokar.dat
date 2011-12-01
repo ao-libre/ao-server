@@ -1,6 +1,6 @@
 '#################### LISTA DE SPAWN #############################
 [INIT]
-NumNPCs=20
+NumNPCs=47
 
 
 [LIST]
@@ -37,37 +37,113 @@ NN10=Dragón Rojo
 NI11=510
 NN11=Araña Gigante
 
-NI12=523
-NN12=Orco
+NI12=515
+NN12=Gorila Salvaje
 
-NI13=529
-NN13=Escorpión
+NI13=523
+NN13=Orco
 
-NI14=530
-NN14=Bandido
+NI14=525
+NN14=Águila
 
-NI15=531
-NN15=Asesino
+NI15=528
+NN15=Anfisbena
 
-NI16=541
-NN16=Ogro
+NI16=529
+NN16=Escorpión
 
-NI17=540
-NN17=Duende
+NI17=530
+NN17=Bandido
 
-NI18=537
-NN18=Beholder
+NI18=531
+NN18=Asesino
 
-NI19=538
-NN19=Oso Pardo
+NI19=533
+NN19=Cuervo Salvaje
 
 NI20=534
 NN20=Hormiga Gigante
 
+NI21=535
+NN21=Hormiga Marabunta
 
+NI22=536
+NN22=Rata Salvaje
 
+NI23=537
+NN23=Beholder
 
+NI24=538
+NN24=Oso Pardo
 
+NI25=539
+NN25=Tortuga Gigante
+
+NI26=540
+NN26=Duende
+
+NI27=541
+NN27=Ogro
+
+NI28=545
+NN28=Licántropo
+
+NI29=549
+NN29=Orco Brujo
+
+NI30=551
+NN30=Mago Malvado
+
+NI31=557
+NN31=Jabalí Salvaje
+
+NI32=582
+NN32=Enano de las Profundidades
+
+NI33=598
+NN33=Hada Oscura
+
+NI34=599
+NN34=Engendro de las profundidades
+
+NI35=612
+NN35=Cocodrilo
+
+NI36=617
+NN36=Pequeño Escarabajo
+
+NI37=618
+NN37=Pequeño Duende
+
+NI38=619
+NN38=Hada del Bosque
+
+NI39=620
+NN39=Pequeña Araña
+
+NI40=621
+NN40=Piraña
+
+NI41=622
+NN41=Pequeño Dragón Mágico
+
+NI42=623
+NN42=Mini Elemental de Fuego
+
+NI43=624
+NN43=Pequeño Dragón Rojo
+
+NI44=625
+NN44=Víbora
+
+NI45=626
+NN45=Goblin Travieso
+
+NI46=627
+NN46=Protector de almas
+
+NI47=628
+NN47=Tarántula venenosa
 
 
 

@@ -1857,7 +1857,8 @@ Public Function ObjEsRobable(ByVal VictimaIndex As Integer, ByVal Slot As Intege
             .Caos = 0 And _
             .OBJType <> eOBJType.otBarcos And _
             Not ItemNewbie(OI) And _
-            .Intransferible = 0
+            .Intransferible = 0 And _
+            .NoRobable = 0
     End With
 End Function
 
@@ -2270,7 +2271,7 @@ Public Sub DoMeditar(ByVal UserIndex As Integer)
         TActual = GetTickCount() And &H7FFFFFFF
         
         Dim iInterval As Integer
-        iInterval = Int(.Stats.ELV / 17)
+        iInterval = Int(.Stats.ELV / 17) * 1000
         If getInterval(TActual, .Counters.tInicioMeditar) < iInterval Then  ' [TEMPORAL] TIEMPO_INICIOMEDITAR Then
             Exit Sub
         End If
