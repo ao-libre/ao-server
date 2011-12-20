@@ -337,9 +337,12 @@ On Error GoTo ErrorHandler
             End If
         End If
         
-        Call QuitarUser(UserIndex, .Pos.Map)
+        If MapaValido(.Pos.Map) Then
+            Call QuitarUser(UserIndex, .Pos.Map)
+            
+            MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex = 0
+        End If
         
-        MapData(.Pos.Map, .Pos.X, .Pos.Y).UserIndex = 0
         .Char.CharIndex = 0
     End With
     
@@ -490,7 +493,17 @@ On Error GoTo ErrHandler
 Exit Sub
 
 ErrHandler:
-    LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description)
+
+    Dim UserErrName As String
+    Dim UserMap As Integer
+    If UserIndex > 0 Then
+        UserErrName = UserList(UserIndex).Name
+        UserMap = UserList(UserIndex).Pos.Map
+    End If
+
+    LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description & _
+        ".User: " & UserErrName & "(" & UserIndex & "). Map: " & UserMap)
+
     'Resume Next
     Call CloseSocket(UserIndex)
 End Sub
@@ -771,7 +784,17 @@ On Error GoTo ErrHandler
 Exit Sub
 
 ErrHandler:
-    Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
+    Dim UserName As String
+    Dim UserMap As Integer
+    
+    If UserIndex > 0 Then
+        UserName = UserList(UserIndex).Name
+        UserMap = UserList(UserIndex).Pos.Map
+    End If
+
+    Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & _
+        " - Description : " & Err.description & ". User: " & UserName & "(" & UserIndex & "). Map: " & UserMap)
+
 End Sub
 
 Public Function PuedeAtravesarAgua(ByVal UserIndex As Integer) As Boolean
@@ -2647,7 +2670,7 @@ Public Sub setHome(ByVal UserIndex As Integer, ByVal newHome As eCiudad, ByVal N
 
 End Sub
 
-Public Function GetHomeArrivalTime(ByVal UserIndex As Integer) As Integer
+Public Function GetHomeArrivalTime(ByVal UserIndex As Integer) As Long
 '**************************************************************
 'Author: ZaMa
 'Last Modify by: ZaMa

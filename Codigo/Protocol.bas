@@ -292,7 +292,7 @@ End Enum
 #End If
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 128
+Private Const LAST_CLIENT_PACKET_ID As Byte = 129
 
 Public Enum FontTypeNames
     FONTTYPE_TALK
@@ -1474,8 +1474,12 @@ On Error GoTo 0
     'Destroy auxiliar buffer
     Set buffer = Nothing
     
-    If error <> 0 Then _
+    If error <> 0 Then
+        LogError "Error en HandleLoginExistingChar: " & Err.description & "(" & error & "). UserName:" & UserName & _
+            ". UserIndex: " & UserIndex
+        
         Err.Raise error
+    End If
 End Sub
 
 ''
@@ -1971,6 +1975,8 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
         Exit Sub
     End If
     
+On Error GoTo ErrHandler
+    
     Dim dummy As Long
     Dim TempTick As Long
     Dim heading As eHeading
@@ -2076,6 +2082,14 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
             End If
         End If
     End With
+    
+    Exit Sub
+ErrHandler:
+    Dim UserName As String
+    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
+
+    LogError "Error en HandleWalk. Error: " & Err.description & ". User: " & UserName & "(" & UserIndex & ")"
+
 End Sub
 
 ''
