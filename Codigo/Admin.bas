@@ -85,6 +85,7 @@ Public PorcentajeRecuperoMana As Integer
 
 Public MinutosWs As Long
 Public MinutosGuardarUsuarios As Long
+Public MinutosMotd As Long
 Public Puerto As Integer
 
 Public BootDelBackUp As Byte
@@ -530,7 +531,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
                     Else
                         Call LogBanFromName(UserName, bannerUserIndex, Reason)
-                        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
+                        Call SendData(SendTarget.ToAdminsButCounselorsAndRms, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
                         
                         'ponemos el flag de ban a 1
                         Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
@@ -545,7 +546,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                             Call CloseSocket(bannerUserIndex)
                         End If
                         
-                        Call LogGM(.Name, "BAN a " & UserName)
+                        Call LogGM(.Name, "BAN a " & UserName & ". Razón: " & Reason)
                     End If
                 End If
             Else
@@ -557,18 +558,18 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
             Else
             
                 Call LogBan(tUser, bannerUserIndex, Reason)
-                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserList(tUser).Name & ".", FontTypeNames.FONTTYPE_SERVER))
+                Call SendData(SendTarget.ToAdminsButCounselorsAndRms, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserList(tUser).Name & ".", FontTypeNames.FONTTYPE_SERVER))
                 
                 'Ponemos el flag de ban a 1
                 UserList(tUser).flags.Ban = 1
                 
                 If (UserList(tUser).flags.Privilegios And rank) = (.flags.Privilegios And rank) Then
                     .flags.Ban = 1
-                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
+                    Call SendData(SendTarget.ToAdminsButCounselorsAndRms, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
                     Call CloseSocket(bannerUserIndex)
                 End If
                 
-                Call LogGM(.Name, "BAN a " & UserName)
+                Call LogGM(.Name, "BAN a " & UserName & ". Razón: " & Reason)
                 
                 'ponemos el flag de ban a 1
                 Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
