@@ -409,7 +409,7 @@ ErrorHandler:
     If UserIndex > 0 Then UserName = UserList(UserIndex).Name
 
     Call LogError("Error en QuitarUser " & Err.Number & ": " & Err.description & _
-                  ". User: " & UserName & "(" & UserIndex & ")")
+                  ". User: " & UserName & "(" & UserIndex & "). Map: " & Map)
 
 End Sub
 

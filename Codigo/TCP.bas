@@ -1861,8 +1861,17 @@ With UserList(UserIndex)
     '    Call SendToUserArea(UserIndex, "QDL" & .Char.charindex)
     'End If
     
-    If MapInfo(Map).NumUsers > 0 Then
-        Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
+    If MapaValido(Map) Then
+        If MapInfo(Map).NumUsers > 0 Then
+            Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
+        End If
+        
+        'Update Map Users
+        MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
+        
+        If MapInfo(Map).NumUsers < 0 Then
+            MapInfo(Map).NumUsers = 0
+        End If
     End If
     
     'Borrar el personaje
@@ -1877,14 +1886,7 @@ With UserList(UserIndex)
                 Call QuitarNPC(.MascotasIndex(i))
         End If
     Next i
-    
-    'Update Map Users
-    MapInfo(Map).NumUsers = MapInfo(Map).NumUsers - 1
-    
-    If MapInfo(Map).NumUsers < 0 Then
-        MapInfo(Map).NumUsers = 0
-    End If
-    
+       
     ' Si el usuario habia dejado un msg en la gm's queue lo borramos
     If Ayuda.Existe(.Name) Then Call Ayuda.Quitar(.Name)
     
@@ -1901,7 +1903,11 @@ End With
 Exit Sub
 
 ErrHandler:
-Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
+    Dim UserName As String
+    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
+
+    Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description & _
+        ".User: " & UserName & "(" & UserIndex & "). Map: " & Map)
 
 End Sub
 
