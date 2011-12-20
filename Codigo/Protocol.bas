@@ -6603,7 +6603,7 @@ On Error GoTo ErrHandler
         
         If LenB(request) <> 0 Then
             Call WriteConsoleMsg(UserIndex, "Su solicitud ha sido enviada.", FontTypeNames.FONTTYPE_INFO)
-            Call SendData(SendTarget.ToRolesMasters, 0, PrepareMessageConsoleMsg(.Name & " PREGUNTA ROL: " & request, FontTypeNames.FONTTYPE_GUILDMSG))
+            Call SendData(SendTarget.ToAdminsButCounselors, 0, PrepareMessageConsoleMsg(.Name & " PREGUNTA ROL: " & request, FontTypeNames.FONTTYPE_GUILDMSG))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8116,9 +8116,9 @@ On Error GoTo ErrHandler
                     Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & ": " & UserList(tUser).Pos.Map & ", " & UserList(tUser).Pos.X & ", " & UserList(tUser).Pos.Y & ".", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
+            
+            Call LogGM(.Name, "/Donde " & UserName)
         End If
-        
-        Call LogGM(.Name, "/Donde " & UserName)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -9077,13 +9077,16 @@ On Error GoTo ErrHandler
         
         ElseIf (.flags.Privilegios And PlayerType.SemiDios) Then
             
-            valido = (opcion = eEditOptions.eo_Poss)
+            valido = (opcion = eEditOptions.eo_Poss Or _
+                     ((opcion = eEditOptions.eo_Vida) And (tUser = UserIndex)))
             
             If .flags.PrivEspecial Then
                 valido = valido Or (opcion = eEditOptions.eo_CiticensKilled) Or _
                          (opcion = eEditOptions.eo_CriminalsKilled)
             End If
             
+        ElseIf (.flags.Privilegios And PlayerType.Consejero) Then
+            valido = ((opcion = eEditOptions.eo_Vida) And (tUser = UserIndex))
         End If
 
         If valido Then
@@ -10180,7 +10183,6 @@ On Error GoTo ErrHandler
                 If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(UserIndex, "No puedes echar a alguien con jerarquía mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " echó a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
                     Call CloseSocket(tUser)
                     Call LogGM(.Name, "Echó a " & UserName)
                 End If
@@ -11059,7 +11061,10 @@ Private Sub HandleEnableDenounces(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
+        ' Gm?
         If Not EsGm(UserIndex) Then Exit Sub
+        ' Rm?
+        If (.flags.Privilegios And PlayerType.RoleMaster) <> 0 Then Exit Sub
         
         Dim Activado As Boolean
         Dim msg As String
@@ -11091,7 +11096,7 @@ Private Sub HandleShowDenouncesList(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
+        If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) <> 0 Then Exit Sub
         Call WriteShowDenounces(UserIndex)
     End With
 End Sub
@@ -14609,7 +14614,10 @@ On Error GoTo ErrHandler
         newMOTD = buffer.ReadASCIIString()
         auxiliaryString = Split(newMOTD, vbCrLf)
         
-        If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+        If ((Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And _
+            (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios))) Or _
+            .flags.PrivEspecial Then
+            
             Call LogGM(.Name, "Ha fijado un nuevo MOTD")
             
             MaxLines = UBound(auxiliaryString()) + 1

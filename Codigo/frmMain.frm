@@ -428,10 +428,11 @@ On Error GoTo ErrHandler
 Static Minutos As Long
 Static MinutosLatsClean As Long
 Static MinsPjesSave As Long
-
+Static MinsSendMotd As Long
 
 Minutos = Minutos + 1
 MinsPjesSave = MinsPjesSave + 1
+MinsSendMotd = MinsSendMotd + 1
 
 ' HappyHour
 If iDay <> Weekday(Date) Then
@@ -484,6 +485,16 @@ If MinutosLatsClean >= 15 Then
     Call LimpiarMundo
 Else
     MinutosLatsClean = MinutosLatsClean + 1
+End If
+
+If MinsSendMotd >= MinutosMotd Then
+    Dim i As Long
+    For i = 1 To LastUser
+        If UserList(i).flags.UserLogged Then
+            Call SendMOTD(i)
+        End If
+    Next i
+    MinsSendMotd = 0
 End If
 
 Call PurgarPenas

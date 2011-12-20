@@ -1763,6 +1763,9 @@ Sub LoadSini()
     MinutosWs = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWS"))
     If MinutosWs < 60 Then MinutosWs = 180
     
+    MinutosMotd = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "MinutosMotd"))
+    If MinutosMotd < 20 Then MinutosMotd = 20
+    
     MinutosGuardarUsuarios = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGuardarUsuarios"))
     
     IntervaloCerrarConexion = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloCerrarConexion"))
