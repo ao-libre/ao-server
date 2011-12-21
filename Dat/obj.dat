@@ -68,7 +68,7 @@ usar primero los nros más bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1115
+NumOBJs=1121
 
 
 
@@ -5379,7 +5379,7 @@ Agarrable=1
 Name=Flor
 GrhIndex=731
 ObjType=30
-Agarrable=0
+Agarrable=1
 Crucial=0
 
 [OBJ474]
@@ -8566,6 +8566,14 @@ LingP=63
 LingO=0
 SkHerreria=80
 
+
+[OBJ697]
+Name=Anillo de defensa Mágica
+GrhIndex=4900
+ObjType=18
+Agarrable=0
+DefensaMagicaMax=6
+
 [OBJ696]
 Name=Laúd Mágico
 GrhIndex=685
@@ -8590,12 +8598,6 @@ CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
 
-[OBJ697]
-Name=Anillo de defensa Mágica
-GrhIndex=4900
-ObjType=18
-Agarrable=0
-DefensaMagicaMax=6
 DefensaMagicaMin=4
 Valor=3500
 Crucial=0
@@ -9152,21 +9154,21 @@ Agarrable=1
 Name=Margarita
 GrhIndex=729
 ObjType=30
-Agarrable=0
+Agarrable=1
 Crucial=0
 
 [OBJ768]
 Name=Hongo
 GrhIndex=730
 ObjType=30
-Agarrable=0
+Agarrable=1
 Crucial=0
 
 [OBJ769]
 Name=Hongos
 GrhIndex=732
 ObjType=30
-Agarrable=0
+Agarrable=1
 Crucial=0
 
 [OBJ770]
@@ -9697,6 +9699,7 @@ MaxDef=0
 MinDef=0
 Valor=10000
 Crucial=0
+NoSeCae=1
 
 [OBJ852]
 Name=Tonel
@@ -12734,7 +12737,7 @@ Crucial=0
 [OBJ1058]
 Name=Arbol navidad
 GrhIndex=24155
-ObjType=36
+ObjType=4
 Agarrable=1
 
 [OBJ1059]
@@ -13840,3 +13843,102 @@ Anim=20
 Valor=0
 NoSeCae=1
 Log=1
+
+[OBJ1116]
+Name=Casco de Darth Vader
+GrhIndex=24198
+ObjType=17
+NumRopaje=2
+Anim=21
+Log=1
+
+[OBJ1117]
+Name=Bastón Nudoso Especial
+GrhIndex=959
+ObjType=2
+Agarrable=0
+Anim=9
+RazaEnanaAnim=61
+MinHit=1
+MaxHit=1
+StaffPower=2
+StaffDamageBonus=30
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=BARDO
+CP10=DRUIDA
+CP11=TRABAJADOR
+Log=1
+NoSeCae=1
+NoRobable=1
+
+[OBJ1118]
+Name=Armadura de Cuero Especial
+GrhIndex=526
+ObjType=3
+NumRopaje=22
+Agarrable=0
+MaxDef=15
+MinDef=10
+CP1=MAGO
+Log=1
+NoSeCae=1
+NoRobable=1
+
+[OBJ1119]
+Name=Laúd Mágico Especial
+GrhIndex=685
+ObjType=18
+StaffPower=2
+MinHit=1
+MaxHit=1
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
+Log=1
+NoSeCae=1
+NoRobable=1
+
+[OBJ1120]
+Name=Arco Compuesto Reforzado Especial
+GrhIndex=1025
+ObjType=2
+Anim=45
+RazaEnanaAnim=44
+Proyectil=1
+Municiones=1
+Refuerzo=8
+MinHit=5
+MaxHit=10
+CP1=PIRATA
+CP2=MAGO
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BARDO
+CP8=DRUIDA
+CP9=TRABAJADOR
+Log=1
+NoSeCae=1
+NoRobable=1
+
+[OBJ1121]
+Name=Traje de Navidad
+GrhIndex=24197
+ObjType=3
+NumRopaje=565
