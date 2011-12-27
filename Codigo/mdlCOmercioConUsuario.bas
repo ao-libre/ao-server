@@ -99,7 +99,8 @@ Public Sub EnviarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte)
     Dim ObjAmount As Long
     Dim OtherUserIndex As Integer
     
-    
+On Error GoTo ErrHandler
+
     OtherUserIndex = UserList(UserIndex).ComUsu.DestUsu
     
     With UserList(OtherUserIndex)
@@ -114,7 +115,11 @@ Public Sub EnviarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte)
    
     Call WriteChangeUserTradeSlot(UserIndex, OfferSlot, ObjIndex, ObjAmount)
     Call FlushBuffer(UserIndex)
+    
+    Exit Sub
 
+ErrHandler:
+    LogError "Error en EnviarOferta. Error: " & Err.description & ". UserIndex: " & UserIndex & ". OfferSlot: " & OfferSlot
 End Sub
 
 Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
@@ -124,7 +129,9 @@ Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
 '25/11/2009: ZaMa - Limpio los arrays (por el nuevo sistema)
 '***************************************************
     Dim i As Long
-    
+
+On Error GoTo ErrHandler
+
     With UserList(UserIndex)
         If .ComUsu.DestUsu > 0 And .ComUsu.DestUsu < MaxUsers Then
             Call WriteUserCommerceEnd(UserIndex)
@@ -143,6 +150,11 @@ Public Sub FinComerciarUsu(ByVal UserIndex As Integer)
         .ComUsu.DestNick = vbNullString
         .flags.Comerciando = False
     End With
+    
+    Exit Sub
+    
+ErrHandler:
+    LogError "Error en FinComerciarUsu. Error: " & Err.description & ". UserIndex: " & UserIndex
 End Sub
 
 Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
@@ -305,6 +317,7 @@ Public Sub AgregarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte, By
 'Last Modification: 24/11/2009
 'Adds gold or items to the user's offer
 '***************************************************
+On Error GoTo ErrHandler
 
     If PuedeSeguirComerciando(UserIndex) Then
         With UserList(UserIndex).ComUsu
@@ -332,7 +345,10 @@ Public Sub AgregarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte, By
             End If
         End With
     End If
-
+    
+    Exit Sub
+ErrHandler:
+    LogError "Error en AgregarOferta. Error: " & Err.description & ". UserIndex: " & UserIndex
 End Sub
 
 Public Function PuedeSeguirComerciando(ByVal UserIndex As Integer) As Boolean
@@ -344,64 +360,69 @@ Public Function PuedeSeguirComerciando(ByVal UserIndex As Integer) As Boolean
 Dim OtroUserIndex As Integer
 Dim ComercioInvalido As Boolean
 
-With UserList(UserIndex)
-    ' Usuario valido?
-    If .ComUsu.DestUsu <= 0 Or .ComUsu.DestUsu > MaxUsers Then
-        ComercioInvalido = True
-    End If
-    
-    OtroUserIndex = .ComUsu.DestUsu
-    
-    If Not ComercioInvalido Then
-        ' Estan logueados?
-        If UserList(OtroUserIndex).flags.UserLogged = False Or .flags.UserLogged = False Then
+On Error GoTo ErrHandler
+    With UserList(UserIndex)
+        ' Usuario valido?
+        If .ComUsu.DestUsu <= 0 Or .ComUsu.DestUsu > MaxUsers Then
             ComercioInvalido = True
-        End If
-    End If
-    
-    If Not ComercioInvalido Then
-        ' Se estan comerciando el uno al otro?
-        If UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex Then
-            ComercioInvalido = True
-        End If
-    End If
-    
-    If Not ComercioInvalido Then
-        ' El nombre del otro es el mismo que al que le comercio?
-        If UserList(OtroUserIndex).Name <> .ComUsu.DestNick Then
-            ComercioInvalido = True
-        End If
-    End If
-    
-    If Not ComercioInvalido Then
-        ' Mi nombre  es el mismo que al que el le comercia?
-        If .Name <> UserList(OtroUserIndex).ComUsu.DestNick Then
-            ComercioInvalido = True
-        End If
-    End If
-    
-    If Not ComercioInvalido Then
-        ' Esta vivo?
-        If UserList(OtroUserIndex).flags.Muerto = 1 Then
-            ComercioInvalido = True
-        End If
-    End If
-    
-    ' Fin del comercio
-    If ComercioInvalido = True Then
-        Call FinComerciarUsu(UserIndex)
-        
-        If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-            Call FinComerciarUsu(OtroUserIndex)
-            Call Protocol.FlushBuffer(OtroUserIndex)
         End If
         
-        Exit Function
-    End If
-End With
+        OtroUserIndex = .ComUsu.DestUsu
+        
+        If Not ComercioInvalido Then
+            ' Estan logueados?
+            If UserList(OtroUserIndex).flags.UserLogged = False Or .flags.UserLogged = False Then
+                ComercioInvalido = True
+            End If
+        End If
+        
+        If Not ComercioInvalido Then
+            ' Se estan comerciando el uno al otro?
+            If UserList(OtroUserIndex).ComUsu.DestUsu <> UserIndex Then
+                ComercioInvalido = True
+            End If
+        End If
+        
+        If Not ComercioInvalido Then
+            ' El nombre del otro es el mismo que al que le comercio?
+            If UserList(OtroUserIndex).Name <> .ComUsu.DestNick Then
+                ComercioInvalido = True
+            End If
+        End If
+        
+        If Not ComercioInvalido Then
+            ' Mi nombre  es el mismo que al que el le comercia?
+            If .Name <> UserList(OtroUserIndex).ComUsu.DestNick Then
+                ComercioInvalido = True
+            End If
+        End If
+        
+        If Not ComercioInvalido Then
+            ' Esta vivo?
+            If UserList(OtroUserIndex).flags.Muerto = 1 Then
+                ComercioInvalido = True
+            End If
+        End If
+        
+        ' Fin del comercio
+        If ComercioInvalido = True Then
+            Call FinComerciarUsu(UserIndex)
+            
+            If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
+                Call FinComerciarUsu(OtroUserIndex)
+                Call Protocol.FlushBuffer(OtroUserIndex)
+            End If
+            
+            Exit Function
+        End If
+    End With
+    
+    PuedeSeguirComerciando = True
+    
+    Exit Function
 
-PuedeSeguirComerciando = True
-
+ErrHandler:
+    LogError "Error en PuedeSeguirComerciando. Error: " & Err.description & ". UserIndex: " & UserIndex
 End Function
 
 Private Function HasOfferedItems(ByVal UserIndex As Integer) As Boolean
