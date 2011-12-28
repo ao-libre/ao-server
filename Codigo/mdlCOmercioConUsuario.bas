@@ -319,32 +319,30 @@ Public Sub AgregarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte, By
 '***************************************************
 On Error GoTo ErrHandler
 
-    If PuedeSeguirComerciando(UserIndex) Then
-        With UserList(UserIndex).ComUsu
-            ' Si ya confirmo su oferta, no puede cambiarla!
-            If Not .Confirmo Then
-                If IsGold Then
-                ' Agregamos (o quitamos) mas oro a la oferta
-                    .GoldAmount = .GoldAmount + Amount
-                    
-                    ' Imposible que pase, pero por las dudas..
-                    If .GoldAmount < 0 Then .GoldAmount = 0
-                Else
-                ' Agreamos (o quitamos) el item y su cantidad en el slot correspondiente
-                    ' Si es 0 estoy modificando la cantidad, no agregando
-                    If ObjIndex > 0 Then .Objeto(OfferSlot) = ObjIndex
-                    .cant(OfferSlot) = .cant(OfferSlot) + Amount
-                    
-                    'Quitó todos los items de ese tipo
-                    If .cant(OfferSlot) <= 0 Then
-                        ' Removemos el objeto para evitar conflictos
-                        .Objeto(OfferSlot) = 0
-                        .cant(OfferSlot) = 0
-                    End If
+    With UserList(UserIndex).ComUsu
+        ' Si ya confirmo su oferta, no puede cambiarla!
+        If Not .Confirmo Then
+            If IsGold Then
+            ' Agregamos (o quitamos) mas oro a la oferta
+                .GoldAmount = .GoldAmount + Amount
+                
+                ' Imposible que pase, pero por las dudas..
+                If .GoldAmount < 0 Then .GoldAmount = 0
+            Else
+            ' Agreamos (o quitamos) el item y su cantidad en el slot correspondiente
+                ' Si es 0 estoy modificando la cantidad, no agregando
+                If ObjIndex > 0 Then .Objeto(OfferSlot) = ObjIndex
+                .cant(OfferSlot) = .cant(OfferSlot) + Amount
+                
+                'Quitó todos los items de ese tipo
+                If .cant(OfferSlot) <= 0 Then
+                    ' Removemos el objeto para evitar conflictos
+                    .Objeto(OfferSlot) = 0
+                    .cant(OfferSlot) = 0
                 End If
             End If
-        End With
-    End If
+        End If
+    End With
     
     Exit Sub
 ErrHandler:
@@ -362,12 +360,13 @@ Dim ComercioInvalido As Boolean
 
 On Error GoTo ErrHandler
     With UserList(UserIndex)
+    
+        OtroUserIndex = .ComUsu.DestUsu
+        
         ' Usuario valido?
-        If .ComUsu.DestUsu <= 0 Or .ComUsu.DestUsu > MaxUsers Then
+        If OtroUserIndex <= 0 Or OtroUserIndex > MaxUsers Then
             ComercioInvalido = True
         End If
-        
-        OtroUserIndex = .ComUsu.DestUsu
         
         If Not ComercioInvalido Then
             ' Estan logueados?
