@@ -4046,17 +4046,13 @@ On Error GoTo ErrHandler
         Amount = .incomingData.ReadLong()
         OfferSlot = .incomingData.ReadByte()
         
+        If Not PuedeSeguirComerciando(UserIndex) Then Exit Sub
+        
         'Get the other player
         tUser = .ComUsu.DestUsu
         
-        ' valid Dest. User?
-        If tUser <= 0 Or tUser > MaxUsers Then
-            
-            ' Finish the trade
-            Call FinComerciarUsu(UserIndex)
-            
         ' If he's already confirmed his offer, but now tries to change it, then he's cheating
-        ElseIf UserList(UserIndex).ComUsu.Confirmo = True Then
+        If UserList(UserIndex).ComUsu.Confirmo = True Then
             
             ' Finish the trade
             Call FinComerciarUsu(UserIndex)
