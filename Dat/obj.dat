@@ -6295,6 +6295,7 @@ MaxDef=35
 MinDef=30
 Valor=20000
 Crucial=1
+CP1=MAGO
 
 [OBJ527]
 Name=Ropa de Enana (E/G-M)
@@ -8656,7 +8657,7 @@ LingH=200
 LingP=100
 LingO=50
 SkHerreria=90
-
+    
 [OBJ700]
 Name=Anillo de los Dioses
 GrhIndex=4903
@@ -8670,6 +8671,11 @@ LingH=3000
 LingP=2000
 LingO=3000
 SkHerreria=101
+ImpideParalizar=1
+ImpideInmobilizar=1
+ImpideAturdir=1
+ImpideCegar=1
+Log=1
 
 [OBJ701]
 Name=Armadura Infame

@@ -1039,6 +1039,11 @@ On Error GoTo ErrHandler
             .NoComerciable = val(Leer.GetValue("OBJ" & Object, "NoComerciable"))
             .Intransferible = val(Leer.GetValue("OBJ" & Object, "Intransferible"))
             
+            .ImpideParalizar = CByte(val(Leer.GetValue("OBJ" & Object, "ImpideParalizar")))
+            .ImpideInmobilizar = CByte(val(Leer.GetValue("OBJ" & Object, "ImpideInmobilizar")))
+            .ImpideAturdir = CByte(val(Leer.GetValue("OBJ" & Object, "ImpideAturdir")))
+            .ImpideCegar = CByte(val(Leer.GetValue("OBJ" & Object, "ImpideCegar")))
+            
             .Upgrade = val(Leer.GetValue("OBJ" & Object, "Upgrade"))
             
             frmCargando.cargar.value = frmCargando.cargar.value + 1
