@@ -1333,6 +1333,8 @@ With UserList(UserIndex)
         Case eGMCommands.RecordDetailsRequest
             Call HandleRecordDetailsRequest(UserIndex)
         
+        Case eGMCommands.HigherAdminsMessage
+            Call HandleHigherAdminsMessage(UserIndex)
     End Select
 End With
 
@@ -2145,6 +2147,9 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
                 Exit Sub
             End If
         End If
+        
+        'Admins can't attack.
+        If (.flags.Privilegios And PlayerType.User) = 0 Then Exit Sub
         
         'If exiting, cancel
         Call CancelExit(UserIndex)
@@ -6599,7 +6604,7 @@ On Error GoTo ErrHandler
         
         If LenB(request) <> 0 Then
             Call WriteConsoleMsg(UserIndex, "Su solicitud ha sido enviada.", FontTypeNames.FONTTYPE_INFO)
-            Call SendData(SendTarget.ToAdminsButCounselors, 0, PrepareMessageConsoleMsg(.Name & " PREGUNTA ROL: " & request, FontTypeNames.FONTTYPE_GUILDMSG))
+            Call SendData(SendTarget.ToRMsAndHigherAdmins, 0, PrepareMessageConsoleMsg(.Name & " PREGUNTA ROL: " & request, FontTypeNames.FONTTYPE_GUILDMSG))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -8574,7 +8579,7 @@ On Error GoTo ErrHandler
         
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Consejero) Then
             'Si es dios o Admins no podemos salvo que nosotros también lo seamos
-            If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
+            If (Not (EsDios(UserName) Or EsAdmin(UserName))) Or (((.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0) And ((.flags.Privilegios And PlayerType.RoleMaster) = 0)) Then
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
                 Else
@@ -10002,6 +10007,7 @@ Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
     Dim i As Long
     Dim list As String
     Dim priv As PlayerType
+    Dim isRM As Boolean
     
     With UserList(UserIndex)
         'Remove packet ID
@@ -10012,10 +10018,15 @@ Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
         priv = PlayerType.Consejero Or PlayerType.SemiDios
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then priv = priv Or PlayerType.Dios Or PlayerType.Admin
         
+        isRM = ((.flags.Privilegios And PlayerType.RoleMaster) <> 0)
+        
         For i = 1 To LastUser
             If UserList(i).flags.UserLogged Then
-                If UserList(i).flags.Privilegios And priv Then _
-                    list = list & UserList(i).Name & ", "
+                If ((UserList(i).flags.Privilegios And priv) <> 0) Then
+                    If Not (isRM And ((UserList(i).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0)) Then
+                        list = list & UserList(i).Name & ", "
+                    End If
+                End If
             End If
         Next i
         
@@ -12366,9 +12377,12 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim UserName As String
+        Dim Reason As String
         Dim tUser As Integer
+        Dim cantPenas As Byte
         
         UserName = buffer.ReadASCIIString()
+        Reason = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And _
             (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Or _
@@ -12390,11 +12404,20 @@ On Error GoTo ErrHandler
                 Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(tUser, .Name & " te ha expulsado en forma definitiva de las fuerzas del caos.", FontTypeNames.FONTTYPE_FIGHT)
                 Call FlushBuffer(tUser)
+                
+                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": EXPULSADO de la Legión Oscura por: " & LCase$(Reason) & " " & Date & " " & time)
             Else
                 If FileExist(CharPath & UserName & ".chr") Then
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .Name)
+                    
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": EXPULSADO de la Legión Oscura por: " & LCase$(Reason) & " " & Date & " " & time)
+                
                     Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
@@ -12444,9 +12467,12 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim UserName As String
+        Dim Reason As String
         Dim tUser As Integer
+        Dim cantPenas As Byte
         
         UserName = buffer.ReadASCIIString()
+        Reason = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And _
             (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Or _
@@ -12468,12 +12494,20 @@ On Error GoTo ErrHandler
                 Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(tUser, .Name & " te ha expulsado en forma definitiva de las fuerzas reales.", FontTypeNames.FONTTYPE_FIGHT)
                 Call FlushBuffer(tUser)
+                
+                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": EXPULSADO del Ejército Real por: " & LCase$(Reason) & " " & Date & " " & time)
             Else
                 If FileExist(CharPath & UserName & ".chr") Then
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
                     Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & .Name)
                     Call WriteConsoleMsg(UserIndex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
+                
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": EXPULSADO del Ejército Real por: " & LCase$(Reason) & " " & Date & " " & time)
                 Else
                     Call WriteConsoleMsg(UserIndex, UserName & ".chr inexistente.", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -14371,6 +14405,10 @@ On Error GoTo ErrHandler
             
             If tUser > 0 Then
                 Call ResetFacciones(tUser)
+                
+                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": Personaje reincorporado a la facción. " & Date & " " & time)
             Else
                 Char = CharPath & UserName & ".chr"
                 
@@ -14390,6 +14428,10 @@ On Error GoTo ErrHandler
                     Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
                     Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
                     Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+                    
+                    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": Personaje reincorporado a la facción. " & Date & " " & time)
                 Else
                     Call WriteConsoleMsg(UserIndex, "El personaje " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -19070,3 +19112,58 @@ End With
 
 End Sub
 
+''
+' Handles the "HigherAdminsMessage" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleHigherAdminsMessage(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Torres Patricio (Pato)
+'Last Modification: 03/30/12
+'
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 3 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+On Error GoTo ErrHandler
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As clsByteQueue: Set buffer = New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        Dim message As String
+        
+        message = buffer.ReadASCIIString()
+        
+        If ((.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0) And ((.flags.Privilegios And PlayerType.RoleMaster) = 0) Then
+            Call LogGM(.Name, "Mensaje a Dioses:" & message)
+        
+            If LenB(message) <> 0 Then
+                'Analize chat...
+                Call Statistics.ParseChat(message)
+            
+                Call SendData(SendTarget.ToHigherAdminsButRMs, 0, PrepareMessageConsoleMsg(.Name & "(Sólo Dioses)> " & message, FontTypeNames.FONTTYPE_GMMSG))
+            End If
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+    
+ErrHandler:
+    Dim error As Long
+    error = Err.Number
+On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If error <> 0 Then _
+        Err.Raise error
+End Sub
