@@ -1871,6 +1871,7 @@ Public Enum eGMCommands
     RecordAddObs
     RecordListRequest
     RecordDetailsRequest
+    HigherAdminsMessage
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1
