@@ -10023,7 +10023,7 @@ Private Sub HandleOnlineGM(ByVal UserIndex As Integer)
         For i = 1 To LastUser
             If UserList(i).flags.UserLogged Then
                 If ((UserList(i).flags.Privilegios And priv) <> 0) Then
-                    If Not (isRM And ((UserList(i).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0)) Then
+                    If Not (isRM And (((UserList(i).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0)) And (UserList(i).flags.Privilegios And PlayerType.RoleMaster) = 0) Then
                         list = list & UserList(i).Name & ", "
                     End If
                 End If
