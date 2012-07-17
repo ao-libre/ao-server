@@ -1000,7 +1000,7 @@ Dim Temps   As String
     End If
 End Function
 
-Public Function GuildIndex(ByRef GuildName As String) As Integer
+Public Function GetGuildIndex(ByVal GuildName As String) As Integer
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -1010,11 +1010,11 @@ Public Function GuildIndex(ByRef GuildName As String) As Integer
 'me da el indice del guildname
 Dim i As Integer
 
-    GuildIndex = 0
+    GetGuildIndex = 0
     GuildName = UCase$(GuildName)
     For i = 1 To CANTIDADDECLANES
         If UCase$(guilds(i).GuildName) = GuildName Then
-            GuildIndex = i
+            GetGuildIndex = i
             Exit Function
         End If
     Next i
@@ -1092,7 +1092,7 @@ Public Sub SendGuildDetails(ByVal UserIndex As Integer, ByRef GuildName As Strin
     Dim GI      As Integer
     Dim i       As Long
 
-    GI = GuildIndex(GuildName)
+    GI = GetGuildIndex(GuildName)
     If GI = 0 Then Exit Sub
     
     With guilds(GI)
@@ -1204,7 +1204,7 @@ Dim GI As Integer
     End If
     
 'devuelve el guildindex
-    GI = GuildIndex(GuildName)
+    GI = GetGuildIndex(GuildName)
     If GI > 0 Then
         If UserList(UserIndex).EscucheClan <> 0 Then
             If UserList(UserIndex).EscucheClan = GI Then
@@ -1268,7 +1268,7 @@ Dim GIG As Integer
         Exit Function
     End If
     
-    GIG = GuildIndex(GuildGuerra)
+    GIG = GetGuildIndex(GuildGuerra)
     If guilds(GI).GetRelacion(GIG) = GUERRA Then
         refError = "Tu clan ya está en guerra con " & GuildGuerra & "."
         Exit Function
@@ -1322,7 +1322,7 @@ Dim GIG     As Integer
         Exit Function
     End If
 
-    GIG = GuildIndex(GuildPaz)
+    GIG = GetGuildIndex(GuildPaz)
     
     If GIG < 1 Or GIG > CANTIDADDECLANES Then
         Call LogError("ModGuilds.r_AceptarPropuestaDePaz: " & GI & " acepta de " & GuildPaz)
@@ -1377,7 +1377,7 @@ Dim GIG     As Integer
         Exit Function
     End If
 
-    GIG = GuildIndex(GuildPro)
+    GIG = GetGuildIndex(GuildPro)
     
     If GIG < 1 Or GIG > CANTIDADDECLANES Then
         Call LogError("ModGuilds.r_RechazarPropuestaDeAlianza: " & GI & " acepta de " & GuildPro)
@@ -1427,7 +1427,7 @@ Dim GIG     As Integer
         Exit Function
     End If
 
-    GIG = GuildIndex(GuildPro)
+    GIG = GetGuildIndex(GuildPro)
     
     If GIG < 1 Or GIG > CANTIDADDECLANES Then
         Call LogError("ModGuilds.r_RechazarPropuestaDePaz: " & GI & " acepta de " & GuildPro)
@@ -1475,7 +1475,7 @@ Dim GIG     As Integer
         Exit Function
     End If
 
-    GIG = GuildIndex(GuildAllie)
+    GIG = GetGuildIndex(GuildAllie)
     
     If GIG < 1 Or GIG > CANTIDADDECLANES Then
         Call LogError("ModGuilds.r_AceptarPropuestaDeAlianza: " & GI & " acepta de " & GuildAllie)
@@ -1521,7 +1521,7 @@ Dim GI              As Integer
         Exit Function
     End If
     
-    OtroClanGI = GuildIndex(OtroClan)
+    OtroClanGI = GetGuildIndex(OtroClan)
     
     If OtroClanGI = GI Then
         refError = "No puedes declarar relaciones con tu propio clan."
@@ -1587,7 +1587,7 @@ Dim GI              As Integer
         Exit Function
     End If
     
-    OtroClanGI = GuildIndex(OtroGuild)
+    OtroClanGI = GetGuildIndex(OtroGuild)
     
     If Not guilds(GI).HayPropuesta(OtroClanGI, Tipo) Then
         refError = "No existe la propuesta solicitada."
@@ -1854,7 +1854,7 @@ Dim NuevoGuildIndex     As Integer
         Exit Function
     End If
 
-    NuevoGuildIndex = GuildIndex(clan)
+    NuevoGuildIndex = GetGuildIndex(clan)
     If NuevoGuildIndex = 0 Then
         refError = "Ese clan no existe, avise a un administrador."
         Exit Function
@@ -2009,3 +2009,13 @@ Public Function GuildFounder(ByVal GuildIndex As Integer) As String
     
     GuildFounder = guilds(GuildIndex).Fundador
 End Function
+
+Public Sub SetNewGuildName(ByVal GuildIndex As Integer, ByRef newGuildName As String)
+'***************************************************
+'Author: Lex!
+'Last Modification: 15/05/2012
+'Va a la clase de guilds para setear GuildName nuevo
+'***************************************************
+
+Call guilds(GuildIndex).SetGuildName(newGuildName)
+End Sub

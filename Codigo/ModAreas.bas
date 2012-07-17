@@ -211,14 +211,14 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte,
                         
                         ' Solo avisa al otro cliente si no es un admin invisible
                         If Not (UserList(TempInt).flags.AdminInvisible = 1) Then
-                            Call MakeUserChar(False, UserIndex, TempInt, Map, X, Y)
-                            
-                            ' Si esta navegando, siempre esta visible
-                            If UserList(TempInt).flags.Navegando = 0 Then
-                                'Si el user estaba invisible le avisamos al nuevo cliente de eso
-                                If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
-                                    If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
-                                        Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
+                            If MakeUserChar(False, UserIndex, TempInt, Map, X, Y) Then
+                                ' Si esta navegando, siempre esta visible
+                                If UserList(TempInt).flags.Navegando = 0 Then
+                                    'Si el user estaba invisible le avisamos al nuevo cliente de eso
+                                    If UserList(TempInt).flags.invisible Or UserList(TempInt).flags.Oculto Then
+                                        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
+                                            Call WriteSetInvisible(UserIndex, UserList(TempInt).Char.CharIndex, True)
+                                        End If
                                     End If
                                 End If
                             End If
@@ -227,13 +227,14 @@ Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Head As Byte,
                     
                         ' Solo avisa al otro cliente si no es un admin invisible
                         If Not (.flags.AdminInvisible = 1) Then
-                            Call MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                            If MakeUserChar(False, TempInt, UserIndex, .Pos.Map, .Pos.X, .Pos.Y) Then
                             
-                            ' Si esta navegando, siempre esta visible
-                            If .flags.Navegando = 0 Then
-                                If .flags.invisible Or .flags.Oculto Then
-                                    If UserList(TempInt).flags.Privilegios And PlayerType.User Then
-                                        Call WriteSetInvisible(TempInt, .Char.CharIndex, True)
+                                ' Si esta navegando, siempre esta visible
+                                If .flags.Navegando = 0 Then
+                                    If .flags.invisible Or .flags.Oculto Then
+                                        If UserList(TempInt).flags.Privilegios And PlayerType.User Then
+                                            Call WriteSetInvisible(TempInt, .Char.CharIndex, True)
+                                        End If
                                     End If
                                 End If
                             End If
@@ -421,6 +422,7 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optiona
 '   - Now the method checks for repetead users instead of trusting parameters.
 '   - If the character is new to the map, update it
 '**************************************************************
+On Error GoTo ErrHandler
     Dim TempVal As Long
     Dim EsNuevo As Boolean
     Dim i As Long
@@ -460,6 +462,11 @@ Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optiona
     End With
     
     Call CheckUpdateNeededUser(UserIndex, USER_NUEVO, ButIndex)
+   
+    Exit Sub
+ErrHandler:
+    LogError ("AgregarUser: num: " & Err.Number & " desc: " & Err.description & _
+        ".UserIndex: " & UserIndex & ". Map: " & Map & ". ButIndex: " & ButIndex)
 End Sub
 
 Public Sub AgregarNpc(ByVal NpcIndex As Integer)

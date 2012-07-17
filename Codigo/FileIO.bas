@@ -1645,6 +1645,9 @@ Sub LoadSini()
     
     #End If
     
+    'TODO:Esto es temporal, hay que volarlo!!
+    GUILDPATH = App.Path & "\GUILDS\"
+    GUILDINFOFILE = GUILDPATH & "guildsinfo.inf"
     
     Puerto = val(GetVar(IniPath & "Server.ini", "INIT", "StartPort"))
     HideMe = val(GetVar(IniPath & "Server.ini", "INIT", "Hide"))
@@ -1655,14 +1658,12 @@ Sub LoadSini()
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
-    HappyHour = val(GetVar(IniPath & "Server.ini", "init", "HappyHour"))
     
-    lNumHappyDays = 0
+    ' HappyHour
     Dim lDay As Long
-    For lDay = 1 To val(GetVar(IniPath & "Server.ini", "init", "HappyDays"))
-        lNumHappyDays = lNumHappyDays + 1
-        ReDim Preserve HappyHourDays(1 To lNumHappyDays)
-        HappyHourDays(lDay) = val(GetVar(IniPath & "Server.ini", "init", "HappyDay" & lNumHappyDays))
+    For lDay = 1 To 7
+        HappyHourDays(lDay) = val(GetVar(IniPath & "Server.ini", "HappyHour", "Day" & lDay))
+        If HappyHourDays(lDay) <= 0 Then HappyHourDays(lDay) = 1
     Next lDay
     
     ArmaduraImperial1 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial1"))

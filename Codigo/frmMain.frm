@@ -434,25 +434,39 @@ Minutos = Minutos + 1
 MinsPjesSave = MinsPjesSave + 1
 MinsSendMotd = MinsSendMotd + 1
 
-' HappyHour
-If iDay <> Weekday(Date) Then
-    
+    Dim tmpHappyHour As Double
+     
+    ' HappyHour
     iDay = Weekday(Date)
-    
-    If isHappyDay(iDay) Then
-        If Not HappyHourActivated And (HappyHour <> 0) Then
-            UpdateNpcsExp HappyHour
-            HappyHourActivated = True
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha comenzado la HappyHour!", FontTypeNames.FONTTYPE_DIOS))
-        End If
-    Else
+    tmpHappyHour = HappyHourDays(iDay)
+     
+    If tmpHappyHour <> HappyHour Then
+       
         If HappyHourActivated Then
-            UpdateNpcsExp (1 / HappyHour)
-            HappyHourActivated = False
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la HappyHour!", FontTypeNames.FONTTYPE_DIOS))
+            ' Reestablece la exp de los npcs
+           If HappyHour <> 0 Then UpdateNpcsExp (1 / HappyHour)
+         End If
+       
+        If tmpHappyHour = 1 Then ' Desactiva
+           Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("¡Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_DIOS))
+             HappyHourActivated = False
+       
+        Else ' Activa
+           UpdateNpcsExp tmpHappyHour
+           
+            If HappyHour <> 1 Then
+                Call SendData(SendTarget.ToAll, 0, _
+                    PrepareMessageConsoleMsg("Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%", FontTypeNames.FONTTYPE_DIOS))
+            Else
+                Call SendData(SendTarget.ToAll, 0, _
+                    PrepareMessageConsoleMsg("¡Ha comenzado la Happy Hour! ¡Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!", FontTypeNames.FONTTYPE_DIOS))
+            End If
+           
+             HappyHourActivated = True
         End If
+     
+        HappyHour = tmpHappyHour
     End If
-End If
 
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 Call ModAreas.AreasOptimizacion
@@ -513,17 +527,6 @@ ErrHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
     Resume Next
 End Sub
-
-Private Function isHappyDay(ByVal iDay As Integer) As Boolean
-    
-    Dim lDay As Long
-    For lDay = 1 To lNumHappyDays
-        If HappyHourDays(lDay) = iDay Then
-            isHappyDay = True
-            Exit Function
-        End If
-    Next lDay
-End Function
 
 Private Sub chkServerHabilitado_Click()
     ServerSoloGMs = chkServerHabilitado.value

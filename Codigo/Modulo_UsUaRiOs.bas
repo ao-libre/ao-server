@@ -420,8 +420,8 @@ Public Function GetNickColor(ByVal UserIndex As Integer) As Byte
     
 End Function
 
-Public Sub MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, _
-        ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ButIndex As Boolean = False)
+Public Function MakeUserChar(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal UserIndex As Integer, _
+        ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ButIndex As Boolean = False) As Boolean
 '*************************************************
 'Author: Unknown
 'Last modified: 15/01/2010
@@ -490,7 +490,10 @@ On Error GoTo ErrHandler
             End If
         End If
     End With
-Exit Sub
+    
+    MakeUserChar = True
+    
+Exit Function
 
 ErrHandler:
 
@@ -501,12 +504,20 @@ ErrHandler:
         UserMap = UserList(UserIndex).Pos.Map
     End If
 
-    LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description & _
-        ".User: " & UserErrName & "(" & UserIndex & "). Map: " & UserMap)
+    Dim sError As String
+    sError = "MakeUserChar: num: " & Err.Number & " desc: " & Err.description & _
+        ".User: " & UserErrName & "(" & UserIndex & "). UserMap: " & UserMap & ". Coor: " & Map & "," & X & "," & Y & _
+        ". toMap: " & toMap & ". sndIndex: " & sndIndex & ". CharIndex: " & CharIndex & _
+        ". ButIndex: " & ButIndex
 
     'Resume Next
     Call CloseSocket(UserIndex)
-End Sub
+    
+    'Para ver si clona..
+    sError = sError & ". MapUserIndex: " & MapData(Map, X, Y).UserIndex
+    Call LogError(sError)
+    
+End Function
 
 ''
 ' Checks if the user gets the next level.
@@ -1802,7 +1813,9 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
             End If
         
             'Si el mapa al que entro NO ES superficial AND en el que estaba TAMPOCO ES superficial, ENTONCES
-            Dim nextMap, previousMap As Boolean
+            Dim nextMap As Boolean
+            Dim previousMap As Boolean
+            
             nextMap = IIf(distanceToCities(Map).distanceToCity(.Hogar) >= 0, True, False)
             previousMap = IIf(distanceToCities(.Pos.Map).distanceToCity(.Hogar) >= 0, True, False)
 
@@ -1823,7 +1836,9 @@ ByVal FX As Boolean, Optional ByVal Teletransported As Boolean)
         .Pos.Y = Y
         .Pos.Map = Map
         
-        Call MakeUserChar(True, Map, UserIndex, Map, X, Y)
+        If Not MakeUserChar(True, Map, UserIndex, Map, X, Y) Then _
+            Exit Sub
+        
         Call WriteUserCharIndexInServer(UserIndex)
         
         Call DoTileEvents(UserIndex, Map, X, Y)

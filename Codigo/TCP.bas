@@ -979,7 +979,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 
 End Function
 
-Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password As String)
+Public Function ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password As String) As Boolean
 '***************************************************
 'Autor: Unknown (orginal version)
 'Last Modification: 24/07/2010 (ZaMa)
@@ -1000,7 +1000,7 @@ With UserList(UserIndex)
         'Kick player ( and leave character inside :D )!
         Call CloseSocketSL(UserIndex)
         Call Cerrar_Usuario(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     'Reseteamos los FLAGS
@@ -1016,7 +1016,7 @@ With UserList(UserIndex)
         Call WriteErrorMsg(UserIndex, "El servidor ha alcanzado el máximo de usuarios soportado, por favor vuelva a intertarlo más tarde.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     '¿Este IP ya esta conectado?
@@ -1025,7 +1025,7 @@ With UserList(UserIndex)
             Call WriteErrorMsg(UserIndex, "No es posible usar más de un personaje al mismo tiempo.")
             Call FlushBuffer(UserIndex)
             Call CloseSocket(UserIndex)
-            Exit Sub
+            Exit Function
         End If
     End If
     
@@ -1034,7 +1034,7 @@ With UserList(UserIndex)
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     '¿Es el passwd valido?
@@ -1042,7 +1042,7 @@ With UserList(UserIndex)
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     '¿Ya esta conectado el personaje?
@@ -1054,7 +1054,7 @@ With UserList(UserIndex)
         End If
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     'Reseteamos los privilegios
@@ -1091,7 +1091,7 @@ With UserList(UserIndex)
             Call WriteErrorMsg(UserIndex, "Servidor restringido a administradores. Por favor reintente en unos momentos.")
             Call FlushBuffer(UserIndex)
             Call CloseSocket(UserIndex)
-            Exit Sub
+            Exit Function
         End If
     End If
     
@@ -1109,7 +1109,7 @@ With UserList(UserIndex)
     If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     Call LoadUserReputacion(UserIndex, Leer)
@@ -1152,7 +1152,7 @@ With UserList(UserIndex)
         If Not MapaValido(mapa) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
             Call CloseSocket(UserIndex)
-            Exit Sub
+            Exit Function
         End If
         
         ' If map has different initial coords, update it
@@ -1272,8 +1272,10 @@ With UserList(UserIndex)
         .LogOnTime = Now
     #End If
     
-    'Crea  el personaje del usuario
-    Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
+    'Crea  el personaje del usuario (hubo algun error)
+    If Not MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y) Then
+        Exit Function
+    End If
     
     If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
         Call DoAdminInvisible(UserIndex)
@@ -1307,7 +1309,7 @@ With UserList(UserIndex)
         Call WriteErrorMsg(UserIndex, "Servidor en Testing por unos minutos, conectese con PJs de nivel menor a 18. No se conecte con Pjs que puedan resultar importantes por ahora pues pueden arruinarse.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
-        Exit Sub
+        Exit Function
     End If
     
     'Actualiza el Num de usuarios
@@ -1408,9 +1410,11 @@ With UserList(UserIndex)
     Open App.Path & "\logs\Connect.log" For Append Shared As #N
     Print #N, .Name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
     Close #N
-
+    
+    ConnectUser = True
+    
 End With
-End Sub
+End Function
 
 Sub SendMOTD(ByVal UserIndex As Integer)
 '***************************************************

@@ -1622,10 +1622,9 @@ Public haciendoBK As Boolean
 Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
 Public NumRecords As Integer
-Public HappyHour As Double
+Public HappyHour As Single
 Public HappyHourActivated As Boolean
-Public HappyHourDays() As Integer
-Public lNumHappyDays As Long
+Public HappyHourDays(1 To 7) As Single
 
 ''
 'Esta activada la verificacion MD5 ?
@@ -1871,6 +1870,7 @@ Public Enum eGMCommands
     RecordAddObs
     RecordListRequest
     RecordDetailsRequest
+    AlterGuildName
     HigherAdminsMessage
 End Enum
 
@@ -1937,3 +1937,7 @@ Public Administradores As clsIniManager
 Public Const MIN_AMOUNT_LOG As Integer = 1000
 Public Const MIN_VALUE_LOG As Long = 50000
 Public Const MIN_GOLD_AMOUNT_LOG As Long = 10000
+
+'TODO:Esto hay que volarlo, es temporal!
+Public GUILDPATH                   As String
+Public GUILDINFOFILE               As String
