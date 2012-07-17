@@ -328,7 +328,7 @@ Function InMapBounds(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Intege
         InMapBounds = True
     End If
     
-    End Function
+End Function
 
 Private Function RhombLegalPos(ByRef Pos As WorldPos, ByRef vX As Long, ByRef vY As Long, _
                                ByVal Distance As Long, Optional PuedeAgua As Boolean = False, _

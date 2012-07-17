@@ -878,3 +878,18 @@ Private Sub ReplaceInvalidChars(ByRef S As String)
         S = Replace(S, "¬", vbNullString)   'morgo usaba esto como "separador"
     End If
 End Sub
+
+Public Sub SetGuildName(ByRef newGuildName As String)
+'***************************************************
+'Author: Lex!
+'Last Modification: 14/05/2012
+'Setea GuildName
+'***************************************************
+    p_GuildName = newGuildName
+    
+    RELACIONESFILE = GUILDPATH & p_GuildName & "-relaciones.rel"
+    MEMBERSFILE = GUILDPATH & p_GuildName & "-members.mem"
+    PROPUESTASFILE = GUILDPATH & p_GuildName & "-propositions.pro"
+    SOLICITUDESFILE = GUILDPATH & p_GuildName & "-solicitudes.sol"
+    VOTACIONESFILE = GUILDPATH & p_GuildName & "-votaciones.vot"
+End Sub

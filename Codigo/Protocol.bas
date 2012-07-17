@@ -1335,6 +1335,9 @@ With UserList(UserIndex)
         
         Case eGMCommands.HigherAdminsMessage
             Call HandleHigherAdminsMessage(UserIndex)
+        
+        Case eGMCommands.AlterGuildName               '/ACLAN
+            Call HandleAlterGuildName(UserIndex)
     End Select
 End With
 
@@ -1447,7 +1450,9 @@ On Error GoTo ErrHandler
         
         Exit Sub
     End If
-        
+    
+    Dim bConFailed As Boolean
+    
 #If SeguridadAlkon Then
     If Not MD5ok(buffer.ReadASCIIStringFixed(16)) Then
         Call WriteErrorMsg(UserIndex, "El cliente está dañado, por favor descarguelo nuevamente desde www.argentumonline.com.ar")
@@ -1459,14 +1464,15 @@ On Error GoTo ErrHandler
         ElseIf Not VersionOK(version) Then
             Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
         Else
-            Call ConnectUser(UserIndex, UserName, Password)
+            bConFailed = Not ConnectUser(UserIndex, UserName, Password)
         End If
 #If SeguridadAlkon Then
     End If
 #End If
     
     'If we got here then packet is complete, copy data back to original queue
-    Call UserList(UserIndex).incomingData.CopyBuffer(buffer)
+    If Not bConFailed Then _
+        Call UserList(UserIndex).incomingData.CopyBuffer(buffer)
     
 ErrHandler:
     Dim error As Long
@@ -10884,7 +10890,7 @@ On Error GoTo ErrHandler
         End If
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) <> 0 Then
-            tGuild = GuildIndex(GuildName)
+            tGuild = GetGuildIndex(GuildName)
             
             If tGuild > 0 Then
                 Call WriteConsoleMsg(UserIndex, "Clan " & UCase(GuildName) & ": " & _
@@ -14393,8 +14399,10 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
         
         Dim UserName As String
+        Dim Reason As String
         Dim tUser As Integer
         Dim Char As String
+        Dim cantPenas As Byte
         
         UserName = buffer.ReadASCIIString()
         
@@ -19167,3 +19175,131 @@ On Error GoTo 0
     If error <> 0 Then _
         Err.Raise error
 End Sub
+''
+' Handle the "AlterName" message
+'
+' @param userIndex The index of the user sending the message
+
+Public Sub HandleAlterGuildName(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lex!
+'Last Modification: 14/05/12
+'Change guild name
+'***************************************************
+    If UserList(UserIndex).incomingData.length < 5 Then
+        Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    On Error GoTo ErrHandler
+    
+    With UserList(UserIndex)
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As clsByteQueue: Set buffer = New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+        
+        'Reads the userName and newUser Packets
+        Dim GuildName As String
+        Dim newGuildName As String
+        Dim GuildIndex As Integer
+        
+        GuildName = buffer.ReadASCIIString()
+        newGuildName = buffer.ReadASCIIString()
+        GuildName = Trim$(GuildName)
+        newGuildName = Trim$(newGuildName)
+        
+        If ((.flags.Privilegios And PlayerType.RoleMaster) = 0) And ((.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0) Then
+            If LenB(GuildName) = 0 Or LenB(newGuildName) = 0 Then
+                Call WriteConsoleMsg(UserIndex, "Usar: /ACLAN origen@destino", FontTypeNames.FONTTYPE_INFO)
+            Else
+                'Revisa si el nombre nuevo del clan existe
+                If (InStrB(newGuildName, "+") <> 0) Then
+                    GuildName = Replace(newGuildName, "+", " ")
+                End If
+                
+                GuildIndex = modGuilds.GetGuildIndex(newGuildName)
+                If GuildIndex > 0 Then
+                    Call WriteConsoleMsg(UserIndex, "El clan destino ya existe.", FontTypeNames.FONTTYPE_INFO)
+                Else
+                    'Revisa si el nombre del clan existe
+                    If (InStrB(GuildName, "+") <> 0) Then
+                        GuildName = Replace(GuildName, "+", " ")
+                    End If
+            
+                    GuildIndex = GetGuildIndex(GuildName)
+                    If GuildIndex > 0 Then
+                        ' Existe clan origen y no el de destino
+                        ' Verifica si existen archivos del clan, los crea con nombre nuevo y borra los viejos
+                        If FileExist(GUILDPATH & GuildName & "-members.mem") Then
+                            Call FileCopy(GUILDPATH & GuildName & "-members.mem", GUILDPATH & UCase$(newGuildName) & "-members.mem")
+                            Kill (GUILDPATH & GuildName & "-members.mem")
+                        End If
+                        
+                        If FileExist(GUILDPATH & GuildName & "-relaciones.rel") Then
+                            Call FileCopy(GUILDPATH & GuildName & "-relaciones.rel", GUILDPATH & UCase$(newGuildName) & "-relaciones.rel")
+                            Kill (GUILDPATH & GuildName & "-relaciones.rel")
+                        End If
+                        
+                        If FileExist(GUILDPATH & GuildName & "-Propositions.pro") Then
+                            Call FileCopy(GUILDPATH & GuildName & "-Propositions.pro", GUILDPATH & UCase$(newGuildName) & "-Propositions.pro")
+                            Kill (GUILDPATH & GuildName & "-Propositions.pro")
+                        End If
+                        
+                        If FileExist(GUILDPATH & GuildName & "-solicitudes.sol") Then
+                            Call FileCopy(GUILDPATH & GuildName & "-solicitudes.sol", GUILDPATH & UCase$(newGuildName) & "-solicitudes.sol")
+                            Kill (GUILDPATH & GuildName & "-solicitudes.sol")
+                        End If
+                        
+                        If FileExist(GUILDPATH & GuildName & "-votaciones.vot") Then
+                            Call FileCopy(GUILDPATH & GuildName & "-votaciones.vot", GUILDPATH & UCase$(newGuildName) & "-votaciones.vot")
+                            Kill (GUILDPATH & GuildName & "-votaciones.vot")
+                        End If
+                        
+                        ' Actualiza nombre del clan en guildsinfo y server
+                        Call WriteVar(GUILDINFOFILE, "GUILD" & GuildIndex, "GuildName", newGuildName)
+                        Call modGuilds.SetNewGuildName(GuildIndex, newGuildName)
+                        
+                        ' Actualiza todos los online del clan
+                        Dim index As Integer
+                        Dim NumOnline As Integer
+                        Dim MemberList As String
+                        Dim MemberIndex As Integer
+                        
+                        MemberIndex = modGuilds.m_Iterador_ProximoUserIndex(GuildIndex)
+                        Do While MemberIndex > 0
+                            If (UserList(MemberIndex).ConnID <> -1) Then
+                                Call RefreshCharStatus(MemberIndex)
+                            End If
+                            
+                            MemberIndex = modGuilds.m_Iterador_ProximoUserIndex(GuildIndex)
+                        Loop
+            
+                        ' Avisa que sali? todo OK y guarda en log del GM
+                        Call WriteConsoleMsg(UserIndex, "El clan " & GuildName & " fue renombrado como " & newGuildName, FontTypeNames.FONTTYPE_INFO)
+                        Call LogGM(.Name, "Ha cambiado el nombre del clan " & GuildName & ". Ahora se llama " & newGuildName)
+                    Else
+                        Call WriteConsoleMsg(UserIndex, "El clan origen no existe.", FontTypeNames.FONTTYPE_INFO)
+                    End If
+                End If
+            End If
+        End If
+            
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+        
+ErrHandler:
+    Dim error As Long
+    error = Err.Number
+    On Error GoTo 0
+        
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+        
+    If error <> 0 Then _
+        Err.Raise error
+End Sub
+

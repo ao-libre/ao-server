@@ -103,27 +103,31 @@ Public Function IpSecurityAceptarNuevaConexion(ByVal ip As Long) As Boolean
 '
 '*************************************************  *************
 Dim IpTableIndex As Long
-    
+Dim tmpTime As Long
 
     IpTableIndex = FindTableIp(ip, IP_INTERVALOS)
+        
+    tmpTime = (GetTickCount() And &H7FFFFFFF)
     
     If IpTableIndex >= 0 Then
-        If IpTables(IpTableIndex + 1) + IntervaloEntreConexiones <= GetTickCount Then   'No está saturando de connects?
-            IpTables(IpTableIndex + 1) = GetTickCount
+        If IpTables(IpTableIndex + 1) + IntervaloEntreConexiones <= tmpTime Then   'No está saturando de connects?
+            IpTables(IpTableIndex + 1) = (tmpTime And &H3FFFFFFF)
             IpSecurityAceptarNuevaConexion = True
             Debug.Print "CONEXION ACEPTADA"
+            
             Exit Function
         Else
             IpSecurityAceptarNuevaConexion = False
-
             Debug.Print "CONEXION NO ACEPTADA"
+            
             Exit Function
         End If
     Else
         IpTableIndex = Not IpTableIndex
         AddNewIpIntervalo ip, IpTableIndex
-        IpTables(IpTableIndex + 1) = GetTickCount
+        IpTables(IpTableIndex + 1) = (tmpTime And &H3FFFFFFF)
         IpSecurityAceptarNuevaConexion = True
+        
         Exit Function
     End If
 
@@ -167,13 +171,13 @@ Dim IpTableIndex As Long
     If IpTableIndex >= 0 Then
         
         If MaxConTables(IpTableIndex + 1) < LIMITECONEXIONESxIP Then
-            LogIP ("Agregamos conexion a " & ip & " iptableindex=" & IpTableIndex & ". Conexiones: " & MaxConTables(IpTableIndex + 1))
-            Debug.Print "suma conexion a " & ip & " total " & MaxConTables(IpTableIndex + 1) + 1
+            LogIP ("Agregamos conexion a " & GetAscIP(ip) & " iptableindex=" & IpTableIndex & ". Conexiones: " & MaxConTables(IpTableIndex + 1))
+            Debug.Print "suma conexion a " & GetAscIP(ip) & " total " & MaxConTables(IpTableIndex + 1) + 1
             MaxConTables(IpTableIndex + 1) = MaxConTables(IpTableIndex + 1) + 1
             IPSecuritySuperaLimiteConexiones = False
         Else
-            LogIP ("rechazamos conexion de " & ip & " iptableindex=" & IpTableIndex & ". Conexiones: " & MaxConTables(IpTableIndex + 1))
-            Debug.Print "rechaza conexion a " & ip
+            LogIP ("rechazamos conexion de " & GetAscIP(ip) & " iptableindex=" & IpTableIndex & ". Conexiones: " & MaxConTables(IpTableIndex + 1))
+            Debug.Print "rechaza conexion a " & GetAscIP(ip)
             IPSecuritySuperaLimiteConexiones = True
         End If
     Else
@@ -234,7 +238,7 @@ Dim key As Long
             End If
         End If
     Else 'Key < 0
-        Call LogIP("restamos conexion a " & ip & " key=" & key & ". NEGATIVO!!")
+        Call LogIP("restamos conexion a " & GetAscIP(ip) & " key=" & key & ". NEGATIVO!!")
         'LogCriticEvent "SecurityIp.IpRestarconexion obtuvo un valor negativo en key"
     End If
     
