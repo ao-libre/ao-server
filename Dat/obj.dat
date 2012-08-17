@@ -68,7 +68,7 @@ usar primero los nros más bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1121
+NumOBJs=1125
 
 
 
@@ -12681,16 +12681,17 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 
 [OBJ1053]
-Name=Túnica Celestial Especial
+Name=Túnica de Campeón
 GrhIndex=767
 ObjType=3
 NumRopaje=101
 Agarrable=0
-Real=0
-MaxDef= 1
-MinDef= 1
-Valor=0
-Crucial=0 
+MaxDef=1
+MinDef=1
+NoSeCae=1
+NoRobable=1
+NoComerciable=1
+Log=1
 
 [OBJ1054]
 Name=Traje invernal del sur
@@ -13817,7 +13818,7 @@ CP11=TRABAJADOR
 
 [OBJ1113]
 Name=Corona de Bronce
-GrhIndex=24156
+GrhIndex=24470
 ObjType=17
 NumRopaje=2
 Agarrable=0
@@ -13828,7 +13829,7 @@ Log=1
 
 [OBJ1114]
 Name=Corona de Plata
-GrhIndex=24161
+GrhIndex=24475
 ObjType=17
 NumRopaje=2
 Agarrable=0
@@ -13839,7 +13840,7 @@ Log=1
 
 [OBJ1115]
 Name=Corona de Oro
-GrhIndex=24166
+GrhIndex=24480
 ObjType=17
 NumRopaje=2
 Agarrable=0
@@ -13850,7 +13851,7 @@ Log=1
 
 [OBJ1116]
 Name=Casco de Darth Vader
-GrhIndex=24198
+GrhIndex=24512
 ObjType=17
 NumRopaje=2
 Anim=21
@@ -13943,6 +13944,64 @@ NoRobable=1
 
 [OBJ1121]
 Name=Traje de Navidad
-GrhIndex=24197
+GrhIndex=24511
 ObjType=3
-NumRopaje=565
+NumRopaje=569
+
+[OBJ1122]
+Name=Casco de Artista Supremo
+GrhIndex=24517
+ObjType=17
+NumRopaje=2
+Agarrable=0
+Anim=22
+MaxDef=10
+MinDef=15
+Log=1
+NoSeCae=1
+NoRobable=1
+NoComerciable=1
+
+[OBJ1123]
+Name=Vestimenta de Campeón (E/G)
+GrhIndex=20320
+ObjType=3
+NumRopaje=482
+Agarrable=0
+MinDef=1
+MaxDef=1
+Crucial=0
+RazaEnana=1
+NoSeCae=1
+NoRobable=1
+NoComerciable=1
+Log=1
+
+[OBJ1124]
+Name=Vestimenta de Campeón
+GrhIndex=20374
+ObjType=3
+NumRopaje=484
+Agarrable=0
+MinDef=1
+MaxDef=1
+Crucial=0
+NoSeCae=1
+NoRobable=1
+NoComerciable=1
+Log=1
+
+[OBJ1125]
+Name=Vestimenta de Campeón (EO)
+GrhIndex=20239
+ObjType=3
+NumRopaje=479
+Agarrable=0
+MinDef=1
+MaxDef=1
+Crucial=0
+RazaDrow=1
+NoSeCae=1
+NoRobable=1
+NoComerciable=1
+Log=1
