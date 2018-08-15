@@ -1,0 +1,609 @@
+---------------------------------------
+ARGENTUM ONLINE - CHANGELOG DEL SERVER
+---------------------------------------
+
+
+- 0.11.5
+
+ * 05/03/2006: Implementación de los comandos /CIUMSG, /CAOSMSG, /CRIMS y /REALMSG pedidos por Pol'Thalas (Maraxus).
+ * 06/03/2006: Corrección de todos los bugs reportados y cerrados en el bug tracker de SF (Maraxus).
+ * 09/03/2006: Implementación de los comandos /MOD de HEAD y BODY y /FORCEMIDIMAP para RMs y dioses pedidos por Pol'Thalas (Maraxus).
+ * 10/03/2006: Corregí el bug que eliminaba mascotas y elementales al hacer worldsave - queda el código viejo por si había un motivo para esto del que no se sabía (Maraxus).
+ * 10/03/2006: Implementación del comando /TALKAS para RMs y dioses pedido por Pol'Thalas (Maraxus).
+ * 10/03/2006: Eliminé todo lo relativo a padrinos y anticuelgue que quedaba así como grandes porciones de código comentadas que ofuscaban. (Maraxus).
+ * 10/03/2006: Eliminé variables de objetos que no se usaban nunca (Maraxus).
+ * 10/03/2006: Comencé a tipar constantes, puse TODOs en futuros enums, hice constantes algunos arrays, puse modificadores de acceso y eliminé arrays implícitos de Main que sólo ocupaban memoria (Maraxus).
+ * 10/03/2006: Implementación del comando /FORCEWAVMAP pedido por Pol'Thalas - las coords x e y tendrán sentido con el panning de sonido en la 11.6 (Maraxus).
+ * 10/03/2006: Corrección de bugs menores en /FORCEMIDIMAP y agregado de mensaje de error con instrucciones de uso. (Maraxus).
+ * 11/03/2006: A pedido de Pol'Thalas hice que los comandos de mensajes a ciudas, crimis, caos y real pudiese o no llevar un fonttype. (Maraxus).
+ * 11/03/2006: Declaré nuevas constantes eliminando así cálculos y expresiones innecesarias. (Maraxus).
+ * 11/03/2006: Implementé el centinela de IAO con algunos cambios. (Maraxus).
+ * 11/03/2006: Corregí el como funciona el comando /MOD para RMs... aparentemente debería existir una tercer categoría que no existe... (Maraxus).
+ * 13/03/2006: Corregí el bug 1449113 ( el/SHOWCMSG cierra el cliente ). (Maraxus).
+ * 14/03/2006: Reacomodé constantes, eliminé cosas de más. (Maraxus).
+ * 14/03/2006: Se implementó el comando /IRCERCA (hecho por Patenke). (Maraxus).
+ * 14/03/2006: Cambié los sendroutes por un enum. (Maraxus).
+ * 14/03/2006: Puse la AI como enum y tipé más de 50 constantes. (Maraxus).
+ * 15/03/2006: Arreglé el counter de trabajando para el Centinela y puse With en los métodos ResetUser* (Maraxus).
+ * 15/03/2006: Puse los logs en el Centinela para eventos "anormales", y poder revisar aciones sospechosas (Maraxus).
+ * 15/03/2006: Corregí el bug que eliminaba NPCs cuando bloqueabas con las skills de uso de escudos y tácticas de combate en 0 (Maraxus).
+ * 15/03/2006: Eliminé módulos innecesarios, tipé constantes, moví algunas cosas de lugar (Maraxus).
+ * 16/03/2006: Eliminé un módulo innecesario, creé nuevos enums para reempazar constantes y los implementé en el resto del código (Maraxus).
+ * 18/03/2006: Corregí algunos bugs que impedían que uno se loguease. Para hacerlo sin seguridad deben desactivar el chqueo de MD5 en el server.ini!! (Maraxus).
+ * 18/03/2006: Ya no te deja comerciar tu barco con otro usuario mientras lo tengas equipado (Maraxus).
+ * 18/03/2006: Corregido el bug que hacía el mimetismo no tuviese efecto (Maraxus).
+ * 18/03/2006: Implemente mensajes de party overhead y los comandos /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 18/03/2006: Corregí un bug en la validación del cliente al crear personajes (Maraxus).
+ * 19/03/2006: Corregí un bug al crear personajes. Ahora esto ya funciona nuevamente (Maraxus).
+ * 19/03/2006: Puse Option Explicit en todos los módulos, tipé un par de constantes que encontré perdidas y convertí los privilegios en un Enum (Maraxus).
+ * 20/03/2006: Corregí un bug en /IRCERCA (gracias a Patenke por el code) (Maraxus).
+ * 21/03/2006: Corregí bugs varios al vender items a un NPC. Limpié un poco el código de comercio. (Maraxus).
+ * 22/03/2006: Corregí un bug al cargar y grabar mapas en el server. (Maraxus).
+ * 22/03/2006: Hice que actualice las áreas al moverse el user (evita las desapariciones del PJ y los saltos feos). (Maraxus).
+ * 22/03/2006: Corregí el bug de que los PJs nuevos fuesen GMs. (Maraxus).
+ * 23/03/2006: Corregí los índices de los heads para evitar la gente que nacía sin cabeza. (Maraxus).
+ * 29/03/2006: Corregí un bug al procesar el mensaje "/CENTINELA" (Maraxus).
+ * 29/03/2006: Hice se resetease el flag CentinelaOK en ResetUserFlags (Maraxus).
+ * 29/03/2006: Corregí bugs menores con el centinela, hice que se vuelva a acercar al user al pasar 1 minuto (por si "no lo vió" la primera vez) (Maraxus).
+ * 29/03/2006: Hice que el centinela hable al clickearselo como cualquier otro NPC. El texto depende del user que lo clickea (Maraxus).
+ * 29/03/2006: Corregí el bug que te pateaba si enviabas un /CENTINELA antes de que este aparezca por primera vez (Maraxus).
+ * 29/03/2006: Corregí el bug que no cancelaba el comercio seguro si no se cierra con "/salir" (Maraxus).
+ * 29/03/2006: Corregí el bug que copiaba el equipo del GM sobre el user al que se le hacía un /MOD de BODY o HEAD (Maraxus).
+ * 30/03/2006: Implementé el comando /SHOWNAME pedido por Pol'Thalas (Maraxus).
+ * 30/03/2006: Rehabilité el ver el clan al pasar el mouse sobre un PJ (Maraxus).
+ * 31/03/2006: Corregí el /STAT para que funcione con PJs offline (Maraxus).
+ * 31/03/2006: Modifiqué los dados según pidió GD (Maraxus).
+ * 31/03/2006: Eliminé los chequeos de atributos válidos que eran obsoletos (Maraxus).
+ * 31/03/2006: Corregí un bug con /SHOWNAME (Maraxus).
+ * 31/03/2006: Eliminé los atributos de la lista de argumentos de ConnectNewUser (Maraxus).
+ * 31/03/2006: /ROL envia un mensaje notificando que el envío se realizó (Maraxus).
+ * 31/03/2006: /INV leía el número de objetos de la bóveda y no del inventario si el PJ estaba offline (Maraxus).
+ * 1/04/2006: El centinela ya no pide la contraseña al pasar un minuto si ya se le respondió (Maraxus).
+ * 1/04/2006: El ValCode y MD5 se pusieron al final del OLOGIN para evitar problemas si el MD5 contenía comas (Maraxus).
+ * 1/04/2006: Eliminé el head y el body del NLOGIN (eran ceros) (Maraxus).
+ * 1/04/2006: Hice que los NPCs actualicen sus áreas al moverse (Maraxus).
+ * 5/04/2006: Ocultarse e Invisibilidad ya no son lo mismo (Maraxus).
+ * 5/04/2006: Limpié el ResetNPCFlags (Maraxus).
+ * 5/04/2006: Eliminé AddToVar (Maraxus).
+ * 6/04/2006: Los object type de escudos y cascos estaban invertidos (Maraxus).
+ * 6/04/2006: Corregí un bug que impedía que los NPCs tirasen hechizos (Maraxus).
+ * 6/04/2006: Corregí los comandos /caosmsg y /realmsg (Maraxus).
+ * 12/04/2006: Corregí bugs varios en comando comos /talkas, /trigger y varios otros puntos de la lógica de juego (Maraxus).
+ * 14/04/2006: Comando /MOd usa "+" en lugar de " " en los nicks (Maraxus).
+ * 14/04/2006: El comando /BANIP pide un motivo del ban (Maraxus).
+ * 14/04/2006: Consejeros RMs pueden agarrar y tirar items (Maraxus).
+ * 14/04/2006: Consejeros GMs no puede atacar criaturas ni usar RMATA en el mapa pretoriano (Maraxus).
+ * 14/04/2006: Al tirar un item si hay otro igual en el piso se ponen juntos (Maraxus).
+ * 14/04/2006: Corregí el código de los sonidos de mapa, ahora funcionan correctamente (Maraxus).
+ * 19/04/2006: Corregí un bug que permitía a los NPCs atacar a GMs con /invisible (Maraxus).
+ * 19/04/2006: Corregí bugs en comandos de GMs como /TRABAJANDO, /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 19/04/2006: Los mensajes /CAOSMSG, /REALMSG, /CUMSG y /CRIMSG se envian también a RMs y aclaran a quienes van dirijidos (Maraxus).
+ * 19/04/2006: El centinela ya no revisa a users ocultandose (Maraxus).
+ * 19/04/2006: Se creó el comando /OCULTANDO para que los GMs puedan revisar a los users ocultandose para detectar macros (Maraxus).
+ * 19/04/2006: Se utiliza clsLeerInis para muchas cosas que antes usaban GetVar por eficiencia (Maraxus).
+ * 19/04/2006: Corregí /ONLINEREAL y /ONLINECAOS (Maraxus).
+ * 21/04/2006: El cura te cura y revive con doble click (Maraxus).
+ * 21/04/2006: Las armaduras faccionarias se pueden vender independientemente de tu alineación (Maraxus).
+ * 21/04/2006: La bóveda se abre con doble click (Maraxus).
+ * 21/04/2006: Se solucionó un bug que entregaba mal las armaduras del caos (Maraxus).
+ * 21/04/2006: Se solucionó un bug que dejaba que te equipes armaduras faccionarias sin ser de esa facción (Maraxus).
+ * 24/04/2006: Se corrigieron /MOD del BODY y HEAD en PJs offline porque funcionaba al revés. (Maraxus).
+ * 24/04/2006: Último bug del centinela, al banear tiraba un error generando un clon. (Maraxus).
+ * 25/04/2006: Los NPCs pretorianos ahora actualizan sus áreas. (Maraxus).
+
+- 0.12.0
+
+ * 27/04/2006: Se incluyó la clase clsByteQueue utilizada en el nuevo protocolo. (Maraxus).
+ * 27/04/2006: No se permite invocar criaturas en zona segura por trigger o por mapa. (Maraxus).
+ * 17/05/2006: Se eliminó la variable FIT de UserStats que no se usaba nunca. (Maraxus).
+ * 03/06/2006: Cambios de Balance y GD. (Energía gastada al robar, daño de apuñalada, Sacerdotes Pretorianos remueven efecto de ocultarse) (Integer).
+ * 09/06/2006: Cambios de Balance y GD. (El golpe del user es absorbido tanto por la armadura como por el escudo, reparticion de exp de los NPC, Mensajes de party overhead,  muertos no ven vida de NPC ) (Integer).
+ * 11/06/2006: Se cambiaron algunos tipos de miembros de UserFlags para adecuarlos a su uso real (Maraxus).
+ * 15/06/2006: Se modificó ligeramente clsByteQueue para que trabaje tirando códigos de error al intentarse pasar los límites del buffer para lecutra y/o escritura (Maraxus).
+ * 16/06/2006: El Rey Pretoriano ya no puede ser atacado mientras haya miembros vivos de su clan (Integer).
+ * 23/06/2006: Eliminé algunas líneas que no se ejecutaban nunca porque los Ifs siempre daban False, cambié tipos de variables de facción y stats y modifiqué la constante MAXUSERMATADOS (Maraxus).
+ * 23/06/2006: Se abstrajo completamente la lista de Guilds, sólo es accesible por modGuilds. Muchos arrays como NPCList y Charlist se hicieron constantes. (Maraxus).
+ * 24/06/2006: Eliminé argumentos de varios paquetes que no eran necesarios (el cliente ni se molestaba en levantarlos). (Maraxus).
+ * 29/06/2006: Las herramientas ahora son consideradas armas. (Integer)
+ * 29/06/2006: El golpe de un User siempre te desconcentra de la meditacion. (Integer)
+ * 29/06/2006: Los golpes de NPCs te pueden desconcentrar mientras meditás. (Integer)
+ * 29/06/2006: Agregué la base de un sistema de estadísticas para data mining. (Maraxus)
+ * 29/06/2006: Los mensajes de party y de clan ya no aparecen overhead. (Maraxus)
+ * 01/07/2006: Agregué parseo de chats de todo tipo para analizar su peso en el tráfico delservidor y armar un Huffman de ser necesario. (Maraxus)
+ * 05/07/2006: Corregí el bug que te pateaba al usar la última flecha. (Maraxus)
+ * 06/07/2006: Corregí el bug que te permitía comerciar y usar la bóveda con doble click estando muerto. (Maraxus)
+ * 07/07/2006: Eliminé varias variables de tHechizos que no se usaban en ninguna parte del code. (Integer)
+ * 09/07/2006: Corregí un bug que permitía mandar PM a dioses y GMs bajo ciertas condiciones. (Maraxus)
+ * 18/07/2006: Corregí un un RT 5 al desconectar usuarios y un RT 9 al conectar usuarios en posiciones inválidas. (Maraxus)
+ * 20/07/2006: Cambiada formula de posibilidades de apuñalar. (Integer)
+ * 21/07/2006: Agregue Barcas faccionarias. (Integer)
+ * 27/07/2006: Corregí los mensajes que se enviaban al apuñalar (gracias Toxic por el dato). (Maraxus)
+ * 27/07/2006: Eliminé toda referencia a DescargaNpcsDat que no hacía nada (gracias Shura pro el dato) y corregí un error importante al recargar un ini. (Maraxus)
+ * 27/07/2006: Mejoré el método SubirSkill (gracias a Nigo por el código y a Patenke por el patch). (Maraxus)
+ * 04/08/2006: Corregí un bug al calcular el daño hecho al apuñalar un NPC. (Maraxus)
+ * 23/08/2006: Corregí las posibilidades de que llueva, ahora hay 1 posibilidad en 20 de que llueva en vez de 1 en 10. (Integer)
+ * 23/08/2006: Realizadas correcciones para que los usuarios ignoren a los Administradores. (^[GS]^)
+ * 12/09/2006: A los GMs y demás no les baja ni el hambre ni la sed. (Integer)
+ * 12/09/2006: Activé el comando "/seguir" a los GMs y Consejeros. (Integer)
+ * 01/10/2006: Consejeros pueden comprar pero no vender. (Integer)
+ * 10/10/2006: /Seguir quita efectos de paralisis. (Integer)
+ * 10/10/2006: /ShowName también impide que tu nombre se vea cuando te lanzan hechizos. (Integer)
+ * 18/12/2006: Nuevo protocolo completo en un 70% aproximadamente. Lo subo para que el resto pueda colaborar a escribirlo. Queda pendiente implementarlo. (Maraxus)
+ * 24/12/2006: Corregí un bug que permitía escuchar conversaciones de otros clanes. (Maraxus)
+ * 27/12/2006: Corregí una docena de bugs de antaño... Entre ellos el que /Dest funcione con teleports, el que /DT sin clickear a nada te patee, el que /APASS no asigna la pass que se acaba de setear con /PASSWD, etc. (Maraxus)
+ * 31/12/2006: Admin.bas, AI_NPC.bas y Comercio.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 31/12/2006: Modificaciones menores a algunos paquetes. (Maraxus)
+ * 31/12/2006: Acciones.bas, FileIO.bas, GameLogic.bas y General.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 31/12/2006: Reescribí SendData y agregué muchos métodos en modAreas. (Maraxus)
+ * 31/12/2006: Varias mejoras de performance en varios algoritmos distintos. La encriptación de paquetes es ahora casi 3 veces más rápida. (Maraxus)
+ * 31/12/2006: Algunos arreglos al protocolo, bugs que encontró NIGO. (Maraxus)
+ * 03/01/2007: Modulo_InventANDobj.bas, invUsuario.bas, Matematicas.bas y mdlCOmercioConUsuario.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 03/01/2007: mdParty.bas, ModAreas.bas, modBanco.bas y modCentinela.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 04/01/2007: modFaccionas.bas, modGuilds.bas, modHechizos.bas, modHexaStrings.bas y modInvisibles.bas han sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 04/01/2007: Nuevos PrepareMessage necesarios para implementar el nuevo protocolo (Maraxus)
+ * 04/01/2007: Algunos SendData que quedaron han sido rescritos (Tavo)
+ * 04/01/2007: Corrigiendo bugs de Tavo... (Maraxus)
+ * 06/01/2007: ahora InMapBounds chequea que el mapa sea correcto (NIGO)
+ * 06/01/2007: Modifique algunos senddata para que funcionen, agregué algunos FlushBuffer (en timers y funciones que mandan mensajes a otros usuarios por medio de write (tengan eso en cuenta ^^)) y correjí algunitos bugs. (liquid)
+ * 06/01/2007: Trabaje mas en varios otros módulos, deje algunos "'CHECK" (sin las comillas) para que alguien mas (o yo mas tarde) revise algunas cosas que no entendí o no tube tiempo de terminar. (liquid)
+ * 07/01/2007: revisé varios CHECK de Liquid. Quedan 3 PrepareMessage pendientes, los escribo en un rato. También hay que volver privados a los envíos a áreas dejando para eso el uso de SendData. (Maraxus)
+ * 07/01/2007: Agregados los 3 PrepareMessage que faltaban. (Maraxus)
+ * 07/01/2007: Creé el módulo modSendData con todos los métodos de envios por áreas y el SendData como interfaz. (Maraxus)
+ * 07/01/2007: MODULO_NPC.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 07/01/2007: Escribí el PrepareMessage de CharacterMove. (Maraxus)
+ * 07/01/2007: preatorians.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 08/01/2007: Corrigiendo bugs, y senddatas que faltaron.., todavia quedan en modUsuarios (los que marque con 'CHECK porq me canse) y en SistemaCombate.. todos. (liquid)
+ * 08/01/2007: SistemaCombate.bas ha sido arreglados para funcionar con el protocolo nuevo (Tavo)
+ * 08/01/2007: Agregue algunas que faltaron en SistemaCombate. (liquid) 
+ * 08/01/2007: Corregi un bug en el nuevo protocolo que hacia imposible descativar el seguro xD (NIGO)
+ * 08/01/2007: Cambiadas MakeObj,EraseObj, y las correspondientes para usuarios y npc's, ahora toman la ruta como un booleano, True=Al Mapa, False=Al User.., arerglados algunos bugs, y reemplazados todas las asignaciones "" por vbnullstring... y las comparaciones a "" por lenb. (liquid)
+ * 08/01/2007: Termine con los mensajes CharacterCreate que restaban en MoDuLo_Usuarios.bas. Puse algunos checks importantes. (Tavo)
+ * 09/01/2007: Termine con algunos errores de compilacion que quedaba y modifique HandleRequestUserList. (Tavo)
+ * 09/01/2007: Agregue le Character.bas al proyecto y correji los ultimos errores de compilacion, al fin compila! (Tavo)
+ * 09/01/2007: HandleIncomingData() ahora es recursivo mientras siga teniendo datos para procesar y no halla ningun error de falta de datos (Tavo)
+ * 10/01/2007: Corregi un bug en "/MEMBERLIST" que dejaba a cualquiera que lo use ver la lista de cualquier clan. (NIGO)
+ * 10/01/2007: EnviarDatosASlot no encola mas y utiliza la Byte Queue (Tavo)
+ * 10/01/2007: Todo rastro de ColaSalida ha sido borrado y remplazado por el outgoingData Buffer en los casos necesarios (Tavo)
+ * 10/01/2007: BUG #1629288, #1477130 y #1479156 reparados. (Tavo)
+ * 10/01/2007: Correción de varios BUGs (Tavo)
+ * 12/01/2007: /STAT ahora envia el status de la persona y su facción (Si la tiene) (Tavo)
+ * 13/01/2007: Arregle algunas cositas de /STAT que estaban mal y no compilaba (Maraxus)
+ * 13/01/2007: Escribí el FlushBuffer, el server estaría listo para empezar a testear (Maraxus)
+ * 13/01/2007: reescribí los métodos que manejaban nuevos mensajes de recibidos de clientes a nivel socket (Maraxus)
+ * 13/01/2007: Corregí los bytes mínimos necesarios para el paquet de crear un PJ (Maraxus)
+ * 13/01/2007: Arregle la carga de charfiles para permitir cargar PJs recién creados (Maraxus)
+ * 14/01/2007: Evitados los ciclos infinitos en HandleIncomingData. (Maraxus)
+ * 15/01/2007: Ahora el cliente loguea y ve stats e inventario. (Maraxus)
+ * 18/01/2007: Corregí un bug con los PMs. (Maraxus)
+ * 18/01/2007: Corregí el /SEG. (Maraxus)
+ * 18/01/2007: Arregle un rt9 en DotileEvents, y ahora el server no te dropea cuando tiene ganas.. (liquid)
+ * 18/01/2007: Andan las estadísticas. (Maraxus)
+ * 18/01/2007: Agregué un par de casos donde debía saltar la NOT_ENOUGH_DATA exception. (Maraxus)
+ * 08/02/2007: Agrego los cambios de Toxic, tengan en cuenta que los PJs deben crearse de cero para poder loguear. (Maraxus)
+ * 25/02/2007: código listo salvo pr posibles bugs. (Maraxus)
+ * 01/03/2007: Privilegios y Restricciones Implementadas. (NIGO)
+ * 31/03/2007: Tras un mes de bug-fixes agregamos algo nuevo. El comando /PING. (Maraxus)
+ * 26/06/2007: Se corrigieron bugs la última semana. (Integer, NIGO y Maraxus)
+ * 26/06/2007: Corregí una desincronización cliente-servidor. (Maraxus)
+ * 06/07/2007: Algunos bugs de permisos en /Lastip y BanCharacter arreglados. (Maraxus)
+ * 09/07/2007: Corregí un typo en el parche de yaer que causaba clone sy otras yerbas. (Maraxus)
+ * 09/07/2007: Corregí un un bug que permitía saber si hay GMs online con /acceptparty y /echarparty. (Maraxus)
+ * 10/07/2007: Corregí un bug en la clsByteQueue que causaba un rt9 al querer limpiarsela si estaba llena. (Maraxus)
+ * 16/07/2007: Corregí varias posibles desincronizaciones cliente-servidor. (Maraxus)
+ * 18/07/2007: Nuevas cosas delcentinela. Loguea más datos y permite saber a quein está visitando ahora. (Maraxus)
+ * 11/08/2007: Gran mejora de performance en el manejo de NPCs y algunas mejoras en GameTimer. (Maraxus)
+
+
+- 0.12.1
+
+ * 12/08/2007: Ahora el WriteParalizeOk actualiza la posicion del personaje. (Tavo)
+ * 14/08/2007: Modificado el WritePlayWave para que tenga los parametros X e Y como bytes, la constante NO_3D_SOUND fue actualizada (Rapsodius)
+ * 23/08/2007: Borré cosas que no servian (Rapsodius)
+ * 29/08/2007: En la cuenta regresiva del /SALIR se te va la invisibilidad. (Rapsodius)
+ * 29/09/2007: Volo la restriccion por niveles para ingresar en una party (Tavo)
+ * 29/09/2007: La experiencia dentro de una party es un numero real (Tavo)
+ * 29/09/2007: La experiencia personal que se entrega, y la que se muestra con /onlineparty, se trunca al número mas chico (Tavo)
+ * 29/09/2007: Nueva formula para la experiencia de cada personaje en la party (Tavo)
+ * 10/10/2007: Modifiqué el sistema de comercio, para que mande el precio de venta. (NicoNZ)
+ * 28/10/2007: Arreglé las passwords y agregué soporte para Singles y Doubles en ByteQueue. (Maraxus)
+ * 02/01/2008: Arreglé el error que perimitia tirar curar veneno, heridas leves y graves a un usuario muerto (ByVal)
+ * 07/01/2008: Dupliqué chequeos de comercio y boveda en el server para evitar duplicación de las listas. (Maraxus)
+ * 10/01/2008: /UPTIME: Removí el mensaje que muestra el tiempo para el reinicio automático del Server, que ya no existe, junto con todas sus variables y asignaciones. Ahora solo muestra el tiempo online que lleva el Server. (ByVal)
+ * 10/01/2008: De ahora en más si el usuario se mueve, o simplemente cambia su dirección de visión, se cancela la salida del usuario en caso que este saliendo obviamente. (Tavo)
+ * 10/01/2008: Si el usuario ataca se cancela la salida. También se cancela si un usuario recibe un golpe. (Tavo)
+ * 11/01/2008: Si el usuario tira un hechizo a otro se cancela la salida. También si un usuario recibe un ataque ofensivo o mundano. (Tavo)
+ * 11/01/2008: Si un usuario intenta hacer una habilidad, o un usuario recibe una habilidad entonces se cancela su salida. (Tavo)
+ * 14/01/2008: La sentencia FOR de la funcion LimpiarMundo estaba mal diseñada. (ByVal)
+ * 17/01/2008: Arreglé el bug que permitia usar la barca a 1 o 2 tiles del agua. (NicoNZ)
+ * 12/02/2008: Solucioné el bug que se respawneaban llaves ya vendidas. (NicoNZ)
+ * 29/03/2008: Arreglo del bug que causaba problemas al definir ganadores de elecciones de líder de clan (daba la elección como desierta). (NIGO)
+ * 29/03/2008: Arreglo del valor de la constante con el último packetId del cliente. Ahora CheckSlot vuelve a funcionar. (Maraxus)
+ * 29/03/2008: Arreglo del cambio de password al estar con SeguridadAlkon. (Maraxus)
+ * 30/03/2008: Arreglos con el sonido 3D. Ahora se mandan posiciones para muchos sonidos donde antes no dando mejor ambiente. (Maraxus)
+ * 30/03/2008: Eliminé el paquete que hacía reproducir el ruido de la fogata. (Maraxus)
+ * 30/03/2008: Corregí un bug que le cambiaba el mail no sólo al usuario sino también al Dios que ejecutaba /AEMAIL. (Maraxus)
+ * 31/03/2008: Se pueden tirar y depositar items incluso si están equipados (de estar sacando todos se desequipan sólos, sino sigue como si nada). Proximamente haré lo mismo con comercio. (Maraxus)
+ * 01/04/2008: Se pueden vender items incluso estando equipados (se desequipan al venderse el último). (Maraxus)
+ * 01/04/2008: Ahora el uso de un /acc o /racc con un id inexistente no crea ningún NPC, evitandose producir rt-9 en el cliente. (Maraxus)
+ * 01/04/2008: Se restauran los atributos originales al morir. (DarkThom)
+ * 01/04/2008: Mejora en el control de resitrcción en el server. (DarkThom)
+ * 02/04/2008: Se llama a CancelExit para cancelar la salida. (Tavo)
+ * 02/04/2008: CancelExit ahora no deja a usuarios adentro eternamente. Además se limpiaron muchas llamadas a CancelExit y se homogeneizó su uso. (Maraxus)
+ * 02/04/2008: Al resucitar un usuario se le reestablece su cabeza original. (Maraxus)
+ * 02/04/2008: Se corrigió un error ortográfico y se evitó sea posible tirarse hechizos negativos a uno mismo. (Maraxus)
+ * 03/04/2008: Se volvió el comportamiento de cancelar salida al de siempre, con las condiciones nuevas agregadas en enero. Siguen siendo menos llamadas de todos modos y más organizado. (Maraxus)
+ * 03/04/2008: Ya no se patea al líder del clan al aceptar un PJ offline. (Maraxus)
+ * 04/04/2008: En las partys ahora antes de calcular la experiencia a X usuario se fija si ese usuario existe (MarKoxX)
+ * 05/04/2008: Cuando un npc mata a otro npc, se fija si este tiene dueño antes de llamar a FollowAmo (MarKoxX)
+ * 08/04/2008: Se arregló un bug que permitía recuperar HP y stamina estando con hambre y/o sed. (Maraxus)
+ * 08/04/2008: Arregle un error que permitia comprar mas items de los disponibles en el npc. (Noich)
+ * 09/04/2008: Typo en el fix anterior. (Maraxus)
+ * 10/04/2008: Se rectificó un mensaje de status del servidor. (Maraxus)
+ * 11/04/2008: Arreglado el bug en el cual al mimetizarte con vos mismo y luego navegar, al irse el efecto quedabas sin la barca caminando por el agua. (NicoNZ)
+ * 11/04/2008: Arregle el bug que al ejecutar el comando /revivir a un PJ vivo aparece desnudo y sigue con todos los items equipados. (NicoNZ)
+ * 11/04/2008: Arregle el bug que al querer vender/comprar y el npc no lo permita, no se volvian a cargar las listas. (NicoNZ)
+ * 11/04/2008: Fix a un bug de NicoNZ al corregir el mimetismo y luego navegar. (Maraxus)
+ * 11/04/2008: Pequeñas mejoras al fix de /revivir de NicoNZ (si estás vivo no te desequipa las cosas y te da un mensaje diciendo te curaron, no te revivieron). (Maraxus)
+ * 13/04/2008: Al modificarse un slot del inventario de un NPC se envía el índice del mismo, no se asume nada. (Maraxus)
+ * 13/04/2008: Ahora los guardias faccionarios pueden ser removidos por usuarios de su misma facción. (NicoNZ)
+ * 13/04/2008: Ya no se puede saber si un usuario esta Online o no mediante el comando /acceptparty. (NicoNZ)
+ * 15/04/2008: Al morir, se resetea el contador de invisible. (NicoNZ)
+ * 15/04/2008: Habia un error que en la herreria, cualquier clase podia construir lo mismo que un herrero. (NicoNZ)
+ * 15/04/2008: Arregle un bug que le daba al usuario un index al meditar en el server y le mandaba otro al cliente. (NicoNZ)
+ * 15/04/2008: Arreglado el FOR del sub LimpiarMundo que tiraba error de la forma en que se ejecutaba. Agregue que si hay un error en ese sub se logeara. (NicoNZ)
+ * 15/04/2008: No se resteaban los counters de invisibilidad ni de ocultar al poner /salir. (NicoNZ)
+ * 17/04/2008: Sub DoApuñalar: Simplifique la cuenta que hacia para sacar la suerte y arregle la cuenta que hacia para sacar el daño. (NicoNZ)
+ * 18/04/2008: Fix en el nombre que aparece en los mensajes de /revivir. (NicoNZ) 
+ * 21/04/2008: Arreglado el bug que no cambiaba la barca al cambiar de status. (NicoNZ)
+ * 22/04/2008: Arreglado el bug que te echaba al poner 2 veces /rmata. (NicoNZ)
+ * 25/04/2008: Ahora se mina de 1 a 6 (solo los mineros). (NicoNZ)
+ * 25/04/2008: Arreglé un par de mensajes al tirar hechizos. (NicoNZ)
+ * 01/05/2008: Ahora no se resetea el intervalo al errar un hechizo. (NicoNZ)
+ * 12/05/2008: Arreglado el bug que al intentar banear una ip ya baneada, se producia un bucle inifinito. (NicoNZ)
+ * 30/05/2208: Al cargarse del backup los mapas, en caso de no existir backup de alguno, se toma el la carpeta mapas. (Serbice)
+ * 14/06/2008: Ahora se ve el precio final a la hora de comerciar con un NPC. (NicoNZ)
+ * 14/06/2008: Arreglé el bug que al invocar un npc en agua nos sacaba la energía y mana, pero el npc no se invocaba. (NicoNZ)
+ * 15/06/2008: Optimizado la funcion SpawnNpc que producía 60 iteraciones sin sentido. (NicoNZ)
+ * 18/06/2008: Agregado un mensaje al domar. (NicoNZ)
+ * 18/06/2008: Arreglado un bug que permitía tener un pj faccionario en un clan de alineación neutra. Además ese personaje no podía volver a loguear. (NicoNZ)
+ * 22/06/2008: Bug fix en CrearNPC, aborta cuando OpenNPC devuelve valores mayor a MAXNPC y no 0, que era imposible. (Maraxus)
+ * 28/06/2008: Los elementales al atacarlos por su amo no se paran más al lado de él sin hacer nada. (NicoNZ)
+ * 28/06/2008: Arreglado el bug que permitía cerrar invisible. (NicoNZ)
+ * 28/06/2008: Ahora si estás inmovilizado, te podes mover sobre el mismo eje para las cuatro direcciones, si estás paralizado, no. (NicoNZ)
+ * 28/06/2008: Arreglado el bug que las mascotas no atacaban. (NicoNZ)
+ * 01/07/2008: Cambio el mensaje del /APASS para que tenga más sentido. (Maraxus)
+ * 05/07/2008: La nueva fórmula de distribuir la experiencia en una party es: Exp*Nivel^(K)/Suma[Nivel^(K)]. (MarKoxX)
+ * 06/07/2008: Ahora ExponenteNivelParty se carga de Balance.dat (MarKoxX)
+ * 06/07/2008: Se agregó el boton "Reload Balance.Dat" en las opciones del server. (MarKoxX)
+ * 07/07/2008: Arreglado el bug que los elementales de agua atacaban usuarios. (NicoNZ)
+ * 07/07/2008: Arreglado el bug que permitía a los no druidas mimetizarse con NPCS. (NicoNZ)
+ * 10/07/2008: Al loguear estando en la costa con la barca equipada ya no aparece tu cabeza. (Maraxus)
+ * 10/07/2008: Arreglado un BUG en PvP que no dejaba subir tácticas a menos que el atacante tuviera llenas las barras de hambre y sed. (MarKoxX)
+ * 10/07/2008: Arreglado un BUG en PvP que daba doble chance de subir combate, proyectiles o combate sin armas. (MarKoxX)
+ * 20/07/2008: Fix post-parche para cambiar pass tras haber recuperado (no coincidian los cases). (Maraxus)
+ * 21/07/2008: Arregle un bug que te permitia declararle la guerra a un clan con el que ya estabas en guerra. (Noich)
+ * 24/07/2008: Cambio en DoRobar: Ahora cuando se roban oro se llama a WriteUpdateGold en LadrOnIndex y VictimaIndex. (MarKoxX)
+ * 27/07/2008: Arreglado que permitia que los criminales podian atacar las mascotas de los ciudadanos con el seguro puesto. (NicoNZ)
+ * 27/07/2008: Arreglado un bug que al hacer doble clic sobre un arma nos mandaba un mensaje sobre que habia que equipar el item. (NicoNZ) 
+ * 27/07/2008: Fix del bug 2027273 (MarKoxX) | Además arreglé el tema de comercio como pidio GD
+ * 28/07/2008: Arregle un error de NicoNZ al arreglar un tema del seguro. (Noich)
+ * 28/07/2008: Fix del bug 2030008. (Noich)
+ * 28/07/2008: Arreglado el bug que se podian tirar hechizos que modificaban stats (vida,mana,hambre,sed,sta) a los usuarios muertos. (NicoNZ)
+ * 18/08/2008: Bug fixes varios, acepto algunos parches y realizo fixes propios par aaquellos que fueron rechazados. (Maraxus)
+ * 18/08/2008: Fix del bug 2044211 (MarKoxX)
+ * 19/08/2008: Ya no se puede saber si un usuario esta online mediante el comando /partylider. (Noich)
+ * 19/08/2008: Agregado y modificado logs de desarrollo y gms. (NicoNZ)
+ * 30/08/2008: Arreglado el bug que permitia a un usuario usar el comando /slot. (NicoNZ)
+ * 03/09/2008: Arreglado el bug que dejaba que los npcs respawneen items que no tienen. (Marco)
+ * 09/09/2008: Arreglado el bug del comando /slot que nos echaba. (NicoNZ)
+ * 12/09/2008: Fix del bug 2097927, el tema de los hechizos (Marco)
+ * 12/09/2008: Ahora cuando pasas a lvl 25 y perteneces a un clan faccionario te echa y no genera antifacción (Marco)
+ * 18/09/2008: Mejoras al fix de /slot de Nico, y acelero increiblemente SeguirAMO eliminando una iteración HORRENDA que se hacía al pedo. (Maraxus)
+ * 20/09/2008: Fixes varios al lanzar hechizos. (Maraxus)
+ * 21/09/2008: Eliminé muchísimas variables que no se usaban. (Maraxus)
+ * 22/09/2008: Continúa la limpieza, y metí cientos de With en NPCs, con lo que el uso de CPU debería de bajar. (Maraxus)
+ * 25/09/2008: Agregado nuevamente el cartel de clan. (Noich)
+ * 25/09/2008: Ahora los Dioses pueden ver el cartel de clan. (noich)
+ * 29/09/2008: Arreglado bug en el cual en cada vez que un user se moría se ejecutaba 2 veces el UserDie. (NicoNZ)
+ * 14/10/2008: Nuevo calculo para cargar mana con pociones azules. (NicoNZ)
+ * 18/10/2008: Ya no se puede saber mediante /partylider si un personaje esta online o no. (NicoNZ)
+ * 26/10/2008: Ahora se le saca energía al trabajar en carpintería y herrería. (NicoNZ)
+ * 15/11/2008: Ya no se puede ver si hay gente online o no con /echarparty. (NicoNZ)
+ * 15/11/2008: En varios mensajes ahora diferencia entre hombre y mujer (EJ: "Estás muy cansada"). (NicoNZ)
+ * 15/11/2008: Arreglado el bug que permitia meter users en clanes sin respetar el nivel minimo. (NicoNZ)
+ * 15/11/2008: No se responde nada cuando un usuario intenta susurrar a un gm (Maraxus)
+ * 17/11/2008: Mergeado el fix del bug de las partys (que permitia a un user ganar mas exp de la que debería) (Marco)
+ * 17/11/2008: Agregado para quitar la penalización de vida en el ring y cambio de ecuación. (NicoNZ)
+ * 17/11/2008: Agregado para que los druidas, al tener equipada la flauta magica, el coste de mana de mimetismo es de 50% menos. (NicoNZ)
+ * 01/12/2008: Arreglo de faltas ortográficas y de gramática. (NicoNZ)
+ * 01/12/2008: Optimización de TriggerZonaPelea. (NIGO)
+ * 10/12/2008: Se facilitaron los dados y ahora con 100 skills en pesca o tala se saca recursos en cada golpe. (NicoNZ)
+ * 10/12/2008: Arreglo bug en el cual los npcs pretorianos pisaban otros npcs. (NicoNZ)
+ * 15/12/2008: Ahora no se pueden domar 2 mascotas iguales. (ZaMa)
+ * 18/12/2008: Arreglado el bug en el cual te retirabas de una facción y no tenías nada puesto te pateaba. Se cambió el mensaje si te retirás y también desequipa el escudo. (NicoNZ)
+ * 30/01/2009: Vuelven los mensajes de clan. (NicoNZ)
+
+
+- 0.12.2
+
+
+ * 10/02/2009: Ahora algunos npcs inmovilizan y turban a los personajes. (Zama)
+ * 02/03/2009: Arreglada ecuacion para quitar vida tras resucitar en rings (ZaMa).
+ * 02/03/2009: Agregada 50% bonificacion en coste de mana a mimetismo para druidas. (ZaMa)
+ * 02/03/2009: Ahora se borran las mascotas cuando moris en agua. (ZaMa)
+ * 02/03/2009: Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla. (ZaMa)
+ * 02/03/2009: Los usuarios pueden atacarse entre si. (ZaMa)
+ * 02/03/2009: Arreglado el cartel de clanes. (ZaMa)
+ * 02/03/2009: Ahora cuando un pj de un clan facconario pasa a 25, se lo echa y no suma antifaccion. (ZaMa)
+ * 02/03/2009: Las criaturas domadas en zona segura, esperan afuera (desaparecen). (ZaMa)
+ * 13/02/2009: Las mascotas no pueden atacar al rey si quedan pretorianos vivos. (ZaMa)
+ * 13/02/2009: Las mascotas no regeneran su vida al cambiar de mapa (Solo entre mapas inseguros). (ZaMa)
+ * 13/02/2009: Arreglado respawn de mascotas al cambiar de mapa. (ZaMa)
+ * 13/02/2009: El fundador de un clan neutro, no puede enlistarse en las facciones. (ZaMa)
+ * 25/03/2009: EL nombre del gm que aparece por consola al clickearlo, tiene el color correspondiente a su rango. (ZaMa)
+ * 25/03/2009: Agrego diferenciacion de colores para dialogos segun rango de Gm. (ZaMa)
+ * 25/03/2009: Agrego diferenciacion de color por consola, segun el rango de Gm. (ZaMa)
+ * 25/03/2009: Agrego funcion para saber quien es el funda. (ZaMa)
+ * 25/03/2009: Modificacion en prob. de dados. (ZaMa)
+ * 25/03/2009: Desequipo los items faccionarios que tenga el funda al abandonar la faccion. (ZaMa)
+ * 26/03/2009: Se puede intercambiar pos con caspers. (ZaMa)
+ * 26/03/2009: No se pisan mas pjs ni npcs cuando se teletransporta un pj. (ZaMa)
+ * 06/04/2009: Los npcs pueden forzar usuarios muertos a moverse si estan en su camino. (ZaMa)
+ * 06/04/2009: Agrego nuevo Intervalo: Golpe+Poción. (ZaMa)
+ * 27/04/2009: Fix en movimiento de npcs. (ZaMa)
+ * 27/04/2009: Indentado LegalPosNPC (Marco)
+ * 27/04/2009: NpcLanzaSpellSobreUser > Ahora pueden tirar estupidez (Marco)
+ * 27/04/2009: Aceptar en concilio de las sombras > El mensaje que enviaba a los clientes decía Consejo de la Legión Oscura en vez de Concilio (Marco)
+ * 28/04/2009: Los NPCs que Atacan Doble, tienen un 50% de probabilidad de tirar hechizos, y no 100% como antes. (ZaMa)
+ * 28/04/2009: Fix al commit anterior de Zama (Marco)
+ * 05/05/2009: Ya no se puede ver si un usuario está online con /acceptparty, /echarparty ni /partyleader (Marco)
+ * 08/05/2009: Fix del bug 2788199 (Pato)
+ * 09/05/2009: Ahora cuando un pretoriano ataca se actualiza la vida del usuario (Pato)
+ * 11/05/2009: Las mascotas no quedan trabados en posiciones invalidas, fixes bug #2788767. (ZaMa)
+ * 11/05/2009: Las mascotas actualizan sus stats solo si fueron creadas, fixes bugs #2788768 and #2788769. (ZaMa)
+ * 11/05/2009: Fix del bug #2788361 (Pato)
+ * 12/05/2009: Se toman los privs del user al que se le susurra sólo después de validar el index, fixes bug #2788777. (Maraxus)
+ * 13/05/2009: Arreglado contador de muertes de usuarios. (ZaMa)
+ * 13/05/2009: Se arregla la forma de iterar sobre los miembros del clan al verificar permanencia, fixes bug #2788777. (Maraxus)
+ * 13/05/2009: La función Distance recibe Integers y no Variants. (Maraxus)
+ * 14/05/2009: Fix del bug #2791530 (Pato)
+ * 14/05/2009: Elimine variables locales que no se usaban en Trabajo.bas (Budi)
+ * 17/05/2009: Agregué los error handlers y corregí algunos typos. (Budi)
+ * 18/05/2009: Fix del bug #2793496 (Budi)
+ * 18/05/2009: Fix al commit anterior de Budi. (Pato)
+ * 28/05/2009: Arreglo el color de nick de rms por consola. (ZaMa)
+ * 28/02/2009: No aparece ningun mensaje cuando mandas privado a un admin invisible. (ZaMa)
+ * 28/02/2009: Al morir en la arena, no se activa el seguro de resu. (ZaMa)  
+ * 28/02/2009: Si te sacan de la arena, y tenes el seguro de resu desactivado, se activa. (ZaMa)
+ * 08/06/2009: Se agregó el comando /mod agregar oro
+ * 09/06/2009: Ahora el comando /rajar funciona incluso cuando el usuario esta offline. (Pato)
+ * 11/06/2009: Agregados algunos checks en el cliente (para equipar, agarrar, tirar, domar, robar, ocultar, meditar)
+ * 11/06/2009: Todos los /mod se pueden usar incluso si el pj esta offline. (ZaMa)
+ * 11/06/2009: Corregido el chequeo de mana del druida con flauta mágica equipada para el hechizo mimetismo. (Pato)
+ * 11/06/2009: Arreglado un chequeo de nivel al loguear. (ZaMa)
+ * 14/06/2009: Ahora es posible ordenar la bóveda (Pato)
+ * 21/06/2009: Agregué el comando /SETINIVAR (BrianPr)
+ * 25/06/2009: Fix al bug #2811927 (Pato)
+ * 30/06/2009: Cuando se usa el /rajar si el personaje no está online se fija que exista el char. (Pato)
+ * 02/07/2009: Ya no se puede saber si un gm está o no online con el comando /banip. (Pato)
+ * 04/07/2009: Ya no se cambia la barca si estas muerto y se actualiza el char por un cambio de stat o alineacion, fixes bug #2816532. (ZaMa)
+ * 11/07/2009: Fix al bug #2819911 (Pato)
+ * 17/07/2009: Los chars de los admins invisibles no existen mas que en su propio cliente. (ZaMa)
+ * 17/07/2009: Ahora los usuarios patean a los admins invisibles (como si fueran caspers). (ZaMa)
+ * 17/07/2009: Ahora todo tipo de mensajes de un admin invi, se muestra por consola. (ZaMa)
+ * 17/07/2009: Ahora se navega automaticamente al teletransportarse sobre agua y se desactiva al hacerlo sobre tierra. (ZaMa)
+ * 19/07/2009: Fix de los bugs #2788770  y #2788769. (Marco)
+ * 19/07/2009: Arreglado RT9 en verpropuestas de paz/alianza de clanes. (Marco)
+ * 21/07/2009: Cuando un usuario muere se cierra el comercio seguro. (Marco)
+ * 26/07/2009: Un usuario no puede tirar / agarrar items mientras comercia. (Marco)
+ * 01/08/2009: Los admins invisibles ya no pueden cambiar posicion con caspers. (ZaMa)
+ * 01/08/2009: Los npcs ya no pueden forzar a un casper a cambiar de terreno. (ZaMa)
+ * 01/08/2009: Los admins invisibles solo producen sonidos en su propio cliente. (ZaMa)
+ * 01/08/2009: Ahora solo se borra el char del admin invisible en su propio cliente. (ZaMa)
+ * 18/08/2009: Ahora los GMs ven invis. (Budi)
+ * 24/08/2009: Ahora se valida si un pj reun los skills suficientes para construir un item, de acuerdo a su clase. (ZaMa)
+ * 25/08/2009: Ahora solo los admins puedne ver las penas de otros admins. (ZaMa).
+ * 02/09/2009: Modificados los privilegios para realizar /ESTUPIDO, /NOESTUPIDO, y /MODMAPINFO. (Pato)
+ * 17/09/2009: Fix bug #2860203 (Pato)
+ * 17/09/2009: Saco el WriteUserCharIndexInServer de DoAdminInvisible ya que el CharIndex del GM nunca cambió, por lo tanto no hay que enviarlo. (Pato)
+ * 20/09/2009: Saco el sistema de empolles (Pato)
+ * 23/09/2009: Si un gm invisible dice algo "vacio"(solo espacios) no se dice nada. (ZaMa)
+ * 23/09/2009: Fix bug #2860188 (Pato)
+ * 17/10/2009: Fix bug #2860200 (Pato)
+ * 18/10/2009: Modifico unos checkeos de privilegios porque sino los GMs que sean miembros de alguno de los 2 consejos aveces no van a ver a los personajes invisibles. (Pato)
+ * 24/11/2009: Cambié en el método del clsParty que actualiza la suma de los niveles elevados un exponente explícito por la variable que contiene el exponente. (Pato)
+ * 29/11/2009: Fixié un Out of Range, modifiqué la función ObtenerMiembrosOnline de clsParty y agregué el método ObtenerExperienciaTotal en clsParty (Budi)
+ 
+- 0.13.0
+
+ * 13/11/2009 : Estado no atacable al entrar a un mapa. (ZaMa)
+ * 13/11/2009 : Random de pos al entrar en un telep, determinado por un radio. (ZaMa)
+ * 14/11/2009 : Los guardias del caos ya no persiguen mas admins ciudas no perseguibles. (ZaMa)
+ * 14/11/2009 : Ahora el usuario esta protegido del ataque de npcs al loguear. (ZaMa)
+ * 15/11/2009 : Mensaje de clan al conectarse/desconectarse. (ZaMa)
+ * 15/11/2009 : No afecta la lluvia en las arenas.  (ZaMa)
+ * 16/11/2009 : Implementado la extraccion y uso de madera elfica. (Sin testear) (ZaMa)
+ * 16/11/2009 : Nuevo sistema de construccion/extraccion. (Sin testear) (ZaMa)
+ * 16/11/2009 : Se reduce un 25% la evasion al meditar. (Sin testear) (ZaMa)
+ * 17/11/2009 : Solucion al robo de npcs. (Sin testear) (ZaMa)
+ * 17/11/2009 : Tirar hechizos estando oculto te vuelve visible. (ZaMa)
+ * 17/11/2009 : Cuerno Faccionario. (Sin testear) (ZaMa)
+ * 18/11/2009 : /Liberar. (ZaMa)
+ * 18/11/2009 : Hechizo invocador de mascotas.  (ZaMa)
+ * 19/11/2009 : Hago los cambios requeridos del bandido. (Pato)
+ * 20/11/2009 : Agrego el nuevo sistema de entrenamiento de skills (Pato)
+ * 22/11/2009 : Agregué el sistema de fundición y arreglé un pequeño error en el nuevo sistema de skills. (Sin testear) (Budi)
+ * 25/11/2009 : Trueque. (ZaMa)
+ * 27/11/2009 : Clase Trabajadora Unica. (Sin testear) (ZaMa)
+ * 27/11/2009 : Problema Clanes. (Sin testear) (ZaMa)
+ * 28/11/2009 : Invisibilidad Variable. (Sin testear) (ZaMa)
+ * 28/11/2009 : Drops Complejos. (Sin testear) (ZaMa)
+ * 30/11/2009 : Sistema de fundición de armas. (Sin testear) (Budi)
+ * 30/11/2009 : Administracion de party en el cliente. (Sin testear) (Budi)
+ * 30/11/2009 : Nueva interfaz, stats del equipo y droga actualizada en el cliente. (Testeado, faltan detalles) (Budi)
+ * 04/12/2009 : Sistema de mochilas (Sin testear) (Budi)
+ * 04/12/2009 : Fixes en el update del equipo, optimizaciones varias (Budi)
+ * 05/12/2009 : Quité el Sistema de Combate (sin testear) (Budi)
+ * 10/12/2009 : Implementé el sistema de upgrade de ítems (Pato)
+ * 18/12/2009 : Los newbies pk no dropean mas items newbies. (ZaMa)
+ * 18/12/2009 : Los ladrones ciudas pueden robar a pks. (ZaMa)
+ * 18/12/2009 : Oro directo a billetera.
+ * 20/12/2009 : Ahora los 10 skills iniciales hay que asignarlos ingame, si no lo hacemos no suben los skills (Pato)
+ * 28/12/2009 : Ahora se selecciona el head al crear pj. (Pato)
+ * 29/12/2009 : Ya no se envian las 7 versiones al loguear o crear PJ. (Pato)
+ * 31/12/2009 : Ahora el server envíar la madera élfica necesaria para cada ítem, y el GrhIndex de los ítems de carpintería. (Pato)
+ * 02/01/2010 : Reformas en foros. (ZaMa)
+ * 12/01/2010 : Adicionales para el druida. (ZaMa)
+ * 12/01/2010 : Armas arrojadizas. (ZaMa)
+ * 12/01/2010 : Adicionales para el pirata. (zaMa)
+ * 13/01/2010 : Termine con el pirata. (zaMa)
+ * 13/01/2010 : Arregldo caminar oculto con bandido. (ZaMa)
+ * 13/02/2010 : Finalizo drops complejos. (ZaMa)
+ * 06/03/2010 : Ahora tenemos 5 intentos para no caer en un teleport luego de entrar a un teleport con radio > 0 (Marco).
+ * 24/03/2010 : Agrego una validación al momento de elegir la cabeza. (Pato)
+ * 29/03/2010 : Ahora en el dat se puede especificar una animación especial para las armas en las razas enanas. (Pato)
+ * 01/04/2010 : Agrego guantes de lucha. (ZaMa)
+ * 01/04/2010 : Modificacion en la cantidad de oro robado por el ladron. (ZaMa)
+ * 01/04/2010 : Agrego guante de lucha. (ZaMa)
+ * 02/04/2010 : Ahora un faccionario se puede salir de su faccion en cualquier momento con "/retirarfaccion". (ZaMa)
+ * 02/04/2010 : Los armadas ya no pueden atacar mas npcs no hostiles aunque no tengan el seguro activado. (ZaMa)
+ * 02/04/2010 : Los ciudas ya no se convierten en criminales al atacar npcs no hostiles. (ZaMa)
+ * 02/04/2010 : Los pretorianos volvieron a dropear oro. (ZaMa)
+ * 07/04/2010 : Los asesinos apuñalan acorde al daño base sin descontar la defensa del npc. (ZaMa)
+ * 14/04/2010 : Ahora se peude compartir npcs. (ZaMa)
+ * 15/04/2010 : Arreglo bug que no permitia destruir teleps creados con /ci. (ZaMa)
+ * 15/04/2010 : Agrego nuevo sistema de recompensas faccionarias. (ZaMa)
+ * 15/04/2010 : Ahora los npcs con dueño tienen prioridad de perseguirlos si estan en su rango de vision. (ZaMa)
+ * 15/04/2010 : Agrego restricciones a la hroa de lanzar hechizos para los caos. (ZaMa)
+ * 23/04/2010 : Ahora no se puede robar sin energia. (ZaMa)
+ * 23/04/2010 : Solo se peude robar a 1 tile de distancia. (ZaMa)
+ * 15/05/2010 : El ladron puede robar a 2 tiles de distancia. (ZaMa)
+ * 15/05/2010 : Arreglo formula para extraccion/construccion. (ZaMa)
+ * 15/05/2010 : Ya no se peude robar usuarios en consulta. (ZaMa)
+ * 17/05/2010 : Ahora se va el ocultar al equipar barca. (ZaMa)
+ * 21/05/2010 : Evito division por cero en UsuarioImpacto. (zaMa)
+ * 22/05/2010 : Fix del bug #3001669 (Marco)
+ * 22/05/2010 : Los gms no pueden meterse más en las partys. (Marco)
+ * 22/05/2010 : Fix a un rt9 en comercio con usuarios invalidos (Marco)
+ * 22/05/2010 : Fix a un bug en las mochilas, agrego un ErrHandler en CarpinteroConstruirItem, y muevo una validación para que no repita mil veces un mensaje. (Pato)
+ * 22/05/2010 : Los caos ya no suben plebe al realizar tareas de contruccion o extraccion. (ZaMa)
+ * 22/05/2010 : Los caos ya no suben nobleza ni plebe al matar npcs. (zaMa)
+ * 22/05/2010 : Ahora ya no se pueden robar los items newbies. (zaMa)
+ * 22/05/2010 : Ya no se puede banear admins de mayor rango si estan online. (ZaMa)
+ * 23/05/2010 : Ahora se puede construir/extraer con herramientas newbies. (ZaMa)
+ * 23/05/2010 : Ahora se resetean los flags de pertenencia tanto de npc como de usuario. (ZaMa)
+ * 23/05/2010 : Ahora al inmobilizar un npc se renueva el timer, y se puede aduñarse del mismo. (ZaMa)
+ * 23/05/2010 : Ahora los elementales renuevan el tiempo de pertencia del npc que atacan si pertenece a su amo. (ZaMa)
+ * 24/05/2010 : Fix del bug # 3000697 (Budi)
+ * 28/05/2010 : Ahora no avisa cuando loguea/desloguea un dios o admin en un clan. (ZaMa)
+ * 28/05/2010 : Solo dioses pueden ver otros dioses online con /onlineclan, /onclan, /onlinecaos, /onlinereal. (ZaMa)
+ * 28/05/2010 : El /rmsg no dice el nombre del que envia el mensaje. (ZaMa)
+ * 30/05/2010 : Los criminales ya no suben plebe al realizar un trabajo. (ZaMa)
+ * 30/05/2010 : Ahora el /est te dice cuanto te falta para llegar a tu hogar. (ZaMa)
+ * 01/06/2010 : Valido si tiene arma equipada antes de preguntar si es vikinga. (ZaMa)
+ * 03/06/2010 : Fix a bug en el sistema de fundición, cuando el objeto fundido no daba ningún lingote(dagas comunes y horquillas por ej) no se actualizaba el inventario, además, saqué unas actualizaciones innecesarias de inventario. (Pato)
+ * 03/06/2010 : Ahora los piratas no dropean en agua sólo si son nivel 20. (Pato)
+ * 06/06/2010 : Ahora se valida si los usuarios tienen los items que ofertan en comercio seguro. (ZaMa)
+ * 06/06/2010 : Optimizaciones en el /hogar. (ZaMa)
+ * 07/06/2010 : Ahora se puede configurar privilegios a gms "especiales" que pueden usar /aname y /lastemail. (ZaMa)
+ * 10/06/2010 : Agrego un ResetUserSlot muy crítico que por falta de él podían aparecer PJs con inventarios y bóvedas de GMS. (Pato)
+ * 10/06/2010 : Agrego grabado de personajes según el tiempo establecido en el Server.ini en INTERVALOS, IntervaloGuardarUsuarios (Pato)
+ * 10/06/2010 : Ahora los caspers no son encarcelados por piquete. (Pato)
+ * 10/06/2010 : Arreglo un overflow en doRobar, generado por robar mas de 256 (era byte) items de un mismo slot. (ZaMa)
+ * 10/06/2010 : Los GMs loguean invisibles, y si están invisibles al desloguear no se hacen visibles primero. (Pato)
+ * 12/06/2010 : Ahora se pueden comerciar mas de 32k de items por comercio seguro. (ZaMa)
+ * 12/06/2010 : Fix al logueo de GMs invis(Me había comido el chequeo de privilegios :(). (Pato)
+ * 04/07/2010 : Al desloguear ahora se pierde el npc del que eras dueño. (ZaMa)
+ * 04/07/2010 : Agrego validaciones para no permitir que semis o conses sepan cuando hay dioses online. (ZaMa)
+ * 04/07/2010 : Ahora no se puede adueñar del dragon de dd. (ZaMa)
+ * 04/07/2010 : Ahora cuando se mata un dragón estando en party se listan los miembros. (Pato)
+ * 04/07/2010 : Sólo el trabajador puede contruir de a más de 1 ítem por ciclo y agregué intervalos al trabajador. (Pato)
+ * 10/07/2010 : Limpio algunos contadores que no se reseteaban al desloguear, y agrego algunos ErrHandlers. (ZaMa)
+ * 10/07/2010 : Ahora los npcs normales y pretos no responden al "/apostar". (ZaMa)
+ * 10/07/2010 : Ahora los npcs no envenenan mas si estas muerto. (ZaMa)
+ * 11/07/2010 : Ahora la defensa al apuñalar npcs es solo ignorada para asesinos. (ZaMa)
+ * 11/07/2010 : Arreglo la probabilidad de dar golpe critico (a 19%, antes era 18.8%). (ZaMa)
+ * 11/07/2010 : Ahora cuando valida el arma que hace critico, no pregunta por el nombre, sino por el nro de item. (ZaMa)
+ * 11/07/2010 : Arreglos varios en el sistema de pertenencia (se resetean flags que anets no). (ZaMa)
+ * 11/07/2010 : Ahora solo dejan de atacar las mascotas si estan atacando al npc que pierde su amo. (ZaMa)
+ * 11/07/2010 : Ahora se puede atacar mascotas/invocaciones de personajes en estado atacable. (ZaMa)
+ * 13/07/2010 : Optimizaciones varias en la logica de MuereNpc (evite repeticiones de logica innecesarias). (ZaMa)
+ * 13/07/2010 : Los matados en estado atacable ya no suman frag. (ZaMa)
+ * 17/07/2010 : Corrijo la cantidad de energia subida por lvl de los bandidos. (ZaMa)
+ * 17/07/2010 : Ahora no se resetea  el tiempo online del usuario en cada "CharSave". (ZaMa)
+ * 24/07/2010 : LA ciudad inicial al crear un personaje pasa a ser namehuak, como estaba definido. (ZaMa)
+ * 24/07/2010 : Ahora se puede tener como hogar la ciudad arkhein. (ZaMa)
+ * 25/07/2010 : Agrego diferenciacion entre barcas neutrales/faccionarias, atacables.. (zaMa)
+ * 25/07/2010 : Agrego una validacion temporal para evitar que los npcs ataquen a usuarios de mapas diferentes. (ZaMa)
+ * 25/07/2010 : Ahora se puede cambiar la propiedad RoboNpcPermitido con /modmapinfo. (ZaMa)
+ * 27/07/2010 : El sistema anti-robo de npcs no aplica a mapas seguros. (zaMa)
+ * 14/09/2010 : ClosestLegalPos y ClosestStablePos ahora usan distancia manhattan (Marco)
+ * 14/09/2010 : Arreglo rt9 en ApropioNpc. (ZaMa)
+ * 16/09/2010 : Se recupera la apariencia de la barca correspondiente despues de terminado el mimetismo. (ZaMa)
+ * 16/09/2010 : Ahora al empezar a navegar te haces visible si estas invisible en los clientes. (ZaMa)
+ * 18/09/2010 : Ahora le avisa al funda de la party cuando alguien quiere ingresar a la misma. (ZaMa)
+ * 18/09/2010 : Ahora solo se le puede mandar /party al lider, y no a cualquier miembro. (ZaMa)
+ * 18/09/2010 : Arregle la forma de calcular el daño de un golpe. Ahora se considera siempre la def del barco y la del escudo. (ZaMa)
+ * 18/09/2010 : Agrego las propiedades: OcultarSinEfecto e InvocarSinEfecto, con sus validacioens y comandos correspondientes. (ZaMa)
+ * 18/09/2010 : Ahora se activa el seguro cuando dejas de ser atacable. (ZaMa)
+ * 18/09/2010 : Agrego comando /mod Yo Vida xxx solo para rms(todos) o dioses. (ZaMa)
+ * 18/09/2010 : Ahora TileLibre busca en forma de rombo y no repite tile (optimizado). (ZaMa)
+ * 18/09/2010 : Los faccionarios ya no pueden curar npcs pertenecientes a miembros de su faccion, y los ciudas sin seguro se vuelven atacables. (ZaMa)
+ * 19/09/2010 : Ahora el centinela no banea , sino que ejecuta y hecha al jugador por macro inasistido. (Mannakia)
+ * 27/09/2010 : Centinela: Ahora una vez que termina la lista de usuarios trabajando, si se cumplio el tiempo de reset (para pasar nuevamente por los usuarios), resetea la info y asigna un nuevo tiempo - SIN TESTEAR. (C4b3z0n)
+ * 09/28/2010 : Fix RT6 Overflow en "LeaveFaction", el Desequipar() del escudo, ponía de parametro el ObjIndex del escudo en vez del EqpSlot.  (C4b3z0n)
+ * 08/10/2010 : Adapte el codigo para que funcione mas de un centinela en paralelo. (ZaMa)
+ * 09/10/2010 : Le hice algunos fixes a la clase ByteBuffer y la implemente para la carga y el grabado de mapas. (Pato)
+ * 09/10/2010 : Optimicé el BackUp de Npcs. (Pato)
+ * 10/10/2010 : Saco el WriteVar e implemento la clase clsIniManager para grabar chars. (Pato)
+ * 12/10/2010 : Fix a un rt 9 cuando un gm que no tenía barca le hacía /revivir a un user que estaba navegando. (Pato)
+ * 12/10/2010 : Limpio las variables del inventario que hacen referencia a la barca en DoNavega, sino el pirata que la última barca que equipo era el galeón no explotaba(Y capaz no la tenía equipada :P). (Pato)
+ * 22/10/2010 : EL ladron pretoriano ya no intenta robar slots vacios de usuarios. (ZaMa)
+ * 26/10/2010 : Ahora el ladron se oculta correctamente. (ZaMa)
+ * 26/10/2010 : Ahora las mascotas rapswnean de forma aleatoria. (ZaMa)
+ * 28/10/2010 : Ahora no se manda el mensaje de invi cuando se actualizan las areas y esta navegando el char. (ZaMa)
+ * 29/10/2010 : Ahora no se hace backup de los pretorianos. (ZaMa)
+ * 29/10/2010 : Ahora el ladron ya no roba ni arrebata a un admin. (ZaMa)
+ * 30/10/2010 : Agrego los comandos "/CrearPretorianos MAPA X Y" y "/EliminarPretorianos MAPA". (ZaMA)
+ * 02/11/2010 : Arreglo un bug del centinela que te pedia la clave al loguear, aunque no estes trabajando. (ZaMa).
+ * 02/11/2010 : Ahora el centinela no te agrega una pena cuando te ejecuta. (ZaMa)
+ * 08/11/2010 : Fix al bug de clanes que podia expulsar al lider. (Amraphen)
+ * 11/11/2010 : No se envian los efectos de un hechizo casteado pro un npc, hasta que se valida que efectivamente lo puede castear. (ZaMa)
+ * 11/11/2010 : El rey Pretoriano ya no ataca usuarios muertos. (ZaMa)
+ * 14/11/2010 : /SHOW DENUNCIAS muestra las últimas 20 denuncias realizadas. (ZaMa)
+ * 14/11/2010 : /DENUNCIAS activa / desactiva la aparición de denuncias en consola. (ZaMa)
+ * 14/11/2010 : /mapmsg: Mensaje por consola solo en el mapa en el que estas. (ZaMa)
+ * 15/11/2010 : Ahora los NPCs enlistadores muestran un mensaje dependiendo de la reputación del usuario. (Amraphen)
+ * 18/11/2010 : Obtengo los privs del charfile antes de mostrar la posicion de un usuario offline. (ZaMa)
+ * 18/11/2010 : /setdialog "dialogo" Cambia el diálogo por defecto del NPC que se clickeó previamente. (Amraphen)
+ * 20/11/2010 : /impersonar copia body, head y descripción del NPC que se clickeo previamente, teleporta al personaje en la posición de este y lo elimina. (ZaMa)
+ * 20/11/2010 : /Mimetizar copia body, head y descripción del NPC que se clickeo previamente. (ZaMa)
+ * 20/11/2010 : Arreglo privilegios en SetDialog. (ZaMa) 
+ * 23/11/2010 : Ahora si no se permite Invi o Ocultar en el mapa al que cambias, te lo saca. (C4b3z0n)
+ * 30/11/2010 : Sistema de prontuario interno. (Amraphen)
+ * 02/10/2010 : Las clases no magicas pierden el paralizar si el paralizador cierra o muere, y se reduce el tiempo si se va de rango. (ZaMa)
+ * 07/12/2010 : Cambios en los whispers. Usuarios pueden hablar en privado con GMs si están en consulta. Los dioses pueden hablar con los usuarios estando fuera del rango de visión o invisibles (por consola). (Enanoh)
+ * 06/12/2011 : Agrego drag and drop. (Budi)
+ * 06/12/2011 : Ahora se cargan todos los PJs administrativos cuando se carga el server (Budi) 
+ * 12/01/2011 : Ahora no se hace backup de NPCs prohibidos (Pretorianos, Mascotas, Invocados y Centinela) (Amraphen)
+ * 13/02/2011 : Fix al bug de combate que te retiraba stamina si intentabas atacar un NPC con dueño. (Amraphen)
+ * 13/03/2011 : Implemento pesca en cardumenes de peces. (ZaMa)
+ * 15/03/2011 : Agrego /mod user poss map-x-y (cambia la poss del usuario este online o no). (ZaMa)
+ * 15/03/2011 : Saco el envio de WriteDumbNoMore, se hace en el cliente. (ZaMa)
+ * 15/03/2011 : Elimino todas las declaraciones dinamicas de objetos (ahora son lazy). (ZaMa)
+ * 15/03/2011 : Agrego propiedad de mapa: StartPos (Teletransporta al loguear). (ZaMa)
+ * 15/03/2011 : Agrego propiedad de mapa: OnDeathGoTo (Teletransporta al morir). (ZaMa)
+ * 24/03/2011 : Ahora se cargan los privilegios (faltaba utilizar la función), y se pueden recargar desde el server. (ZaMa)
+ * 24/03/2011 : Habilito mas comandos al gm especial. (ZaMa)
+ * 26/03/2011 : Habilito la reproduccion de mp3 para mapas. (ZaMa)
+ * 26/03/2011 : Distinción de sonidos entre morir en agua o en tierra, por sexo. (ZaMa)
+ * 26/03/2011 : Ahora se actualiza la vida al recibir daño de la vara pretoriana. (Amraphen)
+ * 27/03/2011 : Ahora se pueden enviar privados a gms si estas en consulta. (ZaMa)
+ * 27/03/2011 : Modificos algunos logs de gms. (ZaMa)
+ * 31/03/2011 : Arreglo rt9 en legalPos. (ZaMa)
+ * 31/03/2011 : Ahora los muertos no pueden entrar en mapas que utilicen la propiedad OnDeathGoTo. (ZaMa)
+ * 06/04/2011 : Agrego validación en el drag and drop. (Pato)
+ * 07/04/2011 : Arregladas ciertas cuestiones con los seguimientos. (Amraphen)
+ * 08/04/2011 : Arreglada la distribución de probabilidades para la vida en el caso de promedio entero. (Amraphen)
+ * 18/04/2011 : Saco el DoTileEvents del timer asqueroso de 40ms y pongo las llamadas en los lugares puntuales donde en verdad va. (Pato)
+ * 27/04/2011 : Arreglo el comportamiento de los NPC's enlistadores. (Amraphen)
