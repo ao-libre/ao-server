@@ -1,0 +1,12 @@
+[History]
+1=#P0#=mb	#P1#=HechizoEstadoUsuario	#P2#=ServidorLautaro/modHechizos/HechizoEstadoUsuario	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161230152307	#P7#=0	#P8#=239	.
+2=#P0#=mb	#P1#=HealerPerformAction	#P2#=ServidorLautaro/clsClanPretoriano/HealerPerformAction	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228171710	#P7#=0	#P8#=25	.
+3=#P0#=mb	#P1#=HandleCreateNewGuild	#P2#=ServidorLautaro/Protocol/HandleCreateNewGuild	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228171525	#P7#=0	#P8#=57	.
+4=#P0#=mb	#P1#=WriteMultiMessage	#P2#=ServidorLautaro/Protocol/WriteMultiMessage	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228171135	#P7#=0	#P8#=82	.
+5=#P0#=mb	#P1#=InfoHechizo	#P2#=ServidorLautaro/modHechizos/InfoHechizo	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228171048	#P7#=0	#P8#=34	.
+6=#P0#=mb	#P1#=WriteChangeSpellSlot	#P2#=ServidorLautaro/Protocol/WriteChangeSpellSlot	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228171018	#P7#=0	#P8#=12	.
+7=#P0#=mb	#P1#=DecirPalabrasMagicas	#P2#=ServidorLautaro/modHechizos/DecirPalabrasMagicas	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228170754	#P7#=0	#P8#=0	.
+8=#P0#=mb	#P1#=LanzarHechizo	#P2#=ServidorLautaro/modHechizos/LanzarHechizo	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228170627	#P7#=0	#P8#=71	.
+9=#P0#=mb	#P1#=HechizoInvocacion	#P2#=ServidorLautaro/modHechizos/HechizoInvocacion	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228170617	#P7#=0	#P8#=86	.
+10=#P0#=mb	#P1#=NpcLanzaSpellSobreNpc	#P2#=ServidorLautaro/modHechizos/NpcLanzaSpellSobreNpc	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228170557	#P7#=0	#P8#=23	.
+11=#P0#=mb	#P1#=SendSpellEffects	#P2#=ServidorLautaro/modHechizos/SendSpellEffects	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20161228170535	#P7#=0	#P8#=11	.
