@@ -1,4 +1,4 @@
-/Charfile
-/Logs
-/WorldBackup
+Charfile/*
+Logs/*
+WorldBackup/*
 .DS_Store
