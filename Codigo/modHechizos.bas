@@ -575,17 +575,17 @@ On Error GoTo error
 
 With UserList(UserIndex)
 
-    Dim Mapa As Integer
-    Mapa = .Pos.Map
+    Dim mapa As Integer
+    mapa = .Pos.Map
     
     'No permitimos se invoquen criaturas en zonas seguras
-    If MapInfo(Mapa).Pk = False Or MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+    If MapInfo(mapa).Pk = False Or MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
         Call WriteConsoleMsg(UserIndex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
     'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
-    If MapInfo(Mapa).InvocarSinEfecto = 1 Then
+    If MapInfo(mapa).InvocarSinEfecto = 1 Then
         Call WriteConsoleMsg(UserIndex, "Invocar no está permitido aquí! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
@@ -1642,7 +1642,7 @@ Sub InfoHechizo(ByVal UserIndex As Integer)
                 Else
                     Call WriteMultiMessage(UserIndex, eMessages.Hechizo_HechiceroMSG_ALGUIEN, SpellIndex)
                 End If
-                Call WriteMultiMessage(UserIndex, eMessages.Hechizo_TargetMSG, SpellIndex, , , .Name)
+                Call WriteMultiMessage(tUser, eMessages.Hechizo_TargetMSG, SpellIndex, , , .Name)
             Else
                 Call WriteMultiMessage(UserIndex, eMessages.Hechizo_PropioMSG, SpellIndex)
             End If
