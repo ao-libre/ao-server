@@ -119,8 +119,19 @@ On Error Resume Next
                     End If
                     
                     If Npclist(tempIndex).NPCtype = eNPCType.Revividor Or EsNewbie(UserIndex) Then
+                        'TODO: ya hay una funcion que hace esto, la del comando /Curar habria que refactorizar
                         'curamos totalmente
                         .Stats.MinHp = .Stats.MaxHp
+            
+                        Call WriteConsoleMsg(UserIndex, "¡Te has curado!", FontTypeNames.FONTTYPE_INFO)
+                        
+                        If .flags.Envenenado = 1 Then
+                            'curamos veneno
+                            .flags.Envenenado = 0
+                            Call WriteConsoleMsg(UserIndex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                        
+                        
                         Call WriteUpdateUserStats(UserIndex)
                     End If
                 End If
