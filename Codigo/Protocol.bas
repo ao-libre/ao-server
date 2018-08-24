@@ -5646,15 +5646,9 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
         
         .Stats.MinHp = .Stats.MaxHp
         
-        If .flags.Envenenado = 1 Then
-            'curamos veneno
-            .flags.Envenenado = 0
-            Call WriteConsoleMsg(UserIndex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
-        End If
-        
-        Call WriteConsoleMsg(UserIndex, "¡¡Has sido curado!!", FontTypeNames.FONTTYPE_INFO)
         Call WriteUpdateHP(UserIndex)
         
+        Call WriteConsoleMsg(UserIndex, "¡¡Has sido curado!!", FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
