@@ -349,6 +349,7 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Passw
 '03/12/2009: Budi - Optimización del código.
 '*************************************************
 Dim i As Long
+Dim Salt As String
 
 'SHA256
 Dim oSHA256 As CSHA256
@@ -600,9 +601,10 @@ End With
 'Valores Default de facciones al Activar nuevo usuario
 Call ResetFacciones(UserIndex)
 
-'Aca Guardamos y Hasheamos el password
-'TODO: Se le podria agregar salt?
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", oSHA256.SHA256(Password)) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
+'Aca Guardamos y Hasheamos el password + Salt
+Salt = RandomString(10)
+Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", oSHA256.SHA256(Password & Salt)) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
+Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt", Salt) 'Grabamos la Salt
 
 Call SaveUser(UserIndex, CharPath & UCase$(Name) & ".chr")
   
@@ -901,17 +903,17 @@ Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
 '
 '***************************************************
 
-Dim x As Integer, y As Integer
-For y = UserList(index).Pos.y - MinYBorder + 1 To UserList(index).Pos.y + MinYBorder - 1
-        For x = UserList(index).Pos.x - MinXBorder + 1 To UserList(index).Pos.x + MinXBorder - 1
+Dim X As Integer, Y As Integer
+For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(index).Pos.Map, x, y).UserIndex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).UserIndex = Index2 Then
                 EstaPCarea = True
                 Exit Function
             End If
         
-        Next x
-Next y
+        Next X
+Next Y
 EstaPCarea = False
 End Function
 
@@ -922,17 +924,17 @@ Function HayPCarea(Pos As WorldPos) As Boolean
 '
 '***************************************************
 
-Dim x As Integer, y As Integer
-For y = Pos.y - MinYBorder + 1 To Pos.y + MinYBorder - 1
-        For x = Pos.x - MinXBorder + 1 To Pos.x + MinXBorder - 1
-            If x > 0 And y > 0 And x < 101 And y < 101 Then
-                If MapData(Pos.Map, x, y).UserIndex > 0 Then
+Dim X As Integer, Y As Integer
+For Y = Pos.Y - MinYBorder + 1 To Pos.Y + MinYBorder - 1
+        For X = Pos.X - MinXBorder + 1 To Pos.X + MinXBorder - 1
+            If X > 0 And Y > 0 And X < 101 And Y < 101 Then
+                If MapData(Pos.Map, X, Y).UserIndex > 0 Then
                     HayPCarea = True
                     Exit Function
                 End If
             End If
-        Next x
-Next y
+        Next X
+Next Y
 HayPCarea = False
 End Function
 
@@ -943,16 +945,16 @@ Function HayOBJarea(Pos As WorldPos, ObjIndex As Integer) As Boolean
 '
 '***************************************************
 
-Dim x As Integer, y As Integer
-For y = Pos.y - MinYBorder + 1 To Pos.y + MinYBorder - 1
-        For x = Pos.x - MinXBorder + 1 To Pos.x + MinXBorder - 1
-            If MapData(Pos.Map, x, y).ObjInfo.ObjIndex = ObjIndex Then
+Dim X As Integer, Y As Integer
+For Y = Pos.Y - MinYBorder + 1 To Pos.Y + MinYBorder - 1
+        For X = Pos.X - MinXBorder + 1 To Pos.X + MinXBorder - 1
+            If MapData(Pos.Map, X, Y).ObjInfo.ObjIndex = ObjIndex Then
                 HayOBJarea = True
                 Exit Function
             End If
         
-        Next x
-Next y
+        Next X
+Next Y
 HayOBJarea = False
 End Function
 Function ValidateChr(ByVal UserIndex As Integer) As Boolean
@@ -979,8 +981,9 @@ Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password
 '03/12/2009: Budi - Optimización del código
 '24/07/2010: ZaMa - La posicion de comienzo es namehuak, como se habia definido inicialmente.
 '***************************************************
-Dim n As Integer
+Dim N As Integer
 Dim tStr As String
+Dim Salt As String
 
 'SHA256
 Dim oSHA256 As CSHA256
@@ -1031,7 +1034,8 @@ With UserList(UserIndex)
     End If
     
     '¿Es el passwd valido?
-    If oSHA256.SHA256(Password) <> GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password") Then
+    Salt = GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt") ' Obtenemos la Salt
+    If oSHA256.SHA256(Password & Salt) <> GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password") Then
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1133,16 +1137,16 @@ With UserList(UserIndex)
         Call WriteParalizeOK(UserIndex)
     End If
     
-    Dim mapa As Integer
-    mapa = .Pos.Map
+    Dim Mapa As Integer
+    Mapa = .Pos.Map
     
     'Posicion de comienzo
-    If mapa = 0 Then
+    If Mapa = 0 Then
         .Pos = Nemahuak
-        mapa = Nemahuak.Map
+        Mapa = Nemahuak.Map
     Else
     
-        If Not MapaValido(mapa) Then
+        If Not MapaValido(Mapa) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
             Call CloseSocket(UserIndex)
             Exit Sub
@@ -1150,11 +1154,11 @@ With UserList(UserIndex)
         
         ' If map has different initial coords, update it
         Dim StartMap As Integer
-        StartMap = MapInfo(mapa).StartPos.Map
+        StartMap = MapInfo(Mapa).StartPos.Map
         If StartMap <> 0 Then
             If MapaValido(StartMap) Then
-                .Pos = MapInfo(mapa).StartPos
-                mapa = StartMap
+                .Pos = MapInfo(Mapa).StartPos
+                Mapa = StartMap
             End If
         End If
         
@@ -1162,26 +1166,26 @@ With UserList(UserIndex)
     
     'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
     'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
-    If MapData(mapa, .Pos.x, .Pos.y).UserIndex <> 0 Or MapData(mapa, .Pos.x, .Pos.y).NpcIndex <> 0 Then
+    If MapData(Mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
         Dim FoundPlace As Boolean
         Dim esAgua As Boolean
         Dim tX As Long
         Dim tY As Long
         
         FoundPlace = False
-        esAgua = HayAgua(mapa, .Pos.x, .Pos.y)
+        esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
         
-        For tY = .Pos.y - 1 To .Pos.y + 1
-            For tX = .Pos.x - 1 To .Pos.x + 1
+        For tY = .Pos.Y - 1 To .Pos.Y + 1
+            For tX = .Pos.X - 1 To .Pos.X + 1
                 If esAgua Then
                     'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                    If LegalPos(mapa, tX, tY, True, False) Then
+                    If LegalPos(Mapa, tX, tY, True, False) Then
                         FoundPlace = True
                         Exit For
                     End If
                 Else
                     'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                    If LegalPos(mapa, tX, tY, False, True) Then
+                    If LegalPos(Mapa, tX, tY, False, True) Then
                         FoundPlace = True
                         Exit For
                     End If
@@ -1193,28 +1197,28 @@ With UserList(UserIndex)
         Next tY
         
         If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
-            .Pos.x = tX
-            .Pos.y = tY
+            .Pos.X = tX
+            .Pos.Y = tY
         Else
             'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-            If MapData(mapa, .Pos.x, .Pos.y).UserIndex <> 0 Then
+            If MapData(Mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Then
                'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                If UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).ComUsu.DestUsu > 0 Then
+                If UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
                     'Le avisamos al que estaba comerciando que se tuvo que ir.
-                    If UserList(UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                        Call FinComerciarUsu(UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).ComUsu.DestUsu)
-                        Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                        Call FlushBuffer(UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).ComUsu.DestUsu)
+                    If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
+                        Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
+                        Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                        Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
                     End If
                     'Lo sacamos.
-                    If UserList(MapData(mapa, .Pos.x, .Pos.y).UserIndex).flags.UserLogged Then
-                        Call FinComerciarUsu(MapData(mapa, .Pos.x, .Pos.y).UserIndex)
-                        Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
-                        Call FlushBuffer(MapData(mapa, .Pos.x, .Pos.y).UserIndex)
+                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).flags.UserLogged Then
+                        Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
+                        Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
                     End If
                 End If
                 
-                Call CloseSocket(MapData(mapa, .Pos.x, .Pos.y).UserIndex)
+                Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
             End If
         End If
     End If
@@ -1226,7 +1230,7 @@ With UserList(UserIndex)
     
     'If in the water, and has a boat, equip it!
     If .Invent.BarcoObjIndex > 0 And _
-            (HayAgua(mapa, .Pos.x, .Pos.y) Or BodyIsBoat(.Char.body)) Then
+            (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
         .Char.Head = 0
         If .flags.Muerto = 0 Then
@@ -1266,7 +1270,7 @@ With UserList(UserIndex)
     #End If
     
     'Crea  el personaje del usuario
-    Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.x, .Pos.y)
+    Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
     
     If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
         Call DoAdminInvisible(UserIndex)
@@ -1276,7 +1280,7 @@ With UserList(UserIndex)
     Call WriteUserCharIndexInServer(UserIndex)
     ''[/el oso]
     
-    Call DoTileEvents(UserIndex, .Pos.Map, .Pos.x, .Pos.y)
+    Call DoTileEvents(UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
     
     Call CheckUserLevel(UserIndex)
     Call WriteUpdateUserStats(UserIndex)
@@ -1387,16 +1391,16 @@ With UserList(UserIndex)
     
     Call MostrarNumUsers
 
-    n = FreeFile
-    Open App.Path & "\logs\numusers.log" For Output As n
-    Print #n, NumUsers
-    Close #n
+    N = FreeFile
+    Open App.Path & "\logs\numusers.log" For Output As N
+    Print #N, NumUsers
+    Close #N
     
-    n = FreeFile
+    N = FreeFile
     'Log
-    Open App.Path & "\logs\Connect.log" For Append Shared As #n
-    Print #n, .Name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
-    Close #n
+    Open App.Path & "\logs\Connect.log" For Append Shared As #N
+    Print #N, .Name & " ha entrado al juego. UserIndex:" & UserIndex & " " & time & " " & Date
+    Close #N
 
 End With
 End Sub
@@ -1525,8 +1529,8 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
-        .Pos.x = 0
-        .Pos.y = 0
+        .Pos.X = 0
+        .Pos.Y = 0
         .ip = vbNullString
         .clase = 0
         .email = vbNullString
@@ -1787,7 +1791,7 @@ Sub CloseUser(ByVal UserIndex As Integer)
 
 On Error GoTo ErrHandler
 
-Dim n As Integer
+Dim N As Integer
 Dim Map As Integer
 Dim Name As String
 Dim i As Integer
@@ -1876,10 +1880,10 @@ With UserList(UserIndex)
     
     Call MostrarNumUsers
     
-    n = FreeFile(1)
-    Open App.Path & "\logs\Connect.log" For Append Shared As #n
-        Print #n, Name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
-    Close #n
+    N = FreeFile(1)
+    Open App.Path & "\logs\Connect.log" For Append Shared As #N
+        Print #N, Name & " ha dejado el juego. " & "User Index:" & UserIndex & " " & time & " " & Date
+    Close #N
 End With
 
 Exit Sub
@@ -1954,3 +1958,17 @@ Public Sub EcharPjsNoPrivilegiados()
     Next LoopC
 
 End Sub
+
+Function RandomString(cb As Integer) As String
+
+    Randomize
+    Dim rgch As String
+    rgch = "abcdefghijklmnopqrstuvwxyz"
+    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$?"
+
+    Dim i As Long
+    For i = 1 To cb
+        RandomString = RandomString & mid$(rgch, Int(Rnd() * Len(rgch) + 1), 1)
+    Next
+
+End Function
