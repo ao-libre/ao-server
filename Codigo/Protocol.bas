@@ -6771,6 +6771,11 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 'Creation Date: 10/10/07
 'Last Modified By: Rapsodius
 '***************************************************
+Dim Salt As String
+'SHA256
+Dim oSHA256 As CSHA256
+Set oSHA256 = New CSHA256
+
     If UserList(UserIndex).incomingData.length < 5 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -6788,19 +6793,23 @@ On Error GoTo ErrHandler
         
         'Remove packet ID
         Call buffer.ReadByte
-
-        oldPass = UCase$(buffer.ReadASCIIString())
-        newPass = UCase$(buffer.ReadASCIIString())
+        'Hasheamos el pass junto al Salt
+        oldPass = oSHA256(buffer.ReadASCIIString() & GetVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Salt"))
+        
+        'Asignamos un nuevo Salt y lo hasheamos junto al nuevo pass
+        Salt = RandomString(10)
+        newPass = oSHA256(buffer.ReadASCIIString() & Salt)
         
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debes especificar una contraseña nueva, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
         Else
-            oldPass2 = UCase$(GetVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password"))
+            oldPass2 = GetVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password")
             
             If oldPass2 <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password", newPass)
+                Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password", newPass) 'Guardmaos el nuevo pass
+                Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Salt", Salt) 'Guardamos la Salt
                 Call WriteConsoleMsg(UserIndex, "La contraseña fue cambiada con éxito.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -10483,11 +10492,11 @@ On Error GoTo ErrHandler
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
             If LenB(message) <> 0 Then
                 
-                Dim mapa As Integer
-                mapa = .Pos.Map
+                Dim Mapa As Integer
+                Mapa = .Pos.Map
                 
-                Call LogGM(.Name, "Mensaje a mapa " & mapa & ":" & message)
-                Call SendData(SendTarget.toMap, mapa, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
+                Call LogGM(.Name, "Mensaje a mapa " & Mapa & ":" & message)
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
             End If
         End If
         
@@ -10728,12 +10737,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         Dim Radio As Byte
         
-        mapa = .incomingData.ReadInteger()
+        Mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         Radio = .incomingData.ReadByte()
@@ -10742,9 +10751,9 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call LogGM(.Name, "/CT " & mapa & "," & X & "," & Y & "," & Radio)
+        Call LogGM(.Name, "/CT " & Mapa & "," & X & "," & Y & "," & Radio)
         
-        If Not MapaValido(mapa) Or Not InMapBounds(mapa, X, Y) Then _
+        If Not MapaValido(Mapa) Or Not InMapBounds(Mapa, X, Y) Then _
             Exit Sub
         
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then _
@@ -10753,12 +10762,12 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then _
             Exit Sub
         
-        If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
+        If MapData(Mapa, X, Y).ObjInfo.ObjIndex > 0 Then
             Call WriteConsoleMsg(UserIndex, "Hay un objeto en el piso en ese lugar.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        If MapData(mapa, X, Y).TileExit.Map > 0 Then
+        If MapData(Mapa, X, Y).TileExit.Map > 0 Then
             Call WriteConsoleMsg(UserIndex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -10769,7 +10778,7 @@ Private Sub HandleTeleportCreate(ByVal UserIndex As Integer)
         ET.ObjIndex = TELEP_OBJ_INDEX + Radio
         
         With MapData(.Pos.Map, .Pos.X, .Pos.Y - 1)
-            .TileExit.Map = mapa
+            .TileExit.Map = Mapa
             .TileExit.X = X
             .TileExit.Y = Y
         End With
@@ -10790,7 +10799,7 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
 '
 '***************************************************
     With UserList(UserIndex)
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
@@ -10800,19 +10809,19 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         '/dt
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        mapa = .flags.TargetMap
+        Mapa = .flags.TargetMap
         X = .flags.TargetX
         Y = .flags.TargetY
         
-        If Not InMapBounds(mapa, X, Y) Then Exit Sub
+        If Not InMapBounds(Mapa, X, Y) Then Exit Sub
         
-        With MapData(mapa, X, Y)
+        With MapData(Mapa, X, Y)
             If .ObjInfo.ObjIndex = 0 Then Exit Sub
             
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(UserIndex).Name, "/DT: " & mapa & "," & X & "," & Y)
+                Call LogGM(UserList(UserIndex).Name, "/DT: " & Mapa & "," & X & "," & Y)
                 
-                Call EraseObj(.ObjInfo.Amount, mapa, X, Y)
+                Call EraseObj(.ObjInfo.Amount, Mapa, X, Y)
                 
                 If MapData(.TileExit.Map, .TileExit.X, .TileExit.Y).ObjInfo.ObjIndex = 651 Then
                     Call EraseObj(1, .TileExit.Map, .TileExit.X, .TileExit.Y)
@@ -10980,24 +10989,24 @@ Private Sub HanldeForceMIDIToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim midiID As Byte
-        Dim mapa As Integer
+        Dim Mapa As Integer
         
         midiID = .incomingData.ReadByte
-        mapa = .incomingData.ReadInteger
+        Mapa = .incomingData.ReadInteger
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
             'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(mapa, 50, 50) Then
-                mapa = .Pos.Map
+            If Not InMapBounds(Mapa, 50, 50) Then
+                Mapa = .Pos.Map
             End If
         
             If midiID = 0 Then
                 'Ponemos el default del mapa
-                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(MapInfo(.Pos.Map).Music))
             Else
                 'Ponemos el pedido por el GM
-                Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayMidi(midiID))
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMidi(midiID))
             End If
         End If
     End With
@@ -11024,26 +11033,26 @@ Private Sub HandleForceWAVEToMap(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         Dim waveID As Byte
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
         waveID = .incomingData.ReadByte()
-        mapa = .incomingData.ReadInteger()
+        Mapa = .incomingData.ReadInteger()
         X = .incomingData.ReadByte()
         Y = .incomingData.ReadByte()
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
         'Si el mapa no fue enviado tomo el actual
-            If Not InMapBounds(mapa, X, Y) Then
-                mapa = .Pos.Map
+            If Not InMapBounds(Mapa, X, Y) Then
+                Mapa = .Pos.Map
                 X = .Pos.X
                 Y = .Pos.Y
             End If
             
             'Ponemos el pedido por el GM
-            Call SendData(SendTarget.toMap, mapa, PrepareMessagePlayWave(waveID, X, Y))
+            Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayWave(waveID, X, Y))
         End If
     End With
 End Sub
@@ -12065,21 +12074,21 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
 
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
                 
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
         X = .Pos.X
         Y = .Pos.Y
             
         Call LogGM(.Name, "/CI: " & tObj & " en mapa " & _
-            mapa & " (" & X & "," & Y & ")")
+            Mapa & " (" & X & "," & Y & ")")
         
-        If MapData(mapa, X, Y - 1).ObjInfo.ObjIndex > 0 Then _
+        If MapData(Mapa, X, Y - 1).ObjInfo.ObjIndex > 0 Then _
             Exit Sub
         
-        If MapData(mapa, X, Y - 1).TileExit.Map > 0 Then _
+        If MapData(Mapa, X, Y - 1).TileExit.Map > 0 Then _
             Exit Sub
         
         If tObj < 1 Or tObj > NumObjDatas Then _
@@ -12093,11 +12102,11 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         
         Objeto.Amount = 100
         Objeto.ObjIndex = tObj
-        Call MakeObj(Objeto, mapa, X, Y - 1)
+        Call MakeObj(Objeto, Mapa, X, Y - 1)
         
         If ObjData(tObj).Log = 1 Then
             Call LogDesarrollo(.Name & " /CI: [" & tObj & "]" & ObjData(tObj).Name & " en mapa " & _
-                mapa & " (" & X & "," & Y & ")")
+                Mapa & " (" & X & "," & Y & ")")
         End If
         
     End With
@@ -12120,30 +12129,30 @@ Private Sub HandleDestroyItems(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
         Dim X As Byte
         Dim Y As Byte
         
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
         X = .Pos.X
         Y = .Pos.Y
         
         Dim ObjIndex As Integer
-        ObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
+        ObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
         
         If ObjIndex = 0 Then Exit Sub
         
         Call LogGM(.Name, "/DEST " & ObjIndex & " en mapa " & _
-            mapa & " (" & X & "," & Y & "). Cantidad: " & MapData(mapa, X, Y).ObjInfo.Amount)
+            Mapa & " (" & X & "," & Y & "). Cantidad: " & MapData(Mapa, X, Y).ObjInfo.Amount)
         
         If ObjData(ObjIndex).OBJType = eOBJType.otTeleport And _
-            MapData(mapa, X, Y).TileExit.Map > 0 Then
+            MapData(Mapa, X, Y).TileExit.Map > 0 Then
             
             Call WriteConsoleMsg(UserIndex, "No puede destruir teleports así. Utilice /DT.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
-        Call EraseObj(10000, mapa, X, Y)
+        Call EraseObj(10000, Mapa, X, Y)
     End With
 End Sub
 
@@ -13414,7 +13423,7 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
     End If
     
     Dim NoOcultar As Byte
-    Dim mapa As Integer
+    Dim Mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13425,14 +13434,14 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            mapa = .Pos.Map
+            Mapa = .Pos.Map
             
-            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & mapa & ".")
+            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido ocultarse en el mapa " & Mapa & ".")
             
-            MapInfo(mapa).OcultarSinEfecto = NoOcultar
+            MapInfo(Mapa).OcultarSinEfecto = NoOcultar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "OcultarSinEfecto", NoOcultar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "OcultarSinEfecto", NoOcultar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
@@ -13456,7 +13465,7 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
     End If
     
     Dim NoInvocar As Byte
-    Dim mapa As Integer
+    Dim Mapa As Integer
     
     With UserList(UserIndex)
     
@@ -13467,14 +13476,14 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal UserIndex As Integer)
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0 Then
             
-            mapa = .Pos.Map
+            Mapa = .Pos.Map
             
-            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido invocar en el mapa " & mapa & ".")
+            Call LogGM(.Name, .Name & " ha cambiado la información sobre si está permitido invocar en el mapa " & Mapa & ".")
             
-            MapInfo(mapa).InvocarSinEfecto = NoInvocar
+            MapInfo(Mapa).InvocarSinEfecto = NoInvocar
             
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "InvocarSinEfecto", NoInvocar)
-            Call WriteConsoleMsg(UserIndex, "Mapa " & mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "InvocarSinEfecto", NoInvocar)
+            Call WriteConsoleMsg(UserIndex, "Mapa " & Mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
         End If
         
     End With
@@ -13761,7 +13770,8 @@ On Error GoTo ErrHandler
         Dim UserName As String
         Dim copyFrom As String
         Dim Password As String
-        
+        Dim Salt As String
+                
         UserName = Replace(buffer.ReadASCIIString(), "+", " ")
         copyFrom = Replace(buffer.ReadASCIIString(), "+", " ")
         
@@ -13775,7 +13785,10 @@ On Error GoTo ErrHandler
                     Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 Else
                     Password = GetVar(CharPath & copyFrom & ".chr", "INIT", "Password")
+                    Salt = GetVar(CharPath & copyFrom & ".chr", "INIT", "Salt")
+                    
                     Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
+                    Call WriteVar(CharPath & UserName & ".chr", "INIT", "Salt", Salt)
                     
                     Call WriteConsoleMsg(UserIndex, "Password de " & UserName & " ha cambiado por la de " & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 End If
