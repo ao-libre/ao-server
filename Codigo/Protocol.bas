@@ -6771,7 +6771,7 @@ Private Sub HandleChangePassword(ByVal UserIndex As Integer)
 'Creation Date: 10/10/07
 'Last Modified By: Rapsodius
 '***************************************************
-Dim Salt As String
+
 'SHA256
 Dim oSHA256 As CSHA256
 Set oSHA256 = New CSHA256
@@ -6787,18 +6787,20 @@ On Error GoTo ErrHandler
         Dim buffer As clsByteQueue: Set buffer = New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
         
+        Dim Salt As String
         Dim oldPass As String
         Dim newPass As String
         Dim oldPass2 As String
         
         'Remove packet ID
         Call buffer.ReadByte
+       
         'Hasheamos el pass junto al Salt
-        oldPass = oSHA256(buffer.ReadASCIIString() & GetVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Salt"))
+        oldPass = oSHA256.SHA256(buffer.ReadASCIIString() & GetVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Salt"))
         
         'Asignamos un nuevo Salt y lo hasheamos junto al nuevo pass
         Salt = RandomString(10)
-        newPass = oSHA256(buffer.ReadASCIIString() & Salt)
+        newPass = oSHA256.SHA256(buffer.ReadASCIIString() & Salt)
         
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debes especificar una contraseña nueva, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
