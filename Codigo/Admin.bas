@@ -196,15 +196,14 @@ End Sub
 
 Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optional ByVal GmName As String = vbNullString)
 '***************************************************
-'Author: Unknown
-'Last Modification: 29/07/2016
+'Author: Lucas Recoaro
+'Last Modification: 26/08/2018
 'Shak: Agregamos el array.
+'Recox: Arreglado problema de tiempo en carcel
 '***************************************************
 
-    UserList(UserIndex).Counters.Pena = Minutos
+    UserList(UserIndex).Counters.Pena = Minutos * 60
     
-    
-    Call AgregarArrayCarcel(UserIndex)
     Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
     
     If LenB(GmName) = 0 Then
