@@ -597,7 +597,7 @@ Function FileExist(ByVal File As String, Optional FileType As VbFileAttribute = 
 'Se fija si existe el archivo
 '*****************************************************************
 
-    FileExist = LenB(dir$(File, FileType)) <> 0
+    FileExist = LenB(Dir$(File, FileType)) <> 0
 End Function
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
@@ -1743,17 +1743,17 @@ On Error GoTo ErrHandler
             
                 If .Counters.Pena > 0 Then
                     'Restamos las penas del personaje
-                    If UserList(ArrayPenas(i)).Counters.Pena > 0 Then
-                        UserList(ArrayPenas(i)).Counters.Pena = UserList(ArrayPenas(i)).Counters.Pena - 1
-                    
-                        If UserList(ArrayPenas(i)).Counters.Pena < 1 Then
-                            UserList(ArrayPenas(i)).Counters.Pena = 0
+                    If .Counters.Pena > 0 Then
+                        .Counters.Pena = .Counters.Pena - 1
+                 
+                        If .Counters.Pena < 1 Then
+                            .Counters.Pena = 0
                             Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
                             Call WriteConsoleMsg(i, "¡Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
-                            Call QuitarArrayCarcel(i)
                             Call FlushBuffer(i)
                         End If
                     End If
+                    
                 End If
                 
                 'Sacamos energía
