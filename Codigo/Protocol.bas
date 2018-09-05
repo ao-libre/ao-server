@@ -135,7 +135,6 @@ Private Enum ServerPacketID
     SendNight               ' NOC
     Pong
     UpdateTagAndStatus
-    PlayAttackAnim
     
     'GM messages
     SpawnList               ' SPL
@@ -157,6 +156,7 @@ Private Enum ServerPacketID
     StopWorking
     CancelOfferItem
     PalabrasMagicas
+    PlayAttackAnim
 End Enum
 
 Private Enum ClientPacketID
