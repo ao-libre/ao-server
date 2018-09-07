@@ -7,6 +7,7 @@ Mas informacion:
 ## Montar Servidor:
 
 * proximamente
+* Pro Tip: Configurar inicializacion de server.exe al iniciar Windows.
 
 
 
