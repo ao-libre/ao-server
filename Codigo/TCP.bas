@@ -349,6 +349,11 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Passw
 '03/12/2009: Budi - Optimización del código.
 '*************************************************
 Dim i As Long
+Dim Salt As String
+
+'SHA256
+Dim oSHA256 As CSHA256
+Set oSHA256 = New CSHA256
 
 With UserList(UserIndex)
 
@@ -596,7 +601,10 @@ End With
 'Valores Default de facciones al Activar nuevo usuario
 Call ResetFacciones(UserIndex)
 
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", Password) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
+'Aca Guardamos y Hasheamos el password + Salt
+Salt = RandomString(10)
+Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", oSHA256.SHA256(Password & Salt)) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
+Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt", Salt) 'Grabamos la Salt
 
 Call SaveUser(UserIndex, CharPath & UCase$(Name) & ".chr")
   
@@ -975,6 +983,11 @@ Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password
 '***************************************************
 Dim N As Integer
 Dim tStr As String
+Dim Salt As String
+
+'SHA256
+Dim oSHA256 As CSHA256
+Set oSHA256 = New CSHA256
 
 With UserList(UserIndex)
 
@@ -1021,7 +1034,8 @@ With UserList(UserIndex)
     End If
     
     '¿Es el passwd valido?
-    If UCase$(Password) <> UCase$(GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password")) Then
+    Salt = GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt") ' Obtenemos la Salt
+    If oSHA256.SHA256(Password & Salt) <> GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password") Then
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1123,16 +1137,16 @@ With UserList(UserIndex)
         Call WriteParalizeOK(UserIndex)
     End If
     
-    Dim mapa As Integer
-    mapa = .Pos.Map
+    Dim Mapa As Integer
+    Mapa = .Pos.Map
     
     'Posicion de comienzo
-    If mapa = 0 Then
+    If Mapa = 0 Then
         .Pos = Nemahuak
-        mapa = Nemahuak.Map
+        Mapa = Nemahuak.Map
     Else
     
-        If Not MapaValido(mapa) Then
+        If Not MapaValido(Mapa) Then
             Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
             Call CloseSocket(UserIndex)
             Exit Sub
@@ -1140,11 +1154,11 @@ With UserList(UserIndex)
         
         ' If map has different initial coords, update it
         Dim StartMap As Integer
-        StartMap = MapInfo(mapa).StartPos.Map
+        StartMap = MapInfo(Mapa).StartPos.Map
         If StartMap <> 0 Then
             If MapaValido(StartMap) Then
-                .Pos = MapInfo(mapa).StartPos
-                mapa = StartMap
+                .Pos = MapInfo(Mapa).StartPos
+                Mapa = StartMap
             End If
         End If
         
@@ -1152,26 +1166,26 @@ With UserList(UserIndex)
     
     'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
     'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
-    If MapData(mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Or MapData(mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
+    If MapData(Mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
         Dim FoundPlace As Boolean
         Dim esAgua As Boolean
         Dim tX As Long
         Dim tY As Long
         
         FoundPlace = False
-        esAgua = HayAgua(mapa, .Pos.X, .Pos.Y)
+        esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
         
         For tY = .Pos.Y - 1 To .Pos.Y + 1
             For tX = .Pos.X - 1 To .Pos.X + 1
                 If esAgua Then
                     'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                    If LegalPos(mapa, tX, tY, True, False) Then
+                    If LegalPos(Mapa, tX, tY, True, False) Then
                         FoundPlace = True
                         Exit For
                     End If
                 Else
                     'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                    If LegalPos(mapa, tX, tY, False, True) Then
+                    If LegalPos(Mapa, tX, tY, False, True) Then
                         FoundPlace = True
                         Exit For
                     End If
@@ -1187,24 +1201,24 @@ With UserList(UserIndex)
             .Pos.Y = tY
         Else
             'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-            If MapData(mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Then
+            If MapData(Mapa, .Pos.X, .Pos.Y).UserIndex <> 0 Then
                'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                If UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
+                If UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu > 0 Then
                     'Le avisamos al que estaba comerciando que se tuvo que ir.
-                    If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
-                        Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
-                        Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                        Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
+                    If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu).flags.UserLogged Then
+                        Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
+                        Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                        Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).ComUsu.DestUsu)
                     End If
                     'Lo sacamos.
-                    If UserList(MapData(mapa, .Pos.X, .Pos.Y).UserIndex).flags.UserLogged Then
-                        Call FinComerciarUsu(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
-                        Call WriteErrorMsg(MapData(mapa, .Pos.X, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
-                        Call FlushBuffer(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
+                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex).flags.UserLogged Then
+                        Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
+                        Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
                     End If
                 End If
                 
-                Call CloseSocket(MapData(mapa, .Pos.X, .Pos.Y).UserIndex)
+                Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).UserIndex)
             End If
         End If
     End If
@@ -1216,7 +1230,7 @@ With UserList(UserIndex)
     
     'If in the water, and has a boat, equip it!
     If .Invent.BarcoObjIndex > 0 And _
-            (HayAgua(mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+            (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
         .Char.Head = 0
         If .flags.Muerto = 0 Then
@@ -1944,3 +1958,17 @@ Public Sub EcharPjsNoPrivilegiados()
     Next LoopC
 
 End Sub
+
+Function RandomString(cb As Integer) As String
+
+    Randomize
+    Dim rgch As String
+    rgch = "abcdefghijklmnopqrstuvwxyz"
+    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$?"
+
+    Dim i As Long
+    For i = 1 To cb
+        RandomString = RandomString & mid$(rgch, Int(Rnd() * Len(rgch) + 1), 1)
+    Next
+
+End Function
