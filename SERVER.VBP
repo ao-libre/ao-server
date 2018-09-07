@@ -66,6 +66,7 @@ Class=clsIniManager; Codigo\clsIniManager.cls
 Module=modUserRecords; Codigo\modUserRecords.bas
 Module=mLimpieza; Codigo\mLimpieza.bas
 Module=mMainLoop; Codigo\mMainLoop.bas
+Class=CSHA256; Codigo\CSHA256.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
