@@ -1,10 +1,6 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
 
-# Declare encoding of all files for code.
-*.bas encoding=ansi
-*.cls encoding=ansi
-
 # Declare files that will always have CRLF line endings on checkout.
 *.cls text eol=crlf
 *.vbp text eol=crlf
