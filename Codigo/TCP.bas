@@ -1092,26 +1092,14 @@ With UserList(UserIndex)
         End If
     End If
     
-    'Cargamos el personaje
-    Dim Leer As clsIniManager
-    Set Leer = New clsIniManager
-    
-    Call Leer.Initialize(CharPath & UCase$(Name) & ".chr")
-    
-    'Cargamos los datos del personaje
-    Call LoadUserInit(UserIndex, Leer)
-    
-    Call LoadUserStats(UserIndex, Leer)
-    
-    If Not ValidateChr(UserIndex) Then
+    'Load the user here
+    Call LoadUserFromCharfile(UserIndex)
+
+     If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
-    
-    Call LoadUserReputacion(UserIndex, Leer)
-    
-    Set Leer = Nothing
     
     If .Invent.EscudoEqpSlot = 0 Then .Char.ShieldAnim = NingunEscudo
     If .Invent.CascoEqpSlot = 0 Then .Char.CascoAnim = NingunCasco
