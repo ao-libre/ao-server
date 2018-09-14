@@ -1052,6 +1052,27 @@ ErrHandler:
 
 End Sub
 
+Sub LoadUserFromCharfile(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 14/09/2018
+'14/09/2018: CHOTS - Load the User data from the Charfile using a single function
+'*************************************************
+    Dim Leer As clsIniManager
+    Set Leer = New clsIniManager
+
+    Call Leer.Initialize(CharPath & UCase$(UserList(UserIndex).Name) & ".chr")
+
+    'Cargamos los datos del personaje
+    Call LoadUserInit(UserIndex, Leer)
+
+    Call LoadUserStats(UserIndex, Leer)
+
+    Call LoadUserReputacion(UserIndex, Leer)
+
+    Set Leer = Nothing
+End Sub
+
 Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 '*************************************************
 'Author: Unknown
