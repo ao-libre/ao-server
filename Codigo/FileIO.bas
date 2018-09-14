@@ -1068,12 +1068,6 @@ Sub LoadUserFromCharfile(ByVal UserIndex As Integer)
 
     Call LoadUserStats(UserIndex, Leer)
 
-    If Not ValidateChr(UserIndex) Then
-        Call WriteErrorMsg(UserIndex, "Error en el personaje.")
-        Call CloseSocket(UserIndex)
-        Exit Sub
-    End If
-
     Call LoadUserReputacion(UserIndex, Leer)
 
     Set Leer = Nothing
