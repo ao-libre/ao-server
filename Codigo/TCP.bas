@@ -1094,6 +1094,12 @@ With UserList(UserIndex)
     
     'Load the user here
     Call LoadUserFromCharfile(UserIndex)
+
+     If Not ValidateChr(UserIndex) Then
+        Call WriteErrorMsg(UserIndex, "Error en el personaje.")
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
     
     If .Invent.EscudoEqpSlot = 0 Then .Char.ShieldAnim = NingunEscudo
     If .Invent.CascoEqpSlot = 0 Then .Char.CascoAnim = NingunCasco
