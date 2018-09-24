@@ -1538,6 +1538,10 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, ByVal NpcIndex As Integer, ByVal
 Dim daño As Long
 
 With Npclist(NpcIndex)
+    
+    Dim tempX, tempY As Integer
+    tempX = .Pos.X
+    tempY = .Pos.Y
     'Salud
     If Hechizos(SpellIndex).SubeHP = 1 Then
         
@@ -1559,6 +1563,7 @@ With Npclist(NpcIndex)
             HechizoCasteado = False
             Exit Sub
         End If
+        
         Call NPCAtacado(NpcIndex, UserIndex)
         daño = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
         daño = daño + Porcentaje(daño, 3 * UserList(UserIndex).Stats.ELV)
@@ -1597,6 +1602,7 @@ With Npclist(NpcIndex)
         If .Stats.MinHp < 1 Then
             .Stats.MinHp = 0
             Call MuereNpc(NpcIndex, UserIndex)
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageFXtoMap(Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).Loops, tempX, tempY))
         End If
     End If
 End With
