@@ -157,6 +157,7 @@ Private Enum ServerPacketID
     CancelOfferItem
     PalabrasMagicas
     PlayAttackAnim
+    FXtoMap
 End Enum
 
 Private Enum ClientPacketID
@@ -18884,4 +18885,17 @@ Public Function PrepareMessageCharacterAttackAnim(ByVal CharIndex As Integer) As
     
     PrepareMessageCharacterAttackAnim = .ReadASCIIStringFixed(.length)
     End With
+End Function
+
+Public Function PrepareMessageFXtoMap(ByVal FxIndex As Integer, ByVal loops As Byte, ByVal x As Integer, ByVal y As Integer) As String
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.FXtoMap)
+        Call .WriteByte(loops)
+        Call .WriteInteger(x)
+        Call .WriteInteger(y)
+        Call .WriteInteger(FxIndex)
+        
+    PrepareMessageFXtoMap = .ReadASCIIStringFixed(.length)
+    End With
+
 End Function
