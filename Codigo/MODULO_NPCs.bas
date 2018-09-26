@@ -998,7 +998,7 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
         For LoopC = 1 To MAX_NPC_DROPS
             ln = Leer.GetValue("NPC" & NpcNumber, "Drop" & LoopC)
             .Drop(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-            If .Drop(LoopC).ObjIndex = 12 Then
+            If .Drop(LoopC).ObjIndex = iORO Then
                 .Drop(LoopC).Amount = val(ReadField(2, ln, 45)) * OroMultiplier
             Else
                 .Drop(LoopC).Amount = val(ReadField(2, ln, 45))
