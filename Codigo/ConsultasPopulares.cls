@@ -89,7 +89,6 @@ End Sub
 Public Function doVotar(ByVal UserIndex As Integer, ByVal opcion As Integer) As String
 On Error GoTo errorh
 Dim YaVoto As Boolean
-Dim CharFile As String
 Dim sufragio As Integer
 
     'revisar q no haya votado
@@ -100,13 +99,9 @@ Dim sufragio As Integer
         Exit Function
     End If
 
-    CharFile = CharPath & UserList(UserIndex).Name & ".chr"
-    
-    
-    
     If (UserList(UserIndex).Stats.ELV >= pNivelRequerido) Then
         If (OpcionValida(opcion)) Then
-            YaVoto = val(GetVar(CharFile, "CONSULTAS", "Voto")) >= pEncuestaActualNum
+            YaVoto = PersonajeCantidadVotos(Userlist(UserIndex).Name) >= pEncuestaActualNum
             If Not YaVoto Then
                 If Not MailYaVoto(UserList(UserIndex).email) Then
                     'pj apto para votar
@@ -114,7 +109,7 @@ Dim sufragio As Integer
                     sufragio = sufragio + 1
                     Call WriteVar(App.Path & ARCHIVOCONFIG, "RESULTADOS" & pEncuestaActualNum, "V" & opcion, str(sufragio))
                     doVotar = "Tu voto ha sido computado. Opcion: " & opcion
-                    Call MarcarPjComoQueYaVoto(UserIndex)
+                    Call MarcarPjComoQueYaVoto(UserIndex, pEncuestaActualNum)
                     Call MarcarMailComoQueYaVoto(UserList(UserIndex).email)
                 Else
                     Call MarcarPjComoQueYaVoto(UserIndex)
@@ -150,9 +145,22 @@ Dim i As Integer
 End Function
 
 
-Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer)
-    Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "CONSULTAS", "Voto", str(pEncuestaActualNum))
+Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer, ByVal NumeroEncuesta as Integer)
+    If Not Database_Enabled Then
+        MarcarPjComoQueYaVotoCharfile(UserName, NumeroEncuesta)
+    Else
+        
+    End If
+    
 End Sub
+
+Private Function PersonajeCantidadVotos(ByVal UserName As String) as Integer
+    If Not Database_Enabled Then
+        PersonajeCantidadVotos = PersonajeCantidadVotosCharfile(UserName)
+    Else
+        PersonajeCantidadVotos = 0
+    End If
+End Function
 
 
 Private Function MailYaVoto(ByVal email As String) As Boolean

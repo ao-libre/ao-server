@@ -373,7 +373,7 @@ With UserList(UserIndex)
     End If
     
     '¿Existe el personaje?
-    If FileExist(CharPath & UCase$(Name) & ".chr", vbNormal) = True Then
+    If PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "Ya existe el personaje.")
         Exit Sub
     End If
@@ -603,10 +603,10 @@ Call ResetFacciones(UserIndex)
 
 'Aca Guardamos y Hasheamos el password + Salt
 Salt = RandomString(10)
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", oSHA256.SHA256(Password & Salt)) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt", Salt) 'Grabamos la Salt
 
-Call SaveUser(UserIndex, CharPath & UCase$(Name) & ".chr")
+Call StorePasswordSalt(Name, oSHA256.SHA256(Password & Salt), Salt)
+
+Call SaveUser(UserIndex)
   
 'Open User
 Call ConnectUser(UserIndex, Name, Password)
@@ -1026,7 +1026,7 @@ With UserList(UserIndex)
     End If
     
     '¿Existe el personaje?
-    If Not FileExist(CharPath & UCase$(Name) & ".chr", vbNormal) Then
+    If Not PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1034,8 +1034,8 @@ With UserList(UserIndex)
     End If
     
     '¿Es el passwd valido?
-    Salt = GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt") ' Obtenemos la Salt
-    If oSHA256.SHA256(Password & Salt) <> GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password") Then
+    Salt = GetUserSalt(Name) ' Obtenemos la Salt
+    If oSHA256.SHA256(Password & Salt) <> GetUserPassword(Name) Then
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1302,7 +1302,7 @@ With UserList(UserIndex)
     .flags.UserLogged = True
     
     'usado para borrar Pjs
-    Call WriteVar(CharPath & .Name & ".chr", "INIT", "Logged", "1")
+    Call UpdateUserLogged(.Name, 1)
     
     Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
     
@@ -1828,10 +1828,10 @@ With UserList(UserIndex)
     Call Statistics.UserDisconnected(UserIndex)
     
     ' Grabamos el personaje del usuario
-    Call SaveUser(UserIndex, CharPath & Name & ".chr")
+    Call SaveUser(UserIndex)
     
     'usado para borrar Pjs
-    Call WriteVar(CharPath & .Name & ".chr", "INIT", "Logged", "0")
+    Call UpdateUserLogged(.Name, 0)
     
     'Quitar el dialogo
     'If MapInfo(Map).NumUsers > 0 Then

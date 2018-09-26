@@ -1080,65 +1080,6 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
     End With
 End Sub
 
-Sub SendUserMiniStatsTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
-'*************************************************
-'Author: Unknown
-'Last modified: 23/01/2007
-'Shows the users Stats when the user is offline.
-'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribución de parámetros.
-'*************************************************
-    Dim CharFile As String
-    Dim Ban As String
-    Dim BanDetailPath As String
-    
-    BanDetailPath = App.Path & "\logs\" & "BanDetail.dat"
-    CharFile = CharPath & charName & ".chr"
-    
-    If FileExist(CharFile) Then
-        Call WriteConsoleMsg(sendIndex, "Pj: " & charName, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Ciudadanos matados: " & GetVar(CharFile, "FACCIONES", "CiudMatados") & " CriminalesMatados: " & GetVar(CharFile, "FACCIONES", "CrimMatados") & " usuarios matados: " & GetVar(CharFile, "MUERTES", "UserMuertes"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "NPCs muertos: " & GetVar(CharFile, "MUERTES", "NpcsMuertes"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(GetVar(CharFile, "INIT", "Clase")), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Pena: " & GetVar(CharFile, "COUNTERS", "PENA"), FontTypeNames.FONTTYPE_INFO)
-        
-        If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Ejército real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
-        
-        ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Legión oscura desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
-        
-        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue ejército real", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
-        
-        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExCaos")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue legión oscura", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
-        End If
-
-        
-        Call WriteConsoleMsg(sendIndex, "Asesino: " & CLng(GetVar(CharFile, "REP", "Asesino")), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Noble: " & CLng(GetVar(CharFile, "REP", "Nobles")), FontTypeNames.FONTTYPE_INFO)
-        
-        If IsNumeric(GetVar(CharFile, "Guild", "GUILDINDEX")) Then
-            Call WriteConsoleMsg(sendIndex, "Clan: " & modGuilds.GuildName(CInt(GetVar(CharFile, "Guild", "GUILDINDEX"))), FontTypeNames.FONTTYPE_INFO)
-        End If
-        
-        Ban = GetVar(CharFile, "FLAGS", "Ban")
-        Call WriteConsoleMsg(sendIndex, "Ban: " & Ban, FontTypeNames.FONTTYPE_INFO)
-        
-        If Ban = "1" Then
-            Call WriteConsoleMsg(sendIndex, "Ban por: " & GetVar(CharFile, charName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, charName, "Reason"), FontTypeNames.FONTTYPE_INFO)
-        End If
-    Else
-        Call WriteConsoleMsg(sendIndex, "El pj no existe: " & charName, FontTypeNames.FONTTYPE_INFO)
-    End If
-End Sub
-
 Sub SendUserInvTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
@@ -1160,38 +1101,6 @@ On Error Resume Next
             End If
         Next j
     End With
-End Sub
-
-Sub SendUserInvTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-On Error Resume Next
-
-    Dim j As Long
-    Dim CharFile As String, Tmp As String
-    Dim ObjInd As Long, ObjCant As Long
-    
-    CharFile = CharPath & charName & ".chr"
-    
-    If FileExist(CharFile, vbNormal) Then
-        Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "Inventory", "CantidadItems") & " objetos.", FontTypeNames.FONTTYPE_INFO)
-        
-        For j = 1 To MAX_INVENTORY_SLOTS
-            Tmp = GetVar(CharFile, "Inventory", "Obj" & j)
-            ObjInd = ReadField(1, Tmp, Asc("-"))
-            ObjCant = ReadField(2, Tmp, Asc("-"))
-            If ObjInd > 0 Then
-                Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).Name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
-            End If
-        Next j
-    Else
-        Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
-    End If
 End Sub
 
 Sub SendUserSkillsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
@@ -2109,82 +2018,6 @@ Public Sub CancelExit(ByVal UserIndex As Integer)
             'Simply reset
             UserList(UserIndex).Counters.Salir = IIf((UserList(UserIndex).flags.Privilegios And PlayerType.User) And MapInfo(UserList(UserIndex).Pos.Map).Pk, IntervaloCerrarConexion, 0)
         End If
-    End If
-End Sub
-
-'CambiarNick: Cambia el Nick de un slot.
-'
-'UserIndex: Quien ejecutó la orden
-'UserIndexDestino: SLot del usuario destino, a quien cambiarle el nick
-'NuevoNick: Nuevo nick de UserIndexDestino
-Public Sub CambiarNick(ByVal UserIndex As Integer, ByVal UserIndexDestino As Integer, ByVal NuevoNick As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    Dim ViejoNick As String
-    Dim ViejoCharBackup As String
-    
-    If UserList(UserIndexDestino).flags.UserLogged = False Then Exit Sub
-    ViejoNick = UserList(UserIndexDestino).Name
-    
-    If FileExist(CharPath & ViejoNick & ".chr", vbNormal) Then
-        'hace un backup del char
-        ViejoCharBackup = CharPath & ViejoNick & ".chr.old-"
-        Name CharPath & ViejoNick & ".chr" As ViejoCharBackup
-    End If
-End Sub
-
-Sub SendUserStatsTxtOFF(ByVal sendIndex As Integer, ByVal Nombre As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    If FileExist(CharPath & Nombre & ".chr", vbArchive) = False Then
-        Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
-    Else
-        Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & Nombre, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Nivel: " & GetVar(CharPath & Nombre & ".chr", "stats", "elv") & "  EXP: " & GetVar(CharPath & Nombre & ".chr", "stats", "Exp") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "elu"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Energía: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Maná: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
-        
-        Call WriteConsoleMsg(sendIndex, "Menor Golpe/Mayor Golpe: " & GetVar(CharPath & Nombre & ".chr", "stats", "MaxHIT"), FontTypeNames.FONTTYPE_INFO)
-        
-        Call WriteConsoleMsg(sendIndex, "Oro: " & GetVar(CharPath & Nombre & ".chr", "stats", "GLD"), FontTypeNames.FONTTYPE_INFO)
-        
-#If ConUpTime Then
-        Dim TempSecs As Long
-        Dim TempStr As String
-        TempSecs = GetVar(CharPath & Nombre & ".chr", "INIT", "UpTime")
-        TempStr = (TempSecs \ 86400) & " Días, " & ((TempSecs Mod 86400) \ 3600) & " Horas, " & ((TempSecs Mod 86400) Mod 3600) \ 60 & " Minutos, " & (((TempSecs Mod 86400) Mod 3600) Mod 60) & " Segundos."
-        Call WriteConsoleMsg(sendIndex, "Tiempo Logeado: " & TempStr, FontTypeNames.FONTTYPE_INFO)
-#End If
-    
-        Call WriteConsoleMsg(sendIndex, "Dados: " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT1") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT2") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT3") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT4") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT5"), FontTypeNames.FONTTYPE_INFO)
-    End If
-End Sub
-
-Sub SendUserOROTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    Dim CharFile As String
-    
-On Error Resume Next
-    CharFile = CharPath & charName & ".chr"
-    
-    If FileExist(CharFile, vbNormal) Then
-        Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "STATS", "BANCO") & " en el banco.", FontTypeNames.FONTTYPE_INFO)
-    Else
-        Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
     End If
 End Sub
 

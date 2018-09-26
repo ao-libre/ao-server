@@ -222,52 +222,89 @@ End Sub
 Public Sub BorrarUsuario(ByVal UserName As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
 '***************************************************
+    If Not Database_Enabled Then
+        BorrarUsuarioCharfile(UserName)
+    Else
 
-On Error Resume Next
-    If FileExist(CharPath & UCase$(UserName) & ".chr", vbNormal) Then
-        Kill CharPath & UCase$(UserName) & ".chr"
     End If
 End Sub
 
 Public Function BANCheck(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
 '***************************************************
+    If Not Database_Enabled Then
+        BANCheck = BANCheckCharfile(Name)
+    Else
 
-    BANCheck = (val(GetVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban")) = 1)
+    End If
 
 End Function
 
 Public Function PersonajeExiste(ByVal Name As String) As Boolean
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
 '***************************************************
+    If Not Database_Enabled Then
+        PersonajeExiste = PersonajeExisteCharfile(Name)
+    Else
 
-    PersonajeExiste = FileExist(CharPath & UCase$(Name) & ".chr", vbNormal)
+    End If
 
 End Function
 
-Public Function UnBan(ByVal Name As String) As Boolean
+Public Sub UnBan(ByVal Name As String)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
 '***************************************************
+    
+    If Not Database_Enabled Then
+        Call UnBanCharfile(Name)
+    Else
 
-    'Unban the character
-    Call WriteVar(App.Path & "\charfile\" & Name & ".chr", "FLAGS", "Ban", "0")
+    End If
     
     'Remove it from the banned people database
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "BannedBy", "NOBODY")
     Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", Name, "Reason", "NO REASON")
+End Sub
+
+Public Function GetUserGuildIndex(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildIndex = GetUserGuildIndexCharfile(UserName)
+    Else
+
+    End If
+
 End Function
+
+Public Sub CopyUser(ByVal UserName As String, ByVal newName As String)
+'***************************************************
+'Author: Unknown
+'Last Modification: 18/09/2018
+'18/09/2018 CHOTS: Checks database too
+'***************************************************
+    
+    If Not Database_Enabled Then
+        Call CopyUserCharfile(UserName, newName)
+    Else
+
+    End If
+End Sub
 
 Public Function MD5ok(ByVal md5formateado As String) As Boolean
 '***************************************************
@@ -492,24 +529,19 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
         If tUser <= 0 Then
             Call WriteConsoleMsg(bannerUserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_TALK)
             
-            If FileExist(CharPath & UserName & ".chr", vbNormal) Then
+            If PersonajeExiste(UserName) Then
                 UserPriv = UserDarPrivilegioLevel(UserName)
                 
                 If (UserPriv And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban") <> "0" Then
+                    If BANCheck(Username) Then
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
                     Else
                         Call LogBanFromName(UserName, bannerUserIndex, Reason)
                         Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
                         
-                        'ponemos el flag de ban a 1
-                        Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
-                        'ponemos la pena
-                        cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
-                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
-                        Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
+                        Call SaveBan(UserName, Reason, .Name)
                         
                         If (UserPriv And rank) = (.flags.Privilegios And rank) Then
                             .flags.Ban = 1
@@ -542,12 +574,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                 
                 Call LogGM(.Name, "BAN a " & UserName)
                 
-                'ponemos el flag de ban a 1
-                Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
-                'ponemos la pena
-                cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
-                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
-                Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, LCase$(.Name) & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
+                Call SaveBan(UserName, Reason, .Name)
                 
                 Call CloseSocket(tUser)
             End If
