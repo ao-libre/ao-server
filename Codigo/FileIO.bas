@@ -29,6 +29,10 @@ Attribute VB_Name = "ES"
 
 Option Explicit
 
+#If False Then
+    Dim X, Y, N, Map, Mapa As Variant
+#End If
+
 Public Sub CargarSpawnList()
 '***************************************************
 'Author: Unknown
@@ -1654,6 +1658,9 @@ Sub LoadSini()
     IdleLimit = val(GetVar(IniPath & "Server.ini", "INIT", "IdleLimit"))
     'Lee la version correcta del cliente
     ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "Version")
+    
+    ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
+    OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
