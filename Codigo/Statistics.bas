@@ -22,9 +22,9 @@ Attribute VB_Name = "Statistics"
 
 Option Explicit
 
-Private Type trainningData
+Private Type trainingData
     startTick As Long
-    trainningTime As Long
+    trainingTime As Long
 End Type
 
 Private Type fragLvlRace
@@ -35,7 +35,7 @@ Private Type fragLvlLvl
     matrix(1 To 50, 1 To 50) As Long
 End Type
 
-Private trainningInfo() As trainningData
+Private trainingInfo() As trainingData
 
 Private fragLvlRaceData(1 To 7) As fragLvlRace
 Private fragLvlLvlData(1 To 7) As fragLvlLvl
@@ -45,7 +45,7 @@ Private fragAlignmentLvlData(1 To 50, 1 To 4) As Long
 Private keyOcurrencies(255) As Currency
 
 Public Sub Initialize()
-    ReDim trainningInfo(1 To MaxUsers) As trainningData
+    ReDim trainingInfo(1 To MaxUsers) As trainingData
 End Sub
 
 Public Sub UserConnected(ByVal UserIndex As Integer)
@@ -55,10 +55,10 @@ Public Sub UserConnected(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    'A new user connected, load it's trainning time count
-    trainningInfo(UserIndex).trainningTime = val(GetVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", 30))
+    'A new user connected, load it's training time count
+    trainingInfo(UserIndex).trainingTime = GetUserTrainingTime(UserList(UserIndex).name)
     
-    trainningInfo(UserIndex).startTick = (GetTickCount() And &H7FFFFFFF)
+    trainingInfo(UserIndex).startTick = (GetTickCount() And &H7FFFFFFF)
 End Sub
 
 Public Sub UserDisconnected(ByVal UserIndex As Integer)
@@ -68,14 +68,14 @@ Public Sub UserDisconnected(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    With trainningInfo(UserIndex)
-        'Update trainning time
-        .trainningTime = .trainningTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
+    With trainingInfo(UserIndex)
+        'Update training time
+        .trainingTime = .trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
         
         .startTick = (GetTickCount() And &H7FFFFFFF)
         
         'Store info in char file
-        Call WriteVar(CharPath & UCase$(UserList(UserIndex).name) & ".chr", "RESEARCH", "TrainningTime", CStr(.trainningTime))
+        Call SaveUserTrainingTime(UserList(UserIndex).name, .trainingTime)
     End With
 End Sub
 
@@ -89,16 +89,16 @@ Public Sub UserLevelUp(ByVal UserIndex As Integer)
     Dim handle As Integer
     handle = FreeFile()
     
-    With trainningInfo(UserIndex)
+    With trainingInfo(UserIndex)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainningTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         
         'Reset data
-        .trainningTime = 0
+        .trainingTime = 0
         .startTick = (GetTickCount() And &H7FFFFFFF)
     End With
 End Sub
