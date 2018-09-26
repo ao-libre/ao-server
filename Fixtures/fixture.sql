@@ -34,6 +34,7 @@ CREATE TABLE user (
     free_skillpoints SMALLINT UNSIGNED NOT NULL,
     assigned_skillpoints SMALLINT UNSIGNED NOT NULL,
     pet_amount TINYINT UNSIGNED NOT NULL,
+    votes_amount SMALLINT UNSIGNED,
 
     # POS
     pos_map TINYINT UNSIGNED NOT NULL,
@@ -150,6 +151,15 @@ CREATE TABLE attribute (
     CONSTRAINT fk_attribute_user FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
+CREATE TABLE punishment (
+    user_id MEDIUMINT UNSIGNED NOT NULL,
+    number TINYINT UNSIGNED NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (user_id, number),
+    CONSTRAINT fk_punishment_user FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
 CREATE TABLE inventory_item (
     user_id MEDIUMINT UNSIGNED NOT NULL,
     number TINYINT UNSIGNED NOT NULL,
@@ -189,3 +199,4 @@ CREATE TABLE skillpoint (
 # z7vW5jWuMkytBzuSBteRKXnXELUcEgt9
 # Linux command:
 # mysql -h 'argentumonlinefree.cjq47ruczip9.sa-east-1.rds.amazonaws.com' -u 'argentumonline' -p
+# https://dev.mysql.com/downloads/connector/odbc/5.1.html
