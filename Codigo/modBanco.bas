@@ -340,35 +340,3 @@ For j = 1 To MAX_BANCOINVENTORY_SLOTS
 Next
 
 End Sub
-
-Sub SendUserBovedaTxtFromChar(ByVal sendIndex As Integer, ByVal charName As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-On Error Resume Next
-Dim j As Integer
-Dim CharFile As String, Tmp As String
-Dim ObjInd As Long, ObjCant As Long
-
-CharFile = CharPath & charName & ".chr"
-
-If FileExist(CharFile, vbNormal) Then
-    Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
-    Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "BancoInventory", "CantidadItems") & " objetos.", FontTypeNames.FONTTYPE_INFO)
-    For j = 1 To MAX_BANCOINVENTORY_SLOTS
-        Tmp = GetVar(CharFile, "BancoInventory", "Obj" & j)
-        ObjInd = ReadField(1, Tmp, Asc("-"))
-        ObjCant = ReadField(2, Tmp, Asc("-"))
-        If ObjInd > 0 Then
-            Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).Name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
-        End If
-    Next
-Else
-    Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
-End If
-
-End Sub
-

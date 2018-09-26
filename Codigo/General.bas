@@ -1840,7 +1840,7 @@ Sub GuardarUsuarios()
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharPath & UCase$(UserList(i).Name) & ".chr", False)
+            Call SaveUser(i, False)
         End If
     Next i
     
@@ -1851,6 +1851,52 @@ Sub GuardarUsuarios()
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
 
     haciendoBK = False
+End Sub
+
+Sub SaveUser(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 17/09/2018 (CHOTS)
+'Saves the User, in the database or charfile
+'*************************************************
+
+On Error GoTo ErrorHandler
+
+Dim UserFile as String
+
+With UserList(UserIndex)
+
+    If .clase = 0 Or .Stats.ELV = 0 Then
+        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
+        Exit Sub
+    End If
+
+    If .flags.Mimetizado = 1 Then
+        .Char.body = .CharMimetizado.body
+        .Char.Head = .CharMimetizado.Head
+        .Char.CascoAnim = .CharMimetizado.CascoAnim
+        .Char.ShieldAnim = .CharMimetizado.ShieldAnim
+        .Char.WeaponAnim = .CharMimetizado.WeaponAnim
+        .Counters.Mimetismo = 0
+        .flags.Mimetizado = 0
+        ' Se fue el efecto del mimetismo, puede ser atacado por npcs
+        .flags.Ignorado = False
+    End If
+
+    If Not Database_Enabled Then
+        'CHOTS | Saves in Charfile
+
+        Call SaveUserToCharfile(UserIndex, UserFile, SaveTimeOnline)
+    Else
+        'CHOTS | Saves in the database
+    End If
+End With
+
+Exit Sub
+
+ErrorHandler:
+    Call LogError("Error en SaveUserToCharfile: " & UserFile)
+
 End Sub
 
 
@@ -1899,4 +1945,396 @@ End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
     Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
+End Sub
+
+Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy as String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'Saves the ban flag and reason
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveBanCharfile(UserName, Reason, BannedBy)
+Else
+    'CHOTS | Saves in the database
+End If
+
+End Sub
+
+Public Function GetUserAmountOfPunishments(ByVal UserName As String) as Integer
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'Get the user number of punishments
+'***************************************************
+If Not Database_Enabled Then
+    GetUserAmountOfPunishments = GetUserAmountOfPunishmentsCharfile(UserName)
+Else
+    'CHOTS | Saves in the database
+End If
+
+End Sub
+
+Public Sub SendUserPunishments(ByVal UserIndex As Integer, ByVal UserName As String, ByVal Count as Integer)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'Saves the ban flag and reason
+'***************************************************
+If Not Database_Enabled Then
+    Call SendUserPunishmentsCharfile(UserIndex, UserName, Count)
+Else
+
+End If
+
+End Sub
+
+Public Function GetUserPos(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'Get the user position
+'***************************************************
+If Not Database_Enabled Then
+    GetUserPos = GetUserPosCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserSalt(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password Salt
+'***************************************************
+If Not Database_Enabled Then
+    GetUserSalt = GetUserSaltCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserPassword(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password
+'***************************************************
+If Not Database_Enabled Then
+    GetUserPassword = GetUserPasswordCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserEmail(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Email
+'***************************************************
+If Not Database_Enabled Then
+    GetUserEmail = GetUserEmailCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt as Integer)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves the password and salt
+'***************************************************
+If Not Database_Enabled Then
+    Call StorePasswordSaltCharfile(UserName, Password, Salt)
+Else
+
+End If
+
+End Sub
+
+Public Sub SaveUserEmail(ByVal Password As String, ByVal Email as String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves the password and salt
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserEmailCharfile(UserName, Email)
+Else
+
+End If
+
+End Sub
+
+Public Sub SaveUserPunishment(ByVal UserName As String, ByVal Number as Integer, ByVal Reason as String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves a new punishment
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserPunishmentCharfile(UserName, Number, Reason)
+Else
+
+End If
+
+End Sub
+
+Public Sub AlterUserPunishment(ByVal UserName As String, ByVal Number as Integer, ByVal Reason as String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves a new punishment
+'***************************************************
+If Not Database_Enabled Then
+    Call AlterUserPunishmentCharfile(UserName, Number, Reason)
+Else
+
+End If
+
+End Sub
+
+Public Sub ResetUserFacciones(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Reset the imperial an legionary armies
+'***************************************************
+If Not Database_Enabled Then
+    Call ResetUserFaccionesCharfile(UserName)
+Else
+
+End If
+
+End Sub
+
+Public Sub KickUserCouncils(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from both councils
+'***************************************************
+If Not Database_Enabled Then
+    Call KickUserCouncilsCharfile(UserName)
+Else
+
+End If
+
+End Sub
+
+Public Sub KickUserFacciones(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from both factions
+'***************************************************
+If Not Database_Enabled Then
+    Call KickUserFaccionesCharfile(UserName)
+Else
+
+End If
+
+End Sub
+
+Public Sub KickUserChaosLegion(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from ChaosLegion
+'***************************************************
+If Not Database_Enabled Then
+    Call KickUserChaosLegionCharfile(UserName, KickerName)
+Else
+
+End If
+
+End Sub
+
+Public Sub KickUserRoyalArmy(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from RoyalArmy
+'***************************************************
+If Not Database_Enabled Then
+    Call KickUserRoyalArmyCharfile(UserName, KickerName)
+Else
+
+End If
+
+End Sub
+
+Public Sub UpdateUserLogged(ByVal UserName As String, ByVal Logged As Byte)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Updates the logged value for the user
+'***************************************************
+If Not Database_Enabled Then
+    Call UpdateUserLoggedCharfile(UserName, Logged)
+Else
+
+End If
+
+End Sub
+
+Public Function GetUserLastIps(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Last IPs list
+'***************************************************
+If Not Database_Enabled Then
+    GetUserLastIps = GetUserLastIpsCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserSkills(ByVal UserName As String) as String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Skills list
+'***************************************************
+If Not Database_Enabled Then
+    GetUserSkills = GetUserSkillsCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserFreeSkills(ByVal UserName As String) as Integer
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Get the number of free skillspoints
+'***************************************************
+If Not Database_Enabled Then
+    GetUserFreeSkills = GetUserFreeSkillsCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserTrainingTime(ByVal UserName As String) as Long
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Get the training time in minutes
+'***************************************************
+If Not Database_Enabled Then
+    GetUserTrainingTime = GetUserTrainingTimeCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Sub SaveUserTrainingTime(ByVal UserName As String, ByVal trainingTime As Long)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Updates the trainingTime value for the user
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserTrainingTimeCharfile(UserName, trainingTime)
+Else
+
+End If
+
+End Sub
+
+Public Function GetUserTrainingTime(ByVal UserName As String) as Long
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Get the training time in minutes
+'***************************************************
+If Not Database_Enabled Then
+    GetUserTrainingTime = GetUserTrainingTimeCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function UserBelongsToRoyalArmy(ByVal UserName As String) as Boolean
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Check if the user belongs to Royal Army
+'***************************************************
+If Not Database_Enabled Then
+    UserBelongsToRoyalArmy = UserBelongsToRoyalArmyCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function UserBelongsToChaosLegion(ByVal UserName As String) as Boolean
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Check if the user belongs to Chaos Legion
+'***************************************************
+If Not Database_Enabled Then
+    UserBelongsToChaosLegion = UserBelongsToChaosLegionCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserLevel(ByVal UserName As String) as Byte
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Level
+'***************************************************
+If Not Database_Enabled Then
+    GetUserLevel = GetUserLevelCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserPromedio(ByVal UserName As String) as Long
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Reputation Average
+'***************************************************
+If Not Database_Enabled Then
+    GetUserLevel = GetUserPromedioCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Function GetUserReenlists(ByVal UserName As String) as Byte
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Legion reenlists
+'***************************************************
+If Not Database_Enabled Then
+    GetUserReenlists = GetUserReenlistsCharfile(UserName)
+Else
+End If
+
+End Function
+
+Public Sub SaveUserReenlists(ByVal UserName As String, ByVal Reenlists As Byte)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the number of reenlists
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserReenlistsCharfile(UserName, Reenlists)
+Else
+
+End If
+
 End Sub
