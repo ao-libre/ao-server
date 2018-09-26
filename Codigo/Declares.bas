@@ -781,14 +781,14 @@ Public Type tPartyData
 End Type
 
 Public Type Position
-    X As Integer
-    Y As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Public Type WorldPos
-    Map As Integer
-    X As Integer
-    Y As Integer
+    map As Integer
+    x As Integer
+    y As Integer
 End Type
 
 Public Type FXdata
@@ -1932,3 +1932,6 @@ Public Enum e_SoundIndex
     MUERTE_MUJER_AGUA = 211
     MUERTE_HOMBRE_AGUA = 212
 End Enum
+
+Public ExpMultiplier As Integer
+Public OroMultiplier As Integer
