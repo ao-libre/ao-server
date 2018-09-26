@@ -43,6 +43,9 @@ Attribute VB_Name = "NPCs"
 '?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 
 Option Explicit
+#If False Then
+    Dim X, Y, N, Map As Variant
+#End If
 
 Sub QuitarMascota(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '***************************************************
@@ -960,7 +963,7 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
         .Hostile = val(Leer.GetValue("NPC" & NpcNumber, "Hostile"))
         .flags.OldHostil = .Hostile
         
-        .GiveEXP = val(Leer.GetValue("NPC" & NpcNumber, "GiveEXP"))
+        .GiveEXP = val(Leer.GetValue("NPC" & NpcNumber, "GiveEXP")) * ExpMultiplier
         
         .flags.ExpCount = .GiveEXP
         
@@ -995,7 +998,11 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
         For LoopC = 1 To MAX_NPC_DROPS
             ln = Leer.GetValue("NPC" & NpcNumber, "Drop" & LoopC)
             .Drop(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-            .Drop(LoopC).Amount = val(ReadField(2, ln, 45))
+            If .Drop(LoopC).ObjIndex = iORO Then
+                .Drop(LoopC).Amount = val(ReadField(2, ln, 45)) * OroMultiplier
+            Else
+                .Drop(LoopC).Amount = val(ReadField(2, ln, 45))
+            End If
         Next LoopC
 
         
