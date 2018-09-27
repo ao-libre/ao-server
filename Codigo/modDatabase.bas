@@ -7,11 +7,11 @@ Attribute VB_Name = "modDatabase"
 
 Option Explicit
 
-Public Const Database_Enabled as Boolean = False
-Public Database_Host as String
-Public Database_Name as String
-Public Database_Username as String
-Public Database_Password as String
+Public Const Database_Enabled As Boolean = False
+Public Database_Host As String
+Public Database_Name As String
+Public Database_Username As String
+Public Database_Password As String
 Public Database_Connection As ADODB.Connection
 Public Database_ResultSet As ADODB.Recordset
  
@@ -22,15 +22,15 @@ Public Sub Database_Connect()
 '***************************************************
 On Error GoTo ErrorHandler
  
-Set Con = New ADODB.Connection
+Set Database_Connection = New ADODB.Connection
  
-Con.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver};SERVER=" & Database_Host & ";DATABASE=" & Database_Name & ";"UID=" & Database_Username & ";PWD=" & Database_Password & "; OPTION=3"
-Con.CursorLocation = adUseClient
-Con.Open
+Database_Connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver};SERVER=" & Database_Host & ";DATABASE=" & Database_Name & ";UID=" & Database_Username & ";PWD=" & Database_Password & "; OPTION=3"
+Database_Connection.CursorLocation = adUseClient
+Database_Connection.Open
 
 Exit Sub
 ErrorHandler:
-    Call LogCriticEvent("Unable to connect to Mysql Database: " & Err.number & " - " Err.Description)
+    Call LogCriticEvent("Unable to connect to Mysql Database: " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Sub Database_Close()
@@ -40,11 +40,11 @@ Public Sub Database_Close()
 '***************************************************
 On Error GoTo ErrorHandler
      
-Con.Close
-Set Con = Nothing
+Database_Connection.Close
+Set Database_Connection = Nothing
      
 Exit Sub
      
 ErrorHandler:
-    Call LogCriticEvent("Unable to close Mysql Database: " & Err.number & " - " Err.Description) 
+    Call LogCriticEvent("Unable to close Mysql Database: " & Err.Number & " - " & Err.description)
 End Sub
