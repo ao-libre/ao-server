@@ -101,7 +101,7 @@ Dim sufragio As Integer
 
     If (UserList(UserIndex).Stats.ELV >= pNivelRequerido) Then
         If (OpcionValida(opcion)) Then
-            YaVoto = PersonajeCantidadVotos(Userlist(UserIndex).Name) >= pEncuestaActualNum
+            YaVoto = PersonajeCantidadVotos(UserList(UserIndex).Name) >= pEncuestaActualNum
             If Not YaVoto Then
                 If Not MailYaVoto(UserList(UserIndex).email) Then
                     'pj apto para votar
@@ -112,7 +112,7 @@ Dim sufragio As Integer
                     Call MarcarPjComoQueYaVoto(UserIndex, pEncuestaActualNum)
                     Call MarcarMailComoQueYaVoto(UserList(UserIndex).email)
                 Else
-                    Call MarcarPjComoQueYaVoto(UserIndex)
+                    Call MarcarPjComoQueYaVoto(UserIndex, pEncuestaActualNum)
                     doVotar = "Este email ya voto en la consulta: " & pEncuestaActualTex
                 End If
             Else
@@ -145,16 +145,16 @@ Dim i As Integer
 End Function
 
 
-Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer, ByVal NumeroEncuesta as Integer)
+Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer, ByVal NumeroEncuesta As Integer)
     If Not Database_Enabled Then
-        MarcarPjComoQueYaVotoCharfile(UserName, NumeroEncuesta)
+        Call MarcarPjComoQueYaVotoCharfile(UserIndex, NumeroEncuesta)
     Else
         
     End If
     
 End Sub
 
-Private Function PersonajeCantidadVotos(ByVal UserName As String) as Integer
+Private Function PersonajeCantidadVotos(ByVal UserName As String) As Integer
     If Not Database_Enabled Then
         PersonajeCantidadVotos = PersonajeCantidadVotosCharfile(UserName)
     Else
