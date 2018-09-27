@@ -9492,7 +9492,7 @@ On Error GoTo ErrHandler
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
                     If Not Database_Enabled Then
                         Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
-                        Call SendUserOROTxtFromChar(UserIndex, UserName)
+                        Call SendUserOROTxtFromCharfile(UserIndex, UserName)
                     Else
 
                     End If
@@ -11698,7 +11698,7 @@ On Error GoTo ErrHandler
             If tUser <= 0 Then
                 If PersonajeExiste(UserName) Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline, echando de los consejos.", FontTypeNames.FONTTYPE_INFO)
-                    Call KickUserConsejo(UserName)
+                    Call KickUserCouncils(UserName)
                 Else
                     Call WriteConsoleMsg(UserIndex, "No se encuentra el charfile " & CharPath & UserName, FontTypeNames.FONTTYPE_INFO)
                 End If
@@ -12434,7 +12434,7 @@ On Error GoTo ErrHandler
                     Call LogGM(.Name, " borro la pena: " & punishment _
                         & " de " & UserName & " y la cambió por: " & NewText)
 
-                    Call AlterUserPunishment(UserName, punishment, LCase$(.Name) & ": <" & NewText & "> " & Date & " " & time)                    
+                    Call AlterUserPunishment(UserName, punishment, LCase$(.Name) & ": <" & NewText & "> " & Date & " " & time)
                     Call WriteConsoleMsg(UserIndex, "Pena modificada.", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
@@ -14159,7 +14159,7 @@ On Error GoTo ErrHandler
             
             If tUser > 0 Then
                 Call ResetFacciones(tUser)
-            Else                
+            Else
                 If PersonajeExiste(UserName) Then
                     Call ResetUserFacciones(UserName)
                 Else
