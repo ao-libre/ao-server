@@ -275,7 +275,7 @@ Public Sub AceptarNuevoMiembro(ByRef Nombre As String)
 Dim OldQ    As Integer
 Dim OldQs   As String
 
-If FileExist(ruta) Then
+If PersonajeExiste(Nombre) Then
     Call SaveUserGuildIndex(Nombre, p_GuildNumber)
     Call SaveUserGuildAspirant(Nombre, 0)
 
@@ -781,12 +781,12 @@ Public Function Iterador_ProximoGM() As Integer
     End If
 End Function
 
-Public Function Iterador_ProximaRelacion(ByVal r As RELACIONES_GUILD) As Integer
+Public Function Iterador_ProximaRelacion(ByVal R As RELACIONES_GUILD) As Integer
     
     While p_IteradorRelaciones < UBound(p_Relaciones)
         
         p_IteradorRelaciones = p_IteradorRelaciones + 1
-        If p_Relaciones(p_IteradorRelaciones) = r Then
+        If p_Relaciones(p_IteradorRelaciones) = R Then
             Iterador_ProximaRelacion = p_IteradorRelaciones
             Exit Function
         End If

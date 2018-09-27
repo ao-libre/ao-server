@@ -83,7 +83,7 @@ End With
 End Sub
 
 
-Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal b As Boolean)
+Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal x As Integer, ByVal y As Integer, ByVal b As Boolean)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -97,23 +97,23 @@ Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal X As Integ
 '***************************************************
 
     If toMap Then
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(X, Y, b))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(x, y, b))
     Else
-        Call WriteBlockPosition(sndIndex, X, Y, b)
+        Call WriteBlockPosition(sndIndex, x, y, b)
     End If
 
 End Sub
 
 
-Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal Map As Integer, ByVal x As Integer, ByVal y As Integer) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-        With MapData(Map, X, Y)
+    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And y > 0 And y < 101 Then
+        With MapData(Map, x, y)
             If ((.Graphic(1) >= 1505 And .Graphic(1) <= 1520) Or _
             (.Graphic(1) >= 5665 And .Graphic(1) <= 5680) Or _
             (.Graphic(1) >= 13547 And .Graphic(1) <= 13562)) And _
@@ -129,13 +129,13 @@ Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) A
 
 End Function
 
-Private Function HayLava(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Private Function HayLava(ByVal Map As Integer, ByVal x As Integer, ByVal y As Integer) As Boolean
 '***************************************************
 'Autor: Nacho (Integer)
 'Last Modification: 03/12/07
 '***************************************************
-    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-        If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
+    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And y > 0 And y < 101 Then
+        If MapData(Map, x, y).Graphic(1) >= 5837 And MapData(Map, x, y).Graphic(1) <= 5852 Then
             HayLava = True
         Else
             HayLava = False
@@ -162,7 +162,7 @@ On Error GoTo ErrHandler
     
     For i = TrashCollector.Count To 1 Step -1
         Set d = TrashCollector(i)
-        Call EraseObj(1, d.Map, d.X, d.Y)
+        Call EraseObj(1, d.Map, d.x, d.y)
         Call TrashCollector.Remove(i)
         Set d = Nothing
     Next i
@@ -182,14 +182,14 @@ Sub EnviarSpawnList(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    Dim k As Long
+    Dim K As Long
     Dim npcNames() As String
     
     ReDim npcNames(1 To UBound(SpawnList)) As String
     
-    For k = 1 To UBound(SpawnList)
-        npcNames(k) = SpawnList(k).NpcName
-    Next k
+    For K = 1 To UBound(SpawnList)
+        npcNames(K) = SpawnList(K).NpcName
+    Next K
     
     Call WriteSpawnList(UserIndex, npcNames())
 
@@ -463,14 +463,14 @@ On Error Resume Next
 
     With Prision
         .Map = 66
-        .X = 75
-        .Y = 47
+        .x = 75
+        .y = 47
     End With
     
     With Libertad
         .Map = 66
-        .X = 75
-        .Y = 65
+        .x = 75
+        .y = 65
     End With
 
     MaxUsers = 0
@@ -584,11 +584,11 @@ Private Sub LogServerStartTime()
 'Last Modify Date: 15/03/2011
 'Logs Server Start Time.
 '*****************************************************************
-    Dim N As Integer
-    N = FreeFile
-    Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
-    Close #N
+    Dim n As Integer
+    n = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #n
+    Print #n, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+    Close #n
 
 End Sub
 
@@ -1124,11 +1124,11 @@ On Error Resume Next
     If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
     
     'Log it
-    Dim N As Integer
-    N = FreeFile
-    Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " servidor reiniciado."
-    Close #N
+    Dim n As Integer
+    n = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #n
+    Print #n, Date & " " & time & " servidor reiniciado."
+    Close #n
     
     'Ocultar
     
@@ -1152,9 +1152,9 @@ Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
 
     With UserList(UserIndex)
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 1 And _
-               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 2 And _
-               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 4 Then Intemperie = True
+            If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 1 And _
+               MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 2 And _
+               MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 4 Then Intemperie = True
         Else
             Intemperie = False
         End If
@@ -1255,7 +1255,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
             If .Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
                 .Counters.Lava = .Counters.Lava + 1
             Else
-                If HayLava(.Pos.Map, .Pos.X, .Pos.Y) Then
+                If HayLava(.Pos.Map, .Pos.x, .Pos.y) Then
                     Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = .Stats.MinHp - Porcentaje(.Stats.MaxHp, 5)
                     
@@ -1537,9 +1537,9 @@ Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, 
 '***************************************************
 
     With UserList(UserIndex)
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 1 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 2 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 4 Then Exit Sub
         
         
         Dim massta As Integer
@@ -1569,7 +1569,7 @@ Public Sub EfectoVeneno(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    Dim N As Integer
+    Dim n As Integer
     
     With UserList(UserIndex)
         If .Counters.Veneno < IntervaloVeneno Then
@@ -1577,8 +1577,8 @@ Public Sub EfectoVeneno(ByVal UserIndex As Integer)
         Else
           Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas morirás.", FontTypeNames.FONTTYPE_VENENO)
           .Counters.Veneno = 0
-          N = RandomNumber(1, 5)
-          .Stats.MinHp = .Stats.MinHp - N
+          n = RandomNumber(1, 5)
+          .Stats.MinHp = .Stats.MinHp - n
           If .Stats.MinHp < 1 Then Call UserDie(UserIndex)
           Call WriteUpdateHP(UserIndex)
         End If
@@ -1666,9 +1666,9 @@ Public Sub Sanar(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal
 '***************************************************
 
     With UserList(UserIndex)
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 1 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 2 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 4 Then Exit Sub
         
         Dim mashit As Integer
         'con el paso del tiempo va sanando....pero muy lentamente ;-)
@@ -1748,7 +1748,7 @@ On Error GoTo ErrHandler
                  
                         If .Counters.Pena < 1 Then
                             .Counters.Pena = 0
-                            Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
+                            Call WarpUserChar(i, Libertad.Map, Libertad.x, Libertad.y, True)
                             Call WriteConsoleMsg(i, "¡Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                             Call FlushBuffer(i)
                         End If
@@ -1762,7 +1762,7 @@ On Error GoTo ErrHandler
                 
                 If Not .Pos.Map = 0 Then
                 'Counter de piquete
-                    If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+                    If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ANTIPIQUETE Then
                             If .flags.Muerto = 0 Then
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
                                 Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
@@ -1862,7 +1862,7 @@ Sub SaveUser(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolea
 
 On Error GoTo ErrorHandler
 
-Dim UserFile as String
+Dim UserFile As String
 
 With UserList(UserIndex)
 
@@ -1886,7 +1886,7 @@ With UserList(UserIndex)
     If Not Database_Enabled Then
         'CHOTS | Saves in Charfile
 
-        Call SaveUserToCharfile(UserIndex, UserFile, SaveTimeOnline)
+        Call SaveUserToCharfile(UserIndex, SaveTimeOnline)
     Else
         'CHOTS | Saves in the database
     End If
@@ -1944,10 +1944,10 @@ Public Sub FreeCharIndexes()
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
+    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.x, UserList(index).Pos.y))
 End Sub
 
-Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy as String)
+Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 18/09/2018
@@ -1961,7 +1961,7 @@ End If
 
 End Sub
 
-Public Function GetUserAmountOfPunishments(ByVal UserName As String) as Integer
+Public Function GetUserAmountOfPunishments(ByVal UserName As String) As Integer
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 19/09/2018
@@ -1973,9 +1973,9 @@ Else
     'CHOTS | Saves in the database
 End If
 
-End Sub
+End Function
 
-Public Sub SendUserPunishments(ByVal UserIndex As Integer, ByVal UserName As String, ByVal Count as Integer)
+Public Sub SendUserPunishments(ByVal UserIndex As Integer, ByVal UserName As String, ByVal Count As Integer)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 18/09/2018
@@ -1989,7 +1989,7 @@ End If
 
 End Sub
 
-Public Function GetUserPos(ByVal UserName As String) as String
+Public Function GetUserPos(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 19/09/2018
@@ -2002,7 +2002,7 @@ End If
 
 End Function
 
-Public Function GetUserSalt(ByVal UserName As String) as String
+Public Function GetUserSalt(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
@@ -2015,7 +2015,7 @@ End If
 
 End Function
 
-Public Function GetUserPassword(ByVal UserName As String) as String
+Public Function GetUserPassword(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
@@ -2028,7 +2028,7 @@ End If
 
 End Function
 
-Public Function GetUserEmail(ByVal UserName As String) as String
+Public Function GetUserEmail(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
@@ -2041,7 +2041,7 @@ End If
 
 End Function
 
-Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt as Integer)
+Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt As Integer)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
@@ -2055,21 +2055,21 @@ End If
 
 End Sub
 
-Public Sub SaveUserEmail(ByVal Password As String, ByVal Email as String)
+Public Sub SaveUserEmail(ByVal UserName As String, ByVal email As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
 'Saves the password and salt
 '***************************************************
 If Not Database_Enabled Then
-    Call SaveUserEmailCharfile(UserName, Email)
+    Call SaveUserEmailCharfile(UserName, email)
 Else
 
 End If
 
 End Sub
 
-Public Sub SaveUserPunishment(ByVal UserName As String, ByVal Number as Integer, ByVal Reason as String)
+Public Sub SaveUserPunishment(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
@@ -2083,7 +2083,7 @@ End If
 
 End Sub
 
-Public Sub AlterUserPunishment(ByVal UserName As String, ByVal Number as Integer, ByVal Reason as String)
+Public Sub AlterUserPunishment(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
@@ -2181,7 +2181,7 @@ End If
 
 End Sub
 
-Public Function GetUserLastIps(ByVal UserName As String) as String
+Public Function GetUserLastIps(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
@@ -2194,7 +2194,7 @@ End If
 
 End Function
 
-Public Function GetUserSkills(ByVal UserName As String) as String
+Public Function GetUserSkills(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
@@ -2207,7 +2207,7 @@ End If
 
 End Function
 
-Public Function GetUserFreeSkills(ByVal UserName As String) as Integer
+Public Function GetUserFreeSkills(ByVal UserName As String) As Integer
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 24/09/2018
@@ -2215,19 +2215,6 @@ Public Function GetUserFreeSkills(ByVal UserName As String) as Integer
 '***************************************************
 If Not Database_Enabled Then
     GetUserFreeSkills = GetUserFreeSkillsCharfile(UserName)
-Else
-End If
-
-End Function
-
-Public Function GetUserTrainingTime(ByVal UserName As String) as Long
-'***************************************************
-'Autor: Juan Andres Dalmasso (CHOTS)
-'Last Modification: 24/09/2018
-'Get the training time in minutes
-'***************************************************
-If Not Database_Enabled Then
-    GetUserTrainingTime = GetUserTrainingTimeCharfile(UserName)
 Else
 End If
 
@@ -2247,7 +2234,7 @@ End If
 
 End Sub
 
-Public Function GetUserTrainingTime(ByVal UserName As String) as Long
+Public Function GetUserTrainingTime(ByVal UserName As String) As Long
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 24/09/2018
@@ -2260,7 +2247,7 @@ End If
 
 End Function
 
-Public Function UserBelongsToRoyalArmy(ByVal UserName As String) as Boolean
+Public Function UserBelongsToRoyalArmy(ByVal UserName As String) As Boolean
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018
@@ -2273,7 +2260,7 @@ End If
 
 End Function
 
-Public Function UserBelongsToChaosLegion(ByVal UserName As String) as Boolean
+Public Function UserBelongsToChaosLegion(ByVal UserName As String) As Boolean
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018
@@ -2286,7 +2273,7 @@ End If
 
 End Function
 
-Public Function GetUserLevel(ByVal UserName As String) as Byte
+Public Function GetUserLevel(ByVal UserName As String) As Byte
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018
@@ -2299,20 +2286,20 @@ End If
 
 End Function
 
-Public Function GetUserPromedio(ByVal UserName As String) as Long
+Public Function GetUserPromedio(ByVal UserName As String) As Long
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018
 'Get the User Reputation Average
 '***************************************************
 If Not Database_Enabled Then
-    GetUserLevel = GetUserPromedioCharfile(UserName)
+    GetUserPromedio = GetUserPromedioCharfile(UserName)
 Else
 End If
 
 End Function
 
-Public Function GetUserReenlists(ByVal UserName As String) as Byte
+Public Function GetUserReenlists(ByVal UserName As String) As Byte
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018

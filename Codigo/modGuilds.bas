@@ -1756,7 +1756,6 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
 
     Exit Sub
 error:
-    Set UserFile = Nothing
     If Not PersonajeExiste(Personaje) Then
         Call LogError("El usuario " & UserList(UserIndex).Name & " (" & UserIndex & _
                     " ) ha pedido los detalles del personaje " & Personaje & " que no se encuentra.")
@@ -2026,14 +2025,14 @@ End If
 
 End Sub
 
-Public Sub SaveUserGuildMember(ByVal UserName As String, ByVal Guilds As String)
+Public Sub SaveUserGuildMember(ByVal UserName As String, ByVal guilds As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 26/09/2018
 'Updates the guilds the user has been member of
 '***************************************************
 If Not Database_Enabled Then
-    Call SaveUserGuildMemberCharfile(UserName, Guilds)
+    Call SaveUserGuildMemberCharfile(UserName, guilds)
 Else
 
 End If
