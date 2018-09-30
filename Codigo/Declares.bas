@@ -1859,6 +1859,7 @@ Public Enum eGMCommands
     RecordAddObs
     RecordListRequest
     RecordDetailsRequest
+    ExitDestroy             '/DE
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1
