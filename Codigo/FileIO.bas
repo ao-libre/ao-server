@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim x, y, n, Map, mapa As Variant
+    Dim x, y, n, Map, Mapa As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -2355,7 +2355,7 @@ Public Sub CargaApuestas()
 
 End Sub
 
-Public Sub generateMatrix(ByVal mapa As Integer)
+Public Sub generateMatrix(ByVal Mapa As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2390,7 +2390,7 @@ Public Sub generateMatrix(ByVal mapa As Integer)
 
 End Sub
 
-Public Sub setDistance(ByVal mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal x As Integer = 0, Optional ByVal y As Integer = 0)
+Public Sub setDistance(ByVal Mapa As Integer, ByVal city As Byte, ByVal side As Integer, Optional ByVal x As Integer = 0, Optional ByVal y As Integer = 0)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -2400,18 +2400,18 @@ Public Sub setDistance(ByVal mapa As Integer, ByVal city As Byte, ByVal side As 
 Dim i As Integer
 Dim lim As Integer
 
-If mapa <= 0 Or mapa > NumMaps Then Exit Sub
+If Mapa <= 0 Or Mapa > NumMaps Then Exit Sub
 
-If distanceToCities(mapa).distanceToCity(city) >= 0 Then Exit Sub
+If distanceToCities(Mapa).distanceToCity(city) >= 0 Then Exit Sub
 
-If mapa = Ciudades(city).Map Then
-    distanceToCities(mapa).distanceToCity(city) = 0
+If Mapa = Ciudades(city).Map Then
+    distanceToCities(Mapa).distanceToCity(city) = 0
 Else
-    distanceToCities(mapa).distanceToCity(city) = Abs(x) + Abs(y)
+    distanceToCities(Mapa).distanceToCity(city) = Abs(x) + Abs(y)
 End If
 
 For i = 1 To 4
-    lim = getLimit(mapa, i)
+    lim = getLimit(Mapa, i)
     If lim > 0 Then
         Select Case i
             Case eHeading.NORTH
@@ -2427,7 +2427,7 @@ For i = 1 To 4
 Next i
 End Sub
 
-Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
+Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
 '***************************************************
 'Author: Budi
 'Last Modification: 31/01/2010
@@ -2437,19 +2437,19 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
 Dim x As Long
 Dim y As Long
 
-If mapa <= 0 Then Exit Function
+If Mapa <= 0 Then Exit Function
 
 For x = 15 To 87
     For y = 0 To 3
         Select Case side
             Case eHeading.NORTH
-                getLimit = MapData(mapa, x, 7 + y).TileExit.Map
+                getLimit = MapData(Mapa, x, 7 + y).TileExit.Map
             Case eHeading.EAST
-                getLimit = MapData(mapa, 92 - y, x).TileExit.Map
+                getLimit = MapData(Mapa, 92 - y, x).TileExit.Map
             Case eHeading.SOUTH
-                getLimit = MapData(mapa, x, 94 - y).TileExit.Map
+                getLimit = MapData(Mapa, x, 94 - y).TileExit.Map
             Case eHeading.WEST
-                getLimit = MapData(mapa, 9 + y, x).TileExit.Map
+                getLimit = MapData(Mapa, 9 + y, x).TileExit.Map
         End Select
         If getLimit > 0 Then Exit Function
     Next y
