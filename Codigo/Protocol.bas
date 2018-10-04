@@ -33,6 +33,10 @@ Attribute VB_Name = "Protocol"
 
 Option Explicit
 
+#If False Then
+    Map As Variant
+#End If
+
 ''
 'When we have a list of strings, we use this to separate them and prevent
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
@@ -1337,6 +1341,9 @@ With UserList(UserIndex)
             
         Case eGMCommands.RecordDetailsRequest
             Call HandleRecordDetailsRequest(UserIndex)
+            
+        Case eGMCommands.ExitDestroy
+            Call HandleExitDestroy(UserIndex)
         
     End Select
 End With
@@ -10858,7 +10865,48 @@ Private Sub HandleTeleportDestroy(ByVal UserIndex As Integer)
         End With
     End With
 End Sub
+''
+' Handles the "ExitDestroy" message.
+'
+' @param    userIndex The index of the user sending the message.
 
+Private Sub HandleExitDestroy(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Cucsifae
+'Last Modification: 30/9/18
+'
+'***************************************************
+    With UserList(UserIndex)
+        Dim mapa As Integer
+        Dim x As Byte
+        Dim y As Byte
+        
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        '/de
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        mapa = .flags.TargetMap
+        x = .flags.TargetX
+        y = .flags.TargetY
+        
+        If Not InMapBounds(mapa, x, y) Then Exit Sub
+        
+        With MapData(mapa, x, y)
+            If .TileExit.Map = 0 Then Exit Sub
+            'Si hay un Teleport hay que usar /DT
+            If .ObjInfo.ObjIndex > 0 Then
+                If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport Then Exit Sub
+            End If
+            Call LogGM(UserList(UserIndex).Name, "/DE: " & mapa & "," & x & "," & y)
+                
+            .TileExit.Map = 0
+            .TileExit.x = 0
+            .TileExit.y = 0
+        End With
+    End With
+End Sub
 ''
 ' Handles the "RainToggle" message.
 '
