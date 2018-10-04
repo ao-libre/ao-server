@@ -1773,6 +1773,7 @@ Sub LoadSini()
     RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
 
     'CHOTS | Database
+    Database_Enabled = CBool(val(GetVar(DatPath & "Server.ini", "DATABASE", "Enabled")))
     Database_Host = GetVar(DatPath & "Server.ini", "DATABASE", "Host")
     Database_Name = GetVar(DatPath & "Server.ini", "DATABASE", "Name")
     Database_Username = GetVar(DatPath & "Server.ini", "DATABASE", "Username")
