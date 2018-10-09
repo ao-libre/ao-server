@@ -1096,9 +1096,9 @@ With UserList(UserIndex)
     .Name = Name
     
     'Load the user here
-    Call LoadUserFromCharfile(UserIndex)
+    Call LoadUser(UserIndex)
 
-     If Not ValidateChr(UserIndex) Then
+    If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
         Call CloseSocket(UserIndex)
         Exit Sub
@@ -1536,7 +1536,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
             .ELU = 0
             .Exp = 0
             .def = 0
-            '.CriminalesMatados = 0
             .NPCsMuertos = 0
             .UsuariosMatados = 0
             .SkillPts = 0

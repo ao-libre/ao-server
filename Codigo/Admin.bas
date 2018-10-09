@@ -241,7 +241,7 @@ Public Function BANCheck(ByVal Name As String) As Boolean
     If Not Database_Enabled Then
         BANCheck = BANCheckCharfile(Name)
     Else
-
+        BANCheck = BANCheckDatabase(Name)
     End If
 
 End Function
