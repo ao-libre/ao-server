@@ -755,6 +755,25 @@ ErrHandler:
 
 End Sub
 
+Public Sub LogDatabaseError(desc As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 09/10/2018
+'***************************************************
+
+On Error GoTo ErrHandler
+
+    Dim nfile As Integer
+    nfile = FreeFile ' obtenemos un canal
+    Open App.Path & "\logs\database.log" For Append Shared As #nfile
+    Print #nfile, Date & " " & time & " " & desc
+    Close #nfile
+    Exit Sub
+
+ErrHandler:
+
+End Sub
+
 Public Sub LogStatic(desc As String)
 '***************************************************
 'Author: Unknown
@@ -1889,6 +1908,7 @@ With UserList(UserIndex)
         Call SaveUserToCharfile(UserIndex, SaveTimeOnline)
     Else
         'CHOTS | Saves in the database
+        Call SaveUserToDatabase(UserIndex, SaveTimeOnline)
     End If
 End With
 
@@ -1896,6 +1916,87 @@ Exit Sub
 
 ErrorHandler:
     Call LogError("Error en SaveUserToCharfile: " & UserFile)
+
+End Sub
+
+Sub LoadUser(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 09/10/2018 (CHOTS)
+'Loads the user from the database or charfile
+'*************************************************
+
+On Error GoTo ErrorHandler
+
+    If Not Database_Enabled Then
+        Call LoadUserFromCharfile(UserIndex)
+    Else
+        Call LoadUserFromDatabase(UserIndex)
+    End If
+
+    With UserList(UserIndex)
+        If .flags.Paralizado = 1 Then
+            .Counters.Paralisis = IntervaloParalizado
+        End If
+
+        'Obtiene el indice-objeto del arma
+        If .Invent.WeaponEqpSlot > 0 Then
+            .Invent.WeaponEqpObjIndex = .Invent.Object(.Invent.WeaponEqpSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto del armadura
+        If .Invent.ArmourEqpSlot > 0 Then
+            .Invent.ArmourEqpObjIndex = .Invent.Object(.Invent.ArmourEqpSlot).ObjIndex
+            .flags.Desnudo = 0
+        Else
+            .flags.Desnudo = 1
+        End If
+
+        'Obtiene el indice-objeto del escudo
+        If .Invent.EscudoEqpSlot > 0 Then
+            .Invent.EscudoEqpObjIndex = .Invent.Object(.Invent.EscudoEqpSlot).ObjIndex
+        End If
+        
+        'Obtiene el indice-objeto del casco
+        If .Invent.CascoEqpSlot > 0 Then
+            .Invent.CascoEqpObjIndex = .Invent.Object(.Invent.CascoEqpSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto barco
+        If .Invent.BarcoSlot > 0 Then
+            .Invent.BarcoObjIndex = .Invent.Object(.Invent.BarcoSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto municion
+        If .Invent.MunicionEqpSlot > 0 Then
+            .Invent.MunicionEqpObjIndex = .Invent.Object(.Invent.MunicionEqpSlot).ObjIndex
+        End If
+
+        '[Alejo]
+        'Obtiene el indice-objeto anilo
+        If .Invent.AnilloEqpSlot > 0 Then
+            .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
+        End If
+
+        If .Invent.MochilaEqpSlot > 0 Then
+            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
+        End If
+
+        If .flags.Muerto = 0 Then
+            .Char = .OrigChar
+        Else
+            .Char.body = iCuerpoMuerto
+            .Char.Head = iCabezaMuerto
+            .Char.WeaponAnim = NingunArma
+            .Char.ShieldAnim = NingunEscudo
+            .Char.CascoAnim = NingunCasco
+        End If
+    End With
+
+Exit Sub
+
+ErrorHandler:
+    Call LogError("Error en LoadUser: " & UserList(UserIndex).Name)
 
 End Sub
 
