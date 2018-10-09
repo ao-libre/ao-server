@@ -1207,23 +1207,18 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             'Matrix
             .lastMap = val(UserFile.GetValue("FLAGS", "LastMap"))
         End With
-        
-        If .flags.Paralizado = 1 Then
-            .Counters.Paralisis = IntervaloParalizado
-        End If
-        
-        
+
         .Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
         .Counters.AsignedSkills = CByte(val(UserFile.GetValue("COUNTERS", "SkillsAsignados")))
         
         .email = UserFile.GetValue("CONTACTO", "Email")
         
+        .Id = val(UserFile.GetValue("INIT", "ID"))
         .Genero = UserFile.GetValue("INIT", "Genero")
         .clase = UserFile.GetValue("INIT", "Clase")
         .raza = UserFile.GetValue("INIT", "Raza")
         .Hogar = UserFile.GetValue("INIT", "Hogar")
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
-        
         
         With .OrigChar
             .Head = CInt(UserFile.GetValue("INIT", "Head"))
@@ -1231,25 +1226,13 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             .WeaponAnim = CInt(UserFile.GetValue("INIT", "Arma"))
             .ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo"))
             .CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
-            
             .heading = eHeading.SOUTH
         End With
         
         #If ConUpTime Then
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
-        
-        If .flags.Muerto = 0 Then
-            .Char = .OrigChar
-        Else
-            .Char.body = iCuerpoMuerto
-            .Char.Head = iCabezaMuerto
-            .Char.WeaponAnim = NingunArma
-            .Char.ShieldAnim = NingunEscudo
-            .Char.CascoAnim = NingunCasco
-        End If
-        
-        
+
         .desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
@@ -1279,56 +1262,14 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             .Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
         Next LoopC
         
-        'Obtiene el indice-objeto del arma
         .Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
-        If .Invent.WeaponEqpSlot > 0 Then
-            .Invent.WeaponEqpObjIndex = .Invent.Object(.Invent.WeaponEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto del armadura
         .Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
-        If .Invent.ArmourEqpSlot > 0 Then
-            .Invent.ArmourEqpObjIndex = .Invent.Object(.Invent.ArmourEqpSlot).ObjIndex
-            .flags.Desnudo = 0
-        Else
-            .flags.Desnudo = 1
-        End If
-        
-        'Obtiene el indice-objeto del escudo
         .Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
-        If .Invent.EscudoEqpSlot > 0 Then
-            .Invent.EscudoEqpObjIndex = .Invent.Object(.Invent.EscudoEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto del casco
         .Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
-        If .Invent.CascoEqpSlot > 0 Then
-            .Invent.CascoEqpObjIndex = .Invent.Object(.Invent.CascoEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto barco
         .Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
-        If .Invent.BarcoSlot > 0 Then
-            .Invent.BarcoObjIndex = .Invent.Object(.Invent.BarcoSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto municion
         .Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
-        If .Invent.MunicionEqpSlot > 0 Then
-            .Invent.MunicionEqpObjIndex = .Invent.Object(.Invent.MunicionEqpSlot).ObjIndex
-        End If
-        
-        '[Alejo]
-        'Obtiene el indice-objeto anilo
         .Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
-        If .Invent.AnilloEqpSlot > 0 Then
-            .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
-        End If
-        
         .Invent.MochilaEqpSlot = val(UserFile.GetValue("Inventory", "MochilaSlot"))
-        If .Invent.MochilaEqpSlot > 0 Then
-            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
-        End If
         
         .NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
         For LoopC = 1 To MAXMASCOTAS
@@ -1941,6 +1882,7 @@ With UserList(UserIndex)
     
     Call Manager.ChangeValue("CONTACTO", "Email", .email)
     
+    Call Manager.ChangeValue("INIT", "ID", .ID)
     Call Manager.ChangeValue("INIT", "Genero", .Genero)
     Call Manager.ChangeValue("INIT", "Raza", .raza)
     Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
@@ -2021,7 +1963,6 @@ With UserList(UserIndex)
     
     Call Manager.ChangeValue("STATS", "ELU", CStr(.Stats.ELU))
     Call Manager.ChangeValue("MUERTES", "UserMuertes", CStr(.Stats.UsuariosMatados))
-    'Call Manager.ChangeValue( "MUERTES", "CrimMuertes", CStr(.Stats.CriminalesMatados))
     Call Manager.ChangeValue("MUERTES", "NpcsMuertes", CStr(.Stats.NPCsMuertos))
       
     '[KEVIN]----------------------------------------------------------------------------

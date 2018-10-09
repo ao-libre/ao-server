@@ -1074,7 +1074,6 @@ Public Type UserStats
     UserAtributosBackUP(1 To NUMATRIBUTOS) As Byte
     UserHechizos(1 To MAXUSERHECHIZOS) As Integer
     UsuariosMatados As Long
-    CriminalesMatados As Long
     NPCsMuertos As Integer
     
     SkillPts As Integer
@@ -1274,7 +1273,7 @@ End Type
 'Tipo de los Usuarios
 Public Type User
     Name As String
-    ID As Long
+    ID As Long 'CHOTS | Database ID
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
