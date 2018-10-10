@@ -228,7 +228,7 @@ Public Sub BorrarUsuario(ByVal UserName As String)
     If Not Database_Enabled Then
         BorrarUsuarioCharfile(UserName)
     Else
-
+        BorrarUsuarioDatabase(UserName)
     End If
 End Sub
 
@@ -255,7 +255,7 @@ Public Function PersonajeExiste(ByVal Name As String) As Boolean
     If Not Database_Enabled Then
         PersonajeExiste = PersonajeExisteCharfile(Name)
     Else
-
+        PersonajeExiste = PersonajeExisteDatabase(Name)
     End If
 
 End Function
@@ -270,7 +270,7 @@ Public Sub UnBan(ByVal Name As String)
     If Not Database_Enabled Then
         Call UnBanCharfile(Name)
     Else
-
+        Call UnBanDatabase(Name)
     End If
     
     'Remove it from the banned people database
@@ -284,10 +284,20 @@ Public Function GetUserGuildIndex(ByVal UserName As String) As Integer
 'Last Modification: 18/09/2018
 '18/09/2018 CHOTS: Checks database too
 '***************************************************
+    If InStrB(UserName, "\") <> 0 Then
+        UserName = Replace(UserName, "\", vbNullString)
+    End If
+    If InStrB(UserName, "/") <> 0 Then
+        UserName = Replace(UserName, "/", vbNullString)
+    End If
+    If InStrB(UserName, ".") <> 0 Then
+        UserName = Replace(UserName, ".", vbNullString)
+    End If
+
     If Not Database_Enabled Then
         GetUserGuildIndex = GetUserGuildIndexCharfile(UserName)
     Else
-
+        GetUserGuildIndex = GetUserGuildIndexDatabase(UserName)
     End If
 
 End Function
@@ -302,7 +312,7 @@ Public Sub CopyUser(ByVal UserName As String, ByVal newName As String)
     If Not Database_Enabled Then
         Call CopyUserCharfile(UserName, newName)
     Else
-
+        Call CopyUserDatabase(UserName, newName)
     End If
 End Sub
 

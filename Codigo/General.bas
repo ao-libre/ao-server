@@ -1903,11 +1903,8 @@ With UserList(UserIndex)
     End If
 
     If Not Database_Enabled Then
-        'CHOTS | Saves in Charfile
-
         Call SaveUserToCharfile(UserIndex, SaveTimeOnline)
     Else
-        'CHOTS | Saves in the database
         Call SaveUserToDatabase(UserIndex, SaveTimeOnline)
     End If
 End With
@@ -1996,7 +1993,7 @@ On Error GoTo ErrorHandler
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en LoadUser: " & UserList(UserIndex).Name)
+    Call LogError("Error en LoadUser: " & UserList(UserIndex).Name & " - " & Err.Number & " - " & Err.description)
 
 End Sub
 
@@ -2057,7 +2054,7 @@ Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal Banne
 If Not Database_Enabled Then
     Call SaveBanCharfile(UserName, Reason, BannedBy)
 Else
-    'CHOTS | Saves in the database
+    Call SaveBanDatabase(UserName, Reason, BannedBy)
 End If
 
 End Sub
@@ -2071,7 +2068,7 @@ Public Function GetUserAmountOfPunishments(ByVal UserName As String) As Integer
 If Not Database_Enabled Then
     GetUserAmountOfPunishments = GetUserAmountOfPunishmentsCharfile(UserName)
 Else
-    'CHOTS | Saves in the database
+    GetUserAmountOfPunishments = GetUserAmountOfPunishmentsDatabase(UserName)
 End If
 
 End Function
@@ -2080,12 +2077,12 @@ Public Sub SendUserPunishments(ByVal UserIndex As Integer, ByVal UserName As Str
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 18/09/2018
-'Saves the ban flag and reason
+'Writes a console msg for each punishment
 '***************************************************
 If Not Database_Enabled Then
     Call SendUserPunishmentsCharfile(UserIndex, UserName, Count)
 Else
-
+    Call SendUserPunishmentsDatabase(UserIndex, UserName, Count)
 End If
 
 End Sub
@@ -2099,6 +2096,7 @@ Public Function GetUserPos(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserPos = GetUserPosCharfile(UserName)
 Else
+    GetUserPos = GetUserPosDatabase(UserName)
 End If
 
 End Function
@@ -2112,6 +2110,7 @@ Public Function GetUserSalt(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserSalt = GetUserSaltCharfile(UserName)
 Else
+    GetUserSalt = GetUserSaltDatabase(UserName)
 End If
 
 End Function
@@ -2125,6 +2124,7 @@ Public Function GetUserPassword(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserPassword = GetUserPasswordCharfile(UserName)
 Else
+    GetUserPassword = GetUserPasswordDatabase(UserName)
 End If
 
 End Function
@@ -2138,6 +2138,7 @@ Public Function GetUserEmail(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserEmail = GetUserEmailCharfile(UserName)
 Else
+    GetUserEmail = GetUserEmailDatabase(UserName)
 End If
 
 End Function
@@ -2151,7 +2152,7 @@ Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String,
 If Not Database_Enabled Then
     Call StorePasswordSaltCharfile(UserName, Password, Salt)
 Else
-
+    Call StorePasswordSaltDatabase(UserName, Password, Salt)
 End If
 
 End Sub
@@ -2160,12 +2161,12 @@ Public Sub SaveUserEmail(ByVal UserName As String, ByVal email As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
-'Saves the password and salt
+'Saves the email
 '***************************************************
 If Not Database_Enabled Then
     Call SaveUserEmailCharfile(UserName, email)
 Else
-
+    Call SaveUserEmailDatabase(UserName, email)
 End If
 
 End Sub
@@ -2179,7 +2180,7 @@ Public Sub SaveUserPunishment(ByVal UserName As String, ByVal Number As Integer,
 If Not Database_Enabled Then
     Call SaveUserPunishmentCharfile(UserName, Number, Reason)
 Else
-
+    Call SaveUserPunishmentDatabase(UserName, Number, Reason)
 End If
 
 End Sub
@@ -2193,7 +2194,7 @@ Public Sub AlterUserPunishment(ByVal UserName As String, ByVal Number As Integer
 If Not Database_Enabled Then
     Call AlterUserPunishmentCharfile(UserName, Number, Reason)
 Else
-
+    Call AlterUserPunishmentDatabase(UserName, Number, Reason)
 End If
 
 End Sub
@@ -2207,7 +2208,7 @@ Public Sub ResetUserFacciones(ByVal UserName As String)
 If Not Database_Enabled Then
     Call ResetUserFaccionesCharfile(UserName)
 Else
-
+    Call ResetUserFaccionesDatabase(UserName)
 End If
 
 End Sub
@@ -2221,7 +2222,7 @@ Public Sub KickUserCouncils(ByVal UserName As String)
 If Not Database_Enabled Then
     Call KickUserCouncilsCharfile(UserName)
 Else
-
+    Call KickUserCouncilsDatabase(UserName)
 End If
 
 End Sub
@@ -2235,7 +2236,7 @@ Public Sub KickUserFacciones(ByVal UserName As String)
 If Not Database_Enabled Then
     Call KickUserFaccionesCharfile(UserName)
 Else
-
+    Call KickUserFaccionesDatabase(UserName)
 End If
 
 End Sub
@@ -2249,7 +2250,7 @@ Public Sub KickUserChaosLegion(ByVal UserName As String, ByVal KickerName As Str
 If Not Database_Enabled Then
     Call KickUserChaosLegionCharfile(UserName, KickerName)
 Else
-
+    Call KickUserChaosLegionDatabase(UserName, KickerName)
 End If
 
 End Sub
@@ -2263,7 +2264,7 @@ Public Sub KickUserRoyalArmy(ByVal UserName As String, ByVal KickerName As Strin
 If Not Database_Enabled Then
     Call KickUserRoyalArmyCharfile(UserName, KickerName)
 Else
-
+    Call KickUserRoyalArmyDatabase(UserName, KickerName)
 End If
 
 End Sub
@@ -2277,7 +2278,7 @@ Public Sub UpdateUserLogged(ByVal UserName As String, ByVal Logged As Byte)
 If Not Database_Enabled Then
     Call UpdateUserLoggedCharfile(UserName, Logged)
 Else
-
+    Call UpdateUserLoggedDatabase(UserName, Logged)
 End If
 
 End Sub
@@ -2291,6 +2292,7 @@ Public Function GetUserLastIps(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserLastIps = GetUserLastIpsCharfile(UserName)
 Else
+    GetUserLastIps = GetUserLastIpsDatabase(UserName)
 End If
 
 End Function
@@ -2304,6 +2306,7 @@ Public Function GetUserSkills(ByVal UserName As String) As String
 If Not Database_Enabled Then
     GetUserSkills = GetUserSkillsCharfile(UserName)
 Else
+    GetUserSkills = GetUserSkillsDatabase(UserName)
 End If
 
 End Function
@@ -2317,6 +2320,7 @@ Public Function GetUserFreeSkills(ByVal UserName As String) As Integer
 If Not Database_Enabled Then
     GetUserFreeSkills = GetUserFreeSkillsCharfile(UserName)
 Else
+    GetUserFreeSkills = GetUserFreeSkillsDatabase(UserName)
 End If
 
 End Function
@@ -2330,7 +2334,7 @@ Public Sub SaveUserTrainingTime(ByVal UserName As String, ByVal trainingTime As 
 If Not Database_Enabled Then
     Call SaveUserTrainingTimeCharfile(UserName, trainingTime)
 Else
-
+    Call SaveUserTrainingTimeDatabase(UserName, trainingTime)
 End If
 
 End Sub
@@ -2344,6 +2348,7 @@ Public Function GetUserTrainingTime(ByVal UserName As String) As Long
 If Not Database_Enabled Then
     GetUserTrainingTime = GetUserTrainingTimeCharfile(UserName)
 Else
+    GetUserTrainingTime = GetUserTrainingTimeDatabase(UserName)
 End If
 
 End Function
@@ -2357,6 +2362,7 @@ Public Function UserBelongsToRoyalArmy(ByVal UserName As String) As Boolean
 If Not Database_Enabled Then
     UserBelongsToRoyalArmy = UserBelongsToRoyalArmyCharfile(UserName)
 Else
+    UserBelongsToRoyalArmy = UserBelongsToRoyalArmyDatabase(UserName)
 End If
 
 End Function
@@ -2370,6 +2376,7 @@ Public Function UserBelongsToChaosLegion(ByVal UserName As String) As Boolean
 If Not Database_Enabled Then
     UserBelongsToChaosLegion = UserBelongsToChaosLegionCharfile(UserName)
 Else
+    UserBelongsToChaosLegion = UserBelongsToChaosLegionDatabase(UserName)
 End If
 
 End Function
@@ -2383,6 +2390,7 @@ Public Function GetUserLevel(ByVal UserName As String) As Byte
 If Not Database_Enabled Then
     GetUserLevel = GetUserLevelCharfile(UserName)
 Else
+    GetUserLevel = GetUserLevelDatabase(UserName)
 End If
 
 End Function
@@ -2396,6 +2404,7 @@ Public Function GetUserPromedio(ByVal UserName As String) As Long
 If Not Database_Enabled Then
     GetUserPromedio = GetUserPromedioCharfile(UserName)
 Else
+    GetUserPromedio = GetUserPromedioDatabase(UserName)
 End If
 
 End Function
@@ -2409,6 +2418,7 @@ Public Function GetUserReenlists(ByVal UserName As String) As Byte
 If Not Database_Enabled Then
     GetUserReenlists = GetUserReenlistsCharfile(UserName)
 Else
+    GetUserReenlists = GetUserReenlistsDatabase(UserName)
 End If
 
 End Function
@@ -2422,7 +2432,7 @@ Public Sub SaveUserReenlists(ByVal UserName As String, ByVal Reenlists As Byte)
 If Not Database_Enabled Then
     Call SaveUserReenlistsCharfile(UserName, Reenlists)
 Else
-
+    Call SaveUserReenlistsDatabase(UserName, Reenlists)
 End If
 
 End Sub
