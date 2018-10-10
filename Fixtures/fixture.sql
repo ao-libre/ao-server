@@ -3,13 +3,14 @@
 # Fixture for the database creation
 # Created on September 17th 2018
 # By Juan Andres Dalmasso (CHOTS)
-# Last modification: 17/09/2018 (CHOTS)
+# Last modification: 10/10/2018 (CHOTS)
 
 CREATE TABLE account (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password VARCHAR(50) NOT NULL,
-    salt VARCHAR(50) NOT NULL,
+    salt VARCHAR(10) NOT NULL,
+    hash VARCHAR(32) NOT NULL,
     date_created TIMESTAMP NOT NULL,
     date_last_login TIMESTAMP NOT NULL,
     last_ip VARCHAR(16)
@@ -18,7 +19,8 @@ CREATE TABLE account (
 CREATE TABLE user (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     account_id MEDIUMINT UNSIGNED NOT NULL,
-    
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
     # INIT
     name VARCHAR(30) NOT NULL,
     level SMALLINT UNSIGNED NOT NULL,
@@ -95,6 +97,7 @@ CREATE TABLE user (
     is_dead BOOLEAN NOT NULL DEFAULT FALSE,
     is_sailing BOOLEAN NOT NULL DEFAULT FALSE,
     is_paralyzed BOOLEAN NOT NULL DEFAULT FALSE,
+    is_logged BOOLEAN NOT NULL DEFAULT FALSE,
 
     # COUNTERS
     counter_pena TINYINT UNSIGNED NOT NULL DEFAULT 0,

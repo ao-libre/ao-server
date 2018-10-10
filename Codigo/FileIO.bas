@@ -2539,10 +2539,10 @@ Public Sub SaveBanCharfile(ByVal UserName As String, ByVal Reason As String, ByV
 'Last Modification: 18/09/2018
 '***************************************************
     Dim cantPenas As Byte
+    cantPenas = GetUserAmountOfPunishmentsCharfile(UserName)
 
     UserName = UCase$(UserName)
     Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
-    cantPenas = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, BannedBy & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
 End Sub
@@ -2982,20 +2982,10 @@ Public Function GetUserGuildIndexCharfile(ByRef UserName As String) As Integer
 'Last Modification: 26/09/2018
 '26/09/2018 CHOTS: Moved to FileIO
 '***************************************************
-
-'aca si que vamos a violar las capas deliveradamente ya que
-'visual basic no permite declarar metodos de clase
-Dim Temps   As String
-    If InStrB(UserName, "\") <> 0 Then
-        UserName = Replace(UserName, "\", vbNullString)
-    End If
-    If InStrB(UserName, "/") <> 0 Then
-        UserName = Replace(UserName, "/", vbNullString)
-    End If
-    If InStrB(UserName, ".") <> 0 Then
-        UserName = Replace(UserName, ".", vbNullString)
-    End If
+    Dim Temps   As String
+    
     Temps = GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX")
+
     If IsNumeric(Temps) Then
         GetUserGuildIndexCharfile = CInt(Temps)
     Else
