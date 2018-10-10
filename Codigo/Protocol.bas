@@ -13697,10 +13697,11 @@ On Error GoTo ErrHandler
                             If Not PersonajeExiste(newName) Then
                                 Call CopyUser(UserName, newName)
                                 
-                                Call WriteConsoleMsg(UserIndex, "Transferencia exitosa.", FontTypeNames.FONTTYPE_INFO)
+                                If Not Database_Enabled Then
+                                    Call SaveBan(UserName, "BAN POR Cambio de nick a " & UCase$(newName), .Name)
+                                End If
 
-                                Call SaveBan(UserName, "BAN POR Cambio de nick a " & UCase$(newName), .Name)
-                                
+                                Call WriteConsoleMsg(UserIndex, "Transferencia exitosa.", FontTypeNames.FONTTYPE_INFO)
                                 Call LogGM(.Name, "Ha cambiado de nombre al usuario " & UserName & ". Ahora se llama " & newName)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "El nick solicitado ya existe.", FontTypeNames.FONTTYPE_INFO)

@@ -149,7 +149,7 @@ Private Sub MarcarPjComoQueYaVoto(ByVal UserIndex As Integer, ByVal NumeroEncues
     If Not Database_Enabled Then
         Call MarcarPjComoQueYaVotoCharfile(UserIndex, NumeroEncuesta)
     Else
-        
+        Call MarcarPjComoQueYaVotoDatabase(UserIndex, NumeroEncuesta)
     End If
     
 End Sub
@@ -158,10 +158,9 @@ Private Function PersonajeCantidadVotos(ByVal UserName As String) As Integer
     If Not Database_Enabled Then
         PersonajeCantidadVotos = PersonajeCantidadVotosCharfile(UserName)
     Else
-        PersonajeCantidadVotos = 0
+        PersonajeCantidadVotos = PersonajeCantidadVotosDatabase(UserName)
     End If
 End Function
-
 
 Private Function MailYaVoto(ByVal email As String) As Boolean
 'abro el archivo, while not eof levnato 1 linea y comparo. Si da true, cierro
