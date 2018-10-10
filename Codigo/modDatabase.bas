@@ -58,7 +58,7 @@ Sub SaveUserToDatabase(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline
 
 On Error GoTo ErrorHandler
 
-    With Userlist(UserIndex)
+    With UserList(UserIndex)
         If .ID > 0 Then
             Call InsertUserToDatabase(UserIndex, SaveTimeOnline)
         Else
@@ -66,8 +66,8 @@ On Error GoTo ErrorHandler
         End If
     End With
 
-    ErrorHandler:
-        Call LogDatabaseError("Unable to save User to Mysql Database: " & Userlist(Userindex).Name & ". " & Err.Number & " - " & Err.description)
+ErrorHandler:
+        Call LogDatabaseError("Unable to save User to Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Sub InsertUserToDatabase(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
@@ -78,36 +78,36 @@ Sub InsertUserToDatabase(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnli
 '*************************************************
 
 On Error GoTo ErrorHandler
-    Dim query as String
-    Dim UserId as Integer
-    Dim LoopC as Byte
+    Dim query As String
+    Dim UserId As Integer
+    Dim LoopC As Byte
 
-    Call Database_Connect()
+    Call Database_Connect
 
     'Basic user data
-    With Userlist(Userindex)
+    With UserList(UserIndex)
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
-        query = query & "race_id = " & .Raza & ", "
-        query = query & "class_id = " & .Clase & ", "
+        query = query & "race_id = " & .raza & ", "
+        query = query & "class_id = " & .clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
-        query = query & "pos_map = " & .Pos.map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
-        query = query & "pos_x = " & .Pos.y & ", "
-        query = query & "body_id = " & .Char.Body & ", "
-        query = query & "head_id = " & .Char.Body & ", "
+        query = query & "pos_map = " & .Pos.Map & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
+        query = query & "pos_x = " & .Pos.Y & ", "
+        query = query & "body_id = " & .Char.body & ", "
+        query = query & "head_id = " & .Char.body & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
         query = query & "shield_id = " & .Char.ShieldAnim & ", "
-        query = query & "items_amount = " & .Inventario.NroItems & ", "
+        query = query & "items_amount = " & .Invent.NroItems & ", "
         query = query & "min_hp = " & .Stats.MinHp & ", "
         query = query & "max_hp = " & .Stats.MaxHp & ", "
         query = query & "min_man = " & .Stats.MinMAN & ", "
@@ -203,11 +203,11 @@ On Error GoTo ErrorHandler
 
     End With
 
-    Call Database_Close()
+    Call Database_Close
     Exit Sub
 
-    ErrorHandler:
-        Call LogDatabaseError("Unable to INSERT User to Mysql Database: " & Userlist(Userindex).Name & ". " & Err.Number & " - " & Err.description)
+ErrorHandler:
+        Call LogDatabaseError("Unable to INSERT User to Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Sub UpdateUserToDatabase(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
@@ -218,22 +218,22 @@ Sub UpdateUserToDatabase(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnli
 '*************************************************
 
 On Error GoTo ErrorHandler
-    Dim query as String
-    Dim UserId as Integer
-    Dim LoopC as Byte
+    Dim query As String
+    Dim UserId As Integer
+    Dim LoopC As Byte
 
-    Call Database_Connect()
+    Call Database_Connect
 
     'Basic user data
-    With Userlist(Userindex)
+    With UserList(UserIndex)
         query = "UPDATE user SET "
         query = query & "name = '" & .Name & "', "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
-        query = query & "race_id = " & .Raza & ", "
-        query = query & "class_id = " & .Clase & ", "
+        query = query & "race_id = " & .raza & ", "
+        query = query & "class_id = " & .clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -241,16 +241,16 @@ On Error GoTo ErrorHandler
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pet_amount = " & .NroMascotas & ", "
-        query = query & "pos_map = " & .Pos.map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
-        query = query & "pos_x = " & .Pos.y & ", "
+        query = query & "pos_map = " & .Pos.Map & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
+        query = query & "pos_x = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
-        query = query & "body_id = " & .Char.Body & ", "
+        query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
         query = query & "shield_id = " & .Char.ShieldAnim & ", "
-        query = query & "heading = " & .Char.Heading & ", "
+        query = query & "heading = " & .Char.heading & ", "
         query = query & "items_amount = " & .Invent.NroItems & ", "
         query = query & "slot_armour = " & .Invent.ArmourEqpSlot & ", "
         query = query & "slot_weapon = " & .Invent.WeaponEqpSlot & ", "
@@ -407,7 +407,7 @@ On Error GoTo ErrorHandler
         Call Database_Connection.Execute(query)
 
         'User pets
-        Dim petType as Integer
+        Dim petType As Integer
         query = "DELETE FROM pet WHERE user_id = " & .ID & ";"
         Call Database_Connection.Execute(query)
 
@@ -439,12 +439,12 @@ On Error GoTo ErrorHandler
 
     End With
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
-    ErrorHandler:
-        Call LogDatabaseError("Unable to UPDATE User to Mysql Database: " & Userlist(Userindex).Name & ". " & Err.Number & " - " & Err.description)
+ErrorHandler:
+        Call LogDatabaseError("Unable to UPDATE User to Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Sub LoadUserFromDatabase(ByVal UserIndex As Integer)
@@ -456,27 +456,27 @@ Sub LoadUserFromDatabase(ByVal UserIndex As Integer)
 
 On Error GoTo ErrorHandler
 
-    Dim query as String
-    Dim LoopC as Byte
+    Dim query As String
+    Dim LoopC As Byte
 
-    Call Database_Connect()
+    Call Database_Connect
 
     'Basic user data
-    With Userlist(Userindex)
+    With UserList(UserIndex)
         query = "SELECT * FROM user WHERE name ='" & UCase$(.Name) & "';"
         Set Database_RecordSet = Database_Connection.Execute(query)
 
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then Exit Sub
 
         'Start setting data
-        .ID = Database_RecordSet!id
-        .Name = Database_RecordSet!name
+        .ID = Database_RecordSet!ID
+        .Name = Database_RecordSet!Name
         .Stats.ELV = Database_RecordSet!level
-        .Stats.Exp = Database_RecordSet!exp
-        .Stats.ELU = Database_RecordSet!elu
+        .Stats.Exp = Database_RecordSet!Exp
+        .Stats.ELU = Database_RecordSet!ELU
         .Genero = Database_RecordSet!genre_id
-        .Raza = Database_RecordSet!race_id
-        .Clase = Database_RecordSet!class_id
+        .raza = Database_RecordSet!race_id
+        .clase = Database_RecordSet!class_id
         .Hogar = Database_RecordSet!home_id
         .desc = Database_RecordSet!description
         .Stats.GLD = Database_RecordSet!gold
@@ -484,11 +484,11 @@ On Error GoTo ErrorHandler
         .Stats.SkillPts = Database_RecordSet!free_skillpoints
         .Counters.AsignedSkills = Database_RecordSet!assigned_skillpoints
         .NroMascotas = Database_RecordSet!pet_amount
-        .Pos.map = Database_RecordSet!pos_map
-        .Pos.x = Database_RecordSet!pos_x
-        .Pos.y = Database_RecordSet!pos_y
+        .Pos.Map = Database_RecordSet!pos_map
+        .Pos.X = Database_RecordSet!pos_x
+        .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
-        .OrigChar.Body = Database_RecordSet!body_id
+        .OrigChar.body = Database_RecordSet!body_id
         .OrigChar.Head = Database_RecordSet!head_id
         .OrigChar.WeaponAnim = Database_RecordSet!weapon_id
         .OrigChar.CascoAnim = Database_RecordSet!helmet_id
@@ -536,11 +536,11 @@ On Error GoTo ErrorHandler
         .Counters.Pena = Database_RecordSet!counter_pena
 
         If Database_RecordSet!pertenece_consejo_real Then
-            .flags.Privilegios = .Privilegios Or PlayerType.RoyalCouncil
+            .flags.Privilegios = .flags.Privilegios Or PlayerType.RoyalCouncil
         End If
 
         If Database_RecordSet!pertenece_consejo_caos Then
-            .flags.Privilegios = .Privilegios Or PlayerType.ChaosCouncil
+            .flags.Privilegios = .flags.Privilegios Or PlayerType.ChaosCouncil
         End If
 
         .Faccion.ArmadaReal = Database_RecordSet!pertenece_real
@@ -553,7 +553,7 @@ On Error GoTo ErrorHandler
         .Faccion.RecibioExpInicialCaos = Database_RecordSet!recibio_exp_caos
         .Faccion.RecompensasReal = Database_RecordSet!recompensas_real
         .Faccion.RecompensasCaos = Database_RecordSet!recompensas_caos
-        .Faccion.Reenlistadas = Database_RecordSet!reenlistadas
+        .Faccion.Reenlistadas = Database_RecordSet!Reenlistadas
         .Faccion.FechaIngreso = Database_RecordSet!fecha_ingreso
         .Faccion.NivelIngreso = Database_RecordSet!nivel_ingreso
         .Faccion.MatadosIngreso = Database_RecordSet!matados_ingreso
@@ -570,8 +570,8 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .UserAtributos(Database_RecordSet!number) = Database_RecordSet!value
-                .UserAtributosBackUP(Database_RecordSet!number) = .UserAtributos(Database_RecordSet!number)
+                .Stats.UserAtributos(Database_RecordSet!Number) = Database_RecordSet!value
+                .Stats.UserAtributosBackUP(Database_RecordSet!Number) = .Stats.UserAtributos(Database_RecordSet!Number)
 
                 Database_RecordSet.MoveNext
             Wend
@@ -586,7 +586,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .UserHechizos(Database_RecordSet!number) = Database_RecordSet!spell_id
+                .Stats.UserHechizos(Database_RecordSet!Number) = Database_RecordSet!spell_id
 
                 Database_RecordSet.MoveNext
             Wend
@@ -601,7 +601,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .MascotasType(Database_RecordSet!number) = Database_RecordSet!pet_id
+                .MascotasType(Database_RecordSet!Number) = Database_RecordSet!pet_id
 
                 Database_RecordSet.MoveNext
             Wend
@@ -616,9 +616,9 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .Invent.Object(Database_RecordSet!number).ObjIndex = Database_RecordSet!item_id
-                .Invent.Object(Database_RecordSet!number).Amount = Database_RecordSet!amount
-                .Invent.Object(Database_RecordSet!number).Equipped = Database_RecordSet!is_equipped
+                .Invent.Object(Database_RecordSet!Number).ObjIndex = Database_RecordSet!item_id
+                .Invent.Object(Database_RecordSet!Number).Amount = Database_RecordSet!Amount
+                .Invent.Object(Database_RecordSet!Number).Equipped = Database_RecordSet!is_equipped
 
                 Database_RecordSet.MoveNext
             Wend
@@ -633,8 +633,8 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .Invent.BancoInvent(Database_RecordSet!number).ObjIndex = Database_RecordSet!item_id
-                .Invent.BancoInvent(Database_RecordSet!number).Amount = Database_RecordSet!amount
+                .BancoInvent.Object(Database_RecordSet!Number).ObjIndex = Database_RecordSet!item_id
+                .BancoInvent.Object(Database_RecordSet!Number).Amount = Database_RecordSet!Amount
 
                 Database_RecordSet.MoveNext
             Wend
@@ -649,9 +649,9 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .Stats.UserSkills(Database_RecordSet!number) = Database_RecordSet!value
-                .Stats.ExpSkills(Database_RecordSet!number) = Database_RecordSet!exp
-                .Stats.EluSkills(Database_RecordSet!number) = Database_RecordSet!elu
+                .Stats.UserSkills(Database_RecordSet!Number) = Database_RecordSet!value
+                .Stats.ExpSkills(Database_RecordSet!Number) = Database_RecordSet!Exp
+                .Stats.EluSkills(Database_RecordSet!Number) = Database_RecordSet!ELU
 
                 Database_RecordSet.MoveNext
             Wend
@@ -663,10 +663,10 @@ On Error GoTo ErrorHandler
 
     Exit Sub
 
-    Call Database_Close()
+    Call Database_Close
 
-    ErrorHandler:
-        Call LogDatabaseError("Unable to LOAD User from Mysql Database: " & Userlist(Userindex).Name & ". " & Err.Number & " - " & Err.description)
+ErrorHandler:
+        Call LogDatabaseError("Unable to LOAD User from Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Function PersonajeExisteDatabase(ByVal UserName As String) As Boolean
@@ -690,7 +690,7 @@ On Error GoTo ErrorHandler
 
     PersonajeExisteDatabase = (Database_RecordSet.RecordCount > 0)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -704,26 +704,27 @@ Public Function BANCheckDatabase(ByVal UserName As String) As Boolean
 'Last Modification: 09/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
-    Call Database_Connect()
+    Call Database_Connect
 
     query = "SELECT is_ban FROM user WHERE name = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        BANCheckCharfile = False
+        BANCheckDatabase = False
         Exit Function
     End If
 
-    BANCheckCharfile = Cbool(Database_RecordSet!is_ban)
+    BANCheckDatabase = Cbool(Database_RecordSet!!is_ban)
+
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in BANCheckDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -741,7 +742,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -763,7 +764,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -792,7 +793,7 @@ On Error GoTo ErrorHandler
 
     GetUserGuildIndexDatabase = CInt(Database_RecordSet!guild_index)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -814,7 +815,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -836,7 +837,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -865,7 +866,7 @@ On Error GoTo ErrorHandler
 
     PersonajeCantidadVotosDatabase = CInt(Database_RecordSet!votes_amount)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -896,7 +897,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -925,7 +926,7 @@ On Error GoTo ErrorHandler
 
     GetUserAmountOfPunishmentsDatabase = CInt(Database_RecordSet!punishments)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -957,7 +958,7 @@ On Error GoTo ErrorHandler
     End If
 
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -985,7 +986,7 @@ On Error GoTo ErrorHandler
 
     GetUserPosDatabase = Database_RecordSet!pos_map & "-" & Database_RecordSet!pos_x & "-" & Database_RecordSet!pos_y
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1013,7 +1014,7 @@ On Error GoTo ErrorHandler
 
     GetUserSaltDatabase = Database_RecordSet!salt
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1041,7 +1042,7 @@ On Error GoTo ErrorHandler
 
     GetUserPasswordDatabase = Database_RecordSet!password
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1069,7 +1070,7 @@ On Error GoTo ErrorHandler
 
     GetUserEmailDatabase = Database_RecordSet!username
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1093,7 +1094,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1117,7 +1118,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1140,7 +1141,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1177,7 +1178,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1201,7 +1202,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1225,7 +1226,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1249,7 +1250,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1273,7 +1274,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1296,7 +1297,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1324,7 +1325,7 @@ On Error GoTo ErrorHandler
 
     GetUserLastIpsDatabase = Database_RecordSet!last_ip
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1357,7 +1358,7 @@ On Error GoTo ErrorHandler
 
     Set Database_RecordSet = Nothing
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1385,7 +1386,7 @@ On Error GoTo ErrorHandler
 
     GetUserFreeSkillsDatabase = CInt(Database_RecordSet!free_skillpoints)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1408,7 +1409,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
@@ -1436,7 +1437,7 @@ On Error GoTo ErrorHandler
 
     GetUserTrainingTimeDatabase = CLng(Database_RecordSet!counter_training)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
     ErrorHandler:
@@ -1464,7 +1465,7 @@ On Error GoTo ErrorHandler
 
     UserBelongsToRoyalArmyDatabase = Cbool(Database_RecordSet!pertenece_real)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1493,7 +1494,7 @@ On Error GoTo ErrorHandler
 
     UserBelongsToChaosLegionDatabase = Cbool(Database_RecordSet!pertenece_caos)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1522,7 +1523,7 @@ On Error GoTo ErrorHandler
 
     GetUserLevelDatabase = CByte(Database_RecordSet!level)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1551,7 +1552,7 @@ On Error GoTo ErrorHandler
 
     GetUserPromedioDatabase = CLng(Database_RecordSet!rep_average)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1580,7 +1581,7 @@ On Error GoTo ErrorHandler
 
     GetUserReenlistsDatabase = CByte(Database_RecordSet!reenlistadas)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1604,7 +1605,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute(query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
     ErrorHandler:
