@@ -28,7 +28,9 @@ Attribute VB_Name = "General"
 'Pablo Ignacio Márquez
 
 Option Explicit
-
+#If False Then
+    Dim x, y, K, n As Variant
+#End If
 Global LeerNPCs As clsIniManager
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
@@ -2143,7 +2145,7 @@ End If
 
 End Function
 
-Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt As Integer)
+Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
