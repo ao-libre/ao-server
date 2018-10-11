@@ -126,8 +126,8 @@ CREATE TABLE user (
     # GUILD
     guild_index SMALLINT UNSIGNED DEFAULT 0,
     guild_aspirant_index SMALLINT UNSIGNED,
-    guild_member_of VARCHAR(50),
     guild_member_history VARCHAR(1024),
+    guild_requests_history VARCHAR(1024),
     guild_rejected_because VARCHAR(255),
 
     CONSTRAINT fk_user_account FOREIGN KEY (account_id) REFERENCES account(id),

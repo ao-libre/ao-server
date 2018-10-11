@@ -9341,11 +9341,11 @@ On Error GoTo ErrHandler
             If TargetIndex <= 0 Then
                 'don't allow to retrieve administrator's info
                 If Not (EsDios(TargetName) Or EsAdmin(TargetName)) Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline, buscando...", FontTypeNames.FONTTYPE_INFO)
                     If Not Database_Enabled Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline, buscando en charfile.", FontTypeNames.FONTTYPE_INFO)
                         Call SendUserStatsTxtCharfile(UserIndex, TargetName)
                     Else
-                        
+                        Call SendUserStatsTxtDatabase(UserIndex, TargetName)
                     End If
                 End If
             Else
@@ -9416,11 +9416,11 @@ On Error GoTo ErrHandler
             
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Buscando... ", FontTypeNames.FONTTYPE_INFO)
                     If Not Database_Enabled Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_INFO)
                         Call SendUserMiniStatsTxtFromCharfile(UserIndex, UserName)
                     Else
-                        
+                        Call SendUserMiniStatsTxtFromDatabase(UserIndex, UserName)
                     End If
                 Else
                     Call WriteConsoleMsg(UserIndex, "No puedes ver los stats de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
@@ -9497,11 +9497,11 @@ On Error GoTo ErrHandler
             
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Buscando... ", FontTypeNames.FONTTYPE_TALK)
                     If Not Database_Enabled Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
                         Call SendUserOROTxtFromCharfile(UserIndex, UserName)
                     Else
-
+                        Call SendUserOROTxtFromDatabase(UserIndex, UserName)
                     End If
                 Else
                     Call WriteConsoleMsg(UserIndex, "No puedes ver el oro de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
@@ -9577,10 +9577,11 @@ On Error GoTo ErrHandler
             
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Buscando...", FontTypeNames.FONTTYPE_TALK)
                     If Not Database_Enabled Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile...", FontTypeNames.FONTTYPE_TALK)
                         Call SendUserInvTxtFromCharfile(UserIndex, UserName)
                     Else
+                        Call SendUserInvTxtFromDatabase(UserIndex, UserName)
                     End If
                 Else
                     Call WriteConsoleMsg(UserIndex, "No puedes ver el inventario de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
@@ -9656,11 +9657,11 @@ On Error GoTo ErrHandler
             
             If tUser <= 0 Then
                 If UserIsAdmin Or Not OtherUserIsAdmin Then
+                    Call WriteConsoleMsg(UserIndex, "Usuario offline. Buscando... ", FontTypeNames.FONTTYPE_TALK)
                     If Not Database_Enabled Then
-                        Call WriteConsoleMsg(UserIndex, "Usuario offline. Leyendo charfile... ", FontTypeNames.FONTTYPE_TALK)
                         Call SendUserBovedaTxtFromCharfile(UserIndex, UserName)
                     Else
-                        
+                        Call SendUserBovedaTxtFromDatabase(UserIndex, UserName)
                     End If
                 Else
                     Call WriteConsoleMsg(UserIndex, "No puedes ver la bóveda de un dios o admin.", FontTypeNames.FONTTYPE_INFO)
