@@ -24,7 +24,8 @@ On Error GoTo ErrorHandler
  
 Set Database_Connection = New ADODB.Connection
  
-Database_Connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver};SERVER=" & Database_Host & ";DATABASE=" & Database_Name & ";UID=" & Database_Username & ";PWD=" & Database_Password & "; OPTION=3"
+Database_Connection.ConnectionString = "Provider=MSDASQL;DRIVER={MySQL ODBC 5.3 ANSI Driver};SERVER=" & Database_Host & ";Database=" & Database_Name & ";User=" & Database_Username & ";Password=" & Database_Password & ";Option=3"
+Debug.Print Database_Connection.ConnectionString
 Database_Connection.CursorLocation = adUseClient
 Database_Connection.Open
 
