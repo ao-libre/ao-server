@@ -7,9 +7,9 @@ Mas informacion:
 * http://www.gs-zone.org/temas/cliente-y-servidor-13-3-dx8-v1.95611/
 
 ## Montar Servidor:
+Guia para montar mi propio servidor:
 
-* proximamente
-* Pro Tip: Configurar inicializacion de server.exe al iniciar Windows.
+https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_propio_servidor/
 
 ## Archivos Definicion:
 [Motd.ini](https://github.com/ao-libre/ao-server/blob/master/Dat/Motd.ini)
