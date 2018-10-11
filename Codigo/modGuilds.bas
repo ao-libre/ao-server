@@ -1751,7 +1751,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
     If Database_Enabled Then
         Call SendCharacterInfoCharfile(UserIndex, Personaje)
     Else
-
+        Call SendCharacterInfoDatabase(UserIndex, Personaje)
     End If
 
     Exit Sub
@@ -1953,7 +1953,7 @@ Public Function GetUserGuildMember(ByVal UserName As String) As String
     If Not Database_Enabled Then
         GetUserGuildMember = GetUserGuildMemberCharfile(UserName)
     Else
-
+        GetUserGuildMember = GetUserGuildMemberDatabase(UserName)
     End If
 End Function
 
@@ -1966,7 +1966,7 @@ Public Function GetUserGuildAspirant(ByVal UserName As String) As Integer
     If Not Database_Enabled Then
         GetUserGuildAspirant = GetUserGuildAspirantCharfile(UserName)
     Else
-
+        GetUserGuildAspirant = GetUserGuildAspirantDatabase(UserName)
     End If
 End Function
 
@@ -1979,7 +1979,20 @@ Public Function GetUserGuildRejectionReason(ByVal UserName As String) As String
     If Not Database_Enabled Then
         GetUserGuildRejectionReason = GetUserGuildRejectionReasonCharfile(UserName)
     Else
+        GetUserGuildRejectionReason = GetUserGuildRejectionReasonDatabase(UserName)
+    End If
+End Function
 
+Public Function GetUserGuildPedidos(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Returns the guilds the user asked to be a member of
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildPedidos = GetUserGuildPedidosCharfile(UserName)
+    Else
+        GetUserGuildPedidos = GetUserGuildPedidosDatabase(UserName)
     End If
 End Function
 
@@ -1992,7 +2005,7 @@ Public Sub SaveUserGuildRejectionReason(ByVal UserName As String, ByVal Reason A
 If Not Database_Enabled Then
     Call SaveUserGuildRejectionReasonCharfile(UserName, Reason)
 Else
-
+    Call SaveUserGuildRejectionReasonDatabase(UserName, Reason)
 End If
 
 End Sub
@@ -2006,7 +2019,7 @@ Public Sub SaveUserGuildIndex(ByVal UserName As String, ByVal GuildIndex As Inte
 If Not Database_Enabled Then
     Call SaveUserGuildIndexCharfile(UserName, GuildIndex)
 Else
-
+    Call SaveUserGuildIndexDatabase(UserName, GuildIndex)
 End If
 
 End Sub
@@ -2020,7 +2033,7 @@ Public Sub SaveUserGuildAspirant(ByVal UserName As String, ByVal AspirantIndex A
 If Not Database_Enabled Then
     Call SaveUserGuildAspirantCharfile(UserName, AspirantIndex)
 Else
-
+    Call SaveUserGuildAspirantDatabase(UserName, AspirantIndex)
 End If
 
 End Sub
@@ -2034,23 +2047,10 @@ Public Sub SaveUserGuildMember(ByVal UserName As String, ByVal guilds As String)
 If Not Database_Enabled Then
     Call SaveUserGuildMemberCharfile(UserName, guilds)
 Else
-
+    Call SaveUserGuildMemberDatabase(UserName, guilds)
 End If
 
 End Sub
-
-Public Function GetUserGuildPedidos(ByVal UserName As String) As String
-'***************************************************
-'Author: Juan Andres Dalmasso (CHOTS)
-'Last Modification: 24/09/2018
-'Returns the guilds the user asked to be a member of
-'***************************************************
-    If Not Database_Enabled Then
-        GetUserGuildPedidos = GetUserGuildPedidosCharfile(UserName)
-    Else
-
-    End If
-End Function
 
 Public Sub SaveUserGuildPedidos(ByVal UserName As String, ByVal Pedidos As String)
 '***************************************************
@@ -2061,7 +2061,7 @@ Public Sub SaveUserGuildPedidos(ByVal UserName As String, ByVal Pedidos As Strin
 If Not Database_Enabled Then
     Call SaveUserGuildPedidosCharfile(UserName, Pedidos)
 Else
-
+    Call SaveUserGuildPedidosDatabase(UserName, Pedidos)
 End If
 
 End Sub
