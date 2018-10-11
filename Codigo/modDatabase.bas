@@ -1813,13 +1813,13 @@ On Error GoTo ErrorHandler
     Else
         gName = "Ninguno"
     End If
-    
+
     'Get previous guilds
     Miembro = Database_RecordSet!guild_member_history
     If Len(Miembro) > 400 Then
         Miembro = ".." & Right$(Miembro, 400)
     End If
-    
+
     Call Protocol.WriteCharacterInfo(UserIndex, UserName, Database_RecordSet!race_id, Database_RecordSet!class_id, _
         Database_RecordSet!genre_id, Database_RecordSet!level, Database_RecordSet!gold, _
         Database_RecordSet!bank_gold, Database_RecordSet!rep_average, Database_RecordSet!guild_requests_history, _
