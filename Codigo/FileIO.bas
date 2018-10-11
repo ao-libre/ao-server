@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa As Variant
+    Dim X, Y, N, Map, Mapa, email As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -1213,7 +1213,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
         
         .email = UserFile.GetValue("CONTACTO", "Email")
         
-        .Id = val(UserFile.GetValue("INIT", "ID"))
+        .ID = val(UserFile.GetValue("INIT", "ID"))
         .Genero = UserFile.GetValue("INIT", "Genero")
         .clase = UserFile.GetValue("INIT", "Clase")
         .raza = UserFile.GetValue("INIT", "Raza")
@@ -1714,11 +1714,11 @@ Sub LoadSini()
     RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
 
     'CHOTS | Database
-    Database_Enabled = CBool(val(GetVar(DatPath & "Server.ini", "DATABASE", "Enabled")))
-    Database_Host = GetVar(DatPath & "Server.ini", "DATABASE", "Host")
-    Database_Name = GetVar(DatPath & "Server.ini", "DATABASE", "Name")
-    Database_Username = GetVar(DatPath & "Server.ini", "DATABASE", "Username")
-    Database_Password = GetVar(DatPath & "Server.ini", "DATABASE", "Password")
+    Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
+    Database_Host = GetVar(IniPath & "Server.ini", "DATABASE", "Host")
+    Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
+    Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
+    Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
