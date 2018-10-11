@@ -29,7 +29,7 @@ Attribute VB_Name = "General"
 
 Option Explicit
 #If False Then
-    Dim x, y, K, n As Variant
+    Dim x, y, K, n, email As Variant
 #End If
 Global LeerNPCs As clsIniManager
 
@@ -2252,7 +2252,7 @@ Public Sub KickUserChaosLegion(ByVal UserName As String, ByVal KickerName As Str
 If Not Database_Enabled Then
     Call KickUserChaosLegionCharfile(UserName, KickerName)
 Else
-    Call KickUserChaosLegionDatabase(UserName, KickerName)
+    Call KickUserChaosLegionDatabase(UserName)
 End If
 
 End Sub
@@ -2266,7 +2266,7 @@ Public Sub KickUserRoyalArmy(ByVal UserName As String, ByVal KickerName As Strin
 If Not Database_Enabled Then
     Call KickUserRoyalArmyCharfile(UserName, KickerName)
 Else
-    Call KickUserRoyalArmyDatabase(UserName, KickerName)
+    Call KickUserRoyalArmyDatabase(UserName)
 End If
 
 End Sub
