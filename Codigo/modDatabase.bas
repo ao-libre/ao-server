@@ -675,7 +675,7 @@ Public Function PersonajeExisteDatabase(ByVal UserName As String) As Boolean
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -694,7 +694,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in PersonajeExisteDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -717,7 +717,8 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    BANCheckCharfile = Cbool(Database_RecordSet!is_ban)
+    BANCheckDatabase = CBool(Database_RecordSet!is_ban)
+
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -733,19 +734,19 @@ Public Sub BorrarUsuarioDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
     query = "UPDATE user SET name = '" & UCase$(UserName) & "_deleted', deleted = TRUE WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in BorrarUsuarioDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -755,19 +756,19 @@ Public Sub UnBanDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
     query = "UPDATE user SET is_ban = FALSE WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in UnBanDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -777,7 +778,7 @@ Public Function GetUserGuildIndexDatabase(ByVal UserName As String) As Integer
 'Last Modification: 09/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -796,7 +797,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserGuildIndexDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -806,19 +807,19 @@ Public Sub CopyUserDatabase(ByVal UserName As String, ByVal newName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
     query = "UPDATE user SET name = '" & UCase$(newName) & "' WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in CopyUserDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -828,20 +829,20 @@ Public Sub MarcarPjComoQueYaVotoDatabase(ByVal UserIndex As Integer, ByVal Numer
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
     query = "UPDATE user SET votes_amount = " & NumeroEncuesta & " WHERE id = " & UserList(UserIndex).ID & ";"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
 
-    ErrorHandler:
-        Call LogDatabaseError("Error in MarcarPjComoQueYaVotoDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+ErrorHandler:
+        Call LogDatabaseError("Error in MarcarPjComoQueYaVotoDatabase: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Function PersonajeCantidadVotosDatabase(ByVal UserName As String) As Integer
@@ -850,7 +851,7 @@ Public Function PersonajeCantidadVotosDatabase(ByVal UserName As String) As Inte
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -869,7 +870,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in PersonajeCantidadVotosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -879,7 +880,7 @@ Public Sub SaveBanDatabase(ByVal UserName As String, ByVal Reason As String, ByV
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
     Dim cantPenas As Byte
     cantPenas = GetUserAmountOfPunishmentsDatabase(UserName)
 
@@ -887,20 +888,20 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET is_ban = TRUE WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     query = "INSERT INTO punishment SET "
     query = query & "user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "'), "
     query = query & "number = " & (cantPenas + 1) & ", "
     query = query & "reason = '" & BannedBy & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveBanDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -910,7 +911,7 @@ Public Function GetUserAmountOfPunishmentsDatabase(ByVal UserName As String) As 
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -928,7 +929,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserAmountOfPunishmentsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -938,7 +939,7 @@ Public Sub SendUserPunishmentsDatabase(ByVal UserIndex As Integer, ByVal UserNam
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -950,7 +951,7 @@ On Error GoTo ErrorHandler
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
 
-            Call WriteConsoleMsg(UserIndex, Database_RecordSet!number & " - " & Database_RecordSet!reason, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, Database_RecordSet!Number & " - " & Database_RecordSet!Reason, FontTypeNames.FONTTYPE_INFO)
 
             Database_RecordSet.MoveNext
         Wend
@@ -960,7 +961,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserPunishmentsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -970,7 +971,7 @@ Public Function GetUserPosDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -988,7 +989,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserPosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -998,7 +999,7 @@ Public Function GetUserSaltDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1011,12 +1012,12 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserSaltDatabase = Database_RecordSet!salt
+    GetUserSaltDatabase = Database_RecordSet!Salt
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1026,7 +1027,7 @@ Public Function GetUserPasswordDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1039,12 +1040,12 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserPasswordDatabase = Database_RecordSet!password
+    GetUserPasswordDatabase = Database_RecordSet!Password
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserPasswordDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1054,7 +1055,7 @@ Public Function GetUserEmailDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1067,12 +1068,12 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserEmailDatabase = Database_RecordSet!username
+    GetUserEmailDatabase = Database_RecordSet!UserName
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserEmailDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1082,7 +1083,7 @@ Public Sub StorePasswordSaltDatabase(ByVal UserName As String, ByVal Password As
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1091,14 +1092,37 @@ On Error GoTo ErrorHandler
     query = query & "salt = '" & Salt & "' "
     query = query & "WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in StorePasswordSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
-End Function
+End Sub
+
+Public Sub SaveUserEmailDatabase(ByVal UserName As String, ByVal Email As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 10/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "UPDATE account SET "
+    query = query & "username = '" & Email & "', """
+    query = query & "WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+
+    Database_Connection.Execute (query)
+
+    Call Database_Close
+
+    Exit Sub
+ErrorHandler:
+        Call LogDatabaseError("Error in SaveUserEmailDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
 
 Public Sub SaveUserPunishmentDatabase(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
 '***************************************************
@@ -1106,7 +1130,7 @@ Public Sub SaveUserPunishmentDatabase(ByVal UserName As String, ByVal Number As 
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1115,12 +1139,12 @@ On Error GoTo ErrorHandler
     query = query & "number = " & Number & ", "
     query = query & "reason = '" & Reason & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserPunishmentDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1130,7 +1154,7 @@ Public Sub AlterUserPunishmentDatabase(ByVal UserName As String, ByVal Number As
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1138,12 +1162,12 @@ On Error GoTo ErrorHandler
     query = query & "reason = '" & Reason & "' "
     query = query & "WHERE number = " & Number & " AND user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in AlterUserPunishmentDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1153,7 +1177,7 @@ Public Sub ResetUserFaccionesDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1175,12 +1199,12 @@ On Error GoTo ErrorHandler
     query = query & "siguiente_recompensa = NULL "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in ResetUserFaccionesDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1190,7 +1214,7 @@ Public Sub KickUserCouncilsDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1199,12 +1223,12 @@ On Error GoTo ErrorHandler
     query = query & "pertenece_consejo_caos = FALSE "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in KickUserCouncilsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1214,7 +1238,7 @@ Public Sub KickUserFaccionesDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1223,12 +1247,12 @@ On Error GoTo ErrorHandler
     query = query & "pertenece_caos = FALSE "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in KickUserFaccionesDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1238,7 +1262,7 @@ Public Sub KickUserChaosLegionDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1247,12 +1271,12 @@ On Error GoTo ErrorHandler
     query = query & "reenlistadas = 200 "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in KickUserChaosLegionDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1262,7 +1286,7 @@ Public Sub KickUserRoyalArmyDatabase(ByVal UserName As String)
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1271,12 +1295,12 @@ On Error GoTo ErrorHandler
     query = query & "reenlistadas = 200 "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in KickUserRoyalArmyDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1286,7 +1310,7 @@ Public Sub UpdateUserLoggedDatabase(ByVal UserName As String, ByVal Logged As By
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1294,12 +1318,12 @@ On Error GoTo ErrorHandler
     query = query & "is_logged = " & IIf(Logged = 1, "TRUE", "FALSE") & " "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in UpdateUserLoggedDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1309,7 +1333,7 @@ Public Function GetUserLastIpsDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1327,7 +1351,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserLastIpsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1337,7 +1361,7 @@ Public Function GetUserSkillsDatabase(ByVal UserName As String) As String
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
     GetUserSkillsDatabase = vbNullString
 
     Call Database_Connect
@@ -1349,7 +1373,7 @@ On Error GoTo ErrorHandler
     If Not Database_RecordSet.RecordCount = 0 Then
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
-            GetUserSkillsDatabase = GetUserSkillsDatabase & "CHAR>" & SkillsNames(Database_RecordSet!number) & " = " & Database_RecordSet!value & vbCrLf
+            GetUserSkillsDatabase = GetUserSkillsDatabase & "CHAR>" & SkillsNames(Database_RecordSet!Number) & " = " & Database_RecordSet!value & vbCrLf
 
             Database_RecordSet.MoveNext
         Wend
@@ -1360,7 +1384,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserSkillsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1370,7 +1394,7 @@ Public Function GetUserFreeSkillsDatabase(ByVal UserName As String) As Integer
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1388,7 +1412,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserFreeSkillsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1398,7 +1422,7 @@ Public Sub SaveUserTrainingTimeDatabase(ByVal UserName As String, ByVal training
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1406,12 +1430,12 @@ On Error GoTo ErrorHandler
     query = query & "counter_training = " & trainingTime & " "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserTrainingTimeDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1421,7 +1445,7 @@ Public Function GetUserTrainingTimeDatabase(ByVal UserName As String) As Long
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1439,7 +1463,7 @@ On Error GoTo ErrorHandler
     Call Database_Close()
 
     Exit Function
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserTrainingTimeDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1449,7 +1473,7 @@ Public Function UserBelongsToRoyalArmyDatabase(ByVal UserName As String) As Bool
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1462,13 +1486,13 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    UserBelongsToRoyalArmyDatabase = Cbool(Database_RecordSet!pertenece_real)
+    UserBelongsToRoyalArmyDatabase = CBool(Database_RecordSet!pertenece_real)
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in UserBelongsToRoyalArmyDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1478,7 +1502,7 @@ Public Function UserBelongsToChaosLegionDatabase(ByVal UserName As String) As Bo
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1491,13 +1515,13 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    UserBelongsToChaosLegionDatabase = Cbool(Database_RecordSet!pertenece_caos)
+    UserBelongsToChaosLegionDatabase = CBool(Database_RecordSet!pertenece_caos)
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in UserBelongsToChaosLegionDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1507,7 +1531,7 @@ Public Function GetUserLevelDatabase(ByVal UserName As String) As Byte
 'Last Modification: 09/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1526,7 +1550,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserLevelDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1536,7 +1560,7 @@ Public Function GetUserPromedioDatabase(ByVal UserName As String) As Long
 'Last Modification: 09/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1555,7 +1579,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserPromedioDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1565,7 +1589,7 @@ Public Function GetUserReenlistsDatabase(ByVal UserName As String) As Byte
 'Last Modification: 09/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1578,13 +1602,13 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserReenlistsDatabase = CByte(Database_RecordSet!reenlistadas)
+    GetUserReenlistsDatabase = CByte(Database_RecordSet!Reenlistadas)
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserReenlistsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1594,7 +1618,7 @@ Public Sub SaveUserReenlistsDatabase(ByVal UserName As String, ByVal Reenlists A
 'Last Modification: 10/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1602,12 +1626,12 @@ On Error GoTo ErrorHandler
     query = query & "reenlistadas = " & Reenlists & " "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close()
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserReenlistsDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1617,6 +1641,8 @@ Public Sub SendUserStatsTxtDatabase(ByVal sendIndex As Integer, ByVal UserName A
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
+    Dim query As String
+
     If PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -1633,7 +1659,7 @@ On Error GoTo ErrorHandler
             Exit Sub
         End If
 
-        Call WriteConsoleMsg(sendIndex, "Nivel: " & Database_RecordSet!level & "  EXP: " & Database_RecordSet!exp & "/" & Database_RecordSet!elu, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Nivel: " & Database_RecordSet!level & "  EXP: " & Database_RecordSet!Exp & "/" & Database_RecordSet!ELU, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Energía: " & Database_RecordSet!min_sta & "/" & Database_RecordSet!max_sta, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Salud: " & Database_RecordSet!min_hp & "/" & Database_RecordSet!max_hp, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Mana: " & Database_RecordSet!min_man & "/" & Database_RecordSet!max_man, FontTypeNames.FONTTYPE_INFO)
@@ -1644,7 +1670,7 @@ On Error GoTo ErrorHandler
         Call Database_Close
     End If
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserStatsTxtDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1654,6 +1680,8 @@ Public Sub SendUserMiniStatsTxtFromDatabase(ByVal sendIndex As Integer, ByVal Us
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
+    Dim query As String
+
     If PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -1681,7 +1709,7 @@ On Error GoTo ErrorHandler
         Call Database_Close
     End If
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserMiniStatsTxtFromDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1691,6 +1719,8 @@ Public Sub SendUserOROTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserName
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
+    Dim query As String
+
     If PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -1712,7 +1742,7 @@ On Error GoTo ErrorHandler
         Call Database_Close
     End If
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserOROTxtFromDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1722,6 +1752,8 @@ Public Sub SendUserInvTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserName
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
+    Dim query As String
+
     If PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -1734,7 +1766,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!amount, FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
 
                 Database_RecordSet.MoveNext
             Wend
@@ -1746,7 +1778,7 @@ On Error GoTo ErrorHandler
         Call Database_Close
     End If
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserInvTxtFromDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1756,6 +1788,8 @@ Public Sub SendUserBovedaTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserN
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
+    Dim query As String
+
     If PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
@@ -1768,7 +1802,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!amount, FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
 
                 Database_RecordSet.MoveNext
             Wend
@@ -1780,7 +1814,7 @@ On Error GoTo ErrorHandler
         Call Database_Close
     End If
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendUserBovedaTxtFromDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1793,6 +1827,7 @@ On Error GoTo ErrorHandler
     Dim gName       As String
     Dim Miembro     As String
     Dim GuildActual As Integer
+    Dim query As String
 
     Call Database_Connect
 
@@ -1826,7 +1861,7 @@ On Error GoTo ErrorHandler
         Database_RecordSet!ciudadanos_matados, Database_RecordSet!criminales_matados)
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SendCharacterInfoDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1836,7 +1871,7 @@ Public Function GetUserGuildMemberDatabase(ByVal UserName As String) As String
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1855,7 +1890,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserGuildMemberDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1865,7 +1900,7 @@ Public Function GetUserGuildAspirantDatabase(ByVal UserName As String) As Intege
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1884,7 +1919,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserGuildAspirantDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1894,7 +1929,7 @@ Public Function GetUserGuildRejectionReasonDatabase(ByVal UserName As String) As
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1913,7 +1948,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserGuildRejectionReasonDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1923,7 +1958,7 @@ Public Function GetUserGuildPedidosDatabase(ByVal UserName As String) As String
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1942,7 +1977,7 @@ On Error GoTo ErrorHandler
 
     Exit Function
 
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in GetUserGuildPedidosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
@@ -1952,7 +1987,7 @@ Public Sub SaveUserGuildRejectionReasonDatabase(ByVal UserName As String, ByVal 
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1960,12 +1995,12 @@ On Error GoTo ErrorHandler
     query = query & "guild_rejected_because = '" & Reason & "' "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildRejectionReasonDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1975,7 +2010,7 @@ Public Sub SaveUserGuildIndexDatabase(ByVal UserName As String, ByVal GuildIndex
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -1983,12 +2018,12 @@ On Error GoTo ErrorHandler
     query = query & "guild_index = " & GuildIndex & " "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildIndexDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -1998,7 +2033,7 @@ Public Sub SaveUserGuildAspirantDatabase(ByVal UserName As String, ByVal Aspiran
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -2006,12 +2041,12 @@ On Error GoTo ErrorHandler
     query = query & "guild_aspirant_index = " & AspirantIndex & " "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildAspirantDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -2021,7 +2056,7 @@ Public Sub SaveUserGuildMemberDatabase(ByVal UserName As String, ByVal guilds As
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -2029,12 +2064,12 @@ On Error GoTo ErrorHandler
     query = query & "guild_member_history = '" & guilds & "' "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildMemberDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
@@ -2044,7 +2079,7 @@ Public Sub SaveUserGuildPedidosDatabase(ByVal UserName As String, ByVal Pedidos 
 'Last Modification: 11/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
-    Dim query as String
+    Dim query As String
 
     Call Database_Connect
 
@@ -2052,11 +2087,11 @@ On Error GoTo ErrorHandler
     query = query & "guild_requests_history = '" & Pedidos & "' "
     query = query & "WHERE name = '" & UCase$(UserName) & "';"
 
-    Database_Connection.Execute(query)
+    Database_Connection.Execute (query)
 
     Call Database_Close
 
     Exit Sub
-    ErrorHandler:
+ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildPedidosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
