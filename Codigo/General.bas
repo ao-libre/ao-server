@@ -2439,17 +2439,18 @@ End If
 
 End Sub
 
-Public Sub SaveNewAccount(ByVal UserName As String, ByVal Password As String, ByVal Salt as String)
+Public Sub SaveNewAccount(ByVal UserName As String, ByVal Password As String, ByVal Salt As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 'Saves a new account
 '***************************************************
-Dim Hash as String
+Dim Hash As String
 Hash = RandomString(32)
 
 If Not Database_Enabled Then
-    Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
+    'Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
+    'CHOTS | @Todo
 Else
     Call SaveNewAccountDatabase(UserName, Password, Salt, Hash)
 End If
