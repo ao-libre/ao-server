@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Map As Variant
+    Dim Map, x, y, mapa As Variant
 #End If
 
 ''
@@ -271,7 +271,7 @@ Private Enum ClientPacketID
     bugReport = 103              '/_BUG
     ChangeDescription = 104      '/DESC
     GuildVote = 105              '/VOTO
-    Punishments = 106           '/PENAS
+    punishments = 106           '/PENAS
     ChangePassword = 107         '/CONTRASEÑA
     Gamble = 108                '/APOSTAR
     InquiryVote = 109            '/ENCUESTA ( with parameters )
@@ -296,7 +296,7 @@ Private Enum ClientPacketID
     Consultation = 128
     moveItem = 129
     LoginExistingAccount = 130 'CHOTS | Accounts
-    CreateNewAccount = 131 'CHOTS | Accounts
+    LoginNewAccount = 131 'CHOTS | Accounts
 End Enum
 
 ''
@@ -376,7 +376,7 @@ On Error Resume Next
     If Not (packetID = ClientPacketID.ThrowDices _
       Or packetID = ClientPacketID.LoginExistingChar _
       Or packetID = ClientPacketID.LoginNewChar _
-      Or packetID = ClientPacketID.CreateNewAccount
+      Or packetID = ClientPacketID.LoginNewAccount _
       Or packetID = ClientPacketID.LoginExistingAccount) Then
         
         'Is the user actually logged?
@@ -714,7 +714,7 @@ On Error Resume Next
         Case ClientPacketID.GuildVote               '/VOTO
             Call HandleGuildVote(UserIndex)
         
-        Case ClientPacketID.Punishments             '/PENAS
+        Case ClientPacketID.punishments             '/PENAS
             Call HandlePunishments(UserIndex)
         
         Case ClientPacketID.ChangePassword          '/CONTRASEÑA
@@ -789,8 +789,8 @@ On Error Resume Next
         Case ClientPacketID.LoginExistingAccount
             Call HandleLoginExistingAccount(UserIndex)
 
-        Case ClientPacketID.CreateNewAccount
-            Call HandleCreateNewAccount(UserIndex)
+        Case ClientPacketID.LoginNewAccount
+            Call HandleLoginNewAccount(UserIndex)
 
         Case Else
             'ERROR : Abort!
@@ -1530,7 +1530,7 @@ On Error GoTo ErrHandler
     Call buffer.ReadByte
 
     Dim UserName As String
-    Dim Password As String
+    Dim AccountHash As String
     Dim version As String
     Dim race As eRaza
     Dim gender As eGenero
@@ -18957,11 +18957,11 @@ On Error GoTo 0
 End Sub
 
 ''
-' Handles the "CreateNewAccount" message.
+' Handles the "LoginNewAccount" message.
 '
 ' @param    userIndex The index of the user sending the message.
 
-Private Sub HandleCreateNewAccount(ByVal UserIndex As Integer)
+Private Sub HandleLoginNewAccount(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
@@ -19018,21 +19018,21 @@ On Error GoTo 0
         Err.Raise error
 End Sub
 
-Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash as String, ByVal NumberOfCharacters as Byte, ByRef Characters() as String)
+Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String, ByVal NumberOfCharacters As Byte, ByRef Characters() As String)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
 '***************************************************
 On Error GoTo ErrHandler
-    Dim i as Byte
+    Dim i As Byte
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.AccountLogged)
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(AccountHash)
         Call .WriteByte(NumberOfCharacters)
         If NumberOfCharacters > 0 Then
-            For i = 1 to NumberOfCharacters
+            For i = 1 To NumberOfCharacters
                 Call .WriteASCIIString(Characters(i))
             Next i
         End If

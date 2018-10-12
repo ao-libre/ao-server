@@ -29,6 +29,10 @@ Attribute VB_Name = "TCP"
 
 Option Explicit
 
+#If False Then
+    Dim x, y, n, mapa, email As Variant
+#End If
+
 #If UsarQueSocket = 0 Then
 ' General constants used with most of the controls
 Public Const INVALID_HANDLE As Integer = -1
@@ -615,6 +619,7 @@ Sub CreateNewAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef
 '*************************************************
 
 'SHA256
+Dim Salt As String
 Dim oSHA256 As CSHA256
 Set oSHA256 = New CSHA256
 
@@ -634,7 +639,7 @@ Salt = RandomString(10)
 
 Call SaveNewAccount(UserName, oSHA256.SHA256(Password & Salt), Salt)
 
-Call ConnectAccount(UserIndex, Name, Password)
+Call ConnectAccount(UserIndex, UserName, Password)
 
 End Sub
 
@@ -647,6 +652,7 @@ Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef P
 
 'SHA256
 Dim oSHA256 As CSHA256
+Dim Salt As String
 Set oSHA256 = New CSHA256
 
 If Not AsciiValidos(UserName) Or LenB(UserName) = 0 Then
@@ -671,8 +677,9 @@ If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
 End If
 
 If Not Database_Enabled Then
-    Call SaveAccountLastLoginCharfile(UserName, UserList(UserIndex).ip)
-    Call LoginAccountCharfile(UserIndex, UserName)
+    'Call SaveAccountLastLoginCharfile(UserName, UserList(UserIndex).ip)
+    'Call LoginAccountCharfile(UserIndex, UserName)
+    'CHOTS | @Todo
 Else
     Call SaveAccountLastLoginDatabase(UserName, UserList(UserIndex).ip)
     Call LoginAccountDatabase(UserIndex, UserName)
@@ -749,7 +756,7 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo ErrHandler    
+On Error GoTo ErrHandler
     UserList(UserIndex).ConnID = -1
 
     If UserIndex = LastUser And LastUser > 1 Then
@@ -1092,7 +1099,7 @@ With UserList(UserIndex)
     End If
     
     '¿Es el passwd valido?
-    If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
+    If Not PersonajePerteneceCuenta(Name, AccountHash) Then
         Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
