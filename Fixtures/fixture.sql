@@ -8,7 +8,7 @@
 CREATE TABLE account (
     id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     salt VARCHAR(10) NOT NULL,
     hash VARCHAR(32) NOT NULL,
     date_created TIMESTAMP NOT NULL,
