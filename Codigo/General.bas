@@ -2103,30 +2103,30 @@ End If
 
 End Function
 
-Public Function GetUserSalt(ByVal UserName As String) As String
+Public Function GetAccountSalt(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 'Get the user Password Salt
 '***************************************************
 If Not Database_Enabled Then
-    GetUserSalt = GetUserSaltCharfile(UserName)
+    GetAccountSalt = GetAccountSaltCharfile(UserName)
 Else
-    GetUserSalt = GetUserSaltDatabase(UserName)
+    GetAccountSalt = GetAccountSaltDatabase(UserName)
 End If
 
 End Function
 
-Public Function GetUserPassword(ByVal UserName As String) As String
+Public Function GetAccountPassword(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 'Get the user Password
 '***************************************************
 If Not Database_Enabled Then
-    GetUserPassword = GetUserPasswordCharfile(UserName)
+    GetAccountPassword = GetAccountPasswordCharfile(UserName)
 Else
-    GetUserPassword = GetUserPasswordDatabase(UserName)
+    GetAccountPassword = GetAccountPasswordDatabase(UserName)
 End If
 
 End Function
@@ -2435,6 +2435,23 @@ If Not Database_Enabled Then
     Call SaveUserReenlistsCharfile(UserName, Reenlists)
 Else
     Call SaveUserReenlistsDatabase(UserName, Reenlists)
+End If
+
+End Sub
+
+Public Sub SaveNewAccount(ByVal UserName As String, ByVal Password As String, ByVal Salt as String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'Saves a new account
+'***************************************************
+Dim Hash as String
+Hash = RandomString(32)
+
+If Not Database_Enabled Then
+    Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
+Else
+    Call SaveNewAccountDatabase(UserName, Password, Salt, Hash)
 End If
 
 End Sub

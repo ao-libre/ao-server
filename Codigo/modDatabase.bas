@@ -89,6 +89,7 @@ On Error GoTo ErrorHandler
     With UserList(UserIndex)
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
+        query = query & "account_id = (SELECT account_id FROM account WHERE hash = '" & .AccountHash & "'), "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
@@ -667,7 +668,7 @@ On Error GoTo ErrorHandler
     Call Database_Close
 
 ErrorHandler:
-        Call LogDatabaseError("Unable to LOAD User from Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Unable to LOAD User from Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Function PersonajeExisteDatabase(ByVal UserName As String) As Boolean
@@ -696,7 +697,65 @@ On Error GoTo ErrorHandler
     Exit Function
 
 ErrorHandler:
-        Call LogDatabaseError("Error in PersonajeExisteDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Error in PersonajeExisteDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Function
+
+Public Function CuentaExisteDatabase(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "SELECT id FROM account WHERE UPPER(username) = '" & UCase$(UserName) & "';"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        CuentaExisteDatabase = False
+        Exit Function
+    End If
+
+    CuentaExisteDatabase = (Database_RecordSet.RecordCount > 0)
+    Set Database_RecordSet = Nothing
+    Call Database_Close
+
+    Exit Function
+
+ErrorHandler:
+    Call LogDatabaseError("Error in CuentaExisteDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Function
+
+Public Function PersonajePerteneceCuentaDatabase(ByVal UserName As String, ByVal AccountHash As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "SELECT id FROM user u JOIN acccount a ON u.account_id = a.id WHERE UPPER(u.username) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        PersonajePerteneceCuentaDatabase = False
+        Exit Function
+    End If
+
+    PersonajePerteneceCuentaDatabase = (Database_RecordSet.RecordCount > 0)
+    Set Database_RecordSet = Nothing
+    Call Database_Close
+
+    Exit Function
+
+ErrorHandler:
+    Call LogDatabaseError("Error in PersonajePerteneceCuentaDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
 Public Function BANCheckDatabase(ByVal UserName As String) As Boolean
@@ -994,7 +1053,7 @@ ErrorHandler:
         Call LogDatabaseError("Error in GetUserPosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
-Public Function GetUserSaltDatabase(ByVal UserName As String) As String
+Public Function GetAccountSaltDatabase(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 10/10/2018
@@ -1009,20 +1068,20 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        GetUserSaltDatabase = vbNullString
+        GetAccountSaltDatabase = vbNullString
         Exit Function
     End If
 
-    GetUserSaltDatabase = Database_RecordSet!Salt
+    GetAccountSaltDatabase = Database_RecordSet!Salt
     Set Database_RecordSet = Nothing
     Call Database_Close
 
     Exit Function
 ErrorHandler:
-        Call LogDatabaseError("Error in GetUserSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in GetAccountSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
-Public Function GetUserPasswordDatabase(ByVal UserName As String) As String
+Public Function GetAccountPasswordDatabase(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 10/10/2018
@@ -1037,17 +1096,17 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        GetUserPasswordDatabase = vbNullString
+        GetAccountPasswordDatabase = vbNullString
         Exit Function
     End If
 
-    GetUserPasswordDatabase = Database_RecordSet!Password
+    GetAccountPasswordDatabase = Database_RecordSet!Password
     Set Database_RecordSet = Nothing
     Call Database_Close
 
     Exit Function
 ErrorHandler:
-        Call LogDatabaseError("Error in GetUserPasswordDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in GetAccountPasswordDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
 
 Public Function GetUserEmailDatabase(ByVal UserName As String) As String
@@ -1091,7 +1150,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE account SET "
     query = query & "password = '" & Password & "', "
     query = query & "salt = '" & Salt & "' "
-    query = query & "WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = query & "WHERE account_id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
 
@@ -1114,7 +1173,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE account SET "
     query = query & "username = '" & Email & "', """
-    query = query & "WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = query & "WHERE account_id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
 
@@ -2095,4 +2154,118 @@ On Error GoTo ErrorHandler
     Exit Sub
 ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildPedidosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
+
+SaveNewAccountDatabase
+
+Public Sub SaveNewAccountDatabase(ByVal UserName As String, ByVal Password As String, ByVal Salt As String, ByVal Hash As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "INSERT INTO account SET "
+    query = query & "username = '" & UserName & "', "
+    query = query & "password = '" & Password & "', "
+    query = query & "salt = '" & Salt & "', "
+    query = query & "hash = '" & Hash & "', "
+    query = query & "date_created = NOW(), "
+    query = query & "date_last_login = NOW() "
+    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+
+    Database_Connection.Execute (query)
+
+    Call Database_Close
+
+    Exit Sub
+ErrorHandler:
+        Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
+
+Public Sub SaveAccountLastLoginDatabase(ByVal UserName As String, ByVal UserIP As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "UPDATE account SET "
+    query = query & "date_last_login = NOW(), "
+    query = query & "last_ip = '" & UserIP & "' "
+    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+
+    Database_Connection.Execute (query)
+
+    Call Database_Close
+
+    Exit Sub
+ErrorHandler:
+        Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
+
+Public Sub LoginAccountDatabase(ByVal UserIndex As Integer, ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+    Dim AccountId As Integer
+    Dim AccountHash As String
+    Dim NumberOfCharacters As Byte
+    Dim Characters() As String
+
+    Call Database_Connect
+
+    query = "SELECT id, username, hash FROM account "
+    query = query & "WHERE UPPER(username) = '" & UCase$(UserName) & "';"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        Call WriteErrorMsg(UserIndex, "Error al cargar la cuenta.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
+
+    AccountId = CInt(Database_RecordSet!id)
+    UserName = Database_RecordSet!username
+    AccountHash = Database_RecordSet!hash
+
+    Set Database_RecordSet = Nothing
+
+    'Now the characters
+    query = "SELECT name FROM user "
+    query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    NumberOfCharacters = 0
+    If Not Database_RecordSet.RecordCount = 0 Then
+        ReDim Characters(1 to Database_RecordSet.RecordCount) as String
+        Database_RecordSet.MoveFirst
+        While Not Database_RecordSet.EOF
+            NumberOfCharacters = NumberOfCharacters + 1
+            Characters(NumberOfCharacters) = Database_RecordSet!name
+
+            Database_RecordSet.MoveNext
+        Wend
+    End If
+
+    Set Database_RecordSet = Nothing
+    Call Database_Close
+
+    Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
+
+    Exit Sub
+ErrorHandler:
+        Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub

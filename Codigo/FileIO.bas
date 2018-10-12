@@ -2777,22 +2777,22 @@ Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
     End If
 End Sub
 
-Public Function GetUserSaltCharfile(ByVal UserName As String) As String
+Public Function GetAccountSaltCharfile(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
 
-    GetUserSaltCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Salt")
+    GetAccountSaltCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Salt")
 End Function
 
-Public Function GetUserPasswordCharfile(ByVal UserName As String) As String
+Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
 
-    GetUserPasswordCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Password")
+    GetAccountPasswordCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Password")
 End Function
 
 Public Function GetUserEmailCharfile(ByVal UserName As String) As String
