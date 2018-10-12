@@ -375,7 +375,9 @@ On Error Resume Next
     'Does the packet requires a logged user??
     If Not (packetID = ClientPacketID.ThrowDices _
       Or packetID = ClientPacketID.LoginExistingChar _
-      Or packetID = ClientPacketID.LoginNewChar) Then
+      Or packetID = ClientPacketID.LoginNewChar _
+      Or packetID = ClientPacketID.CreateNewAccount
+      Or packetID = ClientPacketID.LoginExistingAccount) Then
         
         'Is the user actually logged?
         If Not UserList(UserIndex).flags.UserLogged Then
