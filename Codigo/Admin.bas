@@ -246,28 +246,40 @@ Public Function BANCheck(ByVal Name As String) As Boolean
 
 End Function
 
-Public Function PersonajeExiste(ByVal Name As String) As Boolean
+Public Function PersonajeExiste(ByVal UserName As String) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: 18/09/2018
 '18/09/2018 CHOTS: Checks database too
 '***************************************************
     If Not Database_Enabled Then
-        PersonajeExiste = PersonajeExisteCharfile(Name)
+        PersonajeExiste = PersonajeExisteCharfile(UserName)
     Else
-        PersonajeExiste = PersonajeExisteDatabase(Name)
+        PersonajeExiste = PersonajeExisteDatabase(UserName)
     End If
 End Function
 
-Public Function CuentaExiste(ByVal Name As String) As Boolean
+Public Function CuentaExiste(ByVal UserName As String) As Boolean
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 '***************************************************
     If Not Database_Enabled Then
-        CuentaExiste = CuentaExisteCharfile(Name)
+        CuentaExiste = CuentaExisteCharfile(UserName)
     Else
-        CuentaExiste = CuentaExisteDatabase(Name)
+        CuentaExiste = CuentaExisteDatabase(UserName)
+    End If
+End Function
+
+Public Function PersonajePerteneceCuenta(ByVal Name As String, ByVal AccountHash As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+    If Not Database_Enabled Then
+        PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
+    Else
+        PersonajePerteneceCuenta = PersonajePerteneceCuentaDatabase(UserName, AccountHash)
     End If
 End Function
 
