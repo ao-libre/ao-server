@@ -2156,7 +2156,6 @@ ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildPedidosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
-SaveNewAccountDatabase
 
 Public Sub SaveNewAccountDatabase(ByVal UserName As String, ByVal Password As String, ByVal Salt As String, ByVal Hash As String)
 '***************************************************
@@ -2236,9 +2235,9 @@ On Error GoTo ErrorHandler
         Exit Sub
     End If
 
-    AccountId = CInt(Database_RecordSet!id)
-    UserName = Database_RecordSet!username
-    AccountHash = Database_RecordSet!hash
+    AccountId = CInt(Database_RecordSet!ID)
+    UserName = Database_RecordSet!UserName
+    AccountHash = Database_RecordSet!Hash
 
     Set Database_RecordSet = Nothing
 
@@ -2250,11 +2249,11 @@ On Error GoTo ErrorHandler
 
     NumberOfCharacters = 0
     If Not Database_RecordSet.RecordCount = 0 Then
-        ReDim Characters(1 to Database_RecordSet.RecordCount) as String
+        ReDim Characters(1 To Database_RecordSet.RecordCount) As String
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
             NumberOfCharacters = NumberOfCharacters + 1
-            Characters(NumberOfCharacters) = Database_RecordSet!name
+            Characters(NumberOfCharacters) = Database_RecordSet!Name
 
             Database_RecordSet.MoveNext
         Wend
