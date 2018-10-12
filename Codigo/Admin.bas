@@ -226,9 +226,9 @@ Public Sub BorrarUsuario(ByVal UserName As String)
 '18/09/2018 CHOTS: Checks database too
 '***************************************************
     If Not Database_Enabled Then
-        BorrarUsuarioCharfile(UserName)
+        BorrarUsuarioCharfile (UserName)
     Else
-        BorrarUsuarioDatabase(UserName)
+        BorrarUsuarioDatabase (UserName)
     End If
 End Sub
 
@@ -265,19 +265,23 @@ Public Function CuentaExiste(ByVal UserName As String) As Boolean
 'Last Modification: 12/10/2018
 '***************************************************
     If Not Database_Enabled Then
-        CuentaExiste = CuentaExisteCharfile(UserName)
+        'CuentaExiste = CuentaExisteCharfile(UserName)
+        'CHOTS | @TODO
+        CuentaExiste = False
     Else
         CuentaExiste = CuentaExisteDatabase(UserName)
     End If
 End Function
 
-Public Function PersonajePerteneceCuenta(ByVal Name As String, ByVal AccountHash As String) As Boolean
+Public Function PersonajePerteneceCuenta(ByVal UserName As String, ByVal AccountHash As String) As Boolean
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 '***************************************************
     If Not Database_Enabled Then
-        PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
+        'PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
+        'CHOTS | @todo
+        PersonajePerteneceCuenta = False
     Else
         PersonajePerteneceCuenta = PersonajePerteneceCuentaDatabase(UserName, AccountHash)
     End If
@@ -568,7 +572,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
                 If (UserPriv And rank) > (.flags.Privilegios And rank) Then
                     Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    If BANCheck(Username) Then
+                    If BANCheck(UserName) Then
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
                     Else
                         Call LogBanFromName(UserName, bannerUserIndex, Reason)
