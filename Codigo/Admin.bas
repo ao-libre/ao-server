@@ -257,7 +257,18 @@ Public Function PersonajeExiste(ByVal Name As String) As Boolean
     Else
         PersonajeExiste = PersonajeExisteDatabase(Name)
     End If
+End Function
 
+Public Function CuentaExiste(ByVal Name As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'***************************************************
+    If Not Database_Enabled Then
+        CuentaExiste = CuentaExisteCharfile(Name)
+    Else
+        CuentaExiste = CuentaExisteDatabase(Name)
+    End If
 End Function
 
 Public Sub UnBan(ByVal Name As String)

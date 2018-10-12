@@ -1274,6 +1274,7 @@ End Type
 Public Type User
     Name As String
     ID As Long 'CHOTS | Database ID
+    AccountHash As String 'CHOTS | Account ID
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
