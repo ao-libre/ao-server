@@ -1,27 +1,28 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "msinet.ocx"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
    Caption         =   "Argentum"
-   ClientHeight    =   3105
+   ClientHeight    =   3180
    ClientLeft      =   1410
    ClientTop       =   3000
-   ClientWidth     =   6450
+   ClientWidth     =   6585
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   261.181
+   ScaleHeight     =   267.49
    ScaleMode       =   0  'User
-   ScaleWidth      =   430
+   ScaleWidth      =   439
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin ComctlLib.ProgressBar cargar 
       Height          =   255
       Left            =   120
-      TabIndex        =   3
-      Top             =   2760
+      TabIndex        =   2
+      Top             =   2880
       Width           =   3855
       _ExtentX        =   6800
       _ExtentY        =   450
@@ -31,13 +32,20 @@ Begin VB.Form frmCargando
    End
    Begin VB.PictureBox Picture1 
       BorderStyle     =   0  'None
-      Height          =   2775
-      Left            =   -120
-      ScaleHeight     =   2775
-      ScaleWidth      =   6735
+      Height          =   2895
+      Left            =   0
+      ScaleHeight     =   2895
+      ScaleWidth      =   6615
       TabIndex        =   0
-      Top             =   -120
-      Width           =   6735
+      Top             =   0
+      Width           =   6615
+      Begin InetCtlsObjects.Inet Inet1 
+         Left            =   1440
+         Top             =   1200
+         _ExtentX        =   1005
+         _ExtentY        =   1005
+         _Version        =   393216
+      End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
@@ -55,9 +63,9 @@ Begin VB.Form frmCargando
          ForeColor       =   &H000000FF&
          Height          =   195
          Index           =   3
-         Left            =   2235
-         TabIndex        =   2
-         Top             =   2040
+         Left            =   2160
+         TabIndex        =   1
+         Top             =   2280
          Width           =   2535
       End
    End
@@ -78,10 +86,10 @@ Begin VB.Form frmCargando
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   2
-      Left            =   6120
-      TabIndex        =   1
-      Top             =   2760
-      Width           =   255
+      Left            =   6000
+      TabIndex        =   3
+      Top             =   2880
+      Width           =   375
    End
 End
 Attribute VB_Name = "frmCargando"
@@ -120,6 +128,39 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Form_Load()
-'Label1(1).Caption = Label1(1).Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
-Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
+    'Label1(2).Caption = "V." & App.Major & "." & App.Minor & "." & App.Revision
+    Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
+    Me.Analizar
+End Sub
+
+Function Analizar()
+    On Error Resume Next
+           
+    If Not (CheckIfRunningLastVersion = True) Then
+        If MsgBox("Tu versión no es la actuál, ¿Deseas ejecutar el actualizador automático?.", vbYesNo) = vbYes Then
+            Call ShellExecute(Me.hwnd, "open", App.Path & "/Autoupdate.exe", "", "", 1)
+            End
+        End If
+    End If
+End Function
+
+Private Function CheckIfRunningLastVersion() As Boolean
+    Dim responseGithub As String, versionNumberMaster As String, versionNumberLocal As String
+    Dim JsonObject As Object
+
+    responseGithub = Inet1.OpenURL("https://api.github.com/repos/ao-libre/ao-server/releases/latest")
+    Set JsonObject = JSON.parse(responseGithub)
+    
+    versionNumberMaster = JsonObject.Item("tag_name")
+    versionNumberLocal = GetVar(App.Path & "Server.ini", "Server", "Version")
+    
+    If versionNumberMaster = versionNumberLocal Then
+        CheckIfRunningLastVersion = True
+    Else
+        CheckIfRunningLastVersion = False
+    End If
+End Function
+
+Private Sub Picture1_Click()
+
 End Sub
