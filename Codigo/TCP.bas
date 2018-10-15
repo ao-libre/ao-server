@@ -30,7 +30,7 @@ Attribute VB_Name = "TCP"
 Option Explicit
 
 #If False Then
-    Dim x, y, n, mapa, email As Variant
+    Dim x, y, n, mapa, Email As Variant
 #End If
 
 #If UsarQueSocket = 0 Then
@@ -373,7 +373,7 @@ ValidateSkills = True
 End Function
 
 Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef AccountHash As String, ByVal UserRaza As eRaza, ByVal UserSexo As eGenero, ByVal UserClase As eClass, _
-                    ByRef UserEmail As String, ByVal Hogar As eCiudad, ByVal Head As Integer)
+                    ByVal Hogar As eCiudad, ByVal Head As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 3/12/2009
@@ -443,7 +443,6 @@ With UserList(UserIndex)
     .clase = UserClase
     .raza = UserRaza
     .Genero = UserSexo
-    .email = UserEmail
     .Hogar = Hogar
 
     'CHOTS | Accounts
@@ -1521,7 +1520,7 @@ Sub ResetFacciones(ByVal UserIndex As Integer)
         .CiudadanosMatados = 0
         .CriminalesMatados = 0
         .FuerzasCaos = 0
-        .FechaIngreso = "No ingresó a ninguna Facción"
+        .FechaIngreso = vbNullString
         .RecibioArmaduraCaos = 0
         .RecibioArmaduraReal = 0
         .RecibioExpInicialCaos = 0
@@ -1623,7 +1622,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .Pos.y = 0
         .ip = vbNullString
         .clase = 0
-        .email = vbNullString
+        .Email = vbNullString
         .Genero = 0
         .Hogar = 0
         .raza = 0
