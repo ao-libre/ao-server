@@ -61,11 +61,13 @@ On Error GoTo ErrorHandler
 
     With UserList(UserIndex)
         If .ID > 0 Then
-            Call InsertUserToDatabase(UserIndex, SaveTimeOnline)
-        Else
             Call UpdateUserToDatabase(UserIndex, SaveTimeOnline)
+        Else
+            Call InsertUserToDatabase(UserIndex, SaveTimeOnline)
         End If
     End With
+    
+    Exit Sub
 
 ErrorHandler:
         Call LogDatabaseError("Unable to save User to Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
@@ -89,7 +91,7 @@ On Error GoTo ErrorHandler
     With UserList(UserIndex)
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
-        query = query & "account_id = (SELECT account_id FROM account WHERE hash = '" & .AccountHash & "'), "
+        query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .AccountHash & "'), "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
@@ -103,7 +105,7 @@ On Error GoTo ErrorHandler
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
         query = query & "pos_x = " & .Pos.X & ", "
-        query = query & "pos_x = " & .Pos.Y & ", "
+        query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .Char.body & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
@@ -245,7 +247,7 @@ On Error GoTo ErrorHandler
         query = query & "pet_amount = " & .NroMascotas & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
         query = query & "pos_x = " & .Pos.X & ", "
-        query = query & "pos_x = " & .Pos.Y & ", "
+        query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
         query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
@@ -278,7 +280,7 @@ On Error GoTo ErrorHandler
         query = query & "killed_users = " & .Stats.UsuariosMatados & ", "
         query = query & "rep_asesino = " & .Reputacion.AsesinoRep & ", "
         query = query & "rep_bandido = " & .Reputacion.BandidoRep & ", "
-        query = query & "rep_bugues = " & .Reputacion.BurguesRep & ", "
+        query = query & "rep_burgues = " & .Reputacion.BurguesRep & ", "
         query = query & "rep_ladron = " & .Reputacion.LadronesRep & ", "
         query = query & "rep_noble = " & .Reputacion.NobleRep & ", "
         query = query & "rep_plebe = " & .Reputacion.PlebeRep & ", "
@@ -306,12 +308,12 @@ On Error GoTo ErrorHandler
         query = query & "recompensas_real = " & .Faccion.RecompensasReal & ", "
         query = query & "recompensas_caos = " & .Faccion.RecompensasCaos & ", "
         query = query & "reenlistadas = " & .Faccion.Reenlistadas & ", "
-        query = query & "fecha_ingreso = " & .Faccion.FechaIngreso & ", "
+        query = query & "fecha_ingreso = " & IIf(.Faccion.FechaIngreso <> vbNullString, "'" & .Faccion.FechaIngreso & "'", "NULL") & ", "
         query = query & "nivel_ingreso = " & .Faccion.NivelIngreso & ", "
         query = query & "matados_ingreso = " & .Faccion.MatadosIngreso & ", "
         query = query & "siguiente_recompensa = " & .Faccion.NextRecompensa & ", "
-        query = query & "guild_index = " & .GuildIndex
-        query = query & "WHERE user_id = " & .ID & ";"
+        query = query & "guild_index = " & .GuildIndex & " "
+        query = query & "WHERE id = " & .ID & ";"
         Call Database_Connection.Execute(query)
 
         'User attributes
@@ -376,6 +378,7 @@ On Error GoTo ErrorHandler
 
         query = "INSERT INTO bank_item (user_id, number, item_id, amount) VALUES "
         For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
+            query = query & "("
             query = query & .ID & ", "
             query = query & LoopC & ", "
             query = query & .BancoInvent.Object(LoopC).ObjIndex & ", "
@@ -497,14 +500,14 @@ On Error GoTo ErrorHandler
         .OrigChar.ShieldAnim = Database_RecordSet!shield_id
         .OrigChar.heading = Database_RecordSet!heading
         .Invent.NroItems = Database_RecordSet!items_amount
-        .Invent.ArmourEqpSlot = Database_RecordSet!slot_armour
-        .Invent.WeaponEqpSlot = Database_RecordSet!slot_weapon
-        .Invent.CascoEqpSlot = Database_RecordSet!slot_helmet
-        .Invent.EscudoEqpSlot = Database_RecordSet!slot_shield
-        .Invent.MunicionEqpSlot = Database_RecordSet!slot_ammo
-        .Invent.BarcoSlot = Database_RecordSet!slot_ship
-        .Invent.AnilloEqpSlot = Database_RecordSet!slot_ring
-        .Invent.MochilaEqpSlot = Database_RecordSet!slot_bag
+        .Invent.ArmourEqpSlot = SanitizeNullValue(Database_RecordSet!slot_armour, 0)
+        .Invent.WeaponEqpSlot = SanitizeNullValue(Database_RecordSet!slot_weapon, 0)
+        .Invent.CascoEqpSlot = SanitizeNullValue(Database_RecordSet!slot_helmet, 0)
+        .Invent.EscudoEqpSlot = SanitizeNullValue(Database_RecordSet!slot_shield, 0)
+        .Invent.MunicionEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ammo, 0)
+        .Invent.BarcoSlot = SanitizeNullValue(Database_RecordSet!slot_ship, 0)
+        .Invent.AnilloEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ring, 0)
+        .Invent.MochilaEqpSlot = SanitizeNullValue(Database_RecordSet!slot_bag, 0)
         .Stats.MinHp = Database_RecordSet!min_hp
         .Stats.MaxHp = Database_RecordSet!max_hp
         .Stats.MinMAN = Database_RecordSet!min_man
@@ -521,7 +524,7 @@ On Error GoTo ErrorHandler
         .Stats.UsuariosMatados = Database_RecordSet!killed_users
         .Reputacion.AsesinoRep = Database_RecordSet!rep_asesino
         .Reputacion.BandidoRep = Database_RecordSet!rep_bandido
-        .Reputacion.BurguesRep = Database_RecordSet!rep_bugues
+        .Reputacion.BurguesRep = Database_RecordSet!rep_burgues
         .Reputacion.LadronesRep = Database_RecordSet!rep_ladron
         .Reputacion.NobleRep = Database_RecordSet!rep_noble
         .Reputacion.PlebeRep = Database_RecordSet!rep_plebe
@@ -556,12 +559,12 @@ On Error GoTo ErrorHandler
         .Faccion.RecompensasReal = Database_RecordSet!recompensas_real
         .Faccion.RecompensasCaos = Database_RecordSet!recompensas_caos
         .Faccion.Reenlistadas = Database_RecordSet!Reenlistadas
-        .Faccion.FechaIngreso = Database_RecordSet!fecha_ingreso
-        .Faccion.NivelIngreso = Database_RecordSet!nivel_ingreso
-        .Faccion.MatadosIngreso = Database_RecordSet!matados_ingreso
-        .Faccion.NextRecompensa = Database_RecordSet!siguiente_recompensa
+        .Faccion.FechaIngreso = SanitizeNullValue(Database_RecordSet!fecha_ingreso, vbNullString)
+        .Faccion.NivelIngreso = SanitizeNullValue(Database_RecordSet!nivel_ingreso, 0)
+        .Faccion.MatadosIngreso = SanitizeNullValue(Database_RecordSet!matados_ingreso, 0)
+        .Faccion.NextRecompensa = SanitizeNullValue(Database_RecordSet!siguiente_recompensa, 0)
 
-        .GuildIndex = Database_RecordSet!guild_index
+        .GuildIndex = SanitizeNullValue(Database_RecordSet!guild_index, 0)
 
         Set Database_RecordSet = Nothing
 
@@ -739,7 +742,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT id FROM user u JOIN acccount a ON u.account_id = a.id WHERE UPPER(u.username) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
+    query = "SELECT u.id FROM user u JOIN account a ON u.account_id = a.id WHERE UPPER(u.name) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -2054,7 +2057,7 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildRejectionReasonDatabase = Database_RecordSet!guild_rejected_because
+    GetUserGuildRejectionReasonDatabase = SanitizeNullValue(Database_RecordSet!guild_rejected_because, vbNullString)
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -2318,3 +2321,7 @@ On Error GoTo ErrorHandler
 ErrorHandler:
         Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
+
+Public Function SanitizeNullValue(ByVal value As Variant, ByVal defaultValue As Variant)
+    SanitizeNullValue = IIf(IsNull(value), defaultValue, value)
+End Function

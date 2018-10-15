@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, mapa As Variant
+    Dim Map, x, y, n, mapa As Variant
 #End If
 
 ''
@@ -1537,7 +1537,6 @@ On Error GoTo ErrHandler
     Dim homeland As eCiudad
     Dim Class As eClass
     Dim Head As Integer
-    Dim mail As String
     
     If PuedeCrearPersonajes = 0 Then
         Call WriteErrorMsg(UserIndex, "La creación de personajes en este servidor se ha deshabilitado.")
@@ -1573,13 +1572,12 @@ On Error GoTo ErrHandler
     gender = buffer.ReadByte()
     Class = buffer.ReadByte()
     Head = buffer.ReadInteger
-    mail = buffer.ReadASCIIString()
     homeland = buffer.ReadByte()
         
     If Not VersionOK(version) Then
         Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
     Else
-        Call ConnectNewUser(UserIndex, UserName, AccountHash, race, gender, Class, mail, homeland, Head)
+        Call ConnectNewUser(UserIndex, UserName, AccountHash, race, gender, Class, homeland, Head)
     End If
 
     'If we got here then packet is complete, copy data back to original queue
