@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa, email As Variant
+    Dim X, Y, N, Map, Mapa, Email As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -1211,7 +1211,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
         .Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
         .Counters.AsignedSkills = CByte(val(UserFile.GetValue("COUNTERS", "SkillsAsignados")))
         
-        .email = UserFile.GetValue("CONTACTO", "Email")
+        .Email = UserFile.GetValue("CONTACTO", "Email")
         
         .ID = val(UserFile.GetValue("INIT", "ID"))
         .Genero = UserFile.GetValue("INIT", "Genero")
@@ -1880,7 +1880,7 @@ With UserList(UserIndex)
     Next LoopC
     
     
-    Call Manager.ChangeValue("CONTACTO", "Email", .email)
+    Call Manager.ChangeValue("CONTACTO", "Email", .Email)
     
     Call Manager.ChangeValue("INIT", "ID", .ID)
     Call Manager.ChangeValue("INIT", "Genero", .Genero)
@@ -2777,13 +2777,13 @@ Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
     End If
 End Sub
 
-Public Function GetAccountSaltCharfile(ByVal UserName As String) As String
+Public Function GetUserSaltCharfile(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
 
-    GetAccountSaltCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Salt")
+    GetUserSaltCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Salt")
 End Function
 
 Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
@@ -2814,13 +2814,13 @@ Sub StorePasswordSaltCharfile(ByVal UserName As String, ByVal Password As String
     Call WriteVar(CharPath & UserName & ".chr", "INIT", "Salt", Salt)
 End Sub
 
-Sub SaveUserEmailCharfile(ByVal UserName As String, ByVal email As String)
+Sub SaveUserEmailCharfile(ByVal UserName As String, ByVal Email As String)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
 '***************************************************
 
-    Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", email)
+    Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", Email)
 End Sub
 
 Sub SaveUserPunishmentCharfile(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
