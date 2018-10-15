@@ -6817,7 +6817,7 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
        
         'Hasheamos el pass junto al Salt
-        oldSalt = GetAccountSalt(UserList(UserIndex).Name)
+        oldSalt = GetUserSalt(UserList(UserIndex).Name)
         oldPass = oSHA256.SHA256(buffer.ReadASCIIString() & oldSalt)
         
         'Asignamos un nuevo Salt y lo hasheamos junto al nuevo pass
@@ -6827,7 +6827,7 @@ On Error GoTo ErrHandler
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debes especificar una contraseña nueva, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
         Else
-            storedPass = GetAccountPassword(UserList(UserIndex).Name)
+            storedPass = GetUserPassword(UserList(UserIndex).Name)
             
             If storedPass <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
@@ -13844,8 +13844,8 @@ On Error GoTo ErrHandler
                 If Not PersonajeExiste(UserName) Or Not PersonajeExiste(copyFrom) Then
                     Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Password = GetAccountPassword(copyFrom)
-                    Salt = GetAccountSalt(copyFrom)
+                    Password = GetUserPassword(copyFrom)
+                    Salt = GetUserSalt(copyFrom)
 
                     Call StorePasswordSalt(UserName, Password, Salt)
                     
@@ -18921,6 +18921,9 @@ On Error GoTo ErrHandler
     Dim UserName As String
     Dim Password As String
     Dim version As String
+    
+    UserName = buffer.ReadASCIIString()
+    Password = buffer.ReadASCIIString()
 
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "La cuenta no existe.")
@@ -18928,9 +18931,6 @@ On Error GoTo ErrHandler
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
-
-    UserName = buffer.ReadASCIIString()
-    Password = buffer.ReadASCIIString()
 
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())

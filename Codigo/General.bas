@@ -2102,31 +2102,58 @@ Else
 End If
 
 End Function
-
-Public Function GetAccountSalt(ByVal UserName As String) As String
+Public Function GetAccountSalt(ByVal AccountName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 'Get the user Password Salt
 '***************************************************
 If Not Database_Enabled Then
-    GetAccountSalt = GetAccountSaltCharfile(UserName)
+    GetAccountSalt = vbNullString
+    'CHOTS | TOdo
 Else
-    GetAccountSalt = GetAccountSaltDatabase(UserName)
+    GetAccountSalt = GetAccountSaltDatabase(AccountName)
+End If
+
+End Function
+Public Function GetUserSalt(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password Salt
+'***************************************************
+If Not Database_Enabled Then
+    GetUserSalt = GetUserSaltCharfile(UserName)
+Else
+    GetUserSalt = GetUserSaltDatabase(UserName)
 End If
 
 End Function
 
-Public Function GetAccountPassword(ByVal UserName As String) As String
+Public Function GetAccountPassword(ByVal AccountName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 'Get the user Password
 '***************************************************
 If Not Database_Enabled Then
-    GetAccountPassword = GetAccountPasswordCharfile(UserName)
+    GetAccountPassword = GetAccountPasswordCharfile(AccountName)
 Else
-    GetAccountPassword = GetAccountPasswordDatabase(UserName)
+    GetAccountPassword = GetAccountPasswordDatabase(AccountName)
+End If
+
+End Function
+Public Function GetUserPassword(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password
+'***************************************************
+If Not Database_Enabled Then
+    GetUserPassword = vbNullString
+    'CHOTS | TODO
+Else
+    GetUserPassword = GetUserPasswordDatabase(UserName)
 End If
 
 End Function

@@ -270,6 +270,41 @@ AsciiValidos = True
 
 End Function
 
+Public Function CheckMailString(ByVal sString As String) As Boolean
+On Error GoTo errHnd
+    Dim lPos  As Long
+    Dim lX    As Long
+    Dim iAsc  As Integer
+
+    '1er test: Busca un simbolo @
+    lPos = InStr(sString, "@")
+    If (lPos <> 0) Then
+        '2do test: Busca un simbolo . despues de @ + 1
+        If Not (InStr(lPos, sString, ".", vbBinaryCompare) > lPos + 1) Then _
+            Exit Function
+
+        '3er test: Recorre todos los caracteres y los valida
+        For lX = 0 To Len(sString) - 1
+            If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
+                iAsc = Asc(mid$(sString, (lX + 1), 1))
+                If Not CMSValidateChar_(iAsc) Then _
+                    Exit Function
+            End If
+        Next lX
+
+        'Finale
+        CheckMailString = True
+    End If
+errHnd:
+End Function
+'  Corregida por Maraxus para que reconozca como validas casillas con puntos antes de la arroba
+Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
+    CMSValidateChar_ = (iAsc >= 48 And iAsc <= 57) Or _
+                        (iAsc >= 65 And iAsc <= 90) Or _
+                        (iAsc >= 97 And iAsc <= 122) Or _
+                        (iAsc = 95) Or (iAsc = 45) Or (iAsc = 46)
+End Function
+
 Function Numeric(ByVal cad As String) As Boolean
 '***************************************************
 'Author: Unknown
@@ -623,7 +658,7 @@ Dim Salt As String
 Dim oSHA256 As CSHA256
 Set oSHA256 = New CSHA256
 
-If Not AsciiValidos(UserName) Or LenB(UserName) = 0 Then
+If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
     Call WriteErrorMsg(UserIndex, "Nombre inválido.")
     Exit Sub
 End If
@@ -655,7 +690,7 @@ Dim oSHA256 As CSHA256
 Dim Salt As String
 Set oSHA256 = New CSHA256
 
-If Not AsciiValidos(UserName) Or LenB(UserName) = 0 Then
+If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
     Call WriteErrorMsg(UserIndex, "Nombre inválido.")
     Exit Sub
 End If
