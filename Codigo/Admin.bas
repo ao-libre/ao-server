@@ -28,6 +28,7 @@ Attribute VB_Name = "Admin"
 'Pablo Ignacio Márquez
 
 Option Explicit
+Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 
 Public Type tMotd
     texto As String
@@ -117,7 +118,7 @@ On Error Resume Next
        'OJO
        If Npclist(i).flags.NPCActive Then
             
-            If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
+            If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.x, Npclist(i).Orig.y) And Npclist(i).Numero = Guardias Then
                     MiNPC = Npclist(i)
                     Call QuitarNPC(i)
                     Call ReSpawnNpc(MiNPC)
@@ -151,22 +152,22 @@ On Error Resume Next
     
     Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
     
-    Dim j As Integer, k As Integer
+    Dim j As Integer, K As Integer
     
     For j = 1 To NumMaps
-        If MapInfo(j).BackUp = 1 Then k = k + 1
+        If MapInfo(j).BackUp = 1 Then K = K + 1
     Next j
     
     FrmStat.ProgressBar1.min = 0
-    FrmStat.ProgressBar1.max = k
-    FrmStat.ProgressBar1.value = 0
+    FrmStat.ProgressBar1.max = K
+    FrmStat.ProgressBar1.Value = 0
     
     For loopX = 1 To NumMaps
         'DoEvents
         
         If MapInfo(loopX).BackUp = 1 Then
             Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
-            FrmStat.ProgressBar1.value = FrmStat.ProgressBar1.value + 1
+            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
         End If
     
     Next loopX
@@ -204,7 +205,7 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
 
     UserList(UserIndex).Counters.Pena = Minutos * 60
     
-    Call WarpUserChar(UserIndex, Prision.Map, Prision.X, Prision.Y, True)
+    Call WarpUserChar(UserIndex, Prision.Map, Prision.x, Prision.y, True)
     
     If LenB(GmName) = 0 Then
         Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberás permanecer en la cárcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
@@ -358,11 +359,11 @@ Public Function BanIpQuita(ByVal ip As String) As Boolean
 
 On Error Resume Next
 
-    Dim N As Long
+    Dim n As Long
     
-    N = BanIpBuscar(ip)
-    If N > 0 Then
-        BanIps.Remove N
+    n = BanIpBuscar(ip)
+    If n > 0 Then
+        BanIps.Remove n
         BanIpGuardar
         BanIpQuita = True
     Else
