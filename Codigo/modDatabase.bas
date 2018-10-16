@@ -61,11 +61,13 @@ On Error GoTo ErrorHandler
 
     With UserList(UserIndex)
         If .ID > 0 Then
-            Call InsertUserToDatabase(UserIndex, SaveTimeOnline)
-        Else
             Call UpdateUserToDatabase(UserIndex, SaveTimeOnline)
+        Else
+            Call InsertUserToDatabase(UserIndex, SaveTimeOnline)
         End If
     End With
+    
+    Exit Sub
 
 ErrorHandler:
         Call LogDatabaseError("Unable to save User to Mysql Database: " & UserList(UserIndex).Name & ". " & Err.Number & " - " & Err.description)
@@ -89,13 +91,13 @@ On Error GoTo ErrorHandler
     With UserList(UserIndex)
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
-        query = query & "account_id = (SELECT account_id FROM account WHERE hash = '" & .AccountHash & "'), "
+        query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .AccountHash & "'), "
         query = query & "level = " & .Stats.ELV & ", "
         query = query & "exp = " & .Stats.Exp & ", "
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -103,9 +105,9 @@ On Error GoTo ErrorHandler
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
         query = query & "pos_x = " & .Pos.X & ", "
-        query = query & "pos_x = " & .Pos.Y & ", "
-        query = query & "body_id = " & .Char.body & ", "
-        query = query & "head_id = " & .Char.body & ", "
+        query = query & "pos_y = " & .Pos.Y & ", "
+        query = query & "body_id = " & .Char.Body & ", "
+        query = query & "head_id = " & .Char.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
         query = query & "shield_id = " & .Char.ShieldAnim & ", "
@@ -235,7 +237,7 @@ On Error GoTo ErrorHandler
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -245,9 +247,9 @@ On Error GoTo ErrorHandler
         query = query & "pet_amount = " & .NroMascotas & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
         query = query & "pos_x = " & .Pos.X & ", "
-        query = query & "pos_x = " & .Pos.Y & ", "
+        query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
-        query = query & "body_id = " & .Char.body & ", "
+        query = query & "body_id = " & .Char.Body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
@@ -278,7 +280,7 @@ On Error GoTo ErrorHandler
         query = query & "killed_users = " & .Stats.UsuariosMatados & ", "
         query = query & "rep_asesino = " & .Reputacion.AsesinoRep & ", "
         query = query & "rep_bandido = " & .Reputacion.BandidoRep & ", "
-        query = query & "rep_bugues = " & .Reputacion.BurguesRep & ", "
+        query = query & "rep_burgues = " & .Reputacion.BurguesRep & ", "
         query = query & "rep_ladron = " & .Reputacion.LadronesRep & ", "
         query = query & "rep_noble = " & .Reputacion.NobleRep & ", "
         query = query & "rep_plebe = " & .Reputacion.PlebeRep & ", "
@@ -306,12 +308,12 @@ On Error GoTo ErrorHandler
         query = query & "recompensas_real = " & .Faccion.RecompensasReal & ", "
         query = query & "recompensas_caos = " & .Faccion.RecompensasCaos & ", "
         query = query & "reenlistadas = " & .Faccion.Reenlistadas & ", "
-        query = query & "fecha_ingreso = " & .Faccion.FechaIngreso & ", "
+        query = query & "fecha_ingreso = " & IIf(.Faccion.FechaIngreso <> vbNullString, "'" & .Faccion.FechaIngreso & "'", "NULL") & ", "
         query = query & "nivel_ingreso = " & .Faccion.NivelIngreso & ", "
         query = query & "matados_ingreso = " & .Faccion.MatadosIngreso & ", "
         query = query & "siguiente_recompensa = " & .Faccion.NextRecompensa & ", "
-        query = query & "guild_index = " & .GuildIndex
-        query = query & "WHERE user_id = " & .ID & ";"
+        query = query & "guild_index = " & .GuildIndex & " "
+        query = query & "WHERE id = " & .ID & ";"
         Call Database_Connection.Execute(query)
 
         'User attributes
@@ -376,6 +378,7 @@ On Error GoTo ErrorHandler
 
         query = "INSERT INTO bank_item (user_id, number, item_id, amount) VALUES "
         For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
+            query = query & "("
             query = query & .ID & ", "
             query = query & LoopC & ", "
             query = query & .BancoInvent.Object(LoopC).ObjIndex & ", "
@@ -465,7 +468,7 @@ On Error GoTo ErrorHandler
 
     'Basic user data
     With UserList(UserIndex)
-        query = "SELECT * FROM user WHERE name ='" & UCase$(.Name) & "';"
+        query = "SELECT * FROM user WHERE UPPER(name) ='" & UCase$(.Name) & "';"
         Set Database_RecordSet = Database_Connection.Execute(query)
 
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then Exit Sub
@@ -478,7 +481,7 @@ On Error GoTo ErrorHandler
         .Stats.ELU = Database_RecordSet!ELU
         .Genero = Database_RecordSet!genre_id
         .raza = Database_RecordSet!race_id
-        .clase = Database_RecordSet!class_id
+        .Clase = Database_RecordSet!class_id
         .Hogar = Database_RecordSet!home_id
         .desc = Database_RecordSet!description
         .Stats.GLD = Database_RecordSet!gold
@@ -490,21 +493,21 @@ On Error GoTo ErrorHandler
         .Pos.X = Database_RecordSet!pos_x
         .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
-        .OrigChar.body = Database_RecordSet!body_id
+        .OrigChar.Body = Database_RecordSet!body_id
         .OrigChar.Head = Database_RecordSet!head_id
         .OrigChar.WeaponAnim = Database_RecordSet!weapon_id
         .OrigChar.CascoAnim = Database_RecordSet!helmet_id
         .OrigChar.ShieldAnim = Database_RecordSet!shield_id
         .OrigChar.heading = Database_RecordSet!heading
         .Invent.NroItems = Database_RecordSet!items_amount
-        .Invent.ArmourEqpSlot = Database_RecordSet!slot_armour
-        .Invent.WeaponEqpSlot = Database_RecordSet!slot_weapon
-        .Invent.CascoEqpSlot = Database_RecordSet!slot_helmet
-        .Invent.EscudoEqpSlot = Database_RecordSet!slot_shield
-        .Invent.MunicionEqpSlot = Database_RecordSet!slot_ammo
-        .Invent.BarcoSlot = Database_RecordSet!slot_ship
-        .Invent.AnilloEqpSlot = Database_RecordSet!slot_ring
-        .Invent.MochilaEqpSlot = Database_RecordSet!slot_bag
+        .Invent.ArmourEqpSlot = SanitizeNullValue(Database_RecordSet!slot_armour, 0)
+        .Invent.WeaponEqpSlot = SanitizeNullValue(Database_RecordSet!slot_weapon, 0)
+        .Invent.CascoEqpSlot = SanitizeNullValue(Database_RecordSet!slot_helmet, 0)
+        .Invent.EscudoEqpSlot = SanitizeNullValue(Database_RecordSet!slot_shield, 0)
+        .Invent.MunicionEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ammo, 0)
+        .Invent.BarcoSlot = SanitizeNullValue(Database_RecordSet!slot_ship, 0)
+        .Invent.AnilloEqpSlot = SanitizeNullValue(Database_RecordSet!slot_ring, 0)
+        .Invent.MochilaEqpSlot = SanitizeNullValue(Database_RecordSet!slot_bag, 0)
         .Stats.MinHp = Database_RecordSet!min_hp
         .Stats.MaxHp = Database_RecordSet!max_hp
         .Stats.MinMAN = Database_RecordSet!min_man
@@ -521,7 +524,7 @@ On Error GoTo ErrorHandler
         .Stats.UsuariosMatados = Database_RecordSet!killed_users
         .Reputacion.AsesinoRep = Database_RecordSet!rep_asesino
         .Reputacion.BandidoRep = Database_RecordSet!rep_bandido
-        .Reputacion.BurguesRep = Database_RecordSet!rep_bugues
+        .Reputacion.BurguesRep = Database_RecordSet!rep_burgues
         .Reputacion.LadronesRep = Database_RecordSet!rep_ladron
         .Reputacion.NobleRep = Database_RecordSet!rep_noble
         .Reputacion.PlebeRep = Database_RecordSet!rep_plebe
@@ -556,12 +559,12 @@ On Error GoTo ErrorHandler
         .Faccion.RecompensasReal = Database_RecordSet!recompensas_real
         .Faccion.RecompensasCaos = Database_RecordSet!recompensas_caos
         .Faccion.Reenlistadas = Database_RecordSet!Reenlistadas
-        .Faccion.FechaIngreso = Database_RecordSet!fecha_ingreso
-        .Faccion.NivelIngreso = Database_RecordSet!nivel_ingreso
-        .Faccion.MatadosIngreso = Database_RecordSet!matados_ingreso
-        .Faccion.NextRecompensa = Database_RecordSet!siguiente_recompensa
+        .Faccion.FechaIngreso = SanitizeNullValue(Database_RecordSet!fecha_ingreso, vbNullString)
+        .Faccion.NivelIngreso = SanitizeNullValue(Database_RecordSet!nivel_ingreso, 0)
+        .Faccion.MatadosIngreso = SanitizeNullValue(Database_RecordSet!matados_ingreso, 0)
+        .Faccion.NextRecompensa = SanitizeNullValue(Database_RecordSet!siguiente_recompensa, 0)
 
-        .GuildIndex = Database_RecordSet!guild_index
+        .GuildIndex = SanitizeNullValue(Database_RecordSet!guild_index, 0)
 
         Set Database_RecordSet = Nothing
 
@@ -681,7 +684,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT id FROM user WHERE name = '" & UCase$(UserName) & "' AND deleted = FALSE;"
+    query = "SELECT id FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "' AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -739,7 +742,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT id FROM user u JOIN acccount a ON u.account_id = a.id WHERE UPPER(u.username) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
+    query = "SELECT u.id FROM user u JOIN account a ON u.account_id = a.id WHERE UPPER(u.name) = '" & UCase$(UserName) & "' AND a.hash= '" & AccountHash & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -768,7 +771,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT is_ban FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT is_ban FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -798,7 +801,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "UPDATE user SET name = '" & UCase$(UserName) & "_deleted', deleted = TRUE WHERE name = '" & UCase$(UserName) & "';"
+    query = "UPDATE user SET name = '" & UCase$(UserName) & "_deleted', deleted = TRUE WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -820,7 +823,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "UPDATE user SET is_ban = FALSE WHERE name = '" & UCase$(UserName) & "';"
+    query = "UPDATE user SET is_ban = FALSE WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -842,7 +845,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT guild_index FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT guild_index FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -871,7 +874,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "UPDATE user SET name = '" & UCase$(newName) & "' WHERE name = '" & UCase$(UserName) & "';"
+    query = "UPDATE user SET name = '" & UCase$(newName) & "' WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -915,7 +918,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT votes_amount FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT votes_amount FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -946,12 +949,12 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "UPDATE user SET is_ban = TRUE WHERE name = '" & UCase$(UserName) & "';"
+    query = "UPDATE user SET is_ban = TRUE WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
     query = "INSERT INTO punishment SET "
-    query = query & "user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "'), "
+    query = query & "user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "'), "
     query = query & "number = " & (cantPenas + 1) & ", "
     query = query & "reason = '" & BannedBy & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time & "';"
 
@@ -975,7 +978,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT COUNT(1) as punishments FROM punishment WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "')"
+    query = "SELECT COUNT(1) as punishments FROM punishment WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "')"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1003,7 +1006,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT * FROM punishment WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT * FROM punishment WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1035,7 +1038,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT pos_map, pos_x, pos_y FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT pos_map, pos_x, pos_y FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1052,8 +1055,7 @@ On Error GoTo ErrorHandler
 ErrorHandler:
         Call LogDatabaseError("Error in GetUserPosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
-
-Public Function GetAccountSaltDatabase(ByVal UserName As String) As String
+Public Function GetUserSaltDatabase(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 10/10/2018
@@ -1063,7 +1065,34 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT salt FROM account WHERE id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT salt FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        GetUserSaltDatabase = vbNullString
+        Exit Function
+    End If
+
+    GetUserSaltDatabase = Database_RecordSet!Salt
+    Set Database_RecordSet = Nothing
+    Call Database_Close
+
+    Exit Function
+ErrorHandler:
+        Call LogDatabaseError("Error in GetUserSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Function
+Public Function GetAccountSaltDatabase(ByVal AccountName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 10/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "SELECT salt FROM account WHERE UPPER(username) = '" & UCase$(AccountName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1078,10 +1107,10 @@ On Error GoTo ErrorHandler
 
     Exit Function
 ErrorHandler:
-        Call LogDatabaseError("Error in GetAccountSaltDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in GetAccountSaltDatabase: " & AccountName & ". " & Err.Number & " - " & Err.description)
 End Function
 
-Public Function GetAccountPasswordDatabase(ByVal UserName As String) As String
+Public Function GetAccountPasswordDatabase(ByVal AccountName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 10/10/2018
@@ -1091,7 +1120,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT password FROM account WHERE id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT password FROM account WHERE UPPER(username) = '" & UCase$(AccountName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1106,9 +1135,35 @@ On Error GoTo ErrorHandler
 
     Exit Function
 ErrorHandler:
-        Call LogDatabaseError("Error in GetAccountPasswordDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in GetAccountPasswordDatabase: " & AccountName & ". " & Err.Number & " - " & Err.description)
 End Function
+Public Function GetUserPasswordDatabase(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 10/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim query As String
 
+    Call Database_Connect
+
+    query = "SELECT password FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
+
+    Set Database_RecordSet = Database_Connection.Execute(query)
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        GetUserPasswordDatabase = vbNullString
+        Exit Function
+    End If
+
+    GetUserPasswordDatabase = Database_RecordSet!Password
+    Set Database_RecordSet = Nothing
+    Call Database_Close
+
+    Exit Function
+ErrorHandler:
+        Call LogDatabaseError("Error in GetUserPasswordDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Function
 Public Function GetUserEmailDatabase(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
@@ -1119,7 +1174,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT username FROM account WHERE id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT username FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1150,7 +1205,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE account SET "
     query = query & "password = '" & Password & "', "
     query = query & "salt = '" & Salt & "' "
-    query = query & "WHERE account_id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = query & "WHERE account_id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
 
@@ -1173,7 +1228,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE account SET "
     query = query & "username = '" & Email & "', """
-    query = query & "WHERE account_id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = query & "WHERE account_id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
 
@@ -1195,7 +1250,7 @@ On Error GoTo ErrorHandler
     Call Database_Connect
 
     query = "INSERT INTO punishment SET "
-    query = query & "user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "'), "
+    query = query & "user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "'), "
     query = query & "number = " & Number & ", "
     query = query & "reason = '" & Reason & "';"
 
@@ -1220,7 +1275,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE punishment SET "
     query = query & "reason = '" & Reason & "' "
-    query = query & "WHERE number = " & Number & " AND user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = query & "WHERE number = " & Number & " AND user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Database_Connection.Execute (query)
 
@@ -1257,7 +1312,7 @@ On Error GoTo ErrorHandler
     query = query & "nivel_ingreso = NULL, "
     query = query & "matados_ingreso = NULL, "
     query = query & "siguiente_recompensa = NULL "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1281,7 +1336,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE user SET "
     query = query & "pertenece_consejo_real = FALSE, "
     query = query & "pertenece_consejo_caos = FALSE "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1305,7 +1360,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE user SET "
     query = query & "pertenece_real = FALSE, "
     query = query & "pertenece_caos = FALSE "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1329,7 +1384,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE user SET "
     query = query & "pertenece_caos = FALSE, "
     query = query & "reenlistadas = 200 "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1353,7 +1408,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE user SET "
     query = query & "pertenece_real = FALSE, "
     query = query & "reenlistadas = 200 "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1376,7 +1431,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "is_logged = " & IIf(Logged = 1, "TRUE", "FALSE") & " "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1397,7 +1452,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT last_ip FROM account WHERE id = (SELECT account_id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT last_ip FROM account WHERE id = (SELECT account_id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1426,7 +1481,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT number, value FROM skillpoint WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "');"
+    query = "SELECT number, value FROM skillpoint WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "');"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1458,7 +1513,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT free_skillpoints FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT free_skillpoints FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1488,7 +1543,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "counter_training = " & trainingTime & " "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1509,7 +1564,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT counter_training FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT counter_training FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1537,7 +1592,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT pertenece_real FROM user WHERE name = '" & UCase$(UserName) & "' AND deleted = FALSE;"
+    query = "SELECT pertenece_real FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "' AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1566,7 +1621,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT pertenece_caos FROM user WHERE name = '" & UCase$(UserName) & "' AND deleted = FALSE;"
+    query = "SELECT pertenece_caos FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "' AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1595,7 +1650,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT level FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT level FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1624,7 +1679,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT rep_average FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT rep_average FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1653,7 +1708,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT reenlistadas FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT reenlistadas FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1684,7 +1739,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "reenlistadas = " & Reenlists & " "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -1710,7 +1765,7 @@ On Error GoTo ErrorHandler
 
         Call Database_Connect
 
-        query = "SELECT level, exp. elu, min_sta, max_sta, min_hp, max_hp, min_man, max_man, min_hit, max_hit, gold FROM user WHERE name = '" & UCase$(UserName) & "';"
+        query = "SELECT level, exp. elu, min_sta, max_sta, min_hp, max_hp, min_man, max_man, min_hit, max_hit, gold FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1749,7 +1804,7 @@ On Error GoTo ErrorHandler
 
         Call Database_Connect
 
-        query = "SELECT killed_npcs, killed_users, ciudadanos_matados, criminales_matados, class_id, genre_id, race_id FROM user WHERE name = '" & UCase$(UserName) & "';"
+        query = "SELECT killed_npcs, killed_users, ciudadanos_matados, criminales_matados, class_id, genre_id, race_id FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1786,7 +1841,7 @@ On Error GoTo ErrorHandler
     Else
         Call Database_Connect
 
-        query = "SELECT bank_gold FROM user WHERE name = '" & UCase$(UserName) & "';"
+        query = "SELECT bank_gold FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1819,7 +1874,7 @@ On Error GoTo ErrorHandler
     Else
         Call Database_Connect
 
-        query = "SELECT number, item_id, amount FROM inventory_item WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "')"
+        query = "SELECT number, item_id, amount FROM inventory_item WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "')"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1855,7 +1910,7 @@ On Error GoTo ErrorHandler
     Else
         Call Database_Connect
 
-        query = "SELECT number, item_id, amount FROM bank_item WHERE user_id = (SELECT id from user WHERE name = '" & UCase$(UserName) & "')"
+        query = "SELECT number, item_id, amount FROM bank_item WHERE user_id = (SELECT id from user WHERE UPPER(name) = '" & UCase$(UserName) & "')"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1891,7 +1946,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT race_id, class_id, genre_id, level, gold, bank_gold, rep_average, guild_requests_history, guild_index, guild_member_history, pertenece_real, pertenece_caos, ciudadanos_matados, criminales_matados FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT race_id, class_id, genre_id, level, gold, bank_gold, rep_average, guild_requests_history, guild_index, guild_member_history, pertenece_real, pertenece_caos, ciudadanos_matados, criminales_matados FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1935,7 +1990,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT guild_member_history FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT guild_member_history FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1964,7 +2019,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT guild_aspirant_index FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT guild_aspirant_index FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -1993,7 +2048,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT guild_rejected_because FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT guild_rejected_because FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -2002,7 +2057,7 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildRejectionReasonDatabase = Database_RecordSet!guild_rejected_because
+    GetUserGuildRejectionReasonDatabase = SanitizeNullValue(Database_RecordSet!guild_rejected_because, vbNullString)
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -2022,7 +2077,7 @@ On Error GoTo ErrorHandler
 
     Call Database_Connect
 
-    query = "SELECT guild_requests_history FROM user WHERE name = '" & UCase$(UserName) & "';"
+    query = "SELECT guild_requests_history FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
@@ -2053,7 +2108,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "guild_rejected_because = '" & Reason & "' "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2076,7 +2131,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "guild_index = " & GuildIndex & " "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2099,7 +2154,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "guild_aspirant_index = " & AspirantIndex & " "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2122,7 +2177,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "guild_member_history = '" & guilds & "' "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2145,7 +2200,7 @@ On Error GoTo ErrorHandler
 
     query = "UPDATE user SET "
     query = query & "guild_requests_history = '" & Pedidos & "' "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2155,7 +2210,6 @@ On Error GoTo ErrorHandler
 ErrorHandler:
         Call LogDatabaseError("Error in SaveUserGuildPedidosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
-
 
 Public Sub SaveNewAccountDatabase(ByVal UserName As String, ByVal Password As String, ByVal Salt As String, ByVal Hash As String)
 '***************************************************
@@ -2168,13 +2222,12 @@ On Error GoTo ErrorHandler
     Call Database_Connect
 
     query = "INSERT INTO account SET "
-    query = query & "username = '" & UserName & "', "
+    query = query & "username = '" & UCase$(UserName) & "', "
     query = query & "password = '" & Password & "', "
     query = query & "salt = '" & Salt & "', "
     query = query & "hash = '" & Hash & "', "
     query = query & "date_created = NOW(), "
-    query = query & "date_last_login = NOW() "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "date_last_login = NOW();"
 
     Database_Connection.Execute (query)
 
@@ -2182,7 +2235,7 @@ On Error GoTo ErrorHandler
 
     Exit Sub
 ErrorHandler:
-        Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in SaveNewAccountDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Sub SaveAccountLastLoginDatabase(ByVal UserName As String, ByVal UserIP As String)
@@ -2198,7 +2251,7 @@ On Error GoTo ErrorHandler
     query = "UPDATE account SET "
     query = query & "date_last_login = NOW(), "
     query = query & "last_ip = '" & UserIP & "' "
-    query = query & "WHERE name = '" & UCase$(UserName) & "';"
+    query = query & "WHERE UPPER(username) = '" & UCase$(UserName) & "';"
 
     Database_Connection.Execute (query)
 
@@ -2219,7 +2272,7 @@ On Error GoTo ErrorHandler
     Dim AccountId As Integer
     Dim AccountHash As String
     Dim NumberOfCharacters As Byte
-    Dim Characters() As String
+    Dim Characters() As AccountUser
 
     Call Database_Connect
 
@@ -2242,18 +2295,26 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Nothing
 
     'Now the characters
-    query = "SELECT name FROM user "
+    query = "SELECT name, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map FROM user "
     query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     NumberOfCharacters = 0
     If Not Database_RecordSet.RecordCount = 0 Then
-        ReDim Characters(1 To Database_RecordSet.RecordCount) As String
+        ReDim Characters(1 To Database_RecordSet.RecordCount) As AccountUser
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
             NumberOfCharacters = NumberOfCharacters + 1
-            Characters(NumberOfCharacters) = Database_RecordSet!Name
+            Characters(NumberOfCharacters).Name = Database_RecordSet!Name
+            Characters(NumberOfCharacters).Body = Database_RecordSet!body_id
+            Characters(NumberOfCharacters).Head = Database_RecordSet!head_id
+            Characters(NumberOfCharacters).Weapon = Database_RecordSet!weapon_id
+            Characters(NumberOfCharacters).Shield = Database_RecordSet!shield_id
+            Characters(NumberOfCharacters).Helmet = Database_RecordSet!helmet_id
+            Characters(NumberOfCharacters).Class = Database_RecordSet!class_id
+            Characters(NumberOfCharacters).Race = Database_RecordSet!race_id
+            Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
 
             Database_RecordSet.MoveNext
         Wend
@@ -2268,3 +2329,7 @@ On Error GoTo ErrorHandler
 ErrorHandler:
         Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
+
+Public Function SanitizeNullValue(ByVal value As Variant, ByVal defaultValue As Variant)
+    SanitizeNullValue = IIf(IsNull(value), defaultValue, value)
+End Function

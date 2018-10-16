@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, mapa As Variant
+    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color As Variant
 #End If
 
 ''
@@ -1537,7 +1537,6 @@ On Error GoTo ErrHandler
     Dim homeland As eCiudad
     Dim Class As eClass
     Dim Head As Integer
-    Dim mail As String
     
     If PuedeCrearPersonajes = 0 Then
         Call WriteErrorMsg(UserIndex, "La creación de personajes en este servidor se ha deshabilitado.")
@@ -1573,13 +1572,12 @@ On Error GoTo ErrHandler
     gender = buffer.ReadByte()
     Class = buffer.ReadByte()
     Head = buffer.ReadInteger
-    mail = buffer.ReadASCIIString()
     homeland = buffer.ReadByte()
         
     If Not VersionOK(version) Then
         Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
     Else
-        Call ConnectNewUser(UserIndex, UserName, AccountHash, race, gender, Class, mail, homeland, Head)
+        Call ConnectNewUser(UserIndex, UserName, AccountHash, race, gender, Class, homeland, Head)
     End If
 
     'If we got here then packet is complete, copy data back to original queue
@@ -6817,7 +6815,7 @@ On Error GoTo ErrHandler
         Call buffer.ReadByte
        
         'Hasheamos el pass junto al Salt
-        oldSalt = GetAccountSalt(UserList(UserIndex).Name)
+        oldSalt = GetUserSalt(UserList(UserIndex).Name)
         oldPass = oSHA256.SHA256(buffer.ReadASCIIString() & oldSalt)
         
         'Asignamos un nuevo Salt y lo hasheamos junto al nuevo pass
@@ -6827,7 +6825,7 @@ On Error GoTo ErrHandler
         If LenB(newPass) = 0 Then
             Call WriteConsoleMsg(UserIndex, "Debes especificar una contraseña nueva, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
         Else
-            storedPass = GetAccountPassword(UserList(UserIndex).Name)
+            storedPass = GetUserPassword(UserList(UserIndex).Name)
             
             If storedPass <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
@@ -13844,8 +13842,8 @@ On Error GoTo ErrHandler
                 If Not PersonajeExiste(UserName) Or Not PersonajeExiste(copyFrom) Then
                     Call WriteConsoleMsg(UserIndex, "Alguno de los PJs no existe " & UserName & "@" & copyFrom, FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Password = GetAccountPassword(copyFrom)
-                    Salt = GetAccountSalt(copyFrom)
+                    Password = GetUserPassword(copyFrom)
+                    Salt = GetUserSalt(copyFrom)
 
                     Call StorePasswordSalt(UserName, Password, Salt)
                     
@@ -18921,6 +18919,9 @@ On Error GoTo ErrHandler
     Dim UserName As String
     Dim Password As String
     Dim version As String
+    
+    UserName = buffer.ReadASCIIString()
+    Password = buffer.ReadASCIIString()
 
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "La cuenta no existe.")
@@ -18928,9 +18929,6 @@ On Error GoTo ErrHandler
         Call CloseSocket(UserIndex)
         Exit Sub
     End If
-
-    UserName = buffer.ReadASCIIString()
-    Password = buffer.ReadASCIIString()
 
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
@@ -19018,7 +19016,7 @@ On Error GoTo 0
         Err.Raise error
 End Sub
 
-Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String, ByVal NumberOfCharacters As Byte, ByRef Characters() As String)
+Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String, ByVal NumberOfCharacters As Byte, ByRef Characters() As AccountUser)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
@@ -19033,7 +19031,15 @@ On Error GoTo ErrHandler
         Call .WriteByte(NumberOfCharacters)
         If NumberOfCharacters > 0 Then
             For i = 1 To NumberOfCharacters
-                Call .WriteASCIIString(Characters(i))
+                Call .WriteASCIIString(Characters(i).Name)
+                Call .WriteInteger(Characters(i).body)
+                Call .WriteInteger(Characters(i).Head)
+                Call .WriteInteger(Characters(i).weapon)
+                Call .WriteInteger(Characters(i).shield)
+                Call .WriteInteger(Characters(i).helmet)
+                Call .WriteByte(Characters(i).Class)
+                Call .WriteByte(Characters(i).race)
+                Call .WriteInteger(Characters(i).Map)
             Next i
         End If
     End With
