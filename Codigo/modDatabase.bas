@@ -97,7 +97,7 @@ On Error GoTo ErrorHandler
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -106,8 +106,8 @@ On Error GoTo ErrorHandler
         query = query & "pos_map = " & .Pos.Map & ", "
         query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
-        query = query & "body_id = " & .Char.body & ", "
-        query = query & "head_id = " & .Char.body & ", "
+        query = query & "body_id = " & .Char.Body & ", "
+        query = query & "head_id = " & .Char.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
         query = query & "shield_id = " & .Char.ShieldAnim & ", "
@@ -237,7 +237,7 @@ On Error GoTo ErrorHandler
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -249,7 +249,7 @@ On Error GoTo ErrorHandler
         query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
-        query = query & "body_id = " & .Char.body & ", "
+        query = query & "body_id = " & .Char.Body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
@@ -481,7 +481,7 @@ On Error GoTo ErrorHandler
         .Stats.ELU = Database_RecordSet!ELU
         .Genero = Database_RecordSet!genre_id
         .raza = Database_RecordSet!race_id
-        .clase = Database_RecordSet!class_id
+        .Clase = Database_RecordSet!class_id
         .Hogar = Database_RecordSet!home_id
         .desc = Database_RecordSet!description
         .Stats.GLD = Database_RecordSet!gold
@@ -493,7 +493,7 @@ On Error GoTo ErrorHandler
         .Pos.X = Database_RecordSet!pos_x
         .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
-        .OrigChar.body = Database_RecordSet!body_id
+        .OrigChar.Body = Database_RecordSet!body_id
         .OrigChar.Head = Database_RecordSet!head_id
         .OrigChar.WeaponAnim = Database_RecordSet!weapon_id
         .OrigChar.CascoAnim = Database_RecordSet!helmet_id
@@ -2272,7 +2272,7 @@ On Error GoTo ErrorHandler
     Dim AccountId As Integer
     Dim AccountHash As String
     Dim NumberOfCharacters As Byte
-    Dim Characters() As String
+    Dim Characters() As AccountUser
 
     Call Database_Connect
 
@@ -2295,18 +2295,26 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Nothing
 
     'Now the characters
-    query = "SELECT name FROM user "
+    query = "SELECT name, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map FROM user "
     query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     NumberOfCharacters = 0
     If Not Database_RecordSet.RecordCount = 0 Then
-        ReDim Characters(1 To Database_RecordSet.RecordCount) As String
+        ReDim Characters(1 To Database_RecordSet.RecordCount) As AccountUser
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
             NumberOfCharacters = NumberOfCharacters + 1
-            Characters(NumberOfCharacters) = Database_RecordSet!Name
+            Characters(NumberOfCharacters).Name = Database_RecordSet!Name
+            Characters(NumberOfCharacters).Body = Database_RecordSet!body_id
+            Characters(NumberOfCharacters).Head = Database_RecordSet!head_id
+            Characters(NumberOfCharacters).Weapon = Database_RecordSet!weapon_id
+            Characters(NumberOfCharacters).Shield = Database_RecordSet!shield_id
+            Characters(NumberOfCharacters).Helmet = Database_RecordSet!helmet_id
+            Characters(NumberOfCharacters).Class = Database_RecordSet!class_id
+            Characters(NumberOfCharacters).Race = Database_RecordSet!race_id
+            Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
 
             Database_RecordSet.MoveNext
         Wend

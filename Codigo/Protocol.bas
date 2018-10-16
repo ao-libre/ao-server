@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, n, mapa As Variant
+    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color As Variant
 #End If
 
 ''
@@ -19016,7 +19016,7 @@ On Error GoTo 0
         Err.Raise error
 End Sub
 
-Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String, ByVal NumberOfCharacters As Byte, ByRef Characters() As String)
+Public Sub WriteUserAccountLogged(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String, ByVal NumberOfCharacters As Byte, ByRef Characters() As AccountUser)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
@@ -19031,7 +19031,15 @@ On Error GoTo ErrHandler
         Call .WriteByte(NumberOfCharacters)
         If NumberOfCharacters > 0 Then
             For i = 1 To NumberOfCharacters
-                Call .WriteASCIIString(Characters(i))
+                Call .WriteASCIIString(Characters(i).Name)
+                Call .WriteInteger(Characters(i).body)
+                Call .WriteInteger(Characters(i).Head)
+                Call .WriteInteger(Characters(i).weapon)
+                Call .WriteInteger(Characters(i).shield)
+                Call .WriteInteger(Characters(i).helmet)
+                Call .WriteByte(Characters(i).Class)
+                Call .WriteByte(Characters(i).race)
+                Call .WriteInteger(Characters(i).Map)
             Next i
         End If
     End With
