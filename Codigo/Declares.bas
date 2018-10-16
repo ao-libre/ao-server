@@ -29,9 +29,9 @@ Attribute VB_Name = "Declaraciones"
 
 Option Explicit
 
-
-
-
+#If False Then
+    Dim map, x, y, body, clase, race, email As Variant
+#End If
 
 Private Type tCountersServidor
     Limpieza As Integer
@@ -1268,6 +1268,19 @@ End Type
 Public Type tCrafting
     Cantidad As Long
     PorCiclo As Integer
+End Type
+
+'CHOTS | Accounts
+Public Type AccountUser
+    Name As String
+    body As Integer
+    Head As Integer
+    Weapon As Integer
+    Shield As Integer
+    Helmet As Integer
+    Class As Byte
+    race As Byte
+    map As Integer
 End Type
 
 'Tipo de los Usuarios
