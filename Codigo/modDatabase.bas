@@ -1057,6 +1057,7 @@ On Error GoTo ErrorHandler
 ErrorHandler:
         Call LogDatabaseError("Error in GetUserPosDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Function
+
 Public Function GetUserSaltDatabase(ByVal UserName As String) As String
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)

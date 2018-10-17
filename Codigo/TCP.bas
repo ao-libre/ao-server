@@ -639,6 +639,11 @@ End With
 Call ResetFacciones(UserIndex)
 
 Call SaveUser(UserIndex)
+
+'CHOTS | Account in charfile
+If Not Database_Enabled Then
+    Call SaveUserToAccountCharfile(Name, AccountHash)
+End If
   
 'Open User
 Call ConnectUser(UserIndex, Name, AccountHash)
@@ -711,9 +716,7 @@ If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
 End If
 
 If Not Database_Enabled Then
-    'Call SaveAccountLastLoginCharfile(UserName, UserList(UserIndex).ip)
-    'Call LoginAccountCharfile(UserIndex, UserName)
-    'CHOTS | @Todo
+    Call LoginAccountCharfile(UserIndex, UserName)
 Else
     Call SaveAccountLastLoginDatabase(UserName, UserList(UserIndex).ip)
     Call LoginAccountDatabase(UserIndex, UserName)
