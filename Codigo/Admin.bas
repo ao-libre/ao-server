@@ -266,9 +266,7 @@ Public Function CuentaExiste(ByVal UserName As String) As Boolean
 'Last Modification: 12/10/2018
 '***************************************************
     If Not Database_Enabled Then
-        'CuentaExiste = CuentaExisteCharfile(UserName)
-        'CHOTS | @TODO
-        CuentaExiste = False
+        CuentaExiste = CuentaExisteCharfile(UserName)
     Else
         CuentaExiste = CuentaExisteDatabase(UserName)
     End If
@@ -277,12 +275,10 @@ End Function
 Public Function PersonajePerteneceCuenta(ByVal UserName As String, ByVal AccountHash As String) As Boolean
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
-'Last Modification: 12/10/2018
+'Last Modification: 18/10/2018
 '***************************************************
     If Not Database_Enabled Then
-        'PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
-        'CHOTS | @todo
-        PersonajePerteneceCuenta = False
+        PersonajePerteneceCuenta = PersonajePerteneceCuentaCharfile(UserName, AccountHash)
     Else
         PersonajePerteneceCuenta = PersonajePerteneceCuentaDatabase(UserName, AccountHash)
     End If
