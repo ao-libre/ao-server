@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa, Email As Variant
+    Dim X, Y, N, Map, Mapa, Email, value As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -2784,8 +2784,8 @@ Public Function GetUserSaltCharfile(ByVal UserName As String) As String
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
-    Dim AccountHash as String
-    Dim AccountName as String
+    Dim AccountHash As String
+    Dim AccountName As String
 
     AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
     AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
@@ -2798,8 +2798,8 @@ Public Function GetUserPasswordCharfile(ByVal UserName As String) As String
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
-    Dim AccountHash as String
-    Dim AccountName as String
+    Dim AccountHash As String
+    Dim AccountName As String
 
     AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
     AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
@@ -2813,7 +2813,7 @@ Public Function GetAccountSaltCharfile(ByVal UserName As String) As String
 'Last Modification: 18/10/2018
 '***************************************************
 
-    GetUserSaltCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Salt")
+    GetAccountSaltCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Salt")
 End Function
 
 Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
@@ -2839,8 +2839,8 @@ Sub StorePasswordSaltCharfile(ByVal UserName As String, ByVal Password As String
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
 '***************************************************
-    Dim AccountHash as String
-    Dim AccountName as String
+    Dim AccountHash As String
+    Dim AccountName As String
 
     AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
     AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
@@ -3217,13 +3217,13 @@ On Error GoTo ErrorHandler
     AccountFile = AccountPath & UCase$(UserName) & ".acc"
 
     With Manager
-        .Initialize (AccountFile)
-        .ChangeValue ("INIT", "Password", Password)
-        .ChangeValue ("INIT", "Salt", Salt)
-        .ChangeValue ("INIT", "Hash", Hash)
-        .ChangeValue ("INIT", "FechaCreado", Date & " " & time)
 
-        .DumpFile (AccountFile)
+        Call .ChangeValue("INIT", "Password", Password)
+        Call .ChangeValue("INIT", "Salt", Salt)
+        Call .ChangeValue("INIT", "Hash", Hash)
+        Call .ChangeValue("INIT", "FechaCreado", Date & " " & time)
+
+        Call .DumpFile(AccountFile)
     End With
 
     Set Manager = Nothing
@@ -3233,9 +3233,8 @@ On Error GoTo ErrorHandler
     AccountFile = AccountPath & Hash & ".ach"
 
     With Manager
-        .Initialize (AccountFile)
-        .ChangeValue ("INIT", "UserName", UCase$(UserName))
-        .ChangeValue ("INIT", "CantidadPersonajes", 0)
+        Call .ChangeValue("INIT", "UserName", UCase$(UserName))
+        Call .ChangeValue("INIT", "CantidadPersonajes", 0)
 
         .DumpFile (AccountFile)
     End With
@@ -3261,7 +3260,7 @@ Public Function PersonajePerteneceCuentaCharfile(ByVal UserName As String, ByVal
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 18/10/2018
 '***************************************************
-    Dim CharfileHash as String
+    Dim CharfileHash As String
     CharfileHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
 
     PersonajePerteneceCuentaCharfile = (AccountHash = CharfileHash)
@@ -3272,8 +3271,8 @@ Public Sub SaveUserToAccountCharfile(ByVal UserName As String, ByVal AccountHash
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 18/10/2018
 '***************************************************
-    Dim CantidadPersonajes as Byte
-    Dim AccountCharfile as String
+    Dim CantidadPersonajes As Byte
+    Dim AccountCharfile As String
     AccountCharfile = AccountPath & AccountHash & ".ach"
 
     If FileExist(AccountCharfile) Then
@@ -3301,15 +3300,15 @@ On Error GoTo ErrorHandler
     Dim AccountHash As String
     Dim NumberOfCharacters As Byte
     Dim Characters() As AccountUser
-    Dim CurrentCharacter as String
+    Dim CurrentCharacter As String
 
-    AccountHash = GetVar(AccountPath & UserName & ".acc", "INIT", "AccountHash")
-    NumberOfCharacters = GetVar(AccountPath & AccountHash & ".ach", "INIT", "CantidadPersonajes")
+    AccountHash = GetVar(AccountPath & UCase$(UserName) & ".acc", "INIT", "Hash")
+    NumberOfCharacters = val(GetVar(AccountPath & AccountHash & ".ach", "INIT", "CantidadPersonajes"))
 
     If NumberOfCharacters > 0 Then
         ReDim Characters(1 To NumberOfCharacters) As AccountUser
-        For i = 1 to NumberOfCharacters
-            CurrentCharacter =  GetVar(AccountPath & AccountHash & ".ach", "PERSONAJES", "Personaje" & i)
+        For i = 1 To NumberOfCharacters
+            CurrentCharacter = GetVar(AccountPath & AccountHash & ".ach", "PERSONAJES", "Personaje" & i)
             Characters(i).Name = CurrentCharacter
             Characters(i).body = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Body"))
             Characters(i).Head = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Head"))
@@ -3318,7 +3317,7 @@ On Error GoTo ErrorHandler
             Characters(i).helmet = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Casco"))
             Characters(i).Class = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Clase"))
             Characters(i).race = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Raza"))
-            Characters(i).Map = CInt(ReadField(1, val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position")), 45)
+            Characters(i).Map = CInt(ReadField(1, GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position"), 45))
             Characters(i).level = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "ELV"))
             Characters(i).gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
         Next i
@@ -3327,5 +3326,5 @@ On Error GoTo ErrorHandler
 
     Exit Sub
 ErrorHandler:
-        Call LogDatabaseError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
