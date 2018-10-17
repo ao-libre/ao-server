@@ -112,6 +112,8 @@ On Error GoTo ErrorHandler
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
         query = query & "shield_id = " & .Char.ShieldAnim & ", "
         query = query & "items_amount = " & .Invent.NroItems & ", "
+        query = query & "slot_armour = " & .Invent.ArmourEqpSlot & ", "
+        query = query & "slot_weapon = " & .Invent.WeaponEqpSlot & ", "
         query = query & "min_hp = " & .Stats.MinHp & ", "
         query = query & "max_hp = " & .Stats.MaxHp & ", "
         query = query & "min_man = " & .Stats.MinMAN & ", "
