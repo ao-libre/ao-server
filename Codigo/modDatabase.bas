@@ -104,7 +104,7 @@ On Error GoTo ErrorHandler
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .Char.Head & ", "
@@ -246,7 +246,7 @@ On Error GoTo ErrorHandler
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pet_amount = " & .NroMascotas & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
         query = query & "body_id = " & .Char.body & ", "
@@ -490,7 +490,7 @@ On Error GoTo ErrorHandler
         .Counters.AsignedSkills = Database_RecordSet!assigned_skillpoints
         .NroMascotas = Database_RecordSet!pet_amount
         .Pos.Map = Database_RecordSet!pos_map
-        .Pos.x = Database_RecordSet!pos_x
+        .Pos.X = Database_RecordSet!pos_x
         .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
         .OrigChar.body = Database_RecordSet!body_id
@@ -2295,7 +2295,7 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Nothing
 
     'Now the characters
-    query = "SELECT name, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map FROM user "
+    query = "SELECT name, level, gold, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map FROM user "
     query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
@@ -2315,6 +2315,8 @@ On Error GoTo ErrorHandler
             Characters(NumberOfCharacters).Class = Database_RecordSet!class_id
             Characters(NumberOfCharacters).race = Database_RecordSet!race_id
             Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
+            Characters(NumberOfCharacters).level = Database_RecordSet!level
+            Characters(NumberOfCharacters).gold = Database_RecordSet!gold
 
             Database_RecordSet.MoveNext
         Wend
