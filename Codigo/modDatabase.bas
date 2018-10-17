@@ -97,16 +97,16 @@ On Error GoTo ErrorHandler
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .Clase & ", "
+        query = query & "class_id = " & .clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.X & ", "
+        query = query & "pos_x = " & .Pos.x & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
-        query = query & "body_id = " & .Char.Body & ", "
+        query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .Char.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
@@ -136,7 +136,7 @@ On Error GoTo ErrorHandler
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
             UserId = 1
         End If
-        UserId = val(Database_RecordSet.Fields(0).value)
+        UserId = val(Database_RecordSet.Fields(0).Value)
         Set Database_RecordSet = Nothing
 
         .ID = UserId
@@ -237,7 +237,7 @@ On Error GoTo ErrorHandler
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .Clase & ", "
+        query = query & "class_id = " & .clase & ", "
         query = query & "home_id = " & .Hogar & ", "
         query = query & "description = '" & .desc & "', "
         query = query & "gold = " & .Stats.GLD & ", "
@@ -246,10 +246,10 @@ On Error GoTo ErrorHandler
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pet_amount = " & .NroMascotas & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.X & ", "
+        query = query & "pos_x = " & .Pos.x & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
-        query = query & "body_id = " & .Char.Body & ", "
+        query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .OrigChar.Head & ", "
         query = query & "weapon_id = " & .Char.WeaponAnim & ", "
         query = query & "helmet_id = " & .Char.CascoAnim & ", "
@@ -481,7 +481,7 @@ On Error GoTo ErrorHandler
         .Stats.ELU = Database_RecordSet!ELU
         .Genero = Database_RecordSet!genre_id
         .raza = Database_RecordSet!race_id
-        .Clase = Database_RecordSet!class_id
+        .clase = Database_RecordSet!class_id
         .Hogar = Database_RecordSet!home_id
         .desc = Database_RecordSet!description
         .Stats.GLD = Database_RecordSet!gold
@@ -490,10 +490,10 @@ On Error GoTo ErrorHandler
         .Counters.AsignedSkills = Database_RecordSet!assigned_skillpoints
         .NroMascotas = Database_RecordSet!pet_amount
         .Pos.Map = Database_RecordSet!pos_map
-        .Pos.X = Database_RecordSet!pos_x
+        .Pos.x = Database_RecordSet!pos_x
         .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
-        .OrigChar.Body = Database_RecordSet!body_id
+        .OrigChar.body = Database_RecordSet!body_id
         .OrigChar.Head = Database_RecordSet!head_id
         .OrigChar.WeaponAnim = Database_RecordSet!weapon_id
         .OrigChar.CascoAnim = Database_RecordSet!helmet_id
@@ -575,7 +575,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .Stats.UserAtributos(Database_RecordSet!Number) = Database_RecordSet!value
+                .Stats.UserAtributos(Database_RecordSet!Number) = Database_RecordSet!Value
                 .Stats.UserAtributosBackUP(Database_RecordSet!Number) = .Stats.UserAtributos(Database_RecordSet!Number)
 
                 Database_RecordSet.MoveNext
@@ -654,7 +654,7 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                .Stats.UserSkills(Database_RecordSet!Number) = Database_RecordSet!value
+                .Stats.UserSkills(Database_RecordSet!Number) = Database_RecordSet!Value
                 .Stats.ExpSkills(Database_RecordSet!Number) = Database_RecordSet!Exp
                 .Stats.EluSkills(Database_RecordSet!Number) = Database_RecordSet!ELU
 
@@ -1488,7 +1488,7 @@ On Error GoTo ErrorHandler
     If Not Database_RecordSet.RecordCount = 0 Then
         Database_RecordSet.MoveFirst
         While Not Database_RecordSet.EOF
-            GetUserSkillsDatabase = GetUserSkillsDatabase & "CHAR>" & SkillsNames(Database_RecordSet!Number) & " = " & Database_RecordSet!value & vbCrLf
+            GetUserSkillsDatabase = GetUserSkillsDatabase & "CHAR>" & SkillsNames(Database_RecordSet!Number) & " = " & Database_RecordSet!Value & vbCrLf
 
             Database_RecordSet.MoveNext
         Wend
@@ -2307,13 +2307,13 @@ On Error GoTo ErrorHandler
         While Not Database_RecordSet.EOF
             NumberOfCharacters = NumberOfCharacters + 1
             Characters(NumberOfCharacters).Name = Database_RecordSet!Name
-            Characters(NumberOfCharacters).Body = Database_RecordSet!body_id
+            Characters(NumberOfCharacters).body = Database_RecordSet!body_id
             Characters(NumberOfCharacters).Head = Database_RecordSet!head_id
-            Characters(NumberOfCharacters).Weapon = Database_RecordSet!weapon_id
-            Characters(NumberOfCharacters).Shield = Database_RecordSet!shield_id
-            Characters(NumberOfCharacters).Helmet = Database_RecordSet!helmet_id
+            Characters(NumberOfCharacters).weapon = Database_RecordSet!weapon_id
+            Characters(NumberOfCharacters).shield = Database_RecordSet!shield_id
+            Characters(NumberOfCharacters).helmet = Database_RecordSet!helmet_id
             Characters(NumberOfCharacters).Class = Database_RecordSet!class_id
-            Characters(NumberOfCharacters).Race = Database_RecordSet!race_id
+            Characters(NumberOfCharacters).race = Database_RecordSet!race_id
             Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
 
             Database_RecordSet.MoveNext
@@ -2327,9 +2327,9 @@ On Error GoTo ErrorHandler
 
     Exit Sub
 ErrorHandler:
-        Call LogDatabaseError("Error in SaveAccountLastLoginDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+        Call LogDatabaseError("Error in LoginAccountDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
-Public Function SanitizeNullValue(ByVal value As Variant, ByVal defaultValue As Variant)
-    SanitizeNullValue = IIf(IsNull(value), defaultValue, value)
+Public Function SanitizeNullValue(ByVal Value As Variant, ByVal defaultValue As Variant)
+    SanitizeNullValue = IIf(IsNull(Value), defaultValue, Value)
 End Function
