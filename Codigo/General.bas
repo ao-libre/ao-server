@@ -344,6 +344,7 @@ On Error Resume Next
     IniPath = App.Path & "\"
     DatPath = App.Path & "\Dat\"
     CharPath = App.Path & "\Charfile\"
+    AccountPath = App.Path & "\Account\"
     
     ' Skills by level
     LevelSkill(1).LevelValue = 3
@@ -2110,13 +2111,13 @@ Public Function GetAccountSalt(ByVal AccountName As String) As String
 'Get the user Password Salt
 '***************************************************
 If Not Database_Enabled Then
-    GetAccountSalt = vbNullString
-    'CHOTS | TOdo
+    GetAccountSalt = GetAccountSaltCharfile(AccountName)
 Else
     GetAccountSalt = GetAccountSaltDatabase(AccountName)
 End If
 
 End Function
+
 Public Function GetUserSalt(ByVal UserName As String) As String
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
@@ -2151,8 +2152,7 @@ Public Function GetUserPassword(ByVal UserName As String) As String
 'Get the user Password
 '***************************************************
 If Not Database_Enabled Then
-    GetUserPassword = vbNullString
-    'CHOTS | TODO
+    GetUserPassword = GetUserPasswordCharfile(UserName)
 Else
     GetUserPassword = GetUserPasswordDatabase(UserName)
 End If
@@ -2477,8 +2477,7 @@ Dim Hash As String
 Hash = RandomString(32)
 
 If Not Database_Enabled Then
-    'Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
-    'CHOTS | @Todo
+    Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
 Else
     Call SaveNewAccountDatabase(UserName, Password, Salt, Hash)
 End If
