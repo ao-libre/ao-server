@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "msinet.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
@@ -138,7 +138,7 @@ Function Analizar()
            
     If Not (CheckIfRunningLastVersion = True) Then
         If MsgBox("Tu versión no es la actuál, ¿Deseas ejecutar el actualizador automático?.", vbYesNo) = vbYes Then
-            Call ShellExecute(Me.hwnd, "open", App.Path & "/Autoupdate.exe", "", "", 1)
+            Call ShellExecute(Me.hWnd, "open", App.Path & "/Autoupdate.exe", "", "", 1)
             End
         End If
     End If
@@ -161,6 +161,3 @@ Private Function CheckIfRunningLastVersion() As Boolean
     End If
 End Function
 
-Private Sub Picture1_Click()
-
-End Sub
