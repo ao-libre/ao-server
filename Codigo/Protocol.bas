@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color As Variant
+    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color, value As Variant
 #End If
 
 ''
@@ -19040,6 +19040,8 @@ On Error GoTo ErrHandler
                 Call .WriteByte(Characters(i).Class)
                 Call .WriteByte(Characters(i).race)
                 Call .WriteInteger(Characters(i).Map)
+                Call .WriteByte(Characters(i).level)
+                Call .WriteLong(Characters(i).gold)
             Next i
         End If
     End With

@@ -74,6 +74,7 @@ Class=CSHA256; Codigo\CSHA256.cls
 Module=modDatabase; Codigo\modDatabase.bas
 Module=JSON; Codigo\JSON.bas
 Class=cJSONScript; Codigo\cJSONScript.cls
+Class=cStringBuilder; Codigo\cStringBuilder.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
