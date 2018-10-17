@@ -1587,6 +1587,10 @@ Public IniPath As String
 Public CharPath As String
 
 ''
+'CHOTS | Accounts
+Public AccountPath As String
+
+''
 'Ruta base para los archivos de mapas
 Public MapPath As String
 

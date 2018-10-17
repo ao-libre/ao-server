@@ -1214,6 +1214,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
         .ID = val(UserFile.GetValue("INIT", "ID"))
+        .AccountHash = UserFile.GetValue("INIT", "AccountHash")
         .Genero = UserFile.GetValue("INIT", "Genero")
         .clase = UserFile.GetValue("INIT", "Clase")
         .raza = UserFile.GetValue("INIT", "Raza")
@@ -1883,6 +1884,7 @@ With UserList(UserIndex)
     Call Manager.ChangeValue("CONTACTO", "Email", .Email)
     
     Call Manager.ChangeValue("INIT", "ID", .ID)
+    Call Manager.ChangeValue("INIT", "AccountHash", .AccountHash)
     Call Manager.ChangeValue("INIT", "Genero", .Genero)
     Call Manager.ChangeValue("INIT", "Raza", .raza)
     Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
@@ -2782,8 +2784,36 @@ Public Function GetUserSaltCharfile(ByVal UserName As String) As String
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 20/09/2018
 '***************************************************
+    Dim AccountHash as String
+    Dim AccountName as String
 
-    GetUserSaltCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Salt")
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    GetUserSaltCharfile = GetVar(AccountPath & AccountName & ".acc", "INIT", "Salt")
+End Function
+
+Public Function GetUserPasswordCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'***************************************************
+    Dim AccountHash as String
+    Dim AccountName as String
+
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    GetUserPasswordCharfile = GetVar(AccountPath & AccountName & ".acc", "INIT", "Password")
+End Function
+
+Public Function GetAccountSaltCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+
+    GetUserSaltCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Salt")
 End Function
 
 Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
@@ -2792,7 +2822,7 @@ Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
 'Last Modification: 20/09/2018
 '***************************************************
 
-    GetAccountPasswordCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "Password")
+    GetAccountPasswordCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Password")
 End Function
 
 Public Function GetUserEmailCharfile(ByVal UserName As String) As String
@@ -2809,9 +2839,14 @@ Sub StorePasswordSaltCharfile(ByVal UserName As String, ByVal Password As String
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
 '***************************************************
+    Dim AccountHash as String
+    Dim AccountName as String
 
-    Call WriteVar(CharPath & UserName & ".chr", "INIT", "Password", Password)
-    Call WriteVar(CharPath & UserName & ".chr", "INIT", "Salt", Salt)
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    Call WriteVar(AccountPath & AccountName & ".acc", "INIT", "Password", Password)
+    Call WriteVar(AccountPath & AccountName & ".acc", "INIT", "Salt", Salt)
 End Sub
 
 Sub SaveUserEmailCharfile(ByVal UserName As String, ByVal Email As String)
@@ -3168,3 +3203,129 @@ Sub SendCharacterInfoCharfile(ByVal UserIndex As Integer, ByVal UserName As Stri
     Set UserFile = Nothing
 End Sub
 
+Public Sub SaveNewAccountCharfile(ByVal UserName As String, ByVal Password As String, ByVal Salt As String, ByVal Hash As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim Manager As clsIniManager
+    Dim AccountFile As String
+
+    'CHOTS | First the account itself
+    Set Manager = New clsIniManager
+    AccountFile = AccountPath & UCase$(UserName) & ".acc"
+
+    With Manager
+        .Initialize (AccountFile)
+        .ChangeValue ("INIT", "Password", Password)
+        .ChangeValue ("INIT", "Salt", Salt)
+        .ChangeValue ("INIT", "Hash", Hash)
+        .ChangeValue ("INIT", "FechaCreado", Date & " " & time)
+
+        .DumpFile (AccountFile)
+    End With
+
+    Set Manager = Nothing
+
+    'CHOTS | Now the account char files
+    Set Manager = New clsIniManager
+    AccountFile = AccountPath & Hash & ".ach"
+
+    With Manager
+        .Initialize (AccountFile)
+        .ChangeValue ("INIT", "UserName", UCase$(UserName))
+        .ChangeValue ("INIT", "CantidadPersonajes", 0)
+
+        .DumpFile (AccountFile)
+    End With
+
+    Set Manager = Nothing
+
+    Exit Sub
+ErrorHandler:
+        Call LogError("Error in SaveNewAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
+
+Public Function CuentaExisteCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+
+    CuentaExisteCharfile = FileExist(AccountPath & UCase$(UserName) & ".acc", vbNormal)
+End Function
+
+Public Function PersonajePerteneceCuentaCharfile(ByVal UserName As String, ByVal AccountHash As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+    Dim CharfileHash as String
+    CharfileHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+
+    PersonajePerteneceCuentaCharfile = (AccountHash = CharfileHash)
+End Function
+
+Public Sub SaveUserToAccountCharfile(ByVal UserName As String, ByVal AccountHash As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+    Dim CantidadPersonajes as Byte
+    Dim AccountCharfile as String
+    AccountCharfile = AccountPath & AccountHash & ".ach"
+
+    If FileExist(AccountCharfile) Then
+        CantidadPersonajes = val(GetVar(AccountCharfile, "INIT", "CantidadPersonajes"))
+        CantidadPersonajes = CantidadPersonajes + 1
+
+        If CantidadPersonajes <= 10 Then
+            Call WriteVar(AccountCharfile, "INIT", "CantidadPersonajes", CantidadPersonajes)
+            Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & CantidadPersonajes, UserName)
+        Else
+            Call LogError("Error in SaveUserToAccountCharfile. Se intento crear mas de 10 personajes. Username: " & UserName & ". Hash: " & AccountHash)
+        End If
+    Else
+        Call LogError("Error in SaveUserToAccountCharfile. Cuenta inexistente de " & UserName & ". Hash: " & AccountHash)
+    End If
+End Sub
+
+Public Sub LoginAccountCharfile(ByVal UserIndex As Integer, ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim i As Byte
+    Dim AccountHash As String
+    Dim NumberOfCharacters As Byte
+    Dim Characters() As AccountUser
+    Dim CurrentCharacter as String
+
+    AccountHash = GetVar(AccountPath & UserName & ".acc", "INIT", "AccountHash")
+    NumberOfCharacters = GetVar(AccountPath & AccountHash & ".ach", "INIT", "CantidadPersonajes")
+
+    If NumberOfCharacters > 0 Then
+        ReDim Characters(1 To NumberOfCharacters) As AccountUser
+        For i = 1 to NumberOfCharacters
+            CurrentCharacter =  GetVar(AccountPath & AccountHash & ".ach", "PERSONAJES", "Personaje" & i)
+            Characters(i).Name = CurrentCharacter
+            Characters(i).body = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Body"))
+            Characters(i).Head = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Head"))
+            Characters(i).weapon = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Arma"))
+            Characters(i).shield = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Escudo"))
+            Characters(i).helmet = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Casco"))
+            Characters(i).Class = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Clase"))
+            Characters(i).race = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Raza"))
+            Characters(i).Map = CInt(ReadField(1, val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position")), 45)
+            Characters(i).level = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "ELV"))
+            Characters(i).gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
+        Next i
+    End If
+    Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
+
+    Exit Sub
+ErrorHandler:
+        Call LogDatabaseError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
