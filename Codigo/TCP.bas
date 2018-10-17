@@ -30,7 +30,7 @@ Attribute VB_Name = "TCP"
 Option Explicit
 
 #If False Then
-    Dim x, y, n, mapa, Email As Variant
+    Dim x, y, n, mapa, Email, length As Variant
 #End If
 
 #If UsarQueSocket = 0 Then
@@ -2055,7 +2055,7 @@ Function RandomString(cb As Integer) As String
     Randomize
     Dim rgch As String
     rgch = "abcdefghijklmnopqrstuvwxyz"
-    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$?"
+    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$()-_"
 
     Dim i As Long
     For i = 1 To cb
