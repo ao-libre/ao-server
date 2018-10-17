@@ -29,7 +29,7 @@ Attribute VB_Name = "General"
 
 Option Explicit
 #If False Then
-    Dim x, y, K, n, email As Variant
+    Dim x, y, K, n, email, Obj As Variant
 #End If
 Global LeerNPCs As clsIniManager
 
@@ -1989,6 +1989,7 @@ On Error GoTo ErrorHandler
             .Char.WeaponAnim = NingunArma
             .Char.ShieldAnim = NingunEscudo
             .Char.CascoAnim = NingunCasco
+            .Char.heading = eHeading.SOUTH
         End If
     End With
 
