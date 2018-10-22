@@ -16,15 +16,15 @@ https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_pr
 En este archivo se pueden escribir textos que apareceran a los usuarios al conectarse al servidor.
 
 
-## Preguntas Frecuentes:
+# Preguntas Frecuentes:
 
-* Error - Librerias faltantes (missing .dll)
-* En la carpeta `Librerias` estan todas las librerias necesarias para iniciar el server sin errores, copiar el contenido de la carpeta en `c:/Windows`
+###### Error - Librerias faltantes (missing .dll)
+En la carpeta `Librerias` estan todas las librerias necesarias para iniciar el server sin errores, copiar el contenido de la carpeta en `c:/Windows`
 
 
 ## Autoupdates:
 
-El programa al iniciar comparara la actual version del programa que se encuentra en `server.ini` en el parámetro `Version` con la ultima version que se encuentra en en la ultima version lanzada mediante el [Endpoint Github Releases](https://api.github.com/repos/ao-libre/ao-server/releases/latest). En caso de ser diferente, se ejecuta nuestro programa `ao-autoupdate` para poder hacer el update.
+El programa al iniciar comparara la actual version del programa que se encuentra en `server.ini` en el parámetro `Version` con la ultima version que se encuentra en el [Endpoint Github Releases](https://api.github.com/repos/ao-libre/ao-server/releases/latest). En caso de ser diferente, se ejecuta nuestro programa `ao-autoupdate` para poder hacer el update.
 
 Para mas información sobre este proceso:
 
