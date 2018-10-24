@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa As Variant
+    Dim X, Y, N, Map, Mapa, max, value As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -1640,7 +1640,7 @@ End Sub
 Sub LoadSini()
 '***************************************************
 'Author: Unknown
-'Last Modification: -
+'Last Modification: 24/10/2018
 '
 '***************************************************
 
@@ -1695,6 +1695,9 @@ Sub LoadSini()
     MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
     
     EnTesting = val(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
+    
+    ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
+    MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
     
     'Intervalos
     SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
