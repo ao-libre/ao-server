@@ -1587,7 +1587,7 @@ Public IniPath As String
 Public CharPath As String
 
 ''
-'CHOTS | Accounts
+'Ruta para guardar las cuentas
 Public AccountPath As String
 
 ''
