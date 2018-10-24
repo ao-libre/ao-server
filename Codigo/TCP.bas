@@ -656,30 +656,28 @@ Sub CreateNewAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef
 'Last modified: 12/10/2018
 'Crea una nueva cuenta
 '*************************************************
+    'SHA256
+    Dim Salt As String
+    Dim oSHA256 As CSHA256
+    Set oSHA256 = New CSHA256
 
-'SHA256
-Dim Salt As String
-Dim oSHA256 As CSHA256
-Set oSHA256 = New CSHA256
+    If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
+        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Exit Sub
+    End If
 
-If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
-    Call WriteErrorMsg(UserIndex, "Nombre inválido.")
-    Exit Sub
-End If
+    '¿Existe el personaje?
+    If CuentaExiste(UserName) Then
+        Call WriteErrorMsg(UserIndex, "Ya existe la cuenta.")
+        Exit Sub
+    End If
+        
+    'Aca Guardamos y Hasheamos el password + Salt
+    Salt = RandomString(10)
 
-'¿Existe el personaje?
-If CuentaExiste(UserName) Then
-    Call WriteErrorMsg(UserIndex, "Ya existe la cuenta.")
-    Exit Sub
-End If
-    
-'Aca Guardamos y Hasheamos el password + Salt
-Salt = RandomString(10)
+    Call SaveNewAccount(UserName, oSHA256.SHA256(Password & Salt), Salt)
 
-Call SaveNewAccount(UserName, oSHA256.SHA256(Password & Salt), Salt)
-
-Call ConnectAccount(UserIndex, UserName, Password)
-
+    Call ConnectAccount(UserIndex, UserName, Password)
 End Sub
 
 Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef Password As String)
@@ -688,39 +686,38 @@ Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef P
 'Last modified: 12/10/2018
 'Crea una nueva cuenta
 '*************************************************
+    'SHA256
+    Dim oSHA256 As CSHA256
+    Dim Salt As String
+    Set oSHA256 = New CSHA256
 
-'SHA256
-Dim oSHA256 As CSHA256
-Dim Salt As String
-Set oSHA256 = New CSHA256
+    If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
+        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Exit Sub
+    End If
 
-If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
-    Call WriteErrorMsg(UserIndex, "Nombre inválido.")
-    Exit Sub
-End If
+    '¿Existe el personaje?
+    If Not CuentaExiste(UserName) Then
+        Call WriteErrorMsg(UserIndex, "No existe la cuenta.")
+        Exit Sub
+    End If
+        
+    'Aca Guardamos y Hasheamos el password + Salt
+    '¿Es el passwd valido?
+    Salt = GetAccountSalt(UserName) ' Obtenemos la Salt
+    If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
+        Call WriteErrorMsg(UserIndex, "Password incorrecto.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
 
-'¿Existe el personaje?
-If Not CuentaExiste(UserName) Then
-    Call WriteErrorMsg(UserIndex, "No existe la cuenta.")
-    Exit Sub
-End If
-    
-'Aca Guardamos y Hasheamos el password + Salt
-'¿Es el passwd valido?
-Salt = GetAccountSalt(UserName) ' Obtenemos la Salt
-If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
-    Call WriteErrorMsg(UserIndex, "Password incorrecto.")
-    Call FlushBuffer(UserIndex)
-    Call CloseSocket(UserIndex)
-    Exit Sub
-End If
-
-If Not Database_Enabled Then
-    Call LoginAccountCharfile(UserIndex, UserName)
-Else
-    Call SaveAccountLastLoginDatabase(UserName, UserList(UserIndex).ip)
-    Call LoginAccountDatabase(UserIndex, UserName)
-End If
+    If Not Database_Enabled Then
+        Call LoginAccountCharfile(UserIndex, UserName)
+    Else
+        Call SaveAccountLastLoginDatabase(UserName, UserList(UserIndex).ip)
+        Call LoginAccountDatabase(UserIndex, UserName)
+    End If
 
 End Sub
 
