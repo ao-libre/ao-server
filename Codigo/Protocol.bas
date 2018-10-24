@@ -271,7 +271,7 @@ Private Enum ClientPacketID
     bugReport = 103              '/_BUG
     ChangeDescription = 104      '/DESC
     GuildVote = 105              '/VOTO
-    punishments = 106           '/PENAS
+    Punishments = 106           '/PENAS
     ChangePassword = 107         '/CONTRASEÑA
     Gamble = 108                '/APOSTAR
     InquiryVote = 109            '/ENCUESTA ( with parameters )

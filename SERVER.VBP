@@ -89,7 +89,8 @@ MinorVer=13
 RevisionVer=0
 AutoIncrementVer=0
 ServerSupportFiles=0
-VersionCompanyName="M"
+VersionComments="http://www.ArgentumOnline.org"
+VersionCompanyName="http://www.ArgentumOnline.org"
 VersionLegalCopyright="Argentum Online is copyright of Pablo Ignacio Marquez"
 VersionProductName="Argentum Server"
 CondComp="UsarQueSocket = 1 : ConUpTime = 1"
