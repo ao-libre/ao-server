@@ -30,8 +30,10 @@ Attribute VB_Name = "Declaraciones"
 Option Explicit
 
 #If False Then
-    Dim map, x, y, body, clase, race, email, Obj, length As Variant
+    Dim length, Obj As Variant
 #End If
+
+
 
 Private Type tCountersServidor
     Limpieza As Integer
@@ -216,8 +218,6 @@ Public Enum FXIDs
     FXMEDITARXGRANDE = 16
     FXMEDITARXXGRANDE = 34
 End Enum
-
-Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
 
 ''
 ' TRIGGERS
@@ -1953,5 +1953,9 @@ Public Enum e_SoundIndex
     MUERTE_HOMBRE_AGUA = 212
 End Enum
 
+'SERVER INI
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
+
+Public ContadorAntiPiquete As Integer
+Public MinutosCarcelPiquete As Integer
