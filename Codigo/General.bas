@@ -29,6 +29,10 @@ Attribute VB_Name = "General"
 
 Option Explicit
 
+#If False Then
+    Dim X, Y, Map, k, ErrHandler, Obj, index, N As Variant
+#End If
+
 Global LeerNPCs As clsIniManager
 
 Sub DarCuerpoDesnudo(ByVal UserIndex As Integer, Optional ByVal Mimetizado As Boolean = False)
@@ -1767,9 +1771,9 @@ On Error GoTo ErrHandler
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
                                 Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                 
-                                If .Counters.PiqueteC >= 5 Then
+                                If .Counters.PiqueteC >= ContadorAntiPiquete Then
                                     .Counters.PiqueteC = 0
-                                    Call Encarcelar(i, TIEMPO_CARCEL_PIQUETE)
+                                    Call Encarcelar(i, MinutosCarcelPiquete)
                                 End If
                                 
                                 Call FlushBuffer(i)
