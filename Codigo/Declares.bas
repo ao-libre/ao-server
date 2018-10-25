@@ -1956,6 +1956,4 @@ End Enum
 'SERVER INI
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
-
-Public ContadorAntiPiquete As Integer
-Public MinutosCarcelPiquete As Integer
+Public OficioMultiplier As Integer
