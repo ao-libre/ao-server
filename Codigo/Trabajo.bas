@@ -1483,19 +1483,21 @@ End Sub
 Public Sub DoPescar(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 28/05/2010
+'Last Modification: 26/10/2018
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
+'26/10/2018: CHOTS - Multiplicador de oficios
 '***************************************************
 On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
-Dim CantidadItems As Integer
 Dim Skill As Integer
+Dim MaxItems As Integer
+Dim CantidadItems As Integer
 
 With UserList(UserIndex)
     If .clase = eClass.Worker Then
@@ -1503,7 +1505,6 @@ With UserList(UserIndex)
     Else
         Call QuitarSta(UserIndex, EsfuerzoPescarGeneral)
     End If
-    
     
     Skill = .Stats.UserSkills(eSkill.Pesca)
     Suerte = Int(-0.00125 * Skill * Skill - 0.3 * Skill + 49)
@@ -1514,13 +1515,16 @@ With UserList(UserIndex)
         Dim MiObj As Obj
         
         If .clase = eClass.Worker Then
-            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
+            MaxItems = MaxItemsExtraibles(.Stats.ELV)
             
-            MiObj.Amount = RandomNumber(1, CantidadItems)
+            CantidadItems = RandomNumber(1, MaxItems)
         Else
-            MiObj.Amount = 1
+            CantidadItems = 1
         End If
-        
+
+        CantidadItems = CantidadItems * OficioMultiplier
+
+        MiObj.Amount = CantidadItems
         MiObj.ObjIndex = Pescado
         
         If Not MeterItemEnInventario(UserIndex, MiObj) Then
@@ -1559,8 +1563,8 @@ End Sub
 Public Sub DoPescarRed(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 26/10/2018
+'26/10/2018: CHOTS - Multiplicador de oficios
 '***************************************************
 On Error GoTo ErrHandler
 
@@ -1568,8 +1572,9 @@ On Error GoTo ErrHandler
     Dim Suerte As Integer
     Dim res As Integer
     Dim EsPescador As Boolean
+    Dim MaxItems As Integer
     Dim CantidadItems As Integer
-    
+
     With UserList(UserIndex)
     
         If .clase = eClass.Worker Then
@@ -1595,12 +1600,15 @@ On Error GoTo ErrHandler
                 Dim MiObj As Obj
                 
                 If EsPescador Then
-                    CantidadItems = MaxItemsExtraibles(.Stats.ELV)
-                    MiObj.Amount = RandomNumber(1, CantidadItems)
+                    MaxItems = MaxItemsExtraibles(.Stats.ELV)
+                    CantidadItems = RandomNumber(1, MaxItems)
                 Else
-                    MiObj.Amount = 1
+                    CantidadItems = 1
                 End If
+
+                CantidadItems = CantidadItems * OficioMultiplier
                 
+                MiObj.Amount = CantidadItems
                 MiObj.ObjIndex = ListaPeces(RandomNumber(1, NUM_PECES))
                 
                 If Not MeterItemEnInventario(UserIndex, MiObj) Then
@@ -2087,18 +2095,20 @@ End Sub
 Public Sub DoTalar(ByVal UserIndex As Integer, Optional ByVal DarMaderaElfica As Boolean = False)
 '***************************************************
 'Autor: Unknown
-'Last Modification: 28/05/2010
+'Last Modification: 26/10/2018
 '16/11/2009: ZaMa - Ahora Se puede dar madera elfica.
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
+'26/10/2018: CHOTS - Multiplicador de oficios
 '***************************************************
 On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
+Dim MaxItems As Integer
 Dim CantidadItems As Integer
 Dim Skill As Integer
 
@@ -2118,13 +2128,16 @@ With UserList(UserIndex)
         Dim MiObj As Obj
         
         If .clase = eClass.Worker Then
-            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
+            MaxItems = MaxItemsExtraibles(.Stats.ELV)
             
-            MiObj.Amount = RandomNumber(1, CantidadItems)
+            CantidadItems = RandomNumber(1, MaxItems)
         Else
-            MiObj.Amount = 1
+            CantidadItems = 1
         End If
-        
+
+        CantidadItems = CantidadItems * OficioMultiplier
+
+        MiObj.Amount = CantidadItems
         MiObj.ObjIndex = IIf(DarMaderaElfica, LeñaElfica, Leña)
         
         If Not MeterItemEnInventario(UserIndex, MiObj) Then
@@ -2163,17 +2176,19 @@ End Sub
 Public Sub DoMineria(ByVal UserIndex As Integer)
 '***************************************************
 'Autor: Unknown
-'Last Modification: 28/05/2010
+'Last Modification: 26/10/2018
 '16/11/2009: ZaMa - Implementado nuevo sistema de extraccion.
 '11/05/2010: ZaMa - Arreglo formula de maximo de items contruibles/extraibles.
 '05/13/2010: Pato - Refix a la formula de maximo de items construibles/extraibles.
 '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
 '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
+'26/10/2018: CHOTS - Multiplicador de oficios
 '***************************************************
 On Error GoTo ErrHandler
 
 Dim Suerte As Integer
 Dim res As Integer
+Dim MaxItems As Integer
 Dim CantidadItems As Integer
 
 With UserList(UserIndex)
@@ -2197,12 +2212,16 @@ With UserList(UserIndex)
         MiObj.ObjIndex = ObjData(.flags.TargetObj).MineralIndex
         
         If .clase = eClass.Worker Then
-            CantidadItems = MaxItemsExtraibles(.Stats.ELV)
+            MaxItems = MaxItemsExtraibles(.Stats.ELV)
             
-            MiObj.Amount = RandomNumber(1, CantidadItems)
+            CantidadItems = RandomNumber(1, MaxItems)
         Else
-            MiObj.Amount = 1
+            CantidadItems = 1
         End If
+
+        CantidadItems = CantidadItems * OficioMultiplier
+
+        MiObj.Amount = CantidadItems
         
         If Not MeterItemEnInventario(UserIndex, MiObj) Then _
             Call TirarItemAlPiso(.Pos, MiObj)

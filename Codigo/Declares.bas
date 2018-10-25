@@ -1936,3 +1936,4 @@ End Enum
 
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
+Public OficioMultiplier As Integer
