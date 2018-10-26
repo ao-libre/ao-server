@@ -1640,8 +1640,9 @@ End Sub
 Sub LoadSini()
 '***************************************************
 'Author: Unknown
-'Last Modification: -
-'
+'Last Modification: 26/10/2018 (CHOTS)
+'Cucsifae: Agregados multiplicadores exp y oro
+'CHOTS: Agregado multiplicador oficio
 '***************************************************
 
     Dim Temporal As Long
@@ -1661,6 +1662,7 @@ Sub LoadSini()
     
     ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
     OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
+    OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
