@@ -29,7 +29,9 @@ Attribute VB_Name = "Declaraciones"
 
 Option Explicit
 
-
+#If False Then
+    Dim length, Obj As Variant
+#End If
 
 
 
@@ -1934,6 +1936,9 @@ Public Enum e_SoundIndex
     MUERTE_HOMBRE_AGUA = 212
 End Enum
 
+'SERVER INI
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
 Public OficioMultiplier As Integer
+Public ContadorAntiPiquete As Integer
+Public MinutosCarcelPiquete As Integer
