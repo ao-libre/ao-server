@@ -219,8 +219,6 @@ Public Enum FXIDs
     FXMEDITARXXGRANDE = 34
 End Enum
 
-Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
-
 ''
 ' TRIGGERS
 '
