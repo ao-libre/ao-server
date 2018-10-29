@@ -1756,7 +1756,7 @@ End Sub
 Public Sub SendUserStatsTxtDatabase(ByVal sendIndex As Integer, ByVal UserName As String)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
-'Last Modification: 11/10/2018
+'Last Modification: 30/10/2018
 '***************************************************
 On Error GoTo ErrorHandler
     Dim query As String
@@ -1768,7 +1768,7 @@ On Error GoTo ErrorHandler
 
         Call Database_Connect
 
-        query = "SELECT level, exp. elu, min_sta, max_sta, min_hp, max_hp, min_man, max_man, min_hit, max_hit, gold FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
+        query = "SELECT level, exp, elu, min_sta, max_sta, min_hp, max_hp, min_man, max_man, min_hit, max_hit, gold FROM user WHERE UPPER(name) = '" & UCase$(UserName) & "';"
 
         Set Database_RecordSet = Database_Connection.Execute(query)
 
