@@ -217,8 +217,6 @@ Public Enum FXIDs
     FXMEDITARXXGRANDE = 34
 End Enum
 
-Public Const TIEMPO_CARCEL_PIQUETE As Long = 10
-
 ''
 ' TRIGGERS
 '
@@ -1953,5 +1951,9 @@ Public Enum e_SoundIndex
     MUERTE_HOMBRE_AGUA = 212
 End Enum
 
+'SERVER INI
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
+Public OficioMultiplier As Integer
+Public ContadorAntiPiquete As Integer
+Public MinutosCarcelPiquete As Integer

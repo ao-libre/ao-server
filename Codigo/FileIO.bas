@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa, Email, value As Variant
+    Dim X, Y, N, Map, Mapa, Email, max, value As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -1582,8 +1582,10 @@ End Sub
 Sub LoadSini()
 '***************************************************
 'Author: Unknown
-'Last Modification: 18/09/2018
-'CHOTS: Added database params
+'Last Modification: 26/10/2018 (CHOTS)
+'CHOTS: Database params
+'Cucsifae: Agregados multiplicadores exp y oro
+'CHOTS: Agregado multiplicador oficio
 '***************************************************
 
     Dim Temporal As Long
@@ -1603,6 +1605,7 @@ Sub LoadSini()
     
     ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
     OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
+    OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
@@ -1637,6 +1640,9 @@ Sub LoadSini()
     MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
     
     EnTesting = val(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
+    
+    ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
+    MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
     
     'Intervalos
     SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
