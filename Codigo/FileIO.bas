@@ -2549,34 +2549,35 @@ Public Sub SaveBanCharfile(ByVal UserName As String, ByVal Reason As String, ByV
     Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, BannedBy & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
 End Sub
 
-Public Sub CopyUserCharfile(ByVal UserName As String, ByVal NewName As String)
+Public Sub CopyUserCharfile(ByVal UserName As String, ByVal newName As String)
 '***************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 24/10/2018
 '***************************************************
     UserName = UCase$(UserName)
-    NewName = UCase$(NewName)
+    newName = UCase$(newName)
 
     Dim AccountHash As String
-    Dim LoopC as Byte
-    Dim NumberOfCharacters as Byte
-    Dim AccountCharfile as String
+    Dim LoopC As Byte
+    Dim NumberOfCharacters As Byte
+    Dim AccountCharfile As String
+    Dim CurrentCharacter As String
 
     AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
     AccountCharfile = AccountPath & AccountHash & ".ach"
-    NumberOfCharacters = val(GetVar(AccountCharfile "INIT", "CantidadPersonajes"))
+    NumberOfCharacters = val(GetVar(AccountCharfile, "INIT", "CantidadPersonajes"))
 
     If NumberOfCharacters > 0 Then
         For LoopC = 1 To NumberOfCharacters
             CurrentCharacter = GetVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC)
 
             If UCase$(CurrentCharacter) = UserName Then
-                Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC, NewName)
+                Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC, newName)
             End If
         Next LoopC
     End If
 
-    Call FileCopy(CharPath & UserName & ".chr", CharPath & NewName & ".chr")
+    Call FileCopy(CharPath & UserName & ".chr", CharPath & newName & ".chr")
 End Sub
 
 Public Function PersonajeCantidadVotosCharfile(ByVal UserName As String) As Integer
