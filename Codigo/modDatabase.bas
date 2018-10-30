@@ -1907,6 +1907,7 @@ Public Sub SendUserBovedaTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserN
 '***************************************************
 On Error GoTo ErrorHandler
     Dim query As String
+    Dim ObjInd As Long
 
     If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
@@ -1920,8 +1921,11 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
+                ObjInd = val(Database_RecordSet!item_id)
 
+                If ObjInd > 0 Then
+                    Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(ObjInd).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
+                End If
                 Database_RecordSet.MoveNext
             Wend
         Else
