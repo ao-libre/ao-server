@@ -308,7 +308,7 @@ Dim MiembroDe   As String
         EsMiembro = i <= OldQ
         
         If EsMiembro Then
-            Call SaveUserGuildIndex(Nombre, vbNullString)
+            Call SaveUserGuildIndex(Nombre, 0)
             While i < OldQ
                 Temps = GetVar(MEMBERSFILE, "Members", "Member" & i + 1)
                 Call WriteVar(MEMBERSFILE, "Members", "Member" & i, Temps)
