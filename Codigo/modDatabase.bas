@@ -2345,6 +2345,6 @@ ErrorHandler:
         Call LogDatabaseError("Error in LoginAccountDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
-Public Function SanitizeNullValue(ByVal Value As Variant, ByVal defaultValue As Variant)
+Public Function SanitizeNullValue(ByVal Value As Variant, ByVal defaultValue As Variant) As Variant
     SanitizeNullValue = IIf(IsNull(Value), defaultValue, Value)
 End Function
