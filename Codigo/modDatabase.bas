@@ -1521,7 +1521,7 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Database_Connection.Execute(query)
 
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        GetUserFreeSkillsDatabase = vbNullString
+        GetUserFreeSkillsDatabase = 0
         Exit Function
     End If
 
@@ -1871,6 +1871,7 @@ Public Sub SendUserInvTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserName
 '***************************************************
 On Error GoTo ErrorHandler
     Dim query As String
+    Dim ObjInd As Long
 
     If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
@@ -1884,7 +1885,11 @@ On Error GoTo ErrorHandler
         If Not Database_RecordSet.RecordCount = 0 Then
             Database_RecordSet.MoveFirst
             While Not Database_RecordSet.EOF
-                Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(Database_RecordSet!item_id).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
+                ObjInd = val(Database_RecordSet!item_id)
+
+                If ObjInd > 0 Then
+                    Call WriteConsoleMsg(sendIndex, "Objeto " & Database_RecordSet!Number & " " & ObjData(ObjInd).Name & " Cantidad:" & Database_RecordSet!Amount, FontTypeNames.FONTTYPE_INFO)
+                End If
 
                 Database_RecordSet.MoveNext
             Wend
@@ -1984,7 +1989,7 @@ On Error GoTo ErrorHandler
 
     Exit Sub
 ErrorHandler:
-        Call LogDatabaseError("Error in SendCharacterInfoDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Error in SendCharacterInfoDatabase: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub
 
 Public Function GetUserGuildMemberDatabase(ByVal UserName As String) As String
@@ -2006,7 +2011,7 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildMemberDatabase = Database_RecordSet!guild_member_history
+    GetUserGuildMemberDatabase = SanitizeNullValue(Database_RecordSet!guild_member_history, vbNullString)
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -2035,7 +2040,8 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildAspirantDatabase = CInt(Database_RecordSet!guild_aspirant_index)
+
+    GetUserGuildAspirantDatabase = SanitizeNullValue(Database_RecordSet!guild_aspirant_index, 0)
     Set Database_RecordSet = Nothing
     Call Database_Close
 
@@ -2093,7 +2099,7 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildPedidosDatabase = Database_RecordSet!guild_requests_history
+    GetUserGuildPedidosDatabase = SanitizeNullValue(Database_RecordSet!guild_requests_history, vbNullString)
     Set Database_RecordSet = Nothing
     Call Database_Close
 
