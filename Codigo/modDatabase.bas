@@ -1968,7 +1968,7 @@ On Error GoTo ErrorHandler
     End If
 
     ' Get the character's current guild
-    GuildActual = CInt(Database_RecordSet!guild_index)
+    GuildActual = SanitizeNullValue(Database_RecordSet!guild_index, 0)
     If GuildActual > 0 And GuildActual <= CANTIDADDECLANES Then
         gName = "<" & GuildName(GuildActual) & ">"
     Else
@@ -1976,14 +1976,14 @@ On Error GoTo ErrorHandler
     End If
 
     'Get previous guilds
-    Miembro = Database_RecordSet!guild_member_history
+    Miembro = SanitizeNullValue(Database_RecordSet!guild_member_history, vbNullString)
     If Len(Miembro) > 400 Then
         Miembro = ".." & Right$(Miembro, 400)
     End If
 
     Call Protocol.WriteCharacterInfo(UserIndex, UserName, Database_RecordSet!race_id, Database_RecordSet!class_id, _
         Database_RecordSet!genre_id, Database_RecordSet!level, Database_RecordSet!gold, _
-        Database_RecordSet!bank_gold, Database_RecordSet!rep_average, Database_RecordSet!guild_requests_history, _
+        Database_RecordSet!bank_gold, Database_RecordSet!rep_average, SanitizeNullValue(Database_RecordSet!guild_requests_history, vbNullString), _
         gName, Miembro, Database_RecordSet!pertenece_real, Database_RecordSet!pertenece_caos, _
         Database_RecordSet!ciudadanos_matados, Database_RecordSet!criminales_matados)
 

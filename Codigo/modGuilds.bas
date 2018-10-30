@@ -1748,7 +1748,7 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
         End If
     End If
 
-    If Database_Enabled Then
+    If Not Database_Enabled Then
         Call SendCharacterInfoCharfile(UserIndex, Personaje)
     Else
         Call SendCharacterInfoDatabase(UserIndex, Personaje)
