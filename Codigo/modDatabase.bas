@@ -1761,7 +1761,7 @@ Public Sub SendUserStatsTxtDatabase(ByVal sendIndex As Integer, ByVal UserName A
 On Error GoTo ErrorHandler
     Dim query As String
 
-    If PersonajeExiste(UserName) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & UserName, FontTypeNames.FONTTYPE_INFO)
@@ -1800,7 +1800,7 @@ Public Sub SendUserMiniStatsTxtFromDatabase(ByVal sendIndex As Integer, ByVal Us
 On Error GoTo ErrorHandler
     Dim query As String
 
-    If PersonajeExiste(UserName) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & UserName, FontTypeNames.FONTTYPE_INFO)
@@ -1839,7 +1839,7 @@ Public Sub SendUserOROTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserName
 On Error GoTo ErrorHandler
     Dim query As String
 
-    If PersonajeExiste(UserName) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call Database_Connect
@@ -1872,7 +1872,7 @@ Public Sub SendUserInvTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserName
 On Error GoTo ErrorHandler
     Dim query As String
 
-    If PersonajeExiste(UserName) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call Database_Connect
@@ -1908,7 +1908,7 @@ Public Sub SendUserBovedaTxtFromDatabase(ByVal sendIndex As Integer, ByVal UserN
 On Error GoTo ErrorHandler
     Dim query As String
 
-    If PersonajeExiste(UserName) Then
+    If Not PersonajeExiste(UserName) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
         Call Database_Connect
