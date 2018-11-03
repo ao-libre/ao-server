@@ -27,6 +27,9 @@ Attribute VB_Name = "TCP"
 'Código Postal 1900
 'Pablo Ignacio Márquez
 
+#If False Then
+    Dim ErrHandler, length, index As Variant
+#End If
 Option Explicit
 
 #If False Then
@@ -1501,9 +1504,9 @@ Sub SendMOTD(ByVal UserIndex As Integer)
 
     Dim j As Long
     
-    Call WriteGuildChat(UserIndex, "Mensajes de entrada:")
+    Call WriteConsoleMsg(UserIndex, "Mensajes de entrada:", FontTypeNames.FONTTYPE_INFO)
     For j = 1 To MaxLines
-        Call WriteGuildChat(UserIndex, MOTD(j).texto)
+        Call WriteConsoleMsg(UserIndex, MOTD(j).texto, FontTypeNames.FONTTYPE_INFO)
     Next j
 End Sub
 
