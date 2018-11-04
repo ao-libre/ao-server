@@ -856,7 +856,7 @@ On Error GoTo ErrorHandler
         Exit Function
     End If
 
-    GetUserGuildIndexDatabase = CInt(Database_RecordSet!guild_index)
+    GetUserGuildIndexDatabase = SanitizeNullValue(Database_RecordSet!guild_index, 0)
     Set Database_RecordSet = Nothing
     Call Database_Close()
 
@@ -2039,7 +2039,6 @@ On Error GoTo ErrorHandler
         GetUserGuildAspirantDatabase = 0
         Exit Function
     End If
-
 
     GetUserGuildAspirantDatabase = SanitizeNullValue(Database_RecordSet!guild_aspirant_index, 0)
     Set Database_RecordSet = Nothing
