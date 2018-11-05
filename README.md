@@ -29,6 +29,6 @@ El programa al iniciar comparara la actual version del programa que se encuentra
 
 Para mas información sobre este proceso:
 
-[Funcion para comparar versiones](https://github.com/ao-libre/ao-server/blob/087d56ae43cde31a798ffe8284d1c9b0f5624dd0/Codigo/frmCargando.frm#L137)
+[Funcion para comparar versiones](https://github.com/ao-libre/ao-server/blob/master/Codigo/frmCargando.frm#L137)
 
 [Codigo fuente ao-autpupdate](https://github.com/ao-libre/ao-autoupdate)
