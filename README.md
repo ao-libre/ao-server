@@ -17,11 +17,18 @@ https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_pr
 En este archivo se pueden escribir textos que apareceran a los usuarios al conectarse al servidor.
 
 
-# Preguntas Frecuentes:
+# FAQs:
 
 ###### Error - Librerias faltantes (missing .dll)
 En la carpeta `Librerias` estan todas las librerias necesarias para iniciar el server sin errores, copiar el contenido de la carpeta en `c:/Windows`
 
+
+# Server.ini - Summary:
+Sumario explicando cada una de los valores utilizados en el archivo de configuracion `Server.ini`.
+
+Summary explaining how to use each value in the configuration file `Server.ini`
+
+https://www.reddit.com/r/argentumonlineoficial/comments/9v4dln/serverini_sumario_explicando_parametros/
 
 ## Autoupdates:
 
