@@ -24,9 +24,9 @@ En la carpeta `Librerias` estan todas las librerias necesarias para iniciar el s
 
 
 #### Server.ini - Summary:
-Sumario explicando cada una de los valores utilizados en el archivo de configuracion `Server.ini`.
+Sumario explicando cada una de los valores utilizados en el archivo de configuracion [Server.ini.](Server.ini)
 
-Summary explaining how to use each value in the configuration file `Server.ini`
+Summary explaining how to use each value in the configuration file [Server.ini.](Server.ini)
 
 https://www.reddit.com/r/argentumonlineoficial/comments/9v4dln/serverini_sumario_explicando_parametros/
 
