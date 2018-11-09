@@ -1720,14 +1720,7 @@ Sub LoadSini()
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
-    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
-
-    'CHOTS | Database
-    Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
-    Database_Host = GetVar(IniPath & "Server.ini", "DATABASE", "Host")
-    Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
-    Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
-    Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
+    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
