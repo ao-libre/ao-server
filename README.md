@@ -38,4 +38,4 @@ Para mas información sobre este proceso:
 
 [Funcion para comparar versiones](https://github.com/ao-libre/ao-server/blob/master/Codigo/frmCargando.frm#L137)
 
-[Codigo fuente ao-autpupdate](https://github.com/ao-libre/ao-autoupdate)
+[Codigo fuente ao-autoupdate](https://github.com/ao-libre/ao-autoupdate)
