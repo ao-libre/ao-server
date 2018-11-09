@@ -1447,9 +1447,9 @@ On Error GoTo ErrHandler
     End If
 
     If BANCheck(UserName) Then
-        Call WriteErrorMsg(UserIndex, "Se te ha prohibido la entrada a Argentum Online debido a tu mal comportamiento. Puedes consultar el reglamento y el sistema de soporte desde www.argentumonline.com.ar")
+        Call WriteErrorMsg(UserIndex, "Se te ha prohibido la entrada a Argentum Online debido a tu mal comportamiento. Puedes consultar el reglamento y el sistema de soporte desde www.argentumonline.org")
     ElseIf Not VersionOK(version) Then
-        Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectUser(UserIndex, UserName, Password)
     End If
@@ -1566,7 +1566,7 @@ On Error GoTo ErrHandler
     homeland = buffer.ReadByte()
         
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(UserIndex, "Esta versión del juego es obsoleta, la versión correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectNewUser(UserIndex, UserName, Password, race, gender, Class, mail, homeland, Head)
     End If
