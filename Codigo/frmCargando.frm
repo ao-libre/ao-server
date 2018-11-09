@@ -152,7 +152,7 @@ Private Function CheckIfRunningLastVersion() As Boolean
     Set JsonObject = JSON.parse(responseGithub)
     
     versionNumberMaster = JsonObject.Item("tag_name")
-    versionNumberLocal = GetVar(App.Path & "Server.ini", "INIT", "VersionTagRelease")
+    versionNumberLocal = GetVar(App.Path & "/Server.ini", "INIT", "VersionTagRelease")
     
     If versionNumberMaster = versionNumberLocal Then
         CheckIfRunningLastVersion = True
