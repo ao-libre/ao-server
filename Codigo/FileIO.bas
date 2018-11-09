@@ -1601,7 +1601,7 @@ Sub LoadSini()
     AllowMultiLogins = val(GetVar(IniPath & "Server.ini", "INIT", "AllowMultiLogins"))
     IdleLimit = val(GetVar(IniPath & "Server.ini", "INIT", "IdleLimit"))
     'Lee la version correcta del cliente
-    ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "Version")
+    ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "VersionBuildCliente")
     
     ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
     OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
