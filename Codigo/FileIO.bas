@@ -1778,7 +1778,7 @@ Sub LoadSini()
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
-    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
+    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
