@@ -1582,10 +1582,11 @@ End Sub
 Sub LoadSini()
 '***************************************************
 'Author: Unknown
-'Last Modification: 26/10/2018 (CHOTS)
+'Last Modification: 05/11/2018 (CHOTS)
 'CHOTS: Database params
 'Cucsifae: Agregados multiplicadores exp y oro
 'CHOTS: Agregado multiplicador oficio
+'CHOTS: Agregado min y max Dados
 '***************************************************
 
     Dim Temporal As Long
@@ -1601,11 +1602,13 @@ Sub LoadSini()
     AllowMultiLogins = val(GetVar(IniPath & "Server.ini", "INIT", "AllowMultiLogins"))
     IdleLimit = val(GetVar(IniPath & "Server.ini", "INIT", "IdleLimit"))
     'Lee la version correcta del cliente
-    ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "Version")
+    ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "VersionBuildCliente")
     
     ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
     OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
     OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
+    DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
+    DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
@@ -1718,7 +1721,7 @@ Sub LoadSini()
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
-    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "RECORD"))
+    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
 
     'CHOTS | Database
     Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
