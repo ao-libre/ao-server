@@ -1955,5 +1955,7 @@ End Enum
 Public ExpMultiplier As Integer
 Public OroMultiplier As Integer
 Public OficioMultiplier As Integer
+Public DiceMinimum As Integer
+Public DiceMaximum As Integer
 Public ContadorAntiPiquete As Integer
 Public MinutosCarcelPiquete As Integer

@@ -138,7 +138,7 @@ Function Analizar()
            
     If Not (CheckIfRunningLastVersion = True) Then
         If MsgBox("Tu versión no es la actuál, ¿Deseas ejecutar el actualizador automático?.", vbYesNo) = vbYes Then
-            Call ShellExecute(Me.hWnd, "open", App.Path & "/Autoupdate.exe", "", "", 1)
+            Call ShellExecute(Me.hwnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
             End
         End If
     End If
@@ -152,7 +152,7 @@ Private Function CheckIfRunningLastVersion() As Boolean
     Set JsonObject = JSON.parse(responseGithub)
     
     versionNumberMaster = JsonObject.Item("tag_name")
-    versionNumberLocal = GetVar(App.Path & "Server.ini", "Server", "Version")
+    versionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
     
     If versionNumberMaster = versionNumberLocal Then
         CheckIfRunningLastVersion = True
@@ -160,4 +160,3 @@ Private Function CheckIfRunningLastVersion() As Boolean
         CheckIfRunningLastVersion = False
     End If
 End Function
-
