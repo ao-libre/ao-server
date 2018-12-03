@@ -13895,7 +13895,7 @@ Public Sub HandleCreateNPC(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
         If NpcIndex >= 900 Then
-            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CrearClanPretoriano.", FontTypeNames.FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CREARPRETORIANOS mapa x y.", FontTypeNames.FONTTYPE_WARNING)
             Exit Sub
         End If
         
@@ -13933,7 +13933,7 @@ Public Sub HandleCreateNPCWithRespawn(ByVal UserIndex As Integer)
         NpcIndex = .incomingData.ReadInteger()
         
         If NpcIndex >= 900 Then
-            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CrearClanPretoriano.", FontTypeNames.FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CREARPRETORIANOS mapa x y.", FontTypeNames.FONTTYPE_WARNING)
             Exit Sub
         End If
         
