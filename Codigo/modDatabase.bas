@@ -470,7 +470,7 @@ On Error GoTo ErrorHandler
 
     'Basic user data
     With UserList(UserIndex)
-        query = "SELECT * FROM user WHERE UPPER(name) ='" & UCase$(.Name) & "';"
+        query = "SELECT *, DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') as 'fecha_ingreso_format' FROM user WHERE UPPER(name) ='" & UCase$(.Name) & "';"
         Set Database_RecordSet = Database_Connection.Execute(query)
 
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then Exit Sub
@@ -561,7 +561,7 @@ On Error GoTo ErrorHandler
         .Faccion.RecompensasReal = Database_RecordSet!recompensas_real
         .Faccion.RecompensasCaos = Database_RecordSet!recompensas_caos
         .Faccion.Reenlistadas = Database_RecordSet!Reenlistadas
-        .Faccion.FechaIngreso = SanitizeNullValue(Database_RecordSet!fecha_ingreso, vbNullString)
+        .Faccion.FechaIngreso = SanitizeNullValue(Database_RecordSet!fecha_ingreso_format, vbNullString)
         .Faccion.NivelIngreso = SanitizeNullValue(Database_RecordSet!nivel_ingreso, 0)
         .Faccion.MatadosIngreso = SanitizeNullValue(Database_RecordSet!matados_ingreso, 0)
         .Faccion.NextRecompensa = SanitizeNullValue(Database_RecordSet!siguiente_recompensa, 0)
