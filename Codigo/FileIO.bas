@@ -3334,6 +3334,8 @@ On Error GoTo ErrorHandler
             Characters(i).Map = CInt(ReadField(1, GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position"), 45))
             Characters(i).level = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "ELV"))
             Characters(i).gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
+            Characters(i).criminal = (val(GetVar(CharPath & CurrentCharacter & ".chr", "REP", "Promedio")) < 0)
+            Characters(i).dead = CBool(val(GetVar(CharPath & CurrentCharacter & ".chr", "FLAGS", "Muerto")))
         Next i
     End If
     Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
