@@ -34,7 +34,7 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color, value As Variant
+    Dim Map, x, y, n, mapa, race, helmet, weapon, shield, color, value, ErrHandler, punishments, length, Obj, index As Variant
 #End If
 
 ''
@@ -271,7 +271,7 @@ Private Enum ClientPacketID
     bugReport = 103              '/_BUG
     ChangeDescription = 104      '/DESC
     GuildVote = 105              '/VOTO
-    Punishments = 106           '/PENAS
+    punishments = 106           '/PENAS
     ChangePassword = 107         '/CONTRASEÑA
     Gamble = 108                '/APOSTAR
     InquiryVote = 109            '/ENCUESTA ( with parameters )
@@ -19064,7 +19064,7 @@ On Error GoTo ErrHandler
                 Call .WriteInteger(Characters(i).Map)
                 Call .WriteByte(Characters(i).level)
                 Call .WriteLong(Characters(i).gold)
-                Call .WriteBoolean(Characters(i).crimnial)
+                Call .WriteBoolean(Characters(i).criminal)
                 Call .WriteBoolean(Characters(i).dead)
             Next i
         End If
