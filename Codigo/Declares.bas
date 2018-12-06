@@ -1281,6 +1281,8 @@ Public Type AccountUser
     map As Integer
     level As Byte
     gold As Long
+    criminal As Boolean
+    dead As Boolean
 End Type
 
 'Tipo de los Usuarios
