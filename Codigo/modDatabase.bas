@@ -2307,7 +2307,7 @@ On Error GoTo ErrorHandler
     Set Database_RecordSet = Nothing
 
     'Now the characters
-    query = "SELECT name, level, gold, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map FROM user "
+    query = "SELECT name, level, gold, body_id, head_id, weapon_id, shield_id, helmet_id, race_id, class_id, pos_map, rep_average, is_dead FROM user "
     query = query & "WHERE account_id = " & AccountId & " AND deleted = FALSE;"
 
     Set Database_RecordSet = Database_Connection.Execute(query)
@@ -2329,7 +2329,8 @@ On Error GoTo ErrorHandler
             Characters(NumberOfCharacters).Map = Database_RecordSet!pos_map
             Characters(NumberOfCharacters).level = Database_RecordSet!level
             Characters(NumberOfCharacters).gold = Database_RecordSet!gold
-
+            Characters(NumberOfCharacters).criminal = (Database_RecordSet!rep_average < 0)
+            Characters(NumberOfCharacters).dead = Database_RecordSet!is_dead
             Database_RecordSet.MoveNext
         Wend
     End If

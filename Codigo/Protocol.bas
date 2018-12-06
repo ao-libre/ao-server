@@ -19042,6 +19042,8 @@ On Error GoTo ErrHandler
                 Call .WriteInteger(Characters(i).Map)
                 Call .WriteByte(Characters(i).level)
                 Call .WriteLong(Characters(i).gold)
+                Call .WriteBoolean(Characters(i).crimnial)
+                Call .WriteBoolean(Characters(i).dead)
             Next i
         End If
     End With
