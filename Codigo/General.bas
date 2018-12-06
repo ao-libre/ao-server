@@ -1880,7 +1880,7 @@ End Sub
 Sub SaveUser(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
 '*************************************************
 'Author: Juan Andres Dalmasso (CHOTS)
-'Last modified: 17/09/2018 (CHOTS)
+'Last modified: 06/12/2018 (CHOTS)
 'Saves the User, in the database or charfile
 '*************************************************
 
@@ -1906,6 +1906,16 @@ With UserList(UserIndex)
         ' Se fue el efecto del mimetismo, puede ser atacado por npcs
         .flags.Ignorado = False
     End If
+
+    Dim Prom As Long
+    Prom = (-.Reputacion.AsesinoRep) + _
+        (-.Reputacion.BandidoRep) + _
+        .Reputacion.BurguesRep + _
+        (-.Reputacion.LadronesRep) + _
+        .Reputacion.NobleRep + _
+        .Reputacion.PlebeRep
+    Prom = Prom / 6
+    .Reputacion.Promedio = Prom
 
     If Not Database_Enabled Then
         Call SaveUserToCharfile(UserIndex, SaveTimeOnline)

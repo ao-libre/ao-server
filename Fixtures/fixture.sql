@@ -203,7 +203,7 @@ CREATE TABLE skillpoint (
 
 # Credentials for testing environment
 # argentumonlinefree.cjq47ruczip9.sa-east-1.rds.amazonaws.com
-# argentumonlinefree
+# argentumonline
 # z7vW5jWuMkytBzuSBteRKXnXELUcEgt9
 # Linux command:
 # mysql -h 'argentumonlinefree.cjq47ruczip9.sa-east-1.rds.amazonaws.com' -u 'argentumonline' -p

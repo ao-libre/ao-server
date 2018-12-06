@@ -2012,16 +2012,7 @@ With UserList(UserIndex)
     Call Manager.ChangeValue("REP", "Ladrones", CStr(.Reputacion.LadronesRep))
     Call Manager.ChangeValue("REP", "Nobles", CStr(.Reputacion.NobleRep))
     Call Manager.ChangeValue("REP", "Plebe", CStr(.Reputacion.PlebeRep))
-    
-    Dim L As Long
-    L = (-.Reputacion.AsesinoRep) + _
-        (-.Reputacion.BandidoRep) + _
-        .Reputacion.BurguesRep + _
-        (-.Reputacion.LadronesRep) + _
-        .Reputacion.NobleRep + _
-        .Reputacion.PlebeRep
-    L = L / 6
-    Call Manager.ChangeValue("REP", "Promedio", CStr(L))
+    Call Manager.ChangeValue("REP", "Promedio", .Reputacion.Promedio)
     
     Dim cad As String
     
