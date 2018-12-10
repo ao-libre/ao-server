@@ -7,10 +7,12 @@ Mas informacion:
 
 * http://www.gs-zone.org/temas/cliente-y-servidor-13-3-dx8-v1.95611/
 
-## Montar Servidor:
-Guia para montar mi propio servidor:
+## Wiki Desarrollo Argentum Online
+[Manual para entender el codigo de Argentum Online](http://es.dao.wikia.com/wiki/Wiki_Desarrollo_Argentum_Online).
 
-https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_propio_servidor/
+## Montar Servidor:
+[Guia para montar mi propio servidor:](https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_propio_servidor/).
+
 
 ## Archivos Definicion:
 [Motd.ini](https://github.com/ao-libre/ao-server/blob/master/Dat/Motd.ini)
