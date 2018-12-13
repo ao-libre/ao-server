@@ -19066,6 +19066,7 @@ On Error GoTo ErrHandler
                 Call .WriteLong(Characters(i).gold)
                 Call .WriteBoolean(Characters(i).criminal)
                 Call .WriteBoolean(Characters(i).dead)
+                Call .WriteBoolean(Characters(i).gameMaster)
             Next i
         End If
     End With

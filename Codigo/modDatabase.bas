@@ -2331,6 +2331,7 @@ On Error GoTo ErrorHandler
             Characters(NumberOfCharacters).gold = Database_RecordSet!gold
             Characters(NumberOfCharacters).criminal = (Database_RecordSet!rep_average < 0)
             Characters(NumberOfCharacters).dead = Database_RecordSet!is_dead
+            Characters(NumberOfCharacters).gameMaster = EsGmChar(Database_RecordSet!Name)
             Database_RecordSet.MoveNext
         Wend
     End If
