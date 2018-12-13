@@ -320,7 +320,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
@@ -437,7 +437,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -816,7 +816,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
     
@@ -1050,7 +1050,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -3336,7 +3336,7 @@ On Error GoTo ErrorHandler
             Characters(i).gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
             Characters(i).criminal = (val(GetVar(CharPath & CurrentCharacter & ".chr", "REP", "Promedio")) < 0)
             Characters(i).dead = CBool(val(GetVar(CharPath & CurrentCharacter & ".chr", "FLAGS", "Muerto")))
-            Characters(i).gameMaster = EsGmChar(UserName)
+            Characters(i).gameMaster = EsGmChar(CurrentCharacter)
         Next i
     End If
     Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
