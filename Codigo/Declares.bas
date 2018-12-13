@@ -1285,6 +1285,7 @@ Public Type AccountUser
     gold As Long
     criminal As Boolean
     dead As Boolean
+    gameMaster As Boolean
 End Type
 
 'Tipo de los Usuarios
