@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa, max, value As Variant
+    Dim X, Y, N, Map, Mapa, Email, max, value As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -320,7 +320,7 @@ Public Sub CargarHechizos()
 '
 '###################################################
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
@@ -437,7 +437,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -816,7 +816,7 @@ Sub LoadOBJData()
 
 'Call LogTarea("Sub LoadOBJData")
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
     
@@ -1050,7 +1050,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 
@@ -1207,23 +1207,19 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             'Matrix
             .lastMap = val(UserFile.GetValue("FLAGS", "LastMap"))
         End With
-        
-        If .flags.Paralizado = 1 Then
-            .Counters.Paralisis = IntervaloParalizado
-        End If
-        
-        
+
         .Counters.Pena = CLng(UserFile.GetValue("COUNTERS", "Pena"))
         .Counters.AsignedSkills = CByte(val(UserFile.GetValue("COUNTERS", "SkillsAsignados")))
         
-        .email = UserFile.GetValue("CONTACTO", "Email")
+        .Email = UserFile.GetValue("CONTACTO", "Email")
         
+        .ID = val(UserFile.GetValue("INIT", "ID"))
+        .AccountHash = UserFile.GetValue("INIT", "AccountHash")
         .Genero = UserFile.GetValue("INIT", "Genero")
         .clase = UserFile.GetValue("INIT", "Clase")
         .raza = UserFile.GetValue("INIT", "Raza")
         .Hogar = UserFile.GetValue("INIT", "Hogar")
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
-        
         
         With .OrigChar
             .Head = CInt(UserFile.GetValue("INIT", "Head"))
@@ -1231,25 +1227,13 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             .WeaponAnim = CInt(UserFile.GetValue("INIT", "Arma"))
             .ShieldAnim = CInt(UserFile.GetValue("INIT", "Escudo"))
             .CascoAnim = CInt(UserFile.GetValue("INIT", "Casco"))
-            
             .heading = eHeading.SOUTH
         End With
         
         #If ConUpTime Then
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
-        
-        If .flags.Muerto = 0 Then
-            .Char = .OrigChar
-        Else
-            .Char.body = iCuerpoMuerto
-            .Char.Head = iCabezaMuerto
-            .Char.WeaponAnim = NingunArma
-            .Char.ShieldAnim = NingunEscudo
-            .Char.CascoAnim = NingunCasco
-        End If
-        
-        
+
         .desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
@@ -1279,56 +1263,14 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             .Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
         Next LoopC
         
-        'Obtiene el indice-objeto del arma
         .Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
-        If .Invent.WeaponEqpSlot > 0 Then
-            .Invent.WeaponEqpObjIndex = .Invent.Object(.Invent.WeaponEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto del armadura
         .Invent.ArmourEqpSlot = CByte(UserFile.GetValue("Inventory", "ArmourEqpSlot"))
-        If .Invent.ArmourEqpSlot > 0 Then
-            .Invent.ArmourEqpObjIndex = .Invent.Object(.Invent.ArmourEqpSlot).ObjIndex
-            .flags.Desnudo = 0
-        Else
-            .flags.Desnudo = 1
-        End If
-        
-        'Obtiene el indice-objeto del escudo
         .Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
-        If .Invent.EscudoEqpSlot > 0 Then
-            .Invent.EscudoEqpObjIndex = .Invent.Object(.Invent.EscudoEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto del casco
         .Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
-        If .Invent.CascoEqpSlot > 0 Then
-            .Invent.CascoEqpObjIndex = .Invent.Object(.Invent.CascoEqpSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto barco
         .Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
-        If .Invent.BarcoSlot > 0 Then
-            .Invent.BarcoObjIndex = .Invent.Object(.Invent.BarcoSlot).ObjIndex
-        End If
-        
-        'Obtiene el indice-objeto municion
         .Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
-        If .Invent.MunicionEqpSlot > 0 Then
-            .Invent.MunicionEqpObjIndex = .Invent.Object(.Invent.MunicionEqpSlot).ObjIndex
-        End If
-        
-        '[Alejo]
-        'Obtiene el indice-objeto anilo
         .Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
-        If .Invent.AnilloEqpSlot > 0 Then
-            .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
-        End If
-        
         .Invent.MochilaEqpSlot = val(UserFile.GetValue("Inventory", "MochilaSlot"))
-        If .Invent.MochilaEqpSlot > 0 Then
-            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
-        End If
         
         .NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
         For LoopC = 1 To MAXMASCOTAS
@@ -1641,6 +1583,7 @@ Sub LoadSini()
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/11/2018 (CHOTS)
+'CHOTS: Database params
 'Cucsifae: Agregados multiplicadores exp y oro
 'CHOTS: Agregado multiplicador oficio
 'CHOTS: Agregado min y max Dados
@@ -1779,6 +1722,13 @@ Sub LoadSini()
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
+
+    'CHOTS | Database
+    Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
+    Database_Host = GetVar(IniPath & "Server.ini", "DATABASE", "Host")
+    Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
+    Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
+    Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
@@ -1822,7 +1772,6 @@ Sub LoadSini()
     Nemahuak.X = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "X")
     Nemahuak.Y = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Y")
 
-    
     Ciudades(eCiudad.cUllathorpe) = Ullathorpe
     Ciudades(eCiudad.cNix) = Nix
     Ciudades(eCiudad.cBanderbill) = Banderbill
@@ -1834,7 +1783,6 @@ Sub LoadSini()
     
     Set ConsultaPopular = New ConsultasPopulares
     Call ConsultaPopular.LoadData
-
     
     ' Admins
     Call loadAdministrativeUsers
@@ -1852,7 +1800,7 @@ writeprivateprofilestring Main, Var, value, File
     
 End Sub
 
-Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVal SaveTimeOnline As Boolean = True)
+Sub SaveUserToCharfile(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
 '*************************************************
 'Author: Unknown
 'Last modified: 10/10/2010 (Pato)
@@ -1861,21 +1809,18 @@ Sub SaveUser(ByVal UserIndex As Integer, ByVal UserFile As String, Optional ByVa
 '11/19/2009: Pato - Save the EluSkills and ExpSkills
 '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
 '10/10/2010: Pato - Saco el WriteVar e implemento la clase clsIniManager
+'18/09/2018: CHOTS - Nuevo nombre de la funcion, solo realiza el grabado
 '*************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo ErrorHandler
 
 Dim Manager As clsIniManager
 Dim Existe As Boolean
+Dim UserFile As String
 
 With UserList(UserIndex)
 
-    'ESTO TIENE QUE EVITAR ESE BUGAZO QUE NO SE POR QUE GRABA USUARIOS NULOS
-    'clase=0 es el error, porq el enum empieza de 1!!
-    If .clase = 0 Or .Stats.ELV = 0 Then
-        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
-        Exit Sub
-    End If
+    UserFile = CharPath & UCase$(.Name) & ".chr"
     
     Set Manager = New clsIniManager
     
@@ -1888,20 +1833,7 @@ With UserList(UserIndex)
         Existe = True
     End If
     
-    If .flags.Mimetizado = 1 Then
-        .Char.body = .CharMimetizado.body
-        .Char.Head = .CharMimetizado.Head
-        .Char.CascoAnim = .CharMimetizado.CascoAnim
-        .Char.ShieldAnim = .CharMimetizado.ShieldAnim
-        .Char.WeaponAnim = .CharMimetizado.WeaponAnim
-        .Counters.Mimetismo = 0
-        .flags.Mimetizado = 0
-        ' Se fue el efecto del mimetismo, puede ser atacado por npcs
-        .flags.Ignorado = False
-    End If
-    
     Dim LoopC As Integer
-    
     
     Call Manager.ChangeValue("FLAGS", "Muerto", CStr(.flags.Muerto))
     Call Manager.ChangeValue("FLAGS", "Escondido", CStr(.flags.Escondido))
@@ -1958,8 +1890,10 @@ With UserList(UserIndex)
     Next LoopC
     
     
-    Call Manager.ChangeValue("CONTACTO", "Email", .email)
+    Call Manager.ChangeValue("CONTACTO", "Email", .Email)
     
+    Call Manager.ChangeValue("INIT", "ID", .ID)
+    Call Manager.ChangeValue("INIT", "AccountHash", .AccountHash)
     Call Manager.ChangeValue("INIT", "Genero", .Genero)
     Call Manager.ChangeValue("INIT", "Raza", .raza)
     Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
@@ -2040,7 +1974,6 @@ With UserList(UserIndex)
     
     Call Manager.ChangeValue("STATS", "ELU", CStr(.Stats.ELU))
     Call Manager.ChangeValue("MUERTES", "UserMuertes", CStr(.Stats.UsuariosMatados))
-    'Call Manager.ChangeValue( "MUERTES", "CrimMuertes", CStr(.Stats.CriminalesMatados))
     Call Manager.ChangeValue("MUERTES", "NpcsMuertes", CStr(.Stats.NPCsMuertos))
       
     '[KEVIN]----------------------------------------------------------------------------
@@ -2079,16 +2012,7 @@ With UserList(UserIndex)
     Call Manager.ChangeValue("REP", "Ladrones", CStr(.Reputacion.LadronesRep))
     Call Manager.ChangeValue("REP", "Nobles", CStr(.Reputacion.NobleRep))
     Call Manager.ChangeValue("REP", "Plebe", CStr(.Reputacion.PlebeRep))
-    
-    Dim L As Long
-    L = (-.Reputacion.AsesinoRep) + _
-        (-.Reputacion.BandidoRep) + _
-        .Reputacion.BurguesRep + _
-        (-.Reputacion.LadronesRep) + _
-        .Reputacion.NobleRep + _
-        .Reputacion.PlebeRep
-    L = L / 6
-    Call Manager.ChangeValue("REP", "Promedio", CStr(L))
+    Call Manager.ChangeValue("REP", "Promedio", .Reputacion.Promedio)
     
     Dim cad As String
     
@@ -2134,8 +2058,8 @@ If Existe Then Call Kill(UserFile & ".bk")
 
 Exit Sub
 
-ErrHandler:
-Call LogError("Error en SaveUser")
+ErrorHandler:
+Call LogError("Error en SaveUserToCharfile: " & UserFile)
 Set Manager = Nothing
 
 End Sub
@@ -2571,4 +2495,861 @@ Public Sub LoadArmadurasFaccion()
     
     Next ClassIndex
     
+End Sub
+
+Public Function BANCheckCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'***************************************************
+
+    BANCheckCharfile = (val(GetVar(CharPath & UserName & ".chr", "FLAGS", "Ban")) = 1)
+End Function
+
+Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'***************************************************
+On Error Resume Next
+    If PersonajeExiste(UserName) Then
+        Kill CharPath & UCase$(UserName) & ".chr"
+    End If
+End Sub
+
+Public Function PersonajeExisteCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'***************************************************
+
+    PersonajeExisteCharfile = FileExist(CharPath & UCase$(UserName) & ".chr", vbNormal)
+End Function
+
+Public Sub UnBanCharfile(ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "0")
+End Sub
+
+Public Sub SaveBanCharfile(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'***************************************************
+    Dim cantPenas As Byte
+    cantPenas = GetUserAmountOfPunishmentsCharfile(UserName)
+
+    UserName = UCase$(UserName)
+    Call WriteVar(CharPath & UserName & ".chr", "FLAGS", "Ban", "1")
+    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", cantPenas + 1)
+    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & cantPenas + 1, BannedBy & ": BAN POR " & LCase$(Reason) & " " & Date & " " & time)
+End Sub
+
+Public Sub CopyUserCharfile(ByVal UserName As String, ByVal newName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/10/2018
+'***************************************************
+    UserName = UCase$(UserName)
+    newName = UCase$(newName)
+
+    Dim AccountHash As String
+    Dim LoopC As Byte
+    Dim NumberOfCharacters As Byte
+    Dim AccountCharfile As String
+    Dim CurrentCharacter As String
+
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountCharfile = AccountPath & AccountHash & ".ach"
+    NumberOfCharacters = val(GetVar(AccountCharfile, "INIT", "CantidadPersonajes"))
+
+    If NumberOfCharacters > 0 Then
+        For LoopC = 1 To NumberOfCharacters
+            CurrentCharacter = GetVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC)
+
+            If UCase$(CurrentCharacter) = UserName Then
+                Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC, newName)
+            End If
+        Next LoopC
+    End If
+
+    Call FileCopy(CharPath & UserName & ".chr", CharPath & newName & ".chr")
+End Sub
+
+Public Function PersonajeCantidadVotosCharfile(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'***************************************************
+
+    PersonajeCantidadVotosCharfile = val(GetVar(CharPath & UserName & ".chr", "CONSULTAS", "Voto"))
+End Function
+
+Public Sub MarcarPjComoQueYaVotoCharfile(ByVal UserIndex As Integer, ByVal NumeroEncuesta As Integer)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'***************************************************
+    Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "CONSULTAS", "Voto", str(NumeroEncuesta))
+End Sub
+
+Public Function GetUserAmountOfPunishmentsCharfile(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'***************************************************
+
+    GetUserAmountOfPunishmentsCharfile = val(GetVar(CharPath & UserName & ".chr", "PENAS", "Cant"))
+End Function
+
+Public Sub SendUserPunishmentsCharfile(ByVal UserIndex As Integer, ByVal UserName As String, ByVal Count As Integer)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'***************************************************
+    While Count > 0
+        Call WriteConsoleMsg(UserIndex, Count & " - " & GetVar(CharPath & UserName & ".chr", "PENAS", "P" & Count), FontTypeNames.FONTTYPE_INFO)
+        Count = Count - 1
+    Wend
+End Sub
+
+Public Function GetUserPosCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'***************************************************
+
+    GetUserPosCharfile = GetVar(CharPath & UserName & ".chr", "INIT", "POSITION")
+End Function
+
+
+Sub SendUserBovedaTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName As String)
+'***************************************************
+'Author: Unknown
+'Last Modification: 19/09/2018
+'CHOTS: Lo movi a esta funcion porque tiene mas sentido
+'***************************************************
+
+On Error Resume Next
+Dim j As Integer
+Dim CharFile As String, Tmp As String
+Dim ObjInd As Long, ObjCant As Long
+
+CharFile = CharPath & charName & ".chr"
+
+If FileExist(CharFile, vbNormal) Then
+    Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "BancoInventory", "CantidadItems") & " objetos.", FontTypeNames.FONTTYPE_INFO)
+    For j = 1 To MAX_BANCOINVENTORY_SLOTS
+        Tmp = GetVar(CharFile, "BancoInventory", "Obj" & j)
+        ObjInd = ReadField(1, Tmp, Asc("-"))
+        ObjCant = ReadField(2, Tmp, Asc("-"))
+        If ObjInd > 0 Then
+            Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).Name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
+        End If
+    Next
+Else
+    Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
+End If
+
+End Sub
+
+Sub SendUserMiniStatsTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName As String)
+'*************************************************
+'Author: Unknown
+'Last modified: 19/19/2018
+'Shows the users Stats when the user is offline.
+'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribución de parámetros.
+'19/09/2018 CHOTS - Movido a FileIO
+'*************************************************
+    Dim CharFile As String
+    Dim Ban As String
+    Dim BanDetailPath As String
+    
+    BanDetailPath = App.Path & "\logs\" & "BanDetail.dat"
+    CharFile = CharPath & charName & ".chr"
+    
+    If FileExist(CharFile) Then
+        Call WriteConsoleMsg(sendIndex, "Pj: " & charName, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Ciudadanos matados: " & GetVar(CharFile, "FACCIONES", "CiudMatados") & " CriminalesMatados: " & GetVar(CharFile, "FACCIONES", "CrimMatados") & " usuarios matados: " & GetVar(CharFile, "MUERTES", "UserMuertes"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "NPCs muertos: " & GetVar(CharFile, "MUERTES", "NpcsMuertes"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(GetVar(CharFile, "INIT", "Clase")), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Pena: " & GetVar(CharFile, "COUNTERS", "PENA"), FontTypeNames.FONTTYPE_INFO)
+        
+        If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Ejército real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Legión oscura desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExReal")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Fue ejército real", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        
+        ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExCaos")) = 1 Then
+            Call WriteConsoleMsg(sendIndex, "Fue legión oscura", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        
+        Call WriteConsoleMsg(sendIndex, "Asesino: " & CLng(GetVar(CharFile, "REP", "Asesino")), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Noble: " & CLng(GetVar(CharFile, "REP", "Nobles")), FontTypeNames.FONTTYPE_INFO)
+        
+        If IsNumeric(GetVar(CharFile, "Guild", "GUILDINDEX")) Then
+            Call WriteConsoleMsg(sendIndex, "Clan: " & modGuilds.GuildName(CInt(GetVar(CharFile, "Guild", "GUILDINDEX"))), FontTypeNames.FONTTYPE_INFO)
+        End If
+        
+        Ban = GetVar(CharFile, "FLAGS", "Ban")
+        Call WriteConsoleMsg(sendIndex, "Ban: " & Ban, FontTypeNames.FONTTYPE_INFO)
+        
+        If Ban = "1" Then
+            Call WriteConsoleMsg(sendIndex, "Ban por: " & GetVar(CharFile, charName, "BannedBy") & " Motivo: " & GetVar(BanDetailPath, charName, "Reason"), FontTypeNames.FONTTYPE_INFO)
+        End If
+    Else
+        Call WriteConsoleMsg(sendIndex, "El pj no existe: " & charName, FontTypeNames.FONTTYPE_INFO)
+    End If
+End Sub
+
+Sub SendUserInvTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName As String)
+'***************************************************
+'Author: Unknown
+'Last Modification: 19/09/2018
+'19/09/2018 CHOTS - Movido a FileIO
+'***************************************************
+
+On Error Resume Next
+
+    Dim j As Long
+    Dim CharFile As String, Tmp As String
+    Dim ObjInd As Long, ObjCant As Long
+    
+    CharFile = CharPath & charName & ".chr"
+    
+    If FileExist(CharFile, vbNormal) Then
+        Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "Inventory", "CantidadItems") & " objetos.", FontTypeNames.FONTTYPE_INFO)
+        
+        For j = 1 To MAX_INVENTORY_SLOTS
+            Tmp = GetVar(CharFile, "Inventory", "Obj" & j)
+            ObjInd = ReadField(1, Tmp, Asc("-"))
+            ObjCant = ReadField(2, Tmp, Asc("-"))
+            If ObjInd > 0 Then
+                Call WriteConsoleMsg(sendIndex, "Objeto " & j & " " & ObjData(ObjInd).Name & " Cantidad:" & ObjCant, FontTypeNames.FONTTYPE_INFO)
+            End If
+        Next j
+    Else
+        Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
+    End If
+End Sub
+
+Sub SendUserOROTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName As String)
+'***************************************************
+'Author: Unknown
+'Last Modification: 19/09/2018
+'19/09/2018 CHOTS - Movido a FileIO
+'***************************************************
+
+    Dim CharFile As String
+    
+On Error Resume Next
+    CharFile = CharPath & charName & ".chr"
+    
+    If FileExist(CharFile, vbNormal) Then
+        Call WriteConsoleMsg(sendIndex, charName, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Tiene " & GetVar(CharFile, "STATS", "BANCO") & " en el banco.", FontTypeNames.FONTTYPE_INFO)
+    Else
+        Call WriteConsoleMsg(sendIndex, "Usuario inexistente: " & charName, FontTypeNames.FONTTYPE_INFO)
+    End If
+End Sub
+
+Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
+'***************************************************
+'Author: Unknown
+'Last Modification: 19/09/2018
+'19/09/2018 CHOTS - Movido a FileIO
+'***************************************************
+
+    If PersonajeExiste(Nombre) Then
+        Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
+    Else
+        Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & Nombre, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Nivel: " & GetVar(CharPath & Nombre & ".chr", "stats", "elv") & "  EXP: " & GetVar(CharPath & Nombre & ".chr", "stats", "Exp") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "elu"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Energía: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Maná: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
+        
+        Call WriteConsoleMsg(sendIndex, "Menor Golpe/Mayor Golpe: " & GetVar(CharPath & Nombre & ".chr", "stats", "MaxHIT"), FontTypeNames.FONTTYPE_INFO)
+        
+        Call WriteConsoleMsg(sendIndex, "Oro: " & GetVar(CharPath & Nombre & ".chr", "stats", "GLD"), FontTypeNames.FONTTYPE_INFO)
+        
+#If ConUpTime Then
+        Dim TempSecs As Long
+        Dim TempStr As String
+        TempSecs = GetVar(CharPath & Nombre & ".chr", "INIT", "UpTime")
+        TempStr = (TempSecs \ 86400) & " Días, " & ((TempSecs Mod 86400) \ 3600) & " Horas, " & ((TempSecs Mod 86400) Mod 3600) \ 60 & " Minutos, " & (((TempSecs Mod 86400) Mod 3600) Mod 60) & " Segundos."
+        Call WriteConsoleMsg(sendIndex, "Tiempo Logeado: " & TempStr, FontTypeNames.FONTTYPE_INFO)
+#End If
+    
+        Call WriteConsoleMsg(sendIndex, "Dados: " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT1") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT2") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT3") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT4") & ", " & GetVar(CharPath & Nombre & ".chr", "ATRIBUTOS", "AT5"), FontTypeNames.FONTTYPE_INFO)
+    End If
+End Sub
+
+Public Function GetUserSaltCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'***************************************************
+    Dim AccountHash As String
+    Dim AccountName As String
+
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    GetUserSaltCharfile = GetVar(AccountPath & AccountName & ".acc", "INIT", "Salt")
+End Function
+
+Public Function GetUserPasswordCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'***************************************************
+    Dim AccountHash As String
+    Dim AccountName As String
+
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    GetUserPasswordCharfile = GetVar(AccountPath & AccountName & ".acc", "INIT", "Password")
+End Function
+
+Public Function GetAccountSaltCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+
+    GetAccountSaltCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Salt")
+End Function
+
+Public Function GetAccountPasswordCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'***************************************************
+
+    GetAccountPasswordCharfile = GetVar(AccountPath & UserName & ".acc", "INIT", "Password")
+End Function
+
+Public Function GetUserEmailCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'***************************************************
+
+    GetUserEmailCharfile = GetVar(CharPath & UserName & ".chr", "CONTACTO", "email")
+End Function
+
+Sub StorePasswordSaltCharfile(ByVal UserName As String, ByVal Password As String, ByVal Salt As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'***************************************************
+    Dim AccountHash As String
+    Dim AccountName As String
+
+    AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+    AccountName = GetVar(AccountPath & AccountHash & ".ach", "INIT", "UserName")
+
+    Call WriteVar(AccountPath & AccountName & ".acc", "INIT", "Password", Password)
+    Call WriteVar(AccountPath & AccountName & ".acc", "INIT", "Salt", Salt)
+End Sub
+
+Sub SaveUserEmailCharfile(ByVal UserName As String, ByVal Email As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "CONTACTO", "Email", Email)
+End Sub
+
+Sub SaveUserPunishmentCharfile(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "Cant", Number)
+    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Number, Reason)
+End Sub
+
+Sub AlterUserPunishmentCharfile(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & Number, Reason)
+End Sub
+
+Sub ResetUserFaccionesCharfile(ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+    Dim Char As String
+
+    Char = CharPath & UserName & ".chr"
+
+    Call WriteVar(Char, "FACCIONES", "EjercitoReal", 0)
+    Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
+    Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
+    Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
+    Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
+    Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
+    Call WriteVar(Char, "FACCIONES", "rArReal", 0)
+    Call WriteVar(Char, "FACCIONES", "rExCaos", 0)
+    Call WriteVar(Char, "FACCIONES", "rExReal", 0)
+    Call WriteVar(Char, "FACCIONES", "recCaos", 0)
+    Call WriteVar(Char, "FACCIONES", "recReal", 0)
+    Call WriteVar(Char, "FACCIONES", "Reenlistadas", 0)
+    Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
+    Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
+    Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+End Sub
+
+Sub KickUserCouncilsCharfile(ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "CONSEJO", "PERTENECE", 0)
+    Call WriteVar(CharPath & UserName & ".chr", "CONSEJO", "PERTENECECAOS", 0)
+End Sub
+
+Sub KickUserFaccionesCharfile(ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
+End Sub
+
+Sub KickUserChaosLegionCharfile(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoCaos", 0)
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & KickerName)
+End Sub
+
+Sub KickUserRoyalArmyCharfile(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "EjercitoReal", 0)
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", 200)
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Extra", "Expulsado por " & KickerName)
+End Sub
+
+Sub UpdateUserLoggedCharfile(ByVal UserName As String, ByVal Logged As Byte)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "INIT", "Logged", Logged)
+End Sub
+
+Public Function GetUserLastIpsCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+    Dim i As Byte
+    Dim list As String
+
+    For i = 1 To 5
+        list = list & i & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & i) & vbCrLf
+    Next i
+
+    GetUserLastIpsCharfile = list
+End Function
+
+Public Function GetUserSkillsCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+    Dim i As Byte
+    Dim message As String
+
+    For i = 1 To NUMSKILLS
+        message = message & "CHAR>" & SkillsNames(i) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & i) & vbCrLf
+    Next i
+
+    GetUserSkillsCharfile = message
+End Function
+
+Public Function GetUserFreeSkillsCharfile(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    GetUserFreeSkillsCharfile = val(GetVar(CharPath & UserName & ".chr", "STATS", "SKILLPTSLIBRES"))
+End Function
+
+Public Function GetUserTrainingTimeCharfile(ByVal UserName As String) As Long
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    GetUserTrainingTimeCharfile = val(GetVar(CharPath & UserName & ".chr", "RESEARCH", "TrainingTime"))
+End Function
+
+Sub SaveUserTrainingTimeCharfile(ByVal UserName As String, ByVal trainingTime As Long)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "RESEARCH", "TrainingTime", trainingTime)
+End Sub
+
+Public Function GetUserGuildIndexCharfile(ByRef UserName As String) As Integer
+'***************************************************
+'Author: Unknown
+'Last Modification: 26/09/2018
+'26/09/2018 CHOTS: Moved to FileIO
+'***************************************************
+    Dim Temps   As String
+    
+    Temps = GetVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX")
+
+    If IsNumeric(Temps) Then
+        GetUserGuildIndexCharfile = CInt(Temps)
+    Else
+        GetUserGuildIndexCharfile = 0
+    End If
+End Function
+
+Public Function GetUserGuildMemberCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserGuildMemberCharfile = GetVar(CharPath & UserName & ".chr", "GUILD", "Miembro")
+End Function
+
+Public Function GetUserGuildAspirantCharfile(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserGuildAspirantCharfile = val(GetVar(CharPath & UserName & ".chr", "GUILD", "ASPIRANTEA"))
+End Function
+
+Public Function GetUserGuildRejectionReasonCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserGuildRejectionReasonCharfile = GetVar(CharPath & UserName & ".chr", "GUILD", "MotivoRechazo")
+End Function
+
+Sub SaveUserGuildRejectionReasonCharfile(ByVal UserName As String, ByVal Reason As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "GUILD", "MotivoRechazo", Reason)
+End Sub
+
+Public Function UserBelongsToRoyalArmyCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    UserBelongsToRoyalArmyCharfile = CByte(GetVar(CharPath & UserName & ".chr", "Facciones", "EjercitoReal")) = 1
+End Function
+
+Public Function UserBelongsToChaosLegionCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    UserBelongsToChaosLegionCharfile = CByte(GetVar(CharPath & UserName & ".chr", "Facciones", "EjercitoCaos")) = 1
+End Function
+
+Public Function GetUserLevelCharfile(ByVal UserName As String) As Byte
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserLevelCharfile = val(GetVar(CharPath & UserName & ".chr", "Stats", "ELV"))
+End Function
+
+Public Function GetUserPromedioCharfile(ByVal UserName As String) As Long
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserPromedioCharfile = val(GetVar(CharPath & UserName & ".chr", "REP", "Promedio"))
+End Function
+
+Public Function GetUserReenlistsCharfile(ByVal UserName As String) As Byte
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserReenlistsCharfile = val(GetVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas"))
+End Function
+
+Sub SaveUserReenlistsCharfile(ByVal UserName As String, ByVal Reenlists As Byte)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "FACCIONES", "Reenlistadas", Reenlists)
+End Sub
+
+Public Function GetUserGuildPedidosCharfile(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    GetUserGuildPedidosCharfile = GetVar(CharPath & UserName & ".chr", "GUILD", "Pedidos")
+End Function
+
+Sub SaveUserGuildPedidosCharfile(ByVal UserName As String, ByVal Pedidos As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "GUILD", "Pedidos", Pedidos)
+End Sub
+
+Sub SaveUserGuildMemberCharfile(ByVal UserName As String, ByVal guilds As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "GUILD", "Miembro", guilds)
+End Sub
+
+Sub SaveUserGuildIndexCharfile(ByVal UserName As String, ByVal GuildIndex As Integer)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "GUILD", "GUILDINDEX", GuildIndex)
+End Sub
+
+Sub SaveUserGuildAspirantCharfile(ByVal UserName As String, ByVal AspirantIndex As Integer)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+
+    Call WriteVar(CharPath & UserName & ".chr", "GUILD", "ASPIRANTEA", AspirantIndex)
+End Sub
+
+Sub SendCharacterInfoCharfile(ByVal UserIndex As Integer, ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'***************************************************
+    Dim gName       As String
+    Dim UserFile    As clsIniManager
+    Dim Miembro     As String
+    Dim GuildActual As Integer
+
+    ' Get the character's current guild
+    GuildActual = GetUserGuildIndex(UserName)
+    If GuildActual > 0 And GuildActual <= CANTIDADDECLANES Then
+        gName = "<" & GuildName(GuildActual) & ">"
+    Else
+        gName = "Ninguno"
+    End If
+    
+    'Get previous guilds
+    Miembro = GetUserGuildMember(UserName)
+    If Len(Miembro) > 400 Then
+        Miembro = ".." & Right$(Miembro, 400)
+    End If
+
+    Set UserFile = New clsIniManager
+
+    With UserFile
+        .Initialize (CharPath & UserName & ".chr")
+    
+        Call Protocol.WriteCharacterInfo(UserIndex, UserName, .GetValue("INIT", "Raza"), .GetValue("INIT", "Clase"), _
+            .GetValue("INIT", "Genero"), .GetValue("STATS", "ELV"), .GetValue("STATS", "GLD"), _
+            .GetValue("STATS", "Banco"), .GetValue("REP", "Promedio"), .GetValue("GUILD", "Pedidos"), _
+            gName, Miembro, .GetValue("FACCIONES", "EjercitoReal"), .GetValue("FACCIONES", "EjercitoCaos"), _
+            .GetValue("FACCIONES", "CiudMatados"), .GetValue("FACCIONES", "CrimMatados"))
+
+    End With
+    
+    Set UserFile = Nothing
+End Sub
+
+Public Sub SaveNewAccountCharfile(ByVal UserName As String, ByVal Password As String, ByVal Salt As String, ByVal Hash As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim Manager As clsIniManager
+    Dim AccountFile As String
+
+    'CHOTS | First the account itself
+    Set Manager = New clsIniManager
+    AccountFile = AccountPath & UCase$(UserName) & ".acc"
+
+    With Manager
+
+        Call .ChangeValue("INIT", "Password", Password)
+        Call .ChangeValue("INIT", "Salt", Salt)
+        Call .ChangeValue("INIT", "Hash", Hash)
+        Call .ChangeValue("INIT", "FechaCreado", Date & " " & time)
+
+        Call .DumpFile(AccountFile)
+    End With
+
+    Set Manager = Nothing
+
+    'CHOTS | Now the account char files
+    Set Manager = New clsIniManager
+    AccountFile = AccountPath & Hash & ".ach"
+
+    With Manager
+        Call .ChangeValue("INIT", "UserName", UCase$(UserName))
+        Call .ChangeValue("INIT", "CantidadPersonajes", 0)
+
+        .DumpFile (AccountFile)
+    End With
+
+    Set Manager = Nothing
+
+    Exit Sub
+ErrorHandler:
+        Call LogError("Error in SaveNewAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
+End Sub
+
+Public Function CuentaExisteCharfile(ByVal UserName As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+
+    CuentaExisteCharfile = FileExist(AccountPath & UCase$(UserName) & ".acc", vbNormal)
+End Function
+
+Public Function PersonajePerteneceCuentaCharfile(ByVal UserName As String, ByVal AccountHash As String) As Boolean
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+    Dim CharfileHash As String
+    CharfileHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+
+    PersonajePerteneceCuentaCharfile = (AccountHash = CharfileHash)
+End Function
+
+Public Sub SaveUserToAccountCharfile(ByVal UserName As String, ByVal AccountHash As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+    Dim CantidadPersonajes As Byte
+    Dim AccountCharfile As String
+    AccountCharfile = AccountPath & AccountHash & ".ach"
+
+    If FileExist(AccountCharfile) Then
+        CantidadPersonajes = val(GetVar(AccountCharfile, "INIT", "CantidadPersonajes"))
+        CantidadPersonajes = CantidadPersonajes + 1
+
+        If CantidadPersonajes <= 10 Then
+            Call WriteVar(AccountCharfile, "INIT", "CantidadPersonajes", CantidadPersonajes)
+            Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & CantidadPersonajes, UserName)
+        Else
+            Call LogError("Error in SaveUserToAccountCharfile. Se intento crear mas de 10 personajes. Username: " & UserName & ". Hash: " & AccountHash)
+        End If
+    Else
+        Call LogError("Error in SaveUserToAccountCharfile. Cuenta inexistente de " & UserName & ". Hash: " & AccountHash)
+    End If
+End Sub
+
+Public Sub LoginAccountCharfile(ByVal UserIndex As Integer, ByVal UserName As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/10/2018
+'***************************************************
+On Error GoTo ErrorHandler
+    Dim i As Byte
+    Dim AccountHash As String
+    Dim NumberOfCharacters As Byte
+    Dim Characters() As AccountUser
+    Dim CurrentCharacter As String
+
+    AccountHash = GetVar(AccountPath & UCase$(UserName) & ".acc", "INIT", "Hash")
+    NumberOfCharacters = val(GetVar(AccountPath & AccountHash & ".ach", "INIT", "CantidadPersonajes"))
+
+    If NumberOfCharacters > 0 Then
+        ReDim Characters(1 To NumberOfCharacters) As AccountUser
+        For i = 1 To NumberOfCharacters
+            CurrentCharacter = GetVar(AccountPath & AccountHash & ".ach", "PERSONAJES", "Personaje" & i)
+            Characters(i).Name = CurrentCharacter
+            Characters(i).body = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Body"))
+            Characters(i).Head = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Head"))
+            Characters(i).weapon = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Arma"))
+            Characters(i).shield = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Escudo"))
+            Characters(i).helmet = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Casco"))
+            Characters(i).Class = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Clase"))
+            Characters(i).race = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Raza"))
+            Characters(i).Map = CInt(ReadField(1, GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position"), 45))
+            Characters(i).level = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "ELV"))
+            Characters(i).gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
+            Characters(i).criminal = (val(GetVar(CharPath & CurrentCharacter & ".chr", "REP", "Promedio")) < 0)
+            Characters(i).dead = CBool(val(GetVar(CharPath & CurrentCharacter & ".chr", "FLAGS", "Muerto")))
+            Characters(i).gameMaster = EsGmChar(CurrentCharacter)
+        Next i
+    End If
+    Call WriteUserAccountLogged(UserIndex, UserName, AccountHash, NumberOfCharacters, Characters)
+
+    Exit Sub
+ErrorHandler:
+        Call LogError("Error in LoginAccountCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
 End Sub

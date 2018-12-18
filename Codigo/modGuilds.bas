@@ -219,25 +219,21 @@ Private Sub UpdateGuildMembers(ByVal GuildIndex As Integer)
             End If
 
             If Sale Then
-                If m_EsGuildLeader(MemberName, GuildIndex) Then  'hay que sacarlo de las facciones
+                If m_EsGuildLeader(MemberName, GuildIndex) Then  'hay que sacarlo de las facciones. (CHOTS: no cuenta como reenlistada.)
                  
                     If UserIndex > 0 Then
                         If UserList(UserIndex).Faccion.ArmadaReal <> 0 Then
                             Call ExpulsarFaccionReal(UserIndex)
-                            ' No cuenta como reenlistada :p.
                             UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlistadas - 1
                         ElseIf UserList(UserIndex).Faccion.FuerzasCaos <> 0 Then
                             Call ExpulsarFaccionCaos(UserIndex)
-                            ' No cuenta como reenlistada :p.
                             UserList(UserIndex).Faccion.Reenlistadas = UserList(UserIndex).Faccion.Reenlistadas - 1
                         End If
                     Else
-                        If FileExist(CharPath & MemberName & ".chr") Then
-                            Call WriteVar(CharPath & MemberName & ".chr", "FACCIONES", "EjercitoCaos", 0)
-                            Call WriteVar(CharPath & MemberName & ".chr", "FACCIONES", "EjercitoReal", 0)
-                            Reenlistadas = GetVar(CharPath & MemberName & ".chr", "FACCIONES", "Reenlistadas")
-                            Call WriteVar(CharPath & MemberName & ".chr", "FACCIONES", "Reenlistadas", _
-                                    IIf(Reenlistadas > 1, Reenlistadas - 1, Reenlistadas))
+                        If PersonajeExiste(MemberName) Then
+                            Call KickUserFacciones(MemberName)
+                            Reenlistadas = GetUserReenlists(MemberName)
+                            Call SaveUserReenlists(MemberName, IIf(Reenlistadas > 1, Reenlistadas - 1, Reenlistadas))
                         End If
                     End If
                 Else    'sale si no es guildLeader
@@ -333,7 +329,7 @@ Dim GI          As Integer
         End If
     Else
         'pj offline
-        GI = GetGuildIndexFromChar(Expulsado)
+        GI = GetUserGuildIndex(Expulsado)
         If GI > 0 Then
             If m_PuedeSalirDeClan(Expulsado, GI, Expulsador) Then
                 Call guilds(GI).ExpulsarMiembro(Expulsado)
@@ -656,31 +652,30 @@ Dim f           As Byte
         Personaje = Replace(Personaje, ".", vbNullString)
     End If
     
-    If FileExist(CharPath & Personaje & ".chr") Then
-        Promedio = CLng(GetVar(CharPath & Personaje & ".chr", "REP", "Promedio"))
+    If PersonajeExiste(Personaje) Then
+        Promedio = GetUserPromedio(Personaje)
         Select Case guilds(GuildIndex).Alineacion
             Case ALINEACION_GUILD.ALINEACION_ARMADA
                 If Promedio >= 0 Then
-                    ELV = CInt(GetVar(CharPath & Personaje & ".chr", "Stats", "ELV"))
+                    ELV = GetUserLevel(Personaje)
                     If ELV >= 25 Then
-                        f = CByte(GetVar(CharPath & Personaje & ".chr", "Facciones", "EjercitoReal"))
+                        f = UserBelongsToRoyalArmy(Personaje)
                     End If
-                    m_EstadoPermiteEntrarChar = IIf(ELV >= 25, f <> 0, True)
+                    m_EstadoPermiteEntrarChar = IIf(ELV >= 25, f, True)
                 End If
             Case ALINEACION_GUILD.ALINEACION_CIUDA
                 m_EstadoPermiteEntrarChar = Promedio >= 0
             Case ALINEACION_GUILD.ALINEACION_CRIMINAL
                 m_EstadoPermiteEntrarChar = Promedio < 0
             Case ALINEACION_GUILD.ALINEACION_NEUTRO
-                m_EstadoPermiteEntrarChar = CByte(GetVar(CharPath & Personaje & ".chr", "Facciones", "EjercitoReal")) = 0
-                m_EstadoPermiteEntrarChar = m_EstadoPermiteEntrarChar And (CByte(GetVar(CharPath & Personaje & ".chr", "Facciones", "EjercitoCaos")) = 0)
+                m_EstadoPermiteEntrarChar = (UserBelongsToRoyalArmy(Personaje) = False And UserBelongsToChaosLegion(Personaje) = False)
             Case ALINEACION_GUILD.ALINEACION_LEGION
                 If Promedio < 0 Then
-                    ELV = CInt(GetVar(CharPath & Personaje & ".chr", "Stats", "ELV"))
+                    ELV = GetUserLevel(Personaje)
                     If ELV >= 25 Then
-                        f = CByte(GetVar(CharPath & Personaje & ".chr", "Facciones", "EjercitoCaos"))
+                        f = UserBelongsToChaosLegion(Personaje)
                     End If
-                    m_EstadoPermiteEntrarChar = IIf(ELV >= 25, f <> 0, True)
+                    m_EstadoPermiteEntrarChar = IIf(ELV >= 25, f, True)
                 End If
             Case Else
                 m_EstadoPermiteEntrarChar = True
@@ -972,33 +967,6 @@ errh:
     Call LogError("modGuilds.v_RutinaElecciones():" & Err.description)
     Resume proximo
 End Sub
-
-Private Function GetGuildIndexFromChar(ByRef PlayerName As String) As Integer
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-'aca si que vamos a violar las capas deliveradamente ya que
-'visual basic no permite declarar metodos de clase
-Dim Temps   As String
-    If InStrB(PlayerName, "\") <> 0 Then
-        PlayerName = Replace(PlayerName, "\", vbNullString)
-    End If
-    If InStrB(PlayerName, "/") <> 0 Then
-        PlayerName = Replace(PlayerName, "/", vbNullString)
-    End If
-    If InStrB(PlayerName, ".") <> 0 Then
-        PlayerName = Replace(PlayerName, ".", vbNullString)
-    End If
-    Temps = GetVar(CharPath & PlayerName & ".chr", "GUILD", "GUILDINDEX")
-    If IsNumeric(Temps) Then
-        GetGuildIndexFromChar = CInt(Temps)
-    Else
-        GetGuildIndexFromChar = 0
-    End If
-End Function
 
 Public Function GuildIndex(ByRef GuildName As String) As Integer
 '***************************************************
@@ -1649,7 +1617,7 @@ Public Sub a_RechazarAspiranteChar(ByRef Aspirante As String, ByVal guild As Int
     If InStrB(Aspirante, ".") <> 0 Then
         Aspirante = Replace(Aspirante, ".", "")
     End If
-    Call guilds(guild).InformarRechazoEnChar(Aspirante, Detalles)
+    Call SaveUserGuildRejectionReason(Aspirante, Detalles)
 End Sub
 
 Public Function a_ObtenerRechazoDeChar(ByRef Aspirante As String) As String
@@ -1668,8 +1636,8 @@ Public Function a_ObtenerRechazoDeChar(ByRef Aspirante As String) As String
     If InStrB(Aspirante, ".") <> 0 Then
         Aspirante = Replace(Aspirante, ".", "")
     End If
-    a_ObtenerRechazoDeChar = GetVar(CharPath & Aspirante & ".chr", "GUILD", "MotivoRechazo")
-    Call WriteVar(CharPath & Aspirante & ".chr", "GUILD", "MotivoRechazo", vbNullString)
+    a_ObtenerRechazoDeChar = GetUserGuildRejectionReason(Aspirante)
+    Call SaveUserGuildRejectionReason(Aspirante, vbNullString)
 End Function
 
 Public Function a_RechazarAspirante(ByVal UserIndex As Integer, ByRef Nombre As String, ByRef refError As String) As Boolean
@@ -1737,10 +1705,6 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
 
     Dim GI          As Integer
     Dim NroAsp      As Integer
-    Dim GuildName   As String
-    Dim UserFile    As clsIniManager
-    Dim Miembro     As String
-    Dim GuildActual As Integer
     Dim list()      As String
     Dim i           As Long
     
@@ -1783,41 +1747,16 @@ Public Sub SendDetallesPersonaje(ByVal UserIndex As Integer, ByVal Personaje As 
             Exit Sub
         End If
     End If
-    
-    'ahora traemos la info
-    
-    Set UserFile = New clsIniManager
-    
-    With UserFile
-        .Initialize (CharPath & Personaje & ".chr")
-        
-        ' Get the character's current guild
-        GuildActual = val(.GetValue("GUILD", "GuildIndex"))
-        If GuildActual > 0 And GuildActual <= CANTIDADDECLANES Then
-            GuildName = "<" & guilds(GuildActual).GuildName & ">"
-        Else
-            GuildName = "Ninguno"
-        End If
-        
-        'Get previous guilds
-        Miembro = .GetValue("GUILD", "Miembro")
-        If Len(Miembro) > 400 Then
-            Miembro = ".." & Right$(Miembro, 400)
-        End If
-        
-        Call Protocol.WriteCharacterInfo(UserIndex, Personaje, .GetValue("INIT", "Raza"), .GetValue("INIT", "Clase"), _
-                                .GetValue("INIT", "Genero"), .GetValue("STATS", "ELV"), .GetValue("STATS", "GLD"), _
-                                .GetValue("STATS", "Banco"), .GetValue("REP", "Promedio"), .GetValue("GUILD", "Pedidos"), _
-                                GuildName, Miembro, .GetValue("FACCIONES", "EjercitoReal"), .GetValue("FACCIONES", "EjercitoCaos"), _
-                                .GetValue("FACCIONES", "CiudMatados"), .GetValue("FACCIONES", "CrimMatados"))
-    End With
-    
-    Set UserFile = Nothing
-    
+
+    If Not Database_Enabled Then
+        Call SendCharacterInfoCharfile(UserIndex, Personaje)
+    Else
+        Call SendCharacterInfoDatabase(UserIndex, Personaje)
+    End If
+
     Exit Sub
 error:
-    Set UserFile = Nothing
-    If Not (FileExist(CharPath & Personaje & ".chr", vbArchive)) Then
+    If Not PersonajeExiste(Personaje) Then
         Call LogError("El usuario " & UserList(UserIndex).Name & " (" & UserIndex & _
                     " ) ha pedido los detalles del personaje " & Personaje & " que no se encuentra.")
     Else
@@ -1866,11 +1805,11 @@ Dim NuevoGuildIndex     As Integer
         Exit Function
     End If
 
-    ViejoSolicitado = GetVar(CharPath & UserList(UserIndex).Name & ".chr", "GUILD", "ASPIRANTEA")
+    ViejoSolicitado = GetUserGuildAspirant(UserList(UserIndex).Name)
 
     If LenB(ViejoSolicitado) <> 0 Then
         'borramos la vieja solicitud
-        ViejoGuildINdex = CInt(ViejoSolicitado)
+        ViejoGuildINdex = ViejoSolicitado
         If ViejoGuildINdex <> 0 Then
             ViejoNroAspirante = guilds(ViejoGuildINdex).NumeroDeAspirante(UserList(UserIndex).Name)
             If ViejoNroAspirante > 0 Then
@@ -1936,7 +1875,7 @@ Dim AspiranteUI     As Integer
             refError = Aspirante & " no puede entrar a un clan de alineación " & Alineacion2String(guilds(GI).Alineacion)
             Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
             Exit Function
-        ElseIf GetGuildIndexFromChar(Aspirante) Then
+        ElseIf GetUserGuildIndex(Aspirante) Then
             refError = Aspirante & " ya es parte de otro clan."
             Call guilds(GI).RetirarAspirante(Aspirante, NroAspirante)
             Exit Function
@@ -2005,3 +1944,124 @@ Public Function GuildFounder(ByVal GuildIndex As Integer) As String
     
     GuildFounder = guilds(GuildIndex).Fundador
 End Function
+
+Public Function GetUserGuildMember(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso
+'Returns the guilds the user has been member of
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildMember = GetUserGuildMemberCharfile(UserName)
+    Else
+        GetUserGuildMember = GetUserGuildMemberDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserGuildAspirant(ByVal UserName As String) As Integer
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Returns the guilds the user has been member of
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildAspirant = GetUserGuildAspirantCharfile(UserName)
+    Else
+        GetUserGuildAspirant = GetUserGuildAspirantDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserGuildRejectionReason(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Returns the reason why the user has not been accepted to the guild
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildRejectionReason = GetUserGuildRejectionReasonCharfile(UserName)
+    Else
+        GetUserGuildRejectionReason = GetUserGuildRejectionReasonDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserGuildPedidos(ByVal UserName As String) As String
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Returns the guilds the user asked to be a member of
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserGuildPedidos = GetUserGuildPedidosCharfile(UserName)
+    Else
+        GetUserGuildPedidos = GetUserGuildPedidosDatabase(UserName)
+    End If
+End Function
+
+Public Sub SaveUserGuildRejectionReason(ByVal UserName As String, ByVal Reason As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the rection reason for the user
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserGuildRejectionReasonCharfile(UserName, Reason)
+Else
+    Call SaveUserGuildRejectionReasonDatabase(UserName, Reason)
+End If
+
+End Sub
+
+Public Sub SaveUserGuildIndex(ByVal UserName As String, ByVal GuildIndex As Integer)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the guild index
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserGuildIndexCharfile(UserName, GuildIndex)
+Else
+    Call SaveUserGuildIndexDatabase(UserName, GuildIndex)
+End If
+
+End Sub
+
+Public Sub SaveUserGuildAspirant(ByVal UserName As String, ByVal AspirantIndex As Integer)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the guild Aspirant index
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserGuildAspirantCharfile(UserName, AspirantIndex)
+Else
+    Call SaveUserGuildAspirantDatabase(UserName, AspirantIndex)
+End If
+
+End Sub
+
+Public Sub SaveUserGuildMember(ByVal UserName As String, ByVal guilds As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the guilds the user has been member of
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserGuildMemberCharfile(UserName, guilds)
+Else
+    Call SaveUserGuildMemberDatabase(UserName, guilds)
+End If
+
+End Sub
+
+Public Sub SaveUserGuildPedidos(ByVal UserName As String, ByVal Pedidos As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the guilds the user has asked to be a member of
+'***************************************************
+If Not Database_Enabled Then
+    Call SaveUserGuildPedidosCharfile(UserName, Pedidos)
+Else
+    Call SaveUserGuildPedidosDatabase(UserName, Pedidos)
+End If
+
+End Sub

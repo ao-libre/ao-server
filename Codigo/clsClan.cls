@@ -274,28 +274,20 @@ End Sub
 Public Sub AceptarNuevoMiembro(ByRef Nombre As String)
 Dim OldQ    As Integer
 Dim OldQs   As String
-Dim ruta    As String
 
-ruta = CharPath & Nombre & ".chr"
-    If FileExist(ruta) Then
-        Call WriteVar(ruta, "GUILD", "GUILDINDEX", p_GuildNumber)
-        Call WriteVar(ruta, "GUILD", "AspiranteA", "0")
-        'CantPs = GetVar(CharPath & Nombre & ".chr", "GUILD", "ClanesParticipo")
-        'If IsNumeric(CantPs) Then
-        '    CantP = CInt(CantPs)
-        'Else
-        '    CantP = 0
-        'End If
-        'Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "ClanesParticipo", CantP + 1)
-        OldQs = GetVar(MEMBERSFILE, "INIT", "NroMembers")
-        If IsNumeric(OldQs) Then
-            OldQ = CInt(OldQs)
-        Else
-            OldQ = 0
-        End If
-        Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", OldQ + 1)
-        Call WriteVar(MEMBERSFILE, "Members", "Member" & OldQ + 1, Nombre)
+If PersonajeExiste(Nombre) Then
+    Call SaveUserGuildIndex(Nombre, p_GuildNumber)
+    Call SaveUserGuildAspirant(Nombre, 0)
+
+    OldQs = GetVar(MEMBERSFILE, "INIT", "NroMembers")
+    If IsNumeric(OldQs) Then
+        OldQ = CInt(OldQs)
+    Else
+        OldQ = 0
     End If
+    Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", OldQ + 1)
+    Call WriteVar(MEMBERSFILE, "Members", "Member" & OldQ + 1, Nombre)
+End If
 
 End Sub
 
@@ -306,7 +298,7 @@ Dim i           As Integer
 Dim EsMiembro   As Boolean
 Dim MiembroDe   As String
 
-    If LenB(dir$(CharPath & Nombre & ".chr")) <> 0 Then
+    If PersonajeExiste(Nombre) Then
         OldQ = CInt(GetVar(MEMBERSFILE, "INIT", "NroMembers"))
         i = 1
         Nombre = UCase$(Nombre)
@@ -316,7 +308,7 @@ Dim MiembroDe   As String
         EsMiembro = i <= OldQ
         
         If EsMiembro Then
-            Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "GuildIndex", vbNullString)
+            Call SaveUserGuildIndex(Nombre, 0)
             While i < OldQ
                 Temps = GetVar(MEMBERSFILE, "Members", "Member" & i + 1)
                 Call WriteVar(MEMBERSFILE, "Members", "Member" & i, Temps)
@@ -326,13 +318,13 @@ Dim MiembroDe   As String
             'seteo la cantidad de miembros nueva
             Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", OldQ - 1)
             'lo echo a el
-            MiembroDe = GetVar(CharPath & Nombre & ".chr", "GUILD", "Miembro")
+            MiembroDe = GetUserGuildMember(Nombre)
             If Not InStr(1, MiembroDe, p_GuildName, vbTextCompare) > 0 Then
                 If LenB(MiembroDe) <> 0 Then
                     MiembroDe = MiembroDe & ","
                 End If
                 MiembroDe = MiembroDe & p_GuildName
-                Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "Miembro", MiembroDe)
+                Call SaveUserGuildMember(Nombre, MiembroDe)
             End If
         End If
 
@@ -409,7 +401,7 @@ Dim OldQI   As Integer
             Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & i, "Nombre", Nombre)
             Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & i, "Detalle", IIf(Trim$(Peticion) = vbNullString, "Peticion vacia", Peticion))
             Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", OldQI + 1)
-            Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "ASPIRANTEA", p_GuildNumber)
+            Call SaveUserGuildAspirant(Nombre, p_GuildNumber)
             Exit Sub
         End If
     Next i
@@ -427,16 +419,15 @@ Dim i       As Integer
     Else
         OldQI = 1
     End If
-    'Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & NroAspirante, "Nombre", vbNullString)
-    'Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & NroAspirante, "Detalle", vbNullString)
-    Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "ASPIRANTEA", "0")
-    Pedidos = GetVar(CharPath & Nombre & ".chr", "GUILD", "Pedidos")
+
+    Call SaveUserGuildAspirant(Nombre, 0)
+    Pedidos = GetUserGuildPedidos(Nombre)
     If Not InStr(1, Pedidos, p_GuildName, vbTextCompare) > 0 Then
         If LenB(Pedidos) <> 0 Then
             Pedidos = Pedidos & ","
         End If
         Pedidos = Pedidos & p_GuildName
-        Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "Pedidos", Pedidos)
+        Call SaveUserGuildPedidos(Nombre, Pedidos)
     End If
     
     Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", OldQI - 1)
@@ -447,11 +438,6 @@ Dim i       As Integer
     
     Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & modGuilds.MAXASPIRANTES, "Nombre", vbNullString)
     Call WriteVar(SOLICITUDESFILE, "SOLICITUD" & modGuilds.MAXASPIRANTES, "Detalle", vbNullString)
-    
-End Sub
-
-Public Sub InformarRechazoEnChar(ByRef Nombre As String, ByRef Detalles As String)
-    Call WriteVar(CharPath & Nombre & ".chr", "GUILD", "MotivoRechazo", Detalles)
 End Sub
 
 '
@@ -795,12 +781,12 @@ Public Function Iterador_ProximoGM() As Integer
     End If
 End Function
 
-Public Function Iterador_ProximaRelacion(ByVal r As RELACIONES_GUILD) As Integer
+Public Function Iterador_ProximaRelacion(ByVal R As RELACIONES_GUILD) As Integer
     
     While p_IteradorRelaciones < UBound(p_Relaciones)
         
         p_IteradorRelaciones = p_IteradorRelaciones + 1
-        If p_Relaciones(p_IteradorRelaciones) = r Then
+        If p_Relaciones(p_IteradorRelaciones) = R Then
             Iterador_ProximaRelacion = p_IteradorRelaciones
             Exit Function
         End If

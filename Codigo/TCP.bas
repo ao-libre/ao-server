@@ -32,6 +32,10 @@ Attribute VB_Name = "TCP"
 #End If
 Option Explicit
 
+#If False Then
+    Dim x, y, n, mapa, Email, length As Variant
+#End If
+
 #If UsarQueSocket = 0 Then
 ' General constants used with most of the controls
 Public Const INVALID_HANDLE As Integer = -1
@@ -269,6 +273,41 @@ AsciiValidos = True
 
 End Function
 
+Public Function CheckMailString(ByVal sString As String) As Boolean
+On Error GoTo errHnd
+    Dim lPos  As Long
+    Dim lX    As Long
+    Dim iAsc  As Integer
+
+    '1er test: Busca un simbolo @
+    lPos = InStr(sString, "@")
+    If (lPos <> 0) Then
+        '2do test: Busca un simbolo . despues de @ + 1
+        If Not (InStr(lPos, sString, ".", vbBinaryCompare) > lPos + 1) Then _
+            Exit Function
+
+        '3er test: Recorre todos los caracteres y los valida
+        For lX = 0 To Len(sString) - 1
+            If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
+                iAsc = Asc(mid$(sString, (lX + 1), 1))
+                If Not CMSValidateChar_(iAsc) Then _
+                    Exit Function
+            End If
+        Next lX
+
+        'Finale
+        CheckMailString = True
+    End If
+errHnd:
+End Function
+'  Corregida por Maraxus para que reconozca como validas casillas con puntos antes de la arroba
+Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
+    CMSValidateChar_ = (iAsc >= 48 And iAsc <= 57) Or _
+                        (iAsc >= 65 And iAsc <= 90) Or _
+                        (iAsc >= 97 And iAsc <= 122) Or _
+                        (iAsc = 95) Or (iAsc = 45) Or (iAsc = 46)
+End Function
+
 Function Numeric(ByVal cad As String) As Boolean
 '***************************************************
 'Author: Unknown
@@ -336,8 +375,8 @@ ValidateSkills = True
     
 End Function
 
-Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password As String, ByVal UserRaza As eRaza, ByVal UserSexo As eGenero, ByVal UserClase As eClass, _
-                    ByRef UserEmail As String, ByVal Hogar As eCiudad, ByVal Head As Integer)
+Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef AccountHash As String, ByVal UserRaza As eRaza, ByVal UserSexo As eGenero, ByVal UserClase As eClass, _
+                    ByVal Hogar As eCiudad, ByVal Head As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 3/12/2009
@@ -350,13 +389,9 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Passw
 '11/19/2009: Pato - Modifico la maná inicial del bandido.
 '11/19/2009: Pato - Asigno los valores iniciales de ExpSkills y EluSkills.
 '03/12/2009: Budi - Optimización del código.
+'12/10/2018: CHOTS - Sistema de cuentas
 '*************************************************
 Dim i As Long
-Dim Salt As String
-
-'SHA256
-Dim oSHA256 As CSHA256
-Set oSHA256 = New CSHA256
 
 With UserList(UserIndex)
 
@@ -376,7 +411,7 @@ With UserList(UserIndex)
     End If
     
     '¿Existe el personaje?
-    If FileExist(CharPath & UCase$(Name) & ".chr", vbNormal) = True Then
+    If PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "Ya existe el personaje.")
         Exit Sub
     End If
@@ -411,8 +446,10 @@ With UserList(UserIndex)
     .clase = UserClase
     .raza = UserRaza
     .Genero = UserSexo
-    .email = UserEmail
     .Hogar = Hogar
+
+    'CHOTS | Accounts
+    .AccountHash = AccountHash
     
     '[Pablo (Toxic Waste) 9/01/08]
     .Stats.UserAtributos(eAtributos.Fuerza) = .Stats.UserAtributos(eAtributos.Fuerza) + ModRaza(UserRaza).Fuerza
@@ -604,16 +641,87 @@ End With
 'Valores Default de facciones al Activar nuevo usuario
 Call ResetFacciones(UserIndex)
 
-'Aca Guardamos y Hasheamos el password + Salt
-Salt = RandomString(10)
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password", oSHA256.SHA256(Password & Salt)) 'grabamos el password aqui afuera, para no mantenerlo cargado en memoria
-Call WriteVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt", Salt) 'Grabamos la Salt
+Call SaveUser(UserIndex)
 
-Call SaveUser(UserIndex, CharPath & UCase$(Name) & ".chr")
+'CHOTS | Account in charfile
+If Not Database_Enabled Then
+    Call SaveUserToAccountCharfile(Name, AccountHash)
+End If
   
 'Open User
-Call ConnectUser(UserIndex, Name, Password)
+Call ConnectUser(UserIndex, Name, AccountHash)
   
+End Sub
+
+Sub CreateNewAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef Password As String)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 12/10/2018
+'Crea una nueva cuenta
+'*************************************************
+    'SHA256
+    Dim Salt As String
+    Dim oSHA256 As CSHA256
+    Set oSHA256 = New CSHA256
+
+    If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
+        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Exit Sub
+    End If
+
+    '¿Existe el personaje?
+    If CuentaExiste(UserName) Then
+        Call WriteErrorMsg(UserIndex, "Ya existe la cuenta.")
+        Exit Sub
+    End If
+        
+    'Aca Guardamos y Hasheamos el password + Salt
+    Salt = RandomString(10)
+
+    Call SaveNewAccount(UserName, oSHA256.SHA256(Password & Salt), Salt)
+
+    Call ConnectAccount(UserIndex, UserName, Password)
+End Sub
+
+Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef Password As String)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 12/10/2018
+'Crea una nueva cuenta
+'*************************************************
+    'SHA256
+    Dim oSHA256 As CSHA256
+    Dim Salt As String
+    Set oSHA256 = New CSHA256
+
+    If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
+        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Exit Sub
+    End If
+
+    '¿Existe el personaje?
+    If Not CuentaExiste(UserName) Then
+        Call WriteErrorMsg(UserIndex, "No existe la cuenta.")
+        Exit Sub
+    End If
+        
+    'Aca Guardamos y Hasheamos el password + Salt
+    '¿Es el passwd valido?
+    Salt = GetAccountSalt(UserName) ' Obtenemos la Salt
+    If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
+        Call WriteErrorMsg(UserIndex, "Password incorrecto.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
+
+    If Not Database_Enabled Then
+        Call LoginAccountCharfile(UserIndex, UserName)
+    Else
+        Call SaveAccountLastLoginDatabase(UserName, UserList(UserIndex).ip)
+        Call LoginAccountDatabase(UserIndex, UserName)
+    End If
+
 End Sub
 
 #If UsarQueSocket = 1 Or UsarQueSocket = 2 Then
@@ -686,9 +794,6 @@ Sub CloseSocket(ByVal UserIndex As Integer)
 '***************************************************
 
 On Error GoTo ErrHandler
-    
-    
-    
     UserList(UserIndex).ConnID = -1
 
     If UserIndex = LastUser And LastUser > 1 Then
@@ -733,8 +838,6 @@ Dim CoNnEcTiOnId As Long
     CoNnEcTiOnId = UserList(UserIndex).ConnID
     
     'call logindex(UserIndex, "******> Sub CloseSocket. ConnId: " & CoNnEcTiOnId & " Cerrarlo: " & Cerrarlo)
-    
-    
   
     UserList(UserIndex).ConnID = -1 'inabilitamos operaciones en socket
 
@@ -973,7 +1076,7 @@ ValidateChr = UserList(UserIndex).Char.Head <> 0 _
 
 End Function
 
-Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password As String)
+Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef AccountHash As String)
 '***************************************************
 'Autor: Unknown (orginal version)
 'Last Modification: 24/07/2010 (ZaMa)
@@ -983,14 +1086,10 @@ Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Password
 '11/27/2009: Budi - Se envian los InvStats del personaje y su Fuerza y Agilidad
 '03/12/2009: Budi - Optimización del código
 '24/07/2010: ZaMa - La posicion de comienzo es namehuak, como se habia definido inicialmente.
+'12/10/2019: CHOTS - Sistema de cuentas
 '***************************************************
 Dim n As Integer
 Dim tStr As String
-Dim Salt As String
-
-'SHA256
-Dim oSHA256 As CSHA256
-Set oSHA256 = New CSHA256
 
 With UserList(UserIndex)
 
@@ -1029,7 +1128,7 @@ With UserList(UserIndex)
     End If
     
     '¿Existe el personaje?
-    If Not FileExist(CharPath & UCase$(Name) & ".chr", vbNormal) Then
+    If Not PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1037,9 +1136,8 @@ With UserList(UserIndex)
     End If
     
     '¿Es el passwd valido?
-    Salt = GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Salt") ' Obtenemos la Salt
-    If oSHA256.SHA256(Password & Salt) <> GetVar(CharPath & UCase$(Name) & ".chr", "INIT", "Password") Then
-        Call WriteErrorMsg(UserIndex, "Password incorrecto.")
+    If Not PersonajePerteneceCuenta(Name, AccountHash) Then
+        Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
@@ -1099,9 +1197,9 @@ With UserList(UserIndex)
     .Name = Name
     
     'Load the user here
-    Call LoadUserFromCharfile(UserIndex)
+    Call LoadUser(UserIndex)
 
-     If Not ValidateChr(UserIndex) Then
+    If Not ValidateChr(UserIndex) Then
         Call WriteErrorMsg(UserIndex, "Error en el personaje.")
         Call CloseSocket(UserIndex)
         Exit Sub
@@ -1305,7 +1403,7 @@ With UserList(UserIndex)
     .flags.UserLogged = True
     
     'usado para borrar Pjs
-    Call WriteVar(CharPath & .Name & ".chr", "INIT", "Logged", "1")
+    Call UpdateUserLogged(.Name, 1)
     
     Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
     
@@ -1425,7 +1523,7 @@ Sub ResetFacciones(ByVal UserIndex As Integer)
         .CiudadanosMatados = 0
         .CriminalesMatados = 0
         .FuerzasCaos = 0
-        .FechaIngreso = "No ingresó a ninguna Facción"
+        .FechaIngreso = vbNullString
         .RecibioArmaduraCaos = 0
         .RecibioArmaduraReal = 0
         .RecibioExpInicialCaos = 0
@@ -1518,6 +1616,8 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
 '*************************************************
     With UserList(UserIndex)
         .Name = vbNullString
+        .ID = 0
+        .AccountHash = vbNullString
         .desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
@@ -1525,7 +1625,7 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
         .Pos.y = 0
         .ip = vbNullString
         .clase = 0
-        .email = vbNullString
+        .Email = vbNullString
         .Genero = 0
         .Hogar = 0
         .raza = 0
@@ -1539,7 +1639,6 @@ Sub ResetBasicUserInfo(ByVal UserIndex As Integer)
             .ELU = 0
             .Exp = 0
             .def = 0
-            '.CriminalesMatados = 0
             .NPCsMuertos = 0
             .UsuariosMatados = 0
             .SkillPts = 0
@@ -1831,10 +1930,10 @@ With UserList(UserIndex)
     Call Statistics.UserDisconnected(UserIndex)
     
     ' Grabamos el personaje del usuario
-    Call SaveUser(UserIndex, CharPath & Name & ".chr")
+    Call SaveUser(UserIndex)
     
     'usado para borrar Pjs
-    Call WriteVar(CharPath & .Name & ".chr", "INIT", "Logged", "0")
+    Call UpdateUserLogged(.Name, 0)
     
     'Quitar el dialogo
     'If MapInfo(Map).NumUsers > 0 Then
@@ -1956,7 +2055,7 @@ Function RandomString(cb As Integer) As String
     Randomize
     Dim rgch As String
     rgch = "abcdefghijklmnopqrstuvwxyz"
-    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$?"
+    rgch = rgch & UCase(rgch) & "0123456789" & "#@!~$()-_"
 
     Dim i As Long
     For i = 1 To cb

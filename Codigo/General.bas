@@ -30,7 +30,7 @@ Attribute VB_Name = "General"
 Option Explicit
 
 #If False Then
-    Dim X, Y, Map, k, ErrHandler, Obj, index, N As Variant
+    Dim X, Y, Map, k, ErrHandler, Obj, index, N, email As Variant
 #End If
 
 Global LeerNPCs As clsIniManager
@@ -87,7 +87,7 @@ End With
 End Sub
 
 
-Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal b As Boolean)
+Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal x As Integer, ByVal y As Integer, ByVal b As Boolean)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
@@ -101,23 +101,23 @@ Sub Bloquear(ByVal toMap As Boolean, ByVal sndIndex As Integer, ByVal X As Integ
 '***************************************************
 
     If toMap Then
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(X, Y, b))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(x, y, b))
     Else
-        Call WriteBlockPosition(sndIndex, X, Y, b)
+        Call WriteBlockPosition(sndIndex, x, y, b)
     End If
 
 End Sub
 
 
-Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal Map As Integer, ByVal x As Integer, ByVal y As Integer) As Boolean
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-        With MapData(Map, X, Y)
+    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And y > 0 And y < 101 Then
+        With MapData(Map, x, y)
             If ((.Graphic(1) >= 1505 And .Graphic(1) <= 1520) Or _
             (.Graphic(1) >= 5665 And .Graphic(1) <= 5680) Or _
             (.Graphic(1) >= 13547 And .Graphic(1) <= 13562)) And _
@@ -133,13 +133,13 @@ Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) A
 
 End Function
 
-Private Function HayLava(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+Private Function HayLava(ByVal Map As Integer, ByVal x As Integer, ByVal y As Integer) As Boolean
 '***************************************************
 'Autor: Nacho (Integer)
 'Last Modification: 03/12/07
 '***************************************************
-    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
-        If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
+    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And y > 0 And y < 101 Then
+        If MapData(Map, x, y).Graphic(1) >= 5837 And MapData(Map, x, y).Graphic(1) <= 5852 Then
             HayLava = True
         Else
             HayLava = False
@@ -166,7 +166,7 @@ On Error GoTo ErrHandler
     
     For i = TrashCollector.Count To 1 Step -1
         Set d = TrashCollector(i)
-        Call EraseObj(1, d.Map, d.X, d.Y)
+        Call EraseObj(1, d.Map, d.x, d.y)
         Call TrashCollector.Remove(i)
         Set d = Nothing
     Next i
@@ -186,14 +186,14 @@ Sub EnviarSpawnList(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    Dim k As Long
+    Dim K As Long
     Dim npcNames() As String
     
     ReDim npcNames(1 To UBound(SpawnList)) As String
     
-    For k = 1 To UBound(SpawnList)
-        npcNames(k) = SpawnList(k).NpcName
-    Next k
+    For K = 1 To UBound(SpawnList)
+        npcNames(K) = SpawnList(K).NpcName
+    Next K
     
     Call WriteSpawnList(UserIndex, npcNames())
 
@@ -346,6 +346,7 @@ On Error Resume Next
     IniPath = App.Path & "\"
     DatPath = App.Path & "\Dat\"
     CharPath = App.Path & "\Charfile\"
+    AccountPath = App.Path & "\Account\"
     
     ' Skills by level
     LevelSkill(1).LevelValue = 3
@@ -467,14 +468,14 @@ On Error Resume Next
 
     With Prision
         .Map = 66
-        .X = 75
-        .Y = 47
+        .x = 75
+        .y = 47
     End With
     
     With Libertad
         .Map = 66
-        .X = 75
-        .Y = 65
+        .x = 75
+        .y = 65
     End With
 
     MaxUsers = 0
@@ -588,11 +589,11 @@ Private Sub LogServerStartTime()
 'Last Modify Date: 15/03/2011
 'Logs Server Start Time.
 '*****************************************************************
-    Dim N As Integer
-    N = FreeFile
-    Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
-    Close #N
+    Dim n As Integer
+    n = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #n
+    Print #n, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+    Close #n
 
 End Sub
 
@@ -753,6 +754,25 @@ On Error GoTo ErrHandler
     Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
+    Exit Sub
+
+ErrHandler:
+
+End Sub
+
+Public Sub LogDatabaseError(desc As String)
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 09/10/2018
+'***************************************************
+
+On Error GoTo ErrHandler
+
+    Dim nfile As Integer
+    nfile = FreeFile ' obtenemos un canal
+    Open App.Path & "\logs\database.log" For Append Shared As #nfile
+    Print #nfile, Date & " " & time & " " & desc
+    Close #nfile
     Exit Sub
 
 ErrHandler:
@@ -1128,11 +1148,11 @@ On Error Resume Next
     If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
     
     'Log it
-    Dim N As Integer
-    N = FreeFile
-    Open App.Path & "\logs\Main.log" For Append Shared As #N
-    Print #N, Date & " " & time & " servidor reiniciado."
-    Close #N
+    Dim n As Integer
+    n = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #n
+    Print #n, Date & " " & time & " servidor reiniciado."
+    Close #n
     
     'Ocultar
     
@@ -1156,9 +1176,9 @@ Public Function Intemperie(ByVal UserIndex As Integer) As Boolean
 
     With UserList(UserIndex)
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 1 And _
-               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 2 And _
-               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 4 Then Intemperie = True
+            If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 1 And _
+               MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 2 And _
+               MapData(.Pos.Map, .Pos.x, .Pos.y).trigger <> 4 Then Intemperie = True
         Else
             Intemperie = False
         End If
@@ -1259,7 +1279,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
             If .Counters.Lava < IntervaloFrio Then 'Usamos el mismo intervalo que el del frio
                 .Counters.Lava = .Counters.Lava + 1
             Else
-                If HayLava(.Pos.Map, .Pos.X, .Pos.Y) Then
+                If HayLava(.Pos.Map, .Pos.x, .Pos.y) Then
                     Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = .Stats.MinHp - Porcentaje(.Stats.MaxHp, 5)
                     
@@ -1541,9 +1561,9 @@ Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, 
 '***************************************************
 
     With UserList(UserIndex)
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 1 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 2 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 4 Then Exit Sub
         
         
         Dim massta As Integer
@@ -1573,7 +1593,7 @@ Public Sub EfectoVeneno(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-    Dim N As Integer
+    Dim n As Integer
     
     With UserList(UserIndex)
         If .Counters.Veneno < IntervaloVeneno Then
@@ -1581,8 +1601,8 @@ Public Sub EfectoVeneno(ByVal UserIndex As Integer)
         Else
           Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas morirás.", FontTypeNames.FONTTYPE_VENENO)
           .Counters.Veneno = 0
-          N = RandomNumber(1, 5)
-          .Stats.MinHp = .Stats.MinHp - N
+          n = RandomNumber(1, 5)
+          .Stats.MinHp = .Stats.MinHp - n
           If .Stats.MinHp < 1 Then Call UserDie(UserIndex)
           Call WriteUpdateHP(UserIndex)
         End If
@@ -1670,9 +1690,9 @@ Public Sub Sanar(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, ByVal
 '***************************************************
 
     With UserList(UserIndex)
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And _
-           MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 1 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 2 And _
+           MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 4 Then Exit Sub
         
         Dim mashit As Integer
         'con el paso del tiempo va sanando....pero muy lentamente ;-)
@@ -1752,7 +1772,7 @@ On Error GoTo ErrHandler
                  
                         If .Counters.Pena < 1 Then
                             .Counters.Pena = 0
-                            Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
+                            Call WarpUserChar(i, Libertad.Map, Libertad.x, Libertad.y, True)
                             Call WriteConsoleMsg(i, "¡Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                             Call FlushBuffer(i)
                         End If
@@ -1766,7 +1786,7 @@ On Error GoTo ErrHandler
                 
                 If Not .Pos.Map = 0 Then
                 'Counter de piquete
-                    If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+                    If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ANTIPIQUETE Then
                             If .flags.Muerto = 0 Then
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
                                 Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
@@ -1844,7 +1864,7 @@ Sub GuardarUsuarios()
     Dim i As Integer
     For i = 1 To LastUser
         If UserList(i).flags.UserLogged Then
-            Call SaveUser(i, CharPath & UCase$(UserList(i).Name) & ".chr", False)
+            Call SaveUser(i, False)
         End If
     Next i
     
@@ -1855,6 +1875,142 @@ Sub GuardarUsuarios()
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
 
     haciendoBK = False
+End Sub
+
+Sub SaveUser(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 06/12/2018 (CHOTS)
+'Saves the User, in the database or charfile
+'*************************************************
+
+On Error GoTo ErrorHandler
+
+Dim UserFile As String
+
+With UserList(UserIndex)
+
+    If .clase = 0 Or .Stats.ELV = 0 Then
+        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
+        Exit Sub
+    End If
+
+    If .flags.Mimetizado = 1 Then
+        .Char.body = .CharMimetizado.body
+        .Char.Head = .CharMimetizado.Head
+        .Char.CascoAnim = .CharMimetizado.CascoAnim
+        .Char.ShieldAnim = .CharMimetizado.ShieldAnim
+        .Char.WeaponAnim = .CharMimetizado.WeaponAnim
+        .Counters.Mimetismo = 0
+        .flags.Mimetizado = 0
+        ' Se fue el efecto del mimetismo, puede ser atacado por npcs
+        .flags.Ignorado = False
+    End If
+
+    Dim Prom As Long
+    Prom = (-.Reputacion.AsesinoRep) + _
+        (-.Reputacion.BandidoRep) + _
+        .Reputacion.BurguesRep + _
+        (-.Reputacion.LadronesRep) + _
+        .Reputacion.NobleRep + _
+        .Reputacion.PlebeRep
+    Prom = Prom / 6
+    .Reputacion.Promedio = Prom
+
+    If Not Database_Enabled Then
+        Call SaveUserToCharfile(UserIndex, SaveTimeOnline)
+    Else
+        Call SaveUserToDatabase(UserIndex, SaveTimeOnline)
+    End If
+End With
+
+Exit Sub
+
+ErrorHandler:
+    Call LogError("Error en SaveUserToCharfile: " & UserFile)
+
+End Sub
+
+Sub LoadUser(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 09/10/2018 (CHOTS)
+'Loads the user from the database or charfile
+'*************************************************
+
+On Error GoTo ErrorHandler
+
+    If Not Database_Enabled Then
+        Call LoadUserFromCharfile(UserIndex)
+    Else
+        Call LoadUserFromDatabase(UserIndex)
+    End If
+
+    With UserList(UserIndex)
+        If .flags.Paralizado = 1 Then
+            .Counters.Paralisis = IntervaloParalizado
+        End If
+
+        'Obtiene el indice-objeto del arma
+        If .Invent.WeaponEqpSlot > 0 Then
+            .Invent.WeaponEqpObjIndex = .Invent.Object(.Invent.WeaponEqpSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto del armadura
+        If .Invent.ArmourEqpSlot > 0 Then
+            .Invent.ArmourEqpObjIndex = .Invent.Object(.Invent.ArmourEqpSlot).ObjIndex
+            .flags.Desnudo = 0
+        Else
+            .flags.Desnudo = 1
+        End If
+
+        'Obtiene el indice-objeto del escudo
+        If .Invent.EscudoEqpSlot > 0 Then
+            .Invent.EscudoEqpObjIndex = .Invent.Object(.Invent.EscudoEqpSlot).ObjIndex
+        End If
+        
+        'Obtiene el indice-objeto del casco
+        If .Invent.CascoEqpSlot > 0 Then
+            .Invent.CascoEqpObjIndex = .Invent.Object(.Invent.CascoEqpSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto barco
+        If .Invent.BarcoSlot > 0 Then
+            .Invent.BarcoObjIndex = .Invent.Object(.Invent.BarcoSlot).ObjIndex
+        End If
+
+        'Obtiene el indice-objeto municion
+        If .Invent.MunicionEqpSlot > 0 Then
+            .Invent.MunicionEqpObjIndex = .Invent.Object(.Invent.MunicionEqpSlot).ObjIndex
+        End If
+
+        '[Alejo]
+        'Obtiene el indice-objeto anilo
+        If .Invent.AnilloEqpSlot > 0 Then
+            .Invent.AnilloEqpObjIndex = .Invent.Object(.Invent.AnilloEqpSlot).ObjIndex
+        End If
+
+        If .Invent.MochilaEqpSlot > 0 Then
+            .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
+        End If
+
+        If .flags.Muerto = 0 Then
+            .Char = .OrigChar
+        Else
+            .Char.body = iCuerpoMuerto
+            .Char.Head = iCabezaMuerto
+            .Char.WeaponAnim = NingunArma
+            .Char.ShieldAnim = NingunEscudo
+            .Char.CascoAnim = NingunCasco
+            .Char.heading = eHeading.SOUTH
+        End If
+    End With
+
+Exit Sub
+
+ErrorHandler:
+    Call LogError("Error en LoadUser: " & UserList(UserIndex).Name & " - " & Err.Number & " - " & Err.description)
+
 End Sub
 
 
@@ -1902,5 +2058,411 @@ Public Sub FreeCharIndexes()
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
+    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.x, UserList(index).Pos.y))
+End Sub
+
+Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'Saves the ban flag and reason
+'***************************************************
+    If Not Database_Enabled Then
+        Call SaveBanCharfile(UserName, Reason, BannedBy)
+    Else
+        Call SaveBanDatabase(UserName, Reason, BannedBy)
+    End If
+End Sub
+
+Public Function GetUserAmountOfPunishments(ByVal UserName As String) As Integer
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'Get the user number of punishments
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserAmountOfPunishments = GetUserAmountOfPunishmentsCharfile(UserName)
+    Else
+        GetUserAmountOfPunishments = GetUserAmountOfPunishmentsDatabase(UserName)
+    End If
+End Function
+
+Public Sub SendUserPunishments(ByVal UserIndex As Integer, ByVal UserName As String, ByVal Count As Integer)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 18/09/2018
+'Writes a console msg for each punishment
+'***************************************************
+    If Not Database_Enabled Then
+        Call SendUserPunishmentsCharfile(UserIndex, UserName, Count)
+    Else
+        Call SendUserPunishmentsDatabase(UserIndex, UserName, Count)
+    End If
+End Sub
+
+Public Function GetUserPos(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 19/09/2018
+'Get the user position
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserPos = GetUserPosCharfile(UserName)
+    Else
+        GetUserPos = GetUserPosDatabase(UserName)
+    End If
+End Function
+
+Public Function GetAccountSalt(ByVal AccountName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password Salt
+'***************************************************
+    If Not Database_Enabled Then
+        GetAccountSalt = GetAccountSaltCharfile(AccountName)
+    Else
+        GetAccountSalt = GetAccountSaltDatabase(AccountName)
+    End If
+End Function
+
+Public Function GetUserSalt(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password Salt
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserSalt = GetUserSaltCharfile(UserName)
+    Else
+        GetUserSalt = GetUserSaltDatabase(UserName)
+    End If
+End Function
+
+Public Function GetAccountPassword(ByVal AccountName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password
+'***************************************************
+    If Not Database_Enabled Then
+        GetAccountPassword = GetAccountPasswordCharfile(AccountName)
+    Else
+        GetAccountPassword = GetAccountPasswordDatabase(AccountName)
+    End If
+End Function
+
+Public Function GetUserPassword(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Password
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserPassword = GetUserPasswordCharfile(UserName)
+    Else
+        GetUserPassword = GetUserPasswordDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserEmail(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Email
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserEmail = GetUserEmailCharfile(UserName)
+    Else
+        GetUserEmail = GetUserEmailDatabase(UserName)
+    End If
+End Function
+
+Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String, ByVal Salt As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves the password and salt
+'***************************************************
+    If Not Database_Enabled Then
+        Call StorePasswordSaltCharfile(UserName, Password, Salt)
+    Else
+        Call StorePasswordSaltDatabase(UserName, Password, Salt)
+    End If
+End Sub
+
+Public Sub SaveUserEmail(ByVal UserName As String, ByVal email As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves the email
+'***************************************************
+    If Not Database_Enabled Then
+        Call SaveUserEmailCharfile(UserName, email)
+    Else
+        Call SaveUserEmailDatabase(UserName, email)
+    End If
+End Sub
+
+Public Sub SaveUserPunishment(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves a new punishment
+'***************************************************
+    If Not Database_Enabled Then
+        Call SaveUserPunishmentCharfile(UserName, Number, Reason)
+    Else
+        Call SaveUserPunishmentDatabase(UserName, Number, Reason)
+    End If
+End Sub
+
+Public Sub AlterUserPunishment(ByVal UserName As String, ByVal Number As Integer, ByVal Reason As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 21/09/2018
+'Saves a new punishment
+'***************************************************
+    If Not Database_Enabled Then
+        Call AlterUserPunishmentCharfile(UserName, Number, Reason)
+    Else
+        Call AlterUserPunishmentDatabase(UserName, Number, Reason)
+    End If
+End Sub
+
+Public Sub ResetUserFacciones(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Reset the imperial an legionary armies
+'***************************************************
+    If Not Database_Enabled Then
+        Call ResetUserFaccionesCharfile(UserName)
+    Else
+        Call ResetUserFaccionesDatabase(UserName)
+    End If
+End Sub
+
+Public Sub KickUserCouncils(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from both councils
+'***************************************************
+    If Not Database_Enabled Then
+        Call KickUserCouncilsCharfile(UserName)
+    Else
+        Call KickUserCouncilsDatabase(UserName)
+    End If
+End Sub
+
+Public Sub KickUserFacciones(ByVal UserName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from both factions
+'***************************************************
+    If Not Database_Enabled Then
+        Call KickUserFaccionesCharfile(UserName)
+    Else
+        Call KickUserFaccionesDatabase(UserName)
+    End If
+End Sub
+
+Public Sub KickUserChaosLegion(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from ChaosLegion
+'***************************************************
+    If Not Database_Enabled Then
+        Call KickUserChaosLegionCharfile(UserName, KickerName)
+    Else
+        Call KickUserChaosLegionDatabase(UserName)
+    End If
+End Sub
+
+Public Sub KickUserRoyalArmy(ByVal UserName As String, ByVal KickerName As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Kicks the user from RoyalArmy
+'***************************************************
+    If Not Database_Enabled Then
+        Call KickUserRoyalArmyCharfile(UserName, KickerName)
+    Else
+        Call KickUserRoyalArmyDatabase(UserName)
+    End If
+End Sub
+
+Public Sub UpdateUserLogged(ByVal UserName As String, ByVal Logged As Byte)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Updates the logged value for the user
+'***************************************************
+    If Not Database_Enabled Then
+        Call UpdateUserLoggedCharfile(UserName, Logged)
+    Else
+        Call UpdateUserLoggedDatabase(UserName, Logged)
+    End If
+End Sub
+
+Public Function GetUserLastIps(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Last IPs list
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserLastIps = GetUserLastIpsCharfile(UserName)
+    Else
+        GetUserLastIps = GetUserLastIpsDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserSkills(ByVal UserName As String) As String
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 20/09/2018
+'Get the user Skills list
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserSkills = GetUserSkillsCharfile(UserName)
+    Else
+        GetUserSkills = GetUserSkillsDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserFreeSkills(ByVal UserName As String) As Integer
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Get the number of free skillspoints
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserFreeSkills = GetUserFreeSkillsCharfile(UserName)
+    Else
+        GetUserFreeSkills = GetUserFreeSkillsDatabase(UserName)
+    End If
+End Function
+
+Public Sub SaveUserTrainingTime(ByVal UserName As String, ByVal trainingTime As Long)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Updates the trainingTime value for the user
+'***************************************************
+    If Not Database_Enabled Then
+        Call SaveUserTrainingTimeCharfile(UserName, trainingTime)
+    Else
+        Call SaveUserTrainingTimeDatabase(UserName, trainingTime)
+    End If
+End Sub
+
+Public Function GetUserTrainingTime(ByVal UserName As String) As Long
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 24/09/2018
+'Get the training time in minutes
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserTrainingTime = GetUserTrainingTimeCharfile(UserName)
+    Else
+        GetUserTrainingTime = GetUserTrainingTimeDatabase(UserName)
+    End If
+End Function
+
+Public Function UserBelongsToRoyalArmy(ByVal UserName As String) As Boolean
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Check if the user belongs to Royal Army
+'***************************************************
+    If Not Database_Enabled Then
+        UserBelongsToRoyalArmy = UserBelongsToRoyalArmyCharfile(UserName)
+    Else
+        UserBelongsToRoyalArmy = UserBelongsToRoyalArmyDatabase(UserName)
+    End If
+End Function
+
+Public Function UserBelongsToChaosLegion(ByVal UserName As String) As Boolean
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Check if the user belongs to Chaos Legion
+'***************************************************
+    If Not Database_Enabled Then
+        UserBelongsToChaosLegion = UserBelongsToChaosLegionCharfile(UserName)
+    Else
+        UserBelongsToChaosLegion = UserBelongsToChaosLegionDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserLevel(ByVal UserName As String) As Byte
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Level
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserLevel = GetUserLevelCharfile(UserName)
+    Else
+        GetUserLevel = GetUserLevelDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserPromedio(ByVal UserName As String) As Long
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Reputation Average
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserPromedio = GetUserPromedioCharfile(UserName)
+    Else
+        GetUserPromedio = GetUserPromedioDatabase(UserName)
+    End If
+End Function
+
+Public Function GetUserReenlists(ByVal UserName As String) As Byte
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Get the User Legion reenlists
+'***************************************************
+    If Not Database_Enabled Then
+        GetUserReenlists = GetUserReenlistsCharfile(UserName)
+    Else
+        GetUserReenlists = GetUserReenlistsDatabase(UserName)
+    End If
+End Function
+
+Public Sub SaveUserReenlists(ByVal UserName As String, ByVal Reenlists As Byte)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 26/09/2018
+'Updates the number of reenlists
+    '***************************************************
+    If Not Database_Enabled Then
+        Call SaveUserReenlistsCharfile(UserName, Reenlists)
+    Else
+        Call SaveUserReenlistsDatabase(UserName, Reenlists)
+    End If
+End Sub
+
+Public Sub SaveNewAccount(ByVal UserName As String, ByVal Password As String, ByVal Salt As String)
+'***************************************************
+'Autor: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'Saves a new account
+'***************************************************
+    Dim Hash As String
+    Hash = RandomString(32)
+
+    If Not Database_Enabled Then
+        Call SaveNewAccountCharfile(UserName, Password, Salt, Hash)
+    Else
+        Call SaveNewAccountDatabase(UserName, Password, Salt, Hash)
+    End If
 End Sub

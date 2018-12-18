@@ -258,7 +258,8 @@ With UserList(UserIndex)
         
         .Faccion.RecibioArmaduraReal = 1
         .Faccion.NivelIngreso = .Stats.ELV
-        .Faccion.FechaIngreso = Date
+        .Faccion.FechaIngreso = DatePart("yyyy", Date) & "-" & DatePart("m", Date) & "-" & DatePart("d", Date)
+
         'Esto por ahora es inútil, siempre va a ser cero, pero bueno, despues va a servir.
         .Faccion.MatadosIngreso = .Faccion.CiudadanosMatados
         
@@ -611,7 +612,7 @@ With UserList(UserIndex)
         
         .Faccion.RecibioArmaduraCaos = 1
         .Faccion.NivelIngreso = .Stats.ELV
-        .Faccion.FechaIngreso = Date
+        .Faccion.FechaIngreso = DatePart("yyyy", Date) & "-" & DatePart("m", Date) & "-" & DatePart("d", Date)
     
         .Faccion.RecibioExpInicialCaos = 1
         .Faccion.RecompensasCaos = 0
