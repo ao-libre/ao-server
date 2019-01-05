@@ -34,7 +34,7 @@ https://www.reddit.com/r/argentumonlineoficial/comments/9v4dln/serverini_sumario
 
 #### Autoupdates:
 
-El programa al iniciar comparara la actual version del programa que se encuentra en `server.ini` en el parámetro `Version` con la ultima version que se encuentra en el [Endpoint Github Releases](https://api.github.com/repos/ao-libre/ao-server/releases/latest). En caso de ser diferente, se ejecuta nuestro programa `ao-autoupdate` para poder hacer el update.
+El programa al iniciar comparara la actual version del programa que se encuentra en `server.ini` en el parámetro `VersionTagRelease` con la ultima version que se encuentra en el [Endpoint Github Releases](https://api.github.com/repos/ao-libre/ao-server/releases/latest). En caso de ser diferente, se ejecuta nuestro programa `ao-autoupdate` para poder hacer el update.
 
 Para mas información sobre este proceso:
 
