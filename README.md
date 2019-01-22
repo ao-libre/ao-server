@@ -3,9 +3,6 @@
 
 ![Screenshot](https://preview.ibb.co/cojUf0/Screen-Shot-2018-11-04-at-6-53-52-PM.png)
 
-Mas informacion:
-
-* http://www.gs-zone.org/temas/cliente-y-servidor-13-3-dx8-v1.95611/
 
 ## Wiki Desarrollo Argentum Online
 [Manual para entender el codigo de Argentum Online](http://es.dao.wikia.com/wiki/Wiki_Desarrollo_Argentum_Online).
@@ -41,3 +38,5 @@ Para mas información sobre este proceso:
 [Funcion para comparar versiones](https://github.com/ao-libre/ao-server/blob/master/Codigo/frmCargando.frm#L137)
 
 [Codigo fuente ao-autoupdate](https://github.com/ao-libre/ao-autoupdate)
+
+Codigo fuente utilizado como base: http://www.gs-zone.org/temas/cliente-y-servidor-13-3-dx8-v1.95611/
