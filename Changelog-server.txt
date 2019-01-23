@@ -610,6 +610,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
  * 03/07/2011 : Agrego y modifico logs de ítems. (Pato)
  
 - 0.13.6
+
 * 23/08/2018 : Bug solucionado: Sacerdote no cura veneno (Cucsifae)
 * 25/08/2018 : Se agrego Encriptacion de passwords (Cucsifae)
 * 02/09/2018 : Se agrego Animacion de ataque: paquete para enviar la anim a otros users (Cucsifae)
@@ -622,8 +623,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 25/08/2018 : Se agrego Encriptacion de passwords (Cucsifae)
 * 26/09/2018 : Se agregaron Multiplicadores de Exp y oro en el Init (Cucsifae)
 * 16/10/2018 : Implemented version checking with github releases, if the version differs it will open the app ao-autoupdate to do the update. (Recox)
-* 1/11/2018 : Added parameter in server.ini to customize the time in jail and also the time for the "Antipiquete" (block paths or entries to cities) (Cucsifae)
-* 2/11/2018 : Added multiplier parameter for "Oficios" such as "Tala" "Pesca" "Minar" in the server.ini (CHOTS)
-* 4/11/2018 : Changed WritedGuldChat to WriteConsoleMsg to fix print of MOTD.ini messages (Cucsifae) 
-* 5/11/2018 : Configurable Dice values in Server.ini with parameters MaxDados and MinDados (CHOTS)
+* 01/11/2018 : Added parameter in server.ini to customize the time in jail and also the time for the "Antipiquete" (block paths or entries to cities) (Cucsifae)
+* 02/11/2018 : Added multiplier parameter for "Oficios" such as "Tala" "Pesca" "Minar" in the server.ini (CHOTS)
+* 04/11/2018 : Changed WritedGuldChat to WriteConsoleMsg to fix print of MOTD.ini messages (Cucsifae) 
+* 05/11/2018 : Configurable Dice values in Server.ini with parameters MaxDados and MinDados (CHOTS)
 * 10/11/2018 : Clean BanIps.dat file to avoid false positives, Reseted all the number in the file apuesta.dat to 0 (Recox)
+* 11/11/2018 : Deleted unused properties in file Server.ini, deleted unused files and binaries from the repository (Recox)
+* 04/12/2018 : Change command printed in message in the console when try to create a Pretoriano NPC with /ACC (CHOTS)
