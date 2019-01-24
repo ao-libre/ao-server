@@ -21,6 +21,16 @@ En este archivo se pueden escribir textos que apareceran a los usuarios al conec
 #### Error - Librerias faltantes (missing .dll)
 En la carpeta `Librerias` estan todas las librerias necesarias para iniciar el server sin errores, copiar el contenido de la carpeta en `c:/Windows`
 
+#### Error - Al abrir el proyecto en Visual Basic 6 no puede cargar todas las dependencias:
+Este es un error comun que les suele pasar a varias personas, esto es debido que el EOL del archivo esta corrupto.
+Visual Basic 6 lee el .vbp en CLRF, hay varias formas de solucionarlo:
+
+Opcion a:
+Con Notepad++ cambiar el EOL del archivo a CLRS
+
+Opcion b:
+Abrir un editor de texto y reemplazar todos los `'\n'` por `'\r\n'`
+
 
 #### Server.ini - Summary:
 Sumario explicando cada una de los valores utilizados en el archivo de configuracion [Server.ini.](Server.ini)
