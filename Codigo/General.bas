@@ -54,22 +54,22 @@ With UserList(UserIndex)
                 Case eRaza.Drow
                     CuerpoDesnudo = 32
                 Case eRaza.Elfo
-                    CuerpoDesnudo = 210
+                    CuerpoDesnudo = 21
                 Case eRaza.Gnomo
-                    CuerpoDesnudo = 222
+                    CuerpoDesnudo = 53
                 Case eRaza.Enano
                     CuerpoDesnudo = 53
             End Select
         Case eGenero.Mujer
             Select Case .raza
                 Case eRaza.Humano
-                    CuerpoDesnudo = 39
+                    CuerpoDesnudo = 259
                 Case eRaza.Drow
                     CuerpoDesnudo = 40
                 Case eRaza.Elfo
                     CuerpoDesnudo = 259
                 Case eRaza.Gnomo
-                    CuerpoDesnudo = 260
+                    CuerpoDesnudo = 60
                 Case eRaza.Enano
                     CuerpoDesnudo = 60
             End Select
