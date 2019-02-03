@@ -6827,7 +6827,7 @@ On Error GoTo ErrHandler
         Else
             storedPass = GetUserPassword(UserList(UserIndex).Name)
             
-            If oldPass2 <> oldPass Then
+            If storedPass <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password", newPass) 'Guardmaos el nuevo pass
