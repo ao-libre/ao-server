@@ -33,7 +33,14 @@ Option Explicit
     Dim length, Obj As Variant
 #End If
 
-
+' Nuevo Centinela
+Type CentinelaUser
+     centinelaIndex     As Byte         'Centinela del usuario.
+     Codigo             As String       'Código que debe ingresar.
+     CentinelaCheck     As Boolean      'Si respondió o no.
+     Revisando          As Boolean      'Si tiene centinela.
+     UltimaRevision     As Long         'Ultima revisión al usuario.
+End Type
 
 Private Type tCountersServidor
     Limpieza As Integer
@@ -1361,6 +1368,8 @@ Public Type User
     incomingData As clsByteQueue
     
     CurrentInventorySlots As Byte
+
+    CentinelaUsuario As CentinelaUser
 End Type
 
 
