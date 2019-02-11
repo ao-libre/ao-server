@@ -1891,6 +1891,7 @@ Public Enum eGMCommands
     RecordListRequest
     RecordDetailsRequest
     ExitDestroy             '/DE
+    ToggleCentinelActivated '/CENTINELAACTIVADO
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1

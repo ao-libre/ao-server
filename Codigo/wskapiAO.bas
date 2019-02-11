@@ -515,7 +515,7 @@ Public Sub EventoSockClose(ByVal Slot As Integer)
     
     'maTih.-  Nuevo centinela.
     If UserList(Slot).CentinelaUsuario.centinelaIndex <> 0 Then
-       Call mod_Centinela.UsuarioInActivo(Slot)
+       Call modCentinela.UsuarioInActivo(Slot)
     End If
 
     If UserList(Slot).flags.UserLogged Then
