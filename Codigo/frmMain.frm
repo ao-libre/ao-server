@@ -102,6 +102,12 @@ Begin VB.Form frmMain
       TabIndex        =   2
       Top             =   720
       Width           =   4935
+      Begin VB.Timer Auditoria 
+         Enabled         =   0   'False
+         Interval        =   1000
+         Left            =   840
+         Top             =   1440
+      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
@@ -317,6 +323,28 @@ Sub CheckIdleUser()
     Next iUserIndex
 End Sub
 
+Private Sub Auditoria_Timer()
+On Error GoTo errhand
+Static centinelSecs As Byte
+centinelSecs = centinelSecs + 1
+
+If centinelSecs = 5 Then
+    'Every 5 seconds, we try to call the player's attention so it will report the code.
+    Call modCentinela.AvisarUsuarios
+    
+    centinelSecs = 0
+End If
+
+Call PasarSegundo 'sistema de desconexion de 10 segs
+
+Exit Sub
+
+errhand:
+
+Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
+Resume Next
+
+End Sub
 
 Private Sub AutoSave_Timer()
 
@@ -333,6 +361,9 @@ MinsPjesSave = MinsPjesSave + 1
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
 Call ModAreas.AreasOptimizacion
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+
+'Actualizamos el Centinela
+Call modCentinela.ChekearUsuarios
 
 'Actualizamos la lluvia
 Call tLluviaEvent

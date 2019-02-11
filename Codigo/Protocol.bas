@@ -297,11 +297,12 @@ Private Enum ClientPacketID
     moveItem = 129
     LoginExistingAccount = 130 'CHOTS | Accounts
     LoginNewAccount = 131 'CHOTS | Accounts
+    CentinelReport = 132
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 131
+Private Const LAST_CLIENT_PACKET_ID As Byte = 132
 
 Public Enum FontTypeNames
     FONTTYPE_TALK
@@ -1355,6 +1356,9 @@ With UserList(UserIndex)
             
         Case eGMCommands.ExitDestroy
             Call HandleExitDestroy(UserIndex)
+
+        Case eGMCommands.ToggleCentinelActivated            '/CENTINELAACTIVADO
+            Call HandleToggleCentinelActivated(UserIndex)
         
     End Select
 End With
@@ -6342,6 +6346,32 @@ On Error GoTo 0
     
     If error <> 0 Then _
         Err.Raise error
+End Sub
+
+''
+' Handles the "CentinelReport" message.
+'
+' @param    userIndex The index of the user sending the message.
+ 
+Private Sub HandleCentinelReport(ByVal userIndex As Integer)
+'***************************************************
+'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modification: 02/05/2012
+'                         Nuevo centinela (maTih.-)
+'***************************************************
+    
+Dim NotBuff As New clsByteQueue
+    
+    With UserList(userIndex)
+        Call NotBuff.CopyBuffer(.incomingData)
+        
+        Call NotBuff.ReadByte
+                
+        Call modCentinela.IngresaClave(userIndex, NotBuff.ReadASCIIString())
+        
+        Call .incomingData.CopyBuffer(NotBuff)
+        
+    End With
 End Sub
 
 
@@ -13658,6 +13688,28 @@ Public Sub HandleDoBackUp(ByVal UserIndex As Integer)
         Call LogGM(.Name, .Name & " ha hecho un backup.")
         
         Call ES.DoBackUp 'Sino lo confunde con la id del paquete
+    End With
+End Sub
+
+''
+' Handle the "ToggleCentinelActivated" message
+'
+' @param userIndex The index of the user sending the message
+ 
+Public Sub HandleToggleCentinelActivated(ByVal userIndex As Integer)
+'***************************************************
+'Author: Lucas Tavolaro Ortiz (Tavo)
+'Last Modification: 02/05/2012
+'                         Nuevo centinela (maTih.-)
+'***************************************************
+    With UserList(userIndex)
+        'Remove Packet ID
+        Call .incomingData.ReadByte
+        
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        Call modCentinela.CambiarEstado(userIndex)
+        
     End With
 End Sub
 

@@ -512,6 +512,12 @@ End Sub
 
 Public Sub EventoSockClose(ByVal Slot As Integer)
 #If UsarQueSocket = 1 Then
+    
+    'maTih.-  Nuevo centinela.
+    If UserList(Slot).CentinelaUsuario.centinelaIndex <> 0 Then
+       Call modCentinela.UsuarioInActivo(Slot)
+    End If
+
     If UserList(Slot).flags.UserLogged Then
         Call CloseSocketSL(Slot)
         Call Cerrar_Usuario(Slot)

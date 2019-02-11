@@ -747,6 +747,11 @@ On Error GoTo ErrHandler
         If .ConnID <> -1 Then
             Call CloseSocketSL(UserIndex)
         End If
+
+        'Nuevo centinela - maTih.-
+        If UserList(userIndex).CentinelaUsuario.centinelaIndex <> 0 Then
+            Call mod_Centinela.UsuarioInActivo(userIndex)
+        End If
         
         'mato los comercios seguros
         If .ComUsu.DestUsu > 0 Then
