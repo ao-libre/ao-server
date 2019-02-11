@@ -1,3 +1,4 @@
+Attribute VB_Name = "modCentinela"
 ' programado por maTih.-
 
 ' TODO: CONFIGURAR ESTOS PARAMETROS 
