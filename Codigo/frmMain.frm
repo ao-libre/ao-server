@@ -102,6 +102,12 @@ Begin VB.Form frmMain
       TabIndex        =   2
       Top             =   720
       Width           =   4935
+      Begin VB.Timer Auditoria 
+         Enabled         =   0   'False
+         Interval        =   1000
+         Left            =   840
+         Top             =   1440
+      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
