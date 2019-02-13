@@ -750,7 +750,7 @@ On Error GoTo ErrHandler
 
         'Nuevo centinela - maTih.-
         If UserList(userIndex).CentinelaUsuario.centinelaIndex <> 0 Then
-            Call mod_Centinela.UsuarioInActivo(userIndex)
+            Call modCentinela.UsuarioInActivo(userIndex)
         End If
         
         'mato los comercios seguros
