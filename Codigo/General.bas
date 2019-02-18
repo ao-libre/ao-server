@@ -30,7 +30,7 @@ Attribute VB_Name = "General"
 Option Explicit
 
 #If False Then
-    Dim X, Y, Map, k, ErrHandler, Obj, index, N As Variant
+    Dim X, Y, Map, k, ErrHandler, Obj, index, N, email As Variant
 #End If
 
 Global LeerNPCs As clsIniManager

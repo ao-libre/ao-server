@@ -30,7 +30,7 @@ Attribute VB_Name = "ES"
 Option Explicit
 
 #If False Then
-    Dim X, Y, N, Map, Mapa, max, value As Variant
+    Dim X, Y, N, Map, Mapa, Email, max, value As Variant
 #End If
 
 Public Sub CargarSpawnList()
@@ -1583,6 +1583,7 @@ Sub LoadSini()
 '***************************************************
 'Author: Unknown
 'Last Modification: 05/11/2018 (CHOTS)
+'CHOTS: Database params
 'Cucsifae: Agregados multiplicadores exp y oro
 'CHOTS: Agregado multiplicador oficio
 'CHOTS: Agregado min y max Dados
@@ -1721,6 +1722,13 @@ Sub LoadSini()
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
+
+    'CHOTS | Database
+    Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
+    Database_Host = GetVar(IniPath & "Server.ini", "DATABASE", "Host")
+    Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
+    Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
+    Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
       
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
