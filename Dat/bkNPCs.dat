@@ -2905,13 +2905,14 @@ MinHp=0
 ReSpawn=0
 BackUp=1
 Domable=0
-NroItems=6
+NroItems=7
 Obj1=240-1000
 Obj2=527-1000
 Obj3=486-1000
 Obj4=507-1000
 Obj5=502-1000
 Obj6=707-1000
+Obj7=867-1000
 
 [NPC73]
 Name=Armaduras
