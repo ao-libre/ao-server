@@ -6860,8 +6860,7 @@ On Error GoTo ErrHandler
             If storedPass <> oldPass Then
                 Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Password", newPass) 'Guardmaos el nuevo pass
-                Call WriteVar(CharPath & UserList(UserIndex).Name & ".chr", "INIT", "Salt", Salt) 'Guardamos la Salt
+                Call StorePasswordSalt(UserList(UserIndex).Name, newPass, Salt)
                 Call WriteConsoleMsg(UserIndex, "La contraseña fue cambiada con éxito.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
@@ -8003,8 +8002,8 @@ On Error GoTo ErrHandler
                     CharPrivs = GetCharPrivs(UserName)
                     
                     If (CharPrivs And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios)) <> 0 Or ((CharPrivs And (PlayerType.Dios Or PlayerType.Admin) <> 0) And (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0) Then
-                        miPos = GetVar(CharPath & UserName & ".chr", "INIT", "POSITION")
-                        Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & " (Offline): " & ReadField(1, miPos, 45) & ", " & ReadField(2, miPos, 45) & ", " & ReadField(3, miPos, 45) & ".", FontTypeNames.FONTTYPE_INFO)
+                        miPos = GetUserPos(UserName)
+                        Call WriteConsoleMsg(UserIndex, "Ubicación  " & UserName & " (Offline): " & miPos & ".", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
                     If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
@@ -12519,13 +12518,11 @@ On Error GoTo ErrHandler
                         UserName = Replace(UserName, "/", "")
                 End If
                 
-                If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                    Call LogGM(.Name, " borro la pena: " & punishment & "-" & _
-                      GetVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment) _
-                      & " de " & UserName & " y la cambió por: " & NewText)
-                    
-                    Call WriteVar(CharPath & UserName & ".chr", "PENAS", "P" & punishment, LCase$(.Name) & ": <" & NewText & "> " & Date & " " & time)
-                    
+                If PersonajeExiste(UserName) Then
+                    Call LogGM(.Name, " borro la pena: " & punishment _
+                        & " de " & UserName & " y la cambió por: " & NewText)
+
+                    Call AlterUserPunishment(UserName, punishment, LCase$(.Name) & ": <" & NewText & "> " & Date & " " & time)
                     Call WriteConsoleMsg(UserIndex, "Pena modificada.", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
@@ -12687,11 +12684,8 @@ On Error GoTo ErrHandler
             If validCheck Then
                 Call LogGM(.Name, "/LASTIP " & UserName)
                 
-                If FileExist(CharPath & UserName & ".chr", vbNormal) Then
-                    lista = "Las ultimas IPs con las que " & UserName & " se conectó son:"
-                    For LoopC = 1 To 5
-                        lista = lista & vbCrLf & LoopC & " - " & GetVar(CharPath & UserName & ".chr", "INIT", "LastIP" & LoopC)
-                    Next LoopC
+                If PersonajeExiste(UserName) Then
+                    lista = "Las ultimas IPs con las que " & UserName & " se conectó son:" & vbCrLf & GetUserLastIps(UserName)
                     Call WriteConsoleMsg(UserIndex, lista, FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call WriteConsoleMsg(UserIndex, "Charfile """ & UserName & """ inexistente.", FontTypeNames.FONTTYPE_INFO)
@@ -14277,24 +14271,8 @@ On Error GoTo ErrHandler
             If tUser > 0 Then
                 Call ResetFacciones(tUser)
             Else
-                Char = CharPath & UserName & ".chr"
-                
-                If FileExist(Char, vbNormal) Then
-                    Call WriteVar(Char, "FACCIONES", "EjercitoReal", 0)
-                    Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
-                    Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
-                    Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
-                    Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
-                    Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
-                    Call WriteVar(Char, "FACCIONES", "rArReal", 0)
-                    Call WriteVar(Char, "FACCIONES", "rExCaos", 0)
-                    Call WriteVar(Char, "FACCIONES", "rExReal", 0)
-                    Call WriteVar(Char, "FACCIONES", "recCaos", 0)
-                    Call WriteVar(Char, "FACCIONES", "recReal", 0)
-                    Call WriteVar(Char, "FACCIONES", "Reenlistadas", 0)
-                    Call WriteVar(Char, "FACCIONES", "NivelIngreso", 0)
-                    Call WriteVar(Char, "FACCIONES", "MatadosIngreso", 0)
-                    Call WriteVar(Char, "FACCIONES", "NextRecompensa", 0)
+                If PersonajeExiste(UserName) Then
+                    Call ResetUserFacciones(UserName)
                 Else
                     Call WriteConsoleMsg(UserIndex, "El personaje " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
                 End If

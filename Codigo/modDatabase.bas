@@ -697,7 +697,7 @@ On Error GoTo ErrorHandler
 
     PersonajeExisteDatabase = (Database_RecordSet.RecordCount > 0)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -807,7 +807,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -829,7 +829,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -858,7 +858,7 @@ On Error GoTo ErrorHandler
 
     GetUserGuildIndexDatabase = SanitizeNullValue(Database_RecordSet!guild_index, 0)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -880,7 +880,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -902,7 +902,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -931,7 +931,7 @@ On Error GoTo ErrorHandler
 
     PersonajeCantidadVotosDatabase = CInt(Database_RecordSet!votes_amount)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -962,7 +962,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 
@@ -991,7 +991,7 @@ On Error GoTo ErrorHandler
 
     GetUserAmountOfPunishmentsDatabase = CInt(Database_RecordSet!punishments)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1023,7 +1023,7 @@ On Error GoTo ErrorHandler
     End If
 
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1051,7 +1051,7 @@ On Error GoTo ErrorHandler
 
     GetUserPosDatabase = Database_RecordSet!pos_map & "-" & Database_RecordSet!pos_x & "-" & Database_RecordSet!pos_y
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1106,7 +1106,7 @@ On Error GoTo ErrorHandler
 
     GetAccountSaltDatabase = Database_RecordSet!Salt
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1134,7 +1134,7 @@ On Error GoTo ErrorHandler
 
     GetAccountPasswordDatabase = Database_RecordSet!Password
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1188,7 +1188,7 @@ On Error GoTo ErrorHandler
 
     GetUserEmailDatabase = Database_RecordSet!UserName
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1212,7 +1212,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1259,7 +1259,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1282,7 +1282,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1319,7 +1319,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1343,7 +1343,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1367,7 +1367,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1391,7 +1391,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1415,7 +1415,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1438,7 +1438,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1466,7 +1466,7 @@ On Error GoTo ErrorHandler
 
     GetUserLastIpsDatabase = Database_RecordSet!last_ip
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1499,7 +1499,7 @@ On Error GoTo ErrorHandler
 
     Set Database_RecordSet = Nothing
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1527,7 +1527,7 @@ On Error GoTo ErrorHandler
 
     GetUserFreeSkillsDatabase = CInt(Database_RecordSet!free_skillpoints)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1550,7 +1550,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:
@@ -1578,7 +1578,7 @@ On Error GoTo ErrorHandler
 
     GetUserTrainingTimeDatabase = CLng(Database_RecordSet!counter_training)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 ErrorHandler:
@@ -1606,7 +1606,7 @@ On Error GoTo ErrorHandler
 
     UserBelongsToRoyalArmyDatabase = CBool(Database_RecordSet!pertenece_real)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1635,7 +1635,7 @@ On Error GoTo ErrorHandler
 
     UserBelongsToChaosLegionDatabase = CBool(Database_RecordSet!pertenece_caos)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1664,7 +1664,7 @@ On Error GoTo ErrorHandler
 
     GetUserLevelDatabase = CByte(Database_RecordSet!level)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1693,7 +1693,7 @@ On Error GoTo ErrorHandler
 
     GetUserPromedioDatabase = CLng(Database_RecordSet!rep_average)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1722,7 +1722,7 @@ On Error GoTo ErrorHandler
 
     GetUserReenlistsDatabase = CByte(Database_RecordSet!Reenlistadas)
     Set Database_RecordSet = Nothing
-    Call Database_Close()
+    Call Database_Close
 
     Exit Function
 
@@ -1746,7 +1746,7 @@ On Error GoTo ErrorHandler
 
     Database_Connection.Execute (query)
 
-    Call Database_Close()
+    Call Database_Close
 
     Exit Sub
 ErrorHandler:

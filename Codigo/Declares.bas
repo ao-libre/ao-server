@@ -30,7 +30,7 @@ Attribute VB_Name = "Declaraciones"
 Option Explicit
 
 #If False Then
-    Dim length, Obj As Variant
+    Dim map, x, y, body, clase, race, email, Obj, length As Variant
 #End If
 
 ' Nuevo Centinela
