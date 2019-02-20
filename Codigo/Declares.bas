@@ -30,7 +30,7 @@ Attribute VB_Name = "Declaraciones"
 Option Explicit
 
 #If False Then
-    Dim map, x, y, body, clase, race, email, Obj, length As Variant
+    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
 #End If
 
 ' Nuevo Centinela
@@ -754,14 +754,14 @@ Public Type LevelSkill
     LevelValue As Integer
 End Type
 
-Public Type UserOBJ
+Public Type UserObj
     ObjIndex As Integer
     Amount As Integer
     Equipped As Byte
 End Type
 
 Public Type Inventario
-    Object(1 To MAX_INVENTORY_SLOTS) As UserOBJ
+    Object(1 To MAX_INVENTORY_SLOTS) As UserObj
     WeaponEqpObjIndex As Integer
     WeaponEqpSlot As Byte
     ArmourEqpObjIndex As Integer
@@ -793,7 +793,7 @@ Public Type Position
 End Type
 
 Public Type WorldPos
-    map As Integer
+    Map As Integer
     x As Integer
     y As Integer
 End Type
@@ -822,7 +822,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    Name As String 'Nombre del obj
+    name As String 'Nombre del obj
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
@@ -885,7 +885,7 @@ Public Type ObjData
     
     Cerrada As Integer
     Llave As Byte
-    clave As Long 'si clave=llave la puerta se abre o cierra
+    Clave As Long 'si clave=llave la puerta se abre o cierra
     
     Radio As Integer ' Para teleps: El radio para calcular el random de la pos destino
     
@@ -979,7 +979,7 @@ Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 40
 
 '[KEVIN]
 Public Type BancoInventario
-    Object(1 To MAX_BANCOINVENTORY_SLOTS) As UserOBJ
+    Object(1 To MAX_BANCOINVENTORY_SLOTS) As UserObj
     NroItems As Integer
 End Type
 '[/KEVIN]
@@ -1279,7 +1279,7 @@ End Type
 
 'CHOTS | Accounts
 Public Type AccountUser
-    Name As String
+    name As String
     body As Integer
     Head As Integer
     weapon As Integer
@@ -1287,7 +1287,7 @@ Public Type AccountUser
     helmet As Integer
     Class As Byte
     race As Byte
-    map As Integer
+    Map As Integer
     level As Byte
     gold As Long
     criminal As Boolean
@@ -1297,7 +1297,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    Name As String
+    name As String
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
     
@@ -1313,7 +1313,7 @@ Public Type User
     clase As eClass
     raza As eRaza
     Genero As eGenero
-    email As String
+    Email As String
     Hogar As eCiudad
         
     Invent As Inventario
@@ -1467,7 +1467,7 @@ End Type
 Public Const MAX_NPC_DROPS As Byte = 5
 
 Public Type npc
-    Name As String
+    name As String
     Char As Char 'Define como se vera
     desc As String
 
@@ -1549,7 +1549,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    Name As String
+    name As String
     StartPos As WorldPos
     OnDeathGoTo As WorldPos
     
@@ -1701,7 +1701,7 @@ Public Declare Function GetTickCount Lib "kernel32" () As Long
 Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpfilename As String) As Long
 Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nsize As Long, ByVal lpfilename As String) As Long
 
-Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef destination As Any, ByVal length As Long)
+Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (ByRef destination As Any, ByVal Length As Long)
 
 Public Enum e_ObjetosCriticos
     Manzana = 1
@@ -1892,6 +1892,8 @@ Public Enum eGMCommands
     RecordDetailsRequest
     ExitDestroy             '/DE
     ToggleCentinelActivated '/CENTINELAACTIVADO
+    SearchNpc               '/BUSCAR
+    SearchObj               '/BUSCAR
 End Enum
 
 Public Const MATRIX_INITIAL_MAP As Integer = 1

@@ -163,6 +163,7 @@ Private Enum ServerPacketID
     PlayAttackAnim
     FXtoMap
     AccountLogged 'CHOTS | Accounts
+    SearchList
 End Enum
 
 Private Enum ClientPacketID
@@ -1360,6 +1361,12 @@ With UserList(UserIndex)
         Case eGMCommands.ToggleCentinelActivated            '/CENTINELAACTIVADO
             Call HandleToggleCentinelActivated(UserIndex)
         
+        Case eGMCommands.SearchNpc                          '/BUSCAR
+            Call HandleSearchNpc(UserIndex)
+           
+        Case eGMCommands.SearchObj                          '/BUSCAR
+            Call HandleSearchObj(UserIndex)
+                                           
     End Select
 End With
 
@@ -19150,3 +19157,135 @@ Public Function PrepareMessageFXtoMap(ByVal FxIndex As Integer, ByVal loops As B
     End With
 
 End Function
+
+Public Function WriteSearchList(ByVal UserIndex As Integer, _
+                              ByVal Num As Integer, _
+                              ByVal Datos As String, _
+                              ByVal Obj As Boolean) As String
+ 
+        On Error GoTo errHandler
+
+        With UserList(UserIndex).outgoingData
+                Call .WriteByte(ServerPacketID.SearchList)
+                Call .WriteInteger(Num)
+                Call .WriteBoolean(Obj)
+                Call .WriteASCIIString(Datos)
+        End With
+ 
+errHandler:
+
+        If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+                Call FlushBuffer(UserIndex)
+
+                Resume
+
+        End If
+   
+End Function
+ 
+Public Sub HandleSearchNpc(ByVal UserIndex As Integer)
+ 
+        On Error GoTo errHandler
+
+        With UserList(UserIndex)
+
+                Dim buffer As New clsByteQueue
+
+                Call buffer.CopyBuffer(.incomingData)
+       
+                Call buffer.ReadByte
+       
+                Dim i       As Long
+                Dim n       As Integer
+                Dim name    As String
+                Dim UserNpc As String
+                Dim tStr    As String
+
+                UserNpc = buffer.ReadASCIIString()
+   
+                tStr = Tilde(UserNpc)
+      
+                For i = 1 To val(LeerNPCs.GetValue("INIT", "NumNPCs"))
+                        name = LeerNPCs.GetValue("NPC" & i, "Name")
+       
+                        If InStr(1, Tilde(name), tStr) Then
+                                Call WriteSearchList(UserIndex, i, CStr(i & " - " & name), False)
+                                n = n + 1
+                        End If
+
+                Next i
+   
+                If n = 0 Then
+                        Call WriteSearchList(UserIndex, 0, "No hubo resultados de la busqueda.", False)
+                End If
+   
+                Call .incomingData.CopyBuffer(buffer)
+        End With
+
+errHandler:
+
+        Dim Error As Long
+
+        Error = Err.Number
+
+        On Error GoTo 0
+   
+        Set buffer = Nothing
+   
+        If Error <> 0 Then Err.Raise Error
+End Sub
+ 
+Private Sub HandleSearchObj(ByVal UserIndex As Integer)
+       
+        On Error GoTo errHandler
+
+        With UserList(UserIndex)
+
+                Dim buffer As New clsByteQueue
+
+                Call buffer.CopyBuffer(.incomingData)
+           
+                Call buffer.ReadByte
+           
+                Dim UserObj As String
+                Dim tUser   As Integer
+                Dim n       As Integer
+                Dim i       As Long
+                Dim tStr    As String
+       
+                UserObj = buffer.ReadASCIIString()
+
+                tStr = Tilde(UserObj)
+          
+                For i = 1 To UBound(ObjData)
+
+                        If InStr(1, Tilde(ObjData(i).name), tStr) Then
+                                Call WriteSearchList(UserIndex, i, CStr(i & " - " & ObjData(i).name), True)
+                                n = n + 1
+                        End If
+
+                Next
+
+                If n = 0 Then
+                        Call WriteSearchList(UserIndex, 0, "No hubo resultados de la busqueda.", False)
+                End If
+           
+                Call .incomingData.CopyBuffer(buffer)
+                
+        End With
+     
+errHandler:
+
+        Dim Error As Long
+
+        Error = Err.Number
+
+        On Error GoTo 0
+       
+        Set buffer = Nothing
+       
+        If Error <> 0 Then Err.Raise Error
+        
+End Sub
+ 
+

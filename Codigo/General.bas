@@ -30,7 +30,7 @@ Attribute VB_Name = "General"
 Option Explicit
 
 #If False Then
-    Dim X, Y, Map, k, ErrHandler, Obj, index, N, email As Variant
+    Dim x, y, Map, K, errHandler, Obj, Index, n, Email As Variant
 #End If
 
 Global LeerNPCs As clsIniManager
@@ -158,7 +158,7 @@ Sub LimpiarMundo()
 '01/14/2008: Marcos Martinez (ByVal) - La funcion FOR estaba mal. En ves de i habia un 1.
 '04/15/2008: (NicoNZ) - La funcion FOR estaba mal, de la forma que se hacia tiraba error.
 '***************************************************
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim i As Integer
     Dim d As cGarbage
@@ -175,7 +175,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error producido en el sub LimpiarMundo: " & Err.description)
 End Sub
 
@@ -660,7 +660,7 @@ Public Sub LogCriticEvent(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -670,7 +670,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -681,7 +681,7 @@ Public Sub LogEjercitoReal(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -691,7 +691,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -702,7 +702,7 @@ Public Sub LogEjercitoCaos(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -712,29 +712,29 @@ On Error GoTo ErrHandler
 
 Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
 
-Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
+Public Sub LogIndex(ByVal Index As Integer, ByVal desc As String)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
+    Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
     Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -746,7 +746,7 @@ Public Sub LogError(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -756,7 +756,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -766,7 +766,7 @@ Public Sub LogDatabaseError(desc As String)
 'Last Modification: 09/10/2018
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -775,7 +775,7 @@ On Error GoTo ErrHandler
     Close #nfile
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -786,7 +786,7 @@ Public Sub LogStatic(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -796,7 +796,7 @@ On Error GoTo ErrHandler
 
 Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -807,7 +807,7 @@ Public Sub LogTarea(desc As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile(1) ' obtenemos un canal
@@ -817,7 +817,7 @@ On Error GoTo ErrHandler
 
 Exit Sub
 
-ErrHandler:
+errHandler:
 
 
 End Sub
@@ -876,7 +876,7 @@ Public Sub LogGM(Nombre As String, texto As String)
 '
 '***************************************************ç
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -887,7 +887,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -898,7 +898,7 @@ Public Sub LogAsesinato(texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
     Dim nfile As Integer
     
     nfile = FreeFile ' obtenemos un canal
@@ -909,7 +909,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 Public Sub logVentaCasa(ByVal texto As String)
@@ -919,7 +919,7 @@ Public Sub logVentaCasa(ByVal texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -932,7 +932,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 Public Sub LogHackAttemp(texto As String)
@@ -942,7 +942,7 @@ Public Sub LogHackAttemp(texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -954,7 +954,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -965,7 +965,7 @@ Public Sub LogCheating(texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -975,7 +975,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -987,7 +987,7 @@ Public Sub LogCriticalHackAttemp(texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -999,7 +999,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -1010,7 +1010,7 @@ Public Sub LogAntiCheat(texto As String)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     Dim nfile As Integer
     nfile = FreeFile ' obtenemos un canal
@@ -1021,7 +1021,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errHandler:
 
 End Sub
 
@@ -1195,7 +1195,7 @@ Public Sub EfectoLluvia(ByVal UserIndex As Integer)
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
 
     If UserList(UserIndex).flags.UserLogged Then
         If Intemperie(UserIndex) Then
@@ -1207,7 +1207,7 @@ On Error GoTo ErrHandler
     End If
     
     Exit Sub
-ErrHandler:
+errHandler:
     LogError ("Error en EfectoLluvia")
 End Sub
 
@@ -1489,7 +1489,7 @@ Public Sub EfectoParalisisUser(ByVal UserIndex As Integer)
                 If CasterIndex <> 0 Then
                 
                     ' Close? => Remove Paralisis
-                    If UserList(CasterIndex).Name <> .flags.ParalizedBy Then
+                    If UserList(CasterIndex).name <> .flags.ParalizedBy Then
                         Call RemoveParalisis(UserIndex)
                         Exit Sub
                         
@@ -1734,7 +1734,7 @@ Sub PasarSegundo()
 '
 '***************************************************
 
-On Error GoTo ErrHandler
+On Error GoTo errHandler
     Dim i As Long
     
     'Limpieza del mundo
@@ -1809,7 +1809,7 @@ On Error GoTo ErrHandler
     Next i
 Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
     Resume Next
 End Sub
@@ -1891,7 +1891,7 @@ Dim UserFile As String
 With UserList(UserIndex)
 
     If .clase = 0 Or .Stats.ELV = 0 Then
-        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
+        Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .name)
         Exit Sub
     End If
 
@@ -2009,7 +2009,7 @@ On Error GoTo ErrorHandler
 Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en LoadUser: " & UserList(UserIndex).Name & " - " & Err.Number & " - " & Err.description)
+    Call LogError("Error en LoadUser: " & UserList(UserIndex).name & " - " & Err.Number & " - " & Err.description)
 
 End Sub
 
@@ -2057,8 +2057,8 @@ Public Sub FreeCharIndexes()
     Call ZeroMemory(CharList(1), MAXCHARS * Len(CharList(1)))
 End Sub
 
-Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal index As Integer, ByVal SoundIndex As Integer)
-    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.x, UserList(index).Pos.y))
+Public Sub ReproducirSonido(ByVal Destino As SendTarget, ByVal Index As Integer, ByVal SoundIndex As Integer)
+    Call SendData(Destino, Index, PrepareMessagePlayWave(SoundIndex, UserList(Index).Pos.x, UserList(Index).Pos.y))
 End Sub
 
 Public Sub SaveBan(ByVal UserName As String, ByVal Reason As String, ByVal BannedBy As String)
@@ -2191,16 +2191,16 @@ Public Sub StorePasswordSalt(ByVal UserName As String, ByVal Password As String,
     End If
 End Sub
 
-Public Sub SaveUserEmail(ByVal UserName As String, ByVal email As String)
+Public Sub SaveUserEmail(ByVal UserName As String, ByVal Email As String)
 '***************************************************
 'Autor: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 21/09/2018
 'Saves the email
 '***************************************************
     If Not Database_Enabled Then
-        Call SaveUserEmailCharfile(UserName, email)
+        Call SaveUserEmailCharfile(UserName, Email)
     Else
-        Call SaveUserEmailDatabase(UserName, email)
+        Call SaveUserEmailDatabase(UserName, Email)
     End If
 End Sub
 
@@ -2466,3 +2466,24 @@ Public Sub SaveNewAccount(ByVal UserName As String, ByVal Password As String, By
         Call SaveNewAccountDatabase(UserName, Password, Salt, Hash)
     End If
 End Sub
+
+Public Function Tilde(ByRef Data As String) As String
+
+        Dim temp As String
+
+        'Pato
+        temp = UCase$(Data)
+ 
+        If InStr(1, temp, "Á") Then temp = Replace$(temp, "Á", "A")
+   
+        If InStr(1, temp, "É") Then temp = Replace$(temp, "É", "E")
+   
+        If InStr(1, temp, "Í") Then temp = Replace$(temp, "Í", "I")
+   
+        If InStr(1, temp, "Ó") Then temp = Replace$(temp, "Ó", "O")
+   
+        If InStr(1, temp, "Ú") Then temp = Replace$(temp, "Ú", "U")
+   
+        Tilde = temp
+        
+End Function
