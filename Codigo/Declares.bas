@@ -1370,6 +1370,8 @@ Public Type User
     CurrentInventorySlots As Byte
 
     CentinelaUsuario As CentinelaUser
+    
+    cvcUser As cvc_User
 End Type
 
 

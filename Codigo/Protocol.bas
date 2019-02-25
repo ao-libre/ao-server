@@ -299,11 +299,14 @@ Private Enum ClientPacketID
     LoginExistingAccount = 130 'CHOTS | Accounts
     LoginNewAccount = 131 'CHOTS | Accounts
     CentinelReport = 132
+    Ecvc = 133
+    Acvc = 134
+    IrCvc = 135
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 132
+Private Const LAST_CLIENT_PACKET_ID As Byte = 135
 
 Public Enum FontTypeNames
     FONTTYPE_TALK
@@ -793,6 +796,18 @@ On Error Resume Next
 
         Case ClientPacketID.LoginNewAccount
             Call HandleLoginNewAccount(UserIndex)
+        
+        Case ClientPacketID.CentinelReport
+            Call HandleCentinelReport(UserIndex)
+            
+        Case ClientPacketID.Ecvc
+            Call HandleEnviaCvc(UserIndex)
+
+        Case ClientPacketID.Acvc
+            Call HandleAceptarCvc(UserIndex)
+
+        Case ClientPacketID.IrCvc
+            Call HandleIrCvc(UserIndex)
 
         Case Else
             'ERROR : Abort!
@@ -19275,3 +19290,36 @@ errHandler:
 End Sub
  
 
+Private Sub HandleEnviaCvc(ByVal UserIndex As Integer)
+
+        'Dim targetIndex As Integer
+
+        With UserList(UserIndex)
+                .incomingData.ReadByte
+
+                If .flags.TargetUser = 0 Then Exit Sub 'gdk: adonde mierda clickeas manko?
+                Call Mod_ClanvsClan.Enviar(UserIndex, .flags.TargetUser)
+        End With
+
+End Sub
+
+Private Sub HandleAceptarCvc(ByVal UserIndex As Integer)
+
+        With UserList(UserIndex)
+                .incomingData.ReadByte
+
+                If .flags.TargetUser = 0 Then Exit Sub
+                Call Mod_ClanvsClan.Aceptar(UserIndex, .flags.TargetUser)
+        End With
+
+End Sub
+
+Private Sub HandleIrCvc(ByVal UserIndex As Integer)
+
+        With UserList(UserIndex)
+                .incomingData.ReadByte
+                
+                Call Mod_ClanvsClan.ConectarCVC(UserIndex, True)  'gdk: si le pones false bugeas toditus.
+        End With
+
+End Sub
