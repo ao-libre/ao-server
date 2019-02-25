@@ -65,11 +65,12 @@ En este archivo se registra la informacion de las jugadas del sistema de apuesta
 
 [bkNPCs.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/bkNPCs.dat):
 En este archivo se especifica la información de los NPC's cuando el servidor se inicia desde el BackUp.
+(Confirmar que esta informacion sea 100% correcta) 
 
 [obj.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/obj.dat):
 En este archivo se especifica toda la información de los objetos disponibles en el juego.
 
-
+AreasStats.dat y Consultas.dat (que no estoy seguro de lo que es)
 
 # FAQs:
 
