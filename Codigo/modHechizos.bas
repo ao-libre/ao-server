@@ -400,8 +400,8 @@ Sub DecirPalabrasMagicas(ByVal SpellIndex As Integer, ByVal UserIndex As Integer
 '***************************************************
 On Error GoTo ErrHandler
     
-    ' Amuleto del Silencio, NumObj=555
-    If TieneObjetos(555,1,UserIndex) then Exit Sub
+    ' Amuleto del Silencio
+    If TieneObjetos(AMULETO_DEL_SILENCIO,1,UserIndex) then Exit Sub
               
     With UserList(UserIndex)
         If .flags.AdminInvisible <> 1 Then
