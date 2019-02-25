@@ -40,7 +40,7 @@ Private Const MAX_GUILDS As Integer = 1000
 Public CANTIDADDECLANES As Integer
 'cantidad actual de clanes en el servidor
 
-Private guilds(1 To MAX_GUILDS) As clsClan
+Public guilds(1 To MAX_GUILDS) As clsClan
 'array global de guilds, se indexa por userlist().guildindex
 
 Private Const CANTIDADMAXIMACODEX As Byte = 8
