@@ -12,8 +12,63 @@
 
 
 ## Archivos Definicion:
-[Motd.ini](https://github.com/ao-libre/ao-server/blob/master/Dat/Motd.ini)
+[ArmadurasFaccionarias.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmadurasFaccionarias.dat):
+En este archivo se especifican a que índice de objeto corresponden las diferentes armaduras faccionarias.
+
+[ArmadurasHerrero.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmadurasHerrero.dat):
+En este archivo se especifica el índice de las armaduras a la venta por el herrero.
+
+[ArmasHerrero.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmasHerrero.dat):
+En este archivo se especifica el índice de las armaduras a la venta por el herrero.
+
+[Balance.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Balance.dat):
+En este archivo se encuentra la configuración del balance de las clases y los grupos.
+
+[BanIps.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/BanIps.dat):
+En este archivo se registran las IP's bloqueadas por el servidor o un Game-Master.
+
+[Ciudades.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Ciudades.dat):
+En este archivo se especifican las coordenadas de las ciudades del juego.
+
+[Head.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Head.dat):
+En este archivo se especifican la cantidad de cabezas que posee disponible cada raza en el juego.
+
+[Hechizos.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Hechizos.dat):
+En este archivo se especifica toda la información de los hechizos disponibles en el juego.
+
+[Help.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Help.dat):
+En este archivo se especifican los mensajes de ayuda en el juego.
+
+[Invokar.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Invokar.dat):
+Este comando solo está disponible para los Game-Masters. En este archivo se especifican los NPC's disponibles para invocar.
+
+[Map.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Map.dat):
+En este archivo se especifica la ubicación de la carpeta Maps y la cantidad de mapas que se cargarán en el servidor.
+
+[Motd.ini](https://github.com/ao-libre/ao-server/blob/master/Dat/Motd.ini):
 En este archivo se pueden escribir textos que apareceran a los usuarios al conectarse al servidor.
+
+[NPCs.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/NPCs.dat):
+En este archivo se especifica toda la información de los NPC's o Non-Playing-Characters del juego.
+
+[NombresInvalidos.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/NombresInvalidos.txt):
+En este archivo se especifican los nombres de personajes que no se pueden usar en el juego al crear uno.
+
+[ObjCarpintero.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ObjCarpintero.dat):
+En este archivo se especifican los objetos que pueden crearse con la habilidad de carpinteria.
+
+[Pretorianos.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Pretorianos.dat):
+En este archivo se especifica el índice de los NPC's que pertenecen al Clan Pretoriano.
+
+[apuestas.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/apuestas.dat):
+En este archivo se registra la informacion de las jugadas del sistema de apuestas.
+
+[bkNPCs.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/bkNPCs.dat):
+En este archivo se especifica la información de los NPC's cuando el servidor se inicia desde el BackUp.
+
+[obj.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/obj.dat):
+En este archivo se especifica toda la información de los objetos disponibles en el juego.
+
 
 
 # FAQs:
