@@ -51,10 +51,10 @@ Public Sub Enviar(ByVal UserIndex As Integer, _
 
                 Dim other_Guild As Integer
                 Dim my_Guild    As Integer
-
                 'Dim cant_Users  As Integer
+                
                 other_Guild = UserList(targetIndex).GuildIndex
-                my_Guild = UserList(targetIndex).GuildIndex
+                my_Guild = .GuildIndex
                 usersClan1 = guilds(.GuildIndex).CantidadDeMiembros
                 usersClan2 = guilds(other_Guild).CantidadDeMiembros
 
@@ -314,6 +314,9 @@ Private Sub EraseCVC()
                 .cvc_Enabled = True
                 .count_Down = 0
                 .max_Users = 0
+                
+                Erase .Guild(1).UsUaRiOs
+                Erase .Guild(2).UsUaRiOs
         End With
 
 End Sub
