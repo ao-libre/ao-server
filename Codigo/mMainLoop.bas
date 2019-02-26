@@ -12,13 +12,16 @@ Private Const NumTimers As Byte = 4
 Public MainLoops(1 To NumTimers) As tMainLoop
 
 Public Enum eTimers
-    eGameTimer = 1 'stats entre otros
-    epacketResend 'socket
-    eAuditoria   'Pasarsegundo
-    TimerAI     'Npcs
+    eGameTimer = 1      'Stats entre otros
+    epacketResend = 2   'Socket
+    eAuditoria = 3      'Centinela
+    TimerAI = 4         'Npc's
 End Enum
- Public prgRun As Boolean
+
+Public prgRun As Boolean
+ 
 Public Sub MainLoop()
+    
     Dim LoopC As Integer
     MainLoops(eTimers.eGameTimer).MAXINT = 40
     MainLoops(eTimers.epacketResend).MAXINT = 10
@@ -26,6 +29,7 @@ Public Sub MainLoop()
     MainLoops(eTimers.TimerAI).MAXINT = 380
     
     prgRun = True
+    
     Do While prgRun
         For LoopC = 1 To NumTimers
                 If GetTickCount - MainLoops(LoopC).LastCheck >= MainLoops(LoopC).MAXINT Then
@@ -34,10 +38,13 @@ Public Sub MainLoop()
             DoEvents
         Next LoopC
     Loop
+    
 End Sub
  
-Private Sub MakeProcces(ByVal index As Integer)
-    Select Case index
+Private Sub MakeProcces(ByVal Index As Integer)
+    
+    Select Case Index
+    
         Case eTimers.eGameTimer
             Call GameTimer
  
@@ -49,22 +56,35 @@ Private Sub MakeProcces(ByVal index As Integer)
             
         Case eTimers.TimerAI
             Call TIMER_AI
+            
     End Select
-    MainLoops(index).LastCheck = GetTickCount
+    
+    MainLoops(Index).LastCheck = GetTickCount
+    
 End Sub
+
 Private Sub Auditoria()
-On Error GoTo errhand
 
-Call PasarSegundo 'sistema de desconexion de 10 segs
+    On Error GoTo errhand
+    
+    Call PasarSegundo 'sistema de desconexion de 10 segs
+    
+    Static centinelSecs As Byte
+           centinelSecs = centinelSecs + 1
 
-'Call ActualizaEstadisticasWeb
+    If centinelSecs = 5 Then
+        'Every 5 seconds, we try to call the player's attention so it will report the code.
+        Call modCentinela.AvisarUsuarios
+    
+        centinelSecs = 0
 
-Exit Sub
+    End If
+
+    Exit Sub
 
 errhand:
 
-Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
-Resume Next
+    Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
 
 End Sub
 
