@@ -317,13 +317,6 @@ Sub CheckIdleUser()
     Next iUserIndex
 End Sub
 
-Private Sub Auditoria_Timer()
-
-Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
-Resume Next
-
-End Sub
-
 Private Sub AutoSave_Timer()
 
 On Error GoTo ErrHandler
