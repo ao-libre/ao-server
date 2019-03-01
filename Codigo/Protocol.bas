@@ -95,7 +95,6 @@ Private Enum ServerPacketID
     RainToggle              ' LLU
     CreateFX                ' CFX
     UpdateUserStats         ' EST
-    WorkRequestTarget       ' T01
     ChangeInventorySlot     ' CSI
     ChangeBankSlot          ' SBO
     ChangeSpellSlot         ' SHS
@@ -16010,34 +16009,7 @@ On Error GoTo ErrHandler
     End With
 Exit Sub
 
-ErrHandler:
-    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(UserIndex)
-        Resume
-    End If
-End Sub
-
-''
-' Writes the "WorkRequestTarget" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @param    Skill The skill for which we request a target.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteWorkRequestTarget(ByVal UserIndex As Integer, ByVal Skill As eSkill)
-'***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
-'Last Modification: 05/17/06
-'Writes the "WorkRequestTarget" message to the given user's outgoing data buffer
-'***************************************************
-On Error GoTo ErrHandler
-    With UserList(UserIndex).outgoingData
-        Call .WriteByte(ServerPacketID.WorkRequestTarget)
-        Call .WriteByte(Skill)
-    End With
-Exit Sub
-
-ErrHandler:
+errHandler:
     If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer(UserIndex)
         Resume
