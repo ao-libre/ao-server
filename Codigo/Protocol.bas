@@ -301,6 +301,7 @@ Private Enum ClientPacketID
     Ecvc = 133
     Acvc = 134
     IrCvc = 135
+    DragAndDropHechizos = 136
 End Enum
 
 ''
@@ -19293,5 +19294,21 @@ Private Sub HandleIrCvc(ByVal UserIndex As Integer)
                 
                 Call Mod_ClanvsClan.ConectarCVC(UserIndex, True)  'gdk: si le pones false bugeas toditus.
         End With
+
+End Sub
+
+Public Sub HandleDragAndDropHechizos(ByVal UserIndex As Integer)
+ 
+    With UserList(UserIndex)
+        Call .incomingData.ReadByte
+        
+        Dim ANTPOS As Integer: ANTPOS = .incomingData.ReadInteger
+        Dim NEWPOS As Integer: NEWPOS = .incomingData.ReadInteger
+        Dim ANTHECHI As Integer: ANTHECHI = .Stats.UserHechizos(NEWPOS)
+
+        .Stats.UserHechizos(NEWPOS) = UserList(UserIndex).Stats.UserHechizos(ANTPOS)
+        .Stats.UserHechizos(ANTPOS) = ANTHECHI
+             
+    End With
 
 End Sub
