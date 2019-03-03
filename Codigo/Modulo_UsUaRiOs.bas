@@ -1354,6 +1354,9 @@ On Error GoTo ErrorHandler
         'Quitar el dialogo del user muerto
         Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
         
+        ' Hunger Games
+        If UserList(UserIndex).flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDie UserIndex
+        
         .Stats.MinHp = 0
         .Stats.MinSta = 0
         .flags.AtacadoPorUser = 0

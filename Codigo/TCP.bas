@@ -747,7 +747,10 @@ On Error GoTo ErrHandler
         If .ConnID <> -1 Then
             Call CloseSocketSL(UserIndex)
         End If
-
+        
+        ' Hunger Games
+        If UserList(UserIndex).flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect UserIndex
+        
         'Nuevo centinela - maTih.-
         If UserList(userIndex).CentinelaUsuario.centinelaIndex <> 0 Then
             Call modCentinela.UsuarioInActivo(userIndex)
