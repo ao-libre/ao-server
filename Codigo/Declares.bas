@@ -30,7 +30,7 @@ Attribute VB_Name = "Declaraciones"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
+    Dim Map, x, Y, body, clase, race, Email, obj, Length As Variant
 #End If
 
 ' Nuevo Centinela
@@ -577,7 +577,7 @@ Public Const FLAGORO As Integer = MAX_INVENTORY_SLOTS + 1
 Public Enum eOBJType
     otUseOnce = 1
     otWeapon = 2
-    otArmadura = 3
+    otarmadura = 3
     otArboles = 4
     otGuita = 5
     otPuertas = 6
@@ -589,8 +589,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
-    otESCUDO = 16
-    otCASCO = 17
+    otescudo = 16
+    otcasco = 17
     otAnillo = 18
     otTeleport = 19
     otYacimiento = 22
@@ -789,13 +789,13 @@ End Type
 
 Public Type Position
     x As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Public Type WorldPos
     Map As Integer
     x As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Public Type FXdata
@@ -822,7 +822,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    name As String 'Nombre del obj
+    Name As String 'Nombre del obj
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
@@ -946,7 +946,7 @@ Public Type ObjData
     Upgrade As Integer
 End Type
 
-Public Type Obj
+Public Type obj
     ObjIndex As Integer
     Amount As Integer
 End Type
@@ -1053,7 +1053,7 @@ End Type
 
 'Estadisticas de los usuarios
 Public Type UserStats
-    GLD As Long 'Dinero
+    Gld As Long 'Dinero
     Banco As Long
     
     MaxHp As Integer
@@ -1092,6 +1092,12 @@ End Type
 
 'Flags
 Public Type UserFlags
+    ' Hunger Games
+    SG As SurvivalGames
+    BeforeMap As Integer 'Antes mapa
+    BeforeX As Integer 'AntesX
+    BeforeY As Integer 'AntesY
+    
     SlotCarcel As Integer
     Muerto As Byte '¿Esta muerto?
     Escondido As Byte '¿Esta escondido?
@@ -1279,7 +1285,7 @@ End Type
 
 'CHOTS | Accounts
 Public Type AccountUser
-    name As String
+    Name As String
     body As Integer
     Head As Integer
     weapon As Integer
@@ -1289,7 +1295,7 @@ Public Type AccountUser
     race As Byte
     Map As Integer
     level As Byte
-    gold As Long
+    Gold As Long
     criminal As Boolean
     dead As Boolean
     gameMaster As Boolean
@@ -1297,7 +1303,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    name As String
+    Name As String
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
     
@@ -1469,7 +1475,7 @@ End Type
 Public Const MAX_NPC_DROPS As Byte = 5
 
 Public Type npc
-    name As String
+    Name As String
     Char As Char 'Define como se vera
     desc As String
 
@@ -1542,7 +1548,7 @@ Public Type MapBlock
     Graphic(1 To 4) As Integer
     UserIndex As Integer
     NpcIndex As Integer
-    ObjInfo As Obj
+    ObjInfo As obj
     TileExit As WorldPos
     trigger As eTrigger
 End Type
@@ -1551,7 +1557,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    name As String
+    Name As String
     StartPos As WorldPos
     OnDeathGoTo As WorldPos
     
