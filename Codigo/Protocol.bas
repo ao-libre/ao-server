@@ -301,14 +301,15 @@ Private Enum ClientPacketID
     Ecvc = 133
     Acvc = 134
     IrCvc = 135
-    HungerGamesCreate = 136
-    HungerGamesJoin = 137
-    HungerGamesDelete = 138
+    DragAndDropHechizos = 136
+    HungerGamesCreate = 137
+    HungerGamesJoin = 138
+    HungerGamesDelete = 139
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 135
+Private Const LAST_CLIENT_PACKET_ID As Byte = 139
 
 Public Enum FontTypeNames
     FONTTYPE_TALK
@@ -3480,7 +3481,6 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
         Dim points(1 To NUMSKILLS) As Byte
         
         'Codigo para prevenir el hackeo de los skills
-        '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         For i = 1 To NUMSKILLS
             points(i) = .incomingData.ReadByte()
             
@@ -3499,7 +3499,6 @@ Private Sub HandleModifySkills(ByVal UserIndex As Integer)
             Call CloseSocket(UserIndex)
             Exit Sub
         End If
-        '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         
         .Counters.AsignedSkills = MinimoInt(10, .Counters.AsignedSkills + Count)
         
@@ -19305,6 +19304,22 @@ Private Sub HandleIrCvc(ByVal UserIndex As Integer)
                 
                 Call Mod_ClanvsClan.ConectarCVC(UserIndex, True)  'gdk: si le pones false bugeas toditus.
         End With
+
+End Sub
+
+Public Sub HandleDragAndDropHechizos(ByVal UserIndex As Integer)
+ 
+    With UserList(UserIndex)
+        Call .incomingData.ReadByte
+        
+        Dim ANTPOS As Integer: ANTPOS = .incomingData.ReadInteger
+        Dim NEWPOS As Integer: NEWPOS = .incomingData.ReadInteger
+        Dim ANTHECHI As Integer: ANTHECHI = .Stats.UserHechizos(NEWPOS)
+
+        .Stats.UserHechizos(NEWPOS) = UserList(UserIndex).Stats.UserHechizos(ANTPOS)
+        .Stats.UserHechizos(ANTPOS) = ANTHECHI
+             
+    End With
 
 End Sub
 
