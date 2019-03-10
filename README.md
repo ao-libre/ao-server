@@ -27,7 +27,7 @@ En este archivo se encuentra la configuración del balance de las clases y los g
 [BanIps.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/BanIps.dat):
 En este archivo se registran las IP's bloqueadas por el servidor o un Game-Master.
 
-[Ciudades.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Ciudades.dat):
+[Ciudades.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Ciudades.Dat):
 En este archivo se especifican las coordenadas de las ciudades del juego.
 
 [Head.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/Head.dat):
