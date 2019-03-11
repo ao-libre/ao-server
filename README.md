@@ -10,6 +10,13 @@
 ## Montar Servidor:
 [Guia para montar mi propio servidor:](https://www.reddit.com/r/argentumonlineoficial/comments/9dow3q/como_montar_mi_propio_servidor/).
 
+#### Tips Montar para montar un server:
+- Hacer que el server.exe se ejecute al iniciar Windows poniendo un acceso directo en la carpeta:
+```
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+```
+
+
 
 ## Archivos Definicion:
 [ArmadurasFaccionarias.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmadurasFaccionarias.dat):
