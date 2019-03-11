@@ -62,37 +62,51 @@ ErrHandler:
     Call LogError("Error en TieneObjetosRobables. Error: " & Err.Number & " - " & Err.description)
 End Function
 
-Function ClasePuedeUsarItem(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, Optional ByRef sMotivo As String) As Boolean
-'***************************************************
-'Author: Unknown
-'Last Modification: 14/01/2010 (ZaMa)
-'14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
-'***************************************************
+Function ClasePuedeUsarItem(ByVal UserIndex As Integer, _
+                            ByVal ObjIndex As Integer, _
+                            Optional ByRef sMotivo As String) As Boolean
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: 08/08/2015
+    '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
+    '08/08/2015: Shak - Hechizos por clase
+    '***************************************************
 
-On Error GoTo manejador
-
-    
+    On Error GoTo manejador
+  
     'Admins can use ANYTHING!
     If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
         If ObjData(ObjIndex).ClaseProhibida(1) <> 0 Then
             Dim i As Integer
+
             For i = 1 To NUMCLASES
+
                 If ObjData(ObjIndex).ClaseProhibida(i) = UserList(UserIndex).clase Then
-                    ClasePuedeUsarItem = False
-                    sMotivo = "Tu clase no puede usar este objeto."
-                    Exit Function
+              
+                    '//Si es un hechizo
+                    If ObjData(ObjIndex).OBJType = eOBJType.otPergaminos Then
+                        ClasePuedeUsarItem = False
+                        sMotivo = "Tu clase no tiene la habilidad de aprender este hechizo."
+                    Else
+                        sMotivo = "Tu clase no puede usar este objeto."
+                    End If
                 End If
+                
+                ClasePuedeUsarItem = False: Exit Function
+                
             Next i
+
         End If
     End If
-    
+  
     ClasePuedeUsarItem = True
 
-Exit Function
+    Exit Function
 
 manejador:
     LogError ("Error en ClasePuedeUsarItem")
 End Function
+
 
 Sub QuitarNewbieObj(ByVal UserIndex As Integer)
 '***************************************************
