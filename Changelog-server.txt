@@ -636,3 +636,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 26/02/2019 : Muevo el código del timer Auditoria al MainLoop (jopiortiz)
 * 07/03/2019 : Implementación: Drag and Drop en hechizos (jopiortiz)
 * 07/03/2019 : Implementación: Evento - Juegos del Hambre. (jopiortiz)
+* 11/03/2019 : Eliminada la carga de MD5. (jopiortiz)
