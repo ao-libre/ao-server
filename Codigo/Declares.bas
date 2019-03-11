@@ -1181,10 +1181,6 @@ Public Type UserFlags
     
     ChatColor As Long
     
-    '[el oso]
-    MD5Reportado As String
-    '[/el oso]
-    
     '[Barrin 30-11-03]
     TimesWalk As Long
     StartWalk As Long
@@ -1648,11 +1644,6 @@ Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
 Public NumRecords As Integer
 
-''
-'Esta activada la verificacion MD5 ?
-Public MD5ClientesActivado As Byte
-
-
 Public EnPausa As Boolean
 Public EnTesting As Boolean
 
@@ -1672,7 +1663,6 @@ Public ForbidenNames() As String
 Public ArmasHerrero() As Integer
 Public ArmadurasHerrero() As Integer
 Public ObjCarpintero() As Integer
-Public MD5s() As String
 Public BanIps As Collection
 Public Parties(1 To MAX_PARTIES) As clsParty
 Public ModClase(1 To NUMCLASES) As ModClase
