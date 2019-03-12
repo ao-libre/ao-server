@@ -213,6 +213,23 @@ On Error GoTo ErrHandler
         Call ReSpawnNpc(MiNPC)
     End If
     
+    Dim i As Long, j As Long
+    For i = 1 To MAXUSERQUESTS
+        With UserList(Userindex).QuestStats.Quests(i)
+            If .QuestIndex Then
+                If QuestList(.QuestIndex).RequiredNPCs Then
+                    For j = 1 To QuestList(.QuestIndex).RequiredNPCs
+                        If QuestList(.QuestIndex).RequiredNPC(j).NpcIndex = MiNPC.Numero Then
+                            If QuestList(.QuestIndex).RequiredNPC(j).Amount > .NPCsKilled(j) Then
+                                .NPCsKilled(j) = .NPCsKilled(j) + 1
+                            End If
+                        End If
+                    Next j
+                End If
+            End If
+        End With
+    Next i
+    
 Exit Sub
 
 ErrHandler:
@@ -341,6 +358,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
         .GiveGLD = 0
         .Hostile = 0
         .InvReSpawn = 0
+        .QuestNumber = 0
         
         If .MaestroUser > 0 Then Call QuitarMascota(.MaestroUser, NpcIndex)
         If .MaestroNpc > 0 Then Call QuitarMascotaNpc(.MaestroNpc)
@@ -972,6 +990,8 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
         .flags.Domable = val(Leer.GetValue("NPC" & NpcNumber, "Domable"))
         
         .GiveGLD = val(Leer.GetValue("NPC" & NpcNumber, "GiveGLD"))
+        
+        .QuestNumber = val(Leer.GetValue("NPC" & NpcNumber, "QuestNumber"))
         
         .PoderAtaque = val(Leer.GetValue("NPC" & NpcNumber, "PoderAtaque"))
         .PoderEvasion = val(Leer.GetValue("NPC" & NpcNumber, "PoderEvasion"))

@@ -951,6 +951,22 @@ Public Type obj
     Amount As Integer
 End Type
 
+Public Type tQuestNpc
+    NpcIndex As Integer
+    Amount As Integer
+End Type
+ 
+Public Type tUserQuest
+    NPCsKilled() As Integer
+    QuestIndex As Integer
+End Type
+ 
+Public Type tQuestStats
+    Quests(1 To MAXUSERQUESTS) As tUserQuest
+    NumQuestsDone As Integer
+    QuestsDone() As Integer
+End Type
+
 '[Pablo ToxicWaste]
 Public Type ModClase
     Evasion As Double
@@ -1029,6 +1045,24 @@ Public Type tForo
     StickyPost(1 To MAX_STICKY_POST) As String
     GeneralTitle(1 To MAX_GENERAL_POST) As String
     GeneralPost(1 To MAX_GENERAL_POST) As String
+End Type
+
+Public Type tQuest
+    Nombre As String
+    desc As String
+    RequiredLevel As Byte
+    
+    RequiredOBJs As Byte
+    RequiredOBJ() As obj
+    
+    RequiredNPCs As Byte
+    RequiredNPC() As tQuestNpc
+    
+    RewardGLD As Long
+    RewardEXP As Long
+    
+    RewardOBJs As Byte
+    RewardOBJ() As obj
 End Type
 
 '*********************************************************
@@ -1374,6 +1408,8 @@ Public Type User
     CentinelaUsuario As CentinelaUser
     
     cvcUser As cvc_User
+    
+    QuestStats As tQuestStats
 End Type
 
 
@@ -1502,6 +1538,8 @@ Public Type npc
     GiveEXP As Long
     GiveGLD As Long
     Drop(1 To MAX_NPC_DROPS) As tDrops
+    
+    QuestNumber As Integer
     
     Stats As NPCStats
     flags As NPCFlags
@@ -1672,6 +1710,7 @@ Public DistribucionEnteraVida(1 To 5) As Integer
 Public DistribucionSemienteraVida(1 To 4) As Integer
 Public Ciudades(1 To NUMCIUDADES) As WorldPos
 Public distanceToCities() As HomeDistance
+Public QuestList() As tQuest
 Public Records() As tRecord
 '*********************************************************
 

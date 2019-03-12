@@ -1068,11 +1068,15 @@ Sub LoadUserFromCharfile(ByVal UserIndex As Integer)
     Call Leer.Initialize(CharPath & UCase$(UserList(UserIndex).Name) & ".chr")
 
     'Cargamos los datos del personaje
-    Call LoadUserInit(UserIndex, Leer)
+    Call LoadUserInit(Userindex, Leer)
+    
+    'Cargamos las estadisticas del usuario
+    Call LoadUserStats(Userindex, Leer)
+    
+    'Cargamos las estadisticas de las quests
+    Call LoadQuestStats(Userindex, Leer)
 
-    Call LoadUserStats(UserIndex, Leer)
-
-    Call LoadUserReputacion(UserIndex, Leer)
+    Call LoadUserReputacion(Userindex, Leer)
 
     Set Leer = Nothing
 End Sub
