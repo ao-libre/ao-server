@@ -378,7 +378,7 @@ Public Const ObjArboles As Integer = 4
 Public Const RED_PESCA As Integer = 543
 Public Const CAÑA_PESCA As Integer = 138
 
-Public Const AMULETO_DEL_SILENCIO As Integer = 555 'TO-DO: Datearlo y cambiar este valor por el correspondiente.
+Public Const AMULETO_DEL_SILENCIO As Integer = 1126
 
 Public Enum eNPCType
     Comun = 0
