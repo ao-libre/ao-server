@@ -1,7 +1,9 @@
+# Auto-CRLF setting.
 * text eol=crlf
 
+# Declare file types.
+# The - is a negation symbol, so  -text it means"not" text
 *.msv -text
-*.dll -text
 *.frx -text
 *.ico -text
 *.png -text
@@ -9,10 +11,23 @@
 *.jpg -text
 *.gif -text
 *.bmp -text
+*.mcl -text
+*.dll -text
 *.ind -text
 *.con -text
 *.bin -text
-*.mcl -text
 *.mid -text
 *.mp3 -text
 *.wav -text
+*.ao -text
+*.ocx -text
+*.OCX -text
+*.map -text
+*.exe -text
+
+# Declare encoding of all files for code.
+*.bas encoding=ansi
+*.cls encoding=ansi
+*.vbp encoding=ansi
+*.frm encoding=ansi
+*.json encoding=ansi
