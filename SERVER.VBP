@@ -77,6 +77,7 @@ Module=modDatabase; Codigo\modDatabase.bas
 Module=modCentinela; Codigo\modCentinela.bas
 Module=Mod_ClanvsClan; Codigo\Mod_ClanvsClan.bas
 Module=modHungerGames; Codigo\modHungerGames.bas
+Module=Quests; Codigo\modQuests.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

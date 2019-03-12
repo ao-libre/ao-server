@@ -1850,23 +1850,24 @@ Sub ResetUserSlot(ByVal UserIndex As Integer)
 
 Dim i As Long
 
-UserList(UserIndex).ConnIDValida = False
-UserList(UserIndex).ConnID = -1
+UserList(Userindex).ConnIDValida = False
+UserList(Userindex).ConnID = -1
 
-Call LimpiarComercioSeguro(UserIndex)
-Call ResetFacciones(UserIndex)
-Call ResetContadores(UserIndex)
-Call ResetGuildInfo(UserIndex)
-Call ResetCharInfo(UserIndex)
-Call ResetBasicUserInfo(UserIndex)
-Call ResetReputacion(UserIndex)
-Call ResetUserFlags(UserIndex)
-Call LimpiarInventario(UserIndex)
-Call ResetUserSpells(UserIndex)
-Call ResetUserPets(UserIndex)
-Call ResetUserBanco(UserIndex)
+Call LimpiarComercioSeguro(Userindex)
+Call ResetFacciones(Userindex)
+Call ResetContadores(Userindex)
+Call ResetGuildInfo(Userindex)
+Call ResetCharInfo(Userindex)
+Call ResetBasicUserInfo(Userindex)
+Call ResetReputacion(Userindex)
+Call ResetUserFlags(Userindex)
+Call LimpiarInventario(Userindex)
+Call ResetUserSpells(Userindex)
+Call ResetUserPets(Userindex)
+Call ResetUserBanco(Userindex)
+Call ResetQuestStats(Userindex)
 
-With UserList(UserIndex).ComUsu
+With UserList(Userindex).ComUsu
     .Acepto = False
     
     For i = 1 To MAX_OFFER_SLOTS

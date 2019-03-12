@@ -163,6 +163,8 @@ Private Enum ServerPacketID
     FXtoMap
     AccountLogged 'CHOTS | Accounts
     SearchList
+    QuestDetails
+    QuestListSend
 End Enum
 
 Private Enum ClientPacketID
@@ -305,6 +307,11 @@ Private Enum ClientPacketID
     HungerGamesCreate = 137
     HungerGamesJoin = 138
     HungerGamesDelete = 139
+    Quest = 140                  '/QUEST
+    QuestAccept = 141
+    QuestListRequest = 142
+    QuestDetailsRequest = 143
+    QuestAbandon = 144
 End Enum
 
 ''
@@ -19408,3 +19415,107 @@ Public Sub HandleHungerGamesJoin(ByVal UserIndex As Integer)
 
 End Sub
 
+Public Sub WriteQuestDetails(ByVal Userindex As Integer, ByVal QuestIndex As Integer, Optional QuestSlot As Byte = 0)
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+'Env�a el paquete QuestDetails y la informaci�n correspondiente.
+'Last modified: 30/01/2010 by Amraphen
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Dim i As Integer
+ 
+On Error GoTo Errhandler
+    With UserList(Userindex).outgoingData
+        'ID del paquete
+        Call .WriteByte(ServerPacketID.QuestDetails)
+        
+        'Se usa la variable QuestSlot para saber si enviamos la info de una quest ya empezada o la info de una quest que no se acept� todav�a (1 para el primer caso y 0 para el segundo)
+        Call .WriteByte(IIf(QuestSlot, 1, 0))
+        
+        'Enviamos nombre, descripci�n y nivel requerido de la quest
+        Call .WriteASCIIString(QuestList(QuestIndex).Nombre)
+        Call .WriteASCIIString(QuestList(QuestIndex).desc)
+        Call .WriteByte(QuestList(QuestIndex).RequiredLevel)
+        
+        'Enviamos la cantidad de npcs requeridos
+        Call .WriteByte(QuestList(QuestIndex).RequiredNPCs)
+        If QuestList(QuestIndex).RequiredNPCs Then
+            'Si hay npcs entonces enviamos la lista
+            For i = 1 To QuestList(QuestIndex).RequiredNPCs
+                Call .WriteInteger(QuestList(QuestIndex).RequiredNPC(i).Amount)
+                Call .WriteASCIIString(GetVar(DatPath & "NPCs.dat", "NPC" & QuestList(QuestIndex).RequiredNPC(i).NpcIndex, "Name"))
+                'Si es una quest ya empezada, entonces mandamos los NPCs que mat�.
+                If QuestSlot Then
+                    Call .WriteInteger(UserList(Userindex).QuestStats.Quests(QuestSlot).NPCsKilled(i))
+                End If
+            Next i
+        End If
+        
+        'Enviamos la cantidad de objs requeridos
+        Call .WriteByte(QuestList(QuestIndex).RequiredOBJs)
+        If QuestList(QuestIndex).RequiredOBJs Then
+            'Si hay objs entonces enviamos la lista
+            For i = 1 To QuestList(QuestIndex).RequiredOBJs
+                Call .WriteInteger(QuestList(QuestIndex).RequiredOBJ(i).Amount)
+                Call .WriteASCIIString(ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
+            Next i
+        End If
+    
+        'Enviamos la recompensa de oro y experiencia.
+        Call .WriteLong(QuestList(QuestIndex).RewardGLD)
+        Call .WriteLong(QuestList(QuestIndex).RewardEXP)
+        
+        'Enviamos la cantidad de objs de recompensa
+        Call .WriteByte(QuestList(QuestIndex).RewardOBJs)
+        If QuestList(QuestIndex).RequiredOBJs Then
+            'si hay objs entonces enviamos la lista
+            For i = 1 To QuestList(QuestIndex).RewardOBJs
+                Call .WriteInteger(QuestList(QuestIndex).RewardOBJ(i).Amount)
+                Call .WriteASCIIString(ObjData(QuestList(QuestIndex).RewardOBJ(i).ObjIndex).Name)
+            Next i
+        End If
+    End With
+Exit Sub
+ 
+Errhandler:
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
+        Resume
+    End If
+End Sub
+ 
+Public Sub WriteQuestListSend(ByVal Userindex As Integer)
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+'Env�a el paquete QuestList y la informaci�n correspondiente.
+'Last modified: 30/01/2010 by Amraphen
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Dim i As Integer
+Dim tmpStr As String
+Dim tmpByte As Byte
+ 
+On Error GoTo Errhandler
+ 
+    With UserList(Userindex)
+        .outgoingData.WriteByte ServerPacketID.QuestListSend
+    
+        For i = 1 To MAXUSERQUESTS
+            If .QuestStats.Quests(i).QuestIndex Then
+                tmpByte = tmpByte + 1
+                tmpStr = tmpStr & QuestList(.QuestStats.Quests(i).QuestIndex).Nombre & "-"
+            End If
+        Next i
+        
+        'Escribimos la cantidad de quests
+        Call .outgoingData.WriteByte(tmpByte)
+        
+        'Escribimos la lista de quests (sacamos el �ltimo caracter)
+        If tmpByte Then
+            Call .outgoingData.WriteASCIIString(Left$(tmpStr, Len(tmpStr) - 1))
+        End If
+    End With
+Exit Sub
+ 
+Errhandler:
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
+        Resume
+    End If
+End Sub
