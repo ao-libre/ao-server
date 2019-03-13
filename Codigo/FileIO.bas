@@ -1609,7 +1609,8 @@ Sub LoadSini()
     OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
     DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
     DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
-    
+    DropItemsAlMorir = GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir")
+
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
     

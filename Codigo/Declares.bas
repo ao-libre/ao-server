@@ -1972,5 +1972,6 @@ Public OroMultiplier As Integer
 Public OficioMultiplier As Integer
 Public DiceMinimum As Integer
 Public DiceMaximum As Integer
+Public DropItemsAlMorir As Boolean
 Public ContadorAntiPiquete As Integer
 Public MinutosCarcelPiquete As Integer
