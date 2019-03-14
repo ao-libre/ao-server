@@ -251,7 +251,7 @@ Begin VB.Form frmServidor
       End
       Begin VB.CommandButton cmdRecargarMD5s 
          BackColor       =   &H00FFC0C0&
-         Caption         =   "MD5s"
+         Caption         =   "Deshabilitado"
          Height          =   375
          Left            =   3240
          Style           =   1  'Graphical
@@ -508,10 +508,6 @@ End Sub
 
 Private Sub cmdRecargarHechizos_Click()
     Call CargarHechizos
-End Sub
-
-Private Sub cmdRecargarMD5s_Click()
-    Call MD5sCarga
 End Sub
 
 Private Sub cmdRecargarMOTD_Click()

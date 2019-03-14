@@ -630,3 +630,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 10/11/2018 : Clean BanIps.dat file to avoid false positives, Reseted all the number in the file apuesta.dat to 0 (Recox)
 * 11/11/2018 : Deleted unused properties in file Server.ini, deleted unused files and binaries from the repository (Recox)
 * 04/12/2018 : Change command printed in message in the console when try to create a Pretoriano NPC with /ACC (CHOTS)
+
+- 0.13.7
+* 25/02/2019 : Implementación: Sistema de Duelo entre Clanes (CvC) (jopiortiz)
+* 26/02/2019 : Muevo el código del timer Auditoria al MainLoop (jopiortiz)
+* 07/03/2019 : Implementación: Drag and Drop en hechizos (jopiortiz)
+* 07/03/2019 : Implementación: Evento - Juegos del Hambre. (jopiortiz)
+* 11/03/2019 : Eliminada la carga de MD5. (jopiortiz)

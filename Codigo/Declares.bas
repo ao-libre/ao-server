@@ -30,7 +30,7 @@ Attribute VB_Name = "Declaraciones"
 Option Explicit
 
 #If False Then
-    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
+    Dim Map, x, Y, body, clase, race, Email, obj, Length As Variant
 #End If
 
 ' Nuevo Centinela
@@ -579,7 +579,7 @@ Public Const FLAGORO As Integer = MAX_INVENTORY_SLOTS + 1
 Public Enum eOBJType
     otUseOnce = 1
     otWeapon = 2
-    otArmadura = 3
+    otarmadura = 3
     otArboles = 4
     otGuita = 5
     otPuertas = 6
@@ -591,8 +591,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLeña = 14
     otFogata = 15
-    otESCUDO = 16
-    otCASCO = 17
+    otescudo = 16
+    otcasco = 17
     otAnillo = 18
     otTeleport = 19
     otYacimiento = 22
@@ -791,13 +791,13 @@ End Type
 
 Public Type Position
     x As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Public Type WorldPos
     Map As Integer
     x As Integer
-    y As Integer
+    Y As Integer
 End Type
 
 Public Type FXdata
@@ -824,7 +824,7 @@ End Type
 
 'Tipos de objetos
 Public Type ObjData
-    name As String 'Nombre del obj
+    Name As String 'Nombre del obj
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
@@ -948,9 +948,25 @@ Public Type ObjData
     Upgrade As Integer
 End Type
 
-Public Type Obj
+Public Type obj
     ObjIndex As Integer
     Amount As Integer
+End Type
+
+Public Type tQuestNpc
+    NpcIndex As Integer
+    Amount As Integer
+End Type
+ 
+Public Type tUserQuest
+    NPCsKilled() As Integer
+    QuestIndex As Integer
+End Type
+ 
+Public Type tQuestStats
+    Quests(1 To MAXUSERQUESTS) As tUserQuest
+    NumQuestsDone As Integer
+    QuestsDone() As Integer
 End Type
 
 '[Pablo ToxicWaste]
@@ -1033,6 +1049,24 @@ Public Type tForo
     GeneralPost(1 To MAX_GENERAL_POST) As String
 End Type
 
+Public Type tQuest
+    Nombre As String
+    desc As String
+    RequiredLevel As Byte
+    
+    RequiredOBJs As Byte
+    RequiredOBJ() As obj
+    
+    RequiredNPCs As Byte
+    RequiredNPC() As tQuestNpc
+    
+    RewardGLD As Long
+    RewardEXP As Long
+    
+    RewardOBJs As Byte
+    RewardOBJ() As obj
+End Type
+
 '*********************************************************
 '*********************************************************
 '*********************************************************
@@ -1055,7 +1089,7 @@ End Type
 
 'Estadisticas de los usuarios
 Public Type UserStats
-    GLD As Long 'Dinero
+    Gld As Long 'Dinero
     Banco As Long
     
     MaxHp As Integer
@@ -1094,6 +1128,12 @@ End Type
 
 'Flags
 Public Type UserFlags
+    ' Hunger Games
+    SG As SurvivalGames
+    BeforeMap As Integer 'Antes mapa
+    BeforeX As Integer 'AntesX
+    BeforeY As Integer 'AntesY
+    
     SlotCarcel As Integer
     Muerto As Byte '¿Esta muerto?
     Escondido As Byte '¿Esta escondido?
@@ -1176,10 +1216,6 @@ Public Type UserFlags
     AdminPerseguible As Boolean
     
     ChatColor As Long
-    
-    '[el oso]
-    MD5Reportado As String
-    '[/el oso]
     
     '[Barrin 30-11-03]
     TimesWalk As Long
@@ -1281,7 +1317,7 @@ End Type
 
 'CHOTS | Accounts
 Public Type AccountUser
-    name As String
+    Name As String
     body As Integer
     Head As Integer
     weapon As Integer
@@ -1291,7 +1327,7 @@ Public Type AccountUser
     race As Byte
     Map As Integer
     level As Byte
-    gold As Long
+    Gold As Long
     criminal As Boolean
     dead As Boolean
     gameMaster As Boolean
@@ -1299,7 +1335,7 @@ End Type
 
 'Tipo de los Usuarios
 Public Type User
-    name As String
+    Name As String
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
     
@@ -1372,6 +1408,10 @@ Public Type User
     CurrentInventorySlots As Byte
 
     CentinelaUsuario As CentinelaUser
+    
+    cvcUser As cvc_User
+    
+    QuestStats As tQuestStats
 End Type
 
 
@@ -1469,7 +1509,7 @@ End Type
 Public Const MAX_NPC_DROPS As Byte = 5
 
 Public Type npc
-    name As String
+    Name As String
     Char As Char 'Define como se vera
     desc As String
 
@@ -1500,6 +1540,8 @@ Public Type npc
     GiveEXP As Long
     GiveGLD As Long
     Drop(1 To MAX_NPC_DROPS) As tDrops
+    
+    QuestNumber As Integer
     
     Stats As NPCStats
     flags As NPCFlags
@@ -1542,7 +1584,7 @@ Public Type MapBlock
     Graphic(1 To 4) As Integer
     UserIndex As Integer
     NpcIndex As Integer
-    ObjInfo As Obj
+    ObjInfo As obj
     TileExit As WorldPos
     trigger As eTrigger
 End Type
@@ -1551,7 +1593,7 @@ End Type
 Type MapInfo
     NumUsers As Integer
     Music As String
-    name As String
+    Name As String
     StartPos As WorldPos
     OnDeathGoTo As WorldPos
     
@@ -1642,11 +1684,6 @@ Public PuedeCrearPersonajes As Integer
 Public ServerSoloGMs As Integer
 Public NumRecords As Integer
 
-''
-'Esta activada la verificacion MD5 ?
-Public MD5ClientesActivado As Byte
-
-
 Public EnPausa As Boolean
 Public EnTesting As Boolean
 
@@ -1666,7 +1703,6 @@ Public ForbidenNames() As String
 Public ArmasHerrero() As Integer
 Public ArmadurasHerrero() As Integer
 Public ObjCarpintero() As Integer
-Public MD5s() As String
 Public BanIps As Collection
 Public Parties(1 To MAX_PARTIES) As clsParty
 Public ModClase(1 To NUMCLASES) As ModClase
@@ -1676,6 +1712,7 @@ Public DistribucionEnteraVida(1 To 5) As Integer
 Public DistribucionSemienteraVida(1 To 4) As Integer
 Public Ciudades(1 To NUMCIUDADES) As WorldPos
 Public distanceToCities() As HomeDistance
+Public QuestList() As tQuest
 Public Records() As tRecord
 '*********************************************************
 

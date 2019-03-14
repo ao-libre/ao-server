@@ -340,50 +340,6 @@ Public Sub CopyUser(ByVal UserName As String, ByVal newName As String)
     End If
 End Sub
 
-Public Function MD5ok(ByVal md5formateado As String) As Boolean
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    Dim i As Integer
-    
-    If MD5ClientesActivado = 1 Then
-        For i = 0 To UBound(MD5s)
-            If (md5formateado = MD5s(i)) Then
-                MD5ok = True
-                Exit Function
-            End If
-        Next i
-        MD5ok = False
-    Else
-        MD5ok = True
-    End If
-
-End Function
-
-Public Sub MD5sCarga()
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-    Dim LoopC As Integer
-    
-    MD5ClientesActivado = val(GetVar(IniPath & "Server.ini", "MD5Hush", "Activado"))
-    
-    If MD5ClientesActivado = 1 Then
-        ReDim MD5s(val(GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptados")))
-        For LoopC = 0 To UBound(MD5s)
-            MD5s(LoopC) = GetVar(IniPath & "Server.ini", "MD5Hush", "MD5Aceptado" & (LoopC + 1))
-            MD5s(LoopC) = txtOffset(hexMd52Asc(MD5s(LoopC)), 55)
-        Next LoopC
-    End If
-
-End Sub
-
 Public Sub BanIpAgrega(ByVal ip As String)
 '***************************************************
 'Author: Unknown
