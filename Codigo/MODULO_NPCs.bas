@@ -1,6 +1,6 @@
 Attribute VB_Name = "NPCs"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 MÃ¡rquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,25 +22,25 @@ Attribute VB_Name = "NPCs"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nÃºmero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'CÃ³digo Postal 1900
+'Pablo Ignacio MÃ¡rquez
 
 
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
 '                        Modulo NPC
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
 'Contiene todas las rutinas necesarias para cotrolar los
 'NPCs meno la rutina de AI que se encuentra en el modulo
 'AI_NPCs para su mejor comprension.
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
+'?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿
 
 Option Explicit
 #If False Then
@@ -83,7 +83,7 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 'Llamado cuando la vida de un NPC llega a cero.
 'Last Modify Date: 13/07/2010
 '22/06/06: (Nacho) Chequeamos si es pretoriano
-'24/01/2007: Pablo (ToxicWaste): Agrego para actualización de tag si cambia de status.
+'24/01/2007: Pablo (ToxicWaste): Agrego para actualizaciÃ³n de tag si cambia de status.
 '22/05/2010: ZaMa - Los caos ya no suben nobleza ni plebe al atacar npcs.
 '23/05/2010: ZaMa - El usuario pierde la pertenencia del npc.
 '13/07/2010: ZaMa - Optimizaciones de logica en la seleccion de pretoriano, y el posible cambio de alencion del usuario.
@@ -138,7 +138,7 @@ On Error GoTo ErrHandler
             End If
             
             '[/KEVIN]
-            Call WriteConsoleMsg(UserIndex, "¡Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Â¡Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
             If .Stats.NPCsMuertos < 32000 Then _
                 .Stats.NPCsMuertos = .Stats.NPCsMuertos + 1
             
@@ -204,6 +204,25 @@ On Error GoTo ErrHandler
             End If
             
         End With
+        
+        ' ++ Si el npc lo mata un elemental Userindex 0 y japish
+        Dim i As Long, j As Long
+        For i = 1 To MAXUSERQUESTS
+            With UserList(Userindex).QuestStats.Quests(i)
+                If .QuestIndex Then
+                    If QuestList(.QuestIndex).RequiredNPCs Then
+                        For j = 1 To QuestList(.QuestIndex).RequiredNPCs
+                            If QuestList(.QuestIndex).RequiredNPC(j).NpcIndex = MiNPC.Numero Then
+                                If QuestList(.QuestIndex).RequiredNPC(j).Amount > .NPCsKilled(j) Then
+                                    .NPCsKilled(j) = .NPCsKilled(j) + 1
+                                End If
+                            End If
+                        Next j
+                    End If
+                End If
+            End With
+        Next i                    
+                            
     End If ' Userindex > 0
    
     If MiNPC.MaestroUser = 0 Then
@@ -212,24 +231,7 @@ On Error GoTo ErrHandler
         'ReSpawn o no
         Call ReSpawnNpc(MiNPC)
     End If
-    
-    Dim i As Long, j As Long
-    For i = 1 To MAXUSERQUESTS
-        With UserList(Userindex).QuestStats.Quests(i)
-            If .QuestIndex Then
-                If QuestList(.QuestIndex).RequiredNPCs Then
-                    For j = 1 To QuestList(.QuestIndex).RequiredNPCs
-                        If QuestList(.QuestIndex).RequiredNPC(j).NpcIndex = MiNPC.Numero Then
-                            If QuestList(.QuestIndex).RequiredNPC(j).Amount > .NPCsKilled(j) Then
-                                .NPCsKilled(j) = .NPCsKilled(j) + 1
-                            End If
-                        End If
-                    Next j
-                End If
-            End If
-        End With
-    Next i
-    
+
 Exit Sub
 
 ErrHandler:
@@ -348,7 +350,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'22/05/2010: ZaMa - Ahora se resetea el dueño del npc también.
+'22/05/2010: ZaMa - Ahora se resetea el dueÃ±o del npc tambiÃ©n.
 '***************************************************
 
     With Npclist(NpcIndex)
@@ -549,7 +551,7 @@ Dim Y As Integer
             Call ClosestLegalPos(Pos, newpos, PuedeAgua, PuedeTierra)  'Nos devuelve la posicion valida mas cercana
             If newpos.X <> 0 And newpos.Y <> 0 Then
                 altpos.X = newpos.X
-                altpos.Y = newpos.Y     'posicion alternativa (para evitar el anti respawn, pero intentando qeu si tenía que ser en el agua, sea en el agua.)
+                altpos.Y = newpos.Y     'posicion alternativa (para evitar el anti respawn, pero intentando qeu si tenÃ­a que ser en el agua, sea en el agua.)
             Else
                 Call ClosestLegalPos(Pos, newpos, PuedeAgua)
                 If newpos.X <> 0 And newpos.Y <> 0 Then
@@ -801,7 +803,7 @@ Sub NpcEnvenenarUser(ByVal UserIndex As Integer)
         N = RandomNumber(1, 100)
         If N < 30 Then
             .flags.Envenenado = 1
-            Call WriteConsoleMsg(UserIndex, "¡¡La criatura te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(UserIndex, "Â¡Â¡La criatura te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
         End If
     End With
     
@@ -812,7 +814,7 @@ Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolea
 'Autor: Unknown (orginal version)
 'Last Modification: 06/15/2008
 '23/01/2007 -> Pablo (ToxicWaste): Creates an NPC of the type Npcindex
-'06/15/2008 -> Optimizé el codigo. (NicoNZ)
+'06/15/2008 -> OptimizÃ© el codigo. (NicoNZ)
 '***************************************************
 Dim newpos As WorldPos
 Dim altpos As WorldPos
@@ -928,10 +930,10 @@ Public Function OpenNPC(ByVal NpcNumber As Integer, Optional ByVal Respawn = Tru
 '#               ATENCION PELIGRO                  #
 '###################################################
 '
-'    ¡¡¡¡ NO USAR GetVar PARA LEER LOS NPCS !!!!
+'    Â¡Â¡Â¡Â¡ NO USAR GetVar PARA LEER LOS NPCS !!!!
 '
-'El que ose desafiar esta LEY, se las tendrá que ver
-'conmigo. Para leer los NPCS se deberá usar la
+'El que ose desafiar esta LEY, se las tendrÃ¡ que ver
+'conmigo. Para leer los NPCS se deberÃ¡ usar la
 'nueva clase clsIniManager.
 '
 'Alejo
@@ -1123,7 +1125,7 @@ Public Sub ValidarPermanenciaNpc(ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'Chequea si el npc continua perteneciendo a algún usuario
+'Chequea si el npc continua perteneciendo a algÃºn usuario
 '***************************************************
 
     With Npclist(NpcIndex)
