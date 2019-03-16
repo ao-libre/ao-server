@@ -116,7 +116,7 @@ On Error GoTo ErrHandler
         Call UserReciveObj(UserIndex, CInt(i), Cantidad)
         
         If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).Name & " retiró " & Cantidad & " " & _
+            Call LogDesarrollo(UserList(UserIndex).Name & " retiro " & Cantidad & " " & _
                 ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
         End If
         
@@ -247,7 +247,7 @@ On Error GoTo ErrHandler
         Call UserDejaObj(UserIndex, CInt(Item), Cantidad)
         
         If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).Name & " depositó " & Cantidad & " " & _
+            Call LogDesarrollo(UserList(UserIndex).Name & " deposito " & Cantidad & " " & _
                 ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
         End If
         

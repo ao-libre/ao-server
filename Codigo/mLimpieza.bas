@@ -7,7 +7,7 @@ Option Explicit
 Const MAXITEMS As Integer = 1000
 Private ArrayLimpieza(MAXITEMS) As WorldPos
 
-'//Desde acá establecemos el ultimo slot que se uso
+'//Desde aca establecemos el ultimo slot que se uso
 Public UltimoSlotLimpieza As Integer
 
 

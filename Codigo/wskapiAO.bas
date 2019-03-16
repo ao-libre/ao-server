@@ -313,7 +313,7 @@ On Error Resume Next
 #End If
 End Function
 
-'Retorna 0 cuando se envió o se metio en la cola,
+'Retorna 0 cuando se envio o se metio en la cola,
 'retorna <> 0 cuando no se pudo enviar o no se pudo meter en la cola
 Public Function WsApiEnviar(ByVal Slot As Integer, ByRef str As String) As Long
 #If UsarQueSocket = 1 Then
@@ -402,7 +402,7 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
     '        ' We couldn't decide if to accept or reject the connection
     '        'Force reject so we can get it out of the queue
     '        ret = WSAAccept(SockID, sa, Tam, AddressOf CondicionSocket, 1)
-    '        Call LogCriticEvent("Error en WSAAccept() API 11002: No se pudo decidir si aceptar o rechazar la conexión.")
+    '        Call LogCriticEvent("Error en WSAAccept() API 11002: No se pudo decidir si aceptar o rechazar la conexion.")
     '    Else
     '        i = Err.LastDllError
     '        Call LogCriticEvent("Error en WSAAccept() API " & i & ": " & GetWSAErrorString(i))
@@ -434,15 +434,15 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         Exit Sub
     End If
     
-    'Seteamos el tamaño del buffer de entrada
+    'Seteamos el tamano del buffer de entrada
     If setsockopt(NuevoSock, SOL_SOCKET, SO_RCVBUFFER, SIZE_RCVBUF, 4) <> 0 Then
         i = Err.LastDllError
-        Call LogCriticEvent("Error al setear el tamaño del buffer de entrada " & i & ": " & GetWSAErrorString(i))
+        Call LogCriticEvent("Error al setear el tamano del buffer de entrada " & i & ": " & GetWSAErrorString(i))
     End If
-    'Seteamos el tamaño del buffer de salida
+    'Seteamos el tamano del buffer de salida
     If setsockopt(NuevoSock, SOL_SOCKET, SO_SNDBUFFER, SIZE_SNDBUF, 4) <> 0 Then
         i = Err.LastDllError
-        Call LogCriticEvent("Error al setear el tamaño del buffer de salida " & i & ": " & GetWSAErrorString(i))
+        Call LogCriticEvent("Error al setear el tamano del buffer de salida " & i & ": " & GetWSAErrorString(i))
     End If
     
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -598,6 +598,6 @@ Public Function CondicionSocket(ByRef lpCallerId As WSABUF, ByRef lpCallerData A
         Exit Function
     End If
 
-    CondicionSocket = CF_ACCEPT 'En realdiad es al pedo, porque CondicionSocket se inicializa a 0, pero así es más claro....
+    CondicionSocket = CF_ACCEPT 'En realdiad es al pedo, porque CondicionSocket se inicializa a 0, pero asi es mas claro....
 #End If
 End Function

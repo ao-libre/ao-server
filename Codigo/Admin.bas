@@ -1,6 +1,6 @@
 Attribute VB_Name = "Admin"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "Admin"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
@@ -190,7 +190,7 @@ On Error Resume Next
     
     Call SaveForums
     
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave ha concluído.", FontTypeNames.FONTTYPE_SERVER))
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> WorldSave ha concluido.", FontTypeNames.FONTTYPE_SERVER))
 End Sub
 
 
@@ -208,9 +208,9 @@ Public Sub Encarcelar(ByVal UserIndex As Integer, ByVal Minutos As Long, Optiona
     Call WarpUserChar(UserIndex, Prision.Map, Prision.x, Prision.y, True)
     
     If LenB(GmName) = 0 Then
-        Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberás permanecer en la cárcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
     Else
-        Call WriteConsoleMsg(UserIndex, GmName & " te ha encarcelado, deberás permanecer en la cárcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, GmName & " te ha encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
     End If
     If UserList(UserIndex).flags.Traveling = 1 Then
         UserList(UserIndex).flags.Traveling = 0
@@ -479,7 +479,7 @@ Public Function UserDarPrivilegioLevel(ByVal Name As String) As PlayerType
 '***************************************************
 'Author: Unknown
 'Last Modification: 03/02/07
-'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
+'Last Modified By: Juan Martin Sotuyo Dodero (Maraxus)
 '***************************************************
 
     If EsAdmin(Name) Then
@@ -497,7 +497,7 @@ End Function
 
 Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As String, ByVal Reason As String)
 '***************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modification: 03/02/07
 '22/05/2010: Ya no se peude banear admins de mayor rango si estan online.
 '***************************************************
@@ -517,13 +517,13 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
     
     With UserList(bannerUserIndex)
         If tUser <= 0 Then
-            Call WriteConsoleMsg(bannerUserIndex, "El usuario no está online.", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(bannerUserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_TALK)
             
             If PersonajeExiste(UserName) Then
                 UserPriv = UserDarPrivilegioLevel(UserName)
                 
                 If (UserPriv And rank) > (.flags.Privilegios And rank) Then
-                    Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     If BANCheck(UserName) Then
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
@@ -547,7 +547,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, ByVal UserName As Stri
             End If
         Else
             If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
-                Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquía.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
             Else
             
                 Call LogBan(tUser, bannerUserIndex, Reason)

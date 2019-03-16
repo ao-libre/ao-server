@@ -594,7 +594,7 @@ Dim i               As Long
 
             If CantGanadores > 1 Then
                 'empate en la votacion
-                Call SetGuildNews("*Empate en la votación. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan.")
+                Call SetGuildNews("*Empate en la votacion. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan.")
             ElseIf CantGanadores = 1 Then
                 list = Me.GetMemberList()
                 
@@ -603,14 +603,14 @@ Dim i               As Long
                 Next i
                 
                 If i <= UBound(list()) Then
-                    Call SetGuildNews("*" & Ganador & " ganó la elección del clan*")
+                    Call SetGuildNews("*" & Ganador & " gano la eleccion del clan*")
                     Call Me.SetLeader(Ganador)
                     RevisarElecciones = True
                 Else
-                    Call SetGuildNews("*" & Ganador & " ganó la elección del clan pero abandonó las filas por lo que la votación queda desierta*")
+                    Call SetGuildNews("*" & Ganador & " gano la eleccion del clan pero abandono las filas por lo que la votacion queda desierta*")
                 End If
             Else
-                Call SetGuildNews("*El período de votación se cerró sin votos*")
+                Call SetGuildNews("*El periodo de votacion se cerro sin votos*")
             End If
             
             Call CerrarElecciones

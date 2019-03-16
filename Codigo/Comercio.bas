@@ -56,7 +56,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         ElseIf Cantidad > MAX_INVENTORY_OBJS Then
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " ha sido baneado por el sistema anti-cheats.", FontTypeNames.FONTTYPE_FIGHT))
-            Call Ban(UserList(UserIndex).name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio. Quiso comprar demasiados ítems:" & Cantidad)
+            Call Ban(UserList(UserIndex).name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio. Quiso comprar demasiados items:" & Cantidad)
             UserList(UserIndex).flags.Ban = 1
             Call WriteErrorMsg(UserIndex, "Has sido baneado por el Sistema AntiCheat.")
             Call FlushBuffer(UserIndex)
@@ -96,18 +96,18 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+            Call LogDesarrollo(UserList(UserIndex).name & " compro del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
         ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " compró del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+                Call LogDesarrollo(UserList(UserIndex).name & " compro del NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
             End If
         End If
         
         'Agregado para que no se vuelvan a vender las llaves si se recargan los .dat.
         If ObjData(Objeto.ObjIndex).OBJType = otLlaves Then
             Call WriteVar(DatPath & "NPCs.dat", "NPC" & Npclist(NpcIndex).Numero, "obj" & Slot, Objeto.ObjIndex & "-0")
-            Call logVentaCasa(UserList(UserIndex).name & " compró " & ObjData(Objeto.ObjIndex).name)
+            Call logVentaCasa(UserList(UserIndex).name & " compro " & ObjData(Objeto.ObjIndex).name)
         End If
         
     ElseIf Modo = eModoComercio.Venta Then
@@ -126,14 +126,14 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Real = 1 Then
             If Npclist(NpcIndex).name <> "SR" Then
-                Call WriteConsoleMsg(UserIndex, "Las armaduras del ejército real sólo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Las armaduras del ejército real solo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
                 Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
                 Call WriteTradeOK(UserIndex)
                 Exit Sub
             End If
         ElseIf ObjData(Objeto.ObjIndex).Caos = 1 Then
             If Npclist(NpcIndex).name <> "SC" Then
-                Call WriteConsoleMsg(UserIndex, "Las armaduras de la legión oscura sólo pueden ser vendidas a los sastres del demonio.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Las armaduras de la legion oscura solo pueden ser vendidas a los sastres del demonio.", FontTypeNames.FONTTYPE_INFO)
                 Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
                 Call WriteTradeOK(UserIndex)
                 Exit Sub
@@ -144,7 +144,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Exit Sub
         ElseIf UserList(UserIndex).flags.Privilegios And PlayerType.Consejero Then
-            Call WriteConsoleMsg(UserIndex, "No puedes vender ítems.", FontTypeNames.FONTTYPE_WARNING)
+            Call WriteConsoleMsg(UserIndex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
             Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
             Call WriteTradeOK(UserIndex)
             Exit Sub
@@ -174,11 +174,11 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
         If ObjData(Objeto.ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+            Call LogDesarrollo(UserList(UserIndex).name & " vendio al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
         ElseIf Objeto.Amount >= 1000 Then 'Es mucha cantidad?
             'Si no es de los prohibidos de loguear, lo logueamos.
             If ObjData(Objeto.ObjIndex).NoLog <> 1 Then
-                Call LogDesarrollo(UserList(UserIndex).name & " vendió al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
+                Call LogDesarrollo(UserList(UserIndex).name & " vendio al NPC " & Objeto.Amount & " " & ObjData(Objeto.ObjIndex).name)
             End If
         End If
         
@@ -251,7 +251,7 @@ Private Sub EnviarNpcInv(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 '*************************************************
 'Author: Nacho (Integer)
 'Last Modified: 06/14/08
-'Last Modified By: Nicolás Ezequiel Bouhid (NicoNZ)
+'Last Modified By: Nicolas Ezequiel Bouhid (NicoNZ)
 '*************************************************
     Dim Slot As Byte
     Dim val As Single
@@ -276,11 +276,11 @@ End Sub
 ''
 ' Devuelve el valor de venta del objeto
 '
-' @param ObjIndex  El número de objeto al cual le calculamos el precio de venta
+' @param ObjIndex  El numero de objeto al cual le calculamos el precio de venta
 
 Public Function SalePrice(ByVal ObjIndex As Integer) As Single
 '*************************************************
-'Author: Nicolás (NicoNZ)
+'Author: Nicolas (NicoNZ)
 '
 '*************************************************
     If ObjIndex < 1 Or ObjIndex > UBound(ObjData) Then Exit Function

@@ -46,7 +46,7 @@ Option Explicit
 'es por un blucle infinito de ententos socket2_read. Ni idea
 'que lo ocasiona.
 '2) Eliminé el doevents de gametimer
-'3) Ahora los socket además se cierran con .Disconnect.
+'3) Ahora los socket ademas se cierran con .Disconnect.
 'Espero que solucione el problema del bucle...
 '4) Agregué un sistema para detectar los bucles esos con un
 'contador. Cuando lo detecta se graba en el log de errores,
@@ -66,7 +66,7 @@ Option Explicit
 'problemas...verifiqué y la forma de reutilizacion de socks
 'es por UserList().flags.connid
 '2) La funcion Cerrar_Usuario quedo solo para /salir y des_
-'coneccion estando loggeado..devolví al estado original la
+'coneccion estando loggeado..devolvi al estado original la
 'func CloseSocket (bueh..un poko modifikada ta)
 
 '30-3-2003 (estamos laburadores hoy eh) - ver .33
@@ -122,7 +122,7 @@ Option Explicit
 '---------
 '1) Apliqué el color Verde para los GMs (lease..lookattile)
 '2) Los gms no muestran FXs cuando se mueven estando invisibles
-'3) Me comí un pancho en la plaza deboto..que ricos son esos panchos! (??)
+'3) Me comi un pancho en la plaza deboto..que ricos son esos panchos! (??)
 
 'History Log by Morgolock
 
@@ -132,7 +132,7 @@ Option Explicit
 'Right por Mid$, Left$ y Right$ para que devuelvan strings
 'en vez de variants. Se deberia ganar considerable velocidad.
 '2) Quite el comando /GRABAR ya que generaba problemas con
-'las mascotas y no era demasiado útil ya que los usuarios
+'las mascotas y no era demasiado util ya que los usuarios
 'consiguen el mismo efecto saliendo y volviendo a entrar
 'en el juego.
 '3) Agregué el MOTD, el servidor levanta el mensaje del archivo
@@ -141,7 +141,7 @@ Option Explicit
 
 '12-2-2003
 '---------
-'1) Limité a tres la máxima cantidad de mascotas
+'1) Limité a tres la maxima cantidad de mascotas
 '2) A los newbies se les caen los objetos no newbies
 
 

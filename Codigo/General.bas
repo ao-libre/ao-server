@@ -1,6 +1,6 @@
 Attribute VB_Name = "General"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "General"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -271,12 +271,12 @@ On Error Resume Next
     Call CargarHechizos
         
     ' Objetos de Herreria
-    frmCargando.Label1(2).Caption = "Cargando Objetos de Herrería"
+    frmCargando.Label1(2).Caption = "Cargando Objetos de Herreria"
     Call LoadArmasHerreria
     Call LoadArmadurasHerreria
     
     ' Objetos de Capinteria
-    frmCargando.Label1(2).Caption = "Cargando Objetos de Carpintería"
+    frmCargando.Label1(2).Caption = "Cargando Objetos de Carpinteria"
     Call LoadObjCarpintero
     
     ' Balance.dat
@@ -424,10 +424,10 @@ On Error Resume Next
     ' Skills
     SkillsNames(eSkill.Magia) = "Magia"
     SkillsNames(eSkill.Robar) = "Robar"
-    SkillsNames(eSkill.Tacticas) = "Evasión en combate"
+    SkillsNames(eSkill.Tacticas) = "Evasion en combate"
     SkillsNames(eSkill.Armas) = "Combate con armas"
     SkillsNames(eSkill.Meditar) = "Meditar"
-    SkillsNames(eSkill.Apuñalar) = "Apuñalar"
+    SkillsNames(eSkill.Apunalar) = "Apunalar"
     SkillsNames(eSkill.Ocultarse) = "Ocultarse"
     SkillsNames(eSkill.Supervivencia) = "Supervivencia"
     SkillsNames(eSkill.Talar) = "Talar"
@@ -607,7 +607,7 @@ End Function
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
 '*****************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: 11/15/2004
 'Gets a field from a delimited string
 '*****************************************************************
@@ -1246,12 +1246,12 @@ Public Sub EfectoFrio(ByVal UserIndex As Integer)
             .Counters.Frio = .Counters.Frio + 1
         Else
             If MapInfo(.Pos.Map).Terreno = eTerrain.terrain_nieve Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Estás muriendo de frío, abrigate o morirás!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "¡¡Estas muriendo de frio, abrigate o moriras!!", FontTypeNames.FONTTYPE_INFO)
                 modifi = Porcentaje(.Stats.MaxHp, 5)
                 .Stats.MinHp = .Stats.MinHp - modifi
                 
                 If .Stats.MinHp < 1 Then
-                    Call WriteConsoleMsg(UserIndex, "¡¡Has muerto de frío!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¡¡Has muerto de frio!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = 0
                     Call UserDie(UserIndex)
                 End If
@@ -1280,7 +1280,7 @@ Public Sub EfectoLava(ByVal UserIndex As Integer)
                 .Counters.Lava = .Counters.Lava + 1
             Else
                 If HayLava(.Pos.Map, .Pos.x, .Pos.y) Then
-                    Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estás quemando!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¡¡Quitate de la lava, te estas quemando!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = .Stats.MinHp - Porcentaje(.Stats.MaxHp, 5)
                     
                     If .Stats.MinHp < 1 Then
@@ -1573,7 +1573,7 @@ Public Sub RecStamina(ByVal UserIndex As Integer, ByRef EnviarStats As Boolean, 
             Else
                 EnviarStats = True
                 .Counters.STACounter = 0
-                If .flags.Desnudo Then Exit Sub 'Desnudo no sube energía. (ToxicWaste)
+                If .flags.Desnudo Then Exit Sub 'Desnudo no sube energia. (ToxicWaste)
                
                 massta = RandomNumber(1, Porcentaje(.Stats.MaxSta, 5))
                 .Stats.MinSta = .Stats.MinSta + massta
@@ -1599,7 +1599,7 @@ Public Sub EfectoVeneno(ByVal UserIndex As Integer)
         If .Counters.Veneno < IntervaloVeneno Then
           .Counters.Veneno = .Counters.Veneno + 1
         Else
-          Call WriteConsoleMsg(UserIndex, "Estás envenenado, si no te curas morirás.", FontTypeNames.FONTTYPE_VENENO)
+          Call WriteConsoleMsg(UserIndex, "Estas envenenado, si no te curas moriras.", FontTypeNames.FONTTYPE_VENENO)
           .Counters.Veneno = 0
           n = RandomNumber(1, 5)
           .Stats.MinHp = .Stats.MinHp - n
@@ -1614,7 +1614,7 @@ Public Sub DuracionPociones(ByVal UserIndex As Integer)
 '***************************************************
 'Author: ??????
 'Last Modification: 11/27/09 (Budi)
-'Cuando se pierde el efecto de la poción updatea fz y agi (No me gusta que ambos atributos aunque se haya modificado solo uno, pero bueno :p)
+'Cuando se pierde el efecto de la pocion updatea fz y agi (No me gusta que ambos atributos aunque se haya modificado solo uno, pero bueno :p)
 '***************************************************
     With UserList(UserIndex)
         'Controla la duracion de las pociones
@@ -1780,7 +1780,7 @@ On Error GoTo errHandler
                     
                 End If
                 
-                'Sacamos energía
+                'Sacamos energia
                 If Lloviendo Then _
                     Call EfectoLluvia(i)
                 
@@ -1789,7 +1789,7 @@ On Error GoTo errHandler
                     If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ANTIPIQUETE Then
                             If .flags.Muerto = 0 Then
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
-                                Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(i, "¡¡¡Estas obstruyendo la via publica, muévete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                 
                                 If .Counters.PiqueteC >= ContadorAntiPiquete Then
                                     .Counters.PiqueteC = 0
@@ -2035,7 +2035,7 @@ End Sub
 
 Public Sub FreeNPCs()
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Autor: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Releases all NPC Indexes
 '***************************************************
@@ -2049,7 +2049,7 @@ End Sub
 
 Public Sub FreeCharIndexes()
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Autor: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Releases all char indexes
 '***************************************************

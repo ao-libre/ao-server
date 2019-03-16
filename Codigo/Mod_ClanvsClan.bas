@@ -70,7 +70,7 @@ Public Sub Enviar(ByVal UserIndex As Integer, _
                 UserList(targetIndex).cvcUser.cvc_Target = UserIndex
                 
                 Call Protocol.WriteConsoleMsg(targetIndex, "El clan " & modGuilds.GuildName(my_Guild) & " desafia tu clan a un duelo de modalidad Clan vs Clan, si aceptas hazle click y tipea /ACVC.", FontTypeNames.FONTTYPE_CITIZEN)
-                Call Protocol.WriteConsoleMsg(targetIndex, "La cantidad máxima de usuarios por clan es de : " & CStr(menorCant) & ".", FontTypeNames.FONTTYPE_CITIZEN)
+                Call Protocol.WriteConsoleMsg(targetIndex, "La cantidad maxima de usuarios por clan es de : " & CStr(menorCant) & ".", FontTypeNames.FONTTYPE_CITIZEN)
                 Call Protocol.WriteConsoleMsg(UserIndex, "Ahora debes esperar que el lider acepte.", FontTypeNames.FONTTYPE_CITIZEN)
         End With
 
@@ -83,12 +83,12 @@ Public Sub Aceptar(ByVal UserIndex As Integer, ByVal targetIndex As Integer)
 
         With UserList(UserIndex)
 
-                'clickio a quien le envió?
+                'clickio a quien le envio?
 
                 If (targetIndex = .cvcUser.cvc_Target) Then
                         Call Iniciar(targetIndex, UserIndex, .GuildIndex, UserList(targetIndex).GuildIndex, UserList(targetIndex).cvcUser.cvc_MaxUsers)
                 Else
-                        Call Protocol.WriteConsoleMsg(UserIndex, UserList(targetIndex).Name & " no solicitó ningún Clan vs Clan.", FontTypeNames.FONTTYPE_CITIZEN)
+                        Call Protocol.WriteConsoleMsg(UserIndex, UserList(targetIndex).Name & " no solicito ningun Clan vs Clan.", FontTypeNames.FONTTYPE_CITIZEN)
                 End If
 
         End With
@@ -369,7 +369,7 @@ Private Sub GanaCVC(ByVal guildWinner As Byte, ByVal guildLooser As Byte)
                 Next i
 
                 sMessage = sMessage & vbNewLine
-                sMessage = modGuilds.GuildName(.Guild(guildWinner).Guild_Index) & " venció a " & modGuilds.GuildName(.Guild(guildLooser).Guild_Index) & " en un duelo " & CStr(.max_Users) & " vs " & CStr(.max_Users) & "."
+                sMessage = modGuilds.GuildName(.Guild(guildWinner).Guild_Index) & " vencio a " & modGuilds.GuildName(.Guild(guildLooser).Guild_Index) & " en un duelo " & CStr(.max_Users) & " vs " & CStr(.max_Users) & "."
                 Call SendData(SendTarget.ToAll, 0, Protocol.PrepareMessageConsoleMsg(sMessage, FontTypeNames.FONTTYPE_CITIZEN))
                 'limpio la data
                 Call EraseCVC
@@ -415,7 +415,7 @@ Public Sub ConectarCVC(ByVal UserIndex As Integer, _
 
                 If (user_Gindex <> 0) Then
                         .UsUaRiOs(user_Gindex) = UserIndex
-                        Call EnviarMensajeCVC(0, UserList(UserIndex).Name & " ingresó al cvc para el clan " & modGuilds.GuildName(UserList(UserIndex).GuildIndex) & "!")
+                        Call EnviarMensajeCVC(0, UserList(UserIndex).Name & " ingreso al cvc para el clan " & modGuilds.GuildName(UserList(UserIndex).GuildIndex) & "!")
                         'buscamos una pos
                         Call Get_Pos_By_Guild(UserIndex, guild_Num, user_toPosX, user_toPosY)
 
@@ -453,35 +453,35 @@ Public Function Can_Ingress(ByVal UserIndex As Integer, _
         End If
 
         If UserList(UserIndex).GuildIndex = 0 Then
-                errorMsg = "No perteneces a ningún clan.!"
+                errorMsg = "No perteneces a ningun clan.!"
 
                 Exit Function
 
         End If
 
         If UCase$(modGuilds.GuildLeader(UserList(UserIndex).GuildIndex)) <> UCase$(UserList(UserIndex).Name) Then
-                errorMsg = "No eres el lider de ningún clan."
+                errorMsg = "No eres el lider de ningun clan."
 
                 Exit Function
 
         End If
 
         If UserList(UserIndex).cvcUser.en_CVC = True Then
-                errorMsg = "Estás en el cvc!"
+                errorMsg = "Estas en el cvc!"
 
                 Exit Function
 
         End If
 
         If UserList(UserIndex).flags.Muerto <> 0 Then
-                errorMsg = "Estás muerto."
+                errorMsg = "Estas muerto."
 
                 Exit Function
 
         End If
 
         If UserList(UserIndex).Counters.Pena <> 0 Then
-                errorMsg = "Estás en la cárcel."
+                errorMsg = "Estas en la carcel."
 
                 Exit Function
 
@@ -497,14 +497,14 @@ Public Function Can_Ingress(ByVal UserIndex As Integer, _
                 'llego al tope de usuario?
 
                 If index_In_CVC(guild_Num) = 0 Then
-                        errorMsg = "El clan llegó al límite de usuarios en este clan vs clan."
+                        errorMsg = "El clan llego al limite de usuarios en este clan vs clan."
 
                         Exit Function
 
                 End If
 
         Else
-                errorMsg = "Tu clan no está en ningún CVC."
+                errorMsg = "Tu clan no esta en ningun CVC."
 
                 Exit Function
 
@@ -573,7 +573,7 @@ End Sub
 Private Function Find_Guild_Num(ByVal Guild_Index As Integer) As Byte
 
         '
-        ' @ Devuelve 1 ó 2 según el guildIndex
+        ' @ Devuelve 1 o 2 segun el guildIndex
 
         With CVC_Info
 
@@ -604,7 +604,7 @@ Private Function Get_Num_Dies(ByVal guild_Num As Byte) As Byte
 
                                 If (.UsUaRiOs(j) <> -1) Then
 
-                                        'si no está logeado o está muerto.
+                                        'si no esta logeado o esta muerto.
 
                                         If (UserList(.UsUaRiOs(j)).ConnID = -1) Or (UserList(.UsUaRiOs(j)).flags.Muerto <> 0) Then
                                                 Get_Num_Dies = Get_Num_Dies + 1

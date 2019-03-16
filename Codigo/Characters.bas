@@ -2,7 +2,7 @@ Attribute VB_Name = "Characters"
 '**************************************************************
 ' Characters.bas - library of functions to manipulate characters.
 '
-' Designed and implemented by Juan Martín Sotuyo Dodero (Maraxus)
+' Designed and implemented by Juan Martin Sotuyo Dodero (Maraxus)
 ' (juansotuyo@gmail.com)
 '**************************************************************
 
@@ -35,7 +35,7 @@ Public Const INVALID_INDEX As Integer = 0
 
 Public Function CharIndexToUserIndex(ByVal CharIndex As Integer) As Integer
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Autor: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modification: 05/17/06
 'Takes a CharIndex and transforms it into a UserIndex. Returns INVALID_INDEX in case of error.
 '***************************************************

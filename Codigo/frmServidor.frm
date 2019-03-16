@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmServidor 
    BackColor       =   &H00FFC0C0&
-   Caption         =   "Configuración del Servidor"
+   Caption         =   "Configuracion del Servidor"
    ClientHeight    =   6000
    ClientLeft      =   60
    ClientTop       =   345
@@ -34,7 +34,7 @@ Begin VB.Form frmServidor
    End
    Begin VB.Frame Frame3 
       BackColor       =   &H00FFC0C0&
-      Caption         =   "Administración"
+      Caption         =   "Administracion"
       Height          =   2415
       Left            =   120
       TabIndex        =   16
@@ -102,7 +102,7 @@ Begin VB.Form frmServidor
       End
       Begin VB.CommandButton frmAdministracion 
          BackColor       =   &H00FFC0C0&
-         Caption         =   "Administración"
+         Caption         =   "Administracion"
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
@@ -132,7 +132,7 @@ Begin VB.Form frmServidor
       End
       Begin VB.CommandButton cmdVerTrafico 
          BackColor       =   &H00FFC0C0&
-         Caption         =   "Tráfico"
+         Caption         =   "Trafico"
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
@@ -327,7 +327,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -349,10 +349,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -373,7 +373,7 @@ End Sub
 
 Private Sub cmdApagarServer_Click()
     
-    If MsgBox("¿Está seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, _
+    If MsgBox("¿Esta seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, _
         "Apagar Magicamente") = vbNo Then Exit Sub
     
     Me.MousePointer = 11
@@ -557,7 +557,7 @@ Private Sub cmdResetSockets_Click()
 
 #If UsarQueSocket = 1 Then
 
-    If MsgBox("¿Está seguro que desea reiniciar los sockets? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+    If MsgBox("¿Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
         Call WSApiReiniciarSockets
     End If
 
@@ -565,7 +565,7 @@ Private Sub cmdResetSockets_Click()
 
     Dim LoopC As Integer
     
-    If MsgBox("¿Está seguro que desea reiniciar los sockets? Se cerrarán todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+    If MsgBox("¿Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
         For LoopC = 1 To MaxUsers
             If UserList(LoopC).ConnID <> -1 And UserList(LoopC).ConnIDValida Then
                 Call CloseSocket(LoopC)
@@ -593,7 +593,7 @@ On Error Resume Next
     
     Dim sENtrada As String
     
-    sENtrada = InputBox("Escribe ""estoy DE acuerdo"" entre comillas y con distinción de mayúsculas minúsculas para desbanear a todos los personajes.", "UnBan", "hola")
+    sENtrada = InputBox("Escribe ""estoy DE acuerdo"" entre comillas y con distincion de mayusculas minusculas para desbanear a todos los personajes.", "UnBan", "hola")
     If sENtrada = "estoy DE acuerdo" Then
     
         Fn = App.Path & "\logs\GenteBanned.log"
@@ -619,7 +619,7 @@ Private Sub cmdUnbanAllIps_Click()
     
     Dim sENtrada As String
     
-    sENtrada = InputBox("Escribe ""estoy DE acuerdo"" sin comillas y con distinción de mayúsculas minúsculas para desbanear a todos los personajes", "UnBan", "hola")
+    sENtrada = InputBox("Escribe ""estoy DE acuerdo"" sin comillas y con distincion de mayusculas minusculas para desbanear a todos los personajes", "UnBan", "hola")
     If sENtrada = "estoy DE acuerdo" Then
         
         N = BanIps.Count
