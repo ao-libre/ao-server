@@ -928,7 +928,7 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
 '26/01/2007 Pablo (ToxicWaste) - Cambios que permiten mejor manejo de ataques en los rings.
 '26/01/2007 Pablo (ToxicWaste) - Revivir no permitido en Mapas con ResuSinEfecto
 '02/01/2008 Marcos (ByVal) - Curar Veneno no permitido en usuarios muertos.
-'06/28/2008 NicoNZ - Agregué que se le de valor al flag Inmovilizado.
+'06/28/2008 NicoNZ - Agregue que se le de valor al flag Inmovilizado.
 '17/11/2008: NicoNZ - Agregado para quitar la penalizacion de vida en el ring y cambio de ecuacion.
 '13/02/2009: ZaMa - Arreglada ecuacion para quitar vida tras resucitar en rings.
 '23/11/2009: ZaMa - Optimizacion de codigo.
@@ -2091,7 +2091,7 @@ Public Function CanSupportUser(ByVal CasterIndex As Integer, ByVal TargetIndex A
             
                 ' Armadas no pueden ayudar
                 If esArmada(CasterIndex) Then
-                    Call WriteConsoleMsg(CasterIndex, "Los miembros del ejército real no pueden ayudar a los criminales.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(CasterIndex, "Los miembros del ejercito real no pueden ayudar a los criminales.", FontTypeNames.FONTTYPE_INFO)
                     Exit Function
                 End If
                 
@@ -2127,7 +2127,7 @@ Public Function CanSupportUser(ByVal CasterIndex As Integer, ByVal TargetIndex A
                     
                         ' Si es armada no puede ayudar
                         If esArmada(CasterIndex) Then
-                            Call WriteConsoleMsg(CasterIndex, "Los miembros del ejército real no pueden ayudar a ciudadanos en estado atacable.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(CasterIndex, "Los miembros del ejercito real no pueden ayudar a ciudadanos en estado atacable.", FontTypeNames.FONTTYPE_INFO)
                             Exit Function
                         End If
     

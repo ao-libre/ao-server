@@ -404,7 +404,7 @@ Public Sub OnlineParty(ByVal UserIndex As Integer)
 '*************************************************
 'Author: Unknown
 'Last modified: 11/27/09 (Budi)
-'Adapte la funcion a los nuevos métodos de clsParty
+'Adapte la funcion a los nuevos metodos de clsParty
 '*************************************************
 Dim i As Integer
 Dim PI As Integer

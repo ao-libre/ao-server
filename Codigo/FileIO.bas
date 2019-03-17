@@ -2683,7 +2683,7 @@ Sub SendUserMiniStatsTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName 
         Call WriteConsoleMsg(sendIndex, "Pena: " & GetVar(CharFile, "COUNTERS", "PENA"), FontTypeNames.FONTTYPE_INFO)
         
         If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Ejército real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ejercito real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Ingreso en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
@@ -2693,7 +2693,7 @@ Sub SendUserMiniStatsTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName 
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
         ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue ejército real", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Fue ejercito real", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
         ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExCaos")) = 1 Then

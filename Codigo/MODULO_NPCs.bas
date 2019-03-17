@@ -350,7 +350,7 @@ Private Sub ResetNpcMainInfo(ByVal NpcIndex As Integer)
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-'22/05/2010: ZaMa - Ahora se resetea el dueno del npc también.
+'22/05/2010: ZaMa - Ahora se resetea el dueno del npc tambien.
 '***************************************************
 
     With Npclist(NpcIndex)
@@ -814,7 +814,7 @@ Function SpawnNpc(ByVal NpcIndex As Integer, Pos As WorldPos, ByVal FX As Boolea
 'Autor: Unknown (orginal version)
 'Last Modification: 06/15/2008
 '23/01/2007 -> Pablo (ToxicWaste): Creates an NPC of the type Npcindex
-'06/15/2008 -> Optimizé el codigo. (NicoNZ)
+'06/15/2008 -> Optimize el codigo. (NicoNZ)
 '***************************************************
 Dim newpos As WorldPos
 Dim altpos As WorldPos

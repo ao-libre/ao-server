@@ -2197,7 +2197,7 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, ByVal TargetMap As Integer, 
 '***************************************************
 'Author: Unknown
 '  Este procedimiento es llamado cada vez que un NPC deba ir
-'  a otro lugar en el mismo TargetMap. Utiliza una técnica
+'  a otro lugar en el mismo TargetMap. Utiliza una tecnica
 '  de programacion greedy no deterministica.
 '  Cada paso azaroso que me acerque al destino, es un buen paso.
 '  Si no hay mejor paso valido, entonces hay que volver atras y reintentar.

@@ -88,7 +88,7 @@ Public Function MiExperiencia(ByVal UserIndex As Integer) As Long
 'Last Modification By: Budi
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
-' - 11/27/09 Arreglé el Out of Range.
+' - 11/27/09 Arregle el Out of Range.
 '***************************************************
 'Me dice cuanta experiencia tengo colectada ya en la party
 Dim i As Integer
@@ -395,7 +395,7 @@ If rv Then
             'aspirante armada en party crimi
             If UI > 0 Then
                 If esArmada And criminal(UI) Then
-                    razon = "Los miembros del ejército real no entran a una party con criminales."
+                    razon = "Los miembros del ejercito real no entran a una party con criminales."
                     rv = False
                 End If
                 'aspirante caos en party ciuda
@@ -405,7 +405,7 @@ If rv Then
                 End If
                 'aspirante crimi en party armada
                 If UserList(UI).Faccion.ArmadaReal = 1 And criminal(UserIndex) Then
-                    razon = "Los criminales no entran a parties con miembros del ejército real."
+                    razon = "Los criminales no entran a parties con miembros del ejercito real."
                     rv = False
                 End If
                 'aspirante ciuda en party caos

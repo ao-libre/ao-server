@@ -381,8 +381,8 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Accou
 'Author: Unknown
 'Last modified: 3/12/2009
 'Conecta un nuevo Usuario
-'23/01/2007 Pablo (ToxicWaste) - Agregué ResetFaccion al crear usuario
-'24/01/2007 Pablo (ToxicWaste) - Agregué el nuevo mana inicial de los magos.
+'23/01/2007 Pablo (ToxicWaste) - Agregue ResetFaccion al crear usuario
+'24/01/2007 Pablo (ToxicWaste) - Agregue el nuevo mana inicial de los magos.
 '12/02/2007 Pablo (ToxicWaste) - Puse + 1 de const al Elfo normal.
 '20/04/2007 Pablo (ToxicWaste) - Puse -1 de fuerza al Elfo.
 '09/01/2008 Pablo (ToxicWaste) - Ahora los modificadores de Raza se controlan desde Balance.dat
@@ -994,7 +994,7 @@ Err:
 #ElseIf UsarQueSocket = 3 Then
     'THIS SOCKET DOESN`T USE THE BYTE QUEUE CLASS
     'al carajo, esto encola solo!!! che, me aprobara los
-    'parciales también?, este control hace todo solo!!!!
+    'parciales tambien?, este control hace todo solo!!!!
     On Error GoTo ErrorHandler
         
         If UserList(UserIndex).ConnID = -1 Then
@@ -1313,7 +1313,7 @@ With UserList(UserIndex)
                     'Lo sacamos.
                     If UserList(MapData(mapa, .Pos.x, .Pos.Y).UserIndex).flags.UserLogged Then
                         Call FinComerciarUsu(MapData(mapa, .Pos.x, .Pos.Y).UserIndex)
-                        Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
                         Call FlushBuffer(MapData(mapa, .Pos.x, .Pos.Y).UserIndex)
                     End If
                 End If

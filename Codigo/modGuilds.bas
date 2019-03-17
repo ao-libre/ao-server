@@ -199,7 +199,7 @@ Private Sub UpdateGuildMembers(ByVal GuildIndex As Integer)
     Dim UserIndex As Integer
     Dim Reenlistadas As Integer
     
-    ' Si devuelve true, cambio a neutro y echamos a todos los que estén de mas, sino no echamos a nadie
+    ' Si devuelve true, cambio a neutro y echamos a todos los que esten de mas, sino no echamos a nadie
     If guilds(GuildIndex).CambiarAlineacion(BajarGrado(GuildIndex)) Then 'ALINEACION_NEUTRO)
         
         'uso GetMemberList y no los iteradores pq voy a rajar gente y puedo alterar
@@ -595,7 +595,7 @@ Public Function PuedeFundarUnClan(ByVal UserIndex As Integer, ByVal Alineacion A
     Select Case Alineacion
         Case ALINEACION_GUILD.ALINEACION_ARMADA
             If UserList(UserIndex).Faccion.ArmadaReal <> 1 Then
-                refError = "Para fundar un clan real debes ser miembro del ejército real."
+                refError = "Para fundar un clan real debes ser miembro del ejercito real."
                 Exit Function
             End If
         Case ALINEACION_GUILD.ALINEACION_CIUDA

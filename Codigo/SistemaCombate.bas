@@ -205,7 +205,7 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
 'Author: Unknown
 'Last modified: 03/15/2006
 'Revisa si un NPC logra impactar a un user o no
-'03/15/2006 Maraxus - Evité una division por cero que eliminaba NPCs
+'03/15/2006 Maraxus - Evite una division por cero que eliminaba NPCs
 '*************************************************
     Dim Rechazo As Boolean
     Dim ProbRechazo As Long
@@ -793,7 +793,7 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, ByVal Victima As Integer, Opti
         'Es el Rey Preatoriano?
         If Npclist(Victima).NPCtype = eNPCType.Pretoriano Then
             If Not ClanPretoriano(Npclist(Victima).ClanIndex).CanAtackMember(Victima) Then
-                Call WriteConsoleMsg(.MaestroUser, "Debes matar al resto del ejército antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(.MaestroUser, "Debes matar al resto del ejercito antes de atacar al rey!", FontTypeNames.FONTTYPE_FIGHT)
                 .TargetNPC = 0
                 Exit Sub
             End If
@@ -1490,7 +1490,7 @@ On Error GoTo ErrHandler
                 ' La victima es armada?
                 If esArmada(VictimIndex) Then
                     ' No puede
-                    Call WriteConsoleMsg(AttackerIndex, "Los soldados del ejército real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(AttackerIndex, "Los soldados del ejercito real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
                     Exit Function
                 End If
             End If
@@ -1528,7 +1528,7 @@ On Error GoTo ErrHandler
             ' Por un armada sin seguro
             If esArmada(AttackerIndex) Then
                 ' No puede
-                Call WriteConsoleMsg(AttackerIndex, "Los soldados del ejército real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(AttackerIndex, "Los soldados del ejercito real tienen prohibido atacar ciudadanos.", FontTypeNames.FONTTYPE_WARNING)
                 PuedeAtacar = False
                 Exit Function
             End If
@@ -1637,7 +1637,7 @@ On Error GoTo ErrHandler
             ElseIf .NPCtype = eNPCType.GuardiaReal Then
                 'Lo quiere atacar un Armada?
                 If esArmada(AttackerIndex) Then
-                    Call WriteConsoleMsg(AttackerIndex, "No puedes atacar Guardias Reales siendo del ejército real.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(AttackerIndex, "No puedes atacar Guardias Reales siendo del ejercito real.", FontTypeNames.FONTTYPE_INFO)
                     Exit Function
                 End If
                 'Tienes el seguro puesto?
@@ -1659,7 +1659,7 @@ On Error GoTo ErrHandler
                     
                     ' Si sos armada no podes atacarlo directamente
                     If esArmada(AttackerIndex) Then
-                        Call WriteConsoleMsg(AttackerIndex, "Los miembros del ejército real no pueden atacar npcs no hostiles.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(AttackerIndex, "Los miembros del ejercito real no pueden atacar npcs no hostiles.", FontTypeNames.FONTTYPE_INFO)
                         Exit Function
                     End If
                 
@@ -1669,7 +1669,7 @@ On Error GoTo ErrHandler
                         Exit Function
                     Else
                         'No tiene seguro puesto. Puede atacar pero es penalizado.
-                        Call WriteConsoleMsg(AttackerIndex, "Atacaste un NPC no-hostil. Continua haciéndolo y te podras convertir en criminal.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(AttackerIndex, "Atacaste un NPC no-hostil. Continua haciendolo y te podras convertir en criminal.", FontTypeNames.FONTTYPE_INFO)
                         'NicoNZ: Cambio para que al atacar npcs no hostiles no bajen puntos de nobleza
                         Call DisNobAuBan(AttackerIndex, 0, 1000)
                         PuedeAtacarNPC = True
@@ -1703,7 +1703,7 @@ On Error GoTo ErrHandler
                     'Atacante armada?
                     If esArmada(AttackerIndex) Then
                         'El atacante es Armada y esta intentando atacar mascota de un Ciudadano
-                        Call WriteConsoleMsg(AttackerIndex, "Los miembros del ejército real no pueden atacar mascotas de ciudadanos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(AttackerIndex, "Los miembros del ejercito real no pueden atacar mascotas de ciudadanos.", FontTypeNames.FONTTYPE_INFO)
                         Exit Function
                     End If
                     
@@ -1782,7 +1782,7 @@ On Error GoTo ErrHandler
                                  'Intententa paralizar un npc de un armada?
                                 If esArmada(OwnerUserIndex) Then
                                     'El atacante es Armada y esta intentando paralizar un npc de un armada: No puede
-                                    Call WriteConsoleMsg(AttackerIndex, "Los miembros del Ejército Real no pueden paralizar criaturas ya paralizadas pertenecientes a otros miembros del Ejército Real", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(AttackerIndex, "Los miembros del Ejercito Real no pueden paralizar criaturas ya paralizadas pertenecientes a otros miembros del Ejercito Real", FontTypeNames.FONTTYPE_INFO)
                                     Exit Function
                                 
                                 'El atacante es Armada y esta intentando paralizar un npc de un ciuda
@@ -1794,7 +1794,7 @@ On Error GoTo ErrHandler
                                     Else
                                         ' Si ya estaba atacable, no podra atacar a un npc perteneciente a otro ciuda
                                         If ToogleToAtackable(AttackerIndex, OwnerUserIndex) Then
-                                            Call WriteConsoleMsg(AttackerIndex, "Has paralizado la criatura de un ciudadano, ahora eres atacable por él.", FontTypeNames.FONTTYPE_INFO)
+                                            Call WriteConsoleMsg(AttackerIndex, "Has paralizado la criatura de un ciudadano, ahora eres atacable por el.", FontTypeNames.FONTTYPE_INFO)
                                             PuedeAtacarNPC = True
                                         End If
                                         
@@ -1814,7 +1814,7 @@ On Error GoTo ErrHandler
                                 Else
                                     ' Si ya estaba atacable, no podra atacar a un npc perteneciente a otro ciuda
                                     If ToogleToAtackable(AttackerIndex, OwnerUserIndex) Then
-                                        Call WriteConsoleMsg(AttackerIndex, "Has paralizado la criatura de un ciudadano, ahora eres atacable por él.", FontTypeNames.FONTTYPE_INFO)
+                                        Call WriteConsoleMsg(AttackerIndex, "Has paralizado la criatura de un ciudadano, ahora eres atacable por el.", FontTypeNames.FONTTYPE_INFO)
                                         PuedeAtacarNPC = True
                                     End If
                                     
@@ -1866,7 +1866,7 @@ On Error GoTo ErrHandler
                             'Intententa atacar un npc de un armada?
                             If esArmada(OwnerUserIndex) Then
                                 'El atacante es Armada y esta intentando atacar el npc de un armada: No puede
-                                Call WriteConsoleMsg(AttackerIndex, "Los miembros del Ejército Real no pueden atacar criaturas pertenecientes a otros miembros del Ejército Real", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(AttackerIndex, "Los miembros del Ejercito Real no pueden atacar criaturas pertenecientes a otros miembros del Ejercito Real", FontTypeNames.FONTTYPE_INFO)
                                 Exit Function
                             
                             'El atacante es Armada y esta intentando atacar un npc de un ciuda
@@ -1879,7 +1879,7 @@ On Error GoTo ErrHandler
                                 Else
                                     ' Si ya estaba atacable, no podra atacar a un npc perteneciente a otro ciuda
                                     If ToogleToAtackable(AttackerIndex, OwnerUserIndex) Then
-                                        Call WriteConsoleMsg(AttackerIndex, "Has atacado a la criatura de un ciudadano, ahora eres atacable por él.", FontTypeNames.FONTTYPE_INFO)
+                                        Call WriteConsoleMsg(AttackerIndex, "Has atacado a la criatura de un ciudadano, ahora eres atacable por el.", FontTypeNames.FONTTYPE_INFO)
                                         PuedeAtacarNPC = True
                                     End If
                                     
@@ -1901,7 +1901,7 @@ On Error GoTo ErrHandler
                                 'El atacante no tiene el seguro puesto, ataca.
                                 Else
                                     If ToogleToAtackable(AttackerIndex, OwnerUserIndex) Then
-                                        Call WriteConsoleMsg(AttackerIndex, "Has atacado a la criatura de un ciudadano, ahora eres atacable por él.", FontTypeNames.FONTTYPE_INFO)
+                                        Call WriteConsoleMsg(AttackerIndex, "Has atacado a la criatura de un ciudadano, ahora eres atacable por el.", FontTypeNames.FONTTYPE_INFO)
                                         PuedeAtacarNPC = True
                                     End If
                                     
@@ -1962,7 +1962,7 @@ On Error GoTo ErrHandler
     'Es el Rey Preatoriano?
     If Npclist(NpcIndex).NPCtype = eNPCType.Pretoriano Then
         If Not ClanPretoriano(Npclist(NpcIndex).ClanIndex).CanAtackMember(NpcIndex) Then
-            Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejército antes de atacar al rey.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteConsoleMsg(AttackerIndex, "Debes matar al resto del ejercito antes de atacar al rey.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Function
         End If
     End If

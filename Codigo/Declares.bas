@@ -137,7 +137,7 @@ End Enum
 
 Public Enum eClass
     Mage = 1       'Mago
-    Cleric      'Clérigo
+    Cleric      'Clerigo
     Warrior     'Guerrero
     Assasin     'Asesino
     Thief       'Ladron
@@ -1985,7 +1985,7 @@ Public ClanPretoriano() As clsClanPretoriano
 Public Const MAX_DENOUNCES As Integer = 20
 
 'Mensajes de los NPCs enlistadores (Nobles):
-Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a él!"
+Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a el!"
 Public Const MENSAJE_REY_CRIMINAL_NOENLISTABLE As String = "Tus pecados son grandes, pero aun asi puedes redimirte. El pasado deja huellas, pero aun puedes limpiar tu alma."
 Public Const MENSAJE_REY_CRIMINAL_ENLISTABLE As String = "Limpia tu reputacion y paga por los delitos cometidos. Un miembro de la Armada Real debe tener un comportamiento ejemplar."
 

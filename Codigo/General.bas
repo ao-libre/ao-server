@@ -1789,7 +1789,7 @@ On Error GoTo errHandler
                     If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ANTIPIQUETE Then
                             If .flags.Muerto = 0 Then
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
-                                Call WriteConsoleMsg(i, "¡¡¡Estas obstruyendo la via publica, muévete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(i, "¡¡¡Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                 
                                 If .Counters.PiqueteC >= ContadorAntiPiquete Then
                                     .Counters.PiqueteC = 0
@@ -2476,7 +2476,7 @@ Public Function Tilde(ByRef Data As String) As String
  
         If InStr(1, temp, "Á") Then temp = Replace$(temp, "Á", "A")
    
-        If InStr(1, temp, "É") Then temp = Replace$(temp, "É", "E")
+        If InStr(1, temp, "e") Then temp = Replace$(temp, "e", "E")
    
         If InStr(1, temp, "Í") Then temp = Replace$(temp, "Í", "I")
    

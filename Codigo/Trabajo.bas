@@ -418,7 +418,7 @@ Function CarpinteroTieneMateriales(ByVal UserIndex As Integer, ByVal ItemIndex A
         
         If .MaderaElfica > 0 Then
             If Not TieneObjetos(LenaElfica, .MaderaElfica * Cantidad, UserIndex) Then
-                If ShowMsg Then Call WriteConsoleMsg(UserIndex, "No tienes suficiente madera élfica.", FontTypeNames.FONTTYPE_INFO)
+                If ShowMsg Then Call WriteConsoleMsg(UserIndex, "No tienes suficiente madera elfica.", FontTypeNames.FONTTYPE_INFO)
                 CarpinteroTieneMateriales = False
                 Exit Function
             End If
@@ -506,7 +506,7 @@ Function TieneMaterialesUpgrade(ByVal UserIndex As Integer, ByVal ItemIndex As I
         
         If .MaderaElfica > 0 Then
             If Not TieneObjetos(LenaElfica, CInt(.MaderaElfica - ObjData(ItemIndex).MaderaElfica * PORCENTAJE_MATERIALES_UPGRADE), UserIndex) Then
-                Call WriteConsoleMsg(UserIndex, "No tienes suficiente madera élfica.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No tienes suficiente madera elfica.", FontTypeNames.FONTTYPE_INFO)
                 TieneMaterialesUpgrade = False
                 Exit Function
             End If
@@ -1294,7 +1294,7 @@ On Error GoTo ErrHandler
                     .MascotasType(index) = petType
                     .NroMascotas = NroPets
                     
-                    Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Éstas te esperaran afuera.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. estas te esperaran afuera.", FontTypeNames.FONTTYPE_INFO)
                 End If
                 
                 Call SubirSkill(UserIndex, eSkill.Domar, True)
@@ -1379,7 +1379,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             
             ' Solo el admin sabe que se hace invi
             Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
-            'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+            'Le mandamos el mensaje para que borre el personaje a los clientes que esten cerca
             Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
         Else
             .flags.AdminInvisible = 0
@@ -1394,7 +1394,7 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim))
             Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
              
-            'Le mandamos el mensaje para crear el personaje a los clientes que estén cerca
+            'Le mandamos el mensaje para crear el personaje a los clientes que esten cerca
             Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y, True)
         End If
     End With
@@ -1680,7 +1680,7 @@ On Error GoTo ErrHandler
         Else
             If .Faccion.ArmadaReal = 1 Then
                 If Not criminal(VictimaIndex) Then
-                    Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejército real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(LadrOnIndex, "Los miembros del ejercito real no tienen permitido robarle a ciudadanos.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
                 End If
             End If
@@ -1838,8 +1838,8 @@ Public Function ObjEsRobable(ByVal VictimaIndex As Integer, ByVal Slot As Intege
 '***************************************************
 'Author: Unknown
 'Last Modification: -
-' Agregué los barcos
-' Esta funcion determina qué objetos son robables.
+' Agregue los barcos
+' Esta funcion determina que objetos son robables.
 ' 22/05/2010: Los items newbies ya no son robables.
 '***************************************************
 

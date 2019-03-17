@@ -174,7 +174,7 @@ On Error GoTo ErrHandler
                             End If
                         End If
                     Else 'No es armada
-                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejército real.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejercito real.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -845,7 +845,7 @@ Public Sub FindLegalPos(ByVal UserIndex As Integer, ByVal Map As Integer, ByRef 
                     'Lo sacamos.
                     If UserList(OtherUserIndex).flags.UserLogged Then
                         Call FinComerciarUsu(OtherUserIndex)
-                        Call WriteErrorMsg(OtherUserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call WriteErrorMsg(OtherUserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
                         Call FlushBuffer(OtherUserIndex)
                     End If
                 End If
@@ -1037,7 +1037,7 @@ With UserList(UserIndex)
                         End If
                         
                         If .Faccion.ArmadaReal = 1 Then
-                            Stat = Stat & " <Ejército Real> " & "<" & TituloReal(TempCharIndex) & ">"
+                            Stat = Stat & " <Ejercito Real> " & "<" & TituloReal(TempCharIndex) & ">"
                         ElseIf .Faccion.FuerzasCaos = 1 Then
                             Stat = Stat & " <Legion Oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
                         End If

@@ -204,12 +204,12 @@ With UserList(UserIndex)
     End If
     
     If .Faccion.FuerzasCaos = 1 Then
-        Call WriteChatOverHead(UserIndex, "¡¡¡Maldito insolente!!! Vete de aqui seguidor de las sombras.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "Maldito insolente!!! Vete de aqui seguidor de las sombras.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Exit Sub
     End If
     
     If criminal(UserIndex) Then
-        Call WriteChatOverHead(UserIndex, "¡¡¡No se permiten criminales en el ejército real!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "¡¡¡No se permiten criminales en el ejercito real!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Exit Sub
     End If
     
@@ -234,13 +234,13 @@ With UserList(UserIndex)
     End If
     
     If .Reputacion.NobleRep < 1000000 Then
-        Call WriteChatOverHead(UserIndex, "Necesitas ser aun mas noble para integrar el ejército real, solo tienes " & .Reputacion.NobleRep & "/1.000.000 puntos de nobleza", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "Necesitas ser aun mas noble para integrar el ejercito real, solo tienes " & .Reputacion.NobleRep & "/1.000.000 puntos de nobleza", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Exit Sub
     End If
     
     If .GuildIndex > 0 Then
         If modGuilds.GuildAlignment(.GuildIndex) = "Neutral" Then
-            Call WriteChatOverHead(UserIndex, "¡¡¡Perteneces a un clan neutro, sal de él si quieres unirte a nuestras fuerzas!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+            Call WriteChatOverHead(UserIndex, "¡¡¡Perteneces a un clan neutro, sal de el si quieres unirte a nuestras fuerzas!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
             Exit Sub
         End If
     End If
@@ -248,7 +248,7 @@ With UserList(UserIndex)
     .Faccion.ArmadaReal = 1
     .Faccion.Reenlistadas = .Faccion.Reenlistadas + 1
     
-    Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al ejército real!!! Aqui tienes tus vestimentas. Cumple bien tu labor exterminando criminales y me encargaré de recompensarte.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+    Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido al ejercito real!!! Aqui tienes tus vestimentas. Cumple bien tu labor exterminando criminales y me encargare de recompensarte.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
     
     ' TODO: Dejo esta variable por ahora, pero con chequear las reenlistadas deberia ser suficiente :S
     If .Faccion.RecibioArmaduraReal = 0 Then
@@ -425,9 +425,9 @@ With UserList(UserIndex)
     .Faccion.ArmadaReal = 0
     'Call PerderItemsFaccionarios(UserIndex)
     If Expulsado Then
-        Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado del ejército real!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Has sido expulsado del ejercito real!!!", FontTypeNames.FONTTYPE_FIGHT)
     Else
-        Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado del ejército real!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡Te has retirado del ejercito real!!!", FontTypeNames.FONTTYPE_FIGHT)
     End If
     
     If .Invent.ArmourEqpObjIndex <> 0 Then
@@ -563,7 +563,7 @@ With UserList(UserIndex)
     
     '[Barrin 17-12-03] Si era miembro de la Armada Real no se puede enlistar
     If .Faccion.RecibioExpInicialReal = 1 Then 'Tomamos el valor de ahi: ¿Recibio la experiencia para entrar?
-        Call WriteChatOverHead(UserIndex, "No permitiré que ningun insecto real ingrese a mis tropas.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+        Call WriteChatOverHead(UserIndex, "No permitire que ningun insecto real ingrese a mis tropas.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Exit Sub
     End If
     '[/Barrin]
@@ -585,7 +585,7 @@ With UserList(UserIndex)
     
     If .GuildIndex > 0 Then
         If modGuilds.GuildAlignment(.GuildIndex) = "Neutral" Then
-            Call WriteChatOverHead(UserIndex, "¡¡¡Perteneces a un clan neutro, sal de él si quieres unirte a nuestras fuerzas!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+            Call WriteChatOverHead(UserIndex, "¡¡¡Perteneces a un clan neutro, sal de el si quieres unirte a nuestras fuerzas!!!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
             Exit Sub
         End If
     End If
@@ -593,7 +593,7 @@ With UserList(UserIndex)
     
     If .Faccion.Reenlistadas > 4 Then
         If .Faccion.Reenlistadas = 200 Then
-            Call WriteChatOverHead(UserIndex, "Has sido expulsado de las fuerzas oscuras y durante tu rebeldia has atacado a mi ejército. ¡Vete de aqui!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
+            Call WriteChatOverHead(UserIndex, "Has sido expulsado de las fuerzas oscuras y durante tu rebeldia has atacado a mi ejercito. ¡Vete de aqui!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Else
             Call WriteChatOverHead(UserIndex, "¡Has sido expulsado de las fuerzas oscuras demasiadas veces!", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         End If

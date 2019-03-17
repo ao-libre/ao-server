@@ -533,7 +533,7 @@ End Sub
 
 Private Sub cmdReiniciar_Click()
 
-    If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la pérdida de datos de los usarios. " & _
+    If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la perdida de datos de los usarios. " & _
     "¿Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbNo Then Exit Sub
     
     Me.Visible = False

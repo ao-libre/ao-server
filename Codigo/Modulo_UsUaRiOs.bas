@@ -335,7 +335,7 @@ On Error GoTo ErrorHandler
         If IsAdminInvisible Then
             Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
         Else
-            'Le mandamos el mensaje para que borre el personaje a los clientes que estén cerca
+            'Le mandamos el mensaje para que borre el personaje a los clientes que esten cerca
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
         End If
         
@@ -1053,7 +1053,7 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
         Call WriteConsoleMsg(sendIndex, "Pena: " & (.Counters.Pena / 40), FontTypeNames.FONTTYPE_INFO)
         
         If .Faccion.ArmadaReal = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Ejército real desde: " & .Faccion.FechaIngreso, FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ejercito real desde: " & .Faccion.FechaIngreso, FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Ingreso en nivel: " & .Faccion.NivelIngreso & " con " & .Faccion.MatadosIngreso & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
         
@@ -1063,7 +1063,7 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
         
         ElseIf .Faccion.RecibioExpInicialReal = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue ejército real", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Fue ejercito real", FontTypeNames.FONTTYPE_INFO)
             Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & .Faccion.Reenlistadas, FontTypeNames.FONTTYPE_INFO)
         
         ElseIf .Faccion.RecibioExpInicialCaos = 1 Then
@@ -1143,7 +1143,7 @@ Sub NPCAtacado(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 'Last Modification: 02/04/2010
 '24/01/2007 -> Pablo (ToxicWaste): Agrego para que se actualize el tag si corresponde.
 '24/07/2007 -> Pablo (ToxicWaste): Guardar primero que ataca NPC y el que atacas ahora.
-'06/28/2008 -> NicoNZ: Los elementales al atacarlos por su amo no se paran mas al lado de él sin hacer nada.
+'06/28/2008 -> NicoNZ: Los elementales al atacarlos por su amo no se paran mas al lado de el sin hacer nada.
 '02/04/2010: ZaMa: Un ciuda no se vuelve mas criminal al atacar un npc no hostil.
 '**********************************************
     Dim EraCriminal As Boolean
@@ -1881,7 +1881,7 @@ Private Sub WarpMascotas(ByVal UserIndex As Integer)
     End If
     
     If Not canWarp Then
-        Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. Éstas te esperaran afuera.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No se permiten mascotas en zona segura. estas te esperaran afuera.", FontTypeNames.FONTTYPE_INFO)
     End If
     
     UserList(UserIndex).NroMascotas = NroPets

@@ -126,7 +126,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, ByVal UserIndex As Integer, ByV
             Exit Sub
         ElseIf ObjData(Objeto.ObjIndex).Real = 1 Then
             If Npclist(NpcIndex).name <> "SR" Then
-                Call WriteConsoleMsg(UserIndex, "Las armaduras del ejército real solo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Las armaduras del ejercito real solo pueden ser vendidas a los sastres reales.", FontTypeNames.FONTTYPE_INFO)
                 Call EnviarNpcInv(UserIndex, UserList(UserIndex).flags.TargetNPC)
                 Call WriteTradeOK(UserIndex)
                 Exit Sub

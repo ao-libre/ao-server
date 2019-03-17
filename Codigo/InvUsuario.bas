@@ -741,7 +741,7 @@ On Error GoTo ErrHandler
         SexoPuedeUsarItem = True
     End If
     
-    If Not SexoPuedeUsarItem Then sMotivo = "Tu género no puede usar este objeto."
+    If Not SexoPuedeUsarItem Then sMotivo = "Tu genero no puede usar este objeto."
     
     Exit Function
 ErrHandler:
@@ -1516,7 +1516,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         
                         Exit Sub
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Solo miembros del ejército real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Solo miembros del ejercito real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     End If
                 ElseIf Obj.Caos Then '¿Es el Cuerno Legion?
@@ -1701,7 +1701,7 @@ On Error GoTo ErrHandler
                     If .clase = eClass.Pirat Then
                         ' Si tiene galeon equipado
                         If .Invent.BarcoObjIndex = 476 Then
-                            ' Limitacion por nivel, después dropea normalmente
+                            ' Limitacion por nivel, despues dropea normalmente
                             If .Stats.ELV = 20 Then
                                 ' No dropea en agua
                                 DropAgua = False

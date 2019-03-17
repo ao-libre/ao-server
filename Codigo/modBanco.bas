@@ -167,7 +167,7 @@ With UserList(UserIndex)
             Slot = Slot + 1
 
             If Slot > .CurrentInventorySlots Then
-                Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         Loop
@@ -184,7 +184,7 @@ With UserList(UserIndex)
         
         Call QuitarBancoInvItem(UserIndex, CByte(ObjIndex), Cantidad)
     Else
-        Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
 End With
 
