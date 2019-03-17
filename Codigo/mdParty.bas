@@ -106,13 +106,13 @@ Public Function PuedeCrearParty(ByVal UserIndex As Integer) As Boolean
     
     If (UserList(UserIndex).flags.Privilegios And PlayerType.User) = 0 Then
     'staff members aren't allowed to party anyone.
-        Call WriteConsoleMsg(UserIndex, "¡Los miembros del staff no pueden crear partys!", FontTypeNames.FONTTYPE_PARTY)
+        Call WriteConsoleMsg(UserIndex, "Los miembros del staff no pueden crear partys!", FontTypeNames.FONTTYPE_PARTY)
         PuedeCrearParty = False
     ElseIf CInt(UserList(UserIndex).Stats.UserAtributos(eAtributos.Carisma)) * UserList(UserIndex).Stats.UserSkills(eSkill.Liderazgo) < 100 Then
         Call WriteConsoleMsg(UserIndex, "Tu carisma y liderazgo no son suficientes para liderar una party.", FontTypeNames.FONTTYPE_PARTY)
         PuedeCrearParty = False
     ElseIf UserList(UserIndex).flags.Muerto = 1 Then
-        Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_PARTY)
+        Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_PARTY)
         PuedeCrearParty = False
     End If
 End Function
@@ -141,13 +141,13 @@ With UserList(UserIndex)
                         Set Parties(tInt) = Nothing
                         Exit Sub
                     Else
-                        Call WriteConsoleMsg(UserIndex, "¡Has formado una party!", FontTypeNames.FONTTYPE_PARTY)
+                        Call WriteConsoleMsg(UserIndex, "Has formado una party!", FontTypeNames.FONTTYPE_PARTY)
                         .PartyIndex = tInt
                         .PartySolicitud = 0
                         If Not Parties(tInt).HacerLeader(UserIndex) Then
                             Call WriteConsoleMsg(UserIndex, "No puedes hacerte lider.", FontTypeNames.FONTTYPE_PARTY)
                         Else
-                            Call WriteConsoleMsg(UserIndex, "¡Te has convertido en lider de la party!", FontTypeNames.FONTTYPE_PARTY)
+                            Call WriteConsoleMsg(UserIndex, "Te has convertido en lider de la party!", FontTypeNames.FONTTYPE_PARTY)
                         End If
                     End If
                 End If
@@ -155,7 +155,7 @@ With UserList(UserIndex)
                 Call WriteConsoleMsg(UserIndex, "No tienes suficientes puntos de liderazgo para liderar una party.", FontTypeNames.FONTTYPE_PARTY)
             End If
         Else
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_PARTY)
+            'Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_PARTY)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
         End If
     Else
@@ -181,7 +181,7 @@ Public Sub SolicitarIngresoAParty(ByVal UserIndex As Integer)
     
         'staff members aren't allowed to party anyone
         If (.flags.Privilegios And PlayerType.User) = 0 Then
-            Call WriteConsoleMsg(UserIndex, "¡Los miembros del staff no pueden unirse a partys!", FontTypeNames.FONTTYPE_PARTY)
+            Call WriteConsoleMsg(UserIndex, "Los miembros del staff no pueden unirse a partys!", FontTypeNames.FONTTYPE_PARTY)
             Exit Sub
         End If
         
@@ -194,7 +194,7 @@ Public Sub SolicitarIngresoAParty(ByVal UserIndex As Integer)
         
         ' Muerto?
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             .PartySolicitud = 0
             Exit Sub
@@ -301,7 +301,7 @@ Public Function UserPuedeEjecutarComandos(ByVal User As Integer) As Boolean
         If Parties(PI).EsPartyLeader(User) Then
             UserPuedeEjecutarComandos = True
         Else
-            Call WriteConsoleMsg(User, "¡No eres el lider de tu party!", FontTypeNames.FONTTYPE_PARTY)
+            Call WriteConsoleMsg(User, "No eres el lider de tu party!", FontTypeNames.FONTTYPE_PARTY)
             Exit Function
         End If
     Else
@@ -356,7 +356,7 @@ Public Sub AprobarIngresoAParty(ByVal leader As Integer, ByVal NewMember As Inte
                     Exit Sub
                 End If
             Else
-                Call WriteConsoleMsg(leader, "¡Esta muerto, no puedes aceptar miembros en ese estado!", _
+                Call WriteConsoleMsg(leader, "Esta muerto, no puedes aceptar miembros en ese estado!", _
                     FontTypeNames.FONTTYPE_PARTY)
                 Exit Sub
             End If
@@ -446,10 +446,10 @@ If PI = UserList(NewLeader).PartyIndex Then
         If Parties(PI).HacerLeader(NewLeader) Then
             Call Parties(PI).MandarMensajeAConsola("El nuevo lider de la party es " & UserList(NewLeader).Name, UserList(OldLeader).Name)
         Else
-            Call WriteConsoleMsg(OldLeader, "¡No se ha hecho el cambio de mando!", FontTypeNames.FONTTYPE_PARTY)
+            Call WriteConsoleMsg(OldLeader, "No se ha hecho el cambio de mando!", FontTypeNames.FONTTYPE_PARTY)
         End If
     Else
-        Call WriteConsoleMsg(OldLeader, "¡Esta muerto!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(OldLeader, "Esta muerto!", FontTypeNames.FONTTYPE_INFO)
     End If
 Else
     Call WriteConsoleMsg(OldLeader, LCase(UserList(NewLeader).Name) & " no pertenece a tu party.", FontTypeNames.FONTTYPE_INFO)
