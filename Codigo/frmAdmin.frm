@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmAdmin 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Administración del servidor"
+   Caption         =   "Administracion del servidor"
    ClientHeight    =   2865
    ClientLeft      =   45
    ClientTop       =   435

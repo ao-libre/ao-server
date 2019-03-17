@@ -1,6 +1,6 @@
 Attribute VB_Name = "Extra"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "Extra"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -122,7 +122,7 @@ On Error GoTo ErrHandler
                 DestPos.Map = .TileExit.Map
                 
                 If EsGm(UserIndex) Then
-                    Call LogGM(UserList(UserIndex).Name, "Utilizó un teleport hacia el mapa " & _
+                    Call LogGM(UserList(UserIndex).Name, "Utilizo un teleport hacia el mapa " & _
                         DestPos.Map & " (" & DestPos.X & "," & DestPos.Y & ")")
                 End If
                 
@@ -130,7 +130,7 @@ On Error GoTo ErrHandler
                 If MapInfo(DestPos.Map).OnDeathGoTo.Map <> 0 Then
                     ' Si esta muerto no puede entrar
                     If UserList(UserIndex).flags.Muerto = 1 Then
-                        Call WriteConsoleMsg(UserIndex, "Sólo se permite entrar al mapa a los personajes vivos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Solo se permite entrar al mapa a los personajes vivos.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -174,7 +174,7 @@ On Error GoTo ErrHandler
                             End If
                         End If
                     Else 'No es armada
-                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejército real.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros del ejercito real.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -193,7 +193,7 @@ On Error GoTo ErrHandler
                             End If
                         End If
                     Else 'No es caos
-                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros de la legión oscura.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Mapa exclusivo para miembros de la legion oscura.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -212,7 +212,7 @@ On Error GoTo ErrHandler
                             End If
                         End If
                     Else 'No es Faccionario
-                        Call WriteConsoleMsg(UserIndex, "Solo se permite entrar al mapa si eres miembro de alguna facción.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Solo se permite entrar al mapa si eres miembro de alguna faccion.", FontTypeNames.FONTTYPE_INFO)
                         Call ClosestStablePos(UserList(UserIndex).Pos, nPos)
                         
                         If nPos.X <> 0 And nPos.Y <> 0 Then
@@ -230,7 +230,7 @@ On Error GoTo ErrHandler
                     End If
                 End If
 
-                'Te fusite del mapa. La criatura ya no es más tuya ni te reconoce como que vos la atacaste.
+                'Te fusite del mapa. La criatura ya no es mas tuya ni te reconoce como que vos la atacaste.
                 Dim aN As Integer
                 
                 aN = UserList(UserIndex).flags.AtacadoPorNpc
@@ -845,7 +845,7 @@ Public Sub FindLegalPos(ByVal UserIndex As Integer, ByVal Map As Integer, ByRef 
                     'Lo sacamos.
                     If UserList(OtherUserIndex).flags.UserLogged Then
                         Call FinComerciarUsu(OtherUserIndex)
-                        Call WriteErrorMsg(OtherUserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call WriteErrorMsg(OtherUserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
                         Call FlushBuffer(OtherUserIndex)
                     End If
                 End If
@@ -949,7 +949,7 @@ Dim Stat As String
 Dim ft As FontTypeNames
 
 With UserList(UserIndex)
-    '¿Rango Visión? (ToxicWaste)
+    '¿Rango Vision? (ToxicWaste)
     If (Abs(.Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(.Pos.X - X) > RANGO_VISION_X) Then
         Exit Sub
     End If
@@ -1037,9 +1037,9 @@ With UserList(UserIndex)
                         End If
                         
                         If .Faccion.ArmadaReal = 1 Then
-                            Stat = Stat & " <Ejército Real> " & "<" & TituloReal(TempCharIndex) & ">"
+                            Stat = Stat & " <Ejercito Real> " & "<" & TituloReal(TempCharIndex) & ">"
                         ElseIf .Faccion.FuerzasCaos = 1 Then
-                            Stat = Stat & " <Legión Oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
+                            Stat = Stat & " <Legion Oscura> " & "<" & TituloCaos(TempCharIndex) & ">"
                         End If
                         
                         If .GuildIndex > 0 Then
@@ -1178,7 +1178,7 @@ With UserList(UserIndex)
                     '¿Es el rey o el demonio?
                     If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
                         If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
-                            'Si es de la Legión Oscura y usuario común mostramos el mensaje correspondiente y lo ejecutamos:
+                            'Si es de la Legion Oscura y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
                             If UserList(UserIndex).Faccion.FuerzasCaos = 1 Then
                                 Stat = MENSAJE_REY_CAOS
                                 If .Privilegios And PlayerType.User Then
@@ -1194,7 +1194,7 @@ With UserList(UserIndex)
                                 End If
                             End If
                         Else 'Es el demonio
-                            'Si es de la Armada Real y usuario común mostramos el mensaje correspondiente y lo ejecutamos:
+                            'Si es de la Armada Real y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
                             If UserList(UserIndex).Faccion.ArmadaReal = 1 Then
                                 Stat = MENSAJE_DEMONIO_REAL
                                 '
@@ -1226,7 +1226,7 @@ With UserList(UserIndex)
                             Call WriteConsoleMsg(UserIndex, sDesc, FontTypeNames.FONTTYPE_INFO)
                             
                             If .Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
-                                Call WriteConsoleMsg(UserIndex, "Le pegó primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(UserIndex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
                             End If
                         End If
                 End If

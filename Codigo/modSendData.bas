@@ -3,7 +3,7 @@ Attribute VB_Name = "modSendData"
 ' SendData.bas - Has all methods to send data to different user groups.
 ' Makes use of the modAreas module.
 '
-' Implemented by Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@gmail.com)
+' Implemented by Juan Martin Sotuyo Dodero (Maraxus) (juansotuyo@gmail.com)
 '**************************************************************
 
 '**************************************************************************
@@ -24,7 +24,7 @@ Attribute VB_Name = "modSendData"
 ' Contains all methods to send data to different user groups.
 ' Makes use of the modAreas module.
 '
-' @author Juan Martín Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
+' @author Juan Martin Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
 ' @version 1.0.0
 ' @date 20070107
 
@@ -66,7 +66,7 @@ End Enum
 Public Sub SendData(ByVal sndRoute As SendTarget, ByVal sndIndex As Integer, ByVal sndData As String, _
                     Optional ByVal IsDenounce As Boolean = False)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus) - Rewrite of original
+'Author: Juan Martin Sotuyo Dodero (Maraxus) - Rewrite of original
 'Last Modify Date: 14/11/2010
 'Last modified by: ZaMa
 '14/11/2010: ZaMa - Now denounces can be desactivated.
@@ -381,7 +381,7 @@ End Sub
 
 Private Sub SendToDeadUserArea(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: Unknow
 '
 '**************************************************************
@@ -414,7 +414,7 @@ End Sub
 
 Private Sub SendToUserGuildArea(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: Unknow
 '
 '**************************************************************
@@ -448,7 +448,7 @@ End Sub
 
 Private Sub SendToUserPartyArea(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: Unknow
 '
 '**************************************************************
@@ -482,7 +482,7 @@ End Sub
 
 Private Sub SendToAdminsButConsejerosArea(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: Unknow
 '
 '**************************************************************
@@ -580,7 +580,7 @@ End Sub
 
 Public Sub SendToMap(ByVal Map As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: 5/24/2007
 '
 '**************************************************************
@@ -600,7 +600,7 @@ End Sub
 
 Public Sub SendToMapButIndex(ByVal UserIndex As Integer, ByVal sdData As String)
 '**************************************************************
-'Author: Juan Martín Sotuyo Dodero (Maraxus)
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modify Date: 5/24/2007
 '
 '**************************************************************
@@ -757,7 +757,7 @@ Public Sub AlertarFaccionarios(ByVal UserIndex As Integer)
                 ' Solo se envia a los de la misma faccion
                 If SameFaccion(UserIndex, tempIndex) Then
                     Call EnviarDatosASlot(tempIndex, _
-                         PrepareMessageConsoleMsg("Escuchas el llamado de un compañero que proviene del " & _
+                         PrepareMessageConsoleMsg("Escuchas el llamado de un companero que proviene del " & _
                          GetDireccion(UserIndex, tempIndex), Font))
                 End If
             End If

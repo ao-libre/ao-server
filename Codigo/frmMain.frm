@@ -70,7 +70,7 @@ Begin VB.Form frmMain
    End
    Begin VB.CommandButton cmdConfiguracion 
       BackColor       =   &H00FFC0C0&
-      Caption         =   "Configuración General"
+      Caption         =   "Configuracion General"
       Height          =   375
       Left            =   120
       Style           =   1  'Graphical
@@ -80,7 +80,7 @@ Begin VB.Form frmMain
    End
    Begin VB.CommandButton cmdDump 
       BackColor       =   &H00FFC0C0&
-      Caption         =   "Crear Log Crítico de Usuarios"
+      Caption         =   "Crear Log Critico de Usuarios"
       Height          =   375
       Left            =   120
       Style           =   1  'Graphical
@@ -173,7 +173,7 @@ Begin VB.Form frmMain
       AutoSize        =   -1  'True
       BackColor       =   &H00C0C0C0&
       BackStyle       =   0  'Transparent
-      Caption         =   "Número de usuarios jugando:"
+      Caption         =   "Numero de usuarios jugando:"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -217,7 +217,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -239,10 +239,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 

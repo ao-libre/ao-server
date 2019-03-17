@@ -22,7 +22,7 @@ Call SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, Not estado)
 
 Dim EstadoActual As Boolean
 
-' Está invisible ?
+' Esta invisible ?
 EstadoActual = (UserList(UserIndex).flags.invisible = 1)
 
 'If EstadoActual <> Modo Then

@@ -90,7 +90,7 @@ End Sub
 
 Private Sub packetResend()
 '***************************************************
-'Autor: Juan Martín Sotuyo Dodero (Maraxus)
+'Autor: Juan Martin Sotuyo Dodero (Maraxus)
 'Last Modification: 04/01/07
 'Attempts to resend to the user all data that may be enqueued.
 '***************************************************
@@ -127,7 +127,7 @@ On Error GoTo ErrorHandler
             With Npclist(NpcIndex)
                 If .flags.NPCActive Then 'Nos aseguramos que sea INTELIGENTE!
                 
-                    ' Chequea si contiua teniendo dueño
+                    ' Chequea si contiua teniendo dueno
                     If .Owner > 0 Then Call ValidarPermanenciaNpc(NpcIndex)
                 
                     If .flags.Paralizado = 1 Then

@@ -1,6 +1,6 @@
 Attribute VB_Name = "TCP"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "TCP"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 #If False Then
     Dim errHandler, Length, Index As Variant
@@ -381,14 +381,14 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef Accou
 'Author: Unknown
 'Last modified: 3/12/2009
 'Conecta un nuevo Usuario
-'23/01/2007 Pablo (ToxicWaste) - Agregué ResetFaccion al crear usuario
-'24/01/2007 Pablo (ToxicWaste) - Agregué el nuevo mana inicial de los magos.
+'23/01/2007 Pablo (ToxicWaste) - Agregue ResetFaccion al crear usuario
+'24/01/2007 Pablo (ToxicWaste) - Agregue el nuevo mana inicial de los magos.
 '12/02/2007 Pablo (ToxicWaste) - Puse + 1 de const al Elfo normal.
 '20/04/2007 Pablo (ToxicWaste) - Puse -1 de fuerza al Elfo.
 '09/01/2008 Pablo (ToxicWaste) - Ahora los modificadores de Raza se controlan desde Balance.dat
-'11/19/2009: Pato - Modifico la maná inicial del bandido.
+'11/19/2009: Pato - Modifico la mana inicial del bandido.
 '11/19/2009: Pato - Asigno los valores iniciales de ExpSkills y EluSkills.
-'03/12/2009: Budi - Optimización del código.
+'03/12/2009: Budi - Optimizacion del codigo.
 '12/10/2018: CHOTS - Sistema de cuentas
 '*************************************************
 Dim i As Long
@@ -396,7 +396,7 @@ Dim i As Long
 With UserList(UserIndex)
 
     If Not AsciiValidos(Name) Or LenB(Name) = 0 Then
-        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Exit Sub
     End If
     
@@ -416,7 +416,7 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    'Tiró los dados antes de llegar acá??
+    'Tiro los dados antes de llegar aca??
     If .Stats.UserAtributos(eAtributos.Fuerza) = 0 Then
         Call WriteErrorMsg(UserIndex, "Debe tirar los dados antes de poder crear un personaje.")
         Exit Sub
@@ -425,7 +425,7 @@ With UserList(UserIndex)
     If Not ValidarCabeza(UserRaza, UserSexo, Head) Then
         Call LogCheating("El usuario " & Name & " ha seleccionado la cabeza " & Head & " desde la IP " & .ip)
         
-        Call WriteErrorMsg(UserIndex, "Cabeza inválida, elija una cabeza seleccionable.")
+        Call WriteErrorMsg(UserIndex, "Cabeza invalida, elija una cabeza seleccionable.")
         Exit Sub
     End If
     
@@ -665,7 +665,7 @@ Sub CreateNewAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef
     Set oSHA256 = New CSHA256
 
     If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
-        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Exit Sub
     End If
 
@@ -695,7 +695,7 @@ Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef P
     Set oSHA256 = New CSHA256
 
     If Not CheckMailString(UserName) Or LenB(UserName) = 0 Then
-        Call WriteErrorMsg(UserIndex, "Nombre inválido.")
+        Call WriteErrorMsg(UserIndex, "Nombre invalido.")
         Exit Sub
     End If
 
@@ -789,7 +789,7 @@ errHandler:
     UserList(UserIndex).ConnIDValida = False
     Call ResetUserSlot(UserIndex)
 
-    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripción = " & Err.description & " - UserIndex = " & UserIndex)
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & UserIndex)
 End Sub
 
 #ElseIf UsarQueSocket = 0 Then
@@ -886,7 +886,7 @@ errHandler:
         End If
     End If
     
-    Call LogError("El usuario no guardado tenía connid " & CoNnEcTiOnId & ". Socket no liberado.")
+    Call LogError("El usuario no guardado tenia connid " & CoNnEcTiOnId & ". Socket no liberado.")
     Call ResetUserSlot(UserIndex)
 
 End Sub
@@ -993,8 +993,8 @@ Err:
 
 #ElseIf UsarQueSocket = 3 Then
     'THIS SOCKET DOESN`T USE THE BYTE QUEUE CLASS
-    'al carajo, esto encola solo!!! che, me aprobará los
-    'parciales también?, este control hace todo solo!!!!
+    'al carajo, esto encola solo!!! che, me aprobara los
+    'parciales tambien?, este control hace todo solo!!!!
     On Error GoTo ErrorHandler
         
         If UserList(UserIndex).ConnID = -1 Then
@@ -1092,7 +1092,7 @@ Sub ConnectUser(ByVal UserIndex As Integer, ByRef Name As String, ByRef AccountH
 '12/06/2009: ZaMa - Agrego chequeo de nivel al loguear
 '14/09/2009: ZaMa - Ahora el usuario esta protegido del ataque de npcs al loguear
 '11/27/2009: Budi - Se envian los InvStats del personaje y su Fuerza y Agilidad
-'03/12/2009: Budi - Optimización del código
+'03/12/2009: Budi - Optimizacion del codigo
 '24/07/2010: ZaMa - La posicion de comienzo es namehuak, como se habia definido inicialmente.
 '12/10/2019: CHOTS - Sistema de cuentas
 '***************************************************
@@ -1119,7 +1119,7 @@ With UserList(UserIndex)
     
     'Controlamos no pasar el maximo de usuarios
     If NumUsers >= MaxUsers Then
-        Call WriteErrorMsg(UserIndex, "El servidor ha alcanzado el máximo de usuarios soportado, por favor vuelva a intertarlo más tarde.")
+        Call WriteErrorMsg(UserIndex, "El servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
         Exit Sub
@@ -1128,7 +1128,7 @@ With UserList(UserIndex)
     '¿Este IP ya esta conectado?
     If AllowMultiLogins = 0 Then
         If CheckForSameIP(UserIndex, .ip) = True Then
-            Call WriteErrorMsg(UserIndex, "No es posible usar más de un personaje al mismo tiempo.")
+            Call WriteErrorMsg(UserIndex, "No es posible usar mas de un personaje al mismo tiempo.")
             Call FlushBuffer(UserIndex)
             Call CloseSocket(UserIndex)
             Exit Sub
@@ -1154,9 +1154,9 @@ With UserList(UserIndex)
     '¿Ya esta conectado el personaje?
     If CheckForSameName(Name) Then
         If UserList(NameIndex(Name)).Counters.Saliendo Then
-            Call WriteErrorMsg(UserIndex, "El usuario está saliendo.")
+            Call WriteErrorMsg(UserIndex, "El usuario esta saliendo.")
         Else
-            Call WriteErrorMsg(UserIndex, "Perdón, un usuario con el mismo nombre se ha logueado.")
+            Call WriteErrorMsg(UserIndex, "Perdon, un usuario con el mismo nombre se ha logueado.")
         End If
         Call FlushBuffer(UserIndex)
         Call CloseSocket(UserIndex)
@@ -1247,7 +1247,7 @@ With UserList(UserIndex)
     Else
     
         If Not MapaValido(mapa) Then
-            Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa inválido.")
+            Call WriteErrorMsg(UserIndex, "El PJ se encuenta en un mapa invalido.")
             Call CloseSocket(UserIndex)
             Exit Sub
         End If
@@ -1265,7 +1265,7 @@ With UserList(UserIndex)
     End If
     
     'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
-    'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martín Sotuyo Dodero (Maraxus)
+    'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martin Sotuyo Dodero (Maraxus)
     If MapData(mapa, .Pos.x, .Pos.Y).UserIndex <> 0 Or MapData(mapa, .Pos.x, .Pos.Y).NpcIndex <> 0 Then
         Dim FoundPlace As Boolean
         Dim esAgua As Boolean
@@ -1313,7 +1313,7 @@ With UserList(UserIndex)
                     'Lo sacamos.
                     If UserList(MapData(mapa, .Pos.x, .Pos.Y).UserIndex).flags.UserLogged Then
                         Call FinComerciarUsu(MapData(mapa, .Pos.x, .Pos.Y).UserIndex)
-                        Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconéctate...")
+                        Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.Y).UserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
                         Call FlushBuffer(MapData(mapa, .Pos.x, .Pos.Y).UserIndex)
                     End If
                 End If
@@ -1390,12 +1390,12 @@ With UserList(UserIndex)
     
     If haciendoBK Then
         Call WritePauseToggle(UserIndex)
-        Call WriteConsoleMsg(UserIndex, "Servidor> Por favor espera algunos segundos, el WorldSave está ejecutándose.", FontTypeNames.FONTTYPE_SERVER)
+        Call WriteConsoleMsg(UserIndex, "Servidor> Por favor espera algunos segundos, el WorldSave esta ejecutandose.", FontTypeNames.FONTTYPE_SERVER)
     End If
     
     If EnPausa Then
         Call WritePauseToggle(UserIndex)
-        Call WriteConsoleMsg(UserIndex, "Servidor> Lo sentimos mucho pero el servidor se encuentra actualmente detenido. Intenta ingresar más tarde.", FontTypeNames.FONTTYPE_SERVER)
+        Call WriteConsoleMsg(UserIndex, "Servidor> Lo sentimos mucho pero el servidor se encuentra actualmente detenido. Intenta ingresar mas tarde.", FontTypeNames.FONTTYPE_SERVER)
     End If
     
     If EnTesting And .Stats.ELV >= 18 Then
@@ -1989,7 +1989,7 @@ End With
 Exit Sub
 
 errHandler:
-Call LogError("Error en CloseUser. Número " & Err.Number & " Descripción: " & Err.description)
+Call LogError("Error en CloseUser. Numero " & Err.Number & " Descripcion: " & Err.description)
 
 End Sub
 

@@ -5,7 +5,7 @@ Attribute VB_Name = "modCentinela"
 
 Option Explicit
  
-Public CentinelaEstado  As Boolean          'Está activado?
+Public CentinelaEstado  As Boolean          'Esta activado?
  
 Const NUM_CENTINELAS    As Byte = 5         'Cantidad de centinelas.
 Const NUM_NPC           As Integer = 16     'NpcNum del centinela.
@@ -14,15 +14,15 @@ Const MAPA_EXPLOTAR     As Integer = 15     'Numero de mapa en la qe se pinchan 
 Const X_EXPLOTAR        As Byte = 50        'X
 Const Y_EXPLOTAR        As Byte = 50        'Y
  
-Const LIMITE_TIEMPO     As Long = 120000    'Tiempo límite (milisegundos), 2 minutos.
+Const LIMITE_TIEMPO     As Long = 120000    'Tiempo limite (milisegundos), 2 minutos.
 Const CARCEL_TIEMPO     As Byte = 5         'Minutos en la carcel
-Const REVISION_TIEMPO   As Long = 1800000   'Tiempo de cada revisión (milisegundos) 1.800.000 = 30 minutos (60 segundos * 30 minutos) * 1000 milisegundos
+Const REVISION_TIEMPO   As Long = 1800000   'Tiempo de cada revision (milisegundos) 1.800.000 = 30 minutos (60 segundos * 30 minutos) * 1000 milisegundos
  
 Type Centinelas
      MiNpcIndex         As Integer          'NPCIndex del centinela.
-     Invocado           As Boolean          'Si está invocado.
+     Invocado           As Boolean          'Si esta invocado.
      RevisandoSlot      As Integer          'UI Del usuario.
-     TiempoInicio       As Long             'Desde que empezó el chekeo al usuario.
+     TiempoInicio       As Long             'Desde que empezo el chekeo al usuario.
      CodigoCheck        As String           'Codigo que debe ingresar el usuario.
 End Type
  
@@ -36,11 +36,11 @@ Dim TmpStr  As String
  
 CentinelaEstado = Not CentinelaEstado
  
-TmpStr = UserList(gmIndex).name & " Cambió el estado del Centinela:" & IIf(CentinelaEstado, " Ahora está activado.", " Ahora está desactivado.")
+TmpStr = UserList(gmIndex).name & " Cambio el estado del Centinela:" & IIf(CentinelaEstado, " Ahora esta activado.", " Ahora esta desactivado.")
  
 Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(TmpStr, FontTypeNames.FONTTYPE_CONSE))
  
-Call LogGM(UserList(gmIndex).name, "Cambió el estado del centinela (Enabled:" & CentinelaEstado & ")")
+Call LogGM(UserList(gmIndex).name, "Cambio el estado del centinela (Enabled:" & CentinelaEstado & ")")
  
 End Sub
  
@@ -50,7 +50,7 @@ Sub EnviarAUsuario(ByVal userIndex As Integer, ByVal CIndex As Byte)
  
 With Centinelas(CIndex)
         
-     'Genera el código.
+     'Genera el codigo.
      .CodigoCheck = GenerarClave
      
      'Spawnea.
@@ -77,7 +77,7 @@ End With
 With UserList(userIndex).CentinelaUsuario
      .CentinelaCheck = False                    'Por defecto, no ingreso la clave.
      .centinelaIndex = CIndex                   'Setea el index del mismo.
-     .Codigo = Centinelas(CIndex).CodigoCheck   'Setea el código.
+     .Codigo = Centinelas(CIndex).CodigoCheck   'Setea el codigo.
      .Revisando = True                          'Lo revisa un centinela.
 End With
  
@@ -91,7 +91,7 @@ Dim i   As Long
  
 For i = 1 To NUM_CENTINELAS
     With Centinelas(i)
-         'Si está invocado.
+         'Si esta invocado.
          If .Invocado Then
             'Avisa.
             Call AvisarUsuario(.RevisandoSlot, CByte(i))
@@ -111,7 +111,7 @@ With Centinelas(centinelaIndex)
      
      'Para avisar.
      If Not IngresoFallido Then
-        'Pasó la mitad de tiempo?
+        'Paso la mitad de tiempo?
         If (GetTickCount() - .TiempoInicio) > (LIMITE_TIEMPO / 2) Then
             'Prepara el paquete a enviar.
             DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
@@ -119,7 +119,7 @@ With Centinelas(centinelaIndex)
             DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Tienes menos de un minuto para escribir /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
          End If
      Else
-         DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El código ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
+         DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El codigo ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
      End If
      
      'Envia.
@@ -142,9 +142,9 @@ For LoopC = 1 To LastUser
          If .CentinelaUsuario.Revisando Then
             Call TiempoUsuario(CInt(LoopC))
          Else
-            'Está trabajando?
+            'Esta trabajando?
             If .Counters.Trabajando <> 0 Then
-               'Si todavia no lo revisaron o si pasó más del tiempo sin revisar, vuelve a enviar.
+               'Si todavia no lo revisaron o si paso mas del tiempo sin revisar, vuelve a enviar.
                If Not .CentinelaUsuario.CentinelaCheck Or ((GetTickCount() - .CentinelaUsuario.UltimaRevision) > REVISION_TIEMPO) Then
                   'Busca un slot para centinela y se lo envia.
                   CIndex = ProximoCentinela
@@ -165,7 +165,7 @@ End Sub
  
 Sub IngresaClave(ByVal userIndex As Integer, ByRef Clave As String)
  
-' @ Checkea la clave que ingresó el usuario.
+' @ Checkea la clave que ingreso el usuario.
  
 Clave = UCase$(Clave)
  
@@ -176,10 +176,10 @@ centinelaIndex = UserList(userIndex).CentinelaUsuario.centinelaIndex
 'No tiene centinela.
 If Not centinelaIndex <> 0 Then Exit Sub
  
-'No está revisandolo.
+'No esta revisandolo.
 If Not UserList(userIndex).CentinelaUsuario.Revisando Then Exit Sub
  
-'Checkea el código
+'Checkea el codigo
 If CheckCodigo(Clave, centinelaIndex) Then
    'Quita el centinela.
    Call AprobarUsuario(userIndex, centinelaIndex)
@@ -251,7 +251,7 @@ With UserList(userIndex).CentinelaUsuario
      'No hay indice ! WTF XD
      If Not centinelaIndex <> 0 Then Exit Sub
      
-     'Acabó el tiempo y no ingresó la clave.
+     'Acabo el tiempo y no ingreso la clave.
      If (GetTickCount - Centinelas(centinelaIndex).TiempoInicio) > LIMITE_TIEMPO Then
         Call UsuarioInActivo(userIndex)
      End If
@@ -262,7 +262,7 @@ End Sub
  
 Sub UsuarioInActivo(ByVal userIndex As Integer)
  
-' @ No contestó el usuario, se lo pena.
+' @ No contesto el usuario, se lo pena.
  
 'Telep al mapa.
 Call WarpUserChar(userIndex, MAPA_EXPLOTAR, X_EXPLOTAR, Y_EXPLOTAR, True)
@@ -297,36 +297,36 @@ Function GenerarClave() As String
  
 ' @ Arma la clave para un centinela.
  
-Dim NumCharacters   As Byte     'Numero de carácteres de la clave.
+Dim NumCharacters   As Byte     'Numero de caracteres de la clave.
 Dim LoopC           As Long
  
 NumCharacters = 7
  
 For LoopC = 1 To NumCharacters
     'Una letra y un numero.
-    If (LoopC Mod 2) <> 0 Then  '< Es número INPar.
+    If (LoopC Mod 2) <> 0 Then  '< Es numero INPar.
        'Letra.
        GenerarClave = GenerarClave & Chr$(RandomNumber(97, 122))
     Else
-       'número.
+       'numero.
        GenerarClave = GenerarClave & RandomNumber(1, 9)
     End If
 Next LoopC
  
-'Pasa a mayúsculas.
+'Pasa a mayusculas.
 GenerarClave = UCase$(GenerarClave)
  
 End Function
  
 Function DarPosicion(ByVal userIndex As Integer) As WorldPos
  
-' @ Devuelve la posición para spawnear al centinela.
+' @ Devuelve la posicion para spawnear al centinela.
  
 With UserList(userIndex)
-     'Posición del usuario original.
+     'Posicion del usuario original.
      DarPosicion = .Pos
      
-     'Mueve una posición a la derecha
+     'Mueve una posicion a la derecha
      DarPosicion.X = .Pos.X + 1
      
 End With
@@ -340,7 +340,7 @@ Function ProximoCentinela() As Byte
 Dim i   As Long
  
 For i = 1 To NUM_CENTINELAS
-    'Si no está invocado.
+    'Si no esta invocado.
     If Not Centinelas(i).Invocado Then
        'Devuelve el slot
        ProximoCentinela = CByte(i)
@@ -354,7 +354,7 @@ End Function
  
 Function CheckCodigo(ByRef Ingresada As String, ByVal CIndex As Byte) As Boolean
  
-' @ Devuelve si el código es correcto.
+' @ Devuelve si el codigo es correcto.
  
 CheckCodigo = (Not Ingresada <> Centinelas(CIndex).CodigoCheck)
  

@@ -93,21 +93,21 @@ Public Function HungerGamesCanCreate(ByVal Cupos As Byte, _
     With SurvivalG
 
         If .Created <> 0 Then
-            Err = "Los juegos del hambre ya están en curso!"
+            Err = "Los juegos del hambre ya estan en curso!"
             HungerGamesCanCreate = False
             Exit Function
 
         End If
 
         If Cupos <= 0 Then
-            Err = "Los cupos no son válidos"
+            Err = "Los cupos no son validos"
             HungerGamesCanCreate = False
             Exit Function
 
         End If
 
         If Gold <= 0 Then
-            Err = "El oro ingresado no es válido"
+            Err = "El oro ingresado no es valido"
             HungerGamesCanCreate = False
             Exit Function
 
@@ -128,7 +128,7 @@ Public Sub HungerGamesCreate(ByVal Cupos As Byte, _
         .Drop = Drop
         .Cupos = Cupos
 
-        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Han dado inicio los Juegos del Hambre! El máximo de cupos es [" & Cupos & "], para entrar solo debes pagar " & Gold & " monedas de oro" & vbNewLine & IIf(Drop, "El ganador se queda con los items", " ") & ". Para lograr ingresar escribe /Survival", FontTypeNames.FONTTYPE_CONSEJO)
+        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Han dado inicio los Juegos del Hambre! El maximo de cupos es [" & Cupos & "], para entrar solo debes pagar " & Gold & " monedas de oro" & vbNewLine & IIf(Drop, "El ganador se queda con los items", " ") & ". Para lograr ingresar escribe /Survival", FontTypeNames.FONTTYPE_CONSEJO)
 
         .Created = 1
 
@@ -148,35 +148,35 @@ Public Function HungerGamesCanJoin(ByVal UI As Integer, ByRef Err As String) As 
         End If
 
         If .flags.Muerto <> 0 Then
-            Err = "Estás muerto!"
+            Err = "Estas muerto!"
             HungerGamesCanJoin = False
             Exit Function
 
         End If
 
         'If .flags.Peleando <> 0 Then
-        '    Err = "Estás en otro evento!"
+        '    Err = "Estas en otro evento!"
         '    HungerGamesCanJoin = False
         '    Exit Function
 
         'End If
 
         'If .Reto1vs1.RetoIndex <> 0 Then
-        '    Err = "Estás en otro evento!"
+        '    Err = "Estas en otro evento!"
         '    HungerGamesCanJoin = False
         '    Exit Function
 
         'End If
 
         'If .reto2Data.reto_Index <> 0 Then
-        '    Err = "Estás en otro evento!"
+        '    Err = "Estas en otro evento!"
         '    HungerGamesCanJoin = False
         '    Exit Function
 
         'End If
 
         If .flags.SG.HungerIndex <> 0 Then
-            Err = "Ya estás en los juegos del hambre!"
+            Err = "Ya estas en los juegos del hambre!"
             HungerGamesCanJoin = False
             Exit Function
 
@@ -203,7 +203,7 @@ Public Function HungerGamesCanJoin(ByVal UI As Integer, ByRef Err As String) As 
         End If
 
         If .Invent.NroItems <> 0 Then
-            Err = "No debes tener ningún item en tu inventario!"
+            Err = "No debes tener ningun item en tu inventario!"
             HungerGamesCanJoin = False
             Exit Function
         End If

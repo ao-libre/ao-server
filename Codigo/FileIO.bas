@@ -1,6 +1,6 @@
 Attribute VB_Name = "ES"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "ES"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -135,7 +135,7 @@ Public Sub loadAdministrativeUsers()
 'Consejeros  => Consejero
 'RoleMasters => RM
 
-    'Si esta mierda tuviese array asociativos el código sería tan lindo.
+    'Si esta mierda tuviese array asociativos el codigo seria tan lindo.
     Dim buf As Integer
     Dim i As Long
     Dim Name As String
@@ -312,8 +312,8 @@ Public Sub CargarHechizos()
 '
 '  ¡¡¡¡ NO USAR GetVar PARA LEER Hechizos.dat !!!!
 '
-'El que ose desafiar esta LEY, se las tendrá que ver
-'con migo. Para leer Hechizos.dat se deberá usar
+'El que ose desafiar esta LEY, se las tendra que ver
+'con migo. Para leer Hechizos.dat se debera usar
 'la nueva clase clsLeerInis.
 '
 'Alejo
@@ -599,7 +599,7 @@ On Error Resume Next
     
                 If .TileExit.Map Then ByFlags = ByFlags Or 1
                 
-                ' No hacer backup de los NPCs inválidos (Pretorianos, Mascotas, Invocados )
+                ' No hacer backup de los NPCs invalidos (Pretorianos, Mascotas, Invocados )
                 If .NpcIndex Then
                     NpcInvalido = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano) Or (Npclist(.NpcIndex).MaestroUser > 0)
                     
@@ -728,9 +728,9 @@ Sub LoadBalance()
             .AtaqueArmas = val(GetVar(DatPath & "Balance.dat", "MODATAQUEARMAS", ListaClases(i)))
             .AtaqueProyectiles = val(GetVar(DatPath & "Balance.dat", "MODATAQUEPROYECTILES", ListaClases(i)))
             .AtaqueWrestling = val(GetVar(DatPath & "Balance.dat", "MODATAQUEWRESTLING", ListaClases(i)))
-            .DañoArmas = val(GetVar(DatPath & "Balance.dat", "MODDAÑOARMAS", ListaClases(i)))
-            .DañoProyectiles = val(GetVar(DatPath & "Balance.dat", "MODDAÑOPROYECTILES", ListaClases(i)))
-            .DañoWrestling = val(GetVar(DatPath & "Balance.dat", "MODDAÑOWRESTLING", ListaClases(i)))
+            .DanoArmas = val(GetVar(DatPath & "Balance.dat", "MODDANOARMAS", ListaClases(i)))
+            .DanoProyectiles = val(GetVar(DatPath & "Balance.dat", "MODDANOPROYECTILES", ListaClases(i)))
+            .DanoWrestling = val(GetVar(DatPath & "Balance.dat", "MODDANOWRESTLING", ListaClases(i)))
             .Escudo = val(GetVar(DatPath & "Balance.dat", "MODESCUDO", ListaClases(i)))
         End With
     Next i
@@ -751,7 +751,7 @@ Sub LoadBalance()
         ModVida(i) = val(GetVar(DatPath & "Balance.dat", "MODVIDA", ListaClases(i)))
     Next i
     
-    'Distribución de Vida
+    'Distribucion de Vida
     For i = 1 To 5
         DistribucionEnteraVida(i) = val(GetVar(DatPath & "Balance.dat", "DISTRIBUCION", "E" + CStr(i)))
     Next i
@@ -806,8 +806,8 @@ Sub LoadOBJData()
 '
 '¡¡¡¡ NO USAR GetVar PARA LEER DESDE EL OBJ.DAT !!!!
 '
-'El que ose desafiar esta LEY, se las tendrá que ver
-'con migo. Para leer desde el OBJ.DAT se deberá usar
+'El que ose desafiar esta LEY, se las tendra que ver
+'con migo. Para leer desde el OBJ.DAT se debera usar
 'la nueva clase clsLeerInis.
 '
 'Alejo
@@ -888,7 +888,7 @@ On Error GoTo errHandler
                 
                 Case eOBJType.otWeapon
                     .WeaponAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
-                    .Apuñala = val(Leer.GetValue("OBJ" & Object, "Apuñala"))
+                    .Apunala = val(Leer.GetValue("OBJ" & Object, "Apunala"))
                     .Envenena = val(Leer.GetValue("OBJ" & Object, "Envenena"))
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
@@ -1742,7 +1742,7 @@ Sub LoadSini()
     End If
     
     '&&&&&&&&&&&&&&&&&&&&& BALANCE &&&&&&&&&&&&&&&&&&&&&&&
-    'Se agregó en LoadBalance y en el Balance.dat
+    'Se agrego en LoadBalance y en el Balance.dat
     'PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "PorcentajeRecuperoMana"))
     
     ''&&&&&&&&&&&&&&&&&&&&& FIN BALANCE &&&&&&&&&&&&&&&&&&&&&&&
@@ -2665,7 +2665,7 @@ Sub SendUserMiniStatsTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName 
 'Author: Unknown
 'Last modified: 19/19/2018
 'Shows the users Stats when the user is offline.
-'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribución de parámetros.
+'23/01/2007 Pablo (ToxicWaste) - Agrego de funciones y mejora de distribucion de parametros.
 '19/09/2018 CHOTS - Movido a FileIO
 '*************************************************
     Dim CharFile As String
@@ -2683,22 +2683,22 @@ Sub SendUserMiniStatsTxtFromCharfile(ByVal sendIndex As Integer, ByVal charName 
         Call WriteConsoleMsg(sendIndex, "Pena: " & GetVar(CharFile, "COUNTERS", "PENA"), FontTypeNames.FONTTYPE_INFO)
         
         If CByte(GetVar(CharFile, "FACCIONES", "EjercitoReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Ejército real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ejercito real desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingreso en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")) & " con " & CInt(GetVar(CharFile, "FACCIONES", "MatadosIngreso")) & " ciudadanos matados.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
         ElseIf CByte(GetVar(CharFile, "FACCIONES", "EjercitoCaos")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Legión oscura desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Ingresó en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")), FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Legion oscura desde: " & GetVar(CharFile, "FACCIONES", "FechaIngreso"), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Ingreso en nivel: " & CInt(GetVar(CharFile, "FACCIONES", "NivelIngreso")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
         ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExReal")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue ejército real", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Fue ejercito real", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         
         ElseIf CByte(GetVar(CharFile, "FACCIONES", "rExCaos")) = 1 Then
-            Call WriteConsoleMsg(sendIndex, "Fue legión oscura", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(sendIndex, "Veces que ingresó: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Fue legion oscura", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(sendIndex, "Veces que ingreso: " & CByte(GetVar(CharFile, "FACCIONES", "Reenlistadas")), FontTypeNames.FONTTYPE_INFO)
         End If
 
         
@@ -2782,10 +2782,10 @@ Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
     If PersonajeExiste(Nombre) Then
         Call WriteConsoleMsg(sendIndex, "Pj Inexistente", FontTypeNames.FONTTYPE_INFO)
     Else
-        Call WriteConsoleMsg(sendIndex, "Estadísticas de: " & Nombre, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Estadisticas de: " & Nombre, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Nivel: " & GetVar(CharPath & Nombre & ".chr", "stats", "elv") & "  EXP: " & GetVar(CharPath & Nombre & ".chr", "stats", "Exp") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "elu"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Energía: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Maná: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Energia: " & GetVar(CharPath & Nombre & ".chr", "stats", "minsta") & "/" & GetVar(CharPath & Nombre & ".chr", "stats", "maxSta"), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Salud: " & GetVar(CharPath & Nombre & ".chr", "stats", "MinHP") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxHP") & "  Mana: " & GetVar(CharPath & Nombre & ".chr", "Stats", "MinMAN") & "/" & GetVar(CharPath & Nombre & ".chr", "Stats", "MaxMAN"), FontTypeNames.FONTTYPE_INFO)
         
         Call WriteConsoleMsg(sendIndex, "Menor Golpe/Mayor Golpe: " & GetVar(CharPath & Nombre & ".chr", "stats", "MaxHIT"), FontTypeNames.FONTTYPE_INFO)
         
@@ -2795,7 +2795,7 @@ Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
         Dim TempSecs As Long
         Dim TempStr As String
         TempSecs = GetVar(CharPath & Nombre & ".chr", "INIT", "UpTime")
-        TempStr = (TempSecs \ 86400) & " Días, " & ((TempSecs Mod 86400) \ 3600) & " Horas, " & ((TempSecs Mod 86400) Mod 3600) \ 60 & " Minutos, " & (((TempSecs Mod 86400) Mod 3600) Mod 60) & " Segundos."
+        TempStr = (TempSecs \ 86400) & " Dias, " & ((TempSecs Mod 86400) \ 3600) & " Horas, " & ((TempSecs Mod 86400) Mod 3600) \ 60 & " Minutos, " & (((TempSecs Mod 86400) Mod 3600) Mod 60) & " Segundos."
         Call WriteConsoleMsg(sendIndex, "Tiempo Logeado: " & TempStr, FontTypeNames.FONTTYPE_INFO)
 #End If
     
@@ -2914,7 +2914,7 @@ Sub ResetUserFaccionesCharfile(ByVal UserName As String)
     Call WriteVar(Char, "FACCIONES", "CiudMatados", 0)
     Call WriteVar(Char, "FACCIONES", "CrimMatados", 0)
     Call WriteVar(Char, "FACCIONES", "EjercitoCaos", 0)
-    Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingresó a ninguna Facción")
+    Call WriteVar(Char, "FACCIONES", "FechaIngreso", "No ingreso a ninguna Faccion")
     Call WriteVar(Char, "FACCIONES", "rArCaos", 0)
     Call WriteVar(Char, "FACCIONES", "rArReal", 0)
     Call WriteVar(Char, "FACCIONES", "rExCaos", 0)

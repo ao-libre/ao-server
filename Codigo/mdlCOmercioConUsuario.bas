@@ -178,8 +178,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     ' Aceptaron ambos, chequeo que tengan los items que ofertaron
     If Not HasOfferedItems(UserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque " & UserList(UserIndex).Name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se cancelo porque " & UserList(UserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
         
         Call FinComerciarUsu(UserIndex)
         Call FinComerciarUsu(OtroUserIndex)
@@ -189,8 +189,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         
     ElseIf Not HasOfferedItems(OtroUserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se canceló porque " & UserList(OtroUserIndex).Name & " no posee los ítems que ofertó!!!", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se canceló porque no posees los ítems que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se cancelo porque " & UserList(OtroUserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
         
         Call FinComerciarUsu(UserIndex)
         Call FinComerciarUsu(OtroUserIndex)
@@ -210,7 +210,7 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(OtroUserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " solto oro en comercio seguro con " & UserList(OtroUserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
                 ' Update Usuario
                 Call WriteUpdateUserStats(UserIndex)
                 ' Se la doy al otro
@@ -232,14 +232,14 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 
                 'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
                 If ObjData(TradingObj.ObjIndex).Log = 1 Then
-                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                    Call LogDesarrollo(.Name & " le paso en comercio seguro a " & UserList(OtroUserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                 End If
             
                 'Es mucha cantidad?
                 If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
                 'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le pasó en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(UserList(OtroUserIndex).Name & " le paso en comercio seguro a " & .Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 End If
             End If
@@ -252,12 +252,12 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 ' Quito la cantidad de oro ofrecida
                 .Stats.GLD = .Stats.GLD - .ComUsu.GoldAmount
                 ' Log
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " soltó oro en comercio seguro con " & UserList(UserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(.Name & " solto oro en comercio seguro con " & UserList(UserIndex).Name & ". Cantidad: " & .ComUsu.GoldAmount)
                 ' Update Usuario
                 Call WriteUpdateUserStats(OtroUserIndex)
                 'y se la doy al otro
                 UserList(UserIndex).Stats.GLD = UserList(UserIndex).Stats.GLD + .ComUsu.GoldAmount
-                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).Name & " recibió oro en comercio seguro con " & .Name & ". Cantidad: " & .ComUsu.GoldAmount)
+                If .ComUsu.GoldAmount > MAX_ORO_LOGUEABLE Then Call LogDesarrollo(UserList(UserIndex).Name & " recibio oro en comercio seguro con " & .Name & ". Cantidad: " & .ComUsu.GoldAmount)
                 ' Update Otro Usuario
                 Call WriteUpdateUserStats(UserIndex)
                 
@@ -275,14 +275,14 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
                 
                 'Es un Objeto que tenemos que loguear? Pablo (ToxicWaste) 07/09/07
                 If ObjData(TradingObj.ObjIndex).Log = 1 Then
-                    Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                    Call LogDesarrollo(.Name & " le paso en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                 End If
             
                 'Es mucha cantidad?
                 If TradingObj.Amount > MAX_OBJ_LOGUEABLE Then
                 'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(TradingObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(.Name & " le pasó en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
+                        Call LogDesarrollo(.Name & " le paso en comercio seguro a " & UserList(UserIndex).Name & " " & TradingObj.Amount & " " & ObjData(TradingObj.ObjIndex).Name)
                     End If
                 End If
             End If
@@ -320,7 +320,7 @@ Public Sub AgregarOferta(ByVal UserIndex As Integer, ByVal OfferSlot As Byte, By
                     If ObjIndex > 0 Then .Objeto(OfferSlot) = ObjIndex
                     .cant(OfferSlot) = .cant(OfferSlot) + Amount
                     
-                    'Quitó todos los items de ese tipo
+                    'Quito todos los items de ese tipo
                     If .cant(OfferSlot) <= 0 Then
                         ' Removemos el objeto para evitar conflictos
                         .Objeto(OfferSlot) = 0

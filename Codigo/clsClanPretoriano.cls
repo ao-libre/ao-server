@@ -671,7 +671,7 @@ On Error GoTo ErrHandler
                     Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eKingSpells.BlindAttack), True, True)
                     
                     ' King Message
-                    Call WriteConsoleMsg(BestTarget, "El rey pretoriano te ha vuelto estúpido.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(BestTarget, "El rey pretoriano te ha vuelto estupido.", FontTypeNames.FONTTYPE_FIGHT)
                     Call WriteConsoleMsg(BestTarget, "El rey pretoriano te ha vuelto ciego ", FontTypeNames.FONTTYPE_FIGHT)
                     Call WriteConsoleMsg(BestTarget, "A la distancia escuchas las siguientes palabras: ¡Cobarde, no eres digno de luchar conmigo si escapas! ", FontTypeNames.FONTTYPE_VENENO)
                 End If
@@ -1246,10 +1246,10 @@ On Error GoTo ErrHandler
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Zill", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 2
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yäkà E'nta", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yäka E'nta", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 1
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("¡¡Koràtá!!", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("¡¡Korata!!", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 0
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead(vbNullString, .Char.CharIndex, vbGreen))
@@ -1696,7 +1696,7 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
 'Author: ZaMa
 'Last Modification: 24/06/2010
 'Vamos a setear el hold on del cazador en el medio entre el rey
-'y el atacante. De esta manera se lo podra atacar aun asi está lejos
+'y el atacante. De esta manera se lo podra atacar aun asi esta lejos
 'pero sin alejarse del rango de los an hoax vorps de los
 'clerigos o rey. A menos q este paralizado, claro
 '***************************************************
@@ -1962,7 +1962,7 @@ On Error GoTo ErrHandler
                             Slot = RandomNumber(1, UserList(BestTarget).CurrentInventorySlots)
                             
                             If ThiefStealITem(NpcIndex, BestTarget, Slot) Then
-                                Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te está robando!!", FontTypeNames.FONTTYPE_VENENO)
+                                Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te esta robando!!", FontTypeNames.FONTTYPE_VENENO)
                             End If
                             
                         End If
@@ -2197,12 +2197,12 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, ByVal TargetMap As Integer, 
 '***************************************************
 'Author: Unknown
 '  Este procedimiento es llamado cada vez que un NPC deba ir
-'  a otro lugar en el mismo TargetMap. Utiliza una técnica
-'  de programación greedy no determinística.
+'  a otro lugar en el mismo TargetMap. Utiliza una tecnica
+'  de programacion greedy no deterministica.
 '  Cada paso azaroso que me acerque al destino, es un buen paso.
-'  Si no hay mejor paso válido, entonces hay que volver atrás y reintentar.
+'  Si no hay mejor paso valido, entonces hay que volver atras y reintentar.
 '  Si no puedo moverme, me considero piketeado
-'  La funcion es larga, pero es O(1) - orden algorítmico temporal constante
+'  La funcion es larga, pero es O(1) - orden algoritmico temporal constante
 'Last Modification: 26/09/2010
 'Rapsodius - Changed Mod by And for speed
 '26/09/2010: ZaMa - Now make movements as normal npcs, which allows to kick caspers and invisible admins.
@@ -2432,7 +2432,7 @@ Private Sub MoveFailed(ByVal NpcIndex As Integer)
         If IntervaloPermiteAtacarNpc(NpcIndex) Then
             If (RandomNumber(1, 100) > 95) Then
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, _
-                    PrepareMessageChatOverHead("Maldito bastardo, ¡Ven aquí!", .Char.CharIndex, vbYellow))
+                    PrepareMessageChatOverHead("Maldito bastardo, ¡Ven aqui!", .Char.CharIndex, vbYellow))
             End If
         End If
     End With

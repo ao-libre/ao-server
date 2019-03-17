@@ -1,6 +1,6 @@
 Attribute VB_Name = "Acciones"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "Acciones"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -51,7 +51,7 @@ Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer,
     Dim tempIndex As Integer
     
 On Error Resume Next
-    '¿Rango Visión? (ToxicWaste)
+    '¿Rango Vision? (ToxicWaste)
     If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
         Exit Sub
     End If
@@ -68,7 +68,7 @@ On Error Resume Next
                 If Npclist(tempIndex).Comercia = 1 Then
                     '¿Esta el user muerto? Si es asi no puede comerciar
                     If .flags.Muerto = 1 Then
-                        'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
                         Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                         Exit Sub
                     End If
@@ -79,7 +79,7 @@ On Error Resume Next
                     End If
                     
                     If Distancia(Npclist(tempIndex).Pos, .Pos) > 3 Then
-                        Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     End If
                     
@@ -89,7 +89,7 @@ On Error Resume Next
                 ElseIf Npclist(tempIndex).NPCtype = eNPCType.Banquero Then
                     '¿Esta el user muerto? Si es asi no puede comerciar
                     If .flags.Muerto = 1 Then
-                        'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
                         Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                         Exit Sub
                     End If
@@ -100,7 +100,7 @@ On Error Resume Next
                     End If
                     
                     If Distancia(Npclist(tempIndex).Pos, .Pos) > 3 Then
-                        Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos del vendedor.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     End If
                     
@@ -109,7 +109,7 @@ On Error Resume Next
                 
                 ElseIf Npclist(tempIndex).NPCtype = eNPCType.Revividor Or Npclist(tempIndex).NPCtype = eNPCType.ResucitadorNewbie Then
                     If Distancia(.Pos, Npclist(tempIndex).Pos) > 10 Then
-                        Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     End If
                     
@@ -148,7 +148,7 @@ On Error Resume Next
                         Call AccionParaCartel(Map, X, Y, UserIndex)
                     Case eOBJType.otForos 'Foro
                         Call AccionParaForo(Map, X, Y, UserIndex)
-                    Case eOBJType.otLeña    'Leña
+                    Case eOBJType.otLena    'Lena
                         If tempIndex = FOGATA_APAG And .flags.Muerto = 0 Then
                             Call AccionParaRamita(Map, X, Y, UserIndex)
                         End If
@@ -265,10 +265,10 @@ If Not (Distance(UserList(UserIndex).Pos.X, UserList(UserIndex).Pos.Y, X, Y) > 2
         
         UserList(UserIndex).flags.TargetObj = MapData(Map, X, Y).ObjInfo.ObjIndex
     Else
-        Call WriteConsoleMsg(UserIndex, "La puerta está cerrada con llave.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "La puerta esta cerrada con llave.", FontTypeNames.FONTTYPE_INFO)
     End If
 Else
-    Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
 End If
 
 End Sub
@@ -314,7 +314,7 @@ Pos.Y = Y
 
 With UserList(UserIndex)
     If Distancia(Pos, .Pos) > 2 Then
-        Call WriteConsoleMsg(UserIndex, "Estás demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     

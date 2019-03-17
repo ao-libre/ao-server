@@ -116,7 +116,7 @@ On Error GoTo ErrHandler
         Call UserReciveObj(UserIndex, CInt(i), Cantidad)
         
         If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).Name & " retiró " & Cantidad & " " & _
+            Call LogDesarrollo(UserList(UserIndex).Name & " retiro " & Cantidad & " " & _
                 ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
         End If
         
@@ -167,7 +167,7 @@ With UserList(UserIndex)
             Slot = Slot + 1
 
             If Slot > .CurrentInventorySlots Then
-                Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         Loop
@@ -184,7 +184,7 @@ With UserList(UserIndex)
         
         Call QuitarBancoInvItem(UserIndex, CByte(ObjIndex), Cantidad)
     Else
-        Call WriteConsoleMsg(UserIndex, "No podés tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
 End With
 
@@ -247,7 +247,7 @@ On Error GoTo ErrHandler
         Call UserDejaObj(UserIndex, CInt(Item), Cantidad)
         
         If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(UserIndex).Name & " depositó " & Cantidad & " " & _
+            Call LogDesarrollo(UserList(UserIndex).Name & " deposito " & Cantidad & " " & _
                 ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
         End If
         

@@ -88,7 +88,7 @@ Public Function MiExperiencia(ByVal UserIndex As Integer) As Long
 'Last Modification By: Budi
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number
-' - 11/27/09 Arreglé el Out of Range.
+' - 11/27/09 Arregle el Out of Range.
 '***************************************************
 'Me dice cuanta experiencia tengo colectada ya en la party
 Dim i As Integer
@@ -217,7 +217,7 @@ Public Function SaleMiembro(ByVal UserIndex As Integer) As Boolean
     If i = 1 Then
         'sale el founder, la party se disuelve
         SaleMiembro = True
-        Call MandarMensajeAConsola("El líder disuelve la party.", "Servidor")
+        Call MandarMensajeAConsola("El lider disuelve la party.", "Servidor")
         
         For j = PARTY_MAXMEMBERS To 1 Step -1
             
@@ -343,7 +343,7 @@ Public Sub ObtenerMiembrosOnline(ByRef MemberList() As Integer)
 ' - 09/29/07 Experience is round to the biggest number less than that number
 ' - 09/29/07 Now experience is a real-number (Tavo)
 ' - 08/18/08 Now TotalExperience is fixed (MarKoxX)
-' - 11/27/09 Rehice la función, ahora devuelve el array con los UI online (Budi)
+' - 11/27/09 Rehice la funcion, ahora devuelve el array con los UI online (Budi)
 '***************************************************
 
 Dim i As Integer
@@ -395,22 +395,22 @@ If rv Then
             'aspirante armada en party crimi
             If UI > 0 Then
                 If esArmada And criminal(UI) Then
-                    razon = "Los miembros del ejército real no entran a una party con criminales."
+                    razon = "Los miembros del ejercito real no entran a una party con criminales."
                     rv = False
                 End If
                 'aspirante caos en party ciuda
                 If esCaos And Not criminal(UI) Then
-                    razon = "Los miembros de la legión oscura no entran a una party con ciudadanos."
+                    razon = "Los miembros de la legion oscura no entran a una party con ciudadanos."
                     rv = False
                 End If
                 'aspirante crimi en party armada
                 If UserList(UI).Faccion.ArmadaReal = 1 And criminal(UserIndex) Then
-                    razon = "Los criminales no entran a parties con miembros del ejército real."
+                    razon = "Los criminales no entran a parties con miembros del ejercito real."
                     rv = False
                 End If
                 'aspirante ciuda en party caos
                 If UserList(UI).Faccion.FuerzasCaos = 1 And Not criminal(UserIndex) Then
-                    razon = "Los ciudadanos no entran a parties con miembros de la legión oscura."
+                    razon = "Los ciudadanos no entran a parties con miembros de la legion oscura."
                     rv = False
                 End If
             

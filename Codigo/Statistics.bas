@@ -2,7 +2,7 @@ Attribute VB_Name = "Statistics"
 '**************************************************************
 ' modStatistics.bas - Takes statistics on the game for later study.
 '
-' Implemented by Juan Martín Sotuyo Dodero (Maraxus)
+' Implemented by Juan Martin Sotuyo Dodero (Maraxus)
 ' (juansotuyo@gmail.com)
 '**************************************************************
 
@@ -93,7 +93,7 @@ Public Sub UserLevelUp(ByVal UserIndex As Integer)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(UserIndex).name) & " completó el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(UserIndex).name) & " completo el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         

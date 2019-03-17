@@ -1,6 +1,6 @@
 Attribute VB_Name = "modUserRecords"
 'Argentum Online 0.13.0
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "modUserRecords"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -128,7 +128,7 @@ Public Sub AddObs(ByVal UserIndex As Integer, ByVal RecordIndex As Integer, ByVa
 '**************************************************************
 'Author: Amraphen
 'Last Modify Date: 29/11/2010
-'Agrega una observación.
+'Agrega una observacion.
 '**************************************************************
     With Records(RecordIndex)
         .NumObs = .NumObs + 1

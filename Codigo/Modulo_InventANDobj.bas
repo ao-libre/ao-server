@@ -1,6 +1,6 @@
 Attribute VB_Name = "InvNpc"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "InvNpc"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 
 Option Explicit
@@ -134,7 +134,7 @@ On Error Resume Next
                     Call TirarItemAlPiso(.Pos, MiObj)
                     
                     If ObjData(ObjIndex).Log = 1 Then
-                        Call LogDesarrollo(npc.Name & " dropeó " & MiObj.Amount & " " & _
+                        Call LogDesarrollo(npc.Name & " dropeo " & MiObj.Amount & " " & _
                             ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
                     End If
                     

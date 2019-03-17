@@ -45,10 +45,10 @@ Option Explicit
 '1) Estuve revisando el problema de los cuelgues. Al parecer
 'es por un blucle infinito de ententos socket2_read. Ni idea
 'que lo ocasiona.
-'2) Eliminé el doevents de gametimer
-'3) Ahora los socket además se cierran con .Disconnect.
+'2) Elimine el doevents de gametimer
+'3) Ahora los socket ademas se cierran con .Disconnect.
 'Espero que solucione el problema del bucle...
-'4) Agregué un sistema para detectar los bucles esos con un
+'4) Agregue un sistema para detectar los bucles esos con un
 'contador. Cuando lo detecta se graba en el log de errores,
 'cierra y limpia el socket y el slot
 
@@ -56,17 +56,17 @@ Option Explicit
 
 '31-3-2003 - ver .35
 '---------
-'1) Reparé conteo de users (mal funcionamiento debido a la
+'1) Repare conteo de users (mal funcionamiento debido a la
 'restauracion de CloseSocket [olvide NumUsers = NumUsers -1]
 '2) Agrege aDos.RestarConeccion en PasarSegundo
 
 '31-3-2003 - ver .34
 '---------
-'1) Saqué el Unload frmmain.socket2, creo que esta trayendo
-'problemas...verifiqué y la forma de reutilizacion de socks
+'1) Saque el Unload frmmain.socket2, creo que esta trayendo
+'problemas...verifique y la forma de reutilizacion de socks
 'es por UserList().flags.connid
 '2) La funcion Cerrar_Usuario quedo solo para /salir y des_
-'coneccion estando loggeado..devolví al estado original la
+'coneccion estando loggeado..devolvi al estado original la
 'func CloseSocket (bueh..un poko modifikada ta)
 
 '30-3-2003 (estamos laburadores hoy eh) - ver .33
@@ -106,7 +106,7 @@ Option Explicit
 '---------
 '1) Aplique un codigo para que cierre luego de 10 segundos el
 'juego si estas paralizado..parece que hay problemas..no todo
-'funciona bien..experimenté una caida, creo que el FINOK hacia
+'funciona bien..experimente una caida, creo que el FINOK hacia
 'que al desconectarse el cliente se llame de nuevo a closesocket
 'espero que sea eso..habra que seguir experimentando :S estuve
 'viendo el codigo y no encontre nada mal..no se :(
@@ -120,28 +120,28 @@ Option Explicit
 
 '26-3-2003
 '---------
-'1) Apliqué el color Verde para los GMs (lease..lookattile)
+'1) Aplique el color Verde para los GMs (lease..lookattile)
 '2) Los gms no muestran FXs cuando se mueven estando invisibles
-'3) Me comí un pancho en la plaza deboto..que ricos son esos panchos! (??)
+'3) Me comi un pancho en la plaza deboto..que ricos son esos panchos! (??)
 
 'History Log by Morgolock
 
 '13-2-2003
 '---------
-'1) Modifiqué todas las llamadas a las funciones Mid, Left y
+'1) Modifique todas las llamadas a las funciones Mid, Left y
 'Right por Mid$, Left$ y Right$ para que devuelvan strings
 'en vez de variants. Se deberia ganar considerable velocidad.
 '2) Quite el comando /GRABAR ya que generaba problemas con
-'las mascotas y no era demasiado útil ya que los usuarios
+'las mascotas y no era demasiado util ya que los usuarios
 'consiguen el mismo efecto saliendo y volviendo a entrar
 'en el juego.
-'3) Agregué el MOTD, el servidor levanta el mensaje del archivo
+'3) Agregue el MOTD, el servidor levanta el mensaje del archivo
 'motd.ini del directorio dat del servidor, les envia el motd
 'a los usuarios cuando entran al juego.
 
 '12-2-2003
 '---------
-'1) Limité a tres la máxima cantidad de mascotas
+'1) Limite a tres la maxima cantidad de mascotas
 '2) A los newbies se les caen los objetos no newbies
 
 

@@ -345,7 +345,7 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                 
             End If
             
-            ' No le pertenece a nadie o el dueño no esta en el rango de vision, sigue a cualquiera
+            ' No le pertenece a nadie o el dueno no esta en el rango de vision, sigue a cualquiera
             For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 UserIndex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
@@ -435,7 +435,7 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                         If UserList(UI).Name = .flags.AttackedBy Then
                             If .MaestroUser > 0 Then
                                 If Not criminal(.MaestroUser) And Not criminal(UI) And (UserList(.MaestroUser).flags.Seguro Or UserList(.MaestroUser).Faccion.ArmadaReal = 1) Then
-                                    Call WriteConsoleMsg(.MaestroUser, "La mascota no atacará a ciudadanos si eres miembro del ejército real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(.MaestroUser, "La mascota no atacara a ciudadanos si eres miembro del ejercito real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
                                     Call FlushBuffer(.MaestroUser)
                                     .flags.AttackedBy = vbNullString
                                     Exit Sub
@@ -472,7 +472,7 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                         If UserList(UI).Name = .flags.AttackedBy Then
                             If .MaestroUser > 0 Then
                                 If Not criminal(.MaestroUser) And Not criminal(UI) And (UserList(.MaestroUser).flags.Seguro Or UserList(.MaestroUser).Faccion.ArmadaReal = 1) Then
-                                    Call WriteConsoleMsg(.MaestroUser, "La mascota no atacará a ciudadanos si eres miembro del ejército real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(.MaestroUser, "La mascota no atacara a ciudadanos si eres miembro del ejercito real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
                                     Call FlushBuffer(.MaestroUser)
                                     .flags.AttackedBy = vbNullString
                                     Call FollowAmo(NpcIndex)

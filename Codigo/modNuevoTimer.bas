@@ -1,6 +1,6 @@
 Attribute VB_Name = "modNuevoTimer"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "modNuevoTimer"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -236,9 +236,9 @@ Public Function IntervaloPermiteUsar(ByVal UserIndex As Integer, Optional ByVal 
         
         'UserList(UserIndex).Counters.failedUsageAttempts = UserList(UserIndex).Counters.failedUsageAttempts + 1
         
-        'Tolerancia arbitraria - 20 es MUY alta, la está chiteando zarpado
+        'Tolerancia arbitraria - 20 es MUY alta, la esta chiteando zarpado
         'If UserList(UserIndex).Counters.failedUsageAttempts = 20 Then
-            'Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " kicked by the server por posible modificación de intervalos.", FontTypeNames.FONTTYPE_FIGHT))
+            'Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " kicked by the server por posible modificacion de intervalos.", FontTypeNames.FONTTYPE_FIGHT))
             'Call CloseSocket(UserIndex)
         'End If
     End If

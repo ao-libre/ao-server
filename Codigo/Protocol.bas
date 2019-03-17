@@ -243,7 +243,7 @@ Private Enum ClientPacketID
     GuildLeave = 73               '/SALIRCLAN
     RequestAccountState = 74      '/BALANCE
     PetStand = 75                 '/QUIETO
-    PetFollow = 76                '/ACOMPA�AR
+    PetFollow = 76                '/ACOMPANAR
     ReleasePet = 77              '/LIBERAR
     TrainList = 78                '/ENTRENAR
     Rest = 79                     '/DESCANSAR
@@ -274,7 +274,7 @@ Private Enum ClientPacketID
     ChangeDescription = 104      '/DESC
     GuildVote = 105              '/VOTO
     punishments = 106           '/PENAS
-    ChangePassword = 107         '/CONTRASE�A
+    ChangePassword = 107         '/CONTRASENA
     Gamble = 108                '/APOSTAR
     InquiryVote = 109            '/ENCUESTA ( with parameters )
     LeaveFaction = 110          '/RETIRAR ( with no arguments )
@@ -639,7 +639,7 @@ On Error Resume Next
         Case ClientPacketID.PetStand                '/QUIETO
             Call HandlePetStand(UserIndex)
         
-        Case ClientPacketID.PetFollow               '/ACOMPA�AR
+        Case ClientPacketID.PetFollow               '/ACOMPANAR
             Call HandlePetFollow(UserIndex)
             
         Case ClientPacketID.ReleasePet              '/LIBERAR
@@ -732,7 +732,7 @@ On Error Resume Next
         Case ClientPacketID.punishments             '/PENAS
             Call HandlePunishments(UserIndex)
         
-        Case ClientPacketID.ChangePassword          '/CONTRASE�A
+        Case ClientPacketID.ChangePassword          '/CONTRASENA
             Call HandleChangePassword(UserIndex)
         
         Case ClientPacketID.Gamble                  '/APOSTAR
@@ -1429,7 +1429,7 @@ With UserList(UserIndex)
         Call setHome(UserIndex, Npclist(.flags.TargetNPC).Ciudad, .flags.TargetNPC)
     Else
         If .flags.Muerto = 1 Then
-            'Si es un mapa común y no está en cana
+            'Si es un mapa comUn y no está en cana
             If (MapInfo(.Pos.Map).Restringir = eRestrict.restrict_no) And (.Counters.Pena = 0) Then
                 If .flags.Traveling = 0 Then
                     If Ciudades(.Hogar).Map <> .Pos.Map Then
@@ -1836,7 +1836,7 @@ Private Sub HandleWhisper(ByVal UserIndex As Integer)
 'Last Modification: 03/12/2010
 '28/05/2009: ZaMa - Now it doesn't appear any message when private talking to an invisible admin
 '15/07/2009: ZaMa - Now invisible admins wisper by console.
-'03/12/2010: Enanoh - Agregué susurro a Admins en modo consulta y Los Dioses pueden susurrar en ciertos casos.
+'03/12/2010: Enanoh - Agregue susurro a Admins en modo consulta y Los Dioses pueden susurrar en ciertos casos.
 '***************************************************
     If UserList(UserIndex).incomingData.Length < 5 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -2194,7 +2194,7 @@ Private Sub HandlePickUp(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 07/25/09
-'02/26/2006: Marco - Agregué un checkeo por si el usuario trata de agarrar un item mientras comercia.
+'02/26/2006: Marco - Agregue un checkeo por si el usuario trata de agarrar un item mientras comercia.
 '***************************************************
     With UserList(UserIndex)
         'Remove packet ID
@@ -2209,7 +2209,7 @@ Private Sub HandlePickUp(ByVal UserIndex As Integer)
         'Lower rank administrators can't pick up items
         If .flags.Privilegios And PlayerType.Consejero Then
             If Not .flags.Privilegios And PlayerType.RoleMaster Then
-                Call WriteConsoleMsg(UserIndex, "No puedes tomar ningún objeto.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes tomar ningUn objeto.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         End If
@@ -2560,7 +2560,7 @@ Private Sub HandleDrop(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 07/25/09
-'07/25/09: Marco - Agregué un checkeo para patear a los usuarios que tiran items mientras comercian.
+'07/25/09: Marco - Agregue un checkeo para patear a los usuarios que tiran items mientras comercian.
 '***************************************************
     If UserList(UserIndex).incomingData.Length < 4 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -2951,7 +2951,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
 'Last Modification: 14/01/2010 (ZaMa)
 '16/11/2009: ZaMa - Agregada la posibilidad de extraer madera elfica.
 '12/01/2010: ZaMa - Ahora se admiten armas arrojadizas (proyectiles sin municiones).
-'14/01/2010: ZaMa - Ya no se pierden municiones al atacar npcs con dueño.
+'14/01/2010: ZaMa - Ya no se pierden municiones al atacar npcs con dueno.
 '***************************************************
     If UserList(UserIndex).incomingData.Length < 4 Then
         Err.Raise UserList(UserIndex).incomingData.NotEnoughDataErrCode
@@ -3053,7 +3053,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 
                 If HayAgua(.Pos.Map, x, Y) Then
                     Select Case WeaponIndex
-                        Case CA�A_PESCA, CA�A_PESCA_NEWBIE
+                        Case CANA_PESCA, CANA_PESCA_NEWBIE
                             Call DoPescar(UserIndex)
                         
                         Case RED_PESCA
@@ -3147,9 +3147,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                If WeaponIndex <> HACHA_LE�ADOR And _
-                   WeaponIndex <> HACHA_LE�A_ELFICA And _
-                   WeaponIndex <> HACHA_LE�ADOR_NEWBIE Then
+                If WeaponIndex <> HACHA_LENADOR And _
+                   WeaponIndex <> HACHA_LENA_ELFICA And _
+                   WeaponIndex <> HACHA_LENADOR_NEWBIE Then
                     ' Podemos llegar acá si el user equipó el anillo dsp de la U y antes del click
                     Exit Sub
                 End If
@@ -3170,17 +3170,17 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     
                     '¿Hay un arbol normal donde clickeo?
                     If ObjData(DummyInt).OBJType = eOBJType.otArboles Then
-                        If WeaponIndex = HACHA_LE�ADOR Or WeaponIndex = HACHA_LE�ADOR_NEWBIE Then
+                        If WeaponIndex = HACHA_LENADOR Or WeaponIndex = HACHA_LENADOR_NEWBIE Then
                             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.x, .Pos.Y))
                             Call DoTalar(UserIndex)
                         Else
-                            Call WriteConsoleMsg(UserIndex, "No puedes extraer leña de éste árbol con éste hacha.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(UserIndex, "No puedes extraer lena de este árbol con este hacha.", FontTypeNames.FONTTYPE_INFO)
                         End If
                         
                     ' Arbol Elfico?
                     ElseIf ObjData(DummyInt).OBJType = eOBJType.otArbolElfico Then
                     
-                        If WeaponIndex = HACHA_LE�A_ELFICA Then
+                        If WeaponIndex = HACHA_LENA_ELFICA Then
                             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.x, .Pos.Y))
                             Call DoTalar(UserIndex, True)
                         Else
@@ -3188,7 +3188,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         End If
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "No hay ningún árbol ahí.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No hay ningUn árbol ahí.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case eSkill.Mineria
@@ -3219,10 +3219,10 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     If ObjData(DummyInt).OBJType = eOBJType.otYacimiento Then
                         Call DoMineria(UserIndex)
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Ahí no hay ningún yacimiento.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Ahí no hay ningUn yacimiento.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "Ahí no hay ningún yacimiento.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Ahí no hay ningUn yacimiento.", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case eSkill.Domar
@@ -3301,10 +3301,10 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Call EnivarArmadurasConstruibles(UserIndex)
                         Call WriteShowBlacksmithForm(UserIndex)
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Ahí no hay ningún yunque.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Ahí no hay ningUn yunque.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "Ahí no hay ningún yunque.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Ahí no hay ningUn yunque.", FontTypeNames.FONTTYPE_INFO)
                 End If
         End Select
     End With
@@ -3611,7 +3611,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
             
         '¿El NPC puede comerciar?
         If Npclist(.flags.TargetNPC).Comercia = 0 Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
             Exit Sub
         End If
         
@@ -3710,7 +3710,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
         
         '¿El NPC puede comerciar?
         If Npclist(.flags.TargetNPC).Comercia = 0 Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageChatOverHead("No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
             Exit Sub
         End If
         
@@ -4067,14 +4067,14 @@ Private Sub HandleUserCommerceOffer(ByVal UserIndex As Integer)
             'Don't allow to sell boats if they are equipped (you can't take them off in the water and causes trouble)
             If .flags.Navegando = 1 Then
                 If .Invent.BarcoSlot = Slot Then
-                    Call WriteCommerceChat(UserIndex, "No puedes vender tu barco mientras lo estés usando.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteCommerceChat(UserIndex, "No puedes vender tu barco mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
             
             If .Invent.MochilaEqpSlot > 0 Then
                 If .Invent.MochilaEqpSlot = Slot Then
-                    Call WriteCommerceChat(UserIndex, "No puedes vender tu mochila mientras la estés usando.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteCommerceChat(UserIndex, "No puedes vender tu mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
@@ -5128,7 +5128,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
             End If
         Next i
         
-        Call WriteConsoleMsg(UserIndex, "Número de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "NUmero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -5200,7 +5200,7 @@ Private Sub HandleGuildLeave(ByVal UserIndex As Integer)
             Call WriteConsoleMsg(UserIndex, "Dejas el clan.", FontTypeNames.FONTTYPE_GUILD)
             Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
         Else
-            Call WriteConsoleMsg(UserIndex, "Tú no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(UserIndex, "TU no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
         End If
     End With
 End Sub
@@ -5232,7 +5232,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5287,7 +5287,7 @@ Private Sub HandlePetStand(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5331,7 +5331,7 @@ Private Sub HandlePetFollow(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5419,7 +5419,7 @@ Private Sub HandleTrainList(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5491,7 +5491,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
 '***************************************************
 'Author: Juan Martín Sotuyo Dodero (Maraxus)
 'Last Modification: 04/15/08 (NicoNZ)
-'Arreglé un bug que mandaba un index de la meditacion diferente
+'Arregle un bug que mandaba un index de la meditacion diferente
 'al que decia el server.
 '***************************************************
     With UserList(UserIndex)
@@ -5579,7 +5579,7 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
         
         'Se asegura que el target es un npc
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5626,7 +5626,7 @@ Private Sub HandleConsultation(ByVal UserIndex As String)
         
         'Se asegura que el target es un usuario
         If UserConsulta = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un usuario, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un usuario, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5695,7 +5695,7 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
         
         'Se asegura que el target es un npc
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5784,7 +5784,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
                 If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
-                    Call WriteChatOverHead(UserIndex, "No tengo ningún interés en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                    Call WriteChatOverHead(UserIndex, "No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 End If
                 
                 Exit Sub
@@ -5912,7 +5912,7 @@ Private Sub HandleEnlist(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5953,7 +5953,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -5978,7 +5978,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
             Diferencia = NextRecom - Matados
             
             If Diferencia > 0 Then
-                Call WriteChatOverHead(UserIndex, "Tu deber es combatir criminales, mata " & Diferencia & " criminales más y te daré una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Tu deber es combatir criminales, mata " & Diferencia & " criminales más y te dare una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             Else
                 Call WriteChatOverHead(UserIndex, "Tu deber es combatir criminales, y ya has matado los suficientes como para merecerte una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             End If
@@ -5992,7 +5992,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
             Diferencia = NextRecom - Matados
             
             If Diferencia > 0 Then
-                Call WriteChatOverHead(UserIndex, "Tu deber es sembrar el caos y la desesperanza, mata " & Diferencia & " ciudadanos más y te daré una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Tu deber es sembrar el caos y la desesperanza, mata " & Diferencia & " ciudadanos más y te dare una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             Else
                 Call WriteChatOverHead(UserIndex, "Tu deber es sembrar el caos y la desesperanza, y creo que estás en condiciones de merecer una recompensa.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             End If
@@ -6017,7 +6017,7 @@ Private Sub HandleReward(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -6434,9 +6434,9 @@ Private Sub HandleGuildOnline(ByVal UserIndex As Integer)
         onlineList = modGuilds.m_ListaDeMiembrosOnline(UserIndex, .GuildIndex)
         
         If .GuildIndex <> 0 Then
-            Call WriteConsoleMsg(UserIndex, "Compañeros de tu clan conectados: " & onlineList, FontTypeNames.FONTTYPE_GUILDMSG)
+            Call WriteConsoleMsg(UserIndex, "Companeros de tu clan conectados: " & onlineList, FontTypeNames.FONTTYPE_GUILDMSG)
         Else
-            Call WriteConsoleMsg(UserIndex, "No pertences a ningún clan.", FontTypeNames.FONTTYPE_GUILDMSG)
+            Call WriteConsoleMsg(UserIndex, "No pertences a ningUn clan.", FontTypeNames.FONTTYPE_GUILDMSG)
         End If
     End With
 End Sub
@@ -6580,7 +6580,7 @@ Private Sub HandleGMRequest(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If Not Ayuda.Existe(.Name) Then
-            Call WriteConsoleMsg(UserIndex, "El mensaje ha sido entregado, ahora sólo debes esperar que se desocupe algún GM.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "El mensaje ha sido entregado, ahora sólo debes esperar que se desocupe algUn GM.", FontTypeNames.FONTTYPE_INFO)
             Call Ayuda.Push(.Name)
         Else
             Call Ayuda.Quitar(.Name)
@@ -6892,15 +6892,15 @@ On Error GoTo errHandler
         newPass = oSHA256.SHA256(buffer.ReadASCIIString() & Salt)
         
         If LenB(newPass) = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Debes especificar una contraseña nueva, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Debes especificar una contrasena nueva, intentalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
         Else
             storedPass = GetUserPassword(UserList(UserIndex).Name)
             
             If storedPass <> oldPass Then
-                Call WriteConsoleMsg(UserIndex, "La contraseña actual proporcionada no es correcta. La contraseña no ha sido cambiada, inténtalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "La contrasena actual proporcionada no es correcta. La contrasena no ha sido cambiada, intentalo de nuevo.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call StorePasswordSalt(UserList(UserIndex).Name, newPass, Salt)
-                Call WriteConsoleMsg(UserIndex, "La contraseña fue cambiada con éxito.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "La contrasena fue cambiada con exito.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -6953,7 +6953,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
         
         'Validate target NPC
         ElseIf .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
         
         ' Validate Distance
         ElseIf Distancia(Npclist(.flags.TargetNPC).Pos, .Pos) > 10 Then
@@ -6968,7 +6968,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
             
             ' Normal npcs don't speak
             If TargetNpcType <> eNPCType.Comun And TargetNpcType <> eNPCType.DRAGON And TargetNpcType <> eNPCType.Pretoriano Then
-                Call WriteChatOverHead(UserIndex, "No tengo ningún interés en apostar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "No tengo ningUn interes en apostar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             End If
             
         ' Validate amount
@@ -7068,7 +7068,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-             Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+             Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
              Exit Sub
         End If
         
@@ -7082,7 +7082,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
         If Amount > 0 And Amount <= .Stats.Banco Then
              .Stats.Banco = .Stats.Banco - Amount
              .Stats.Gld = .Stats.Gld + Amount
-             Call WriteChatOverHead(UserIndex, "Tenés " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+             Call WriteChatOverHead(UserIndex, "Tenes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         Else
             Call WriteChatOverHead(UserIndex, "No tienes esa cantidad.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         End If
@@ -7223,7 +7223,7 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
         
         'Validate target NPC
         If .flags.TargetNPC = 0 Then
-            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre él.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Primero tienes que seleccionar un personaje, haz click izquierdo sobre el.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         
@@ -7237,12 +7237,12 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
         If Amount > 0 And Amount <= .Stats.Gld Then
             .Stats.Banco = .Stats.Banco + Amount
             .Stats.Gld = .Stats.Gld - Amount
-            Call WriteChatOverHead(UserIndex, "Tenés " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+            Call WriteChatOverHead(UserIndex, "Tenes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
             
             Call WriteUpdateGold(UserIndex)
             Call WriteUpdateBankGold(UserIndex)
         Else
-            Call WriteChatOverHead(UserIndex, "No tenés esa cantidad.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+            Call WriteChatOverHead(UserIndex, "No tenes esa cantidad.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
         End If
     End With
 End Sub
@@ -7878,7 +7878,7 @@ On Error GoTo errHandler
         
         'Check the user has enough powers
         If .flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero) Then
-            'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+            'Si es dios o Admins no podemos salvo que nosotros tambien lo seamos
             If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) Then
                 If tIndex <= 0 Then 'existe el usuario destino?
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
@@ -8404,7 +8404,7 @@ Private Sub HandlePartyForm(ByVal UserIndex As Integer)
             Call WriteShowPartyForm(UserIndex)
             
         Else
-            Call WriteConsoleMsg(UserIndex, "No perteneces a ningún grupo!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WriteConsoleMsg(UserIndex, "No perteneces a ningUn grupo!", FontTypeNames.FONTTYPE_INFOBOLD)
         End If
     End With
 End Sub
@@ -8517,7 +8517,7 @@ On Error GoTo errHandler
         tUser = NameIndex(UserName)
         
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.Consejero) Then
-            'Si es dios o Admins no podemos salvo que nosotros también lo seamos
+            'Si es dios o Admins no podemos salvo que nosotros tambien lo seamos
             If Not (EsDios(UserName) Or EsAdmin(UserName)) Or (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Then
                 If tUser <= 0 Then
                     Call WriteConsoleMsg(UserIndex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
@@ -8760,7 +8760,7 @@ On Error GoTo errHandler
                     If Not UserList(tUser).flags.Privilegios And PlayerType.User Then
                         Call WriteConsoleMsg(UserIndex, "No puedes encarcelar a administradores.", FontTypeNames.FONTTYPE_INFO)
                     ElseIf jailTime > (60 * 40) Then
-                        Call WriteConsoleMsg(UserIndex, "No puedés encarcelar por más de 60 minutos.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "No puedes encarcelar por más de 60 minutos.", FontTypeNames.FONTTYPE_INFO)
                     Else
                         If (InStrB(UserName, "\") <> 0) Then
                             UserName = Replace(UserName, "\", "")
@@ -10189,7 +10189,7 @@ On Error GoTo errHandler
             
             If tUser > 0 Then
                 If Not UserList(tUser).flags.Privilegios And PlayerType.User Then
-                    Call WriteConsoleMsg(UserIndex, "¿¿Estás loco?? ¿¿Cómo vas a piñatear un gm?? :@", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¿¿Estás loco?? ¿¿Cómo vas a pinatear un gm?? :@", FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call UserDie(tUser)
                     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " ha ejecutado a " & UserName & ".", FontTypeNames.FONTTYPE_EJECUCION))
@@ -10199,7 +10199,7 @@ On Error GoTo errHandler
                 If Not (EsDios(UserName) Or EsAdmin(UserName)) Then
                     Call WriteConsoleMsg(UserIndex, "No está online.", FontTypeNames.FONTTYPE_INFO)
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¿¿Estás loco?? ¿¿Cómo vas a piñatear un gm?? :@", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "¿¿Estás loco?? ¿¿Cómo vas a pinatear un gm?? :@", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -10691,7 +10691,7 @@ On Error GoTo errHandler
                 End If
             Else
                 If Not (EsDios(UserName) Or EsAdmin(UserName)) Or IsAdmin Then
-                    Call WriteConsoleMsg(UserIndex, "No hay ningún personaje con ese nick.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No hay ningUn personaje con ese nick.", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -11238,7 +11238,7 @@ On Error GoTo errHandler
         
         'Solo dioses, admins, semis y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then
-            Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("EJÉRCITO REAL> " & message, FontTypeNames.FONTTYPE_TALK))
+            Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("EJeRCITO REAL> " & message, FontTypeNames.FONTTYPE_TALK))
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -12464,7 +12464,7 @@ Private Sub HandleForceMIDIAll(ByVal UserIndex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " broadcast música: " & midiID, FontTypeNames.FONTTYPE_SERVER))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " broadcast mUsica: " & midiID, FontTypeNames.FONTTYPE_SERVER))
         
         Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayMidi(midiID))
     End With
@@ -12840,7 +12840,7 @@ On Error GoTo errHandler
                         If UserList(tIndex).Invent.Object(Slot).ObjIndex > 0 Then
                             Call WriteConsoleMsg(UserIndex, " Objeto " & Slot & ") " & ObjData(UserList(tIndex).Invent.Object(Slot).ObjIndex).Name & " Cantidad:" & UserList(tIndex).Invent.Object(Slot).Amount, FontTypeNames.FONTTYPE_INFO)
                         Else
-                            Call WriteConsoleMsg(UserIndex, "No hay ningún objeto en slot seleccionado.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(UserIndex, "No hay ningUn objeto en slot seleccionado.", FontTypeNames.FONTTYPE_INFO)
                         End If
                     Else
                         Call WriteConsoleMsg(UserIndex, "Slot Inválido.", FontTypeNames.FONTTYPE_TALK)
@@ -13416,7 +13416,7 @@ On Error GoTo errHandler
                 Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Terreno: " & TerrainByteToString(MapInfo(.Pos.Map).Terreno), FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'NIEVE' ya que al ingresarlo, la gente muere de frío en el mapa.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Igualmente, el Unico Util es 'NIEVE' ya que al ingresarlo, la gente muere de frío en el mapa.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -13473,7 +13473,7 @@ On Error GoTo errHandler
                 Call WriteConsoleMsg(UserIndex, "Mapa " & .Pos.Map & " Zona: " & MapInfo(.Pos.Map).Zona, FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Opciones para terreno: 'BOSQUE', 'NIEVE', 'DESIERTO', 'CIUDAD', 'CAMPO', 'DUNGEON'", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(UserIndex, "Igualmente, el único útil es 'DUNGEON' ya que al ingresarlo, NO se sentirá el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Igualmente, el Unico Util es 'DUNGEON' ya que al ingresarlo, NO se sentirá el efecto de la lluvia en este mapa.", FontTypeNames.FONTTYPE_INFO)
             End If
         End If
         
@@ -13911,7 +13911,7 @@ On Error GoTo errHandler
         copyFrom = Replace(buffer.ReadASCIIString(), "+", " ")
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
-            Call LogGM(.Name, "Ha alterado la contraseña de " & UserName)
+            Call LogGM(.Name, "Ha alterado la contrasena de " & UserName)
             
             If LenB(UserName) = 0 Or LenB(copyFrom) = 0 Then
                 Call WriteConsoleMsg(UserIndex, "usar /APASS <pjsinpass>@<pjconpass>", FontTypeNames.FONTTYPE_INFO)
@@ -14356,7 +14356,7 @@ On Error GoTo errHandler
             GuildIndex = modGuilds.m_EcharMiembroDeClan(UserIndex, UserName)
             
             If GuildIndex = 0 Then
-                Call WriteConsoleMsg(UserIndex, "No pertenece a ningún clan o es fundador.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No pertenece a ningUn clan o es fundador.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteConsoleMsg(UserIndex, "Expulsado.", FontTypeNames.FONTTYPE_INFO)
                 Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(UserName & " ha sido expulsado del clan por los administradores del servidor.", FontTypeNames.FONTTYPE_GUILD))
@@ -14533,7 +14533,7 @@ On Error GoTo errHandler
                 MOTD(LoopC).texto = auxiliaryString(LoopC - 1)
             Next LoopC
             
-            Call WriteConsoleMsg(UserIndex, "Se ha cambiado el MOTD con éxito.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Se ha cambiado el MOTD con exito.", FontTypeNames.FONTTYPE_INFO)
         End If
         
         'If we got here then packet is complete, copy data back to original queue
@@ -14650,7 +14650,7 @@ On Error GoTo errHandler
             If (UCase$(sLlave) = "INIT" And UCase$(sClave) = "DIOSES") Or UCase$(sLlave) = "DIOSES" Then
                 Call WriteConsoleMsg(UserIndex, "¡No puedes modificar esa información desde aquí!", FontTypeNames.FONTTYPE_INFO)
             Else
-                'Obtengo el valor según llave y clave
+                'Obtengo el valor segUn llave y clave
                 sTmp = GetVar(IniPath & "Server.ini", sLlave, sClave)
 
                 'Si obtengo un valor escribo en el server.ini
@@ -18819,7 +18819,7 @@ On Error GoTo errHandler
         'Status del pj (online?)
         Call .WriteBoolean(tIndex > 0)
         
-        'Escribo la IP según el estado del personaje
+        'Escribo la IP segUn el estado del personaje
         If tIndex > 0 Then
             'La IP Actual
             TmpStr = UserList(tIndex).ip
@@ -18828,7 +18828,7 @@ On Error GoTo errHandler
         End If
         Call .WriteASCIIString(TmpStr)
         
-        'Escribo tiempo online según el estado del personaje
+        'Escribo tiempo online segUn el estado del personaje
         If tIndex > 0 Then
             'Tiempo logueado.
             TempDate = Now - UserList(tIndex).LogOnTime

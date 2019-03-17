@@ -1,6 +1,6 @@
 Attribute VB_Name = "Declaraciones"
 'Argentum Online 0.12.2
-'Copyright (C) 2002 Márquez Pablo Ignacio
+'Copyright (C) 2002 Marquez Pablo Ignacio
 '
 'This program is free software; you can redistribute it and/or modify
 'it under the terms of the Affero General Public License;
@@ -22,10 +22,10 @@ Attribute VB_Name = "Declaraciones"
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 numero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Codigo Postal 1900
+'Pablo Ignacio Marquez
 
 Option Explicit
 
@@ -36,10 +36,10 @@ Option Explicit
 ' Nuevo Centinela
 Type CentinelaUser
      centinelaIndex     As Byte         'Centinela del usuario.
-     Codigo             As String       'Código que debe ingresar.
-     CentinelaCheck     As Boolean      'Si respondió o no.
+     Codigo             As String       'Codigo que debe ingresar.
+     CentinelaCheck     As Boolean      'Si respondio o no.
      Revisando          As Boolean      'Si tiene centinela.
-     UltimaRevision     As Long         'Ultima revisión al usuario.
+     UltimaRevision     As Long         'Ultima revision al usuario.
 End Type
 
 Private Type tCountersServidor
@@ -137,14 +137,14 @@ End Enum
 
 Public Enum eClass
     Mage = 1       'Mago
-    Cleric      'Clérigo
+    Cleric      'Clerigo
     Warrior     'Guerrero
     Assasin     'Asesino
-    Thief       'Ladrón
+    Thief       'Ladron
     Bard        'Bardo
     Druid       'Druida
     Bandit      'Bandido
-    Paladin     'Paladín
+    Paladin     'Paladin
     Hunter      'Cazador
     Worker      'Trabajador
     Pirat       'Pirata
@@ -213,7 +213,7 @@ Public Const DESCARGA_SPELL_INDEX As Integer = 23
 Public Const SLOTS_POR_FILA As Byte = 5
 
 Public Const PROB_ACUCHILLAR As Byte = 20
-Public Const DAÑO_ACUCHILLAR As Single = 0.2
+Public Const DANO_ACUCHILLAR As Single = 0.2
 
 Public Const MAXMASCOTASENTRENADOR As Byte = 7
 
@@ -306,7 +306,7 @@ Public Const MAXUSERHECHIZOS As Byte = 35
 
 ' TODO: Y ESTO ? LO CONOCE GD ?
 Public Const EsfuerzoTalarGeneral As Byte = 4
-Public Const EsfuerzoTalarLeñador As Byte = 2
+Public Const EsfuerzoTalarLenador As Byte = 2
 
 Public Const EsfuerzoPescarPescador As Byte = 1
 Public Const EsfuerzoPescarGeneral As Byte = 3
@@ -318,7 +318,7 @@ Public Const FX_TELEPORT_INDEX As Integer = 1
 
 Public Const PORCENTAJE_MATERIALES_UPGRADE As Single = 0.85
 
-' La utilidad de esto es casi nula, sólo se revisa si fue a la cabeza...
+' La utilidad de esto es casi nula, solo se revisa si fue a la cabeza...
 Public Enum PartesCuerpo
     bCabeza = 1
     bPiernaIzquierda = 2
@@ -334,7 +334,7 @@ Public Const MAX_ORO_EDIT As Long = 5000000
 Public Const MAX_VIDA_EDIT As Long = 30000
 
 
-Public Const STANDARD_BOUNTY_HUNTER_MESSAGE As String = "Se te ha otorgado un premio por ayudar al proyecto reportando bugs, el mismo está disponible en tu bóveda."
+Public Const STANDARD_BOUNTY_HUNTER_MESSAGE As String = "Se te ha otorgado un premio por ayudar al proyecto reportando bugs, el mismo esta disponible en tu boveda."
 Public Const TAG_USER_INVISIBLE As String = "[INVISIBLE]"
 Public Const TAG_CONSULT_MODE As String = "[CONSULTA]"
 
@@ -350,19 +350,19 @@ Public Const MINATRIBUTOS As Byte = 6
 Public Const LingoteHierro As Integer = 386
 Public Const LingotePlata As Integer = 387
 Public Const LingoteOro As Integer = 388
-Public Const Leña As Integer = 58
-Public Const LeñaElfica As Integer = 1006
+Public Const Lena As Integer = 58
+Public Const LenaElfica As Integer = 1006
 
 Public Const MAXNPCS As Integer = 10000
 Public Const MAXCHARS As Integer = 10000
 
-Public Const HACHA_LEÑADOR As Integer = 127
-Public Const HACHA_LEÑA_ELFICA As Integer = 1005
+Public Const HACHA_LENADOR As Integer = 127
+Public Const HACHA_LENA_ELFICA As Integer = 1005
 Public Const PIQUETE_MINERO As Integer = 187
 
-Public Const HACHA_LEÑADOR_NEWBIE As Integer = 561
+Public Const HACHA_LENADOR_NEWBIE As Integer = 561
 Public Const PIQUETE_MINERO_NEWBIE As Integer = 562
-Public Const CAÑA_PESCA_NEWBIE As Integer = 563
+Public Const CANA_PESCA_NEWBIE As Integer = 563
 Public Const SERRUCHO_CARPINTERO_NEWBIE As Integer = 564
 Public Const MARTILLO_HERRERO_NEWBIE As Integer = 565
 
@@ -376,7 +376,7 @@ Public Const MARTILLO_HERRERO As Integer = 389
 Public Const SERRUCHO_CARPINTERO As Integer = 198
 Public Const ObjArboles As Integer = 4
 Public Const RED_PESCA As Integer = 543
-Public Const CAÑA_PESCA As Integer = 138
+Public Const CANA_PESCA As Integer = 138
 
 Public Const AMULETO_DEL_SILENCIO As Integer = 1126
 
@@ -395,7 +395,7 @@ Public Enum eNPCType
     Gobernador = 11
 End Enum
 
-Public Const MIN_APUÑALAR As Byte = 10
+Public Const MIN_APUNALAR As Byte = 10
 
 '********** CONSTANTANTES ***********
 
@@ -478,7 +478,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    Apunalar = 6
     Ocultarse = 7
     Supervivencia = 8
     Talar = 9
@@ -519,17 +519,17 @@ Public Const AumentoSTLadron As Byte = AumentoSTDef + 3
 Public Const AumentoSTMago As Byte = AumentoSTDef - 1
 Public Const AumentoSTTrabajador As Byte = AumentoSTDef + 25
 
-'Tamaño del mapa
+'Tamano del mapa
 Public Const XMaxMapSize As Byte = 100
 Public Const XMinMapSize As Byte = 1
 Public Const YMaxMapSize As Byte = 100
 Public Const YMinMapSize As Byte = 1
 
-'Tamaño del tileset
+'Tamano del tileset
 Public Const TileSizeX As Byte = 32
 Public Const TileSizeY As Byte = 32
 
-'Tamaño en Tiles de la pantalla de visualizacion
+'Tamano en Tiles de la pantalla de visualizacion
 Public Const XWindow As Byte = 17
 Public Const YWindow As Byte = 13
 
@@ -545,7 +545,7 @@ Public Const SND_NIVEL As Byte = 6
 Public Const SND_USERMUERTE As Byte = 11
 Public Const SND_IMPACTO As Byte = 10
 Public Const SND_IMPACTO2 As Byte = 12
-Public Const SND_LEÑADOR As Byte = 13
+Public Const SND_LENADOR As Byte = 13
 Public Const SND_FOGATA As Byte = 14
 Public Const SND_AVE As Byte = 21
 Public Const SND_AVE2 As Byte = 22
@@ -589,7 +589,7 @@ Public Enum eOBJType
     otForos = 10
     otPociones = 11
     otBebidas = 13
-    otLeña = 14
+    otLena = 14
     otFogata = 15
     otescudo = 16
     otcasco = 17
@@ -834,7 +834,7 @@ Public Type ObjData
     'Solo contenedores
     MAXITEMS As Integer
     Conte As Inventario
-    Apuñala As Byte
+    Apunala As Byte
     Acuchilla As Byte
     
     HechizoIndex As Integer
@@ -975,9 +975,9 @@ Public Type ModClase
     AtaqueArmas As Double
     AtaqueProyectiles As Double
     AtaqueWrestling As Double
-    DañoArmas As Double
-    DañoProyectiles As Double
-    DañoWrestling As Double
+    DanoArmas As Double
+    DanoProyectiles As Double
+    DanoWrestling As Double
     Escudo As Double
 End Type
 
@@ -1171,17 +1171,17 @@ Public Type UserFlags
     SeguroResu As Boolean
     
     DuracionEfecto As Long
-    TargetNPC As Integer ' Npc señalado por el usuario
-    TargetNpcTipo As eNPCType ' Tipo del npc señalado
+    TargetNPC As Integer ' Npc senalado por el usuario
+    TargetNpcTipo As eNPCType ' Tipo del npc senalado
     OwnedNpc As Integer ' Npc que le pertenece (no puede ser atacado)
     NpcInv As Integer
     
     Ban As Byte
     AdministrativeBan As Byte
     
-    TargetUser As Integer ' Usuario señalado
+    TargetUser As Integer ' Usuario senalado
     
-    TargetObj As Integer ' Obj señalado
+    TargetObj As Integer ' Obj senalado
     TargetObjMap As Integer
     TargetObjX As Integer
     TargetObjY As Integer
@@ -1985,13 +1985,13 @@ Public ClanPretoriano() As clsClanPretoriano
 Public Const MAX_DENOUNCES As Integer = 20
 
 'Mensajes de los NPCs enlistadores (Nobles):
-Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a él!"
-Public Const MENSAJE_REY_CRIMINAL_NOENLISTABLE As String = "Tus pecados son grandes, pero aún así puedes redimirte. El pasado deja huellas, pero aún puedes limpiar tu alma."
-Public Const MENSAJE_REY_CRIMINAL_ENLISTABLE As String = "Limpia tu reputación y paga por los delitos cometidos. Un miembro de la Armada Real debe tener un comportamiento ejemplar."
+Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a el!"
+Public Const MENSAJE_REY_CRIMINAL_NOENLISTABLE As String = "Tus pecados son grandes, pero aun asi puedes redimirte. El pasado deja huellas, pero aun puedes limpiar tu alma."
+Public Const MENSAJE_REY_CRIMINAL_ENLISTABLE As String = "Limpia tu reputacion y paga por los delitos cometidos. Un miembro de la Armada Real debe tener un comportamiento ejemplar."
 
-Public Const MENSAJE_DEMONIO_REAL As String = "Lacayo de Tancredo, ve y dile a tu gente que nadie pisará estas tierras si no se arrodilla ante mi."
-Public Const MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE As String = "Tu indecisión te ha condenado a una vida sin sentido, aún tienes elección... Pero ten mucho cuidado, mis hordas nunca descansan."
-Public Const MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE As String = "Siento el miedo por tus venas. Deja de ser escoria y únete a mis filas, sabrás que es el mejor camino."
+Public Const MENSAJE_DEMONIO_REAL As String = "Lacayo de Tancredo, ve y dile a tu gente que nadie pisara estas tierras si no se arrodilla ante mi."
+Public Const MENSAJE_DEMONIO_CIUDADANO_NOENLISTABLE As String = "Tu indecision te ha condenado a una vida sin sentido, aun tienes eleccion... Pero ten mucho cuidado, mis hordas nunca descansan."
+Public Const MENSAJE_DEMONIO_CIUDADANO_ENLISTABLE As String = "Siento el miedo por tus venas. Deja de ser escoria y unete a mis filas, sabras que es el mejor camino."
 
 Public Administradores As clsIniManager
 
