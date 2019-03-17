@@ -2482,7 +2482,7 @@ Public Function Tilde(ByRef Data As String) As String
    
         If InStr(1, temp, "Ó") Then temp = Replace$(temp, "Ó", "O")
    
-        If InStr(1, temp, "Ú") Then temp = Replace$(temp, "Ú", "U")
+        If InStr(1, temp, "U") Then temp = Replace$(temp, "U", "U")
    
         Tilde = temp
         
