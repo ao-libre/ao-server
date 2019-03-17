@@ -1246,10 +1246,10 @@ On Error GoTo ErrHandler
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Zill", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 2
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yäkà E'nta", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yäka E'nta", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 1
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("¡¡Koràta!!", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("¡¡Korata!!", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 0
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead(vbNullString, .Char.CharIndex, vbGreen))
