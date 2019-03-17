@@ -204,8 +204,22 @@ On Error GoTo ErrHandler
             End If
             
         End With
-        
-        ' ++ Si el npc lo mata un elemental Userindex 0 y japish
+                        
+    End If ' Userindex > 0
+   
+    If MiNPC.MaestroUser = 0 Then
+        'Tiramos el inventario
+        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano)
+        'ReSpawn o no
+        Call ReSpawnNpc(MiNPC)
+    End If
+                        
+    If UserIndex < 1 Then
+        UserIndex = MiNPC.MaestroUser
+        If UserIndex = 0 Then Exit Sub
+    End If
+                        
+    ' ++ Si el npc lo mata un elemental Userindex 0 y japish
         Dim i As Long, j As Long
         For i = 1 To MAXUSERQUESTS
             With UserList(Userindex).QuestStats.Quests(i)
@@ -221,16 +235,7 @@ On Error GoTo ErrHandler
                     End If
                 End If
             End With
-        Next i                    
-                            
-    End If ' Userindex > 0
-   
-    If MiNPC.MaestroUser = 0 Then
-        'Tiramos el inventario
-        Call NPC_TIRAR_ITEMS(MiNPC, MiNPC.NPCtype = eNPCType.Pretoriano)
-        'ReSpawn o no
-        Call ReSpawnNpc(MiNPC)
-    End If
+        Next i                         
 
 Exit Sub
 
