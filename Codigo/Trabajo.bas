@@ -2003,7 +2003,7 @@ Public Sub DoAcuchillar(ByVal UserIndex As Integer, ByVal VictimNpcIndex As Inte
 '***************************************************
 
     If RandomNumber(1, 100) <= PROB_ACUCHILLAR Then
-        dano = Int(dano * DAÑO_ACUCHILLAR)
+        dano = Int(dano * DANO_ACUCHILLAR)
         
         If VictimUserIndex <> 0 Then
         

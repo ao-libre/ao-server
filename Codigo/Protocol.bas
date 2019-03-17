@@ -243,7 +243,7 @@ Private Enum ClientPacketID
     GuildLeave = 73               '/SALIRCLAN
     RequestAccountState = 74      '/BALANCE
     PetStand = 75                 '/QUIETO
-    PetFollow = 76                '/ACOMPAÑAR
+    PetFollow = 76                '/ACOMPANAR
     ReleasePet = 77              '/LIBERAR
     TrainList = 78                '/ENTRENAR
     Rest = 79                     '/DESCANSAR
@@ -274,7 +274,7 @@ Private Enum ClientPacketID
     ChangeDescription = 104      '/DESC
     GuildVote = 105              '/VOTO
     punishments = 106           '/PENAS
-    ChangePassword = 107         '/CONTRASEÑA
+    ChangePassword = 107         '/CONTRASENA
     Gamble = 108                '/APOSTAR
     InquiryVote = 109            '/ENCUESTA ( with parameters )
     LeaveFaction = 110          '/RETIRAR ( with no arguments )
@@ -639,7 +639,7 @@ On Error Resume Next
         Case ClientPacketID.PetStand                '/QUIETO
             Call HandlePetStand(UserIndex)
         
-        Case ClientPacketID.PetFollow               '/ACOMPAÑAR
+        Case ClientPacketID.PetFollow               '/ACOMPANAR
             Call HandlePetFollow(UserIndex)
             
         Case ClientPacketID.ReleasePet              '/LIBERAR
@@ -732,7 +732,7 @@ On Error Resume Next
         Case ClientPacketID.punishments             '/PENAS
             Call HandlePunishments(UserIndex)
         
-        Case ClientPacketID.ChangePassword          '/CONTRASEÑA
+        Case ClientPacketID.ChangePassword          '/CONTRASENA
             Call HandleChangePassword(UserIndex)
         
         Case ClientPacketID.Gamble                  '/APOSTAR
@@ -3053,7 +3053,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                 
                 If HayAgua(.Pos.Map, x, Y) Then
                     Select Case WeaponIndex
-                        Case CAÑA_PESCA, CAÑA_PESCA_NEWBIE
+                        Case CANA_PESCA, CANA_PESCA_NEWBIE
                             Call DoPescar(UserIndex)
                         
                         Case RED_PESCA
@@ -3147,9 +3147,9 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Exit Sub
                 End If
                 
-                If WeaponIndex <> HACHA_LEÑADOR And _
-                   WeaponIndex <> HACHA_LEÑA_ELFICA And _
-                   WeaponIndex <> HACHA_LEÑADOR_NEWBIE Then
+                If WeaponIndex <> HACHA_LENADOR And _
+                   WeaponIndex <> HACHA_LENA_ELFICA And _
+                   WeaponIndex <> HACHA_LENADOR_NEWBIE Then
                     ' Podemos llegar acÃ¡ si el user equipÃ³ el anillo dsp de la U y antes del click
                     Exit Sub
                 End If
@@ -3170,7 +3170,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     
                     'Â¿Hay un arbol normal donde clickeo?
                     If ObjData(DummyInt).OBJType = eOBJType.otArboles Then
-                        If WeaponIndex = HACHA_LEÑADOR Or WeaponIndex = HACHA_LEÑADOR_NEWBIE Then
+                        If WeaponIndex = HACHA_LENADOR Or WeaponIndex = HACHA_LENADOR_NEWBIE Then
                             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.x, .Pos.Y))
                             Call DoTalar(UserIndex)
                         Else
@@ -3180,7 +3180,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     ' Arbol Elfico?
                     ElseIf ObjData(DummyInt).OBJType = eOBJType.otArbolElfico Then
                     
-                        If WeaponIndex = HACHA_LEÑA_ELFICA Then
+                        If WeaponIndex = HACHA_LENA_ELFICA Then
                             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_TALAR, .Pos.x, .Pos.Y))
                             Call DoTalar(UserIndex, True)
                         Else

@@ -213,7 +213,7 @@ Public Const DESCARGA_SPELL_INDEX As Integer = 23
 Public Const SLOTS_POR_FILA As Byte = 5
 
 Public Const PROB_ACUCHILLAR As Byte = 20
-Public Const DAÑO_ACUCHILLAR As Single = 0.2
+Public Const DANO_ACUCHILLAR As Single = 0.2
 
 Public Const MAXMASCOTASENTRENADOR As Byte = 7
 
@@ -356,13 +356,13 @@ Public Const LenaElfica As Integer = 1006
 Public Const MAXNPCS As Integer = 10000
 Public Const MAXCHARS As Integer = 10000
 
-Public Const HACHA_LEÑADOR As Integer = 127
-Public Const HACHA_LEÑA_ELFICA As Integer = 1005
+Public Const HACHA_LENADOR As Integer = 127
+Public Const HACHA_LENA_ELFICA As Integer = 1005
 Public Const PIQUETE_MINERO As Integer = 187
 
-Public Const HACHA_LEÑADOR_NEWBIE As Integer = 561
+Public Const HACHA_LENADOR_NEWBIE As Integer = 561
 Public Const PIQUETE_MINERO_NEWBIE As Integer = 562
-Public Const CAÑA_PESCA_NEWBIE As Integer = 563
+Public Const CANA_PESCA_NEWBIE As Integer = 563
 Public Const SERRUCHO_CARPINTERO_NEWBIE As Integer = 564
 Public Const MARTILLO_HERRERO_NEWBIE As Integer = 565
 
@@ -376,7 +376,7 @@ Public Const MARTILLO_HERRERO As Integer = 389
 Public Const SERRUCHO_CARPINTERO As Integer = 198
 Public Const ObjArboles As Integer = 4
 Public Const RED_PESCA As Integer = 543
-Public Const CAÑA_PESCA As Integer = 138
+Public Const CANA_PESCA As Integer = 138
 
 Public Const AMULETO_DEL_SILENCIO As Integer = 1126
 
@@ -395,7 +395,7 @@ Public Enum eNPCType
     Gobernador = 11
 End Enum
 
-Public Const MIN_APUÑALAR As Byte = 10
+Public Const MIN_APUNALAR As Byte = 10
 
 '********** CONSTANTANTES ***********
 
@@ -545,7 +545,7 @@ Public Const SND_NIVEL As Byte = 6
 Public Const SND_USERMUERTE As Byte = 11
 Public Const SND_IMPACTO As Byte = 10
 Public Const SND_IMPACTO2 As Byte = 12
-Public Const SND_LEÑADOR As Byte = 13
+Public Const SND_LENADOR As Byte = 13
 Public Const SND_FOGATA As Byte = 14
 Public Const SND_AVE As Byte = 21
 Public Const SND_AVE2 As Byte = 22

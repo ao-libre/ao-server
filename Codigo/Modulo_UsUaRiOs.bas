@@ -1228,7 +1228,7 @@ Public Function PuedeApunalar(ByVal UserIndex As Integer) As Boolean
         
         If WeaponIndex > 0 Then
             If ObjData(WeaponIndex).Apunala = 1 Then
-                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUÑALAR _
+                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR _
                                 Or .clase = eClass.Assasin
             End If
         End If
