@@ -632,6 +632,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 04/12/2018 : Change command printed in message in the console when try to create a Pretoriano NPC with /ACC (CHOTS)
 
 - 0.13.7
+
 * 25/02/2019 : Implementación: Sistema de Duelo entre Clanes (CvC) (jopiortiz)
 * 26/02/2019 : Muevo el código del timer Auditoria al MainLoop (jopiortiz)
 * 07/03/2019 : Implementación: Drag and Drop en hechizos (jopiortiz)
@@ -639,9 +640,16 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 11/03/2019 : Eliminada la carga de MD5. (jopiortiz)
 
 - 0.13.8
+
+* 12/03/2019 : Delete modHexaStrings.bas Este módulo pertenecía a la carga de MD5's. (jopiortiz)
+* 12/03/2019 : Implementado mensaje "Tu clase no tiene la habilidad de aprender este hechizo." al querer usar un hechizo prohibido por clase. (jopiortiz)
 * 12/03/2019: Implementación: Sistema de Quests via NPC's. (jopiortiz)
-* 12/03/2019: Optimizaciones varias, limpieza de codigo (jopiortiz)
 * 14/03/2019 : Implementación: Amuleto del Silencio (Recox-jopiortiz)
-* 15/03/2019 : Reemplazados caracteres especiales por normales (à á é í ó ú ñ Ñ) para evitar errores en encodeo y diferencias de codigo no deseadas en pull requests. (Recox)
+* 17/03/2019 : Ahora podes matar npcs de quest con elementales y te lo suma al dueñoindex de la quest (Juanmz)
+* 18/03/2019 : Reemplazados caracteres especiales por normales (à á é í ó ú ñ Ñ) para evitar potenciales errores de encodeo y diferencias de codigo no deseadas en pull requests. (Recox)
+
+
+
+
 
 
