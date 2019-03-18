@@ -1434,12 +1434,16 @@ On Error GoTo ErrorHandler
         End If
         
         If TriggerZonaPelea(UserIndex, UserIndex) <> eTrigger6.TRIGGER6_PERMITE Then
-            ' << Si es newbie no pierde el inventario >>
-            If Not EsNewbie(UserIndex) Then
-                Call TirarTodo(UserIndex)
-            Else
-                Call TirarTodosLosItemsNoNewbies(UserIndex)
+
+            If DropItemsAlMorir Then
+                ' << Si es newbie no pierde el inventario >>
+                If Not EsNewbie(UserIndex) Then
+                    Call TirarTodo(UserIndex)
+                Else
+                    Call TirarTodosLosItemsNoNewbies(UserIndex)
+                End If
             End If
+
         End If
         
         ' DESEQUIPA TODOS LOS OBJETOS
