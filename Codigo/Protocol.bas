@@ -897,7 +897,7 @@ On Error GoTo errHandler
                 Call .WriteInteger(UserList(Arg1).Char.CharIndex) 'VictimIndex
                 Call .WriteLong(Arg2) 'Expe
             
-            Case eMessages.UserKill '"¡" & .name & " te ha matado!"
+            Case eMessages.UserKill '"" & .name & " te ha matado!"
                 Call .WriteInteger(UserList(Arg1).Char.CharIndex) 'AttackerIndex
             
             Case eMessages.EarnExp
@@ -1686,14 +1686,14 @@ On Error GoTo errHandler
                 If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(UserIndex)
-                    Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
                 End If
             Else
                 If .flags.invisible = 0 Then
                     Call UsUaRiOs.SetInvisible(UserIndex, UserList(UserIndex).Char.CharIndex, False)
-                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -1777,14 +1777,14 @@ On Error GoTo errHandler
                 If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(UserIndex)
-                    Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
                 End If
             Else
                 If .flags.invisible = 0 Then
                     Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
-                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -1866,7 +1866,7 @@ On Error GoTo errHandler
         
         If .flags.Muerto Then
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. ", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!! Los muertos no pueden comunicarse con el mundo de los vivos. ", FontTypeNames.FONTTYPE_INFO)
         Else
             ' Offline?
             TargetUserIndex = NameIndex(TargetName)
@@ -2079,7 +2079,7 @@ Private Sub HandleWalk(ByVal UserIndex As Integer)
                     If .clase = eClass.Pirat Then
                         ' Pierde la apariencia de fragata fantasmal
                         Call ToggleBoatBody(UserIndex)
-                        Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                         Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
                     End If
@@ -2132,7 +2132,7 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
         
         'If dead, can't attack
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -2171,14 +2171,14 @@ Private Sub HandleAttack(ByVal UserIndex As Integer)
                 If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(UserIndex)
-                    Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
                 End If
             Else
                 If .flags.invisible = 0 Then
                     Call UsUaRiOs.SetInvisible(UserIndex, .Char.CharIndex, False)
-                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
         End If
@@ -2631,7 +2631,7 @@ Private Sub HandleCastSpell(ByVal UserIndex As Integer)
         Spell = .incomingData.ReadByte()
         
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -2749,7 +2749,7 @@ Private Sub HandleWork(ByVal UserIndex As Integer)
                 
                 ' Verifico si se peude ocultar en este mapa
                 If MapInfo(.Pos.Map).OcultarSinEfecto = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "¡Ocultarse no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Ocultarse no funciona aquí!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
@@ -3034,7 +3034,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                     Call LanzarHechizo(.flags.Hechizo, UserIndex)
                     .flags.Hechizo = 0
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¡Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Primero selecciona el hechizo que quieres lanzar!", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case eSkill.Pesca
@@ -3130,10 +3130,10 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                             End If
                         End If
                     Else
-                        Call WriteConsoleMsg(UserIndex, "¡No hay a quien robarle!", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "No hay a quien robarle!", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¡No puedes robar en zonas seguras!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No puedes robar en zonas seguras!", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case eSkill.Talar
@@ -3251,7 +3251,7 @@ Private Sub HandleWorkLeftClick(ByVal UserIndex As Integer)
                         Call WriteConsoleMsg(UserIndex, "No puedes domar a esa criatura.", FontTypeNames.FONTTYPE_INFO)
                     End If
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¡No hay ninguna criatura allí!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No hay ninguna criatura allí!", FontTypeNames.FONTTYPE_INFO)
                 End If
             
             Case FundirMetal    'UGLY!!! This is a constant, not a skill!!
@@ -3601,7 +3601,7 @@ Private Sub HandleCommerceBuy(ByVal UserIndex As Integer)
         
         'Dead people can't commerce...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -3654,7 +3654,7 @@ Private Sub HandleBankExtractItem(ByVal UserIndex As Integer)
         
         'Dead people can't commerce
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -3700,7 +3700,7 @@ Private Sub HandleCommerceSell(ByVal UserIndex As Integer)
         
         'Dead people can't commerce...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -3747,7 +3747,7 @@ Private Sub HandleBankDeposit(ByVal UserIndex As Integer)
         
         'Dead people can't commerce...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5001,7 +5001,7 @@ Private Sub HandleGuildOpenElections(ByVal UserIndex As Integer)
         If Not modGuilds.v_AbrirElecciones(UserIndex, Error) Then
             Call WriteConsoleMsg(UserIndex, Error, FontTypeNames.FONTTYPE_GUILD)
         Else
-            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("¡Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & .Name, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToGuildMembers, .GuildIndex, PrepareMessageConsoleMsg("Han comenzado las elecciones del clan! Puedes votar escribiendo /VOTO seguido del nombre del personaje, por ejemplo: /VOTO " & .Name, FontTypeNames.FONTTYPE_GUILD))
         End If
     End With
 End Sub
@@ -5225,7 +5225,7 @@ Private Sub HandleRequestAccountState(ByVal UserIndex As Integer)
         
         'Dead people can't check their accounts
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5280,7 +5280,7 @@ Private Sub HandlePetStand(ByVal UserIndex As Integer)
         
         'Dead people can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5324,7 +5324,7 @@ Private Sub HandlePetFollow(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5369,7 +5369,7 @@ Private Sub HandleReleasePet(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5412,7 +5412,7 @@ Private Sub HandleTrainList(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5453,7 +5453,7 @@ Private Sub HandleRest(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Solo puedes usar ítems cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!! Solo puedes usar ítems cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5500,7 +5500,7 @@ Private Sub HandleMeditate(ByVal UserIndex As Integer)
         
         'Dead users can't use pets
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!! Sólo puedes meditar cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!! Sólo puedes meditar cuando estás vivo.", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5595,7 +5595,7 @@ Private Sub HandleResucitate(ByVal UserIndex As Integer)
         End If
         
         Call RevivirUsuario(UserIndex)
-        Call WriteConsoleMsg(UserIndex, "¡¡Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -5712,7 +5712,7 @@ Private Sub HandleHeal(ByVal UserIndex As Integer)
         
         Call WriteUpdateHP(UserIndex)
         
-        Call WriteConsoleMsg(UserIndex, "¡¡Has sido curado!!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has sido curado!!", FontTypeNames.FONTTYPE_INFO)
     End With
 End Sub
 
@@ -5768,7 +5768,7 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
         
         'Dead people can't commerce
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5808,13 +5808,13 @@ Private Sub HandleCommerceStart(ByVal UserIndex As Integer)
             
             'Is the other one dead??
             If UserList(.flags.TargetUser).flags.Muerto = 1 Then
-                Call WriteConsoleMsg(UserIndex, "¡¡No puedes comerciar con los muertos!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes comerciar con los muertos!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             
             'Is it me??
             If .flags.TargetUser = UserIndex Then
-                Call WriteConsoleMsg(UserIndex, "¡¡No puedes comerciar con vos mismo!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes comerciar con vos mismo!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             
@@ -5868,7 +5868,7 @@ Private Sub HandleBankStart(ByVal UserIndex As Integer)
         
         'Dead people can't commerce
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -5970,7 +5970,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
         
         If Npclist(.flags.TargetNPC).flags.Faccion = 0 Then
             If .Faccion.ArmadaReal = 0 Then
-                Call WriteChatOverHead(UserIndex, "¡¡No perteneces a las tropas reales!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "No perteneces a las tropas reales!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 Exit Sub
             End If
             
@@ -5984,7 +5984,7 @@ Private Sub HandleInformation(ByVal UserIndex As Integer)
             End If
         Else
             If .Faccion.FuerzasCaos = 0 Then
-                Call WriteChatOverHead(UserIndex, "¡¡No perteneces a la legión oscura!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "No perteneces a la legión oscura!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 Exit Sub
             End If
             
@@ -6031,13 +6031,13 @@ Private Sub HandleReward(ByVal UserIndex As Integer)
         
         If Npclist(.flags.TargetNPC).flags.Faccion = 0 Then
              If .Faccion.ArmadaReal = 0 Then
-                 Call WriteChatOverHead(UserIndex, "¡¡No perteneces a las tropas reales!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                 Call WriteChatOverHead(UserIndex, "No perteneces a las tropas reales!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                  Exit Sub
              End If
              Call RecompensaArmadaReal(UserIndex)
         Else
              If .Faccion.FuerzasCaos = 0 Then
-                 Call WriteChatOverHead(UserIndex, "¡¡No perteneces a la legión oscura!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                 Call WriteChatOverHead(UserIndex, "No perteneces a la legión oscura!!", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                  Exit Sub
              End If
              Call RecompensaCaos(UserIndex)
@@ -6948,7 +6948,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
         
         ' Dead?
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
         
         'Validate target NPC
@@ -6986,7 +6986,7 @@ Private Sub HandleGamble(ByVal UserIndex As Integer)
         Else
             If RandomNumber(1, 100) <= 47 Then
                 .Stats.Gld = .Stats.Gld + Amount
-                Call WriteChatOverHead(UserIndex, "¡Felicidades! Has ganado " & CStr(Amount) & " monedas de oro.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Felicidades! Has ganado " & CStr(Amount) & " monedas de oro.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 
                 Apuestas.Perdidas = Apuestas.Perdidas + Amount
                 Call WriteVar(DatPath & "apuestas.dat", "Main", "Perdidas", CStr(Apuestas.Perdidas))
@@ -7061,7 +7061,7 @@ Private Sub HandleBankExtractGold(ByVal UserIndex As Integer)
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -7115,7 +7115,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -7139,7 +7139,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
         If .Faccion.ArmadaReal = 1 Then
             ' Si le pidio al demonio salir de la armada, este le responde.
             If TalkToDemon Then
-                Call WriteChatOverHead(UserIndex, "¡¡¡Sal de aquí bufón!!!", _
+                Call WriteChatOverHead(UserIndex, "Sal de aquí bufón!!!", _
                                        Npclist(NpcIndex).Char.CharIndex, vbWhite)
             
             Else
@@ -7157,7 +7157,7 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
         ElseIf .Faccion.FuerzasCaos = 1 Then
             ' Si le pidio al rey salir del caos, le responde.
             If TalkToKing Then
-                Call WriteChatOverHead(UserIndex, "¡¡¡Sal de aquí maldito criminal!!!", _
+                Call WriteChatOverHead(UserIndex, "Sal de aquí maldito criminal!!!", _
                                        Npclist(NpcIndex).Char.CharIndex, vbWhite)
             Else
                 ' Si le pidio al demonio salir del caos, este le responde.
@@ -7177,11 +7177,11 @@ Private Sub HandleLeaveFaction(ByVal UserIndex As Integer)
                 Call WriteChatOverHead(UserIndex, "No perteneces a nuestra facción. Si deseas unirte, di /ENLISTAR", _
                                        Npclist(NpcIndex).Char.CharIndex, vbWhite)
             ElseIf (TalkToDemon And Not criminal(UserIndex)) Then
-                Call WriteChatOverHead(UserIndex, "¡¡¡Sal de aquí bufón!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Sal de aquí bufón!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
             ElseIf (TalkToKing And criminal(UserIndex)) Then
-                Call WriteChatOverHead(UserIndex, "¡¡¡Sal de aquí maldito criminal!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+                Call WriteChatOverHead(UserIndex, "Sal de aquí maldito criminal!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
             Else
-                Call WriteConsoleMsg(UserIndex, "¡No perteneces a ninguna facción!", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, "No perteneces a ninguna facción!", FontTypeNames.FONTTYPE_FIGHT)
             End If
         
         End If
@@ -7216,7 +7216,7 @@ Private Sub HandleBankDepositGold(ByVal UserIndex As Integer)
         
         'Dead people can't leave a faction.. they can't talk...
         If .flags.Muerto = 1 Then
-            'Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
+            'Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_INFO)
             Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
             Exit Sub
         End If
@@ -7327,7 +7327,7 @@ Private Sub HandleGuildFundate(ByVal UserIndex As Integer)
         Call .incomingData.ReadByte
         
         If HasFound(.Name) Then
-            Call WriteConsoleMsg(UserIndex, "¡Ya has fundado un clan, no puedes fundar otro!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WriteConsoleMsg(UserIndex, "Ya has fundado un clan, no puedes fundar otro!", FontTypeNames.FONTTYPE_INFOBOLD)
             Exit Sub
         End If
         
@@ -7361,7 +7361,7 @@ Private Sub HandleGuildFundation(ByVal UserIndex As Integer)
         clanType = .incomingData.ReadByte()
         
         If HasFound(.Name) Then
-            Call WriteConsoleMsg(UserIndex, "¡Ya has fundado un clan, no puedes fundar otro!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WriteConsoleMsg(UserIndex, "Ya has fundado un clan, no puedes fundar otro!", FontTypeNames.FONTTYPE_INFOBOLD)
             Call LogCheating("El usuario " & .Name & " ha intentado fundar un clan ya habiendo fundado otro desde la IP " & .ip)
             Exit Sub
         End If
@@ -7555,7 +7555,7 @@ On Error GoTo errHandler
         
         UserName = buffer.ReadASCIIString()
         If UserList(UserIndex).flags.Muerto Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Estás muerto!!", FontTypeNames.FONTTYPE_PARTY)
+            Call WriteConsoleMsg(UserIndex, "Estás muerto!!", FontTypeNames.FONTTYPE_PARTY)
         Else
             bUserVivo = True
         End If
@@ -9137,7 +9137,7 @@ On Error GoTo errHandler
                                     Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(UserName & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
                                     ' Si esta online le avisamos
                                     If tUser > 0 Then _
-                                        Call WriteConsoleMsg(tUser, "¡Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearás! Por esta razón, hasta tanto no te enlistes en la facción bajo la cual tu clan está alineado, estarás excluído del mismo.", FontTypeNames.FONTTYPE_GUILD)
+                                        Call WriteConsoleMsg(tUser, "Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearás! Por esta razón, hasta tanto no te enlistes en la facción bajo la cual tu clan está alineado, estarás excluído del mismo.", FontTypeNames.FONTTYPE_GUILD)
                                 End If
                             End If
                         End If
@@ -12235,7 +12235,7 @@ Private Sub HandleCreateItem(ByVal UserIndex As Integer)
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
         Dim Objeto As obj
-        Call WriteConsoleMsg(UserIndex, "¡¡ATENCIÓN: FUERON CREADOS ***" & Cuantos & "** ÍTEMS, TIRE Y /DEST LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
+        Call WriteConsoleMsg(UserIndex, "ATENCIÓN: FUERON CREADOS ***" & Cuantos & "** ÍTEMS, TIRE Y /DEST LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
 
       Objeto.Amount = Cuantos
       Objeto.ObjIndex = tObj
@@ -14189,7 +14189,7 @@ Public Sub HandleTurnOffServer(ByVal UserIndex As Integer)
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then Exit Sub
         
         Call LogGM(.Name, "/APAGAR")
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("¡¡¡" & .Name & " VA A APAGAR EL SERVIDOR!!!", FontTypeNames.FONTTYPE_FIGHT))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("" & .Name & " VA A APAGAR EL SERVIDOR!!!", FontTypeNames.FONTTYPE_FIGHT))
         
         'Log
         handle = FreeFile
@@ -14648,7 +14648,7 @@ On Error GoTo errHandler
 
             'No podemos modificar [INIT]Dioses ni [Dioses]*
             If (UCase$(sLlave) = "INIT" And UCase$(sClave) = "DIOSES") Or UCase$(sLlave) = "DIOSES" Then
-                Call WriteConsoleMsg(UserIndex, "¡No puedes modificar esa información desde aquí!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes modificar esa información desde aquí!", FontTypeNames.FONTTYPE_INFO)
             Else
                 'Obtengo el valor segUn llave y clave
                 sTmp = GetVar(IniPath & "Server.ini", sLlave, sClave)
