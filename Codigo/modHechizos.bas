@@ -204,7 +204,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integer
                 .Counters.TiempoOculto = 0
                 .flags.Oculto = 0
                 Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                Call WriteConsoleMsg(UserIndex, "¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
+                Call WriteConsoleMsg(UserIndex, "Â¡Has sido detectado!", FontTypeNames.FONTTYPE_VENENO)
             Else
                 'sino, solo lo "iniciamos" en la sacada de invisibilidad.
                 Call WriteConsoleMsg(UserIndex, "Comienzas a hacerte visible.", FontTypeNames.FONTTYPE_VENENO)
@@ -947,18 +947,18 @@ With UserList(UserIndex)
     ' <-------- Agrega Invisibilidad ---------->
     If Hechizos(HechizoIndex).Invisibilidad = 1 Then
         If UserList(TargetIndex).flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Â¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
             HechizoCasteado = False
             Exit Sub
         End If
         
         If UserList(TargetIndex).Counters.Saliendo Then
             If UserIndex <> TargetIndex Then
-                Call WriteConsoleMsg(UserIndex, "¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Â¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_INFO)
                 HechizoCasteado = False
                 Exit Sub
             Else
-                Call WriteConsoleMsg(UserIndex, "¡No puedes hacerte invisible mientras te encuentras saliendo!", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(UserIndex, "Â¡No puedes hacerte invisible mientras te encuentras saliendo!", FontTypeNames.FONTTYPE_WARNING)
                 HechizoCasteado = False
                 Exit Sub
             End If
@@ -966,7 +966,7 @@ With UserList(UserIndex)
         
         'No usar invi mapas InviSinEfecto
         If MapInfo(UserList(TargetIndex).Pos.Map).InviSinEfecto > 0 Then
-            Call WriteConsoleMsg(UserIndex, "¡La invisibilidad no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Â¡La invisibilidad no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
             HechizoCasteado = False
             Exit Sub
         End If
@@ -1065,7 +1065,7 @@ With UserList(UserIndex)
     
         'Verificamos que el usuario no este muerto
         If UserList(TargetIndex).flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Â¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
             HechizoCasteado = False
             Exit Sub
         End If
@@ -1134,7 +1134,7 @@ With UserList(UserIndex)
             HechizoCasteado = True
             If UserList(TargetIndex).Invent.AnilloEqpObjIndex = SUPERANILLO Then
                 Call WriteConsoleMsg(TargetIndex, " Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                Call WriteConsoleMsg(UserIndex, " ¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, " Â¡El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
                 Call FlushBuffer(TargetIndex)
                 Exit Sub
             End If
@@ -1193,14 +1193,14 @@ With UserList(UserIndex)
             
             'Seguro de resurreccion (solo afecta a los hechizos, no al sacerdote ni al comando de GM)
             If UserList(TargetIndex).flags.SeguroResu Then
-                Call WriteConsoleMsg(UserIndex, "¡El espiritu no tiene intenciones de regresar al mundo de los vivos!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Â¡El espiritu no tiene intenciones de regresar al mundo de los vivos!", FontTypeNames.FONTTYPE_INFO)
                 HechizoCasteado = False
                 Exit Sub
             End If
         
             'No usar resu en mapas con ResuSinEfecto
             If MapInfo(UserList(TargetIndex).Pos.Map).ResuSinEfecto > 0 Then
-                Call WriteConsoleMsg(UserIndex, "¡Revivir no esta permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Â¡Revivir no esta permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
                 HechizoCasteado = False
                 Exit Sub
             End If
@@ -1249,7 +1249,7 @@ With UserList(UserIndex)
                     .Reputacion.NobleRep = .Reputacion.NobleRep + 500
                     If .Reputacion.NobleRep > MAXREP Then _
                         .Reputacion.NobleRep = MAXREP
-                    Call WriteConsoleMsg(UserIndex, "¡Los Dioses te sonrien, has ganado 500 puntos de nobleza!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Â¡Los Dioses te sonrien, has ganado 500 puntos de nobleza!", FontTypeNames.FONTTYPE_INFO)
                 End If
             End If
             
@@ -1403,6 +1403,14 @@ With Npclist(NpcIndex)
     
     If Hechizos(SpellIndex).Paraliza = 1 Then
         If .flags.AfectaParalisis = 0 Then
+            If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
+                If Not EsGm(UserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posiciÃ³n.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
+                    HechizoCasteado = False
+                    Exit Sub
+                End If
+            End If                                                                                                          
+                                                                                                                      
             If Not PuedeAtacarNPC(UserIndex, NpcIndex, True) Then
                 HechizoCasteado = False
                 Exit Sub
@@ -1474,6 +1482,15 @@ With Npclist(NpcIndex)
                 HechizoCasteado = False
                 Exit Sub
             End If
+                                                                                                                                          
+            If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
+                If Not EsGm(UserIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posiciÃ³n.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
+                    HechizoCasteado = False
+                    Exit Sub
+                End If
+            End If      
+                                                                                                                                            
             Call NPCAtacado(NpcIndex, UserIndex)
             .flags.Inmovilizado = 1
             .flags.Paralizado = 0
@@ -1599,7 +1616,7 @@ With Npclist(NpcIndex)
         If dano < 0 Then dano = 0
         
         .Stats.MinHp = .Stats.MinHp - dano
-        'Call WriteConsoleMsg(UserIndex, "¡Le has quitado " & dano & " puntos de vida a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+        'Call WriteConsoleMsg(UserIndex, "Â¡Le has quitado " & dano & " puntos de vida a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
         Call WriteMultiMessage(UserIndex, eMessages.UserHitNPC, dano)
         Call CalcularDarExp(UserIndex, NpcIndex, dano)
     
@@ -1869,7 +1886,7 @@ With UserList(TargetIndex)
         
         'Verifica que el usuario no este muerto
         If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(UserIndex, "¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Â¡El usuario esta muerto!", FontTypeNames.FONTTYPE_INFO)
             Exit Function
         End If
         
