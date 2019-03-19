@@ -410,7 +410,7 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    '¿Existe el personaje?
+    'Existe el personaje?
     If PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "Ya existe el personaje.")
         Exit Sub
@@ -527,7 +527,7 @@ With UserList(UserIndex)
     .Stats.ELU = 300
     .Stats.ELV = 1
     
-    '???????????????? INVENTARIO ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+    '???????????????? INVENTARIO 
     Dim Slot As Byte
     Dim IsPaladin As Boolean
     
@@ -669,7 +669,7 @@ Sub CreateNewAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef
         Exit Sub
     End If
 
-    '¿Existe el personaje?
+    'Existe el personaje?
     If CuentaExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "Ya existe la cuenta.")
         Exit Sub
@@ -699,14 +699,14 @@ Sub ConnectAccount(ByVal UserIndex As Integer, ByRef UserName As String, ByRef P
         Exit Sub
     End If
 
-    '¿Existe el personaje?
+    'Existe el personaje?
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "No existe la cuenta.")
         Exit Sub
     End If
         
     'Aca Guardamos y Hasheamos el password + Salt
-    '¿Es el passwd valido?
+    'Es el passwd valido?
     Salt = GetAccountSalt(UserName) ' Obtenemos la Salt
     If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
         Call WriteErrorMsg(UserIndex, "Password incorrecto.")
@@ -1125,7 +1125,7 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    '¿Este IP ya esta conectado?
+    'Este IP ya esta conectado?
     If AllowMultiLogins = 0 Then
         If CheckForSameIP(UserIndex, .ip) = True Then
             Call WriteErrorMsg(UserIndex, "No es posible usar mas de un personaje al mismo tiempo.")
@@ -1135,7 +1135,7 @@ With UserList(UserIndex)
         End If
     End If
     
-    '¿Existe el personaje?
+    'Existe el personaje?
     If Not PersonajeExiste(Name) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
@@ -1143,7 +1143,7 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    '¿Es el passwd valido?
+    'Es el passwd valido?
     If Not PersonajePerteneceCuenta(Name, AccountHash) Then
         Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
         Call FlushBuffer(UserIndex)
@@ -1151,7 +1151,7 @@ With UserList(UserIndex)
         Exit Sub
     End If
     
-    '¿Ya esta conectado el personaje?
+    'Ya esta conectado el personaje?
     If CheckForSameName(Name) Then
         If UserList(NameIndex(Name)).Counters.Saliendo Then
             Call WriteErrorMsg(UserIndex, "El usuario esta saliendo.")

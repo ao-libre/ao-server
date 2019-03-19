@@ -183,7 +183,7 @@ On Error GoTo hayerror
         With UserList(iUserIndex)
            'Conexion activa?
            If .ConnID <> -1 Then
-                '¿User valido?
+                'User valido?
                 
                 If .ConnIDValida And .flags.UserLogged Then
                     

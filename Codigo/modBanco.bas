@@ -149,7 +149,7 @@ With UserList(UserIndex)
     obji = .BancoInvent.Object(ObjIndex).ObjIndex
     
     
-    '¿Ya tiene un objeto de este tipo?
+    'Ya tiene un objeto de este tipo?
     Slot = 1
     Do Until .Invent.Object(Slot).ObjIndex = obji And _
        .Invent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS
@@ -278,7 +278,7 @@ Sub UserDejaObj(ByVal UserIndex As Integer, ByVal ObjIndex As Integer, ByVal Can
     With UserList(UserIndex)
         obji = .Invent.Object(ObjIndex).ObjIndex
         
-        '¿Ya tiene un objeto de este tipo?
+        'Ya tiene un objeto de este tipo?
         Slot = 1
         Do Until .BancoInvent.Object(Slot).ObjIndex = obji And _
             .BancoInvent.Object(Slot).Amount + Cantidad <= MAX_INVENTORY_OBJS

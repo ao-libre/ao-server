@@ -309,7 +309,7 @@ On Error GoTo ErrHandler
         
         'Quita un objeto
         .Amount = .Amount - Cantidad
-        '¿Quedan mas?
+        'Quedan mas?
         If .Amount <= 0 Then
             UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
             .ObjIndex = 0
@@ -410,7 +410,7 @@ With UserList(UserIndex)
             Call UpdateUserInv(False, UserIndex, Slot)
             
             If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
-                Call WriteConsoleMsg(UserIndex, "¡¡ATENCIÓN!! ¡ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(UserIndex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
             End If
             
             If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Tiro cantidad:" & num & " Objeto:" & ObjData(DropObj.ObjIndex).Name)
@@ -496,7 +496,7 @@ On Error GoTo ErrHandler
     Dim Slot As Byte
     
     With UserList(UserIndex)
-        '¿el user ya tiene un objeto del mismo tipo?
+        'el user ya tiene un objeto del mismo tipo?
         Slot = 1
         
         Do Until .Invent.Object(Slot).ObjIndex = MiObj.ObjIndex And _
@@ -560,9 +560,9 @@ Sub GetObj(ByVal UserIndex As Integer)
     Dim ObjPos As String
     
     With UserList(UserIndex)
-        '¿Hay algun obj?
+        'Hay algun obj?
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex > 0 Then
-            '¿Esta permitido agarrar este obj?
+            'Esta permitido agarrar este obj?
             If ObjData(MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
                 Dim X As Integer
                 Dim Y As Integer
@@ -1005,7 +1005,7 @@ On Error GoTo ErrHandler
                  
             Case eOBJType.otMochilas
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1117,7 +1117,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Select Case Obj.OBJType
             Case eOBJType.otUseOnce
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1143,7 +1143,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         
             Case eOBJType.otGuita
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1158,7 +1158,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 
             Case eOBJType.otWeapon
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1245,13 +1245,13 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otPociones
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
                 
                 If Not IntervaloPermiteGolpeUsar(UserIndex, False) Then
-                    Call WriteConsoleMsg(UserIndex, "¡¡Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
@@ -1361,7 +1361,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         
              Case eOBJType.otBebidas
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1385,18 +1385,18 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otLlaves
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
                 
                 If .flags.TargetObj = 0 Then Exit Sub
                 TargObj = ObjData(.flags.TargetObj)
-                '¿El objeto clickeado es una puerta?
+                'El objeto clickeado es una puerta?
                 If TargObj.OBJType = eOBJType.otPuertas Then
-                    '¿Esta cerrada?
+                    'Esta cerrada?
                     If TargObj.Cerrada = 1 Then
-                          '¿Cerrada con llave?
+                          'Cerrada con llave?
                           If TargObj.Llave > 0 Then
                              If TargObj.clave = Obj.clave Then
                  
@@ -1429,7 +1429,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otBotellaVacia
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1448,7 +1448,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otBotellaLlena
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1468,7 +1468,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otPergaminos
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
@@ -1486,7 +1486,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 End If
             Case eOBJType.otMinerales
                 If .flags.Muerto = 1 Then
-                     'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                      Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                      Exit Sub
                 End If
@@ -1494,12 +1494,12 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                
             Case eOBJType.otInstrumentos
                 If .flags.Muerto = 1 Then
-                    'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
+                    'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                     Exit Sub
                 End If
                 
-                If Obj.Real Then '¿Es el Cuerno Real?
+                If Obj.Real Then 'Es el Cuerno Real?
                     If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
                         If MapInfo(.Pos.Map).Pk = False Then
                             Call WriteConsoleMsg(UserIndex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
@@ -1519,7 +1519,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         Call WriteConsoleMsg(UserIndex, "Solo miembros del ejercito real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     End If
-                ElseIf Obj.Caos Then '¿Es el Cuerno Legion?
+                ElseIf Obj.Caos Then 'Es el Cuerno Legion?
                     If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
                         If MapInfo(.Pos.Map).Pk = False Then
                             Call WriteConsoleMsg(UserIndex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
@@ -1587,7 +1587,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         Or .flags.Navegando = 1 Then
                     Call DoNavega(UserIndex, Obj, Slot)
                 Else
-                    Call WriteConsoleMsg(UserIndex, "¡Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
                 End If
                 
         End Select

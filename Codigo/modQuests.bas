@@ -132,7 +132,7 @@ Dim NpcIndex As Integer
         End If
     
         'A esta altura ya cumplio los objetivos, entonces se le entregan las recompensas.
-        Call WriteConsoleMsg(Userindex, "¡Has completado la mision " & Chr(34) & QuestList(QuestIndex).Nombre & Chr(34) & "!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Has completado la mision " & Chr(34) & QuestList(QuestIndex).Nombre & Chr(34) & "!", FontTypeNames.FONTTYPE_INFO)
         
         'Si la quest pedia objetos, se los saca al personaje.
         If .RequiredOBJs Then

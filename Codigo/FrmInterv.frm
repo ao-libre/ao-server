@@ -1064,7 +1064,7 @@ Option Explicit
 
 Public Sub AplicarIntervalos()
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿ Intervalos del main loop ¿?¿?¿?¿?¿?¿?¿?¿?¿
+'?????????? Intervalos del main loop ????????
 SanaIntervaloSinDescansar = val(txtSanaIntervaloSinDescansar.Text)
 StaminaIntervaloSinDescansar = val(txtStaminaIntervaloSinDescansar.Text)
 SanaIntervaloDescansar = val(txtSanaIntervaloDescansar.Text)

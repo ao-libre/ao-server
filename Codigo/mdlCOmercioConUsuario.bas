@@ -178,8 +178,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
     ' Aceptaron ambos, chequeo que tengan los items que ofertaron
     If Not HasOfferedItems(UserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se cancelo porque " & UserList(UserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "El comercio se cancelo porque " & UserList(UserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
         
         Call FinComerciarUsu(UserIndex)
         Call FinComerciarUsu(OtroUserIndex)
@@ -189,8 +189,8 @@ Public Sub AceptarComercioUsu(ByVal UserIndex As Integer)
         
     ElseIf Not HasOfferedItems(OtroUserIndex) Then
         
-        Call WriteConsoleMsg(UserIndex, "¡¡¡El comercio se cancelo porque " & UserList(OtroUserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
-        Call WriteConsoleMsg(OtroUserIndex, "¡¡¡El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(UserIndex, "El comercio se cancelo porque " & UserList(OtroUserIndex).Name & " no posee los items que oferto!!!", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(OtroUserIndex, "El comercio se cancelo porque no posees los items que ofertaste!!!", FontTypeNames.FONTTYPE_FIGHT)
         
         Call FinComerciarUsu(UserIndex)
         Call FinComerciarUsu(OtroUserIndex)

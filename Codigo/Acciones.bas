@@ -51,12 +51,12 @@ Sub Accion(ByVal UserIndex As Integer, ByVal Map As Integer, ByVal X As Integer,
     Dim tempIndex As Integer
     
 On Error Resume Next
-    '¿Rango Vision? (ToxicWaste)
+    'Rango Vision? (ToxicWaste)
     If (Abs(UserList(UserIndex).Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(UserList(UserIndex).Pos.X - X) > RANGO_VISION_X) Then
         Exit Sub
     End If
     
-    '¿Posicion valida?
+    'Posicion valida?
     If InMapBounds(Map, X, Y) Then
         With UserList(UserIndex)
             If MapData(Map, X, Y).NpcIndex > 0 Then     'Acciones NPCs
@@ -66,9 +66,9 @@ On Error Resume Next
                 .flags.TargetNPC = tempIndex
                 
                 If Npclist(tempIndex).Comercia = 1 Then
-                    '¿Esta el user muerto? Si es asi no puede comerciar
+                    'Esta el user muerto? Si es asi no puede comerciar
                     If .flags.Muerto = 1 Then
-                        'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        'Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
                         Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                         Exit Sub
                     End If
@@ -87,9 +87,9 @@ On Error Resume Next
                     Call IniciarComercioNPC(UserIndex)
                 
                 ElseIf Npclist(tempIndex).NPCtype = eNPCType.Banquero Then
-                    '¿Esta el user muerto? Si es asi no puede comerciar
+                    'Esta el user muerto? Si es asi no puede comerciar
                     If .flags.Muerto = 1 Then
-                        'Call WriteConsoleMsg(UserIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                        'Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
                         Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
                         Exit Sub
                     End If
@@ -135,7 +135,7 @@ On Error Resume Next
                     End If
                 End If
                 
-            '¿Es un obj?
+            'Es un obj?
             ElseIf MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
                 tempIndex = MapData(Map, X, Y).ObjInfo.ObjIndex
                 

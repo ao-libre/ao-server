@@ -714,7 +714,7 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, ByVal UserIndex As Integ
             Call NpcDano(NpcIndex, UserIndex)
             Call WriteUpdateHP(UserIndex)
             
-            '¿Puede envenenar?
+            'Puede envenenar?
             If Npclist(NpcIndex).Veneno = 1 Then Call NpcEnvenenarUser(UserIndex)
         End With
         
@@ -1438,7 +1438,7 @@ On Error GoTo ErrHandler
     
     'Estas muerto no podes atacar
     If UserList(AttackerIndex).flags.Muerto = 1 Then
-        Call WriteConsoleMsg(AttackerIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(AttackerIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
         PuedeAtacar = False
         Exit Function
     End If
@@ -1540,7 +1540,7 @@ On Error GoTo ErrHandler
         If esArmada(AttackerIndex) Then
             If UserList(AttackerIndex).Faccion.RecompensasReal > 11 Then
                 If UserList(VictimIndex).Pos.Map = 58 Or UserList(VictimIndex).Pos.Map = 59 Or UserList(VictimIndex).Pos.Map = 60 Then
-                Call WriteConsoleMsg(VictimIndex, "¡Huye de la ciudad! Estas siendo atacado y no podras defenderte.", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! Estas siendo atacado y no podras defenderte.", FontTypeNames.FONTTYPE_WARNING)
                 PuedeAtacar = True 'Beneficio de Armadas que atacan en su ciudad.
                 Exit Function
                 End If
@@ -1549,7 +1549,7 @@ On Error GoTo ErrHandler
         If esCaos(AttackerIndex) Then
             If UserList(AttackerIndex).Faccion.RecompensasCaos > 11 Then
                 If UserList(VictimIndex).Pos.Map = 151 Or UserList(VictimIndex).Pos.Map = 156 Then
-                Call WriteConsoleMsg(VictimIndex, "¡Huye de la ciudad! Estas siendo atacado y no podras defenderte.", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(VictimIndex, "Huye de la ciudad! Estas siendo atacado y no podras defenderte.", FontTypeNames.FONTTYPE_WARNING)
                 PuedeAtacar = True 'Beneficio de Caos que atacan en su ciudad.
                 Exit Function
                 End If
@@ -1596,7 +1596,7 @@ On Error GoTo ErrHandler
     
         'Estas muerto?
         If UserList(AttackerIndex).flags.Muerto = 1 Then
-            Call WriteConsoleMsg(AttackerIndex, "¡¡Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(AttackerIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
             Exit Function
         End If
         
@@ -1645,7 +1645,7 @@ On Error GoTo ErrHandler
                     Call WriteConsoleMsg(AttackerIndex, "Para poder atacar Guardias Reales debes quitarte el seguro.", FontTypeNames.FONTTYPE_INFO)
                     Exit Function
                 Else
-                    Call WriteConsoleMsg(AttackerIndex, "¡Atacaste un Guardia Real! Eres un criminal.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(AttackerIndex, "Atacaste un Guardia Real! Eres un criminal.", FontTypeNames.FONTTYPE_INFO)
                     Call VolverCriminal(AttackerIndex)
                     PuedeAtacarNPC = True
                     Exit Function
@@ -2100,8 +2100,8 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
                 
                 If RandomNumber(1, 100) < 60 Then
                     UserList(VictimaIndex).flags.Envenenado = 1
-                    Call WriteConsoleMsg(VictimaIndex, "¡¡" & UserList(AtacanteIndex).Name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(AtacanteIndex, "¡¡Has envenenado a " & UserList(VictimaIndex).Name & "!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimaIndex, "" & UserList(AtacanteIndex).Name & " te ha envenenado!!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(AtacanteIndex, "Has envenenado a " & UserList(VictimaIndex).Name & "!!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
             End If
         End If
@@ -2216,7 +2216,7 @@ On Error GoTo ErrHandler
             
             'Prevent from hitting self
             If TargetUserIndex = UserIndex Then
-                Call WriteConsoleMsg(UserIndex, "¡No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
             

@@ -329,9 +329,9 @@ Static MinsPjesSave As Long
 Minutos = Minutos + 1
 MinsPjesSave = MinsPjesSave + 1
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'??????????
 Call ModAreas.AreasOptimizacion
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'??????????
 
 'Actualizamos el Centinela
 Call modCentinela.ChekearUsuarios
@@ -387,8 +387,8 @@ Private Sub chkServerHabilitado_Click()
 End Sub
 
 Private Sub cmdCerrarServer_Click()
-    If MsgBox("¡¡Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & _
-        "¿Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
+    If MsgBox("Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & _
+        "Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
         
         prgRun = False
         Dim f

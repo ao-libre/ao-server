@@ -49,7 +49,7 @@ End Type
 Public Const USER_NUEVO As Byte = 255
 
 'Cuidado:
-' ¡¡¡LAS AREAS ESTÁN HARDCODEADAS!!!
+' LAS AREAS ESTaN HARDCODEADAS!!!
 Private CurDay As Byte
 Private CurHour As Byte
 

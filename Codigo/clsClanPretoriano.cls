@@ -673,7 +673,7 @@ On Error GoTo ErrHandler
                     ' King Message
                     Call WriteConsoleMsg(BestTarget, "El rey pretoriano te ha vuelto estupido.", FontTypeNames.FONTTYPE_FIGHT)
                     Call WriteConsoleMsg(BestTarget, "El rey pretoriano te ha vuelto ciego ", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(BestTarget, "A la distancia escuchas las siguientes palabras: ¡Cobarde, no eres digno de luchar conmigo si escapas! ", FontTypeNames.FONTTYPE_VENENO)
+                    Call WriteConsoleMsg(BestTarget, "A la distancia escuchas las siguientes palabras: Cobarde, no eres digno de luchar conmigo si escapas! ", FontTypeNames.FONTTYPE_VENENO)
                 End If
             
                 Call KingMeleeAttack(NpcIndex)
@@ -1240,16 +1240,16 @@ On Error GoTo ErrHandler
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Rahma", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 4
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("vôrtax", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("vortax", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 3
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Zill", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 2
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yäka E'nta", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yaka E'nta", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 1
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("¡¡Korata!!", .Char.CharIndex, vbGreen))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Korata!!", .Char.CharIndex, vbGreen))
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
             Case 0
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead(vbNullString, .Char.CharIndex, vbGreen))
@@ -1921,7 +1921,7 @@ On Error GoTo ErrHandler
                         ' Can paralize
                         If RandomNumber(1, 100) < 10 Then
                             Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eThiefSpells.Paralisis), False, True)
-                            Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te ha paralizado con su golpe!!", FontTypeNames.FONTTYPE_VENENO)
+                            Call WriteConsoleMsg(BestTarget, "" & .Name & " te ha paralizado con su golpe!!", FontTypeNames.FONTTYPE_VENENO)
                         
                         ' Can unequip weapon
                         ElseIf RandomNumber(1, 100) < 22 Then
@@ -1941,7 +1941,7 @@ On Error GoTo ErrHandler
                             If WeaponEqpSlot <> 0 Then
                                 
                                 If SnatchItem(NpcIndex, BestTarget, WeaponEqpSlot) Then
-                                    Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te ha arrebatado tu arma!!", FontTypeNames.FONTTYPE_VENENO)
+                                    Call WriteConsoleMsg(BestTarget, "" & .Name & " te ha arrebatado tu arma!!", FontTypeNames.FONTTYPE_VENENO)
                                 End If
                                 
                             Else
@@ -1949,7 +1949,7 @@ On Error GoTo ErrHandler
                                 If MunicionEqpSlot <> 0 Then
                                 
                                     If SnatchItem(NpcIndex, BestTarget, MunicionEqpSlot) Then
-                                        Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te ha arrebatado tus municiones!!", FontTypeNames.FONTTYPE_VENENO)
+                                        Call WriteConsoleMsg(BestTarget, "" & .Name & " te ha arrebatado tus municiones!!", FontTypeNames.FONTTYPE_VENENO)
                                     End If
                                     
                                 End If
@@ -1962,7 +1962,7 @@ On Error GoTo ErrHandler
                             Slot = RandomNumber(1, UserList(BestTarget).CurrentInventorySlots)
                             
                             If ThiefStealITem(NpcIndex, BestTarget, Slot) Then
-                                Call WriteConsoleMsg(BestTarget, "¡¡" & .Name & " te esta robando!!", FontTypeNames.FONTTYPE_VENENO)
+                                Call WriteConsoleMsg(BestTarget, "" & .Name & " te esta robando!!", FontTypeNames.FONTTYPE_VENENO)
                             End If
                             
                         End If
@@ -2432,7 +2432,7 @@ Private Sub MoveFailed(ByVal NpcIndex As Integer)
         If IntervaloPermiteAtacarNpc(NpcIndex) Then
             If (RandomNumber(1, 100) > 95) Then
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, _
-                    PrepareMessageChatOverHead("Maldito bastardo, ¡Ven aqui!", .Char.CharIndex, vbYellow))
+                    PrepareMessageChatOverHead("Maldito bastardo, Ven aqui!", .Char.CharIndex, vbYellow))
             End If
         End If
     End With

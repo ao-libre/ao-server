@@ -373,7 +373,7 @@ End Sub
 
 Private Sub cmdApagarServer_Click()
     
-    If MsgBox("¿Esta seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, _
+    If MsgBox("Esta seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, _
         "Apagar Magicamente") = vbNo Then Exit Sub
     
     Me.MousePointer = 11
@@ -533,8 +533,8 @@ End Sub
 
 Private Sub cmdReiniciar_Click()
 
-    If MsgBox("¡¡Atencion!! Si reinicia el servidor puede provocar la perdida de datos de los usarios. " & _
-    "¿Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbNo Then Exit Sub
+    If MsgBox("Atencion!! Si reinicia el servidor puede provocar la perdida de datos de los usarios. " & _
+    "Desea reiniciar el servidor de todas maneras?", vbYesNo) = vbNo Then Exit Sub
     
     Me.Visible = False
     Call General.Restart
@@ -557,7 +557,7 @@ Private Sub cmdResetSockets_Click()
 
 #If UsarQueSocket = 1 Then
 
-    If MsgBox("¿Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+    If MsgBox("Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
         Call WSApiReiniciarSockets
     End If
 
@@ -565,7 +565,7 @@ Private Sub cmdResetSockets_Click()
 
     Dim LoopC As Integer
     
-    If MsgBox("¿Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+    If MsgBox("Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
         For LoopC = 1 To MaxUsers
             If UserList(LoopC).ConnID <> -1 And UserList(LoopC).ConnIDValida Then
                 Call CloseSocket(LoopC)

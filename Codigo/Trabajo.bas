@@ -59,7 +59,7 @@ On Error GoTo ErrHandler
                 If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(UserIndex)
-                    Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                         NingunEscudo, NingunCasco)
                 End If
@@ -121,7 +121,7 @@ On Error GoTo ErrHandler
             If .flags.Navegando = 0 Then
                 Call SetInvisible(UserIndex, .Char.CharIndex, True)
         
-                Call WriteConsoleMsg(UserIndex, "¡Te has escondido entre las sombras!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Te has escondido entre las sombras!", FontTypeNames.FONTTYPE_INFO)
             ' Es un pirata navegando
             Else
                 ' Le cambiamos el body a galeon fantasmal
@@ -135,7 +135,7 @@ On Error GoTo ErrHandler
         Else
             '[CDT 17-02-2004]
             If Not .flags.UltimoMensaje = 4 Then
-                Call WriteConsoleMsg(UserIndex, "¡No has logrado esconderte!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No has logrado esconderte!", FontTypeNames.FONTTYPE_INFO)
                 .flags.UltimoMensaje = 4
             End If
             '[/CDT]
@@ -189,7 +189,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                 If .flags.Oculto = 1 Then
                     .flags.Oculto = 0
                     Call SetInvisible(UserIndex, .Char.CharIndex, False)
-                    Call WriteConsoleMsg(UserIndex, "¡Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
                 End If
                
                 ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
@@ -222,7 +222,7 @@ Public Sub DoNavega(ByVal UserIndex As Integer, ByRef Barco As ObjData, ByVal Sl
                         ' Al desequipar barca, perdio el ocultar
                         .flags.Oculto = 0
                         .Counters.Ocultando = 0
-                        Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                     End If
                 End If
                 
@@ -588,8 +588,8 @@ With UserList(UserIndex)
         OtroUserIndex = .ComUsu.DestUsu
             
         If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
-            Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(UserIndex, "Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
             
             Call LimpiarComercioSeguro(UserIndex)
             Call Protocol.FlushBuffer(OtroUserIndex)
@@ -729,8 +729,8 @@ On Error GoTo ErrHandler
             OtroUserIndex = .ComUsu.DestUsu
                 
             If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
-                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(UserIndex, "Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(UserIndex)
                 Call Protocol.FlushBuffer(OtroUserIndex)
@@ -871,8 +871,8 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
             OtroUserIndex = .ComUsu.DestUsu
                 
             If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
-                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(UserIndex, "Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(UserIndex)
                 Call Protocol.FlushBuffer(OtroUserIndex)
@@ -911,7 +911,7 @@ Public Sub DoLingotes(ByVal UserIndex As Integer)
         End If
         
         Call UpdateUserInv(False, UserIndex, Slot)
-        Call WriteConsoleMsg(UserIndex, "¡Has obtenido " & CantidadItems & " lingote" & _
+        Call WriteConsoleMsg(UserIndex, "Has obtenido " & CantidadItems & " lingote" & _
                             IIf(CantidadItems = 1, "", "s") & "!", FontTypeNames.FONTTYPE_INFO)
     
         .Counters.Trabajando = .Counters.Trabajando + 1
@@ -936,8 +936,8 @@ Dim OtroUserIndex As Integer
             OtroUserIndex = .ComUsu.DestUsu
                 
             If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
-                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(UserIndex, "Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(UserIndex)
                 Call Protocol.FlushBuffer(OtroUserIndex)
@@ -977,7 +977,7 @@ Dim OtroUserIndex As Integer
         Next i
         
         Call UpdateUserInv(False, UserIndex, Slot)
-        Call WriteConsoleMsg(UserIndex, "¡Has obtenido el " & num & "% de los lingotes utilizados para la construccion del objeto!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has obtenido el " & num & "% de los lingotes utilizados para la construccion del objeto!", FontTypeNames.FONTTYPE_INFO)
     
         .Counters.Trabajando = .Counters.Trabajando + 1
     End With
@@ -1001,8 +1001,8 @@ With UserList(UserIndex)
         OtroUserIndex = .ComUsu.DestUsu
             
         If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-            Call WriteConsoleMsg(UserIndex, "¡¡Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
-            Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(UserIndex, "Comercio cancelado, no puedes comerciar mientras trabajas!!", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
             
             Call LimpiarComercioSeguro(UserIndex)
             Call Protocol.FlushBuffer(OtroUserIndex)
@@ -1531,13 +1531,13 @@ With UserList(UserIndex)
             Call TirarItemAlPiso(.Pos, MiObj)
         End If
         
-        Call WriteConsoleMsg(UserIndex, "¡Has pescado un lindo pez!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has pescado un lindo pez!", FontTypeNames.FONTTYPE_INFO)
         
         Call SubirSkill(UserIndex, eSkill.Pesca, True)
     Else
         '[CDT 17-02-2004]
         If Not .flags.UltimoMensaje = 6 Then
-          Call WriteConsoleMsg(UserIndex, "¡No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
+          Call WriteConsoleMsg(UserIndex, "No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
           .flags.UltimoMensaje = 6
         End If
         '[/CDT]
@@ -1615,12 +1615,12 @@ On Error GoTo ErrHandler
                     Call TirarItemAlPiso(.Pos, MiObj)
                 End If
                 
-                Call WriteConsoleMsg(UserIndex, "¡Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
                 
                 Call SubirSkill(UserIndex, eSkill.Pesca, True)
             Else
                 If Not .flags.UltimoMensaje = 6 Then
-                  Call WriteConsoleMsg(UserIndex, "¡No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
+                  Call WriteConsoleMsg(UserIndex, "No has pescado nada!", FontTypeNames.FONTTYPE_INFO)
                   .flags.UltimoMensaje = 6
                 End If
                 
@@ -1666,7 +1666,7 @@ On Error GoTo ErrHandler
     If Not MapInfo(UserList(VictimaIndex).Pos.Map).Pk Then Exit Sub
     
     If UserList(VictimaIndex).flags.EnConsulta Then
-        Call WriteConsoleMsg(LadrOnIndex, "¡¡¡No puedes robar a usuarios en consulta!!!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(LadrOnIndex, "No puedes robar a usuarios en consulta!!!", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
     End If
     
@@ -1752,8 +1752,8 @@ On Error GoTo ErrHandler
                     OtroUserIndex = UserList(VictimaIndex).ComUsu.DestUsu
                         
                     If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                        Call WriteConsoleMsg(VictimaIndex, "¡¡Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_TALK)
-                        Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(VictimaIndex, "Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                         
                         Call LimpiarComercioSeguro(VictimaIndex)
                         Call Protocol.FlushBuffer(OtroUserIndex)
@@ -1799,8 +1799,8 @@ On Error GoTo ErrHandler
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, True)
             Else
-                Call WriteConsoleMsg(LadrOnIndex, "¡No has logrado robar nada!", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(VictimaIndex, "¡" & .Name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar nada!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(VictimaIndex, "" & .Name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
                 Call FlushBuffer(VictimaIndex)
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, False)
@@ -1990,7 +1990,7 @@ If RandomNumber(0, 100) < Suerte Then
     
     Call SubirSkill(UserIndex, eSkill.Apunalar, True)
 Else
-    Call WriteConsoleMsg(UserIndex, "¡No has logrado apunalar a tu enemigo!", FontTypeNames.FONTTYPE_FIGHT)
+    Call WriteConsoleMsg(UserIndex, "No has logrado apunalar a tu enemigo!", FontTypeNames.FONTTYPE_FIGHT)
     Call SubirSkill(UserIndex, eSkill.Apunalar, False)
 End If
 
@@ -2144,13 +2144,13 @@ With UserList(UserIndex)
             Call TirarItemAlPiso(.Pos, MiObj)
         End If
         
-        Call WriteConsoleMsg(UserIndex, "¡Has conseguido algo de lena!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has conseguido algo de lena!", FontTypeNames.FONTTYPE_INFO)
         
         Call SubirSkill(UserIndex, eSkill.Talar, True)
     Else
         '[CDT 17-02-2004]
         If Not .flags.UltimoMensaje = 8 Then
-            Call WriteConsoleMsg(UserIndex, "¡No has obtenido lena!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "No has obtenido lena!", FontTypeNames.FONTTYPE_INFO)
             .flags.UltimoMensaje = 8
         End If
         '[/CDT]
@@ -2226,13 +2226,13 @@ With UserList(UserIndex)
         If Not MeterItemEnInventario(UserIndex, MiObj) Then _
             Call TirarItemAlPiso(.Pos, MiObj)
         
-        Call WriteConsoleMsg(UserIndex, "¡Has extraido algunos minerales!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(UserIndex, "Has extraido algunos minerales!", FontTypeNames.FONTTYPE_INFO)
         
         Call SubirSkill(UserIndex, eSkill.Mineria, True)
     Else
         '[CDT 17-02-2004]
         If Not .flags.UltimoMensaje = 9 Then
-            Call WriteConsoleMsg(UserIndex, "¡No has conseguido nada!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "No has conseguido nada!", FontTypeNames.FONTTYPE_INFO)
             .flags.UltimoMensaje = 9
         End If
         '[/CDT]
@@ -2329,7 +2329,7 @@ Public Sub DoMeditar(ByVal UserIndex As Integer)
                 .Stats.MinMAN = .Stats.MaxMAN
             
             If Not .flags.UltimoMensaje = 22 Then
-                Call WriteConsoleMsg(UserIndex, "¡Has recuperado " & cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "Has recuperado " & cant & " puntos de mana!", FontTypeNames.FONTTYPE_INFO)
                 .flags.UltimoMensaje = 22
             End If
             
@@ -2378,7 +2378,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
                 Call WriteConsoleMsg(UserIndex, "Has logrado desequipar el escudo de tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
                 If .Stats.ELV < 20 Then
-                    Call WriteConsoleMsg(VictimIndex, "¡Tu oponente te ha desequipado el escudo!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desequipado el escudo!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
                 
                 Call FlushBuffer(VictimIndex)
@@ -2401,7 +2401,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
                 Call WriteConsoleMsg(UserIndex, "Has logrado desarmar a tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
                 If .Stats.ELV < 20 Then
-                    Call WriteConsoleMsg(VictimIndex, "¡Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
                 
                 Call FlushBuffer(VictimIndex)
@@ -2424,7 +2424,7 @@ Public Sub DoDesequipar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer
                 Call WriteConsoleMsg(UserIndex, "Has logrado desequipar el casco de tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
                 
                 If .Stats.ELV < 20 Then
-                    Call WriteConsoleMsg(VictimIndex, "¡Tu oponente te ha desequipado el casco!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desequipado el casco!", FontTypeNames.FONTTYPE_FIGHT)
                 End If
                 
                 Call FlushBuffer(VictimIndex)
@@ -2472,8 +2472,8 @@ If (res < 20) Then
             OtroUserIndex = UserList(VictimaIndex).ComUsu.DestUsu
                 
             If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                Call WriteConsoleMsg(VictimaIndex, "¡¡Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_TALK)
-                Call WriteConsoleMsg(OtroUserIndex, "¡¡Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(VictimaIndex, "Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_TALK)
+                Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(VictimaIndex)
                 Call Protocol.FlushBuffer(OtroUserIndex)
@@ -2481,7 +2481,7 @@ If (res < 20) Then
         End If
                 
         Call RobarObjeto(UserIndex, VictimaIndex)
-        Call WriteConsoleMsg(VictimaIndex, "¡" & UserList(UserIndex).Name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "" & UserList(UserIndex).Name & " es un Bandido!", FontTypeNames.FONTTYPE_INFO)
     Else
         Call WriteConsoleMsg(UserIndex, UserList(VictimaIndex).Name & " no tiene objetos.", FontTypeNames.FONTTYPE_INFO)
     End If
@@ -2512,7 +2512,7 @@ Public Sub DoHandInmo(ByVal UserIndex As Integer, ByVal VictimaIndex As Integer)
         
         Call WriteParalizeOK(VictimaIndex)
         Call WriteConsoleMsg(UserIndex, "Tu golpe ha dejado inmovil a tu oponente", FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(VictimaIndex, "¡El golpe te ha dejado inmovil!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(VictimaIndex, "El golpe te ha dejado inmovil!", FontTypeNames.FONTTYPE_INFO)
     End If
 
 End Sub
@@ -2539,7 +2539,7 @@ Public Sub Desarmar(ByVal UserIndex As Integer, ByVal VictimIndex As Integer)
             Call Desequipar(VictimIndex, UserList(VictimIndex).Invent.WeaponEqpSlot)
             Call WriteConsoleMsg(UserIndex, "Has logrado desarmar a tu oponente!", FontTypeNames.FONTTYPE_FIGHT)
             If UserList(VictimIndex).Stats.ELV < 20 Then
-                Call WriteConsoleMsg(VictimIndex, "¡Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)
             End If
             Call FlushBuffer(VictimIndex)
         End If

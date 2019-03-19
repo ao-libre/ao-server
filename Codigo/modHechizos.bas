@@ -1405,7 +1405,7 @@ With Npclist(NpcIndex)
         If .flags.AfectaParalisis = 0 Then
             If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
                 If Not EsGm(UserIndex) Then
-                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posición.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
+                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posicion.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
                     HechizoCasteado = False
                     Exit Sub
                 End If
@@ -1485,7 +1485,7 @@ With Npclist(NpcIndex)
                                                                                                                                           
             If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
                 If Not EsGm(UserIndex) Then
-                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posición.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
+                    Call WriteConsoleMsg(UserIndex, "No puedes paralizar criaturas en esa posicion.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
                     HechizoCasteado = False
                     Exit Sub
                 End If

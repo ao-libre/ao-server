@@ -142,9 +142,9 @@ On Error GoTo ErrHandler
                 End If
                 
                 
-                '¿Es mapa de newbies?
+                'Es mapa de newbies?
                 If MapInfo(DestPos.Map).Restringir = eRestrict.restrict_newbie Then
-                    '¿El usuario es un newbie?
+                    'El usuario es un newbie?
                     If EsNewbie(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
@@ -162,8 +162,8 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, False)
                         End If
                     End If
-                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_armada Then '¿Es mapa de Armadas?
-                    '¿El usuario es Armada?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_armada Then 'Es mapa de Armadas?
+                    'El usuario es Armada?
                     If esArmada(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
@@ -181,8 +181,8 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, FxFlag)
                         End If
                     End If
-                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_caos Then '¿Es mapa de Caos?
-                    '¿El usuario es Caos?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_caos Then 'Es mapa de Caos?
+                    'El usuario es Caos?
                     If esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
@@ -200,8 +200,8 @@ On Error GoTo ErrHandler
                             Call WarpUserChar(UserIndex, nPos.Map, nPos.X, nPos.Y, FxFlag)
                         End If
                     End If
-                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_faccion Then '¿Es mapa de faccionarios?
-                    '¿El usuario es Armada o Caos?
+                ElseIf MapInfo(DestPos.Map).Restringir = eRestrict.restrict_faccion Then 'Es mapa de faccionarios?
+                    'El usuario es Armada o Caos?
                     If esArmada(UserIndex) Or esCaos(UserIndex) Or EsGm(UserIndex) Then
                         If LegalPos(DestPos.Map, DestPos.X, DestPos.Y, PuedeAtravesarAgua(UserIndex)) Then
                             Call WarpUserChar(UserIndex, DestPos.Map, DestPos.X, DestPos.Y, FxFlag)
@@ -597,7 +597,7 @@ Function NameIndex(ByVal Name As String) As Integer
 
     Dim UserIndex As Long
     
-    '¿Nombre valido?
+    'Nombre valido?
     If LenB(Name) = 0 Then
         NameIndex = 0
         Exit Function
@@ -700,7 +700,7 @@ Function LegalPos(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer, 
 'Checks if the position is Legal.
 '***************************************************
 
-    '¿Es un mapa valido?
+    'Es un mapa valido?
     If (Map <= 0 Or Map > NumMaps) Or _
        (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
                 LegalPos = False
@@ -746,7 +746,7 @@ Dim IsDeadChar As Boolean
 Dim IsAdminInvisible As Boolean
 
 
-'¿Es un mapa valido?
+'Es un mapa valido?
 If (Map <= 0 Or Map > NumMaps) Or _
    (X < MinXBorder Or X > MaxXBorder Or Y < MinYBorder Or Y > MaxYBorder) Then
         MoveToLegalPos = False
@@ -949,18 +949,18 @@ Dim Stat As String
 Dim ft As FontTypeNames
 
 With UserList(UserIndex)
-    '¿Rango Vision? (ToxicWaste)
+    'Rango Vision? (ToxicWaste)
     If (Abs(.Pos.Y - Y) > RANGO_VISION_Y) Or (Abs(.Pos.X - X) > RANGO_VISION_X) Then
         Exit Sub
     End If
     
-    '¿Posicion valida?
+    'Posicion valida?
     If InMapBounds(Map, X, Y) Then
         With .flags
             .TargetMap = Map
             .TargetX = X
             .TargetY = Y
-            '¿Es un obj?
+            'Es un obj?
             If MapData(Map, X, Y).ObjInfo.ObjIndex > 0 Then
                 'Informa el nombre
                 .TargetObjMap = Map
@@ -1002,7 +1002,7 @@ With UserList(UserIndex)
                 End If
             
             End If
-            '¿Es un personaje?
+            'Es un personaje?
             If Y + 1 <= YMaxMapSize Then
                 If MapData(Map, X, Y + 1).UserIndex > 0 Then
                     TempCharIndex = MapData(Map, X, Y + 1).UserIndex
@@ -1013,7 +1013,7 @@ With UserList(UserIndex)
                     FoundChar = 2
                 End If
             End If
-            '¿Es un personaje?
+            'Es un personaje?
             If FoundChar = 0 Then
                 If MapData(Map, X, Y).UserIndex > 0 Then
                     TempCharIndex = MapData(Map, X, Y).UserIndex
@@ -1028,7 +1028,7 @@ With UserList(UserIndex)
     
     
         'Reaccion al personaje
-        If FoundChar = 1 Then '  ¿Encontro un Usuario?
+        If FoundChar = 1 Then '  Encontro un Usuario?
            If UserList(TempCharIndex).flags.AdminInvisible = 0 Or .flags.Privilegios And PlayerType.Dios Then
                 With UserList(TempCharIndex)
                     If LenB(.DescRM) = 0 And .showName Then 'No tiene descRM y quiere que se vea su nombre.
@@ -1104,7 +1104,7 @@ With UserList(UserIndex)
         End If
     
         With .flags
-            If FoundChar = 2 Then '¿Encontro un NPC?
+            If FoundChar = 2 Then 'Encontro un NPC?
                 Dim estatus As String
                 Dim MinHp As Long
                 Dim MaxHp As Long
@@ -1175,7 +1175,7 @@ With UserList(UserIndex)
                 If Len(Npclist(TempCharIndex).desc) > 1 Then
                     Stat = Npclist(TempCharIndex).desc
                     
-                    '¿Es el rey o el demonio?
+                    'Es el rey o el demonio?
                     If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
                         If Npclist(TempCharIndex).flags.Faccion = 0 Then 'Es el Rey.
                             'Si es de la Legion Oscura y usuario comun mostramos el mensaje correspondiente y lo ejecutamos:
