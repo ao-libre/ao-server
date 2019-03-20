@@ -337,7 +337,7 @@ Public Sub AprobarIngresoAParty(ByVal leader As Integer, ByVal NewMember As Inte
                             'no pudo entrar
                             'ACA UNO PUEDE CODIFICAR OTRO TIPO DE ERRORES...
                             Call SendData(SendTarget.ToAdmins, leader, _
-                                PrepareMessageConsoleMsg(" Servidor> CATASTROFE EN PARTIES, NUEVOMIEMBRO DIO FALSE! :S ", _
+                                PrepareMessageConsoleMsg(" Servidor> CATASTROFE EN PARTIES, NUEVO MIEMBRO DIO FALSE! :S ", _
                                 FontTypeNames.FONTTYPE_PARTY))
                             End If
                         Else
