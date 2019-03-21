@@ -59,82 +59,100 @@ Option Explicit
 
 Private Const FRENTE = 1
 
-Private MaxElem As Integer
+Private MAXELEM As Integer
 
-Private Cola As Collection
+Private Cola    As Collection
 
-Public Property Let MaxLenght(ByVal Max As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 14/11/2010
-'Sets the max queue lenght.
-'***************************************************
-    MaxElem = Max
+Public Property Let MaxLenght(ByVal max As Integer)
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 14/11/2010
+    'Sets the max queue lenght.
+    '***************************************************
+    MAXELEM = max
+
 End Property
 
 Public Sub Reset()
-On Error Resume Next
 
-Dim i As Integer
-For i = 1 To Me.Longitud
-    Cola.Remove FRENTE
-Next i
+    On Error Resume Next
+
+    Dim i As Integer
+
+    For i = 1 To Me.Longitud
+        Cola.Remove FRENTE
+    Next i
 
 End Sub
 
 Public Property Get Longitud() As Integer
-Longitud = Cola.Count
+    Longitud = Cola.Count
+
 End Property
 
 Private Function IndexValido(ByVal i As Integer) As Boolean
-IndexValido = i >= 1 And i <= Me.Longitud
+    IndexValido = i >= 1 And i <= Me.Longitud
+
 End Function
 
 Private Sub Class_Initialize()
-Set Cola = New Collection
+    Set Cola = New Collection
+
 End Sub
 
-Public Function VerElemento(ByVal index As Integer, Optional ByVal ConvertUpper As Boolean = True) As String
-On Error Resume Next
-    If IndexValido(index) Then
+Public Function VerElemento(ByVal Index As Integer, _
+                            Optional ByVal ConvertUpper As Boolean = True) As String
+
+    On Error Resume Next
+
+    If IndexValido(Index) Then
+
         'Pablo
         If ConvertUpper Then
-            VerElemento = UCase$(Cola.Item(index))
+            VerElemento = UCase$(Cola.Item(Index))
         Else
-            VerElemento = Cola.Item(index)
+            VerElemento = Cola.Item(Index)
+
         End If
         
         '/Pablo
         'VerElemento = Cola(Index)
     Else
         VerElemento = 0
+
     End If
+
 End Function
 
-
 Public Sub Push(ByVal Detalle As String, Optional ByVal ConvertUpper As Boolean = True)
-'***************************************************
-'Author: Unknown
-'Last Modification: 14/11/2010
-'14/11/2010: ZaMa - Ahora se valida si supera un maximo previamente establecido.
-'***************************************************
-On Error Resume Next
+
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: 14/11/2010
+    '14/11/2010: ZaMa - Ahora se valida si supera un maximo previamente establecido.
+    '***************************************************
+    On Error Resume Next
+
     'Mete elemento en la cola
     
     Dim aux As String
+
     aux = time$ & " "
     
     If ConvertUpper Then
         aux = aux & UCase$(Detalle)
     Else
         aux = aux & Detalle
+
     End If
     
     ' Validate that not exceed max lenght
-    If MaxElem <> 0 Then
-        If Cola.Count = MaxElem Then
+    If MAXELEM <> 0 Then
+        If Cola.Count = MAXELEM Then
             Call Cola.Remove(FRENTE) ' Quito el primer elemento
+
         End If
+
     End If
     
     Call Cola.Add(aux)
@@ -142,79 +160,103 @@ On Error Resume Next
 End Sub
 
 Public Function Pop() As String
-On Error Resume Next
-'Quita elemento de la cola
-If Cola.Count > 0 Then
-    Pop = Cola(FRENTE)
-    Call Cola.Remove(FRENTE)
-Else
-    Pop = 0
-End If
+
+    On Error Resume Next
+
+    'Quita elemento de la cola
+    If Cola.Count > 0 Then
+        Pop = Cola(FRENTE)
+        Call Cola.Remove(FRENTE)
+    Else
+        Pop = 0
+
+    End If
+
 End Function
 
 Public Function PopByVal() As String
-On Error Resume Next
-'Call LogTarea("PopByVal SOS")
 
-'Quita elemento de la cola
-If Cola.Count > 0 Then
-    PopByVal = Cola.Item(1)
-Else
-    PopByVal = 0
-End If
+    On Error Resume Next
+
+    'Call LogTarea("PopByVal SOS")
+
+    'Quita elemento de la cola
+    If Cola.Count > 0 Then
+        PopByVal = Cola.Item(1)
+    Else
+        PopByVal = 0
+
+    End If
 
 End Function
 
 Public Function Existe(ByVal Nombre As String) As Boolean
-On Error Resume Next
+
+    On Error Resume Next
   
- Dim V As String
- Dim i As Integer
- Dim NombreEnMayusculas As String
- NombreEnMayusculas = UCase$(Nombre)
+    Dim V                  As String
+
+    Dim i                  As Integer
+
+    Dim NombreEnMayusculas As String
+
+    NombreEnMayusculas = UCase$(Nombre)
  
- For i = 1 To Me.Longitud
+    For i = 1 To Me.Longitud
         'Pablo
         V = mid$(Me.VerElemento(i), 10, Len(Me.VerElemento(i)))
+
         '/Pablo
         'V = Me.VerElemento(i)
         If V = NombreEnMayusculas Then
             Existe = True
             Exit Function
+
         End If
- Next
- Existe = False
+
+    Next
+    Existe = False
 
 End Function
 
 Public Sub Quitar(ByVal Nombre As String)
-On Error Resume Next
-Dim V As String
-Dim i As Integer
-Dim NombreEnMayusculas As String
+
+    On Error Resume Next
+
+    Dim V                  As String
+
+    Dim i                  As Integer
+
+    Dim NombreEnMayusculas As String
  
-NombreEnMayusculas = UCase$(Nombre)
+    NombreEnMayusculas = UCase$(Nombre)
  
-For i = 1 To Me.Longitud
-    'Pablo
-    V = mid$(Me.VerElemento(i), 10, Len(Me.VerElemento(i)))
-    '/Pablo
-    'V = Me.VerElemento(i)
-    If V = NombreEnMayusculas Then
-        Call Cola.Remove(i)
-        Exit Sub
-    End If
-Next i
+    For i = 1 To Me.Longitud
+        'Pablo
+        V = mid$(Me.VerElemento(i), 10, Len(Me.VerElemento(i)))
+
+        '/Pablo
+        'V = Me.VerElemento(i)
+        If V = NombreEnMayusculas Then
+            Call Cola.Remove(i)
+            Exit Sub
+
+        End If
+
+    Next i
  
 End Sub
 
-Public Sub QuitarIndex(ByVal index As Integer)
-On Error Resume Next
-If IndexValido(index) Then Call Cola.Remove(index)
-End Sub
+Public Sub QuitarIndex(ByVal Index As Integer)
 
+    On Error Resume Next
+
+    If IndexValido(Index) Then Call Cola.Remove(Index)
+
+End Sub
 
 Private Sub Class_Terminate()
-'Destruimos el objeto Cola
-Set Cola = Nothing
+    'Destruimos el objeto Cola
+    Set Cola = Nothing
+
 End Sub

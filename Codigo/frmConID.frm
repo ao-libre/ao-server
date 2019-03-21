@@ -141,34 +141,40 @@ Option Explicit
 
 Private Sub Command1_Click()
     Unload Me
+
 End Sub
 
 Private Sub Command2_Click()
 
-List1.Clear
+    List1.Clear
 
-Dim c As Integer
-Dim i As Integer
+    Dim c As Integer
 
-For i = 1 To MaxUsers
-    List1.AddItem "UserIndex " & i & " -- " & UserList(i).ConnID
-    If UserList(i).ConnID <> -1 Then c = c + 1
-Next i
+    Dim i As Integer
 
-If c = MaxUsers Then
-    Label1.Caption = "No hay slots vacios!"
-Else
-    Label1.Caption = "Hay " & MaxUsers - c & " slots vacios!"
-End If
+    For i = 1 To MaxUsers
+        List1.AddItem "UserIndex " & i & " -- " & UserList(i).ConnID
+
+        If UserList(i).ConnID <> -1 Then c = c + 1
+    Next i
+
+    If c = MaxUsers Then
+        Label1.Caption = "No hay slots vacios!"
+    Else
+        Label1.Caption = "Hay " & MaxUsers - c & " slots vacios!"
+
+    End If
 
 End Sub
 
 Private Sub Command3_Click()
-Dim i As Integer
 
-For i = 1 To MaxUsers
-    If UserList(i).ConnID <> -1 And UserList(i).ConnIDValida And Not UserList(i).flags.UserLogged Then Call CloseSocket(i)
-Next i
+    Dim i As Integer
+
+    For i = 1 To MaxUsers
+
+        If UserList(i).ConnID <> -1 And UserList(i).ConnIDValida And Not UserList(i).flags.UserLogged Then Call CloseSocket(i)
+    Next i
 
 End Sub
 
