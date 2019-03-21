@@ -310,7 +310,7 @@ Public Sub CargarHechizos()
 '#               ATENCION PELIGRO                  #
 '###################################################
 '
-'  ¡¡¡¡ NO USAR GetVar PARA LEER Hechizos.dat !!!!
+'   NO USAR GetVar PARA LEER Hechizos.dat !!!!
 '
 'El que ose desafiar esta LEY, se las tendra que ver
 'con migo. Para leer Hechizos.dat se debera usar
@@ -804,7 +804,7 @@ Sub LoadOBJData()
 '#               ATENCION PELIGRO                  #
 '###################################################
 '
-'¡¡¡¡ NO USAR GetVar PARA LEER DESDE EL OBJ.DAT !!!!
+' NO USAR GetVar PARA LEER DESDE EL OBJ.DAT !!!!
 '
 'El que ose desafiar esta LEY, se las tendra que ver
 'con migo. Para leer desde el OBJ.DAT se debera usar
@@ -1874,7 +1874,7 @@ With UserList(UserIndex)
     Call Manager.ChangeValue("FACCIONES", "NextRecompensa", CStr(.Faccion.NextRecompensa))
     
     
-    '¿Fueron modificados los atributos del usuario?
+    'Fueron modificados los atributos del usuario?
     If Not .flags.TomoPocion Then
         For LoopC = 1 To UBound(.Stats.UserAtributos)
             Call Manager.ChangeValue("ATRIBUTOS", "AT" & LoopC, CStr(.Stats.UserAtributos(LoopC)))

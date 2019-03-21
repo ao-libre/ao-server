@@ -313,7 +313,7 @@ If Not HacerLeader Then Exit Function
 If UserIndexIndex = 0 Then
     'catastrofe! esto no deberia pasar nunca! pero como es AO.... :p
     Call LogError("INCONSISTENCIA DE PARTIES")
-    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("¡¡¡Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!", FontTypeNames.FONTTYPE_GUILD))
+    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Inconsistencia de parties en HACERLEADER (UII = 0), AVISE A UN PROGRAMADOR ESTO ES UNA CATASTROFE!!!!", FontTypeNames.FONTTYPE_GUILD))
     HacerLeader = False
     Exit Function
 End If
@@ -421,7 +421,7 @@ If rv Then
         razon = "La mayor cantidad de miembros es " & PARTY_MAXMEMBERS
     End If
 Else
-    '¿Con o sin nombre?
+    'Con o sin nombre?
     razon = "El usuario " & UserList(UserIndex).name & " se encuentra muy lejos."
 End If
 

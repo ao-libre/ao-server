@@ -137,7 +137,7 @@ Function Analizar()
     On Error Resume Next
            
     If Not (CheckIfRunningLastVersion = True) Then
-        If MsgBox("Tu version no es la actual, ¿Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
+        If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
             Call ShellExecute(Me.hwnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
             End
         End If

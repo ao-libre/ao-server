@@ -3,7 +3,7 @@ Attribute VB_Name = "Mod_Barcos"
 
 Option Explicit
 
-'CONFIGURACIÓN DE LOS BARCOS
+'CONFIGURACION DE LOS BARCOS
 Private Const Num_Barcos As Byte = 1
 
 

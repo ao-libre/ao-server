@@ -29,11 +29,11 @@ Attribute VB_Name = "UsUaRiOs"
 
 Option Explicit
 
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'????????????????????????????
 '                        Modulo Usuarios
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'????????????????????????????
 'Rutinas de los usuarios
-'?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿
+'????????????????????????????
 
 Public Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer)
 '***************************************************
@@ -406,13 +406,13 @@ Public Sub RefreshCharStatus(ByVal UserIndex As Integer)
         If GI > 0 Then
             NuevaA = False
             If Not modGuilds.m_ValidarPermanencia(UserIndex, True, NuevaA) Then
-                Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan. ¡El clan ha sumado un punto de antifaccion!", FontTypeNames.FONTTYPE_GUILD)
+                Call WriteConsoleMsg(UserIndex, "Has sido expulsado del clan. El clan ha sumado un punto de antifaccion!", FontTypeNames.FONTTYPE_GUILD)
             End If
  
             If NuevaA Then
-                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("¡El clan ha pasado a tener alineacion " & modGuilds.GuildAlignment(GI) & "!", FontTypeNames.FONTTYPE_GUILD))
+                Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg("El clan ha pasado a tener alineacion " & modGuilds.GuildAlignment(GI) & "!", FontTypeNames.FONTTYPE_GUILD))
                     tStr = modGuilds.GuildName(GI)
-                    Call LogClanes("¡El clan " & tStr & " cambio de alineacion!")
+                    Call LogClanes("El clan " & tStr & " cambio de alineacion!")
                 End If
             End If
     End With
@@ -568,7 +568,7 @@ On Error GoTo ErrHandler
             Call Statistics.UserLevelUp(UserIndex)
             
             Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_NIVEL, .Pos.x, .Pos.y))
-            Call WriteConsoleMsg(UserIndex, "¡Has subido de nivel!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(UserIndex, "Has subido de nivel!", FontTypeNames.FONTTYPE_INFO)
             
             If .Stats.ELV = 1 Then
                 Pts = 10
@@ -761,7 +761,7 @@ On Error GoTo ErrHandler
                         'We get here, so guild has factionary alignment, we have to expulse the user
                         Call modGuilds.m_EcharMiembroDeClan(-1, .Name)
                         Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
-                        Call WriteConsoleMsg(UserIndex, "¡Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearas! Por esta razon, hasta tanto no te enlistes en la faccion bajo la cual tu clan esta alineado, estaras excluido del mismo.", FontTypeNames.FONTTYPE_GUILD)
+                        Call WriteConsoleMsg(UserIndex, "Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearas! Por esta razon, hasta tanto no te enlistes en la faccion bajo la cual tu clan esta alineado, estaras excluido del mismo.", FontTypeNames.FONTTYPE_GUILD)
                     End If
                 End If
             End If
@@ -1132,7 +1132,7 @@ Private Function EsMascotaCiudadano(ByVal NpcIndex As Integer, ByVal UserIndex A
     If Npclist(NpcIndex).MaestroUser > 0 Then
         EsMascotaCiudadano = Not criminal(Npclist(NpcIndex).MaestroUser)
         If EsMascotaCiudadano Then
-            Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "¡¡" & UserList(UserIndex).Name & " esta atacando tu mascota!!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Npclist(NpcIndex).MaestroUser, "" & UserList(UserIndex).Name & " esta atacando tu mascota!!", FontTypeNames.FONTTYPE_INFO)
         End If
     End If
 End Function
@@ -1293,12 +1293,12 @@ Sub SubirSkill(ByVal UserIndex As Integer, ByVal Skill As Integer, ByVal Acerto 
                 
                 If .ExpSkills(Skill) >= .EluSkills(Skill) Then
                     .UserSkills(Skill) = .UserSkills(Skill) + 1
-                    Call WriteConsoleMsg(UserIndex, "¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto! Ahora tienes " & .UserSkills(Skill) & " pts.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "Has mejorado tu skill " & SkillsNames(Skill) & " en un punto! Ahora tienes " & .UserSkills(Skill) & " pts.", FontTypeNames.FONTTYPE_INFO)
                     
                     .Exp = .Exp + 50
                     If .Exp > MAXEXP Then .Exp = MAXEXP
                     
-                    Call WriteConsoleMsg(UserIndex, "¡Has ganado 50 puntos de experiencia!", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "Has ganado 50 puntos de experiencia!", FontTypeNames.FONTTYPE_FIGHT)
                     
                     Call WriteUpdateExp(UserIndex)
                     Call CheckUserLevel(UserIndex)
@@ -1544,7 +1544,7 @@ On Error GoTo ErrorHandler
         MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
-            Call WriteConsoleMsg(UserIndex, "¡¡¡Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WriteConsoleMsg(UserIndex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
             Call WarpUserChar(UserIndex, MapaTelep, MapInfo(mapa).OnDeathGoTo.x, _
                 MapInfo(mapa).OnDeathGoTo.y, True, True)
         End If
@@ -1974,7 +1974,7 @@ Sub Cerrar_Usuario(ByVal UserIndex As Integer)
                         If .clase = eClass.Pirat Then
                             ' Pierde la apariencia de fragata fantasmal
                             Call ToggleBoatBody(UserIndex)
-                            Call WriteConsoleMsg(UserIndex, "¡Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(UserIndex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
                             Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, _
                                                 NingunEscudo, NingunCasco)
                             HiddenPirat = True
@@ -2501,9 +2501,9 @@ Public Sub setHome(ByVal UserIndex As Integer, ByVal newHome As eCiudad, ByVal N
     If UserList(UserIndex).Hogar <> newHome Then
         UserList(UserIndex).Hogar = newHome
     
-        Call WriteChatOverHead(UserIndex, "¡¡¡Bienvenido a nuestra humilde comunidad, este es ahora tu nuevo hogar!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+        Call WriteChatOverHead(UserIndex, "Bienvenido a nuestra humilde comunidad, este es ahora tu nuevo hogar!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
     Else
-        Call WriteChatOverHead(UserIndex, "¡¡¡Ya eres miembro de nuestra humilde comunidad!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+        Call WriteChatOverHead(UserIndex, "Ya eres miembro de nuestra humilde comunidad!!!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
     End If
 
 End Sub

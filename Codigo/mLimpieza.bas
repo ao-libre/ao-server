@@ -25,7 +25,7 @@ Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     
     ArrayLimpieza(UltimoSlotLimpieza) = Pos
     
-    '¿Alcanzamos los slots que permite almacenar?
+    'Alcanzamos los slots que permite almacenar?
     '//Reservamos 100 slots por si cuando empieza a limpiar el mundo, siguen tirando objetos.
     If UltimoSlotLimpieza = MAXITEMS - 100 Then
         counterSV.Limpieza = 30

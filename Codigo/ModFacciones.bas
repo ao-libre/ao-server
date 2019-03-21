@@ -562,7 +562,7 @@ With UserList(UserIndex)
     End If
     
     '[Barrin 17-12-03] Si era miembro de la Armada Real no se puede enlistar
-    If .Faccion.RecibioExpInicialReal = 1 Then 'Tomamos el valor de ahi: ¿Recibio la experiencia para entrar?
+    If .Faccion.RecibioExpInicialReal = 1 Then 'Tomamos el valor de ahi: Recibio la experiencia para entrar?
         Call WriteChatOverHead(UserIndex, "No permitire que ningun insecto real ingrese a mis tropas.", str(Npclist(.flags.TargetNPC).Char.CharIndex), vbWhite)
         Exit Sub
     End If

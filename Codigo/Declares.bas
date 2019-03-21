@@ -1135,10 +1135,10 @@ Public Type UserFlags
     BeforeY As Integer 'AntesY
     
     SlotCarcel As Integer
-    Muerto As Byte '¿Esta muerto?
-    Escondido As Byte '¿Esta escondido?
-    Comerciando As Boolean '¿Esta comerciando?
-    UserLogged As Boolean '¿Esta online?
+    Muerto As Byte 'Esta muerto?
+    Escondido As Byte 'Esta escondido?
+    Comerciando As Boolean 'Esta comerciando?
+    UserLogged As Boolean 'Esta online?
     Meditando As Boolean
     Descuento As String
     Hambre As Byte
@@ -1232,7 +1232,7 @@ Public Type UserFlags
     Mimetizado As Byte
     
     lastMap As Integer
-    Traveling As Byte 'Travelin Band ¿?
+    Traveling As Byte 'Travelin Band ?
     
     ParalizedBy As String
     ParalizedByIndex As Integer
@@ -1445,7 +1445,7 @@ Public Type NPCFlags
     AfectaParalisis As Byte
     Domable As Integer
     Respawn As Byte
-    NPCActive As Boolean '¿Esta vivo?
+    NPCActive As Boolean 'Esta vivo?
     Follow As Boolean
     Faccion As Byte
     AtacaDoble As Byte
@@ -1985,7 +1985,7 @@ Public ClanPretoriano() As clsClanPretoriano
 Public Const MAX_DENOUNCES As Integer = 20
 
 'Mensajes de los NPCs enlistadores (Nobles):
-Public Const MENSAJE_REY_CAOS As String = "¿Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, ¡Guardias, a el!"
+Public Const MENSAJE_REY_CAOS As String = "Esperabas pasar desapercibido, intruso? Los servidores del Demonio no son bienvenidos, Guardias, a el!"
 Public Const MENSAJE_REY_CRIMINAL_NOENLISTABLE As String = "Tus pecados son grandes, pero aun asi puedes redimirte. El pasado deja huellas, pero aun puedes limpiar tu alma."
 Public Const MENSAJE_REY_CRIMINAL_ENLISTABLE As String = "Limpia tu reputacion y paga por los delitos cometidos. Un miembro de la Armada Real debe tener un comportamiento ejemplar."
 
