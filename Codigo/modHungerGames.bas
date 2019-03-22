@@ -229,11 +229,14 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
         .flags.BeforeMap = .Pos.Map
         .flags.BeforeX = .Pos.x
         .flags.BeforeY = .Pos.Y
-        WarpUserChar UI, HungerMap, 50, 50, True
+
+        WarpUserCharX UI, HungerMap, 50, 50, True
+
         .Stats.Gld = .Stats.Gld - SurvivalG.Oro
-        WriteUpdateGold UI
+        Call WriteUpdateGold UI
+
         SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Bienvenido " & .Name & " a los juegos del hambre!", FontTypeNames.fonttype_dios)
-        WritePauseToggle UI
+        Call WritePauseToggle UI
 
         If SurvivalG.Joined = SurvivalG.Cupos Then
             SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Cupos alcanzados! " & vbNewLine & "Juegos del Hambre> Damos inicio a LOS JUEGOS DEL HAMBRE!", FontTypeNames.fonttype_dios)
@@ -241,12 +244,9 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
             Dim i As Long
 
             For i = 1 To NumUsers
-
-                If UserList(i).flags.SG.HungerIndex <> 0 Then
-                    WarpUserChar i, HungerMap, RandomNumber(71, 73), 30, False
-
+                If UserList(i).flags.SG.HungerIndex > 0 Then
+                    WarpUserCharX i, HungerMap, 71, 30, False
                 End If
-
             Next i
 
             Dim Cof As obj
@@ -256,16 +256,14 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
 
             For i = 1 To MAX_COFRES
 
-                Dim Xx As Integer
+                Dim X As Integer
+                Dim Y As Integer
 
-                Dim Yy As Integer
+                X = RandomNumber(8, 90)
+                Y = RandomNumber(8, 90)
 
-                Xx = RandomNumber(8, 90)
-                Yy = RandomNumber(8, 90)
-
-                If MapData(HungerMap, Xx, Yy).ObjInfo.ObjIndex = 0 Then
-                    MakeObj Cof, HungerMap, Xx, Yy
-
+                If MapData(HungerMap, X, Y).ObjInfo.ObjIndex = 0 Then
+                    Call MakeObj(Cof, HungerMap, X, Y)
                 End If
 
             Next i
@@ -286,19 +284,25 @@ Public Sub HungerDesconect(ByVal UI As Integer)
 
     With UserList(UI)
 
-        If .flags.SG.HungerIndex <> 0 Then
-            TirarTodosLosItems UI
-            WarpUserChar UI, .flags.BeforeMap, .flags.BeforeX, .flags.BeforeY, False
+        If .flags.SG.HungerIndex > 0 Then
+            Call TirarTodosLosItems(UI)
+            Call WarpUserCharX(UI, .flags.BeforeMap, .flags.BeforeX, .flags.BeforeY, False)
+            
             .flags.SG.HungerIndex = 0
             .flags.SG.HungerDie = 0
+            
             SurvivalG.Joined = 0
-            SurvivalG.InPie = SurvivalG.InPie - 1
-            CleanSg
+            
+            If SurvivalG.InPie > 0 Then
+                SurvivalG.InPie = SurvivalG.InPie - 1
 
-        End If
-
-        If SurvivalG.InPie = 1 And Not UserList(UI).flags.SG.HungerDie = 1 Then
-            HungerWin Hambriento
+                If SurvivalG.InPie = 1 And Not UserList(UI).flags.SG.HungerDie = 1 Then
+                    Call HungerWin(Hambriento)
+                End If
+            
+                ' ++ Esto no va sino explota todo a la mierda porque limpia todos los users
+                'CleanSg 
+            End If
 
         End If
 
@@ -310,22 +314,29 @@ Public Sub HungerDie(ByVal UI As Integer)
 
     With UserList(UI)
 
-        If .flags.SG.HungerIndex <> 0 Then
-            'TirarTodosLosItems UI
-            WarpUserChar UI, .flags.BeforeMap, .flags.BeforeX, .flags.BeforeY, False
+        If .flags.SG.HungerIndex > 0 Then
+            Call TirarTodosLosItems(UI)
+            Call WarpUserCharX(UI, .flags.BeforeMap, .flags.BeforeX, .flags.BeforeY, False)
+            
             .flags.SG.HungerIndex = 0
-            .flags.SG.HungerDie = 1
+            .flags.SG.HungerDie = 0
+            
             SurvivalG.Joined = SurvivalG.Joined - 1
-            SurvivalG.InPie = SurvivalG.InPie - 1
+            
+            If SurvivalG.InPie > 0 Then
+                SurvivalG.InPie = SurvivalG.InPie - 1
+
+                If SurvivalG.InPie = 1 And Not UserList(UI).flags.SG.HungerDie = 1 Then
+                    Call HungerWin(Hambriento)
+                End If
+            
+                ' ++ Esto no va sino explota todo a la mierda porque limpia todos los users
+                'CleanSg 
+            End If
 
         End If
 
     End With
-
-    If SurvivalG.InPie = 1 And Not UserList(Hambriento).flags.SG.HungerDie = 1 Then
-        HungerWin Hambriento
-
-    End If
 
 End Sub
 
@@ -338,17 +349,14 @@ Public Sub HungerWin(ByVal Win As Integer)
             Dim Pozo As Long
 
             Pozo = SurvivalG.Oro * SurvivalG.Cupos
+
             .Stats.Gld = .Stats.Gld + Pozo
-            'If SurvivalG.Drop = True Then
-            'SurvivalG.counteraregresar = 120
-            'Else
-            WarpUserChar Win, UserList(Win).flags.BeforeMap, UserList(Win).flags.BeforeX, UserList(Win).flags.BeforeY, False
+            Call WriteUpdateGold(Win)
+
+            Call WarpUserCharX(Win, UserList(Win).flags.BeforeMap, UserList(Win).flags.BeforeX, UserList(Win).flags.BeforeY, False)
             CleanSg
 
-            If SurvivalG.Drop = False Then
-                CleanHGMap
-
-            End If
+            If Not SurvivalG.Drop Then CleanHGMap
 
             SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> El ganador ha sido " & .Name & "! se lleva el pozo acumulado de " & Pozo & " y el respeto de todos.", FontTypeNames.fonttype_dios)
 
@@ -366,13 +374,9 @@ Public Function CleanHGMap()
 
     For x = 1 To 100
         For Y = 1 To 100
-
             With MapData(HungerMap, x, Y).ObjInfo
-
                 EraseObj .Amount, HungerMap, x, Y
-
             End With
-
         Next Y
     Next x
 
@@ -511,3 +515,23 @@ Public Function EscudoRandom() As Integer
  
 End Function
 
+Public Sub WarpUserCharX(ByVal UserIndex As Integer, ByVal Mapa As Integer, ByVal X As Integer, ByVal Y As Integer, Optional ByVal FX As Boolean = False)
+
+    Dim NuevaPos As WorldPos
+    Dim FuturePos As WorldPos
+
+    FuturePos.Map = Mapa
+    FuturePos.X = X
+    FuturePos.Y = Y
+
+    If MapData(FuturePos.Map, FuturePos.X, FuturePos.Y).UserIndex = UserIndex Then
+        Exit Sub
+    End If
+
+    Call ClosestLegalPos(FuturePos, NuevaPos, True)
+
+    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+        Call WarpUserChar(UserIndex, NuevaPos.Map, NuevaPos.X, NuevaPos.Y, FX)
+    End If
+
+End Sub
