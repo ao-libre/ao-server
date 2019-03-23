@@ -250,6 +250,9 @@ Option Explicit
 
 #End If
 
+Private MAX_OBJ_INICIAL As Byte
+Private ItemsIniciales() As UserObj
+
 Sub DarCuerpo(ByVal Userindex As Integer)
 
     '*************************************************
@@ -679,123 +682,12 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Stats.ELV = 1
     
         '???????????????? INVENTARIO
-        Dim Slot      As Byte
-
-        Dim IsPaladin As Boolean
-    
-        IsPaladin = UserClase = eClass.Paladin
-    
-        'Pociones Rojas (Newbie)
-        Slot = 1
-        .Invent.Object(Slot).ObjIndex = 857
-        .Invent.Object(Slot).Amount = 200
-    
-        'Pociones azules (Newbie)
-        If .Stats.MaxMAN > 0 Or IsPaladin Then
-            Slot = Slot + 1
-            .Invent.Object(Slot).ObjIndex = 856
-            .Invent.Object(Slot).Amount = 200
-    
+        If InventarioUsarConfiguracionPersonalizada Then
+            Call AddItemsCustomToNewUser(UserIndex)
         Else
-            'Pociones amarillas (Newbie)
-            Slot = Slot + 1
-            .Invent.Object(Slot).ObjIndex = 855
-            .Invent.Object(Slot).Amount = 100
-    
-            'Pociones verdes (Newbie)
-            Slot = Slot + 1
-            .Invent.Object(Slot).ObjIndex = 858
-            .Invent.Object(Slot).Amount = 50
-    
-        End If
-    
-        ' Ropa (Newbie)
-        Slot = Slot + 1
-
-        Select Case UserRaza
-
-            Case eRaza.Humano
-                .Invent.Object(Slot).ObjIndex = 463
-
-            Case eRaza.Elfo
-                .Invent.Object(Slot).ObjIndex = 464
-
-            Case eRaza.Drow
-                .Invent.Object(Slot).ObjIndex = 465
-
-            Case eRaza.Enano
-                .Invent.Object(Slot).ObjIndex = 466
-
-            Case eRaza.Gnomo
-                .Invent.Object(Slot).ObjIndex = 466
-
-        End Select
-    
-        ' Equipo ropa
-        .Invent.Object(Slot).Amount = 1
-        .Invent.Object(Slot).Equipped = 1
-    
-        .Invent.ArmourEqpSlot = Slot
-        .Invent.ArmourEqpObjIndex = .Invent.Object(Slot).ObjIndex
-
-        'Arma (Newbie)
-        Slot = Slot + 1
-
-        Select Case UserClase
-
-            Case eClass.Hunter
-                ' Arco (Newbie)
-                .Invent.Object(Slot).ObjIndex = 859
-
-            Case eClass.Worker
-                ' Herramienta (Newbie)
-                .Invent.Object(Slot).ObjIndex = RandomNumber(561, 565)
-
-            Case Else
-                ' Daga (Newbie)
-                .Invent.Object(Slot).ObjIndex = 460
-
-        End Select
-    
-        ' Equipo arma
-        .Invent.Object(Slot).Amount = 1
-        .Invent.Object(Slot).Equipped = 1
-    
-        .Invent.WeaponEqpObjIndex = .Invent.Object(Slot).ObjIndex
-        .Invent.WeaponEqpSlot = Slot
-    
-        .Char.WeaponAnim = GetWeaponAnim(Userindex, .Invent.WeaponEqpObjIndex)
-
-        ' Municiones (Newbie)
-        If UserClase = eClass.Hunter Then
-            Slot = Slot + 1
-            .Invent.Object(Slot).ObjIndex = 860
-            .Invent.Object(Slot).Amount = 150
-        
-            ' Equipo flechas
-            .Invent.Object(Slot).Equipped = 1
-            .Invent.MunicionEqpSlot = Slot
-            .Invent.MunicionEqpObjIndex = 860
-
+            Call AddItemsToNewUser(UserIndex, UserClase, UserRaza)
         End If
 
-        ' Manzanas (Newbie)
-        Slot = Slot + 1
-        .Invent.Object(Slot).ObjIndex = 467
-        .Invent.Object(Slot).Amount = 100
-    
-        ' Jugos (Nwbie)
-        Slot = Slot + 1
-        .Invent.Object(Slot).ObjIndex = 468
-        .Invent.Object(Slot).Amount = 100
-    
-        ' Sin casco y escudo
-        .Char.ShieldAnim = NingunEscudo
-        .Char.CascoAnim = NingunCasco
-    
-        ' Total Items
-        .Invent.NroItems = Slot
-    
         #If ConUpTime Then
             .LogOnTime = Now
             .UpTime = 0
@@ -817,6 +709,163 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
     'Open User
     Call ConnectUser(Userindex, Name, AccountHash)
   
+End Sub
+
+Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
+'*************************************************
+'Author: Lucas Recoaro (Recox)
+'Last modified: 19/03/2019
+'Añade items al usuario recien creado
+'*************************************************
+    Dim Slot As Byte
+    Dim IsPaladin As Boolean
+
+    IsPaladin = UserClase = eClass.Paladin
+    With UserList(UserIndex)
+        'Pociones Rojas (Newbie)
+        Slot = 1
+        .Invent.Object(Slot).ObjIndex = 857
+        .Invent.Object(Slot).Amount = 200
+
+        'Pociones azules (Newbie)
+        If .Stats.MaxMAN > 0 Or IsPaladin Then
+            Slot = Slot + 1
+            .Invent.Object(Slot).ObjIndex = 856
+            .Invent.Object(Slot).Amount = 200
+
+        Else
+            'Pociones amarillas (Newbie)
+            Slot = Slot + 1
+            .Invent.Object(Slot).ObjIndex = 855
+            .Invent.Object(Slot).Amount = 100
+
+            'Pociones verdes (Newbie)
+            Slot = Slot + 1
+            .Invent.Object(Slot).ObjIndex = 858
+            .Invent.Object(Slot).Amount = 50
+
+        End If
+
+        ' Ropa (Newbie)
+        Slot = Slot + 1
+        Select Case UserRaza
+            Case eRaza.Humano
+                .Invent.Object(Slot).ObjIndex = 463
+            Case eRaza.Elfo
+                .Invent.Object(Slot).ObjIndex = 464
+            Case eRaza.Drow
+                .Invent.Object(Slot).ObjIndex = 465
+            Case eRaza.Enano, eRaza.Gnomo
+                .Invent.Object(Slot).ObjIndex = 466
+        End Select
+
+        ' Equipo ropa
+        .Invent.Object(Slot).Amount = 1
+        .Invent.Object(Slot).Equipped = 1
+
+        .Invent.ArmourEqpSlot = Slot
+        .Invent.ArmourEqpObjIndex = .Invent.Object(Slot).ObjIndex
+
+        'Arma (Newbie)
+        Slot = Slot + 1
+        Select Case UserClase
+            Case eClass.Hunter
+                ' Arco (Newbie)
+                .Invent.Object(Slot).ObjIndex = 859
+            Case eClass.Worker
+                ' Herramienta (Newbie)
+                .Invent.Object(Slot).ObjIndex = RandomNumber(561, 565)
+            Case Else
+                ' Daga (Newbie)
+                .Invent.Object(Slot).ObjIndex = 460
+        End Select
+
+        ' Equipo arma
+        .Invent.Object(Slot).Amount = 1
+        .Invent.Object(Slot).Equipped = 1
+
+        .Invent.WeaponEqpObjIndex = .Invent.Object(Slot).ObjIndex
+        .Invent.WeaponEqpSlot = Slot
+
+        .Char.WeaponAnim = GetWeaponAnim(UserIndex, .Invent.WeaponEqpObjIndex)
+
+        ' Municiones (Newbie)
+        If UserClase = eClass.Hunter Then
+            Slot = Slot + 1
+            .Invent.Object(Slot).ObjIndex = 860
+            .Invent.Object(Slot).Amount = 150
+
+            ' Equipo flechas
+            .Invent.Object(Slot).Equipped = 1
+            .Invent.MunicionEqpSlot = Slot
+            .Invent.MunicionEqpObjIndex = 860
+        End If
+
+        ' Manzanas (Newbie)
+        Slot = Slot + 1
+        .Invent.Object(Slot).ObjIndex = 467
+        .Invent.Object(Slot).Amount = 100
+
+        ' Jugos (Nwbie)
+        Slot = Slot + 1
+        .Invent.Object(Slot).ObjIndex = 468
+        .Invent.Object(Slot).Amount = 100
+
+        ' Sin casco y escudo
+        .Char.ShieldAnim = NingunEscudo
+        .Char.CascoAnim = NingunCasco
+
+        ' Total Items
+        .Invent.NroItems = Slot
+     End With
+End Sub
+
+Private Sub AddItemsCustomToNewUser(ByVal UserIndex As Integer)
+'*************************************************
+'Author: Lucas Recoaro (Recox)
+'Last modified: 19/03/2019
+'Añade items customizados al usuario recien creado
+'*************************************************
+    Dim CantidadItemsIniciales As Integer
+    Dim Item As Integer
+    Dim CantidadItem As Integer
+    Dim Slot As Long
+
+    Call CargarObjetosIniciales
+
+    With UserList(UserIndex)
+        For Slot = 1 To MAX_OBJ_INICIAL
+            .Invent.Object(Slot).ObjIndex = ItemsIniciales(Slot).ObjIndex
+            .Invent.Object(Slot).Amount = ItemsIniciales(Slot).Amount
+            .Invent.Object(Slot).Equipped = ItemsIniciales(Slot).Equipped
+        Next Slot
+    End With
+End Sub
+
+Private Sub CargarObjetosIniciales()
+
+    Dim Leer As clsIniManager
+    Set Leer = New clsIniManager
+    Call Leer.Initialize(IniPath & "Server.ini")
+
+    Dim Slot As Long, sTemp As String
+
+    MAX_OBJ_INICIAL = val(Leer.GetValue("INVENTARIO", "CantidadItemsIniciales"))
+
+    ReDim ItemsIniciales(1 To MAX_OBJ_INICIAL) As UserObj
+
+    For Slot = 1 To MAX_OBJ_INICIAL
+
+        sTemp = Leer.GetValue("INVENTARIO", "Item" & Slot)
+
+        ItemsIniciales(Slot).ObjIndex = val(ReadField(1, sTemp, 45))
+        ItemsIniciales(Slot).Amount = val(ReadField(2, sTemp, 45))
+        ItemsIniciales(Slot).Equipped = val(ReadField(3, sTemp, 45))
+
+    Next Slot
+
+    Set Leer = Nothing
+
 End Sub
 
 Sub CreateNewAccount(ByVal Userindex As Integer, _

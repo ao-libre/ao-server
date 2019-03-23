@@ -2379,3 +2379,5 @@ Public DropItemsAlMorir     As Boolean
 Public ContadorAntiPiquete  As Integer
 
 Public MinutosCarcelPiquete As Integer
+
+Public InventarioUsarConfiguracionPersonalizada As Boolean

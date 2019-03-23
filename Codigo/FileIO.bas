@@ -1754,7 +1754,10 @@ Sub LoadSini()
     
     ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
-    
+
+    'Inventario Inicial
+    InventarioUsarConfiguracionPersonalizada = val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada"))
+
     'Intervalos
     SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
     FrmInterv.txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
