@@ -32,20 +32,40 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Declare Function RegisterWindowMessage Lib "user32" Alias "RegisterWindowMessageA" (ByVal lpString As String) As Long
-Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Function RegisterWindowMessage _
+                Lib "user32" _
+                Alias "RegisterWindowMessageA" (ByVal lpString As String) As Long
+
+Private Declare Function SendMessageLong _
+                Lib "user32" _
+                Alias "SendMessageA" (ByVal hWnd As Long, _
+                                      ByVal wMsg As Long, _
+                                      ByVal wParam As Long, _
+                                      ByVal lParam As Long) As Long
 
 Private sMensaje As Long, hVentana As Long, hVentanaMia As Long
 
-Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
-Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hWnd As Long) As Long
-Private Declare Function GetWindow Lib "user32" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
+Private Declare Function GetWindowText _
+                Lib "user32" _
+                Alias "GetWindowTextA" (ByVal hWnd As Long, _
+                                        ByVal lpString As String, _
+                                        ByVal cch As Long) As Long
+
+Private Declare Function GetWindowTextLength _
+                Lib "user32" _
+                Alias "GetWindowTextLengthA" (ByVal hWnd As Long) As Long
+
+Private Declare Function GetWindow _
+                Lib "user32" (ByVal hWnd As Long, _
+                              ByVal wCmd As Long) As Long
 
 Private Const GW_HWNDFIRST = 0
+
 Private Const GW_HWNDNEXT = 2
 
 '*************************************************
 Public Enum EstaNotificaciones
+
     CANTIDAD_ONLINE = 1
     RECORD_USUARIOS = 2
     UPTIME_SERVER = 3
@@ -53,61 +73,70 @@ Public Enum EstaNotificaciones
     EVENTO_NUEVO_CLAN = 5
     
     HANDLE_WND_SERVER = 100
+
 End Enum
 
 '*************************************************
 
 Private Function BuscaVentana(Wnd As Long, str As String) As Long
-Dim W As Long
-Dim L As Long
-Dim T As String
 
+    Dim W As Long
 
-W = GetWindow(Wnd, GW_HWNDFIRST)
+    Dim L As Long
 
-While W <> 0
-   L = GetWindowTextLength(W)
+    Dim T As String
 
-   If L > 0 Then
-      T = Space(L + 1)
-      L = GetWindowText(W, T, L + 1)
+    W = GetWindow(Wnd, GW_HWNDFIRST)
 
-      If Left$(T, Len(str)) = str Then
-         BuscaVentana = W
-         Exit Function
-      End If
-   End If
+    While W <> 0
 
-   W = GetWindow(W, GW_HWNDNEXT)
-Wend
+        L = GetWindowTextLength(W)
 
-BuscaVentana = 0
+        If L > 0 Then
+            T = Space(L + 1)
+            L = GetWindowText(W, T, L + 1)
+
+            If Left$(T, Len(str)) = str Then
+                BuscaVentana = W
+                Exit Function
+
+            End If
+
+        End If
+
+        W = GetWindow(W, GW_HWNDNEXT)
+    Wend
+
+    BuscaVentana = 0
 
 End Function
 
-Public Function Informar(ByVal QueCosa As EstaNotificaciones, ByVal Parametro As Long) As Long
-Call BuscaWndEstadisticas
-If hVentana <> 0 Then
-    Informar = SendMessageLong(hVentana, sMensaje, QueCosa, Parametro)
-End If
+Public Function Informar(ByVal QueCosa As EstaNotificaciones, _
+                         ByVal Parametro As Long) As Long
+    Call BuscaWndEstadisticas
+
+    If hVentana <> 0 Then
+        Informar = SendMessageLong(hVentana, sMensaje, QueCosa, Parametro)
+
+    End If
 
 End Function
 
 Public Function EstadisticasAndando() As Boolean
 
-Call BuscaWndEstadisticas
-'Ret = SendNotifyMessage(hVentana, sMensaje, 0, 0)
-EstadisticasAndando = (hVentana <> 0)
+    Call BuscaWndEstadisticas
+    'Ret = SendNotifyMessage(hVentana, sMensaje, 0, 0)
+    EstadisticasAndando = (hVentana <> 0)
 
 End Function
 
 Public Sub Inicializa(ByVal hWnd As Long)
-hVentanaMia = hWnd
-sMensaje = RegisterWindowMessage("EstadisticasAO")
+    hVentanaMia = hWnd
+    sMensaje = RegisterWindowMessage("EstadisticasAO")
 
 End Sub
 
 Private Sub BuscaWndEstadisticas()
-hVentana = BuscaVentana(hVentanaMia, "Servidor de estadisticas AO")
+    hVentana = BuscaVentana(hVentanaMia, "Servidor de estadisticas AO")
 
 End Sub

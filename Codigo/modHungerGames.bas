@@ -23,14 +23,17 @@ Public Type HungerSG
 End Type
 
 Public Const MAX_COFRES As Byte = 22
+
 Public Hambriento       As Integer
 
 Public Const HungerMap  As Integer = 192 'Mapa donde se hace
+
 Public SurvivalG        As HungerSG
 
 Public Sub SecondSg()
 
     If SurvivalG.Created = 0 Then Exit Sub
+
     Dim i As Long
 
     With SurvivalG
@@ -63,6 +66,7 @@ End Sub
 Public Sub CleanSg()
 
     With SurvivalG
+
         Dim i As Long
 
         For i = 1 To LastUser
@@ -200,12 +204,14 @@ Public Function HungerGamesCanJoin(ByVal UI As Integer, ByRef Err As String) As 
             Err = "Ya moriste en los juegos del hambre"
             HungerGamesCanJoin = False
             Exit Function
+
         End If
 
         If .Invent.NroItems <> 0 Then
             Err = "No debes tener ningun item en tu inventario!"
             HungerGamesCanJoin = False
             Exit Function
+
         End If
 
         HungerGamesCanJoin = True
@@ -234,7 +240,7 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
 
         If SurvivalG.Joined = SurvivalG.Cupos Then
             SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Cupos alcanzados! " & vbNewLine & "Juegos del Hambre> Damos inicio a LOS JUEGOS DEL HAMBRE!", FontTypeNames.fonttype_dios)
-            
+
             Dim i As Long
 
             For i = 1 To NumUsers
@@ -244,10 +250,12 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
             Next i
 
             Dim Cof As obj
+
             Cof.ObjIndex = 11
             Cof.Amount = 1
 
             For i = 1 To MAX_COFRES
+
                 Dim X As Integer
                 Dim Y As Integer
 
@@ -337,7 +345,9 @@ Public Sub HungerWin(ByVal Win As Integer)
     With UserList(Win)
 
         If .flags.SG.HungerIndex <> 0 Then
+
             Dim Pozo As Long
+
             Pozo = SurvivalG.Oro * SurvivalG.Cupos
 
             .Stats.Gld = .Stats.Gld + Pozo
@@ -359,6 +369,7 @@ End Sub
 Public Function CleanHGMap()
 
     Dim x As Long
+
     Dim Y As Long
 
     For x = 1 To 100
@@ -379,6 +390,7 @@ Public Function ArmaRandom() As Integer
     ' @ Devuelve un arma random, se puede cambiar..
  
     Dim YATengo    As Boolean
+
     Dim YAObjIndex As Integer
  
     Do While Not YATengo
@@ -404,6 +416,7 @@ Public Function ArmaduraRandom() As Integer
     ' @ Devuelve una armadira random, se puede cambiar..
  
     Dim YATengo    As Boolean
+
     Dim YAObjIndex As Integer
  
     Do While Not YATengo
@@ -429,6 +442,7 @@ Public Function AnilloRandom() As Integer
     ' @ Devuelve una AnilloRandom random, se puede cambiar..
  
     Dim YATengo    As Boolean
+
     Dim YAObjIndex As Integer
  
     Do While Not YATengo
@@ -454,6 +468,7 @@ Public Function CascoRandom() As Integer
     ' @ Devuelve una AnilloRandom random, se puede cambiar..
  
     Dim YATengo    As Boolean
+
     Dim YAObjIndex As Integer
  
     Do While Not YATengo
@@ -479,6 +494,7 @@ Public Function EscudoRandom() As Integer
     ' @ Devuelve una AnilloRandom random, se puede cambiar..
  
     Dim YATengo    As Boolean
+
     Dim YAObjIndex As Integer
  
     Do While Not YATengo
@@ -519,5 +535,3 @@ Public Sub WarpUserCharX(ByVal UserIndex As Integer, ByVal Mapa As Integer, ByVa
     End If
 
 End Sub
-
-

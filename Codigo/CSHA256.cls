@@ -55,12 +55,16 @@ Attribute VB_Exposed = False
 '*******************************************************************************
 Option Explicit
 
-Private m_lOnBits(30)   As Long
-Private m_l2Power(30)   As Long
-Private K(63)           As Long
+Private m_lOnBits(30)         As Long
+
+Private m_l2Power(30)         As Long
+
+Private K(63)                 As Long
 
 Private Const BITS_TO_A_BYTE  As Long = 8
+
 Private Const BYTES_TO_A_WORD As Long = 4
+
 Private Const BITS_TO_A_WORD  As Long = BYTES_TO_A_WORD * BITS_TO_A_BYTE
 
 '*******************************************************************************
@@ -200,6 +204,7 @@ Private Sub Class_Initialize()
     K(61) = &HA4506CEB
     K(62) = &HBEF9A3F7
     K(63) = &HC67178F2
+
 End Sub
 
 '*******************************************************************************
@@ -217,8 +222,8 @@ End Sub
 ' with zeros in the vacated bits on the right. This function is equivalent to
 ' the << operator in Java and C++
 '*******************************************************************************
-Private Function LShift(ByVal lValue As Long, _
-                        ByVal iShiftBits As Integer) As Long
+Private Function LShift(ByVal lValue As Long, ByVal iShiftBits As Integer) As Long
+
     ' NOTE: If you can guarantee that the Shift parameter will be in the
     ' range 1 to 30 you can safely strip of this first nested if structure for
     ' speed.
@@ -228,19 +233,23 @@ Private Function LShift(ByVal lValue As Long, _
         LShift = lValue
         Exit Function
         
-    ' A shift of 31 will result in the right most bit becoming the left most
-    ' bit and all other bits being cleared
+        ' A shift of 31 will result in the right most bit becoming the left most
+        ' bit and all other bits being cleared
     ElseIf iShiftBits = 31 Then
+
         If lValue And 1 Then
             LShift = &H80000000
         Else
             LShift = 0
+
         End If
+
         Exit Function
         
-    ' A shift of less than zero or more than 31 is undefined
+        ' A shift of less than zero or more than 31 is undefined
     ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
         Err.Raise 6
+
     End If
     
     ' If the left most bit that remains will end up in the negative bit
@@ -254,18 +263,17 @@ Private Function LShift(ByVal lValue As Long, _
         ' is going to end up in the negative bit marker position (&H80000000).
         ' After the multiplication/shift we Or the result with &H80000000 to
         ' turn the negative bit on.
-        LShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * _
-            m_l2Power(iShiftBits)) Or &H80000000
+        LShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * m_l2Power(iShiftBits)) Or &H80000000
     
     Else
     
         ' (Value And OnBits(31-Shift)) chops off the left most bits that we are
         ' shifting into so we do not get an overflow error when we do the
         ' multiplication/shift
-        LShift = ((lValue And m_lOnBits(31 - iShiftBits)) * _
-            m_l2Power(iShiftBits))
+        LShift = ((lValue And m_lOnBits(31 - iShiftBits)) * m_l2Power(iShiftBits))
         
     End If
+
 End Function
 
 '*******************************************************************************
@@ -284,8 +292,7 @@ End Function
 ' equivalent to the >>> operator in Java or the >> operator in C++ when used on
 ' an unsigned long.
 '*******************************************************************************
-Private Function RShift(ByVal lValue As Long, _
-                        ByVal iShiftBits As Integer) As Long
+Private Function RShift(ByVal lValue As Long, ByVal iShiftBits As Integer) As Long
     
     ' NOTE: If you can guarantee that the Shift parameter will be in the
     ' range 1 to 30 you can safely strip of this first nested if structure for
@@ -296,19 +303,23 @@ Private Function RShift(ByVal lValue As Long, _
         RShift = lValue
         Exit Function
         
-    ' A shift of 31 will clear all bits and move the left most bit to the right
-    ' most bit position
+        ' A shift of 31 will clear all bits and move the left most bit to the right
+        ' most bit position
     ElseIf iShiftBits = 31 Then
+
         If lValue And &H80000000 Then
             RShift = 1
         Else
             RShift = 0
+
         End If
+
         Exit Function
         
-    ' A shift of less than zero or more than 31 is undefined
+        ' A shift of less than zero or more than 31 is undefined
     ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
         Err.Raise 6
+
     End If
     
     ' We do not care about the top most bit or the final bit, the top most bit
@@ -328,7 +339,9 @@ Private Function RShift(ByVal lValue As Long, _
         ' bit after it has been shifted to the right the appropriate number of
         ' places
         RShift = (RShift Or (&H40000000 \ m_l2Power(iShiftBits - 1)))
+
     End If
+
 End Function
 
 '*******************************************************************************
@@ -344,12 +357,16 @@ End Function
 ' DESCRIPTION:
 ' Adds two potentially large unsigned numbers without overflowing
 '*******************************************************************************
-Private Function AddUnsigned(ByVal lX As Long, _
-                             ByVal lY As Long) As Long
+Private Function AddUnsigned(ByVal lX As Long, ByVal lY As Long) As Long
+
     Dim lX4     As Long
+
     Dim lY4     As Long
+
     Dim lX8     As Long
+
     Dim lY8     As Long
+
     Dim lResult As Long
  
     lX8 = lX And &H80000000
@@ -362,16 +379,21 @@ Private Function AddUnsigned(ByVal lX As Long, _
     If lX4 And lY4 Then
         lResult = lResult Xor &H80000000 Xor lX8 Xor lY8
     ElseIf lX4 Or lY4 Then
+
         If lResult And &H40000000 Then
             lResult = lResult Xor &HC0000000 Xor lX8 Xor lY8
         Else
             lResult = lResult Xor &H40000000 Xor lX8 Xor lY8
+
         End If
+
     Else
         lResult = lResult Xor lX8 Xor lY8
+
     End If
  
     AddUnsigned = lResult
+
 End Function
 
 '*******************************************************************************
@@ -380,10 +402,9 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Ch(ByVal x As Long, _
-                    ByVal y As Long, _
-                    ByVal z As Long) As Long
-    Ch = ((x And y) Xor ((Not x) And z))
+Private Function Ch(ByVal x As Long, ByVal Y As Long, ByVal z As Long) As Long
+    Ch = ((x And Y) Xor ((Not x) And z))
+
 End Function
 
 '*******************************************************************************
@@ -392,10 +413,9 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Maj(ByVal x As Long, _
-                     ByVal y As Long, _
-                     ByVal z As Long) As Long
-    Maj = ((x And y) Xor (x And z) Xor (y And z))
+Private Function Maj(ByVal x As Long, ByVal Y As Long, ByVal z As Long) As Long
+    Maj = ((x And Y) Xor (x And z) Xor (Y And z))
+
 End Function
 
 '*******************************************************************************
@@ -404,9 +424,9 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function (rotate right)
 '*******************************************************************************
-Private Function S(ByVal x As Long, _
-                   ByVal n As Long) As Long
+Private Function S(ByVal x As Long, ByVal n As Long) As Long
     S = (RShift(x, (n And m_lOnBits(4))) Or LShift(x, (32 - (n And m_lOnBits(4)))))
+
 End Function
 
 '*******************************************************************************
@@ -415,9 +435,9 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function (just a right shift)
 '*******************************************************************************
-Private Function R(ByVal x As Long, _
-                   ByVal n As Long) As Long
+Private Function R(ByVal x As Long, ByVal n As Long) As Long
     R = RShift(x, CInt(n And m_lOnBits(4)))
+
 End Function
 
 '*******************************************************************************
@@ -428,6 +448,7 @@ End Function
 '*******************************************************************************
 Private Function Sigma0(ByVal x As Long) As Long
     Sigma0 = (S(x, 2) Xor S(x, 13) Xor S(x, 22))
+
 End Function
 
 '*******************************************************************************
@@ -438,6 +459,7 @@ End Function
 '*******************************************************************************
 Private Function Sigma1(ByVal x As Long) As Long
     Sigma1 = (S(x, 6) Xor S(x, 11) Xor S(x, 25))
+
 End Function
 
 '*******************************************************************************
@@ -448,6 +470,7 @@ End Function
 '*******************************************************************************
 Private Function Gamma0(ByVal x As Long) As Long
     Gamma0 = (S(x, 7) Xor S(x, 18) Xor R(x, 3))
+
 End Function
 
 '*******************************************************************************
@@ -458,6 +481,7 @@ End Function
 '*******************************************************************************
 Private Function Gamma1(ByVal x As Long) As Long
     Gamma1 = (S(x, 17) Xor S(x, 19) Xor R(x, 10))
+
 End Function
 
 '*******************************************************************************
@@ -474,16 +498,24 @@ End Function
 ' the SHA-256 rules (similar to MD5 routine).
 '*******************************************************************************
 Private Function ConvertToWordArray(sMessage As String) As Long()
-    Dim lMessageLength  As Long
-    Dim lNumberOfWords  As Long
-    Dim lWordArray()    As Long
-    Dim lBytePosition   As Long
-    Dim lByteCount      As Long
-    Dim lWordCount      As Long
-    Dim lByte           As Long
+
+    Dim lMessageLength   As Long
+
+    Dim lNumberOfWords   As Long
+
+    Dim lWordArray()     As Long
+
+    Dim lBytePosition    As Long
+
+    Dim lByteCount       As Long
+
+    Dim lWordCount       As Long
+
+    Dim lByte            As Long
     
-    Const MODULUS_BITS      As Long = 512
-    Const CONGRUENT_BITS    As Long = 448
+    Const MODULUS_BITS   As Long = 512
+
+    Const CONGRUENT_BITS As Long = 448
     
     lMessageLength = Len(sMessage)
     
@@ -492,10 +524,7 @@ Private Function ConvertToWordArray(sMessage As String) As Long()
     ' it must still have another 512 bits added. 512 bits = 64 bytes
     ' (or 16 * 4 byte words), 448 bits = 56 bytes. This means lNumberOfWords must
     ' be a multiple of 16 (i.e. 16 * 4 (bytes) * 8 (bits))
-    lNumberOfWords = (((lMessageLength + _
-        ((MODULUS_BITS - CONGRUENT_BITS) \ BITS_TO_A_BYTE)) \ _
-        (MODULUS_BITS \ BITS_TO_A_BYTE)) + 1) * _
-        (MODULUS_BITS \ BITS_TO_A_WORD)
+    lNumberOfWords = (((lMessageLength + ((MODULUS_BITS - CONGRUENT_BITS) \ BITS_TO_A_BYTE)) \ (MODULUS_BITS \ BITS_TO_A_BYTE)) + 1) * (MODULUS_BITS \ BITS_TO_A_WORD)
     ReDim lWordArray(lNumberOfWords - 1)
     
     ' Combine each block of 4 bytes (ascii code of character) into one long
@@ -504,6 +533,7 @@ Private Function ConvertToWordArray(sMessage As String) As Long()
     ' (most significant) byte first in each word.
     lBytePosition = 0
     lByteCount = 0
+
     Do Until lByteCount >= lMessageLength
         ' Each word is 4 bytes
         lWordCount = lByteCount \ BYTES_TO_A_WORD
@@ -513,7 +543,7 @@ Private Function ConvertToWordArray(sMessage As String) As Long()
         ' NOTE: This is where we are using just the first byte of each unicode
         ' character, you may want to make the change here, or to the SHA256 method
         ' so it accepts a byte array.
-        lByte = AscB(Mid(sMessage, lByteCount + 1, 1))
+        lByte = AscB(mid(sMessage, lByteCount + 1, 1))
         
         lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(lByte, lBytePosition)
         lByteCount = lByteCount + 1
@@ -526,8 +556,7 @@ Private Function ConvertToWordArray(sMessage As String) As Long()
 
     ' Add a terminating 1 bit, all the rest of the bits to the end of the
     ' word array will default to zero
-    lWordArray(lWordCount) = lWordArray(lWordCount) Or _
-        LShift(&H80, lBytePosition)
+    lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(&H80, lBytePosition)
 
     ' We put the length of the message in bits into the last two words, to get
     ' the length in bits we need to multiply by 8 (or left shift 3). This left
@@ -538,6 +567,7 @@ Private Function ConvertToWordArray(sMessage As String) As Long()
     lWordArray(lNumberOfWords - 2) = RShift(lMessageLength, 29)
     
     ConvertToWordArray = lWordArray
+
 End Function
 
 '*******************************************************************************
@@ -561,56 +591,71 @@ End Function
 ' a manner consistent with the string type.
 '*******************************************************************************
 Public Function SHA256(sMessage As String) As String
-    Dim HASH(7) As Long
+
+    Dim Hash(7) As Long
+
     Dim M()     As Long
+
     Dim W(63)   As Long
+
     Dim a       As Long
+
     Dim b       As Long
+
     Dim c       As Long
+
     Dim d       As Long
+
     Dim e       As Long
+
     Dim f       As Long
+
     Dim g       As Long
+
     Dim h       As Long
+
     Dim i       As Long
+
     Dim j       As Long
+
     Dim T1      As Long
+
     Dim T2      As Long
     
     ' Initial hash values
-    HASH(0) = &H6A09E667
-    HASH(1) = &HBB67AE85
-    HASH(2) = &H3C6EF372
-    HASH(3) = &HA54FF53A
-    HASH(4) = &H510E527F
-    HASH(5) = &H9B05688C
-    HASH(6) = &H1F83D9AB
-    HASH(7) = &H5BE0CD19
+    Hash(0) = &H6A09E667
+    Hash(1) = &HBB67AE85
+    Hash(2) = &H3C6EF372
+    Hash(3) = &HA54FF53A
+    Hash(4) = &H510E527F
+    Hash(5) = &H9B05688C
+    Hash(6) = &H1F83D9AB
+    Hash(7) = &H5BE0CD19
     
     ' Preprocessing. Append padding bits and length and convert to words
     M = ConvertToWordArray(sMessage)
     
     ' Main loop
     For i = 0 To UBound(M) Step 16
-        a = HASH(0)
-        b = HASH(1)
-        c = HASH(2)
-        d = HASH(3)
-        e = HASH(4)
-        f = HASH(5)
-        g = HASH(6)
-        h = HASH(7)
+        a = Hash(0)
+        b = Hash(1)
+        c = Hash(2)
+        d = Hash(3)
+        e = Hash(4)
+        f = Hash(5)
+        g = Hash(6)
+        h = Hash(7)
         
         For j = 0 To 63
+
             If j < 16 Then
                 W(j) = M(j + i)
             Else
-                W(j) = AddUnsigned(AddUnsigned(AddUnsigned(Gamma1(W(j - 2)), _
-                    W(j - 7)), Gamma0(W(j - 15))), W(j - 16))
+                W(j) = AddUnsigned(AddUnsigned(AddUnsigned(Gamma1(W(j - 2)), W(j - 7)), Gamma0(W(j - 15))), W(j - 16))
+
             End If
                 
-            T1 = AddUnsigned(AddUnsigned(AddUnsigned(AddUnsigned(h, Sigma1(e)), _
-                Ch(e, f, g)), K(j)), W(j))
+            T1 = AddUnsigned(AddUnsigned(AddUnsigned(AddUnsigned(h, Sigma1(e)), Ch(e, f, g)), K(j)), W(j))
             T2 = AddUnsigned(Sigma0(a), Maj(a, b, c))
             
             h = g
@@ -623,23 +668,17 @@ Public Function SHA256(sMessage As String) As String
             a = AddUnsigned(T1, T2)
         Next
         
-        HASH(0) = AddUnsigned(a, HASH(0))
-        HASH(1) = AddUnsigned(b, HASH(1))
-        HASH(2) = AddUnsigned(c, HASH(2))
-        HASH(3) = AddUnsigned(d, HASH(3))
-        HASH(4) = AddUnsigned(e, HASH(4))
-        HASH(5) = AddUnsigned(f, HASH(5))
-        HASH(6) = AddUnsigned(g, HASH(6))
-        HASH(7) = AddUnsigned(h, HASH(7))
+        Hash(0) = AddUnsigned(a, Hash(0))
+        Hash(1) = AddUnsigned(b, Hash(1))
+        Hash(2) = AddUnsigned(c, Hash(2))
+        Hash(3) = AddUnsigned(d, Hash(3))
+        Hash(4) = AddUnsigned(e, Hash(4))
+        Hash(5) = AddUnsigned(f, Hash(5))
+        Hash(6) = AddUnsigned(g, Hash(6))
+        Hash(7) = AddUnsigned(h, Hash(7))
     Next
     
     ' Output the 256 bit digest
-    SHA256 = LCase(Right("00000000" & Hex(HASH(0)), 8) & _
-        Right("00000000" & Hex(HASH(1)), 8) & _
-        Right("00000000" & Hex(HASH(2)), 8) & _
-        Right("00000000" & Hex(HASH(3)), 8) & _
-        Right("00000000" & Hex(HASH(4)), 8) & _
-        Right("00000000" & Hex(HASH(5)), 8) & _
-        Right("00000000" & Hex(HASH(6)), 8) & _
-        Right("00000000" & Hex(HASH(7)), 8))
+    SHA256 = LCase(Right("00000000" & Hex(Hash(0)), 8) & Right("00000000" & Hex(Hash(1)), 8) & Right("00000000" & Hex(Hash(2)), 8) & Right("00000000" & Hex(Hash(3)), 8) & Right("00000000" & Hex(Hash(4)), 8) & Right("00000000" & Hex(Hash(5)), 8) & Right("00000000" & Hex(Hash(6)), 8) & Right("00000000" & Hex(Hash(7)), 8))
+
 End Function

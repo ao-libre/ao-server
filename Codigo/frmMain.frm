@@ -249,6 +249,7 @@ Option Explicit
 Public ESCUCHADAS As Long
 
 Private Type NOTIFYICONDATA
+
     cbSize As Long
     hWnd As Long
     uID As Long
@@ -256,22 +257,40 @@ Private Type NOTIFYICONDATA
     uCallbackMessage As Long
     hIcon As Long
     szTip As String * 64
+
 End Type
    
 Const NIM_ADD = 0
+
 Const NIM_DELETE = 2
+
 Const NIF_MESSAGE = 1
+
 Const NIF_ICON = 2
+
 Const NIF_TIP = 4
 
 Const WM_MOUSEMOVE = &H200
+
 Const WM_LBUTTONDBLCLK = &H203
+
 Const WM_RBUTTONUP = &H205
 
-Private Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hWnd As Long, lpdwProcessId As Long) As Long
-Private Declare Function Shell_NotifyIconA Lib "SHELL32" (ByVal dwMessage As Long, lpData As NOTIFYICONDATA) As Integer
+Private Declare Function GetWindowThreadProcessId _
+                Lib "user32" (ByVal hWnd As Long, _
+                              lpdwProcessId As Long) As Long
 
-Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, CallbackMessage As Long, Icon As Long, Tip As String) As NOTIFYICONDATA
+Private Declare Function Shell_NotifyIconA _
+                Lib "SHELL32" (ByVal dwMessage As Long, _
+                               lpData As NOTIFYICONDATA) As Integer
+
+Private Function setNOTIFYICONDATA(hWnd As Long, _
+                                   ID As Long, _
+                                   flags As Long, _
+                                   CallbackMessage As Long, _
+                                   Icon As Long, _
+                                   Tip As String) As NOTIFYICONDATA
+
     Dim nidTemp As NOTIFYICONDATA
 
     nidTemp.cbSize = Len(nidTemp)
@@ -283,22 +302,29 @@ Private Function setNOTIFYICONDATA(hWnd As Long, ID As Long, flags As Long, Call
     nidTemp.szTip = Tip & Chr$(0)
 
     setNOTIFYICONDATA = nidTemp
+
 End Function
 
 Sub CheckIdleUser()
+
     Dim iUserIndex As Long
     
     For iUserIndex = 1 To MaxUsers
+
         With UserList(iUserIndex)
+
             'Conexion activa? y es un usuario loggeado?
             If .ConnID <> -1 And .flags.UserLogged Then
+
                 'Actualiza el contador de inactividad
                 If .flags.Traveling = 0 Then
                     .Counters.IdleCount = .Counters.IdleCount + 1
+
                 End If
                 
                 If .Counters.IdleCount >= IdleLimit Then
                     Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
+
                     'mato los comercios seguros
                     If .ComUsu.DestUsu > 0 Then
                         If UserList(.ComUsu.DestUsu).flags.UserLogged Then
@@ -306,110 +332,135 @@ Sub CheckIdleUser()
                                 Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
                                 Call FinComerciarUsu(.ComUsu.DestUsu)
                                 Call FlushBuffer(.ComUsu.DestUsu) 'flush the buffer to send the message right away
+
                             End If
+
                         End If
+
                         Call FinComerciarUsu(iUserIndex)
+
                     End If
+
                     Call Cerrar_Usuario(iUserIndex)
+
                 End If
+
             End If
+
         End With
+
     Next iUserIndex
+
 End Sub
 
 Private Sub AutoSave_Timer()
 
-On Error GoTo ErrHandler
-'fired every minute
-Static Minutos As Long
-Static MinutosLatsClean As Long
-Static MinsPjesSave As Long
+    On Error GoTo errHandler
 
+    'fired every minute
+    Static Minutos          As Long
 
-Minutos = Minutos + 1
-MinsPjesSave = MinsPjesSave + 1
+    Static MinutosLatsClean As Long
 
-'??????????
-Call ModAreas.AreasOptimizacion
-'??????????
+    Static MinsPjesSave     As Long
 
-'Actualizamos el Centinela
-Call modCentinela.ChekearUsuarios
+    Minutos = Minutos + 1
+    MinsPjesSave = MinsPjesSave + 1
 
-'Actualizamos la lluvia
-Call tLluviaEvent
+    '??????????
+    Call ModAreas.AreasOptimizacion
+    '??????????
 
-If Minutos = MinutosWs - 1 Then
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
-    KillLog
-End If
+    'Actualizamos el Centinela
+    Call modCentinela.ChekearUsuarios
 
-If Minutos >= MinutosWs Then
-    Call ES.DoBackUp
-    Call aClon.VaciarColeccion
-    Minutos = 0
-End If
+    'Actualizamos la lluvia
+    Call tLluviaEvent
 
-If MinsPjesSave = MinutosGuardarUsuarios - 1 Then
-    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("CharSave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
-ElseIf MinsPjesSave >= MinutosGuardarUsuarios Then
-    Call mdParty.ActualizaExperiencias
-    Call GuardarUsuarios
-    MinsPjesSave = 0
-End If
+    If Minutos = MinutosWs - 1 Then
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+        KillLog
 
-If MinutosLatsClean >= 15 Then
-    MinutosLatsClean = 0
-    Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
-Else
-    MinutosLatsClean = MinutosLatsClean + 1
-End If
+    End If
 
-Call CheckIdleUser
+    If Minutos >= MinutosWs Then
+        Call ES.DoBackUp
+        Call aClon.VaciarColeccion
+        Minutos = 0
 
-'<<<<<-------- Log the number of users online ------>>>
-Dim N As Integer
-N = FreeFile()
-Open App.Path & "\logs\numusers.log" For Output Shared As N
-Print #N, NumUsers
-Close #N
-'<<<<<-------- Log the number of users online ------>>>
+    End If
 
-Exit Sub
-ErrHandler:
+    If MinsPjesSave = MinutosGuardarUsuarios - 1 Then
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("CharSave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+    ElseIf MinsPjesSave >= MinutosGuardarUsuarios Then
+        Call mdParty.ActualizaExperiencias
+        Call GuardarUsuarios
+        MinsPjesSave = 0
+
+    End If
+
+    If MinutosLatsClean >= 15 Then
+        MinutosLatsClean = 0
+        Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
+    Else
+        MinutosLatsClean = MinutosLatsClean + 1
+
+    End If
+
+    Call CheckIdleUser
+
+    '<<<<<-------- Log the number of users online ------>>>
+    Dim n As Integer
+
+    n = FreeFile()
+    Open App.Path & "\logs\numusers.log" For Output Shared As n
+    Print #n, NumUsers
+    Close #n
+    '<<<<<-------- Log the number of users online ------>>>
+
+    Exit Sub
+errHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
+
     Resume Next
+
 End Sub
 
-
 Private Sub chkServerHabilitado_Click()
-    ServerSoloGMs = chkServerHabilitado.value
+    ServerSoloGMs = chkServerHabilitado.Value
+
 End Sub
 
 Private Sub cmdCerrarServer_Click()
-    If MsgBox("Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & _
-        "Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
+
+    If MsgBox("Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & "Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
         
         prgRun = False
+
         Dim f
+
         For Each f In Forms
+
             Unload f
         Next
+
     End If
+
 End Sub
 
 Private Sub cmdConfiguracion_Click()
     frmServidor.Visible = True
+
 End Sub
 
 Private Sub CMDDUMP_Click()
-On Error Resume Next
+
+    On Error Resume Next
 
     Dim i As Integer
+
     For i = 1 To MaxUsers
-        Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & _
-            ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & _
-            " UserLogged: " & UserList(i).flags.UserLogged)
+        Call LogCriticEvent(i & ") ConnID: " & UserList(i).ConnID & ". ConnidValida: " & UserList(i).ConnIDValida & " Name: " & UserList(i).Name & " UserLogged: " & UserList(i).flags.UserLogged)
     Next i
     
     Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
@@ -418,128 +469,156 @@ End Sub
 
 Private Sub cmdSystray_Click()
     SetSystray
+
 End Sub
 
 Private Sub Command1_Click()
-Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(BroadMsg.Text))
-''''''''''''''''SOLO PARA EL TESTEO'''''''
-''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
-txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(BroadMsg.Text))
+    ''''''''''''''''SOLO PARA EL TESTEO'''''''
+    ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
+    txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
+
 End Sub
 
 Public Sub InitMain(ByVal f As Byte)
 
-If f = 1 Then
-    Call SetSystray
-Else
-    frmMain.Show
-End If
+    If f = 1 Then
+        Call SetSystray
+    Else
+        frmMain.Show
+
+    End If
 
 End Sub
 
 Private Sub Command2_Click()
-Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & BroadMsg.Text, FontTypeNames.FONTTYPE_SERVER))
-''''''''''''''''SOLO PARA EL TESTEO'''''''
-''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
-txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
+    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> " & BroadMsg.Text, FontTypeNames.FONTTYPE_SERVER))
+    ''''''''''''''''SOLO PARA EL TESTEO'''''''
+    ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
+    txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
+
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-On Error Resume Next
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+
+    On Error Resume Next
    
-   If Not Visible Then
-        Select Case X \ Screen.TwipsPerPixelX
+    If Not Visible Then
+
+        Select Case x \ Screen.TwipsPerPixelX
                 
             Case WM_LBUTTONDBLCLK
                 WindowState = vbNormal
                 Visible = True
+
                 Dim hProcess As Long
+
                 GetWindowThreadProcessId hWnd, hProcess
                 AppActivate hProcess
+
             Case WM_RBUTTONUP
                 hHook = SetWindowsHookEx(WH_CALLWNDPROC, AddressOf AppHook, App.hInstance, App.ThreadID)
                 PopupMenu mnuPopUp
-                If hHook Then UnhookWindowsHookEx hHook: hHook = 0
+
+                If hHook Then
+                    UnhookWindowsHookEx hHook
+                    hHook = 0
+                End If
+
+
         End Select
-   End If
+
+    End If
    
 End Sub
 
 Private Sub QuitarIconoSystray()
-On Error Resume Next
 
-'Borramos el icono del systray
-Dim i As Integer
-Dim nid As NOTIFYICONDATA
+    On Error Resume Next
 
-nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, vbNull, frmMain.Icon, "")
+    'Borramos el icono del systray
+    Dim i   As Integer
 
-i = Shell_NotifyIconA(NIM_DELETE, nid)
-    
+    Dim nid As NOTIFYICONDATA
+
+    nid = setNOTIFYICONDATA(frmMain.hWnd, vbNull, NIF_MESSAGE Or NIF_ICON Or NIF_TIP, vbNull, frmMain.Icon, "")
+
+    i = Shell_NotifyIconA(NIM_DELETE, nid)
 
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-On Error Resume Next
 
-'Save stats!!!
-Call Statistics.DumpStatistics
+    On Error Resume Next
 
-Call QuitarIconoSystray
+    'Save stats!!!
+    Call Statistics.DumpStatistics
 
-#If UsarQueSocket = 1 Then
-Call LimpiaWsApi
-#ElseIf UsarQueSocket = 0 Then
-Socket1.Cleanup
-#ElseIf UsarQueSocket = 2 Then
-Serv.Detener
-#End If
+    Call QuitarIconoSystray
 
-Dim LoopC As Integer
+    #If UsarQueSocket = 1 Then
+        Call LimpiaWsApi
+    #ElseIf UsarQueSocket = 0 Then
+        Socket1.Cleanup
+    #ElseIf UsarQueSocket = 2 Then
+        Serv.Detener
+    #End If
 
-For LoopC = 1 To MaxUsers
-    If UserList(LoopC).ConnID <> -1 Then Call CloseSocket(LoopC)
-Next
+    Dim LoopC As Integer
 
-'Log
-Dim N As Integer
-N = FreeFile
-Open App.Path & "\logs\Main.log" For Append Shared As #N
-Print #N, Date & " " & time & " server cerrado."
-Close #N
+    For LoopC = 1 To MaxUsers
 
-End
+        If UserList(LoopC).ConnID <> -1 Then Call CloseSocket(LoopC)
+    Next
+
+    'Log
+    Dim n As Integer
+
+    n = FreeFile
+    Open App.Path & "\logs\Main.log" For Append Shared As #n
+    Print #n, Date & " " & time & " server cerrado."
+    Close #n
+
+    End
 
 End Sub
-
 
 Private Sub mnusalir_Click()
     Call cmdCerrarServer_Click
+
 End Sub
 
 Public Sub mnuMostrar_Click()
-On Error Resume Next
+
+    On Error Resume Next
+
     WindowState = vbNormal
     Form_MouseMove 0, 0, 7725, 0
+
 End Sub
 
 Private Sub KillLog()
-On Error Resume Next
-If FileExist(App.Path & "\logs\connect.log", vbNormal) Then Kill App.Path & "\logs\connect.log"
-If FileExist(App.Path & "\logs\haciendo.log", vbNormal) Then Kill App.Path & "\logs\haciendo.log"
-If FileExist(App.Path & "\logs\stats.log", vbNormal) Then Kill App.Path & "\logs\stats.log"
-If FileExist(App.Path & "\logs\Asesinatos.log", vbNormal) Then Kill App.Path & "\logs\Asesinatos.log"
-If FileExist(App.Path & "\logs\HackAttemps.log", vbNormal) Then Kill App.Path & "\logs\HackAttemps.log"
-If Not FileExist(App.Path & "\logs\nokillwsapi.txt") Then
-    If FileExist(App.Path & "\logs\wsapi.log", vbNormal) Then Kill App.Path & "\logs\wsapi.log"
-End If
+
+    On Error Resume Next
+
+    If FileExist(App.Path & "\logs\connect.log", vbNormal) Then Kill App.Path & "\logs\connect.log"
+    If FileExist(App.Path & "\logs\haciendo.log", vbNormal) Then Kill App.Path & "\logs\haciendo.log"
+    If FileExist(App.Path & "\logs\stats.log", vbNormal) Then Kill App.Path & "\logs\stats.log"
+    If FileExist(App.Path & "\logs\Asesinatos.log", vbNormal) Then Kill App.Path & "\logs\Asesinatos.log"
+    If FileExist(App.Path & "\logs\HackAttemps.log", vbNormal) Then Kill App.Path & "\logs\HackAttemps.log"
+    If Not FileExist(App.Path & "\logs\nokillwsapi.txt") Then
+        If FileExist(App.Path & "\logs\wsapi.log", vbNormal) Then Kill App.Path & "\logs\wsapi.log"
+
+    End If
 
 End Sub
 
 Private Sub SetSystray()
 
-    Dim i As Integer
-    Dim S As String
+    Dim i   As Integer
+
+    Dim S   As String
+
     Dim nid As NOTIFYICONDATA
     
     S = "ARGENTUM-ONLINE"
@@ -552,36 +631,49 @@ Private Sub SetSystray()
 End Sub
 
 Private Sub tLluviaEvent()
-Static MinutosLloviendo As Long
-Static MinutosSinLluvia As Long
 
-If Not Lloviendo Then
-    MinutosSinLluvia = MinutosSinLluvia + 1
-    If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
-        If RandomNumber(1, 100) <= 2 Then
+    Static MinutosLloviendo As Long
+
+    Static MinutosSinLluvia As Long
+
+    If Not Lloviendo Then
+        MinutosSinLluvia = MinutosSinLluvia + 1
+
+        If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
+            If RandomNumber(1, 100) <= 2 Then
+                Lloviendo = True
+                MinutosSinLluvia = 0
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+
+            End If
+
+        ElseIf MinutosSinLluvia >= 1440 Then
             Lloviendo = True
             MinutosSinLluvia = 0
             Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+
         End If
-    ElseIf MinutosSinLluvia >= 1440 Then
-        Lloviendo = True
-        MinutosSinLluvia = 0
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-    End If
-Else
-    MinutosLloviendo = MinutosLloviendo + 1
-    If MinutosLloviendo >= 5 Then
-        Lloviendo = False
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-        MinutosLloviendo = 0
+
     Else
-        If RandomNumber(1, 100) <= 2 Then
+        MinutosLloviendo = MinutosLloviendo + 1
+
+        If MinutosLloviendo >= 5 Then
             Lloviendo = False
-            MinutosLloviendo = 0
             Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+            MinutosLloviendo = 0
+        Else
+
+            If RandomNumber(1, 100) <= 2 Then
+                Lloviendo = False
+                MinutosLloviendo = 0
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
+
+            End If
+
         End If
+
     End If
-End If
+
 End Sub
 
 
@@ -680,10 +772,6 @@ errorh:
 Call LogError("Error socket read: " & MiDato & " dato:" & RD & " userlogged: " & UserList(MiDato).flags.UserLogged & " connid:" & UserList(MiDato).ConnID & " ID Parametro" & ID & " error:" & Err.description)
 
 End Sub
-
-
-
-
 
 #End If
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

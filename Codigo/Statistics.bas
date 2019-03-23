@@ -23,100 +23,118 @@ Attribute VB_Name = "Statistics"
 Option Explicit
 
 Private Type trainingData
+
     startTick As Long
     trainingTime As Long
+
 End Type
 
 Private Type fragLvlRace
+
     matrix(1 To 50, 1 To 5) As Long
+
 End Type
 
 Private Type fragLvlLvl
+
     matrix(1 To 50, 1 To 50) As Long
+
 End Type
 
-Private trainingInfo() As trainingData
+Private trainingInfo()                        As trainingData
 
-Private fragLvlRaceData(1 To 7) As fragLvlRace
-Private fragLvlLvlData(1 To 7) As fragLvlLvl
+Private fragLvlRaceData(1 To 7)               As fragLvlRace
+
+Private fragLvlLvlData(1 To 7)                As fragLvlLvl
+
 Private fragAlignmentLvlData(1 To 50, 1 To 4) As Long
 
 'Currency just in case.... chats are way TOO often...
-Private keyOcurrencies(255) As Currency
+Private keyOcurrencies(255)                   As Currency
 
 Public Sub Initialize()
     ReDim trainingInfo(1 To MaxUsers) As trainingData
+
 End Sub
 
-Public Sub UserConnected(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+Public Sub UserConnected(ByVal Userindex As Integer)
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
     'A new user connected, load it's training time count
-    trainingInfo(UserIndex).trainingTime = GetUserTrainingTime(UserList(UserIndex).name)
+    trainingInfo(Userindex).trainingTime = GetUserTrainingTime(UserList(Userindex).Name)
     
-    trainingInfo(UserIndex).startTick = (GetTickCount() And &H7FFFFFFF)
+    trainingInfo(Userindex).startTick = (GetTickCount() And &H7FFFFFFF)
+
 End Sub
 
-Public Sub UserDisconnected(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+Public Sub UserDisconnected(ByVal Userindex As Integer)
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
-    With trainingInfo(UserIndex)
+    With trainingInfo(Userindex)
         'Update training time
         .trainingTime = .trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
         
         .startTick = (GetTickCount() And &H7FFFFFFF)
         
         'Store info in char file
-        Call SaveUserTrainingTime(UserList(UserIndex).name, .trainingTime)
+        Call SaveUserTrainingTime(UserList(Userindex).Name, .trainingTime)
+
     End With
+
 End Sub
 
-Public Sub UserLevelUp(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+Public Sub UserLevelUp(ByVal Userindex As Integer)
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
     Dim handle As Integer
+
     handle = FreeFile()
     
-    With trainingInfo(UserIndex)
+    With trainingInfo(Userindex)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(UserIndex).name) & " completo el nivel " & CStr(UserList(UserIndex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(Userindex).Name) & " completo el nivel " & CStr(UserList(Userindex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         
         'Reset data
         .trainingTime = 0
         .startTick = (GetTickCount() And &H7FFFFFFF)
+
     End With
+
 End Sub
 
 Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
-    Dim clase As Integer
-    Dim raza As Integer
+    Dim clase     As Integer
+
+    Dim raza      As Integer
+
     Dim alignment As Integer
     
     If UserList(victim).Stats.ELV > 50 Or UserList(killer).Stats.ELV > 50 Then Exit Sub
     
     Select Case UserList(killer).clase
+
         Case eClass.Assasin
             clase = 1
         
@@ -140,9 +158,11 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         
         Case Else
             Exit Sub
+
     End Select
     
     Select Case UserList(killer).raza
+
         Case eRaza.Elfo
             raza = 1
         
@@ -160,6 +180,7 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
         
         Case Else
             Exit Sub
+
     End Select
     
     If criminal(killer) Then
@@ -167,13 +188,18 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
             alignment = 2
         Else
             alignment = 3
+
         End If
+
     Else
+
         If esArmada(killer) Then
             alignment = 1
         Else
             alignment = 4
+
         End If
+
     End If
     
     fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) + 1
@@ -181,21 +207,25 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
     
     fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) = fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) + 1
+
 End Sub
 
 Public Sub DumpStatistics()
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
     Dim handle As Integer
+
     handle = FreeFile()
     
     Dim line As String
-    Dim i As Long
-    Dim j As Long
+
+    Dim i    As Long
+
+    Dim j    As Long
     
     Open App.Path & "\logs\frags.txt" For Output As handle
     
@@ -299,10 +329,6 @@ Public Sub DumpStatistics()
         line = vbNullString
     Next j
     
-    
-    
-    
-    
     'Save lvl vs race frag matrix for each class - we use GNU Octave's ASCII file format
     
     Print #handle, "# name: fragLvlRace_Ase"
@@ -403,11 +429,6 @@ Public Sub DumpStatistics()
         line = vbNullString
     Next j
     
-    
-    
-    
-    
-    
     'Save lvl vs class frag matrix for each race - we use GNU Octave's ASCII file format
     
     Print #handle, "# name: fragLvlClass_Elf"
@@ -480,9 +501,6 @@ Public Sub DumpStatistics()
         line = vbNullString
     Next j
     
-    
-    
-    
     'Save lvl vs alignment frag matrix for each race - we use GNU Octave's ASCII file format
     
     Print #handle, "# name: fragAlignmentLvl"
@@ -501,8 +519,6 @@ Public Sub DumpStatistics()
     
     Close handle
     
-    
-    
     'Dump Chat statistics
     handle = FreeFile()
     
@@ -517,24 +533,28 @@ Public Sub DumpStatistics()
     
     'Show each character's ocurrencies
     If Total <> 0 Then
+
         For i = 0 To 255
             Print #handle, CStr(i) & "    " & CStr(Round(keyOcurrencies(i) / Total, 8))
         Next i
+
     End If
     
     Print #handle, "TOTAL =    " & CStr(Total)
     
     Close handle
+
 End Sub
 
 Public Sub ParseChat(ByRef S As String)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
 
-    Dim i As Long
+    Dim i   As Long
+
     Dim key As Integer
     
     For i = 1 To Len(S)
@@ -545,4 +565,5 @@ Public Sub ParseChat(ByRef S As String)
     
     'Add a NULL-terminated to consider that possibility too....
     keyOcurrencies(0) = keyOcurrencies(0) + 1
+
 End Sub

@@ -89,4 +89,5 @@ Option Explicit
 
 Private Sub Command1_Click()
     Me.Visible = False
+
 End Sub

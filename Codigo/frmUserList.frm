@@ -135,46 +135,57 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
-Dim LoopC As Integer
 
-Text2.Text = "MaxUsers: " & MaxUsers & vbCrLf
-Text2.Text = Text2.Text & "LastUser: " & LastUser & vbCrLf
-Text2.Text = Text2.Text & "NumUsers: " & NumUsers & vbCrLf
-'Text2.Text = Text2.Text & "" & vbCrLf
+    Dim LoopC As Integer
 
-List1.Clear
+    Text2.Text = "MaxUsers: " & MaxUsers & vbCrLf
+    Text2.Text = Text2.Text & "LastUser: " & LastUser & vbCrLf
+    Text2.Text = Text2.Text & "NumUsers: " & NumUsers & vbCrLf
+    'Text2.Text = Text2.Text & "" & vbCrLf
 
-For LoopC = 1 To MaxUsers
-    List1.AddItem Format(LoopC, "000") & " " & IIf(UserList(LoopC).flags.UserLogged, UserList(LoopC).Name, "")
-    List1.ItemData(List1.NewIndex) = LoopC
-Next LoopC
+    List1.Clear
 
+    For LoopC = 1 To MaxUsers
+        List1.AddItem Format(LoopC, "000") & " " & IIf(UserList(LoopC).flags.UserLogged, UserList(LoopC).Name, "")
+        List1.ItemData(List1.NewIndex) = LoopC
+    Next LoopC
 
 End Sub
 
 Private Sub Command2_Click()
-Dim LoopC As Integer
 
-For LoopC = 1 To MaxUsers
-    If UserList(LoopC).ConnID <> -1 And Not UserList(LoopC).flags.UserLogged Then
-        Call CloseSocket(LoopC)
-    End If
-Next LoopC
+    Dim LoopC As Integer
+
+    For LoopC = 1 To MaxUsers
+
+        If UserList(LoopC).ConnID <> -1 And Not UserList(LoopC).flags.UserLogged Then
+            Call CloseSocket(LoopC)
+
+        End If
+
+    Next LoopC
 
 End Sub
 
 Private Sub List1_Click()
-Dim UserIndex As Integer
-If List1.ListIndex <> -1 Then
-    UserIndex = List1.ItemData(List1.ListIndex)
-    If UserIndex > 0 And UserIndex <= MaxUsers Then
-        With UserList(UserIndex)
-            Text1.Text = "UserLogged: " & .flags.UserLogged & vbCrLf
-            Text1.Text = Text1.Text & "IdleCount: " & .Counters.IdleCount & vbCrLf
-            Text1.Text = Text1.Text & "ConnId: " & .ConnID & vbCrLf
-            Text1.Text = Text1.Text & "ConnIDValida: " & .ConnIDValida & vbCrLf
-        End With
+
+    Dim Userindex As Integer
+
+    If List1.ListIndex <> -1 Then
+        Userindex = List1.ItemData(List1.ListIndex)
+
+        If Userindex > 0 And Userindex <= MaxUsers Then
+
+            With UserList(Userindex)
+                Text1.Text = "UserLogged: " & .flags.UserLogged & vbCrLf
+                Text1.Text = Text1.Text & "IdleCount: " & .Counters.IdleCount & vbCrLf
+                Text1.Text = Text1.Text & "ConnId: " & .ConnID & vbCrLf
+                Text1.Text = Text1.Text & "ConnIDValida: " & .ConnIDValida & vbCrLf
+
+            End With
+
+        End If
+
     End If
-End If
 
 End Sub

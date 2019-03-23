@@ -40,9 +40,9 @@ Attribute VB_Exposed = False
 'Pablo Ignacio Marquez
 Option Explicit
 
-Public map As Integer
-Public X As Integer
-Public Y As Integer
+Public Map As Integer
 
+Public x   As Integer
 
+Public Y   As Integer
 

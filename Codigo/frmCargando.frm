@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
@@ -131,22 +131,29 @@ Private Sub Form_Load()
     'Label1(2).Caption = "V." & App.Major & "." & App.Minor & "." & App.Revision
     Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
     Me.Analizar
+
 End Sub
 
 Function Analizar()
+
     On Error Resume Next
            
     If Not (CheckIfRunningLastVersion = True) Then
         If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
-            Call ShellExecute(Me.hwnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
+            Call ShellExecute(Me.hWnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
             End
+
         End If
+
     End If
+
 End Function
 
 Private Function CheckIfRunningLastVersion() As Boolean
+
     Dim responseGithub As String, versionNumberMaster As String, versionNumberLocal As String
-    Dim JsonObject As Object
+
+    Dim JsonObject     As Object
 
     responseGithub = Inet1.OpenURL("https://api.github.com/repos/ao-libre/ao-server/releases/latest")
     Set JsonObject = JSON.parse(responseGithub)
@@ -158,5 +165,7 @@ Private Function CheckIfRunningLastVersion() As Boolean
         CheckIfRunningLastVersion = True
     Else
         CheckIfRunningLastVersion = False
+
     End If
+
 End Function

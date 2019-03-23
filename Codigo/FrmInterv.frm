@@ -1064,71 +1064,72 @@ Option Explicit
 
 Public Sub AplicarIntervalos()
 
-'?????????? Intervalos del main loop ????????
-SanaIntervaloSinDescansar = val(txtSanaIntervaloSinDescansar.Text)
-StaminaIntervaloSinDescansar = val(txtStaminaIntervaloSinDescansar.Text)
-SanaIntervaloDescansar = val(txtSanaIntervaloDescansar.Text)
-StaminaIntervaloDescansar = val(txtStaminaIntervaloDescansar.Text)
-IntervaloSed = val(txtIntervaloSed.Text)
-IntervaloHambre = val(txtIntervaloHambre.Text)
-IntervaloVeneno = val(txtIntervaloVeneno.Text)
-IntervaloParalizado = val(txtIntervaloParalizado.Text)
-IntervaloInvisible = val(txtIntervaloInvisible.Text)
-IntervaloFrio = val(txtIntervaloFrio.Text)
-IntervaloWavFx = val(txtIntervaloWAVFX.Text)
-IntervaloInvocacion = val(txtInvocacion.Text)
-IntervaloParaConexion = val(txtIntervaloParaConexion.Text)
+    '?????????? Intervalos del main loop ????????
+    SanaIntervaloSinDescansar = val(txtSanaIntervaloSinDescansar.Text)
+    StaminaIntervaloSinDescansar = val(txtStaminaIntervaloSinDescansar.Text)
+    SanaIntervaloDescansar = val(txtSanaIntervaloDescansar.Text)
+    StaminaIntervaloDescansar = val(txtStaminaIntervaloDescansar.Text)
+    IntervaloSed = val(txtIntervaloSed.Text)
+    IntervaloHambre = val(txtIntervaloHambre.Text)
+    IntervaloVeneno = val(txtIntervaloVeneno.Text)
+    IntervaloParalizado = val(txtIntervaloParalizado.Text)
+    IntervaloInvisible = val(txtIntervaloInvisible.Text)
+    IntervaloFrio = val(txtIntervaloFrio.Text)
+    IntervaloWavFx = val(txtIntervaloWAVFX.Text)
+    IntervaloInvocacion = val(txtInvocacion.Text)
+    IntervaloParaConexion = val(txtIntervaloParaConexion.Text)
 
-'///////////////// TIMERS \\\\\\\\\\\\\\\\\\\
+    '///////////////// TIMERS \\\\\\\\\\\\\\\\\\\
 
-IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
-IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
-IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
-
-
+    IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
+    IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
+    IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
 
 End Sub
 
 Private Sub Command1_Click()
-On Error Resume Next
-Call AplicarIntervalos
+
+    On Error Resume Next
+
+    Call AplicarIntervalos
 
 End Sub
 
 Private Sub Command2_Click()
 
-On Error GoTo Err
+    On Error GoTo Err
 
-'Intervalos
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar", str(SanaIntervaloSinDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloSinDescansar", str(StaminaIntervaloSinDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloDescansar", str(SanaIntervaloDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloDescansar", str(StaminaIntervaloDescansar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloSed", str(IntervaloSed))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloHambre", str(IntervaloHambre))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloVeneno", str(IntervaloVeneno))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParalizado", str(IntervaloParalizado))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvisible", str(IntervaloInvisible))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFrio", str(IntervaloFrio))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWAVFX", str(IntervaloWavFx))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvocacion", str(IntervaloInvocacion))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParaConexion", str(IntervaloParaConexion))
+    'Intervalos
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar", str(SanaIntervaloSinDescansar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloSinDescansar", str(StaminaIntervaloSinDescansar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloDescansar", str(SanaIntervaloDescansar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloDescansar", str(StaminaIntervaloDescansar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloSed", str(IntervaloSed))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloHambre", str(IntervaloHambre))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloVeneno", str(IntervaloVeneno))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParalizado", str(IntervaloParalizado))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvisible", str(IntervaloInvisible))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFrio", str(IntervaloFrio))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWAVFX", str(IntervaloWavFx))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvocacion", str(IntervaloInvocacion))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParaConexion", str(IntervaloParaConexion))
 
-'&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
+    '&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
 
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", str(IntervaloUserPuedeTrabajar))
-Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", str(IntervaloUserPuedeTrabajar))
+    Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
 
+    MsgBox "Los intervalos se han guardado sin problemas."
 
-MsgBox "Los intervalos se han guardado sin problemas."
-
-Exit Sub
+    Exit Sub
 Err:
     MsgBox "Error al intentar grabar los intervalos"
+
 End Sub
 
 Private Sub ok_Click()
     Me.Visible = False
+
 End Sub
 

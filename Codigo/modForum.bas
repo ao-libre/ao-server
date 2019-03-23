@@ -27,42 +27,51 @@ Attribute VB_Name = "modForum"
 'Codigo Postal 1900
 'Pablo Ignacio Marquez
 
-
 Option Explicit
 
 Public Const MAX_MENSAJES_FORO As Byte = 30
+
 Public Const MAX_ANUNCIOS_FORO As Byte = 5
 
-Public Const FORO_REAL_ID As String = "REAL"
-Public Const FORO_CAOS_ID As String = "CAOS"
+Public Const FORO_REAL_ID      As String = "REAL"
+
+Public Const FORO_CAOS_ID      As String = "CAOS"
 
 Public Type tPost
+
     sTitulo As String
     sPost As String
     Autor As String
+
 End Type
 
 Public Type tForo
+
     vsPost(1 To MAX_MENSAJES_FORO) As tPost
     vsAnuncio(1 To MAX_ANUNCIOS_FORO) As tPost
     CantPosts As Byte
     CantAnuncios As Byte
     ID As String
+
 End Type
 
 Private NumForos As Integer
-Private Foros() As tForo
 
+Private Foros()  As tForo
 
 Public Sub AddForum(ByVal sForoID As String)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Adds a forum to the list and fills it.
-'***************************************************
+
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Adds a forum to the list and fills it.
+    '***************************************************
     Dim ForumPath As String
-    Dim PostPath As String
+
+    Dim PostPath  As String
+
     Dim PostIndex As Integer
+
     Dim FileIndex As Integer
     
     NumForos = NumForos + 1
@@ -111,6 +120,7 @@ Public Sub AddForum(ByVal sForoID As String)
                 
                 Close #FileIndex
             Next PostIndex
+
         End If
         
     End With
@@ -118,36 +128,41 @@ Public Sub AddForum(ByVal sForoID As String)
 End Sub
 
 Public Function GetForumIndex(ByRef sForoID As String) As Integer
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Returns the forum index.
-'***************************************************
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Returns the forum index.
+    '***************************************************
     
     Dim ForumIndex As Integer
     
     For ForumIndex = 1 To NumForos
+
         If Foros(ForumIndex).ID = sForoID Then
             GetForumIndex = ForumIndex
             Exit Function
+
         End If
+
     Next ForumIndex
     
 End Function
 
-Public Sub AddPost(ByVal ForumIndex As Integer, ByRef Post As String, ByRef Autor As String, _
-                   ByRef Titulo As String, ByVal bAnuncio As Boolean)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Saves a new post into the forum.
-'***************************************************
+Public Sub AddPost(ByVal ForumIndex As Integer, _
+                   ByRef Post As String, _
+                   ByRef Autor As String, _
+                   ByRef Titulo As String, _
+                   ByVal bAnuncio As Boolean)
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Saves a new post into the forum.
+    '***************************************************
 
     With Foros(ForumIndex)
         
         If bAnuncio Then
-            If .CantAnuncios < MAX_ANUNCIOS_FORO Then _
-                .CantAnuncios = .CantAnuncios + 1
+            If .CantAnuncios < MAX_ANUNCIOS_FORO Then .CantAnuncios = .CantAnuncios + 1
             
             Call MoveArray(ForumIndex, bAnuncio)
             
@@ -156,11 +171,12 @@ Public Sub AddPost(ByVal ForumIndex As Integer, ByRef Post As String, ByRef Auto
                 .sTitulo = Titulo
                 .Autor = Autor
                 .sPost = Post
+
             End With
             
         Else
-            If .CantPosts < MAX_MENSAJES_FORO Then _
-                .CantPosts = .CantPosts + 1
+
+            If .CantPosts < MAX_MENSAJES_FORO Then .CantPosts = .CantPosts + 1
                 
             Call MoveArray(ForumIndex, bAnuncio)
             
@@ -169,36 +185,42 @@ Public Sub AddPost(ByVal ForumIndex As Integer, ByRef Post As String, ByRef Auto
                 .sTitulo = Titulo
                 .Autor = Autor
                 .sPost = Post
+
             End With
         
         End If
+
     End With
+
 End Sub
 
 Public Sub SaveForums()
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Saves all forums into disk.
-'***************************************************
+
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Saves all forums into disk.
+    '***************************************************
     Dim ForumIndex As Integer
 
     For ForumIndex = 1 To NumForos
         Call SaveForum(ForumIndex)
     Next ForumIndex
+
 End Sub
 
-
 Private Sub SaveForum(ByVal ForumIndex As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Saves a forum into disk.
-'***************************************************
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Saves a forum into disk.
+    '***************************************************
 
     Dim PostIndex As Integer
+
     Dim FileIndex As Integer
-    Dim PostPath As String
+
+    Dim PostPath  As String
     
     Call CleanForum(ForumIndex)
     
@@ -219,6 +241,7 @@ Private Sub SaveForum(ByVal ForumIndex As Integer)
                 Print #FileIndex, .sTitulo
                 Print #FileIndex, .Autor
                 Print #FileIndex, .sPost
+
             End With
             
             Close #FileIndex
@@ -236,6 +259,7 @@ Private Sub SaveForum(ByVal ForumIndex As Integer)
                 Print #FileIndex, .sTitulo
                 Print #FileIndex, .Autor
                 Print #FileIndex, .sPost
+
             End With
             
             Close #FileIndex
@@ -247,19 +271,23 @@ Private Sub SaveForum(ByVal ForumIndex As Integer)
 End Sub
 
 Public Sub CleanForum(ByVal ForumIndex As Integer)
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Cleans a forum from disk.
-'***************************************************
+
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Cleans a forum from disk.
+    '***************************************************
     Dim PostIndex As Integer
-    Dim NumPost As Integer
+
+    Dim NumPost   As Integer
+
     Dim ForumPath As String
 
     With Foros(ForumIndex)
     
         ' Elimino todo
         ForumPath = App.Path & "\Foros\" & .ID & ".for"
+
         If FileExist(ForumPath, vbNormal) Then
     
             NumPost = val(GetVar(ForumPath, "INFO", "CantMSG"))
@@ -269,7 +297,6 @@ Public Sub CleanForum(ByVal ForumIndex As Integer)
                 Kill App.Path & "\Foros\" & .ID & PostIndex & ".for"
             Next PostIndex
             
-            
             NumPost = val(GetVar(ForumPath, "INFO", "CantAnuncios"))
             
             ' Elimino los post viejos
@@ -277,25 +304,27 @@ Public Sub CleanForum(ByVal ForumIndex As Integer)
                 Kill App.Path & "\Foros\" & .ID & PostIndex & "a.for"
             Next PostIndex
             
-            
             ' Elimino el foro
             Kill App.Path & "\Foros\" & .ID & ".for"
     
         End If
+
     End With
 
 End Sub
 
-Public Function SendPosts(ByVal UserIndex As Integer, ByRef ForoID As String) As Boolean
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Sends all the posts of a required forum
-'***************************************************
+Public Function SendPosts(ByVal Userindex As Integer, ByRef ForoID As String) As Boolean
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Sends all the posts of a required forum
+    '***************************************************
     
     Dim ForumIndex As Integer
-    Dim PostIndex As Integer
-    Dim bEsGm As Boolean
+
+    Dim PostIndex  As Integer
+
+    Dim bEsGm      As Boolean
     
     ForumIndex = GetForumIndex(ForoID)
 
@@ -305,24 +334,30 @@ Public Function SendPosts(ByVal UserIndex As Integer, ByRef ForoID As String) As
             
             ' Send General posts
             For PostIndex = 1 To .CantPosts
+
                 With .vsPost(PostIndex)
-                    Call WriteAddForumMsg(UserIndex, eForumMsgType.ieGeneral, .sTitulo, .Autor, .sPost)
+                    Call WriteAddForumMsg(Userindex, eForumMsgType.ieGeneral, .sTitulo, .Autor, .sPost)
+
                 End With
+
             Next PostIndex
             
             ' Send Sticky posts
             For PostIndex = 1 To .CantAnuncios
+
                 With .vsAnuncio(PostIndex)
-                    Call WriteAddForumMsg(UserIndex, eForumMsgType.ieGENERAL_STICKY, .sTitulo, .Autor, .sPost)
+                    Call WriteAddForumMsg(Userindex, eForumMsgType.ieGENERAL_STICKY, .sTitulo, .Autor, .sPost)
+
                 End With
+
             Next PostIndex
             
         End With
         
-        bEsGm = EsGM(UserIndex)
+        bEsGm = EsGm(Userindex)
         
         ' Caos?
-        If esCaos(UserIndex) Or bEsGm Then
+        If esCaos(Userindex) Or bEsGm Then
             
             ForumIndex = GetForumIndex(FORO_CAOS_ID)
             
@@ -332,23 +367,28 @@ Public Function SendPosts(ByVal UserIndex As Integer, ByRef ForoID As String) As
                 For PostIndex = 1 To .CantPosts
                 
                     With .vsPost(PostIndex)
-                        Call WriteAddForumMsg(UserIndex, eForumMsgType.ieCAOS, .sTitulo, .Autor, .sPost)
+                        Call WriteAddForumMsg(Userindex, eForumMsgType.ieCAOS, .sTitulo, .Autor, .sPost)
+
                     End With
                     
                 Next PostIndex
                 
                 ' Send Sticky posts
                 For PostIndex = 1 To .CantAnuncios
+
                     With .vsAnuncio(PostIndex)
-                        Call WriteAddForumMsg(UserIndex, eForumMsgType.ieCAOS_STICKY, .sTitulo, .Autor, .sPost)
+                        Call WriteAddForumMsg(Userindex, eForumMsgType.ieCAOS_STICKY, .sTitulo, .Autor, .sPost)
+
                     End With
+
                 Next PostIndex
                 
             End With
+
         End If
             
         ' Caos?
-        If esArmada(UserIndex) Or bEsGm Then
+        If esArmada(Userindex) Or bEsGm Then
             
             ForumIndex = GetForumIndex(FORO_REAL_ID)
             
@@ -358,33 +398,41 @@ Public Function SendPosts(ByVal UserIndex As Integer, ByRef ForoID As String) As
                 For PostIndex = 1 To .CantPosts
                 
                     With .vsPost(PostIndex)
-                        Call WriteAddForumMsg(UserIndex, eForumMsgType.ieREAL, .sTitulo, .Autor, .sPost)
+                        Call WriteAddForumMsg(Userindex, eForumMsgType.ieREAL, .sTitulo, .Autor, .sPost)
+
                     End With
                     
                 Next PostIndex
                 
                 ' Send Sticky posts
                 For PostIndex = 1 To .CantAnuncios
+
                     With .vsAnuncio(PostIndex)
-                        Call WriteAddForumMsg(UserIndex, eForumMsgType.ieREAL_STICKY, .sTitulo, .Autor, .sPost)
+                        Call WriteAddForumMsg(Userindex, eForumMsgType.ieREAL_STICKY, .sTitulo, .Autor, .sPost)
+
                     End With
+
                 Next PostIndex
                 
             End With
+
         End If
         
         SendPosts = True
+
     End If
     
 End Function
 
 Public Function EsAnuncio(ByVal ForumType As Byte) As Boolean
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Returns true if the post is sticky.
-'***************************************************
+
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Returns true if the post is sticky.
+    '***************************************************
     Select Case ForumType
+
         Case eForumMsgType.ieCAOS_STICKY
             EsAnuncio = True
             
@@ -399,12 +447,14 @@ Public Function EsAnuncio(ByVal ForumType As Byte) As Boolean
 End Function
 
 Public Function ForumAlignment(ByVal yForumType As Byte) As Byte
-'***************************************************
-'Author: ZaMa
-'Last Modification: 01/03/2010
-'Returns the forum alignment.
-'***************************************************
+
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 01/03/2010
+    'Returns the forum alignment.
+    '***************************************************
     Select Case yForumType
+
         Case eForumMsgType.ieCAOS, eForumMsgType.ieCAOS_STICKY
             ForumAlignment = eForumType.ieCAOS
             
@@ -419,31 +469,40 @@ Public Function ForumAlignment(ByVal yForumType As Byte) As Byte
 End Function
 
 Public Sub ResetForums()
-'***************************************************
-'Author: ZaMa
-'Last Modification: 22/02/2010
-'Resets forum info
-'***************************************************
+    '***************************************************
+    'Author: ZaMa
+    'Last Modification: 22/02/2010
+    'Resets forum info
+    '***************************************************
     ReDim Foros(1 To 1) As tForo
     NumForos = 0
+
 End Sub
 
 Private Sub MoveArray(ByVal ForumIndex As Integer, ByVal Sticky As Boolean)
-Dim i As Long
 
-With Foros(ForumIndex)
-    If Sticky Then
-        For i = .CantAnuncios To 2 Step -1
-            .vsAnuncio(i).sTitulo = .vsAnuncio(i - 1).sTitulo
-            .vsAnuncio(i).sPost = .vsAnuncio(i - 1).sPost
-            .vsAnuncio(i).Autor = .vsAnuncio(i - 1).Autor
-        Next i
-    Else
-        For i = .CantPosts To 2 Step -1
-            .vsPost(i).sTitulo = .vsPost(i - 1).sTitulo
-            .vsPost(i).sPost = .vsPost(i - 1).sPost
-            .vsPost(i).Autor = .vsPost(i - 1).Autor
-        Next i
-    End If
-End With
+    Dim i As Long
+
+    With Foros(ForumIndex)
+
+        If Sticky Then
+
+            For i = .CantAnuncios To 2 Step -1
+                .vsAnuncio(i).sTitulo = .vsAnuncio(i - 1).sTitulo
+                .vsAnuncio(i).sPost = .vsAnuncio(i - 1).sPost
+                .vsAnuncio(i).Autor = .vsAnuncio(i - 1).Autor
+            Next i
+
+        Else
+
+            For i = .CantPosts To 2 Step -1
+                .vsPost(i).sTitulo = .vsPost(i - 1).sTitulo
+                .vsPost(i).sPost = .vsPost(i - 1).sPost
+                .vsPost(i).Autor = .vsPost(i - 1).Autor
+            Next i
+
+        End If
+
+    End With
+
 End Sub
