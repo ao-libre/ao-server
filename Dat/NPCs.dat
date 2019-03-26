@@ -12,6 +12,8 @@
 7 ====== TIMBEROS
 8 ====== GUARDIAS DEL CAOS
 9 ====== PUEDE RESUCITAR SOLAMENTE A LOS NEWBIES
+10 ====== Clan Praetoriano
+11 ====== Gobernador
 
 
 ##############################################
@@ -38,6 +40,7 @@ NPCS GUARDIAS LEGIÓN
 NPCS NO HOSTILES
 NPCS HOSTILES
 NPCS PRETORIANOS
+NPCS QUESTS
 
 
 ##############################################
@@ -72,7 +75,7 @@ Actual Npc con Nro más alto: 616
 [INIT]
 'aca va el número de NPC más alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=923
+NumNPCs=926
 
 
 
@@ -1078,7 +1081,7 @@ BackUp=0
 #############################################
 
 [NPC13] 'npc gobernador de ulla
-Name=Gobernador
+Name=Gobernador de Ulla
 NpcType=11
 Desc=Hola, soy el gobernador de Ullathorpe ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -3288,7 +3291,7 @@ BackUp=0
 #############################################
 
 [NPC150] 'npc gobernador de nix
-Name=Gobernador
+Name=Gobernador de Nix
 NpcType=11
 Desc=Hola, soy el gobernador de Nix ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -3307,7 +3310,7 @@ BackUp=0
 #############################################
 
 [NPC151] 'npc gobernador de Banderbill
-Name=Gobernador
+Name=Gobernador de Banderbill
 NpcType=11
 Desc=Hola, soy el gobernador de Banderbill ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -3326,7 +3329,7 @@ BackUp=0
 #############################################
 
 [NPC152] 'npc gobernador de Lindos
-Name=Gobernador
+Name=Gobernador de Lindos
 NpcType=11
 Desc=Hola, soy el gobernador de Lindos ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -3345,7 +3348,7 @@ BackUp=0
 #############################################
 
 [NPC153] 'npc gobernador de Arghal
-Name=Gobernador
+Name=Gobernador de Arghal
 NpcType=11
 Desc=Hola, soy el gobernador de Arghal ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -3364,7 +3367,7 @@ BackUp=0
 #############################################
 
 [NPC158] 'npc gobernador de Arkhein
-Name=Gobernador
+Name=Gobernador de Arkhein
 NpcType=11
 Desc=Hola, soy el gobernador de Arkhein ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
@@ -9675,3 +9678,60 @@ Obj1=12-10000 ' Oro
 Obj2=873-1    ' Guantes de hurto
 Obj3=132-1    ' Casco de Hierro
 BackUp=0
+
+##############################################################
+##############################################################
+#####################NPCS QUESTS##############################
+##############################################################
+###############no cambiar los índices asignados###############
+
+[NPC924]
+Name=Mark Quest
+NpcType=0
+Desc=¡Buen día amigo mío! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
+Head=101
+Heading=3
+Body=348
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=1
+
+[NPC925]
+Name=Willdon
+NpcType=0
+Desc=Que onda? Necesito pieles de oso y lobo para hacer un par de cosas copadas, si queres ayudarme escribe /QUEST.
+Head=101
+Heading=3
+Body=348
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=2
+
+[NPC926]
+Name=Selenna
+NpcType=0
+Desc=Esta ciudad en un peligro con estas criaturas alrededor, hay que traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
+Head=71
+Heading=3
+Body=254
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=3
