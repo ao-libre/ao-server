@@ -9722,7 +9722,7 @@ QuestNumber=2
 [NPC926]
 Name=Selenna
 NpcType=0
-Desc=Esta ciudad en un peligro con estas criaturas alrededor, hay que traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
+Desc=Esta ciudad es un peligro con estas criaturas alrededor, hay que traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
 Head=71
 Heading=3
 Body=254
