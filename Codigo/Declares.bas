@@ -2044,6 +2044,8 @@ Public Prision         As WorldPos
 
 Public Libertad        As WorldPos
 
+Public CustomSpawnMap  As WorldPos
+
 Public Ayuda           As cCola
 
 Public Denuncias       As cCola
@@ -2381,3 +2383,5 @@ Public ContadorAntiPiquete  As Integer
 Public MinutosCarcelPiquete As Integer
 
 Public InventarioUsarConfiguracionPersonalizada As Boolean
+
+Public UsarMundoPropio As Boolean 

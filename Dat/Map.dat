@@ -1,6 +1,8 @@
+'En este archivo se debe especificar el Mundo a elegir.
+
 'En éste archivo se debe especificar la cantidad de mapas
 'que cargará el servidor
 
 [INIT]
-MapPath=\Maps\
+MapPath=\Mundos\Alkon\
 NumMaps=290

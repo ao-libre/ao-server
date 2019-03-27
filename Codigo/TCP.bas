@@ -1540,8 +1540,18 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Posicion de comienzo
         If mapa = 0 Then
-            .Pos = Nemahuak
-            mapa = Nemahuak.Map
+
+            'Configurable desde el Server.ini / CustomWorld
+            'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
+            'Caso contrario sigue modo Alkon'
+            If UsarMundoPropio Then
+                .Pos = CustomSpawnMap
+                mapa = CustomSpawnMap.Map
+            Else
+                .Pos = Nemahuak
+                mapa = Nemahuak.Map
+            End If
+
         Else
     
             If Not MapaValido(mapa) Then
