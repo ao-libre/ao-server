@@ -1,5 +1,5 @@
 [Mapa198]
-Name=Mapa para Casamientos. (Oasis)
+Name=Boda Loca
 MusicNum=14
 MagiaSinefecto=0
 InviSinEfecto=0
@@ -9,3 +9,4 @@ Zona=DUNGEON
 Restringir=GM
 BackUp= 1
 Pk=0
+NoEncriptarMP=0
