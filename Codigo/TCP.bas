@@ -542,7 +542,6 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
     '03/12/2009: Budi - Optimizacion del codigo.
     '12/10/2018: CHOTS - Sistema de cuentas
     '*************************************************
-    Dim i As Long
 
     With UserList(Userindex)
 
@@ -596,6 +595,8 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Reputacion.PlebeRep = 30
     
         .Reputacion.Promedio = 30 / 6
+
+        .Char.heading = eHeading.SOUTH
     
         .Name = Name
         .clase = UserClase
@@ -605,7 +606,91 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
 
         'CHOTS | Accounts
         .AccountHash = AccountHash
+
+        '???????????????? ATRIBUTOS
+        If EstadisticasInicialesUsarConfiguracionPersonalizada Then
+            Call SetAttributesCustomToNewUser(UserIndex)
+        Else
+            Call SetAttributesToNewUser(UserIndex, UserClase, UserRaza)
+        End If
     
+        '???????????????? INVENTARIO
+        If InventarioUsarConfiguracionPersonalizada Then
+            Call AddItemsCustomToNewUser(UserIndex)
+        Else
+            Call AddItemsToNewUser(UserIndex, UserClase, UserRaza)
+        End If
+
+        Call DarCuerpo(Userindex)
+        .Char.Head = Head
+    
+        .OrigChar = .Char
+
+        #If ConUpTime Then
+            .LogOnTime = Now
+            .UpTime = 0
+        #End If
+
+    End With
+
+    'Valores Default de facciones al Activar nuevo usuario
+    Call ResetFacciones(Userindex)
+
+    Call SaveUser(Userindex)
+
+    'CHOTS | Account in charfile
+    If Not Database_Enabled Then
+        Call SaveUserToAccountCharfile(Name, AccountHash)
+
+    End If
+  
+    'Open User
+    Call ConnectUser(Userindex, Name, AccountHash)
+  
+End Sub
+
+Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
+
+    With UserList(UserIndex)
+        .Stats.UserAtributos(eAtributos.Fuerza) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Fuerza"))
+        .Stats.UserAtributos(eAtributos.Agilidad) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Agilidad"))
+        .Stats.UserAtributos(eAtributos.Inteligencia) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Inteligencia"))
+        .Stats.UserAtributos(eAtributos.Carisma) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Carisma"))
+        .Stats.UserAtributos(eAtributos.Constitucion) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Constitucion"))
+        
+        Dim SkillPointsIniciales as Long
+        SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
+
+        Dim i As Long
+        For i = 1 To NUMSKILLS
+            .Stats.UserSkills(i) = SkillPointsIniciales
+        Next i
+    
+        .Stats.SkillPts = 0
+        .Stats.MaxHp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHp"))
+        .Stats.MinHp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHp"))
+        .Stats.MaxSta = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxSta"))
+        .Stats.MinSta = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinSta"))
+        .Stats.MaxAGU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxAGU"))
+        .Stats.MinAGU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinAGU"))
+        .Stats.MaxHam = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHam"))
+        .Stats.MinHam = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHam"))
+        .Stats.MaxMAN = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxMAN"))
+        .Stats.MinMAN = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinMAN"))
+        .Stats.MaxHIT = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHIT"))
+        .Stats.MinHIT = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHIT"))
+    
+        .Stats.Gld = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro"))
+        .Stats.Exp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Experiencia"))
+        .Stats.ELU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELU"))
+        .Stats.ELV = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELV"))
+    End With
+
+End Sub
+
+Private Sub SetAttributesToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
+
+    With UserList(UserIndex)
         '[Pablo (Toxic Waste) 9/01/08]
         .Stats.UserAtributos(eAtributos.Fuerza) = .Stats.UserAtributos(eAtributos.Fuerza) + ModRaza(UserRaza).Fuerza
         .Stats.UserAtributos(eAtributos.Agilidad) = .Stats.UserAtributos(eAtributos.Agilidad) + ModRaza(UserRaza).Agilidad
@@ -614,19 +699,13 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Stats.UserAtributos(eAtributos.Constitucion) = .Stats.UserAtributos(eAtributos.Constitucion) + ModRaza(UserRaza).Constitucion
         '[/Pablo (Toxic Waste)]
     
+        Dim i As Long
         For i = 1 To NUMSKILLS
             .Stats.UserSkills(i) = 0
             Call CheckEluSkill(Userindex, i, True)
         Next i
     
         .Stats.SkillPts = 10
-    
-        .Char.heading = eHeading.SOUTH
-    
-        Call DarCuerpo(Userindex)
-        .Char.Head = Head
-    
-        .OrigChar = .Char
     
         Dim MiInt As Long
 
@@ -680,35 +759,8 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Stats.Exp = 0
         .Stats.ELU = 300
         .Stats.ELV = 1
-    
-        '???????????????? INVENTARIO
-        If InventarioUsarConfiguracionPersonalizada Then
-            Call AddItemsCustomToNewUser(UserIndex)
-        Else
-            Call AddItemsToNewUser(UserIndex, UserClase, UserRaza)
-        End If
-
-        #If ConUpTime Then
-            .LogOnTime = Now
-            .UpTime = 0
-        #End If
-
     End With
 
-    'Valores Default de facciones al Activar nuevo usuario
-    Call ResetFacciones(Userindex)
-
-    Call SaveUser(Userindex)
-
-    'CHOTS | Account in charfile
-    If Not Database_Enabled Then
-        Call SaveUserToAccountCharfile(Name, AccountHash)
-
-    End If
-  
-    'Open User
-    Call ConnectUser(Userindex, Name, AccountHash)
-  
 End Sub
 
 Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
