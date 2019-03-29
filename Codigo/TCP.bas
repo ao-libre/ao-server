@@ -595,8 +595,6 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Reputacion.PlebeRep = 30
     
         .Reputacion.Promedio = 30 / 6
-
-        .Char.heading = eHeading.SOUTH
     
         .Name = Name
         .clase = UserClase
@@ -622,6 +620,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         End If
 
         Call DarCuerpo(Userindex)
+        .Char.heading = eHeading.SOUTH
         .Char.Head = Head
     
         .OrigChar = .Char
@@ -681,6 +680,7 @@ Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
         .Stats.MinHIT = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHIT"))
     
         .Stats.Gld = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro"))
+        .Stats.Banco = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco"))
         .Stats.Exp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Experiencia"))
         .Stats.ELU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELU"))
         .Stats.ELV = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELV"))
