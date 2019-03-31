@@ -1755,6 +1755,9 @@ Sub LoadSini()
     ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
 
+    'Usar Mundo personalizado / Use custom world
+    UsarMundoPropio = GetVar(IniPath & "Server.ini", "MUNDO", "UsarMundoPropio")
+
     'Inventario Inicial
     InventarioUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
 
@@ -1887,6 +1890,13 @@ Sub LoadSini()
     Nemahuak.Map = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Mapa")
     Nemahuak.x = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "X")
     Nemahuak.Y = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Y")
+
+    'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
+    If UsarMundoPropio Then
+        CustomSpawnMap.Map = GetVar(IniPath & "Server.Ini", "MUNDO", "Mapa")
+        CustomSpawnMap.x = GetVar(IniPath & "Server.Ini", "MUNDO", "X")
+        CustomSpawnMap.y = GetVar(IniPath & "Server.Ini", "MUNDO", "Y")
+    End If
 
     Ciudades(eCiudad.cUllathorpe) = Ullathorpe
     Ciudades(eCiudad.cNix) = Nix

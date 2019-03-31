@@ -443,7 +443,7 @@ BackUp=0
 ##############################################################
 
 [NPC14] 'Vende Pociones
-Name=Lilith
+Name=Lilith (Vende Pociones)
 NpcType=0
 Desc=Hola, tengo las mejores Pociones de la Alquimia.
 Head=77
@@ -3506,7 +3506,7 @@ BackUp=0
 #############################################
 
 [NPC154] 'Vende Pociones newbie
-Name=Lilith
+Name=Lilith (Vende Pociones newbie)
 NpcType=0
 Desc=Hola, tengo las mejores Pociones de la Alquimia para principiantes.
 Head=77
@@ -9735,3 +9735,51 @@ Alineacion=0
 Comercia=0
 BackUp=0
 QuestNumber=3
+
+[NPC927]
+Name=Novia cornuda
+NpcType=0
+Desc=¡ME CAMBIASTE POR UNA GNOMA! No vuelvas a hablarme nunca mas en tu puta vida.
+Head=77
+Heading=3
+Body=511
+Movement=2
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+[NPC928]
+Name=Novio cagador
+NpcType=0
+Desc=¡NO ES LO QUE PARECE!.
+Head=0
+Heading=3
+Body=4
+Movement=2
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+
+[NPC929]
+Name=Tercera en discordia
+NpcType=0
+Desc=Enserio armaste un casamiento 2 x 1 para ahorrarte plata? Sos una rata inmunda, cagador, mal padre.
+Head=473
+Heading=3
+Body=288
+Movement=2
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0

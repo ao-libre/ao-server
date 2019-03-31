@@ -1,6 +1,8 @@
-'En éste archivo se debe especificar la cantidad de mapas
-'que cargará el servidor
+'En este archivo se debe especificar la cantidad de mapas
+'que cargara el servidor
+'No modificar este valor por uno menor, ya que la programacion esta pensada para el server Alkon
+'y podria llegar a explotar la aplicacion
 
 [INIT]
-MapPath=\Maps\
+MapPath=\Mundos\Deathmatch\
 NumMaps=290
