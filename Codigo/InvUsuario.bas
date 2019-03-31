@@ -71,9 +71,10 @@ Function ClasePuedeUsarItem(ByVal Userindex As Integer, _
                             Optional ByRef sMotivo As String) As Boolean
     '***************************************************
     'Author: Unknown
-    'Last Modification: 08/08/2015
+    'Last Modification: 01/04/2019
     '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
     '08/08/2015: Shak - Hechizos por clase
+    '01/04/2019: Recox - Se arreglo la prohibicion de hechizos por clase
     '***************************************************
 
     On Error GoTo manejador
@@ -90,17 +91,16 @@ Function ClasePuedeUsarItem(ByVal Userindex As Integer, _
               
                     '//Si es un hechizo
                     If ObjData(ObjIndex).OBJType = eOBJType.otPergaminos Then
-                        ClasePuedeUsarItem = False
                         sMotivo = "Tu clase no tiene la habilidad de aprender este hechizo."
+                        ClasePuedeUsarItem = False
+                        Exit Function
                     Else
                         sMotivo = "Tu clase no puede usar este objeto."
-
+                        ClasePuedeUsarItem = False
+                        Exit Function
                     End If
 
                 End If
-                
-                ClasePuedeUsarItem = False
-                Exit Function
                 
             Next i
 
