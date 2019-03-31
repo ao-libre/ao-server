@@ -651,11 +651,11 @@ End Sub
 Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
 
     With UserList(UserIndex)
-        .Stats.UserAtributos(eAtributos.Fuerza) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Fuerza"))
-        .Stats.UserAtributos(eAtributos.Agilidad) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Agilidad"))
-        .Stats.UserAtributos(eAtributos.Inteligencia) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Inteligencia"))
-        .Stats.UserAtributos(eAtributos.Carisma) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Carisma"))
-        .Stats.UserAtributos(eAtributos.Constitucion) = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Constitucion"))
+        .Stats.UserAtributos(eAtributos.Fuerza) = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Fuerza")))
+        .Stats.UserAtributos(eAtributos.Agilidad) = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Agilidad")))
+        .Stats.UserAtributos(eAtributos.Inteligencia) = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Inteligencia")))
+        .Stats.UserAtributos(eAtributos.Carisma) = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Carisma")))
+        .Stats.UserAtributos(eAtributos.Constitucion) = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Constitucion")))
         
         Dim SkillPointsIniciales as Long
         SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
@@ -664,26 +664,26 @@ Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
         For i = 1 To NUMSKILLS
             .Stats.UserSkills(i) = SkillPointsIniciales
         Next i
-    
+
         .Stats.SkillPts = 0
-        .Stats.MaxHp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHp"))
-        .Stats.MinHp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHp"))
-        .Stats.MaxSta = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxSta"))
-        .Stats.MinSta = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinSta"))
-        .Stats.MaxAGU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxAGU"))
-        .Stats.MinAGU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinAGU"))
-        .Stats.MaxHam = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHam"))
-        .Stats.MinHam = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHam"))
-        .Stats.MaxMAN = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxMAN"))
-        .Stats.MinMAN = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinMAN"))
-        .Stats.MaxHIT = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHIT"))
-        .Stats.MinHIT = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHIT"))
+        .Stats.MaxHp = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHp")))
+        .Stats.MinHp = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHp")))
+        .Stats.MaxSta = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxSta")))
+        .Stats.MinSta = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinSta")))
+        .Stats.MaxMAN = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxMAN")))
+        .Stats.MinMAN = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinMAN")))
+        .Stats.MaxHIT = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHIT")))
+        .Stats.MinHIT = CInt(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHIT")))
+        .Stats.MaxAGU = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxAGU")))
+        .Stats.MinAGU = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinAGU")))
+        .Stats.MaxHam = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MaxHam")))
+        .Stats.MinHam = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "MinHam")))
     
-        .Stats.Gld = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro"))
-        .Stats.Banco = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco"))
-        .Stats.Exp = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Experiencia"))
-        .Stats.ELU = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELU"))
-        .Stats.ELV = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELV"))
+        .Stats.Gld = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
+        .Stats.Banco = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
+        .Stats.Exp = CDbl(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Experiencia")))
+        .Stats.ELU = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELU")))
+        .Stats.ELV = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELV")))
     End With
 
 End Sub
