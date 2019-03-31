@@ -698,11 +698,20 @@ Sub GetObj(ByVal Userindex As Integer)
                 
                 ' Oro directo a la billetera!
                 If obj.OBJType = otGuita Then
-                    .Stats.Gld = .Stats.Gld + MiObj.Amount
-                    'Quitamos el objeto
-                    Call EraseObj(MapData(.Pos.Map, x, Y).ObjInfo.Amount, .Pos.Map, .Pos.x, .Pos.Y)
-                        
-                    Call WriteUpdateGold(Userindex)
+
+                    'Calculamos la diferencia con el maximo de oro permitido el cual es el valor de LONG
+                    Dim RemainingAmountToMaximumGold As Long
+                    RemainingAmountToMaximumGold = 2147483647 - .Stats.Gld
+
+                    If Not .Stats.Gld > 2147483647 And RemainingAmountToMaximumGold >= MiObj.Amount Then
+                        .Stats.Gld = .Stats.Gld + MiObj.Amount
+                        'Quitamos el objeto
+                        Call EraseObj(MapData(.Pos.Map, x, Y).ObjInfo.Amount, .Pos.Map, .Pos.x, .Pos.Y)
+                            
+                        Call WriteUpdateGold(Userindex)
+                    Else
+                        Call WriteConsoleMsg(Userindex, "No puedes juntar este oro por que tendrias mas del maximo disponible (2147483647)", FontTypeNames.FONTTYPE_INFO)
+                    End If
                 Else
 
                     If MeterItemEnInventario(Userindex, MiObj) Then

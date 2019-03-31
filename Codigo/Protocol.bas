@@ -8284,7 +8284,14 @@ Private Sub HandleBankDepositGold(ByVal Userindex As Integer)
         
         If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Banquero Then Exit Sub
         
-        If Amount > 0 And Amount <= .Stats.Gld Then
+        'Calculamos la diferencia con el maximo de oro permitido el cual es el valor de LONG
+        Dim RemainingAmountToMaximumGold As Long
+        RemainingAmountToMaximumGold = 2147483647 - .Stats.Gld
+
+        If .Stats.Banco >= 2147483647 And RemainingAmountToMaximumGold <= Amount Then
+            Call WriteChatOverHead(Userindex, "No puedes depositar el oro por que tendrias mas del maximo permitido (2147483647)",  Npclist(.flags.TargetNPC).Char.CharIndex, vbRed)
+
+        ElseIf Amount > 0 And Amount <= .Stats.Gld Then
             .Stats.Banco = .Stats.Banco + Amount
             .Stats.Gld = .Stats.Gld - Amount
             Call WriteChatOverHead(Userindex, "Tenes " & .Stats.Banco & " monedas de oro en tu cuenta.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
