@@ -227,16 +227,16 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
         SurvivalG.Joined = SurvivalG.Joined + 1
         .flags.SG.HungerIndex = UI
         .flags.BeforeMap = .Pos.Map
-        .flags.BeforeX = .Pos.x
+        .flags.BeforeX = .Pos.X
         .flags.BeforeY = .Pos.Y
 
         WarpUserCharX UI, HungerMap, 50, 50, True
 
         .Stats.Gld = .Stats.Gld - SurvivalG.Oro
-        Call WriteUpdateGold UI
+        'Call WriteUpdateGold UI
 
         SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Bienvenido " & .Name & " a los juegos del hambre!", FontTypeNames.fonttype_dios)
-        Call WritePauseToggle UI
+        'Call WritePauseToggle UI
 
         If SurvivalG.Joined = SurvivalG.Cupos Then
             SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Cupos alcanzados! " & vbNewLine & "Juegos del Hambre> Damos inicio a LOS JUEGOS DEL HAMBRE!", FontTypeNames.fonttype_dios)
@@ -301,7 +301,7 @@ Public Sub HungerDesconect(ByVal UI As Integer)
                 End If
             
                 ' ++ Esto no va sino explota todo a la mierda porque limpia todos los users
-                'CleanSg 
+                'CleanSg
             End If
 
         End If
@@ -331,7 +331,7 @@ Public Sub HungerDie(ByVal UI As Integer)
                 End If
             
                 ' ++ Esto no va sino explota todo a la mierda porque limpia todos los users
-                'CleanSg 
+                'CleanSg
             End If
 
         End If
@@ -368,17 +368,17 @@ End Sub
 
 Public Function CleanHGMap()
 
-    Dim x As Long
+    Dim X As Long
 
     Dim Y As Long
 
-    For x = 1 To 100
+    For X = 1 To 100
         For Y = 1 To 100
-            With MapData(HungerMap, x, Y).ObjInfo
-                EraseObj .Amount, HungerMap, x, Y
+            With MapData(HungerMap, X, Y).ObjInfo
+                EraseObj .Amount, HungerMap, X, Y
             End With
         Next Y
-    Next x
+    Next X
 
 End Function
 
