@@ -1756,7 +1756,10 @@ Sub LoadSini()
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
 
     'Inventario Inicial
-    InventarioUsarConfiguracionPersonalizada = val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada"))
+    InventarioUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
+
+    'Atributos Iniciales
+    EstadisticasInicialesUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Activado")))
 
     'Intervalos
     SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
