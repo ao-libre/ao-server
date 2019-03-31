@@ -2384,4 +2384,8 @@ Public MinutosCarcelPiquete As Integer
 
 Public InventarioUsarConfiguracionPersonalizada As Boolean
 
+Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
+
 Public UsarMundoPropio As Boolean 
+
+
