@@ -261,6 +261,10 @@ Sub ConfigListeningSocket(ByRef obj As Object, ByVal Port As Integer)
 
 End Sub
 
+Public Function GetVersionOfTheServer() As String
+    GetVersionOfTheServer = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
+End Function
+
 Sub Main()
     '***************************************************
     'Author: Unknown
@@ -278,7 +282,9 @@ Sub Main()
     
     UltimoSlotLimpieza = -1
     
-    frmMain.Caption = frmMain.Caption & " V." & App.Major & "." & App.Minor & "." & App.Revision
+    Dim MundoSeleccionado As String 
+    MundoSeleccionado= GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado 
     
     ' Start loading..
     frmCargando.Show
@@ -647,7 +653,7 @@ Private Sub LogServerStartTime()
 
     n = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #n
-    Print #n, Date & " " & time & " server iniciado " & App.Major & "."; App.Minor & "." & App.Revision
+    Print #n, Date & " " & time & " server iniciado " & GetVersionOfTheServer()
     Close #n
 
 End Sub
@@ -944,7 +950,7 @@ Public Sub LogGM(Nombre As String, texto As String)
     'Author: Unknown
     'Last Modification: -
     '
-    '***************************************************Á
+    '***************************************************
 
     On Error GoTo errHandler
 
@@ -1341,12 +1347,12 @@ Public Sub EfectoFrio(ByVal Userindex As Integer)
         Else
 
             If MapInfo(.Pos.Map).Terreno = eTerrain.terrain_nieve Then
-                Call WriteConsoleMsg(Userindex, "°°Estas muriendo de frio, abrigate o moriras!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Estas muriendo de frio, abrigate o moriras!!", FontTypeNames.FONTTYPE_INFO)
                 modifi = Porcentaje(.Stats.MaxHp, 5)
                 .Stats.MinHp = .Stats.MinHp - modifi
                 
                 If .Stats.MinHp < 1 Then
-                    Call WriteConsoleMsg(Userindex, "°°Has muerto de frio!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Has muerto de frio!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = 0
                     Call UserDie(Userindex)
 
@@ -1383,11 +1389,11 @@ Public Sub EfectoLava(ByVal Userindex As Integer)
         Else
 
             If HayLava(.Pos.Map, .Pos.x, .Pos.Y) Then
-                Call WriteConsoleMsg(Userindex, "°°Quitate de la lava, te estas quemando!!", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Quitate de la lava, te estas quemando!!", FontTypeNames.FONTTYPE_INFO)
                 .Stats.MinHp = .Stats.MinHp - Porcentaje(.Stats.MaxHp, 5)
                     
                 If .Stats.MinHp < 1 Then
-                    Call WriteConsoleMsg(Userindex, "°°Has muerto quemado!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Has muerto quemado!!", FontTypeNames.FONTTYPE_INFO)
                     .Stats.MinHp = 0
                     Call UserDie(Userindex)
 
@@ -1923,7 +1929,7 @@ Sub PasarSegundo()
     If counterSV.Limpieza > 0 Then
         counterSV.Limpieza = counterSV.Limpieza - 1
         
-        If counterSV.Limpieza < 6 Then Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. °°Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+        If counterSV.Limpieza < 6 Then Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
         
         If counterSV.Limpieza = 0 Then
             Call BorrarObjetosLimpieza
@@ -1964,7 +1970,7 @@ Sub PasarSegundo()
                         If .Counters.Pena < 1 Then
                             .Counters.Pena = 0
                             Call WarpUserChar(i, Libertad.Map, Libertad.x, Libertad.Y, True)
-                            Call WriteConsoleMsg(i, "°Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                             Call FlushBuffer(i)
 
                         End If
@@ -1982,7 +1988,7 @@ Sub PasarSegundo()
                     If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
                         If .flags.Muerto = 0 Then
                             .Counters.PiqueteC = .Counters.PiqueteC + 1
-                            Call WriteConsoleMsg(i, "°°°Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                 
                             If .Counters.PiqueteC >= ContadorAntiPiquete Then
                                 .Counters.PiqueteC = 0
@@ -2807,13 +2813,13 @@ Public Function Tilde(ByRef data As String) As String
     'Pato
     temp = UCase$(data)
  
-    If InStr(1, temp, "¡") Then temp = Replace$(temp, "¡", "A")
+    If InStr(1, temp, "√Å") Then temp = Replace$(temp, "√Å", "A")
    
     If InStr(1, temp, "e") Then temp = Replace$(temp, "e", "E")
    
-    If InStr(1, temp, "Õ") Then temp = Replace$(temp, "Õ", "I")
+    If InStr(1, temp, "√ç") Then temp = Replace$(temp, "√ç", "I")
    
-    If InStr(1, temp, "”") Then temp = Replace$(temp, "”", "O")
+    If InStr(1, temp, "√ì") Then temp = Replace$(temp, "√ì", "O")
    
     If InStr(1, temp, "U") Then temp = Replace$(temp, "U", "U")
    
