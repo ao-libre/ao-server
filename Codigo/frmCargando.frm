@@ -128,7 +128,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Form_Load()
-    'Label1(2).Caption = "V." & App.Major & "." & App.Minor & "." & App.Revision
+    Label1(2).Caption = GetVersionOfTheServer()
     Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
     Me.Analizar
 
