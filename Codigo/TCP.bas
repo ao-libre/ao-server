@@ -605,8 +605,8 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         'CHOTS | Accounts
         .AccountHash = AccountHash
 
-		'Primero agregamos los items, ya que en caso de que el nivel
-		'Inicial sea mayor al de un newbie, los items se borran automaticamente.
+        'Primero agregamos los items, ya que en caso de que el nivel
+        'Inicial sea mayor al de un newbie, los items se borran automaticamente.
         '???????????????? INVENTARIO
         If InventarioUsarConfiguracionPersonalizada Then
             Call AddItemsCustomToNewUser(UserIndex)
