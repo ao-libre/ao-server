@@ -624,7 +624,7 @@ End Sub
 '
 ' @param UserIndex Specifies reference to user
 
-Public Sub CheckUserLevel(ByVal Userindex As Integer)
+Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInConsole As Boolean = True)
 
     '*************************************************
     'Author: Unknown
@@ -682,8 +682,10 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer)
             'Store it!
             Call Statistics.UserLevelUp(Userindex)
             
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_NIVEL, .Pos.x, .Pos.Y))
-            Call WriteConsoleMsg(Userindex, "Has subido de nivel!", FontTypeNames.FONTTYPE_INFO)
+            If PrintInConsole Then
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_NIVEL, .Pos.x, .Pos.Y))
+                Call WriteConsoleMsg(Userindex, "Has subido de nivel!", FontTypeNames.FONTTYPE_INFO)
+            End If
             
             If .Stats.ELV = 1 Then
                 Pts = 10
@@ -858,26 +860,29 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer)
 
             End If
             
+            
             'Notificamos al user
-            If AumentoHP > 0 Then
-                Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoHP & " puntos de vida.", FontTypeNames.FONTTYPE_INFO)
+            If PrintInConsole Then
+                If AumentoHP > 0 Then
+                    Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoHP & " puntos de vida.", FontTypeNames.FONTTYPE_INFO)
 
-            End If
+                End If
 
-            If AumentoSTA > 0 Then
-                Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoSTA & " puntos de energia.", FontTypeNames.FONTTYPE_INFO)
+                If AumentoSTA > 0 Then
+                    Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoSTA & " puntos de energia.", FontTypeNames.FONTTYPE_INFO)
 
-            End If
+                End If
 
-            If AumentoMANA > 0 Then
-                Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoMANA & " puntos de mana.", FontTypeNames.FONTTYPE_INFO)
+                If AumentoMANA > 0 Then
+                    Call WriteConsoleMsg(Userindex, "Has ganado " & AumentoMANA & " puntos de mana.", FontTypeNames.FONTTYPE_INFO)
 
-            End If
+                End If
 
-            If AumentoHIT > 0 Then
-                Call WriteConsoleMsg(Userindex, "Tu golpe maximo aumento en " & AumentoHIT & " puntos.", FontTypeNames.FONTTYPE_INFO)
-                Call WriteConsoleMsg(Userindex, "Tu golpe minimo aumento en " & AumentoHIT & " puntos.", FontTypeNames.FONTTYPE_INFO)
+                If AumentoHIT > 0 Then
+                    Call WriteConsoleMsg(Userindex, "Tu golpe maximo aumento en " & AumentoHIT & " puntos.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Tu golpe minimo aumento en " & AumentoHIT & " puntos.", FontTypeNames.FONTTYPE_INFO)
 
+                End If
             End If
             
             Call LogDesarrollo(.Name & " paso a nivel " & .Stats.ELV & " gano HP: " & AumentoHP)
@@ -895,8 +900,11 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer)
                     If modGuilds.GuildAlignment(GI) = "Del Mal" Or modGuilds.GuildAlignment(GI) = "Real" Then
                         'We get here, so guild has factionary alignment, we have to expulse the user
                         Call modGuilds.m_EcharMiembroDeClan(-1, .Name)
-                        Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
-                        Call WriteConsoleMsg(Userindex, "Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearas! Por esta razon, hasta tanto no te enlistes en la faccion bajo la cual tu clan esta alineado, estaras excluido del mismo.", FontTypeNames.FONTTYPE_GUILD)
+                        
+                        If PrintInConsole Then
+                            Call SendData(SendTarget.ToGuildMembers, GI, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
+                            Call WriteConsoleMsg(Userindex, "Ya tienes la madurez suficiente como para decidir bajo que estandarte pelearas! Por esta razon, hasta tanto no te enlistes en la faccion bajo la cual tu clan esta alineado, estaras excluido del mismo.", FontTypeNames.FONTTYPE_GUILD)
+                        End If
 
                     End If
 
@@ -912,7 +920,10 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer)
 
             If MapInfo(.Pos.Map).Restringir = eRestrict.restrict_newbie Then
                 Call WarpUserChar(Userindex, 1, 50, 50, True)
-                Call WriteConsoleMsg(Userindex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
+
+                If PrintInConsole Then
+                    Call WriteConsoleMsg(Userindex, "Debes abandonar el Dungeon Newbie.", FontTypeNames.FONTTYPE_INFO)
+                End If
 
             End If
 
@@ -923,8 +934,9 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer)
             Call WriteLevelUp(Userindex, Pts)
             
             .Stats.SkillPts = .Stats.SkillPts + Pts
-            
-            Call WriteConsoleMsg(Userindex, "Has ganado un total de " & Pts & " skillpoints.", FontTypeNames.FONTTYPE_INFO)
+            If PrintInConsole Then
+                Call WriteConsoleMsg(Userindex, "Has ganado un total de " & Pts & " skillpoints.", FontTypeNames.FONTTYPE_INFO)
+            End If
 
         End If
         

@@ -141,7 +141,7 @@ Sub Accion(ByVal Userindex As Integer, _
                         'curamos totalmente
                         .Stats.MinHp = .Stats.MaxHp
                         
-                        Call WriteConsoleMsg(Userindex, "?e has curado!", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Te has curado!", FontTypeNames.FONTTYPE_INFO)
                         
                         If .flags.Envenenado = 1 Then
                             'curamos veneno
