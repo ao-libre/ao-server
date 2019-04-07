@@ -874,7 +874,6 @@ Private Sub AddItemsCustomToNewUser(ByVal UserIndex As Integer)
 '*************************************************
     Dim CantidadItemsIniciales As Integer
     Dim Slot As Long
-    Call CargarObjetosIniciales
 
     Call CargarObjetosIniciales
 
