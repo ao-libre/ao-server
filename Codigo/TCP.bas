@@ -664,14 +664,12 @@ Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
             If i <> InitialLevel Then
                 .Stats.Exp = .Stats.ELU
                 
-                'Se creo el parametro opcion en la funcion CheckUserLevel
+                'Se creo el parametro opcional en la funcion CheckUserLevel
                 'Ya que al crear pjs con nivel mayor a 40 la cantidad de datos enviados hacia el 
                 'WriteConsole hacia que explote la aplicacion, con este parche se evita eso.
                 Call CheckUserLevel(Userindex, False)
             End If
         Next i
-
-        .Stats.Exp = .Stats.ELU
 
         Dim SkillPointsIniciales as Long
         SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
