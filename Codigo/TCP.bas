@@ -605,18 +605,20 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         'CHOTS | Accounts
         .AccountHash = AccountHash
 
-        '???????????????? ATRIBUTOS
-        Call SetAttributesToNewUser(UserIndex, UserClase, UserRaza)
-
-        If EstadisticasInicialesUsarConfiguracionPersonalizada Then
-            Call SetAttributesCustomToNewUser(UserIndex)
-        End If
-    
+        'Primero agregamos los items, ya que en caso de que el nivel
+        'Inicial sea mayor al de un newbie, los items se borran automaticamente.
         '???????????????? INVENTARIO
         If InventarioUsarConfiguracionPersonalizada Then
             Call AddItemsCustomToNewUser(UserIndex)
         Else
             Call AddItemsToNewUser(UserIndex, UserClase, UserRaza)
+        End If
+
+        '???????????????? ATRIBUTOS
+        Call SetAttributesToNewUser(UserIndex, UserClase, UserRaza)
+
+        If EstadisticasInicialesUsarConfiguracionPersonalizada Then
+            Call SetAttributesCustomToNewUser(UserIndex)
         End If
 
         Call DarCuerpo(Userindex)
@@ -651,20 +653,31 @@ End Sub
 Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
 
     With UserList(UserIndex)
+        .Stats.Gld = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
+        .Stats.Banco = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
+
+        Dim InitialLevel, Experiencia as Long
+        InitialLevel = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Nivel"))
+        
+        Dim i As Long
+        For i = 1 to InitialLevel
+            If i <> InitialLevel Then
+                .Stats.Exp = .Stats.ELU
+                
+                'Se creo el parametro opcional en la funcion CheckUserLevel
+                'Ya que al crear pjs con nivel mayor a 40 la cantidad de datos enviados hacia el 
+                'WriteConsole hacia que explote la aplicacion, con este parche se evita eso.
+                Call CheckUserLevel(Userindex, False)
+            End If
+        Next i
+
         Dim SkillPointsIniciales as Long
         SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
-
-        Dim i As Long
         For i = 1 To NUMSKILLS
             .Stats.UserSkills(i) = SkillPointsIniciales
         Next i
-        .Stats.SkillPts = 0    
 
-        .Stats.Gld = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
-        .Stats.Banco = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
-        .Stats.Exp = CDbl(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Experiencia")))
-        .Stats.ELU = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELU")))
-        .Stats.ELV = CByte(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "ELV")))
+        .Stats.SkillPts = 0    
     End With
 
 End Sub
@@ -860,9 +873,8 @@ Private Sub AddItemsCustomToNewUser(ByVal UserIndex As Integer)
 'Añade items customizados al usuario recien creado
 '*************************************************
     Dim CantidadItemsIniciales As Integer
-    Dim Item As Integer
-    Dim CantidadItem As Integer
     Dim Slot As Long
+    Call CargarObjetosIniciales
 
     Call CargarObjetosIniciales
 
