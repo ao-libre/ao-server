@@ -322,26 +322,29 @@ Sub CheckIdleUser()
 
                 End If
                 
-                If .Counters.IdleCount >= IdleLimit And Not EsGm(Userindex) Then
-                    Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
+                If Not EsGm(Userindex) Then 
+                    If .Counters.IdleCount >= IdleLimit Then
+                        Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
 
-                    'mato los comercios seguros
-                    If .ComUsu.DestUsu > 0 Then
-                        If UserList(.ComUsu.DestUsu).flags.UserLogged Then
-                            If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
-                                Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
-                                Call FinComerciarUsu(.ComUsu.DestUsu)
-                                Call FlushBuffer(.ComUsu.DestUsu) 'flush the buffer to send the message right away
+                        'mato los comercios seguros
+                        If .ComUsu.DestUsu > 0 Then
+                            If UserList(.ComUsu.DestUsu).flags.UserLogged Then
+                                If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
+                                    Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
+                                    Call FinComerciarUsu(.ComUsu.DestUsu)
+                                    Call FlushBuffer(.ComUsu.DestUsu) 'flush the buffer to send the message right away
+
+                                End If
 
                             End If
 
+                            Call FinComerciarUsu(iUserIndex)
+
                         End If
 
-                        Call FinComerciarUsu(iUserIndex)
+                        Call Cerrar_Usuario(iUserIndex)
 
                     End If
-
-                    Call Cerrar_Usuario(iUserIndex)
 
                 End If
 
