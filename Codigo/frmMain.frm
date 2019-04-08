@@ -322,7 +322,7 @@ Sub CheckIdleUser()
 
                 End If
                 
-                If Not EsGm(Userindex) Then 
+                If Not EsGm(iUserIndex) Then 
                     If .Counters.IdleCount >= IdleLimit Then
                         Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
 
