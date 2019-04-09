@@ -18668,25 +18668,26 @@ End Sub
 ' @param    Y Y coord of the character's new position.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteObjectCreate(ByVal Userindex As Integer, _
+Public Sub WriteObjectCreate(ByVal UserIndex As Integer, _
                              ByVal GrhIndex As Integer, _
-                             ByVal x As Byte, _
-                             ByVal Y As Byte)
+                             ByVal X As Byte, _
+                             ByVal Y As Byte, _
+                             ByVal ObjName As String)
 
     '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
+    'Author: Juan Mart�n Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
     'Writes the "ObjectCreate" message to the given user's outgoing data buffer
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo Errhandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageObjectCreate(GrhIndex, x, Y))
+    Call UserList(UserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageObjectCreate(GrhIndex, X, Y, ObjName))
     Exit Sub
+ 
+Errhandler:
 
-errHandler:
-
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
         Resume
 
     End If
