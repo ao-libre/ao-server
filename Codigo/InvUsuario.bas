@@ -566,7 +566,7 @@ Sub MakeObj(ByRef obj As obj, _
             Else
                 .ObjInfo = obj
                 
-                Call modSendData.SendToAreaByPos(Map, x, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, x, Y))
+                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, X, Y, ObjData(obj.ObjIndex).Name))
 
             End If
             

@@ -21655,8 +21655,9 @@ End Function
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
 Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, _
-                                           ByVal x As Byte, _
-                                           ByVal Y As Byte) As String
+                                           ByVal X As Byte, _
+                                           ByVal Y As Byte, _
+                                           ByVal ObjName As String) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -21665,9 +21666,10 @@ Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, _
     '***************************************************
     With auxiliarBuffer
         Call .WriteByte(ServerPacketID.ObjectCreate)
-        Call .WriteByte(x)
+        Call .WriteByte(X)
         Call .WriteByte(Y)
         Call .WriteInteger(GrhIndex)
+        Call .WriteASCIIString(ObjName)
         
         PrepareMessageObjectCreate = .ReadASCIIStringFixed(.Length)
 

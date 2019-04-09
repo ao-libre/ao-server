@@ -1024,6 +1024,7 @@ Public Type ObjData
     
     GrhIndex As Integer ' Indice del grafico que representa el obj
     GrhSecundario As Integer
+    ObjName As String   ' Nombre del objeto
     
     'Solo contenedores
     MAXITEMS As Integer
