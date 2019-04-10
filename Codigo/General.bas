@@ -397,6 +397,16 @@ Private Sub LoadConstants()
     CharPath = App.Path & "\Charfile\"
     AccountPath = App.Path & "\Account\"
     
+    ' Verifico si existe la carpeta donde se guardan las cuentas.
+    If LenB(Dir$(AccountPath, vbDirectory)) = 0 Then
+        Call MkDir(AccountPath)
+    End If
+    
+    ' Verifico si existe la carpeta donde se guardan los personajes.
+    If LenB(Dir$(CharPath, vbDirectory)) = 0 Then
+        Call MkDir(CharPath)
+    End If
+    
     ' Skills by level
     LevelSkill(1).LevelValue = 3
     LevelSkill(2).LevelValue = 5
