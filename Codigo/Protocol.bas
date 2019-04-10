@@ -14435,9 +14435,9 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
 
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
 
-        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
+        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
 
         If tObj < 1 Or tObj > NumObjDatas Then Exit Sub
 
