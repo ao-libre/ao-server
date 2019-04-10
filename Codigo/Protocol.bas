@@ -14416,6 +14416,9 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
     'Last Modification: 11/02/2011
     'maTih.- : Ahora se puede elegir, la cantidad a crear.
     '***************************************************
+    
+    On Error GoTo ErrHandler
+    
     If UserList(Userindex).incomingData.Length < 3 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -14426,24 +14429,17 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
 
-        Dim tObj    As Integer
-
-        Dim Cuantos As Integer
-
+        Dim tObj    As Integer: tObj = .incomingData.ReadInteger()
+        Dim Cuantos As Integer: Cuantos = .incomingData.ReadInteger()
         Dim tStr    As String
 
-        tObj = .incomingData.ReadInteger()
-        Cuantos = .incomingData.ReadInteger()
-
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-     
-        Call LogGM(.Name, "/CI: " & tObj & " Cantidad : " & Cuantos)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
 
         If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
 
         If tObj < 1 Or tObj > NumObjDatas Then Exit Sub
 
@@ -14452,14 +14448,20 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
 
         Dim Objeto As obj
 
-        Call WriteConsoleMsg(Userindex, "ATENCION: FUERON CREADOS ***" & Cuantos & "** iTEMS, TIRE Y /DEST LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
-
         Objeto.Amount = Cuantos
         Objeto.ObjIndex = tObj
-        Call MakeObj(Objeto, .Pos.Map, .Pos.x, .Pos.Y - 1)
+        
+        If MeterItemEnInventario(Userindex, Objeto) Then
+            Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
+            Call LogGM(.Name, "/CI: " & tObj & " [Nombre del Objeto: " & ObjData(tObj).Name & "] - [Cantidad : " & Cuantos & "]")
+        Else
+            Call WriteConsoleMsg(Userindex, "No tenes espacio en tu inventario para crear el item.", FontTypeNames.FONTTYPE_INFO)
+        End If
 
     End With
-
+    
+ErrHandler:
+    Call LogError("Error en HandleCreateItem " & Err.Number & " " & Err.description)
 End Sub
 
 ''
