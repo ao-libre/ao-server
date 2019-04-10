@@ -14431,7 +14431,6 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
 
         Dim tObj    As Integer: tObj = .incomingData.ReadInteger()
         Dim Cuantos As Integer: Cuantos = .incomingData.ReadInteger()
-        Dim tStr    As String
 
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
 
@@ -14445,9 +14444,11 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
         Dim Objeto As obj
-
-        Objeto.Amount = Cuantos
-        Objeto.ObjIndex = tObj
+        
+        With Objeto
+            .Amount = Cuantos
+            .ObjIndex = tObj
+        End With
         
         If MeterItemEnInventario(Userindex, Objeto) Then
             Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
