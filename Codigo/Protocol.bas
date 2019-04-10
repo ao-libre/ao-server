@@ -14435,8 +14435,6 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
 
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
-
         If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
 
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
@@ -14455,6 +14453,7 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
             Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
             Call LogGM(.Name, "/CI: " & tObj & " [Nombre del Objeto: " & ObjData(tObj).Name & "] - [Cantidad : " & Cuantos & "]")
         Else
+            Call TirarItemAlPiso(.Pos, Objeto)
             Call WriteConsoleMsg(Userindex, "No tenes espacio en tu inventario para crear el item.", FontTypeNames.FONTTYPE_INFO)
         End If
 
