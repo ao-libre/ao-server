@@ -14450,12 +14450,22 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
             .ObjIndex = tObj
         End With
         
-        If MeterItemEnInventario(Userindex, Objeto) Then
-            Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
-            Call LogGM(.Name, "/CI: " & tObj & " [Nombre del Objeto: " & ObjData(tObj).Name & "] - [Cantidad : " & Cuantos & "]")
+        ' Chequeo si el objeto es AGARRABLE(para las puertas, arboles y demas objs. que no deberian estar en el inventario)
+        '   0 = SI
+        '   1 = NO
+        If ObjData(tObj).Agarrable = 0 Then
+            ' Trato de meterlo en el inventario.
+            If MeterItemEnInventario(Userindex, Objeto) Then
+                Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
+                Call LogGM(.Name, "/CI: " & tObj & " [Nombre del Objeto: " & ObjData(tObj).Name & "] - [Cantidad : " & Cuantos & "]")
+            Else
+                ' Si no hay espacio, lo tiro al piso.
+                Call TirarItemAlPiso(.Pos, Objeto)
+                Call WriteConsoleMsg(Userindex, "No tenes espacio en tu inventario para crear el item.", FontTypeNames.FONTTYPE_INFO)
+            End If
         Else
+            ' Crear el item NO AGARRARBLE y tirarlo al piso.
             Call TirarItemAlPiso(.Pos, Objeto)
-            Call WriteConsoleMsg(Userindex, "No tenes espacio en tu inventario para crear el item.", FontTypeNames.FONTTYPE_INFO)
         End If
 
     End With
