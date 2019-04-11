@@ -386,7 +386,7 @@ End Sub
 '
 ' @param    userIndex The index of the user sending the message.
 
-Public Sub HandleIncomingData(ByVal Userindex As Integer)
+Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -405,7 +405,7 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
         'Is the user actually logged?
         If Not UserList(Userindex).flags.UserLogged Then
             Call CloseSocket(Userindex)
-            Exit Sub
+            Exit Function
         
             'He is logged. Reset idle counter if id is valid.
         ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
@@ -419,7 +419,7 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
         'Is the user logged?
         If UserList(Userindex).flags.UserLogged Then
             Call CloseSocket(Userindex)
-            Exit Sub
+            Exit Function
 
         End If
 
@@ -850,20 +850,24 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
     'Done with this packet, move on to next one or send everything if no more packets found
     If UserList(Userindex).incomingData.Length > 0 And Err.Number = 0 Then
         Err.Clear
-        Call HandleIncomingData(Userindex)
+        HandleIncomingData = True
     
     ElseIf Err.Number <> 0 And Not Err.Number = UserList(Userindex).incomingData.NotEnoughDataErrCode Then
         'An error ocurred, log it and kick player.
         Call LogError("Error: " & Err.Number & " [" & Err.description & "] " & " Source: " & Err.source & vbTab & " HelpFile: " & Err.HelpFile & vbTab & " HelpContext: " & Err.HelpContext & vbTab & " LastDllError: " & Err.LastDllError & vbTab & " - UserIndex: " & Userindex & " - producido al manejar el paquete: " & CStr(packetID))
         Call CloseSocket(Userindex)
+
+        HandleIncomingData = False
     
     Else
         'Flush buffer - send everything that has been written
         Call FlushBuffer(Userindex)
 
+        HandleIncomingData = False
+
     End If
 
-End Sub
+End Function
 
 Public Sub WriteMultiMessage(ByVal Userindex As Integer, _
                              ByVal MessageIndex As Integer, _
