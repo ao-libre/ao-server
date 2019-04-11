@@ -763,7 +763,7 @@ With UserList(MiDato)
     Call .incomingData.WriteASCIIStringFixed(Datos)
     
     If .ConnID <> -1 Then
-        While HandleIncomingData(MiDato) = True ' Iteramos en todos los datos
+        Do While HandleIncomingData(MiDato) = True ' Iteramos en todos los datos
         Loop
     Else
         Exit Sub
