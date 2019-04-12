@@ -14442,7 +14442,7 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
         ' El indice proporcionado supera la cantidad minima o total de items existentes en el juego?
         If tObj < 1 Or tObj > NumObjDatas Then Exit Sub
 
-        ' El indice del objeto es nulo?
+        ' El nombre del objeto es nulo?
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
         Dim Objeto As obj
