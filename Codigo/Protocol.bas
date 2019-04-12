@@ -14426,21 +14426,23 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
     End If
 
     With UserList(Userindex)
-        'Remove packet ID
+        
+        ' Recibo el ID del paquete
         Call .incomingData.ReadByte
 
         Dim tObj    As Integer: tObj = .incomingData.ReadInteger()
         Dim Cuantos As Integer: Cuantos = .incomingData.ReadInteger()
-
+        
+        ' Es Game-Master?
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
-
-        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
-
+        
+        ' Si hace mas de 10000, lo sacamos cagando.
+        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Estas tratando de crear demasiado, como mucho podes crear 10.000 unidades.", FontTypeNames.FONTTYPE_TALK): Exit Sub
+        
+        ' El indice proporcionado supera la cantidad minima o total de items existentes en el juego?
         If tObj < 1 Or tObj > NumObjDatas Then Exit Sub
 
-        'Is the object not null?
+        ' El indice del objeto es nulo?
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
         Dim Objeto As obj
