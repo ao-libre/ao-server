@@ -77,6 +77,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
             If .Stats.MinHp > .Stats.MaxHp Then .Stats.MinHp = .Stats.MaxHp
             
             Call WriteConsoleMsg(Userindex, Npclist(NpcIndex).Name & " te ha quitado " & dano & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
             Call WriteUpdateUserStats(Userindex)
         
             ' Damage
@@ -1897,6 +1898,7 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
             If dano < 0 Then dano = 0
         
             .Stats.MinHp = .Stats.MinHp - dano
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
             'Call WriteConsoleMsg(UserIndex, "Le has quitado " & dano & " puntos de vida a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
             Call WriteMultiMessage(Userindex, eMessages.UserHitNPC, dano)
             Call CalcularDarExp(Userindex, NpcIndex, dano)
@@ -2284,7 +2286,9 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
             Call InfoHechizo(Userindex)
         
             .Stats.MinHp = .Stats.MinHp - dano
-        
+            
+            Call SendData(SendTarget.ToPCArea, targetIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+            
             Call WriteUpdateHP(targetIndex)
         
             Call WriteConsoleMsg(Userindex, "Le has quitado " & dano & " puntos de vida a " & .Name & ".", FontTypeNames.FONTTYPE_FIGHT)

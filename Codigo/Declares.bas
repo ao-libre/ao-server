@@ -35,6 +35,11 @@ Option Explicit
 
 #End If
 
+'********** Constantes de dano en render.
+Public Const DAMAGE_PUNAL    As Byte = 1
+Public Const DAMAGE_NORMAL   As Byte = 2
+'********** Constantes de dano en render.
+
 ' Nuevo Centinela
 Type CentinelaUser
 

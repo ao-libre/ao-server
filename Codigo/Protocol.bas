@@ -167,7 +167,7 @@ Private Enum ServerPacketID
     SearchList
     QuestDetails
     QuestListSend
-
+    CreateDamage            ' CDMG
 End Enum
 
 Private Enum ClientPacketID
@@ -23226,3 +23226,20 @@ errHandler:
     End If
 
 End Sub
+
+Public Function PrepareMessageCreateDamage(ByVal X As Byte, ByVal Y As Byte, ByVal DamageValue As Integer, ByVal DamageType As Byte)
+ 
+' @ Envia el paquete para crear dano (Y)
+ 
+With auxiliarBuffer
+     .WriteByte ServerPacketID.CreateDamage
+     .WriteByte X
+     .WriteByte Y
+     .WriteInteger DamageValue
+     .WriteByte DamageType
+     
+     PrepareMessageCreateDamage = .ReadASCIIStringFixed(.Length)
+     
+End With
+ 
+End Function
