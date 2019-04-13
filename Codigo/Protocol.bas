@@ -14416,6 +14416,9 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
     'Last Modification: 11/02/2011
     'maTih.- : Ahora se puede elegir, la cantidad a crear.
     '***************************************************
+    
+    On Error GoTo ErrHandler
+    
     If UserList(Userindex).incomingData.Length < 3 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -14423,43 +14426,58 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
     End If
 
     With UserList(Userindex)
-        'Remove packet ID
+        
+        ' Recibo el ID del paquete
         Call .incomingData.ReadByte
 
-        Dim tObj    As Integer
-
-        Dim Cuantos As Integer
-
-        Dim tStr    As String
-
-        tObj = .incomingData.ReadInteger()
-        Cuantos = .incomingData.ReadInteger()
-
+        Dim tObj    As Integer: tObj = .incomingData.ReadInteger()
+        Dim Cuantos As Integer: Cuantos = .incomingData.ReadInteger()
+        
+        ' Es Game-Master?
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-     
-        Call LogGM(.Name, "/CI: " & tObj & " Cantidad : " & Cuantos)
-
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y - 1).ObjInfo.ObjIndex > 0 Then Exit Sub
-
-        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Demasiados, maximo para crear : 10.000", FontTypeNames.FONTTYPE_TALK): Exit Sub
-
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
-
+        
+        ' Si hace mas de 10000, lo sacamos cagando.
+        If Cuantos > 10000 Then Call WriteConsoleMsg(Userindex, "Estas tratando de crear demasiado, como mucho podes crear 10.000 unidades.", FontTypeNames.FONTTYPE_TALK): Exit Sub
+        
+        ' El indice proporcionado supera la cantidad minima o total de items existentes en el juego?
         If tObj < 1 Or tObj > NumObjDatas Then Exit Sub
 
-        'Is the object not null?
+        ' El nombre del objeto es nulo?
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
         Dim Objeto As obj
-
-        Call WriteConsoleMsg(Userindex, "ATENCION: FUERON CREADOS ***" & Cuantos & "** iTEMS, TIRE Y /DEST LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
-
-        Objeto.Amount = Cuantos
-        Objeto.ObjIndex = tObj
-        Call MakeObj(Objeto, .Pos.Map, .Pos.x, .Pos.Y - 1)
-
+        
+        With Objeto
+            .Amount = Cuantos
+            .ObjIndex = tObj
+        End With
+        
+        ' Chequeo si el objeto es AGARRABLE(para las puertas, arboles y demas objs. que no deberian estar en el inventario)
+        '   0 = SI
+        '   1 = NO
+        If ObjData(tObj).Agarrable = 0 Then
+            ' Trato de meterlo en el inventario.
+            If MeterItemEnInventario(Userindex, Objeto) Then
+                Call WriteConsoleMsg(Userindex, "Has creado " & Objeto.Amount & " unidades de " & ObjData(tObj).Name & ".", FontTypeNames.FONTTYPE_INFO)
+            Else
+                ' Si no hay espacio, lo tiro al piso.
+                Call TirarItemAlPiso(.Pos, Objeto)
+                Call WriteConsoleMsg(Userindex, "No tenes espacio en tu inventario para crear el item.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "ATENCION: CREASTE [" & Cuantos & "] ITEMS, TIRE E INGRESE /DEST EN CONSOLA PARA DESTRUIR LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
+            End If
+        Else
+            ' Crear el item NO AGARRARBLE y tirarlo al piso.
+            Call TirarItemAlPiso(.Pos, Objeto)
+            Call WriteConsoleMsg(Userindex, "ATENCION: CREASTE [" & Cuantos & "] ITEMS, TIRE E INGRESE /DEST EN CONSOLA PARA DESTRUIR LOS QUE NO NECESITE!!", FontTypeNames.FONTTYPE_GUILD)
+        End If
+        
+        ' Lo registro en los logs.
+        Call LogGM(.Name, "/CI: " & tObj & " - [Nombre del Objeto: " & ObjData(tObj).Name & "] - [Cantidad : " & Cuantos & "]")
+        
     End With
-
+    
+ErrHandler:
+    Call LogError("Error en HandleCreateItem " & Err.Number & " " & Err.description)
 End Sub
 
 ''
