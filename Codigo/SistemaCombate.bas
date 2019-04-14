@@ -488,6 +488,8 @@ Public Sub UserDanoNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         Call CalcularDarExp(Userindex, NpcIndex, dano)
         .Stats.MinHp = .Stats.MinHp - dano
         
+        Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+        
         If .Stats.MinHp > 0 Then
 
             'Trata de apunalar por la espalda al enemigo
@@ -1571,6 +1573,12 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
             'e intenta dar un golpe critico [Pablo (ToxicWaste)]
             Call DoGolpeCritico(AtacanteIndex, 0, VictimaIndex, dano)
 
+        End If
+        
+        'Doble chekeo innecesario, pero bueno..
+        'Hecho para que no envie apu + golpe normal.
+        If Not PuedeApunalar(AtacanteIndex) Then
+            Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateDamage(UserList(VictimaIndex).Pos.X, UserList(VictimaIndex).Pos.Y, dano, DAMAGE_NORMAL))
         End If
         
         If UserList(VictimaIndex).Stats.MinHp <= 0 Then

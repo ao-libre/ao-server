@@ -2374,6 +2374,10 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
         
             With UserList(VictimUserIndex)
                 .Stats.MinHp = .Stats.MinHp - dano
+                
+                ' Dano en Render
+                Call SendData(SendTarget.ToPCArea, VictimUserIndex, PrepareMessageCreateDamage(UserList(VictimUserIndex).Pos.X, UserList(VictimUserIndex).Pos.Y, dano, DAMAGE_PUNAL))
+                
                 Call WriteConsoleMsg(Userindex, "Has apunalado a " & .Name & " por " & dano, FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteConsoleMsg(VictimUserIndex, "Te ha apunalado " & UserList(Userindex).Name & " por " & dano, FontTypeNames.FONTTYPE_FIGHT)
 
@@ -2382,6 +2386,9 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
             Call FlushBuffer(VictimUserIndex)
         Else
             Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - Int(dano * 2)
+            
+            Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(Npclist(VictimNpcIndex).Pos.X, Npclist(VictimNpcIndex).Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+            
             Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
             '[Alejo]
             Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
