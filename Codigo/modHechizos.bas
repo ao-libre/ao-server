@@ -1088,7 +1088,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
     '***************************************************
 
     Dim HechizoIndex As Integer
-
     Dim targetIndex  As Integer
 
     With UserList(Userindex)
@@ -1125,22 +1124,18 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-        
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If Not EsGm(Userindex) And EsGm(targetIndex) Then
+                HechizoCasteado = False
+                Exit Sub
+            End If
+            
             ' Chequea si el status permite ayudar al otro usuario
             HechizoCasteado = CanSupportUser(Userindex, targetIndex, True)
 
             If Not HechizoCasteado Then Exit Sub
-        
-            'Si sos user, no uses este hechizo con GMS.
-            If .flags.Privilegios And PlayerType.User Then
-                If Not UserList(targetIndex).flags.Privilegios And PlayerType.User Then
-                    HechizoCasteado = False
-                    Exit Sub
 
-                End If
-
-            End If
-       
             UserList(targetIndex).flags.invisible = 1
         
             ' Solo se hace invi para los clientes si no esta navegando
@@ -1172,12 +1167,10 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             End If
         
             'Si sos user, no uses este hechizo con GMS.
-            If .flags.Privilegios And PlayerType.User Then
-                If Not UserList(targetIndex).flags.Privilegios And PlayerType.User Then
-                    Exit Sub
-
-                End If
-
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "No puedes mimetizar a un Game Master.", FontTypeNames.FONTTYPE_FIGHT)
+                HechizoCasteado = False
+                Exit Sub
             End If
         
             If .flags.Mimetizado = 1 Then
@@ -1219,7 +1212,13 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-        
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters son inmunes a las alteraciones de estado.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+            
             If Not PuedeAtacar(Userindex, targetIndex) Then Exit Sub
             If Userindex <> targetIndex Then
                 Call UsuarioAtacadoPorUsuario(Userindex, targetIndex)
@@ -1242,23 +1241,16 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-        
+            
             ' Chequea si el status permite ayudar al otro usuario
             HechizoCasteado = CanSupportUser(Userindex, targetIndex)
 
             If Not HechizoCasteado Then Exit Sub
             
-            'Si sos user, no uses este hechizo con GMS.
-            If .flags.Privilegios And PlayerType.User Then
-                If Not UserList(targetIndex).flags.Privilegios And PlayerType.User Then
-                    Exit Sub
-
-                End If
-
-            End If
-            
             UserList(targetIndex).flags.Envenenado = 0
+            
             Call InfoHechizo(Userindex)
+            
             HechizoCasteado = True
 
         End If
@@ -1270,8 +1262,15 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters son inmunes a las alteraciones de estado.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
         
             If Not PuedeAtacar(Userindex, targetIndex) Then Exit Sub
+            
             If Userindex <> targetIndex Then
                 Call UsuarioAtacadoPorUsuario(Userindex, targetIndex)
 
@@ -1306,7 +1305,13 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-        
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters son inmunes a las alteraciones de estado.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+            
             If UserList(targetIndex).flags.Paralizado = 0 Then
                 If Not PuedeAtacar(Userindex, targetIndex) Then Exit Sub
             
@@ -1522,8 +1527,15 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-        
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters son inmunes a las alteraciones de estado.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+            
             If Not PuedeAtacar(Userindex, targetIndex) Then Exit Sub
+            
             If Userindex <> targetIndex Then
                 Call UsuarioAtacadoPorUsuario(Userindex, targetIndex)
 
@@ -1546,7 +1558,13 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 Exit Sub
 
             End If
-
+            
+            'Si sos user, no uses este hechizo con GMS.
+            If EsGm(targetIndex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters son inmunes a las alteraciones de estado.", FontTypeNames.FONTTYPE_FIGHT)
+                Exit Sub
+            End If
+            
             If Not PuedeAtacar(Userindex, targetIndex) Then Exit Sub
             If Userindex <> targetIndex Then
                 Call UsuarioAtacadoPorUsuario(Userindex, targetIndex)
