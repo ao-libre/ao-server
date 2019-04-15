@@ -43,7 +43,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
     '13/01/2010: ZaMa - Arreglo condicional para que el bandido camine oculto.
     '********************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With UserList(Userindex)
         .Counters.TiempoOculto = .Counters.TiempoOculto - 1
@@ -86,7 +86,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en Sub DoPermanecerOculto")
 
 End Sub
@@ -100,7 +100,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     '13/01/2010: ZaMa - El pirata se transforma en galeon fantasmal cuando se oculta en agua.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Suerte As Double
 
@@ -167,7 +167,7 @@ Public Sub DoOcultarse(ByVal Userindex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en Sub DoOcultarse")
 
 End Sub
@@ -303,7 +303,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With UserList(Userindex)
 
@@ -322,7 +322,7 @@ Public Sub FundirMineral(ByVal Userindex As Integer)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en FundirMineral. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -334,7 +334,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With UserList(Userindex)
 
@@ -354,7 +354,7 @@ Public Sub FundirArmas(ByVal Userindex As Integer)
     End With
     
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en FundirArmas. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -822,7 +822,7 @@ Public Sub HerreroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex As I
             End If
         
             Call SubirSkill(Userindex, eSkill.Herreria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.x, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
         
             If Not criminal(Userindex) Then
                 .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
@@ -872,7 +872,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     '22/05/2010: ZaMa - Los caos ya no suben plebe al trabajar.
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim CantidadItems   As Integer
 
@@ -989,7 +989,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
             End If
             
             Call SubirSkill(Userindex, eSkill.Carpinteria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.x, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
             
             If Not criminal(Userindex) Then
                 .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
@@ -1005,7 +1005,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
     End With
     
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en CarpinteroConstruirItem. Error " & Err.Number & " : " & Err.description & ". UserIndex:" & Userindex & ". ItemIndex:" & ItemIndex)
 
 End Sub
@@ -1292,7 +1292,7 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
             End Select
         
             Call SubirSkill(Userindex, eSkill.Herreria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.x, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
     
         ElseIf PuedeConstruirCarpintero(ItemUpgrade) Then
         
@@ -1324,7 +1324,7 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
             End Select
         
             Call SubirSkill(Userindex, eSkill.Carpinteria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.x, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
         Else
             Exit Sub
 
@@ -1495,7 +1495,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     '01/05/2010: ZaMa - Agrego bonificacion 11% para domar con flauta magica.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim puntosDomar      As Integer
 
@@ -1546,12 +1546,12 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
             
             If puntosRequeridos <= puntosDomar And RandomNumber(1, 5) = 1 Then
 
-                Dim Index As Integer
+                Dim index As Integer
 
                 .NroMascotas = .NroMascotas + 1
-                Index = FreeMascotaIndex(Userindex)
-                .MascotasIndex(Index) = NpcIndex
-                .MascotasType(Index) = Npclist(NpcIndex).Numero
+                index = FreeMascotaIndex(Userindex)
+                .MascotasIndex(index) = NpcIndex
+                .MascotasType(index) = Npclist(NpcIndex).Numero
                 
                 Npclist(NpcIndex).MaestroUser = Userindex
                 
@@ -1569,7 +1569,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
                     
                     Call QuitarNPC(NpcIndex)
                     
-                    .MascotasType(Index) = petType
+                    .MascotasType(index) = petType
                     .NroMascotas = NroPets
                     
                     Call WriteConsoleMsg(Userindex, "No se permiten mascotas en zona segura. estas te esperaran afuera.", FontTypeNames.FONTTYPE_INFO)
@@ -1599,7 +1599,7 @@ Sub DoDomar(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en DoDomar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1688,7 +1688,7 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
             Call EnviarDatosASlot(Userindex, PrepareMessageSetInvisible(.Char.CharIndex, False))
              
             'Le mandamos el mensaje para crear el personaje a los clientes que esten cerca
-            Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.x, .Pos.Y, True)
+            Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y, True)
 
         End If
 
@@ -1697,7 +1697,7 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
 End Sub
 
 Sub TratarDeHacerFogata(ByVal Map As Integer, _
-                        ByVal x As Integer, _
+                        ByVal X As Integer, _
                         ByVal Y As Integer, _
                         ByVal Userindex As Integer)
     '***************************************************
@@ -1714,16 +1714,16 @@ Sub TratarDeHacerFogata(ByVal Map As Integer, _
 
     Dim posMadera As WorldPos
 
-    If Not LegalPos(Map, x, Y) Then Exit Sub
+    If Not LegalPos(Map, X, Y) Then Exit Sub
 
     With posMadera
         .Map = Map
-        .x = x
+        .X = X
         .Y = Y
 
     End With
 
-    If MapData(Map, x, Y).ObjInfo.ObjIndex <> 58 Then
+    If MapData(Map, X, Y).ObjInfo.ObjIndex <> 58 Then
         Call WriteConsoleMsg(Userindex, "Necesitas clickear sobre lena para hacer ramitas.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
 
@@ -1741,7 +1741,7 @@ Sub TratarDeHacerFogata(ByVal Map As Integer, _
 
     End If
 
-    If MapData(Map, x, Y).ObjInfo.Amount < 3 Then
+    If MapData(Map, X, Y).ObjInfo.Amount < 3 Then
         Call WriteConsoleMsg(Userindex, "Necesitas por lo menos tres troncos para hacer una fogata.", FontTypeNames.FONTTYPE_INFO)
         Exit Sub
 
@@ -1764,11 +1764,11 @@ Sub TratarDeHacerFogata(ByVal Map As Integer, _
 
     If exito = 1 Then
         obj.ObjIndex = FOGATA_APAG
-        obj.Amount = MapData(Map, x, Y).ObjInfo.Amount \ 3
+        obj.Amount = MapData(Map, X, Y).ObjInfo.Amount \ 3
     
         Call WriteConsoleMsg(Userindex, "Has hecho " & obj.Amount & " fogatas.", FontTypeNames.FONTTYPE_INFO)
     
-        Call MakeObj(obj, Map, x, Y)
+        Call MakeObj(obj, Map, X, Y)
     
         'Seteamos la fogata como el nuevo TargetObj del user
         UserList(Userindex).flags.TargetObj = FOGATA_APAG
@@ -1803,7 +1803,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Suerte        As Integer
 
@@ -1843,17 +1843,22 @@ Public Sub DoPescar(ByVal Userindex As Integer)
             End If
 
             CantidadItems = CantidadItems * OficioMultiplier
-
-            MiObj.Amount = CantidadItems
-            MiObj.ObjIndex = Pescado
-        
+            
+            With MiObj
+                .Amount = CantidadItems
+                .ObjIndex = Pescado
+            End With
+            
             If Not MeterItemEnInventario(Userindex, MiObj) Then
                 Call TirarItemAlPiso(.Pos, MiObj)
 
             End If
         
             Call WriteConsoleMsg(Userindex, "Has pescado un lindo pez!", FontTypeNames.FONTTYPE_INFO)
-        
+            
+            'Renderizo el dano en render.
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            
             Call SubirSkill(Userindex, eSkill.Pesca, True)
         Else
 
@@ -1883,7 +1888,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en DoPescar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -1895,7 +1900,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     'Last Modification: 26/10/2018
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim iSkill        As Integer
 
@@ -1977,7 +1982,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en DoPescarRed")
 
 End Sub
@@ -2002,7 +2007,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
     '23/04/2010: ZaMa - El alcance de robo pasa a ser de 1 tile.
     '*************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim OtroUserIndex As Integer
 
@@ -2197,7 +2202,7 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en DoRobar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -2375,7 +2380,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
             With UserList(VictimUserIndex)
                 .Stats.MinHp = .Stats.MinHp - dano
                 
-                ' Dano en Render
+                'Renderizo el dano en render
                 Call SendData(SendTarget.ToPCArea, VictimUserIndex, PrepareMessageCreateDamage(UserList(VictimUserIndex).Pos.X, UserList(VictimUserIndex).Pos.Y, dano, DAMAGE_PUNAL))
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado a " & .Name & " por " & dano, FontTypeNames.FONTTYPE_FIGHT)
@@ -2385,13 +2390,17 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
         
             Call FlushBuffer(VictimUserIndex)
         Else
-            Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - Int(dano * 2)
             
-            Call SendData(SendTarget.ToNPCArea, VictimNpcIndex, PrepareMessageCreateDamage(Npclist(VictimNpcIndex).Pos.X, Npclist(VictimNpcIndex).Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+            With Npclist(VictimNpcIndex)
+                .Stats.MinHp = .Stats.MinHp - Int(dano * 2)
+                
+                'Renderizo el dano en render
+                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                
+                Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
+                Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
             
-            Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
-            '[Alejo]
-            Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
+            End With
 
         End If
     
@@ -2477,16 +2486,29 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
             
             With UserList(VictimUserIndex)
                 .Stats.MinHp = .Stats.MinHp - dano
+                
+                'Renderizo el dano en render
+                Call SendData(SendTarget.ToPCArea, VictimUserIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a " & .Name & " por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteConsoleMsg(VictimUserIndex, UserList(Userindex).Name & " te ha golpeado criticamente por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
 
             End With
             
         Else
-        
-            Npclist(VictimNpcIndex).Stats.MinHp = Npclist(VictimNpcIndex).Stats.MinHp - dano
-            Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
-            Call CalcularDarExp(Userindex, VictimNpcIndex, dano)
+            
+            With Npclist(VictimNpcIndex)
+                .Stats.MinHp = .Stats.MinHp - dano
+                
+                'Renderizo el dano en render
+                Call SendData(SendTarget.ToPCArea, VictimNpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                
+                Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
+                
+                Call CalcularDarExp(Userindex, VictimNpcIndex, dano)
+            End With
+            
+           
             
         End If
         
@@ -2501,7 +2523,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     UserList(Userindex).Stats.MinSta = UserList(Userindex).Stats.MinSta - Cantidad
 
@@ -2510,7 +2532,7 @@ Public Sub QuitarSta(ByVal Userindex As Integer, ByVal Cantidad As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en QuitarSta. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -2529,7 +2551,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Suerte        As Integer
 
@@ -2569,9 +2591,12 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
             End If
 
             CantidadItems = CantidadItems * OficioMultiplier
-
-            MiObj.Amount = CantidadItems
-            MiObj.ObjIndex = IIf(DarMaderaElfica, LenaElfica, Lena)
+            
+            With MiObj
+                .Amount = CantidadItems
+                .ObjIndex = IIf(DarMaderaElfica, LenaElfica, Lena)
+            End With
+            
         
             If Not MeterItemEnInventario(Userindex, MiObj) Then
                 Call TirarItemAlPiso(.Pos, MiObj)
@@ -2579,7 +2604,10 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
             End If
         
             Call WriteConsoleMsg(Userindex, "Has conseguido algo de lena!", FontTypeNames.FONTTYPE_INFO)
-        
+            
+            'Renderizo el dano en render.
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            
             Call SubirSkill(Userindex, eSkill.Talar, True)
         Else
 
@@ -2608,7 +2636,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en DoTalar")
 
 End Sub
@@ -2625,7 +2653,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
     '28/05/2010: ZaMa - Los pks no suben plebe al trabajar.
     '26/10/2018: CHOTS - Multiplicador de oficios
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Suerte        As Integer
 
@@ -2675,7 +2703,10 @@ Public Sub DoMineria(ByVal Userindex As Integer)
             If Not MeterItemEnInventario(Userindex, MiObj) Then Call TirarItemAlPiso(.Pos, MiObj)
         
             Call WriteConsoleMsg(Userindex, "Has extraido algunos minerales!", FontTypeNames.FONTTYPE_INFO)
-        
+            
+            'Renderizo el dano en render.
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            
             Call SubirSkill(Userindex, eSkill.Mineria, True)
         Else
 
@@ -2704,7 +2735,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en Sub DoMineria")
 
 End Sub
@@ -2797,6 +2828,9 @@ Public Sub DoMeditar(ByVal Userindex As Integer)
                 .flags.UltimoMensaje = 22
 
             End If
+            
+            'Renderizo el dano en render.
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, cant, DAMAGE_TRABAJO))
             
             Call WriteUpdateMana(Userindex)
             Call SubirSkill(Userindex, eSkill.Meditar, True)
