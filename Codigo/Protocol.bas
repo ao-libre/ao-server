@@ -9599,11 +9599,16 @@ Private Sub HandleWarpChar(ByVal Userindex As Integer)
                     
                 ElseIf Not ((UserList(tUser).flags.Privilegios And PlayerType.Dios) <> 0 Or (UserList(tUser).flags.Privilegios And PlayerType.Admin) <> 0) Or tUser = Userindex Then
                             
-                    If InMapBounds(Map, x, Y) Then
-                        Call FindLegalPos(tUser, Map, x, Y)
-                        Call WarpUserChar(tUser, Map, x, Y, True, True)
-                        Call WriteConsoleMsg(Userindex, UserList(tUser).Name & " transportado.", FontTypeNames.FONTTYPE_INFO)
-                        Call LogGM(.Name, "Transporto a " & UserList(tUser).Name & " hacia " & "Mapa" & Map & " X:" & x & " Y:" & Y)
+                    If InMapBounds(Map, X, Y) Then
+                        Call FindLegalPos(tUser, Map, X, Y)
+                        Call WarpUserChar(tUser, Map, X, Y, True, True)
+                        
+                        ' Agrego esto para no llenar consola de mensajes al hacer SHIFT + CLICK DERECHO
+                        If Userindex <> tUser Then
+                            Call WriteConsoleMsg(Userindex, UserList(tUser).Name & " transportado.", FontTypeNames.FONTTYPE_INFO)
+                        End If
+                        
+                        Call LogGM(.Name, "Transporto a " & UserList(tUser).Name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
 
                     End If
 
