@@ -1010,20 +1010,10 @@ End Sub
         '
         '***************************************************
 
-        On Error GoTo errHandler
+        On Error GoTo ErrHandler
 
-        With UserList(Userindex)
+        With UserList(UserIndex)
 
-            If Userindex = LastUser Then
-
-                Do Until UserList(LastUser).flags.UserLogged
-                    LastUser = LastUser - 1
-
-                    If LastUser < 1 Then Exit Do
-                Loop
-
-            End If
-        
             Call SecurityIp.IpRestarConexion(GetLongIp(.ip))
         
             If .ConnID <> -1 Then

@@ -1175,6 +1175,7 @@ Public Sub FreeSlot(ByVal UserIndex As Integer)
 
         Do While (LastUser > 0) And (UserList(LastUser).ConnID = -1)
             LastUser = LastUser - 1
+            If LastUser = 0 Then Exit Do
         Loop
 
     End If
