@@ -1066,20 +1066,20 @@ End Sub
                 Call ResetUserSlot(Userindex)
 
             End If
-        
-            .ConnID = -1
-            .ConnIDValida = False
-
+            
+            Call FreeSlot(UserIndex)
+            
         End With
 
         Exit Sub
 
-errHandler:
-        UserList(Userindex).ConnID = -1
-        UserList(Userindex).ConnIDValida = False
-        Call ResetUserSlot(Userindex)
+ErrHandler:
 
-        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & Userindex)
+        Call ResetUserSlot(UserIndex)
+        
+        Call FreeSlot(UserIndex)
+        
+        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & UserIndex)
 
     End Sub
 

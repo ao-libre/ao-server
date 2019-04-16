@@ -1158,7 +1158,30 @@ Function NextOpenUser() As Integer
 
 End Function
 
-Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
+Public Sub FreeSlot(ByVal UserIndex As Integer)
+    '***************************************************
+    'Author: Torres Patricio (Pato)
+    'Last Modification: 01/10/2012
+    '
+    '***************************************************
+
+    With UserList(UserIndex)
+        .ConnID = -1
+        .ConnIDValida = False
+
+    End With
+
+    If UserIndex = LastUser Then
+
+        Do While (LastUser > 0) And (UserList(LastUser).ConnID = -1)
+            LastUser = LastUser - 1
+        Loop
+
+    End If
+
+End Sub
+
+Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
