@@ -45,6 +45,7 @@ Attribute VB_Exposed = False
 ' - HISTORY
 '       v1.0.0  -   Initial release ( 2006/04/27 - Juan Martin Sotuyo Dodero )
 '       v1.1.0  -   Added Single and Double support ( 2007/10/28 - Juan Martin Sotuyo Dodero )
+'       v1.2.0  -   Reemplazo de multiplicaciones por sumas que son mas rapidas. ( 2019/04/16 - Damian )
 '**************************************************************************
 
 Option Explicit
@@ -137,6 +138,7 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     'A Visual Basic equivalent of a Copy Contructor
     '***************************************************
     If source.Length = 0 Then
+        
         'Clear the list and exit
         Call RemoveData(Length)
         Exit Sub
@@ -150,7 +152,6 @@ Public Sub CopyBuffer(ByRef source As clsByteQueue)
     
     ' Read buffer
     Dim buf() As Byte
-
     ReDim buf(source.Length - 1) As Byte
     
     Call source.PeekBlock(buf, source.Length)
@@ -530,6 +531,7 @@ Public Function WriteUnicodeString(ByVal Value As String) As Long
     Call CopyMemory(buf(0), CInt(Len(Value)), 2)
     
     If Len(Value) > 0 Then
+    
         'Copy data to temp buffer
         Call CopyMemory(buf(2), ByVal StrPtr(Value), LenB(Value))
 
@@ -557,6 +559,7 @@ Public Function WriteBlock(ByRef Value() As Byte, _
     'Last Modification: 04/27/06
     'Writes a byte array to the queue
     '***************************************************
+    
     'Prevent from copying memory outside the array
     If Length > UBound(Value()) + 1 Or Length < 0 Then Length = UBound(Value()) + 1
     
@@ -741,7 +744,6 @@ Public Function ReadASCIIStringFixed(ByVal Length As Long) As String
     If queueLength >= Length Then
 
         Dim buf() As Byte
-
         ReDim buf(Length - 1) As Byte
         
         'Read the data and remove it
@@ -775,14 +777,14 @@ Public Function ReadUnicodeStringFixed(ByVal Length As Long) As String
     '***************************************************
     If Length <= 0 Then Exit Function
     
-    If queueLength >= Length * 2 Then
+    Dim i As Integer: i = Length + Length
+    
+    If queueLength >= i Then
 
-        Dim buf() As Byte
-
-        ReDim buf(Length * 2 - 1) As Byte
+        Dim buf() As Byte: ReDim buf(i - 1) As Byte
         
         'Read the data and remove it
-        Call RemoveData(ReadData(buf, Length * 2))
+        Call RemoveData(ReadData(buf, i))
         
         ReadUnicodeStringFixed = buf
     Else
@@ -810,26 +812,25 @@ Public Function ReadASCIIString() As String
     'Reads a variable length ASCII string from the queue and removes it
     '***************************************************
     Dim buf(1) As Byte
-
     Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
+        
         'Read the length
         Call ReadData(buf, 2)
         Call CopyMemory(Length, buf(0), 2)
         
         'Make sure there are enough bytes
         If queueLength >= Length + 2 Then
+            
             'Remove the length
             Call RemoveData(2)
             
             If Length > 0 Then
 
-                Dim buf2() As Byte
-
-                ReDim buf2(Length - 1) As Byte
-                
+                Dim buf2() As Byte: ReDim buf2(Length - 1) As Byte
+ 
                 'Read the data and remove it
                 Call RemoveData(ReadData(buf2, Length))
                 
@@ -867,26 +868,30 @@ Public Function ReadUnicodeString() As String
     'Reads a variable length UNICODE string from the queue and removes it
     '***************************************************
     Dim buf(1) As Byte
-
     Dim Length As Integer
+    Dim i As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
+        
         'Read the length
         Call ReadData(buf, 2)
         Call CopyMemory(Length, buf(0), 2)
         
+        i = Length + Length
+        
         'Make sure there are enough bytes
-        If queueLength >= Length * 2 + 2 Then
+        If queueLength >= i + 2 Then
+            
             'Remove the length
             Call RemoveData(2)
             
-            Dim buf2() As Byte
-
-            ReDim buf2(Length * 2 - 1) As Byte
+            i = Length + Length
             
+            Dim buf2() As Byte: ReDim buf2(i - 1) As Byte
+
             'Read the data and remove it
-            Call RemoveData(ReadData(buf2, Length * 2))
+            Call RemoveData(ReadData(buf2, i))
             
             ReadUnicodeString = buf2
         Else
@@ -1128,14 +1133,15 @@ Public Function PeekUnicodeStringFixed(ByVal Length As Long) As String
     '***************************************************
     If Length <= 0 Then Exit Function
     
-    If queueLength >= Length * 2 Then
+    Dim i As Integer: i = Length + Length
+    
+    If queueLength >= i Then
 
         Dim buf() As Byte
-
-        ReDim buf(Length * 2 - 1) As Byte
+        ReDim buf(i - 1) As Byte
         
         'Read the data and remove it
-        Call ReadData(buf, Length * 2)
+        Call ReadData(buf, i)
         
         PeekUnicodeStringFixed = buf
     Else
@@ -1162,11 +1168,11 @@ Public Function PeekASCIIString() As String
     'Reads a variable length ASCII string from the queue but doesn't removes it
     '***************************************************
     Dim buf(1) As Byte
-
     Dim Length As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
+        
         'Read the length
         Call ReadData(buf, 2)
         Call CopyMemory(Length, buf(0), 2)
@@ -1174,19 +1180,16 @@ Public Function PeekASCIIString() As String
         'Make sure there are enough bytes
         If queueLength >= Length + 2 Then
 
-            Dim buf2() As Byte
+            Dim buf2() As Byte: ReDim buf2(Length + 1) As Byte
 
-            ReDim buf2(Length + 1) As Byte
-            
             'Read the data (we have to read the length again)
             Call ReadData(buf2, Length + 2)
             
             If Length > 0 Then
 
                 'Get rid of the length
-                Dim buf3() As Byte
+                Dim buf3() As Byte: ReDim buf3(Length - 1) As Byte
 
-                ReDim buf3(Length - 1) As Byte
                 Call CopyMemory(buf3(0), buf2(2), Length)
                 
                 PeekASCIIString = StrConv(buf3, vbUnicode)
@@ -1222,30 +1225,34 @@ Public Function PeekUnicodeString() As String
     'Reads a variable length UNICODE string from the queue but doesn't removes it
     '***************************************************
     Dim buf(1) As Byte
-
     Dim Length As Integer
+    Dim i As Integer
     
     'Make sure we can read a valid length
     If queueLength > 1 Then
+        
         'Read the length
         Call ReadData(buf, 2)
         Call CopyMemory(Length, buf(0), 2)
         
+        i = Length + Length
+        
         'Make sure there are enough bytes
-        If queueLength >= Length * 2 + 2 Then
-
-            Dim buf2() As Byte
-
-            ReDim buf2(Length * 2 + 1) As Byte
+        If queueLength >= i + 2 Then
             
+            i = Length + Length
+            
+            Dim buf2() As Byte: ReDim buf2(i + 1) As Byte
+
             'Read the data (we need to read the length again)
-            Call ReadData(buf2, Length * 2 + 2)
+            Call ReadData(buf2, i + 2)
             
             'Get rid of the length bytes
-            Dim buf3() As Byte
+            i = Length + Length
+            
+            Dim buf3() As Byte: ReDim buf3(i - 1) As Byte
 
-            ReDim buf3(Length * 2 - 1) As Byte
-            Call CopyMemory(buf3(0), buf2(2), Length * 2)
+            Call CopyMemory(buf3(0), buf2(2), i)
             
             PeekUnicodeString = buf3
         Else
