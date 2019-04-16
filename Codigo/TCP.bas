@@ -1022,10 +1022,10 @@ End Sub
             End If
         
             ' Hunger Games
-            If UserList(Userindex).flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
+            If .flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
         
             'Nuevo centinela - maTih.-
-            If UserList(Userindex).CentinelaUsuario.centinelaIndex <> 0 Then
+            If .CentinelaUsuario.centinelaIndex <> 0 Then
                 Call modCentinela.UsuarioInActivo(Userindex)
 
             End If
@@ -1057,7 +1057,7 @@ End Sub
 
             End If
             
-            Call FreeSlot(UserIndex)
+            Call LiberarSlot(Userindex)
             
         End With
 
@@ -1067,7 +1067,7 @@ ErrHandler:
 
         Call ResetUserSlot(UserIndex)
         
-        Call FreeSlot(UserIndex)
+        Call LiberarSlot(Userindex)
         
         Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & UserIndex)
 
@@ -1085,12 +1085,7 @@ Sub CloseSocket(ByVal Userindex As Integer)
 On Error GoTo errHandler
     UserList(Userindex).ConnID = -1
 
-    If Userindex = LastUser And LastUser > 1 Then
-        Do Until UserList(LastUser).flags.UserLogged
-            LastUser = LastUser - 1
-            If LastUser <= 1 Then Exit Do
-        Loop
-    End If
+    Call LiberarSlot(Userindex)
 
     If UserList(Userindex).flags.UserLogged Then
             If NumUsers <> 0 Then NumUsers = NumUsers - 1
@@ -1130,12 +1125,7 @@ Dim CoNnEcTiOnId As Long
   
     UserList(Userindex).ConnID = -1 'inabilitamos operaciones en socket
 
-    If Userindex = LastUser And LastUser > 1 Then
-        Do
-            LastUser = LastUser - 1
-            If LastUser <= 1 Then Exit Do
-        Loop While UserList(LastUser).flags.UserLogged = True
-    End If
+    Call LiberarSlot(Userindex)
 
     If UserList(Userindex).flags.UserLogged Then
             If NumUsers <> 0 Then NumUsers = NumUsers - 1
@@ -1167,7 +1157,7 @@ errHandler:
         End If
     End If
     
-    Call LogError("El usuario no guardado tenia connid " & CoNnEcTiOnId & ". Socket no liberado.")
+    Call LogError("El usuario no guardado tenia ConnID " & CoNnEcTiOnId & ". Socket no liberado.")
     Call ResetUserSlot(Userindex)
 
 End Sub

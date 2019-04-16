@@ -1158,7 +1158,7 @@ Function NextOpenUser() As Integer
 
 End Function
 
-Public Sub FreeSlot(ByVal UserIndex As Integer)
+Public Sub LiberarSlot(ByVal Userindex As Integer)
     '***************************************************
     'Author: Torres Patricio (Pato)
     'Last Modification: 01/10/2012
