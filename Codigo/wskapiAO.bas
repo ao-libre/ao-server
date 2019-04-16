@@ -605,7 +605,8 @@ Public Sub EventoSockRead(ByVal Slot As Integer, ByRef Datos() As Byte)
             Call .incomingData.WriteBlock(Datos)
     
             If .ConnID <> -1 Then
-                Call HandleIncomingData(Slot)
+                Do While HandleIncomingData(Slot) = True
+                Loop
             Else
                 Exit Sub
 
