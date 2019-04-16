@@ -38,6 +38,10 @@ Option Explicit
 '********** Constantes de dano en render.
 Public Const DAMAGE_PUNAL    As Byte = 1
 Public Const DAMAGE_NORMAL   As Byte = 2
+Public Const DAMAGE_CRITICO  As Byte = 3
+Public Const DAMAGE_FALLO    As Byte = 4
+Public Const DAMAGE_CURAR    As Byte = 5
+Public Const DAMAGE_TRABAJO  As Byte = 6
 '********** Constantes de dano en render.
 
 ' Nuevo Centinela
