@@ -405,6 +405,7 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
         'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
         If .Counters.PacketsTick > 10 Then
             Call CloseSocket(Userindex)
+            Exit Sub
         End If
         
         'Verifico si el paquete necesita que el user este logeado
