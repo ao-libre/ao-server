@@ -397,8 +397,6 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
     
     With UserList(Userindex)
         
-        Dim packetID As Byte: packetID = .incomingData.PeekByte()
-        
         'Contamos cuantos paquetes recibimos.
         .Counters.PacketsTick = .Counters.PacketsTick + 1
         
@@ -408,6 +406,8 @@ Public Sub HandleIncomingData(ByVal Userindex As Integer)
             Exit Sub
         End If
         
+        Dim packetID As Byte: packetID = .incomingData.PeekByte()
+
         'Verifico si el paquete necesita que el user este logeado
         If Not (packetID = ClientPacketID.ThrowDices Or packetID = ClientPacketID.LoginExistingChar Or packetID = ClientPacketID.LoginNewChar Or packetID = ClientPacketID.LoginNewAccount Or packetID = ClientPacketID.LoginExistingAccount) Then
             
