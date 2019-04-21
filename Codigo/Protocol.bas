@@ -394,39 +394,51 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
     '
     '***************************************************
     On Error Resume Next
-
-    Dim packetID As Byte
     
-    packetID = UserList(Userindex).incomingData.PeekByte()
-    
-    'Does the packet requires a logged user??
-    If Not (packetID = ClientPacketID.ThrowDices Or packetID = ClientPacketID.LoginExistingChar Or packetID = ClientPacketID.LoginNewChar Or packetID = ClientPacketID.LoginNewAccount Or packetID = ClientPacketID.LoginExistingAccount) Then
+    With UserList(Userindex)
         
-        'Is the user actually logged?
-        If Not UserList(Userindex).flags.UserLogged Then
+        'Contamos cuantos paquetes recibimos.
+        .Counters.PacketsTick = .Counters.PacketsTick + 1
+        
+        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
+        If .Counters.PacketsTick > 10 Then
             Call CloseSocket(Userindex)
             Exit Function
+
+        End If
         
-            'He is logged. Reset idle counter if id is valid.
+        Dim packetID As Byte: packetID = .incomingData.PeekByte()
+
+        'Verifico si el paquete necesita que el user este logeado
+        If Not (packetID = ClientPacketID.ThrowDices Or packetID = ClientPacketID.LoginExistingChar Or packetID = ClientPacketID.LoginNewChar Or packetID = ClientPacketID.LoginNewAccount Or packetID = ClientPacketID.LoginExistingAccount) Then
+            
+            'Vierifico si el user esta logeado
+            If Not .flags.UserLogged Then
+                Call CloseSocket(Userindex)
+                Exit Function
+            
+                'El usuario ya logueo. Reseteamos el tiempo AFK si el ID es valido.
+            ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
+                .Counters.IdleCount = 0
+    
+            End If
+    
         ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
-            UserList(Userindex).Counters.IdleCount = 0
-
-        End If
-
-    ElseIf packetID <= LAST_CLIENT_PACKET_ID Then
-        UserList(Userindex).Counters.IdleCount = 0
-        
-        'Is the user logged?
-        If UserList(Userindex).flags.UserLogged Then
-            Call CloseSocket(Userindex)
-            Exit Function
-
-        End If
-
-    End If
+            .Counters.IdleCount = 0
+            
+            'Vierifico si el user esta logeado
+            If .flags.UserLogged Then
+                Call CloseSocket(Userindex)
+                Exit Function
     
-    ' Ante cualquier paquete, pierde la proteccion de ser atacado.
-    UserList(Userindex).flags.NoPuedeSerAtacado = False
+            End If
+    
+        End If
+        
+        ' Ante cualquier paquete, pierde la proteccion de ser atacado.
+        .flags.NoPuedeSerAtacado = False
+        
+    End With
     
     Select Case packetID
 

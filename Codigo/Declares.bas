@@ -1527,6 +1527,8 @@ Public Type UserCounters
     
     goHome As Long
     AsignedSkills As Byte
+    
+    PacketsTick As Byte
 
 End Type
 
