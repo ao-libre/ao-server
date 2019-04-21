@@ -1572,8 +1572,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                 .Pos = CustomSpawnMap
                 mapa = CustomSpawnMap.Map
             Else
-                .Pos = Nemahuak
-                mapa = Nemahuak.Map
+                .Pos = Ciudades(.Hogar) 'Nemahuak
+                mapa = Ciudades(.Hogar).Map 'Nemahuak.Map
             End If
 
         Else
