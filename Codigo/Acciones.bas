@@ -367,10 +367,13 @@ Sub AccionParaRamita(ByVal Map As Integer, _
     Dim SkillSupervivencia As Byte
 
     Dim Pos                As WorldPos
-
-    Pos.Map = Map
-    Pos.x = x
-    Pos.Y = Y
+    
+    With Pos
+        .Map = Map
+        .X = X
+        .Y = Y
+    End With
+    
 
     With UserList(Userindex)
 
@@ -403,21 +406,17 @@ Sub AccionParaRamita(ByVal Map As Integer, _
     
         If exito = 1 Then
             If MapInfo(.Pos.Map).Zona <> Ciudad Then
-                obj.ObjIndex = FOGATA
-                obj.Amount = 1
+            
+                With obj
+                    .ObjIndex = FOGATA
+                    .Amount = 1
+                End With
             
                 Call WriteConsoleMsg(Userindex, "Has prendido la fogata.", FontTypeNames.FONTTYPE_INFO)
             
                 Call MakeObj(obj, Map, x, Y)
             
-                'Las fogatas prendidas se deben eliminar
-                Dim Fogatita As cGarbage
-
-                Set Fogatita = New cGarbage
-                Fogatita.Map = Map
-                Fogatita.x = x
-                Fogatita.Y = Y
-                Call TrashCollector.Add(Fogatita)
+                Call mLimpieza.AgregarObjetoLimpieza(Pos)
             
                 Call SubirSkill(Userindex, eSkill.Supervivencia, True)
             Else
