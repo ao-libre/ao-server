@@ -34,7 +34,6 @@ Form=Codigo\frmDebugNpc.frm
 Class=CColaArray; Codigo\cColaArray.cls
 Class=clsAntiMassClon; Codigo\clsAntiMassClon.cls
 Class=cSolicitud; Codigo\cSolicitud.cls
-Class=cGarbage; Codigo\cGarbage.cls
 Module=PathFinding; Codigo\PathFinding.bas
 Module=Queue; Codigo\Queue.bas
 Module=mdlCOmercioConUsuario; Codigo\mdlCOmercioConUsuario.bas
