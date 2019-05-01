@@ -60,6 +60,7 @@ Public Sub DoPermanecerOculto(ByVal Userindex As Integer)
 
             .Counters.TiempoOculto = 0
             .flags.Oculto = 0
+            Call WriteTimeInvi(UserIndex, 0)
             
             If .flags.Navegando = 1 Then
                 If .clase = eClass.Pirat Then
@@ -217,8 +218,9 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
                
                 ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
                 If .flags.invisible = 1 Then
-                    Call SetInvisible(Userindex, .Char.CharIndex, False)
-
+                    Call WriteTimeInvi(UserIndex, 0)
+                    Call SetInvisible(UserIndex, .Char.CharIndex, False)
+                    
                 End If
                 
                 ' Esta muerto

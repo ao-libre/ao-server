@@ -1543,10 +1543,27 @@ Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
 
         If .Counters.Invisibilidad < IntervaloInvisible Then
             .Counters.Invisibilidad = .Counters.Invisibilidad + 1
+            
+            'Calcula el tiempo restante
+            Dim TiempoTranscurrido As Long: TiempoTranscurrido = (.Counters.Invisibilidad * GetInterval(eTimers.eGameTimer))
+            
+            'Lo envia al cliente
+            If TiempoTranscurrido Mod 1000 = 0 Or TiempoTranscurrido = 40 Then
+                If TiempoTranscurrido = 40 Then
+                    Call WriteTimeInvi(UserIndex, ((IntervaloInvisible * GetInterval(eTimers.eGameTimer)) / 1000))
+                Else
+                    Call WriteTimeInvi(UserIndex, (((IntervaloInvisible * GetInterval(eTimers.eGameTimer)) / 1000) - (TiempoTranscurrido / 1000)))
+
+                End If
+
+            End If
+
         Else
             .Counters.Invisibilidad = RandomNumber(-100, 100) ' Invi variable :D
             .flags.invisible = 0
-
+            
+            Call WriteTimeInvi(UserIndex, 0)
+            
             If .flags.Oculto = 0 Then
                 Call WriteConsoleMsg(Userindex, "Has vuelto a ser visible.", FontTypeNames.FONTTYPE_INFO)
                 

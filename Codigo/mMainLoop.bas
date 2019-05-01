@@ -72,6 +72,12 @@ Private Sub MakeProcces(ByVal Index As Integer)
     
 End Sub
 
+Public Function GetInterval(ByVal Timer As eTimers) As Integer
+    
+    GetInterval = MainLoops(Timer).MAXINT
+
+End Function
+
 Private Sub Auditoria()
 
     On Error GoTo errhand
