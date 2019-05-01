@@ -168,6 +168,8 @@ Private Enum ServerPacketID
     QuestDetails
     QuestListSend
     CreateDamage            ' CDMG
+    TimeInvi
+    TimeParal
 End Enum
 
 Private Enum ClientPacketID
@@ -23264,3 +23266,47 @@ With auxiliarBuffer
 End With
  
 End Function
+
+Public Sub WriteTimeInvi(ByVal UserIndex As Integer, ByVal Time As Byte)
+
+    On Error GoTo Errhandler
+
+    With UserList(UserIndex)
+        .outgoingData.WriteByte ServerPacketID.TimeInvi
+        .outgoingData.WriteByte Time
+
+    End With
+
+    Exit Sub
+
+Errhandler:
+
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+
+    End If
+
+End Sub
+
+Public Sub WriteTimeParal(ByVal UserIndex As Integer, ByVal Time As Byte)
+
+    On Error GoTo Errhandler
+
+    With UserList(UserIndex)
+        .outgoingData.WriteByte ServerPacketID.TimeParal
+        .outgoingData.WriteByte Time
+
+    End With
+
+    Exit Sub
+
+Errhandler:
+
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+
+    End If
+
+End Sub
