@@ -185,37 +185,6 @@ Private Function HayLava(ByVal Map As Integer, _
 
 End Function
 
-Sub LimpiarMundo()
-
-    '***************************************************
-    'Author: Unknow
-    'Last Modification: 04/15/2008
-    '01/14/2008: Marcos Martinez (ByVal) - La funcion FOR estaba mal. En ves de i habia un 1.
-    '04/15/2008: (NicoNZ) - La funcion FOR estaba mal, de la forma que se hacia tiraba error.
-    '***************************************************
-    On Error GoTo errHandler
-
-    Dim i As Integer
-
-    Dim d As cGarbage
-
-    Set d = New cGarbage
-    
-    For i = TrashCollector.Count To 1 Step -1
-        Set d = TrashCollector(i)
-        Call EraseObj(1, d.Map, d.x, d.Y)
-        Call TrashCollector.Remove(i)
-        Set d = Nothing
-    Next i
-    
-    Call SecurityIp.IpSecurityMantenimientoLista
-    
-    Exit Sub
-
-errHandler:
-    Call LogError("Error producido en el sub LimpiarMundo: " & Err.description)
-
-End Sub
 
 Sub EnviarSpawnList(ByVal Userindex As Integer)
     '***************************************************
