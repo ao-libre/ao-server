@@ -240,8 +240,7 @@ Sub AprobarUsuario(ByVal Userindex As Integer, ByVal CIndex As Byte)
             .centinelaIndex = 0
             .Codigo = vbNullString
             .Revisando = False
-            .UltimaRevision = 0
-
+            .UltimaRevision = GetTickCount()
         End With
  
         Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.fonttype_dios)
@@ -264,7 +263,6 @@ Sub LimpiarIndice(ByVal centinelaIndex As Byte)
         'Estaba el char?
         If .MiNpcIndex <> 0 Then
             Call QuitarNPC(.MiNpcIndex)
-
         End If
  
     End With
@@ -287,7 +285,6 @@ Sub TiempoUsuario(ByVal Userindex As Integer)
         'Acabo el tiempo y no ingreso la clave.
         If (GetTickCount - Centinelas(centinelaIndex).TiempoInicio) > LIMITE_TIEMPO Then
             Call UsuarioInActivo(Userindex)
-
         End If
  
     End With
@@ -301,11 +298,14 @@ Sub UsuarioInActivo(ByVal Userindex As Integer)
     'Telep al mapa.
     Call WarpUserChar(Userindex, MAPA_EXPLOTAR, X_EXPLOTAR, Y_EXPLOTAR, True)
  
+
+    'No creo que tirar los items sea justo, con encarcelarlo y matarlo es mas que suficiente. (Recox)
+    'Aparte de que si muere desaparecen los items...
     'Muere.
-    Call UserDie(Userindex)
+    'Call UserDie(Userindex)
  
     'Tira los items.
-    Call TirarTodosLosItems(Userindex)
+    'Call TirarTodosLosItems(Userindex)
  
     'Lo encarcela.
     Call Encarcelar(Userindex, CARCEL_TIEMPO, "El centinela")
@@ -313,7 +313,6 @@ Sub UsuarioInActivo(ByVal Userindex As Integer)
     'Borra el centinela.
     If UserList(Userindex).CentinelaUsuario.centinelaIndex <> 0 Then
         Call LimpiarIndice(UserList(Userindex).CentinelaUsuario.centinelaIndex)
-
     End If
  
     'Deja un mensaje.
@@ -336,7 +335,7 @@ Function GenerarClave() As String
 
     Dim LoopC         As Long
  
-    NumCharacters = 7
+    NumCharacters = 4
  
     For LoopC = 1 To NumCharacters
 
