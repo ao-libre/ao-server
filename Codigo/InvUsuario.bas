@@ -1984,20 +1984,23 @@ Sub TirarTodo(ByVal Userindex As Integer)
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
         
-        Call TirarTodosLosItems(Userindex)
-        
-        Dim Cantidad As Long: Cantidad = .Stats.Gld - CLng(.Stats.ELV) * 10000
-       
-        ' Si estas en zona segura tampoco se tira el oro.
-        If MapInfo(.Pos.Map).Pk Then
+        ' Si estas en zona segura no tiramos nada.
+        If MapInfo(.Pos.Map).Pk Then Exit Sub
             
-            If Cantidad > 0 Then
-                Call TirarOro(Cantidad, Userindex)
-            End If
-            
+        ' << Si es newbie no pierde el inventario >>
+        If Not EsNewbie(Userindex) Then
+            Call TirarTodosLosItems(Userindex)
+        Else
+            Call TirarTodosLosItemsNoNewbies(Userindex)
+    
         End If
+            
+        Dim Cantidad As Long: Cantidad = .Stats.Gld - CLng(.Stats.ELV) * 10000
+               
+        ' Tiramos el oro.
+        If Cantidad > 0 Then Call TirarOro(Cantidad, Userindex)
         
     End With
 
