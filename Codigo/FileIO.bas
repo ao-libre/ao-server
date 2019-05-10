@@ -2056,7 +2056,6 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
                 TempDate = Now - .LogOnTime
                 .LogOnTime = Now
                 .UpTime = .UpTime + (Abs(Day(TempDate) - 30) * 24 * 3600) + Hour(TempDate) * 3600 + Minute(TempDate) * 60 + Second(TempDate)
-                .UpTime = .UpTime
                 Call Manager.ChangeValue("INIT", "UpTime", .UpTime)
 
             End If
