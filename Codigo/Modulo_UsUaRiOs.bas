@@ -1738,9 +1738,23 @@ Public Sub UserDie(ByVal Userindex As Integer)
         End If
         
         If TriggerZonaPelea(Userindex, Userindex) <> eTrigger6.TRIGGER6_PERMITE Then
-            
-            ' Tiramos los items y el oro.
-            If DropItemsAlMorir Then Call TirarTodo(Userindex)
+
+            If DropItemsAlMorir Then
+                
+                ' Si estas en zona segura no se caen los items.
+                If MapInfo(.Pos.Map).Pk Then
+                
+                    ' << Si es newbie no pierde el inventario >>
+                    If Not EsNewbie(Userindex) Then
+                        Call TirarTodo(Userindex)
+                    Else
+                        Call TirarTodosLosItemsNoNewbies(Userindex)
+    
+                    End If
+                    
+                End If
+
+            End If
 
         End If
         
