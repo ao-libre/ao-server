@@ -22642,8 +22642,8 @@ End Sub
 Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
 
     '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 12/10/2018
+    'Author: Juan Andres Dalmasso (CHOTASO) 'Quien te conoce papa (JUAN MZ)
+    'Last Modification: 10/05/2019
     '
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
@@ -22669,16 +22669,15 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
 
     Dim version  As String
 
+    UserName = buffer.ReadASCIIString()
+    Password = buffer.ReadASCIIString()
+    
     If CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta ya existe.")
         Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
-
     End If
-
-    UserName = buffer.ReadASCIIString()
-    Password = buffer.ReadASCIIString()
 
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
