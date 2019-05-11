@@ -321,7 +321,7 @@ End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 139
+Private Const LAST_CLIENT_PACKET_ID As Byte = 144
 
 Public Enum FontTypeNames
 
@@ -842,16 +842,34 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             Call HandleAceptarCvc(Userindex)
 
         Case ClientPacketID.IrCvc
-            Call HandleIrCvc(Userindex)
+            Call HandleIrCvc(UserIndex)
+            
+        Case ClientPacketID.DragAndDropHechizos
+            Call HandleDragAndDropHechizos(UserIndex)
             
         Case ClientPacketID.HungerGamesCreate
-            Call HandleHungerGamesCreate(Userindex)
-    
-        Case ClientPacketID.HungerGamesDelete
-            Call HandleHungerGamesDelete(Userindex)
+            Call HandleHungerGamesCreate(UserIndex)
     
         Case ClientPacketID.HungerGamesJoin
-            Call HandleHungerGamesJoin(Userindex)
+            Call HandleHungerGamesJoin(UserIndex)
+        
+        Case ClientPacketID.HungerGamesDelete
+            Call HandleHungerGamesDelete(UserIndex)
+  
+        Case ClientPacketID.Quest
+            Call Quests.HandleQuest(UserIndex)
+            
+        Case ClientPacketID.QuestAccept
+            Call Quests.HandleQuestAccept(UserIndex)
+        
+        Case ClientPacketID.QuestListRequest
+            Call Quests.HandleQuestListRequest(UserIndex)
+        
+        Case ClientPacketID.QuestDetailsRequest
+            Call Quests.HandleQuestDetailsRequest(UserIndex)
+        
+        Case ClientPacketID.QuestAbandon
+            Call Quests.HandleQuestAbandon(UserIndex)
 
         Case Else
             'ERROR : Abort!
@@ -22999,22 +23017,19 @@ Private Sub HandleIrCvc(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub HandleDragAndDropHechizos(ByVal Userindex As Integer)
+Public Sub HandleDragAndDropHechizos(ByVal UserIndex As Integer)
  
-    With UserList(Userindex)
+    With UserList(UserIndex)
+        
         Call .incomingData.ReadByte
         
-        Dim ANTPOS As Integer
-        ANTPOS = .incomingData.ReadInteger
+        Dim AnteriorPosicion As Integer: AnteriorPosicion = .incomingData.ReadInteger
+        Dim NuevaPosicion As Integer: NuevaPosicion = .incomingData.ReadInteger
+        
+        Dim Hechizo As Integer: Hechizo = .Stats.UserHechizos(NuevaPosicion)
 
-        Dim NEWPOS As Integer
-        NEWPOS = .incomingData.ReadInteger
-
-        Dim ANTHECHI As Integer
-        ANTHECHI = .Stats.UserHechizos(NEWPOS)
-
-        .Stats.UserHechizos(NEWPOS) = UserList(Userindex).Stats.UserHechizos(ANTPOS)
-        .Stats.UserHechizos(ANTPOS) = ANTHECHI
+        .Stats.UserHechizos(NuevaPosicion) = .Stats.UserHechizos(AnteriorPosicion)
+        .Stats.UserHechizos(AnteriorPosicion) = Hechizo
              
     End With
 
