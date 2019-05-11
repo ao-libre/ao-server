@@ -1264,11 +1264,8 @@ Private Sub HandleGMCommands(ByVal Userindex As Integer)
             Case eGMCommands.SystemMessage           '/SMSG
                 Call HandleSystemMessage(Userindex)
         
-            Case eGMCommands.CreateNPC               '/ACC
+            Case eGMCommands.CreateNPC               '/ACC y /RACC
                 Call HandleCreateNPC(Userindex)
-        
-            Case eGMCommands.CreateNPCWithRespawn    '/RACC
-                Call HandleCreateNPCWithRespawn(Userindex)
         
             Case eGMCommands.ImperialArmour          '/AI1 - 4
                 Call HandleImperialArmour(Userindex)
@@ -16532,82 +16529,43 @@ End Sub
 
 Public Sub HandleCreateNPC(ByVal Userindex As Integer)
 
-    '***************************************************
+    '**********************************************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 26/09/2010
+    'Last Modification: 11/05/2019
     '26/09/2010: ZaMa - Ya no se pueden crear npcs pretorianos.
-    '***************************************************
-    If UserList(Userindex).incomingData.Length < 3 Then
+    '11/05/2019: Jopi - Se arreglo la comprobacion de NPC's pretorianos.
+    '11/05/2019: Jopi - Se combino HandleCreateNPCWithRespawn() con este procedimiento.
+    '**********************************************************************************
+    If UserList(Userindex).incomingData.Length < 4 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
 
     End If
     
     With UserList(Userindex)
+        
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        Dim NpcIndex As Integer
+        Dim NpcIndex As Integer: NpcIndex = .incomingData.ReadInteger()
+        Dim Respawn As Boolean: Respawn = .incomingData.ReadBoolean()
         
-        NpcIndex = .incomingData.ReadInteger()
+        'Nos fijamos que sea GM.
+        If Not EsGm(Userindex) Then Exit Sub
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-        
-        If NpcIndex >= 900 Then
-            Call WriteConsoleMsg(Userindex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CREARPRETORIANOS mapa x y.", FontTypeNames.FONTTYPE_WARNING)
+        'Nos fijamos si es pretoriano.
+        If Npclist(NpcIndex).NPCtype = eNPCType.Pretoriano Then
+            Call WriteConsoleMsg(Userindex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CREARPRETORIANOS MAPA X Y.", FontTypeNames.FONTTYPE_WARNING)
             Exit Sub
 
         End If
         
-        NpcIndex = SpawnNpc(NpcIndex, .Pos, True, False)
-        
+        'Invocamos el NPC.
         If NpcIndex <> 0 Then
-            Call LogGM(.Name, "Sumoneo a " & Npclist(NpcIndex).Name & " en mapa " & .Pos.Map)
-
-        End If
-
-    End With
-
-End Sub
-
-''
-' Handle the "CreateNPCWithRespawn" message
-'
-' @param userIndex The index of the user sending the message
-
-Public Sub HandleCreateNPCWithRespawn(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 26/09/2010
-    '26/09/2010: ZaMa - Ya no se pueden crear npcs pretorianos.
-    '***************************************************
-    If UserList(Userindex).incomingData.Length < 3 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-
-    End If
-    
-    With UserList(Userindex)
-        'Remove Packet ID
-        Call .incomingData.ReadByte
         
-        Dim NpcIndex As Integer
+            NpcIndex = SpawnNpc(NpcIndex, .Pos, True, Respawn)
         
-        NpcIndex = .incomingData.ReadInteger()
-        
-        If NpcIndex >= 900 Then
-            Call WriteConsoleMsg(Userindex, "No puedes sumonear miembros del clan pretoriano de esta forma, utiliza /CREARPRETORIANOS mapa x y.", FontTypeNames.FONTTYPE_WARNING)
-            Exit Sub
-
-        End If
-        
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
-        
-        NpcIndex = SpawnNpc(NpcIndex, .Pos, True, True)
-        
-        If NpcIndex <> 0 Then
-            Call LogGM(.Name, "Sumoneo con respawn " & Npclist(NpcIndex).Name & " en mapa " & .Pos.Map)
+            Call LogGM(.Name, "Invoco " & IIf(Respawn, "con respawn", vbNullString) & " a " & Npclist(NpcIndex).Name & " [Indice: " & NpcIndex & "] en el mapa " & .Pos.Map)
 
         End If
 
