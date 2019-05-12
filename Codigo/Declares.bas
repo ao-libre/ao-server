@@ -2399,4 +2399,8 @@ Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
 Public UsarMundoPropio As Boolean 
 
+Public ConexionAPI As Boolean
+
+
+
 

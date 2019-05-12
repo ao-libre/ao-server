@@ -1051,7 +1051,6 @@ End Sub
                 If NumUsers > 0 Then NumUsers = NumUsers - 1
                 Call CloseUser(Userindex)
             
-                Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
             Else
                 Call ResetUserSlot(Userindex)
 
@@ -1775,7 +1774,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'usado para borrar Pjs
         Call UpdateUserLogged(.Name, 1)
     
-        Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
     
         MapInfo(.Pos.Map).NumUsers = MapInfo(.Pos.Map).NumUsers + 1
     
@@ -1790,8 +1788,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             RECORDusuarios = NumUsers
             Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RECORDusuarios))
         
-            Call EstadisticasWeb.Informar(RECORD_USUARIOS, RECORDusuarios)
-
         End If
     
         If .NroMascotas > 0 And MapInfo(.Pos.Map).Pk Then

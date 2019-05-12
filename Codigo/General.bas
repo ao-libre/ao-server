@@ -342,7 +342,6 @@ Sub Main()
     End If
     
     tInicioServer = GetTickCount() And &H7FFFFFFF
-    Call InicializaEstadisticas
 
     Call MainLoop
 
@@ -2216,26 +2215,6 @@ Sub LoadUser(ByVal Userindex As Integer)
 
 ErrorHandler:
     Call LogError("Error en LoadUser: " & UserList(Userindex).Name & " - " & Err.Number & " - " & Err.description)
-
-End Sub
-
-Sub InicializaEstadisticas()
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Dim Ta As Long
-
-    Ta = GetTickCount() And &H7FFFFFFF
-    
-    Set EstadisticasWeb = New clsEstadisticasIPC
-    Call EstadisticasWeb.Inicializa(frmMain.hWnd)
-    Call EstadisticasWeb.Informar(CANTIDAD_MAPAS, NumMaps)
-    Call EstadisticasWeb.Informar(CANTIDAD_ONLINE, NumUsers)
-    Call EstadisticasWeb.Informar(UPTIME_SERVER, (Ta - tInicioServer) / 1000)
-    Call EstadisticasWeb.Informar(RECORD_USUARIOS, RECORDusuarios)
 
 End Sub
 
