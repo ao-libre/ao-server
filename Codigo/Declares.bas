@@ -2222,8 +2222,7 @@ Public Enum eGMCommands
     ChangeMOTD              '/MOTDCAMBIA
     SetMOTD                 'ZMOTD
     SystemMessage           '/SMSG
-    CreateNPC               '/ACC
-    CreateNPCWithRespawn    '/RACC
+    CreateNPC               '/ACC y /RACC
     ImperialArmour          '/AI1 - 4
     ChaosArmour             '/AC1 - 4
     NavigateToggle          '/NAVE
