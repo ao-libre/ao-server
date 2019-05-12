@@ -16243,13 +16243,14 @@ Public Sub HandleToggleCentinelActivated(ByVal Userindex As Integer)
     '***************************************************
     'Author: Lucas Tavolaro Ortiz (Tavo)
     'Last Modification: 02/05/2012
-    '                         Nuevo centinela (maTih.-)
+    'Nuevo centinela (maTih.-)
     '***************************************************
     With UserList(Userindex)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        'Solo para Admins y Dioses
+        If Not EsAdmin(.Name) Or Not EsDios(.Name) Then Exit Sub
         
         Call modCentinela.CambiarEstado(Userindex)
         

@@ -1694,6 +1694,7 @@ Sub LoadSini()
     'Cucsifae: Agregados multiplicadores exp y oro
     'CHOTS: Agregado multiplicador oficio
     'CHOTS: Agregado min y max Dados
+    'Jopi: Agregado AuditoriaTabajo para activar/desactivar el centinela.
     '***************************************************
 
     Dim Temporal As Long
@@ -1717,7 +1718,9 @@ Sub LoadSini()
     DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
     DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
     DropItemsAlMorir = GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir")
-
+    
+    CentinelaEstado = GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo")
+    
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
     
