@@ -1719,7 +1719,7 @@ Sub LoadSini()
     DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
     DropItemsAlMorir = GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir")
     
-    CentinelaEstado = GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo")
+    CentinelaEstado = CBool(GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo"))
     
     PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
