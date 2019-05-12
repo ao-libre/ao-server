@@ -372,7 +372,9 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub cmdForzarCierre_Click()
-    
+        
+    If MsgBox("Desea FORZAR el CIERRE del SERVIDOR?", vbYesNo, "CIERRE DEL SERVIDOR!!!") = vbNo Then Exit Sub
+        
     End
 
 End Sub

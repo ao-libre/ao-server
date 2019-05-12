@@ -436,7 +436,7 @@ End Sub
 
 Private Sub cmdApagarServidor_Click()
 
-    If MsgBox("¿Realmente desea cerrar el servidor?", vbYesNo, "Confirmacion de CIERRE del SERVIDOR") = vbNo Then Exit Sub
+    If MsgBox("Realmente desea cerrar el servidor?", vbYesNo, "CIERRE DEL SERVIDOR!!!") = vbNo Then Exit Sub
     
     Me.MousePointer = 11
     
