@@ -442,9 +442,6 @@ Private Sub cmdApagarServidor_Click()
     
     FrmStat.Show
     
-    'Limpiamos el mundo.
-    Call mLimpieza.BorrarObjetosLimpieza
-    
     'WorldSave
     Call ES.DoBackUp
 
@@ -453,7 +450,7 @@ Private Sub cmdApagarServidor_Click()
 
     'Guardar Pjs
     Call GuardarUsuarios
-    
+
     'Chauuu
     Unload frmMain
     End
