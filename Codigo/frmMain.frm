@@ -58,9 +58,9 @@ Begin VB.Form frmMain
       Top             =   5880
       Width           =   1335
    End
-   Begin VB.CommandButton cmdCerrarServer 
+   Begin VB.CommandButton cmdApagarServidor 
       BackColor       =   &H00C0C0FF&
-      Caption         =   "Cerrar Servidor"
+      Caption         =   "Apagar Servidor"
       Height          =   375
       Left            =   1560
       Style           =   1  'Graphical
@@ -322,7 +322,7 @@ Sub CheckIdleUser()
 
                 End If
                 
-                If Not EsGm(iUserIndex) Then 
+                If Not EsGm(iUserIndex) Then
                     If .Counters.IdleCount >= IdleLimit Then
                         Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
 
@@ -358,7 +358,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     'fired every minute
     Static Minutos          As Long
@@ -422,7 +422,7 @@ Private Sub AutoSave_Timer()
     '<<<<<-------- Log the number of users online ------>>>
 
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
     Resume Next
@@ -434,20 +434,29 @@ Private Sub chkServerHabilitado_Click()
 
 End Sub
 
-Private Sub cmdCerrarServer_Click()
+Private Sub cmdApagarServidor_Click()
 
-    If MsgBox("Atencion!! Si cierra el servidor puede provocar la perdida de datos. " & "Desea hacerlo de todas maneras?", vbYesNo) = vbYes Then
-        
-        prgRun = False
+    If MsgBox("¿Realmente desea cerrar el servidor?", vbYesNo, "Confirmacion de CIERRE del SERVIDOR") = vbNo Then Exit Sub
+    
+    Me.MousePointer = 11
+    
+    FrmStat.Show
+    
+    'Limpiamos el mundo.
+    Call mLimpieza.BorrarObjetosLimpieza
+    
+    'WorldSave
+    Call ES.DoBackUp
 
-        Dim f
+    'commit experiencia
+    Call mdParty.ActualizaExperiencias
 
-        For Each f In Forms
-
-            Unload f
-        Next
-
-    End If
+    'Guardar Pjs
+    Call GuardarUsuarios
+    
+    'Chauuu
+    Unload frmMain
+    End
 
 End Sub
 
@@ -502,13 +511,13 @@ Private Sub Command2_Click()
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     On Error Resume Next
    
     If Not Visible Then
 
-        Select Case x \ Screen.TwipsPerPixelX
+        Select Case X \ Screen.TwipsPerPixelX
                 
             Case WM_LBUTTONDBLCLK
                 WindowState = vbNormal
@@ -587,7 +596,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub mnusalir_Click()
-    Call cmdCerrarServer_Click
+    Call cmdApagarServidor_Click
 
 End Sub
 

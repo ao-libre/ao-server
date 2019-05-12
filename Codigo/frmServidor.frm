@@ -162,9 +162,9 @@ Begin VB.Form frmServidor
       Top             =   5520
       Width           =   1695
    End
-   Begin VB.CommandButton cmdApagarServer 
+   Begin VB.CommandButton cmdForzarCierre 
       BackColor       =   &H00C0C0FF&
-      Caption         =   "Apagar Server con Backup"
+      Caption         =   "Forzar Cierre del Servidor"
       Height          =   375
       Left            =   3720
       Style           =   1  'Graphical
@@ -371,25 +371,9 @@ Private Sub Form_Load()
 
 End Sub
 
-Private Sub cmdApagarServer_Click()
+Private Sub cmdForzarCierre_Click()
     
-    If MsgBox("Esta seguro que desea hacer WorldSave, guardar pjs y cerrar?", vbYesNo, "Apagar Magicamente") = vbNo Then Exit Sub
-    
-    Me.MousePointer = 11
-    
-    FrmStat.Show
-   
-    'WorldSave
-    Call ES.DoBackUp
-
-    'commit experiencia
-    Call mdParty.ActualizaExperiencias
-
-    'Guardar Pjs
-    Call GuardarUsuarios
-    
-    'Chauuu
-    Unload frmMain
+    End
 
 End Sub
 
@@ -672,7 +656,7 @@ End Sub
 
 Private Sub cmdWorldBackup_Click()
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Me.MousePointer = 11
     FrmStat.Show
@@ -682,7 +666,7 @@ Private Sub cmdWorldBackup_Click()
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en WORLDSAVE")
 
 End Sub
