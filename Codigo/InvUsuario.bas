@@ -1988,12 +1988,17 @@ Sub TirarTodo(ByVal Userindex As Integer)
         
         Call TirarTodosLosItems(Userindex)
         
-        Dim Cantidad As Long
-
-        Cantidad = .Stats.Gld - CLng(.Stats.ELV) * 10000
+        Dim Cantidad As Long: Cantidad = .Stats.Gld - CLng(.Stats.ELV) * 10000
+       
+        ' Si estas en zona segura tampoco se tira el oro.
+        If MapInfo(.Pos.Map).Pk Then
+            
+            If Cantidad > 0 Then
+                Call TirarOro(Cantidad, Userindex)
+            End If
+            
+        End If
         
-        If Cantidad > 0 Then Call TirarOro(Cantidad, Userindex)
-
     End With
 
     Exit Sub
