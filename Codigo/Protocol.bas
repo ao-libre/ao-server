@@ -406,7 +406,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
         'If .Counters.PacketsTick > 10 Then
         '    Call CloseSocket(Userindex)
-        '    Exit Function'
+        '    Exit Function
 
         'End If
         
