@@ -400,12 +400,15 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         'Contamos cuantos paquetes recibimos.
         .Counters.PacketsTick = .Counters.PacketsTick + 1
         
-        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
-        If .Counters.PacketsTick > 10 Then
-            Call CloseSocket(Userindex)
-            Exit Function
+        'Comento esto por ahora, por que cuando hago worldsave, envia mas paquetes en 40ms
+        'y desconecta al pj, hay que reveer que hacer con esto y como solucionarlo.
 
-        End If
+        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
+        'If .Counters.PacketsTick > 10 Then
+        '    Call CloseSocket(Userindex)
+        '    Exit Function'
+
+        'End If
         
         Dim packetID As Byte: packetID = .incomingData.PeekByte()
 
