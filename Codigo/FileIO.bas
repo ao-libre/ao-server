@@ -518,6 +518,7 @@ Public Sub DoBackUp()
     If ConexionAPI Then
         Call ApiEndpointBackupCharfiles
         Call ApiEndpointBackupCuentas
+        Call ApiEndpointBackupLogs
     End If
 
     haciendoBK = False

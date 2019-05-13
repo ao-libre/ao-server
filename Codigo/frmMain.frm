@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -102,6 +103,13 @@ Begin VB.Form frmMain
       TabIndex        =   2
       Top             =   720
       Width           =   4935
+      Begin InetCtlsObjects.Inet InetApi 
+         Left            =   840
+         Top             =   1560
+         _ExtentX        =   1005
+         _ExtentY        =   1005
+         _Version        =   393216
+      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
@@ -322,7 +330,7 @@ Sub CheckIdleUser()
 
                 End If
                 
-                If Not EsGm(iUserIndex) Then 
+                If Not EsGm(iUserIndex) Then
                     If .Counters.IdleCount >= IdleLimit Then
                         Call WriteShowMessageBox(iUserIndex, "Demasiado tiempo inactivo. Has sido desconectado.")
 
@@ -358,7 +366,7 @@ End Sub
 
 Private Sub AutoSave_Timer()
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     'fired every minute
     Static Minutos          As Long
@@ -422,7 +430,7 @@ Private Sub AutoSave_Timer()
     '<<<<<-------- Log the number of users online ------>>>
 
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en TimerAutoSave " & Err.Number & ": " & Err.description)
 
     Resume Next
@@ -502,13 +510,13 @@ Private Sub Command2_Click()
 
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
     On Error Resume Next
    
     If Not Visible Then
 
-        Select Case x \ Screen.TwipsPerPixelX
+        Select Case X \ Screen.TwipsPerPixelX
                 
             Case WM_LBUTTONDBLCLK
                 WindowState = vbNormal
