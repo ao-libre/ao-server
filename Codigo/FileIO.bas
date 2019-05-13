@@ -512,8 +512,15 @@ Public Sub DoBackUp()
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
     
-    'Call EstadisticasWeb.Informar(EVENTO_NUEVO_CLAN, 0)
-    
+    'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then
+        Call ApiEndpointBackupCharfiles
+        Call ApiEndpointBackupCuentas
+        Call ApiEndpointBackupLogs
+    End If
+
     haciendoBK = False
     
     'Log
@@ -1849,7 +1856,11 @@ Sub LoadSini()
     Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
     Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
     Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
-      
+
+    'Conexion con la API hecha en Node.js      
+    'Mas info aqui: https://github.com/ao-libre/ao-api-server/
+    ConexionAPI = val(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado"))
+
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
 
