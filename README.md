@@ -15,8 +15,8 @@
 ```
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 ```
-
-
+#### Comandos para la administración del servidor:
+[Guía de Comandos para la administración del servidor (en Reddit)](https://www.reddit.com/r/argentumonlineoficial/comments/9fpd7r/comandos_diosessemidiosesconsejeros/)
 
 ## Archivos Definicion:
 [ArmadurasFaccionarias.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmadurasFaccionarias.dat):
