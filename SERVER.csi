@@ -1,8 +1,8 @@
 [History]
 1=#P0#=mb	#P1#=HandleCreatePretorianClan	#P2#=AOLibreServer/Protocol/HandleCreatePretorianClan	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321140301	#P7#=0	#P8#=63	.
-2=#P0#=mb	#P1#=HandleWalk	#P2#=AOLibreServer/Protocol/HandleWalk	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135411	#P7#=0	#P8#=83	.
-3=#P0#=mb	#P1#=PuedeAtacarNPC	#P2#=AOLibreServer/SistemaCombate/PuedeAtacarNPC	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135339	#P7#=0	#P8#=272	.
-4=#P0#=mb	#P1#=HechizoEstadoNPC	#P2#=AOLibreServer/modHechizos/HechizoEstadoNPC	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135457	#P7#=0	#P8#=82	.
+2=#P0#=mb	#P1#=HechizoEstadoNPC	#P2#=AOLibreServer/modHechizos/HechizoEstadoNPC	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135457	#P7#=0	#P8#=82	.
+3=#P0#=mb	#P1#=HandleWalk	#P2#=AOLibreServer/Protocol/HandleWalk	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135411	#P7#=0	#P8#=83	.
+4=#P0#=mb	#P1#=PuedeAtacarNPC	#P2#=AOLibreServer/SistemaCombate/PuedeAtacarNPC	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135339	#P7#=0	#P8#=272	.
 5=#P0#=mb	#P1#=NpcAtacaNpc	#P2#=AOLibreServer/SistemaCombate/NpcAtacaNpc	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135149	#P7#=0	#P8#=5	.
 6=#P0#=mb	#P1#=NpcAtacaUser	#P2#=AOLibreServer/SistemaCombate/NpcAtacaUser	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190321135105	#P7#=0	#P8#=53	.
 7=#P0#=mb	#P1#=ConnectUser	#P2#=AOLibreServer/TCP/ConnectUser	#P3#=	#P4#=	#P5#=MembMethodPublic	#P6#=20190318190236	#P7#=0	#P8#=208	.
