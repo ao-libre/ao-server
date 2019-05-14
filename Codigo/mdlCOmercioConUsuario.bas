@@ -24,7 +24,7 @@ Option Explicit
 
 Private Const MAX_ORO_LOGUEABLE As Long = 50000
 
-Private Const MAX_OBJ_LOGUEABLE As Long = 1000
+Private Const MAX_OBJ_LOGUEABLE As Integer = 10000
 
 Public Const MAX_OFFER_SLOTS    As Integer = 40
 
