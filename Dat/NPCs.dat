@@ -503,12 +503,16 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=20
-NROITEMS=5
-Obj1=163-1000 'Cuchara
-Obj2=167-1000 'Mueble Rústico
-Obj3=168-1000 'Silla
-Obj4=198-1000 'Serrucho
-Obj5=480-10000 ' Flecha
+NROITEMS=9
+Obj1=163-1000 	'Cuchara
+Obj2=167-1000 	'Mueble Rústico
+Obj3=168-1000 	'Silla
+Obj4=198-1000 	'Serrucho
+Obj5=480-10000 	'Flecha
+Obj6=478-1000 	'Arco Simple
+Obj7=663-1000 	'Arco Simple Reforzado
+Obj8=479-1000 	'Arco Compuesto
+Obj9=664-1000 	'Arco Compuesto Reforzado
 BackUp=1
 
 #############################################
