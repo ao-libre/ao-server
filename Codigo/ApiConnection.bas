@@ -7,15 +7,7 @@ Attribute VB_Name = "ApiConnection"
 '**************************************************************
 
 Option Explicit
-
-Private Sub MakeRequestToEndpoint(ByVal Endpoint As String)
-    'Esto tendria que crearse en este modulo, trate pero no pude asi que hago esta solucion para poder avanzar
-    'No se como crear el component Inet aqui, dejo lo que intente aunque no funciona
-    'Si solucionan eso, hay que borrar el InetApi del frmMain, aunque asi funciona barbaro
-    'Dim InetApi As InetCtlsObjects.Inet
-    'Set Inet = New InetCtlsObjects.Inet
-    frmMain.InetApi.OpenURL (Endpoint)
-End Sub
+Dim XmlHttp As Object
 
 Public Sub ApiEndpointBackupCharfiles()
     Dim UrlServer As String
@@ -23,7 +15,10 @@ Public Sub ApiEndpointBackupCharfiles()
     
     'Este endpoint hace una copia de todos los charfiles a una base de datos mysql
     'No todos los parametros estan incluidos, es mas que nada para usar de rankings
-    MakeRequestToEndpoint (UrlServer & "/api/v1/charfiles/backupcharfiles")
+    Set XmlHttp = CreateObject("Microsoft.XmlHttp")
+    XmlHttp.Open "GET", UrlServer & "/api/v1/charfiles/backupcharfiles", False
+    XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XmlHttp.send
 End Sub
 
 Public Sub ApiEndpointBackupCuentas()
@@ -33,7 +28,10 @@ Public Sub ApiEndpointBackupCuentas()
     'Este endpoint hace una copia de todos las cuentas a una base de datos mysql
     'Es mas que nada para poder hacer cosas con los usuarios
     'De forma mas facil en javascript
-    MakeRequestToEndpoint (UrlServer & "/api/v1/accounts/backupaccountfiles")
+    Set XmlHttp = CreateObject("Microsoft.XmlHttp")
+    XmlHttp.Open "GET", UrlServer & "/api/v1/accounts/backupaccountfiles", False
+    XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XmlHttp.send
 End Sub
 
 Public Sub ApiEndpointBackupLogs()
@@ -41,5 +39,19 @@ Public Sub ApiEndpointBackupLogs()
     UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer")
     
     'Este endpoint hace una copia de todos los logs a una base de datos mysql
-    MakeRequestToEndpoint (UrlServer & "/api/v1/logs/backuplogs")
+    Set XmlHttp = CreateObject("Microsoft.XmlHttp")
+    XmlHttp.Open "GET", UrlServer & "/api/v1/logs/backuplogs", False
+    XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XmlHttp.send
+End Sub
+
+Public Sub ApiEndpointSendWelcomeEmail(ByVal UserName As String, ByVal Password As String, ByVal Email As String)
+    Dim UrlServer As String
+    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer")
+    
+    'Este endpoint envia un email de bienvenida al usuario, con su nombre de usuario y password para que no lo pierda :)
+    Set XmlHttp = CreateObject("Microsoft.XmlHttp")
+    XmlHttp.Open "POST", UrlServer & "/api/v1/emails/welcome", False
+    XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XmlHttp.send "username=" & UserName & "&password=" & Password & "&emailTo=" & Email
 End Sub
