@@ -15,8 +15,8 @@
 ```
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 ```
-
-
+#### Comandos para la administración del servidor:
+[Guía de Comandos para la administración del servidor (en Reddit)](https://www.reddit.com/r/argentumonlineoficial/comments/9fpd7r/comandos_diosessemidiosesconsejeros/)
 
 ## Archivos Definicion:
 [ArmadurasFaccionarias.dat](https://github.com/ao-libre/ao-server/blob/master/Dat/ArmadurasFaccionarias.dat):
@@ -120,3 +120,8 @@ En caso que se quiera probar un PULL REQUEST hay que estar en el branch `master`
 Aqui se deja explicado como hacer un release para cualquiera de las aplicaciones de Argentum Online Libre 
 https://github.com/ao-libre/ao-cliente/wiki/How-to-create-and-publish-Releases%3F
 
+#### Documentacion oficial Visual Basic 6
+
+While the Visual Basic 6.0 IDE is no longer supported, Microsoft's goal is that Visual Basic 6.0 applications continue to run on supported Windows versions. The resources available from this page should help you as you maintain existing applications, and as you migrate your functionality to .NET.
+
+https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6.0-documentation

@@ -321,7 +321,7 @@ End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 139
+Private Const LAST_CLIENT_PACKET_ID As Byte = 144
 
 Public Enum FontTypeNames
 
@@ -400,12 +400,15 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         'Contamos cuantos paquetes recibimos.
         .Counters.PacketsTick = .Counters.PacketsTick + 1
         
-        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
-        If .Counters.PacketsTick > 10 Then
-            Call CloseSocket(Userindex)
-            Exit Function
+        'Comento esto por ahora, por que cuando hago worldsave, envia mas paquetes en 40ms
+        'y desconecta al pj, hay que reveer que hacer con esto y como solucionarlo.
 
-        End If
+        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
+        'If .Counters.PacketsTick > 10 Then
+        '    Call CloseSocket(Userindex)
+        '    Exit Function
+
+        'End If
         
         Dim packetID As Byte: packetID = .incomingData.PeekByte()
 
@@ -842,16 +845,34 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             Call HandleAceptarCvc(Userindex)
 
         Case ClientPacketID.IrCvc
-            Call HandleIrCvc(Userindex)
+            Call HandleIrCvc(UserIndex)
+            
+        Case ClientPacketID.DragAndDropHechizos
+            Call HandleDragAndDropHechizos(UserIndex)
             
         Case ClientPacketID.HungerGamesCreate
-            Call HandleHungerGamesCreate(Userindex)
-    
-        Case ClientPacketID.HungerGamesDelete
-            Call HandleHungerGamesDelete(Userindex)
+            Call HandleHungerGamesCreate(UserIndex)
     
         Case ClientPacketID.HungerGamesJoin
-            Call HandleHungerGamesJoin(Userindex)
+            Call HandleHungerGamesJoin(UserIndex)
+        
+        Case ClientPacketID.HungerGamesDelete
+            Call HandleHungerGamesDelete(UserIndex)
+  
+        Case ClientPacketID.Quest
+            Call Quests.HandleQuest(UserIndex)
+            
+        Case ClientPacketID.QuestAccept
+            Call Quests.HandleQuestAccept(UserIndex)
+        
+        Case ClientPacketID.QuestListRequest
+            Call Quests.HandleQuestListRequest(UserIndex)
+        
+        Case ClientPacketID.QuestDetailsRequest
+            Call Quests.HandleQuestDetailsRequest(UserIndex)
+        
+        Case ClientPacketID.QuestAbandon
+            Call Quests.HandleQuestAbandon(UserIndex)
 
         Case Else
             'ERROR : Abort!
@@ -16240,13 +16261,14 @@ Public Sub HandleToggleCentinelActivated(ByVal Userindex As Integer)
     '***************************************************
     'Author: Lucas Tavolaro Ortiz (Tavo)
     'Last Modification: 02/05/2012
-    '                         Nuevo centinela (maTih.-)
+    'Nuevo centinela (maTih.-)
     '***************************************************
     With UserList(Userindex)
         'Remove Packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        'Solo para Admins y Dioses
+        If Not EsAdmin(.Name) Or Not EsDios(.Name) Then Exit Sub
         
         Call modCentinela.CambiarEstado(Userindex)
         
@@ -22601,8 +22623,9 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 12/10/2018
+    'Last Modification: 10/05/2019
     '
+    'CHOTS: Fix a bug reported by @juanmz
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
@@ -22622,21 +22645,18 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
     Call buffer.ReadByte
 
     Dim UserName As String
-
     Dim Password As String
-
     Dim version  As String
+
+    UserName = buffer.ReadASCIIString()
+    Password = buffer.ReadASCIIString()
 
     If CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta ya existe.")
         Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
-
     End If
-
-    UserName = buffer.ReadASCIIString()
-    Password = buffer.ReadASCIIString()
 
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
@@ -22645,7 +22665,6 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
     Else
         Call CreateNewAccount(Userindex, UserName, Password)
-
     End If
 
     'If we got here then packet is complete, copy data back to original queue
@@ -22957,22 +22976,19 @@ Private Sub HandleIrCvc(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub HandleDragAndDropHechizos(ByVal Userindex As Integer)
+Public Sub HandleDragAndDropHechizos(ByVal UserIndex As Integer)
  
-    With UserList(Userindex)
+    With UserList(UserIndex)
+        
         Call .incomingData.ReadByte
         
-        Dim ANTPOS As Integer
-        ANTPOS = .incomingData.ReadInteger
+        Dim AnteriorPosicion As Integer: AnteriorPosicion = .incomingData.ReadInteger
+        Dim NuevaPosicion As Integer: NuevaPosicion = .incomingData.ReadInteger
+        
+        Dim Hechizo As Integer: Hechizo = .Stats.UserHechizos(NuevaPosicion)
 
-        Dim NEWPOS As Integer
-        NEWPOS = .incomingData.ReadInteger
-
-        Dim ANTHECHI As Integer
-        ANTHECHI = .Stats.UserHechizos(NEWPOS)
-
-        .Stats.UserHechizos(NEWPOS) = UserList(Userindex).Stats.UserHechizos(ANTPOS)
-        .Stats.UserHechizos(ANTPOS) = ANTHECHI
+        .Stats.UserHechizos(NuevaPosicion) = .Stats.UserHechizos(AnteriorPosicion)
+        .Stats.UserHechizos(AnteriorPosicion) = Hechizo
              
     End With
 

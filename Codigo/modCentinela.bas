@@ -38,16 +38,22 @@ Public Centinelas(1 To NUM_CENTINELAS) As Centinelas
 Sub CambiarEstado(ByVal gmIndex As Integer)
  
     ' @ Cambia el estado del centinela.
- 
-    Dim tmpStr As String
- 
+
+    'Lo cambiamos en la memoria.
     CentinelaEstado = Not CentinelaEstado
- 
-    tmpStr = UserList(gmIndex).Name & " Cambio el estado del Centinela:" & IIf(CentinelaEstado, " Ahora esta activado.", " Ahora esta desactivado.")
- 
+    
+    'Lo cambiamos en el Server.ini
+    Call WriteVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo", IIf(CentinelaEstado, 1, 0))
+
+    'Preparamos el aviso por consola.
+    Dim tmpStr As String
+    tmpStr = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(CentinelaEstado, " ACTIVADO.", " DESACTIVADO.")
+    
+    'Mandamos el aviso por consola.
     Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(tmpStr, FontTypeNames.FONTTYPE_CONSE))
- 
-    Call LogGM(UserList(gmIndex).Name, "Cambio el estado del centinela (Enabled:" & CentinelaEstado & ")")
+    
+    'Lo registramos en los logs.
+    Call LogGM(UserList(gmIndex).Name, "Cambio el estado del Centinela (Estado: " & IIf(CentinelaEstado, "ACTIVADO", "DESACTIVADO") & ")")
  
 End Sub
  

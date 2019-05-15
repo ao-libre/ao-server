@@ -1,12 +1,13 @@
 VERSION 5.00
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Argentum Online"
-   ClientHeight    =   6390
+   ClientHeight    =   7020
    ClientLeft      =   1950
    ClientTop       =   1515
-   ClientWidth     =   5190
+   ClientWidth     =   5205
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -24,10 +25,20 @@ Begin VB.Form frmMain
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   6390
-   ScaleWidth      =   5190
+   ScaleHeight     =   7020
+   ScaleWidth      =   5205
    StartUpPosition =   2  'CenterScreen
    WindowState     =   1  'Minimized
+   Begin VB.CommandButton cmdForzarCierre 
+      BackColor       =   &H00C0C0FF&
+      Caption         =   "Forzar Cierre del Servidor Sin Backup"
+      Height          =   375
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   14
+      Top             =   6480
+      Width           =   4935
+   End
    Begin VB.CheckBox chkServerHabilitado 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Server Habilitado Solo Gms"
@@ -60,7 +71,7 @@ Begin VB.Form frmMain
    End
    Begin VB.CommandButton cmdApagarServidor 
       BackColor       =   &H00C0C0FF&
-      Caption         =   "Apagar Servidor"
+      Caption         =   "Apagar Servidor Con Backup"
       Height          =   375
       Left            =   1560
       Style           =   1  'Graphical
@@ -102,6 +113,14 @@ Begin VB.Form frmMain
       TabIndex        =   2
       Top             =   720
       Width           =   4935
+      Begin InetCtlsObjects.Inet InetApi 
+         Left            =   840
+         Top             =   1560
+         _ExtentX        =   1005
+         _ExtentY        =   1005
+         _Version        =   393216
+         RequestTimeout  =   0
+      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
@@ -430,7 +449,7 @@ ErrHandler:
 End Sub
 
 Private Sub chkServerHabilitado_Click()
-    ServerSoloGMs = chkServerHabilitado.Value
+    ServerSoloGMs = chkServerHabilitado.value
 
 End Sub
 
@@ -473,6 +492,14 @@ Private Sub CMDDUMP_Click()
     Next i
     
     Call LogCriticEvent("Lastuser: " & LastUser & " NextOpenUser: " & NextOpenUser)
+
+End Sub
+
+Private Sub cmdForzarCierre_Click()
+        
+    If MsgBox("Desea FORZAR el CIERRE del SERVIDOR?", vbYesNo, "CIERRE DEL SERVIDOR!!!") = vbNo Then Exit Sub
+        
+    End
 
 End Sub
 
