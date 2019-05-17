@@ -946,6 +946,14 @@ Sub CreateNewAccount(ByVal Userindex As Integer, _
 
     Call SaveNewAccount(UserName, oSHA256.SHA256(Password & Salt), Salt)
 
+    'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then
+        'Pasamos UserName tambien como email, ya que son lo mismo.... :(
+        Call ApiEndpointSendWelcomeEmail(UserName, Password, UserName)
+    End If
+
     Call ConnectAccount(Userindex, UserName, Password)
 
 End Sub
@@ -990,6 +998,15 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
         Exit Sub
 
     End If
+
+    'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then
+        'Pasamos UserName tambien como email, ya que son lo mismo.... :(
+        Call ApiEndpointSendLoginAccountEmail(UserName)
+    End If
+
 
     If Not Database_Enabled Then
         Call LoginAccountCharfile(Userindex, UserName)
