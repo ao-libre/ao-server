@@ -55,3 +55,14 @@ Public Sub ApiEndpointSendWelcomeEmail(ByVal UserName As String, ByVal Password 
     XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     XmlHttp.send "username=" & UserName & "&password=" & Password & "&emailTo=" & Email
 End Sub
+
+Public Sub ApiEndpointSendLoginAccountEmail(ByVal Email As String)
+    Dim UrlServer As String
+    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer")
+    
+    'Este endpoint envia un email de bienvenida al usuario, con su nombre de usuario y password para que no lo pierda :)
+    Set XmlHttp = CreateObject("Microsoft.XmlHttp")
+    XmlHttp.Open "POST", UrlServer & "/api/v1/emails/accountLogin", False
+    XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XmlHttp.send "emailTo=" & Email
+End Sub
