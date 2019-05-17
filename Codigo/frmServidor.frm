@@ -661,11 +661,17 @@ Private Sub cmdWorldBackup_Click()
     On Error GoTo ErrHandler
 
     Me.MousePointer = 11
-    FrmStat.Show
-    Call ES.DoBackUp
-    Me.MousePointer = 0
-    MsgBox "WORLDSAVE OK!!"
     
+    FrmStat.Show
+    
+    Call ES.DoBackUp
+    
+    Me.MousePointer = 0
+    
+    Unload FrmStat
+    
+    MsgBox "WORLDSAVE OK!!"
+
     Exit Sub
 
 ErrHandler:
