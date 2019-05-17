@@ -29,224 +29,38 @@ Attribute VB_Name = "TCP"
 
 #If False Then
 
-    Dim errHandler, Length, Index As Variant
+    Dim ErrHandler, Length, index As Variant
 
 #End If
 Option Explicit
 
 #If False Then
 
-    Dim x, Y, n, mapa, Email, Length As Variant
+    Dim X, Y, n, Mapa, Email, Length As Variant
 
 #End If
 
 #If UsarQueSocket = 0 Then
 
-    ' General constants used with most of the controls
-    Public Const INVALID_HANDLE     As Integer = -1
-
-    Public Const CONTROL_ERRIGNORE  As Integer = 0
-
-    Public Const CONTROL_ERRDISPLAY As Integer = 1
-
-    ' SocietWrench Control Actions
-    Public Const SOCKET_OPEN        As Integer = 1
-
-    Public Const SOCKET_CONNECT     As Integer = 2
-
-    Public Const SOCKET_LISTEN      As Integer = 3
-
-    Public Const SOCKET_ACCEPT      As Integer = 4
-
-    Public Const SOCKET_CANCEL      As Integer = 5
-
-    Public Const SOCKET_FLUSH       As Integer = 6
-
-    Public Const SOCKET_CLOSE       As Integer = 7
-
-    Public Const SOCKET_DISCONNECT  As Integer = 7
-
-    Public Const SOCKET_ABORT       As Integer = 8
-
-    ' SocketWrench Control States
-    Public Const SOCKET_NONE        As Integer = 0
-
-    Public Const SOCKET_IDLE        As Integer = 1
-
-    Public Const SOCKET_LISTENING   As Integer = 2
-
-    Public Const SOCKET_CONNECTING  As Integer = 3
-
-    Public Const SOCKET_ACCEPTING   As Integer = 4
-
-    Public Const SOCKET_RECEIVING   As Integer = 5
-
-    Public Const SOCKET_SENDING     As Integer = 6
-
-    Public Const SOCKET_CLOSING     As Integer = 7
-
     ' Societ Address Families
-    Public Const AF_UNSPEC          As Integer = 0
-
-    Public Const AF_UNIX            As Integer = 1
-
     Public Const AF_INET            As Integer = 2
 
     ' Societ Types
     Public Const SOCK_STREAM        As Integer = 1
 
-    Public Const SOCK_DGRAM         As Integer = 2
-
-    Public Const SOCK_RAW           As Integer = 3
-
-    Public Const SOCK_RDM           As Integer = 4
-
-    Public Const SOCK_SEQPACKET     As Integer = 5
-
     ' Protocol Types
     Public Const IPPROTO_IP         As Integer = 0
 
-    Public Const IPPROTO_ICMP       As Integer = 1
-
-    Public Const IPPROTO_GGP        As Integer = 2
-
     Public Const IPPROTO_TCP        As Integer = 6
-
-    Public Const IPPROTO_PUP        As Integer = 12
-
-    Public Const IPPROTO_UDP        As Integer = 17
-
-    Public Const IPPROTO_IDP        As Integer = 22
-
-    Public Const IPPROTO_ND         As Integer = 77
-
-    Public Const IPPROTO_RAW        As Integer = 255
-
-    Public Const IPPROTO_MAX        As Integer = 256
 
     ' Network Addpesses
     Public Const INADDR_ANY         As String = "0.0.0.0"
 
-    Public Const INADDR_LOOPBACK    As String = "127.0.0.1"
-
     Public Const INADDR_NONE        As String = "255.055.255.255"
-
-    ' Shutdown Values
-    Public Const SOCKET_READ        As Integer = 0
-
-    Public Const SOCKET_WRITE       As Integer = 1
-
-    Public Const SOCKET_READWRITE   As Integer = 2
-
-    ' SocketWrench Error Pesponse
-    Public Const SOCKET_ERRIGNORE   As Integer = 0
-
-    Public Const SOCKET_ERRDISPLAY  As Integer = 1
-
-    ' SocketWrench Error Codes
-    Public Const WSABASEERR         As Integer = 24000
-
-    Public Const WSAEINTR           As Integer = 24004
-
-    Public Const WSAEBADF           As Integer = 24009
-
-    Public Const WSAEACCES          As Integer = 24013
-
-    Public Const WSAEFAULT          As Integer = 24014
-
-    Public Const WSAEINVAL          As Integer = 24022
-
-    Public Const WSAEMFILE          As Integer = 24024
 
     Public Const WSAEWOULDBLOCK     As Integer = 24035
 
-    Public Const WSAEINPROGRESS     As Integer = 24036
-
-    Public Const WSAEALREADY        As Integer = 24037
-
-    Public Const WSAENOTSOCK        As Integer = 24038
-
-    Public Const WSAEDESTADDRREQ    As Integer = 24039
-
     Public Const WSAEMSGSIZE        As Integer = 24040
-
-    Public Const WSAEPROTOTYPE      As Integer = 24041
-
-    Public Const WSAENOPROTOOPT     As Integer = 24042
-
-    Public Const WSAEPROTONOSUPPORT As Integer = 24043
-
-    Public Const WSAESOCKTNOSUPPORT As Integer = 24044
-
-    Public Const WSAEOPNOTSUPP      As Integer = 24045
-
-    Public Const WSAEPFNOSUPPORT    As Integer = 24046
-
-    Public Const WSAEAFNOSUPPORT    As Integer = 24047
-
-    Public Const WSAEADDRINUSE      As Integer = 24048
-
-    Public Const WSAEADDRNOTAVAIL   As Integer = 24049
-
-    Public Const WSAENETDOWN        As Integer = 24050
-
-    Public Const WSAENETUNREACH     As Integer = 24051
-
-    Public Const WSAENETRESET       As Integer = 24052
-
-    Public Const WSAECONNABORTED    As Integer = 24053
-
-    Public Const WSAECONNRESET      As Integer = 24054
-
-    Public Const WSAENOBUFS         As Integer = 24055
-
-    Public Const WSAEISCONN         As Integer = 24056
-
-    Public Const WSAENOTCONN        As Integer = 24057
-
-    Public Const WSAESHUTDOWN       As Integer = 24058
-
-    Public Const WSAETOOMANYREFS    As Integer = 24059
-
-    Public Const WSAETIMEDOUT       As Integer = 24060
-
-    Public Const WSAECONNREFUSED    As Integer = 24061
-
-    Public Const WSAELOOP           As Integer = 24062
-
-    Public Const WSAENAMETOOLONG    As Integer = 24063
-
-    Public Const WSAEHOSTDOWN       As Integer = 24064
-
-    Public Const WSAEHOSTUNREACH    As Integer = 24065
-
-    Public Const WSAENOTEMPTY       As Integer = 24066
-
-    Public Const WSAEPROCLIM        As Integer = 24067
-
-    Public Const WSAEUSERS          As Integer = 24068
-
-    Public Const WSAEDQUOT          As Integer = 24069
-
-    Public Const WSAESTALE          As Integer = 24070
-
-    Public Const WSAEREMOTE         As Integer = 24071
-
-    Public Const WSASYSNOTREADY     As Integer = 24091
-
-    Public Const WSAVERNOTSUPPORTED As Integer = 24092
-
-    Public Const WSANOTINITIALISED  As Integer = 24093
-
-    Public Const WSAHOST_NOT_FOUND  As Integer = 25001
-
-    Public Const WSATRY_AGAIN       As Integer = 25002
-
-    Public Const WSANO_RECOVERY     As Integer = 25003
-
-    Public Const WSANO_DATA         As Integer = 25004
-
-    Public Const WSANO_ADDRESS      As Integer = 2500
 
 #End If
 
@@ -609,16 +423,16 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         'Inicial sea mayor al de un newbie, los items se borran automaticamente.
         '???????????????? INVENTARIO
         If InventarioUsarConfiguracionPersonalizada Then
-            Call AddItemsCustomToNewUser(UserIndex)
+            Call AddItemsCustomToNewUser(Userindex)
         Else
-            Call AddItemsToNewUser(UserIndex, UserClase, UserRaza)
+            Call AddItemsToNewUser(Userindex, UserClase, UserRaza)
         End If
 
         '???????????????? ATRIBUTOS
-        Call SetAttributesToNewUser(UserIndex, UserClase, UserRaza)
+        Call SetAttributesToNewUser(Userindex, UserClase, UserRaza)
 
         If EstadisticasInicialesUsarConfiguracionPersonalizada Then
-            Call SetAttributesCustomToNewUser(UserIndex)
+            Call SetAttributesCustomToNewUser(Userindex)
         End If
 
         Call DarCuerpo(Userindex)
@@ -650,41 +464,41 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
   
 End Sub
 
-Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
+Private Sub SetAttributesCustomToNewUser(ByVal Userindex As Integer)
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
         .Stats.Gld = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
         .Stats.Banco = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
 
-        Dim InitialLevel, Experiencia as Long
+        Dim InitialLevel, Experiencia As Long
         InitialLevel = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Nivel"))
         
         Dim i As Long
-        For i = 1 to InitialLevel
+        For i = 1 To InitialLevel
             If i <> InitialLevel Then
                 .Stats.Exp = .Stats.ELU
                 
                 'Se creo el parametro opcional en la funcion CheckUserLevel
-                'Ya que al crear pjs con nivel mayor a 40 la cantidad de datos enviados hacia el 
+                'Ya que al crear pjs con nivel mayor a 40 la cantidad de datos enviados hacia el
                 'WriteConsole hacia que explote la aplicacion, con este parche se evita eso.
                 Call CheckUserLevel(Userindex, False)
             End If
         Next i
 
-        Dim SkillPointsIniciales as Long
+        Dim SkillPointsIniciales As Long
         SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
         For i = 1 To NUMSKILLS
             .Stats.UserSkills(i) = SkillPointsIniciales
         Next i
 
-        .Stats.SkillPts = 0    
+        .Stats.SkillPts = 0
     End With
 
 End Sub
 
-Private Sub SetAttributesToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
+Private Sub SetAttributesToNewUser(ByVal Userindex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
         '[Pablo (Toxic Waste) 9/01/08]
         .Stats.UserAtributos(eAtributos.Fuerza) = .Stats.UserAtributos(eAtributos.Fuerza) + ModRaza(UserRaza).Fuerza
         .Stats.UserAtributos(eAtributos.Agilidad) = .Stats.UserAtributos(eAtributos.Agilidad) + ModRaza(UserRaza).Agilidad
@@ -757,7 +571,7 @@ Private Sub SetAttributesToNewUser(ByVal UserIndex As Integer, ByVal UserClase A
 
 End Sub
 
-Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
+Private Sub AddItemsToNewUser(ByVal Userindex As Integer, ByVal UserClase As eClass, ByVal UserRaza As eRaza)
 '*************************************************
 'Author: Lucas Recoaro (Recox)
 'Last modified: 19/03/2019
@@ -767,7 +581,7 @@ Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eCl
     Dim IsPaladin As Boolean
 
     IsPaladin = UserClase = eClass.Paladin
-    With UserList(UserIndex)
+    With UserList(Userindex)
         'Pociones Rojas (Newbie)
         Slot = 1
         .Invent.Object(Slot).ObjIndex = 857
@@ -833,7 +647,7 @@ Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eCl
         .Invent.WeaponEqpObjIndex = .Invent.Object(Slot).ObjIndex
         .Invent.WeaponEqpSlot = Slot
 
-        .Char.WeaponAnim = GetWeaponAnim(UserIndex, .Invent.WeaponEqpObjIndex)
+        .Char.WeaponAnim = GetWeaponAnim(Userindex, .Invent.WeaponEqpObjIndex)
 
         ' Municiones (Newbie)
         If UserClase = eClass.Hunter Then
@@ -866,7 +680,7 @@ Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eCl
      End With
 End Sub
 
-Private Sub AddItemsCustomToNewUser(ByVal UserIndex As Integer)
+Private Sub AddItemsCustomToNewUser(ByVal Userindex As Integer)
 '*************************************************
 'Author: Lucas Recoaro (Recox)
 'Last modified: 19/03/2019
@@ -877,7 +691,7 @@ Private Sub AddItemsCustomToNewUser(ByVal UserIndex As Integer)
 
     Call CargarObjetosIniciales
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
         For Slot = 1 To MAX_OBJ_INICIAL
             .Invent.Object(Slot).ObjIndex = ItemsIniciales(Slot).ObjIndex
             .Invent.Object(Slot).Amount = ItemsIniciales(Slot).Amount
@@ -1012,7 +826,7 @@ End Sub
 
         On Error GoTo ErrHandler
 
-        With UserList(UserIndex)
+        With UserList(Userindex)
 
             Call SecurityIp.IpRestarConexion(GetLongIp(.ip))
         
@@ -1064,11 +878,11 @@ End Sub
 
 ErrHandler:
 
-        Call ResetUserSlot(UserIndex)
+        Call ResetUserSlot(Userindex)
         
         Call LiberarSlot(Userindex)
         
-        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & UserIndex)
+        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & Userindex)
 
     End Sub
 
@@ -1081,7 +895,7 @@ Sub CloseSocket(ByVal Userindex As Integer)
 '
 '***************************************************
 
-On Error GoTo errHandler
+On Error GoTo ErrHandler
     UserList(Userindex).ConnID = -1
 
     Call LiberarSlot(Userindex)
@@ -1097,7 +911,7 @@ On Error GoTo errHandler
 
 Exit Sub
 
-errHandler:
+ErrHandler:
     UserList(Userindex).ConnID = -1
     Call ResetUserSlot(Userindex)
 End Sub
@@ -1111,7 +925,7 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal cerrarlo As Boolean =
 'Last Modification: -
 '
 '***************************************************
-On Error GoTo errHandler
+On Error GoTo ErrHandler
 
 Dim NURestados As Boolean
 Dim CoNnEcTiOnId As Long
@@ -1144,7 +958,7 @@ Dim CoNnEcTiOnId As Long
 
 Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & Userindex)
     
     If Not NURestados Then
@@ -1293,25 +1107,25 @@ ErrorHandler:
 
 End Function
 
-Function EstaPCarea(Index As Integer, Index2 As Integer) As Boolean
+Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    Dim x As Integer, Y As Integer
+    Dim X As Integer, Y As Integer
 
-    For Y = UserList(Index).Pos.Y - MinYBorder + 1 To UserList(Index).Pos.Y + MinYBorder - 1
-        For x = UserList(Index).Pos.x - MinXBorder + 1 To UserList(Index).Pos.x + MinXBorder - 1
+    For Y = UserList(index).Pos.Y - MinYBorder + 1 To UserList(index).Pos.Y + MinYBorder - 1
+        For X = UserList(index).Pos.X - MinXBorder + 1 To UserList(index).Pos.X + MinXBorder - 1
 
-            If MapData(UserList(Index).Pos.Map, x, Y).Userindex = Index2 Then
+            If MapData(UserList(index).Pos.Map, X, Y).Userindex = Index2 Then
                 EstaPCarea = True
                 Exit Function
 
             End If
         
-        Next x
+        Next X
     Next Y
 
     EstaPCarea = False
@@ -1325,13 +1139,13 @@ Function HayPCarea(Pos As WorldPos) As Boolean
     '
     '***************************************************
 
-    Dim x As Integer, Y As Integer
+    Dim X As Integer, Y As Integer
 
     For Y = Pos.Y - MinYBorder + 1 To Pos.Y + MinYBorder - 1
-        For x = Pos.x - MinXBorder + 1 To Pos.x + MinXBorder - 1
+        For X = Pos.X - MinXBorder + 1 To Pos.X + MinXBorder - 1
 
-            If x > 0 And Y > 0 And x < 101 And Y < 101 Then
-                If MapData(Pos.Map, x, Y).Userindex > 0 Then
+            If X > 0 And Y > 0 And X < 101 And Y < 101 Then
+                If MapData(Pos.Map, X, Y).Userindex > 0 Then
                     HayPCarea = True
                     Exit Function
 
@@ -1339,7 +1153,7 @@ Function HayPCarea(Pos As WorldPos) As Boolean
 
             End If
 
-        Next x
+        Next X
     Next Y
 
     HayPCarea = False
@@ -1353,18 +1167,18 @@ Function HayOBJarea(Pos As WorldPos, ObjIndex As Integer) As Boolean
     '
     '***************************************************
 
-    Dim x As Integer, Y As Integer
+    Dim X As Integer, Y As Integer
 
     For Y = Pos.Y - MinYBorder + 1 To Pos.Y + MinYBorder - 1
-        For x = Pos.x - MinXBorder + 1 To Pos.x + MinXBorder - 1
+        For X = Pos.X - MinXBorder + 1 To Pos.X + MinXBorder - 1
 
-            If MapData(Pos.Map, x, Y).ObjInfo.ObjIndex = ObjIndex Then
+            If MapData(Pos.Map, X, Y).ObjInfo.ObjIndex = ObjIndex Then
                 HayOBJarea = True
                 Exit Function
 
             End If
         
-        Next x
+        Next X
     Next Y
 
     HayOBJarea = False
@@ -1557,27 +1371,27 @@ Sub ConnectUser(ByVal Userindex As Integer, _
 
         End If
     
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
     
         'Posicion de comienzo
-        If mapa = 0 Then
+        If Mapa = 0 Then
 
             'Configurable desde el Server.ini / CustomWorld
             'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
             'Caso contrario sigue modo Alkon'
             If UsarMundoPropio Then
                 .Pos = CustomSpawnMap
-                mapa = CustomSpawnMap.Map
+                Mapa = CustomSpawnMap.Map
             Else
                 .Pos = Ciudades(.Hogar) 'Nemahuak
-                mapa = Ciudades(.Hogar).Map 'Nemahuak.Map
+                Mapa = Ciudades(.Hogar).Map 'Nemahuak.Map
             End If
 
         Else
     
-            If Not MapaValido(mapa) Then
+            If Not MapaValido(Mapa) Then
                 Call WriteErrorMsg(Userindex, "El PJ se encuenta en un mapa invalido.")
                 Call CloseSocket(Userindex)
                 Exit Sub
@@ -1587,12 +1401,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             ' If map has different initial coords, update it
             Dim StartMap As Integer
 
-            StartMap = MapInfo(mapa).StartPos.Map
+            StartMap = MapInfo(Mapa).StartPos.Map
 
             If StartMap <> 0 Then
                 If MapaValido(StartMap) Then
-                    .Pos = MapInfo(mapa).StartPos
-                    mapa = StartMap
+                    .Pos = MapInfo(Mapa).StartPos
+                    Mapa = StartMap
 
                 End If
 
@@ -1602,7 +1416,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
         'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martin Sotuyo Dodero (Maraxus)
-        If MapData(mapa, .Pos.x, .Pos.Y).Userindex <> 0 Or MapData(mapa, .Pos.x, .Pos.Y).NpcIndex <> 0 Then
+        If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
 
             Dim FoundPlace As Boolean
 
@@ -1613,15 +1427,15 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Dim tY         As Long
         
             FoundPlace = False
-            esAgua = HayAgua(mapa, .Pos.x, .Pos.Y)
+            esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
         
             For tY = .Pos.Y - 1 To .Pos.Y + 1
-                For tX = .Pos.x - 1 To .Pos.x + 1
+                For tX = .Pos.X - 1 To .Pos.X + 1
 
                     If esAgua Then
 
                         'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, True, False) Then
+                        If LegalPos(Mapa, tX, tY, True, False) Then
                             FoundPlace = True
                             Exit For
 
@@ -1630,7 +1444,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     Else
 
                         'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, False, True) Then
+                        If LegalPos(Mapa, tX, tY, False, True) Then
                             FoundPlace = True
                             Exit For
 
@@ -1644,35 +1458,35 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Next tY
         
             If FoundPlace Then 'Si encontramos un lugar, listo, nos quedamos ahi
-                .Pos.x = tX
+                .Pos.X = tX
                 .Pos.Y = tY
             Else
 
                 'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-                If MapData(mapa, .Pos.x, .Pos.Y).Userindex <> 0 Then
+                If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
 
                     'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                    If UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
+                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
 
                         'Le avisamos al que estaba comerciando que se tuvo que ir.
-                        If UserList(UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
-                            Call FinComerciarUsu(UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).ComUsu.DestUsu)
-                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                            Call FlushBuffer(UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).ComUsu.DestUsu)
+                        If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
+                            Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                            Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                            Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
 
                         'Lo sacamos.
-                        If UserList(MapData(mapa, .Pos.x, .Pos.Y).Userindex).flags.UserLogged Then
-                            Call FinComerciarUsu(MapData(mapa, .Pos.x, .Pos.Y).Userindex)
-                            Call WriteErrorMsg(MapData(mapa, .Pos.x, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                            Call FlushBuffer(MapData(mapa, .Pos.x, .Pos.Y).Userindex)
+                        If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
+                            Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
+                            Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
+                            Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                         End If
 
                     End If
                 
-                    Call CloseSocket(MapData(mapa, .Pos.x, .Pos.Y).Userindex)
+                    Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                 End If
 
@@ -1683,7 +1497,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         .showName = True 'Por default los nombres son visibles
     
         'If in the water, and has a boat, equip it!
-        If .Invent.BarcoObjIndex > 0 And (HayAgua(mapa, .Pos.x, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+        If .Invent.BarcoObjIndex > 0 And (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
             .Char.Head = 0
 
@@ -1725,7 +1539,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         #End If
     
         'Crea  el personaje del usuario
-        Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.x, .Pos.Y)
+        Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
     
         If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
             Call DoAdminInvisible(Userindex)
@@ -1736,7 +1550,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call WriteUserCharIndexInServer(Userindex)
         ''[/el oso]
     
-        Call DoTileEvents(Userindex, .Pos.Map, .Pos.x, .Pos.Y)
+        Call DoTileEvents(Userindex, .Pos.Map, .Pos.X, .Pos.Y)
     
         Call CheckUserLevel(Userindex)
         Call WriteUpdateUserStats(Userindex)
@@ -2016,7 +1830,7 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
         .desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
-        .Pos.x = 0
+        .Pos.X = 0
         .Pos.Y = 0
         .ip = vbNullString
         .clase = 0
@@ -2295,7 +2109,7 @@ Sub CloseUser(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim n    As Integer
 
@@ -2410,7 +2224,7 @@ Sub CloseUser(ByVal Userindex As Integer)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en CloseUser. Numero " & Err.Number & " Descripcion: " & Err.description)
 
 End Sub
@@ -2422,7 +2236,7 @@ Sub ReloadSokcet()
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     #If UsarQueSocket = 1 Then
 
@@ -2446,7 +2260,7 @@ Sub ReloadSokcet()
     #End If
 
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub

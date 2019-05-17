@@ -30,10 +30,6 @@ Option Explicit
 Public Const MAX_PARTIES               As Integer = 300
 
 ''
-'nivel minimo para crear party
-Public Const MINPARTYLEVEL             As Byte = 15
-
-''
 'Cantidad maxima de gente en la party
 Public Const PARTY_MAXMEMBERS          As Byte = 5
 
@@ -41,10 +37,6 @@ Public Const PARTY_MAXMEMBERS          As Byte = 5
 'Si esto esta en True, la exp sale por cada golpe que le da
 'Si no, la exp la recibe al salirse de la party (pq las partys, floodean)
 Public Const PARTY_EXPERIENCIAPORGOLPE As Boolean = False
-
-''
-'maxima diferencia de niveles permitida en una party
-Public Const MAXPARTYDELTALEVEL        As Byte = 7
 
 ''
 'distancia al leader para que este acepte el ingreso
@@ -565,8 +557,8 @@ End Sub
 
 Public Sub ObtenerExito(ByVal Userindex As Integer, _
                         ByVal Exp As Long, _
-                        mapa As Integer, _
-                        x As Integer, _
+                        Mapa As Integer, _
+                        X As Integer, _
                         Y As Integer)
     '***************************************************
     'Author: Unknown
@@ -579,7 +571,7 @@ Public Sub ObtenerExito(ByVal Userindex As Integer, _
 
     End If
     
-    Call Parties(UserList(Userindex).PartyIndex).ObtenerExito(Exp, mapa, x, Y)
+    Call Parties(UserList(Userindex).PartyIndex).ObtenerExito(Exp, Mapa, X, Y)
 
 End Sub
 

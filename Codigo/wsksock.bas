@@ -171,21 +171,12 @@ Attribute VB_Name = "WSKSOCK"
 
     End Type
 
-    'Agregado por Maraxus
-    Public Const WSA_FLAG_OVERLAPPED = &H1
-
     'Agregados por Maraxus
     Public Const CF_ACCEPT = &H0
 
     Public Const CF_REJECT = &H1
 
     'Agregado por Maraxus
-    Public Const SD_RECEIVE As Long = &H0&
-
-    Public Const SD_SEND    As Long = &H1&
-
-    Public Const SD_BOTH    As Long = &H2&
-
     Public Const INVALID_SOCKET = -1
 
     Public Const SOCKET_ERROR = -1
@@ -193,8 +184,6 @@ Attribute VB_Name = "WSKSOCK"
     Public Const SOCK_STREAM = 1
 
     Public Const SOCK_DGRAM = 2
-
-    Public Const MAXGETHOSTSTRUCT = 1024
 
     Public Const AF_INET = 2
 
@@ -311,14 +300,7 @@ Attribute VB_Name = "WSKSOCK"
     Global Const WSANO_DATA = 11004
 
     Global Const WSANO_ADDRESS = 11004
-
-    '---ioctl Constants
-    Public Const FIONREAD = &H8004667F
-
-    Public Const FIONBIO = &H8004667E
-
-    Public Const FIOASYNC = &H8004667D
-
+    
     #If Win16 Then
 
         '---Windows System functions
@@ -345,13 +327,9 @@ Attribute VB_Name = "WSKSOCK"
 
         Public Const SO_SNDBUFFER = &H1001              ' Agregado por Maraxus
 
-        Public Const SO_CONDITIONAL_ACCEPT = &H3002    ' Agregado por Maraxus
-
         Public Const FD_READ = &H1
 
         Public Const FD_WRITE = &H2
-
-        Public Const FD_OOB = &H4
 
         Public Const FD_ACCEPT = &H8
 

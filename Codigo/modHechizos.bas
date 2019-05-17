@@ -29,10 +29,6 @@ Attribute VB_Name = "modHechizos"
 
 Option Explicit
 
-Public Const HELEMENTAL_FUEGO  As Integer = 26
-
-Public Const HELEMENTAL_TIERRA As Integer = 28
-
 Public Const SUPERANILLO       As Integer = 700
 
 Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _

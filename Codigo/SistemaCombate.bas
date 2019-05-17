@@ -38,8 +38,6 @@ Option Explicit
 
 Public Const MAXDISTANCIAARCO  As Byte = 18
 
-Public Const MAXDISTANCIAMAGIA As Byte = 18
-
 Public Function MinimoInt(ByVal a As Integer, ByVal b As Integer) As Integer
 
     If a > b Then

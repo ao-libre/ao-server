@@ -43,8 +43,6 @@ Private Const SINGLE_SIZE           As Byte = 4
 
 Private Const DOUBLE_SIZE           As Byte = 8
 
-Private Const STRING_LENGTH_SIZE    As Byte = 2
-
 Public Sub initializeReader(ByRef arrayByte() As Byte)
     lastPos = UBound(arrayByte)
     ReDim data(lastPos) As Byte
