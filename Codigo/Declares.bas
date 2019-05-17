@@ -165,17 +165,6 @@ Public Enum PlayerType
 
 End Enum
 
-Public Enum ePrivileges
-
-    Admin = 1
-    Dios
-    Especial
-    SemiDios
-    Consejero
-    RoleMaster
-
-End Enum
-
 Public Enum eClass
 
     Mage = 1       'Mago

@@ -67,18 +67,7 @@ Public Enum ALINEACION_GUILD
 
 End Enum
 
-'alineaciones permitidas
-
-Public Enum SONIDOS_GUILD
-
-    SND_CREACIONCLAN = 44
-    SND_ACEPTADOCLAN = 43
-    SND_DECLAREWAR = 45
-
-End Enum
-
 'numero de .wav del cliente
-
 Public Enum RELACIONES_GUILD
 
     GUERRA = -1
