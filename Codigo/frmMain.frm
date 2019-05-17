@@ -449,7 +449,7 @@ ErrHandler:
 End Sub
 
 Private Sub chkServerHabilitado_Click()
-    ServerSoloGMs = chkServerHabilitado.value
+    ServerSoloGMs = chkServerHabilitado.Value
 
 End Sub
 
@@ -815,7 +815,3 @@ End Sub
 ''''''''''''''FIN  USO DEL CONTROL TCPSERV'''''''''''''''''''''''''
 '''''''''''''Compilar con UsarQueSocket = 3''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-Private Sub txtChat_Change()
-
-End Sub

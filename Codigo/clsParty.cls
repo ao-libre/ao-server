@@ -64,11 +64,6 @@ Public Sub Class_Initialize()
 
 End Sub
 
-'Destructor de clase
-Public Sub Class_Terminate()
-
-End Sub
-
 ''
 ' Sets the new p_sumaniveleselevados to the party.
 '

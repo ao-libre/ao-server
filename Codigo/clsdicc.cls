@@ -57,12 +57,6 @@ Public Sub Class_Initialize()
 
 End Sub
 
-Public Sub Class_Terminate()
-
-    'destructor
-    'destruir los variants?????
-End Sub
-
 Public Property Get CantElem() As Integer
     CantElem = p_cant
 
