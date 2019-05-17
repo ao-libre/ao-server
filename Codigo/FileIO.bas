@@ -1719,6 +1719,8 @@ Sub LoadSini()
     'Lee la version correcta del cliente
     ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "VersionBuildCliente")
     
+    STAT_MAXELV = GetVar(IniPath & "Server.ini", "INIT", "NivelMaximo")
+    
     ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
     OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
     OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
