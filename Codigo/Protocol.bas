@@ -17253,13 +17253,10 @@ Public Sub HandleChangeMOTD(ByVal Userindex As Integer)
         End If
         
         Dim auxiliaryString As String
+
         Dim LoopC           As Long
-        Dim Lower_MOTD As Long, Upper_MOTD As Long
         
-        Lower_MOTD = LBound(MOTD())
-        Upper_MOTD = UBound(MOTD())
-        
-        For LoopC = Lower_MOTD To Upper_MOTD
+        For LoopC = LBound(MOTD()) To UBound(MOTD())
             auxiliaryString = auxiliaryString & MOTD(LoopC).texto & vbCrLf
         Next LoopC
         

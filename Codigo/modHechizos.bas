@@ -597,16 +597,16 @@ Sub HechizoTerrenoEstado(ByVal Userindex As Integer, ByRef b As Boolean)
     '***************************************************
 
     Dim PosCasteadaX As Integer
+
     Dim PosCasteadaY As Integer
+
     Dim PosCasteadaM As Integer
+
     Dim h            As Integer
+
     Dim tempX        As Integer
-    Dim tempX_From   As Integer
-    Dim tempX_To     As Integer
+
     Dim tempY        As Integer
-    Dim tempY_From   As Integer
-    Dim tempY_To     As Integer
-    
 
     With UserList(Userindex)
         PosCasteadaX = .flags.TargetX
@@ -615,16 +615,11 @@ Sub HechizoTerrenoEstado(ByVal Userindex As Integer, ByRef b As Boolean)
         
         h = .flags.Hechizo
         
-        tempX_From = PosCasteadaX - 8
-        tempX_To = PosCasteadaX + 8
-        tempY_From = PosCasteadaY - 8
-        tempY_To = PosCasteadaY + 8
-        
         If Hechizos(h).RemueveInvisibilidadParcial = 1 Then
             b = True
 
-            For tempX = tempX_From To tempX_To
-                For tempY = tempY_From To tempY_To
+            For tempX = PosCasteadaX - 8 To PosCasteadaX + 8
+                For tempY = PosCasteadaY - 8 To PosCasteadaY + 8
 
                     If InMapBounds(PosCasteadaM, tempX, tempY) Then
                         If MapData(PosCasteadaM, tempX, tempY).Userindex > 0 Then

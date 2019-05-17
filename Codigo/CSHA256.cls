@@ -402,8 +402,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Ch(ByVal X As Long, ByVal Y As Long, ByVal z As Long) As Long
-    Ch = ((X And Y) Xor ((Not X) And z))
+Private Function Ch(ByVal x As Long, ByVal Y As Long, ByVal z As Long) As Long
+    Ch = ((x And Y) Xor ((Not x) And z))
 
 End Function
 
@@ -413,8 +413,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Maj(ByVal X As Long, ByVal Y As Long, ByVal z As Long) As Long
-    Maj = ((X And Y) Xor (X And z) Xor (Y And z))
+Private Function Maj(ByVal x As Long, ByVal Y As Long, ByVal z As Long) As Long
+    Maj = ((x And Y) Xor (x And z) Xor (Y And z))
 
 End Function
 
@@ -424,8 +424,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function (rotate right)
 '*******************************************************************************
-Private Function S(ByVal X As Long, ByVal n As Long) As Long
-    S = (RShift(X, (n And m_lOnBits(4))) Or LShift(X, (32 - (n And m_lOnBits(4)))))
+Private Function S(ByVal x As Long, ByVal n As Long) As Long
+    S = (RShift(x, (n And m_lOnBits(4))) Or LShift(x, (32 - (n And m_lOnBits(4)))))
 
 End Function
 
@@ -435,8 +435,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function (just a right shift)
 '*******************************************************************************
-Private Function R(ByVal X As Long, ByVal n As Long) As Long
-    R = RShift(X, CInt(n And m_lOnBits(4)))
+Private Function R(ByVal x As Long, ByVal n As Long) As Long
+    R = RShift(x, CInt(n And m_lOnBits(4)))
 
 End Function
 
@@ -446,8 +446,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Sigma0(ByVal X As Long) As Long
-    Sigma0 = (S(X, 2) Xor S(X, 13) Xor S(X, 22))
+Private Function Sigma0(ByVal x As Long) As Long
+    Sigma0 = (S(x, 2) Xor S(x, 13) Xor S(x, 22))
 
 End Function
 
@@ -457,8 +457,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Sigma1(ByVal X As Long) As Long
-    Sigma1 = (S(X, 6) Xor S(X, 11) Xor S(X, 25))
+Private Function Sigma1(ByVal x As Long) As Long
+    Sigma1 = (S(x, 6) Xor S(x, 11) Xor S(x, 25))
 
 End Function
 
@@ -468,8 +468,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Gamma0(ByVal X As Long) As Long
-    Gamma0 = (S(X, 7) Xor S(X, 18) Xor R(X, 3))
+Private Function Gamma0(ByVal x As Long) As Long
+    Gamma0 = (S(x, 7) Xor S(x, 18) Xor R(x, 3))
 
 End Function
 
@@ -479,8 +479,8 @@ End Function
 ' DESCRIPTION:
 ' SHA-256 function
 '*******************************************************************************
-Private Function Gamma1(ByVal X As Long) As Long
-    Gamma1 = (S(X, 17) Xor S(X, 19) Xor R(X, 10))
+Private Function Gamma1(ByVal x As Long) As Long
+    Gamma1 = (S(x, 17) Xor S(x, 19) Xor R(x, 10))
 
 End Function
 
@@ -593,21 +593,34 @@ End Function
 Public Function SHA256(sMessage As String) As String
 
     Dim Hash(7) As Long
+
     Dim M()     As Long
+
     Dim W(63)   As Long
+
     Dim a       As Long
+
     Dim b       As Long
+
     Dim c       As Long
+
     Dim d       As Long
+
     Dim e       As Long
+
     Dim f       As Long
+
     Dim g       As Long
+
     Dim h       As Long
+
     Dim i       As Long
+
     Dim j       As Long
+
     Dim T1      As Long
+
     Dim T2      As Long
-    Dim Upper_M As Long
     
     ' Initial hash values
     Hash(0) = &H6A09E667
@@ -621,10 +634,9 @@ Public Function SHA256(sMessage As String) As String
     
     ' Preprocessing. Append padding bits and length and convert to words
     M = ConvertToWordArray(sMessage)
-    Upper_M = UBound(M)
     
     ' Main loop
-    For i = 0 To Upper_M Step 16
+    For i = 0 To UBound(M) Step 16
         a = Hash(0)
         b = Hash(1)
         c = Hash(2)

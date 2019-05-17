@@ -433,16 +433,13 @@ Public Sub ChangeCodexAndDesc(ByRef desc As String, _
     '***************************************************
 
     Dim i As Long
-    Dim Upper_Codex As Long
     
     If GuildIndex < 1 Or GuildIndex > CANTIDADDECLANES Then Exit Sub
     
     With guilds(GuildIndex)
         Call .SetDesc(desc)
         
-        Upper_Codex = UBound(codex())
-        
-        For i = 0 To Upper_Codex
+        For i = 0 To UBound(codex())
             Call .SetCodex(i, codex(i))
         Next i
         
@@ -492,10 +489,10 @@ Public Function CrearNuevoClan(ByVal FundadorIndex As Integer, _
     '***************************************************
 
     Dim CantCodex   As Integer
-    Dim CantClanes  As Integer
+
     Dim i           As Integer
+
     Dim DummyString As String
-    
 
     CrearNuevoClan = False
 
@@ -552,9 +549,7 @@ Public Function CrearNuevoClan(ByVal FundadorIndex As Integer, _
         UserList(FundadorIndex).GuildIndex = CANTIDADDECLANES
         Call RefreshCharStatus(FundadorIndex)
         
-        CantClanes = CANTIDADDECLANES - 1
-        
-        For i = 1 To CantClanes
+        For i = 1 To CANTIDADDECLANES - 1
             Call guilds(i).ProcesarFundacionDeOtroClan
         Next i
 
@@ -990,14 +985,14 @@ Private Function GuildNameValido(ByVal cad As String) As Boolean
     '***************************************************
 
     Dim car As Byte
+
     Dim i   As Integer
-    Dim i_To As Integer
 
     'old function by morgo
+
     cad = LCase$(cad)
-    i_To = Len(cad)
-    
-    For i = 1 To i_To
+
+    For i = 1 To Len(cad)
         car = Asc(mid$(cad, i, 1))
 
         If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
@@ -1099,8 +1094,9 @@ Public Function v_UsuarioVota(ByVal Userindex As Integer, _
     '***************************************************
 
     Dim GuildIndex As Integer
+
     Dim list()     As String
-    Dim Upper_list As Long
+
     Dim i          As Long
 
     v_UsuarioVota = False
@@ -1121,9 +1117,9 @@ Public Function v_UsuarioVota(ByVal Userindex As Integer, _
         End If
         
         list = .GetMemberList()
-        Upper_list = UBound(list())
-        
-        For i = 0 To Upper_list
+
+        For i = 0 To UBound(list())
+
             If UCase$(Votado) = list(i) Then Exit For
         Next i
         
@@ -1900,9 +1896,11 @@ Public Function r_ListaDePropuestas(ByVal Userindex As Integer, _
     '***************************************************
 
     Dim GI            As Integer
+
     Dim i             As Integer
-    Dim i_To          As Integer
+
     Dim proposalCount As Integer
+
     Dim proposals()   As String
     
     GI = UserList(Userindex).GuildIndex
@@ -1921,9 +1919,7 @@ Public Function r_ListaDePropuestas(ByVal Userindex As Integer, _
             End If
             
             'Store each guild name
-            i_To = proposalCount - 1
-            
-            For i = 0 To i_To
+            For i = 0 To proposalCount - 1
                 proposals(i) = guilds(.Iterador_ProximaPropuesta(Tipo)).GuildName
             Next i
 
@@ -2067,10 +2063,12 @@ Public Sub SendDetallesPersonaje(ByVal Userindex As Integer, ByVal Personaje As 
     '***************************************************
 
     Dim GI     As Integer
+
     Dim NroAsp As Integer
+
     Dim list() As String
+
     Dim i      As Long
-    Dim Upper_list As Long
     
     On Error GoTo Error
 
@@ -2109,9 +2107,9 @@ Public Sub SendDetallesPersonaje(ByVal Userindex As Integer, ByVal Personaje As 
     
     If NroAsp = 0 Then
         list = guilds(GI).GetMemberList()
-        Upper_list = UBound(list())
         
-        For i = 0 To Upper_list
+        For i = 0 To UBound(list())
+
             If Personaje = list(i) Then Exit For
         Next i
         

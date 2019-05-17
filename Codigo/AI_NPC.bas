@@ -344,11 +344,15 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
     '25/07/2010: ZaMa - Agrego una validacion temporal para evitar que los npcs ataquen a usuarios de mapas difernetes.
     '***************************************************
     Dim tHeading      As Byte
+
     Dim Userindex     As Integer
+
     Dim SignoNS       As Integer
+
     Dim SignoEO       As Integer
+
     Dim i             As Long
-    Dim iTo           As Long
+
     Dim UserProtected As Boolean
     
     With Npclist(NpcIndex)
@@ -375,9 +379,7 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
 
             End Select
             
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
-            For i = 1 To iTo
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
@@ -406,7 +408,9 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
         Else
             
             ' Tiene prioridad de seguir al usuario al que le pertenece si esta en el rango de vision
-            Dim OwnerIndex As Integer: OwnerIndex = .Owner
+            Dim OwnerIndex As Integer
+            
+            OwnerIndex = .Owner
 
             If OwnerIndex > 0 Then
                 
@@ -440,10 +444,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                 
             End If
             
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
             ' No le pertenece a nadie o el dueno no esta en el rango de vision, sigue a cualquiera
-            For i = 1 To iTo
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
@@ -501,10 +503,13 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
     '08/16/2008: MarKoxX - Now pets that do mel� attacks have to be near the enemy to attack.
     '**************************************************************
     Dim tHeading As Byte
+
     Dim UI       As Integer
+    
     Dim i        As Long
-    Dim iTo      As Long
+    
     Dim SignoNS  As Integer
+
     Dim SignoEO  As Integer
 
     With Npclist(NpcIndex)
@@ -530,10 +535,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                     SignoNS = 0
 
             End Select
-            
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
-            For i = 1 To iTo
+
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 UI = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
 
                 'Is it in it's range of vision??
@@ -582,10 +585,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
             Next i
 
         Else
-            
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
-            For i = 1 To iTo
+
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 UI = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
@@ -669,16 +670,16 @@ Private Sub PersigueCiudadano(ByVal NpcIndex As Integer)
     '12/01/2010: ZaMa - Los npcs no atacan druidas mimetizados con npcs.
     '***************************************************
     Dim Userindex     As Integer
+
     Dim tHeading      As Byte
+
     Dim i             As Long
-    Dim iTo           As Long
+
     Dim UserProtected As Boolean
     
     With Npclist(NpcIndex)
-        
-        iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-        
-        For i = 1 To iTo
+
+        For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
             Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
             'Is it in it's range of vision??
@@ -726,11 +727,15 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
     '12/01/2010: ZaMa - Los npcs no atacan druidas mimetizados con npcs.
     '***************************************************
     Dim Userindex     As Integer
+
     Dim tHeading      As Byte
+
     Dim i             As Long
-    Dim iTo           As Long
+
     Dim SignoNS       As Integer
+
     Dim SignoEO       As Integer
+
     Dim UserProtected As Boolean
     
     With Npclist(NpcIndex)
@@ -757,9 +762,7 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 
             End Select
             
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
-            For i = 1 To iTo
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
@@ -795,10 +798,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
             Next i
 
         Else
-            
-            iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            
-            For i = 1 To iTo
+
+            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
                 Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
@@ -890,19 +891,18 @@ Private Sub AiNpcAtacaNpc(ByVal NpcIndex As Integer)
     '***************************************************
 
     Dim tHeading As Byte
+
     Dim X        As Long
+
     Dim Y        As Long
+
     Dim NI       As Integer
+
     Dim bNoEsta  As Boolean
-    Dim SignoNS  As Integer
-    Dim SignoEO  As Integer
     
-    Dim yFrom As Long
-    Dim yTo As Long
-    Dim xFrom As Long
-    Dim xTo As Long
-    Dim SignoNS_For As Byte
-    Dim SignoEO_For As Byte
+    Dim SignoNS  As Integer
+
+    Dim SignoEO  As Integer
     
     With Npclist(NpcIndex)
 
@@ -928,15 +928,8 @@ Private Sub AiNpcAtacaNpc(ByVal NpcIndex As Integer)
 
             End Select
             
-            yFrom = .Pos.Y
-            yTo = .Pos.Y + SignoNS * RANGO_VISION_Y
-            xFrom = .Pos.X
-            xTo = .Pos.X + SignoEO * RANGO_VISION_X
-            SignoNS_For = IIf(SignoNS = 0, 1, SignoNS)
-            SignoEO_For = IIf(SignoEO = 0, 1, SignoEO)
-            
-            For Y = yFrom To yTo Step SignoNS_For
-                For X = xFrom To xTo Step SignoEO_For
+            For Y = .Pos.Y To .Pos.Y + SignoNS * RANGO_VISION_Y Step IIf(SignoNS = 0, 1, SignoNS)
+                For X = .Pos.X To .Pos.X + SignoEO * RANGO_VISION_X Step IIf(SignoEO = 0, 1, SignoEO)
 
                     If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                         NI = MapData(.Pos.Map, X, Y).NpcIndex
@@ -975,14 +968,9 @@ Private Sub AiNpcAtacaNpc(ByVal NpcIndex As Integer)
             Next Y
 
         Else
-            
-            yFrom = .Pos.Y - RANGO_VISION_Y
-            yTo = .Pos.Y + RANGO_VISION_Y
-            xFrom = .Pos.X - RANGO_VISION_Y
-            xTo = .Pos.X + RANGO_VISION_Y
-            
-            For Y = yFrom To yTo
-                For X = xFrom To xTo
+
+            For Y = .Pos.Y - RANGO_VISION_Y To .Pos.Y + RANGO_VISION_Y
+                For X = .Pos.X - RANGO_VISION_Y To .Pos.X + RANGO_VISION_Y
 
                     If X >= MinXBorder And X <= MaxXBorder And Y >= MinYBorder And Y <= MaxYBorder Then
                         NI = MapData(.Pos.Map, X, Y).NpcIndex
@@ -1049,15 +1037,14 @@ Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
     '14/09/2009: ZaMa - Now npcs don't follow protected users.
     '***************************************************
     Dim Userindex     As Integer
+
     Dim i             As Long
-    Dim iTo           As Long
+
     Dim UserProtected As Boolean
     
     With Npclist(NpcIndex)
-        
-        iTo = ModAreas.ConnGroups(.Pos.Map).CountEntrys
-        
-        For i = 1 To iTo
+
+        For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
             Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
             
             'Is it in it's range of vision??
@@ -1312,17 +1299,13 @@ Function PathFindingAI(ByVal NpcIndex As Integer) As Boolean
     'to the user's location.
     '***************************************************
     Dim Y As Long
+
     Dim X As Long
     
     With Npclist(NpcIndex)
-    
-    Dim yFrom As Long: yFrom = .Pos.Y - 10
-    Dim yTo As Long: yTo = .Pos.Y + 10
-    Dim xFrom As Long: xFrom = .Pos.X - 10
-    Dim xTo As Long: xTo = .Pos.X + 10
-    
-        For Y = xFrom To yTo    'Makes a loop that looks at
-            For X = xFrom To xTo    '5 tiles in every direction
+
+        For Y = .Pos.Y - 10 To .Pos.Y + 10    'Makes a loop that looks at
+            For X = .Pos.X - 10 To .Pos.X + 10   '5 tiles in every direction
                 
                 'Make sure tile is legal
                 If X > MinXBorder And X < MaxXBorder And Y > MinYBorder And Y < MaxYBorder Then

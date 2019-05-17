@@ -59,7 +59,7 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
     'Last Modification: 25/11/2009
     '
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     'Si ambos pusieron /comerciar entonces
     If UserList(Origen).ComUsu.DestUsu = Destino And UserList(Destino).ComUsu.DestUsu = Origen Then
@@ -94,7 +94,7 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
     Call FlushBuffer(Destino)
     
     Exit Sub
-ErrHandler:
+errHandler:
     Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
 
 End Sub
@@ -175,9 +175,10 @@ Public Sub AceptarComercioUsu(ByVal Userindex As Integer)
     '06/05/2010: ZaMa - Ahora valida si los usuarios tienen los items que ofertan.
     '***************************************************
     Dim TradingObj    As obj
+
     Dim OtroUserIndex As Integer
+
     Dim OfferSlot     As Integer
-    Dim OfferSlot_To  As Integer
 
     UserList(Userindex).ComUsu.Acepto = True
     
@@ -221,17 +222,14 @@ Public Sub AceptarComercioUsu(ByVal Userindex As Integer)
         
     End If
     
-    OfferSlot_To = MAX_OFFER_SLOTS + 1
-    
     ' Envio los items a quien corresponde
-    For OfferSlot = 1 To OfferSlot_To
+    For OfferSlot = 1 To MAX_OFFER_SLOTS + 1
         
         ' Items del 1er usuario
         With UserList(Userindex)
 
             ' Le pasa el oro
             If OfferSlot = GOLD_OFFER_SLOT Then
-                
                 ' Quito la cantidad de oro ofrecida
                 .Stats.Gld = .Stats.Gld - .ComUsu.GoldAmount
 
@@ -487,10 +485,13 @@ Private Function HasOfferedItems(ByVal Userindex As Integer) As Boolean
     '***************************************************
 
     Dim OfferedItems(MAX_OFFER_SLOTS - 1) As tOfferItem
+
     Dim Slot                              As Long
+
     Dim SlotAux                           As Long
+
     Dim SlotCount                         As Long
-    Dim SlotCount_To                      As Long
+    
     Dim ObjIndex                          As Integer
     
     With UserList(Userindex).ComUsu
@@ -501,10 +502,8 @@ Private Function HasOfferedItems(ByVal Userindex As Integer) As Boolean
             ObjIndex = .Objeto(Slot)
             
             If ObjIndex > 0 Then
-                
-                SlotCount_To = SlotCount - 1
-                
-                For SlotAux = 0 To SlotCount_To
+            
+                For SlotAux = 0 To SlotCount - 1
                     
                     If ObjIndex = OfferedItems(SlotAux).ObjIndex Then
                         ' Son iguales, aumento la cantidad
@@ -528,10 +527,8 @@ Private Function HasOfferedItems(ByVal Userindex As Integer) As Boolean
             
         Next Slot
         
-        SlotCount_To = SlotCount - 1
-        
         ' Chequeo que tengan la cantidad en el inventario
-        For Slot = 0 To SlotCount_To
+        For Slot = 0 To SlotCount - 1
 
             If Not HasEnoughItems(Userindex, OfferedItems(Slot).ObjIndex, OfferedItems(Slot).Amount) Then Exit Function
         Next Slot

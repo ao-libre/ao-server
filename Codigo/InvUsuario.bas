@@ -39,7 +39,7 @@ Public Function TieneObjetosRobables(ByVal Userindex As Integer) As Boolean
     '17/09/02
     'Agregue que la funcion se asegure que el objeto no es un barco
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i        As Integer
 
@@ -61,7 +61,7 @@ Public Function TieneObjetosRobables(ByVal Userindex As Integer) As Boolean
     
     Exit Function
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TieneObjetosRobables. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -161,7 +161,7 @@ Sub QuitarNewbieObj(ByVal Userindex As Integer)
 
             End Select
         
-            Call WarpUserChar(Userindex, DeDonde.Map, DeDonde.X, DeDonde.Y, True)
+            Call WarpUserChar(Userindex, DeDonde.Map, DeDonde.x, DeDonde.Y, True)
     
         End If
 
@@ -224,7 +224,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
     'Last Modification: 23/01/2007
     '23/01/2007 -> Pablo (ToxicWaste): Billetera invertida y explotar oro en el agua.
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'If Cantidad > 100000 Then Exit Sub
 
@@ -242,22 +242,17 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
             If Cantidad > 50000 Then
 
                 Dim j        As Integer
-                Dim j_From   As Integer
-                Dim j_To     As Integer
+
                 Dim K        As Integer
-                Dim K_From   As Integer
-                Dim K_To     As Integer
+
                 Dim M        As Integer
+
                 Dim Cercanos As String
-                
+
                 M = .Pos.Map
-                j_From = .Pos.X - 10
-                j_To = .Pos.X + 10
-                K_From = .Pos.Y - 10
-                K_To = .Pos.Y + 10
-                
-                For j = j_From To j_To
-                    For K = K_From To K_To
+
+                For j = .Pos.x - 10 To .Pos.x + 10
+                    For K = .Pos.Y - 10 To .Pos.Y + 10
 
                         If InMapBounds(M, j, K) Then
                             If MapData(M, j, K).Userindex > 0 Then
@@ -276,6 +271,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
             '/Seguridad
             Dim Extra    As Long
+
             Dim TeniaOro As Long
 
             TeniaOro = .Stats.Gld
@@ -306,7 +302,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
                 If .clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
 
-                    If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
+                    If AuxPos.x <> 0 And AuxPos.Y <> 0 Then
                         .Stats.Gld = .Stats.Gld - MiObj.Amount
 
                     End If
@@ -314,7 +310,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
                 Else
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, True)
 
-                    If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
+                    If AuxPos.x <> 0 And AuxPos.Y <> 0 Then
                         .Stats.Gld = .Stats.Gld - MiObj.Amount
 
                     End If
@@ -344,7 +340,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -358,7 +354,7 @@ Sub QuitarUserInvItem(ByVal Userindex As Integer, _
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If Slot < 1 Or Slot > UserList(Userindex).CurrentInventorySlots Then Exit Sub
     
@@ -384,7 +380,7 @@ Sub QuitarUserInvItem(ByVal Userindex As Integer, _
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en QuitarUserInvItem. Error " & Err.Number & " : " & Err.description)
     
 End Sub
@@ -398,7 +394,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim NullObj As UserObj
 
@@ -438,7 +434,7 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
 
     End With
 
-ErrHandler:
+errHandler:
     Call LogError("Error en UpdateUserInv. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -447,7 +443,7 @@ Sub DropObj(ByVal Userindex As Integer, _
             ByVal Slot As Byte, _
             ByVal Num As Integer, _
             ByVal Map As Integer, _
-            ByVal X As Integer, _
+            ByVal x As Integer, _
             ByVal Y As Integer)
     '***************************************************
     'Author: Unknown
@@ -474,8 +470,8 @@ Sub DropObj(ByVal Userindex As Integer, _
             DropObj.Amount = MinimoInt(Num, .Invent.Object(Slot).Amount)
 
             'Check objeto en el suelo
-            MapObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
-            MapObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
+            MapObj.ObjIndex = MapData(.Pos.Map, x, Y).ObjInfo.ObjIndex
+            MapObj.Amount = MapData(.Pos.Map, x, Y).ObjInfo.Amount
         
             If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
         
@@ -490,7 +486,7 @@ Sub DropObj(ByVal Userindex As Integer, _
 
                 End If
             
-                Call MakeObj(DropObj, Map, X, Y)
+                Call MakeObj(DropObj, Map, x, Y)
                 Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
                 Call UpdateUserInv(False, Userindex, Slot)
             
@@ -504,12 +500,12 @@ Sub DropObj(ByVal Userindex As Integer, _
                 'Log de Objetos que se tiran al piso. Pablo (ToxicWaste) 07/09/07
                 'Es un Objeto que tenemos que loguear?
                 If ObjData(DropObj.ObjIndex).Log = 1 Then
-                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                    Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & x & " Y: " & Y)
                 ElseIf DropObj.Amount > 5000 Then 'Es mucha cantidad? > Subi a 5000 el minimo porque si no se llenaba el log de cosas al pedo. (NicoNZ)
 
                     'Si no es de los prohibidos de loguear, lo logueamos.
                     If ObjData(DropObj.ObjIndex).NoLog <> 1 Then
-                        Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & X & " Y: " & Y)
+                        Call LogDesarrollo(.Name & " tiro al piso " & DropObj.Amount & " " & ObjData(DropObj.ObjIndex).Name & " Mapa: " & Map & " X: " & x & " Y: " & Y)
 
                     End If
 
@@ -528,7 +524,7 @@ End Sub
 
 Sub EraseObj(ByVal Num As Integer, _
              ByVal Map As Integer, _
-             ByVal X As Integer, _
+             ByVal x As Integer, _
              ByVal Y As Integer)
     '***************************************************
     'Author: Unknown
@@ -536,14 +532,14 @@ Sub EraseObj(ByVal Num As Integer, _
     '
     '***************************************************
 
-    With MapData(Map, X, Y)
+    With MapData(Map, x, Y)
         .ObjInfo.Amount = .ObjInfo.Amount - Num
     
         If .ObjInfo.Amount <= 0 Then
             .ObjInfo.ObjIndex = 0
             .ObjInfo.Amount = 0
         
-            Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectDelete(X, Y))
+            Call modSendData.SendToAreaByPos(Map, x, Y, PrepareMessageObjectDelete(x, Y))
 
         End If
 
@@ -553,7 +549,7 @@ End Sub
 
 Sub MakeObj(ByRef obj As obj, _
             ByVal Map As Integer, _
-            ByVal X As Integer, _
+            ByVal x As Integer, _
             ByVal Y As Integer)
     '***************************************************
     'Author: Unknown
@@ -563,14 +559,14 @@ Sub MakeObj(ByRef obj As obj, _
     
     If obj.ObjIndex > 0 And obj.ObjIndex <= UBound(ObjData) Then
     
-        With MapData(Map, X, Y)
+        With MapData(Map, x, Y)
 
             If .ObjInfo.ObjIndex = obj.ObjIndex Then
                 .ObjInfo.Amount = .ObjInfo.Amount + obj.Amount
             Else
                 .ObjInfo = obj
                 
-                Call modSendData.SendToAreaByPos(Map, X, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, X, Y))
+                Call modSendData.SendToAreaByPos(Map, x, Y, PrepareMessageObjectCreate(ObjData(obj.ObjIndex).GrhIndex, x, Y))
 
             End If
             
@@ -580,7 +576,7 @@ Sub MakeObj(ByRef obj As obj, _
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
-                xPos.X = X
+                xPos.x = x
                 xPos.Y = Y
                 AgregarObjetoLimpieza xPos
 
@@ -599,7 +595,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim Slot As Byte
     
@@ -663,7 +659,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Function
-ErrHandler:
+errHandler:
     Call LogError("Error en MeterItemEnInventario. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -684,21 +680,21 @@ Sub GetObj(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         'Hay algun obj?
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex > 0 Then
+        If MapData(.Pos.Map, .Pos.x, .Pos.Y).ObjInfo.ObjIndex > 0 Then
 
             'Esta permitido agarrar este obj?
-            If ObjData(MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
+            If ObjData(MapData(.Pos.Map, .Pos.x, .Pos.Y).ObjInfo.ObjIndex).Agarrable <> 1 Then
 
-                Dim X As Integer
+                Dim x As Integer
 
                 Dim Y As Integer
                 
-                X = .Pos.X
+                x = .Pos.x
                 Y = .Pos.Y
                 
-                obj = ObjData(MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex)
-                MiObj.Amount = MapData(.Pos.Map, X, Y).ObjInfo.Amount
-                MiObj.ObjIndex = MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex
+                obj = ObjData(MapData(.Pos.Map, .Pos.x, .Pos.Y).ObjInfo.ObjIndex)
+                MiObj.Amount = MapData(.Pos.Map, x, Y).ObjInfo.Amount
+                MiObj.ObjIndex = MapData(.Pos.Map, x, Y).ObjInfo.ObjIndex
                 
                 ' Oro directo a la billetera!
                 If obj.OBJType = otGuita Then
@@ -710,7 +706,7 @@ Sub GetObj(ByVal Userindex As Integer)
                     If Not .Stats.Gld > 2147483647 And RemainingAmountToMaximumGold >= MiObj.Amount Then
                         .Stats.Gld = .Stats.Gld + MiObj.Amount
                         'Quitamos el objeto
-                        Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call EraseObj(MapData(.Pos.Map, x, Y).ObjInfo.Amount, .Pos.Map, .Pos.x, .Pos.Y)
                             
                         Call WriteUpdateGold(Userindex)
                     Else
@@ -721,20 +717,20 @@ Sub GetObj(ByVal Userindex As Integer)
                     If MeterItemEnInventario(Userindex, MiObj) Then
                     
                         'Quitamos el objeto
-                        Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
+                        Call EraseObj(MapData(.Pos.Map, x, Y).ObjInfo.Amount, .Pos.Map, .Pos.x, .Pos.Y)
 
                         If Not .flags.Privilegios And PlayerType.User Then Call LogGM(.Name, "Agarro:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
         
                         'Log de Objetos que se agarran del piso. Pablo (ToxicWaste) 07/09/07
                         'Es un Objeto que tenemos que loguear?
                         If ObjData(MiObj.ObjIndex).Log = 1 Then
-                            ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
+                            ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.x & " Y: " & .Pos.Y
                             Call LogDesarrollo(.Name & " junto del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
                         ElseIf MiObj.Amount > 5000 Then 'Es mucha cantidad?
 
                             'Si no es de los prohibidos de loguear, lo logueamos.
                             If ObjData(MiObj.ObjIndex).NoLog <> 1 Then
-                                ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y
+                                ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.x & " Y: " & .Pos.Y
                                 Call LogDesarrollo(.Name & " junto del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
 
                             End If
@@ -763,7 +759,7 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Desequipa el item slot del inventario
     Dim obj As ObjData
@@ -896,7 +892,7 @@ Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en Desquipar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
@@ -910,7 +906,7 @@ Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
     '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     If ObjData(ObjIndex).Mujer = 1 Then
         SexoPuedeUsarItem = UserList(Userindex).Genero <> eGenero.Hombre
@@ -924,7 +920,7 @@ Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
     If Not SexoPuedeUsarItem Then sMotivo = "Tu genero no puede usar este objeto."
     
     Exit Function
-ErrHandler:
+errHandler:
     Call LogError("SexoPuedeUsarItem")
 
 End Function
@@ -972,7 +968,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     '14/01/2010: ZaMa - Agrego el motivo especifico por el que no puede equipar/usar el item.
     '*************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     'Equipa un item del inventario
     Dim obj      As ObjData
@@ -1026,7 +1022,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                     .Invent.WeaponEqpSlot = Slot
                     
                     'El sonido solo se envia si no lo produce un admin invisible
-                    If Not (.flags.AdminInvisible = 1) Then Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SACARARMA, .Pos.X, .Pos.Y))
+                    If Not (.flags.AdminInvisible = 1) Then Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SACARARMA, .Pos.x, .Pos.Y))
                     
                     If .flags.Mimetizado = 1 Then
                         .CharMimetizado.WeaponAnim = GetWeaponAnim(Userindex, ObjIndex)
@@ -1270,7 +1266,7 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("EquiparInvItem Slot:" & Slot & " - Error: " & Err.Number & " - Error Description : " & Err.description)
 
 End Sub
@@ -1284,7 +1280,7 @@ Private Function CheckRazaUsaRopa(ByVal Userindex As Integer, _
     '14/01/2010: ZaMa - Agrego el motivo por el que no puede equipar/usar el item.
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
@@ -1308,7 +1304,7 @@ Private Function CheckRazaUsaRopa(ByVal Userindex As Integer, _
     
     Exit Function
     
-ErrHandler:
+errHandler:
     Call LogError("Error CheckRazaUsaRopa ItemIndex:" & ItemIndex)
 
 End Function
@@ -1555,9 +1551,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                         End If
 
@@ -1578,9 +1574,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                         End If
 
@@ -1597,9 +1593,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                         End If
                     
@@ -1615,9 +1611,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                         End If
                         
@@ -1634,9 +1630,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                         End If
                         
@@ -1674,9 +1670,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 
                 ' Los admin invisibles solo producen sonidos a si mismos
                 If .flags.AdminInvisible = 1 Then
-                    Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                    Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
                 Else
-                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.x, .Pos.Y))
 
                 End If
                 
@@ -1841,10 +1837,10 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
                         Else
                             Call AlertarFaccionarios(Userindex)
-                            Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
 
                         End If
                         
@@ -1866,10 +1862,10 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
-                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                            Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
                         Else
                             Call AlertarFaccionarios(Userindex)
-                            Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
 
                         End If
                         
@@ -1885,9 +1881,9 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 'Si llega aca es porque es o Laud o Tambor o Flauta
                 ' Los admin invisibles solo producen sonidos a si mismos
                 If .flags.AdminInvisible = 1 Then
-                    Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                    Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
                 Else
-                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.x, .Pos.Y))
 
                 End If
                
@@ -1931,7 +1927,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
 
                 End If
                 
-                If ((LegalPos(.Pos.Map, .Pos.X - 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y - 1, True, False) Or LegalPos(.Pos.Map, .Pos.X + 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y + 1, True, False)) And .flags.Navegando = 0) Or .flags.Navegando = 1 Then
+                If ((LegalPos(.Pos.Map, .Pos.x - 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.x, .Pos.Y - 1, True, False) Or LegalPos(.Pos.Map, .Pos.x + 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.x, .Pos.Y + 1, True, False)) And .flags.Navegando = 0) Or .flags.Navegando = 1 Then
                     Call DoNavega(Userindex, obj, Slot)
                 Else
                     Call WriteConsoleMsg(Userindex, "Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
@@ -1984,11 +1980,11 @@ Sub TirarTodo(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 6 Then Exit Sub
         
         Call TirarTodosLosItems(Userindex)
         
@@ -2007,19 +2003,19 @@ Sub TirarTodo(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarTodo. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
 
-Public Function ItemSeCae(ByVal index As Integer) As Boolean
+Public Function ItemSeCae(ByVal Index As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    With ObjData(index)
+    With ObjData(Index)
         ItemSeCae = (.Real <> 1 Or .NoSeCae = 0) And (.Caos <> 1 Or .NoSeCae = 0) And .OBJType <> eOBJType.otLlaves And .OBJType <> eOBJType.otBarcos And .NoSeCae = 0
 
     End With
@@ -2033,7 +2029,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     'Last Modification: 12/01/2010 (ZaMa)
     '12/01/2010: ZaMa - Ahora los piratas no explotan items solo si estan entre 20 y 25
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim i         As Byte
 
@@ -2052,7 +2048,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
 
             If ItemIndex > 0 Then
                 If ItemSeCae(ItemIndex) Then
-                    NuevaPos.X = 0
+                    NuevaPos.x = 0
                     NuevaPos.Y = 0
                     
                     'Creo el Obj
@@ -2080,8 +2076,8 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
                     
                     Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
                     
-                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                    If NuevaPos.x <> 0 And NuevaPos.Y <> 0 Then
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.x, NuevaPos.Y)
 
                     End If
 
@@ -2095,7 +2091,7 @@ Sub TirarTodosLosItems(ByVal Userindex As Integer)
     
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarTodosLosItems. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2131,14 +2127,14 @@ Sub TirarTodosLosItemsNoNewbies(ByVal Userindex As Integer)
     
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 6 Then Exit Sub
         
         For i = 1 To UserList(Userindex).CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
 
             If ItemIndex > 0 Then
                 If ItemSeCae(ItemIndex) And Not ItemNewbie(ItemIndex) Then
-                    NuevaPos.X = 0
+                    NuevaPos.x = 0
                     NuevaPos.Y = 0
                     
                     'Creo MiObj
@@ -2148,8 +2144,8 @@ Sub TirarTodosLosItemsNoNewbies(ByVal Userindex As Integer)
                     'Tira los Items no newbies en todos lados.
                     Tilelibre .Pos, NuevaPos, MiObj, True, True
 
-                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                    If NuevaPos.x <> 0 And NuevaPos.Y <> 0 Then
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.x, NuevaPos.Y)
 
                     End If
 
@@ -2170,25 +2166,23 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
     'Last Modification: 12/01/09 (Budi)
     '***************************************************
     Dim i         As Byte
-    Dim i_From    As Byte
-    Dim i_To      As Byte
+
     Dim NuevaPos  As WorldPos
+
     Dim MiObj     As obj
+
     Dim ItemIndex As Integer
     
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 6 Then Exit Sub
         
-        i_From = MAX_NORMAL_INVENTORY_SLOTS + 1
-        i_To = .CurrentInventorySlots
-        
-        For i = i_From To i_To
+        For i = MAX_NORMAL_INVENTORY_SLOTS + 1 To .CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
 
             If ItemIndex > 0 Then
                 If ItemSeCae(ItemIndex) Then
-                    NuevaPos.X = 0
+                    NuevaPos.x = 0
                     NuevaPos.Y = 0
                     
                     'Creo MiObj
@@ -2196,8 +2190,8 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
                     MiObj.ObjIndex = ItemIndex
                     Tilelibre .Pos, NuevaPos, MiObj, True, True
 
-                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                    If NuevaPos.x <> 0 And NuevaPos.Y <> 0 Then
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.x, NuevaPos.Y)
 
                     End If
 

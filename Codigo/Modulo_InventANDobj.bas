@@ -49,24 +49,24 @@ Public Function TirarItemAlPiso(Pos As WorldPos, _
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim NuevaPos As WorldPos
 
-    NuevaPos.X = 0
+    NuevaPos.x = 0
     NuevaPos.Y = 0
     
     Tilelibre Pos, NuevaPos, obj, NotPirata, True
 
-    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-        Call MakeObj(obj, Pos.Map, NuevaPos.X, NuevaPos.Y)
+    If NuevaPos.x <> 0 And NuevaPos.Y <> 0 Then
+        Call MakeObj(obj, Pos.Map, NuevaPos.x, NuevaPos.Y)
 
     End If
 
     TirarItemAlPiso = NuevaPos
 
     Exit Function
-ErrHandler:
+errHandler:
 
 End Function
 
@@ -342,17 +342,17 @@ Sub CargarInvent(ByVal NpcIndex As Integer)
 
     'Vuelve a cargar el inventario del npc NpcIndex
     Dim LoopC   As Integer
-    Dim LoopC_To As Integer
+
     Dim ln      As String
+
     Dim npcfile As String
     
     npcfile = DatPath & "NPCs.dat"
     
     With Npclist(NpcIndex)
         .Invent.NroItems = val(GetVar(npcfile, "NPC" & .Numero, "NROITEMS"))
-        LoopC_To = .Invent.NroItems
         
-        For LoopC = 1 To LoopC_To
+        For LoopC = 1 To .Invent.NroItems
             ln = GetVar(npcfile, "NPC" & .Numero, "Obj" & LoopC)
             .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
             .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
@@ -369,7 +369,7 @@ Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos)
     'Autor: ZaMa
     'Last Modification: 13/02/2010
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     If Cantidad > 0 Then
 
@@ -402,7 +402,7 @@ Public Sub TirarOroNpc(ByVal Cantidad As Long, ByRef Pos As WorldPos)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en TirarOro. Error " & Err.Number & " : " & Err.description)
 
 End Sub

@@ -156,14 +156,13 @@ End Function
 
 Public Function SendInfoEncuesta(ByVal Userindex As Integer) As String
 
-    Dim i As Integer, iTo As Long
+    Dim i As Integer
 
     Call WriteConsoleMsg(Userindex, "CONSULTA POPULAR NUMERO " & pEncuestaActualNum, FontTypeNames.FONTTYPE_GUILD)
     Call WriteConsoleMsg(Userindex, pEncuestaActualTex, FontTypeNames.FONTTYPE_GUILD)
     Call WriteConsoleMsg(Userindex, " Opciones de voto: ", FontTypeNames.FONTTYPE_GUILDMSG)
-    
-    iTo = UBound(pOpciones)
-    For i = 1 To iTo
+
+    For i = 1 To UBound(pOpciones)
         Call WriteConsoleMsg(Userindex, "(Opcion " & i & "): " & GetVar(App.Path & ARCHIVOCONFIG, "ENCUESTA" & pEncuestaActualNum, "OPCION" & i), FontTypeNames.FONTTYPE_GUILDMSG)
     Next i
 
