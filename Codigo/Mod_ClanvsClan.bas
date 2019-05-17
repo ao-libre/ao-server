@@ -157,18 +157,21 @@ Private Sub EnviarMensajeCVC(ByVal to_Guild As Byte, ByRef send_Msg As String)
     With CVC_Info
 
         Dim j As Long
-
         Dim i As Long
-
+        
+        Dim Upper_UsUaRiOs As Long
+        Dim Upper_UsUaRiOs_Guild As Long
+        
         'a todo el cvc.
-
         If (to_Guild = 0) Then
 
             For j = 1 To 2
 
                 With .Guild(j)
-
-                    For i = 1 To UBound(.UsUaRiOs())
+                    
+                    Upper_UsUaRiOs = UBound(.UsUaRiOs())
+                    
+                    For i = 1 To Upper_UsUaRiOs
 
                         If .UsUaRiOs(i) <> -1 Then
                             If UserList(.UsUaRiOs(i)).ConnID <> -1 Then
@@ -189,12 +192,15 @@ Private Sub EnviarMensajeCVC(ByVal to_Guild As Byte, ByRef send_Msg As String)
         End If
 
         'a un solo clan
-
-        For j = 1 To UBound(.Guild(to_Guild).UsUaRiOs())
+        Upper_UsUaRiOs_Guild = UBound(.Guild(to_Guild).UsUaRiOs())
+        
+        For j = 1 To Upper_UsUaRiOs_Guild
 
             With .Guild(to_Guild)
-
-                For i = 1 To UBound(.UsUaRiOs())
+                
+                Upper_UsUaRiOs = UBound(.UsUaRiOs())
+                
+                For i = 1 To Upper_UsUaRiOs
 
                     If .UsUaRiOs(i) <> -1 Then
                         If UserList(.UsUaRiOs(i)).ConnID <> -1 Then
@@ -329,11 +335,13 @@ Private Sub EraseCVC()
     With CVC_Info
 
         Dim j As Long
-
         Dim i As Long
+        Dim Upper_UsUaRiOs_Guild As Long
 
         For j = 1 To 2
-            For i = 1 To UBound(.Guild(j).UsUaRiOs())
+            Upper_UsUaRiOs_Guild = UBound(.Guild(j).UsUaRiOs())
+            
+            For i = 1 To Upper_UsUaRiOs_Guild
                 .Guild(j).UsUaRiOs(i) = -1
 
             Next i
@@ -363,14 +371,12 @@ Private Sub GanaCVC(ByVal guildWinner As Byte, ByVal guildLooser As Byte)
     With CVC_Info
 
         Dim j      As Long
-
         Dim i      As Long
-
+        Dim Upper_UsUaRiOs As Long
         Dim startX As Byte
-
         Dim startY As Byte
 
-        startX = Ullathorpe.x
+        startX = Ullathorpe.X
         startY = Ullathorpe.Y
 
         Dim sMessage As String
@@ -378,7 +384,9 @@ Private Sub GanaCVC(ByVal guildWinner As Byte, ByVal guildLooser As Byte)
         sMessage = "CVC > Terminado."
 
         For i = 1 To 2
-            For j = 1 To UBound(.Guild(i).UsUaRiOs())
+            Upper_UsUaRiOs = UBound(.Guild(i).UsUaRiOs())
+            
+            For j = 1 To Upper_UsUaRiOs
 
                 With .Guild(i)
 
@@ -646,8 +654,11 @@ Private Function Get_Num_Dies(ByVal guild_Num As Byte) As Byte
     With CVC_Info
 
         Dim j As Long
-
-        For j = 1 To UBound(.Guild(guild_Num).UsUaRiOs())
+        Dim Upper_UsUaRiOs_Guild As Long
+        
+        Upper_UsUaRiOs_Guild = UBound(.Guild(guild_Num).UsUaRiOs())
+        
+        For j = 1 To Upper_UsUaRiOs_Guild
 
             With .Guild(guild_Num)
 

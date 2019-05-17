@@ -726,15 +726,11 @@ End Function
 Public Function RevisarElecciones() As Boolean
 
     Dim FechaSufragio As Date
-
     Dim Temps         As String
-
     Dim Ganador       As String
-
     Dim CantGanadores As Integer
-
     Dim list()        As String
-
+    Dim Upper_list    As Long
     Dim i             As Long
 
     RevisarElecciones = False
@@ -753,9 +749,9 @@ Public Function RevisarElecciones() As Boolean
                 Call SetGuildNews("*Empate en la votacion. " & Ganador & " con " & CantGanadores & " votos ganaron las elecciones del clan.")
             ElseIf CantGanadores = 1 Then
                 list = Me.GetMemberList()
+                Upper_list = UBound(list())
                 
-                For i = 0 To UBound(list())
-
+                For i = 0 To Upper_list
                     If Ganador = list(i) Then Exit For
                 Next i
                 

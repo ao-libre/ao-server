@@ -109,8 +109,8 @@ Public Function MiExperiencia(ByVal Userindex As Integer) As Long
 End Function
 
 Public Sub ObtenerExito(ByVal ExpGanada As Long, _
-                        ByVal mapa As Integer, _
-                        x As Integer, _
+                        ByVal Mapa As Integer, _
+                        X As Integer, _
                         Y As Integer)
 
     '***************************************************
@@ -139,8 +139,8 @@ Public Sub ObtenerExito(ByVal ExpGanada As Long, _
             ' Formula: Exp* (Nivel ^ ExponenteNivelParty) / sumadeNivelesElevados
             expThisUser = CDbl(ExpGanada * (UserList(p_members(i).Userindex).Stats.ELV ^ ExponenteNivelParty) / p_SumaNivelesElevados)
         
-            If mapa = UserList(UI).Pos.Map And UserList(UI).flags.Muerto = 0 Then
-                If Distance(UserList(UI).Pos.x, UserList(UI).Pos.Y, x, Y) <= PARTY_MAXDISTANCIA Then
+            If Mapa = UserList(UI).Pos.Map And UserList(UI).flags.Muerto = 0 Then
+                If Distance(UserList(UI).Pos.X, UserList(UI).Pos.Y, X, Y) <= PARTY_MAXDISTANCIA Then
                     p_members(i).Experiencia = p_members(i).Experiencia + expThisUser
 
                     If p_members(i).Experiencia < 0 Then

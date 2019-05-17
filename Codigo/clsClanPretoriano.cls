@@ -166,8 +166,8 @@ Private ClanIndex     As Integer
 ' Contiene los index de los miembros del clan.
 Private Pretorianos() As tPretorianData
 
-Public Function SpawnClan(ByVal mapa As Integer, _
-                          ByVal x As Integer, _
+Public Function SpawnClan(ByVal Mapa As Integer, _
+                          ByVal X As Integer, _
                           ByVal Y As Integer, _
                           ByVal PretoClanIndex As Integer, _
                           Optional ByVal Respawning As Boolean = False) As Boolean
@@ -179,15 +179,15 @@ Public Function SpawnClan(ByVal mapa As Integer, _
     '22/06/2006: (Nacho) - Seteamos cuantos NPCs creamos
     '21/09/2010: ZaMa - Reescribi la funcion, ahora se le pasa las coordenadas de respawn
     '********************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nPos       As WorldPos
 
     Dim PretoIndex As Integer
     
     ' Initial pos
-    CenterPos.Map = mapa
-    CenterPos.x = x
+    CenterPos.Map = Mapa
+    CenterPos.X = X
     CenterPos.Y = Y
     
     ReDim Pretorianos(1 To NRO_PRETORIANOS) As tPretorianData
@@ -198,7 +198,7 @@ Public Function SpawnClan(ByVal mapa As Integer, _
     If Not Respawning Then
 
         ' The clan only respawns on pretorian map
-        If mapa = MAPA_PRETORIANO Then
+        If Mapa = MAPA_PRETORIANO Then
             RespawnClan = True
             Call InitializePretoriansVars
             
@@ -225,11 +225,11 @@ Public Function SpawnClan(ByVal mapa As Integer, _
     
     ' Spawn 2 Healers
     PretoIndex = PretoIndex + 1
-    nPos.x = nPos.x + 3
+    nPos.X = nPos.X + 3
     Call SpawnPretorian(nPos, ePretorianAI.Healer, PretoIndex)
     
     PretoIndex = PretoIndex + 1
-    nPos.x = nPos.x - 6
+    nPos.X = nPos.X - 6
     Call SpawnPretorian(nPos, ePretorianAI.Healer, PretoIndex)
     
     ' Spawn 3 Sword Masters
@@ -238,22 +238,22 @@ Public Function SpawnClan(ByVal mapa As Integer, _
     Call SpawnPretorian(nPos, ePretorianAI.SwordMaster, PretoIndex)
     
     PretoIndex = PretoIndex + 1
-    nPos.x = nPos.x + 3
+    nPos.X = nPos.X + 3
     Call SpawnPretorian(nPos, ePretorianAI.SwordMaster, PretoIndex)
     
     PretoIndex = PretoIndex + 1
-    nPos.x = nPos.x + 3
+    nPos.X = nPos.X + 3
     Call SpawnPretorian(nPos, ePretorianAI.SwordMaster, PretoIndex)
     
     ' Sapwn 1 Shooter
     PretoIndex = PretoIndex + 1
     nPos.Y = nPos.Y - 6
-    nPos.x = nPos.x - 1
+    nPos.X = nPos.X - 1
     Call SpawnPretorian(nPos, ePretorianAI.Shooter, PretoIndex)
     
     ' Spawn 1 SpellCaster
     PretoIndex = PretoIndex + 1
-    nPos.x = nPos.x - 4
+    nPos.X = nPos.X - 4
     Call SpawnPretorian(nPos, ePretorianAI.SpellCaster, PretoIndex)
     
     ' Spawn 1 Thief
@@ -271,7 +271,7 @@ Public Function SpawnClan(ByVal mapa As Integer, _
 
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en CrearClanPretoriano. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -290,7 +290,7 @@ Private Function IsValidSpawnArea() As Boolean
 
     Dim LoopY As Long
     
-    For loopX = CenterPos.x - 6 To CenterPos.x + 6
+    For loopX = CenterPos.X - 6 To CenterPos.X + 6
         For LoopY = CenterPos.Y - 6 To CenterPos.Y + 6
             
             If Not InMapBounds(CenterPos.Map, loopX, LoopY) Then Exit Function
@@ -312,11 +312,11 @@ Private Sub InitializePretoriansVars()
     '********************************************************
 
     LeftSpawnPos.Map = MAPA_PRETORIANO
-    LeftSpawnPos.x = 35
+    LeftSpawnPos.X = 35
     LeftSpawnPos.Y = 25
     
     RightSpawnPos.Map = MAPA_PRETORIANO
-    RightSpawnPos.x = 67
+    RightSpawnPos.X = 67
     RightSpawnPos.Y = 25
     
 End Sub
@@ -355,19 +355,19 @@ Private Sub SpawnPretorian(ByRef SpawnPos As WorldPos, _
         ' Check if there's any npc in the king's position
         Dim OtherNpcIndex As Integer
 
-        OtherNpcIndex = MapData(SpawnPos.Map, SpawnPos.x, SpawnPos.Y).NpcIndex
+        OtherNpcIndex = MapData(SpawnPos.Map, SpawnPos.X, SpawnPos.Y).NpcIndex
         
         ' Found one
         If OtherNpcIndex <> 0 Then
             ' Move it to the closest legal position
             Call ClosestLegalPos(SpawnPos, FinalPos)
 
-            If FinalPos.x <> 0 And FinalPos.Y <> 0 Then
-                Call SendData(SendTarget.ToNPCArea, OtherNpcIndex, PrepareMessageCharacterMove(Npclist(OtherNpcIndex).Char.CharIndex, FinalPos.x, FinalPos.Y))
+            If FinalPos.X <> 0 And FinalPos.Y <> 0 Then
+                Call SendData(SendTarget.ToNPCArea, OtherNpcIndex, PrepareMessageCharacterMove(Npclist(OtherNpcIndex).Char.CharIndex, FinalPos.X, FinalPos.Y))
                 ' Update map and npc pos
-                MapData(SpawnPos.Map, SpawnPos.x, SpawnPos.Y).NpcIndex = 0
+                MapData(SpawnPos.Map, SpawnPos.X, SpawnPos.Y).NpcIndex = 0
                 Npclist(OtherNpcIndex).Pos = FinalPos
-                MapData(FinalPos.Map, FinalPos.x, FinalPos.Y).NpcIndex = OtherNpcIndex
+                MapData(FinalPos.Map, FinalPos.X, FinalPos.Y).NpcIndex = OtherNpcIndex
             
                 ' King's position is now empty
                 FinalPos = SpawnPos
@@ -549,7 +549,7 @@ Public Sub AI_King(ByVal NpcIndex As Integer)
     'Author: ZaMa
     'Last Modification: 19/09/2010
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
 
@@ -561,7 +561,7 @@ Public Sub AI_King(ByVal NpcIndex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en AI_King. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -578,7 +578,7 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
     '3) If a user tries to run, then blind and make him stupid
     '4) if no one is near, then heal himself.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
 
@@ -622,7 +622,7 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
         ' King's alone
     Else
         
-        Dim mapa               As Integer
+        Dim Mapa               As Integer
 
         Dim NPCPosX            As Integer
 
@@ -637,8 +637,8 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
         Dim Distance           As Integer
         
         With Npclist(NpcIndex).Pos
-            mapa = .Map
-            NPCPosX = .x
+            Mapa = .Map
+            NPCPosX = .X
             NPCPosY = .Y
 
         End With
@@ -654,9 +654,9 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
 
         If CounterStep = 1 Then
             CounterStart = 1
-            CounterEnd = ModAreas.ConnGroups(mapa).CountEntrys
+            CounterEnd = ModAreas.ConnGroups(Mapa).CountEntrys
         Else
-            CounterStart = ModAreas.ConnGroups(mapa).CountEntrys
+            CounterStart = ModAreas.ConnGroups(Mapa).CountEntrys
             CounterEnd = 1
             CounterStep = -1
 
@@ -665,7 +665,7 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
         ' Search for the best user target
         For Counter = CounterStart To CounterEnd Step CounterStep
         
-            Userindex = ModAreas.ConnGroups(mapa).UserEntrys(Counter)
+            Userindex = ModAreas.ConnGroups(Mapa).UserEntrys(Counter)
             
             'Is it in it's range of vision??
             If InVisionRange(Userindex, NPCPosX, NPCPosY) Then
@@ -722,7 +722,7 @@ Private Function KingBestTarget(ByVal NpcIndex As Integer, _
 
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en KingBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -736,7 +736,7 @@ Private Sub KingPerformAction(ByVal NpcIndex As Integer, _
     'Last Modification: 05/07/2010
     'Performs the required action.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim IdleTime As Long
 
@@ -760,7 +760,7 @@ Private Sub KingPerformAction(ByVal NpcIndex As Integer, _
             Case eKingAction.ChaseTarget, eKingAction.MassiveAttack
                 
                 If Accion = eKingAction.ChaseTarget Then
-                    Call GreedyWalkTo(NpcIndex, UserList(BestTarget).Pos.Map, UserList(BestTarget).Pos.x, UserList(BestTarget).Pos.Y)
+                    Call GreedyWalkTo(NpcIndex, UserList(BestTarget).Pos.Map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
                 Else
                     Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eKingSpells.StupidityAttack), True, True)
                     Call NpcLanzaSpellSobreUser(NpcIndex, BestTarget, .Spells(eKingSpells.BlindAttack), True, True)
@@ -795,7 +795,7 @@ Private Sub KingPerformAction(ByVal NpcIndex As Integer, _
     Debug.Print KingIdleTime
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en KingPerformAction. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -807,7 +807,7 @@ Private Sub KingMeleeAttack(NpcIndex)
     'Last Modification: 19/09/2010
     'King performes a melee attack ignoring attack intervals
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim headingloop As Byte
 
@@ -825,9 +825,9 @@ Private Sub KingMeleeAttack(NpcIndex)
             Call HeadtoPos(headingloop, nPos)
             
             ' In map Limits?
-            If InMapBounds(nPos.Map, nPos.x, nPos.Y) Then
+            If InMapBounds(nPos.Map, nPos.X, nPos.Y) Then
             
-                Userindex = MapData(nPos.Map, nPos.x, nPos.Y).Userindex
+                Userindex = MapData(nPos.Map, nPos.X, nPos.Y).Userindex
 
                 If Userindex > 0 Then
                     If UserAtacable(Userindex, False) Then
@@ -848,7 +848,7 @@ Private Sub KingMeleeAttack(NpcIndex)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en KingMeleeAttack. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -867,7 +867,7 @@ Private Sub KingReviveAlly(ByVal NpcIndex As Integer)
     With Npclist(NpcIndex)
 
         ' Has to be in the center to revive
-        If .Pos.x = CenterPos.x Then
+        If .Pos.X = CenterPos.X Then
             If .Pos.Y = CenterPos.Y Then
                 
                 ' Any ally dead?
@@ -875,7 +875,7 @@ Private Sub KingReviveAlly(ByVal NpcIndex As Integer)
 
                 If AllyIndex <> 0 Then
                     nPos = CenterPos
-                    nPos.x = nPos.x + 1
+                    nPos.X = nPos.X + 1
                     Call SpawnPretorian(nPos, Pretorianos(AllyIndex).NPCAI, AllyIndex)
                     ClanMembersAlive = ClanMembersAlive + 1
 
@@ -898,7 +898,7 @@ Public Sub AI_Healer(ByVal NpcIndex As Integer)
     'Author: Unkown
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
 
@@ -958,7 +958,7 @@ Public Sub AI_Healer(ByVal NpcIndex As Integer)
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en AI_Healer. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -974,7 +974,7 @@ Private Function HealerBestTarget(ByVal NpcIndex As Integer, _
     '3) party healing if no threats
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex           As Integer
 
@@ -990,7 +990,7 @@ Private Function HealerBestTarget(ByVal NpcIndex As Integer, _
 
     Dim NpcY                As Integer
     
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
     
     Dim CounterStart As Long
@@ -1065,7 +1065,7 @@ Private Function HealerBestTarget(ByVal NpcIndex As Integer, _
         
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en HealerBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -1107,7 +1107,7 @@ Private Sub HealerPerformAction(ByVal NpcIndex As Integer, _
                 CanMove = True
                 
             Case eHealerAction.RescueFarAlly
-                Call GreedyWalkTo(NpcIndex, .Pos.Map, Npclist(BestTarget).Pos.x, Npclist(BestTarget).Pos.Y)
+                Call GreedyWalkTo(NpcIndex, .Pos.Map, Npclist(BestTarget).Pos.X, Npclist(BestTarget).Pos.Y)
                 CanMove = False
                  
             Case Else
@@ -1153,7 +1153,7 @@ Public Sub AI_SpellCaster(ByVal NpcIndex As Integer)
     'Author: ZaMa
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     Dim BestTarget As Integer
 
@@ -1176,7 +1176,7 @@ Public Sub AI_SpellCaster(ByVal NpcIndex As Integer)
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en AI_SpellCaster. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1231,7 +1231,7 @@ Private Function SpellCasterBestTarget(ByVal NpcIndex As Integer, _
     '2) A wizard's mission is background spellcasting attack
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex           As Integer
 
@@ -1245,7 +1245,7 @@ Private Function SpellCasterBestTarget(ByVal NpcIndex As Integer, _
 
     Dim BestTargetInvisible As Boolean
         
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
     
     Dim CounterStart As Long
@@ -1328,7 +1328,7 @@ Private Function SpellCasterBestTarget(ByVal NpcIndex As Integer, _
     
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en SpellCasterBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -1392,7 +1392,7 @@ Private Sub SpellCasterDestroyWand(ByVal NpcIndex As Integer, ByVal SpellIndex A
     'Author: Unkown
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     ''sonidos: 30 y 32, y no los cambien sino termina siendo muy chistoso...
     ''Para el FX utiliza el del hechizos(SpellIndex)
@@ -1403,27 +1403,27 @@ Private Sub SpellCasterDestroyWand(ByVal NpcIndex As Integer, ByVal SpellIndex A
 
             Case 5
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Rahma", .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
 
             Case 4
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("vortax", .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
 
             Case 3
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Zill", .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
 
             Case 2
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("yaka E'nta", .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
 
             Case 1
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead("Korata!!", .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
 
             Case 0
                 Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageChatOverHead(vbNullString, .Char.CharIndex, vbGreen))
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(SONIDO_DRAGON_VIVO, .Pos.X, .Pos.Y))
                 
                 Call DealWandDamage(NpcIndex, .Spells(SpellIndex))
 
@@ -1433,7 +1433,7 @@ Private Sub SpellCasterDestroyWand(ByVal NpcIndex As Integer, ByVal SpellIndex A
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en SpellCasterDestroyWand. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1446,26 +1446,23 @@ Private Sub DealWandDamage(ByVal NpcIndex As Integer, ByVal SpellIndex As Intege
     'Description: Deals massive wand damage.
     '17/06/2011: Amraphen - User's hp is updated once he gets hit by wand damage.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex As Integer
-
     Dim Counter   As Long
-    
+    Dim CounterTo As Long
     Dim Distancia As Integer
-
     Dim Danio     As Integer
-    
-    Dim x         As Integer
-
+    Dim X         As Integer
     Dim Y         As Integer
     
     With Npclist(NpcIndex)
         
-        x = .Pos.x
+        X = .Pos.X
         Y = .Pos.Y
+        CounterTo = ModAreas.ConnGroups(CenterPos.Map).CountEntrys
         
-        For Counter = 1 To ModAreas.ConnGroups(CenterPos.Map).CountEntrys
+        For Counter = 1 To CounterTo
             
             Userindex = ModAreas.ConnGroups(CenterPos.Map).UserEntrys(Counter)
             
@@ -1475,13 +1472,13 @@ Private Sub DealWandDamage(ByVal NpcIndex As Integer, ByVal SpellIndex As Intege
                     
                     If UserAtacable(Userindex, False, False) Then
                         
-                        Distancia = UserDistance(Userindex, x, Y)
+                        Distancia = UserDistance(Userindex, X, Y)
                         Danio = Abs(Int(880 / (Distancia ^ (3 / 7))))
                         
                         .Stats.MinHp = .Stats.MinHp - Danio
                         
                         Call WriteConsoleMsg(Userindex, Npclist(NpcIndex).Name & " te ha quitado " & Danio & " puntos de vida al romper su vara.", FontTypeNames.FONTTYPE_FIGHT)
-                        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, .Pos.x, .Pos.Y))
+                        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, .Pos.X, .Pos.Y))
                         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
                         
                         If .Stats.MinHp < 1 Then
@@ -1508,7 +1505,7 @@ Private Sub DealWandDamage(ByVal NpcIndex As Integer, ByVal SpellIndex As Intege
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en DealWandDamage. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1522,7 +1519,7 @@ Private Sub DealWandDamageToPets(ByVal NpcIndex As Integer, _
     'Last Modification: 26/09/2010
     'Deals massive wand damage to user pets.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim PetIndex   As Integer
 
@@ -1536,7 +1533,7 @@ Private Sub DealWandDamageToPets(ByVal NpcIndex As Integer, _
 
     Dim NpcY       As Integer
     
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
     
     For PetCounter = 1 To MAXMASCOTAS
@@ -1552,7 +1549,7 @@ Private Sub DealWandDamageToPets(ByVal NpcIndex As Integer, _
 
                 .Stats.MinHp = .Stats.MinHp - Danio
                 
-                Call SendData(SendTarget.ToNPCArea, PetIndex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToNPCArea, PetIndex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, .Pos.X, .Pos.Y))
                 Call SendData(SendTarget.ToNPCArea, PetIndex, PrepareMessageCreateFX(.Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
                 
                 If .Stats.MinHp < 1 Then
@@ -1569,7 +1566,7 @@ Private Sub DealWandDamageToPets(ByVal NpcIndex As Integer, _
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en DealWandDamageToPets. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1580,7 +1577,7 @@ Public Sub AI_SwordMaster(ByVal NpcIndex As Integer)
     'Author: ZaMa
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
     
@@ -1595,7 +1592,7 @@ Public Sub AI_SwordMaster(ByVal NpcIndex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en AI_SwordMaster. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1608,7 +1605,7 @@ Private Function SwordMasterBestTarget(ByVal NpcIndex As Integer) As Integer
     '1) The nearest enemy will be attacked.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex          As Integer
 
@@ -1624,7 +1621,7 @@ Private Function SwordMasterBestTarget(ByVal NpcIndex As Integer) As Integer
 
     Dim Distance           As Integer
     
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
     
     Dim CounterStart As Long
@@ -1688,7 +1685,7 @@ Private Function SwordMasterBestTarget(ByVal NpcIndex As Integer) As Integer
     
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en SwordMasterBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -1702,7 +1699,7 @@ Private Sub SwordMasterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integ
     'sale del area de combate (tipica forma de separar un clan)
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With Npclist(NpcIndex)
     
@@ -1723,7 +1720,7 @@ Private Sub SwordMasterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integ
         If BestTarget > 0 Then
             
             With UserList(BestTarget)
-                Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.x, .Pos.Y)
+                Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.X, .Pos.Y)
 
             End With
             
@@ -1737,7 +1734,7 @@ Private Sub SwordMasterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integ
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en SwordMasterMove. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1749,7 +1746,7 @@ Private Sub SwordMasterAttack(ByVal NpcIndex As Integer)
     'Searchs and Attacks the sorrounding target
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim headingloop As Byte
 
@@ -1765,7 +1762,7 @@ Private Sub SwordMasterAttack(ByVal NpcIndex As Integer)
             NpcPos = .Pos
             Call HeadtoPos(headingloop, NpcPos)
             
-            Userindex = MapData(NpcPos.Map, NpcPos.x, NpcPos.Y).Userindex
+            Userindex = MapData(NpcPos.Map, NpcPos.X, NpcPos.Y).Userindex
             
             If Userindex > 0 Then
                 If UserAtacable(Userindex, False) Then
@@ -1785,7 +1782,7 @@ Private Sub SwordMasterAttack(ByVal NpcIndex As Integer)
 
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en SwordMasterAttack. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1813,7 +1810,7 @@ Public Sub AI_Shooter(ByVal NpcIndex As Integer)
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en AI_Shooter. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -1828,7 +1825,7 @@ Private Function ShooterBestTarget(ByVal NpcIndex As Integer) As Integer
     '2) in any other case, our nearest enemy will be attacked
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex          As Integer
 
@@ -1844,7 +1841,7 @@ Private Function ShooterBestTarget(ByVal NpcIndex As Integer) As Integer
 
     Dim Distance           As Integer
         
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
         
     Dim CounterStart As Long
@@ -1911,7 +1908,7 @@ Private Function ShooterBestTarget(ByVal NpcIndex As Integer) As Integer
         
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en ShooterBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -1926,7 +1923,7 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
     'clerigos o rey. A menos q este paralizado, claro
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With Npclist(NpcIndex)
     
@@ -1944,7 +1941,7 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
         End If
         
         ' Don't go too far from center
-        If Abs(CenterPos.x - .Pos.x) > 4 Or Abs(CenterPos.Y - .Pos.Y) > 4 Then
+        If Abs(CenterPos.X - .Pos.X) > 4 Or Abs(CenterPos.Y - .Pos.Y) > 4 Then
             Call ReturnToCenter(NpcIndex)
             Exit Sub
 
@@ -1953,27 +1950,29 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
         ' If has attacked someone, then go close to him
         If BestTarget > 0 Then
             
-            Call GreedyWalkTo(NpcIndex, CenterPos.Map, CenterPos.x + ((UserList(BestTarget).Pos.x - CenterPos.x) / 2), CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
+            Call GreedyWalkTo(NpcIndex, CenterPos.Map, CenterPos.X + ((UserList(BestTarget).Pos.X - CenterPos.X) / 2), CenterPos.Y + ((UserList(BestTarget).Pos.Y - CenterPos.Y) / 2))
             Exit Sub
         Else
         
             ' Search for aproaching enemies
             Dim Counter   As Long
-
+            Dim CounterTo As Long
             Dim Userindex As Integer
             
-            For Counter = 1 To ModAreas.ConnGroups(CenterPos.Map).CountEntrys
+            CounterTo = ModAreas.ConnGroups(CenterPos.Map).CountEntrys
+            
+            For Counter = 1 To CounterTo
             
                 Userindex = ModAreas.ConnGroups(CenterPos.Map).UserEntrys(Counter)
                 
                 'Is it in extended range of vision from center position??
-                If InVisionRange(Userindex, CenterPos.x, CenterPos.Y, True) Then
+                If InVisionRange(Userindex, CenterPos.X, CenterPos.Y, True) Then
                     
                     ' Can be atacked?
                     If UserAtacable(Userindex) Then
                         
                         With UserList(Userindex)
-                            Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.x, .Pos.Y)
+                            Call GreedyWalkTo(NpcIndex, CenterPos.Map, .Pos.X, .Pos.Y)
 
                         End With
                         
@@ -1994,7 +1993,7 @@ Private Sub ShooterMove(ByVal NpcIndex As Integer, ByVal BestTarget As Integer)
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     LogError ("Error en ShooterMove. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2005,7 +2004,7 @@ Private Sub AI_Thief(ByVal NpcIndex As Integer)
     'Author: ZaMa
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim BestTarget As Integer
 
@@ -2019,7 +2018,7 @@ Private Sub AI_Thief(ByVal NpcIndex As Integer)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en AI_Thief. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2034,7 +2033,7 @@ Private Function ThiefBestTarget(ByVal NpcIndex As Integer, _
     '2) Targets the nearer user.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Userindex          As Integer
 
@@ -2050,7 +2049,7 @@ Private Function ThiefBestTarget(ByVal NpcIndex As Integer, _
 
     Dim Distance           As Integer
     
-    NpcX = Npclist(NpcIndex).Pos.x
+    NpcX = Npclist(NpcIndex).Pos.X
     NpcY = Npclist(NpcIndex).Pos.Y
     
     Dim CounterStart As Long
@@ -2139,7 +2138,7 @@ Private Function ThiefBestTarget(ByVal NpcIndex As Integer, _
     
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en ThiefBestTarget. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -2153,7 +2152,7 @@ Private Sub ThiefPerfomAction(ByVal NpcIndex As Integer, _
     'Last Modification: 28/10/2010
     '28/10/2010: ZaMa - Now thief doesn't steal/snatch admins.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     Dim WeaponEqpSlot   As Byte
 
@@ -2246,7 +2245,7 @@ Private Sub ThiefPerfomAction(ByVal NpcIndex As Integer, _
                 End If
                 
                 ' Get closer to target
-                Call GreedyWalkTo(NpcIndex, CenterPos.Map, UserList(BestTarget).Pos.x, UserList(BestTarget).Pos.Y)
+                Call GreedyWalkTo(NpcIndex, CenterPos.Map, UserList(BestTarget).Pos.X, UserList(BestTarget).Pos.Y)
                 
             Case eThiefAction.None
                 
@@ -2261,7 +2260,7 @@ Private Sub ThiefPerfomAction(ByVal NpcIndex As Integer, _
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en ThiefPerfomAction. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2275,7 +2274,7 @@ Private Function SnatchItem(ByVal NpcIndex As Integer, _
     'Last Modification: 25/09/2010
     'Snatchs slot items from user. No validations are made bacause it's either weapon or munition.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim DropObj As obj
 
@@ -2289,9 +2288,9 @@ Private Function SnatchItem(ByVal NpcIndex As Integer, _
         Call Tilelibre(.Pos, nPos, DropObj, False, True)
         
         ' Found any?
-        If nPos.x <> 0 And nPos.Y <> 0 Then
+        If nPos.X <> 0 And nPos.Y <> 0 Then
             ' Drop it
-            Call MakeObj(DropObj, nPos.Map, nPos.x, nPos.Y)
+            Call MakeObj(DropObj, nPos.Map, nPos.X, nPos.Y)
             Call QuitarUserInvItem(targetIndex, Slot, DropObj.Amount)
             Call UpdateUserInv(False, targetIndex, Slot)
             
@@ -2304,7 +2303,7 @@ Private Function SnatchItem(ByVal NpcIndex As Integer, _
     
     Exit Function
     
-errHandler:
+ErrHandler:
     LogError ("Error en SnatchItem. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -2401,7 +2400,7 @@ Private Function TargetClose(ByRef Pos As WorldPos) As Boolean
         nPos = Pos
         Call HeadtoPos(headingloop, nPos)
         
-        Userindex = MapData(nPos.Map, nPos.x, nPos.Y).Userindex
+        Userindex = MapData(nPos.Map, nPos.X, nPos.Y).Userindex
         
         If Userindex <> 0 Then
             If UserAtacable(Userindex) Then
@@ -2441,7 +2440,7 @@ Private Function CheckNearUserPets(ByVal NpcIndex As Integer, _
                 With Npclist(PetIndex)
                     
                     ' If it is visible for the Pretorian
-                    If InVisionRangeNpc(NpcIndex, .Pos.x, .Pos.Y) Then
+                    If InVisionRangeNpc(NpcIndex, .Pos.X, .Pos.Y) Then
                         
                         ' If not paralized then it's a suitable target
                         If .flags.Paralizado = 0 Then
@@ -2468,7 +2467,7 @@ Private Function EsClaseMagica(ByVal Userindex As Integer) As Boolean
     'Author: Unkown
     'Last Modification: -
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With UserList(Userindex)
         EsClaseMagica = .clase = eClass.Mage Or .clase = eClass.Cleric Or .clase = eClass.Druid Or .clase = eClass.Bard
@@ -2477,7 +2476,7 @@ Private Function EsClaseMagica(ByVal Userindex As Integer) As Boolean
     
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en EsClaseMagica. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -2500,7 +2499,7 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, _
     'Rapsodius - Changed Mod by And for speed
     '26/09/2010: ZaMa - Now make movements as normal npcs, which allows to kick caspers and invisible admins.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim NpcX      As Integer
 
@@ -2512,7 +2511,7 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, _
 
         If .Map <> TargetMap Then Exit Sub
         
-        NpcX = .x
+        NpcX = .X
         NpcY = .Y
 
     End With
@@ -2732,7 +2731,7 @@ Private Sub GreedyWalkTo(ByVal NpcIndex As Integer, _
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en GreedyWalkTo. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
@@ -2765,7 +2764,7 @@ Private Sub ReturnToCenter(ByVal NpcIndex As Integer)
     'Returns to the center, where the king is.
     '***************************************************
     
-    Call GreedyWalkTo(NpcIndex, CenterPos.Map, CenterPos.x, CenterPos.Y)
+    Call GreedyWalkTo(NpcIndex, CenterPos.Map, CenterPos.X, CenterPos.Y)
     
 End Sub
 
@@ -2778,11 +2777,11 @@ Private Function FarFromTeam(ByVal NpcIndex) As Boolean
     
     If Npclist(NpcIndex).Pos.Map <> CenterPos.Map Then Exit Function
     
-    FarFromTeam = (Abs(Npclist(NpcIndex).Pos.Y - CenterPos.Y) > MAX_DISTANCE) Or (Abs(Npclist(NpcIndex).Pos.x - CenterPos.x) > MAX_DISTANCE)
+    FarFromTeam = (Abs(Npclist(NpcIndex).Pos.Y - CenterPos.Y) > MAX_DISTANCE) Or (Abs(Npclist(NpcIndex).Pos.X - CenterPos.X) > MAX_DISTANCE)
     
     Exit Function
 
-errHandler:
+ErrHandler:
     LogError ("Error en FarFromTeam. Error: " & Err.Number & " - " & Err.description)
 
 End Function
@@ -2795,21 +2794,21 @@ Private Function UserReachable(ByVal NpcIndex As Integer, _
     'Last Modification: 19/09/2010
     'Ignores users who are too far in order to avoid being separated from the rest of the team.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
         
     If Npclist(NpcIndex).Pos.Map <> CenterPos.Map Then Exit Function
 
-    UserReachable = (Abs(UserList(Userindex).Pos.x - CenterPos.x) < MAX_DISTANCE) And (Abs(UserList(Userindex).Pos.Y - CenterPos.Y) < MAX_DISTANCE)
+    UserReachable = (Abs(UserList(Userindex).Pos.X - CenterPos.X) < MAX_DISTANCE) And (Abs(UserList(Userindex).Pos.Y - CenterPos.Y) < MAX_DISTANCE)
     
     Exit Function
     
-errHandler:
+ErrHandler:
     LogError ("Error en UserReachable. Error: " & Err.Number & " - " & Err.description)
 
 End Function
 
 Private Function InVisionRange(ByVal Userindex As Integer, _
-                               ByVal x As Integer, _
+                               ByVal X As Integer, _
                                ByVal Y As Integer, _
                                Optional ByVal ExtendedRange As Boolean = False) As Boolean
     '***************************************************
@@ -2823,14 +2822,14 @@ Private Function InVisionRange(ByVal Userindex As Integer, _
     Rango = val(IIf(ExtendedRange, 2, 1))
     
     With UserList(Userindex)
-        InVisionRange = Abs(.Pos.x - x) <= RANGO_VISION_X * Rango And Abs(.Pos.Y - Y) <= RANGO_VISION_Y * Rango
+        InVisionRange = Abs(.Pos.X - X) <= RANGO_VISION_X * Rango And Abs(.Pos.Y - Y) <= RANGO_VISION_Y * Rango
 
     End With
     
 End Function
 
 Private Function InVisionRangeNpc(ByVal NpcIndex As Integer, _
-                                  ByVal x As Integer, _
+                                  ByVal X As Integer, _
                                   ByVal Y As Integer, _
                                   Optional ByVal ExtendedRange As Boolean = False) As Boolean
     '***************************************************
@@ -2844,7 +2843,7 @@ Private Function InVisionRangeNpc(ByVal NpcIndex As Integer, _
     Rango = val(IIf(ExtendedRange, 2, 1))
 
     With Npclist(NpcIndex)
-        InVisionRangeNpc = Abs(.Pos.x - x) <= RANGO_VISION_X * Rango And Abs(.Pos.Y - Y) <= RANGO_VISION_Y * Rango
+        InVisionRangeNpc = Abs(.Pos.X - X) <= RANGO_VISION_X * Rango And Abs(.Pos.Y - Y) <= RANGO_VISION_Y * Rango
 
     End With
     
@@ -2878,7 +2877,7 @@ Private Function UserAtacable(ByVal Userindex As Integer, _
 End Function
 
 Private Function UserDistance(ByVal Userindex As Integer, _
-                              ByVal x As Integer, _
+                              ByVal X As Integer, _
                               ByVal Y As Integer) As Integer
     '***************************************************
     'Author: ZaMa
@@ -2887,14 +2886,14 @@ Private Function UserDistance(ByVal Userindex As Integer, _
     '***************************************************
 
     With UserList(Userindex)
-        UserDistance = Abs(x - .Pos.x) + Abs(Y - .Pos.Y)
+        UserDistance = Abs(X - .Pos.X) + Abs(Y - .Pos.Y)
 
     End With
     
 End Function
 
 Private Function NpcDistance(ByVal NpcIndex As Integer, _
-                             ByVal x As Integer, _
+                             ByVal X As Integer, _
                              ByVal Y As Integer) As Integer
     '***************************************************
     'Author: ZaMa
@@ -2903,7 +2902,7 @@ Private Function NpcDistance(ByVal NpcIndex As Integer, _
     '***************************************************
 
     With Npclist(NpcIndex)
-        NpcDistance = Abs(x - .Pos.x) + Abs(Y - .Pos.Y)
+        NpcDistance = Abs(X - .Pos.X) + Abs(Y - .Pos.Y)
 
     End With
     
@@ -2934,7 +2933,7 @@ Public Sub MuerePretoriano(ByVal NpcIndex As Integer)
                     Dim NewSpawnPos As WorldPos
                 
                     ' Switch respawn place (alternate between two places)
-                    If CenterPos.x = LeftSpawnPos.x Then
+                    If CenterPos.X = LeftSpawnPos.X Then
                         NewSpawnPos = RightSpawnPos
                     Else
                         NewSpawnPos = LeftSpawnPos
@@ -2942,7 +2941,7 @@ Public Sub MuerePretoriano(ByVal NpcIndex As Integer)
                     End If
                     
                     ' Spawn it
-                    Call SpawnClan(NewSpawnPos.Map, NewSpawnPos.x, NewSpawnPos.Y, ClanIndex, True)
+                    Call SpawnClan(NewSpawnPos.Map, NewSpawnPos.X, NewSpawnPos.Y, ClanIndex, True)
                 Else
                     ClanActive = False
 
@@ -2976,7 +2975,7 @@ Private Function AllyParalyzed(ByVal NpcIndex As Integer, _
 
         If AllyIndex <> 0 Then
             If Npclist(AllyIndex).flags.Paralizado = 1 Then
-                If InVisionRangeNpc(AllyIndex, Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.Y, ExtendedRange) Then
+                If InVisionRangeNpc(AllyIndex, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y, ExtendedRange) Then
                     AllyParalyzed = AllyIndex
                     Exit Function
 
@@ -3010,7 +3009,7 @@ Private Function AllyInjured(ByVal NpcIndex As Integer) As Integer
             With Npclist(AllyIndex)
 
                 If .Stats.MinHp < .Stats.MaxHp Then
-                    If InVisionRangeNpc(NpcIndex, .Pos.x, .Pos.Y, False) Then
+                    If InVisionRangeNpc(NpcIndex, .Pos.X, .Pos.Y, False) Then
                         AllyInjured = AllyIndex
                         Exit Function
 
@@ -3043,7 +3042,7 @@ Private Function AllyPoisoned(ByVal NpcIndex As Integer) As Integer
 
         If AllyIndex <> 0 Then
             If Npclist(AllyIndex).flags.Envenenado = 1 Then
-                If InVisionRangeNpc(AllyIndex, Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.Y) Then
+                If InVisionRangeNpc(AllyIndex, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y) Then
                     AllyPoisoned = AllyIndex
                     Exit Function
 

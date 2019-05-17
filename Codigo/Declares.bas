@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, x, Y, body, clase, race, Email, obj, Length As Variant
+    Dim Map, X, Y, body, clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -256,10 +256,6 @@ Public Const FLAUTAELFICA            As Integer = 1050
 
 Public Const APOCALIPSIS_SPELL_INDEX As Integer = 25
 
-Public Const DESCARGA_SPELL_INDEX    As Integer = 23
-
-Public Const SLOTS_POR_FILA          As Byte = 5
-
 Public Const PROB_ACUCHILLAR         As Byte = 20
 
 Public Const DANO_ACUCHILLAR         As Single = 0.2
@@ -317,17 +313,9 @@ Public Enum eTrigger6
 End Enum
 
 'TODO : Reemplazar por un enum
-Public Const Bosque   As String = "BOSQUE"
-
-Public Const Nieve    As String = "NIEVE"
-
-Public Const Desierto As String = "DESIERTO"
-
 Public Const Ciudad   As String = "CIUDAD"
 
 Public Const Campo    As String = "CAMPO"
-
-Public Const Dungeon  As String = "DUNGEON"
 
 Public Enum eTerrain
 
@@ -384,8 +372,6 @@ Public Const EsfuerzoPescarGeneral         As Byte = 3
 Public Const EsfuerzoExcavarMinero         As Byte = 2
 
 Public Const EsfuerzoExcavarGeneral        As Byte = 5
-
-Public Const FX_TELEPORT_INDEX             As Integer = 1
 
 Public Const PORCENTAJE_MATERIALES_UPGRADE As Single = 0.85
 
@@ -461,17 +447,9 @@ Public Const FOGATA_APAG                    As Integer = 136
 
 Public Const FOGATA                         As Integer = 63
 
-Public Const ORO_MINA                       As Integer = 194
-
-Public Const PLATA_MINA                     As Integer = 193
-
-Public Const HIERRO_MINA                    As Integer = 192
-
 Public Const MARTILLO_HERRERO               As Integer = 389
 
 Public Const SERRUCHO_CARPINTERO            As Integer = 198
-
-Public Const ObjArboles                     As Integer = 4
 
 Public Const RED_PESCA                      As Integer = 543
 
@@ -625,10 +603,6 @@ Public Enum eAtributos
 
 End Enum
 
-Public Const AdicionalHPGuerrero        As Byte = 2 'HP adicionales cuando sube de nivel
-
-Public Const AdicionalHPCazador         As Byte = 1 'HP adicionales cuando sube de nivel
-
 Public Const AumentoSTDef               As Byte = 15
 
 Public Const AumentoStBandido           As Byte = AumentoSTDef + 3
@@ -648,11 +622,6 @@ Public Const YMaxMapSize                As Byte = 100
 
 Public Const YMinMapSize                As Byte = 1
 
-'Tamano del tileset
-Public Const TileSizeX                  As Byte = 32
-
-Public Const TileSizeY                  As Byte = 32
-
 'Tamano en Tiles de la pantalla de visualizacion
 Public Const XWindow                    As Byte = 17
 
@@ -665,33 +634,15 @@ Public Const SND_TALAR                  As Byte = 13
 
 Public Const SND_PESCAR                 As Byte = 14
 
-Public Const SND_MINERO                 As Byte = 15
-
 Public Const SND_WARP                   As Byte = 3
 
 Public Const SND_PUERTA                 As Byte = 5
 
 Public Const SND_NIVEL                  As Byte = 6
 
-Public Const SND_USERMUERTE             As Byte = 11
-
 Public Const SND_IMPACTO                As Byte = 10
 
 Public Const SND_IMPACTO2               As Byte = 12
-
-Public Const SND_LENADOR                As Byte = 13
-
-Public Const SND_FOGATA                 As Byte = 14
-
-Public Const SND_AVE                    As Byte = 21
-
-Public Const SND_AVE2                   As Byte = 22
-
-Public Const SND_AVE3                   As Byte = 34
-
-Public Const SND_GRILLO                 As Byte = 28
-
-Public Const SND_GRILLO2                As Byte = 29
 
 Public Const SND_SACARARMA              As Byte = 25
 
@@ -803,8 +754,6 @@ Public Const STAT_MAXMAN              As Integer = 9999
 Public Const STAT_MAXHIT_UNDER36      As Byte = 99
 
 Public Const STAT_MAXHIT_OVER36       As Integer = 999
-
-Public Const STAT_MAXDEF              As Byte = 99
 
 Public Const ELU_SKILL_INICIAL        As Byte = 200
 
@@ -974,7 +923,7 @@ End Type
 
 Public Type Position
 
-    x As Integer
+    X As Integer
     Y As Integer
 
 End Type
@@ -982,7 +931,7 @@ End Type
 Public Type WorldPos
 
     Map As Integer
-    x As Integer
+    X As Integer
     Y As Integer
 
 End Type
@@ -2277,8 +2226,6 @@ Public Const MATRIX_INITIAL_MAP                     As Integer = 1
 
 Public Const GOHOME_PENALTY                         As Integer = 5
 
-Public Const GM_MAP                                 As Integer = 49
-
 Public Const TELEP_OBJ_INDEX                        As Integer = 1012
 
 Public Const HUMANO_H_PRIMER_CABEZA                 As Integer = 1
@@ -2385,7 +2332,7 @@ Public InventarioUsarConfiguracionPersonalizada As Boolean
 
 Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
-Public UsarMundoPropio As Boolean 
+Public UsarMundoPropio As Boolean
 
 Public ConexionAPI As Boolean
 

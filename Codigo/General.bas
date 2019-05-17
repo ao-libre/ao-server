@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim x, Y, Map, K, errHandler, obj, Index, n, Email As Variant
+    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
 
 #End If
 
@@ -111,7 +111,7 @@ End Sub
 
 Sub Bloquear(ByVal toMap As Boolean, _
              ByVal sndIndex As Integer, _
-             ByVal x As Integer, _
+             ByVal X As Integer, _
              ByVal Y As Integer, _
              ByVal b As Boolean)
     '***************************************************
@@ -127,24 +127,24 @@ Sub Bloquear(ByVal toMap As Boolean, _
     '***************************************************
 
     If toMap Then
-        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(x, Y, b))
+        Call SendData(SendTarget.toMap, sndIndex, PrepareMessageBlockPosition(X, Y, b))
     Else
-        Call WriteBlockPosition(sndIndex, x, Y, b)
+        Call WriteBlockPosition(sndIndex, X, Y, b)
 
     End If
 
 End Sub
 
-Function HayAgua(ByVal Map As Integer, ByVal x As Integer, ByVal Y As Integer) As Boolean
+Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And Y > 0 And Y < 101 Then
+    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
 
-        With MapData(Map, x, Y)
+        With MapData(Map, X, Y)
 
             If ((.Graphic(1) >= 1505 And .Graphic(1) <= 1520) Or (.Graphic(1) >= 5665 And .Graphic(1) <= 5680) Or (.Graphic(1) >= 13547 And .Graphic(1) <= 13562)) And .Graphic(2) = 0 Then
                 HayAgua = True
@@ -163,15 +163,15 @@ Function HayAgua(ByVal Map As Integer, ByVal x As Integer, ByVal Y As Integer) A
 End Function
 
 Private Function HayLava(ByVal Map As Integer, _
-                         ByVal x As Integer, _
+                         ByVal X As Integer, _
                          ByVal Y As Integer) As Boolean
 
     '***************************************************
     'Autor: Nacho (Integer)
     'Last Modification: 03/12/07
     '***************************************************
-    If Map > 0 And Map < NumMaps + 1 And x > 0 And x < 101 And Y > 0 And Y < 101 Then
-        If MapData(Map, x, Y).Graphic(1) >= 5837 And MapData(Map, x, Y).Graphic(1) <= 5852 Then
+    If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
+        If MapData(Map, X, Y).Graphic(1) >= 5837 And MapData(Map, X, Y).Graphic(1) <= 5852 Then
             HayLava = True
         Else
             HayLava = False
@@ -194,12 +194,13 @@ Sub EnviarSpawnList(ByVal Userindex As Integer)
     '***************************************************
 
     Dim K          As Long
-
+    Dim Upper_SpawnList As Long
     Dim npcNames() As String
-    
     ReDim npcNames(1 To UBound(SpawnList)) As String
     
-    For K = 1 To UBound(SpawnList)
+    Upper_SpawnList = UBound(SpawnList)
+    
+    For K = 1 To Upper_SpawnList
         npcNames(K) = SpawnList(K).NpcName
     Next K
     
@@ -251,9 +252,9 @@ Sub Main()
     
     UltimoSlotLimpieza = -1
     
-    Dim MundoSeleccionado As String 
-    MundoSeleccionado= GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
-    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado 
+    Dim MundoSeleccionado As String
+    MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado
     
     ' Start loading..
     frmCargando.Show
@@ -495,14 +496,14 @@ Private Sub LoadConstants()
 
     With Prision
         .Map = 66
-        .x = 75
+        .X = 75
         .Y = 47
 
     End With
     
     With Libertad
         .Map = 66
-        .x = 75
+        .X = 75
         .Y = 65
 
     End With
@@ -708,7 +709,7 @@ Public Sub LogCriticEvent(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -719,7 +720,7 @@ Public Sub LogCriticEvent(desc As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -730,7 +731,7 @@ Public Sub LogEjercitoReal(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -741,7 +742,7 @@ Public Sub LogEjercitoReal(desc As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -752,7 +753,7 @@ Public Sub LogEjercitoCaos(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -763,29 +764,29 @@ Public Sub LogEjercitoCaos(desc As String)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
-Public Sub LogIndex(ByVal Index As Integer, ByVal desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
     nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\logs\" & Index & ".log" For Append Shared As #nfile
+    Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
     Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -796,7 +797,7 @@ Public Sub LogError(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -807,7 +808,7 @@ Public Sub LogError(desc As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -817,7 +818,7 @@ Public Sub LogDatabaseError(desc As String)
     'Last Modification: 09/10/2018
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -827,7 +828,7 @@ Public Sub LogDatabaseError(desc As String)
     Close #nfile
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -838,7 +839,7 @@ Public Sub LogStatic(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -849,7 +850,7 @@ Public Sub LogStatic(desc As String)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -860,7 +861,7 @@ Public Sub LogTarea(desc As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -871,7 +872,7 @@ Public Sub LogTarea(desc As String)
 
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -930,7 +931,7 @@ Public Sub LogGM(Nombre As String, texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -942,7 +943,7 @@ Public Sub LogGM(Nombre As String, texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -953,7 +954,7 @@ Public Sub LogAsesinato(texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
     
@@ -965,7 +966,7 @@ Public Sub LogAsesinato(texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -976,7 +977,7 @@ Public Sub logVentaCasa(ByVal texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -990,7 +991,7 @@ Public Sub logVentaCasa(ByVal texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -1001,7 +1002,7 @@ Public Sub LogHackAttemp(texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -1014,7 +1015,7 @@ Public Sub LogHackAttemp(texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -1025,7 +1026,7 @@ Public Sub LogCheating(texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -1036,7 +1037,7 @@ Public Sub LogCheating(texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -1047,7 +1048,7 @@ Public Sub LogCriticalHackAttemp(texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -1060,7 +1061,7 @@ Public Sub LogCriticalHackAttemp(texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -1071,7 +1072,7 @@ Public Sub LogAntiCheat(texto As String)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim nfile As Integer
 
@@ -1083,7 +1084,7 @@ Public Sub LogAntiCheat(texto As String)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -1123,7 +1124,8 @@ Sub Restart()
     If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
     
     Dim LoopC As Long
-  
+    Dim Upper_Userlist As Long
+    
     #If UsarQueSocket = 0 Then
 
         frmMain.Socket1.Cleanup
@@ -1151,7 +1153,9 @@ Sub Restart()
     'Initialize statistics!!
     Call Statistics.Initialize
     
-    For LoopC = 1 To UBound(UserList())
+    Upper_Userlist = UBound(UserList())
+    
+    For LoopC = 1 To Upper_Userlist
         Set UserList(LoopC).incomingData = Nothing
         Set UserList(LoopC).outgoingData = Nothing
     Next LoopC
@@ -1238,7 +1242,7 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
     With UserList(Userindex)
 
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
-            If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger <> 1 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger <> 2 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger <> 4 Then Intemperie = True
+            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 4 Then Intemperie = True
         Else
             Intemperie = False
 
@@ -1258,7 +1262,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     If UserList(Userindex).flags.UserLogged Then
         If Intemperie(Userindex) Then
@@ -1274,7 +1278,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     End If
     
     Exit Sub
-errHandler:
+ErrHandler:
     LogError ("Error en EfectoLluvia")
 
 End Sub
@@ -1366,7 +1370,7 @@ Public Sub EfectoLava(ByVal Userindex As Integer)
             .Counters.Lava = .Counters.Lava + 1
         Else
 
-            If HayLava(.Pos.Map, .Pos.x, .Pos.Y) Then
+            If HayLava(.Pos.Map, .Pos.X, .Pos.Y) Then
                 Call WriteConsoleMsg(Userindex, "Quitate de la lava, te estas quemando!!", FontTypeNames.FONTTYPE_INFO)
                 .Stats.MinHp = .Stats.MinHp - Porcentaje(.Stats.MaxHp, 5)
                     
@@ -1694,7 +1698,7 @@ Public Sub RecStamina(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
         
         Dim massta As Integer
 
@@ -1851,7 +1855,7 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 4 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
         
         Dim mashit As Integer
 
@@ -1899,7 +1903,7 @@ Sub PasarSegundo()
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim i As Long
     
@@ -1947,7 +1951,7 @@ Sub PasarSegundo()
                  
                         If .Counters.Pena < 1 Then
                             .Counters.Pena = 0
-                            Call WarpUserChar(i, Libertad.Map, Libertad.x, Libertad.Y, True)
+                            Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
                             Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
                             Call FlushBuffer(i)
 
@@ -1963,7 +1967,7 @@ Sub PasarSegundo()
                 If Not .Pos.Map = 0 Then
 
                     'Counter de piquete
-                    If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
+                    If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
                         If .flags.Muerto = 0 Then
                             .Counters.PiqueteC = .Counters.PiqueteC + 1
                             Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
@@ -1995,7 +1999,7 @@ Sub PasarSegundo()
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
 
     Resume Next
@@ -2246,9 +2250,9 @@ Public Sub FreeCharIndexes()
 End Sub
 
 Public Sub ReproducirSonido(ByVal Destino As SendTarget, _
-                            ByVal Index As Integer, _
+                            ByVal index As Integer, _
                             ByVal SoundIndex As Integer)
-    Call SendData(Destino, Index, PrepareMessagePlayWave(SoundIndex, UserList(Index).Pos.x, UserList(Index).Pos.Y))
+    Call SendData(Destino, index, PrepareMessagePlayWave(SoundIndex, UserList(index).Pos.X, UserList(index).Pos.Y))
 
 End Sub
 
