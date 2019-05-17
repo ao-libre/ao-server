@@ -1,4 +1,5 @@
 Attribute VB_Name = "PraetoriansCoopNPC"
+Option Explicit
 
 ''**************************************************************
 '' PraetoriansCoopNPC.bas - Handles the Praeorians NPCs.
