@@ -19,8 +19,7 @@ C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 - Utilizar la API `ao-api-server` para hacer uso de envio de emails, backup de charfiles, accounts, logs en base de datos mysql, utilizar diferentes endpoints para consumir desde su sitio web:
 https://github.com/ao-libre/ao-api-server
 
-- Instalar Autologon
-Autologon es un programa que hace que Windows Server inice sin necesidad de poner nuestros datos en el logon, basicamente inicia sesion por nosotros, util ya que a veces el server puede reiniciarse o apagarse sin motivo alguno y con esto todo vuelve a estar disponible
+- Instalar Autologon, es un programa que hace que Windows Server inicie sin necesidad de poner nuestros datos en el logon, basicamente inicia sesion por nosotros, util ya que a veces el server puede reiniciarse o apagarse sin motivo alguno (O si lo hay pero esa es otra historia) y con esto todo vuelve a estar disponible automaticamente
 https://docs.microsoft.com/en-us/sysinternals/downloads/autologon
 
 #### Comandos para la administración del servidor:
