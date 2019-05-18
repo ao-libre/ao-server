@@ -15,6 +15,14 @@
 ```
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 ```
+
+- Utilizar la API `ao-api-server` para hacer uso de envio de emails, backup de charfiles, accounts, logs en base de datos mysql, utilizar diferentes endpoints para consumir desde su sitio web:
+https://github.com/ao-libre/ao-api-server
+
+- Instalar Autologon
+Autologon es un programa que hace que Windows Server inice sin necesidad de poner nuestros datos en el logon, basicamente inicia sesion por nosotros, util ya que a veces el server puede reiniciarse o apagarse sin motivo alguno y con esto todo vuelve a estar disponible
+https://docs.microsoft.com/en-us/sysinternals/downloads/autologon
+
 #### Comandos para la administración del servidor:
 [Guía de Comandos para la administración del servidor (en Reddit)](https://www.reddit.com/r/argentumonlineoficial/comments/9fpd7r/comandos_diosessemidiosesconsejeros/)
 
