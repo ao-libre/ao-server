@@ -1760,7 +1760,7 @@ Sub LoadSini()
     
     MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
     
-    EnTesting = CBool(val(GetVar(IniPath & "Server.ini", "INIT", "Testing")))
+    EnTesting = CBool(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
     
     ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
