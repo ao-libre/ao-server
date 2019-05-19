@@ -1724,7 +1724,7 @@ Sub LoadSini()
     OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
     DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
     DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
-    DropItemsAlMorir = GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir")
+    DropItemsAlMorir = CBool(GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir"))
     
     CentinelaEstado = CBool(GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo"))
     
@@ -1760,13 +1760,13 @@ Sub LoadSini()
     
     MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
     
-    EnTesting = val(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
+    EnTesting = CBool(val(GetVar(IniPath & "Server.ini", "INIT", "Testing")))
     
     ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
 
     'Usar Mundo personalizado / Use custom world
-    UsarMundoPropio = GetVar(IniPath & "Server.ini", "MUNDO", "UsarMundoPropio")
+    UsarMundoPropio = CBool(GetVar(IniPath & "Server.ini", "MUNDO", "UsarMundoPropio"))
 
     'Inventario Inicial
     InventarioUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
@@ -1859,7 +1859,7 @@ Sub LoadSini()
 
     'Conexion con la API hecha en Node.js      
     'Mas info aqui: https://github.com/ao-libre/ao-api-server/
-    ConexionAPI = val(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado"))
+    ConexionAPI = CBool(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado"))
 
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
