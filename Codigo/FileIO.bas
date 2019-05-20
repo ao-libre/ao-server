@@ -1724,7 +1724,7 @@ Sub LoadSini()
     OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
     DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
     DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
-    DropItemsAlMorir = CBool(GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir"))
+    DropItemsAlMorir = CBool(val(GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir")))
     
     CentinelaEstado = CBool(GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo"))
     
@@ -1760,7 +1760,7 @@ Sub LoadSini()
     
     MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
     
-    EnTesting = CBool(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
+    EnTesting = CBool(val(GetVar(IniPath & "Server.ini", "INIT", "Testing")))
     
     ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
     MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
@@ -1859,7 +1859,7 @@ Sub LoadSini()
 
     'Conexion con la API hecha en Node.js      
     'Mas info aqui: https://github.com/ao-libre/ao-api-server/
-    ConexionAPI = CBool(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado"))
+    ConexionAPI = CBool(val(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado")))
 
     'Max users
     Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
