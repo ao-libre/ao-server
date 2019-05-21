@@ -1696,173 +1696,142 @@ End Sub
 Sub LoadSini()
     '***************************************************
     'Author: Unknown
-    'Last Modification: 05/11/2018 (CHOTS)
+    'Last Modification: 15/05/2019 (Jopi)
     'CHOTS: Database params
     'Cucsifae: Agregados multiplicadores exp y oro
     'CHOTS: Agregado multiplicador oficio
     'CHOTS: Agregado min y max Dados
-    'Jopi: Agregado AuditoriaTabajo para activar/desactivar el centinela.
+    'Jopi: Uso de clsIniManager para cargar los valores.
     '***************************************************
 
     Dim Temporal As Long
     
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando info de inicio del server."
+    Dim Lector As clsIniManager
+    Set Lector = New clsIniManager
+    
+    If frmMain.Visible Then
+        frmMain.txStatus.Caption = "Cargando info de inicio del server."
+    End If
+    
+    Call Lector.Initialize(IniPath & "Server.ini")
     
     BootDelBackUp = val(GetVar(IniPath & "Server.ini", "INIT", "IniciarDesdeBackUp"))
     
     'Misc
+    Puerto = val(Lector.GetValue("INIT", "StartPort"))
+    HideMe = val(Lector.GetValue("INIT", "Hide"))
+    AllowMultiLogins = val(Lector.GetValue("INIT", "AllowMultiLogins"))
+    IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
     
-    Puerto = val(GetVar(IniPath & "Server.ini", "INIT", "StartPort"))
-    HideMe = val(GetVar(IniPath & "Server.ini", "INIT", "Hide"))
-    AllowMultiLogins = val(GetVar(IniPath & "Server.ini", "INIT", "AllowMultiLogins"))
-    IdleLimit = val(GetVar(IniPath & "Server.ini", "INIT", "IdleLimit"))
     'Lee la version correcta del cliente
-    ULTIMAVERSION = GetVar(IniPath & "Server.ini", "INIT", "VersionBuildCliente")
+    ULTIMAVERSION = Lector.GetValue("INIT", "VersionBuildCliente")
     
-    ExpMultiplier = GetVar(IniPath & "Server.ini", "INIT", "ExpMulti")
-    OroMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OroMulti")
-    OficioMultiplier = GetVar(IniPath & "Server.ini", "INIT", "OficioMulti")
-    DiceMinimum = GetVar(IniPath & "Server.ini", "INIT", "MinDados")
-    DiceMaximum = GetVar(IniPath & "Server.ini", "INIT", "MaxDados")
-    DropItemsAlMorir = CBool(GetVar(IniPath & "Server.ini", "INIT", "DropItemsAlMorir"))
+    ExpMultiplier = Lector.GetValue("INIT", "ExpMulti")
+    OroMultiplier = Lector.GetValue("INIT", "OroMulti")
+    OficioMultiplier = Lector.GetValue("INIT", "OficioMulti")
+    DiceMinimum = Lector.GetValue("INIT", "MinDados")
+    DiceMaximum = Lector.GetValue("INIT", "MaxDados")
     
-    CentinelaEstado = CBool(GetVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo"))
+    DropItemsAlMorir = CBool(Lector.GetValue("INIT", "DropItemsAlMorir"))
+
+    PuedeCrearPersonajes = val(Lector.GetValue("INIT", "PuedeCrearPersonajes"))
+    ServerSoloGMs = val(Lector.GetValue("init", "ServerSoloGMs"))
     
-    PuedeCrearPersonajes = val(GetVar(IniPath & "Server.ini", "INIT", "PuedeCrearPersonajes"))
-    ServerSoloGMs = val(GetVar(IniPath & "Server.ini", "init", "ServerSoloGMs"))
+    ArmaduraImperial1 = val(Lector.GetValue("INIT", "ArmaduraImperial1"))
+    ArmaduraImperial2 = val(Lector.GetValue("INIT", "ArmaduraImperial2"))
+    ArmaduraImperial3 = val(Lector.GetValue("INIT", "ArmaduraImperial3"))
+    TunicaMagoImperial = val(Lector.GetValue("INIT", "TunicaMagoImperial"))
+    TunicaMagoImperialEnanos = val(Lector.GetValue("INIT", "TunicaMagoImperialEnanos"))
+    ArmaduraCaos1 = val(Lector.GetValue("INIT", "ArmaduraCaos1"))
+    ArmaduraCaos2 = val(Lector.GetValue("INIT", "ArmaduraCaos2"))
+    ArmaduraCaos3 = val(Lector.GetValue("INIT", "ArmaduraCaos3"))
+    TunicaMagoCaos = val(Lector.GetValue("INIT", "TunicaMagoCaos"))
+    TunicaMagoCaosEnanos = val(Lector.GetValue("INIT", "TunicaMagoCaosEnanos"))
     
-    ArmaduraImperial1 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial1"))
-    ArmaduraImperial2 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial2"))
-    ArmaduraImperial3 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraImperial3"))
-    TunicaMagoImperial = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaMagoImperial"))
-    TunicaMagoImperialEnanos = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaMagoImperialEnanos"))
-    ArmaduraCaos1 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraCaos1"))
-    ArmaduraCaos2 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraCaos2"))
-    ArmaduraCaos3 = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraCaos3"))
-    TunicaMagoCaos = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaMagoCaos"))
-    TunicaMagoCaosEnanos = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaMagoCaosEnanos"))
+    VestimentaImperialHumano = val(Lector.GetValue("INIT", "VestimentaImperialHumano"))
+    VestimentaImperialEnano = val(Lector.GetValue("INIT", "VestimentaImperialEnano"))
+    TunicaConspicuaHumano = val(Lector.GetValue("INIT", "TunicaConspicuaHumano"))
+    TunicaConspicuaEnano = val(Lector.GetValue("INIT", "TunicaConspicuaEnano"))
+    ArmaduraNobilisimaHumano = val(Lector.GetValue("INIT", "ArmaduraNobilisimaHumano"))
+    ArmaduraNobilisimaEnano = val(Lector.GetValue("INIT", "ArmaduraNobilisimaEnano"))
+    ArmaduraGranSacerdote = val(Lector.GetValue("INIT", "ArmaduraGranSacerdote"))
     
-    VestimentaImperialHumano = val(GetVar(IniPath & "Server.ini", "INIT", "VestimentaImperialHumano"))
-    VestimentaImperialEnano = val(GetVar(IniPath & "Server.ini", "INIT", "VestimentaImperialEnano"))
-    TunicaConspicuaHumano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaConspicuaHumano"))
-    TunicaConspicuaEnano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaConspicuaEnano"))
-    ArmaduraNobilisimaHumano = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraNobilisimaHumano"))
-    ArmaduraNobilisimaEnano = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraNobilisimaEnano"))
-    ArmaduraGranSacerdote = val(GetVar(IniPath & "Server.ini", "INIT", "ArmaduraGranSacerdote"))
+    VestimentaLegionHumano = val(Lector.GetValue("INIT", "VestimentaLegionHumano"))
+    VestimentaLegionEnano = val(Lector.GetValue("INIT", "VestimentaLegionEnano"))
+    TunicaLobregaHumano = val(Lector.GetValue("INIT", "TunicaLobregaHumano"))
+    TunicaLobregaEnano = val(Lector.GetValue("INIT", "TunicaLobregaEnano"))
+    TunicaEgregiaHumano = val(Lector.GetValue("INIT", "TunicaEgregiaHumano"))
+    TunicaEgregiaEnano = val(Lector.GetValue("INIT", "TunicaEgregiaEnano"))
+    SacerdoteDemoniaco = val(Lector.GetValue("INIT", "SacerdoteDemoniaco"))
     
-    VestimentaLegionHumano = val(GetVar(IniPath & "Server.ini", "INIT", "VestimentaLegionHumano"))
-    VestimentaLegionEnano = val(GetVar(IniPath & "Server.ini", "INIT", "VestimentaLegionEnano"))
-    TunicaLobregaHumano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaLobregaHumano"))
-    TunicaLobregaEnano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaLobregaEnano"))
-    TunicaEgregiaHumano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaEgregiaHumano"))
-    TunicaEgregiaEnano = val(GetVar(IniPath & "Server.ini", "INIT", "TunicaEgregiaEnano"))
-    SacerdoteDemoniaco = val(GetVar(IniPath & "Server.ini", "INIT", "SacerdoteDemoniaco"))
+    MAPA_PRETORIANO = val(Lector.GetValue("INIT", "MapaPretoriano"))
     
-    MAPA_PRETORIANO = val(GetVar(IniPath & "Server.ini", "INIT", "MapaPretoriano"))
+    EnTesting = CBool(Lector.GetValue("INIT", "Testing"))
     
-    EnTesting = CBool(GetVar(IniPath & "Server.ini", "INIT", "Testing"))
-    
-    ContadorAntiPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "ContadorAntiPiquete"))
-    MinutosCarcelPiquete = val(GetVar(IniPath & "Server.ini", "INIT", "MinutosCarcelPiquete"))
+    ContadorAntiPiquete = val(Lector.GetValue("INIT", "ContadorAntiPiquete"))
+    MinutosCarcelPiquete = val(Lector.GetValue("INIT", "MinutosCarcelPiquete"))
 
     'Usar Mundo personalizado / Use custom world
-    UsarMundoPropio = CBool(GetVar(IniPath & "Server.ini", "MUNDO", "UsarMundoPropio"))
+    UsarMundoPropio = CBool(Lector.GetValue("MUNDO", "UsarMundoPropio"))
 
     'Inventario Inicial
-    InventarioUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
+    InventarioUsarConfiguracionPersonalizada = CBool(val(Lector.GetValue("INVENTARIO", "InventarioUsarConfiguracionPersonalizada")))
 
     'Atributos Iniciales
-    EstadisticasInicialesUsarConfiguracionPersonalizada = CBool(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Activado")))
+    EstadisticasInicialesUsarConfiguracionPersonalizada = CBool(val(Lector.GetValue("ESTADISTICASINICIALESPJ", "Activado")))
 
     'Intervalos
-    SanaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloSinDescansar"))
-    FrmInterv.txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
+    SanaIntervaloSinDescansar = val(Lector.GetValue("INTERVALOS", "SanaIntervaloSinDescansar"))
+    StaminaIntervaloSinDescansar = val(Lector.GetValue("INTERVALOS", "StaminaIntervaloSinDescansar"))
+    SanaIntervaloDescansar = val(Lector.GetValue("INTERVALOS", "SanaIntervaloDescansar"))
+    StaminaIntervaloDescansar = val(Lector.GetValue("INTERVALOS", "StaminaIntervaloDescansar"))
+    IntervaloSed = val(Lector.GetValue("INTERVALOS", "IntervaloSed"))
+    IntervaloHambre = val(Lector.GetValue("INTERVALOS", "IntervaloHambre"))
+    IntervaloVeneno = val(Lector.GetValue("INTERVALOS", "IntervaloVeneno"))
+    IntervaloParalizado = val(Lector.GetValue("INTERVALOS", "IntervaloParalizado"))
+    IntervaloInvisible = val(Lector.GetValue("INTERVALOS", "IntervaloInvisible"))
+    IntervaloFrio = val(Lector.GetValue("INTERVALOS", "IntervaloFrio"))
+    IntervaloWavFx = val(Lector.GetValue("INTERVALOS", "IntervaloWAVFX"))
+    IntervaloInvocacion = val(Lector.GetValue("INTERVALOS", "IntervaloInvocacion"))
+    IntervaloParaConexion = val(Lector.GetValue("INTERVALOS", "IntervaloParaConexion"))
+    IntervaloUserPuedeCastear = val(Lector.GetValue("INTERVALOS", "IntervaloLanzaHechizo"))
+    IntervaloUserPuedeTrabajar = val(Lector.GetValue("INTERVALOS", "IntervaloTrabajo"))
+    IntervaloUserPuedeAtacar = val(Lector.GetValue("INTERVALOS", "IntervaloUserPuedeAtacar"))
     
-    StaminaIntervaloSinDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloSinDescansar"))
-    FrmInterv.txtStaminaIntervaloSinDescansar.Text = StaminaIntervaloSinDescansar
-    
-    SanaIntervaloDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "SanaIntervaloDescansar"))
-    FrmInterv.txtSanaIntervaloDescansar.Text = SanaIntervaloDescansar
-    
-    StaminaIntervaloDescansar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "StaminaIntervaloDescansar"))
-    FrmInterv.txtStaminaIntervaloDescansar.Text = StaminaIntervaloDescansar
-    
-    IntervaloSed = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloSed"))
-    FrmInterv.txtIntervaloSed.Text = IntervaloSed
-    
-    IntervaloHambre = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloHambre"))
-    FrmInterv.txtIntervaloHambre.Text = IntervaloHambre
-    
-    IntervaloVeneno = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloVeneno"))
-    FrmInterv.txtIntervaloVeneno.Text = IntervaloVeneno
-    
-    IntervaloParalizado = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParalizado"))
-    FrmInterv.txtIntervaloParalizado.Text = IntervaloParalizado
-    
-    IntervaloInvisible = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvisible"))
-    FrmInterv.txtIntervaloInvisible.Text = IntervaloInvisible
-    
-    IntervaloFrio = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFrio"))
-    FrmInterv.txtIntervaloFrio.Text = IntervaloFrio
-    
-    IntervaloWavFx = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWAVFX"))
-    FrmInterv.txtIntervaloWAVFX.Text = IntervaloWavFx
-    
-    IntervaloInvocacion = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloInvocacion"))
-    FrmInterv.txtInvocacion.Text = IntervaloInvocacion
-    
-    IntervaloParaConexion = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloParaConexion"))
-    FrmInterv.txtIntervaloParaConexion.Text = IntervaloParaConexion
+    'TODO : Agregar estos intervalos al form!!!
+    IntervaloMagiaGolpe = val(Lector.GetValue("INTERVALOS", "IntervaloMagiaGolpe"))
+    IntervaloGolpeMagia = val(Lector.GetValue("INTERVALOS", "IntervaloGolpeMagia"))
+    IntervaloGolpeUsar = val(Lector.GetValue("INTERVALOS", "IntervaloGolpeUsar"))
     
     '&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
-    
     IntervaloPuedeSerAtacado = 5000 ' Cargar desde balance.dat
     IntervaloAtacable = 60000 ' Cargar desde balance.dat
     IntervaloOwnedNpc = 18000 ' Cargar desde balance.dat
-    
-    IntervaloUserPuedeCastear = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo"))
-    FrmInterv.txtIntervaloLanzaHechizo.Text = IntervaloUserPuedeCastear
-    
-    IntervaloUserPuedeTrabajar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo"))
-    FrmInterv.txtTrabajo.Text = IntervaloUserPuedeTrabajar
-    
-    IntervaloUserPuedeAtacar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar"))
-    FrmInterv.txtPuedeAtacar.Text = IntervaloUserPuedeAtacar
-    
-    'TODO : Agregar estos intervalos al form!!!
-    IntervaloMagiaGolpe = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloMagiaGolpe"))
-    IntervaloGolpeMagia = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeMagia"))
-    IntervaloGolpeUsar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGolpeUsar"))
-    
-    MinutosWs = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloWS"))
+
+    MinutosWs = val(Lector.GetValue("INTERVALOS", "IntervaloWS"))
 
     If MinutosWs < 60 Then MinutosWs = 180
     
-    MinutosGuardarUsuarios = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloGuardarUsuarios"))
+    MinutosGuardarUsuarios = val(Lector.GetValue("INTERVALOS", "IntervaloGuardarUsuarios"))
+    IntervaloCerrarConexion = val(Lector.GetValue("INTERVALOS", "IntervaloCerrarConexion"))
+    IntervaloUserPuedeUsar = val(Lector.GetValue("INTERVALOS", "IntervaloUserPuedeUsar"))
+    IntervaloFlechasCazadores = val(Lector.GetValue("INTERVALOS", "IntervaloFlechasCazadores"))
     
-    IntervaloCerrarConexion = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloCerrarConexion"))
-    IntervaloUserPuedeUsar = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeUsar"))
-    IntervaloFlechasCazadores = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloFlechasCazadores"))
-    
-    IntervaloOculto = val(GetVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloOculto"))
+    IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
-    RECORDusuarios = val(GetVar(IniPath & "Server.ini", "INIT", "Record"))
+    RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
 
     'CHOTS | Database
-    Database_Enabled = CBool(val(GetVar(IniPath & "Server.ini", "DATABASE", "Enabled")))
-    Database_Host = GetVar(IniPath & "Server.ini", "DATABASE", "Host")
-    Database_Name = GetVar(IniPath & "Server.ini", "DATABASE", "Name")
-    Database_Username = GetVar(IniPath & "Server.ini", "DATABASE", "Username")
-    Database_Password = GetVar(IniPath & "Server.ini", "DATABASE", "Password")
-
-    'Conexion con la API hecha en Node.js      
-    'Mas info aqui: https://github.com/ao-libre/ao-api-server/
-    ConexionAPI = CBool(GetVar(IniPath & "Server.ini", "ConexionAPI", "Activado"))
-
+    Database_Enabled = CBool(val(Lector.GetValue("DATABASE", "Enabled")))
+    Database_Host = Lector.GetValue("DATABASE", "Host")
+    Database_Name = Lector.GetValue("DATABASE", "Name")
+    Database_Username = Lector.GetValue("DATABASE", "Username")
+    Database_Password = Lector.GetValue("DATABASE", "Password")
+      
     'Max users
-    Temporal = val(GetVar(IniPath & "Server.ini", "INIT", "MaxUsers"))
+    Temporal = val(Lector.GetValue("INIT", "MaxUsers"))
 
     If MaxUsers = 0 Then
         MaxUsers = Temporal
@@ -1872,52 +1841,19 @@ Sub LoadSini()
     
     '&&&&&&&&&&&&&&&&&&&&& BALANCE &&&&&&&&&&&&&&&&&&&&&&&
     'Se agrego en LoadBalance y en el Balance.dat
-    'PorcentajeRecuperoMana = val(GetVar(IniPath & "Server.ini", "BALANCE", "PorcentajeRecuperoMana"))
+    'PorcentajeRecuperoMana = val(Lector.GetValue("BALANCE", "PorcentajeRecuperoMana"))
     
     ''&&&&&&&&&&&&&&&&&&&&& FIN BALANCE &&&&&&&&&&&&&&&&&&&&&&&
     Call Statistics.Initialize
-    
-    Ullathorpe.Map = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "Mapa")
-    Ullathorpe.x = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "X")
-    Ullathorpe.Y = GetVar(DatPath & "Ciudades.dat", "Ullathorpe", "Y")
-    
-    Nix.Map = GetVar(DatPath & "Ciudades.dat", "Nix", "Mapa")
-    Nix.x = GetVar(DatPath & "Ciudades.dat", "Nix", "X")
-    Nix.Y = GetVar(DatPath & "Ciudades.dat", "Nix", "Y")
-    
-    Banderbill.Map = GetVar(DatPath & "Ciudades.dat", "Banderbill", "Mapa")
-    Banderbill.x = GetVar(DatPath & "Ciudades.dat", "Banderbill", "X")
-    Banderbill.Y = GetVar(DatPath & "Ciudades.dat", "Banderbill", "Y")
-    
-    Lindos.Map = GetVar(DatPath & "Ciudades.dat", "Lindos", "Mapa")
-    Lindos.x = GetVar(DatPath & "Ciudades.dat", "Lindos", "X")
-    Lindos.Y = GetVar(DatPath & "Ciudades.dat", "Lindos", "Y")
-    
-    Arghal.Map = GetVar(DatPath & "Ciudades.dat", "Arghal", "Mapa")
-    Arghal.x = GetVar(DatPath & "Ciudades.dat", "Arghal", "X")
-    Arghal.Y = GetVar(DatPath & "Ciudades.dat", "Arghal", "Y")
-    
-    Arkhein.Map = GetVar(DatPath & "Ciudades.dat", "Arkhein", "Mapa")
-    Arkhein.x = GetVar(DatPath & "Ciudades.dat", "Arkhein", "X")
-    Arkhein.Y = GetVar(DatPath & "Ciudades.dat", "Arkhein", "Y")
-    
-    Nemahuak.Map = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Mapa")
-    Nemahuak.x = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "X")
-    Nemahuak.Y = GetVar(DatPath & "Ciudades.dat", "Nemahuak", "Y")
 
     'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
     If UsarMundoPropio Then
-        CustomSpawnMap.Map = GetVar(IniPath & "Server.Ini", "MUNDO", "Mapa")
-        CustomSpawnMap.x = GetVar(IniPath & "Server.Ini", "MUNDO", "X")
-        CustomSpawnMap.y = GetVar(IniPath & "Server.Ini", "MUNDO", "Y")
+        CustomSpawnMap.Map = Lector.GetValue("MUNDO", "Mapa")
+        CustomSpawnMap.X = Lector.GetValue("MUNDO", "X")
+        CustomSpawnMap.Y = Lector.GetValue("MUNDO", "Y")
     End If
-
-    Ciudades(eCiudad.cUllathorpe) = Ullathorpe
-    Ciudades(eCiudad.cNix) = Nix
-    Ciudades(eCiudad.cBanderbill) = Banderbill
-    Ciudades(eCiudad.cLindos) = Lindos
-    Ciudades(eCiudad.cArghal) = Arghal
-    Ciudades(eCiudad.cArkhein) = Arkhein
+    
+    Set Lector = Nothing
     
     Set ConsultaPopular = New ConsultasPopulares
     Call ConsultaPopular.LoadData
@@ -1925,6 +1861,72 @@ Sub LoadSini()
     ' Admins
     Call loadAdministrativeUsers
     
+End Sub
+
+Sub CargarCiudades()
+    
+    '***************************************************
+    'Author: Jopi
+    'Last Modification: 15/05/2019 (Jopi)
+    'Jopi: Uso de clsIniManager para cargar los valores.
+    '***************************************************
+    
+    Dim Lector As clsIniManager: Set Lector = New clsIniManager
+    
+    Call Lector.Initialize(DatPath & "Ciudades.dat")
+        
+        With Ullathorpe
+            .Map = Lector.GetValue("Ullathorpe", "Mapa")
+            .X = Lector.GetValue("Ullathorpe", "X")
+            .Y = Lector.GetValue("Ullathorpe", "Y")
+        End With
+        
+        With Nix
+            .Map = Lector.GetValue("Nix", "Mapa")
+            .X = Lector.GetValue("Nix", "X")
+            .Y = Lector.GetValue("Nix", "Y")
+        End With
+        
+        With Banderbill
+            .Map = Lector.GetValue("Banderbill", "Mapa")
+            .X = Lector.GetValue("Banderbill", "X")
+            .Y = Lector.GetValue("Banderbill", "Y")
+        End With
+
+        
+        With Lindos
+            .Map = Lector.GetValue("Lindos", "Mapa")
+            .X = Lector.GetValue("Lindos", "X")
+            .Y = Lector.GetValue("Lindos", "Y")
+        End With
+        
+        With Arghal
+            .Map = Lector.GetValue("Arghal", "Mapa")
+            .X = Lector.GetValue("Arghal", "X")
+            .Y = Lector.GetValue("Arghal", "Y")
+        End With
+        
+        With Arkhein
+            .Map = Lector.GetValue("Arkhein", "Mapa")
+            .X = Lector.GetValue("Arkhein", "X")
+            .Y = Lector.GetValue("Arkhein", "Y")
+        End With
+        
+        With Nemahuak
+            .Map = Lector.GetValue("Nemahuak", "Mapa")
+            .X = Lector.GetValue("Nemahuak", "X")
+            .Y = Lector.GetValue("Nemahuak", "Y")
+        End With
+
+    Set Lector = Nothing
+    
+        Ciudades(eCiudad.cUllathorpe) = Ullathorpe
+        Ciudades(eCiudad.cNix) = Nix
+        Ciudades(eCiudad.cBanderbill) = Banderbill
+        Ciudades(eCiudad.cLindos) = Lindos
+        Ciudades(eCiudad.cArghal) = Arghal
+        Ciudades(eCiudad.cArkhein) = Arkhein
+
 End Sub
 
 Sub WriteVar(ByVal File As String, _
