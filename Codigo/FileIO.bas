@@ -1726,6 +1726,8 @@ Sub LoadSini()
     'Lee la version correcta del cliente
     ULTIMAVERSION = Lector.GetValue("INIT", "VersionBuildCliente")
     
+    STAT_MAXELV = Lector.GetValue("INIT", "NivelMaximo")
+    
     ExpMultiplier = Lector.GetValue("INIT", "ExpMulti")
     OroMultiplier = Lector.GetValue("INIT", "OroMulti")
     OficioMultiplier = Lector.GetValue("INIT", "OficioMulti")
