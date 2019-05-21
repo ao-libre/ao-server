@@ -741,17 +741,17 @@ Function NameIndex(ByVal Name As String) As Integer
     If LenB(Name) = 0 Then
         NameIndex = 0
         Exit Function
-
     End If
-    
+                                        
+    Name = Ucase$(Name)
+                                        
     If InStrB(Name, "+") <> 0 Then
-        Name = UCase$(Replace(Name, "+", " "))
-
+        Name = Replace(Name, "+", " ")
     End If
     
     Userindex = 1
-
-    Do Until UCase$(UserList(Userindex).Name) = UCase$(Name)
+    
+     Do Until  StrComp(UCase$(UserList(Userindex).Name) , Name) = 0
         
         Userindex = Userindex + 1
         
