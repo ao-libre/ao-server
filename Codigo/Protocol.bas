@@ -316,12 +316,12 @@ Private Enum ClientPacketID
     QuestListRequest = 142
     QuestDetailsRequest = 143
     QuestAbandon = 144
-
+    CambiarContrasena = 145
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 144
+Private Const LAST_CLIENT_PACKET_ID As Byte = 145
 
 Public Enum FontTypeNames
 
@@ -873,6 +873,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         Case ClientPacketID.QuestAbandon
             Call Quests.HandleQuestAbandon(UserIndex)
+        
+        Case ClientPacketID.CambiarContrasena
+            Call HandleCambiarContrasena(UserIndex)
 
         Case Else
             'ERROR : Abort!
@@ -23238,3 +23241,32 @@ With auxiliarBuffer
 End With
  
 End Function
+
+Public Sub HandleCambiarContrasena(ByVal UserIndex As Integer)
+ 
+    Dim Correo As String
+    Dim NuevaContrasena As String
+    
+    With UserList(UserIndex)
+        
+        'Leemos el ID del paquete
+        .incomingData.ReadByte
+        
+        'Leemos los datos de la cuenta a modificar.
+        Correo = .incomingData.ReadASCIIString
+        NuevaContrasena = .incomingData.ReadASCIIString
+        
+        If ConexionAPI Then
+        
+            Call ApiEndpointSendResetPasswordAccountEmail(Correo, NuevaContrasena)
+            Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la contrase�a de su cuenta.")
+            
+        Else
+        
+            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente.")
+            
+        End If
+        
+    End With
+    
+End Sub

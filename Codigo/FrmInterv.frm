@@ -1128,6 +1128,31 @@ Err:
 
 End Sub
 
+Private Sub Form_Load()
+    
+    With Me
+    
+        .txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
+        .txtStaminaIntervaloSinDescansar.Text = StaminaIntervaloSinDescansar
+        .txtSanaIntervaloDescansar.Text = SanaIntervaloDescansar
+        .txtStaminaIntervaloDescansar.Text = StaminaIntervaloDescansar
+        .txtIntervaloSed.Text = IntervaloSed
+        .txtIntervaloHambre.Text = IntervaloHambre
+        .txtIntervaloVeneno.Text = IntervaloVeneno
+        .txtIntervaloParalizado.Text = IntervaloParalizado
+        .txtIntervaloInvisible.Text = IntervaloInvisible
+        .txtIntervaloFrio.Text = IntervaloFrio
+        .txtIntervaloWAVFX.Text = IntervaloWavFx
+        .txtInvocacion.Text = IntervaloInvocacion
+        .txtIntervaloParaConexion.Text = IntervaloParaConexion
+        .txtIntervaloLanzaHechizo.Text = IntervaloUserPuedeCastear
+        .txtTrabajo.Text = IntervaloUserPuedeTrabajar
+        .txtPuedeAtacar.Text = IntervaloUserPuedeAtacar
+    
+    End With
+    
+End Sub
+
 Private Sub ok_Click()
     Me.Visible = False
 

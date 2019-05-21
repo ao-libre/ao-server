@@ -267,9 +267,10 @@ Sub Main()
     frmCargando.Label1(2).Caption = "Iniciando Arrays..."
     Call LoadArrays
     
-    ' Server.ini & Apuestas.dat
+    ' Server.ini & Apuestas.dat & Ciudades.dat
     frmCargando.Label1(2).Caption = "Cargando Server.ini"
     Call LoadSini
+    Call CargarCiudades
     Call CargaApuestas
     
     ' Npcs.dat
