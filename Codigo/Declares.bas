@@ -803,7 +803,7 @@ Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
 Public Const FONTTYPE_CENTINELA       As String = "~0~255~0~1~0"
 
 'Estadisticas
-Public Const STAT_MAXELV              As Byte = 255
+Public STAT_MAXELV                    As Byte
 
 Public Const STAT_MAXHP               As Integer = 999
 
