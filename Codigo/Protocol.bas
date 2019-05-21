@@ -23242,58 +23242,31 @@ End With
  
 End Function
 
-Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
-    
-    ' Esto modificarlo dependiendo el tamano de las variables
-    If UserList(Userindex).incomingData.Length < 3 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
-    On Error GoTo ErrHandler
-    
+Public Sub HandleCambiarContrasena(ByVal UserIndex As Integer)
+ 
     Dim Correo As String
     Dim NuevaContrasena As String
     
-    With UserList(Userindex)
-        
-        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-        Dim buffer As New clsByteQueue
-        Call buffer.CopyBuffer(.incomingData)
+    With UserList(UserIndex)
         
         'Leemos el ID del paquete
-        Call buffer.ReadByte
+        .incomingData.ReadByte
         
         'Leemos los datos de la cuenta a modificar.
-        Correo = buffer.ReadASCIIString()
-        NuevaContrasena = buffer.ReadASCIIString()
+        Correo = .incomingData.ReadASCIIString
+        NuevaContrasena = .incomingData.ReadASCIIString
         
         If ConexionAPI Then
         
             Call ApiEndpointSendResetPasswordAccountEmail(Correo, NuevaContrasena)
-            Call WriteErrorMsg(Userindex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la contrase�a de su cuenta.")
+            Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la contrase�a de su cuenta.")
             
         Else
         
-            Call WriteErrorMsg(Userindex, "Esta funcion se encuentra deshabilitada actualmente.")
+            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente.")
             
         End If
         
-        'If we got here then packet is complete, copy data back to original queue
-        'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
-        Call .incomingData.CopyBuffer(buffer)
-        
     End With
-   
-ErrHandler:
     
-    Dim Error As Long: Error = Err.Number
-    
-    On Error GoTo 0
-     
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-     
-    If Error <> 0 Then Err.Raise Error
- 
 End Sub
