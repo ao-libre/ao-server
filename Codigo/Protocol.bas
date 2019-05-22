@@ -23250,7 +23250,7 @@ End Function
 
 Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
     
-    ' Esto modificarlo dependiendo el tamano de las variables
+    'Verifico si llegan todos los datos
     If UserList(Userindex).incomingData.Length < 5 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -23299,9 +23299,23 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
         'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
         Call .incomingData.CopyBuffer(buffer)
         
+        Call FlushBuffer(Userindex)
+        Call CloseSocket(Userindex)
+        
     End With
-
+    
+ErrHandler:
+    
+    Dim Error As Long: Error = Err.Number
+    
     Call FlushBuffer(Userindex)
     Call CloseSocket(Userindex)
+    
+    On Error GoTo 0
+
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
 
 End Sub
