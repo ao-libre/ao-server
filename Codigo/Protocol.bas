@@ -23291,7 +23291,7 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
 
         Else
         
-            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente, si sos el administrador del server necesitas habilitar la API hecha en Node.js (https://github.com/ao-libre/ao-api-server).")
+            Call WriteErrorMsg(Userindex, "Esta funcion se encuentra deshabilitada actualmente, si sos el administrador del servidor necesitas habilitar la API hecha en Node.js (https://github.com/ao-libre/ao-api-server).")
             
         End If
         
