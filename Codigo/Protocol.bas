@@ -23265,7 +23265,7 @@ Public Sub HandleCambiarContrasena(ByVal UserIndex As Integer)
         If ConexionAPI Then
         
             Call ApiEndpointSendResetPasswordAccountEmail(Correo, NuevaContrasena)
-            Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la contrase�a de su cuenta.")
+            Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la password de su cuenta.")
             
         Else
         
