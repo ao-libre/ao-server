@@ -1825,6 +1825,10 @@ Sub LoadSini()
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
 
+    'Conexion con la API hecha en Node.js      
+    'Mas info aqui: https://github.com/ao-libre/ao-api-server/
+    ConexionAPI = CBool(GetVar(IniPath & "Server.ini", "CONEXIONAPI", "Activado"))
+
     'CHOTS | Database
     Database_Enabled = CBool(val(Lector.GetValue("DATABASE", "Enabled")))
     Database_Host = Lector.GetValue("DATABASE", "Host")

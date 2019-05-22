@@ -413,7 +413,13 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         Dim packetID As Byte: packetID = .incomingData.PeekByte()
 
         'Verifico si el paquete necesita que el user este logeado
-        If Not (packetID = ClientPacketID.ThrowDices Or packetID = ClientPacketID.LoginExistingChar Or packetID = ClientPacketID.LoginNewChar Or packetID = ClientPacketID.LoginNewAccount Or packetID = ClientPacketID.LoginExistingAccount) Then
+        'TODO: BORRAR packetID = ClientPacketID.LoginExistingChar por que no se usa mas, borrarlo aca y en el cliente
+        If Not (packetID = ClientPacketID.ThrowDices _ 
+                Or packetID = ClientPacketID.LoginExistingChar _
+                Or packetID = ClientPacketID.LoginNewChar _
+                Or packetID = ClientPacketID.LoginNewAccount _
+                Or packetID = ClientPacketID.LoginExistingAccount _
+                Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
             If Not .flags.UserLogged Then
@@ -23269,13 +23275,23 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
         NuevaContrasena = buffer.ReadASCIIString()
         
         If ConexionAPI Then
+
+            'Correo = UserName es lo mismo para aca el Jopi le puso correo :)
+            If Not CuentaExiste(Correo) Then
+                Call WriteErrorMsg(Userindex, "La cuenta no existe.")
+                Call FlushBuffer(Userindex)
+                Call CloseSocket(Userindex)
+                Exit Sub
+
+            End If
         
             Call ApiEndpointSendResetPasswordAccountEmail(Correo, NuevaContrasena)
-            Call WriteErrorMsg(Userindex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la contrasena de su cuenta.")
-            
+
+            Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la password de su cuenta.")
+
         Else
         
-            Call WriteErrorMsg(Userindex, "Esta funcion se encuentra deshabilitada actualmente.")
+            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente, si sos el administrador del server necesitas habilitar la API hecha en Node.js (https://github.com/ao-libre/ao-api-server).")
             
         End If
         
@@ -23284,16 +23300,8 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
         Call .incomingData.CopyBuffer(buffer)
         
     End With
-   
-ErrHandler:
-    
-    Dim Error As Long: Error = Err.Number
-    
-    On Error GoTo 0
-     
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-     
-    If Error <> 0 Then Err.Raise Error
- 
+
+    Call FlushBuffer(Userindex)
+    Call CloseSocket(Userindex)
+
 End Sub
