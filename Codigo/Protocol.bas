@@ -413,7 +413,13 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         Dim packetID As Byte: packetID = .incomingData.PeekByte()
 
         'Verifico si el paquete necesita que el user este logeado
-        If Not (packetID = ClientPacketID.ThrowDices Or packetID = ClientPacketID.LoginExistingChar Or packetID = ClientPacketID.LoginNewChar Or packetID = ClientPacketID.LoginNewAccount Or packetID = ClientPacketID.LoginExistingAccount) Then
+        'TODO: BORRAR packetID = ClientPacketID.LoginExistingChar por que no se usa mas, borrarlo aca y en el cliente
+        If Not (packetID = ClientPacketID.ThrowDices _ 
+                Or packetID = ClientPacketID.LoginExistingChar _
+                Or packetID = ClientPacketID.LoginNewChar _
+                Or packetID = ClientPacketID.LoginNewAccount _
+                Or packetID = ClientPacketID.LoginExistingAccount _
+                Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
             If Not .flags.UserLogged Then
