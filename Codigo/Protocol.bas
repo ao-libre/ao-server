@@ -23263,16 +23263,27 @@ Public Sub HandleCambiarContrasena(ByVal UserIndex As Integer)
         NuevaContrasena = .incomingData.ReadASCIIString
         
         If ConexionAPI Then
+
+            'Correo = UserName es lo mismo para aca el Jopi le puso correo :)
+            If Not CuentaExiste(Correo) Then
+                Call WriteErrorMsg(Userindex, "La cuenta no existe.")
+                Call FlushBuffer(Userindex)
+                Call CloseSocket(Userindex)
+                Exit Sub
+
+            End If
         
             Call ApiEndpointSendResetPasswordAccountEmail(Correo, NuevaContrasena)
             Call WriteErrorMsg(UserIndex, "Se ha enviado un correo electronico a: " & Correo & " donde debera confirmar el cambio de la password de su cuenta.")
-            
+
         Else
         
-            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente.")
+            Call WriteErrorMsg(UserIndex, "Esta funcion se encuentra deshabilitada actualmente, si sos el administrador del server necesitas habilitar la API hecha en Node.js (https://github.com/ao-libre/ao-api-server).")
             
         End If
         
     End With
-    
+
+    Call FlushBuffer(Userindex)
+    Call CloseSocket(Userindex)
 End Sub
