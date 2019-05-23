@@ -1,4 +1,4 @@
----------------------------------------
+﻿---------------------------------------
 ARGENTUM ONLINE - CHANGELOG DEL SERVER
 ---------------------------------------
 
@@ -680,5 +680,68 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 21/04/2019: Agregado limite para la recepción de paquetes. (jopiortiz/Juanmz)
 * 21/04/2019: Inicia en al ciudad elegida al crear pj (JuanMZ)
 
+- 0.13.8.1
+
+* 04/04/2019: Se usa el numero de versionTagRelease desde el archivo sinfo.ini para mostrar la version juego en el titulo (Recox)
+* 04/04/2019: Se muestra el mundo seleccionado desde el archivo Dat\Map.ini para mostrarlo en el titulo de la aplicacion (Recox)
+
+- 0.13.8.2
+
+* 07/04/2019: Se simplifico la customizacion de atributos iniciales, ahora se respetan los modificadores de raza/clase (Recox)
+* 07/04/2019: Se arreglo un caracter roto cuando el sacerdote te cura. (Recox)
+
+- 0.13.8.3
+
+* 08/04/2019: Los gms ya no son expulsados del juego por inactividad (Recox)
+* 08/04/2019: Se modifico un poco el mapa 273 del battleserver y el 198 del deathmatch (Recox)
+* 09/04/2019: Ahora los sacerdotes de abajo y arriba curan en mapa deathmatch (198) (Recox)
 
 
+- 0.13.8.4
+
+* 11/04/2019: Chequeo si existen las carpetas "Account" y "Charfile" al iniciar el servidor. (jopiortiz)
+* 11/04/2019: Se convirtio el mapa Escondrijo de las ruinas de earost en el mundo deathmatch con todos los npcs necesarios para un agite rapido. (Recox)
+* 13/04/2019: El comando /CI ahora mete el item en el inventario en caso de que sea agarrable, si tiene el inventario lleno se tira al piso, los objetos no agarrables van al piso directamente (jopiortiz)
+* 14/04/2019: Implementación - daño en render. (jopiortiz)
+
+- 0.13.8.5
+
+* 17/04/2019: Cambio la recursividad del HandleIncomingData, y ahora pasa a ser iterado y arregla el error de 'Out of stack space' (MateoMiccino)
+* 17/04/2019: Se encapsulo el comportamiento de la funcion LiberarSlot y se rehusa alrededor de la aplicacion (jopiortiz/Juanmz)
+* 21/04/2019: Deleted objs that are not indexed and breaks the application: OBJ1121, OBJ1122, OBJ1116, OBJ1113, OBJ1114, OBJ1115 (Recox)
+* 21/04/2019: Agregado limite para la recepción de paquetes. (jopiortiz/Juanmz)
+* 21/04/2019: Inicia en al ciudad elegida al crear pj (JuanMZ)
+
+- 0.13.8.6
+
+* 05/05/2019: Eliminado cGarbaje. (jopiortiz)
+* 10/05/2019: Borrada esta irrelevante linea de codigo .UpTime = .UpTime (Recox)
+* 10/05/2019: El centinela ahora escribe un codigo de 4 caracteres en ves de 7 (Recox)
+* 10/05/2019: Al poner el codigo correcto, ahora el centinela se va a tomar unos 30 mins antes de aparecer de nuevo para que no sea tan molesto (Recox)
+* 10/05/2019: Ahora cuando no ingreso el codigo dentro del tiempo especificado, el centinela solo me manda a la carcel, ya no mata al personaje ni le borra todos los items. (Recox)
+* 10/05/2019: Se le elimino la defensa magica al Murcielago y al Escorpion ya que son npcs que viven en el NW Dungeon y a un mago se le complica levelear. (Recox)
+* 13/05/2019: No se caen los items y el oro al morir en Zona Segura. (jopiortiz)
+* 13/05/2019: Fix a bug with HandleLoginNewAccount (CHOTS/JuanMZ)
+* 13/05/2019: Arreglado - No se mataba el proceso al cerrar el servidor. (jopiortiz)
+* 13/05/2019: Centinela activable/desactivable desde el Server.ini (jopiortiz)
+* 13/05/2019: Se implemento conexion con API, endpoints BackupCharfiles, BackupAccount, BackupLogs (Recox)
+* 13/05/2019: Arregladas omisiones en los manejadores de muchos paquetes. (jopiortiz)
+* 13/05/2019: Se agrego boton forzar cerrar server en el frmMain. (Recox)
+* 13/05/2019: Se comento el codigo la proteccion de contador de paquetes en 40ms, ya que al hacer WorldSave desconecta el personaje debido a que llegan mas paquetes en ese momento (debe ser arreglado) . (Recox)
+
+- 0.13.9
+
+* 15/05/2019: Actualización de armas vendidas por los herreros. (jopiortiz)
+* 15/05/2019: Actualización de Hechizos vendidos por los comerciantes magos. (jopiortiz)
+* 15/05/2019: Los carpinteros venderán arcos.  (jopiortiz)
+* 17/05/2019: Implementado xmlHttp para hacer AJAX requests (Recox)
+* 17/05/2019: Implementado Endpoint de la API para el envio de emails al registrarse (Recox)
+* 17/05/2019: Implementado Endpoint de la API para el envio de emails al iniciar sesion (Recox)
+* 19/05/2019: Cast to Bool to some global properties (Recox)
+* 21/05/2019: Implementacion endpoint Cambio de Contraseña mediante la API.  (jopiortiz)
+* 21/05/2019: Uso de clsIniManager para cargar Server.ini y Ciudades.dat (jopiortiz)
+* 21/05/2019: Optimizada funcion NameIndex (JuanMZ)
+* 22/05/2019: Se setea el Nivel Máximo desde Server.ini (jopiortiz)
+* 22/05/2019: Implementado Endpoint para cambiar password mediante la api hecha en node.js (jopiortiz/Recox)
+* 22/05/2019: Se encapsulo todo el comportamiento referido a la conexion de los Sockets/Winsocks con el servidor.
+* 22/05/2019: Eliminada la reconexion con el servidor del frmCrearPersonaje.
