@@ -78,6 +78,8 @@ On Error GoTo ErrorHandler
         
     'Por alguna razon tengo que castearlo a string, sino no funciona, la verdad no tengo idea por que ya que la variable es String
     XmlHttp.send CStr(Parameters)
+	
+	Set XmlHttp = Nothing
 
 ErrorHandler:
 
@@ -95,6 +97,8 @@ On Error GoTo ErrorHandler
     XmlHttp.Open "GET", Endpoint, True
     XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     XmlHttp.send
+	
+	Set XmlHttp = Nothing
 
 ErrorHandler:
 
