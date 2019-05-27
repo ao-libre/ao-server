@@ -73,7 +73,7 @@ On Error GoTo ErrorHandler
 
     Set XmlHttp = CreateObject("Microsoft.XmlHttp")
     
-    XmlHttp.Open "POST", Endpoint, False
+    XmlHttp.Open "POST", Endpoint, True
     XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
         
     'Por alguna razon tengo que castearlo a string, sino no funciona, la verdad no tengo idea por que ya que la variable es String
@@ -92,7 +92,7 @@ On Error GoTo ErrorHandler
 
     Set XmlHttp = CreateObject("Microsoft.XmlHttp")
     
-    XmlHttp.Open "GET", Endpoint, False
+    XmlHttp.Open "GET", Endpoint, True
     XmlHttp.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     XmlHttp.send
 
