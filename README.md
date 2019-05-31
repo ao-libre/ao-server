@@ -132,3 +132,4 @@ https://github.com/ao-libre/ao-cliente/wiki/How-to-create-and-publish-Releases%3
 While the Visual Basic 6.0 IDE is no longer supported, Microsoft's goal is that Visual Basic 6.0 applications continue to run on supported Windows versions. The resources available from this page should help you as you maintain existing applications, and as you migrate your functionality to .NET.
 
 https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/visual-basic-6.0-documentation
+
