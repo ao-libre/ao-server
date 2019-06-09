@@ -743,5 +743,9 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 21/05/2019: Optimizada funcion NameIndex (JuanMZ)
 * 22/05/2019: Se setea el Nivel Máximo desde Server.ini (jopiortiz)
 * 22/05/2019: Implementado Endpoint para cambiar password mediante la api hecha en node.js (jopiortiz/Recox)
-* 22/05/2019: Se encapsulo todo el comportamiento referido a la conexion de los Sockets/Winsocks con el servidor.
-* 22/05/2019: Eliminada la reconexion con el servidor del frmCrearPersonaje.
+
+- v0.13.9.1
+* 22/05/2019: Se encapsulo todo el comportamiento referido a la conexion de los Sockets/Winsocks con el servidor. (jopiortiz)
+* 22/05/2019: Eliminada la reconexion con el servidor del frmCrearPersonaje.(jopiortiz)
+* 09/06/2019: Las llamadas hechas por xmlHttp ahora son asincronicas. (Recox)
+
