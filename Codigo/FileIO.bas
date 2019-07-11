@@ -1926,12 +1926,12 @@ Sub CargarCiudades()
 
     Set Lector = Nothing
     
-        Ciudades(eCiudad.cUllathorpe) = Ullathorpe
-        Ciudades(eCiudad.cNix) = Nix
-        Ciudades(eCiudad.cBanderbill) = Banderbill
-        Ciudades(eCiudad.cLindos) = Lindos
-        Ciudades(eCiudad.cArghal) = Arghal
-        Ciudades(eCiudad.cArkhein) = Arkhein
+    Ciudades(eCiudad.cUllathorpe) = Ullathorpe
+    Ciudades(eCiudad.cNix) = Nix
+    Ciudades(eCiudad.cBanderbill) = Banderbill
+    Ciudades(eCiudad.cLindos) = Lindos
+    Ciudades(eCiudad.cArghal) = Arghal
+    Ciudades(eCiudad.cArkhein) = Arkhein
 
 End Sub
 
