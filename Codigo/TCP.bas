@@ -1588,8 +1588,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                 .Pos = CustomSpawnMap
                 mapa = CustomSpawnMap.Map
             Else
-                .Pos = Ciudades(.Hogar) 'Nemahuak
-                mapa = Ciudades(.Hogar).Map 'Nemahuak.Map
+                'Dejo esto comentado aqui por si se quiere utilizar la ciudad elegida desde el menu
+                'Crear personaje, ahora se utiliza solo Nemahuak ya que es una ciudad nw utilizada desde la 0.13
+                ' .Pos = Ciudades(.Hogar)
+                ' mapa = Ciudades(.Hogar).Map
+                .Pos = Nemahuak
+                mapa = Nemahuak.Map
             End If
 
         Else
