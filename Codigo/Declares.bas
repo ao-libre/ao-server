@@ -1979,6 +1979,18 @@ Public EnPausa                            As Boolean
 
 Public EnTesting                          As Boolean
 
+' Sistema de Happy Hour (adaptado de 0.13.5)
+Public iniHappyHourActivado As Boolean ' GSZAO
+Public HappyHour As Single      ' 0.13.5
+Public HappyHourActivated As Boolean      ' 0.13.5
+
+Public Type tHappyHour ' GSZAO
+    Multi As Single ' Multi
+    Hour As Integer ' Hora
+End Type
+
+Public HappyHourDays(1 To 7) As tHappyHour    ' 0.13.5
+
 '*****************ARRAYS PUBLICOS*************************
 Public UserList()                         As User 'USUARIOS
 

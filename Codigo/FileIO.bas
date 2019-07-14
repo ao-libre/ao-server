@@ -1825,9 +1825,22 @@ Sub LoadSini()
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
 
+    ' HappyHour
+    Dim lDayNumberTemp As Long
+    Dim sDayName As String
+    
+    iniHappyHourActivado = IIf(Lector.GetValue("HAPPYHOUR", "Activado") = 1, True, False)
+    For lDayNumberTemp = 1 To 7
+        sDayName = Lector.GetValue("HAPPYHOUR", "Dia" & lDayNumberTemp)
+        HappyHourDays(lDayNumberTemp).Hour = val(ReadField(1, sDayName, 45)) ' GSZAO
+        HappyHourDays(lDayNumberTemp).Multi = val(ReadField(2, sDayName, 45)) ' 0.13.5
+        If HappyHourDays(lDayNumberTemp).Hour < 0 Or HappyHourDays(lDayNumberTemp).Hour > 23 Then HappyHourDays(lDayNumberTemp).Hour = 20 ' Hora de 0 a 23.
+        If HappyHourDays(lDayNumberTemp).Multi < 0 Then HappyHourDays(lDayNumberTemp).Multi = 0
+    Next
+
     'Conexion con la API hecha en Node.js      
     'Mas info aqui: https://github.com/ao-libre/ao-api-server/
-    ConexionAPI = CBool(GetVar(IniPath & "Server.ini", "CONEXIONAPI", "Activado"))
+    ConexionAPI = CBool(Lector.GetValue("CONEXIONAPI", "Activado"))
 
     'CHOTS | Database
     Database_Enabled = CBool(val(Lector.GetValue("DATABASE", "Enabled")))

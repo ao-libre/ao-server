@@ -366,6 +366,67 @@ Sub CheckIdleUser()
 
 End Sub
 
+Public Sub UpdateNpcsExp(ByVal Multiplicador As Single) ' 0.13.5
+    Dim NpcIndex As Long
+    For NpcIndex = 1 To LastNPC
+        With Npclist(NpcIndex)
+            .GiveEXP = .GiveEXP * Multiplicador
+            .flags.ExpCount = .flags.ExpCount * Multiplicador
+        End With
+    Next NpcIndex
+End Sub
+
+Private Sub HappyHourManager
+    If iniHappyHourActivado = True Then
+        Dim tmpHappyHour As Double
+    
+        ' HappyHour
+        Dim iDay As Integer ' 0.13.5
+
+        iDay = Weekday(Date)
+        tmpHappyHour = HappyHourDays(iDay).Multi
+         
+        If tmpHappyHour <> HappyHour Then ' 0.13.5
+            If HappyHourActivated Then
+                ' Reestablece la exp de los npcs
+               If HappyHour <> 0 Then Call UpdateNpcsExp(1 / HappyHour)
+             End If
+           
+            If tmpHappyHour = 1 Then ' Desactiva
+               Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_DIOS))
+                 HappyHourActivated = False
+           
+            Else ' Activa?
+                If HappyHourDays(iDay).Hour = Hour(Now) And tmpHappyHour > 0 Then ' GSZAO - Es la hora pautada?
+                    UpdateNpcsExp tmpHappyHour
+                    
+                    If HappyHour <> 1 Then
+                       Call SendData(SendTarget.ToAll, 0, _
+                           PrepareMessageConsoleMsg("Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%", FontTypeNames.FONTTYPE_DIOS))
+                    Else
+                       Call SendData(SendTarget.ToAll, 0, _
+                           PrepareMessageConsoleMsg("Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!", FontTypeNames.FONTTYPE_DIOS))
+                    End If
+                    
+                    HappyHourActivated = True
+                Else
+                    HappyHourActivated = False ' GSZAO
+                End If
+            End If
+         
+            HappyHour = tmpHappyHour
+        End If
+    Else
+        ' Si estaba activado, lo deshabilitamos
+        If HappyHour <> 0 Then
+            Call UpdateNpcsExp(1 / HappyHour)
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_DIOS))
+            HappyHourActivated = False
+            HappyHour = 0
+        End If
+    End If
+End Sub
+
 Private Sub AutoSave_Timer()
 
     On Error GoTo ErrHandler
@@ -379,6 +440,8 @@ Private Sub AutoSave_Timer()
 
     Minutos = Minutos + 1
     MinsPjesSave = MinsPjesSave + 1
+
+    Call HappyHourManager
 
     '??????????
     Call ModAreas.AreasOptimizacion
