@@ -726,19 +726,26 @@ Private Sub SetAttributesToNewUser(ByVal UserIndex As Integer, ByVal UserClase A
             MiInt = .Stats.UserAtributos(eAtributos.Inteligencia) * 3
             .Stats.MaxMAN = MiInt
             .Stats.MinMAN = MiInt
-        ElseIf UserClase = eClass.Cleric Or UserClase = eClass.Druid Or UserClase = eClass.Bard Or UserClase = eClass.Assasin Then
-            .Stats.MaxMAN = 50
-            .Stats.MinMAN = 50
-        ElseIf UserClase = eClass.Bandit Then 'Mana Inicial del Bandido (ToxicWaste)
+        ElseIf UserClase = eClass.Cleric or _
+               UserClase = eClass.Druid or _
+               UserClase = eClass.Bard or _
+               UserClase = eClass.Assasin or _
+               UserClase = eClass.Bandit or _
+               UserClase = eClass.Paladin Then
             .Stats.MaxMAN = 50
             .Stats.MinMAN = 50
         Else
             .Stats.MaxMAN = 0
             .Stats.MinMAN = 0
-
         End If
     
-        If UserClase = eClass.Mage Or UserClase = eClass.Cleric Or UserClase = eClass.Druid Or UserClase = eClass.Bard Or UserClase = eClass.Assasin Then
+        If UserClase = eClass.Cleric or _
+           UserClase = eClass.Druid or _
+           UserClase = eClass.Bard or _
+           UserClase = eClass.Assasin or _
+           UserClase = eClass.Bandit or _
+           UserClase = eClass.Paladin Then 
+
             .Stats.UserHechizos(1) = 2
         
             If UserClase = eClass.Druid Then .Stats.UserHechizos(2) = 46
