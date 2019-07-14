@@ -5880,8 +5880,8 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
+    'Last Modification: 14/07/19 (Recox)
+    'Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista (Recox)
     '***************************************************
     Dim i     As Long
 
@@ -5890,17 +5890,26 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
     With UserList(Userindex)
         'Remove packet ID
         Call .incomingData.ReadByte
-        
+
+        Dim UsersNamesOnlines As String
+
         For i = 1 To LastUser
 
             If LenB(UserList(i).Name) <> 0 Then
-                If UserList(i).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then Count = Count + 1
 
+                If i = LastUser Then
+                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
+                Else
+                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                End If
+                
+                Count = Count + 1
             End If
 
         Next i
         
-        Call WriteConsoleMsg(Userindex, "NUmero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
+        Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
 
     End With
 
