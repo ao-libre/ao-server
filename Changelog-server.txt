@@ -747,3 +747,9 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.9.1
 * 09/06/2019: Las llamadas hechas por xmlHttp ahora son asincronicas. (Recox)
 
+- v0.13.9.2
+* 11/07/2019: Se agrego Nemahuak como ciudad default otra vez. (Recox)
+* 14/07/2019: Added Initial Mana on Paladin when the user is created (Recox)
+* 14/07/2019: /Online muestra lista usuarios online, ahora se suman gms a la cuenta y a la lista de nombres (Recox)
+* 14/07/2019: Added happy hour experience functionality (Recox)
+
