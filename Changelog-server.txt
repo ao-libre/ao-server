@@ -753,3 +753,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 14/07/2019: /Online muestra lista usuarios online, ahora se suman gms a la cuenta y a la lista de nombres (Recox)
 * 14/07/2019: Added happy hour experience functionality (Recox)
 
+- v0.13.9.3
+* 24/07/2019: Bugfix los npcs de agua respawnean con menos frecuencia en tierra. (Wyr0X)
+
