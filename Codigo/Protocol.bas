@@ -10462,10 +10462,11 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 18/09/2010
+    'Last Modification: 11/05/2019
     '02/03/2009: ZaMa - Cuando editas nivel, chequea si el pj puede permanecer en clan faccionario
     '11/06/2009: ZaMa - Todos los comandos se pueden usar aunque el pj este offline
     '18/09/2010: ZaMa - Ahora se puede editar la vida del propio pj (cualquier rm o dios).
+    '11/05/2019: Jopi - No registramos en los logs si te editas a vos mismo.
     '***************************************************
     If UserList(Userindex).incomingData.Length < 8 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
@@ -10965,7 +10966,10 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                 End Select
                 
                 CommandString = CommandString & Arg1 & " " & Arg2
-                Call LogGM(.Name, CommandString & " " & UserName)
+                
+                If Userindex <> tUser Then
+                    Call LogGM(.Name, CommandString & " " & UserName)
+                End If
                 
             End If
 
