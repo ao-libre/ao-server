@@ -9591,8 +9591,9 @@ Private Sub HandleWarpChar(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 26/03/2009
-    '26/03/2009: ZaMa -  Chequeo que no se teletransporte a un tile donde haya un char o npc.
+    'Last Modification: 11/08/2019
+    '26/03/2009: ZaMa - Chequeo que no se teletransporte a un tile donde haya un char o npc.
+    '11/08/2019: Jopi - No registramos en los logs si te teletransportas a vos mismo.
     '***************************************************
     If UserList(Userindex).incomingData.Length < 7 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
@@ -9658,10 +9659,9 @@ Private Sub HandleWarpChar(ByVal Userindex As Integer)
                         ' Agrego esto para no llenar consola de mensajes al hacer SHIFT + CLICK DERECHO
                         If Userindex <> tUser Then
                             Call WriteConsoleMsg(Userindex, UserList(tUser).Name & " transportado.", FontTypeNames.FONTTYPE_INFO)
-                        End If
-                        
-                        Call LogGM(.Name, "Transporto a " & UserList(tUser).Name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
+                            Call LogGM(.Name, "Transporto a " & UserList(tUser).Name & " hacia " & "Mapa" & Map & " X:" & X & " Y:" & Y)
 
+                        End If
                     End If
 
                 Else
