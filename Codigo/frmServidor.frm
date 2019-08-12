@@ -249,9 +249,9 @@ Begin VB.Form frmServidor
          Top             =   1320
          Width           =   1455
       End
-      Begin VB.CommandButton cmdRecargarMD5s 
+      Begin VB.CommandButton cmdRecargarClanes 
          BackColor       =   &H00FFC0C0&
-         Caption         =   "Deshabilitado"
+         Caption         =   "Clanes"
          Height          =   375
          Left            =   3240
          Style           =   1  'Graphical
@@ -355,6 +355,10 @@ Attribute VB_Exposed = False
 'Pablo Ignacio Marquez
 
 Option Explicit
+
+Private Sub cmdRecargarClanes_Click()
+    Call LoadGuildsDB
+End Sub
 
 Private Sub Form_Load()
 
