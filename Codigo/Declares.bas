@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, x, Y, body, clase, race, Email, obj, Length As Variant
+    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
 
 #End If
 
@@ -986,7 +986,7 @@ End Type
 Public Type Position
 
     x As Integer
-    Y As Integer
+    y As Integer
 
 End Type
 
@@ -994,7 +994,7 @@ Public Type WorldPos
 
     Map As Integer
     x As Integer
-    Y As Integer
+    y As Integer
 
 End Type
 
@@ -1150,7 +1150,7 @@ Public Type ObjData
 
 End Type
 
-Public Type obj
+Public Type Obj
 
     ObjIndex As Integer
     Amount As Integer
@@ -1286,7 +1286,7 @@ Public Type tQuest
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
-    RequiredOBJ() As obj
+    RequiredOBJ() As Obj
     
     RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
@@ -1295,7 +1295,7 @@ Public Type tQuest
     RewardEXP As Long
     
     RewardOBJs As Byte
-    RewardOBJ() As obj
+    RewardOBJ() As Obj
 
 End Type
 
@@ -1363,7 +1363,10 @@ End Type
 
 'Flags
 Public Type UserFlags
-
+    ' Retos
+    SlotReto As Byte
+    SlotRetoUser As Byte
+    
     ' Hunger Games
     SG As SurvivalGames
     BeforeMap As Integer 'Antes mapa
@@ -1477,7 +1480,7 @@ Public Type UserFlags
 End Type
 
 Public Type UserCounters
-
+    TimeFight As Long
     IdleCount As Long
     AttackCounter As Integer
     HPCounter As Integer
@@ -1580,9 +1583,19 @@ Public Type AccountUser
 
 End Type
 
+' Info de los retos
+Public Type tUserRetoTemp
+    Tipo As eTipoReto
+    RequiredGld As Long
+    Users() As String
+    Accepts() As Byte
+End Type
+
 'Tipo de los Usuarios
 Public Type User
-
+    PosAnt As WorldPos
+    RetoTemp As tUserRetoTemp
+    
     Name As String
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
@@ -1844,9 +1857,9 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Integer
-    Userindex As Integer
+    UserIndex As Integer
     NpcIndex As Integer
-    ObjInfo As obj
+    ObjInfo As Obj
     TileExit As WorldPos
     trigger As eTrigger
 
@@ -2408,7 +2421,7 @@ Public InventarioUsarConfiguracionPersonalizada As Boolean
 
 Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
-Public UsarMundoPropio As Boolean 
+Public UsarMundoPropio As Boolean
 
 Public ConexionAPI As Boolean
 
