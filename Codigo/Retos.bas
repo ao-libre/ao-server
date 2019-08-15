@@ -1,8 +1,8 @@
 Attribute VB_Name = "Retos"
-' Lautaro Leonel Marino. Luján, Buenos Aires
+' Lautaro Leonel Marino. Lujï¿½n, Buenos Aires
 ' 13/08/2019
-' Módulo de retos.
-' Desde acá se manejan los retos desde 1vs1 hasta nVSn, configurable de forma fácil.
+' Mï¿½dulo de retos.
+' Desde acï¿½ se manejan los retos desde 1vs1 hasta nVSn, configurable de forma fï¿½cil.
 
 Option Explicit
 
@@ -40,25 +40,28 @@ Public Arenas(1 To MAX_RETOS_SIMULTANEOS) As tMapEvent
 Public Retos(1 To MAX_RETOS_SIMULTANEOS) As tRetos
 
 Public Sub LoadArenas()
-10        Arenas(1).Map = 1
+'Pongo para usar de reto los mapas de casamiento y gms
+'No creo que sea lo mejor pero al menos no estan en ulla los duelos asi... (Recox)
+
+10        Arenas(1).Map = 199
 20        Arenas(1).X = 25
 30        Arenas(1).X2 = 40
 40        Arenas(1).Y = 19
 50        Arenas(1).Y2 = 32
           
-60        Arenas(2).Map = 1
+60        Arenas(2).Map = 276
 70        Arenas(2).X = 61
 80        Arenas(2).X2 = 76
 90        Arenas(2).Y = 19
 100       Arenas(2).Y2 = 32
           
-110       Arenas(3).Map = 1
+110       Arenas(3).Map = 208
 120       Arenas(3).X = 25
 130       Arenas(3).X2 = 40
 140       Arenas(3).Y = 46
 150       Arenas(3).Y2 = 59
           
-160       Arenas(4).Map = 1
+160       Arenas(4).Map = 198
 170       Arenas(4).X = 59
 180       Arenas(4).X2 = 74
 190       Arenas(4).Y = 46
@@ -130,7 +133,7 @@ Private Function FreeSlotArena() As Byte
 60        Next LoopC
 End Function
 Private Function FreeSlot() As Byte
-          ' • Slot libre para comenzar un nuevo enfrentamiento
+          ' ï¿½ Slot libre para comenzar un nuevo enfrentamiento
           Dim LoopC As Integer
           
 10        FreeSlot = 0
@@ -220,7 +223,7 @@ Private Function CanSetUsers(ByRef Users() As String) As Boolean
           Dim LoopC As Integer, loopX As Integer
           Dim Tmp As String
           
-          ' • Chequeos de cantidad de personajes teniendo en cuenta el tipo de reto.
+          ' ï¿½ Chequeos de cantidad de personajes teniendo en cuenta el tipo de reto.
           
 20        If SetSubTipo(Users()) = 0 Then
 30            CanSetUsers = False
@@ -260,7 +263,7 @@ End Function
 Private Function CanContinueFight(ByVal Userindex As Integer) As Boolean
 10        On Error GoTo Error
           
-          ' • Si encontramos un personaje vivo el evento continua.
+          ' ï¿½ Si encontramos un personaje vivo el evento continua.
           Dim LoopC As Integer
           Dim SlotReto As Byte
           Dim SlotRetoUser As Byte
@@ -295,7 +298,7 @@ End Function
 Private Function AttackerFight(ByVal SlotReto As Byte, ByVal TeamUser As Byte) As Integer
 10        On Error GoTo Error
 
-          ' • Buscamos al AttackerIndex (Caso abandono del evento)
+          ' ï¿½ Buscamos al AttackerIndex (Caso abandono del evento)
           Dim LoopC As Integer
           
 20        With Retos(SlotReto)
@@ -318,8 +321,8 @@ Private Function CanAcceptFight(ByVal Userindex As Integer, _
 
 10        On Error GoTo Error
           
-          ' • Username es el que mando el reto al principio.
-          ' • Si está online y cumple con los requisitos entra
+          ' ï¿½ Username es el que mando el reto al principio.
+          ' ï¿½ Si estï¿½ online y cumple con los requisitos entra
           Dim SlotTemp As Byte
           Dim tUser As Integer
           Dim ArrayNulo As Long
@@ -345,7 +348,7 @@ Private Function CanAcceptFight(ByVal Userindex As Integer, _
 140               End If
                   
 150               If .RetoTemp.Accepts(SlotTemp) = 1 Then
-                      ' El personaje ya aceptó.
+                      ' El personaje ya aceptï¿½.
 160                   CanAcceptFight = False
 170                   Exit Function
 180               End If
@@ -355,7 +358,7 @@ Private Function CanAcceptFight(ByVal Userindex As Integer, _
 190               .RetoTemp.Accepts(SlotTemp) = 1
 200               CanAcceptFight = True
                   
-                  ' • Chequeo de aceptaciones
+                  ' ï¿½ Chequeo de aceptaciones
 210               If CheckAccepts(.RetoTemp.Accepts) Then
 220                   GoFight tUser
 230               End If
@@ -374,7 +377,7 @@ Private Function ValidateFight_Users(ByVal Userindex As Integer, _
                                               
 10        On Error GoTo Error
           
-          ' • Validamos al Team seleccionado.
+          ' ï¿½ Validamos al Team seleccionado.
           
           Dim LoopC As Integer
           Dim tUser As Integer
@@ -392,15 +395,15 @@ Private Function ValidateFight_Users(ByVal Userindex As Integer, _
                   End If
                   
 50                If tUser <= 0 Then
-60                    'SendMsjUsers "El personaje " & Users(LoopC) & " está offline.", Users()
-                      WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " está offline", FontTypeNames.FONTTYPE_INFO
+60                    'SendMsjUsers "El personaje " & Users(LoopC) & " estï¿½ offline.", Users()
+                      WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " estï¿½ offline", FontTypeNames.FONTTYPE_INFO
 70                    ValidateFight_Users = False
 80                    Exit Function
 90                End If
                   
 100               With UserList(tUser)
 110                   If .flags.Muerto = 1 Then
-                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " está muerto.", FontTypeNames.FONTTYPE_INFO
+                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " estï¿½ muerto.", FontTypeNames.FONTTYPE_INFO
 130                       ValidateFight_Users = False
 140                       Exit Function
 150                   End If
@@ -411,13 +414,13 @@ Private Function ValidateFight_Users(ByVal Userindex As Integer, _
 200                   End If
                       
 210                   If (.flags.SlotReto > 0) Then
-                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " está participando en otro evento.", FontTypeNames.FONTTYPE_INFO
+                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " estï¿½ participando en otro evento.", FontTypeNames.FONTTYPE_INFO
 230                       ValidateFight_Users = False
 240                       Exit Function
 250                   End If
                       
 260                   If .flags.Comerciando Then
-                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " no está disponible en este momento.", FontTypeNames.FONTTYPE_INFO
+                          WriteConsoleMsg Userindex, "El personaje " & Users(LoopC) & " no estï¿½ disponible en este momento.", FontTypeNames.FONTTYPE_INFO
 280                       ValidateFight_Users = False
 290                       Exit Function
 300                   End If
@@ -446,20 +449,20 @@ Private Function ValidateFight(ByVal Userindex As Integer, _
                                       
 10        On Error GoTo Error
           
-              ' • Validamos el enfrentamiento que se va a disputar
-              ' • UserIndex = Personaje que inició la invitación.
+              ' ï¿½ Validamos el enfrentamiento que se va a disputar
+              ' ï¿½ UserIndex = Personaje que iniciï¿½ la invitaciï¿½n.
               '(Userindex, Tipo, GldRequired, Users) Then
               
           Dim LoopC As Integer
           Dim tUser As Integer
 
 70        If GldRequired < 0 Or GldRequired > 100000000 Then
-              WriteConsoleMsg Userindex, "Oro Mínimo: 0 . Oro Máximo 100.000.000", FontTypeNames.FONTTYPE_INFO
+              WriteConsoleMsg Userindex, "Oro Mï¿½nimo: 0 . Oro Mï¿½ximo 100.000.000", FontTypeNames.FONTTYPE_INFO
 90            ValidateFight = False
 100           Exit Function
 110       End If
           
-          ' • Los Team están diferentes en cuanto a cantidad. [LOG ERROR ANTI CHEAT]
+          ' ï¿½ Los Team estï¿½n diferentes en cuanto a cantidad. [LOG ERROR ANTI CHEAT]
 120       If Not CanSetUsers(Users) Then
               'Mensaje: Intento hackear el sistema
 130           LogRetos "POSIBLE HACKEO: " & UserList(Userindex).Name & " hackeo el sistema de retos."
@@ -486,7 +489,7 @@ Private Function StrTeam(ByRef Users() As tRetoUser) As String
           
 10        On Error GoTo Error
           
-          ' • Devuelve ENEMIGOS vs TEAM
+          ' ï¿½ Devuelve ENEMIGOS vs TEAM
           
           Dim LoopC As Integer
           Dim strtemp(1) As String
@@ -542,7 +545,7 @@ End Function
 Private Function CheckAccepts(ByRef Accepts() As Byte) As Boolean
 10        On Error GoTo Error
           
-          ' • Si encontramos a un usuario que no haya aceptado retornamos false.
+          ' ï¿½ Si encontramos a un usuario que no haya aceptado retornamos false.
           Dim LoopC As Integer
           
 20        CheckAccepts = True
@@ -564,7 +567,7 @@ Private Function SearchFight(ByVal UserName As String, _
                                 ByRef Users() As String, _
                                 ByRef Accepts() As Byte) As Byte
                                       
-          ' • Buscamos la invitación que nos realizo el personaje UserName
+          ' ï¿½ Buscamos la invitaciï¿½n que nos realizo el personaje UserName
           
 10    On Error GoTo Error
 
@@ -614,14 +617,14 @@ Private Sub SendInvitation(ByVal Userindex As Integer, _
                                   
 10        On Error GoTo Error
           
-          ' • Enviamos la solicitud del duelo a los demás y guardamos los datos temporales al usuario mandatario.
+          ' ï¿½ Enviamos la solicitud del duelo a los demï¿½s y guardamos los datos temporales al usuario mandatario.
           
           Dim LoopC As Integer
           Dim strtemp As String
           Dim tUser As Integer
           Dim str() As tRetoUser
           
-          ' • Save data temp
+          ' ï¿½ Save data temp
 20        With UserList(Userindex)
           
               
@@ -632,7 +635,7 @@ Private Sub SendInvitation(ByVal Userindex As Integer, _
 60                .RequiredGld = GldRequired
 90                .Users = Users
                   
-110               .Accepts(UBound(Users())) = 1 ' El último personaje es el que envió por lo tanto ya aceptó.
+110               .Accepts(UBound(Users())) = 1 ' El ï¿½ltimo personaje es el que enviï¿½ por lo tanto ya aceptï¿½.
 120           End With
 130       End With
           
@@ -664,7 +667,7 @@ End Sub
 
 
 Private Sub GoFight(ByVal Userindex As Integer)
-          ' • Comienzo del duelo
+          ' ï¿½ Comienzo del duelo
           
 10    On Error GoTo Error
 
@@ -699,7 +702,7 @@ End Sub
 Private Sub SetUserEvent(ByVal SlotReto As Byte, ByRef Users() As tRetoUser)
 
 10        On Error GoTo Error
-          ' • Guardamos los slot en los usuarios y seteamos el team.
+          ' ï¿½ Guardamos los slot en los usuarios y seteamos el team.
           
           Dim LoopC As Integer
           Dim SlotRetoUser As Byte
@@ -738,7 +741,7 @@ Error:
 End Sub
 Private Sub WarpFight(ByRef Users() As tRetoUser)
 
-          ' • Teletransportamos a los personajes a la sala de combate
+          ' ï¿½ Teletransportamos a los personajes a la sala de combate
           
 10    On Error GoTo Error
 
@@ -764,7 +767,7 @@ Private Sub WarpFight(ByRef Users() As tRetoUser)
 130               With UserList(tUser)
 140                   .Counters.TimeFight = 10
 150                   Call WriteUserInEvent(tUser)
-                      ' Mensaje: ¡Preparate en 10 segundos comenzarás a luchar!
+                      ' Mensaje: ï¿½Preparate en 10 segundos comenzarï¿½s a luchar!
                   
 160                   ClosestStablePos Pos, Pos
 170                   WarpUserChar tUser, Pos.Map, Pos.X, Pos.Y, False
@@ -818,12 +821,12 @@ Error:
 90        LogRetos "[" & Err.Number & "] " & Err.description & ") PROCEDIMIENTO : SendMsjUsers()"
 End Sub
 
-Private Function ExistCompañero(ByVal Userindex As Integer) As Boolean
+Private Function ExistCompaï¿½ero(ByVal Userindex As Integer) As Boolean
           Dim LoopC As Integer
           Dim SlotReto As Byte
           Dim SlotRetoUser As Byte
           
-   On Error GoTo ExistCompañero_Error
+   On Error GoTo ExistCompaï¿½ero_Error
 
 10        SlotReto = UserList(Userindex).flags.SlotReto
 20        SlotRetoUser = UserList(Userindex).flags.SlotRetoUser
@@ -833,7 +836,7 @@ Private Function ExistCompañero(ByVal Userindex As Integer) As Boolean
 50                If .Users(LoopC).Userindex > 0 Then
 60                    If LoopC <> SlotRetoUser Then
 70                        If .Users(LoopC).Team = .Users(SlotRetoUser).Team Then
-80                            ExistCompañero = True
+80                            ExistCompaï¿½ero = True
 90                            Exit For
 100                       End If
 110                   End If
@@ -844,16 +847,16 @@ Private Function ExistCompañero(ByVal Userindex As Integer) As Boolean
    On Error GoTo 0
    Exit Function
 
-ExistCompañero_Error:
+ExistCompaï¿½ero_Error:
 
-    LogRetos "Error " & Err.Number & " (" & Err.description & ") in procedure ExistCompañero of Módulo mRetos in line " & Erl
+    LogRetos "Error " & Err.Number & " (" & Err.description & ") in procedure ExistCompaï¿½ero of Mï¿½dulo mRetos in line " & Erl
           
 End Function
 Public Sub UserdieFight(ByVal Userindex As Integer, ByVal AttackerIndex As Integer, ByVal Forzado As Boolean)
 
 10    On Error GoTo Error
 
-          ' • Un personaje en reto es matado por otro.
+          ' ï¿½ Un personaje en reto es matado por otro.
           Dim LoopC As Integer
           Dim strtemp As String
           Dim SlotReto As Byte
@@ -866,7 +869,7 @@ Public Sub UserdieFight(ByVal Userindex As Integer, ByVal AttackerIndex As Integ
           
 30        Deslogged = False
               
-          ' • Caso hipotetico de deslogeo. El funcionamiento es el mismo, con la diferencia de que se busca al ganador.
+          ' ï¿½ Caso hipotetico de deslogeo. El funcionamiento es el mismo, con la diferencia de que se busca al ganador.
 40        If AttackerIndex = 0 Then
 50            AttackerIndex = AttackerFight(SlotReto, Retos(SlotReto).Users(UserList(Userindex).flags.SlotRetoUser).Team)
               
@@ -874,7 +877,7 @@ Public Sub UserdieFight(ByVal Userindex As Integer, ByVal AttackerIndex As Integ
 70        End If
           
 80        TeamUser = Retos(SlotReto).Users(UserList(AttackerIndex).flags.SlotRetoUser).Team
-90        ExistTeam = ExistCompañero(Userindex)
+90        ExistTeam = ExistCompaï¿½ero(Userindex)
           
           
           ' Deslogeo de todos los integrantes del team
@@ -968,7 +971,7 @@ End Sub
 
 Private Sub FinishFight(ByVal SlotReto As Byte, ByVal Team As Byte, Optional ByVal ChangeTeam As Boolean)
 
-          ' • Finalizamos el reto o el round.
+          ' ï¿½ Finalizamos el reto o el round.
           
 10    On Error GoTo Error
 
@@ -1010,8 +1013,8 @@ Private Sub FinishFight(ByVal SlotReto As Byte, ByVal Team As Byte, Optional ByV
 280           Else
 290               strtemp = Left$(strtemp, Len(strtemp) - 2)
         
-300               SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Retos» " & StrTeam(.Users()) & ". Ganador " & strtemp & ". Apuesta por " & .RequiredGld & " Monedas de Oro", FontTypeNames.FONTTYPE_INFO)
-310               LogRetos "Retos» " & StrTeam(.Users()) & ". Ganador el team de " & strtemp & ". Apuesta por " & .RequiredGld & " Monedas de Oro"
+300               SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Retosï¿½ " & StrTeam(.Users()) & ". Ganador " & strtemp & ". Apuesta por " & .RequiredGld & " Monedas de Oro", FontTypeNames.FONTTYPE_INFO)
+310               LogRetos "Retosï¿½ " & StrTeam(.Users()) & ". Ganador el team de " & strtemp & ". Apuesta por " & .RequiredGld & " Monedas de Oro"
 320           End If
 330       End With
           
@@ -1021,7 +1024,7 @@ Error:
 350       LogRetos "[" & Err.Number & "] " & Err.description & ") PROCEDIMIENTO : FinishFight() en linea " & Erl
 End Sub
 
-' • Procedimientos necesarios para enviar,aceptar,abandonar.
+' ï¿½ Procedimientos necesarios para enviar,aceptar,abandonar.
 
 Public Sub SendFight(ByVal Userindex As Integer, _
                             ByVal GldRequired As Long, _
@@ -1056,7 +1059,7 @@ Public Sub AcceptFight(ByVal Userindex As Integer, _
               
 30            If CanAcceptFight(Userindex, UserName) Then
                   
-40                WriteConsoleMsg Userindex, "Has aceptado la invitación.", FontTypeNames.FONTTYPE_INFO
+40                WriteConsoleMsg Userindex, "Has aceptado la invitaciï¿½n.", FontTypeNames.FONTTYPE_INFO
                   ' Has aceptado la invitacion bababa
 50            End If
 60        End With
@@ -1067,7 +1070,7 @@ Error:
 End Sub
 
 Public Sub WarpPosAnt(ByVal Userindex As Integer)
-          ' • Warpeo del personaje a su posición anterior.
+          ' ï¿½ Warpeo del personaje a su posiciï¿½n anterior.
           
           Dim Pos As WorldPos
           
@@ -1092,6 +1095,6 @@ Public Sub WarpPosAnt(ByVal Userindex As Integer)
 
 WarpPosAnt_Error:
 
-    LogError "Error " & Err.Number & " (" & Err.description & ") in procedure WarpPosAnt of Módulo General in line " & Erl
+    LogError "Error " & Err.Number & " (" & Err.description & ") in procedure WarpPosAnt of Mï¿½dulo General in line " & Erl
 End Sub
 
