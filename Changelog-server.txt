@@ -757,8 +757,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 24/07/2019: Bugfix los npcs de agua respawnean con menos frecuencia en tierra. (Wyr0X)
 * 09/08/2019: Fix, los NPC's se quedaban trabados en los bloqueos. (jopiortiz)
 
-
+- v0.13.11
 * 13/08/2019: Retos 1vs1,2vs2,3vs3,nVSn (MarinoLautaro)
-		- /RETOS
-		- /ACEPTAR NICK
+		- Para retar, /RETOS
+		- Para aceptar, /ACEPTAR NICK
 * 14/08/2019: Se cambiaron los mapas de duelos por otros que no sean ciudades. (Recox)
