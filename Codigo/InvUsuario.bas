@@ -979,7 +979,10 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     
     With UserList(UserIndex)
         ObjIndex = .Invent.Object(Slot).ObjIndex
-        Obj = ObjData(ObjIndex)
+        obj = ObjData(ObjIndex)
+        
+        ' No se pueden usar muebles.
+        If obj.OBJType = eOBJType.otMuebles Then Exit Sub
         
         If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
             Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -1335,7 +1338,10 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     
         If .Invent.Object(Slot).Amount = 0 Then Exit Sub
         
-        Obj = ObjData(.Invent.Object(Slot).ObjIndex)
+        obj = ObjData(.Invent.Object(Slot).ObjIndex)
+        
+        ' No se pueden usar muebles.
+        If obj.OBJType = eOBJType.otMuebles Then Exit Sub
         
         If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
             Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
