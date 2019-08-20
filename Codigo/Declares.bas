@@ -751,6 +751,7 @@ Public Enum eOBJType
     otcasco = 17
     otAnillo = 18
     otTeleport = 19
+    otMuebles = 20
     otYacimiento = 22
     otMinerales = 23
     otPergaminos = 24
