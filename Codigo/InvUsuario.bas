@@ -829,7 +829,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
 
                 With .Char
-                    Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                    Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                 End With
                  
@@ -846,7 +846,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                     With .Char
                         .CascoAnim = NingunCasco
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                     End With
 
@@ -865,7 +865,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                     With .Char
                         .ShieldAnim = NingunEscudo
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                     End With
 
@@ -880,24 +880,74 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End With
                 
-                Call InvUsuario.TirarTodosLosItemsEnMochila(UserIndex)
+                Call InvUsuario.TirarTodosLosItemsEnMochila(Userindex)
                 .CurrentInventorySlots = MAX_NORMAL_INVENTORY_SLOTS
 
         End Select
 
     End With
     
-    Call WriteUpdateUserStats(UserIndex)
-    Call UpdateUserInv(False, UserIndex, Slot)
+    Call WriteUpdateUserStats(Userindex)
+    Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en Desquipar. Error " & Err.Number & " : " & Err.description)
 
 End Sub
 
-Function SexoPuedeUsarItem(ByVal UserIndex As Integer, _
+Function EsUsable(ByVal ObjIndex As Integer)
+'*************************************************
+'Author: Jopi
+'Revisa si el objeto puede ser equipado/usado.
+'*************************************************
+    Dim obj As ObjData
+        obj = ObjData(ObjIndex)
+    
+    Select Case obj.OBJType
+    
+        Case eOBJType.otArbolElfico
+            EsUsable = False
+        
+        Case eOBJType.otArboles
+            EsUsable = False
+        
+        Case eOBJType.otCarteles
+            EsUsable = False
+        
+        Case eOBJType.otForos
+            EsUsable = False
+        
+        Case eOBJType.otFragua
+            EsUsable = False
+        
+        Case eOBJType.otMuebles
+            EsUsable = False
+        
+        Case eOBJType.otPuertas
+            EsUsable = False
+        
+        Case eOBJType.otTeleport
+            EsUsable = False
+        
+        Case eOBJType.otYacimiento
+            EsUsable = False
+        
+        Case eOBJType.otYacimientoPez
+            EsUsable = False
+        
+        Case eOBJType.otYunque
+            EsUsable = False
+        
+        Case Else
+            EsUsable = True
+    
+    End Select
+
+End Function
+
+Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
                            ByVal ObjIndex As Integer, _
                            Optional ByRef sMotivo As String) As Boolean
     '***************************************************
@@ -935,8 +985,6 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
     '***************************************************
 
     If ObjData(ObjIndex).Real = 1 Then
-        If Not criminal(UserIndex) Then
-            FaccionPuedeUsarItem = esArmada(UserIndex)
         Else
             FaccionPuedeUsarItem = False
 
@@ -982,7 +1030,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         obj = ObjData(ObjIndex)
         
         ' No se pueden usar muebles.
-        If obj.OBJType = eOBJType.otMuebles Then Exit Sub
+        If Not EsUsable(ObjIndex) Then Exit Sub
         
         If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
             Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -1257,8 +1305,6 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 .Invent.Object(Slot).Equipped = 1
                 .Invent.MochilaEqpObjIndex = ObjIndex
                 .Invent.MochilaEqpSlot = Slot
-                .CurrentInventorySlots = MAX_NORMAL_INVENTORY_SLOTS + Obj.MochilaType * 5
-                Call WriteAddSlots(UserIndex, Obj.MochilaType)
 
         End Select
 
@@ -1340,11 +1386,8 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         
         obj = ObjData(.Invent.Object(Slot).ObjIndex)
         
-        ' No se pueden usar muebles.
-        If obj.OBJType = eOBJType.otMuebles Then Exit Sub
-        
-        If Obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
-            Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
+        If obj.Newbie = 1 And Not EsNewbie(Userindex) Then
+            Call WriteConsoleMsg(Userindex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
         End If
@@ -1371,7 +1414,10 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         .flags.TargetObjInvIndex = ObjIndex
         .flags.TargetObjInvSlot = Slot
         
-        Select Case Obj.OBJType
+        ' No se pueden usar muebles.
+        If Not EsUsable(ObjIndex) Then Exit Sub
+        
+        Select Case obj.OBJType
 
             Case eOBJType.otUseOnce
 
