@@ -985,6 +985,8 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
     '***************************************************
 
     If ObjData(ObjIndex).Real = 1 Then
+        If Not criminal(Userindex) Then
+            FaccionPuedeUsarItem = esArmada(Userindex)
         Else
             FaccionPuedeUsarItem = False
 
