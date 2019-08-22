@@ -597,8 +597,11 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1000
-NROITEMS=1
+NROITEMS=4
 Obj1=534-1000 'Odre Vacía
+Obj2=1127-1000 'Manual de Liderazgo
+Obj3=1128-1000 'Manual de Supervivencia
+Obj4=1129-1000 'Manual de Navegacion
 BackUp=1
 
 #############################################
