@@ -602,6 +602,7 @@ Obj1=534-1000 'Odre Vacía
 Obj2=1127-1000 'Manual de Liderazgo
 Obj3=1128-1000 'Manual de Supervivencia
 Obj4=1129-1000 'Manual de Navegacion
+InvReSpawn=0
 BackUp=1
 
 #############################################
