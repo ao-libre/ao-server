@@ -2003,16 +2003,16 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         
                     Case 1128   ' Manual de Supervivencia
                         
-                        If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
-                            .Stats.UserSkills(eSkill.Liderazgo) = 100
+                        If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
+                            .Stats.UserSkills(eSkill.Supervivencia) = 100
                             Call QuitarUserInvItem(Userindex, Slot, 1)
                             Call UpdateUserInv(False, Userindex, Slot)
                         End If
                         
                     Case 1129   ' Manual de Navegacion
                         
-                        If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
-                            .Stats.UserSkills(eSkill.Liderazgo) = 100
+                        If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
+                            .Stats.UserSkills(eSkill.Navegacion) = 100
                             Call QuitarUserInvItem(Userindex, Slot, 1)
                             Call UpdateUserInv(False, Userindex, Slot)
                         End If
