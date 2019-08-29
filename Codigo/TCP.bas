@@ -744,7 +744,8 @@ Private Sub SetAttributesToNewUser(ByVal UserIndex As Integer, ByVal UserClase A
            UserClase = eClass.Bard Or _
            UserClase = eClass.Assasin Or _
            UserClase = eClass.Bandit Or _
-           UserClase = eClass.Paladin Then
+           UserClase = eClass.Paladin Or _
+           UserClase = eClass.Mage Then
 
             .Stats.UserHechizos(1) = 2
         
