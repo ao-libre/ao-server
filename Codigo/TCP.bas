@@ -1896,6 +1896,13 @@ Sub ConnectUser(ByVal UserIndex As Integer, _
         Call Statistics.UserConnected(UserIndex)
     
         Call MostrarNumUsers
+        
+        'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+        'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+        'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+        If ConexionAPI Then
+            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .Desc)
+        End If
 
         n = FreeFile
         Open App.Path & "\logs\numusers.log" For Output As n
