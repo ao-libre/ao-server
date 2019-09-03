@@ -35,7 +35,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, Value, ErrHandler, punishments, Length, obj, index As Variant
+    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, value, ErrHandler, punishments, Length, obj, index As Variant
 
 #End If
 
@@ -3755,11 +3755,21 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
         If modGuilds.CrearNuevoClan(Userindex, desc, GuildName, site, codex, .FundandoGuildAlineacion, errorStr) Then
-            Call SendData(SendTarget.ToAll, Userindex, PrepareMessageConsoleMsg(.Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex) & ".", FontTypeNames.FONTTYPE_GUILD))
+            Dim message As String
+            message = .Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex)
+
+            Call SendData(SendTarget.ToAll, Userindex, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
             
             'Update tag
             Call RefreshCharStatus(Userindex)
+
+            'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+            'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+            'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+            If ConexionAPI Then
+                Call ApiEndpointSendNewGuildCreatedMessageDiscord(message, desc, GuildName, site)
+            End If
         Else
             Call WriteConsoleMsg(Userindex, errorStr, FontTypeNames.FONTTYPE_GUILD)
 
@@ -16781,11 +16791,11 @@ Public Sub HandleServerOpenToUsersToggle(ByVal Userindex As Integer)
         If ServerSoloGMs > 0 Then
             Call WriteConsoleMsg(Userindex, "Servidor habilitado para todos.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 0
-            frmMain.chkServerHabilitado.Value = vbUnchecked
+            frmMain.chkServerHabilitado.value = vbUnchecked
         Else
             Call WriteConsoleMsg(Userindex, "Servidor restringido a administradores.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 1
-            frmMain.chkServerHabilitado.Value = vbChecked
+            frmMain.chkServerHabilitado.value = vbChecked
 
         End If
 

@@ -1971,13 +1971,13 @@ Sub PasarSegundo()
                     
                     ' Cuenta regresiva de retos y eventos
                     If .Counters.TimeFight = 0 Then
-                        WriteConsoleMsg i, "Cuenta» ¡YA!", FontTypeNames.FONTTYPE_FIGHT
+                        WriteConsoleMsg i, "Cuentaï¿½ ï¿½YA!", FontTypeNames.FONTTYPE_FIGHT
                                              
                         If .flags.SlotReto > 0 Then
                             Call WriteUserInEvent(i)
                         End If
                     Else
-                        WriteConsoleMsg i, "Cuenta» " & .Counters.TimeFight, FontTypeNames.FONTTYPE_GUILD
+                        WriteConsoleMsg i, "Cuentaï¿½ " & .Counters.TimeFight, FontTypeNames.FONTTYPE_GUILD
                     End If
                 End If
                 
