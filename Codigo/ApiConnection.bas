@@ -133,7 +133,7 @@ Public Sub ApiEndpointSendCreateNewCharacterMessageDiscord(ByVal Name As String)
 End Sub
 
 
-Private Sub SendPOSTRequest(ByVal Endpoint As String, Optional ByVal Parameters As String = "")
+Private Sub SendPOSTRequest(ByVal Endpoint As String, ByVal Parameters As String)
 
 On Error GoTo ErrorHandler
 
