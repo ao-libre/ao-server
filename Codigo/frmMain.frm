@@ -390,7 +390,7 @@ Private Sub HappyHourManager()
         If tmpHappyHour <> HappyHour Then ' 0.13.5
             If HappyHourActivated Then
                 ' Reestablece la exp de los npcs
-               If HappyHour <> 0 Then Call UpdateNpcsExp(1 / HappyHour)
+                If HappyHour <> 0 Then Call UpdateNpcsExp(1 / HappyHour)
             End If
            
             If tmpHappyHour = 1 Then ' Desactiva
