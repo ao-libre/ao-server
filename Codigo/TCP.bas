@@ -1908,7 +1908,7 @@ Sub ConnectUser(ByVal UserIndex As Integer, _
         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
         'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
         If ConexionAPI Then
-            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .Desc)
+            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .desc, criminal(Userindex), ListaClases(.Clase))
         End If
 
         n = FreeFile

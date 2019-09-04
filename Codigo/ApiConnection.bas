@@ -67,12 +67,11 @@ Public Sub ApiEndpointSendResetPasswordAccountEmail(ByVal Email As String, ByVal
     Call SendPOSTRequest(UrlServer, Parameters)
 End Sub
 
-Public Sub ApiEndpointSendUserConnectedMessageDiscord(ByVal UserName As String, ByVal Desc As String)
+Public Sub ApiEndpointSendUserConnectedMessageDiscord(ByVal UserName As String, ByVal desc As String, ByVal EsCriminal As Boolean, ByVal Clase As String)
     'Este endpoint envia un mensaje al chat avisando que alguien se conecto
 
     UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendConnectedMessage"
-
-    Parameters = "userName=" & UserName & "&desc=" & Desc
+    Parameters = "userName=" & UserName & "&desc=" & desc & "&esCriminal=" & EsCriminal & "&clase=" & Clase
 
     Call SendPOSTRequest(UrlServer, Parameters)
 End Sub
