@@ -3,8 +3,10 @@ Logs/*
 Charfile/*
 Logs/*
 WorldBackup/*
+Guilds/*
 Codigo/*.log
 .DS_Store
 *.vbw
 *.csi
 *.OBJ
+server.exe
