@@ -519,6 +519,7 @@ Public Sub DoBackUp()
         Call ApiEndpointBackupCharfiles()
         Call ApiEndpointBackupCuentas()
         Call ApiEndpointBackupLogs()
+        Call ApiEndpointSendWorldSaveMessageDiscord()
     End If
 
     haciendoBK = False
