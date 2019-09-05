@@ -2243,6 +2243,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(Userindex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
+                Call MoveUserChar(Userindex, heading)
             Else
                 'Move user
                 Call MoveUserChar(Userindex, heading)

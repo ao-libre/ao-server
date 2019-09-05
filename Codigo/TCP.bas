@@ -1501,12 +1501,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             If UserList(NameIndex(Name)).Counters.Saliendo Then
                 Call WriteErrorMsg(Userindex, "El usuario esta saliendo.")
             Else
-                Call WriteErrorMsg(Userindex, "Perdon, un usuario con el mismo nombre se ha logueado.")
-
+                Call WriteErrorMsg(Userindex, "Un usuario con el mismo nombre esta conectado.")
+                Call Cerrar_Usuario(NameIndex(Name))
             End If
 
             Call FlushBuffer(Userindex)
-            'Call CloseSocket(Userindex)
+            'Call CloseSocket(Userindex) 'QUITADO PARA QUE NO CIERRE LA CONEXION AL TIRARSE EL MENSAJE
             Exit Sub
 
         End If
@@ -1766,13 +1766,11 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         #End If
     
         'Crea  el personaje del usuario
-        Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
-    
         If (.flags.Privilegios And (PlayerType.User Or PlayerType.RoleMaster)) = 0 Then
             Call DoAdminInvisible(Userindex)
             .flags.SendDenounces = True
-
         End If
+        Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
     
         Call WriteUserCharIndexInServer(Userindex)
         ''[/el oso]
