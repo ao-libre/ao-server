@@ -705,7 +705,7 @@ Sub MostrarNumUsers()
 
 End Sub
 
-Public Sub LogCriticEvent(Desc As String)
+Public Sub LogCriticEvent(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -718,7 +718,7 @@ Public Sub LogCriticEvent(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -727,7 +727,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogEjercitoReal(Desc As String)
+Public Sub LogEjercitoReal(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -740,7 +740,7 @@ Public Sub LogEjercitoReal(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-    Print #nfile, Desc
+    Print #nfile, desc
     Close #nfile
     
     Exit Sub
@@ -749,7 +749,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogEjercitoCaos(Desc As String)
+Public Sub LogEjercitoCaos(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -762,7 +762,7 @@ Public Sub LogEjercitoCaos(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-    Print #nfile, Desc
+    Print #nfile, desc
     Close #nfile
 
     Exit Sub
@@ -771,7 +771,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -784,7 +784,7 @@ Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -793,7 +793,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogError(Desc As String)
+Public Sub LogError(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -806,7 +806,7 @@ Public Sub LogError(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -815,7 +815,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogRetos(Desc As String)
+Public Sub LogRetos(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -828,7 +828,7 @@ Public Sub LogRetos(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Retos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     
     Exit Sub
@@ -837,7 +837,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogDatabaseError(Desc As String)
+Public Sub LogDatabaseError(desc As String)
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 09/10/2018
@@ -849,7 +849,7 @@ Public Sub LogDatabaseError(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\database.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
     Exit Sub
 
@@ -857,7 +857,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogStatic(Desc As String)
+Public Sub LogStatic(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -870,7 +870,7 @@ Public Sub LogStatic(Desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
 
     Exit Sub
@@ -879,7 +879,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogTarea(Desc As String)
+Public Sub LogTarea(desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -892,7 +892,7 @@ Public Sub LogTarea(Desc As String)
 
     nfile = FreeFile(1) ' obtenemos un canal
     Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+    Print #nfile, Date & " " & time & " " & desc
     Close #nfile
 
     Exit Sub
@@ -2010,7 +2010,7 @@ Sub PasarSegundo()
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
                                 .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
                                 If .Counters.ContadorPiquete = 6 Then
-                                    Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(i, "¡¡¡Estas obstruyendo la via pública, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                     .Counters.ContadorPiquete = 0
                                 End If
                                 If .Counters.PiqueteC >= 30 Then
