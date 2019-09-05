@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
+    Dim Map, X, Y, body, clase, race, Email, Obj, Length As Variant
 
 #End If
 
@@ -986,16 +986,16 @@ End Type
 
 Public Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
 Public Type WorldPos
 
     Map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -1500,6 +1500,7 @@ Public Type UserCounters
     
     Mimetismo As Integer
     PiqueteC As Long
+    ContadorPiquete As Long
     Pena As Long
     SendMapCounter As WorldPos
     '[Gonzalo]
@@ -1858,7 +1859,7 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Integer
-    UserIndex As Integer
+    Userindex As Integer
     NpcIndex As Integer
     ObjInfo As Obj
     TileExit As WorldPos

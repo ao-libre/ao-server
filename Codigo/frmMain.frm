@@ -376,7 +376,7 @@ Public Sub UpdateNpcsExp(ByVal Multiplicador As Single) ' 0.13.5
     Next NpcIndex
 End Sub
 
-Private Sub HappyHourManager
+Private Sub HappyHourManager()
     If iniHappyHourActivado = True Then
         Dim tmpHappyHour As Double
     
@@ -393,7 +393,7 @@ Private Sub HappyHourManager
              End If
            
             If tmpHappyHour = 1 Then ' Desactiva
-               Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_DIOS))
+               Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.fonttype_dios))
                  HappyHourActivated = False
            
             Else ' Activa?
@@ -402,10 +402,10 @@ Private Sub HappyHourManager
                     
                     If HappyHour <> 1 Then
                        Call SendData(SendTarget.ToAll, 0, _
-                           PrepareMessageConsoleMsg("Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%", FontTypeNames.FONTTYPE_DIOS))
+                           PrepareMessageConsoleMsg("Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%", FontTypeNames.fonttype_dios))
                     Else
                        Call SendData(SendTarget.ToAll, 0, _
-                           PrepareMessageConsoleMsg("Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!", FontTypeNames.FONTTYPE_DIOS))
+                           PrepareMessageConsoleMsg("Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!", FontTypeNames.fonttype_dios))
                     End If
                     
                     HappyHourActivated = True
@@ -420,7 +420,7 @@ Private Sub HappyHourManager
         ' Si estaba activado, lo deshabilitamos
         If HappyHour <> 0 Then
             Call UpdateNpcsExp(1 / HappyHour)
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_DIOS))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.fonttype_dios))
             HappyHourActivated = False
             HappyHour = 0
         End If
@@ -588,6 +588,7 @@ Private Sub Command2_Click()
     txtChat.Text = txtChat.Text & vbNewLine & "Servidor> " & BroadMsg.Text
 
 End Sub
+
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
