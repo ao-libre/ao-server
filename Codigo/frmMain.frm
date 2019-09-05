@@ -382,6 +382,7 @@ Private Sub HappyHourManager()
     
         ' HappyHour
         Dim iDay As Integer ' 0.13.5
+        Dim Message As String
 
         iDay = Weekday(Date)
         tmpHappyHour = HappyHourDays(iDay).Multi
@@ -389,23 +390,40 @@ Private Sub HappyHourManager()
         If tmpHappyHour <> HappyHour Then ' 0.13.5
             If HappyHourActivated Then
                 ' Reestablece la exp de los npcs
-               If HappyHour <> 0 Then Call UpdateNpcsExp(1 / HappyHour)
-             End If
+                If HappyHour <> 0 Then Call UpdateNpcsExp(1 / HappyHour)
+            End If
            
             If tmpHappyHour = 1 Then ' Desactiva
-               Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.fonttype_dios))
-                 HappyHourActivated = False
+                Message = "Ha concluido la Happy Hour!"
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+                HappyHourActivated = False
+
+                If ConexionAPI Then
+                    Call ApiEndpointSendHappyHourEndedMessageDiscord(Message)
+                End If
            
             Else ' Activa?
                 If HappyHourDays(iDay).Hour = Hour(Now) And tmpHappyHour > 0 Then ' GSZAO - Es la hora pautada?
                     UpdateNpcsExp tmpHappyHour
                     
                     If HappyHour <> 1 Then
-                       Call SendData(SendTarget.ToAll, 0, _
-                           PrepareMessageConsoleMsg("Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%", FontTypeNames.fonttype_dios))
+                        Message = "Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%"
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+
+                        If ConexionAPI Then
+                            Call ApiEndpointSendHappyHourModifiedMessageDiscord(Message)
+                        End If
                     Else
-                       Call SendData(SendTarget.ToAll, 0, _
-                           PrepareMessageConsoleMsg("Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!", FontTypeNames.fonttype_dios))
+                        Message = "Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!"
+
+                       Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+                    
+                        'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+                        'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+                        'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+                        If ConexionAPI Then
+                            Call ApiEndpointSendHappyHourStartedMessageDiscord(Message)
+                        End If
                     End If
                     
                     HappyHourActivated = True
@@ -503,7 +521,7 @@ ErrHandler:
 End Sub
 
 Private Sub chkServerHabilitado_Click()
-    ServerSoloGMs = chkServerHabilitado.Value
+    ServerSoloGMs = chkServerHabilitado.value
 
 End Sub
 

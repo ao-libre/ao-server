@@ -647,7 +647,14 @@ Sub ConnectNewUser(ByVal UserIndex As Integer, _
   
     'Open User
     Call ConnectUser(UserIndex, Name, AccountHash)
-  
+
+    'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then
+        Call ApiEndpointSendCreateNewCharacterMessageDiscord(Name)
+    End If
+
 End Sub
 
 Private Sub SetAttributesCustomToNewUser(ByVal UserIndex As Integer)
@@ -1069,7 +1076,7 @@ End Sub
 
             End If
             
-            ' Retos nVSn. Usuario cierra conexión.
+            ' Retos nVSn. Usuario cierra conexiï¿½n.
             If .flags.SlotReto > 0 Then
                 Call Retos.UserdieFight(UserIndex, 0, True)
             End If
@@ -1896,6 +1903,13 @@ Sub ConnectUser(ByVal UserIndex As Integer, _
         Call Statistics.UserConnected(UserIndex)
     
         Call MostrarNumUsers
+        
+        'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+        'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+        'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+        If ConexionAPI Then
+            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .desc, criminal(Userindex), ListaClases(.Clase))
+        End If
 
         n = FreeFile
         Open App.Path & "\logs\numusers.log" For Output As n
