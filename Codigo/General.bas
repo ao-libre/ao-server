@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
+    Dim X, Y, Map, K, ErrHandler, Obj, index, n, Email As Variant
 
 #End If
 
@@ -207,7 +207,7 @@ Sub EnviarSpawnList(ByVal Userindex As Integer)
 
 End Sub
 
-Sub ConfigListeningSocket(ByRef obj As Object, ByVal Port As Integer)
+Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -216,15 +216,15 @@ Sub ConfigListeningSocket(ByRef obj As Object, ByVal Port As Integer)
 
     #If UsarQueSocket = 0 Then
 
-        obj.AddressFamily = AF_INET
-        obj.Protocol = IPPROTO_IP
-        obj.SocketType = SOCK_STREAM
-        obj.Binary = False
-        obj.Blocking = False
-        obj.BufferSize = 1024
-        obj.LocalPort = Port
-        obj.backlog = 5
-        obj.listen
+        Obj.AddressFamily = AF_INET
+        Obj.Protocol = IPPROTO_IP
+        Obj.SocketType = SOCK_STREAM
+        Obj.Binary = False
+        Obj.Blocking = False
+        Obj.BufferSize = 1024
+        Obj.LocalPort = Port
+        Obj.backlog = 5
+        Obj.listen
 
     #End If
 
@@ -705,7 +705,7 @@ Sub MostrarNumUsers()
 
 End Sub
 
-Public Sub LogCriticEvent(desc As String)
+Public Sub LogCriticEvent(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -718,7 +718,7 @@ Public Sub LogCriticEvent(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     
     Exit Sub
@@ -727,7 +727,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogEjercitoReal(desc As String)
+Public Sub LogEjercitoReal(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -740,7 +740,7 @@ Public Sub LogEjercitoReal(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-    Print #nfile, desc
+    Print #nfile, Desc
     Close #nfile
     
     Exit Sub
@@ -749,7 +749,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogEjercitoCaos(desc As String)
+Public Sub LogEjercitoCaos(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -762,7 +762,7 @@ Public Sub LogEjercitoCaos(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-    Print #nfile, desc
+    Print #nfile, Desc
     Close #nfile
 
     Exit Sub
@@ -771,7 +771,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
+Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -784,7 +784,7 @@ Public Sub LogIndex(ByVal index As Integer, ByVal desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     
     Exit Sub
@@ -793,7 +793,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogError(desc As String)
+Public Sub LogError(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -806,7 +806,7 @@ Public Sub LogError(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     
     Exit Sub
@@ -815,7 +815,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogRetos(desc As String)
+Public Sub LogRetos(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -828,7 +828,7 @@ Public Sub LogRetos(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Retos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     
     Exit Sub
@@ -837,7 +837,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogDatabaseError(desc As String)
+Public Sub LogDatabaseError(Desc As String)
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 09/10/2018
@@ -849,7 +849,7 @@ Public Sub LogDatabaseError(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\database.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     Exit Sub
 
@@ -857,7 +857,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogStatic(desc As String)
+Public Sub LogStatic(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -870,7 +870,7 @@ Public Sub LogStatic(desc As String)
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
 
     Exit Sub
@@ -879,7 +879,7 @@ ErrHandler:
 
 End Sub
 
-Public Sub LogTarea(desc As String)
+Public Sub LogTarea(Desc As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -892,7 +892,7 @@ Public Sub LogTarea(desc As String)
 
     nfile = FreeFile(1) ' obtenemos un canal
     Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & desc
+    Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
 
     Exit Sub
@@ -2006,15 +2006,18 @@ Sub PasarSegundo()
 
                     'Counter de piquete
                     If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-                        If .flags.Muerto = 0 Then
-                            .Counters.PiqueteC = .Counters.PiqueteC + 1
-                            Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
-                                
-                            If .Counters.PiqueteC >= ContadorAntiPiquete Then
-                                .Counters.PiqueteC = 0
-                                Call Encarcelar(i, MinutosCarcelPiquete)
-
-                            End If
+                            If .flags.Muerto = 0 Then
+                                .Counters.PiqueteC = .Counters.PiqueteC + 1
+                                .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
+                                If .Counters.ContadorPiquete = 6 Then
+                                    Call WriteConsoleMsg(i, "¡¡¡Estás obstruyendo la vía pública, muévete o serás encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                    .Counters.ContadorPiquete = 0
+                                End If
+                                If .Counters.PiqueteC >= 30 Then
+                                    .Counters.PiqueteC = 0
+                                    .Counters.ContadorPiquete = 0
+                                    Call Encarcelar(i, MinutosCarcelPiquete)
+                                End If
                                 
                             Call FlushBuffer(i)
                         Else
@@ -2124,7 +2127,7 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
 
     With UserList(Userindex)
 
-        If .clase = 0 Or .Stats.ELV = 0 Then
+        If .Clase = 0 Or .Stats.ELV = 0 Then
             Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
             Exit Sub
 

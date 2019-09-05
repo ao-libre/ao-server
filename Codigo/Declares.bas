@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, x, y, body, clase, race, Email, Obj, Length As Variant
+    Dim Map, X, Y, body, Clase, race, Email, Obj, Length As Variant
 
 #End If
 
@@ -237,7 +237,7 @@ Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
 
-    desc As String * 255
+    Desc As String * 255
     crc As Long
     MagicWord As Long
 
@@ -986,16 +986,16 @@ End Type
 
 Public Type Position
 
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
 Public Type WorldPos
 
     Map As Integer
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 
 End Type
 
@@ -1283,7 +1283,7 @@ End Type
 Public Type tQuest
 
     Nombre As String
-    desc As String
+    Desc As String
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
@@ -1500,6 +1500,7 @@ Public Type UserCounters
     
     Mimetismo As Integer
     PiqueteC As Long
+    ContadorPiquete As Long
     Pena As Long
     SendMapCounter As WorldPos
     '[Gonzalo]
@@ -1607,10 +1608,10 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    desc As String ' Descripcion
+    Desc As String ' Descripcion
     DescRM As String
     
-    clase As eClass
+    Clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1785,7 +1786,7 @@ Public Type npc
 
     Name As String
     Char As Char 'Define como se vera
-    desc As String
+    Desc As String
 
     NPCtype As eNPCType
     Numero As Integer
@@ -1858,7 +1859,7 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Integer
-    UserIndex As Integer
+    Userindex As Integer
     NpcIndex As Integer
     ObjInfo As Obj
     TileExit As WorldPos
