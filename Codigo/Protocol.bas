@@ -169,6 +169,7 @@ Private Enum ServerPacketID
     QuestListSend
     CreateDamage            ' CDMG
     UserInEvent
+    RenderMsg
 End Enum
 
 Private Enum ClientPacketID
