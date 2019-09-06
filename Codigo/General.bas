@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, Map, K, ErrHandler, obj, index, n, Email As Variant
+    Dim X, Y, Map, K, ErrHandler, Obj, index, n, Email As Variant
 
 #End If
 
@@ -207,7 +207,7 @@ Sub EnviarSpawnList(ByVal Userindex As Integer)
 
 End Sub
 
-Sub ConfigListeningSocket(ByRef obj As Object, ByVal Port As Integer)
+Sub ConfigListeningSocket(ByRef Obj As Object, ByVal Port As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -216,15 +216,15 @@ Sub ConfigListeningSocket(ByRef obj As Object, ByVal Port As Integer)
 
     #If UsarQueSocket = 0 Then
 
-        obj.AddressFamily = AF_INET
-        obj.Protocol = IPPROTO_IP
-        obj.SocketType = SOCK_STREAM
-        obj.Binary = False
-        obj.Blocking = False
-        obj.BufferSize = 1024
-        obj.LocalPort = Port
-        obj.backlog = 5
-        obj.listen
+        Obj.AddressFamily = AF_INET
+        Obj.Protocol = IPPROTO_IP
+        Obj.SocketType = SOCK_STREAM
+        Obj.Binary = False
+        Obj.Blocking = False
+        Obj.BufferSize = 1024
+        Obj.LocalPort = Port
+        Obj.backlog = 5
+        Obj.listen
 
     #End If
 
@@ -2006,15 +2006,18 @@ Sub PasarSegundo()
 
                     'Counter de piquete
                     If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ANTIPIQUETE Then
-                        If .flags.Muerto = 0 Then
-                            .Counters.PiqueteC = .Counters.PiqueteC + 1
-                            Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
-                                
-                            If .Counters.PiqueteC >= ContadorAntiPiquete Then
-                                .Counters.PiqueteC = 0
-                                Call Encarcelar(i, MinutosCarcelPiquete)
-
-                            End If
+                            If .flags.Muerto = 0 Then
+                                .Counters.PiqueteC = .Counters.PiqueteC + 1
+                                .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
+                                If .Counters.ContadorPiquete = 6 Then
+                                    Call WriteConsoleMsg(i, "¡¡¡Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                    .Counters.ContadorPiquete = 0
+                                End If
+                                If .Counters.PiqueteC >= 30 Then
+                                    .Counters.PiqueteC = 0
+                                    .Counters.ContadorPiquete = 0
+                                    Call Encarcelar(i, MinutosCarcelPiquete)
+                                End If
                                 
                             Call FlushBuffer(i)
                         Else
@@ -2124,7 +2127,7 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
 
     With UserList(Userindex)
 
-        If .clase = 0 Or .Stats.ELV = 0 Then
+        If .Clase = 0 Or .Stats.ELV = 0 Then
             Call LogCriticEvent("Estoy intentantdo guardar un usuario nulo de nombre: " & .Name)
             Exit Sub
 
