@@ -942,7 +942,10 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
         
     End With
     
-    Call WriteUpdateUserStats(UserIndex)
+    'Guardamos los datos del usuario.
+    Call SaveUser(Userindex, True)
+    
+    Call WriteUpdateUserStats(Userindex)
     Exit Sub
 
 errHandler:
