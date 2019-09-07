@@ -140,14 +140,13 @@ Sub AvisarUsuario(ByVal userSlot As Integer, _
             'Paso la mitad de tiempo?
             If (GetTickCount() - .TiempoInicio) > (LIMITE_TIEMPO / 2) Then
                 'Prepara el paquete a enviar.
-                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
+                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
             Else
-                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Tienes menos de un minuto para escribir /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
-
+                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Tienes menos de un minuto para escribir /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
             End If
 
         Else
-            DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El codigo ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
+            DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El codigo ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
 
         End If
      
