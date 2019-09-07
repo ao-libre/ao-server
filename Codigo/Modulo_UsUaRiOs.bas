@@ -645,23 +645,14 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
     '06/09/2019: Jopi - Guardado de usuario al pasar de nivel.
     '*************************************************
     Dim Pts              As Integer
-
     Dim AumentoHIT       As Integer
-
     Dim AumentoMANA      As Integer
-
     Dim AumentoSTA       As Integer
-
     Dim AumentoHP        As Integer
-
     Dim WasNewbie        As Boolean
-
     Dim Promedio         As Double
-
     Dim aux              As Integer
-
     Dim DistVida(1 To 5) As Integer
-
     Dim GI               As Integer 'Guild Index
     
     On Error GoTo errHandler
@@ -912,9 +903,6 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
                 End If
 
             End If
-            
-            'Guardamos los datos del usuario.
-            Call SaveUser(Userindex, True)
 
         Loop
         
@@ -945,8 +933,12 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
         End If
         
     End With
-
+    
+    'Guardamos los datos del usuario.
+    Call SaveUser(Userindex, True)
+    
     Call WriteUpdateUserStats(Userindex)
+    
     Exit Sub
 
 errHandler:
