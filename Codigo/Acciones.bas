@@ -434,3 +434,52 @@ Sub AccionParaRamita(ByVal Map As Integer, _
     End With
 
 End Sub
+
+Public Sub AccionParaSacerdote(ByVal UserIndex As Integer)
+
+    '******************************
+    'Adaptacion a 13.0: Kaneidra
+    'Last Modification: 15/05/2012
+    '******************************
+    
+    With UserList(UserIndex)
+        
+        ' Si esta muerto...
+        If .flags.Muerto = 1 Then
+            
+            ' Lo resucitamos.
+            Call RevivirUsuario(UserIndex)
+            
+            ' Restauramos su mana.
+            .Stats.MinMAN = .Stats.MaxMAN
+            Call WriteUpdateMana(UserIndex)
+            
+            ' Lo curamos.
+            .Stats.MinHp = .Stats.MaxHp
+            Call WriteUpdateHP(UserIndex)
+            
+            ' Le avisamos.
+            Call WriteConsoleMsg(UserIndex, "El sacerdote te ha resucitado y curado.", FontTypeNames.FONTTYPE_INFO)
+
+        End If
+        
+        ' Si esta herido... lo curamos.
+        If .Stats.MinHp < .Stats.MaxHp Then
+            .Stats.MinHp = .Stats.MaxHp
+            Call WriteUpdateHP(UserIndex)
+            Call WriteConsoleMsg(UserIndex, "El sacerdote te ha curado.", FontTypeNames.FONTTYPE_INFO)
+
+        End If
+        
+        ' Curamos su envenenamiento.
+        If .flags.Envenenado = 1 Then .flags.Envenenado = 0
+        
+        ' Sacamos la maldicion.
+        If .flags.Maldicion = 1 Then .flags.Maldicion = 0
+        
+        ' Sacamos la ceguera.
+        If .flags.Ceguera = 1 Then .flags.Ceguera = 0
+
+    End With
+ 
+End Sub

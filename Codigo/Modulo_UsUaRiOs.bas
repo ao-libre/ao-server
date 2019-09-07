@@ -1055,6 +1055,8 @@ Sub MoveUserChar(ByVal UserIndex As Integer, ByVal nHeading As eHeading)
                 .Char.heading = nHeading
                 MapData(.Pos.Map, .Pos.x, .Pos.y).UserIndex = UserIndex
                 
+                If HaySacerdote(UserIndex) Then Call AccionParaSacerdote(UserIndex)
+                
                 Call DoTileEvents(UserIndex, .Pos.Map, .Pos.x, .Pos.y)
 
             End With
