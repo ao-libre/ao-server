@@ -1,4 +1,4 @@
----------------------------------------
+﻿---------------------------------------
 ARGENTUM ONLINE - CHANGELOG DEL SERVER
 ---------------------------------------
 
@@ -773,4 +773,11 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 30/08/2019: Se agrego request a ao-api-server para que mande un mensaje al chat de discord cuando alguien entra al server (Recox)
 
 - v0.13.13
+
 * 04/09/2019: Se agrego request a ao-api-server para que mande un mensaje al chat de discord cuando se crean clanes, happy hour, nuevo personaje creado y worldsave (Recox)
+
+- v0.13.14.2: 
+
+* 06/09/2019: Se implementó el auto-resucitar y auto-curar al acercarte al sacerdote. (jopiortiz)
+* 06/09/2019: Se realiza un guardado del usuario al pasar de nivel. (jopiortiz)
+* 07/09/2019: Se agregaron los npcs Etognil en los yacimientos - Npcs dropean oro, plata y bronce (Recox)

@@ -185,6 +185,41 @@ Private Function HayLava(ByVal Map As Integer, _
 
 End Function
 
+Function HaySacerdote(ByVal Userindex As Integer) As Boolean
+    '******************************
+    'Adaptacion a 13.0: Kaneidra
+    'Last Modification: 15/05/2012
+    '******************************
+ 
+    Dim X As Integer, Y As Integer
+    
+    With UserList(Userindex)
+    
+        For Y = .Pos.Y - MinYBorder + 1 To .Pos.Y + MinYBorder - 1
+            For X = .Pos.X - MinXBorder + 1 To .Pos.X + MinXBorder - 1
+       
+                If MapData(.Pos.Map, X, Y).NpcIndex > 0 Then
+                    If Npclist(MapData(.Pos.Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or _
+                       Npclist(MapData(.Pos.Map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
+                       
+                        If Distancia(.Pos, Npclist(MapData(.Pos.Map, X, Y).NpcIndex).Pos) < 5 Then
+                            HaySacerdote = True
+                            Exit Function
+                        End If
+
+                    End If
+
+                End If
+           
+            Next X
+        Next Y
+    
+    End With
+ 
+    HaySacerdote = False
+ 
+End Function
+
 
 Sub EnviarSpawnList(ByVal Userindex As Integer)
     '***************************************************
