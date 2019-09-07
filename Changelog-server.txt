@@ -779,3 +779,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.14.2: 
 
 * 06/09/2019: Se implementó el auto-resucitar y auto-curar al acercarte al sacerdote. (jopiortiz)
+* 07/09/2019: Se agregaron los npcs Etognil en los yacimientos - Npcs dropean oro, plata y bronce (Recox)
