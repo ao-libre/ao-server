@@ -628,7 +628,7 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
 
     '*************************************************
     'Author: Unknown
-    'Last modified: 08/04/2011
+    'Last modified: 06/09/2019
     'Chequea que el usuario no halla alcanzado el siguiente nivel,
     'de lo contrario le da la vida, mana, etc, correspodiente.
     '07/08/2006 Integer - Modificacion de los valores
@@ -642,6 +642,7 @@ Public Sub CheckUserLevel(ByVal UserIndex As Integer, Optional ByVal PrintInCons
     '11/19/2009 Pato - Modifico la nueva formula de mana ganada para el bandido y se la limito a 499
     '02/04/2010: ZaMa - Modifico la ganancia de hit por nivel del ladron.
     '08/04/2011: Amraphen - Arreglada la distribucion de probabilidades para la vida en el caso de promedio entero.
+    '06/09/2019: Jopi - Guardado de usuario al pasar de nivel.
     '*************************************************
     Dim Pts              As Integer
 
