@@ -893,6 +893,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             
         Case ClientPacketID.FightAccept
             Call HandleFightAccept(Userindex)
+        
+        Case ClientPacketID.CloseGuild
+            Call HandleCloseGuild(Userindex)
             
         Case Else
             'ERROR : Abort!
@@ -23498,13 +23501,13 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
         Dim i As Long
         
         If Not .GuildIndex >= 1 Then
-            Call WriteConsoleMsg(UserIndex, "No perteneces a ning�n clan.", FONTTYPE_GUILD)
+            Call WriteConsoleMsg(Userindex, "No perteneces a ningun clan.", FONTTYPE_GUILD)
             Exit Sub
 
         End If
 
         If guilds(.GuildIndex).Fundador <> .Name Then
-            Call WriteConsoleMsg(UserIndex, "No eres l�der del clan.", FONTTYPE_GUILD)
+            Call WriteConsoleMsg(Userindex, "No eres lider del clan.", FONTTYPE_GUILD)
             Exit Sub
 
         End If
@@ -23513,10 +23516,10 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
             
             'Obtenemos la lista de miembros del clan.
             Dim GuildMembers() As String
-                GuildMembers = guilds(GuildIndex).GetMemberList()
+                GuildMembers = guilds(.GuildIndex).GetMemberList()
             
             'Expulsamos a todos los miembros del clan.
-            For i = 1 To UBound(GuildMembers)
+            For i = 0 To UBound(GuildMembers)
                 
                 Dim MemberName As String
                     MemberName = GuildMembers(i)
@@ -23529,26 +23532,19 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
             
         End If
         
-        Call SendData(SendTarget.toall, 0, PrepareMessageConsoleMsg("El Clan " & guilds(.GuildIndex).GuildName & " ha cerrado sus puertas.", FontTypeNames.FONTTYPE_SERVER))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("El Clan " & guilds(.GuildIndex).GuildName & " ha cerrado sus puertas.", FontTypeNames.FONTTYPE_SERVER))
         
         Dim GuildsIO As clsIniManager
-
         Set GuildsIO = New clsIniManager
         Call GuildsIO.Initialize(App.Path & "\guilds\guildsinfo.inf")
         
-        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Founder", "NADIE")
-        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "GuildName", guilds(.GuildIndex).GuildName & "(CLAN CERRADO)")
-        For i = 1 To 8
-            Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Codex" & i, "CLAN CERRADO")
-        Next
-        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Leader", "NADIE")
-        
-        Call GuildsIO.DumpFile(App.Path & "\guilds\guildsinfo.inf")
+        'Ya con cambiarle el nombre a "CLAN CERRADO" ya se omite de la lista de clanes enviadas al cliente.
+        Call WriteVar(App.Path & "\guilds\guildsinfo.inf", "GUILD" & .GuildIndex, "GuildName", "CLAN CERRADO")
         
         Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-members.mem")
         Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-solicitudes.sol")
         
-        .GuildIndex = 0
+        '.GuildIndex = 0
     
     End With
         
