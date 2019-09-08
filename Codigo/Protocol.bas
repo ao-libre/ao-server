@@ -35,7 +35,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, n, mapa, race, helmet, weapon, shield, color, Value, ErrHandler, punishments, Length, Obj, index As Variant
+    Dim Map, X, Y, n, mapa, race, helmet, weapon, shield, color, value, ErrHandler, punishments, Length, obj, index As Variant
 
 #End If
 
@@ -1814,7 +1814,7 @@ Private Sub HandleTalk(ByVal Userindex As Integer)
             .Counters.TiempoOculto = 0
             
             If .flags.Navegando = 1 Then
-                If .Clase = eClass.Pirat Then
+                If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(Userindex)
                     Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -1925,7 +1925,7 @@ Private Sub HandleYell(ByVal Userindex As Integer)
             .Counters.TiempoOculto = 0
             
             If .flags.Navegando = 1 Then
-                If .Clase = eClass.Pirat Then
+                If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(Userindex)
                     Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -2207,7 +2207,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
                     If dummy <> 0 Then dummy = 126000 \ dummy
                     
                     Call LogHackAttemp("Tramposo SH: " & .Name & " , " & dummy)
-                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha sido echado por el servidor por posible uso de SH.", FontTypeNames.FONTTYPE_SERVER))
+                    Call SendData(SendTarget.Toadmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha sido echado por el servidor por posible uso de SH.", FontTypeNames.FONTTYPE_SERVER))
                     Call CloseSocket(Userindex)
                     
                     Exit Sub
@@ -2274,12 +2274,12 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'Can't move while hidden except he is a thief
         If .flags.Oculto = 1 And .flags.AdminInvisible = 0 Then
-            If .Clase <> eClass.Thief And .Clase <> eClass.Bandit Then
+            If .clase <> eClass.Thief And .clase <> eClass.Bandit Then
                 .flags.Oculto = 0
                 .Counters.TiempoOculto = 0
             
                 If .flags.Navegando = 1 Then
-                    If .Clase = eClass.Pirat Then
+                    If .clase = eClass.Pirat Then
                         ' Pierde la apariencia de fragata fantasmal
                         Call ToggleBoatBody(Userindex)
                         Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -2385,7 +2385,7 @@ Private Sub HandleAttack(ByVal Userindex As Integer)
             .Counters.TiempoOculto = 0
             
             If .flags.Navegando = 1 Then
-                If .Clase = eClass.Pirat Then
+                If .clase = eClass.Pirat Then
                     ' Pierde la apariencia de fragata fantasmal
                     Call ToggleBoatBody(Userindex)
                     Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -3053,7 +3053,7 @@ Private Sub HandleWork(ByVal Userindex As Integer)
                 End If
             
                 If .flags.Navegando = 1 Then
-                    If .Clase <> eClass.Pirat Then
+                    If .clase <> eClass.Pirat Then
 
                         '[CDT 17-02-2004]
                         If Not .flags.UltimoMensaje = 3 Then
@@ -3141,7 +3141,7 @@ Private Sub HandleUseSpellMacro(ByVal Userindex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        Call SendData(SendTarget.ToAdmins, Userindex, PrepareMessageConsoleMsg(.Name & " fue expulsado por Anti-macro de hechizos.", FontTypeNames.FONTTYPE_VENENO))
+        Call SendData(SendTarget.Toadmins, Userindex, PrepareMessageConsoleMsg(.Name & " fue expulsado por Anti-macro de hechizos.", FontTypeNames.FONTTYPE_VENENO))
         Call WriteErrorMsg(Userindex, "Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros.")
         Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
@@ -3741,7 +3741,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim Desc      As String
+        Dim desc      As String
 
         Dim GuildName As String
 
@@ -3751,12 +3751,12 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
 
         Dim errorStr  As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         GuildName = Trim$(buffer.ReadASCIIString())
         Site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(Userindex, Desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(Userindex, desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
             Dim Message As String
             Message = .Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex)
 
@@ -3770,7 +3770,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
             'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
-                Call ApiEndpointSendNewGuildCreatedMessageDiscord(Message, Desc, GuildName, Site)
+                Call ApiEndpointSendNewGuildCreatedMessageDiscord(Message, desc, GuildName, Site)
             End If
         Else
             Call WriteConsoleMsg(Userindex, errorStr, FontTypeNames.FONTTYPE_GUILD)
@@ -4412,7 +4412,7 @@ Private Sub HandleMoveBank(ByVal Userindex As Integer)
 
         Dim Slot     As Byte
 
-        Dim TempItem As Obj
+        Dim TempItem As obj
         
         If .ReadBoolean() Then
             Dir = 1
@@ -4478,14 +4478,14 @@ Private Sub HandleClanCodexUpdate(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim Desc    As String
+        Dim desc    As String
 
         Dim codex() As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(Desc, codex, .GuildIndex)
+        Call modGuilds.ChangeCodexAndDesc(desc, codex, .GuildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -6670,7 +6670,7 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
 
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If LenB(Npclist(.flags.TargetNPC).Desc) <> 0 Then
+                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
                     Call WriteChatOverHead(Userindex, "No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
 
                 End If
@@ -7593,9 +7593,8 @@ Private Sub HandleGMRequest(ByVal Userindex As Integer)
             Call Ayuda.Quitar(.Name)
             Call Ayuda.Push(.Name)
             Call WriteConsoleMsg(Userindex, "Ya habias mandado un mensaje, tu mensaje ha sido movido al final de la cola de mensajes.", FontTypeNames.FONTTYPE_INFO)
-
         End If
-
+        Call SendData(SendTarget.Toadmins, 0, PrepareMessageConsoleMsg(.Name + " ha solicitado la ayuda de algun GM", FontTypeNames.FONTTYPE_CENTINELA), False)
     End With
 
 End Sub
@@ -7703,7 +7702,7 @@ Private Sub HandleChangeDescription(ByVal Userindex As Integer)
         If Not AsciiValidos(description) Then
             Call WriteConsoleMsg(Userindex, "La descripcion tiene caracteres invalidos.", FontTypeNames.FONTTYPE_INFO)
         Else
-            .Desc = Trim$(description)
+            .desc = Trim$(description)
             Call WriteConsoleMsg(Userindex, "La descripcion ha cambiado.", FontTypeNames.FONTTYPE_INFO)
 
         End If
@@ -8423,7 +8422,7 @@ Private Sub HandleDenounce(ByVal Userindex As Integer)
             
             msg = LCase$(.Name) & " DENUNCIA: " & Text
             
-            Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(msg, FontTypeNames.FONTTYPE_GUILDMSG), True)
+            Call SendData(SendTarget.Toadmins, 0, PrepareMessageConsoleMsg(msg, FontTypeNames.FONTTYPE_GUILDMSG), True)
             
             Call Denuncias.Push(msg, False)
             
@@ -8952,7 +8951,7 @@ Private Sub HandleGMMessage(ByVal Userindex As Integer)
                 'Analize chat...
                 Call Statistics.ParseChat(Message)
             
-                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & "> " & Message, FontTypeNames.FONTTYPE_GMMSG))
+                Call SendData(SendTarget.Toadmins, 0, PrepareMessageConsoleMsg(.Name & "> " & Message, FontTypeNames.FONTTYPE_GMMSG))
 
             End If
 
@@ -10756,7 +10755,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                                 Call WriteVar(UserCharPath, "INIT", "Clase", LoopC)
                                 Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
                             Else ' Online
-                                UserList(tUser).Clase = LoopC
+                                UserList(tUser).clase = LoopC
 
                             End If
 
@@ -12877,7 +12876,7 @@ Private Sub HandleTeleportCreate(ByVal Userindex As Integer)
 
         End If
         
-        Dim ET As Obj
+        Dim ET As obj
 
         ET.Amount = 1
         ' Es el numero en el dat. El indice es el comienzo + el radio, todo harcodeado :(.
@@ -13127,15 +13126,15 @@ Private Sub HandleSetCharDescription(ByVal Userindex As Integer)
         
         Dim tUser As Integer
 
-        Dim Desc  As String
+        Dim desc  As String
         
-        Desc = buffer.ReadASCIIString()
+        desc = buffer.ReadASCIIString()
         
         If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or (.flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
             tUser = .flags.TargetUser
 
             If tUser > 0 Then
-                UserList(tUser).DescRM = Desc
+                UserList(tUser).DescRM = desc
             Else
                 Call WriteConsoleMsg(Userindex, "Haz click sobre un personaje antes.", FontTypeNames.FONTTYPE_INFO)
 
@@ -14400,7 +14399,7 @@ Private Sub HandleBanIP(ByVal Userindex As Integer)
                     Call WriteConsoleMsg(Userindex, "La IP " & bannedIP & " ya se encuentra en la lista de bans.", FontTypeNames.FONTTYPE_INFO)
                 Else
                     Call BanIpAgrega(bannedIP)
-                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " baneo la IP " & bannedIP & " por " & Reason, FontTypeNames.FONTTYPE_FIGHT))
+                    Call SendData(SendTarget.Toadmins, 0, PrepareMessageConsoleMsg(.Name & " baneo la IP " & bannedIP & " por " & Reason, FontTypeNames.FONTTYPE_FIGHT))
                     
                     'Find every player with that ip and ban him!
                     For i = 1 To LastUser
@@ -14527,7 +14526,7 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
         ' El nombre del objeto es nulo?
         If LenB(ObjData(tObj).Name) = 0 Then Exit Sub
 
-        Dim Objeto As Obj
+        Dim Objeto As obj
         
         With Objeto
             .Amount = Cuantos
@@ -16793,11 +16792,11 @@ Public Sub HandleServerOpenToUsersToggle(ByVal Userindex As Integer)
         If ServerSoloGMs > 0 Then
             Call WriteConsoleMsg(Userindex, "Servidor habilitado para todos.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 0
-            frmMain.chkServerHabilitado.Value = vbUnchecked
+            frmMain.chkServerHabilitado.value = vbUnchecked
         Else
             Call WriteConsoleMsg(Userindex, "Servidor restringido a administradores.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 1
-            frmMain.chkServerHabilitado.Value = vbChecked
+            frmMain.chkServerHabilitado.value = vbChecked
 
         End If
 
@@ -17564,7 +17563,7 @@ Public Sub WriteLoggedMessage(ByVal Userindex As Integer)
     With UserList(Userindex)
         Call .outgoingData.WriteByte(ServerPacketID.Logged)
     
-        Call .outgoingData.WriteByte(.Clase)
+        Call .outgoingData.WriteByte(.clase)
 
     End With
 
@@ -19345,7 +19344,7 @@ Public Sub WriteBlacksmithWeapons(ByVal Userindex As Integer)
 
     Dim i              As Long
 
-    Dim Obj            As ObjData
+    Dim obj            As ObjData
 
     Dim validIndexes() As Integer
 
@@ -19359,7 +19358,7 @@ Public Sub WriteBlacksmithWeapons(ByVal Userindex As Integer)
         For i = 1 To UBound(ArmasHerrero())
 
             ' Can the user create this object? If so add it to the list....
-            If ObjData(ArmasHerrero(i)).SkHerreria <= Round(UserList(Userindex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(Userindex).Clase), 0) Then
+            If ObjData(ArmasHerrero(i)).SkHerreria <= Round(UserList(Userindex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(Userindex).clase), 0) Then
                 Count = Count + 1
                 validIndexes(Count) = i
 
@@ -19372,14 +19371,14 @@ Public Sub WriteBlacksmithWeapons(ByVal Userindex As Integer)
         
         ' Write the needed data of each object
         For i = 1 To Count
-            Obj = ObjData(ArmasHerrero(validIndexes(i)))
-            Call .WriteASCIIString(Obj.Name)
-            Call .WriteInteger(Obj.GrhIndex)
-            Call .WriteInteger(Obj.LingH)
-            Call .WriteInteger(Obj.LingP)
-            Call .WriteInteger(Obj.LingO)
+            obj = ObjData(ArmasHerrero(validIndexes(i)))
+            Call .WriteASCIIString(obj.Name)
+            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteInteger(obj.LingH)
+            Call .WriteInteger(obj.LingP)
+            Call .WriteInteger(obj.LingO)
             Call .WriteInteger(ArmasHerrero(validIndexes(i)))
-            Call .WriteInteger(Obj.Upgrade)
+            Call .WriteInteger(obj.Upgrade)
         Next i
 
     End With
@@ -19413,7 +19412,7 @@ Public Sub WriteBlacksmithArmors(ByVal Userindex As Integer)
 
     Dim i              As Long
 
-    Dim Obj            As ObjData
+    Dim obj            As ObjData
 
     Dim validIndexes() As Integer
 
@@ -19427,7 +19426,7 @@ Public Sub WriteBlacksmithArmors(ByVal Userindex As Integer)
         For i = 1 To UBound(ArmadurasHerrero())
 
             ' Can the user create this object? If so add it to the list....
-            If ObjData(ArmadurasHerrero(i)).SkHerreria <= Round(UserList(Userindex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(Userindex).Clase), 0) Then
+            If ObjData(ArmadurasHerrero(i)).SkHerreria <= Round(UserList(Userindex).Stats.UserSkills(eSkill.Herreria) / ModHerreriA(UserList(Userindex).clase), 0) Then
                 Count = Count + 1
                 validIndexes(Count) = i
 
@@ -19440,14 +19439,14 @@ Public Sub WriteBlacksmithArmors(ByVal Userindex As Integer)
         
         ' Write the needed data of each object
         For i = 1 To Count
-            Obj = ObjData(ArmadurasHerrero(validIndexes(i)))
-            Call .WriteASCIIString(Obj.Name)
-            Call .WriteInteger(Obj.GrhIndex)
-            Call .WriteInteger(Obj.LingH)
-            Call .WriteInteger(Obj.LingP)
-            Call .WriteInteger(Obj.LingO)
+            obj = ObjData(ArmadurasHerrero(validIndexes(i)))
+            Call .WriteASCIIString(obj.Name)
+            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteInteger(obj.LingH)
+            Call .WriteInteger(obj.LingP)
+            Call .WriteInteger(obj.LingO)
             Call .WriteInteger(ArmadurasHerrero(validIndexes(i)))
-            Call .WriteInteger(Obj.Upgrade)
+            Call .WriteInteger(obj.Upgrade)
         Next i
 
     End With
@@ -19481,7 +19480,7 @@ Public Sub WriteCarpenterObjects(ByVal Userindex As Integer)
 
     Dim i              As Long
 
-    Dim Obj            As ObjData
+    Dim obj            As ObjData
 
     Dim validIndexes() As Integer
 
@@ -19495,7 +19494,7 @@ Public Sub WriteCarpenterObjects(ByVal Userindex As Integer)
         For i = 1 To UBound(ObjCarpintero())
 
             ' Can the user create this object? If so add it to the list....
-            If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(Userindex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(Userindex).Clase) Then
+            If ObjData(ObjCarpintero(i)).SkCarpinteria <= UserList(Userindex).Stats.UserSkills(eSkill.Carpinteria) \ ModCarpinteria(UserList(Userindex).clase) Then
                 Count = Count + 1
                 validIndexes(Count) = i
 
@@ -19508,13 +19507,13 @@ Public Sub WriteCarpenterObjects(ByVal Userindex As Integer)
         
         ' Write the needed data of each object
         For i = 1 To Count
-            Obj = ObjData(ObjCarpintero(validIndexes(i)))
-            Call .WriteASCIIString(Obj.Name)
-            Call .WriteInteger(Obj.GrhIndex)
-            Call .WriteInteger(Obj.Madera)
-            Call .WriteInteger(Obj.MaderaElfica)
+            obj = ObjData(ObjCarpintero(validIndexes(i)))
+            Call .WriteASCIIString(obj.Name)
+            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteInteger(obj.Madera)
+            Call .WriteInteger(obj.MaderaElfica)
             Call .WriteInteger(ObjCarpintero(validIndexes(i)))
-            Call .WriteInteger(Obj.Upgrade)
+            Call .WriteInteger(obj.Upgrade)
         Next i
 
     End With
@@ -19690,7 +19689,7 @@ End Sub
 
 Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
                                        ByVal Slot As Byte, _
-                                       ByRef Obj As Obj, _
+                                       ByRef obj As obj, _
                                        ByVal price As Single)
 
     '***************************************************
@@ -19704,8 +19703,8 @@ Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
 
     Dim ObjInfo As ObjData
     
-    If Obj.ObjIndex >= LBound(ObjData()) And Obj.ObjIndex <= UBound(ObjData()) Then
-        ObjInfo = ObjData(Obj.ObjIndex)
+    If obj.ObjIndex >= LBound(ObjData()) And obj.ObjIndex <= UBound(ObjData()) Then
+        ObjInfo = ObjData(obj.ObjIndex)
 
     End If
     
@@ -19713,10 +19712,10 @@ Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
         Call .WriteByte(ServerPacketID.ChangeNPCInventorySlot)
         Call .WriteByte(Slot)
         Call .WriteASCIIString(ObjInfo.Name)
-        Call .WriteInteger(Obj.Amount)
+        Call .WriteInteger(obj.Amount)
         Call .WriteSingle(price)
         Call .WriteInteger(ObjInfo.GrhIndex)
-        Call .WriteInteger(Obj.ObjIndex)
+        Call .WriteInteger(obj.ObjIndex)
         Call .WriteByte(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
         Call .WriteInteger(ObjInfo.MinHIT)
@@ -19839,7 +19838,7 @@ Public Sub WriteMiniStats(ByVal Userindex As Integer)
         
         Call .WriteInteger(UserList(Userindex).Stats.NPCsMuertos)
         
-        Call .WriteByte(UserList(Userindex).Clase)
+        Call .WriteByte(UserList(Userindex).clase)
         Call .WriteLong(UserList(Userindex).Counters.Pena)
 
     End With
@@ -20167,7 +20166,7 @@ Public Sub WriteSendSkills(ByVal Userindex As Integer)
     
     With UserList(Userindex)
         Call .outgoingData.WriteByte(ServerPacketID.SendSkills)
-        Call .outgoingData.WriteByte(.Clase)
+        Call .outgoingData.WriteByte(.clase)
         
         For i = 1 To NUMSKILLS
             Call .outgoingData.WriteByte(UserList(Userindex).Stats.UserSkills(i))
@@ -22140,7 +22139,7 @@ Public Sub HandleSetDialog(ByVal Userindex As Integer)
             ' Dsgm/Dsrm/Rm
             If Not ((.flags.Privilegios And PlayerType.Dios) = 0 And (.flags.Privilegios And (PlayerType.SemiDios Or PlayerType.RoleMaster)) <> (PlayerType.SemiDios Or PlayerType.RoleMaster)) Then
                 'Replace the NPC's dialog.
-                Npclist(.flags.TargetNPC).Desc = NewDialog
+                Npclist(.flags.TargetNPC).desc = NewDialog
 
             End If
 
@@ -22876,14 +22875,14 @@ End Function
 Public Function WriteSearchList(ByVal Userindex As Integer, _
                                 ByVal Num As Integer, _
                                 ByVal Datos As String, _
-                                ByVal Obj As Boolean) As String
+                                ByVal obj As Boolean) As String
  
     On Error GoTo ErrHandler
 
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.SearchList)
         Call .WriteInteger(Num)
-        Call .WriteBoolean(Obj)
+        Call .WriteBoolean(obj)
         Call .WriteASCIIString(Datos)
 
     End With
@@ -23184,7 +23183,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         
         'Enviamos nombre, descripci�n y nivel requerido de la quest
         Call .WriteASCIIString(QuestList(QuestIndex).Nombre)
-        Call .WriteASCIIString(QuestList(QuestIndex).Desc)
+        Call .WriteASCIIString(QuestList(QuestIndex).desc)
         Call .WriteByte(QuestList(QuestIndex).RequiredLevel)
         
         'Enviamos la cantidad de npcs requeridos
