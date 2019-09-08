@@ -23498,7 +23498,7 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
     
         Call .incomingData.ReadByte
         
-        Dim i                   As Long
+        Dim i As Long
         Dim PreviousGuildIndex  As Integer
         
         If Not .GuildIndex >= 1 Then
@@ -23524,12 +23524,11 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
         'Obtenemos la lista de miembros del clan.
         Dim GuildMembers() As String
             GuildMembers = guilds(PreviousGuildIndex).GetMemberList()
-            
-        'Expulsamos a todos los miembros del clan.
-        For i = 1 To UBound(GuildMembers)
+
+        For i = 0 To UBound(GuildMembers)
             Call SaveUserGuildIndex(GuildMembers(i), 0)
             Call SaveUserGuildAspirant(GuildMembers(i), 0)
-        Next
+        Next i
         
         'La borramos junto con la lista de solicitudes.
         Call Kill(App.Path & "\Guilds\" & guilds(PreviousGuildIndex).GuildName & "-members.mem")

@@ -1262,7 +1262,7 @@ Public Function PrepareGuildsList() As String()
     '***************************************************
     'Author: Unknown
     'Last Modification: 08/09/2019
-    '08/09/2019: Jopi - Ignoro los clanes con nombres vacios y los clanes cerrados.
+    '08/09/2019: Jopi - Ignoro los clanes cerrados.
     '***************************************************
 
     Dim tStr() As String
@@ -1276,8 +1276,10 @@ Public Function PrepareGuildsList() As String()
         
         For i = 1 To CANTIDADDECLANES
         
-            If Len(guilds(i).GuildName) > 0 Or guilds(i).GuildName <> "CLAN CERRADO" Then
-                tStr(i - 1) = guilds(i).GuildName
+            If LenB(guilds(i).GuildName) <> 0 Then
+                If guilds(i).GuildName <> "CLAN CERRADO" Then
+                    tStr(i - 1) = guilds(i).GuildName
+                End If
             End If
             
         Next i

@@ -249,7 +249,6 @@ End Function
 Public Function GetMemberList() As String()
 
     Dim OldQ   As Integer
-
     Dim list() As String
 
     Dim i      As Long
