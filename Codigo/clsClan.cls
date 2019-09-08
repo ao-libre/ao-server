@@ -42,48 +42,29 @@ Option Explicit
 ' by el oso :p
 
 Private p_GuildName             As String
-
 Private p_Alineacion            As ALINEACION_GUILD
-
 Private p_OnlineMembers         As Collection   'Array de UserIndexes!
-
 Private p_GMsOnline             As Collection
-
 Private p_PropuestasDePaz       As Collection
-
 Private p_PropuestasDeAlianza   As Collection
-
 Private p_IteradorRelaciones    As Integer
-
 Private p_IteradorOnlineMembers As Integer
-
 Private p_IteradorPropuesta     As Integer
-
 Private p_IteradorOnlineGMs     As Integer
-
 Private p_GuildNumber           As Integer      'Numero de guild en el mundo
-
 Private p_Relaciones()          As RELACIONES_GUILD 'array de relaciones con los otros clanes
 
 Private GUILDINFOFILE           As String
-
 Private GUILDPATH               As String       'aca pq me es mas comodo setearlo y pq en ningun disenio
-
 Private MEMBERSFILE             As String       'decente la capa de arriba se entera donde estan
-
 Private SOLICITUDESFILE         As String       'los datos fisicamente
-
 Private PROPUESTASFILE          As String
-
 Private RELACIONESFILE          As String
-
 Private VOTACIONESFILE          As String
 
-Private Const NEWSLENGTH = 1024
-
-Private Const DESCLENGTH = 256
-
-Private Const CODEXLENGTH = 256
+Private Const NEWSLENGTH        As Integer = 1024
+Private Const DESCLENGTH        As Integer = 256
+Private Const CODEXLENGTH       As Integer = 256
 
 Public Property Get GuildName() As String
     GuildName = p_GuildName

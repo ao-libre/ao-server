@@ -321,11 +321,12 @@ Private Enum ClientPacketID
     CambiarContrasena = 145
     FightSend = 146
     FightAccept = 147
+    CloseGuild = 148
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 147
+Private Const LAST_CLIENT_PACKET_ID As Byte = 148
 
 Public Enum FontTypeNames
 
@@ -23486,5 +23487,78 @@ On Error GoTo 0
     
     If Error <> 0 Then _
         Err.Raise Error
+End Sub
+
+Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
+    
+    With UserList(UserIndex)
+    
+        Call .incomingData.ReadByte
+        
+        Dim i As Long
+        
+        If Not .GuildIndex >= 1 Then
+            Call WriteConsoleMsg(UserIndex, "No perteneces a ning�n clan.", FONTTYPE_GUILD)
+            Exit Sub
+
+        End If
+
+        If guilds(.GuildIndex).Fundador <> .Name Then
+            Call WriteConsoleMsg(UserIndex, "No eres l�der del clan.", FONTTYPE_GUILD)
+            Exit Sub
+
+        End If
+        
+        If guilds(.GuildIndex).CantidadDeMiembros > 1 Then
+            
+            'Obtenemos la lista de miembros del clan.
+            Dim GuildMembers() As String
+                GuildMembers = guilds(GuildIndex).GetMemberList()
+            
+            'Expulsamos a todos los miembros del clan.
+            For i = 1 To UBound(GuildMembers)
+                
+                Dim MemberName As String
+                    MemberName = GuildMembers(i)
+                
+                Dim TempMiembro As String
+                    TempMiembro = NameIndex(MemberName)
+
+                Call guilds(.GuildIndex).ExpulsarMiembro(TempMiembro)
+            Next
+            
+        End If
+        
+        Call SendData(SendTarget.toall, 0, PrepareMessageConsoleMsg("El Clan " & guilds(.GuildIndex).GuildName & " ha cerrado sus puertas.", FontTypeNames.FONTTYPE_SERVER))
+        
+        Dim GuildsIO As clsIniManager
+
+        Set GuildsIO = New clsIniManager
+        Call GuildsIO.Initialize(App.Path & "\guilds\guildsinfo.inf")
+        
+        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Founder", "NADIE")
+        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "GuildName", guilds(.GuildIndex).GuildName & "(CLAN CERRADO)")
+        For i = 1 To 8
+            Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Codex" & i, "CLAN CERRADO")
+        Next
+        Call GuildsIO.ChangeValue("GUILD" & .GuildIndex, "Leader", "NADIE")
+        
+        Call GuildsIO.DumpFile(App.Path & "\guilds\guildsinfo.inf")
+        
+        Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-members.mem")
+        Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-solicitudes.sol")
+        
+        .GuildIndex = 0
+    
+    End With
+        
+    ' Guardamos el usuario.
+    Call SaveUser(UserIndex)
+        
+    ' Actualizamos la base de datos de clanes.
+    Call modGuilds.LoadGuildsDB
+        
+    Exit Sub
+
 End Sub
 
