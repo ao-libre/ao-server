@@ -23521,13 +23521,10 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
             'Expulsamos a todos los miembros del clan.
             For i = 0 To UBound(GuildMembers)
                 
-                Dim MemberName As String
-                    MemberName = GuildMembers(i)
-                
-                Dim TempMiembro As String
-                    TempMiembro = NameIndex(MemberName)
+                Dim MemberIndex As Integer
+                    MemberIndex = NameIndex(GuildMembers(i))
 
-                Call guilds(.GuildIndex).ExpulsarMiembro(TempMiembro)
+                UserList(MemberIndex).GuildIndex = 0
             Next
             
         End If
@@ -23543,9 +23540,7 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
         
         Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-members.mem")
         Call Kill(App.Path & "\Guilds\" & guilds(.GuildIndex).GuildName & "-solicitudes.sol")
-        
-        '.GuildIndex = 0
-    
+
     End With
         
     ' Guardamos el usuario.
