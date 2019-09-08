@@ -23526,11 +23526,9 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
             GuildMembers = guilds(PreviousGuildIndex).GetMemberList()
             
         'Expulsamos a todos los miembros del clan.
-        For i = 0 To UBound(GuildMembers)
-            Dim MemberIndex As Integer
-                MemberIndex = NameIndex(GuildMembers(i))
-
-            UserList(MemberIndex).GuildIndex = 0
+        For i = 1 To UBound(GuildMembers)
+            Call SaveUserGuildIndex(GuildMembers(i), 0)
+            Call SaveUserGuildAspirant(GuildMembers(i), 0)
         Next
         
         'La borramos junto con la lista de solicitudes.
@@ -23540,10 +23538,7 @@ Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
         Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("El Clan " & guilds(.GuildIndex).GuildName & " ha cerrado sus puertas.", FontTypeNames.FONTTYPE_SERVER))
         
     End With
-        
-    ' Guardamos el usuario.
-    Call SaveUser(UserIndex)
-        
+
     ' Actualizamos la base de datos de clanes.
     Call modGuilds.LoadGuildsDB
         
