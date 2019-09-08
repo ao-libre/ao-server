@@ -724,7 +724,7 @@ Public Const MAX_INVENTORY_SLOTS        As Byte = 30
 
 ''
 ' Cantidad de "slots" en el inventario sin mochila
-Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 20
+Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 25
 
 ''
 ' Constante para indicar que se esta usando ORO
