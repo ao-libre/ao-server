@@ -178,23 +178,27 @@ Public Sub InicializarNuevoClan(ByRef Fundador As String)
     Dim NewQ As Integer
 
     'para que genere los archivos
-    Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", "0")
-    Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", "0")
-
+    If Not FileExist(MEMBERSFILE, vbNormal) Then
+        Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", "0")
+    End If
+    
+    If Not FileExist(SOLICITUDESFILE, vbNormal) Then
+        Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", "0")
+    End If
+    
     OldQ = GetVar(GUILDINFOFILE, "INIT", "nroguilds")
 
     If IsNumeric(OldQ) Then
         NewQ = CInt(Trim$(OldQ)) + 1
     Else
         NewQ = 1
-
     End If
 
-    Call WriteVar(GUILDINFOFILE, "INIT", "NroGuilds", NewQ)
-
-    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Founder", Fundador)
+    Call WriteVar(GUILDINFOFILE, "INIT", "NroGuilds", NewQ & vbNewLine)
+    
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "GuildName", p_GuildName)
-    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Founder", Fundador)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date$)
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Antifaccion", "0")
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Alineacion", Alineacion2String(p_Alineacion))
 
