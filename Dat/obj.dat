@@ -68,7 +68,7 @@ usar primero los nros más bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1129
+NumOBJs=1130
 
 
 
@@ -13972,3 +13972,9 @@ GrhIndex=609
 ObjType=35
 Agarrable=0
 Valor=90000
+
+[OBJ1130]
+Name=Pez saltando
+GrhIndex=3993
+ObjType=38
+Agarrable=1
