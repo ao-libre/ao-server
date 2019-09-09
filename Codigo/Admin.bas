@@ -138,6 +138,13 @@ Public BootDelBackUp                     As Byte
 Public Lloviendo                         As Boolean
 
 Public DeNoche                           As Boolean
+'[ReyarB]
+Public MiPesca                          As Integer
+Public MiTalar                          As Integer
+Public MiMinar                          As Integer
+'[/ReyarB]
+
+
 
 Function VersionOK(ByVal Ver As String) As Boolean
     '***************************************************
@@ -168,7 +175,7 @@ Sub ReSpawnOrigPosNpcs()
         'OJO
         If Npclist(i).flags.NPCActive Then
             
-            If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.x, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
+            If InMapBounds(Npclist(i).Orig.Map, Npclist(i).Orig.X, Npclist(i).Orig.Y) And Npclist(i).Numero = Guardias Then
                 MiNPC = Npclist(i)
                 Call QuitarNPC(i)
                 Call ReSpawnNpc(MiNPC)
@@ -261,7 +268,7 @@ Public Sub Encarcelar(ByVal Userindex As Integer, _
 
     UserList(Userindex).Counters.Pena = Minutos * 60
     
-    Call WarpUserChar(Userindex, Prision.Map, Prision.x, Prision.Y, True)
+    Call WarpUserChar(Userindex, Prision.Map, Prision.X, Prision.Y, True)
     
     If LenB(GmName) = 0 Then
         Call WriteConsoleMsg(Userindex, "Has sido encarcelado, deberas permanecer en la carcel " & Minutos & " minutos.", FontTypeNames.FONTTYPE_INFO)
