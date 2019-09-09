@@ -1339,14 +1339,11 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                 If FoundChar = 2 Then 'Encontro un NPC?
 
                     Dim estatus            As String
-
                     Dim MinHp              As Long
-
                     Dim MaxHp              As Long
-
                     Dim SupervivenciaSkill As Byte
-
                     Dim sDesc              As String
+                    Dim TimeParalizado     As String
                 
                     MinHp = Npclist(TempCharIndex).Stats.MinHp
                     MaxHp = Npclist(TempCharIndex).Stats.MaxHp
@@ -1421,9 +1418,19 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                         End If
 
                     End If
-                
-                    If Len(Npclist(TempCharIndex).desc) > 1 Then
-                        Stat = Npclist(TempCharIndex).desc
+                    
+                    'Lorwik> Tiene 100 skills en supervivencia?
+                    If UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia) = 100 Then
+
+                        'Lorwik> Esta paralizado o inmovilizado? Si lo esta miramos el tiempo que le queda.
+                        If Npclist(TempCharIndex).flags.Paralizado = 1 Or Npclist(TempCharIndex).flags.Inmovilizado = 1 Then
+                            TimeParalizado = " - Tiempo de paralisis: " & Npclist(TempCharIndex).Contadores.Paralisis & " segundos."
+                        End If
+                        
+                    End If
+                    
+                    If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                        Stat = Npclist(TempCharIndex).Desc
                     
                         'Es el rey o el demonio?
                         If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then
@@ -1483,22 +1490,16 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                     Else
 
                         If Npclist(TempCharIndex).MaestroUser > 0 Then
-                            Call WriteConsoleMsg(UserIndex, estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & ".", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & " es mascota de " & UserList(Npclist(TempCharIndex).MaestroUser).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
+                        
                         Else
-                            sDesc = estatus & Npclist(TempCharIndex).Name
-
-                            If Npclist(TempCharIndex).Owner > 0 Then sDesc = sDesc & " le pertenece a " & UserList(Npclist(TempCharIndex).Owner).Name
-                            sDesc = sDesc & "."
+                            Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
                             
-                            Call WriteConsoleMsg(UserIndex, sDesc, FontTypeNames.FONTTYPE_INFO)
-                            
-                            If .Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
-                                Call WriteConsoleMsg(UserIndex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
-
+                            If UserList(Userindex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
+                                Call WriteConsoleMsg(Userindex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
                             End If
-
                         End If
-
+                        
                     End If
                 
                     FoundSomething = 1

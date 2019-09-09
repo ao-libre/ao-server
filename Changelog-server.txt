@@ -787,3 +787,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 08/09/2019: Ahora te avisa cuando alguien manda /GM (FrankoH)
 * 08/09/2019: Implementado cierre de clan mediante /CERRARCLAN. (jopiortiz)
 * 08/09/2019: Se modificaron/arreglaron algunos mapas. (ReyarB)
+* 09/09/2019: Ver tiempo restante de parálisis al tener 100 puntos en supervivencia. (jopiortiz)
