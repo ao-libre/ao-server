@@ -1419,10 +1419,10 @@ Sub LookatTile(ByVal UserIndex As Integer, _
 
                     End If
                     
-                    'Lorwik> �Tiene 100 skills en supervivencia?
+                    'Lorwik> Tiene 100 skills en supervivencia?
                     If UserList(Userindex).Stats.UserSkills(eSkill.Supervivencia) = 100 Then
 
-                        'Lorwik> �Esta paralizado o inmovilizado? Si lo esta miramos el tiempo que le queda.
+                        'Lorwik> Esta paralizado o inmovilizado? Si lo esta miramos el tiempo que le queda.
                         If Npclist(TempCharIndex).flags.Paralizado = 1 Or Npclist(TempCharIndex).flags.Inmovilizado = 1 Then
                             TimeParalizado = " - Tiempo de paralisis: " & Npclist(TempCharIndex).Contadores.Paralisis & " segundos."
                         End If
@@ -1496,7 +1496,7 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                             Call WriteConsoleMsg(Userindex, estatus & Npclist(TempCharIndex).Name & TimeParalizado, FontTypeNames.FONTTYPE_INFO)
                             
                             If UserList(Userindex).flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin) Then
-                                Call WriteConsoleMsg(Userindex, "Le peg� primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Le pego primero: " & Npclist(TempCharIndex).flags.AttackedFirstBy & ".", FontTypeNames.FONTTYPE_INFO)
                             End If
                         End If
                         
