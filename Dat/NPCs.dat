@@ -532,9 +532,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1
-NROITEMS=2
-Obj1=138-1000 'Caña de Pescar
+NROITEMS=3
+Obj1=138-1000 'Cana de Pescar
 Obj2=139-1000 'Pescado
+Obj3=543-1000 'Red de Pesca
 BackUp=1
 
 #############################################
@@ -554,9 +555,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1
-NROITEMS=2
-Obj1=138-1000 'Caña de Pescar
+NROITEMS=3
+Obj1=138-1000 'Cana de Pescar
 Obj2=139-1000 'Pescado
+Obj3=543-1000 'Red de Pesca
 BackUp=1
 
 #############################################
@@ -597,8 +599,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1000
-NROITEMS=1
-Obj1=534-1000 'Odre Vacía
+NROITEMS=3
+Obj1=1127-1000 'Manual de Liderazgo
+Obj1=1128-1000 'Manual de Supervivencia
+Obj1=1129-1000 'Manual de Navegacion
 BackUp=1
 
 #############################################
@@ -1576,7 +1580,6 @@ Obj20=658-1000 'Vara de Fresno
 Obj21=659-1000 'Bastón nudoso
 Obj22=696-1000 'Laúd Mágico
 Obj23=208-1000 'Flauta Mágica
-
 BackUp=1
 
 #############################################
