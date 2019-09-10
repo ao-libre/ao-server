@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim x, Y, n, Map, mapa, Email, max, Value As Variant
+    Dim X, Y, n, Map, Mapa, Email, max, Value As Variant
 
 #End If
 
@@ -340,7 +340,7 @@ Public Sub CargarHechizos()
     '
     '###################################################
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando Hechizos."
     
@@ -460,7 +460,7 @@ Public Sub CargarHechizos()
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     MsgBox "Error cargando hechizos.dat " & Err.Number & ": " & Err.description
  
 End Sub
@@ -516,10 +516,10 @@ Public Sub DoBackUp()
     'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
     If ConexionAPI Then
-        Call ApiEndpointBackupCharfiles()
-        Call ApiEndpointBackupCuentas()
-        Call ApiEndpointBackupLogs()
-        Call ApiEndpointSendWorldSaveMessageDiscord()
+        Call ApiEndpointBackupCharfiles
+        Call ApiEndpointBackupCuentas
+        Call ApiEndpointBackupLogs
+        Call ApiEndpointSendWorldSaveMessageDiscord
     End If
 
     haciendoBK = False
@@ -553,7 +553,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
 
     Dim Y           As Long
 
-    Dim x           As Long
+    Dim X           As Long
 
     Dim ByFlags     As Byte
 
@@ -596,7 +596,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     'map Header
     Call MapWriter.putInteger(MapInfo(Map).MapVersion)
         
-    Call MapWriter.putString(MiCabecera.desc, False)
+    Call MapWriter.putString(MiCabecera.Desc, False)
     Call MapWriter.putLong(MiCabecera.crc)
     Call MapWriter.putLong(MiCabecera.MagicWord)
     
@@ -608,9 +608,9 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     
     'Write .map file
     For Y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            With MapData(Map, x, Y)
+            With MapData(Map, X, Y)
                 ByFlags = 0
                 
                 If .Blocked Then ByFlags = ByFlags Or 1
@@ -658,7 +658,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 
                 If .TileExit.Map Then
                     Call InfWriter.putInteger(.TileExit.Map)
-                    Call InfWriter.putInteger(.TileExit.x)
+                    Call InfWriter.putInteger(.TileExit.X)
                     Call InfWriter.putInteger(.TileExit.Y)
 
                 End If
@@ -675,7 +675,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
 
             End With
 
-        Next x
+        Next X
     Next Y
     
     Call MapWriter.saveBuffer
@@ -697,8 +697,8 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
         Call IniManager.ChangeValue("Mapa" & Map, "MagiaSinefecto", .MagiaSinEfecto)
         Call IniManager.ChangeValue("Mapa" & Map, "InviSinEfecto", .InviSinEfecto)
         Call IniManager.ChangeValue("Mapa" & Map, "ResuSinEfecto", .ResuSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.x & "-" & .StartPos.Y)
-        Call IniManager.ChangeValue("Mapa" & Map, "OnDeathGoTo", .OnDeathGoTo.Map & "-" & .OnDeathGoTo.x & "-" & .OnDeathGoTo.Y)
+        Call IniManager.ChangeValue("Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.X & "-" & .StartPos.Y)
+        Call IniManager.ChangeValue("Mapa" & Map, "OnDeathGoTo", .OnDeathGoTo.Map & "-" & .OnDeathGoTo.X & "-" & .OnDeathGoTo.Y)
     
         Call IniManager.ChangeValue("Mapa" & Map, "Terreno", TerrainByteToString(.Terreno))
         Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
@@ -872,7 +872,7 @@ Sub LoadOBJData()
 
     'Call LogTarea("Sub LoadOBJData")
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     If frmMain.Visible Then frmMain.txStatus.Caption = "Cargando base de datos de los objetos."
     
@@ -1116,7 +1116,7 @@ Sub LoadOBJData()
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     MsgBox "error cargando objetos " & Err.Number & ": " & Err.description
 
 End Sub
@@ -1297,7 +1297,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         .ID = val(UserFile.GetValue("INIT", "ID"))
         .AccountHash = UserFile.GetValue("INIT", "AccountHash")
         .Genero = UserFile.GetValue("INIT", "Genero")
-        .clase = UserFile.GetValue("INIT", "Clase")
+        .Clase = UserFile.GetValue("INIT", "Clase")
         .raza = UserFile.GetValue("INIT", "Raza")
         .Hogar = UserFile.GetValue("INIT", "Hogar")
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
@@ -1316,10 +1316,10 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
 
-        .desc = UserFile.GetValue("INIT", "Desc")
+        .Desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
-        .Pos.x = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
+        .Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
         .Pos.Y = CInt(ReadField(3, UserFile.GetValue("INIT", "Position"), 45))
         
         .Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
@@ -1510,7 +1510,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
 
     Dim hFile     As Integer
 
-    Dim x         As Long
+    Dim X         As Long
 
     Dim Y         As Long
 
@@ -1558,7 +1558,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     'map Header
     MapInfo(Map).MapVersion = MapReader.getInteger
     
-    MiCabecera.desc = MapReader.getString(Len(MiCabecera.desc))
+    MiCabecera.Desc = MapReader.getString(Len(MiCabecera.Desc))
     MiCabecera.crc = MapReader.getLong
     MiCabecera.MagicWord = MapReader.getLong
     
@@ -1569,9 +1569,9 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     Call InfReader.getInteger
 
     For Y = YMinMapSize To YMaxMapSize
-        For x = XMinMapSize To XMaxMapSize
+        For X = XMinMapSize To XMaxMapSize
 
-            With MapData(Map, x, Y)
+            With MapData(Map, X, Y)
                 '.map file
                 ByFlags = MapReader.getByte
 
@@ -1596,7 +1596,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
 
                 If ByFlags And 1 Then
                     .TileExit.Map = InfReader.getInteger
-                    .TileExit.x = InfReader.getInteger
+                    .TileExit.X = InfReader.getInteger
                     .TileExit.Y = InfReader.getInteger
 
                 End If
@@ -1612,7 +1612,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
                         If val(GetVar(npcfile, "NPC" & .NpcIndex, "PosOrig")) = 1 Then
                             .NpcIndex = OpenNPC(.NpcIndex)
                             Npclist(.NpcIndex).Orig.Map = Map
-                            Npclist(.NpcIndex).Orig.x = x
+                            Npclist(.NpcIndex).Orig.X = X
                             Npclist(.NpcIndex).Orig.Y = Y
                         Else
                             .NpcIndex = OpenNPC(.NpcIndex)
@@ -1620,10 +1620,10 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
                         End If
 
                         Npclist(.NpcIndex).Pos.Map = Map
-                        Npclist(.NpcIndex).Pos.x = x
+                        Npclist(.NpcIndex).Pos.X = X
                         Npclist(.NpcIndex).Pos.Y = Y
 
-                        Call MakeNPCChar(True, 0, .NpcIndex, Map, x, Y)
+                        Call MakeNPCChar(True, 0, .NpcIndex, Map, X, Y)
 
                     End If
 
@@ -1638,7 +1638,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
 
             End With
 
-        Next x
+        Next X
     Next Y
     
     Call Leer.Initialize(MAPFl & ".dat")
@@ -1647,11 +1647,11 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
         .Name = Leer.GetValue("Mapa" & Map, "Name")
         .Music = Leer.GetValue("Mapa" & Map, "MusicNum")
         .StartPos.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
-        .StartPos.x = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
+        .StartPos.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         .StartPos.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         
         .OnDeathGoTo.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
-        .OnDeathGoTo.x = val(ReadField(2, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
+        .OnDeathGoTo.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
         .OnDeathGoTo.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
         
         .MagiaSinEfecto = val(Leer.GetValue("Mapa" & Map, "MagiaSinEfecto"))
@@ -1686,7 +1686,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     Exit Sub
 
 errh:
-    Call LogError("Error cargando mapa: " & Map & " - Pos: " & x & "," & Y & "." & Err.description)
+    Call LogError("Error cargando mapa: " & Map & " - Pos: " & X & "," & Y & "." & Err.description)
 
     Set MapReader = Nothing
     Set InfReader = Nothing
@@ -1821,6 +1821,14 @@ Sub LoadSini()
     IntervaloFlechasCazadores = val(Lector.GetValue("INTERVALOS", "IntervaloFlechasCazadores"))
     
     IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
+    '[ReyarB]
+    MiPesca = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiPesca"))
+    FrmInterv.txtMiPesca.Text = MiPesca
+    MiTalar = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiTalar"))
+    FrmInterv.txtMiTalar.Text = MiTalar
+    MiMinar = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiMinar"))
+    FrmInterv.txtMiMinar.Text = MiMinar
+    '[/ReyarB]
     
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
@@ -1839,7 +1847,7 @@ Sub LoadSini()
         If HappyHourDays(lDayNumberTemp).Multi < 0 Then HappyHourDays(lDayNumberTemp).Multi = 0
     Next
 
-    'Conexion con la API hecha en Node.js      
+    'Conexion con la API hecha en Node.js
     'Mas info aqui: https://github.com/ao-libre/ao-api-server/
     ConexionAPI = CBool(Lector.GetValue("CONEXIONAPI", "Activado"))
 
@@ -2065,8 +2073,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
         Call Manager.ChangeValue("INIT", "Genero", .Genero)
         Call Manager.ChangeValue("INIT", "Raza", .raza)
         Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
-        Call Manager.ChangeValue("INIT", "Clase", .clase)
-        Call Manager.ChangeValue("INIT", "Desc", .desc)
+        Call Manager.ChangeValue("INIT", "Clase", .Clase)
+        Call Manager.ChangeValue("INIT", "Desc", .Desc)
     
         Call Manager.ChangeValue("INIT", "Heading", CStr(.Char.heading))
         Call Manager.ChangeValue("INIT", "Head", CStr(.OrigChar.Head))
@@ -2117,7 +2125,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
 
         End If
     
-        Call Manager.ChangeValue("INIT", "Position", .Pos.Map & "-" & .Pos.x & "-" & .Pos.Y)
+        Call Manager.ChangeValue("INIT", "Position", .Pos.Map & "-" & .Pos.X & "-" & .Pos.Y)
     
         Call Manager.ChangeValue("STATS", "GLD", CStr(.Stats.Gld))
         Call Manager.ChangeValue("STATS", "BANCO", CStr(.Stats.Banco))
@@ -2279,7 +2287,7 @@ Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
     With Npclist(NpcIndex)
         'General
         Print #hFile, "Name=" & .Name
-        Print #hFile, "Desc=" & .desc
+        Print #hFile, "Desc=" & .Desc
         Print #hFile, "Head=" & val(.Char.Head)
         Print #hFile, "Body=" & val(.Char.body)
         Print #hFile, "Heading=" & val(.Char.heading)
@@ -2345,7 +2353,7 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
     
         .Numero = NpcNumber
         .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-        .desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+        .Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
         .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
         .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
         
@@ -2489,7 +2497,7 @@ Public Sub CargaApuestas()
 
 End Sub
 
-Public Sub generateMatrix(ByVal mapa As Integer)
+Public Sub generateMatrix(ByVal Mapa As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2532,10 +2540,10 @@ Public Sub generateMatrix(ByVal mapa As Integer)
 
 End Sub
 
-Public Sub setDistance(ByVal mapa As Integer, _
+Public Sub setDistance(ByVal Mapa As Integer, _
                        ByVal city As Byte, _
                        ByVal side As Integer, _
-                       Optional ByVal x As Integer = 0, _
+                       Optional ByVal X As Integer = 0, _
                        Optional ByVal Y As Integer = 0)
     '***************************************************
     'Author: Unknown
@@ -2547,35 +2555,35 @@ Public Sub setDistance(ByVal mapa As Integer, _
 
     Dim lim As Integer
 
-    If mapa <= 0 Or mapa > NumMaps Then Exit Sub
+    If Mapa <= 0 Or Mapa > NumMaps Then Exit Sub
 
-    If distanceToCities(mapa).distanceToCity(city) >= 0 Then Exit Sub
+    If distanceToCities(Mapa).distanceToCity(city) >= 0 Then Exit Sub
 
-    If mapa = Ciudades(city).Map Then
-        distanceToCities(mapa).distanceToCity(city) = 0
+    If Mapa = Ciudades(city).Map Then
+        distanceToCities(Mapa).distanceToCity(city) = 0
     Else
-        distanceToCities(mapa).distanceToCity(city) = Abs(x) + Abs(Y)
+        distanceToCities(Mapa).distanceToCity(city) = Abs(X) + Abs(Y)
 
     End If
 
     For i = 1 To 4
-        lim = getLimit(mapa, i)
+        lim = getLimit(Mapa, i)
 
         If lim > 0 Then
 
             Select Case i
 
                 Case eHeading.NORTH
-                    Call setDistance(lim, city, i, x, Y + 1)
+                    Call setDistance(lim, city, i, X, Y + 1)
 
                 Case eHeading.EAST
-                    Call setDistance(lim, city, i, x + 1, Y)
+                    Call setDistance(lim, city, i, X + 1, Y)
 
                 Case eHeading.SOUTH
-                    Call setDistance(lim, city, i, x, Y - 1)
+                    Call setDistance(lim, city, i, X, Y - 1)
 
                 Case eHeading.WEST
-                    Call setDistance(lim, city, i, x - 1, Y)
+                    Call setDistance(lim, city, i, X - 1, Y)
 
             End Select
 
@@ -2585,7 +2593,7 @@ Public Sub setDistance(ByVal mapa As Integer, _
 
 End Sub
 
-Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
+Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
 
     '***************************************************
     'Author: Budi
@@ -2593,34 +2601,34 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
     'Retrieves the limit in the given side in the given map.
     'TODO: This should be set in the .inf map file.
     '***************************************************
-    Dim x As Long
+    Dim X As Long
 
     Dim Y As Long
 
-    If mapa <= 0 Then Exit Function
+    If Mapa <= 0 Then Exit Function
 
-    For x = 15 To 87
+    For X = 15 To 87
         For Y = 0 To 3
 
             Select Case side
 
                 Case eHeading.NORTH
-                    getLimit = MapData(mapa, x, 7 + Y).TileExit.Map
+                    getLimit = MapData(Mapa, X, 7 + Y).TileExit.Map
 
                 Case eHeading.EAST
-                    getLimit = MapData(mapa, 92 - Y, x).TileExit.Map
+                    getLimit = MapData(Mapa, 92 - Y, X).TileExit.Map
 
                 Case eHeading.SOUTH
-                    getLimit = MapData(mapa, x, 94 - Y).TileExit.Map
+                    getLimit = MapData(Mapa, X, 94 - Y).TileExit.Map
 
                 Case eHeading.WEST
-                    getLimit = MapData(mapa, 9 + Y, x).TileExit.Map
+                    getLimit = MapData(Mapa, 9 + Y, X).TileExit.Map
 
             End Select
 
             If getLimit > 0 Then Exit Function
         Next Y
-    Next x
+    Next X
 
 End Function
 
@@ -3314,13 +3322,13 @@ Public Function GetUserSkillsCharfile(ByVal UserName As String) As String
     '***************************************************
     Dim i       As Byte
 
-    Dim message As String
+    Dim Message As String
 
     For i = 1 To NUMSKILLS
-        message = message & "CHAR>" & SkillsNames(i) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & i) & vbCrLf
+        Message = Message & "CHAR>" & SkillsNames(i) & " = " & GetVar(CharPath & UserName & ".chr", "SKILLS", "SK" & i) & vbCrLf
     Next i
 
-    GetUserSkillsCharfile = message
+    GetUserSkillsCharfile = Message
 
 End Function
 
