@@ -3,15 +3,141 @@ Begin VB.Form FrmInterv
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Intervalos"
-   ClientHeight    =   4920
+   ClientHeight    =   6300
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7650
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   4920
+   ScaleHeight     =   6300
    ScaleWidth      =   7650
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame Suerte 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Suerte"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1215
+      Left            =   120
+      TabIndex        =   55
+      Top             =   4320
+      Width           =   2055
+      Begin VB.TextBox txtMiPesca 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   120
+         TabIndex        =   58
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.TextBox txtMiTalar 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   720
+         TabIndex        =   57
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.TextBox txtMiMinar 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   56
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.Label pesca 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Pesca"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   61
+         Top             =   360
+         Width           =   615
+      End
+      Begin VB.Label Label26 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Talar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   720
+         TabIndex        =   60
+         Top             =   360
+         Width           =   495
+      End
+      Begin VB.Label Label27 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Mineria"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   1320
+         TabIndex        =   59
+         Top             =   360
+         Width           =   615
+      End
+   End
    Begin VB.CommandButton Command2 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Guardar Intervalos"
@@ -28,7 +154,7 @@ Begin VB.Form FrmInterv
       Left            =   4680
       Style           =   1  'Graphical
       TabIndex        =   36
-      Top             =   4320
+      Top             =   5640
       Width           =   2895
    End
    Begin VB.CommandButton Command1 
@@ -47,7 +173,7 @@ Begin VB.Form FrmInterv
       Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   0
-      Top             =   4320
+      Top             =   5640
       Width           =   1695
    End
    Begin VB.Frame Frame11 
@@ -1023,8 +1149,8 @@ Begin VB.Form FrmInterv
       Left            =   120
       Style           =   1  'Graphical
       TabIndex        =   1
-      Top             =   4320
-      Width           =   1695
+      Top             =   5640
+      Width           =   2055
    End
 End
 Attribute VB_Name = "FrmInterv"
@@ -1084,6 +1210,11 @@ Public Sub AplicarIntervalos()
     IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
     IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
     IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
+    '[ReyarB]
+    MiPesca = val(txtMiPesca.Text)
+    MiTalar = val(txtMiTalar.Text)
+    MiMinar = val(txtMiMinar.Text)
+    '[/ReyarB]
 
 End Sub
 
@@ -1119,7 +1250,13 @@ Private Sub Command2_Click()
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", str(IntervaloUserPuedeTrabajar))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
-
+    '[ReyarB]
+    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiPesca", str(MiPesca))
+    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiTalar", str(MiTalar))
+    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiMinar", str(MiMinar))
+    '[/ReyarB]
+    
+    
     MsgBox "Los intervalos se han guardado sin problemas."
 
     Exit Sub
