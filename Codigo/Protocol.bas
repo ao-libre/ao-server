@@ -321,11 +321,12 @@ Private Enum ClientPacketID
     CambiarContrasena = 145
     FightSend = 146
     FightAccept = 147
+    CloseGuild = 148
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 147
+Private Const LAST_CLIENT_PACKET_ID As Byte = 148
 
 Public Enum FontTypeNames
 
@@ -892,6 +893,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             
         Case ClientPacketID.FightAccept
             Call HandleFightAccept(Userindex)
+        
+        Case ClientPacketID.CloseGuild
+            Call HandleCloseGuild(Userindex)
             
         Case Else
             'ERROR : Abort!
@@ -23486,5 +23490,58 @@ On Error GoTo 0
     
     If Error <> 0 Then _
         Err.Raise Error
+End Sub
+
+Private Sub HandleCloseGuild(ByVal UserIndex As Integer)
+    
+    With UserList(UserIndex)
+    
+        Call .incomingData.ReadByte
+        
+        Dim i As Long
+        Dim PreviousGuildIndex  As Integer
+        
+        If Not .GuildIndex >= 1 Then
+            Call WriteConsoleMsg(Userindex, "No perteneces a ningun clan.", FONTTYPE_GUILD)
+            Exit Sub
+
+        End If
+
+        If guilds(.GuildIndex).Fundador <> .Name Then
+            Call WriteConsoleMsg(Userindex, "No eres lider del clan.", FONTTYPE_GUILD)
+            Exit Sub
+
+        End If
+        
+        'Ya con cambiarle el nombre a "CLAN CERRADO" ya se omite de la lista de clanes enviadas al cliente.
+        'Tambien cambiamos "Founder" y "Leader" a "NADIE" sino no te deja fundar otro clan.
+        Call WriteVar(App.Path & "\guilds\guildsinfo.inf", "GUILD" & .GuildIndex, "GuildName", "CLAN CERRADO")
+        Call WriteVar(App.Path & "\guilds\guildsinfo.inf", "GUILD" & .GuildIndex, "Founder", "NADIE")
+        Call WriteVar(App.Path & "\guilds\guildsinfo.inf", "GUILD" & .GuildIndex, "Leader", "NADIE")
+        
+        PreviousGuildIndex = .GuildIndex
+        
+        'Obtenemos la lista de miembros del clan.
+        Dim GuildMembers() As String
+            GuildMembers = guilds(PreviousGuildIndex).GetMemberList()
+
+        For i = 0 To UBound(GuildMembers)
+            Call SaveUserGuildIndex(GuildMembers(i), 0)
+            Call SaveUserGuildAspirant(GuildMembers(i), 0)
+        Next i
+        
+        'La borramos junto con la lista de solicitudes.
+        Call Kill(App.Path & "\Guilds\" & guilds(PreviousGuildIndex).GuildName & "-members.mem")
+        Call Kill(App.Path & "\Guilds\" & guilds(PreviousGuildIndex).GuildName & "-solicitudes.sol")
+        
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("El Clan " & guilds(.GuildIndex).GuildName & " ha cerrado sus puertas.", FontTypeNames.FONTTYPE_SERVER))
+        
+    End With
+
+    ' Actualizamos la base de datos de clanes.
+    Call modGuilds.LoadGuildsDB
+        
+    Exit Sub
+
 End Sub
 
