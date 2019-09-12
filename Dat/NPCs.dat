@@ -532,9 +532,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1
-NROITEMS=2
-Obj1=138-1000 'Caña de Pescar
+NROITEMS=3
+Obj1=138-1000 'Cana de Pescar
 Obj2=139-1000 'Pescado
+Obj3=543-1000 'Red de Pesca
 BackUp=1
 
 #############################################
@@ -554,9 +555,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1
-NROITEMS=2
-Obj1=138-1000 'Caña de Pescar
+NROITEMS=3
+Obj1=138-1000 'Cana de Pescar
 Obj2=139-1000 'Pescado
+Obj3=543-1000 'Red de Pesca
 BackUp=1
 
 #############################################
@@ -597,8 +599,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=1000
-NROITEMS=1
-Obj1=534-1000 'Odre Vacía
+NROITEMS=3
+Obj1=1127-1000 'Manual de Liderazgo
+Obj1=1128-1000 'Manual de Supervivencia
+Obj1=1129-1000 'Manual de Navegacion
 BackUp=1
 
 #############################################
@@ -1576,7 +1580,6 @@ Obj20=658-1000 'Vara de Fresno
 Obj21=659-1000 'Bastón nudoso
 Obj22=696-1000 'Laúd Mágico
 Obj23=208-1000 'Flauta Mágica
-
 BackUp=1
 
 #############################################
@@ -9427,7 +9430,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC715]
-Name=NPC15
+Name=Etognil Bronce
 NpcType=0
 Head=0
 Heading=3
@@ -9435,64 +9438,33 @@ Body=569
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=0
+ReSpawn=1
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
-MaxHIT=350
-MinHIT=75
-DEF=0
+GiveEXP=1000
+GiveGLD=0
+MinHP=49000
+MaxHP=49000
+MaxHIT=450
+MinHIT=300
+DEF=30
+AfectaParalisis=1
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=12-8000 'Oro
-Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
-############################################
+NROITEMS=6
+Drop1=12-1200 'Oro
+Drop2=38-100 'Pociones Rojas
+Drop3=37-100 'Pociones Azules`
+Drop4=12-7500 'Oro
+Drop5=386-10 'Lingote de Hierro
+Drop6=192-900 'Minerales de Bronce
 
 [NPC716]
-Name=NPC16
-NpcType=0
-Head=0
-Heading=3
-Body=570
-Movement=3
-AguaValida=0
-Attackable=1
-ReSpawn=0
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
-MaxHIT=350
-MinHIT=75
-DEF=0
-PoderAtaque=230
-PoderEvasion=220
-Snd3=100
-BackUp=0
-NROITEMS=5
-Drop1=12-8000 'Oro
-Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
-
-############################################
-
-[NPC717]
-Name=NPC17
+Name=Etognil Plata
 NpcType=0
 Head=0
 Heading=3
@@ -9500,27 +9472,64 @@ Body=571
 Movement=3
 AguaValida=0
 Attackable=1
-ReSpawn=0
+ReSpawn=1
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=15000
-MaxHP=15000
-MaxHIT=350
-MinHIT=75
-DEF=0
+GiveEXP=2000
+GiveGLD=0
+MinHP=65000
+MaxHP=65000
+MaxHIT=450
+MinHIT=300
+DEF=30
+AfectaParalisis=1
+PoderAtaque=280
+PoderEvasion=250
+Snd3=100
+BackUp=0
+NROITEMS=6
+Drop1=12-1200 'Oro
+Drop2=38-100 'Pociones Rojas
+Drop3=37-100 'Pociones Azules
+Drop4=12-7500 'Oro
+Drop5=387-10 'Lingote de Plata
+Drop6=193-700 'Minerales de Plata
+
+[NPC717]
+Name=Etognil Oro
+NpcType=0
+Head=0
+Heading=3
+Body=570
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=1
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=2000
+GiveGLD=0
+MinHP=80000
+MaxHP=80000
+MaxHIT=450
+MinHIT=300
+DEF=30
+AfectaParalisis=1
 PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
-Drop1=12-8000 'Oro
-Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
+NROITEMS=6
+Drop1=12-1200 'Oro
+Drop2=38-100 'Pociones Rojas
+Drop3=37-100 'Pociones Azules
+Drop4=12-7500 'Oro
+Drop5=388-10 'Lingote de Oro
+Drop6=194-600 'Minerales de Oro
 ############################################
 
 [NPC750] ' Hija de ZeuS

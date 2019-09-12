@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, body, Clase, race, Email, Obj, Length As Variant
+    Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -724,7 +724,7 @@ Public Const MAX_INVENTORY_SLOTS        As Byte = 30
 
 ''
 ' Cantidad de "slots" en el inventario sin mochila
-Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 20
+Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 25
 
 ''
 ' Constante para indicar que se esta usando ORO
@@ -1151,7 +1151,7 @@ Public Type ObjData
 
 End Type
 
-Public Type Obj
+Public Type obj
 
     ObjIndex As Integer
     Amount As Integer
@@ -1287,7 +1287,7 @@ Public Type tQuest
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
-    RequiredOBJ() As Obj
+    RequiredOBJ() As obj
     
     RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
@@ -1296,7 +1296,7 @@ Public Type tQuest
     RewardEXP As Long
     
     RewardOBJs As Byte
-    RewardOBJ() As Obj
+    RewardOBJ() As obj
 
 End Type
 
@@ -1861,7 +1861,7 @@ Public Type MapBlock
     Graphic(1 To 4) As Integer
     Userindex As Integer
     NpcIndex As Integer
-    ObjInfo As Obj
+    ObjInfo As obj
     TileExit As WorldPos
     trigger As eTrigger
 

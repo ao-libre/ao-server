@@ -62,18 +62,18 @@ Public Function MaximoInt(ByVal a As Integer, ByVal b As Integer) As Integer
 
 End Function
 
-Private Function PoderEvasionEscudo(ByVal UserIndex As Integer) As Long
+Private Function PoderEvasionEscudo(ByVal Userindex As Integer) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    PoderEvasionEscudo = (UserList(UserIndex).Stats.UserSkills(eSkill.Defensa) * ModClase(UserList(UserIndex).clase).Escudo) / 2
+    PoderEvasionEscudo = (UserList(Userindex).Stats.UserSkills(eSkill.Defensa) * ModClase(UserList(Userindex).Clase).Escudo) / 2
 
 End Function
 
-Private Function PoderEvasion(ByVal UserIndex As Integer) As Long
+Private Function PoderEvasion(ByVal Userindex As Integer) As Long
 
     '***************************************************
     'Author: Unknown
@@ -82,8 +82,8 @@ Private Function PoderEvasion(ByVal UserIndex As Integer) As Long
     '***************************************************
     Dim lTemp As Long
 
-    With UserList(UserIndex)
-        lTemp = (.Stats.UserSkills(eSkill.Tacticas) + .Stats.UserSkills(eSkill.Tacticas) / 33 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).Evasion
+    With UserList(Userindex)
+        lTemp = (.Stats.UserSkills(eSkill.Tacticas) + .Stats.UserSkills(eSkill.Tacticas) / 33 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).Evasion
        
         PoderEvasion = (lTemp + (2.5 * MaximoInt(.Stats.ELV - 12, 0)))
 
@@ -91,7 +91,7 @@ Private Function PoderEvasion(ByVal UserIndex As Integer) As Long
 
 End Function
 
-Private Function PoderAtaqueArma(ByVal UserIndex As Integer) As Long
+Private Function PoderAtaqueArma(ByVal Userindex As Integer) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -100,16 +100,16 @@ Private Function PoderAtaqueArma(ByVal UserIndex As Integer) As Long
 
     Dim PoderAtaqueTemp As Long
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If .Stats.UserSkills(eSkill.Armas) < 31 Then
-            PoderAtaqueTemp = .Stats.UserSkills(eSkill.Armas) * ModClase(.clase).AtaqueArmas
+            PoderAtaqueTemp = .Stats.UserSkills(eSkill.Armas) * ModClase(.Clase).AtaqueArmas
         ElseIf .Stats.UserSkills(eSkill.Armas) < 61 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueArmas
+            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueArmas
         ElseIf .Stats.UserSkills(eSkill.Armas) < 91 Then
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueArmas
+            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueArmas
         Else
-            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueArmas
+            PoderAtaqueTemp = (.Stats.UserSkills(eSkill.Armas) + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueArmas
 
         End If
         
@@ -119,7 +119,7 @@ Private Function PoderAtaqueArma(ByVal UserIndex As Integer) As Long
 
 End Function
 
-Private Function PoderAtaqueProyectil(ByVal UserIndex As Integer) As Long
+Private Function PoderAtaqueProyectil(ByVal Userindex As Integer) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -130,18 +130,18 @@ Private Function PoderAtaqueProyectil(ByVal UserIndex As Integer) As Long
 
     Dim SkillProyectiles As Integer
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
      
         SkillProyectiles = .Stats.UserSkills(eSkill.Proyectiles)
     
         If SkillProyectiles < 31 Then
-            PoderAtaqueTemp = SkillProyectiles * ModClase(.clase).AtaqueProyectiles
+            PoderAtaqueTemp = SkillProyectiles * ModClase(.Clase).AtaqueProyectiles
         ElseIf SkillProyectiles < 61 Then
-            PoderAtaqueTemp = (SkillProyectiles + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+            PoderAtaqueTemp = (SkillProyectiles + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueProyectiles
         ElseIf SkillProyectiles < 91 Then
-            PoderAtaqueTemp = (SkillProyectiles + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+            PoderAtaqueTemp = (SkillProyectiles + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueProyectiles
         Else
-            PoderAtaqueTemp = (SkillProyectiles + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueProyectiles
+            PoderAtaqueTemp = (SkillProyectiles + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueProyectiles
 
         End If
         
@@ -151,7 +151,7 @@ Private Function PoderAtaqueProyectil(ByVal UserIndex As Integer) As Long
 
 End Function
 
-Private Function PoderAtaqueWrestling(ByVal UserIndex As Integer) As Long
+Private Function PoderAtaqueWrestling(ByVal Userindex As Integer) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -162,18 +162,18 @@ Private Function PoderAtaqueWrestling(ByVal UserIndex As Integer) As Long
 
     Dim WrestlingSkill  As Integer
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
     
         WrestlingSkill = .Stats.UserSkills(eSkill.Wrestling)
     
         If WrestlingSkill < 31 Then
-            PoderAtaqueTemp = WrestlingSkill * ModClase(.clase).AtaqueWrestling
+            PoderAtaqueTemp = WrestlingSkill * ModClase(.Clase).AtaqueWrestling
         ElseIf WrestlingSkill < 61 Then
-            PoderAtaqueTemp = (WrestlingSkill + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+            PoderAtaqueTemp = (WrestlingSkill + .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueWrestling
         ElseIf WrestlingSkill < 91 Then
-            PoderAtaqueTemp = (WrestlingSkill + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+            PoderAtaqueTemp = (WrestlingSkill + 2 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueWrestling
         Else
-            PoderAtaqueTemp = (WrestlingSkill + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.clase).AtaqueWrestling
+            PoderAtaqueTemp = (WrestlingSkill + 3 * .Stats.UserAtributos(eAtributos.Agilidad)) * ModClase(.Clase).AtaqueWrestling
 
         End If
         
@@ -183,7 +183,7 @@ Private Function PoderAtaqueWrestling(ByVal UserIndex As Integer) As Long
 
 End Function
 
-Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
+Public Function UserImpactoNpc(ByVal Userindex As Integer, _
                                ByVal NpcIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
@@ -199,20 +199,20 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
 
     Dim ProbExito   As Long
     
-    Arma = UserList(UserIndex).Invent.WeaponEqpObjIndex
+    Arma = UserList(Userindex).Invent.WeaponEqpObjIndex
     
     If Arma > 0 Then 'Usando un arma
         If ObjData(Arma).proyectil = 1 Then
-            PoderAtaque = PoderAtaqueProyectil(UserIndex)
+            PoderAtaque = PoderAtaqueProyectil(Userindex)
             Skill = eSkill.Proyectiles
         Else
-            PoderAtaque = PoderAtaqueArma(UserIndex)
+            PoderAtaque = PoderAtaqueArma(Userindex)
             Skill = eSkill.Armas
 
         End If
 
     Else 'Peleando con punos
-        PoderAtaque = PoderAtaqueWrestling(UserIndex)
+        PoderAtaque = PoderAtaqueWrestling(Userindex)
         Skill = eSkill.Wrestling
 
     End If
@@ -223,16 +223,16 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
     UserImpactoNpc = (RandomNumber(1, 100) <= ProbExito)
     
     If UserImpactoNpc Then
-        Call SubirSkill(UserIndex, Skill, True)
+        Call SubirSkill(Userindex, Skill, True)
     Else
-        Call SubirSkill(UserIndex, Skill, False)
+        Call SubirSkill(Userindex, Skill, False)
 
     End If
 
 End Function
 
 Public Function NpcImpacto(ByVal NpcIndex As Integer, _
-                           ByVal UserIndex As Integer) As Boolean
+                           ByVal Userindex As Integer) As Boolean
 
     '*************************************************
     'Author: Unknown
@@ -256,15 +256,15 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, _
 
     Dim SkillDefensa      As Long
     
-    UserEvasion = PoderEvasion(UserIndex)
+    UserEvasion = PoderEvasion(Userindex)
     NpcPoderAtaque = Npclist(NpcIndex).PoderAtaque
-    PoderEvasioEscudo = PoderEvasionEscudo(UserIndex)
+    PoderEvasioEscudo = PoderEvasionEscudo(Userindex)
     
-    SkillTacticas = UserList(UserIndex).Stats.UserSkills(eSkill.Tacticas)
-    SkillDefensa = UserList(UserIndex).Stats.UserSkills(eSkill.Defensa)
+    SkillTacticas = UserList(Userindex).Stats.UserSkills(eSkill.Tacticas)
+    SkillDefensa = UserList(Userindex).Stats.UserSkills(eSkill.Defensa)
     
     'Esta usando un escudo ???
-    If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then UserEvasion = UserEvasion + PoderEvasioEscudo
+    If UserList(Userindex).Invent.EscudoEqpObjIndex > 0 Then UserEvasion = UserEvasion + PoderEvasioEscudo
     
     ' Chances are rounded
     ProbExito = MaximoInt(10, MinimoInt(90, 50 + ((NpcPoderAtaque - UserEvasion) * 0.4)))
@@ -272,7 +272,7 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, _
     NpcImpacto = (RandomNumber(1, 100) <= ProbExito)
     
     ' el usuario esta usando un escudo ???
-    If UserList(UserIndex).Invent.EscudoEqpObjIndex > 0 Then
+    If UserList(Userindex).Invent.EscudoEqpObjIndex > 0 Then
         If Not NpcImpacto Then
             If SkillDefensa + SkillTacticas > 0 Then  'Evitamos division por cero
                 ' Chances are rounded
@@ -286,11 +286,11 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, _
                 
             If Rechazo Then
                 'Se rechazo el ataque con el escudo
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_ESCUDO, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y))
-                Call WriteMultiMessage(UserIndex, eMessages.BlockedWithShieldUser) 'Call WriteBlockedWithShieldUser(UserIndex)
-                Call SubirSkill(UserIndex, eSkill.Defensa, True)
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_ESCUDO, UserList(Userindex).Pos.X, UserList(Userindex).Pos.Y))
+                Call WriteMultiMessage(Userindex, eMessages.BlockedWithShieldUser) 'Call WriteBlockedWithShieldUser(UserIndex)
+                Call SubirSkill(Userindex, eSkill.Defensa, True)
             Else
-                Call SubirSkill(UserIndex, eSkill.Defensa, False)
+                Call SubirSkill(Userindex, eSkill.Defensa, False)
 
             End If
 
@@ -300,7 +300,7 @@ Public Function NpcImpacto(ByVal NpcIndex As Integer, _
 
 End Function
 
-Public Function CalcularDano(ByVal UserIndex As Integer, _
+Public Function CalcularDano(ByVal Userindex As Integer, _
                              Optional ByVal NpcIndex As Integer = 0) As Long
 
     '***************************************************
@@ -330,7 +330,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
 
     matoDragon = False
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If .Invent.WeaponEqpObjIndex > 0 Then
             Arma = ObjData(.Invent.WeaponEqpObjIndex)
@@ -338,7 +338,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
             ' Ataca a un npc?
             If NpcIndex > 0 Then
                 If Arma.proyectil = 1 Then
-                    ModifClase = ModClase(.clase).DanoProyectiles
+                    ModifClase = ModClase(.Clase).DanoProyectiles
                     DanoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                     DanoMaxArma = Arma.MaxHIT
                     
@@ -351,7 +351,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
                     End If
 
                 Else
-                    ModifClase = ModClase(.clase).DanoArmas
+                    ModifClase = ModClase(.Clase).DanoArmas
                     
                     If .Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then ' Usa la mata Dragones?
                         If Npclist(NpcIndex).NPCtype = DRAGON Then 'Ataca Dragon?
@@ -375,7 +375,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
             Else ' Ataca usuario
 
                 If Arma.proyectil = 1 Then
-                    ModifClase = ModClase(.clase).DanoProyectiles
+                    ModifClase = ModClase(.Clase).DanoProyectiles
                     DanoArma = RandomNumber(Arma.MinHIT, Arma.MaxHIT)
                     DanoMaxArma = Arma.MaxHIT
                      
@@ -388,10 +388,10 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
                     End If
 
                 Else
-                    ModifClase = ModClase(.clase).DanoArmas
+                    ModifClase = ModClase(.Clase).DanoArmas
                     
                     If .Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
-                        ModifClase = ModClase(.clase).DanoArmas
+                        ModifClase = ModClase(.Clase).DanoArmas
                         DanoArma = 1 ' Si usa la espada mataDragones dano es 1
                         DanoMaxArma = 1
                     Else
@@ -405,7 +405,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
             End If
 
         Else
-            ModifClase = ModClase(.clase).DanoWrestling
+            ModifClase = ModClase(.Clase).DanoWrestling
             
             ' Dano sin guantes
             DanoMinArma = 4
@@ -441,7 +441,7 @@ Public Function CalcularDano(ByVal UserIndex As Integer, _
 
 End Function
 
-Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
+Public Sub UserDanoNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: 07/04/2010 (Pato)
@@ -465,12 +465,12 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
     
     Dim BoatIndex                            As Integer
     
-    DanoBase = CalcularDano(UserIndex, NpcIndex)
+    DanoBase = CalcularDano(Userindex, NpcIndex)
     
     'esta navegando? si es asi le sumamos el dano del barco
-    If UserList(UserIndex).flags.Navegando = 1 Then
+    If UserList(Userindex).flags.Navegando = 1 Then
     
-        BoatIndex = UserList(UserIndex).Invent.BarcoObjIndex
+        BoatIndex = UserList(Userindex).Invent.BarcoObjIndex
 
         If BoatIndex > 0 Then
             DanoBase = DanoBase + RandomNumber(ObjData(BoatIndex).MinHIT, ObjData(BoatIndex).MaxHIT)
@@ -484,33 +484,34 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
         
         If dano < 0 Then dano = 0
         
-        Call WriteMultiMessage(UserIndex, eMessages.UserHitNPC, dano)
-        Call CalcularDarExp(UserIndex, NpcIndex, dano)
+        Call WriteMultiMessage(Userindex, eMessages.UserHitNPC, dano)
+        Call CalcularDarExp(Userindex, NpcIndex, dano)
         .Stats.MinHp = .Stats.MinHp - dano
         
         'Renderizo dano en render
-        Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateDamage(.Pos.x, .Pos.y, dano, DAMAGE_NORMAL))
+        Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateFX(.Char.CharIndex, FXSANGRE, 0))
+        Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
         
         If .Stats.MinHp > 0 Then
 
             'Trata de apunalar por la espalda al enemigo
-            If PuedeApunalar(UserIndex) Then
+            If PuedeApunalar(Userindex) Then
                 
                 ' La defensa se ignora solo en asesinos
-                If UserList(UserIndex).clase <> eClass.Assasin Then
+                If UserList(Userindex).Clase <> eClass.Assasin Then
                     DanoBase = dano
 
                 End If
                 
-                Call DoApunalar(UserIndex, NpcIndex, 0, DanoBase)
+                Call DoApunalar(Userindex, NpcIndex, 0, DanoBase)
                 
             End If
             
             'trata de dar golpe critico
-            Call DoGolpeCritico(UserIndex, NpcIndex, 0, dano)
+            Call DoGolpeCritico(Userindex, NpcIndex, 0, dano)
             
-            If PuedeAcuchillar(UserIndex) Then
-                Call DoAcuchillar(UserIndex, NpcIndex, 0, dano)
+            If PuedeAcuchillar(Userindex) Then
+                Call DoAcuchillar(Userindex, NpcIndex, 0, dano)
 
             End If
 
@@ -522,14 +523,14 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             If .NPCtype = DRAGON Then
 
                 'Si tiene equipada la matadracos se la sacamos
-                If UserList(UserIndex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
-                    Call QuitarObjetos(EspadaMataDragonesIndex, 1, UserIndex)
+                If UserList(Userindex).Invent.WeaponEqpObjIndex = EspadaMataDragonesIndex Then
+                    Call QuitarObjetos(EspadaMataDragonesIndex, 1, Userindex)
 
                 End If
 
                 If .Stats.MaxHp > 100000 Then
-                    Text = UserList(UserIndex).Name & " mato un dragon"
-                    PI = UserList(UserIndex).PartyIndex
+                    Text = UserList(Userindex).Name & " mato un dragon"
+                    PI = UserList(Userindex).PartyIndex
                     
                     If PI > 0 Then
                         Call Parties(PI).ObtenerMiembrosOnline(MembersOnline())
@@ -558,10 +559,10 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
             ' comiencen a seguir al amo
             For i = 1 To MAXMASCOTAS
 
-                If UserList(UserIndex).MascotasIndex(i) > 0 Then
-                    If Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = NpcIndex Then
-                        Npclist(UserList(UserIndex).MascotasIndex(i)).TargetNPC = 0
-                        Npclist(UserList(UserIndex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
+                If UserList(Userindex).MascotasIndex(i) > 0 Then
+                    If Npclist(UserList(Userindex).MascotasIndex(i)).TargetNPC = NpcIndex Then
+                        Npclist(UserList(Userindex).MascotasIndex(i)).TargetNPC = 0
+                        Npclist(UserList(Userindex).MascotasIndex(i)).Movement = TipoAI.SigueAmo
 
                     End If
 
@@ -569,7 +570,7 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
             Next i
             
-            Call MuereNpc(NpcIndex, UserIndex)
+            Call MuereNpc(NpcIndex, Userindex)
 
         End If
 
@@ -577,7 +578,7 @@ Public Sub UserDanoNpc(ByVal UserIndex As Integer, ByVal NpcIndex As Integer)
 
 End Sub
 
-Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
+Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: 18/09/2010 (ZaMa)
@@ -588,7 +589,7 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
     Dim Lugar       As Integer
 
-    Dim Obj         As ObjData
+    Dim obj         As ObjData
     
     Dim BoatDefense As Integer
 
@@ -606,7 +607,7 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
     
     dano = RandomNumber(Npclist(NpcIndex).Stats.MinHIT, Npclist(NpcIndex).Stats.MaxHIT)
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         ' Navega?
         If .flags.Navegando = 1 Then
@@ -614,8 +615,8 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
             BoatIndex = .Invent.BarcoObjIndex
 
             If BoatIndex > 0 Then
-                Obj = ObjData(BoatIndex)
-                BoatDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
+                obj = ObjData(BoatIndex)
+                BoatDefense = RandomNumber(obj.MinDef, obj.MaxDef)
 
             End If
 
@@ -631,8 +632,8 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
                 HelmetIndex = .Invent.CascoEqpObjIndex
 
                 If HelmetIndex > 0 Then
-                    Obj = ObjData(HelmetIndex)
-                    HeadDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
+                    obj = ObjData(HelmetIndex)
+                    HeadDefense = RandomNumber(obj.MinDef, obj.MaxDef)
 
                 End If
                 
@@ -646,9 +647,9 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
                 ArmourIndex = .Invent.ArmourEqpObjIndex
 
                 If ArmourIndex > 0 Then
-                    Obj = ObjData(ArmourIndex)
-                    MinDef = Obj.MinDef
-                    MaxDef = Obj.MaxDef
+                    obj = ObjData(ArmourIndex)
+                    MinDef = obj.MinDef
+                    MaxDef = obj.MaxDef
 
                 End If
                 
@@ -656,9 +657,9 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
                 ShieldIndex = .Invent.EscudoEqpObjIndex
 
                 If ShieldIndex > 0 Then
-                    Obj = ObjData(ShieldIndex)
-                    MinDef = MinDef + Obj.MinDef
-                    MaxDef = MaxDef + Obj.MaxDef
+                    obj = ObjData(ShieldIndex)
+                    MinDef = MinDef + obj.MinDef
+                    MaxDef = MaxDef + obj.MaxDef
 
                 End If
                 
@@ -671,21 +672,21 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
         If dano < 1 Then dano = 1
         
-        Call WriteMultiMessage(UserIndex, eMessages.NPCHitUser, Lugar, dano)
+        Call WriteMultiMessage(Userindex, eMessages.NPCHitUser, Lugar, dano)
         
         If .flags.Privilegios And PlayerType.User Then .Stats.MinHp = .Stats.MinHp - dano
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateDamage(.Pos.x, .Pos.y, dano, DAMAGE_NORMAL))
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
         
         If .flags.Meditando Then
             If dano > Fix(.Stats.MinHp / 100 * .Stats.UserAtributos(eAtributos.Inteligencia) * .Stats.UserSkills(eSkill.Meditar) / 100 * 12 / (RandomNumber(0, 5) + 7)) Then
                 .flags.Meditando = False
-                Call WriteMeditateToggle(UserIndex)
-                Call WriteConsoleMsg(UserIndex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteMeditateToggle(Userindex)
+                Call WriteConsoleMsg(Userindex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
                 .Char.FX = 0
                 .Char.loops = 0
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
 
             End If
 
@@ -693,12 +694,12 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
         
         'Muere el usuario
         If .Stats.MinHp <= 0 Then
-            Call WriteMultiMessage(UserIndex, eMessages.NPCKillUser)  'Le informamos que ha muerto ;)
+            Call WriteMultiMessage(Userindex, eMessages.NPCKillUser)  'Le informamos que ha muerto ;)
             
             'Si lo mato un guardia
-            If criminal(UserIndex) Then
+            If criminal(Userindex) Then
                 If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-                    Call RestarCriminalidad(UserIndex)
+                    Call RestarCriminalidad(Userindex)
 
                 End If
 
@@ -722,7 +723,7 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
                 
             End If
             
-            Call UserDie(UserIndex)
+            Call UserDie(Userindex)
 
         End If
 
@@ -730,7 +731,7 @@ Public Sub NpcDano(ByVal NpcIndex As Integer, ByVal UserIndex As Integer)
 
 End Sub
 
-Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
+Public Sub RestarCriminalidad(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -739,9 +740,9 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
 
     Dim EraCriminal As Boolean
 
-    EraCriminal = criminal(UserIndex)
+    EraCriminal = criminal(Userindex)
     
-    With UserList(UserIndex).Reputacion
+    With UserList(Userindex).Reputacion
 
         If .BandidoRep > 0 Then
             .BandidoRep = .BandidoRep - vlASALTO
@@ -754,11 +755,11 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
 
         End If
     
-        If EraCriminal And Not criminal(UserIndex) Then
+        If EraCriminal And Not criminal(Userindex) Then
         
-            If esCaos(UserIndex) Then Call ExpulsarFaccionCaos(UserIndex)
+            If esCaos(Userindex) Then Call ExpulsarFaccionCaos(Userindex)
             
-            Call RefreshCharStatus(UserIndex)
+            Call RefreshCharStatus(Userindex)
 
         End If
     
@@ -767,7 +768,7 @@ Public Sub RestarCriminalidad(ByVal UserIndex As Integer)
 End Sub
 
 Public Sub CheckPets(ByVal NpcIndex As Integer, _
-                     ByVal UserIndex As Integer, _
+                     ByVal Userindex As Integer, _
                      Optional ByVal CheckElementales As Boolean = True)
     '***************************************************
     'Author: Unknown
@@ -778,11 +779,11 @@ Public Sub CheckPets(ByVal NpcIndex As Integer, _
     Dim j As Integer
     
     ' Si no tengo mascotas, para que cheaquear lo demas?
-    If UserList(UserIndex).NroMascotas = 0 Then Exit Sub
+    If UserList(Userindex).NroMascotas = 0 Then Exit Sub
     
-    If Not PuedeAtacarNPC(UserIndex, NpcIndex, , True) Then Exit Sub
+    If Not PuedeAtacarNPC(Userindex, NpcIndex, , True) Then Exit Sub
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         For j = 1 To MAXMASCOTAS
 
@@ -805,7 +806,7 @@ Public Sub CheckPets(ByVal NpcIndex As Integer, _
 
 End Sub
 
-Public Sub AllFollowAmo(ByVal UserIndex As Integer)
+Public Sub AllFollowAmo(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -816,8 +817,8 @@ Public Sub AllFollowAmo(ByVal UserIndex As Integer)
     
     For j = 1 To MAXMASCOTAS
 
-        If UserList(UserIndex).MascotasIndex(j) > 0 Then
-            Call FollowAmo(UserList(UserIndex).MascotasIndex(j))
+        If UserList(Userindex).MascotasIndex(j) > 0 Then
+            Call FollowAmo(UserList(Userindex).MascotasIndex(j))
 
         End If
 
@@ -826,14 +827,14 @@ Public Sub AllFollowAmo(ByVal UserIndex As Integer)
 End Sub
 
 Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
-                             ByVal UserIndex As Integer) As Boolean
+                             ByVal Userindex As Integer) As Boolean
     '*************************************************
     'Author: Unknown
     'Last modified: -
     '
     '*************************************************
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If .flags.AdminInvisible = 1 Then Exit Function
         If (Not .flags.Privilegios And PlayerType.User) <> 0 And Not .flags.AdminPerseguible Then Exit Function
@@ -846,12 +847,12 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
         'If .CanAttack = 1 Then
         If IntervaloPermiteAtacarNpc(NpcIndex) Then
             NpcAtacaUser = True
-            Call CheckPets(NpcIndex, UserIndex, False)
+            Call CheckPets(NpcIndex, Userindex, False)
             
-            If .Target = 0 Then .Target = UserIndex
+            If .Target = 0 Then .Target = Userindex
             
-            If UserList(UserIndex).flags.AtacadoPorNpc = 0 And UserList(UserIndex).flags.AtacadoPorUser = 0 Then
-                UserList(UserIndex).flags.AtacadoPorNpc = NpcIndex
+            If UserList(Userindex).flags.AtacadoPorNpc = 0 And UserList(Userindex).flags.AtacadoPorUser = 0 Then
+                UserList(Userindex).flags.AtacadoPorNpc = NpcIndex
 
             End If
 
@@ -864,46 +865,46 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
         '.CanAttack = 0
         
         If .flags.Snd1 > 0 Then
-            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(.flags.Snd1, .Pos.x, .Pos.y))
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(.flags.Snd1, .Pos.X, .Pos.Y))
 
         End If
 
     End With
     
-    If NpcImpacto(NpcIndex, UserIndex) Then
+    If NpcImpacto(NpcIndex, Userindex) Then
 
-        With UserList(UserIndex)
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO, .Pos.x, .Pos.y))
+        With UserList(Userindex)
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_IMPACTO, .Pos.X, .Pos.Y))
             
             If .flags.Meditando = False Then
                 If .flags.Navegando = 0 Then
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateFX(.Char.CharIndex, FXSANGRE, 0))
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, FXSANGRE, 0))
 
                 End If
 
             End If
             
-            Call NpcDano(NpcIndex, UserIndex)
-            Call WriteUpdateHP(UserIndex)
+            Call NpcDano(NpcIndex, Userindex)
+            Call WriteUpdateHP(Userindex)
             
             'Puede envenenar?
-            If Npclist(NpcIndex).Veneno = 1 Then Call NpcEnvenenarUser(UserIndex)
+            If Npclist(NpcIndex).Veneno = 1 Then Call NpcEnvenenarUser(Userindex)
 
         End With
         
-        Call SubirSkill(UserIndex, eSkill.Tacticas, False)
+        Call SubirSkill(Userindex, eSkill.Tacticas, False)
     Else
-        Call WriteMultiMessage(UserIndex, eMessages.NPCSwing)
+        Call WriteMultiMessage(Userindex, eMessages.NPCSwing)
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateDamage(UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y, 1, DAMAGE_FALLO))
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(UserList(Userindex).Pos.X, UserList(Userindex).Pos.Y, 1, DAMAGE_FALLO))
         
-        Call SubirSkill(UserIndex, eSkill.Tacticas, True)
+        Call SubirSkill(Userindex, eSkill.Tacticas, True)
 
     End If
     
     'Controla el nivel del usuario
-    Call CheckUserLevel(UserIndex)
+    Call CheckUserLevel(Userindex)
 
 End Function
 
@@ -944,7 +945,7 @@ Public Sub NpcDanoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
         Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - dano
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, .MaestroUser, PrepareMessageCreateDamage(Npclist(Victima).Pos.x, Npclist(Victima).Pos.y, dano, DAMAGE_NORMAL))
+        Call SendData(SendTarget.ToPCArea, .MaestroUser, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL))
         
         If Npclist(Victima).Stats.MinHp < 1 Then
             .Movement = .flags.OldMovement
@@ -1006,7 +1007,7 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         End If
         
         If .flags.Snd1 > 0 Then
-            Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(.flags.Snd1, .Pos.x, .Pos.y))
+            Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(.flags.Snd1, .Pos.X, .Pos.Y))
 
         End If
         
@@ -1026,16 +1027,16 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         
         If NpcImpactoNpc(Atacante, Victima) Then
             If Npclist(Victima).flags.Snd2 > 0 Then
-                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(Npclist(Victima).flags.Snd2, Npclist(Victima).Pos.x, Npclist(Victima).Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(Npclist(Victima).flags.Snd2, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
             Else
-                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO2, Npclist(Victima).Pos.x, Npclist(Victima).Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO2, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
 
             End If
         
             If MasterIndex > 0 Then
-                Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_IMPACTO, .Pos.x, .Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_IMPACTO, .Pos.X, .Pos.Y))
             Else
-                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO, Npclist(Victima).Pos.x, Npclist(Victima).Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_IMPACTO, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
 
             End If
             
@@ -1043,16 +1044,16 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         Else
 
             If MasterIndex > 0 Then
-                Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING, .Pos.x, .Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
                 
                 'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.x, Npclist(Victima).Pos.y, 1, DAMAGE_FALLO))
+                Call SendData(SendTarget.ToPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             Else
-                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING, Npclist(Victima).Pos.x, Npclist(Victima).Pos.y))
+                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
                 
                 'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Victima, PrepareMessageCreateDamage(Npclist(Victima).Pos.x, Npclist(Victima).Pos.y, 1, DAMAGE_FALLO))
+                Call SendData(SendTarget.ToPCArea, Victima, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             End If
 
@@ -1062,7 +1063,7 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
 
 End Sub
 
-Public Function UsuarioAtacaNpc(ByVal UserIndex As Integer, _
+Public Function UsuarioAtacaNpc(ByVal Userindex As Integer, _
                                 ByVal NpcIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
@@ -1072,52 +1073,52 @@ Public Function UsuarioAtacaNpc(ByVal UserIndex As Integer, _
     '13/02/2011: Amraphen - Ahora la stamina es quitada cuando efectivamente se ataca al NPC.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
-    If Not PuedeAtacarNPC(UserIndex, NpcIndex) Then Exit Function
+    If Not PuedeAtacarNPC(Userindex, NpcIndex) Then Exit Function
     
-    Call NPCAtacado(NpcIndex, UserIndex)
+    Call NPCAtacado(NpcIndex, Userindex)
     
-    If UserImpactoNpc(UserIndex, NpcIndex) Then
+    If UserImpactoNpc(Userindex, NpcIndex) Then
         If Npclist(NpcIndex).flags.Snd2 > 0 Then
-            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2, Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.y))
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessagePlayWave(Npclist(NpcIndex).flags.Snd2, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y))
         Else
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_IMPACTO2, Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_IMPACTO2, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y))
 
         End If
         
-        Call UserDanoNpc(UserIndex, NpcIndex)
+        Call UserDanoNpc(Userindex, NpcIndex)
     Else
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING, UserList(UserIndex).Pos.x, UserList(UserIndex).Pos.y))
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SWING, UserList(Userindex).Pos.X, UserList(Userindex).Pos.Y))
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageCreateDamage(Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.y, 1, DAMAGE_FALLO))
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y, 1, DAMAGE_FALLO))
         
-        Call WriteMultiMessage(UserIndex, eMessages.UserSwing)
+        Call WriteMultiMessage(Userindex, eMessages.UserSwing)
 
     End If
     
     'Quitamos stamina
-    Call QuitarSta(UserIndex, RandomNumber(1, 10))
+    Call QuitarSta(Userindex, RandomNumber(1, 10))
     
     ' Revelo su condicion de usuario al atacar, los npcs lo van a atacar
-    UserList(UserIndex).flags.Ignorado = False
+    UserList(Userindex).flags.Ignorado = False
     
     UsuarioAtacaNpc = True
     
     Exit Function
     
-errHandler:
+ErrHandler:
 
     Dim UserName As String
     
-    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
+    If Userindex > 0 Then UserName = UserList(Userindex).Name
     
-    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description & ". User: " & UserIndex & "-> " & UserName & ". NpcIndex: " & NpcIndex & ".")
+    Call LogError("Error en UsuarioAtacaNpc. Error " & Err.Number & " : " & Err.description & ". User: " & Userindex & "-> " & UserName & ". NpcIndex: " & NpcIndex & ".")
     
 End Function
 
-Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
+Public Sub UsuarioAtaca(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: 13/02/2011 (Amraphen)
@@ -1129,27 +1130,27 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
     Dim AttackPos As WorldPos
     
     'Check bow's interval
-    If Not IntervaloPermiteUsarArcos(UserIndex, False) Then Exit Sub
+    If Not IntervaloPermiteUsarArcos(Userindex, False) Then Exit Sub
     
     'Check Spell-Magic interval
-    If Not IntervaloPermiteMagiaGolpe(UserIndex) Then
+    If Not IntervaloPermiteMagiaGolpe(Userindex) Then
 
         'Check Attack interval
-        If Not IntervaloPermiteAtacar(UserIndex) Then
+        If Not IntervaloPermiteAtacar(Userindex) Then
             Exit Sub
 
         End If
 
     End If
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         'Chequeamos que tenga por lo menos 10 de stamina.
         If .Stats.MinSta < 10 Then
             If .Genero = eGenero.Hombre Then
-                Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "Estas muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Estas muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
@@ -1161,48 +1162,48 @@ Public Sub UsuarioAtaca(ByVal UserIndex As Integer)
         Call HeadtoPos(.Char.heading, AttackPos)
         
         'Exit if not legal
-        If AttackPos.x < XMinMapSize Or AttackPos.x > XMaxMapSize Or AttackPos.y <= YMinMapSize Or AttackPos.y > YMaxMapSize Then
-            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING, .Pos.x, .Pos.y))
+        If AttackPos.X < XMinMapSize Or AttackPos.X > XMaxMapSize Or AttackPos.Y <= YMinMapSize Or AttackPos.Y > YMaxMapSize Then
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
             Exit Sub
 
         End If
         
-        index = MapData(AttackPos.Map, AttackPos.x, AttackPos.y).UserIndex
+        index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).Userindex
         
         'Look for user
         If index > 0 Then
-            Call UsuarioAtacaUsuario(UserIndex, index)
-            Call WriteUpdateUserStats(UserIndex)
+            Call UsuarioAtacaUsuario(Userindex, index)
+            Call WriteUpdateUserStats(Userindex)
             Call WriteUpdateUserStats(index)
             Exit Sub
 
         End If
         
-        index = MapData(AttackPos.Map, AttackPos.x, AttackPos.y).NpcIndex
+        index = MapData(AttackPos.Map, AttackPos.X, AttackPos.Y).NpcIndex
         
         'Look for NPC
         If index > 0 Then
             If Npclist(index).Attackable Then
                 If Npclist(index).MaestroUser > 0 And MapInfo(Npclist(index).Pos.Map).Pk = False Then
-                    Call WriteConsoleMsg(UserIndex, "No puedes atacar mascotas en zona segura.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(Userindex, "No puedes atacar mascotas en zona segura.", FontTypeNames.FONTTYPE_FIGHT)
                     Exit Sub
 
                 End If
                 
-                Call UsuarioAtacaNpc(UserIndex, index)
+                Call UsuarioAtacaNpc(Userindex, index)
             Else
-                Call WriteConsoleMsg(UserIndex, "No puedes atacar a este NPC.", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(Userindex, "No puedes atacar a este NPC.", FontTypeNames.FONTTYPE_FIGHT)
 
             End If
             
-            Call WriteUpdateUserStats(UserIndex)
+            Call WriteUpdateUserStats(Userindex)
             
             Exit Sub
 
         End If
         
-        Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SWING, .Pos.x, .Pos.y))
-        Call WriteUpdateUserStats(UserIndex)
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
+        Call WriteUpdateUserStats(Userindex)
         
         If .Counters.Trabajando Then .Counters.Trabajando = .Counters.Trabajando - 1
             
@@ -1220,7 +1221,7 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
     '21/05/2010: ZaMa - Evito division por cero.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim ProbRechazo            As Long
 
@@ -1308,7 +1309,7 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
 
                 If Rechazo Then
                     'Se rechazo el ataque con el escudo
-                    Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessagePlayWave(SND_ESCUDO, .Pos.x, .Pos.y))
+                    Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessagePlayWave(SND_ESCUDO, .Pos.X, .Pos.Y))
                       
                     Call WriteMultiMessage(AtacanteIndex, eMessages.BlockedWithShieldother)
                     Call WriteMultiMessage(VictimaIndex, eMessages.BlockedWithShieldUser)
@@ -1334,7 +1335,7 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
     
     Exit Function
     
-errHandler:
+ErrHandler:
 
     Dim AtacanteNick As String
 
@@ -1356,7 +1357,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     '                    invalidos, y evitar un doble chequeo innecesario
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Function
     
@@ -1371,7 +1372,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
         Call UsuarioAtacadoPorUsuario(AtacanteIndex, VictimaIndex)
         
         If UsuarioImpacto(AtacanteIndex, VictimaIndex) Then
-            Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_IMPACTO, .Pos.x, .Pos.y))
+            Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_IMPACTO, .Pos.X, .Pos.Y))
             
             If UserList(VictimaIndex).flags.Navegando = 0 Then
                 Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateFX(UserList(VictimaIndex).Char.CharIndex, FXSANGRE, 0))
@@ -1379,11 +1380,11 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
             End If
             
             'Pablo (ToxicWaste): Guantes de Hurto del Bandido en accion
-            If .clase = eClass.Bandit Then
+            If .Clase = eClass.Bandit Then
                 Call DoDesequipar(AtacanteIndex, VictimaIndex)
                 
                 'y ahora, el ladron puede llegar a paralizar con el golpe.
-            ElseIf .clase = eClass.Thief Then
+            ElseIf .Clase = eClass.Thief Then
                 Call DoHandInmo(AtacanteIndex, VictimaIndex)
 
             End If
@@ -1394,9 +1395,9 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
 
             ' Invisible admins doesn't make sound to other clients except itself
             If .flags.AdminInvisible = 1 Then
-                Call EnviarDatosASlot(AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.x, .Pos.y))
+                Call EnviarDatosASlot(AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
             Else
-                Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.x, .Pos.y))
+                Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
 
             End If
             
@@ -1404,13 +1405,13 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
             Call WriteMultiMessage(VictimaIndex, eMessages.UserAttackedSwing, AtacanteIndex)
             
             'Renderizo el dano en render.
-            Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessageCreateDamage(UserList(VictimaIndex).Pos.x, UserList(VictimaIndex).Pos.y, 1, DAMAGE_FALLO))
+            Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessageCreateDamage(UserList(VictimaIndex).Pos.X, UserList(VictimaIndex).Pos.Y, 1, DAMAGE_FALLO))
             
             Call SubirSkill(VictimaIndex, eSkill.Tacticas, True)
 
         End If
         
-        If .clase = eClass.Thief Then Call Desarmar(AtacanteIndex, VictimaIndex)
+        If .Clase = eClass.Thief Then Call Desarmar(AtacanteIndex, VictimaIndex)
 
     End With
     
@@ -1418,7 +1419,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     
     Exit Function
     
-errHandler:
+ErrHandler:
     Call LogError("Error en UsuarioAtacaUsuario. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -1432,13 +1433,13 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     '18/09/2010: ZaMa - Ahora se cosidera la defensa de los barcos siempre.
     '***************************************************
     
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim dano          As Long
 
     Dim Lugar         As Byte
 
-    Dim Obj           As ObjData
+    Dim obj           As ObjData
     
     Dim BoatDefense   As Integer
 
@@ -1478,8 +1479,8 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
             BoatIndex = .Invent.BarcoObjIndex
             
             If BoatIndex > 0 Then
-                Obj = ObjData(BoatIndex)
-                dano = dano + RandomNumber(Obj.MinHIT, Obj.MaxHIT)
+                obj = ObjData(BoatIndex)
+                dano = dano + RandomNumber(obj.MinHIT, obj.MaxHIT)
 
             End If
             
@@ -1491,8 +1492,8 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
             BoatIndex = UserList(VictimaIndex).Invent.BarcoObjIndex
             
             If BoatIndex > 0 Then
-                Obj = ObjData(BoatIndex)
-                BoatDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
+                obj = ObjData(BoatIndex)
+                BoatDefense = RandomNumber(obj.MinDef, obj.MaxDef)
 
             End If
             
@@ -1516,8 +1517,8 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
                 HelmetIndex = UserList(VictimaIndex).Invent.CascoEqpObjIndex
 
                 If HelmetIndex > 0 Then
-                    Obj = ObjData(HelmetIndex)
-                    HeadDefense = RandomNumber(Obj.MinDef, Obj.MaxDef)
+                    obj = ObjData(HelmetIndex)
+                    HeadDefense = RandomNumber(obj.MinDef, obj.MaxDef)
 
                 End If
             
@@ -1531,9 +1532,9 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
                 ArmourIndex = UserList(VictimaIndex).Invent.ArmourEqpObjIndex
 
                 If ArmourIndex > 0 Then
-                    Obj = ObjData(ArmourIndex)
-                    MinDef = Obj.MinDef
-                    MaxDef = Obj.MaxDef
+                    obj = ObjData(ArmourIndex)
+                    MinDef = obj.MinDef
+                    MaxDef = obj.MaxDef
 
                 End If
                 
@@ -1541,9 +1542,9 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
                 ShieldIndex = UserList(VictimaIndex).Invent.EscudoEqpObjIndex
 
                 If ShieldIndex > 0 Then
-                    Obj = ObjData(ShieldIndex)
-                    MinDef = MinDef + Obj.MinDef
-                    MaxDef = MaxDef + Obj.MaxDef
+                    obj = ObjData(ShieldIndex)
+                    MinDef = MinDef + obj.MinDef
+                    MaxDef = MaxDef + obj.MaxDef
 
                 End If
                 
@@ -1600,7 +1601,7 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
         'Doble chekeo innecesario, pero bueno..
         'Hecho para que no envie apu + golpe normal.
         If Not PuedeApunalar(AtacanteIndex) Then
-            Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateDamage(UserList(VictimaIndex).Pos.x, UserList(VictimaIndex).Pos.y, dano, DAMAGE_NORMAL))
+            Call SendData(SendTarget.ToPCArea, VictimaIndex, PrepareMessageCreateDamage(UserList(VictimaIndex).Pos.X, UserList(VictimaIndex).Pos.Y, dano, DAMAGE_NORMAL))
         End If
         
         If UserList(VictimaIndex).Stats.MinHp <= 0 Then
@@ -1648,7 +1649,7 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     
     Exit Sub
     
-errHandler:
+ErrHandler:
 
     Dim AtacanteNick As String
 
@@ -1779,7 +1780,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, _
     '24/02/2009: ZaMa - Los usuarios pueden atacarse entre si.
     '02/04/2010: ZaMa - Los armadas no pueden atacar nunca a los ciudas, salvo que esten atacables.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     'MUY importante el orden de estos "IF"...
     
@@ -1946,7 +1947,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, _
     End If
     
     'Estas atacando desde un trigger seguro? o tu victima esta en uno asi?
-    If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.x, UserList(VictimIndex).Pos.y).trigger = eTrigger.ZONASEGURA Or MapData(UserList(AttackerIndex).Pos.Map, UserList(AttackerIndex).Pos.x, UserList(AttackerIndex).Pos.y).trigger = eTrigger.ZONASEGURA Then
+    If MapData(UserList(VictimIndex).Pos.Map, UserList(VictimIndex).Pos.X, UserList(VictimIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Or MapData(UserList(AttackerIndex).Pos.Map, UserList(AttackerIndex).Pos.X, UserList(AttackerIndex).Pos.Y).trigger = eTrigger.ZONASEGURA Then
         Call WriteConsoleMsg(AttackerIndex, "No puedes pelear aqui.", FontTypeNames.FONTTYPE_WARNING)
         PuedeAtacar = False
         Exit Function
@@ -1956,7 +1957,7 @@ Public Function PuedeAtacar(ByVal AttackerIndex As Integer, _
     PuedeAtacar = True
     Exit Function
 
-errHandler:
+ErrHandler:
     Call LogError("Error en PuedeAtacar. Error " & Err.Number & " : " & Err.description)
 
 End Function
@@ -1978,7 +1979,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
     '04/07/2010: ZaMa - Ahora no se puede apropiar del dragon de dd.
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     With Npclist(NpcIndex)
     
@@ -2439,7 +2440,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
         
     Exit Function
         
-errHandler:
+ErrHandler:
     
     Dim AtckName  As String
 
@@ -2452,29 +2453,29 @@ errHandler:
 
 End Function
 
-Private Function SameClan(ByVal UserIndex As Integer, _
+Private Function SameClan(ByVal Userindex As Integer, _
                           ByVal OtherUserIndex As Integer) As Boolean
     '***************************************************
     'Autor: ZaMa
     'Returns True if both players belong to the same clan.
     'Last Modification: 16/11/2009
     '***************************************************
-    SameClan = (UserList(UserIndex).GuildIndex = UserList(OtherUserIndex).GuildIndex) And UserList(UserIndex).GuildIndex <> 0
+    SameClan = (UserList(Userindex).GuildIndex = UserList(OtherUserIndex).GuildIndex) And UserList(Userindex).GuildIndex <> 0
 
 End Function
 
-Private Function SameParty(ByVal UserIndex As Integer, _
+Private Function SameParty(ByVal Userindex As Integer, _
                            ByVal OtherUserIndex As Integer) As Boolean
     '***************************************************
     'Autor: ZaMa
     'Returns True if both players belong to the same party.
     'Last Modification: 16/11/2009
     '***************************************************
-    SameParty = UserList(UserIndex).PartyIndex = UserList(OtherUserIndex).PartyIndex And UserList(UserIndex).PartyIndex <> 0
+    SameParty = UserList(Userindex).PartyIndex = UserList(OtherUserIndex).PartyIndex And UserList(Userindex).PartyIndex <> 0
 
 End Function
 
-Sub CalcularDarExp(ByVal UserIndex As Integer, _
+Sub CalcularDarExp(ByVal Userindex As Integer, _
                    ByVal NpcIndex As Integer, _
                    ByVal ElDano As Long)
 
@@ -2509,17 +2510,17 @@ Sub CalcularDarExp(ByVal UserIndex As Integer, _
     
     '[Nacho] Le damos la exp al user
     If ExpaDar > 0 Then
-        If UserList(UserIndex).PartyIndex > 0 Then
-            Call mdParty.ObtenerExito(UserIndex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.x, Npclist(NpcIndex).Pos.y)
+        If UserList(Userindex).PartyIndex > 0 Then
+            Call mdParty.ObtenerExito(Userindex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
         Else
-            UserList(UserIndex).Stats.Exp = UserList(UserIndex).Stats.Exp + ExpaDar
+            UserList(Userindex).Stats.Exp = UserList(Userindex).Stats.Exp + ExpaDar
 
-            If UserList(UserIndex).Stats.Exp > MAXEXP Then UserList(UserIndex).Stats.Exp = MAXEXP
-            Call WriteConsoleMsg(UserIndex, "Has ganado " & ExpaDar & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+            If UserList(Userindex).Stats.Exp > MAXEXP Then UserList(Userindex).Stats.Exp = MAXEXP
+            Call WriteConsoleMsg(Userindex, "Has ganado " & ExpaDar & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
 
         End If
         
-        Call CheckUserLevel(UserIndex)
+        Call CheckUserLevel(Userindex)
 
     End If
 
@@ -2535,14 +2536,14 @@ Public Function TriggerZonaPelea(ByVal Origen As Integer, _
 
     'TODO: Pero que rebuscado!!
     'Nigo:  Te lo redisene, pero no te borro el TODO para que lo revises.
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim tOrg As eTrigger
 
     Dim tDst As eTrigger
     
-    tOrg = MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.x, UserList(Origen).Pos.y).trigger
-    tDst = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.x, UserList(Destino).Pos.y).trigger
+    tOrg = MapData(UserList(Origen).Pos.Map, UserList(Origen).Pos.X, UserList(Origen).Pos.Y).trigger
+    tDst = MapData(UserList(Destino).Pos.Map, UserList(Destino).Pos.X, UserList(Destino).Pos.Y).trigger
     
     If tOrg = eTrigger.ZONAPELEA Or tDst = eTrigger.ZONAPELEA Then
         If tOrg = tDst Then
@@ -2558,7 +2559,7 @@ Public Function TriggerZonaPelea(ByVal Origen As Integer, _
     End If
 
     Exit Function
-errHandler:
+ErrHandler:
     TriggerZonaPelea = TRIGGER6_AUSENTE
     LogError ("Error en TriggerZonaPelea - " & Err.description)
 
@@ -2601,14 +2602,14 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
 
 End Sub
 
-Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y As Byte)
+Public Sub LanzarProyectil(ByVal Userindex As Integer, ByVal X As Byte, ByVal Y As Byte)
 
     '***************************************************
     'Autor: ZaMa
     'Last Modification: 10/07/2010
     'Throws an arrow or knive to target user/npc.
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim MunicionSlot    As Byte
 
@@ -2629,7 +2630,7 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
     Threw = True
     
     'Make sure the item is valid and there is ammo equipped.
-    With UserList(UserIndex)
+    With UserList(Userindex)
         
         With .Invent
             MunicionSlot = .MunicionEqpSlot
@@ -2642,12 +2643,12 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
         ' Tiene arma equipada?
         If WeaponIndex = 0 Then
             DummyInt = 1
-            Call WriteConsoleMsg(UserIndex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
             
             ' En un slot valido?
         ElseIf WeaponSlot < 1 Or WeaponSlot > .CurrentInventorySlots Then
             DummyInt = 1
-            Call WriteConsoleMsg(UserIndex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "No tienes un arco o cuchilla equipada.", FontTypeNames.FONTTYPE_INFO)
             
             ' Usa municion? (Si no la usa, puede ser un arma arrojadiza)
         ElseIf ObjData(WeaponIndex).Municion = 1 Then
@@ -2655,22 +2656,22 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
             ' La municion esta equipada en un slot valido?
             If MunicionSlot < 1 Or MunicionSlot > .CurrentInventorySlots Then
                 DummyInt = 1
-                Call WriteConsoleMsg(UserIndex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
                 
                 ' Tiene municion?
             ElseIf MunicionIndex = 0 Then
                 DummyInt = 1
-                Call WriteConsoleMsg(UserIndex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No tienes municiones equipadas.", FontTypeNames.FONTTYPE_INFO)
                 
                 ' Son flechas?
             ElseIf ObjData(MunicionIndex).OBJType <> eOBJType.otFlechas Then
                 DummyInt = 1
-                Call WriteConsoleMsg(UserIndex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
                 
                 ' Tiene suficientes?
             ElseIf .Invent.Object(MunicionSlot).Amount < 1 Then
                 DummyInt = 1
-                Call WriteConsoleMsg(UserIndex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No tienes municiones.", FontTypeNames.FONTTYPE_INFO)
 
             End If
             
@@ -2682,24 +2683,24 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
         
         If DummyInt <> 0 Then
             If DummyInt = 1 Then
-                Call Desequipar(UserIndex, WeaponSlot)
+                Call Desequipar(Userindex, WeaponSlot)
 
             End If
             
-            Call Desequipar(UserIndex, MunicionSlot)
+            Call Desequipar(Userindex, MunicionSlot)
             Exit Sub
 
         End If
     
         'Quitamos stamina
         If .Stats.MinSta >= 10 Then
-            Call QuitarSta(UserIndex, RandomNumber(1, 10))
+            Call QuitarSta(Userindex, RandomNumber(1, 10))
         Else
 
             If .Genero = eGenero.Hombre Then
-                Call WriteConsoleMsg(UserIndex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Estas muy cansado para luchar.", FontTypeNames.FONTTYPE_INFO)
             Else
-                Call WriteConsoleMsg(UserIndex, "Estas muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Estas muy cansada para luchar.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
@@ -2707,7 +2708,7 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
 
         End If
         
-        Call LookatTile(UserIndex, .Pos.Map, x, y)
+        Call LookatTile(Userindex, .Pos.Map, X, Y)
         
         TargetUserIndex = .flags.TargetUser
         TargetNpcIndex = .flags.TargetNPC
@@ -2716,27 +2717,27 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
         If TargetUserIndex > 0 Then
 
             'Only allow to atack if the other one can retaliate (can see us)
-            If Abs(UserList(TargetUserIndex).Pos.y - .Pos.y) > RANGO_VISION_Y Then
-                Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
+            If Abs(UserList(TargetUserIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y Then
+                Call WriteConsoleMsg(Userindex, "Estas demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
             End If
             
             'Prevent from hitting self
-            If TargetUserIndex = UserIndex Then
-                Call WriteConsoleMsg(UserIndex, "No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
+            If TargetUserIndex = Userindex Then
+                Call WriteConsoleMsg(Userindex, "No puedes atacarte a vos mismo!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
 
             End If
             
             'Attack!
-            Threw = UsuarioAtacaUsuario(UserIndex, TargetUserIndex)
+            Threw = UsuarioAtacaUsuario(Userindex, TargetUserIndex)
             
         ElseIf TargetNpcIndex > 0 Then
 
             'Only allow to atack if the other one can retaliate (can see us)
-            If Abs(Npclist(TargetNpcIndex).Pos.y - .Pos.y) > RANGO_VISION_Y And Abs(Npclist(TargetNpcIndex).Pos.x - .Pos.x) > RANGO_VISION_X Then
-                Call WriteConsoleMsg(UserIndex, "Estas demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
+            If Abs(Npclist(TargetNpcIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y And Abs(Npclist(TargetNpcIndex).Pos.X - .Pos.X) > RANGO_VISION_X Then
+                Call WriteConsoleMsg(Userindex, "Estas demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
             End If
@@ -2744,7 +2745,7 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
             'Is it attackable???
             If Npclist(TargetNpcIndex).Attackable <> 0 Then
                 'Attack!
-                Threw = UsuarioAtacaNpc(UserIndex, TargetNpcIndex)
+                Threw = UsuarioAtacaNpc(Userindex, TargetNpcIndex)
 
             End If
 
@@ -2765,8 +2766,8 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
             End If
             
             'Take 1 knife/arrow away
-            Call QuitarUserInvItem(UserIndex, Slot, 1)
-            Call UpdateUserInv(False, UserIndex, Slot)
+            Call QuitarUserInvItem(Userindex, Slot, 1)
+            Call UpdateUserInv(False, Userindex, Slot)
             
         End If
         
@@ -2774,13 +2775,13 @@ Public Sub LanzarProyectil(ByVal UserIndex As Integer, ByVal x As Byte, ByVal y 
     
     Exit Sub
 
-errHandler:
+ErrHandler:
 
     Dim UserName As String
 
-    If UserIndex > 0 Then UserName = UserList(UserIndex).Name
+    If Userindex > 0 Then UserName = UserList(Userindex).Name
 
-    Call LogError("Error en LanzarProyectil " & Err.Number & ": " & Err.description & ". User: " & UserName & "(" & UserIndex & ")")
+    Call LogError("Error en LanzarProyectil " & Err.Number & ": " & Err.description & ". User: " & UserName & "(" & Userindex & ")")
 
 End Sub
 

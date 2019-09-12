@@ -42,48 +42,29 @@ Option Explicit
 ' by el oso :p
 
 Private p_GuildName             As String
-
 Private p_Alineacion            As ALINEACION_GUILD
-
 Private p_OnlineMembers         As Collection   'Array de UserIndexes!
-
 Private p_GMsOnline             As Collection
-
 Private p_PropuestasDePaz       As Collection
-
 Private p_PropuestasDeAlianza   As Collection
-
 Private p_IteradorRelaciones    As Integer
-
 Private p_IteradorOnlineMembers As Integer
-
 Private p_IteradorPropuesta     As Integer
-
 Private p_IteradorOnlineGMs     As Integer
-
 Private p_GuildNumber           As Integer      'Numero de guild en el mundo
-
 Private p_Relaciones()          As RELACIONES_GUILD 'array de relaciones con los otros clanes
 
 Private GUILDINFOFILE           As String
-
 Private GUILDPATH               As String       'aca pq me es mas comodo setearlo y pq en ningun disenio
-
 Private MEMBERSFILE             As String       'decente la capa de arriba se entera donde estan
-
 Private SOLICITUDESFILE         As String       'los datos fisicamente
-
 Private PROPUESTASFILE          As String
-
 Private RELACIONESFILE          As String
-
 Private VOTACIONESFILE          As String
 
-Private Const NEWSLENGTH = 1024
-
-Private Const DESCLENGTH = 256
-
-Private Const CODEXLENGTH = 256
+Private Const NEWSLENGTH        As Integer = 1024
+Private Const DESCLENGTH        As Integer = 256
+Private Const CODEXLENGTH       As Integer = 256
 
 Public Property Get GuildName() As String
     GuildName = p_GuildName
@@ -197,23 +178,27 @@ Public Sub InicializarNuevoClan(ByRef Fundador As String)
     Dim NewQ As Integer
 
     'para que genere los archivos
-    Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", "0")
-    Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", "0")
-
+    If Not FileExist(MEMBERSFILE, vbNormal) Then
+        Call WriteVar(MEMBERSFILE, "INIT", "NroMembers", "0")
+    End If
+    
+    If Not FileExist(SOLICITUDESFILE, vbNormal) Then
+        Call WriteVar(SOLICITUDESFILE, "INIT", "CantSolicitudes", "0")
+    End If
+    
     OldQ = GetVar(GUILDINFOFILE, "INIT", "nroguilds")
 
     If IsNumeric(OldQ) Then
         NewQ = CInt(Trim$(OldQ)) + 1
     Else
         NewQ = 1
-
     End If
 
-    Call WriteVar(GUILDINFOFILE, "INIT", "NroGuilds", NewQ)
-
-    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Founder", Fundador)
+    Call WriteVar(GUILDINFOFILE, "INIT", "NroGuilds", NewQ & vbNewLine)
+    
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "GuildName", p_GuildName)
-    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Founder", Fundador)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date$)
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Antifaccion", "0")
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Alineacion", Alineacion2String(p_Alineacion))
 
@@ -264,7 +249,6 @@ End Function
 Public Function GetMemberList() As String()
 
     Dim OldQ   As Integer
-
     Dim list() As String
 
     Dim i      As Long
