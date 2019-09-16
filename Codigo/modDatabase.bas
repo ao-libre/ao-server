@@ -8,17 +8,11 @@ Attribute VB_Name = "modDatabase"
 Option Explicit
 
 Public Database_Enabled    As Boolean
-
 Public Database_Host       As String
-
 Public Database_Name       As String
-
 Public Database_Username   As String
-
 Public Database_Password   As String
-
 Public Database_Connection As ADODB.Connection
-
 Public Database_RecordSet  As ADODB.Recordset
  
 Public Sub Database_Connect()
