@@ -38,16 +38,12 @@ Public usersClan2   As Byte
 Public menorCant    As Byte
 
 'constantes de pos..
-Const PRIMER_CLAN_X As Byte = 50
+Const PRIMER_CLAN_X As Byte = 39
+Const SECOND_CLAN_X As Byte = 20
+Const PRIMER_CLAN_Y As Byte = 78
+Const SECOND_CLAN_Y As Byte = 74
+Const MAPA_CVC      As Byte = 273
 
-Const SECOND_CLAN_X As Byte = 77
-
-Const PRIMER_CLAN_Y As Byte = 22
-
-Const SECOND_CLAN_Y As Byte = 55
-
-Const MAPA_CVC      As Byte = 1
- 
 Public Sub Enviar(ByVal Userindex As Integer, _
                   ByVal targetIndex As Integer) ', ByVal max_Users_Guild As Byte)
 
