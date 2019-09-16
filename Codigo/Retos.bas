@@ -39,33 +39,24 @@ Public Arenas(1 To MAX_RETOS_SIMULTANEOS) As tMapEvent
 Public Retos(1 To MAX_RETOS_SIMULTANEOS) As tRetos
 
 Public Sub LoadArenas()
-'Pongo para usar de reto los mapas de casamiento y gms
-'No creo que sea lo mejor pero al menos no estan en ulla los duelos asi... (Recox)
 
-10        Arenas(1).Map = 199
-20        Arenas(1).X = 25
-30        Arenas(1).X2 = 40
-40        Arenas(1).Y = 19
-50        Arenas(1).Y2 = 32
-          
-60        Arenas(2).Map = 276
-70        Arenas(2).X = 61
-80        Arenas(2).X2 = 76
-90        Arenas(2).Y = 19
-100       Arenas(2).Y2 = 32
-          
-110       Arenas(3).Map = 208
-120       Arenas(3).X = 25
-130       Arenas(3).X2 = 40
-140       Arenas(3).Y = 46
-150       Arenas(3).Y2 = 59
-          
-160       Arenas(4).Map = 198
-170       Arenas(4).X = 59
-180       Arenas(4).X2 = 74
-190       Arenas(4).Y = 46
-200       Arenas(4).Y2 = 59
+    Dim i       As Long
+    
+    Dim RetosIO As clsIniManager
+    Set RetosIO = New clsIniManager
 
+    Call RetosIO.Initialize(DatPath & "Retos.dat")
+
+    For i = LBound(Arenas) To UBound(Arenas)
+        Arenas(i).Map = RetosIO.GetValue("ARENA" & CStr(i), "Mapa")
+        Arenas(i).X = RetosIO.GetValue("ARENA" & CStr(i), "X")
+        Arenas(i).X2 = RetosIO.GetValue("ARENA" & CStr(i), "X2")
+        Arenas(i).Y = RetosIO.GetValue("ARENA" & CStr(i), "Y")
+        Arenas(i).Y2 = RetosIO.GetValue("ARENA" & CStr(i), "Y2")
+    Next
+    
+    Set RetosIO = Nothing
+    
 End Sub
 
 Private Sub ResetDueloUser(ByVal Userindex As Integer)
