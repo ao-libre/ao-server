@@ -793,3 +793,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 16/09/2019: Se modifico el mapa 294. (Reyarb)
 * 16/09/2019: Se soluciono el error de que no actualizaba las armaduras/armas. (FrankoH)
 * 17/09/2019: Arregle el bug que no dejaba tirar oro que se introdujo con el cambio de inventario (Recox)
+* 17/09/2019: Ahora el happy hour se activa correctamente (Recox)
