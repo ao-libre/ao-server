@@ -494,7 +494,7 @@ Public Sub PasarSegundo()
                                 .Counters.PiqueteC = .Counters.PiqueteC + 1
                                 .Counters.ContadorPiquete = .Counters.ContadorPiquete + 1
                                 If .Counters.ContadorPiquete = 6 Then
-                                    Call WriteConsoleMsg(i, "���Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(i, "Estas obstruyendo la via publica, muevete o seras encarcelado!!!", FontTypeNames.FONTTYPE_INFO)
                                     .Counters.ContadorPiquete = 0
                                 End If
                                 If .Counters.PiqueteC >= 30 Then
