@@ -720,7 +720,7 @@ Public Const MAX_INVENTORY_OBJS         As Integer = 10000
 
 ''
 ' Cantidad de "slots" en el inventario con mochila
-Public Const MAX_INVENTORY_SLOTS        As Byte = 30
+Public Const MAX_INVENTORY_SLOTS        As Byte = 25
 
 ''
 ' Cantidad de "slots" en el inventario sin mochila
