@@ -5,9 +5,15 @@ Attribute VB_Name = "modDatabase"
 'Adapted and modified by Juan Andres Dalmasso (CHOTS)
 'September 2018
 
+' --------------------------------------------------------------
+'                           ATENCION!
+'Asegurate de descargar la version 32bits del Controlador OBDC.
+'---------------------------------------------------------------
+
 Option Explicit
 
 Public Database_Enabled    As Boolean
+Public Database_DataSource As String
 Public Database_Host       As String
 Public Database_Name       As String
 Public Database_Username   As String
@@ -17,22 +23,38 @@ Public Database_RecordSet  As ADODB.Recordset
  
 Public Sub Database_Connect()
 
-    '***************************************************
+    '************************************************************************************
     'Author: Juan Andres Dalmasso
-    'Last Modification: 18/09/2018
-    '***************************************************
+    'Last Modification: 21/09/2019
+    '21/09/2019 Jopi - Agregue soporte a conexion via DSN. Solo para usuarios avanzados.
+    '************************************************************************************
     On Error GoTo ErrorHandler
  
     Set Database_Connection = New ADODB.Connection
- 
-    Database_Connection.ConnectionString = "Provider=MSDASQL;DRIVER={MySQL ODBC 5.3 ANSI Driver};SERVER=" & Database_Host & ";Database=" & Database_Name & ";User=" & Database_Username & ";Password=" & Database_Password & ";Option=3"
+    
+    If Len(Database_DataSource) <> 0 Then
+        Database_Connection.ConnectionString = "DATA SOURCE=" & Database_DataSource & ";" & _
+                                               "USER ID=" & Database_Username & ";" & _
+                                               "PASSWORD=" & Database_Password & ";"
+    Else
+    
+        Database_Connection.ConnectionString = "DRIVER={MySQL ODBC 8.0 ANSI Driver};" & _
+                                               "SERVER=" & Database_Host & ";" & _
+                                               "DATABASE=" & Database_Name & ";" & _
+                                               "USER=" & Database_Username & ";" & _
+                                               "PASSWORD=" & Database_Password & ";" & _
+                                               "OPTION=3"
+    End If
+    
     Debug.Print Database_Connection.ConnectionString
+    
     Database_Connection.CursorLocation = adUseClient
     Database_Connection.Open
 
     Exit Sub
+    
 ErrorHandler:
-    Call LogDatabaseError("Unable to connect to Mysql Database: " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Database Error: " & Err.Number & " - " & Err.description)
 
 End Sub
 

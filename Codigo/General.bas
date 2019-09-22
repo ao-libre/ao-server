@@ -896,14 +896,30 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
         If Intemperie(Userindex) Then
 
             Dim modifi As Long
+                modifi = Porcentaje(UserList(Userindex).Stats.MaxSta, 3)
 
-            modifi = Porcentaje(UserList(Userindex).Stats.MaxSta, 3)
             Call QuitarSta(Userindex, modifi)
             Call FlushBuffer(Userindex)
 
         End If
 
     End If
+
+Public Sub LogDatabaseError(Desc As String)
+    '***************************************************
+    'Author: Juan Andres Dalmasso (CHOTS)
+    'Last Modification: 09/10/2018
+    '***************************************************
+
+    Dim nfile As Integer
+        nfile = FreeFile
+        
+    Open App.Path & "\logs\database.log" For Append Shared As #nfile
+        Print #nfile, Date & " " & time & " " & Desc
+    Close #nfile
+    
+    'Me ayudo bastante esto.
+    Debug.Print Desc
     
     Exit Sub
 ErrHandler:
