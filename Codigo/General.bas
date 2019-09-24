@@ -890,9 +890,10 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo ErrHandler:
 
     If UserList(Userindex).flags.UserLogged Then
+        
         If Intemperie(Userindex) Then
 
             Dim modifi As Long
@@ -905,11 +906,19 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
 
     End If
 
+    Exit Sub
+
+ErrHandler:
+    Call LogError("Error en EfectoLluvia")
+
+End Sub
+
 Public Sub LogDatabaseError(Desc As String)
     '***************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 09/10/2018
     '***************************************************
+    On Error GoTo ErrHandler:
 
     Dim nfile As Integer
         nfile = FreeFile
@@ -922,8 +931,9 @@ Public Sub LogDatabaseError(Desc As String)
     Debug.Print Desc
     
     Exit Sub
+
 ErrHandler:
-    LogError ("Error en EfectoLluvia")
+    Call LogError("Error - Base de Datos: " & Desc)
 
 End Sub
 
