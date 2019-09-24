@@ -198,18 +198,22 @@ Public Sub LogDatabaseError(Desc As String)
     'Author: Juan Andres Dalmasso (CHOTS)
     'Last Modification: 09/10/2018
     '***************************************************
-
-    On Error GoTo ErrHandler
+    On Error GoTo ErrHandler:
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
-    Open App.Path & "\logs\database.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        nfile = FreeFile
+        
+    Open App.Path & "\logs\Database.log" For Append Shared As #nfile
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
+    
+    'Me ayudo bastante esto.
+    Debug.Print Desc
+    
     Exit Sub
 
 ErrHandler:
+    Call LogError("Error - Base de Datos: " & Desc)
 
 End Sub
 
