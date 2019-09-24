@@ -797,6 +797,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 17/09/2019: Ahora el happy hour se activa correctamente (Recox)
 
 - v0.13.16:
+
 * 24/09/2019: Se agregaron archivos en .github para usar bot con respuestas automaticas y template para postear issues (Recox)
 * 24/09/2019: Cambio el color del mensaje del centinela a Amarillo. (jopiortiz)
 * 24/09/2019: Modificados mapas, agregados npcs. (Recox-Reyarb)
