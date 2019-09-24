@@ -15,10 +15,10 @@ Public Sub LogBan(ByVal BannedIndex As Integer, _
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
-
-    mifile = FreeFile
+        mifile = FreeFile
+        
     Open App.Path & "\logs\GenteBanned.log" For Append Shared As #mifile
-    Print #mifile, UserList(BannedIndex).Name
+        Print #mifile, UserList(BannedIndex).Name
     Close #mifile
 
 End Sub
@@ -37,10 +37,10 @@ Public Sub LogBanFromName(ByVal BannedName As String, _
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
-
-    mifile = FreeFile
+        mifile = FreeFile
+    
     Open App.Path & "\logs\GenteBanned.log" For Append Shared As #mifile
-    Print #mifile, BannedName
+        Print #mifile, BannedName
     Close #mifile
 
 End Sub
@@ -52,11 +52,12 @@ Public Sub LogServerStartTime()
     'Last Modify Date: 15/03/2011
     'Logs Server Start Time.
     '*****************************************************************
+    
     Dim n As Integer
-
-    n = FreeFile
+        n = FreeFile
+        
     Open App.Path & "\logs\Main.log" For Append Shared As #n
-    Print #n, Date & " " & time & " server iniciado " & GetVersionOfTheServer()
+        Print #n, Date & " " & time & " server iniciado " & GetVersionOfTheServer()
     Close #n
 
 End Sub
@@ -71,11 +72,13 @@ Public Sub LogCriticEvent(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+        
     Open App.Path & "\logs\Eventos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
+    
+    Debug.Print Desc
     
     Exit Sub
 
@@ -93,10 +96,10 @@ Public Sub LogEjercitoReal(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\EjercitoReal.log" For Append Shared As #nfile
-    Print #nfile, Desc
+        Print #nfile, Desc
     Close #nfile
     
     Exit Sub
@@ -115,10 +118,10 @@ Public Sub LogEjercitoCaos(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\EjercitoCaos.log" For Append Shared As #nfile
-    Print #nfile, Desc
+        Print #nfile, Desc
     Close #nfile
 
     Exit Sub
@@ -137,10 +140,10 @@ Public Sub LogIndex(ByVal index As Integer, ByVal Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\" & index & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
     
     Exit Sub
@@ -159,11 +162,13 @@ Public Sub LogError(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\errores.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
+    
+    Debug.Print Desc
     
     Exit Sub
 
@@ -181,11 +186,13 @@ Public Sub LogRetos(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\Retos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
+    
+    Debug.Print Desc
     
     Exit Sub
 
@@ -226,12 +233,14 @@ Public Sub LogStatic(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\Stats.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
-
+    
+    Debug.Print Desc
+    
     Exit Sub
 
 ErrHandler:
@@ -248,12 +257,14 @@ Public Sub LogTarea(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile(1) ' obtenemos un canal
+        nfile = FreeFile(1) ' obtenemos un canal
+    
     Open App.Path & "\logs\haciendo.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
-
+    
+    Debug.Print Desc
+    
     Exit Sub
 
 ErrHandler:
@@ -268,12 +279,14 @@ Public Sub LogClanes(ByVal str As String)
     '***************************************************
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\clanes.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+        Print #nfile, Date & " " & time & " " & str
     Close #nfile
-
+    
+    Debug.Print str
+    
 End Sub
 
 Public Sub LogIP(ByVal str As String)
@@ -284,12 +297,12 @@ Public Sub LogIP(ByVal str As String)
     '***************************************************
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\IP.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+        Print #nfile, Date & " " & time & " " & str
     Close #nfile
-
+    
 End Sub
 
 Public Sub LogDesarrollo(ByVal str As String)
@@ -300,10 +313,10 @@ Public Sub LogDesarrollo(ByVal str As String)
     '***************************************************
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\desarrollo" & Month(Date) & Year(Date) & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & str
+        Print #nfile, Date & " " & time & " " & str
     Close #nfile
 
 End Sub
@@ -318,11 +331,11 @@ Public Sub LogGM(Nombre As String, texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     'Guardamos todo en el mismo lugar. Pablo (ToxicWaste) 18/05/07
     Open App.Path & "\logs\" & Nombre & ".log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -341,11 +354,10 @@ Public Sub LogAsesinato(texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-    
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
     
     Open App.Path & "\logs\asesinatos.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -364,13 +376,12 @@ Public Sub logVentaCasa(ByVal texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
     
     Open App.Path & "\logs\propiedades.log" For Append Shared As #nfile
-    Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
-    Print #nfile, "----------------------------------------------------------"
+        Print #nfile, "----------------------------------------------------------"
+        Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
@@ -389,12 +400,12 @@ Public Sub LogHackAttemp(texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\HackAttemps.log" For Append Shared As #nfile
-    Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
-    Print #nfile, "----------------------------------------------------------"
+        Print #nfile, "----------------------------------------------------------"
+        Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
@@ -413,10 +424,10 @@ Public Sub LogCheating(texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\CH.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, Date & " " & time & " " & texto
     Close #nfile
     
     Exit Sub
@@ -435,12 +446,12 @@ Public Sub LogCriticalHackAttemp(texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\CriticalHackAttemps.log" For Append Shared As #nfile
-    Print #nfile, "----------------------------------------------------------"
-    Print #nfile, Date & " " & time & " " & texto
-    Print #nfile, "----------------------------------------------------------"
+        Print #nfile, "----------------------------------------------------------"
+        Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, "----------------------------------------------------------"
     Close #nfile
     
     Exit Sub
@@ -459,11 +470,11 @@ Public Sub LogAntiCheat(texto As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\AntiCheat.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & texto
-    Print #nfile, ""
+        Print #nfile, Date & " " & time & " " & texto
+        Print #nfile, ""
     Close #nfile
     
     Exit Sub
