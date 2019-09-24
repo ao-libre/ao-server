@@ -790,7 +790,13 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 09/09/2019: Ver tiempo restante de parálisis al tener 100 puntos en supervivencia. (jopiortiz)
 
 - v0.13.15:
+
 * 16/09/2019: Se modifico el mapa 294. (Reyarb)
 * 16/09/2019: Se soluciono el error de que no actualizaba las armaduras/armas. (FrankoH)
 * 17/09/2019: Arregle el bug que no dejaba tirar oro que se introdujo con el cambio de inventario (Recox)
 * 17/09/2019: Ahora el happy hour se activa correctamente (Recox)
+
+- v0.13.16:
+* 24/09/2019: Se agregaron archivos en .github para usar bot con respuestas automaticas y template para postear issues (Recox)
+* 24/09/2019: Cambio el color del mensaje del centinela a Amarillo. (jopiortiz)
+* 24/09/2019: Modificados mapas, agregados npcs. (Recox-Reyarb)
