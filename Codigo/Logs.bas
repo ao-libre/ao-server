@@ -213,7 +213,6 @@ Public Sub LogDatabaseError(Desc As String)
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error - Base de Datos: " & Desc)
 
 End Sub
 
