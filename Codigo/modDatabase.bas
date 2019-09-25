@@ -28,9 +28,9 @@ Public Sub Database_Connect()
     Set Database_Connection = New ADODB.Connection
     
     If Len(Database_DataSource) <> 0 Then
-        Database_Connection.ConnectionString = "DATA SOURCE=" & Database_DataSource & ";" & _
-                                               "USER ID=" & Database_Username & ";" & _
-                                               "PASSWORD=" & Database_Password & ";"
+    
+        Database_Connection.ConnectionString = "DATA SOURCE=" & Database_DataSource & ";"
+        
     Else
     
         Database_Connection.ConnectionString = "DRIVER={MySQL ODBC 8.0 ANSI Driver};" & _
