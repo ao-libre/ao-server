@@ -8,6 +8,7 @@ Attribute VB_Name = "modDatabase"
 Option Explicit
 
 Public Database_Enabled    As Boolean
+Public Database_DataSource As String
 Public Database_Host       As String
 Public Database_Name       As String
 Public Database_Username   As String
@@ -17,22 +18,38 @@ Public Database_RecordSet  As ADODB.Recordset
  
 Public Sub Database_Connect()
 
-    '***************************************************
+    '************************************************************************************
     'Author: Juan Andres Dalmasso
-    'Last Modification: 18/09/2018
-    '***************************************************
+    'Last Modification: 21/09/2019
+    '21/09/2019 Jopi - Agregue soporte a conexion via DSN. Solo para usuarios avanzados.
+    '************************************************************************************
     On Error GoTo ErrorHandler
  
     Set Database_Connection = New ADODB.Connection
- 
-    Database_Connection.ConnectionString = "Provider=MSDASQL;DRIVER={MySQL ODBC 5.3 ANSI Driver};SERVER=" & Database_Host & ";Database=" & Database_Name & ";User=" & Database_Username & ";Password=" & Database_Password & ";Option=3"
+    
+    If Len(Database_DataSource) <> 0 Then
+        Database_Connection.ConnectionString = "DATA SOURCE=" & Database_DataSource & ";" & _
+                                               "USER ID=" & Database_Username & ";" & _
+                                               "PASSWORD=" & Database_Password & ";"
+    Else
+    
+        Database_Connection.ConnectionString = "DRIVER={MySQL ODBC 8.0 ANSI Driver};" & _
+                                               "SERVER=" & Database_Host & ";" & _
+                                               "DATABASE=" & Database_Name & ";" & _
+                                               "USER=" & Database_Username & ";" & _
+                                               "PASSWORD=" & Database_Password & ";" & _
+                                               "OPTION=3"
+    End If
+    
     Debug.Print Database_Connection.ConnectionString
+    
     Database_Connection.CursorLocation = adUseClient
     Database_Connection.Open
 
     Exit Sub
+    
 ErrorHandler:
-    Call LogDatabaseError("Unable to connect to Mysql Database: " & Err.Number & " - " & Err.description)
+    Call LogDatabaseError("Database Error: " & Err.Number & " - " & Err.description)
 
 End Sub
 
@@ -110,14 +127,14 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
-        query = query & "description = '" & .desc & "', "
+        query = query & "description = '" & .Desc & "', "
         query = query & "gold = " & .Stats.Gld & ", "
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "body_id = " & .Char.body & ", "
         query = query & "head_id = " & .Char.Head & ", "
@@ -280,16 +297,16 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
         query = query & "elu = " & .Stats.ELU & ", "
         query = query & "genre_id = " & .Genero & ", "
         query = query & "race_id = " & .raza & ", "
-        query = query & "class_id = " & .clase & ", "
+        query = query & "class_id = " & .Clase & ", "
         query = query & "home_id = " & .Hogar & ", "
-        query = query & "description = '" & .desc & "', "
+        query = query & "description = '" & .Desc & "', "
         query = query & "gold = " & .Stats.Gld & ", "
         query = query & "bank_gold = " & .Stats.Banco & ", "
         query = query & "free_skillpoints = " & .Stats.SkillPts & ", "
         query = query & "assigned_skillpoints = " & .Counters.AsignedSkills & ", "
         query = query & "pet_amount = " & .NroMascotas & ", "
         query = query & "pos_map = " & .Pos.Map & ", "
-        query = query & "pos_x = " & .Pos.x & ", "
+        query = query & "pos_x = " & .Pos.X & ", "
         query = query & "pos_y = " & .Pos.Y & ", "
         query = query & "last_map = " & .flags.lastMap & ", "
         query = query & "body_id = " & .Char.body & ", "
@@ -560,16 +577,16 @@ Sub LoadUserFromDatabase(ByVal Userindex As Integer)
         .Stats.ELU = Database_RecordSet!ELU
         .Genero = Database_RecordSet!genre_id
         .raza = Database_RecordSet!race_id
-        .clase = Database_RecordSet!class_id
+        .Clase = Database_RecordSet!class_id
         .Hogar = Database_RecordSet!home_id
-        .desc = Database_RecordSet!description
+        .Desc = Database_RecordSet!description
         .Stats.Gld = Database_RecordSet!Gold
         .Stats.Banco = Database_RecordSet!bank_gold
         .Stats.SkillPts = Database_RecordSet!free_skillpoints
         .Counters.AsignedSkills = Database_RecordSet!assigned_skillpoints
         .NroMascotas = Database_RecordSet!pet_amount
         .Pos.Map = Database_RecordSet!pos_map
-        .Pos.x = Database_RecordSet!pos_x
+        .Pos.X = Database_RecordSet!pos_x
         .Pos.Y = Database_RecordSet!pos_y
         .flags.lastMap = Database_RecordSet!last_map
         .OrigChar.body = Database_RecordSet!body_id
