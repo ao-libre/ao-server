@@ -1817,6 +1817,7 @@ Sub LoadSini()
 
     'CHOTS | Database
     Database_Enabled = CBool(val(Lector.GetValue("DATABASE", "Enabled")))
+    Database_DataSource = Lector.GetValue("DATABASE", "DSN")
     Database_Host = Lector.GetValue("DATABASE", "Host")
     Database_Name = Lector.GetValue("DATABASE", "Name")
     Database_Username = Lector.GetValue("DATABASE", "Username")

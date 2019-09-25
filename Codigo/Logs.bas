@@ -202,13 +202,16 @@ Public Sub LogDatabaseError(Desc As String)
     On Error GoTo ErrHandler
 
     Dim nfile As Integer
-
-    nfile = FreeFile ' obtenemos un canal
+        nfile = FreeFile ' obtenemos un canal
+    
     Open App.Path & "\logs\database.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time & " " & Desc
+        Print #nfile, Date & " " & time & " " & Desc
     Close #nfile
+    
     Exit Sub
-
+    
+    Debug.Print Desc
+    
 ErrHandler:
 
 End Sub
