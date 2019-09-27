@@ -801,3 +801,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 24/09/2019: Se agregaron archivos en .github para usar bot con respuestas automaticas y template para postear issues (Recox)
 * 24/09/2019: Cambio el color del mensaje del centinela a Amarillo. (jopiortiz)
 * 24/09/2019: Modificados mapas, agregados npcs. (Recox-Reyarb)
+* 28/09/2019: Se agrego el factor de dificultad de los oficios (Suerte) (Reyarb)
