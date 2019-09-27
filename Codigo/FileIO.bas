@@ -1794,6 +1794,17 @@ Sub LoadSini()
     
     IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
     
+    '&&&&&&&&&&&&&&&&&&&&& SUERTE &&&&&&&&&&&&&&&&&&&&&&&
+    
+    PescarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "PescarSuerte"))
+    FrmInterv.txtPescarSuerte.Text = PescarSuerte
+    
+    TalarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "TalarSuerte"))
+    FrmInterv.txtTalarSuerte.Text = TalarSuerte
+    
+    MinarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "MinarSuerte"))
+    FrmInterv.txtMinarSuerte.Text = MinarSuerte
+    
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
