@@ -139,11 +139,12 @@ Public Lloviendo                         As Boolean
 
 Public DeNoche                           As Boolean
 
-'[ReyarB]
-Public MiPesca As Integer
-Public MiTalar As Integer
-Public MiMinar As Integer
-'[/ReyarB]
+Public PescarSuerte                      As Integer
+
+Public TalarSuerte                       As Integer
+
+Public MinarSuerte                       As Integer
+
 
 Function VersionOK(ByVal Ver As String) As Boolean
     '***************************************************

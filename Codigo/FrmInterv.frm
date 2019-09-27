@@ -29,7 +29,7 @@ Begin VB.Form FrmInterv
       TabIndex        =   55
       Top             =   4320
       Width           =   2055
-      Begin VB.TextBox txtMiMinar 
+      Begin VB.TextBox txtMinarSuerte 
          BackColor       =   &H00C0FFFF&
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -47,7 +47,7 @@ Begin VB.Form FrmInterv
          Top             =   720
          Width           =   450
       End
-      Begin VB.TextBox txtMiTalar 
+      Begin VB.TextBox txtTalarSuerte 
          BackColor       =   &H00C0FFFF&
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -65,7 +65,7 @@ Begin VB.Form FrmInterv
          Top             =   720
          Width           =   450
       End
-      Begin VB.TextBox txtMiPesca 
+      Begin VB.TextBox txtPescarSuerte 
          BackColor       =   &H00C0FFFF&
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -1210,11 +1210,13 @@ Public Sub AplicarIntervalos()
     IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
     IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
     IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
-    '[ReyarB]
-    MiPesca = val(txtMiPesca.Text)
-    MiTalar = val(txtMiTalar.Text)
-    MiMinar = val(txtMiMinar.Text)
-    '[/ReyarB]
+    
+    '///////////////////Suerte \\\\\\\\\\\\\\\\\\
+    
+    PescarSuerte = val(txtPescarSuerte.Text)
+    TalarSuerte = val(txtTalarSuerte.Text)
+    MinarSuerte = val(txtMinarSuerte.Text)
+    
     
 
 End Sub
@@ -1251,11 +1253,13 @@ Private Sub Command2_Click()
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", str(IntervaloUserPuedeTrabajar))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
-    '[ReyarB]
-    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiPesca", str(MiPesca))
-    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiTalar", str(MiTalar))
-    Call WriteVar(IniPath & "Server.ini", "SuerteReyarB", "MiMinar", str(MiMinar))
-    '[/ReyarB]
+    
+    '&&&&&&&&&&&&&&&&&&&& Suerte desde INIT &&&&&&&&&&&&&&&&&&&&&&&&&
+    
+    Call WriteVar(IniPath & "Server.ini", "INIT", "PescarSuerte", str(PescarSuerte))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "TalarSuerte", str(TalarSuerte))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "MinarSuerte", str(MinarSuerte))
+    
     
     MsgBox "Los intervalos se han guardado sin problemas."
 
