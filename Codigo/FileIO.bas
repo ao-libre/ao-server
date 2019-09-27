@@ -1793,7 +1793,16 @@ Sub LoadSini()
     IntervaloFlechasCazadores = val(Lector.GetValue("INTERVALOS", "IntervaloFlechasCazadores"))
     
     IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
+    '[ReyarB]
+    MiPesca = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiPesca"))
+    FrmInterv.txtMiPesca.Text = MiPesca
     
+    MiTalar = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiTalar"))
+    FrmInterv.txtMiTalar.Text = MiTalar
+    
+    MiMinar = val(GetVar(IniPath & "Server.ini", "SuerteReyarB", "MiMinar"))
+    FrmInterv.txtMiMinar.Text = MiMinar
+    '[/ReyarB]
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
