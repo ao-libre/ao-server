@@ -6457,10 +6457,10 @@ Private Sub HandleResucitate(ByVal Userindex As Integer)
         End If
         
         'Validate NPC and make sure player is dead
-        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor And (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie Or Not EsNewbie(Userindex))) Or .flags.Muerto = 0 Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype = eNPCType.Revividor Or .flags.Muerto = 0 Then Exit Sub
         
         'Make sure it's close enough
-        If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then
+        If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 5 Then
             Call WriteConsoleMsg(Userindex, "El sacerdote no puede resucitarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -6583,7 +6583,7 @@ Private Sub HandleHeal(ByVal Userindex As Integer)
 
         End If
         
-        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor And Npclist(.flags.TargetNPC).NPCtype <> eNPCType.ResucitadorNewbie) Or .flags.Muerto <> 0 Then Exit Sub
+        If (Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor) Or .flags.Muerto <> 0 Then Exit Sub
         
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 10 Then
             Call WriteConsoleMsg(Userindex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
