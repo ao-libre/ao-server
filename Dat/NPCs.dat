@@ -11,7 +11,7 @@
 6 ====== DRAGONES
 7 ====== TIMBEROS
 8 ====== GUARDIAS DEL CAOS
-9 ====== PUEDE RESUCITAR SOLAMENTE A LOS NEWBIES
+9 ====== SLOT LIBRE
 10 ====== Clan Praetoriano
 11 ====== Gobernador
 
@@ -256,9 +256,9 @@ BackUp=0
 
 #############################################
 
-[NPC119] 'sólo resucita newbies
+[NPC119]
 Name=Sacerdote
-NpcType=9
+NpcType=1
 Desc=¡Hola, hijo mío! Soy el sacerdote de estas tierras. Si eres newbie te podré resucitar, sólo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
 Head=3
 Heading=3
@@ -271,8 +271,6 @@ Domable=0
 Alineacion=0
 Comercia=0
 BackUp=0
-
-
 
 
 ##############################################################
