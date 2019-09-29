@@ -122,7 +122,7 @@ Sub Accion(ByVal Userindex As Integer, _
                     'A depositar de una
                     Call IniciarDeposito(Userindex)
                 
-                ElseIf Npclist(tempIndex).NPCtype = eNPCType.Revividor Or Npclist(tempIndex).NPCtype = eNPCType.ResucitadorNewbie Then
+                ElseIf Npclist(tempIndex).NPCtype = eNPCType.Revividor Then
 
                     If Distancia(.Pos, Npclist(tempIndex).Pos) > 10 Then
                         Call WriteConsoleMsg(Userindex, "El sacerdote no puede curarte debido a que estas demasiado lejos.", FontTypeNames.FONTTYPE_INFO)
