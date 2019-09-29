@@ -199,8 +199,7 @@ Function HaySacerdote(ByVal Userindex As Integer) As Boolean
             For X = .Pos.X - MinXBorder + 1 To .Pos.X + MinXBorder - 1
        
                 If MapData(.Pos.Map, X, Y).NpcIndex > 0 Then
-                    If Npclist(MapData(.Pos.Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Or _
-                       Npclist(MapData(.Pos.Map, X, Y).NpcIndex).NPCtype = eNPCType.ResucitadorNewbie Then
+                    If Npclist(MapData(.Pos.Map, X, Y).NpcIndex).NPCtype = eNPCType.Revividor Then
                        
                         If Distancia(.Pos, Npclist(MapData(.Pos.Map, X, Y).NpcIndex).Pos) < 5 Then
                             HaySacerdote = True
