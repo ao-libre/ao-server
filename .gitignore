@@ -9,4 +9,5 @@ Codigo/*.log
 *.vbw
 *.csi
 *.OBJ
+bkNpcs.dat
 server.exe
