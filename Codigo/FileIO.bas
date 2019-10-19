@@ -1795,16 +1795,9 @@ Sub LoadSini()
     IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
     
     '&&&&&&&&&&&&&&&&&&&&& SUERTE &&&&&&&&&&&&&&&&&&&&&&&
-    
     PescarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "PescarSuerte"))
-    FrmInterv.txtPescarSuerte.Text = PescarSuerte
-    
     TalarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "TalarSuerte"))
-    FrmInterv.txtTalarSuerte.Text = TalarSuerte
-    
     MinarSuerte = val(GetVar(IniPath & "Server.ini", "INIT", "MinarSuerte"))
-    FrmInterv.txtMinarSuerte.Text = MinarSuerte
-    
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
@@ -1813,7 +1806,7 @@ Sub LoadSini()
     Dim lDayNumberTemp As Long
     Dim sDayName As String
     
-    iniHappyHourActivado = IIf(Lector.GetValue("HAPPYHOUR", "Activado") = 1, True, False)
+    iniHappyHourActivado = CBool(Lector.GetValue("HAPPYHOUR", "Activado"))
     For lDayNumberTemp = 1 To 7
         sDayName = Lector.GetValue("HAPPYHOUR", "Dia" & lDayNumberTemp)
         HappyHourDays(lDayNumberTemp).Hour = val(ReadField(1, sDayName, 45)) ' GSZAO

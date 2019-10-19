@@ -1216,9 +1216,6 @@ Public Sub AplicarIntervalos()
     PescarSuerte = val(txtPescarSuerte.Text)
     TalarSuerte = val(txtTalarSuerte.Text)
     MinarSuerte = val(txtMinarSuerte.Text)
-    
-    
-
 End Sub
 
 Private Sub Command1_Click()
@@ -1270,9 +1267,10 @@ Err:
 End Sub
 
 Private Sub Form_Load()
-    
     With Me
-    
+        .txtPescarSuerte.Text = PescarSuerte
+        .txtTalarSuerte.Text = TalarSuerte
+        .txtMinarSuerte.Text = MinarSuerte
         .txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
         .txtStaminaIntervaloSinDescansar.Text = StaminaIntervaloSinDescansar
         .txtSanaIntervaloDescansar.Text = SanaIntervaloDescansar
