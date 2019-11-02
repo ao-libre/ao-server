@@ -323,6 +323,7 @@ Private Enum ClientPacketID
     FightSend = 146
     FightAccept = 147
     CloseGuild = 148
+    Discord = 149
 End Enum
 
 ''
@@ -897,6 +898,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         Case ClientPacketID.CloseGuild
             Call HandleCloseGuild(Userindex)
+        
+        Case ClientPacketID.Discord                  '/Discord
+            Call HandleDiscord(Userindex)
             
         Case Else
             'ERROR : Abort!
@@ -23562,3 +23566,77 @@ Private Sub HandleCloseGuild(ByVal Userindex As Integer)
 
 End Sub
 
+
+
+
+''
+' Handles the "Discord" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleDiscord(ByVal Userindex As Integer)
+'***************************************************
+'Author: Lucas Daniel Recoaro (Recox)
+'Last Modification: 14/07/19 (Recox)
+'Manda un mensaje al server para que el mismo lo envie al bot del discord (Recox)
+'***************************************************
+
+    If UserList(Userindex).incomingData.Length < 3 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+
+    End If
+    
+    On Error GoTo ErrHandler
+
+    With UserList(Userindex)
+
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As clsByteQueue
+        Set buffer = New clsByteQueue
+
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Remove packet ID
+        Call buffer.ReadByte
+
+        Dim Chat As String
+        Chat = buffer.ReadASCIIString()
+
+        If LenB(Chat) <> 0 Then
+            'Analize chat...
+            Call Statistics.ParseChat(Chat)
+            
+            'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
+            'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+            'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+            If ConexionAPI Then
+                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .desc)
+                Call WriteConsoleMsg(Userindex, "Link Discord: https://discord.gg/xbAuHcf - El bot de Discord recibio y envio lo siguiente: " & Chat, FontTypeNames.FONTTYPE_INFOBOLD)
+
+            Else
+                Call WriteConsoleMsg(Userindex, "(api - node.js)  El modulo para usar esta funcion no esta instalado en este servidor. http://www.github.com/ao-libre/ao-api-server para mas informacion / more info.", FontTypeNames.FONTTYPE_INFOBOLD)
+
+            End If
+        
+        End If
+        
+        'If we got here then packet is complete, copy data back to original queue
+        Call .incomingData.CopyBuffer(buffer)
+
+    End With
+    
+ErrHandler:
+
+    Dim Error As Long
+
+    Error = Err.Number
+
+    On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
