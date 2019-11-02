@@ -107,11 +107,19 @@ Public Sub ApiEndpointSendNewGuildCreatedMessageDiscord(ByVal Message As String,
     'Este endpoint envia un mensaje al chat avisando que se creo un clan
 
     UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendNewGuildCreated"
-
     Parameters = "message=" & Message & "&desc=" & Desc & "&guildname=" & Guildname & "&site=" & Site
 
     Call SendPOSTRequest(UrlServer, Parameters)
 End Sub
+
+Public Sub ApiEndpointSendCustomCharacterMessageDiscord(ByVal Chat As String, ByVal Name As String, ByVal desc As String)
+    'Este endpoint envia un mensaje al discord desde dentro del juego por un usuario con el comando /discord
+    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendCustomCharacterMessageDiscord"
+    Parameters = "userName=" & Name & "&desc=" & desc & "&chat=" & Chat
+
+    Call SendPOSTRequest(UrlServer, Parameters)
+End Sub
+
 
 Public Sub ApiEndpointSendWorldSaveMessageDiscord()
     'Este endpoint envia un mensaje al chat avisando que se creo un clan
@@ -172,5 +180,3 @@ ErrorHandler:
     End If
     
 End Sub
-
-
