@@ -50,7 +50,7 @@ Sub CambiarEstado(ByVal gmIndex As Integer)
     tmpStr = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(CentinelaEstado, " ACTIVADO.", " DESACTIVADO.")
     
     'Mandamos el aviso por consola.
-    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(tmpStr, FontTypeNames.FONTTYPE_CONSE))
+    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(tmpStr, FontTypeNames.FONTTYPE_CENTINELA))
     
     'Lo registramos en los logs.
     Call LogGM(UserList(gmIndex).Name, "Cambio el estado del Centinela (Estado: " & IIf(CentinelaEstado, "ACTIVADO", "DESACTIVADO") & ")")

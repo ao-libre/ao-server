@@ -787,7 +787,7 @@ Public Const FONTTYPE_PARTY           As String = "~255~180~255~0~0"
 
 Public Const FONTTYPE_VENENO          As String = "~0~255~0~0~0"
 
-Public Const FONTTYPE_GUILD           As String = "~255~255~255~1~0"
+Public Const FONTTYPE_GUILD           As String = "~164~61~195~1~0"
 
 Public Const FONTTYPE_SERVER          As String = "~0~185~0~0~0"
 
@@ -802,6 +802,10 @@ Public Const FONTTYPE_CONSEJOVesA     As String = "~0~200~255~1~0"
 Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
 
 Public Const FONTTYPE_CENTINELA       As String = "~0~255~0~1~0"
+
+Public Const FONTTYPE_CITIZEN       As String = "~78~78~252~1~0"
+
+Public Const FONTTYPE_CRIMINAL       As String = "~224~52~17~1~0"
 
 'Estadisticas
 Public STAT_MAXELV                    As Byte

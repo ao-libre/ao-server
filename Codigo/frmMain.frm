@@ -395,7 +395,7 @@ Private Sub HappyHourManager()
            
             If tmpHappyHour = 1 Then ' Desactiva
                 Message = "Ha concluido la Happy Hour!"
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
                 HappyHourActivated = False
 
                 If ConexionAPI Then
@@ -408,7 +408,7 @@ Private Sub HappyHourManager()
                     
                     If HappyHour <> 1 Then
                         Message = "Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%"
-                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
 
                         If ConexionAPI Then
                             Call ApiEndpointSendHappyHourModifiedMessageDiscord(Message)
@@ -416,7 +416,7 @@ Private Sub HappyHourManager()
                     Else
                         Message = "Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!"
 
-                       Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.fonttype_dios))
+                       Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
                     
                         'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
                         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
@@ -439,7 +439,7 @@ Private Sub HappyHourManager()
         ' Si estaba activado, lo deshabilitamos
         If HappyHour <> 0 Then
             Call UpdateNpcsExp(1 / HappyHour)
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.fonttype_dios))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Ha concluido la Happy Hour!", FontTypeNames.FONTTYPE_SERVER))
             HappyHourActivated = False
             HappyHour = 0
         End If
@@ -473,7 +473,7 @@ Private Sub AutoSave_Timer()
     Call tLluviaEvent
 
     If Minutos = MinutosWs - 1 Then
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_SERVER))
         KillLog
 
     End If
@@ -486,7 +486,7 @@ Private Sub AutoSave_Timer()
     End If
 
     If MinsPjesSave = MinutosGuardarUsuarios - 1 Then
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("CharSave en 1 minuto ...", FontTypeNames.FONTTYPE_VENENO))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("CharSave en 1 minuto ...", FontTypeNames.FONTTYPE_SERVER))
     ElseIf MinsPjesSave >= MinutosGuardarUsuarios Then
         Call mdParty.ActualizaExperiencias
         Call GuardarUsuarios

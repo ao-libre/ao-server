@@ -462,7 +462,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
             DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
         
             If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
-                Call WriteConsoleMsg(UserIndex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(UserIndex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
             End If
@@ -476,7 +476,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
             If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
         
                 If MapObj.Amount = MAX_INVENTORY_OBJS Then
-                    Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
                     Exit Sub
 
                 End If
@@ -491,7 +491,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
                 Call UpdateUserInv(False, UserIndex, Slot)
             
                 If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
-                    Call WriteConsoleMsg(UserIndex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(UserIndex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
 
                 End If
             
