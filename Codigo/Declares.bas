@@ -771,25 +771,25 @@ Public Enum eOBJType
 End Enum
 
 'Texto
-Public Const FONTTYPE_TALK            As String = "~255~255~255~0~0"
+Public Const FONTTYPE_TALK            As String = "~204~255~255~0~0"
 
-Public Const FONTTYPE_FIGHT           As String = "~255~0~0~1~0"
+Public Const FONTTYPE_FIGHT           As String = "~255~102~102~1~0"
 
-Public Const FONTTYPE_WARNING         As String = "~32~51~223~1~1"
+Public Const FONTTYPE_WARNING         As String = "~255~255~102~1~1"
 
-Public Const FONTTYPE_INFO            As String = "~65~190~156~0~0"
+Public Const FONTTYPE_INFO            As String = "~255~204~153~0~0"
 
-Public Const FONTTYPE_INFOBOLD        As String = "~65~190~156~1~0"
+Public Const FONTTYPE_INFOBOLD        As String = "~255~204~153~1~0"
 
-Public Const FONTTYPE_EJECUCION       As String = "~130~130~130~1~0"
+Public Const FONTTYPE_EJECUCION       As String = "~255~0~127~1~0"
 
-Public Const FONTTYPE_PARTY           As String = "~255~180~255~0~0"
+Public Const FONTTYPE_PARTY           As String = "~252~203~130~0~0"
 
-Public Const FONTTYPE_VENENO          As String = "~0~255~0~0~0"
+Public Const FONTTYPE_VENENO          As String = "~128~255~0~1~0"
 
-Public Const FONTTYPE_GUILD           As String = "~164~61~195~1~0"
+Public Const FONTTYPE_GUILD           As String = "~205~101~236~0~0"
 
-Public Const FONTTYPE_SERVER          As String = "~0~185~0~0~0"
+Public Const FONTTYPE_SERVER          As String = "~250~150~237~1~0"
 
 Public Const FONTTYPE_GUILDMSG        As String = "~228~199~27~0~0"
 
@@ -801,7 +801,7 @@ Public Const FONTTYPE_CONSEJOVesA     As String = "~0~200~255~1~0"
 
 Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
 
-Public Const FONTTYPE_CENTINELA       As String = "~0~255~0~1~0"
+Public Const FONTTYPE_CENTINELA       As String = "~240~230~140~1~0"
 
 Public Const FONTTYPE_CITIZEN       As String = "~78~78~252~1~0"
 
