@@ -1288,7 +1288,7 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                                     ' Elijo el color segun el rango del GM:
                                     ' Dios
                                     If .flags.Privilegios = PlayerType.Dios Then
-                                        ft = FontTypeNames.fonttype_dios
+                                        ft = FontTypeNames.FONTTYPE_DIOS
                                         ' Gm
                                     ElseIf .flags.Privilegios = PlayerType.SemiDios Then
                                         ft = FontTypeNames.FONTTYPE_GM

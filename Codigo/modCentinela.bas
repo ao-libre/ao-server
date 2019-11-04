@@ -248,7 +248,7 @@ Sub AprobarUsuario(ByVal Userindex As Integer, ByVal CIndex As Byte)
             .UltimaRevision = GetTickCount()
         End With
  
-        Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.fonttype_dios)
+        Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.FONTTYPE_DIOS)
      
     End With
  
@@ -321,7 +321,7 @@ Sub UsuarioInActivo(ByVal Userindex As Integer)
     End If
  
     'Deja un mensaje.
-    Call Protocol.WriteConsoleMsg(Userindex, "El centinela te ha ejecutado y encarcelado por Macro Inasistido.", FontTypeNames.fonttype_dios)
+    Call Protocol.WriteConsoleMsg(Userindex, "El centinela te ha ejecutado y encarcelado por Macro Inasistido.", FontTypeNames.FONTTYPE_DIOS)
  
     'Limpia el tipo del usuario.
     Dim ClearType As CentinelaUser

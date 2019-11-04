@@ -351,7 +351,9 @@ Public Enum FontTypeNames
     FONTTYPE_GMMSG
     FONTTYPE_GM
     FONTTYPE_CITIZEN
-    fonttype_dios
+    FONTTYPE_CONSE
+    FONTTYPE_DIOS
+    FONTTYPE_CRIMINAL
 
 End Enum
 
@@ -9847,7 +9849,7 @@ Private Sub HandlePartyForm(ByVal Userindex As Integer)
             Call WriteShowPartyForm(Userindex)
             
         Else
-            Call WriteConsoleMsg(Userindex, "No perteneces a ningUn grupo!", FontTypeNames.FONTTYPE_INFOBOLD)
+            Call WriteConsoleMsg(Userindex, "No perteneces a ningun grupo!", FontTypeNames.FONTTYPE_INFOBOLD)
 
         End If
 
