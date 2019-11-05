@@ -328,7 +328,7 @@ End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 148
+Private Const LAST_CLIENT_PACKET_ID As Byte = 149
 
 Public Enum FontTypeNames
 
