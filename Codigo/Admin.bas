@@ -603,7 +603,7 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
     With UserList(bannerUserIndex)
 
         If tUser <= 0 Then
-            Call WriteConsoleMsg(bannerUserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(bannerUserIndex, "El usuario no esta online.", FontTypeNames.FONTTYPE_SERVER)
             
             If PersonajeExiste(UserName) Then
                 UserPriv = UserDarPrivilegioLevel(UserName)

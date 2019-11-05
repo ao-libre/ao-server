@@ -2993,8 +2993,8 @@ Public Sub DoHurtar(ByVal Userindex As Integer, ByVal VictimaIndex As Integer)
                 OtroUserIndex = UserList(VictimaIndex).ComUsu.DestUsu
                 
                 If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
-                    Call WriteConsoleMsg(VictimaIndex, "Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_TALK)
-                    Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(VictimaIndex, "Comercio cancelado, te estan robando!!", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_WARNING)
                 
                     Call LimpiarComercioSeguro(VictimaIndex)
                     Call Protocol.FlushBuffer(OtroUserIndex)
@@ -3038,8 +3038,8 @@ Public Sub DoHandInmo(ByVal Userindex As Integer, ByVal VictimaIndex As Integer)
         UserList(VictimaIndex).flags.ParalizedBy = UserList(Userindex).Name
         
         Call WriteParalizeOK(VictimaIndex)
-        Call WriteConsoleMsg(Userindex, "Tu golpe ha dejado inmovil a tu oponente", FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(VictimaIndex, "El golpe te ha dejado inmovil!", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Tu golpe ha dejado inmovil a tu oponente", FontTypeNames.FONTTYPE_FIGHT)
+        Call WriteConsoleMsg(VictimaIndex, "El golpe te ha dejado inmovil!", FontTypeNames.FONTTYPE_FIGHT)
 
     End If
 

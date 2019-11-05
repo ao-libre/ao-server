@@ -1066,7 +1066,7 @@ End Sub
             If .ComUsu.DestUsu > 0 Then
                 If UserList(.ComUsu.DestUsu).flags.UserLogged Then
                     If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
-                        Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_TALK)
+                        Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
                         Call FinComerciarUsu(.ComUsu.DestUsu)
                         Call FlushBuffer(.ComUsu.DestUsu)
 
@@ -1698,7 +1698,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                         'Le avisamos al que estaba comerciando que se tuvo que ir.
                         If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
                             Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
-                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
+                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
                             Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
@@ -1823,7 +1823,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         End If
     
         If NumUsers > RECORDusuarios Then
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("RECORD de usuarios conectados simultaneamente." & "Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFO))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente. Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFOBOLD))
             RECORDusuarios = NumUsers
             Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RECORDusuarios))
         

@@ -39,12 +39,12 @@ Public Sub SecondSg()
     With SurvivalG
 
         If .Cuonter > 0 Then
-            SendData SendTarget.toMap, HungerMap, PrepareMessageConsoleMsg("Juegos del Hambre> " & .Cuonter, FontTypeNames.FONTTYPE_CENTINELA)
+            SendData SendTarget.toMap, HungerMap, PrepareMessageConsoleMsg("Juegos del Hambre> " & .Cuonter, FontTypeNames.FONTTYPE_INFO)
             .Cuonter = .Cuonter - 1
 
             If .Cuonter <= 0 Then
                 .Cuonter = 0
-                SendData SendTarget.toMap, HungerMap, PrepareMessageConsoleMsg("Juegos del Hambre> YA", FontTypeNames.FONTTYPE_CENTINELA)
+                SendData SendTarget.toMap, HungerMap, PrepareMessageConsoleMsg("Juegos del Hambre> YA", FontTypeNames.FONTTYPE_INFO)
 
                 For i = 1 To NumUsers
 
@@ -132,7 +132,7 @@ Public Sub HungerGamesCreate(ByVal Cupos As Byte, _
         .Drop = Drop
         .Cupos = Cupos
 
-        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Han dado inicio los Juegos del Hambre! El maximo de cupos es [" & Cupos & "], para entrar solo debes pagar " & Gold & " monedas de oro" & vbNewLine & IIf(Drop, "El ganador se queda con los items", " ") & ". Para lograr ingresar escribe /Survival", FontTypeNames.FONTTYPE_CONSEJO)
+        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Han dado inicio los Juegos del Hambre! El maximo de cupos es [" & Cupos & "], para entrar solo debes pagar " & Gold & " monedas de oro" & vbNewLine & IIf(Drop, "El ganador se queda con los items", " ") & ". Para lograr ingresar escribe /Survival", FontTypeNames.FONTTYPE_INFO)
 
         .Created = 1
 
@@ -235,11 +235,11 @@ Public Sub HungerGamesJoin(ByVal UI As Integer, ByVal Gld As Long, ByVal Cupos A
         .Stats.Gld = .Stats.Gld - SurvivalG.Oro
         'Call WriteUpdateGold UI
 
-        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Bienvenido " & .Name & " a los juegos del hambre!", FontTypeNames.fonttype_dios)
+        SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> Bienvenido " & .Name & " a los juegos del hambre!", FontTypeNames.FONTTYPE_INFO)
         'Call WritePauseToggle UI
 
         If SurvivalG.Joined = SurvivalG.Cupos Then
-            SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Cupos alcanzados! " & vbNewLine & "Juegos del Hambre> Damos inicio a LOS JUEGOS DEL HAMBRE!", FontTypeNames.fonttype_dios)
+            SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Cupos alcanzados! " & vbNewLine & "Juegos del Hambre> Damos inicio a LOS JUEGOS DEL HAMBRE!", FontTypeNames.FONTTYPE_INFOBOLD)
 
             Dim i As Long
 
@@ -358,7 +358,7 @@ Public Sub HungerWin(ByVal Win As Integer)
 
             If Not SurvivalG.Drop Then CleanHGMap
 
-            SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> El ganador ha sido " & .Name & "! se lleva el pozo acumulado de " & Pozo & " y el respeto de todos.", FontTypeNames.fonttype_dios)
+            SendData SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del hambre> El ganador ha sido " & .Name & "! se lleva el pozo acumulado de " & Pozo & " y el respeto de todos.", FontTypeNames.FONTTYPE_INFOBOLD)
 
         End If
 

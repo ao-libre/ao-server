@@ -1288,13 +1288,13 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                                     ' Elijo el color segun el rango del GM:
                                     ' Dios
                                     If .flags.Privilegios = PlayerType.Dios Then
-                                        ft = FontTypeNames.fonttype_dios
+                                        ft = FontTypeNames.FONTTYPE_DIOS
                                         ' Gm
                                     ElseIf .flags.Privilegios = PlayerType.SemiDios Then
                                         ft = FontTypeNames.FONTTYPE_GM
                                         ' Conse
                                     ElseIf .flags.Privilegios = PlayerType.Consejero Then
-                                        ft = FontTypeNames.FONTTYPE_CONSE
+                                        ft = FontTypeNames.FONTTYPE_CONSEJO
                                         ' Rm o Dsrm
                                     ElseIf .flags.Privilegios = (PlayerType.RoleMaster Or PlayerType.Consejero) Or .flags.Privilegios = (PlayerType.RoleMaster Or PlayerType.Dios) Then
                                         ft = FontTypeNames.FONTTYPE_EJECUCION
@@ -1303,7 +1303,7 @@ Sub LookatTile(ByVal UserIndex As Integer, _
                                 
                                 ElseIf criminal(TempCharIndex) Then
                                     Stat = Stat & " <CRIMINAL>"
-                                    ft = FontTypeNames.FONTTYPE_FIGHT
+                                    ft = FontTypeNames.FONTTYPE_CRIMINAL
                                 Else
                                     Stat = Stat & " <CIUDADANO>"
                                     ft = FontTypeNames.FONTTYPE_CITIZEN

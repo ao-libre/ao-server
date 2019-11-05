@@ -544,7 +544,7 @@ Public Sub ActualizaExperiencias()
         haciendoBK = True
         Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
     
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Distribuyendo experiencia en parties.", FontTypeNames.FONTTYPE_SERVER))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Distribuyendo experiencia en parties.", FontTypeNames.FONTTYPE_PARTY))
 
         For i = 1 To MAX_PARTIES
 
@@ -555,7 +555,7 @@ Public Sub ActualizaExperiencias()
 
         Next i
 
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Experiencia distribuida.", FontTypeNames.FONTTYPE_SERVER))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Experiencia distribuida.", FontTypeNames.FONTTYPE_PARTY))
         Call SendData(SendTarget.ToAll, 0, PrepareMessagePauseToggle())
         haciendoBK = False
 
