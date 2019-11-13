@@ -133,7 +133,7 @@ Public MinutosGuardarUsuarios            As Long
 
 Public Puerto                            As Integer
 
-Public BootDelBackUp                     As Byte
+Public BootDelBackUp                     As Boolean
 
 Public Lloviendo                         As Boolean
 
