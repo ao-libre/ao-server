@@ -340,7 +340,7 @@ Sub Main()
 
     ' Mapas
     If BootDelBackUp Then
-        frmCargando.Label1(2).Caption = "Cargando BackUp"
+        frmCargando.Label1(2).Caption = "Cargando Backup"
         Call CargarBackUp
     Else
         frmCargando.Label1(2).Caption = "Cargando Mapas"
@@ -370,7 +370,7 @@ Sub Main()
     LogServerStartTime
     
     'Ocultar
-    If HideMe = 1 Then
+    If HideMe Then
         Call frmMain.InitMain(1)
     Else
         Call frmMain.InitMain(0)
@@ -849,7 +849,7 @@ Sub Restart()
     
     'Ocultar
     
-    If HideMe = 1 Then
+    If HideMe Then
         Call frmMain.InitMain(1)
     Else
         Call frmMain.InitMain(0)

@@ -5,7 +5,7 @@ Attribute VB_Name = "modCentinela"
 
 Option Explicit
  
-Public CentinelaEstado As Boolean          'Esta activado?
+Public isCentinelaActivated As Boolean          'Esta activado?
  
 Const NUM_CENTINELAS   As Byte = 5         'Cantidad de centinelas.
 
@@ -36,24 +36,29 @@ End Type
 Public Centinelas(1 To NUM_CENTINELAS) As Centinelas
  
 Sub CambiarEstado(ByVal gmIndex As Integer)
- 
+'***************************************************
+'Author: Unknown
+'Last Modification: 13/11/2019 (Recox)
+'13/11/2019 Recox: La variable isCentinelaActivated tiene un nombre mas descriptivo
+'***************************************************
+
     ' @ Cambia el estado del centinela.
 
     'Lo cambiamos en la memoria.
-    CentinelaEstado = Not CentinelaEstado
+    isCentinelaActivated = Not isCentinelaActivated
     
     'Lo cambiamos en el Server.ini
-    Call WriteVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo", IIf(CentinelaEstado, 1, 0))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "CentinelaAuditoriaTrabajoActivo", IIf(isCentinelaActivated, 1, 0))
 
     'Preparamos el aviso por consola.
-    Dim tmpStr As String
-    tmpStr = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(CentinelaEstado, " ACTIVADO.", " DESACTIVADO.")
+    Dim message As String
+    message = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(isCentinelaActivated, " ACTIVADO.", " DESACTIVADO.")
     
     'Mandamos el aviso por consola.
-    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(tmpStr, FontTypeNames.FONTTYPE_CENTINELA))
+    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_CENTINELA))
     
     'Lo registramos en los logs.
-    Call LogGM(UserList(gmIndex).Name, "Cambio el estado del Centinela (Estado: " & IIf(CentinelaEstado, "ACTIVADO", "DESACTIVADO") & ")")
+    Call LogGM(message)
  
 End Sub
  
