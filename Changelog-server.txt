@@ -811,3 +811,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.18:
 
 * 02/11/2019: Se agrego comando /discord para poder chatear en el mismo. (Recox)
+* 13/11/2019: El centinela ahora se puede activar/desactivar mediante el server.ini. (Recox)

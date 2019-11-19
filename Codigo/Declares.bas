@@ -1937,13 +1937,13 @@ Public NumObjDatas                        As Integer
 
 Public NumeroHechizos                     As Integer
 
-Public AllowMultiLogins                   As Byte
+Public AllowMultiLogins                   As Boolean
 
 Public IdleLimit                          As Integer
 
 Public MaxUsers                           As Integer
 
-Public HideMe                             As Byte
+Public HideMe                             As Boolean
 
 Public LastBackup                         As String
 

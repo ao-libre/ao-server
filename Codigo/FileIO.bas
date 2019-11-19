@@ -1667,15 +1667,16 @@ errh:
 End Sub
 
 Sub LoadSini()
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 15/05/2019 (Jopi)
-    'CHOTS: Database params
-    'Cucsifae: Agregados multiplicadores exp y oro
-    'CHOTS: Agregado multiplicador oficio
-    'CHOTS: Agregado min y max Dados
-    'Jopi: Uso de clsIniManager para cargar los valores.
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: 13/11/2019 (Recox)
+'CHOTS: Database params
+'Cucsifae: Agregados multiplicadores exp y oro
+'CHOTS: Agregado multiplicador oficio
+'CHOTS: Agregado min y max Dados
+'Jopi: Uso de clsIniManager para cargar los valores.
+'Recox: Cargamos si el centinela esta activo o no.
+'***************************************************
 
     Dim Temporal As Long
     
@@ -1688,12 +1689,12 @@ Sub LoadSini()
     
     Call Lector.Initialize(IniPath & "Server.ini")
     
-    BootDelBackUp = val(GetVar(IniPath & "Server.ini", "INIT", "IniciarDesdeBackUp"))
+    BootDelBackUp = CBool(Lector.GetValue("INIT", "IniciarDesdeBackUp"))
     
     'Misc
     Puerto = val(Lector.GetValue("INIT", "StartPort"))
-    HideMe = val(Lector.GetValue("INIT", "Hide"))
-    AllowMultiLogins = val(Lector.GetValue("INIT", "AllowMultiLogins"))
+    HideMe = CBool(Lector.GetValue("INIT", "Hide"))
+    AllowMultiLogins = CBool(Lector.GetValue("INIT", "AllowMultiLogins"))
     IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
     
     'Lee la version correcta del cliente
@@ -1709,8 +1710,11 @@ Sub LoadSini()
     
     DropItemsAlMorir = CBool(Lector.GetValue("INIT", "DropItemsAlMorir"))
 
+    'Esto es para ver si el centinela esta activo o no.
+    isCentinelaActivated = CBool(Lector.GetValue("INIT", "CentinelaAuditoriaTrabajoActivo"))
+
     PuedeCrearPersonajes = val(Lector.GetValue("INIT", "PuedeCrearPersonajes"))
-    ServerSoloGMs = val(Lector.GetValue("init", "ServerSoloGMs"))
+    ServerSoloGMs = val(Lector.GetValue("INIT", "ServerSoloGMs"))
     
     ArmaduraImperial1 = val(Lector.GetValue("INIT", "ArmaduraImperial1"))
     ArmaduraImperial2 = val(Lector.GetValue("INIT", "ArmaduraImperial2"))
