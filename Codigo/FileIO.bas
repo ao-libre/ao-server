@@ -1134,18 +1134,18 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         With .Stats
 
             For LoopC = 1 To NUMATRIBUTOS
-                .UserAtributos(LoopC) = CInt(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
-                .UserAtributosBackUP(LoopC) = .UserAtributos(LoopC)
+                .UserAtributos(LoopC) = CByte(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
+                .UserAtributosBackUP(LoopC) = CByte(.UserAtributos(LoopC))
             Next LoopC
         
             For LoopC = 1 To NUMSKILLS
-                .UserSkills(LoopC) = val(UserFile.GetValue("SKILLS", "SK" & LoopC))
-                .EluSkills(LoopC) = val(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
-                .ExpSkills(LoopC) = val(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
+                .UserSkills(LoopC) = CByte(UserFile.GetValue("SKILLS", "SK" & LoopC))
+                .EluSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
+                .ExpSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
             Next LoopC
         
             For LoopC = 1 To MAXUSERHECHIZOS
-                .UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
+                .UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
             Next LoopC
         
             .Gld = CLng(UserFile.GetValue("STATS", "GLD"))
