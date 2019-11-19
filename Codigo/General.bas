@@ -1601,8 +1601,6 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
 
     On Error GoTo ErrorHandler
 
-    Dim UserFile As String
-
     With UserList(Userindex)
 
         If .Clase = 0 Or .Stats.ELV = 0 Then
@@ -1642,7 +1640,7 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
     Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en SaveUserToCharfile: " & UserFile)
+    Call LogError("Error en SaveUser - Userindex: " & Userindex)
 
 End Sub
 
