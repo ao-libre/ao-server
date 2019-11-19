@@ -7597,14 +7597,15 @@ Private Sub HandleGMRequest(ByVal Userindex As Integer)
         Call .incomingData.ReadByte
         
         If Not Ayuda.Existe(.Name) Then
-            Call WriteConsoleMsg(Userindex, "El mensaje ha sido entregado, ahora solo debes esperar que se desocupe algUn GM.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "El mensaje ha sido entregado, ahora solo debes esperar que se desocupe algun GM.", FontTypeNames.FONTTYPE_INFO)
             Call Ayuda.Push(.Name)
         Else
             Call Ayuda.Quitar(.Name)
             Call Ayuda.Push(.Name)
             Call WriteConsoleMsg(Userindex, "Ya habias mandado un mensaje, tu mensaje ha sido movido al final de la cola de mensajes.", FontTypeNames.FONTTYPE_INFO)
         End If
-        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name + " ha solicitado la ayuda de algun GM", FontTypeNames.FONTTYPE_CENTINELA), False)
+
+        Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name + " ha solicitado la ayuda de algun GM con /GM. Podes usar el comando /SHOW SOS para ver quienes necesitan ayuda", FontTypeNames.FONTTYPE_INFO))
     End With
 
 End Sub
