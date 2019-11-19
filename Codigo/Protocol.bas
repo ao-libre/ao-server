@@ -14568,7 +14568,9 @@ Private Sub HandleCreateItem(ByVal Userindex As Integer)
     End With
     
 ErrHandler:
-    Call LogError("Error en HandleCreateItem " & Err.Number & " " & Err.description)
+    If Err.Number <> 0 Then
+        Call LogError("Error en HandleCreateItem " & Err.Number & " " & Err.description)
+    End If
 End Sub
 
 ''
