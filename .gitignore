@@ -11,3 +11,4 @@ Codigo/*.log
 *.OBJ
 bkNpcs.dat
 server.exe
+Guilds/guildsinfo.inf
