@@ -1467,7 +1467,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         End If
     
         'Este IP ya esta conectado?
-        If AllowMultiLogins Then
+        If AllowMultiLogins = False Then
             If CheckForSameIP(Userindex, .ip) = True Then
                 Call WriteErrorMsg(Userindex, "No es posible usar mas de un personaje al mismo tiempo.")
                 Call FlushBuffer(Userindex)

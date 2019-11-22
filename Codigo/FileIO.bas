@@ -1134,18 +1134,18 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         With .Stats
 
             For LoopC = 1 To NUMATRIBUTOS
-                .UserAtributos(LoopC) = CInt(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
-                .UserAtributosBackUP(LoopC) = .UserAtributos(LoopC)
+                .UserAtributos(LoopC) = CByte(UserFile.GetValue("ATRIBUTOS", "AT" & LoopC))
+                .UserAtributosBackUP(LoopC) = CByte(.UserAtributos(LoopC))
             Next LoopC
         
             For LoopC = 1 To NUMSKILLS
-                .UserSkills(LoopC) = val(UserFile.GetValue("SKILLS", "SK" & LoopC))
-                .EluSkills(LoopC) = val(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
-                .ExpSkills(LoopC) = val(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
+                .UserSkills(LoopC) = CByte(UserFile.GetValue("SKILLS", "SK" & LoopC))
+                .EluSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "ELUSK" & LoopC))
+                .ExpSkills(LoopC) = CLng(UserFile.GetValue("SKILLS", "EXPSK" & LoopC))
             Next LoopC
         
             For LoopC = 1 To MAXUSERHECHIZOS
-                .UserHechizos(LoopC) = val(UserFile.GetValue("Hechizos", "H" & LoopC))
+                .UserHechizos(LoopC) = CInt(UserFile.GetValue("Hechizos", "H" & LoopC))
             Next LoopC
         
             .Gld = CLng(UserFile.GetValue("STATS", "GLD"))
@@ -1195,18 +1195,18 @@ End Sub
 Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: Recox
+    'Recox - Castie todo a long para que sea el mismo tipo de dato que en Declares
     '***************************************************
 
     With UserList(Userindex).Reputacion
-        .AsesinoRep = val(UserFile.GetValue("REP", "Asesino"))
-        .BandidoRep = val(UserFile.GetValue("REP", "Bandido"))
-        .BurguesRep = val(UserFile.GetValue("REP", "Burguesia"))
-        .LadronesRep = val(UserFile.GetValue("REP", "Ladrones"))
-        .NobleRep = val(UserFile.GetValue("REP", "Nobles"))
-        .PlebeRep = val(UserFile.GetValue("REP", "Plebe"))
-        .Promedio = val(UserFile.GetValue("REP", "Promedio"))
+        .AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
+        .BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
+        .BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
+        .LadronesRep = CLng(UserFile.GetValue("REP", "Ladrones"))
+        .NobleRep = CLng(UserFile.GetValue("REP", "Nobles"))
+        .PlebeRep = CLng(UserFile.GetValue("REP", "Plebe"))
+        .Promedio = CLng(UserFile.GetValue("REP", "Promedio"))
 
     End With
     
@@ -1216,10 +1216,11 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
     '*************************************************
     'Author: Unknown
-    'Last modified: 19/11/2006
+    'Last modified: 19/11/2019
     'Loads the Users RECORDs
     '23/01/2007 Pablo (ToxicWaste) - Agrego NivelIngreso, FechaIngreso, MatadosIngreso y NextRecompensa.
     '23/01/2007 Pablo (ToxicWaste) - Quito CriminalesMatados de Stats porque era redundante.
+    '19/11/2019 Recox - Casteo todas las propiedades a su tipo de dato en Declares para evitar errores
     '*************************************************
     Dim LoopC As Long
 
@@ -1266,12 +1267,11 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
-        .ID = val(UserFile.GetValue("INIT", "ID"))
-        .AccountHash = UserFile.GetValue("INIT", "AccountHash")
-        .Genero = UserFile.GetValue("INIT", "Genero")
-        .Clase = UserFile.GetValue("INIT", "Clase")
-        .raza = UserFile.GetValue("INIT", "Raza")
-        .Hogar = UserFile.GetValue("INIT", "Hogar")
+        .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
+        .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
+        .Clase = CByte(UserFile.GetValue("INIT", "Clase"))
+        .raza = CByte(UserFile.GetValue("INIT", "Raza"))
+        .Hogar = CByte(UserFile.GetValue("INIT", "Hogar"))
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
         
         With .OrigChar
@@ -1325,7 +1325,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         .Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
         .Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
         .Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
-        .Invent.MochilaEqpSlot = val(UserFile.GetValue("Inventory", "MochilaSlot"))
+        .Invent.MochilaEqpSlot = CByte(UserFile.GetValue("Inventory", "MochilaSlot"))
         
         .NroMascotas = CInt(UserFile.GetValue("MASCOTAS", "NroMascotas"))
 
@@ -1944,8 +1944,7 @@ Sub WriteVar(ByVal File As String, _
     
 End Sub
 
-Sub SaveUserToCharfile(ByVal Userindex As Integer, _
-                       Optional ByVal SaveTimeOnline As Boolean = True)
+Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
     'Author: Unknown
     'Last modified: 10/10/2010 (Pato)
@@ -1955,6 +1954,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
     '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
     '10/10/2010: Pato - Saco el WriteVar e implemento la clase clsIniManager
     '18/09/2018: CHOTS - Nuevo nombre de la funcion, solo realiza el grabado
+    '19/11/2019: Recox - Cambie el casteo de muchas propiedades, para evitar y arreglar errores
     '*************************************************
 
     On Error GoTo ErrorHandler
@@ -1981,41 +1981,41 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
 
         End If
     
-        Dim LoopC As Integer
+        Dim LoopC As Long
     
-        Call Manager.ChangeValue("FLAGS", "Muerto", CStr(.flags.Muerto))
-        Call Manager.ChangeValue("FLAGS", "Escondido", CStr(.flags.Escondido))
-        Call Manager.ChangeValue("FLAGS", "Hambre", CStr(.flags.Hambre))
-        Call Manager.ChangeValue("FLAGS", "Sed", CStr(.flags.Sed))
-        Call Manager.ChangeValue("FLAGS", "Desnudo", CStr(.flags.Desnudo))
-        Call Manager.ChangeValue("FLAGS", "Ban", CStr(.flags.Ban))
-        Call Manager.ChangeValue("FLAGS", "Navegando", CStr(.flags.Navegando))
-        Call Manager.ChangeValue("FLAGS", "Envenenado", CStr(.flags.Envenenado))
-        Call Manager.ChangeValue("FLAGS", "Paralizado", CStr(.flags.Paralizado))
+        Call Manager.ChangeValue("FLAGS", "Muerto", CByte(.flags.Muerto))
+        Call Manager.ChangeValue("FLAGS", "Escondido", CByte(.flags.Escondido))
+        Call Manager.ChangeValue("FLAGS", "Hambre", CByte(.flags.Hambre))
+        Call Manager.ChangeValue("FLAGS", "Sed", CByte(.flags.Sed))
+        Call Manager.ChangeValue("FLAGS", "Desnudo", CByte(.flags.Desnudo))
+        Call Manager.ChangeValue("FLAGS", "Ban", CByte(.flags.Ban))
+        Call Manager.ChangeValue("FLAGS", "Navegando", CByte(.flags.Navegando))
+        Call Manager.ChangeValue("FLAGS", "Envenenado", CByte(.flags.Envenenado))
+        Call Manager.ChangeValue("FLAGS", "Paralizado", CByte(.flags.Paralizado))
         'Matrix
-        Call Manager.ChangeValue("FLAGS", "LastMap", CStr(.flags.lastMap))
+        Call Manager.ChangeValue("FLAGS", "LastMap", CInt(.flags.lastMap))
     
         Call Manager.ChangeValue("CONSEJO", "PERTENECE", IIf(.flags.Privilegios And PlayerType.RoyalCouncil, "1", "0"))
         Call Manager.ChangeValue("CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
     
-        Call Manager.ChangeValue("COUNTERS", "Pena", CStr(.Counters.Pena))
-        Call Manager.ChangeValue("COUNTERS", "SkillsAsignados", CStr(.Counters.AsignedSkills))
+        Call Manager.ChangeValue("COUNTERS", "Pena", CLng(.Counters.Pena))
+        Call Manager.ChangeValue("COUNTERS", "SkillsAsignados", CByte(.Counters.AsignedSkills))
     
-        Call Manager.ChangeValue("FACCIONES", "EjercitoReal", CStr(.Faccion.ArmadaReal))
-        Call Manager.ChangeValue("FACCIONES", "EjercitoCaos", CStr(.Faccion.FuerzasCaos))
-        Call Manager.ChangeValue("FACCIONES", "CiudMatados", CStr(.Faccion.CiudadanosMatados))
-        Call Manager.ChangeValue("FACCIONES", "CrimMatados", CStr(.Faccion.CriminalesMatados))
-        Call Manager.ChangeValue("FACCIONES", "rArCaos", CStr(.Faccion.RecibioArmaduraCaos))
-        Call Manager.ChangeValue("FACCIONES", "rArReal", CStr(.Faccion.RecibioArmaduraReal))
-        Call Manager.ChangeValue("FACCIONES", "rExCaos", CStr(.Faccion.RecibioExpInicialCaos))
-        Call Manager.ChangeValue("FACCIONES", "rExReal", CStr(.Faccion.RecibioExpInicialReal))
-        Call Manager.ChangeValue("FACCIONES", "recCaos", CStr(.Faccion.RecompensasCaos))
-        Call Manager.ChangeValue("FACCIONES", "recReal", CStr(.Faccion.RecompensasReal))
-        Call Manager.ChangeValue("FACCIONES", "Reenlistadas", CStr(.Faccion.Reenlistadas))
-        Call Manager.ChangeValue("FACCIONES", "NivelIngreso", CStr(.Faccion.NivelIngreso))
-        Call Manager.ChangeValue("FACCIONES", "FechaIngreso", .Faccion.FechaIngreso)
-        Call Manager.ChangeValue("FACCIONES", "MatadosIngreso", CStr(.Faccion.MatadosIngreso))
-        Call Manager.ChangeValue("FACCIONES", "NextRecompensa", CStr(.Faccion.NextRecompensa))
+        Call Manager.ChangeValue("FACCIONES", "EjercitoReal", CByte(.Faccion.ArmadaReal))
+        Call Manager.ChangeValue("FACCIONES", "EjercitoCaos", CByte(.Faccion.FuerzasCaos))
+        Call Manager.ChangeValue("FACCIONES", "CiudMatados", CLng(.Faccion.CiudadanosMatados))
+        Call Manager.ChangeValue("FACCIONES", "CrimMatados", CLng(.Faccion.CriminalesMatados))
+        Call Manager.ChangeValue("FACCIONES", "rArCaos", CByte(.Faccion.RecibioArmaduraCaos))
+        Call Manager.ChangeValue("FACCIONES", "rArReal", CByte(.Faccion.RecibioArmaduraReal))
+        Call Manager.ChangeValue("FACCIONES", "rExCaos", CByte(.Faccion.RecibioExpInicialCaos))
+        Call Manager.ChangeValue("FACCIONES", "rExReal", CByte(.Faccion.RecibioExpInicialReal))
+        Call Manager.ChangeValue("FACCIONES", "recCaos", CLng(.Faccion.RecompensasCaos))
+        Call Manager.ChangeValue("FACCIONES", "recReal", CLng(.Faccion.RecompensasReal))
+        Call Manager.ChangeValue("FACCIONES", "Reenlistadas", CByte(.Faccion.Reenlistadas))
+        Call Manager.ChangeValue("FACCIONES", "NivelIngreso", CInt(.Faccion.NivelIngreso))
+        Call Manager.ChangeValue("FACCIONES", "FechaIngreso", CStr(.Faccion.FechaIngreso))
+        Call Manager.ChangeValue("FACCIONES", "MatadosIngreso", CInt(.Faccion.MatadosIngreso))
+        Call Manager.ChangeValue("FACCIONES", "NextRecompensa", CInt(.Faccion.NextRecompensa))
     
         'Fueron modificados los atributos del usuario?
         If Not .flags.TomoPocion Then
@@ -2039,30 +2039,29 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
             Call Manager.ChangeValue("SKILLS", "EXPSK" & LoopC, CStr(.Stats.ExpSkills(LoopC)))
         Next LoopC
     
-        Call Manager.ChangeValue("CONTACTO", "Email", .Email)
+        Call Manager.ChangeValue("CONTACTO", "Email", CStr(.Email))
     
-        Call Manager.ChangeValue("INIT", "ID", .ID)
-        Call Manager.ChangeValue("INIT", "AccountHash", .AccountHash)
-        Call Manager.ChangeValue("INIT", "Genero", .Genero)
-        Call Manager.ChangeValue("INIT", "Raza", .raza)
-        Call Manager.ChangeValue("INIT", "Hogar", .Hogar)
-        Call Manager.ChangeValue("INIT", "Clase", .Clase)
-        Call Manager.ChangeValue("INIT", "Desc", .Desc)
+        Call Manager.ChangeValue("INIT", "AccountHash", CStr(.AccountHash))
+        Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
+        Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
+        Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))
+        Call Manager.ChangeValue("INIT", "Clase", CByte(.Clase))
+        Call Manager.ChangeValue("INIT", "Desc", CStr(.Desc))
     
-        Call Manager.ChangeValue("INIT", "Heading", CStr(.Char.heading))
-        Call Manager.ChangeValue("INIT", "Head", CStr(.OrigChar.Head))
+        Call Manager.ChangeValue("INIT", "Heading", CByte(.Char.heading))
+        Call Manager.ChangeValue("INIT", "Head", CInt(.OrigChar.Head))
     
         If .flags.Muerto = 0 Then
             If .Char.body <> 0 Then
-                Call Manager.ChangeValue("INIT", "Body", CStr(.Char.body))
+                Call Manager.ChangeValue("INIT", "Body", CInt(.Char.body))
 
             End If
 
         End If
     
-        Call Manager.ChangeValue("INIT", "Arma", CStr(.Char.WeaponAnim))
-        Call Manager.ChangeValue("INIT", "Escudo", CStr(.Char.ShieldAnim))
-        Call Manager.ChangeValue("INIT", "Casco", CStr(.Char.CascoAnim))
+        Call Manager.ChangeValue("INIT", "Arma", CInt(.Char.WeaponAnim))
+        Call Manager.ChangeValue("INIT", "Escudo", CInt(.Char.ShieldAnim))
+        Call Manager.ChangeValue("INIT", "Casco", CInt(.Char.CascoAnim))
     
         #If ConUpTime Then
     
@@ -2073,7 +2072,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
                 TempDate = Now - .LogOnTime
                 .LogOnTime = Now
                 .UpTime = .UpTime + (Abs(Day(TempDate) - 30) * 24 * 3600) + Hour(TempDate) * 3600 + Minute(TempDate) * 60 + Second(TempDate)
-                Call Manager.ChangeValue("INIT", "UpTime", .UpTime)
+                Call Manager.ChangeValue("INIT", "UpTime", CLng(.UpTime))
 
             End If
 
@@ -2100,75 +2099,72 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
     
         Call Manager.ChangeValue("INIT", "Position", .Pos.Map & "-" & .Pos.X & "-" & .Pos.Y)
     
-        Call Manager.ChangeValue("STATS", "GLD", CStr(.Stats.Gld))
-        Call Manager.ChangeValue("STATS", "BANCO", CStr(.Stats.Banco))
+        Call Manager.ChangeValue("STATS", "GLD", CLng(.Stats.Gld))
+        Call Manager.ChangeValue("STATS", "BANCO", CLng(.Stats.Banco))
     
-        Call Manager.ChangeValue("STATS", "MaxHP", CStr(.Stats.MaxHp))
-        Call Manager.ChangeValue("STATS", "MinHP", CStr(.Stats.MinHp))
+        Call Manager.ChangeValue("STATS", "MaxHP", CInt(.Stats.MaxHp))
+        Call Manager.ChangeValue("STATS", "MinHP", CInt(.Stats.MinHp))
     
-        Call Manager.ChangeValue("STATS", "MaxSTA", CStr(.Stats.MaxSta))
-        Call Manager.ChangeValue("STATS", "MinSTA", CStr(.Stats.MinSta))
+        Call Manager.ChangeValue("STATS", "MaxSTA", CInt(.Stats.MaxSta))
+        Call Manager.ChangeValue("STATS", "MinSTA", CInt(.Stats.MinSta))
     
-        Call Manager.ChangeValue("STATS", "MaxMAN", CStr(.Stats.MaxMAN))
-        Call Manager.ChangeValue("STATS", "MinMAN", CStr(.Stats.MinMAN))
+        Call Manager.ChangeValue("STATS", "MaxMAN", CInt(.Stats.MaxMAN))
+        Call Manager.ChangeValue("STATS", "MinMAN", CInt(.Stats.MinMAN))
     
-        Call Manager.ChangeValue("STATS", "MaxHIT", CStr(.Stats.MaxHIT))
-        Call Manager.ChangeValue("STATS", "MinHIT", CStr(.Stats.MinHIT))
+        Call Manager.ChangeValue("STATS", "MaxHIT", CInt(.Stats.MaxHIT))
+        Call Manager.ChangeValue("STATS", "MinHIT", CInt(.Stats.MinHIT))
     
-        Call Manager.ChangeValue("STATS", "MaxAGU", CStr(.Stats.MaxAGU))
-        Call Manager.ChangeValue("STATS", "MinAGU", CStr(.Stats.MinAGU))
+        Call Manager.ChangeValue("STATS", "MaxAGU", CByte(.Stats.MaxAGU))
+        Call Manager.ChangeValue("STATS", "MinAGU", CByte(.Stats.MinAGU))
     
-        Call Manager.ChangeValue("STATS", "MaxHAM", CStr(.Stats.MaxHam))
-        Call Manager.ChangeValue("STATS", "MinHAM", CStr(.Stats.MinHam))
+        Call Manager.ChangeValue("STATS", "MaxHAM", CByte(.Stats.MaxHam))
+        Call Manager.ChangeValue("STATS", "MinHAM", CByte(.Stats.MinHam))
     
-        Call Manager.ChangeValue("STATS", "SkillPtsLibres", CStr(.Stats.SkillPts))
+        Call Manager.ChangeValue("STATS", "SkillPtsLibres", CInt(.Stats.SkillPts))
+    
+        Call Manager.ChangeValue("STATS", "EXP", CDbl(.Stats.Exp))
+        Call Manager.ChangeValue("STATS", "ELV", CByte(.Stats.ELV))
       
-        Call Manager.ChangeValue("STATS", "EXP", CStr(.Stats.Exp))
-        Call Manager.ChangeValue("STATS", "ELV", CStr(.Stats.ELV))
+        Call Manager.ChangeValue("STATS", "ELU", CLng(.Stats.ELU))
     
-        Call Manager.ChangeValue("STATS", "ELU", CStr(.Stats.ELU))
-        Call Manager.ChangeValue("MUERTES", "UserMuertes", CStr(.Stats.UsuariosMatados))
-        Call Manager.ChangeValue("MUERTES", "NpcsMuertes", CStr(.Stats.NPCsMuertos))
+        Call Manager.ChangeValue("MUERTES", "UserMuertes", CLng(.Stats.UsuariosMatados))
+        Call Manager.ChangeValue("MUERTES", "NpcsMuertes", CInt(.Stats.NPCsMuertos))
       
         '[KEVIN]----------------------------------------------------------------------------
         '*******************************************************************************************
-        Call Manager.ChangeValue("BancoInventory", "CantidadItems", val(.BancoInvent.NroItems))
+        Call Manager.ChangeValue("BancoInventory", "CantidadItems", CInt(.BancoInvent.NroItems))
 
-        Dim loopd As Integer
-
-        For loopd = 1 To MAX_BANCOINVENTORY_SLOTS
-            Call Manager.ChangeValue("BancoInventory", "Obj" & loopd, .BancoInvent.Object(loopd).ObjIndex & "-" & .BancoInvent.Object(loopd).Amount)
-        Next loopd
+        For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
+            Call Manager.ChangeValue("BancoInventory", "Obj" & LoopC, .BancoInvent.Object(LoopC).ObjIndex & "-" & .BancoInvent.Object(LoopC).Amount)
+        Next LoopC
 
         '*******************************************************************************************
         '[/KEVIN]-----------
       
         'Save Inv
-        Call Manager.ChangeValue("Inventory", "CantidadItems", val(.Invent.NroItems))
+        Call Manager.ChangeValue("Inventory", "CantidadItems", CInt(.Invent.NroItems))
     
         For LoopC = 1 To MAX_INVENTORY_SLOTS
             Call Manager.ChangeValue("Inventory", "Obj" & LoopC, .Invent.Object(LoopC).ObjIndex & "-" & .Invent.Object(LoopC).Amount & "-" & .Invent.Object(LoopC).Equipped)
         Next LoopC
     
-        Call Manager.ChangeValue("Inventory", "WeaponEqpSlot", CStr(.Invent.WeaponEqpSlot))
-        Call Manager.ChangeValue("Inventory", "ArmourEqpSlot", CStr(.Invent.ArmourEqpSlot))
-        Call Manager.ChangeValue("Inventory", "CascoEqpSlot", CStr(.Invent.CascoEqpSlot))
-        Call Manager.ChangeValue("Inventory", "EscudoEqpSlot", CStr(.Invent.EscudoEqpSlot))
-        Call Manager.ChangeValue("Inventory", "BarcoSlot", CStr(.Invent.BarcoSlot))
-        Call Manager.ChangeValue("Inventory", "MunicionSlot", CStr(.Invent.MunicionEqpSlot))
-        Call Manager.ChangeValue("Inventory", "MochilaSlot", CStr(.Invent.MochilaEqpSlot))
-        '/Nacho
-    
-        Call Manager.ChangeValue("Inventory", "AnilloSlot", CStr(.Invent.AnilloEqpSlot))
+        Call Manager.ChangeValue("Inventory", "WeaponEqpSlot", CByte(.Invent.WeaponEqpSlot))
+        Call Manager.ChangeValue("Inventory", "ArmourEqpSlot", CByte(.Invent.ArmourEqpSlot))
+        Call Manager.ChangeValue("Inventory", "CascoEqpSlot", CByte(.Invent.CascoEqpSlot))
+        Call Manager.ChangeValue("Inventory", "EscudoEqpSlot", CByte(.Invent.EscudoEqpSlot))
+        Call Manager.ChangeValue("Inventory", "BarcoSlot", CByte(.Invent.BarcoSlot))
+        Call Manager.ChangeValue("Inventory", "MunicionSlot", CByte(.Invent.MunicionEqpSlot))
+        Call Manager.ChangeValue("Inventory", "AnilloSlot", CByte(.Invent.AnilloEqpSlot))
+        Call Manager.ChangeValue("Inventory", "MochilaSlot", CByte(.Invent.MochilaEqpSlot))
     
         'Reputacion
-        Call Manager.ChangeValue("REP", "Asesino", CStr(.Reputacion.AsesinoRep))
-        Call Manager.ChangeValue("REP", "Bandido", CStr(.Reputacion.BandidoRep))
-        Call Manager.ChangeValue("REP", "Burguesia", CStr(.Reputacion.BurguesRep))
-        Call Manager.ChangeValue("REP", "Ladrones", CStr(.Reputacion.LadronesRep))
-        Call Manager.ChangeValue("REP", "Nobles", CStr(.Reputacion.NobleRep))
-        Call Manager.ChangeValue("REP", "Plebe", CStr(.Reputacion.PlebeRep))
-        Call Manager.ChangeValue("REP", "Promedio", .Reputacion.Promedio)
+        Call Manager.ChangeValue("REP", "Asesino", CLng(.Reputacion.AsesinoRep))
+        Call Manager.ChangeValue("REP", "Bandido", CLng(.Reputacion.BandidoRep))
+        Call Manager.ChangeValue("REP", "Burguesia", CLng(.Reputacion.BurguesRep))
+        Call Manager.ChangeValue("REP", "Ladrones", CLng(.Reputacion.LadronesRep))
+        Call Manager.ChangeValue("REP", "Nobles", CLng(.Reputacion.NobleRep))
+        Call Manager.ChangeValue("REP", "Plebe", CLng(.Reputacion.PlebeRep))
+        Call Manager.ChangeValue("REP", "Promedio", CLng(.Reputacion.Promedio))
     
         Dim cad As String
     
@@ -2204,7 +2200,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
     
         Next
     
-        Call Manager.ChangeValue("MASCOTAS", "NroMascotas", CStr(NroMascotas))
+        Call Manager.ChangeValue("MASCOTAS", "NroMascotas", CInt(NroMascotas))
     
         'Devuelve el head de muerto
         If .flags.Muerto = 1 Then
@@ -2223,7 +2219,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, _
     Exit Sub
 
 ErrorHandler:
-    Call LogError("Error en SaveUserToCharfile: " & UserFile)
+    Call LogError("Error en SaveUserToCharfile: " & UserFile & " -- " & Err.Number & ": " & Err.description)
+
     Set Manager = Nothing
 
 End Sub
