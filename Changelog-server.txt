@@ -813,3 +813,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 02/11/2019: Se agrego comando /discord para poder chatear en el mismo. (Recox)
 * 13/11/2019: El centinela ahora se puede activar/desactivar mediante el server.ini. (Recox)
 * 19/11/2019: Se cambiaron los casting de tipos de datos en la carga y guardado de charfiles. (Recox)
+* 22/11/2019: Ahora el mercader vende la mochila y alforja (Recox)
+* 22/11/2019: Se cambio otGuita por otOro (Recox)
