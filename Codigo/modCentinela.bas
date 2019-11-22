@@ -58,7 +58,7 @@ Sub CambiarEstado(ByVal gmIndex As Integer)
     Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_CENTINELA))
     
     'Lo registramos en los logs.
-    Call LogGM(message)
+    Call LogGM(UserList(gmIndex).Name, message)
  
 End Sub
  
