@@ -697,7 +697,7 @@ Sub GetObj(ByVal UserIndex As Integer)
                 MiObj.ObjIndex = MapData(.Pos.Map, x, y).ObjInfo.ObjIndex
                 
                 ' Oro directo a la billetera!
-                If Obj.OBJType = otGuita Then
+                If Obj.OBJType = otOro Then
 
                     'Calculamos la diferencia con el maximo de oro permitido el cual es el valor de LONG
                     Dim RemainingAmountToMaximumGold As Long
@@ -712,6 +712,7 @@ Sub GetObj(ByVal UserIndex As Integer)
                     Else
                         Call WriteConsoleMsg(UserIndex, "No puedes juntar este oro por que tendrias mas del maximo disponible (2147483647)", FontTypeNames.FONTTYPE_INFO)
                     End If
+
                 Else
 
                     If MeterItemEnInventario(UserIndex, MiObj) Then
@@ -726,6 +727,7 @@ Sub GetObj(ByVal UserIndex As Integer)
                         If ObjData(MiObj.ObjIndex).Log = 1 Then
                             ObjPos = " Mapa: " & .Pos.Map & " X: " & .Pos.x & " Y: " & .Pos.y
                             Call LogDesarrollo(.Name & " junto del piso " & MiObj.Amount & " " & ObjData(MiObj.ObjIndex).Name & ObjPos)
+                        
                         ElseIf MiObj.Amount > 5000 Then 'Es mucha cantidad?
 
                             'Si no es de los prohibidos de loguear, lo logueamos.
@@ -1450,7 +1452,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 
                 Call UpdateUserInv(False, UserIndex, Slot)
         
-            Case eOBJType.otGuita
+            Case eOBJType.otOro
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)

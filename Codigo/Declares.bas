@@ -737,7 +737,7 @@ Public Enum eOBJType
     otWeapon = 2
     otarmadura = 3
     otArboles = 4
-    otGuita = 5
+    otOro = 5
     otPuertas = 6
     otContenedores = 7
     otCarteles = 8
