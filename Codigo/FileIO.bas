@@ -1689,29 +1689,29 @@ Sub LoadSini()
     
     Call Lector.Initialize(IniPath & "Server.ini")
     
-    BootDelBackUp = CBool(Lector.GetValue("INIT", "IniciarDesdeBackUp"))
+    BootDelBackUp = CBool(val(Lector.GetValue("INIT", "IniciarDesdeBackUp")))
     
     'Misc
     Puerto = val(Lector.GetValue("INIT", "StartPort"))
     HideMe = CBool(Lector.GetValue("INIT", "Hide"))
-    AllowMultiLogins = CBool(Lector.GetValue("INIT", "AllowMultiLogins"))
+    AllowMultiLogins = CBool(val(Lector.GetValue("INIT", "AllowMultiLogins")))
     IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
     
     'Lee la version correcta del cliente
     ULTIMAVERSION = Lector.GetValue("INIT", "VersionBuildCliente")
     
-    STAT_MAXELV = Lector.GetValue("INIT", "NivelMaximo")
+    STAT_MAXELV = val(Lector.GetValue("INIT", "NivelMaximo"))
     
-    ExpMultiplier = Lector.GetValue("INIT", "ExpMulti")
-    OroMultiplier = Lector.GetValue("INIT", "OroMulti")
-    OficioMultiplier = Lector.GetValue("INIT", "OficioMulti")
-    DiceMinimum = Lector.GetValue("INIT", "MinDados")
-    DiceMaximum = Lector.GetValue("INIT", "MaxDados")
+    ExpMultiplier = val(Lector.GetValue("INIT", "ExpMulti"))
+    OroMultiplier = val(Lector.GetValue("INIT", "OroMulti"))
+    OficioMultiplier = val(Lector.GetValue("INIT", "OficioMulti"))
+    DiceMinimum = val(Lector.GetValue("INIT", "MinDados"))
+    DiceMaximum = val(Lector.GetValue("INIT", "MaxDados"))
     
     DropItemsAlMorir = CBool(Lector.GetValue("INIT", "DropItemsAlMorir"))
 
     'Esto es para ver si el centinela esta activo o no.
-    isCentinelaActivated = CBool(Lector.GetValue("INIT", "CentinelaAuditoriaTrabajoActivo"))
+    isCentinelaActivated = CBool(val(Lector.GetValue("INIT", "CentinelaAuditoriaTrabajoActivo")))
 
     PuedeCrearPersonajes = val(Lector.GetValue("INIT", "PuedeCrearPersonajes"))
     ServerSoloGMs = val(Lector.GetValue("INIT", "ServerSoloGMs"))
