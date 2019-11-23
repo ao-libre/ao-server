@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, x, Y, body, clase, race, Email, obj, Length As Variant
+    Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -501,7 +501,7 @@ Public Enum eNPCType
     DRAGON = 6
     Timbero = 7
     Guardiascaos = 8
-    ResucitadorNewbie = 9
+    'ATENCION: [SLOT LIBRE] Si vas a agregar un NPC agregalo aca.
     Pretoriano = 10
     Gobernador = 11
 
@@ -720,11 +720,11 @@ Public Const MAX_INVENTORY_OBJS         As Integer = 10000
 
 ''
 ' Cantidad de "slots" en el inventario con mochila
-Public Const MAX_INVENTORY_SLOTS        As Byte = 30
+Public Const MAX_INVENTORY_SLOTS        As Byte = 25
 
 ''
 ' Cantidad de "slots" en el inventario sin mochila
-Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 20
+Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 25
 
 ''
 ' Constante para indicar que se esta usando ORO
@@ -737,7 +737,7 @@ Public Enum eOBJType
     otWeapon = 2
     otarmadura = 3
     otArboles = 4
-    otGuita = 5
+    otOro = 5
     otPuertas = 6
     otContenedores = 7
     otCarteles = 8
@@ -751,6 +751,7 @@ Public Enum eOBJType
     otcasco = 17
     otAnillo = 18
     otTeleport = 19
+    otMuebles = 20
     otYacimiento = 22
     otMinerales = 23
     otPergaminos = 24
@@ -761,46 +762,13 @@ Public Enum eOBJType
     otFlechas = 32
     otBotellaVacia = 33
     otBotellaLlena = 34
-    otManchas = 35          'No se usa
+    otManuales = 35
     otArbolElfico = 36
     otMochilas = 37
     otYacimientoPez = 38
     otCualquiera = 1000
 
 End Enum
-
-'Texto
-Public Const FONTTYPE_TALK            As String = "~255~255~255~0~0"
-
-Public Const FONTTYPE_FIGHT           As String = "~255~0~0~1~0"
-
-Public Const FONTTYPE_WARNING         As String = "~32~51~223~1~1"
-
-Public Const FONTTYPE_INFO            As String = "~65~190~156~0~0"
-
-Public Const FONTTYPE_INFOBOLD        As String = "~65~190~156~1~0"
-
-Public Const FONTTYPE_EJECUCION       As String = "~130~130~130~1~0"
-
-Public Const FONTTYPE_PARTY           As String = "~255~180~255~0~0"
-
-Public Const FONTTYPE_VENENO          As String = "~0~255~0~0~0"
-
-Public Const FONTTYPE_GUILD           As String = "~255~255~255~1~0"
-
-Public Const FONTTYPE_SERVER          As String = "~0~185~0~0~0"
-
-Public Const FONTTYPE_GUILDMSG        As String = "~228~199~27~0~0"
-
-Public Const FONTTYPE_CONSEJO         As String = "~130~130~255~1~0"
-
-Public Const FONTTYPE_CONSEJOCAOS     As String = "~255~60~00~1~0"
-
-Public Const FONTTYPE_CONSEJOVesA     As String = "~0~200~255~1~0"
-
-Public Const FONTTYPE_CONSEJOCAOSVesA As String = "~255~50~0~1~0"
-
-Public Const FONTTYPE_CENTINELA       As String = "~0~255~0~1~0"
 
 'Estadisticas
 Public STAT_MAXELV                    As Byte
@@ -985,7 +953,7 @@ End Type
 
 Public Type Position
 
-    x As Integer
+    X As Integer
     Y As Integer
 
 End Type
@@ -993,7 +961,7 @@ End Type
 Public Type WorldPos
 
     Map As Integer
-    x As Integer
+    X As Integer
     Y As Integer
 
 End Type
@@ -1363,7 +1331,10 @@ End Type
 
 'Flags
 Public Type UserFlags
-
+    ' Retos
+    SlotReto As Byte
+    SlotRetoUser As Byte
+    
     ' Hunger Games
     SG As SurvivalGames
     BeforeMap As Integer 'Antes mapa
@@ -1477,7 +1448,7 @@ Public Type UserFlags
 End Type
 
 Public Type UserCounters
-
+    TimeFight As Long
     IdleCount As Long
     AttackCounter As Integer
     HPCounter As Integer
@@ -1496,6 +1467,7 @@ Public Type UserCounters
     
     Mimetismo As Integer
     PiqueteC As Long
+    ContadorPiquete As Long
     Pena As Long
     SendMapCounter As WorldPos
     '[Gonzalo]
@@ -1580,9 +1552,19 @@ Public Type AccountUser
 
 End Type
 
+' Info de los retos
+Public Type tUserRetoTemp
+    Tipo As eTipoReto
+    RequiredGld As Long
+    Users() As String
+    Accepts() As Byte
+End Type
+
 'Tipo de los Usuarios
 Public Type User
-
+    PosAnt As WorldPos
+    RetoTemp As tUserRetoTemp
+    
     Name As String
     ID As Long 'CHOTS | Database ID
     AccountHash As String 'CHOTS | Account ID
@@ -1596,7 +1578,7 @@ Public Type User
     desc As String ' Descripcion
     DescRM As String
     
-    clase As eClass
+    Clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1955,13 +1937,13 @@ Public NumObjDatas                        As Integer
 
 Public NumeroHechizos                     As Integer
 
-Public AllowMultiLogins                   As Byte
+Public AllowMultiLogins                   As Boolean
 
 Public IdleLimit                          As Integer
 
 Public MaxUsers                           As Integer
 
-Public HideMe                             As Byte
+Public HideMe                             As Boolean
 
 Public LastBackup                         As String
 
@@ -2408,7 +2390,7 @@ Public InventarioUsarConfiguracionPersonalizada As Boolean
 
 Public EstadisticasInicialesUsarConfiguracionPersonalizada As Boolean
 
-Public UsarMundoPropio As Boolean 
+Public UsarMundoPropio As Boolean
 
 Public ConexionAPI As Boolean
 

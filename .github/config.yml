@@ -1,0 +1,15 @@
+# ProBot Request Info (https://probot.github.io/apps/request-info/)
+
+requestInfoReplyComment: >
+  👋 Apreciariamos que nos des mas informacion acerca de este problema // We would appreciate it if you could provide us with more information about this
+  issue. <br><br> ![](https://cdn.discordapp.com/attachments/479064501115944962/625835056103161885/69790511_2481614545447879_1315578289837834240_n.png)
+requestInfoLabelToAdd: 'mas info'
+
+# ProBot Welcome (https://probot.github.io/apps/welcome/)
+
+newPRWelcomeComment: >
+  🙌 Gracias por mandar este Pull Request!! Gracias a vos el AO sigue vivo // Thanks for opening this pull request! You're awesome.
+  <br><br> ![](https://cdn.discordapp.com/attachments/479064501115944962/625835058053251082/69818870_2485155531760447_8645700228327931904_n.png)
+firstPRMergeComment: >
+  🎉 Felicitaciones por tu primer PR mergeado a master // Congrats on getting your first pull request landed! <br><br>
+  ![](https://cdn.discordapp.com/attachments/479064501115944962/625835059248627713/69676504_2480678892208111_2172923271870152704_n.png)

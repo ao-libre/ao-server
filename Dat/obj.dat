@@ -36,7 +36,7 @@
 ' 32: flechas
 ' 33: botellas vacias
 ' 34: botellas llenas
-' 35: manchas
+' 35: Manuales
 
 
 ##############################################
@@ -68,8 +68,7 @@ usar primero los nros más bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1126
-
+NumOBJs=1131
 
 
 
@@ -13950,3 +13949,43 @@ GrhIndex=25332
 ObjType=29
 Agarrable=0
 Crucial=0
+
+[OBJ1127]
+Name=Manual de Liderazgo
+GrhIndex=609
+ObjType=35
+Agarrable=0
+Valor=100000
+
+[OBJ1128]
+Name=Manual de Supervivencia
+GrhIndex=609
+ObjType=35
+Agarrable=0
+Valor=20000
+
+[OBJ1129]
+Name=Manual de Navegacion
+GrhIndex=609
+ObjType=35
+Agarrable=0
+Valor=90000
+
+[OBJ1130]
+Name=Pez saltando
+GrhIndex=3993
+ObjType=38
+Agarrable=1
+
+
+[OBJ1131]
+Name=Banco iglesia
+GrhIndex=5747
+ObjType=20
+Agarrable=1
+
+[OBJ1131]
+Name=Banco iglesia Adornado
+GrhIndex=274
+ObjType=20
+Agarrable=1

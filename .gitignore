@@ -3,6 +3,12 @@ Logs/*
 Charfile/*
 Logs/*
 WorldBackup/*
+Guilds/*
 Codigo/*.log
 .DS_Store
 *.vbw
+*.csi
+*.OBJ
+bkNpcs.dat
+server.exe
+Guilds/guildsinfo.inf

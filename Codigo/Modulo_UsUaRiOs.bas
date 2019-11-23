@@ -317,6 +317,7 @@ Public Sub ChangeUserChar(ByVal Userindex As Integer, _
         .CascoAnim = casco
         
         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCharacterChange(body, Head, heading, .CharIndex, Arma, Escudo, .FX, .loops, casco))
+        Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageHeadingChange(heading, .CharIndex))
 
     End With
 
@@ -404,7 +405,7 @@ Public Sub EraseUserChar(ByVal Userindex As Integer, ByVal IsAdminInvisible As B
         
         Call QuitarUser(Userindex, .Pos.Map)
         
-        MapData(.Pos.Map, .Pos.x, .Pos.Y).Userindex = 0
+        MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex = 0
         .Char.CharIndex = 0
 
     End With
@@ -526,7 +527,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
                         ByVal sndIndex As Integer, _
                         ByVal Userindex As Integer, _
                         ByVal Map As Integer, _
-                        ByVal x As Integer, _
+                        ByVal X As Integer, _
                         ByVal Y As Integer, _
                         Optional ButIndex As Boolean = False)
     '*************************************************
@@ -536,7 +537,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
     '15/01/2010: ZaMa - Ahora se envia el color del nick.
     '*************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim CharIndex  As Integer
 
@@ -550,7 +551,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
     
     With UserList(Userindex)
     
-        If InMapBounds(Map, x, Y) Then
+        If InMapBounds(Map, X, Y) Then
 
             'If needed make a new character in list
             If .Char.CharIndex = 0 Then
@@ -561,7 +562,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
             End If
             
             'Place character on map if needed
-            If toMap Then MapData(Map, x, Y).Userindex = Userindex
+            If toMap Then MapData(Map, X, Y).Userindex = Userindex
             
             'Send make character command to clients
             If Not toMap Then
@@ -599,7 +600,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
 
                 End If
             
-                Call WriteCharacterCreate(sndIndex, .Char.body, .Char.Head, .Char.heading, .Char.CharIndex, x, Y, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, 999, .Char.CascoAnim, UserName, NickColor, Privileges)
+                Call WriteCharacterCreate(sndIndex, .Char.body, .Char.Head, .Char.heading, .Char.CharIndex, X, Y, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, 999, .Char.CascoAnim, UserName, NickColor, Privileges)
             Else
                 'Hide the name and clan - set privs as normal user
                 Call AgregarUser(Userindex, .Pos.Map, ButIndex)
@@ -612,7 +613,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("MakeUserChar: num: " & Err.Number & " desc: " & Err.description)
     'Resume Next
     Call CloseSocket(Userindex)
@@ -628,7 +629,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
 
     '*************************************************
     'Author: Unknown
-    'Last modified: 08/04/2011
+    'Last modified: 06/09/2019
     'Chequea que el usuario no halla alcanzado el siguiente nivel,
     'de lo contrario le da la vida, mana, etc, correspodiente.
     '07/08/2006 Integer - Modificacion de los valores
@@ -642,28 +643,20 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
     '11/19/2009 Pato - Modifico la nueva formula de mana ganada para el bandido y se la limito a 499
     '02/04/2010: ZaMa - Modifico la ganancia de hit por nivel del ladron.
     '08/04/2011: Amraphen - Arreglada la distribucion de probabilidades para la vida en el caso de promedio entero.
+    '06/09/2019: Jopi - Guardado de usuario al pasar de nivel.
     '*************************************************
     Dim Pts              As Integer
-
     Dim AumentoHIT       As Integer
-
     Dim AumentoMANA      As Integer
-
     Dim AumentoSTA       As Integer
-
     Dim AumentoHP        As Integer
-
     Dim WasNewbie        As Boolean
-
     Dim Promedio         As Double
-
     Dim aux              As Integer
-
     Dim DistVida(1 To 5) As Integer
-
     Dim GI               As Integer 'Guild Index
     
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     WasNewbie = EsNewbie(Userindex)
     
@@ -683,7 +676,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
             Call Statistics.UserLevelUp(Userindex)
             
             If PrintInConsole Then
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_NIVEL, .Pos.x, .Pos.Y))
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_NIVEL, .Pos.X, .Pos.Y))
                 Call WriteConsoleMsg(Userindex, "Has subido de nivel!", FontTypeNames.FONTTYPE_INFO)
             End If
             
@@ -716,7 +709,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
             End If
             
             'Calculo subida de vida
-            Promedio = ModVida(.clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
+            Promedio = ModVida(.Clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
             aux = RandomNumber(0, 100)
             
             If Promedio - Int(Promedio) = 0.5 Then
@@ -760,7 +753,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
                 
             End If
         
-            Select Case .clase
+            Select Case .Clase
 
                 Case eClass.Warrior
                     AumentoHIT = IIf(.Stats.ELV > 35, 2, 3)
@@ -942,10 +935,14 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
         
     End With
     
+    'Guardamos los datos del usuario.
+    Call SaveUser(Userindex, True)
+    
     Call WriteUpdateUserStats(Userindex)
+    
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en la subrutina CheckUserLevel - Error : " & Err.Number & " - Description : " & Err.description)
 
 End Sub
@@ -988,12 +985,12 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
         
     isAdminInvi = (UserList(Userindex).flags.AdminInvisible = 1)
     
-    If MoveToLegalPos(UserList(Userindex).Pos.Map, nPos.x, nPos.Y, sailing, Not sailing) Then
+    If MoveToLegalPos(UserList(Userindex).Pos.Map, nPos.X, nPos.Y, sailing, Not sailing) Then
 
         'si no estoy solo en el mapa...
         If MapInfo(UserList(Userindex).Pos.Map).NumUsers > 1 Then
                
-            CasperIndex = MapData(UserList(Userindex).Pos.Map, nPos.x, nPos.Y).Userindex
+            CasperIndex = MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).Userindex
 
             'Si hay un usuario, y paso la validacion, entonces es un casper
             If CasperIndex > 0 Then
@@ -1015,13 +1012,13 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
                         Call HeadtoPos(CasperHeading, .Pos)
                     
                         ' Si es un admin invisible, no se avisa a los demas clientes
-                        If Not .flags.AdminInvisible = 1 Then Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, .Pos.x, .Pos.Y))
+                        If Not .flags.AdminInvisible = 1 Then Call SendData(SendTarget.ToPCAreaButIndex, CasperIndex, PrepareMessageCharacterMove(.Char.CharIndex, .Pos.X, .Pos.Y))
                         
                         Call WriteForceCharMove(CasperIndex, CasperHeading)
                             
                         'Update map and char
                         .Char.heading = CasperHeading
-                        MapData(.Pos.Map, .Pos.x, .Pos.Y).Userindex = CasperIndex
+                        MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex = CasperIndex
 
                     End With
                 
@@ -1033,7 +1030,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             End If
             
             ' Si es un admin invisible, no se avisa a los demas clientes
-            If Not isAdminInvi Then Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterMove(UserList(Userindex).Char.CharIndex, nPos.x, nPos.Y))
+            If Not isAdminInvi Then Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterMove(UserList(Userindex).Char.CharIndex, nPos.X, nPos.Y))
             
         End If
         
@@ -1043,19 +1040,21 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             Dim oldUserIndex As Integer
             
             With UserList(Userindex)
-                oldUserIndex = MapData(.Pos.Map, .Pos.x, .Pos.Y).Userindex
+                oldUserIndex = MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex
                 
                 ' Si no hay intercambio de pos con nadie
                 If oldUserIndex = Userindex Then
-                    MapData(.Pos.Map, .Pos.x, .Pos.Y).Userindex = 0
+                    MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex = 0
 
                 End If
                 
                 .Pos = nPos
                 .Char.heading = nHeading
-                MapData(.Pos.Map, .Pos.x, .Pos.Y).Userindex = Userindex
+                MapData(.Pos.Map, .Pos.X, .Pos.Y).Userindex = Userindex
                 
-                Call DoTileEvents(Userindex, .Pos.Map, .Pos.x, .Pos.Y)
+                If HaySacerdote(Userindex) Then Call AccionParaSacerdote(Userindex)
+                
+                Call DoTileEvents(Userindex, .Pos.Map, .Pos.X, .Pos.Y)
 
             End With
             
@@ -1165,13 +1164,13 @@ Public Sub LiberarSlot(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
         .ConnID = -1
         .ConnIDValida = False
 
     End With
 
-    If UserIndex = LastUser Then
+    If Userindex = LastUser Then
 
         Do While (LastUser > 0) And (UserList(LastUser).ConnID = -1)
             LastUser = LastUser - 1
@@ -1182,7 +1181,7 @@ Public Sub LiberarSlot(ByVal Userindex As Integer)
 
 End Sub
 
-Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integer)
+Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1256,7 +1255,7 @@ Public Sub SendUserStatsTxt(ByVal sendIndex As Integer, ByVal UserIndex As Integ
 
         End If
         
-        Call WriteConsoleMsg(sendIndex, "Oro: " & .Stats.Gld & "  Posicion: " & .Pos.x & "," & .Pos.Y & " en mapa " & .Pos.Map, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Oro: " & .Stats.Gld & "  Posicion: " & .Pos.X & "," & .Pos.Y & " en mapa " & .Pos.Map, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Dados: " & .Stats.UserAtributos(eAtributos.Fuerza) & ", " & .Stats.UserAtributos(eAtributos.Agilidad) & ", " & .Stats.UserAtributos(eAtributos.Inteligencia) & ", " & .Stats.UserAtributos(eAtributos.Carisma) & ", " & .Stats.UserAtributos(eAtributos.Constitucion), FontTypeNames.FONTTYPE_INFO)
 
     End With
@@ -1275,7 +1274,7 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
         Call WriteConsoleMsg(sendIndex, "Pj: " & .Name, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Ciudadanos matados: " & .Faccion.CiudadanosMatados & " Criminales matados: " & .Faccion.CriminalesMatados & " usuarios matados: " & .Stats.UsuariosMatados, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "NPCs muertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.Clase), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Pena: " & (.Counters.Pena / 40), FontTypeNames.FONTTYPE_INFO)
         
         If .Faccion.ArmadaReal = 1 Then
@@ -1489,7 +1488,7 @@ Public Function PuedeApunalar(ByVal Userindex As Integer) As Boolean
         
         If WeaponIndex > 0 Then
             If ObjData(WeaponIndex).Apunala = 1 Then
-                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .clase = eClass.Assasin
+                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .Clase = eClass.Assasin
 
             End If
 
@@ -1510,7 +1509,7 @@ Public Function PuedeAcuchillar(ByVal Userindex As Integer) As Boolean
     
     With UserList(Userindex)
 
-        If .clase = eClass.Pirat Then
+        If .Clase = eClass.Pirat Then
         
             WeaponIndex = .Invent.WeaponEqpObjIndex
 
@@ -1597,7 +1596,7 @@ End Sub
 ' @param UserIndex  Indice del usuario que muere
 '
 
-Public Sub UserDie(ByVal Userindex As Integer)
+Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As Integer = 0)
 
     '************************************************
     'Author: Uknown
@@ -1622,7 +1621,7 @@ Public Sub UserDie(ByVal Userindex As Integer)
 
         'Sonido
         If .Genero = eGenero.Mujer Then
-            If HayAgua(.Pos.Map, .Pos.x, .Pos.Y) Then
+            If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
                 iSoundDeath = e_SoundIndex.MUERTE_MUJER_AGUA
             Else
                 iSoundDeath = e_SoundIndex.MUERTE_MUJER
@@ -1631,7 +1630,7 @@ Public Sub UserDie(ByVal Userindex As Integer)
 
         Else
 
-            If HayAgua(.Pos.Map, .Pos.x, .Pos.Y) Then
+            If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
                 iSoundDeath = e_SoundIndex.MUERTE_HOMBRE_AGUA
             Else
                 iSoundDeath = e_SoundIndex.MUERTE_HOMBRE
@@ -1858,7 +1857,7 @@ Public Sub UserDie(ByVal Userindex As Integer)
 
         '<<Castigos por party>>
         If .PartyIndex > 0 Then
-            Call mdParty.ObtenerExito(Userindex, .Stats.ELV * -10 * mdParty.CantMiembros(Userindex), .Pos.Map, .Pos.x, .Pos.Y)
+            Call mdParty.ObtenerExito(Userindex, .Stats.ELV * -10 * mdParty.CantMiembros(Userindex), .Pos.Map, .Pos.X, .Pos.Y)
 
         End If
         
@@ -1866,20 +1865,26 @@ Public Sub UserDie(ByVal Userindex As Integer)
         Call LimpiarComercioSeguro(Userindex)
         
         ' Hay que teletransportar?
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
 
         Dim MapaTelep As Integer
 
-        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
+        MapaTelep = MapInfo(Mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
             Call WriteConsoleMsg(Userindex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
-            Call WarpUserChar(Userindex, MapaTelep, MapInfo(mapa).OnDeathGoTo.x, MapInfo(mapa).OnDeathGoTo.Y, True, True)
+            Call WarpUserChar(Userindex, MapaTelep, MapInfo(Mapa).OnDeathGoTo.X, MapInfo(Mapa).OnDeathGoTo.Y, True, True)
 
         End If
         
+        ' Retos nVSn. User muere
+        If AttackerIndex <> 0 Then
+            If .flags.SlotReto > 0 Then
+                Call Retos.UserdieFight(Userindex, AttackerIndex, False)
+            End If
+        End If
     End With
 
     Exit Sub
@@ -1945,7 +1950,7 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
     '23/01/2007 -> Pablo (ToxicWaste): El agua es ahora un TileLibre agregando las condiciones necesarias.
     '18/09/2010: ZaMa - Aplico optimizacion de busqueda de tile libre en forma de rombo.
     '**************************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim Found As Boolean
 
@@ -1956,15 +1961,15 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
     Dim tY    As Long
     
     nPos = Pos
-    tX = Pos.x
+    tX = Pos.X
     tY = Pos.Y
     
     LoopC = 1
     
     ' La primera posicion es valida?
-    If LegalPos(Pos.Map, nPos.x, nPos.Y, PuedeAgua, PuedeTierra, True) Then
+    If LegalPos(Pos.Map, nPos.X, nPos.Y, PuedeAgua, PuedeTierra, True) Then
         
-        If Not HayObjeto(Pos.Map, nPos.x, nPos.Y, obj.ObjIndex, obj.Amount) Then
+        If Not HayObjeto(Pos.Map, nPos.X, nPos.Y, obj.ObjIndex, obj.Amount) Then
             Found = True
 
         End If
@@ -1977,7 +1982,7 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
         While (Not Found) And LoopC <= 16
 
             If RhombLegalTilePos(Pos, tX, tY, LoopC, obj.ObjIndex, obj.Amount, PuedeAgua, PuedeTierra) Then
-                nPos.x = tX
+                nPos.X = tX
                 nPos.Y = tY
                 Found = True
 
@@ -1989,21 +1994,21 @@ Sub Tilelibre(ByRef Pos As WorldPos, _
     End If
     
     If Not Found Then
-        nPos.x = 0
+        nPos.X = 0
         nPos.Y = 0
 
     End If
     
     Exit Sub
     
-errHandler:
+ErrHandler:
     Call LogError("Error en Tilelibre. Error: " & Err.Number & " - " & Err.description)
 
 End Sub
 
 Sub WarpUserChar(ByVal Userindex As Integer, _
                  ByVal Map As Integer, _
-                 ByVal x As Integer, _
+                 ByVal X As Integer, _
                  ByVal Y As Integer, _
                  ByVal FX As Boolean, _
                  Optional ByVal Teletransported As Boolean)
@@ -2027,7 +2032,7 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
         
         OldMap = .Pos.Map
-        OldX = .Pos.x
+        OldX = .Pos.X
         OldY = .Pos.Y
 
         Call EraseUserChar(Userindex, .flags.AdminInvisible = 1)
@@ -2106,14 +2111,14 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
 
         End If
         
-        .Pos.x = x
+        .Pos.X = X
         .Pos.Y = Y
         .Pos.Map = Map
         
-        Call MakeUserChar(True, Map, Userindex, Map, x, Y)
+        Call MakeUserChar(True, Map, Userindex, Map, X, Y)
         Call WriteUserCharIndexInServer(Userindex)
         
-        Call DoTileEvents(Userindex, Map, x, Y)
+        Call DoTileEvents(Userindex, Map, X, Y)
         
         'Force a flush, so user index is in there before it's destroyed for teleporting
         Call FlushBuffer(Userindex)
@@ -2140,7 +2145,7 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         End If
         
         If FX And .flags.AdminInvisible = 0 Then 'FX
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_WARP, x, Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_WARP, X, Y))
             Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, FXIDs.FXWARP, 0))
 
         End If
@@ -2155,7 +2160,7 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         
         ' Automatic toogle navigate
         If (.flags.Privilegios And (PlayerType.User Or PlayerType.Consejero)) = 0 Then
-            If HayAgua(.Pos.Map, .Pos.x, .Pos.Y) Then
+            If HayAgua(.Pos.Map, .Pos.X, .Pos.Y) Then
                 If .flags.Navegando = 0 Then
                     .flags.Navegando = 1
                         
@@ -2206,7 +2211,7 @@ Private Sub WarpMascotas(ByVal Userindex As Integer)
 
     Dim canWarp          As Boolean
 
-    Dim Index            As Integer
+    Dim index            As Integer
 
     Dim iMinHP           As Integer
     
@@ -2214,13 +2219,13 @@ Private Sub WarpMascotas(ByVal Userindex As Integer)
     canWarp = (MapInfo(UserList(Userindex).Pos.Map).Pk = True)
     
     For i = 1 To MAXMASCOTAS
-        Index = UserList(Userindex).MascotasIndex(i)
+        index = UserList(Userindex).MascotasIndex(i)
         
-        If Index > 0 Then
+        If index > 0 Then
 
             ' si la mascota tiene tiempo de vida > 0 significa q fue invocada => we kill it
-            If Npclist(Index).Contadores.TiempoExistencia > 0 Then
-                Call QuitarNPC(Index)
+            If Npclist(index).Contadores.TiempoExistencia > 0 Then
+                Call QuitarNPC(index)
                 UserList(Userindex).MascotasIndex(i) = 0
                 InvocadosMatados = InvocadosMatados + 1
                 NroPets = NroPets - 1
@@ -2233,9 +2238,9 @@ Private Sub WarpMascotas(ByVal Userindex As Integer)
                 'PetTiempoDeVida = Npclist(index).Contadores.TiempoExistencia
                 
                 ' Guardamos el hp, para restaurarlo uando se cree el npc
-                iMinHP = Npclist(Index).Stats.MinHp
+                iMinHP = Npclist(index).Stats.MinHp
                 
-                Call QuitarNPC(Index)
+                Call QuitarNPC(index)
                 
                 ' Restauramos el valor de la variable
                 UserList(Userindex).MascotasType(i) = petType
@@ -2257,24 +2262,24 @@ Private Sub WarpMascotas(ByVal Userindex As Integer)
             Dim SpawnPos As WorldPos
         
             SpawnPos.Map = UserList(Userindex).Pos.Map
-            SpawnPos.x = UserList(Userindex).Pos.x + RandomNumber(-3, 3)
+            SpawnPos.X = UserList(Userindex).Pos.X + RandomNumber(-3, 3)
             SpawnPos.Y = UserList(Userindex).Pos.Y + RandomNumber(-3, 3)
         
-            Index = SpawnNpc(petType, SpawnPos, False, PetRespawn)
+            index = SpawnNpc(petType, SpawnPos, False, PetRespawn)
             
             'Controlamos que se sumoneo OK - should never happen. Continue to allow removal of other pets if not alone
             ' Exception: Pets don't spawn in water if they can't swim
-            If Index = 0 Then
+            If index = 0 Then
                 Call WriteConsoleMsg(Userindex, "Tus mascotas no pueden transitar este mapa.", FontTypeNames.FONTTYPE_INFO)
             Else
-                UserList(Userindex).MascotasIndex(i) = Index
+                UserList(Userindex).MascotasIndex(i) = index
 
                 ' Nos aseguramos de que conserve el hp, si estaba danado
-                Npclist(Index).Stats.MinHp = IIf(iMinHP = 0, Npclist(Index).Stats.MinHp, iMinHP)
+                Npclist(index).Stats.MinHp = IIf(iMinHP = 0, Npclist(index).Stats.MinHp, iMinHP)
             
-                Npclist(Index).MaestroUser = Userindex
-                Npclist(Index).Contadores.TiempoExistencia = PetTiempoDeVida
-                Call FollowAmo(Index)
+                Npclist(index).MaestroUser = Userindex
+                Npclist(index).Contadores.TiempoExistencia = PetTiempoDeVida
+                Call FollowAmo(index)
 
             End If
 
@@ -2314,7 +2319,7 @@ Public Sub WarpMascota(ByVal Userindex As Integer, ByVal PetIndex As Integer)
     With UserList(Userindex)
         
         TargetPos.Map = .flags.TargetMap
-        TargetPos.x = .flags.TargetX
+        TargetPos.X = .flags.TargetX
         TargetPos.Y = .flags.TargetY
         
         NpcIndex = .MascotasIndex(PetIndex)
@@ -2387,7 +2392,7 @@ Sub Cerrar_Usuario(ByVal Userindex As Integer)
                 
                 If .flags.Oculto Then
                     If .flags.Navegando = 1 Then
-                        If .clase = eClass.Pirat Then
+                        If .Clase = eClass.Pirat Then
                             ' Pierde la apariencia de fragata fantasmal
                             Call ToggleBoatBody(Userindex)
                             Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -2467,7 +2472,7 @@ Sub VolverCriminal(ByVal Userindex As Integer)
     '**************************************************************
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
             .Reputacion.BurguesRep = 0
@@ -2497,7 +2502,7 @@ Sub VolverCiudadano(ByVal Userindex As Integer)
     '**************************************************************
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.Y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 6 Then Exit Sub
         
         .Reputacion.LadronesRep = 0
         .Reputacion.BandidoRep = 0
@@ -2678,18 +2683,18 @@ Public Sub ApropioNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGm(Userindex) Then Exit Sub
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.x, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa).Pk = False Then Exit Sub
+        If MapInfo(Mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
@@ -2713,28 +2718,28 @@ Public Function GetDireccion(ByVal Userindex As Integer, _
     'Last Modify Date: 17/11/2009
     'Devuelve la direccion hacia donde esta el usuario
     '**************************************************************
-    Dim x As Integer
+    Dim X As Integer
 
     Dim Y As Integer
     
-    x = UserList(Userindex).Pos.x - UserList(OtherUserIndex).Pos.x
+    X = UserList(Userindex).Pos.X - UserList(OtherUserIndex).Pos.X
     Y = UserList(Userindex).Pos.Y - UserList(OtherUserIndex).Pos.Y
     
-    If x = 0 And Y > 0 Then
+    If X = 0 And Y > 0 Then
         GetDireccion = "Sur"
-    ElseIf x = 0 And Y < 0 Then
+    ElseIf X = 0 And Y < 0 Then
         GetDireccion = "Norte"
-    ElseIf x > 0 And Y = 0 Then
+    ElseIf X > 0 And Y = 0 Then
         GetDireccion = "Este"
-    ElseIf x < 0 And Y = 0 Then
+    ElseIf X < 0 And Y = 0 Then
         GetDireccion = "Oeste"
-    ElseIf x > 0 And Y < 0 Then
+    ElseIf X > 0 And Y < 0 Then
         GetDireccion = "NorEste"
-    ElseIf x < 0 And Y < 0 Then
+    ElseIf X < 0 And Y < 0 Then
         GetDireccion = "NorOeste"
-    ElseIf x > 0 And Y > 0 Then
+    ElseIf X > 0 And Y > 0 Then
         GetDireccion = "SurEste"
-    ElseIf x < 0 And Y > 0 Then
+    ElseIf X < 0 And Y > 0 Then
         GetDireccion = "SurOeste"
 
     End If
@@ -2759,7 +2764,7 @@ Public Function FarthestPet(ByVal Userindex As Integer) As Integer
     'Last Modify Date: 18/11/2009
     'Devuelve el indice de la mascota mas lejana.
     '**************************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     Dim PetIndex      As Integer
 
@@ -2781,10 +2786,10 @@ Public Function FarthestPet(ByVal Userindex As Integer) As Integer
                     If FarthestPet = 0 Then
                         ' Por si tiene 1 sola mascota
                         FarthestPet = PetIndex
-                        Distancia = Abs(.Pos.x - Npclist(.MascotasIndex(PetIndex)).Pos.x) + Abs(.Pos.Y - Npclist(.MascotasIndex(PetIndex)).Pos.Y)
+                        Distancia = Abs(.Pos.X - Npclist(.MascotasIndex(PetIndex)).Pos.X) + Abs(.Pos.Y - Npclist(.MascotasIndex(PetIndex)).Pos.Y)
                     Else
                         ' La distancia de la proxima mascota
-                        OtraDistancia = Abs(.Pos.x - Npclist(.MascotasIndex(PetIndex)).Pos.x) + Abs(.Pos.Y - Npclist(.MascotasIndex(PetIndex)).Pos.Y)
+                        OtraDistancia = Abs(.Pos.X - Npclist(.MascotasIndex(PetIndex)).Pos.X) + Abs(.Pos.Y - Npclist(.MascotasIndex(PetIndex)).Pos.Y)
 
                         ' Esta mas lejos?
                         If OtraDistancia > Distancia Then
@@ -2805,7 +2810,7 @@ Public Function FarthestPet(ByVal Userindex As Integer) As Integer
 
     Exit Function
     
-errHandler:
+ErrHandler:
     Call LogError("Error en FarthestPet")
 
 End Function
@@ -3084,7 +3089,7 @@ Public Sub HomeArrival(ByVal Userindex As Integer)
             'Le sacamos el navegando, pero no le mostramos a los demas porque va a ser sumoneado hasta ulla.
         End If
         
-        tX = Ciudades(.Hogar).x
+        tX = Ciudades(.Hogar).X
         tY = Ciudades(.Hogar).Y
         tMap = Ciudades(.Hogar).Map
         

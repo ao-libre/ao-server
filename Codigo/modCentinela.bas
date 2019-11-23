@@ -5,7 +5,7 @@ Attribute VB_Name = "modCentinela"
 
 Option Explicit
  
-Public CentinelaEstado As Boolean          'Esta activado?
+Public isCentinelaActivated As Boolean          'Esta activado?
  
 Const NUM_CENTINELAS   As Byte = 5         'Cantidad de centinelas.
 
@@ -36,24 +36,29 @@ End Type
 Public Centinelas(1 To NUM_CENTINELAS) As Centinelas
  
 Sub CambiarEstado(ByVal gmIndex As Integer)
- 
+'***************************************************
+'Author: Unknown
+'Last Modification: 13/11/2019 (Recox)
+'13/11/2019 Recox: La variable isCentinelaActivated tiene un nombre mas descriptivo
+'***************************************************
+
     ' @ Cambia el estado del centinela.
 
     'Lo cambiamos en la memoria.
-    CentinelaEstado = Not CentinelaEstado
+    isCentinelaActivated = Not isCentinelaActivated
     
     'Lo cambiamos en el Server.ini
-    Call WriteVar(IniPath & "Server.ini", "INIT", "AuditoriaTrabajo", IIf(CentinelaEstado, 1, 0))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "CentinelaAuditoriaTrabajoActivo", IIf(isCentinelaActivated, 1, 0))
 
     'Preparamos el aviso por consola.
-    Dim tmpStr As String
-    tmpStr = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(CentinelaEstado, " ACTIVADO.", " DESACTIVADO.")
+    Dim message As String
+    message = UserList(gmIndex).Name & " cambio el estado del Centinela a " & IIf(isCentinelaActivated, " ACTIVADO.", " DESACTIVADO.")
     
     'Mandamos el aviso por consola.
-    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(tmpStr, FontTypeNames.FONTTYPE_CONSE))
+    Call modSendData.SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_CENTINELA))
     
     'Lo registramos en los logs.
-    Call LogGM(UserList(gmIndex).Name, "Cambio el estado del Centinela (Estado: " & IIf(CentinelaEstado, "ACTIVADO", "DESACTIVADO") & ")")
+    Call LogGM(UserList(gmIndex).Name, message)
  
 End Sub
  
@@ -140,14 +145,13 @@ Sub AvisarUsuario(ByVal userSlot As Integer, _
             'Paso la mitad de tiempo?
             If (GetTickCount() - .TiempoInicio) > (LIMITE_TIEMPO / 2) Then
                 'Prepara el paquete a enviar.
-                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
+                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
             Else
-                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Tienes menos de un minuto para escribir /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
-
+                DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Tienes menos de un minuto para escribir /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
             End If
 
         Else
-            DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El codigo ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbRed)
+            DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, El codigo ingresado NO es correcto, debes escribir : /CENTINELA " & .CodigoCheck & ".", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
 
         End If
      
@@ -249,7 +253,7 @@ Sub AprobarUsuario(ByVal Userindex As Integer, ByVal CIndex As Byte)
             .UltimaRevision = GetTickCount()
         End With
  
-        Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.fonttype_dios)
+        Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.FONTTYPE_DIOS)
      
     End With
  
@@ -322,7 +326,7 @@ Sub UsuarioInActivo(ByVal Userindex As Integer)
     End If
  
     'Deja un mensaje.
-    Call Protocol.WriteConsoleMsg(Userindex, "El centinela te ha ejecutado y encarcelado por Macro Inasistido.", FontTypeNames.fonttype_dios)
+    Call Protocol.WriteConsoleMsg(Userindex, "El centinela te ha ejecutado y encarcelado por Macro Inasistido.", FontTypeNames.FONTTYPE_DIOS)
  
     'Limpia el tipo del usuario.
     Dim ClearType As CentinelaUser

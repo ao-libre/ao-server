@@ -3,15 +3,141 @@ Begin VB.Form FrmInterv
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Intervalos"
-   ClientHeight    =   4920
+   ClientHeight    =   6105
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7650
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   4920
+   ScaleHeight     =   6105
    ScaleWidth      =   7650
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame Suerte 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Suerte"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1215
+      Left            =   120
+      TabIndex        =   55
+      Top             =   4320
+      Width           =   2055
+      Begin VB.TextBox txtMinarSuerte 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   1320
+         TabIndex        =   58
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.TextBox txtTalarSuerte 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   720
+         TabIndex        =   57
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.TextBox txtPescarSuerte 
+         BackColor       =   &H00C0FFFF&
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   120
+         TabIndex        =   56
+         Text            =   "6"
+         Top             =   720
+         Width           =   450
+      End
+      Begin VB.Label Label27 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Mineria"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   1320
+         TabIndex        =   61
+         Top             =   360
+         Width           =   615
+      End
+      Begin VB.Label Label26 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Talar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   720
+         TabIndex        =   60
+         Top             =   360
+         Width           =   495
+      End
+      Begin VB.Label pesca 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Pesca"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   59
+         Top             =   360
+         Width           =   615
+      End
+   End
    Begin VB.CommandButton Command2 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Guardar Intervalos"
@@ -25,10 +151,10 @@ Begin VB.Form FrmInterv
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   4680
+      Left            =   4560
       Style           =   1  'Graphical
       TabIndex        =   36
-      Top             =   4320
+      Top             =   5640
       Width           =   2895
    End
    Begin VB.CommandButton Command1 
@@ -44,11 +170,11 @@ Begin VB.Form FrmInterv
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2880
+      Left            =   2280
       Style           =   1  'Graphical
       TabIndex        =   0
-      Top             =   4320
-      Width           =   1695
+      Top             =   5640
+      Width           =   2175
    End
    Begin VB.Frame Frame11 
       BackColor       =   &H00FFC0C0&
@@ -1023,8 +1149,8 @@ Begin VB.Form FrmInterv
       Left            =   120
       Style           =   1  'Graphical
       TabIndex        =   1
-      Top             =   4320
-      Width           =   1695
+      Top             =   5640
+      Width           =   2055
    End
 End
 Attribute VB_Name = "FrmInterv"
@@ -1084,7 +1210,12 @@ Public Sub AplicarIntervalos()
     IntervaloUserPuedeCastear = val(txtIntervaloLanzaHechizo.Text)
     IntervaloUserPuedeTrabajar = val(txtTrabajo.Text)
     IntervaloUserPuedeAtacar = val(txtPuedeAtacar.Text)
-
+    
+    '///////////////////Suerte \\\\\\\\\\\\\\\\\\
+    
+    PescarSuerte = val(txtPescarSuerte.Text)
+    TalarSuerte = val(txtTalarSuerte.Text)
+    MinarSuerte = val(txtMinarSuerte.Text)
 End Sub
 
 Private Sub Command1_Click()
@@ -1119,7 +1250,14 @@ Private Sub Command2_Click()
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloLanzaHechizo", str(IntervaloUserPuedeCastear))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloTrabajo", str(IntervaloUserPuedeTrabajar))
     Call WriteVar(IniPath & "Server.ini", "INTERVALOS", "IntervaloUserPuedeAtacar", str(IntervaloUserPuedeAtacar))
-
+    
+    '&&&&&&&&&&&&&&&&&&&& Suerte desde INIT &&&&&&&&&&&&&&&&&&&&&&&&&
+    
+    Call WriteVar(IniPath & "Server.ini", "INIT", "PescarSuerte", str(PescarSuerte))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "TalarSuerte", str(TalarSuerte))
+    Call WriteVar(IniPath & "Server.ini", "INIT", "MinarSuerte", str(MinarSuerte))
+    
+    
     MsgBox "Los intervalos se han guardado sin problemas."
 
     Exit Sub
@@ -1129,9 +1267,10 @@ Err:
 End Sub
 
 Private Sub Form_Load()
-    
     With Me
-    
+        .txtPescarSuerte.Text = PescarSuerte
+        .txtTalarSuerte.Text = TalarSuerte
+        .txtMinarSuerte.Text = MinarSuerte
         .txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
         .txtStaminaIntervaloSinDescansar.Text = StaminaIntervaloSinDescansar
         .txtSanaIntervaloDescansar.Text = SanaIntervaloDescansar

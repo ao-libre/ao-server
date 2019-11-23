@@ -48,7 +48,7 @@ Private MaxValue                       As Long
 
 Private Multiplicado                   As Long 'Cuantas veces multiplike el EntrysCounter para que me entren?
 
-Private Const IntervaloEntreConexiones As Long = 5000
+Private Const IntervaloEntreConexiones As Long = 200
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'Declaraciones para maximas conexiones por usuario
@@ -139,7 +139,7 @@ Public Function IpSecurityAceptarNuevaConexion(ByVal ip As Long) As Boolean
 
 End Function
 
-Private Sub AddNewIpIntervalo(ByVal ip As Long, ByVal Index As Long)
+Private Sub AddNewIpIntervalo(ByVal ip As Long, ByVal index As Long)
 
     '*************************************************  *************
     'Author: Lucio N. Tourrilhes (DuNga)
@@ -157,8 +157,8 @@ Private Sub AddNewIpIntervalo(ByVal ip As Long, ByVal Index As Long)
     End If
     
     '4) Corro todo el array para arriba
-    Call CopyMemory(IpTables(Index + 2), IpTables(Index), (MaxValue - Index \ 2) * 8)   '*4 (peso del long) * 2(cantidad de elementos por c/u)
-    IpTables(Index) = ip
+    Call CopyMemory(IpTables(index + 2), IpTables(index), (MaxValue - index \ 2) * 8)   '*4 (peso del long) * 2(cantidad de elementos por c/u)
+    IpTables(index) = ip
     
     '3) Subo el indicador de el maximo valor almacenado y listo :)
     MaxValue = MaxValue + 1
@@ -207,7 +207,7 @@ Public Function IPSecuritySuperaLimiteConexiones(ByVal ip As Long) As Boolean
 
 End Function
 
-Private Sub AddNewIpLimiteConexiones(ByVal ip As Long, ByVal Index As Long)
+Private Sub AddNewIpLimiteConexiones(ByVal ip As Long, ByVal index As Long)
     '*************************************************  *************
     'Author: (EL OSO)
     'Last Modify Date: 16/2/2006
@@ -216,8 +216,8 @@ Private Sub AddNewIpLimiteConexiones(ByVal ip As Long, ByVal Index As Long)
     'Debug.Print "agrega conexion a " & ip
     'Debug.Print "(Declaraciones.MaxUsers - index) = " & (Declaraciones.MaxUsers - Index)
     '4) Corro todo el array para arriba
-    Call CopyMemory(MaxConTables(Index + 2), MaxConTables(Index), (MaxConTablesEntry - Index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
-    MaxConTables(Index) = ip
+    Call CopyMemory(MaxConTables(index + 2), MaxConTables(index), (MaxConTablesEntry - index \ 2) * 8)    '*4 (peso del long) * 2(cantidad de elementos por c/u)
+    MaxConTables(index) = ip
 
     '3) Subo el indicador de el maximo valor almacenado y listo :)
     MaxConTablesEntry = MaxConTablesEntry + 1
@@ -231,7 +231,7 @@ Public Sub IpRestarConexion(ByVal ip As Long)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim key As Long
 
@@ -266,7 +266,7 @@ Public Sub IpRestarConexion(ByVal ip As Long)
     
     Exit Sub
 
-errHandler:
+ErrHandler:
     Call LogError("Error en IpRestarConexion. Error: " & Err.Number & " - " & Err.description & ". Ip: " & GetAscIP(ip) & " Key:" & key)
 
 End Sub

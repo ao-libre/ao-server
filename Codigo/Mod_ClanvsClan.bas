@@ -32,22 +32,17 @@ End Type
 Public CVC_Info     As cvc_Data
 
 Public usersClan1   As Byte
-
 Public usersClan2   As Byte
 
 Public menorCant    As Byte
 
 'constantes de pos..
-Const PRIMER_CLAN_X As Byte = 50
+Const PRIMER_CLAN_X As Byte = 39
+Const SECOND_CLAN_X As Byte = 20
+Const PRIMER_CLAN_Y As Byte = 78
+Const SECOND_CLAN_Y As Byte = 74
+Const MAPA_CVC      As Integer = 273
 
-Const SECOND_CLAN_X As Byte = 77
-
-Const PRIMER_CLAN_Y As Byte = 22
-
-Const SECOND_CLAN_Y As Byte = 55
-
-Const MAPA_CVC      As Byte = 1
- 
 Public Sub Enviar(ByVal Userindex As Integer, _
                   ByVal targetIndex As Integer) ', ByVal max_Users_Guild As Byte)
 
@@ -79,9 +74,9 @@ Public Sub Enviar(ByVal Userindex As Integer, _
         .cvcUser.cvc_MaxUsers = menorCant
         UserList(targetIndex).cvcUser.cvc_Target = Userindex
                 
-        Call Protocol.WriteConsoleMsg(targetIndex, "El clan " & modGuilds.GuildName(my_Guild) & " desafia tu clan a un duelo de modalidad Clan vs Clan, si aceptas hazle click y tipea /ACVC.", FontTypeNames.FONTTYPE_CITIZEN)
-        Call Protocol.WriteConsoleMsg(targetIndex, "La cantidad maxima de usuarios por clan es de : " & CStr(menorCant) & ".", FontTypeNames.FONTTYPE_CITIZEN)
-        Call Protocol.WriteConsoleMsg(Userindex, "Ahora debes esperar que el lider acepte.", FontTypeNames.FONTTYPE_CITIZEN)
+        Call Protocol.WriteConsoleMsg(targetIndex, "El clan " & modGuilds.GuildName(my_Guild) & " desafia tu clan a un duelo de modalidad Clan vs Clan, si aceptas hazle click y tipea /ACVC.", FontTypeNames.FONTTYPE_GUILD)
+        Call Protocol.WriteConsoleMsg(targetIndex, "La cantidad maxima de usuarios por clan es de : " & CStr(menorCant) & ".", FontTypeNames.FONTTYPE_GUILD)
+        Call Protocol.WriteConsoleMsg(Userindex, "Ahora debes esperar que el lider acepte.", FontTypeNames.FONTTYPE_GUILD)
 
     End With
 
@@ -99,7 +94,7 @@ Public Sub Aceptar(ByVal Userindex As Integer, ByVal targetIndex As Integer)
         If (targetIndex = .cvcUser.cvc_Target) Then
             Call Iniciar(targetIndex, Userindex, .GuildIndex, UserList(targetIndex).GuildIndex, UserList(targetIndex).cvcUser.cvc_MaxUsers)
         Else
-            Call Protocol.WriteConsoleMsg(Userindex, UserList(targetIndex).Name & " no solicito ningun Clan vs Clan.", FontTypeNames.FONTTYPE_CITIZEN)
+            Call Protocol.WriteConsoleMsg(Userindex, UserList(targetIndex).Name & " no solicito ningun Clan vs Clan.", FontTypeNames.FONTTYPE_GUILD)
 
         End If
 
@@ -137,7 +132,7 @@ Private Sub Iniciar(ByVal userSend As Integer, _
         Next j
 
         For j = 1 To 2
-            Call SendData(SendTarget.ToGuildMembers, .Guild(j).Guild_Index, Protocol.PrepareMessageConsoleMsg("CLAN VS CLAN > " & modGuilds.GuildName(.Guild(1).Guild_Index) & " vs " & modGuilds.GuildName(.Guild(2).Guild_Index) & " cada clan con " & CStr(.max_Users) & " Participantes, para participar tipea /IRCVC.", FontTypeNames.FONTTYPE_CITIZEN))
+            Call SendData(SendTarget.ToGuildMembers, .Guild(j).Guild_Index, Protocol.PrepareMessageConsoleMsg("CLAN VS CLAN > " & modGuilds.GuildName(.Guild(1).Guild_Index) & " vs " & modGuilds.GuildName(.Guild(2).Guild_Index) & " cada clan con " & CStr(.max_Users) & " Participantes, para participar tipea /IRCVC.", FontTypeNames.FONTTYPE_GUILD))
 
         Next j
 
@@ -172,7 +167,7 @@ Private Sub EnviarMensajeCVC(ByVal to_Guild As Byte, ByRef send_Msg As String)
 
                         If .UsUaRiOs(i) <> -1 Then
                             If UserList(.UsUaRiOs(i)).ConnID <> -1 Then
-                                Call Protocol.WriteConsoleMsg(.UsUaRiOs(i), send_Msg, FontTypeNames.FONTTYPE_CITIZEN)
+                                Call Protocol.WriteConsoleMsg(.UsUaRiOs(i), send_Msg, FontTypeNames.FONTTYPE_GUILD)
 
                             End If
 
@@ -198,7 +193,7 @@ Private Sub EnviarMensajeCVC(ByVal to_Guild As Byte, ByRef send_Msg As String)
 
                     If .UsUaRiOs(i) <> -1 Then
                         If UserList(.UsUaRiOs(i)).ConnID <> -1 Then
-                            Call Protocol.WriteConsoleMsg(.UsUaRiOs(i), send_Msg, FontTypeNames.FONTTYPE_CITIZEN)
+                            Call Protocol.WriteConsoleMsg(.UsUaRiOs(i), send_Msg, FontTypeNames.FONTTYPE_GUILD)
 
                         End If
 
@@ -409,7 +404,7 @@ Private Sub GanaCVC(ByVal guildWinner As Byte, ByVal guildLooser As Byte)
 
         sMessage = sMessage & vbNewLine
         sMessage = modGuilds.GuildName(.Guild(guildWinner).Guild_Index) & " vencio a " & modGuilds.GuildName(.Guild(guildLooser).Guild_Index) & " en un duelo " & CStr(.max_Users) & " vs " & CStr(.max_Users) & "."
-        Call SendData(SendTarget.ToAll, 0, Protocol.PrepareMessageConsoleMsg(sMessage, FontTypeNames.FONTTYPE_CITIZEN))
+        Call SendData(SendTarget.ToAll, 0, Protocol.PrepareMessageConsoleMsg(sMessage, FontTypeNames.FONTTYPE_GUILD))
         'limpio la data
         Call EraseCVC
 
@@ -434,7 +429,7 @@ Public Sub ConectarCVC(ByVal Userindex As Integer, _
         'no puede entrar ,lo informo.
 
         If (Can_Ingress(Userindex, ref_Error) = False) Then
-            Call Protocol.WriteConsoleMsg(Userindex, ref_Error, FontTypeNames.FONTTYPE_CITIZEN)
+            Call Protocol.WriteConsoleMsg(Userindex, ref_Error, FontTypeNames.FONTTYPE_GUILD)
 
             Exit Sub
 
@@ -472,7 +467,7 @@ Public Sub ConectarCVC(ByVal Userindex As Integer, _
             UserList(Userindex).cvcUser.en_CVC = True
         Else
             'no ai mas espacio..
-            Call Protocol.WriteConsoleMsg(Userindex, "No puedes entrar al CVC porque tu clan ya tiene " & CStr(CVC_Info.max_Users) & " jugadores.", FontTypeNames.FONTTYPE_CITIZEN)
+            Call Protocol.WriteConsoleMsg(Userindex, "No puedes entrar al CVC porque tu clan ya tiene " & CStr(CVC_Info.max_Users) & " jugadores.", FontTypeNames.FONTTYPE_GUILD)
 
         End If
 

@@ -583,7 +583,7 @@ Public Function CrearNPC(NroNPC As Integer, _
                          Optional ByVal CustomHead As Integer) As Integer
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
+    'Last Modification: 22/07/2019 - WyroX: Intentamos NO spawnear NPCs de agua en tierra, a menos que se alcance el límite de iteraciones.
     '
     '***************************************************
 
@@ -643,29 +643,16 @@ Public Function CrearNPC(NroNPC As Integer, _
 
             If NEWPOS.x <> 0 And NEWPOS.Y <> 0 Then
                 altpos.x = NEWPOS.x
-                altpos.Y = NEWPOS.Y     'posicion alternativa (para evitar el anti respawn, pero intentando qeu si tenia que ser en el agua, sea en el agua.)
-            Else
-                Call ClosestLegalPos(Pos, NEWPOS, PuedeAgua)
-
-                If NEWPOS.x <> 0 And NEWPOS.Y <> 0 Then
-                    altpos.x = NEWPOS.x
-                    altpos.Y = NEWPOS.Y     'posicion alternativa (para evitar el anti respawn)
-
-                End If
-
+                altpos.Y = NEWPOS.Y
             End If
 
             'Si X e Y son iguales a 0 significa que no se encontro posicion valida
-            If LegalPosNPC(NEWPOS.Map, NEWPOS.x, NEWPOS.Y, PuedeAgua) And Not HayPCarea(NEWPOS) And TestSpawnTrigger(NEWPOS, PuedeAgua) Then
+            If LegalPos(NEWPOS.Map, NEWPOS.x, NEWPOS.Y, PuedeAgua, PuedeTierra) And Not HayPCarea(NEWPOS) And TestSpawnTrigger(NEWPOS, PuedeAgua) Then
                 'Asignamos las nuevas coordenas solo si son validas
                 Npclist(nIndex).Pos.Map = NEWPOS.Map
                 Npclist(nIndex).Pos.x = NEWPOS.x
                 Npclist(nIndex).Pos.Y = NEWPOS.Y
                 PosicionValida = True
-            Else
-                NEWPOS.x = 0
-                NEWPOS.Y = 0
-            
             End If
                 
             'for debug
@@ -673,32 +660,36 @@ Public Function CrearNPC(NroNPC As Integer, _
 
             If Iteraciones > MAXSPAWNATTEMPS Then
                 If altpos.x <> 0 And altpos.Y <> 0 Then
-                    Map = altpos.Map
-                    x = altpos.x
-                    Y = altpos.Y
-                    Npclist(nIndex).Pos.Map = Map
-                    Npclist(nIndex).Pos.x = x
-                    Npclist(nIndex).Pos.Y = Y
-                    Call MakeNPCChar(True, Map, nIndex, Map, x, Y)
-                    Exit Function
+                    Npclist(nIndex).Pos.Map = altpos.Map
+                    Npclist(nIndex).Pos.x = altpos.x
+                    Npclist(nIndex).Pos.Y = altpos.Y
+                    PosicionValida = True
                 Else
-                    altpos.x = 50
-                    altpos.Y = 50
-                    Call ClosestLegalPos(altpos, NEWPOS)
+                    ' WyroX: Super� la cantidad de intentos sin ninguna posici�n v�lida? Probamos un intento m�s pero sin el flag "PuedeTierra"
+                    Call ClosestLegalPos(Pos, NEWPOS, PuedeAgua)
 
                     If NEWPOS.x <> 0 And NEWPOS.Y <> 0 Then
                         Npclist(nIndex).Pos.Map = NEWPOS.Map
                         Npclist(nIndex).Pos.x = NEWPOS.x
                         Npclist(nIndex).Pos.Y = NEWPOS.Y
-                        Call MakeNPCChar(True, NEWPOS.Map, nIndex, NEWPOS.Map, NEWPOS.x, NEWPOS.Y)
-                        Exit Function
+                        PosicionValida = True
                     Else
-                        Call QuitarNPC(nIndex)
-                        Call LogError(MAXSPAWNATTEMPS & " iteraciones en CrearNpc Mapa:" & mapa & " NroNpc:" & NroNPC)
-                        Exit Function
+                        altpos.x = 50
+                        altpos.Y = 50
+                        Call ClosestLegalPos(altpos, NEWPOS)
 
+                        If NEWPOS.x <> 0 And NEWPOS.Y <> 0 Then
+                            Npclist(nIndex).Pos.Map = NEWPOS.Map
+                            Npclist(nIndex).Pos.x = NEWPOS.x
+                            Npclist(nIndex).Pos.Y = NEWPOS.Y
+                            PosicionValida = True
+                        Else
+                            Call QuitarNPC(nIndex)
+                            Call LogError(MAXSPAWNATTEMPS & " iteraciones en CrearNpc Mapa:" & mapa & " NroNpc:" & NroNPC)
+                            Exit Function
+
+                        End If
                     End If
-
                 End If
 
             End If
@@ -706,7 +697,7 @@ Public Function CrearNPC(NroNPC As Integer, _
         Loop
             
         'asignamos las nuevas coordenas
-        Map = NEWPOS.Map
+        Map = Npclist(nIndex).Pos.Map
         x = Npclist(nIndex).Pos.x
         Y = Npclist(nIndex).Pos.Y
 
