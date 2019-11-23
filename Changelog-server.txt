@@ -815,3 +815,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 19/11/2019: Se cambiaron los casting de tipos de datos en la carga y guardado de charfiles. (Recox)
 * 22/11/2019: Ahora el mercader vende la mochila y alforja (Recox)
 * 22/11/2019: Se cambio otGuita por otOro (Recox)
+* 22/11/2019: El anillo de de resistencia magica ahora es equipable en paladines como dice el manual (Recox)
+
+
