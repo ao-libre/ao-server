@@ -2038,7 +2038,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=11
+NROITEMS=15
 Obj1=501-1000 'Ropa de Campesino
 Obj2=135-1000 'Túnica Roja Burda
 Obj3=238-1000 'Túnica Azul
@@ -2050,6 +2050,10 @@ Obj8=986-1000 'Túnica de Druida
 Obj9=873-1000 'Guantes de Hurto
 Obj10=1036-1000 'Guantes de Lucha
 Obj11=1010-1000 'Sombrero de Pirata
+Obj12=383-1000 'Sombrero Magico
+Obj13=661-1000 'Sombrero de Aprendiz
+Obj14=662-1000 'Sombrero de Mago
+Obj15=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -2255,7 +2259,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=11
+NROITEMS=15
 Obj1=31-1000 'Vestimentas Comunes
 Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
@@ -2267,6 +2271,10 @@ Obj8=196-1000 'Túnica de Mago
 Obj9=986-1000 'Túnica de Druida
 Obj10=873-1000 'Guantes de Hurto
 Obj11=1010-1000 'Sombrero de Pirata
+Obj12=383-1000 'Sombrero Magico
+Obj13=661-1000 'Sombrero de Aprendiz
+Obj14=662-1000 'Sombrero de Mago
+Obj15=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -2712,7 +2720,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=14
+NROITEMS=18
 Obj1=45-1000 'Ropa de Clan
 Obj2=80-1000 'Ropa de Clan
 Obj3=641-1000 'Ropa de Pordiosero
@@ -2727,6 +2735,10 @@ Obj11=986-1000 'Túnica de Druida
 Obj12=873-1000 'Guantes de Hurto
 Obj13=1036-1000 'Guantes de Lucha
 Obj14=1010-1000 'Sombrero de Pirata
+Obj15=383-1000 'Sombrero Magico
+Obj16=661-1000 'Sombrero de Aprendiz
+Obj17=662-1000 'Sombrero de Mago
+Obj18=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
@@ -2939,7 +2951,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=3
-NROITEMS=10
+NROITEMS=14
 Obj1=515-1000 'Ropa Legendaria
 Obj2=490-1000 'Ropa de Minero
 Obj3=381-1000 'Túnica de Monje
@@ -2949,7 +2961,11 @@ Obj6=519-1000 'Túnica Legendaria
 Obj7=986-1000 'Túnica de Druida
 Obj8=873-1000 'Guantes de Hurto
 Obj9=1036-1000 'Guantes de Lucha
-Obj10=1010-1000 'Sombrero de pirata
+Obj10=1010-1000 'Sombrero de Pirata
+Obj11=383-1000 'Sombrero Magico
+Obj12=661-1000 'Sombrero de Aprendiz
+Obj13=662-1000 'Sombrero de Mago
+Obj14=1057-1000 'Sombrero Invernal
 BackUp=1
 
 #############################################
