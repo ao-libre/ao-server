@@ -818,3 +818,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 22/11/2019: El anillo de de resistencia magica ahora es equipable en paladines como dice el manual (Recox)
 * 22/11/2019: Los sastres venden todos los sombreros (Recox)
 * 22/11/2019: Los valores del server.ini que son numeros, se les pone la funcion val() para poder obtener los mismos corectamente, gracias a esto solucionamos el problema de que el centinela sigue apareciendo cuando esta desactivado (Recox)
+* 22/11/2019: Las flechas +1, +2 y +3 las pueden usar los guerreros y ladrones como dice el manual (Recox)
