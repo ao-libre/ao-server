@@ -418,7 +418,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
 
         'End If
         
-        Dim packetID As Byte: packetID = .incomingData.PeekByte()
+        Dim packetID As Long: packetID = CLng(.incomingData.PeekByte())
 
         'Verifico si el paquete necesita que el user este logeado
         'TODO: BORRAR packetID = ClientPacketID.LoginExistingChar por que no se usa mas, borrarlo aca y en el cliente
