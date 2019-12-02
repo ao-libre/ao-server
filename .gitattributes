@@ -32,3 +32,4 @@
 *.vbp encoding=ansi
 *.frm encoding=ansi
 *.json encoding=ansi
+*.dat encoding=ansi
