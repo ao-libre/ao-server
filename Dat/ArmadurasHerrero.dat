@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=61
+NumArmaduras=63
 
 
 [Armadura1] ' Casco de hierro
@@ -184,3 +184,9 @@ Index=695
 
 [Armadura61] ' Armadura Infame
 Index=701
+
+[Armadura62] ' Anillo de los dioses
+Index=700
+
+[Armadura63] ' Ropaje Sombrio
+Index=1132

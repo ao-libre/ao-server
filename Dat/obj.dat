@@ -13983,3 +13983,17 @@ Name=Banco iglesia Adornado
 GrhIndex=274
 ObjType=20
 Agarrable=1
+
+[OBJ1132]
+Name=Ropaje sombrio
+GrhIndex=1470
+ObjType=3
+NumRopaje=255
+Agarrable=0
+MaxDef=70
+MinDef=70
+NoSeCae=1
+LingH=9
+LingP=9
+LingO=9
+SkHerreria=101

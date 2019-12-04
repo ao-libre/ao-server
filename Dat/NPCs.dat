@@ -1557,7 +1557,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=23
+NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
@@ -1581,6 +1581,7 @@ Obj20=658-1000 'Vara de Fresno
 Obj21=659-1000 'Bastón nudoso
 Obj22=696-1000 'Laúd Mágico
 Obj23=208-1000 'Flauta Mágica
+Obj24=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
@@ -1607,9 +1608,13 @@ Obj3=35-1000 'Vestimentas Comunes
 Obj4=641-1000 'Ropa de Pordiosero
 Obj5=501-1000 'Ropa de Campesino
 Obj6=501-1000 'Ropa de Campesino
+Obj6=135-1000 'Tunica Roja Burda
 Obj7=135-1000 'Tunica Roja Burda
+obj7=238-1000 'Tunica Azul
 Obj8=238-1000 'Tunica Azul
+obj8=239-1000 'Tunica Roja
 Obj9=239-1000 'Tunica Roja
+obj9=873-1000 'Guantes de hurto
 Obj10=381-1000 'Tunica de Monje
 Obj11=196-1000 'Tunica de Mago
 Obj12=357-1000 'Tunica de Monje
@@ -1782,7 +1787,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=23
+NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
@@ -1806,6 +1811,7 @@ Obj20=659-1000 'Bastón nudoso
 Obj21=696-1000 'Laúd Mágico
 Obj22=208-1000 'Flauta Mágica
 Obj23=532-1000 'Apocalipsis
+Obj24=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
@@ -2030,6 +2036,7 @@ Obj20=659-1000 'Bastón nudoso
 Obj21=696-1000 'Laúd Mágico
 Obj22=208-1000 'Flauta Mágica
 Obj23=532-1000 'Apocalipsis
+Obj24=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
@@ -2227,7 +2234,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=23
+NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
@@ -2251,6 +2258,7 @@ Obj20=659-1000 'Bastón nudoso
 Obj21=696-1000 'Laúd Mágico
 Obj22=208-1000 'Flauta Mágica
 Obj23=532-1000 'Apocalipsis
+Obj24=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
@@ -2479,7 +2487,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=23
+NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
@@ -2503,6 +2511,7 @@ Obj20=659-1000 'Bastón nudoso
 Obj21=696-1000 'Laúd Mágico
 Obj22=208-1000 'Flauta Mágica
 Obj23=532-1000 'Apocalipsis
+Obj24=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
@@ -2920,7 +2929,7 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=24
-NROITEMS=21
+NROITEMS=22
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
@@ -2943,6 +2952,7 @@ Obj19=658-1000 'Vara de Fresno
 Obj20=659-1000 'Bastón nudoso
 Obj21=696-1000 'Laúd Mágico
 Obj22=208-1000 'Flauta Mágica
+Obj23=531-1000 'Descarga Eléctrica
 BackUp=1
 
 #############################################
