@@ -1,5 +1,5 @@
 [INIT]
-NumArmas=26
+NumArmas=27
 
 [Arma1] ' Daga
 Index=15
@@ -78,3 +78,6 @@ Index=198
 
 [Arma26] ' Hacha de Leñador
 Index=127
+
+[Arma27] ' Espada Mata Dragones NatOs
+Index=556
