@@ -1,7 +1,7 @@
 'Tipos....
 '1 actuan sobre HP,MANA,STA,HAM y SED.
 '2 actuan sobre los estados de los usuarios.
-'3 invocaciÛn.
+'3 invocaci√≥n.
 '4 materializa.
 '5 metamorfosis.
 
@@ -16,8 +16,8 @@ NumeroHechizos=50
 
 
 [HECHIZO1]
-Nombre=AntÌdoto M·gico
-Desc=Con este conjuro podr·s mutar los fluidos tÛxicos de tu cuerpo para detener su vil accionar, contrarrestando los efectos nocivos de todo tipo de ponzoÒas y venenos. Se trata de un conjuro tan simple como necesario, puesto que, adem·s de los magos que provocan envenenamiento, son varias las criaturas que lanzan veneno en estas tierras.
+Nombre=Ant√≠doto M√°gico
+Desc=Con este conjuro podr√°s mutar los fluidos t√≥xicos de tu cuerpo para detener su vil accionar, contrarrestando los efectos nocivos de todo tipo de ponzo√±as y venenos. Se trata de un conjuro tan simple como necesario, puesto que, adem√°s de los magos que provocan envenenamiento, son varias las criaturas que lanzan veneno en estas tierras.
 PalabrasMagicas=NIHIL VED
 HechizeroMsg=Le has detenido el envenenamiento a 
 PropioMsg=Te has detenido el envenenamiento.
@@ -79,11 +79,11 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO2]
-Nombre=Dardo M·gico
-Desc=…ste es uno de los m·s elementales y sencillos hechizos de ataque que podr·s aprender. No causa un gran daÒo a la vÌctima, pero al consumir muy pocos recursos, resulta una herramienta muy ˙til para el entrenamiento de los jÛvenes hechiceros.
+Nombre=Dardo M√°gico
+Desc=√âste es uno de los m√°s elementales y sencillos hechizos de ataque que podr√°s aprender. No causa un gran da√±o a la v√≠ctima, pero al consumir muy pocos recursos, resulta una herramienta muy √∫til para el entrenamiento de los j√≥venes hechiceros.
 PalabrasMagicas=OHL VOR PEK
-HechizeroMsg=Has lanzado un dardo m·gico sobre
-TargetMsg=ha lanzado un dardo m·gico sobre ti.
+HechizeroMsg=Has lanzado un dardo m√°gico sobre
+TargetMsg=ha lanzado un dardo m√°gico sobre ti.
 Tipo=1
 WAV=114
 FXgrh=15
@@ -142,11 +142,11 @@ Resis=1
 
 [HECHIZO3]
 Nombre=Curar Heridas Leves
-Desc=Con este sencillo conjuro podr·s efectuar la sanaciÛn inmediata de pequeÒas heridas y devolver lentamente la salud a quien se lo lances. Suele ser de gran utilidad para los jÛvenes aprendices de magia, para poder entrenar al resguardo del ataque de las fieras salvajes.
+Desc=Con este sencillo conjuro podr√°s efectuar la sanaci√≥n inmediata de peque√±as heridas y devolver lentamente la salud a quien se lo lances. Suele ser de gran utilidad para los j√≥venes aprendices de magia, para poder entrenar al resguardo del ataque de las fieras salvajes.
 PalabrasMagicas=CORP SANC
-HechizeroMsg=Le has curado algunas pequeÒas heridas a 
-TargetMsg=te ha curado algunas pequeÒas heridas.
-PropioMsg=Te has curado algunas pequeÒas heridas.
+HechizeroMsg=Le has curado algunas peque√±as heridas a 
+TargetMsg=te ha curado algunas peque√±as heridas.
+PropioMsg=Te has curado algunas peque√±as heridas.
 Tipo=1
 WAV=17
 FXgrh=0
@@ -205,7 +205,7 @@ Resis=0
 
 [HECHIZO4]
 Nombre=Toxina
-Desc=Con este hechizo de aprendizaje simple y veloz, podr·s inundar el cuerpo de la vÌctima de un mortal veneno, con el que lentamente ir· perdiendo la vida hasta sucumbir. Por ser un hechizo que requiere poco conocimiento, resulta de gran utilidad en las primeras etapas, fundamentalmente como modo de defensa personal e incluso para el entrenamiento.
+Desc=Con este hechizo de aprendizaje simple y veloz, podr√°s inundar el cuerpo de la v√≠ctima de un mortal veneno, con el que lentamente ir√° perdiendo la vida hasta sucumbir. Por ser un hechizo que requiere poco conocimiento, resulta de gran utilidad en las primeras etapas, fundamentalmente como modo de defensa personal e incluso para el entrenamiento.
 PalabrasMagicas=SERP XON IN
 HechizeroMsg=Has envenenado a
 TargetMsg=te ha envenenado.
@@ -268,7 +268,7 @@ Resis=1
 
 [HECHIZO5]
 Nombre=Curar Heridas Graves
-Desc=Con esta milagrosa sanaciÛn para las heridas m·s profundas y dolorosas, podr·s r·pidamente devolver la salud a quienes agonizan. Se trata de un conjuro de una complejidad intermedia, pero que suele resultar fundamental para los jÛvenes aventureros que desean recorrer el mundo y enfrentarse con sus peligros.
+Desc=Con esta milagrosa sanaci√≥n para las heridas m√°s profundas y dolorosas, podr√°s r√°pidamente devolver la salud a quienes agonizan. Se trata de un conjuro de una complejidad intermedia, pero que suele resultar fundamental para los j√≥venes aventureros que desean recorrer el mundo y enfrentarse con sus peligros.
 PalabrasMagicas=EN CORP SANCTIS
 HechizeroMsg=Le has sanado graves heridas a 
 TargetMsg=te ha sanado graves heridas.
@@ -330,11 +330,11 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO6]
-Nombre=Flecha M·gica
-Desc=Con este sortilegio lograr·s que una inmaterial flecha impacte en la vÌctima produciÈndole heridas de mediana gravedad. Su aprendizaje es medianamente f·cil, y puede resultar de mucha utilidad para combatir contra las criaturas menores que suelen habitar los suburbios de las ciudades.
+Nombre=Flecha M√°gica
+Desc=Con este sortilegio lograr√°s que una inmaterial flecha impacte en la v√≠ctima produci√©ndole heridas de mediana gravedad. Su aprendizaje es medianamente f√°cil, y puede resultar de mucha utilidad para combatir contra las criaturas menores que suelen habitar los suburbios de las ciudades.
 PalabrasMagicas=VAX PER
-HechizeroMsg=Has lanzado una flecha m·gica sobre 
-TargetMsg=ha lanzado una flecha m·gica sobre ti.
+HechizeroMsg=Has lanzado una flecha m√°gica sobre 
+TargetMsg=ha lanzado una flecha m√°gica sobre ti.
 Tipo=1
 WAV=19
 FXgrh=33
@@ -392,11 +392,11 @@ Resis=1
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO7]
-Nombre=Flecha ElÈctrica
-Desc=…ste es un interesante hechizo que te permitir· canalizar las elergÌas elÈctricas del mundo en ataques direccionados a un determinado objetivo. Si bien el daÒo que causa no es muy grande, es seguramente la mejor herramienta para el entrenamiento y la defensa de los hechiceros menos experimentados.
+Nombre=Flecha El√©ctrica
+Desc=√âste es un interesante hechizo que te permitir√° canalizar las elerg√≠as el√©ctricas del mundo en ataques direccionados a un determinado objetivo. Si bien el da√±o que causa no es muy grande, es seguramente la mejor herramienta para el entrenamiento y la defensa de los hechiceros menos experimentados.
 PalabrasMagicas=SUN VAP
-HechizeroMsg=Has lanzado una flecha elÈctrica sobre 
-TargetMsg=ha lanzado una flecha elÈctrica sobre ti.
+HechizeroMsg=Has lanzado una flecha el√©ctrica sobre 
+TargetMsg=ha lanzado una flecha el√©ctrica sobre ti.
 Tipo=1
 WAV=19
 FXgrh=32
@@ -454,11 +454,11 @@ Resis=1
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO8]
-Nombre=Proyectil M·gico
-Desc=Este rentable hechizo de ataque resulta el ideal para los niveles intermedios, pues les permitir· un gran poder de ataque que no sÛlo facilitar· entrenar velozmente, si no que adem·s, puede ser utilizado como una respetable arma en los combates contra tus adversarios.
+Nombre=Proyectil M√°gico
+Desc=Este rentable hechizo de ataque resulta el ideal para los niveles intermedios, pues les permitir√° un gran poder de ataque que no s√≥lo facilitar√° entrenar velozmente, si no que adem√°s, puede ser utilizado como una respetable arma en los combates contra tus adversarios.
 PalabrasMagicas=VAX IN TAR
-HechizeroMsg=Has lanzado un proyectil m·gico sobre 
-TargetMsg=ha lanzado un proyectil m·gico sobre ti.
+HechizeroMsg=Has lanzado un proyectil m√°gico sobre 
+TargetMsg=ha lanzado un proyectil m√°gico sobre ti.
 Tipo=1
 WAV=111
 FXgrh=10
@@ -517,7 +517,7 @@ Resis=1
 
 [HECHIZO9]
 Nombre=Paralizar
-Desc=Con este arcano encantamiento podr·s dejar completamente petrificado a la vÌctima durante un determinado lapso de tiempo. Se trata de uno de los hechizos m·s utilizado en estas tierras por su gran utilidad tanto en el combate como en el entrenamiento.
+Desc=Con este arcano encantamiento podr√°s dejar completamente petrificado a la v√≠ctima durante un determinado lapso de tiempo. Se trata de uno de los hechizos m√°s utilizado en estas tierras por su gran utilidad tanto en el combate como en el entrenamiento.
 PalabrasMagicas=HOAX VORP
 HechizeroMsg=Has paralizado a 
 TargetMsg=te ha paralizado.
@@ -580,7 +580,7 @@ Resis=0
 
 [HECHIZO10]
 Nombre=Devolver Movilidad
-Desc=Conjuro con el cual podr·s contrarrestar los efectos tanto de la par·lisis como de la inmovilizaciÛn. En virtud de que los hechizos de estatismo son usados con mucha frecuencia por todos las clases m·gicas que habitan estas tierras, Èste conjuro se vuelve pr·cticamente vital para cualquier valiente que estÈ dispuesto a combatir.
+Desc=Conjuro con el cual podr√°s contrarrestar los efectos tanto de la par√°lisis como de la inmovilizaci√≥n. En virtud de que los hechizos de estatismo son usados con mucha frecuencia por todos las clases m√°gicas que habitan estas tierras, √©ste conjuro se vuelve pr√°cticamente vital para cualquier valiente que est√© dispuesto a combatir.
 PalabrasMagicas=AN HOAX VORP
 HechizeroMsg=Le has devuelto la movilidad a 
 TargetMsg=te ha devuelto la movilidad.
@@ -643,8 +643,8 @@ Resis=0
 
 [HECHIZO11]
 Nombre=Resucitar
-Desc=Encanto sagrado que te permitir· devolver la vida a los difuntos. Esta increÌble habilidad fue enseÒada personalmente por el mismo Gulfas Morgolock al otrora Rey de los hombres en las remotas Èpocas del ¡rbol Blanco. Su aprendizaje no es f·cil y su utilizaciÛn resulta muy desgastante, pero sin dudas es una de las piezas m·s importantes de la magia de las tierras del Argentum. 
-PalabrasMagicas=AHIL KNƒ XƒR
+Desc=Encanto sagrado que te permitir√° devolver la vida a los difuntos. Esta incre√≠ble habilidad fue ense√±ada personalmente por el mismo Gulfas Morgolock al otrora Rey de los hombres en las remotas √©pocas del √Årbol Blanco. Su aprendizaje no es f√°cil y su utilizaci√≥n resulta muy desgastante, pero sin dudas es una de las piezas m√°s importantes de la magia de las tierras del Argentum. 
+PalabrasMagicas=AHIL KN√Ñ X√ÑR
 HechizeroMsg=Has resucitado a 
 TargetMsg=te ha resucitado.
 Tipo=2
@@ -705,8 +705,8 @@ Resis=1
 
 [HECHIZO12]
 Nombre=Ataque de Hambre
-Desc=Embrujo que tiene por objeto provocar un considerable desbalance nutricional en el destinatario, lo que conlleva a la pÈrdida de energÌa y de concentraciÛn. Ideal para lograr la debilitaciÛn del adversario durante los combates.
-PalabrasMagicas=‘L AEX
+Desc=Embrujo que tiene por objeto provocar un considerable desbalance nutricional en el destinatario, lo que conlleva a la p√©rdida de energ√≠a y de concentraci√≥n. Ideal para lograr la debilitaci√≥n del adversario durante los combates.
+PalabrasMagicas=√îL AEX
 HechizeroMsg=Le has generado un fuerte hambre a 
 TargetMsg=te ha generado un fuerte hambre.
 PropioMsg=Te has generado un fuerte hambre.
@@ -767,12 +767,12 @@ Resis=1
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO13]
-Nombre=Terrible hambre de IgÙr
-Desc=Abominable hechizo que provoca en la vÌctima un estado de desnutriciÛn absoluto. Este encantamiento fue creado por el mago Nimbul mientras estudiaba la conducta de los gigantes de las montaÒas, la primer vÌctima de este hechizo fue un gigante llamado IgÙr, de ahÌ el nombre del mismo.
-PalabrasMagicas=€X'‘L AEX
-HechizeroMsg=Le has lanzado terrible hambre de IgÙr a 
-TargetMsg=te ha lanzado terrible hambre de IgÙr.
-PropioMsg=Te has lanzado terrible hambre de IgÙr.
+Nombre=Terrible hambre de Ig√¥r
+Desc=Abominable hechizo que provoca en la v√≠ctima un estado de desnutrici√≥n absoluto. Este encantamiento fue creado por el mago Nimbul mientras estudiaba la conducta de los gigantes de las monta√±as, la primer v√≠ctima de este hechizo fue un gigante llamado Ig√¥r, de ah√≠ el nombre del mismo.
+PalabrasMagicas=√õX'√îL AEX
+HechizeroMsg=Le has lanzado terrible hambre de Ig√¥r a 
+TargetMsg=te ha lanzado terrible hambre de Ig√¥r.
+PropioMsg=Te has lanzado terrible hambre de Ig√¥r.
 Tipo=1
 WAV=16
 FXgrh=0
@@ -831,7 +831,7 @@ Resis=1
 
 [HECHIZO14]
 Nombre=Invisibilidad
-Desc=Se trata de uno de los recursos m·gicos m·s importante de estas tierras. Con Èl podr·s volverte (t˙ o a quien se lo lances) completamente invisible a la vista de los dem·s. Esto lo convierte en una de las herramientas m·s importantes utilizadas por los combatientes guerreros.
+Desc=Se trata de uno de los recursos m√°gicos m√°s importante de estas tierras. Con √©l podr√°s volverte (t√∫ o a quien se lo lances) completamente invisible a la vista de los dem√°s. Esto lo convierte en una de las herramientas m√°s importantes utilizadas por los combatientes guerreros.
 HechizeroMsg=Has vuelto invisible a 
 TargetMsg=te ha vuelto invisible.
 PropioMsg=Te has vuelto invisible.
@@ -893,10 +893,10 @@ Resis=0
 
 [HECHIZO15]
 Nombre=Tormenta de Fuego
-Desc=Poderoso hechizo de ataque. Su costo en relaciÛn al daÒo que provoca lo convierte en un arma m·s propia para el combate que para el entrenamiento. Es ideal para aquellos aprendices de magia que todavÌa no alcanzaron a conocer el secreto de los hechizos mayores y necesitan estar bien equipados para la guerra.
+Desc=Poderoso hechizo de ataque. Su costo en relaci√≥n al da√±o que provoca lo convierte en un arma m√°s propia para el combate que para el entrenamiento. Es ideal para aquellos aprendices de magia que todav√≠a no alcanzaron a conocer el secreto de los hechizos mayores y necesitan estar bien equipados para la guerra.
 PalabrasMagicas=EN VAX ON TAR
 HechizeroMsg=Has lanzado una tormenta de fuego sobre 
-TargetMsg=lanzÛ una tormenta de fuego sobre ti.
+TargetMsg=lanz√≥ una tormenta de fuego sobre ti.
 Tipo=1
 WAV=27
 FXgrh=7
@@ -955,7 +955,7 @@ Resis=1
 
 [HECHIZO16]
 Nombre=Llamado a la Naturaleza
-Desc=El secreto druÌdico de la invocaciÛn se concentra en este embrujo, que te permitir· implorar por ayuda a la madre naturaleza. Al hacerlo, dos temibles lobos acudir·n en tu auxilio, para socorrerte de cualquier peligro que pudieses estar padeciendo.
+Desc=El secreto dru√≠dico de la invocaci√≥n se concentra en este embrujo, que te permitir√° implorar por ayuda a la madre naturaleza. Al hacerlo, dos temibles lobos acudir√°n en tu auxilio, para socorrerte de cualquier peligro que pudieses estar padeciendo.
 PalabrasMagicas=Nature et worg
 HechizeroMsg=Has Llamado a la naturaleza contra 
 TargetMsg=ha llamado a la naturaleza sobre ti.
@@ -1017,8 +1017,8 @@ Resis=0
 
 [HECHIZO17]
 Nombre=Llamado Nigromante
-Desc=Con este espantoso ritual de magia negra podr·s lograr que los restos mortales de quienes descansan en paz, se alcen en tu ayuda. Al hacerlo, dos tenebrosos zombies emerger·n de la tierra para colaborar contigo.
-PalabrasMagicas=MoŒ c·mus
+Desc=Con este espantoso ritual de magia negra podr√°s lograr que los restos mortales de quienes descansan en paz, se alcen en tu ayuda. Al hacerlo, dos tenebrosos zombies emerger√°n de la tierra para colaborar contigo.
+PalabrasMagicas=Mo√é c√°mus
 HechizeroMsg=Has invocado la ayuda de los muertos contra 
 TargetMsg=ha utilizado la Nigromancia sobre ti.
 Tipo=4
@@ -1079,7 +1079,7 @@ Resis=0
 
 [HECHIZO18]
 Nombre=Celeridad
-Desc=Podr·s aumentar la agilidad del destinatario a travÈs de este muy ˙til sortilegio. Con Èl devolver·s al cuerpo toda la ligereza y velocidad que necesita para adquirir una verdadera destreza guerrera. Su facilidad y los pocos recursos que insume su pr·ctica, lo convierten en una herramienta sumamente ˙til que no puede faltarle a ning˙n buen combatiente.
+Desc=Podr√°s aumentar la agilidad del destinatario a trav√©s de este muy √∫til sortilegio. Con √©l devolver√°s al cuerpo toda la ligereza y velocidad que necesita para adquirir una verdadera destreza guerrera. Su facilidad y los pocos recursos que insume su pr√°ctica, lo convierten en una herramienta sumamente √∫til que no puede faltarle a ning√∫n buen combatiente.
 PalabrasMagicas=YUP A'INC
 HechizeroMsg=Has aumentado la agilidad de 
 TargetMsg=ha aumentado tu agilidad.
@@ -1142,7 +1142,7 @@ Resis=0
 
 [HECHIZO19]
 Nombre=Torpeza
-Desc=Este conjuro tiene por finalidad contrarrestar o anular los efectos del hechizo de celeridad, reduciendo la agilidad y destreza que hayan adquirido quienes fueron hechizados con aquÈl.
+Desc=Este conjuro tiene por finalidad contrarrestar o anular los efectos del hechizo de celeridad, reduciendo la agilidad y destreza que hayan adquirido quienes fueron hechizados con aqu√©l.
 PalabrasMagicas=ASYNC YUP A'INC
 HechizeroMsg=Has lanzado torpeza sobre 
 TargetMsg=ha lanzado torpeza sobre ti.
@@ -1205,7 +1205,7 @@ Resis=0
 
 [HECHIZO20]
 Nombre=Fuerza
-Desc= El poder m·gico que encierra este hechizo te permitir· aumentar notoriamente la fuerza y el poderÌo de la persona sobre quien lo invoques. Al igual que el hechizo de celeridad, su facilidad y los pocos recursos que insume su pr·ctica, lo convierten en una herramienta sumamente ˙til que no puede faltarle a ning˙n buen combatiente.
+Desc= El poder m√°gico que encierra este hechizo te permitir√° aumentar notoriamente la fuerza y el poder√≠o de la persona sobre quien lo invoques. Al igual que el hechizo de celeridad, su facilidad y los pocos recursos que insume su pr√°ctica, lo convierten en una herramienta sumamente √∫til que no puede faltarle a ning√∫n buen combatiente.
 PalabrasMagicas=Ar A'kron
 HechizeroMsg=Has lanzado fuerza sobre 
 TargetMsg=ha lanzado fuerza sobre ti.
@@ -1268,7 +1268,7 @@ Resis=0
 
 [HECHIZO21]
 Nombre=Debilidad
-Desc=Este conjuro tiene por finalidad contrarrestar o anular los efectos del hechizo de Fuerza, reduciendo la fuerza y el poderÌo que hayan adquirido quienes fueron hechizados con aquÈl.
+Desc=Este conjuro tiene por finalidad contrarrestar o anular los efectos del hechizo de Fuerza, reduciendo la fuerza y el poder√≠o que hayan adquirido quienes fueron hechizados con aqu√©l.
 PalabrasMagicas=Xoom varp
 HechizeroMsg=Has lanzado Debilidad sobre 
 TargetMsg=ha lanzado Debilidad sobre ti.
@@ -1331,8 +1331,8 @@ Resis=0
 
 [HECHIZO22]
 Nombre=Llamado a Uhkrul
-Desc=Invoca un DragÛn Rojo.
-PalabrasMagicas=Arg ZagaÒarak
+Desc=Invoca un Drag√≥n Rojo.
+PalabrasMagicas=Arg Zaga√±arak
 HechizeroMsg=Llamado a Uhkrul.
 Tipo=4
 WAV=17
@@ -1391,11 +1391,11 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO23]
-Nombre=Descarga ElÈctrica
-Desc=…ste es uno de los hechizos de daÒo m·s poderoso de todo el Argentum. Al controlarlo podr·s manipular las fuerzas de la naturaleza de modo tal que del cielo mismo caiga una fuerte descarga de electricidad sobre el objetivo. El daÒo que provoca en sus vÌcitimas puede ser mortal frente a principiantes o aprendices.
+Nombre=Descarga El√©ctrica
+Desc=√âste es uno de los hechizos de da√±o m√°s poderoso de todo el Argentum. Al controlarlo podr√°s manipular las fuerzas de la naturaleza de modo tal que del cielo mismo caiga una fuerte descarga de electricidad sobre el objetivo. El da√±o que provoca en sus v√≠citimas puede ser mortal frente a principiantes o aprendices.
 PalabrasMagicas=T'HY KOOOL
-HechizeroMsg=Has lanzado una descarga elÈctrica sobre 
-TargetMsg=ha lanzado una descarga elÈctrica sobre ti.
+HechizeroMsg=Has lanzado una descarga el√©ctrica sobre 
+TargetMsg=ha lanzado una descarga el√©ctrica sobre ti.
 Tipo=1
 WAV=113
 FXgrh=11
@@ -1454,8 +1454,8 @@ Resis=1
 
 [HECHIZO24]
 Nombre=Inmovilizar
-Desc=Este valioso sortilegio te permitir· dejar a la vÌctima sin la capacidad de desplazarse, tendr· la sensaciÛn de que una poderosa fuerza lo atrae hacia el piso, y si bien podr· mover sus miembros, no podr· dejar el lugar en el que se encuentra. 
-PalabrasMagicas=ƒr Prop s'uo
+Desc=Este valioso sortilegio te permitir√° dejar a la v√≠ctima sin la capacidad de desplazarse, tendr√° la sensaci√≥n de que una poderosa fuerza lo atrae hacia el piso, y si bien podr√° mover sus miembros, no podr√° dejar el lugar en el que se encuentra. 
+PalabrasMagicas=√Ñr Prop s'uo
 HechizeroMsg=Has inmovilizado a 
 TargetMsg=te ha inmovilizado.
 PropioMsg=Te has inmovilizado.
@@ -1517,10 +1517,10 @@ Resis=0
 
 [HECHIZO25]
 Nombre=Apocalipsis
-Desc=El ataque m·gico m·s letal de estas tierras. SÛlo aquellos avezados en el arte de la magia pueden aprender este temible hechizo. Su poder es fulminante y suele ser mortal para quien es vÌctima de Èl.  
-PalabrasMagicas=Rahma NaÒarak O'al
+Desc=El ataque m√°gico m√°s letal de estas tierras. S√≥lo aquellos avezados en el arte de la magia pueden aprender este temible hechizo. Su poder es fulminante y suele ser mortal para quien es v√≠ctima de √©l.  
+PalabrasMagicas=Rahma Na√±arak O'al
 HechizeroMsg=Has lanzado Apocalipsis sobre 
-TargetMsg=lanzÛ Apocalipsis sobre ti.
+TargetMsg=lanz√≥ Apocalipsis sobre ti.
 Tipo=1
 WAV=27
 FXgrh=13
@@ -1579,7 +1579,7 @@ Resis=1
 
 [HECHIZO26]
 Nombre=Invocar Elemental de Fuego
-Desc=Encontrar·s la colaboraciÛn de uno de los elementos vitales del universo, el corazÛn mismo del ardoroso fuego vendr· en tu auxilio.
+Desc=Encontrar√°s la colaboraci√≥n de uno de los elementos vitales del universo, el coraz√≥n mismo del ardoroso fuego vendr√° en tu auxilio.
 PalabrasMagicas=Fir Yur'rax
 HechizeroMsg=Has invocado un elemental de fuego contra 
 TargetMsg=ha invocado un elemental de fuego sobre ti.
@@ -1641,7 +1641,7 @@ Resis=0
 
 [HECHIZO27]
 Nombre=Invocar Elemental de Agua
-Desc=Encontrar·s la colaboraciÛn de uno de los elementos que conforman el universo, el agua vital vendr· en tu auxilio.
+Desc=Encontrar√°s la colaboraci√≥n de uno de los elementos que conforman el universo, el agua vital vendr√° en tu auxilio.
 PalabrasMagicas=Wata Mantra'rax
 HechizeroMsg=Has invocado un elemental de agua contra 
 TargetMsg=ha invocado un elemental de agua sobre ti.
@@ -1703,7 +1703,7 @@ Resis=0
 
 [HECHIZO28]
 Nombre=Invocar Elemental de Tierra
-Desc=Encontrar·s la colaboraciÛn de uno de los elementos vitales del universo, la sagrada tierra vendr· en tu auxilio.
+Desc=Encontrar√°s la colaboraci√≥n de uno de los elementos vitales del universo, la sagrada tierra vendr√° en tu auxilio.
 PalabrasMagicas=Mu Mantra'rax
 HechizeroMsg=Has invocado un elemental de tierra contra 
 TargetMsg=ha invocado un elemental de tierra sobre ti.
@@ -1826,10 +1826,10 @@ Resis=0
 
 [HECHIZO30]
 Nombre=Ceguera
-Desc=Este embrujo le quitar· el sentido de la vista a vuestro oponente.
+Desc=Este embrujo le quitar√° el sentido de la vista a vuestro oponente.
 PalabrasMagicas=CAE' XitA
 HechizeroMsg=Has lanzado ceguera sobre 
-TargetMsg=lanzÛ ceguera vos.
+TargetMsg=lanz√≥ ceguera vos.
 PropioMsg=Has lanzado ceguera sobre ti.
 Tipo=2
 WAV=17
@@ -1889,8 +1889,8 @@ Resis=0
 
 [HECHIZO31]
 Nombre=Aturdir
-Desc=Este sortilegio provocar· que la vÌctima pierda moment·neamente todo tipo de sentido de la orientaciÛn.
-PalabrasMagicas=ASYNC GAM AL€
+Desc=Este sortilegio provocar√° que la v√≠ctima pierda moment√°neamente todo tipo de sentido de la orientaci√≥n.
+PalabrasMagicas=ASYNC GAM AL√õ
 HechizeroMsg=Has aturdido a 
 TargetMsg=te ha aturdido.
 PropioMsg=Te has aturdido.
@@ -1952,15 +1952,15 @@ Resis=0
 
 [HECHIZO32]
 Nombre=Ira de Dios
-Desc=SÛlo el encono de los Dioses puede provocar tanto daÒo.
+Desc=S√≥lo el encono de los Dioses puede provocar tanto da√±o.
 PalabrasMagicas=La IRA de Dios
 HechizeroMsg=Has lanzado la IRA de Dios sobre 
-TargetMsg=te lanzÛ la IRA de Dios.
+TargetMsg=te lanz√≥ la IRA de Dios.
 Tipo=1
 WAV=27
 FXgrh=26
 Loops=0
-MinSkill=101
+MinSkill=100
 ManaRequerido=1
 StaRequerido=1
 Target=3
@@ -2013,9 +2013,9 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO33]
-Nombre=InvocaciÛn de Ultratumba
+Nombre=Invocaci√≥n de Ultratumba
 Desc=Utilizando el obscuro y controvertido arte de la nigromancia eres capaz de reanimar los restos de un guerrero y ligarlos a tu voluntad.
-PalabrasMagicas=Cˆrpse D˚m Ex
+PalabrasMagicas=C√∂rpse D√ªm Ex
 HechizeroMsg=Has invocado al guerrero de ultratumba contra 
 TargetMsg=ha invocado al guerrero de ultratumba sobre ti.
 Tipo=4
@@ -2076,8 +2076,8 @@ Resis=0
 
 [HECHIZO34]
 Nombre=Por el culo
-Desc=Le das por el ano a tu contrincante, quien deber· ponerse luego pomadita.
-PalabrasMagicas=P'ER LE CŸ|_0
+Desc=Le das por el ano a tu contrincante, quien deber√° ponerse luego pomadita.
+PalabrasMagicas=P'ER LE C√ô|_0
 HechizeroMsg=Se la has dado por el culo a 
 TargetMsg=te la ha dado por el culo.
 Tipo=1
@@ -2208,7 +2208,7 @@ Nombre=Tormenta Pretoriana
 Desc=Tormenta Pretoriana
 PalabrasMagicas=EN VAX ON TAR
 HechizeroMsg=Has lanzado tormenta sobre 
-TargetMsg=lanzÛ tormenta de fuego sobre vos.
+TargetMsg=lanz√≥ tormenta de fuego sobre vos.
 PropioMsg=Has lanzado tormenta sobre ti.
 Tipo=1
 WAV=27
@@ -2275,7 +2275,7 @@ Nombre=Flecha Cazador Pretoriano
 Desc=Flecha Cazador Pretoriano
 PalabrasMagicas= 
 HechizeroMsg=Has lanzado una flecha sobre 
-TargetMsg=lanzÛ un flechazo sobre vos.
+TargetMsg=lanz√≥ un flechazo sobre vos.
 PropioMsg=Has lanzado un flechazo sobre ti.
 Tipo=1
 WAV=10
@@ -2336,7 +2336,7 @@ Resis=0
 [HECHIZO38] 'Solo utiliza el wav, palabras, FX, loops. NO ASIGNAR A NPCS! (solo Pretorianos)
 Nombre=Remover Invisibilidad
 Desc=Hechizo invocado por el mago pretoriano unicamente
-PalabrasMagicas=AN ROHL ŸX MAœO
+PalabrasMagicas=AN ROHL √ôX MA√èO
 WAV=16
 FXgrh=2
 RemueveInvisibilidadParcial=1
@@ -2360,12 +2360,12 @@ MinSkill=101
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 [HECHIZO40]
-Nombre=BendiciÛn de Sortilego
-Desc=Provoca una profunda curaciÛn de las heridas m·s terribles. Restaura entre 12 y 35 puntos de salud.
-PalabrasMagicas=In Nomine Patris et Fili et Spiritus Sancti, AmÈn.
-HechizeroMsg=Has lanzado tu bendiciÛn de Sortilego sobre 
-TargetMsg=te ha lanzado su bendiciÛn de Sortilego.
-PropioMsg=Te has lanzado la bendiciÛn de Sortilego.
+Nombre=Bendici√≥n de Sortilego
+Desc=Provoca una profunda curaci√≥n de las heridas m√°s terribles. Restaura entre 12 y 35 puntos de salud.
+PalabrasMagicas=In Nomine Patris et Fili et Spiritus Sancti, Am√©n.
+HechizeroMsg=Has lanzado tu bendici√≥n de Sortilego sobre 
+TargetMsg=te ha lanzado su bendici√≥n de Sortilego.
+PropioMsg=Te has lanzado la bendici√≥n de Sortilego.
 Tipo=1
 WAV=18
 FXgrh=9
@@ -2424,8 +2424,8 @@ Resis=0
 
 [HECHIZO41]
 Nombre=Desaturdir
-Desc=Con este conjuro podr·s contrarrestar los nefastos efectos del hechizo aturdir.
-PalabrasMagicas=AN ASYNC GAM AL€
+Desc=Con este conjuro podr√°s contrarrestar los nefastos efectos del hechizo aturdir.
+PalabrasMagicas=AN ASYNC GAM AL√õ
 HechizeroMsg=Le has quitado su aturdimiento a 
 TargetMsg=te ha quitado el aturdimiento.
 PropioMsg=Te has quitado el aturdimiento.
@@ -2487,11 +2487,11 @@ Resis=0
 
 [HECHIZO42]
 Nombre=Mimetismo
-Desc=Con este encantamiento adquirir·s temporalmente la apariencia fÌsica de otra persona.
-PalabrasMagicas=Cimim Ux MaÔo
+Desc=Con este encantamiento adquirir√°s temporalmente la apariencia f√≠sica de otra persona.
+PalabrasMagicas=Cimim Ux Ma√Øo
 HechizeroMsg=Haz adquirido la apariencia de 
 TargetMsg=ha adquirido magicamente tu apariencia.
-PropioMsg=Generas una ilusiÛn en tu apariencia actual.
+PropioMsg=Generas una ilusi√≥n en tu apariencia actual.
 Tipo=2
 WAV=16
 FXgrh=0
@@ -2550,8 +2550,8 @@ Resis=0
 
 [HECHIZO43]
 Nombre=El Ojo del Demiurgo
-Desc=Un haz de luz divina te permitir· momentaneamente ver aquello que resulta invisible a los ojos mortales.
-PalabrasMagicas=An Maœo naq vÔk·
+Desc=Un haz de luz divina te permitir√° momentaneamente ver aquello que resulta invisible a los ojos mortales.
+PalabrasMagicas=An Ma√èo naq v√Øk√°
 HechizeroMsg=Has invocado el Ojo del Demiurgo para ver lo invisible.
 TargetMsg=te ha invocado el Ojo del Demiurgo para ver lo invisible.
 PropioMsg=Has invocado el Ojo del Demiurgo para ver lo invisible.
@@ -2675,7 +2675,7 @@ Resis=0
 
 [HECHIZO45]
 Nombre=Drenar
-Desc=Un hechizo maligno que drena del espÌritu del enemigo su salud, y se la entrega al conjurador.
+Desc=Un hechizo maligno que drena del esp√≠ritu del enemigo su salud, y se la entrega al conjurador.
 PalabrasMagicas= 
 HechizeroMsg=Has drenado vida de
 TargetMsg=te ha drenado vida.
@@ -2799,7 +2799,7 @@ Resis=1
 
 [HECHIZO45]
 Nombre=Drenar
-Desc=Un hechizo maligno que drena del espÌritu del enemigo su salud, y se la entrega al conjurador.
+Desc=Un hechizo maligno que drena del esp√≠ritu del enemigo su salud, y se la entrega al conjurador.
 PalabrasMagicas= 
 HechizeroMsg=Has drenado vida de
 TargetMsg=te ha drenado vida.
@@ -2861,8 +2861,8 @@ Resis=1
 
 [HECHIZO46]
 Nombre=Invocar Mascota
-Desc=Podr·s lograr que tu m·s lejana mascota regrese a tÌ.
-PalabrasMagicas=Ts‰lo Kai'Tor
+Desc=Podr√°s lograr que tu m√°s lejana mascota regrese a t√≠.
+PalabrasMagicas=Ts√§lo Kai'Tor
 HechizeroMsg=Has invocado una mascota contra 
 TargetMsg=ha invocado una mascota sobre ti.
 Tipo=4
@@ -2922,11 +2922,11 @@ Resis=0
 '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 [HECHIZO47]
-Nombre=Flecha LadrÛn Pretoriano
-Desc=Flecha LadrÛn Pretoriano
+Nombre=Flecha Ladr√≥n Pretoriano
+Desc=Flecha Ladr√≥n Pretoriano
 PalabrasMagicas= 
 HechizeroMsg=Has lanzado una flecha sobre 
-TargetMsg=lanzÛ un flechazo sobre vos.
+TargetMsg=lanz√≥ un flechazo sobre vos.
 PropioMsg=Has lanzado un flechazo sobre ti.
 Tipo=1
 WAV=10
