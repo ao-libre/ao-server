@@ -7296,14 +7296,10 @@ MaxDef=85
 MinDef=80
 Valor=0
 Crucial=0
-CP1=GUERRERO
-CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
-CP5=CLERIGO
-CP6=PIRATA
-CP7=ASESINO
-CP8=TRABAJADOR
+LingH=5
+LingP=5
+LingO=5
+SkHerreria=101
 NoSeCae=1
 
 [OBJ617]]]'2da Jerarq
@@ -8047,7 +8043,6 @@ CP4=CLERIGO
 CP5=ASESINO
 CP6=LADRON
 CP7=BANDIDO
-CP8=GUERRERO
 CP9=BARDO
 CP10=DRUIDA
 CP11=TRABAJADOR
@@ -8659,9 +8654,9 @@ DefensaMagicaMax=210
 DefensaMagicaMin=200
 Valor=1500000
 Crucial=0
-LingH=3000
-LingP=2000
-LingO=3000
+LingH=3
+LingP=2
+LingO=3
 SkHerreria=101
 ImpideParalizar=1
 ImpideInmobilizar=1
@@ -13972,12 +13967,18 @@ ObjType=38
 Agarrable=1
 
 [OBJ1131]
+Name=Banco iglesia
+GrhIndex=5747
+ObjType=20
+Agarrable=1
+
+[OBJ1132]
 Name=Banco iglesia Adornado
 GrhIndex=274
 ObjType=20
 Agarrable=1
 
-[OBJ1132]
+[OBJ1133]
 Name=Ropaje sombrio
 GrhIndex=1470
 ObjType=3
@@ -13991,7 +13992,7 @@ LingP=9
 LingO=9
 SkHerreria=101
 
-[OBJ1133]
+[OBJ1134]
 Name=Neo's Shield
 GrhIndex=4860
 ObjType=16
@@ -14010,7 +14011,7 @@ LingO=0
 SkHerreria=101
 NoSeCae=1
 
-[OBJ1134]
+[OBJ1135]
 Name=Arco Divino
 GrhIndex=750
 ObjType=2
@@ -14026,7 +14027,7 @@ Crucial=0
 Madera=1
 SkCarpinteria=101
 
-[OBJ1135]
+[OBJ1136]
 Name=Ira de Dios
 GrhIndex=609
 ObjType=24
