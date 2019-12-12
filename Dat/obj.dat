@@ -13972,18 +13972,12 @@ ObjType=38
 Agarrable=1
 
 [OBJ1131]
-Name=Banco iglesia
-GrhIndex=5747
-ObjType=20
-Agarrable=1
-
-[OBJ1132]
 Name=Banco iglesia Adornado
 GrhIndex=274
 ObjType=20
 Agarrable=1
 
-[OBJ1133]
+[OBJ1132]
 Name=Ropaje sombrio
 GrhIndex=1470
 ObjType=3
@@ -13997,7 +13991,7 @@ LingP=9
 LingO=9
 SkHerreria=101
 
-[OBJ1134]
+[OBJ1133]
 Name=Neo's Shield
 GrhIndex=4860
 ObjType=16
@@ -14016,7 +14010,7 @@ LingO=0
 SkHerreria=101
 NoSeCae=1
 
-[OBJ1135]
+[OBJ1134]
 Name=Arco Divino
 GrhIndex=750
 ObjType=2
@@ -14032,7 +14026,7 @@ Crucial=0
 Madera=1
 SkCarpinteria=101
 
-[OBJ1136]
+[OBJ1135]
 Name=Ira de Dios
 GrhIndex=609
 ObjType=24
