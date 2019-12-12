@@ -1,5 +1,5 @@
 [INIT]
-NumObjs=34
+NumObjs=36
 
 [OBJ1] 'Flecha
 Index=480
@@ -13,19 +13,19 @@ Index=552
 [OBJ4] 'Flecha +3
 Index=553
 
-[OBJ5] 'Laud M醙ico
+[OBJ5] 'Laud M谩gico
 Index=696
 
-[OBJ6] 'Laud 蒷fico
+[OBJ6] 'Laud 脡lfico
 Index=1049
 
-[OBJ7] 'Flauta M醙ica
+[OBJ7] 'Flauta M谩gica
 Index=208
 
-[OBJ8] 'Flauta 蒷fica
+[OBJ8] 'Flauta 脡lfica
 Index=1050
 
-[OBJ9] ' B醕ulo Engarzado
+[OBJ9] ' B谩culo Engarzado
 Index=660
 
 [OBJ10] 'Arco de Cazador
@@ -49,7 +49,7 @@ Index=474
 [OBJ16] 'Galera
 Index=475
 
-[OBJ17] 'Gale髇
+[OBJ17] 'Gale贸n
 Index=476
 
 [OBJ18] 'Tambor
@@ -76,29 +76,35 @@ Index=733
 [OBJ25] 'Banqueta
 Index=799
 
-[OBJ26] 'Mueble R鷖tico 
+[OBJ26] 'Mueble R煤stico 
 Index=167
 
-[OBJ27] 'Mueble R鷖tico
+[OBJ27] 'Mueble R煤stico
 Index=756
 
-[OBJ28] 'Sill髇
+[OBJ28] 'Sill贸n
 Index=748
 
-[OBJ29] 'Sill髇
+[OBJ29] 'Sill贸n
 Index=788
 
-[OBJ30] 'Sill髇
+[OBJ30] 'Sill贸n
 Index=789
 
-[OBJ31] 'Sill髇 Azul
+[OBJ31] 'Sill贸n Azul
 Index=790
 
-[OBJ32] 'Sill髇 Azul Doble
+[OBJ32] 'Sill贸n Azul Doble
 Index=791
 
 [OBJ33] 'Armario
 Index=800
 
-[OBJ34] 'Ca馻 de Pescar
+[OBJ34] 'Ca帽a de Pescar
 Index=138
+
+[OBJ35] 
+Index=1134
+
+[OBJ36] 
+Index=1135
