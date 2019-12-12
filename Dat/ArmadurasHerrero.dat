@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=63
+NumArmaduras=65
 
 
 [Armadura1] ' Casco de hierro
@@ -47,7 +47,7 @@ Index=667
 [Armadura15] ' Cota de Mallas Larga (E/G)
 Index=975
 
-[Armadura16] ' Armadura de Campe髇
+[Armadura16] ' Armadura de Campe贸n
 Index=903
 
 [Armadura17] ' Armadura placas
@@ -92,7 +92,7 @@ Index=356
 [Armadura30] ' Armadura de Elite (E/G)
 Index=672
 
-[Armadura31] ' Armadura Bru駃da (E/G)
+[Armadura31] ' Armadura Bru帽ida (E/G)
 Index=500
 
 [Armadura32] ' Armadura Pesada de Hierro y Bronce (E/G)
@@ -110,25 +110,25 @@ Index=487
 [Armadura36] ' Armadura Legendaria
 Index=485
 
-[Armadura37] ' Armadura de Drag髇 (Hombre)
+[Armadura37] ' Armadura de Drag贸n (Hombre)
 Index=481
 
-[Armadura38] ' Armadura de Drag髇 (Mujer)
+[Armadura38] ' Armadura de Drag贸n (Mujer)
 Index=482
 
-[Armadura39] ' Armadura de Drag髇 (Enano/Enana)
+[Armadura39] ' Armadura de Drag贸n (Enano/Enana)
 Index=483
 
-[Armadura40] ' Manto del Drag髇 (H/E/EO)
+[Armadura40] ' Manto del Drag贸n (H/E/EO)
 Index=906
 
-[Armadura41] ' Anillo M醙ico
+[Armadura41] ' Anillo M谩gico
 Index=697
 
-[Armadura42] ' Anillo de resistencia M醙ica
+[Armadura42] ' Anillo de resistencia M谩gica
 Index=698
 
-[Armadura43] ' Anillo de Disoluci髇 M醙ica
+[Armadura43] ' Anillo de Disoluci贸n M谩gica
 Index=699
 
 [Armadura44] ' Armadura Real
@@ -143,10 +143,10 @@ Index=680
 [Armadura47] ' Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
 Index=520
 
-[Armadura48] ' Armadura Nobil韘ima
+[Armadura48] ' Armadura Nobil铆sima
 Index=629
 
-[Armadura49] ' Armadura Nobil韘ima (E/G)
+[Armadura49] ' Armadura Nobil铆sima (E/G)
 Index=681
 
 [Armadura50] ' Armadura de Ilustre Caballero
@@ -167,19 +167,19 @@ Index=369
 [Armadura55] ' Armadura Legionaria (E/G)
 Index=379
 
-[Armadura56] ' Armadura de Gran Sacerdote Demon韆co
+[Armadura56] ' Armadura de Gran Sacerdote Demon铆aco
 Index=684
 
-[Armadura57] ' Armadura L骲rega
+[Armadura57] ' Armadura L贸brega
 Index=683
 
-[Armadura58] ' Armadura L骲rega (H/E/EO-M)
+[Armadura58] ' Armadura L贸brega (H/E/EO-M)
 Index=635
 
-[Armadura59] ' Armadura L骲rega (E/G)
+[Armadura59] ' Armadura L贸brega (E/G)
 Index=685
 
-[Armadura60] ' Armadura de Peque駉 Pandemonium (E/G)
+[Armadura60] ' Armadura de Peque帽o Pandemonium (E/G)
 Index=695
 
 [Armadura61] ' Armadura Infame
@@ -190,3 +190,9 @@ Index=700
 
 [Armadura63] ' Ropaje Sombrio
 Index=1132
+
+[Armadura64] ' Armadura de campeon
+Index=616
+
+[Armadura65] ' Neo's SHields
+Index=1133
