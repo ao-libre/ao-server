@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=65
+NumArmaduras=67
 
 
 [Armadura1] ' Casco de hierro
@@ -196,3 +196,9 @@ Index=616
 
 [Armadura65] ' Neo's SHields
 Index=1133
+
+[Armadura66]
+Index=1137
+
+[Armadura67]
+Index=1138
