@@ -14037,3 +14037,19 @@ HechizoIndex=32
 Madera=1
 SkCarpinteria=101
 Log=1
+
+[OBJ1136]
+Name=Armadura Omnineo
+GrhIndex=20239
+ObjType=3
+NumRopaje=479
+Agarrable=0
+MaxDef=200
+MinDef=200
+Valor=2000000
+Crucial=0
+LingH=1
+LingP=0
+LingO=0
+SkHerreria=101
+Nosecae=1
