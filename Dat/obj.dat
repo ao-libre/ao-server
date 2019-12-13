@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1137
+NumOBJs=1138
 
 
 
@@ -14008,7 +14008,6 @@ LingH=1
 LingP=0
 LingO=0
 SkHerreria=101
-NoSeCae=1
 
 [OBJ1134]
 Name=Arco Divino
@@ -14052,7 +14051,6 @@ LingH=1
 LingP=0
 LingO=0
 SkHerreria=101
-Nosecae=1
 
 [OBJ1137]
 Name=Armadura Omnineo (E/G)
@@ -14069,4 +14067,19 @@ LingH=1
 LingP=0
 LingO=0
 SkHerreria=101
-Nosecae=1
+
+[OBJ1138]
+Name=Espada Argentum
+GrhIndex=18997
+ObjType=2
+Agarrable=0
+Anim=101
+RazaEnanaAnim=65
+MinHit=1000
+MaxHit=1000
+Valor=188000
+Crucial=0
+LingH=5
+LingP=4
+LingO=3
+SkHerreria=101
