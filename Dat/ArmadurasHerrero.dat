@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=65
+NumArmaduras=66
 
 
 [Armadura1] ' Casco de hierro
@@ -196,3 +196,6 @@ Index=616
 
 [Armadura65] ' Neo's SHields
 Index=1133
+
+[Armadura66] ' Armadura Omnineo
+Index=1136
