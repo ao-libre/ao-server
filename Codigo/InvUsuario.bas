@@ -1698,7 +1698,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .flags.Privilegios And PlayerType.User Then
                             Call QuitarUserInvItem(UserIndex, Slot, 1)
                             Call UserDie(UserIndex)
-                            Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_WARNING)
+                            Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)
 
                         End If
 
