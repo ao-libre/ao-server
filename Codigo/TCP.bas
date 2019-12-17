@@ -1570,7 +1570,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If .Invent.CascoEqpSlot = 0 Then .Char.CascoAnim = NingunCasco
         If .Invent.WeaponEqpSlot = 0 Then .Char.WeaponAnim = NingunArma
     
-        .CurrentInventorySlots = Call getMaxInventorySlots(Userindex)
+        .CurrentInventorySlots = getMaxInventorySlots(Userindex)
 
         If (.flags.Muerto = 0) Then
             .flags.SeguroResu = False
