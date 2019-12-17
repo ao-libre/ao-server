@@ -36,7 +36,7 @@ NPCS ARKHEIN
 NPCS ESPERANZA
 NPCS CIUDAD PERDIDA
 NPCS GUARDIAS ARMADA
-NPCS GUARDIAS LEGIÓN
+NPCS GUARDIAS LEGION
 NPCS NO HOSTILES
 NPCS HOSTILES
 NPCS PRETORIANOS
@@ -44,7 +44,7 @@ NPCS QUESTS
 
 
 ##############################################
-##############NÚMEROS LIBRES##################
+##############NUMEROS LIBRES##################
 ##############################################
 
 36
@@ -56,7 +56,7 @@ NPCS QUESTS
 580
 581
 
-Actual Npc con Nro más alto: 616
+Actual Npc con Nro mas alto: 616
 
 
 ##############################################
@@ -64,7 +64,7 @@ Actual Npc con Nro más alto: 616
 ##############################################
 
 1) lOS NPCs pretorianos se numeran del 900 a 904 (NO CAMBIAR)
-2) Al crear un nuevo NPCS traten de asignar primero los números libres que se detallan arriba, intentando asignar pirmero los números más bajos.
+2) Al crear un nuevo NPCS traten de asignar primero los numeros libres que se detallan arriba, intentando asignar pirmero los numeros mas bajos.
 
 
 ##############################################
@@ -73,7 +73,7 @@ Actual Npc con Nro más alto: 616
 
 
 [INIT]
-'aca va el número de NPC más alto, NO la cantidad de NPCs.
+'aca va el numero de NPC mas alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
 NumNPCs=929
 
@@ -87,7 +87,7 @@ NumNPCs=929
 [NPC34] 'Propiedades Ulla 
 Name=Cullighan
 NpcType=0
-Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. ¡acérquese y sea dueño de una de las exclusivas casas de Ullathorpe. ¡Será admirado por toda la población!
+Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. acerquese y sea dueño de una de las exclusivas casas de Ullathorpe. Sera admirado por toda la poblacion!
 Head=33
 Heading=3
 Body=240
@@ -112,7 +112,7 @@ BackUp=1
 [NPC35] 'Propiedades Nix
 Name=Moraday
 NpcType=0
-Desc=¿Ha descubierto que la ciudad de Nix es la más hermosa de todo Argentum, verdad? ¡Pues qué mejor que ser un terrateniente de este paraíso! ¡Acércate que haremos negocios!
+Desc=Ha descubierto que la ciudad de Nix es la mas hermosa de todo Argentum, verdad? Pues que mejor que ser un terrateniente de este paraiso! Acercate que haremos negocios!
 Head=35
 Heading=3
 Body=239
@@ -143,7 +143,7 @@ BackUp=1
 [NPC52] 'Propiedades Bander
 Name=Rantarisk
 NpcType=0
-Desc=De lejos pude ver vuestro blazón, seguro busca una de las moradas más lujosas de todo el Argentum. En la ciudad real de Banderbill es donde deben habitar la flor y la nata de la nobleza ¡Venga y hagamos negocios!
+Desc=De lejos pude ver vuestro blazon, seguro busca una de las moradas mas lujosas de todo el Argentum. En la ciudad real de Banderbill es donde deben habitar la flor y la nata de la nobleza Venga y hagamos negocios!
 Head=32
 Heading=3
 Body=241
@@ -181,7 +181,7 @@ BackUp=1
 
 [NPC62] 'Propiedades Lindos
 Name=Guldorf
-Desc=Si está buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras exclusivas residencias, y cambie su vida para siempre.
+Desc=Si esta buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras exclusivas residencias, y cambie su vida para siempre.
 Head=36
 Body=234
 Heading=3
@@ -207,7 +207,7 @@ BackUp=1
 
 [NPC101] ' Propiedades Arkhein
 Name=Vendedor de propiedades.
-Desc=En estas tierras demoníacas están las mejores residencias para los miembros de la Legión Oscura... Si no eres legionario puedes también vivir acá, ¡pero os aseguro que los augura un infierno! jajaja!
+Desc=En estas tierras demoniacas estan las mejores residencias para los miembros de la Legion Oscura... Si no eres legionario puedes tambien vivir aca, pero os aseguro que los augura un infierno! jajaja!
 Head=34
 Body=170
 Heading=3
@@ -241,7 +241,7 @@ BackUp=1
 [NPC5]
 Name=Sacerdote
 NpcType=1
-Desc=¡Hola, hijo mío! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre mí. 
+Desc=Hola, hijo mio! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre mi. 
 Head=3
 Heading=3
 Body=49
@@ -259,7 +259,7 @@ BackUp=0
 [NPC119]
 Name=Sacerdote
 NpcType=1
-Desc=¡Hola, hijo mío! Soy el sacerdote de estas tierras. Si eres newbie te podré resucitar, sólo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
+Desc=Hola, hijo mio! Soy el sacerdote de estas tierras. Si eres newbie te podre resucitar, solo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
 Head=3
 Heading=3
 Body=49
@@ -298,7 +298,7 @@ BackUp=0
 [NPC98]
 Name=Demonio Legionario
 NpcType=5
-Desc=Si deseas unirte a la Legión Oscura escribe /ENLISTAR
+Desc=Si deseas unirte a la Legion Oscura escribe /ENLISTAR
 Head=0
 Heading=3
 Body=405
@@ -322,7 +322,7 @@ BackUp=0
 
 [NPC60] 'Entrenador de Banderbill
 Name=O'Riley de Banderbill
-Desc=¡Hola amigo! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura sólo debes pedirmelo. (Escribe /ENTRENAR)
+Desc=Hola amigo! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura solo debes pedirmelo. (Escribe /ENTRENAR)
 NpcType=3
 Head=6
 Heading=3
@@ -339,9 +339,9 @@ CI1=566
 CI2=565
 CI3=564
 CI4=516
-CN1=Murciélago
+CN1=Murcielago
 CN2=Serpiente
-CN3=Escorpión
+CN3=Escorpion
 CN4=Goblin
 BackUp=0
 
@@ -350,7 +350,7 @@ BackUp=0
 [NPC108] 'Entrenador de Arkhein
 Name=O'Riley de Arkhein
 NpcType=3
-Desc=¡Hola amigo! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversión en estos festejos.
+Desc=Hola amigo! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversion en estos festejos.
 Head=6
 Heading=3
 Body=57
@@ -371,7 +371,7 @@ CN1=Hormiga gigante
 CN2=Tortuga gigante
 CN3=Ogro
 CN4=Liche
-CN5=Duende Mágico
+CN5=Duende Magico
 BackUp=0
 
 
@@ -402,7 +402,7 @@ BackUp=0
 [NPC24]
 Name=Banquero
 NpcType=4
-Desc=Hola, bienvenido a la cadena de finanzas Goliath. Somos la cadena más grande en Argentum, contamos con bancos en las ciudades más importantes.
+Desc=Hola, bienvenido a la cadena de finanzas Goliath. Somos la cadena mas grande en Argentum, contamos con bancos en las ciudades mas importantes.
 Head=503
 Heading=3
 Body=201
@@ -455,12 +455,12 @@ Domable=0
 Comercia=1
 TipoItems=11
 NROITEMS=6
-Obj1=36-1000 'Poción Amarilla
-Obj2=37-1000 'Poción Azul
-Obj3=38-1000 'Poción Roja
-Obj4=39-1000 'Poción Verde
-Obj5=166-1000 'Poción Violeta
-Obj6=645-1000 'Poción Negra
+Obj1=36-1000 'Pocion Amarilla
+Obj2=37-1000 'Pocion Azul
+Obj3=38-1000 'Pocion Roja
+Obj4=39-1000 'Pocion Verde
+Obj5=166-1000 'Pocion Violeta
+Obj6=645-1000 'Pocion Negra
 BackUp=1
 
 #############################################
@@ -468,7 +468,7 @@ BackUp=1
 [NPC33] 'Leñador
 Name=Leñador
 NpcType=0
-Desc=¡Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
+Desc=Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
 Heading=3
 Body=1
@@ -489,7 +489,7 @@ BackUp=1
 [NPC44] 'Carpintero
 Name=Carpintero
 NpcType=0
-Desc=¡Hola muchacho!, bienvenido a mi humilde Carpintería.
+Desc=Hola muchacho!, bienvenido a mi humilde Carpinteria.
 Head=2
 Heading=3
 Body=1
@@ -503,7 +503,7 @@ Comercia=1
 TipoItems=20
 NROITEMS=9
 Obj1=163-1000 	'Cuchara
-Obj2=167-1000 	'Mueble Rústico
+Obj2=167-1000 	'Mueble Rustico
 Obj3=168-1000 	'Silla
 Obj4=198-1000 	'Serrucho
 Obj5=480-10000 	'Flecha
@@ -518,7 +518,7 @@ BackUp=1
 [NPC41] 'Pescador Quieto
 Name=Pescador
 NpcType=0
-Desc=¡Bienvenido al gremio de pescadores! 
+Desc=Bienvenido al gremio de pescadores! 
 Head=2
 Heading=3
 Body=3
@@ -541,7 +541,7 @@ BackUp=1
 [NPC58] 'Pescador Movil
 Name=Pescador
 NpcType=0
-Desc=¡Bienvenido al gremio de pescadores!
+Desc=Bienvenido al gremio de pescadores!
 Head=101
 Heading=3
 Body=3
@@ -585,7 +585,7 @@ BackUp=1
 [NPC80] 'Mercader
 Name=Mercader
 NpcType=0
-Desc=¡¡Hola buen amigo, compro y vendo todo tipo de mercancías!!
+Desc=Hola buen amigo, compro y vendo todo tipo de mercancias!!
 Head=2
 Heading=3
 Body=3
@@ -611,7 +611,7 @@ BackUp=1
 [NPC9] 'Provisiones Newbie Dungeon
 Name=Ralph
 NpcType=0
-Desc=¡Hola, pequeño aventurero, tengo aquí unas mercaderías para saciar tu hambre y sed!.
+Desc=Hola, pequeño aventurero, tengo aqui unas mercaderias para saciar tu hambre y sed!.
 Head=504
 Heading=3
 Body=202
@@ -650,7 +650,7 @@ BackUp=1
 [NPC42] 'Provisiones camino Ulla-Bander
 Name=Antogne
 NpcType=0
-Desc=¡Hola aventurero! Si estais hambriento habeis venido al lugar apropiador, tengo todo tipo de frutas.
+Desc=Hola aventurero! Si estais hambriento habeis venido al lugar apropiador, tengo todo tipo de frutas.
 Head=505
 Heading=3
 Body=202
@@ -689,7 +689,7 @@ BackUp=1
 [NPC114] 'Sastre Armada Real. NO CAMBIAR EL NAME=SR
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastrería Real.
+Desc=Bienvenido a la Sastreria Real.
 Head=171
 Heading=3
 Body=174
@@ -703,15 +703,15 @@ Comercia=1
 TipoItems=3
 NROITEMS=13
 Obj1=675-1000 'Vestimenta Imperial
-Obj2=516-1000 'Túnica de Maga del Imperio (H/E/EO-M)
-Obj3=517-1000 'Túnica de Mago del Imperio
+Obj2=516-1000 'Tunica de Maga del Imperio (H/E/EO-M)
+Obj3=517-1000 'Tunica de Mago del Imperio
 Obj4=372-1000 'Manto de Sacerdote del Imperio
 Obj5=521-1000 'Armadura Real
-Obj6=679-1000 'Túnica Conspicua de Mago Imperial
+Obj6=679-1000 'Tunica Conspicua de Mago Imperial
 Obj7=520-1000 'Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
 Obj8=680-1000 'Armadura de Gran Sacerdote Imperial
-Obj9=629-1000 'Armadura Nobilísima
-Obj10=687-1000 'Túnica Palatina
+Obj9=629-1000 'Armadura Nobilisima
+Obj10=687-1000 'Tunica Palatina
 Obj11=691-1000 'Armadura de Ilustre Caballero
 Obj12=693-1000 'Armadura Magna (H/E/EO-M)
 Obj13=1038-1000 'Escudo Real
@@ -722,7 +722,7 @@ BackUp=1
 [NPC159]'Sastre Armada Real Bajos. NO CAMBIAR EL NAME=SR
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastrería Real.
+Desc=Bienvenido a la Sastreria Real.
 Head=309
 Heading=3
 Body=175
@@ -736,23 +736,23 @@ Comercia=1
 TipoItems=3
 NROITEMS=10
 Obj1=676-1000 'Vestimenta Imperial (E/G)
-Obj2=549-1000 'Túnica de Mago del Imperio (E/G)
+Obj2=549-1000 'Tunica de Mago del Imperio (E/G)
 Obj3=1039-1000 'Manto de Sacerdote del Imperio (E/G)
 Obj4=492-1000 'Armadura Real (E/G)
-Obj5=682-1000 'Túnica Conspicua de Mago Imperial (E/G)
+Obj5=682-1000 'Tunica Conspicua de Mago Imperial (E/G)
 Obj6=1040-1000 'Armadura de Gran Sacerdote Imperial (E/G)
-Obj7=681-1000 'Armadura Nobilísima (E/G)
-Obj8=688-1000 'Pequeña Túnica Palatina (E/G)
+Obj7=681-1000 'Armadura Nobilisima (E/G)
+Obj8=688-1000 'Pequeña Tunica Palatina (E/G)
 Obj9=694-1000 'Armadura de Ilustre Caballero (E/G)
 Obj10=1038-1000 'Escudo Real
 BackUp=1
 
 #############################################
 
-[NPC115] 'Sastre Legión Oscura. NO CAMBIAR EL NAME=SC
+[NPC115] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
 Name=SC
 NpcType=0
-Desc=¡AQUÍ OBTENDRÁS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRÁS TU ARMADURA LEGIONARIA!
 Head=0
 Heading=3
 Body=69
@@ -766,25 +766,25 @@ Comercia=1
 TipoItems=3
 NROITEMS=12
 Obj1=677-1000 'Vestimenta Legionaria
-Obj2=509-1000 'Túnica de Maga Oscura (H/E/EO-M)
-Obj3=518-1000 'Túnica de Mago Oscuro
-Obj4=523-1000 'Manto de Sacerdote Demoníaco
+Obj2=509-1000 'Tunica de Maga Oscura (H/E/EO-M)
+Obj3=518-1000 'Tunica de Mago Oscuro
+Obj4=523-1000 'Manto de Sacerdote Demoniaco
 Obj5=369-1000 'Armadura Legionaria
-Obj6=634-1000 'Túnica Egregia de Mago Oscuro
-Obj7=684-1000 'Armadura de Gran Sacerdote Demoníaco
-Obj8=635-1000 'Armadura Lóbrega (H/E/EO-M)
-Obj9=683-1000 'Armadura Lóbrega
-Obj10=689-1000 'Túnica Avernal
+Obj6=634-1000 'Tunica Egregia de Mago Oscuro
+Obj7=684-1000 'Armadura de Gran Sacerdote Demoniaco
+Obj8=635-1000 'Armadura Lobrega (H/E/EO-M)
+Obj9=683-1000 'Armadura Lobrega
+Obj10=689-1000 'Tunica Avernal
 Obj11=701-1000 'Armadura Infame
 Obj12=1037-1000 'Escudo Legionario
 BackUp=1
 
 ##############################################
 
-[NPC160] 'Sastre Legión Oscura. NO CAMBIAR EL NAME=SC
+[NPC160] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
 Name=SC
 NpcType=0
-Desc=¡AQUÍ OBTENDRÁS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRÁS TU ARMADURA LEGIONARIA!
 Head=318
 Heading=3
 Body=177
@@ -798,13 +798,13 @@ Comercia=1
 TipoItems=3
 NROITEMS=10
 Obj1=678-1000 'Vestimenta Legionaria (E/G)
-Obj2=558-1000 'Túnica de Mago Oscuro (E/G)
-Obj3=1041-1000 'Manto de Sacerdote Demoníaco (E/G)
+Obj2=558-1000 'Tunica de Mago Oscuro (E/G)
+Obj3=1041-1000 'Manto de Sacerdote Demoniaco (E/G)
 Obj4=379-1000 'Armadura Legionaria (E/G)
-Obj5=686-1000 'Túnica Egregia de Mago Oscuro (E/G)
-Obj6=1042-1000 'Armadura de Gran Sacerdote Demoníaco (E/G)
-Obj7=685-1000 'Armadura Lóbrega (E/G)
-Obj8=690-1000 'Pequeña Túnica Avernal (E/G)
+Obj5=686-1000 'Tunica Egregia de Mago Oscuro (E/G)
+Obj6=1042-1000 'Armadura de Gran Sacerdote Demoniaco (E/G)
+Obj7=685-1000 'Armadura Lobrega (E/G)
+Obj8=690-1000 'Pequeña Tunica Avernal (E/G)
 Obj9=695-1000 'Armadura de Pequeño Pandemonium (E/G)
 Obj10=1037-1000 'Escudo Legionario
 BackUp=1
@@ -827,7 +827,7 @@ Comercia=1
 TipoItems=3
 NROITEMS=15
 Obj1=879-1000 'Vestido Bordado de Gala (H/E/EO-M)
-Obj2=880-1000 'Túnica del Oráculo (H/E/EO-M)
+Obj2=880-1000 'Tunica del Oraculo (H/E/EO-M)
 Obj3=884-1000 'Cota de Anillas Compuesta (H/E/EO-M)
 Obj4=885-1000 'Armadura Liviana de Hierro (H/E/EO-M)
 Obj5=886-1000 'Vestido de Arquera (H/E/EO-M)
@@ -835,7 +835,7 @@ Obj6=891-1000 'Armadura de Cuero de Oso Pardo (H/E/EO-M)
 Obj7=892-1000 'Coraza Compuesta Roja (H/E/EO-M)
 Obj8=893-1000 'Anillas Con Manto Verde (H/E/EO-M)
 Obj9=894-1000 'Armadura de Cruzado (H/E/EO-M)
-Obj10=896-1000 'Túnica de Morgana (H/E/EO-M)
+Obj10=896-1000 'Tunica de Morgana (H/E/EO-M)
 Obj11=899-1000 'Cota de Peto Liso (H/E/EO-M)
 Obj12=900-1000 'Anillas Con Manto Desgastado (H/E/EO-M)
 Obj13=901-1000 'Coraza Compuesta de Mujer (H/E/EO-M)
@@ -847,7 +847,7 @@ BackUp=1
 
 [NPC121] 'Sastre Razas (humanos hombres)
 Name=Isaac
-Desc=¿Buscas ropas para HOMBRES HUMANOS? Entonces has hecho bien en acudir a mí.
+Desc=Buscas ropas para HOMBRES HUMANOS? Entonces has hecho bien en acudir a mi.
 Head=7
 Heading=3
 Body=240
@@ -861,19 +861,19 @@ Comercia=1
 TipoItems=3
 NROITEMS=7
 Obj1=882-1000 'Anillas Livianas de Aventurero (H/E/EO)
-Obj2=887-1000 'Cotas de Manto Marrón (H/E/EO)
+Obj2=887-1000 'Cotas de Manto Marron (H/E/EO)
 Obj3=888-1000 'Brial del Bosque (H/E/EO)
 Obj4=889-1000 'Anillas Con Manto Verde (H/E/EO)
 Obj5=890-1000 'Armadura de Cuero de Oso Pardo (H/E/EO)
 Obj6=897-1000 'Cota de Piquero (H/E/EO)
-Obj7=903-1000 'Armadura de Campeón (H/E/EO)
+Obj7=903-1000 'Armadura de Campeon (H/E/EO)
 BackUp=1
 
 ##############################################
 
-[NPC122] 'Sastre Razas (gnomos varón)
+[NPC122] 'Sastre Razas (gnomos varon)
 Name=Nelvi
-Desc=Poseo una gran cantidad de ropajes para los astutos GNOMOS, ¿Deseas algo en particular?
+Desc=Poseo una gran cantidad de ropajes para los astutos GNOMOS, Deseas algo en particular?
 Head=403
 Heading=3
 Body=294
@@ -894,23 +894,23 @@ Obj5=913-1000 'Ropaje de Ermitaño (E/G)
 Obj6=915-1000 'Ropaje de Aldeano (E/G)
 Obj7=916-1000 'Vestimenta Elegante (E/G)
 Obj8=917-1000 'Vestimenta de Minero (E/G)
-Obj9=918-1000 'Gabán de Cuero Pequeño (E/G)
+Obj9=918-1000 'Gaban de Cuero Pequeño (E/G)
 Obj10=919-1000 'Alifafe de Serpiente (E/G)
 Obj11=920-1000 'Ropaje de Herrero (E/G)
-Obj12=921-1000 'Túnica Sírica Elegante (E/G)
-Obj13=922-1000 'Traje de Capitán Pirata (E/G)
+Obj12=921-1000 'Tunica Sirica Elegante (E/G)
+Obj13=922-1000 'Traje de Capitan Pirata (E/G)
 Obj14=923-1000 'Traje de Noble (E/G)
 Obj15=924-1000 'Vestimenta de Explorador (E/G)
 Obj16=927-1000 'Alifafe de Lobo (E/G)
-Obj17=928-1000 'Barragán de Cazador (E/G)
-Obj18=929-1000 'Barragán Compuesto (E/G)
+Obj17=928-1000 'Barragan de Cazador (E/G)
+Obj18=929-1000 'Barragan Compuesto (E/G)
 Obj19=930-1000 'Toga de Aprendiz (E/G)
 Obj20=932-1000 'Sotana de Gran Hechicero (E/G)
 BackUp=1
 
 ##############################################
 
-[NPC123] 'Sastre Razas (gnomos mujer y varón)
+[NPC123] 'Sastre Razas (gnomos mujer y varon)
 Name=Aile
 Desc=Bienvenido, vendo ropas para los hermosos GNOMOS de estas tierras.
 Head=473
@@ -929,16 +929,16 @@ Obj1=909-1000 'Vestido de Novia (E/G-M)
 Obj2=914-1000 'Ropaje de Aldeana (E/G-M)
 Obj3=925-1000 'Peto de Gladiadora (E/G-M)
 Obj4=926-1000 'Hombreras de Amazona (E/G-M)
-Obj5=931-1000 'Vestido Elegante Púrpura (E/G)
+Obj5=931-1000 'Vestido Elegante Purpura (E/G)
 Obj6=933-1000 'Cota Liviana Verde (E/G-M)
 Obj7=935-1000 'Cotas con Peto Compuesto (E/G-M)
-Obj8=936-1000 'Túnica de Gran Hechicera (E/G-M)
+Obj8=936-1000 'Tunica de Gran Hechicera (E/G-M)
 Obj9=938-1000 'Traje de Bruja (E/G-M)
 Obj10=941-1000 'Traje Seductor de Pitonisa (E/G-M)
 Obj11=942-1000 'Vestido de Gala Turquesa (E/G-M)
 Obj12=934-1000 'Cotas Livianas (E/G)
-Obj13=937-1000 'Cota de Peto Púrpura (E/G)
-Obj14=939-1000 'Túnica de Gala Roja (E/G)
+Obj13=937-1000 'Cota de Peto Purpura (E/G)
+Obj14=939-1000 'Tunica de Gala Roja (E/G)
 Obj15=940-1000 'Cota de Mallas Enteriza (E/G)
 BackUp=1
 
@@ -959,19 +959,19 @@ Alineacion=0
 Comercia=1
 TipoItems=3
 NROITEMS=14
-Obj1=943-1000 'Sobrevesta Élfica (H/E/EO)
+Obj1=943-1000 'Sobrevesta Elfica (H/E/EO)
 Obj2=944-1000 'Vestido Aurë (H/E/EO-M)
 Obj3=945-1000 'Vestido de Gala Alcarinqua (H/E/EO-M)
-Obj4=946-1000 'Vestimentas de Poblador Élfico (H/E/EO)
-Obj5=947-1000 'Hábito Liviano de Ritual (H/E/EO)
+Obj4=946-1000 'Vestimentas de Poblador Elfico (H/E/EO)
+Obj5=947-1000 'Habito Liviano de Ritual (H/E/EO)
 Obj6=948-1000 'Vestido Bordado de Elite (H/E/EO-M)
-Obj7=949-1000 'Hábito Liviano de Ritual (H/E/EO-M)
-Obj8=950-1000 'Sírica Élfica Rojiza (H/E/EO-M)
+Obj7=949-1000 'Habito Liviano de Ritual (H/E/EO-M)
+Obj8=950-1000 'Sirica Elfica Rojiza (H/E/EO-M)
 Obj9=951-1000 'Prenda de la Naturaleza (H/E/EO-M)
-Obj10=952-1000 'Ropa de Explorador Élfico (H/E/EO)
-Obj11=953-1000 'Manto Élfico Púrpura (H/E/EO-M)
-Obj12=954-1000 'Hábito de Ritual de Hombre (H/E/EO)
-Obj13=955-1000 'Hábito de Ritual Femenino (H/E/EO-M)
+Obj10=952-1000 'Ropa de Explorador Elfico (H/E/EO)
+Obj11=953-1000 'Manto Elfico Purpura (H/E/EO-M)
+Obj12=954-1000 'Habito de Ritual de Hombre (H/E/EO)
+Obj13=955-1000 'Habito de Ritual Femenino (H/E/EO-M)
 Obj14=956-1000 'Valya Silmeanar (H/E/EO-M)
 BackUp=1
 
@@ -979,7 +979,7 @@ BackUp=1
 
 [NPC125] 'Sastre Razas (enanos)
 Name=Torke
-Desc=Solo tengo ropajes para ENANOS, si no las puedes usar, ¡vete de aqui!
+Desc=Solo tengo ropajes para ENANOS, si no las puedes usar, vete de aqui!
 Head=371
 Heading=3
 Body=306
@@ -993,21 +993,21 @@ Comercia=1
 TipoItems=3
 NROITEMS=18
 Obj1=957-1000 'Vestido de Enana (E/G-M)
-Obj2=958-1000 'Vestimenta Común (E/G)
+Obj2=958-1000 'Vestimenta Comun (E/G)
 Obj3=959-1000 'Ropa de Carpintero Enano (E/G)
 Obj4=960-1000 'Ropa de Leñador (E/G)
 Obj5=961-1000 'Ropa de Minero (E/G)
-Obj6=962-1000 'Túnica Elegante (E/G)
+Obj6=962-1000 'Tunica Elegante (E/G)
 Obj7=963-1000 'Ropaje de Luchador de Las Minas (E/G)
 Obj8=964-1000 'Ropa de Viajero (E/G)
 Obj9=965-1000 'Antigua Armadura Dorada (E/G)
 Obj10=966-1000 'Alifafe de Pirata (E/G)
 Obj11=967-1000 'Ropas de Buscador (E/G)
 Obj12=968-1000 'Armadura Grabada Completa (E/G)
-Obj13=969-1000 'Túnica Dorada de Gala (E/G)
+Obj13=969-1000 'Tunica Dorada de Gala (E/G)
 Obj14=970-1000 'Armadura de Placas Livianas Thor (E/G)
 Obj15=971-1000 'Armadura Metal Oscuro (E/G)
-Obj16=972-1000 'Túnica de Mahal (E/G)
+Obj16=972-1000 'Tunica de Mahal (E/G)
 Obj17=973-1000 'Armadura de Placas Livianas Thor (E/G-M)
 Obj18=974-1000 'Capa de Monje Cocida con Mithril (E/G)
 BackUp=1
@@ -1067,7 +1067,7 @@ Comercia=0
 [NPC1]
 Name=Aldeano
 NpcType=0
-Desc=¡Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=Hola forastero! Bienvenido a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=18
@@ -1085,7 +1085,7 @@ BackUp=0
 [NPC10] 'npc adorno
 Name=Bardo
 NpcType=0
-Desc=¡¿Hola, os gustaria oír una hermosa melodía?!.
+Desc=Hola, os gustaria oir una hermosa melodia?!.
 Head=0
 Heading=3
 Body=17
@@ -1103,7 +1103,7 @@ BackUp=0
 [NPC11] 'npc adorno
 Name=Aldeana
 NpcType=0
-Desc=¡Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=Hola forastero! Bienvenido a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=19
@@ -1121,7 +1121,7 @@ BackUp=0
 [NPC13] 'npc gobernador de ulla
 Name=Gobernador de Ulla
 NpcType=11
-Desc=Hola, soy el gobernador de Ullathorpe ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Ullathorpe Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=1
 Heading=3
@@ -1140,7 +1140,7 @@ BackUp=0
 [NPC118]
 Name=Alarnick, antiguo soberano de Banderbill
 NpcType=0
-Desc=¡Esto no es digno de un soberano! ¡Exijo me devuelvan mi trono y me saquen de esta pocilga!...¡Maldito Tancredo, me las pagarás!
+Desc=Esto no es digno de un soberano! Exijo me devuelvan mi trono y me saquen de esta pocilga!...Maldito Tancredo, me las pagaras!
 Head=101
 Heading=3
 Body=348
@@ -1158,7 +1158,7 @@ BackUp=0
 [NPC128] 'Pregonero
 Name=Nelmasil
 NpcType=0
-Desc=El pueblo de Ullathorpe en contra del alcalde... ¡Todos aquellos que estén en contra se presenten en el castillo del rey en Banderbill!
+Desc=El pueblo de Ullathorpe en contra del alcalde... Todos aquellos que esten en contra se presenten en el castillo del rey en Banderbill!
 Head=0
 Body=410
 Heading=3
@@ -1175,7 +1175,7 @@ Comercia=0
 [NPC129] 'Profeta loco
 Name=Gael Azrraed
 NpcType=0
-Desc=¡Todos arderán! arderán en el infierno y luciernagas saldrán de sus ojos!
+Desc=Todos arderan! arderan en el infierno y luciernagas saldran de sus ojos!
 Head=2070
 Body=75
 Heading=3
@@ -1209,7 +1209,7 @@ Comercia=0
 [NPC131] 'Viajero
 Name=Linderoth
 NpcType=0
-Desc=Hey tú, ¿qué me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un niño...
+Desc=Hey tu, que me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un niño...
 Head=2280
 Body=285
 Heading=3
@@ -1226,7 +1226,7 @@ Comercia=0
 [NPC132] 'Sujeto sospechoso
 Name= Sebastien
 NpcType=0
-Desc=¡¡¿EH, EH?!! ¡no! ¡Yo no he hecho nada! ¡Vete si no quieres problemas!
+Desc=EH, EH?!! no! Yo no he hecho nada! Vete si no quieres problemas!
 Head=2154
 Body=31
 Heading=3
@@ -1243,7 +1243,7 @@ Comercia=0
 [NPC133] 'Gran Soldado
 Name=Anthares
 NpcType=0
-Desc=Shhh, ten cuidado, planeo raptar al Demonio. Buscaré refuerzos y la ciudad será asediada.
+Desc=Shhh, ten cuidado, planeo raptar al Demonio. Buscare refuerzos y la ciudad sera asediada.
 Head=2050
 Body=378
 Heading=3
@@ -1260,7 +1260,7 @@ Comercia=0
 [NPC134] 'Granjero desesperado
 Name=Vuragon
 NpcType=0
-Desc=Estoy hasta la coronilla de que se escape mi vaca! ya recibirá su merecido cuando la encuentre.
+Desc=Estoy hasta la coronilla de que se escape mi vaca! ya recibira su merecido cuando la encuentre.
 Head=60
 Body=501
 Heading=3
@@ -1277,7 +1277,7 @@ Comercia=0
 [NPC135] 'Criminal de servicio comunitario
 Name=Belial
 NpcType=0
-Desc=¡Maldito seas Tancredo de Hauteville! Me obligan limpiar esta mugrosa ciudad por haber hecho algo que ¡¡¡no hice!!!
+Desc=Maldito seas Tancredo de Hauteville! Me obligan limpiar esta mugrosa ciudad por haber hecho algo que no hice!!!
 Head=63
 Body=641
 Heading=3
@@ -1294,7 +1294,7 @@ Comercia=0
 [NPC136] ' Asesino maniatico
 Name=Efral
 NpcType=0
-Desc=¿Qué miras tú? ¿Acaso quieres sufrir?
+Desc=Que miras tu? Acaso quieres sufrir?
 Head=69
 Body=442
 Heading=3
@@ -1311,7 +1311,7 @@ Comercia=0
 [NPC137] 'Mendigo
 Name=Manrique
 NpcType=0
-Desc=El Rey es avaro y sus terratenientes también, dame algo por favor, no seas como él...
+Desc=El Rey es avaro y sus terratenientes tambien, dame algo por favor, no seas como el...
 Head=0
 Body=411
 Heading=3
@@ -1345,7 +1345,7 @@ Comercia=0
 [NPC139] 'Druida.
 Name=Clipsa
 NpcType=0
-Desc=Que la Diosa naturaleza te guíe.
+Desc=Que la Diosa naturaleza te guie.
 Head=67
 Body=357
 Heading=3
@@ -1396,7 +1396,7 @@ Comercia=0
 [NPC142] 'Borracho perfil der 3
 Name=Onkin
 NpcType=0
-Desc=Déjenme tarnquilo... hip hip... descargaré lo que he... hip hip... bebido
+Desc=Dejenme tarnquilo... hip hip... descargare lo que he... hip hip... bebido
 Head=0
 Body=424
 Heading=3
@@ -1412,7 +1412,7 @@ Comercia=0
 [NPC143] 'Bardo
 Name=Fethresor
 NpcType=0
-Desc=En las batallas más escalofriantes, más sangrientas... Un bardo siempre está presente.
+Desc=En las batallas mas escalofriantes, mas sangrientas... Un bardo siempre esta presente.
 Head=0
 Body=418
 Heading=3
@@ -1429,7 +1429,7 @@ Comercia=0
 [NPC144] 'Bardo
 Name=Whyx
 NpcType=0
-Desc=Mis melodías podrían hacer que hasta el más hábil guerrero, caiga a mis pies...
+Desc=Mis melodias podrian hacer que hasta el mas habil guerrero, caiga a mis pies...
 Head=0
 Body=419
 Heading=3
@@ -1446,7 +1446,7 @@ Comercia=0
 [NPC145] 'Bardo
 Name=Iklot
 NpcType=0
-Desc=Cuando te encuentres solo, perdido, sin saber para dónde correr... Respira profundo y susurra mi melodía.
+Desc=Cuando te encuentres solo, perdido, sin saber para donde correr... Respira profundo y susurra mi melodia.
 Head=0
 Body=420
 Heading=3
@@ -1463,7 +1463,7 @@ Comercia=0
 [NPC146] 'VendeBebidas Fiesta de la Cerveza
 Name=Unurbar Gorog
 NpcType=0
-Desc=¡Hola! Poseo las mejores y más extrañas bebidas de estas tierras, ¿Qué desea que le sirva?
+Desc=Hola! Poseo las mejores y mas extrañas bebidas de estas tierras, Que desea que le sirva?
 Head=304
 Heading=3
 Body=372
@@ -1477,8 +1477,8 @@ Comercia=1
 TipoItems=13
 NROITEMS=8
 Obj1=498-1000 'Sidra
-Obj2=522-1000 'Hipocrás
-Obj3=550-1000 'Porrón de cerveza
+Obj2=522-1000 'Hipocras
+Obj3=550-1000 'Porron de cerveza
 Obj4=160-1000 'Cerveza
 Obj5=557-1000 'Vino de canela
 Obj6=612-1000 'Cerveza de los enanos
@@ -1491,7 +1491,7 @@ BackUp=1
 [NPC147]Pregonero Fiesta de la Cerveza.
 Name=Dugh Dhail
 NpcType=0
-Desc=¡Hola forastero! Pronto se celebrará un nuevo aniversario de la creación de la Cerveza. ¿Acudirás a los festejos?
+Desc=Hola forastero! Pronto se celebrara un nuevo aniversario de la creacion de la Cerveza. Acudiras a los festejos?
 Head=0
 Heading=3
 Body=410
@@ -1577,7 +1577,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -1588,7 +1588,7 @@ BackUp=1
 [NPC46] 'VendeMagia Ulla
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda de Ullathorpe... Tengo algunos hechizos que podrían interesarte.
+Desc=Bienvenido a mi pequeña tienda de Ullathorpe... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1604,27 +1604,27 @@ NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=532-1000 'Apocalipsis
 Obj20=658-1000 'Vara de Fresno
-Obj21=659-1000 'Bastón nudoso
-Obj22=696-1000 'Laúd Mágico
-Obj23=208-1000 'Flauta Mágica
-Obj24=531-1000 'Descarga Eléctrica
+Obj21=659-1000 'Baston nudoso
+Obj22=696-1000 'Laud Magico
+Obj23=208-1000 'Flauta Magica
+Obj24=531-1000 'Descarga Electrica
 BackUp=1
 
 #############################################
@@ -1632,7 +1632,7 @@ BackUp=1
 [NPC12] 'Sastre Ulla (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Hola forastero! Soy el Sastre de Ullathorpe, Bienvenido!
+Desc=Hola forastero! Soy el Sastre de Ullathorpe, Bienvenido!
 Head=9
 Heading=3
 Body=50
@@ -1650,9 +1650,9 @@ Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
 Obj4=641-1000 'Ropa de Pordiosero
 Obj5=501-1000 'Ropa de Campesino
-Obj6=135-1000 'Túnica Roja Burda
-obj7=238-1000 'Túnica Azul
-obj8=239-1000 'Túnica Roja
+Obj6=135-1000 'Tunica Roja Burda
+obj7=238-1000 'Tunica Azul
+obj8=239-1000 'Tunica Roja
 obj9=873-1000 'Guantes de hurto
 BackUp=1
 
@@ -1661,7 +1661,7 @@ BackUp=1
 [NPC19] 'Sastre Ulla (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Bienvenida Viajera! Tengo hermosas vestimentas para ofrecerte...
+Desc=Bienvenida Viajera! Tengo hermosas vestimentas para ofrecerte...
 Head=70
 Heading=3
 Body=80
@@ -1686,7 +1686,7 @@ BackUp=1
 [NPC20] 'Sastre Ulla (enanos)
 Name=Sastre
 NpcType=0
-Desc=¡Acérquese! Tengo pequeñas prendas que serán de su agrado...
+Desc=Acerquese! Tengo pequeñas prendas que seran de su agrado...
 Head=303
 Heading=3
 Body=180
@@ -1711,7 +1711,7 @@ BackUp=1
 
 [NPC54] 'Armaduras Ulla
 Name=Armaduras
-Desc=Acércate, tengo algunas armaduras que podrían protegerte.
+Desc=Acercate, tengo algunas armaduras que podrian protegerte.
 Head=6
 Body=93
 Heading=4
@@ -1741,7 +1741,7 @@ BackUp=1
 [NPC15] 'Provisiones Nix
 Name=Thorkis
 NpcType=0
-Desc=¡Qué tal amigo! Entra, pues tengo las mejores provisiones de Nix!
+Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de Nix!
 Head=504
 Heading=3
 Body=202
@@ -1807,7 +1807,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -1818,7 +1818,7 @@ BackUp=1
 [NPC47] 'VendeMagia NIX
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda de Nix... Tengo algunos hechizos que podrían interesarte.
+Desc=Bienvenido a mi pequeña tienda de Nix... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1834,28 +1834,28 @@ NROITEMS=25
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=658-1000 'Vara de Fresno
-Obj20=659-1000 'Bastón nudoso
-Obj21=696-1000 'Laúd Mágico
-Obj22=208-1000 'Flauta Mágica
+Obj20=659-1000 'Baston nudoso
+Obj21=696-1000 'Laud Magico
+Obj22=208-1000 'Flauta Magica
 Obj23=532-1000 'Apocalipsis
-Obj24=531-1000 'Descarga Eléctrica
-Obj25=614-1000 'Túnica de Archimago
+Obj24=531-1000 'Descarga Electrica
+Obj25=614-1000 'Tunica de Archimago
 BackUp=1
 
 #############################################
@@ -1863,7 +1863,7 @@ BackUp=1
 [NPC21] 'Sastre Nix (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Hola forastero! Soy el Sastre de Nix, Bienvenido!
+Desc=Hola forastero! Soy el Sastre de Nix, Bienvenido!
 Head=7
 Heading=3
 Body=50
@@ -1882,9 +1882,9 @@ Obj3=35-1000 'Vestimentas Comunes
 Obj4=45-1000 'Ropa de Clan
 Obj5=80-1000 'Ropa de Clan
 Obj6=501-1000 'Ropa de Campesino
-Obj7=135-1000 'Túnica Roja Burda
-obj8=238-1000 'Túnica Azul
-obj9=239-1000 'Túnica Roja
+Obj7=135-1000 'Tunica Roja Burda
+obj8=238-1000 'Tunica Azul
+obj9=239-1000 'Tunica Roja
 obj10=1036-1000 'Guantes de lucha
 BackUp=1
 
@@ -1893,7 +1893,7 @@ BackUp=1
 [NPC22] 'Sastre Nix (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Bienvenida Viajera! Entra a mi tienda, ¡Tengo las mejores prendas de Nix!
+Desc=Bienvenida Viajera! Entra a mi tienda, Tengo las mejores prendas de Nix!
 Head=71
 Heading=3
 Body=80
@@ -1918,7 +1918,7 @@ BackUp=1
 [NPC23] 'Sastre Nix (enanos)
 Name=Sastre
 NpcType=0
-Desc=¡Acérquese! Tengo pequeñas prendas que serán de su agrado...
+Desc=Acerquese! Tengo pequeñas prendas que seran de su agrado...
 Head=404
 Heading=3
 Body=180
@@ -1943,7 +1943,7 @@ BackUp=1
 
 [NPC70] 'Armaduras Nix
 Name=Armaduras
-Desc=Acércate, tengo algunas armaduras que podrían protegerte.
+Desc=Acercate, tengo algunas armaduras que podrian protegerte.
 Head=6
 Body=93
 Heading=4
@@ -1976,7 +1976,7 @@ BackUp=1
 [NPC50] 'Provisiones Bander
 Name=Tellez
 NpcType=0
-Desc=¡Hola! Bienvenido al "Mesón Hostigado", ¿Qué desea que le sirva?
+Desc=Hola! Bienvenido al "Meson Hostigado", Que desea que le sirva?
 Head=505
 Heading=3
 Body=202
@@ -2015,7 +2015,7 @@ BackUp=1
 [NPC38] 'Herrero Bander
 Name=Herrero
 NpcType=0
-Desc=¡Ven, pasa, que he fabricado las más poderosas armas de Banderbill para tí!
+Desc=Ven, pasa, que he fabricado las mas poderosas armas de Banderbill para ti!
 Head=505
 Heading=3
 Body=199
@@ -2042,7 +2042,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -2053,7 +2053,7 @@ BackUp=1
 [NPC51] 'VendeMagia Bander
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña Tienda de Banderbill... Tengo algunos hechizos que podrían interesarte.
+Desc=Bienvenido a mi pequeña Tienda de Banderbill... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2069,27 +2069,27 @@ NROITEMS=23
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=658-1000 'Vara de Fresno
-Obj20=659-1000 'Bastón nudoso
-Obj21=696-1000 'Laúd Mágico
-Obj22=208-1000 'Flauta Mágica
+Obj20=659-1000 'Baston nudoso
+Obj21=696-1000 'Laud Magico
+Obj22=208-1000 'Flauta Magica
 Obj23=532-1000 'Apocalipsis
-Obj24=531-1000 'Descarga Eléctrica
+Obj24=531-1000 'Descarga Electrica
 BackUp=1
 
 #############################################
@@ -2097,7 +2097,7 @@ BackUp=1
 [NPC25] 'Sastre Bander (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Bienvenido a la Sastrería de Banderbill! ¿En qué lo puedo ayudar?
+Desc=Bienvenido a la Sastreria de Banderbill! En que lo puedo ayudar?
 Head=7
 Heading=3
 Body=56
@@ -2111,13 +2111,13 @@ Comercia=1
 TipoItems=3
 NROITEMS=15
 Obj1=501-1000 'Ropa de Campesino
-Obj2=135-1000 'Túnica Roja Burda
-Obj3=238-1000 'Túnica Azul
-Obj4=239-1000 'Túnica Roja
-Obj5=381-1000 'Túnica de Monje
-Obj6=196-1000 'Túnica de Mago
-Obj7=357-1000 'Túnica de Monje
-Obj8=986-1000 'Túnica de Druida
+Obj2=135-1000 'Tunica Roja Burda
+Obj3=238-1000 'Tunica Azul
+Obj4=239-1000 'Tunica Roja
+Obj5=381-1000 'Tunica de Monje
+Obj6=196-1000 'Tunica de Mago
+Obj7=357-1000 'Tunica de Monje
+Obj8=986-1000 'Tunica de Druida
 Obj9=873-1000 'Guantes de Hurto
 Obj10=1036-1000 'Guantes de Lucha
 Obj11=1010-1000 'Sombrero de Pirata
@@ -2132,7 +2132,7 @@ BackUp=1
 [NPC26] 'Sastre Bander (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Adelante hermosa niña! En mi tienda encontrarás vestidos hechos para tí!
+Desc=Adelante hermosa niña! En mi tienda encontraras vestidos hechos para ti!
 Head=173
 Heading=3
 Body=121
@@ -2157,7 +2157,7 @@ BackUp=1
 [NPC27] 'Sastre Bander (enanos)
 Name=Sastre
 NpcType=0
-Desc=¡Ven y mira estas prendas que he confeccionado para nuestra raza!
+Desc=Ven y mira estas prendas que he confeccionado para nuestra raza!
 Head=305
 Heading=3
 Body=159
@@ -2174,8 +2174,8 @@ Obj1=486-1000 'Ropa de Estilo (E/G)
 Obj2=507-1000 'Ropa Violeta (E/G)
 Obj3=502-1000 'Ropa de Campesino (E/G)
 Obj4=707-1000 'Vestimenta de Noble (E/G)
-Obj5=671-1000 'Túnica de Monje (E/G)
-Obj6=670-1000 'Túnica de Mago (E/G)
+Obj5=671-1000 'Tunica de Monje (E/G)
+Obj6=670-1000 'Tunica de Mago (E/G)
 BackUp=1
 
 #############################################
@@ -2213,7 +2213,7 @@ BackUp=1
 [NPC43] 'Provisiones Lindos
 Name=Sorks
 NpcType=0
-Desc=¿¡Estáis sediento y hambriento!?
+Desc=Estais sediento y hambriento!?
 Head=505
 Heading=3
 Body=202
@@ -2252,7 +2252,7 @@ BackUp=1
 [NPC56] 'Herrero Lindos
 Name=Herrero
 NpcType=0
-Desc=¡Ven, pasa, que he fabricado, aquí en Lindos, poderosas armas para tí!
+Desc=Ven, pasa, que he fabricado, aqui en Lindos, poderosas armas para ti!
 Head=505
 Heading=3
 Body=199
@@ -2279,7 +2279,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -2290,7 +2290,7 @@ BackUp=1
 [NPC69] 'VendeMagia Lindos
 Name=Mago
 NpcType=0
-Desc=Ven por aquí joven, las artes mágicas superiores te están llamando...
+Desc=Ven por aqui joven, las artes magicas superiores te estan llamando...
 Head=110
 Heading=3
 Body=46
@@ -2306,27 +2306,27 @@ NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=658-1000 'Vara de Fresno
-Obj20=659-1000 'Bastón nudoso
-Obj21=696-1000 'Laúd Mágico
-Obj22=208-1000 'Flauta Mágica
+Obj20=659-1000 'Baston nudoso
+Obj21=696-1000 'Laud Magico
+Obj22=208-1000 'Flauta Magica
 Obj23=532-1000 'Apocalipsis
-Obj24=531-1000 'Descarga Eléctrica
+Obj24=531-1000 'Descarga Electrica
 BackUp=1
 
 #############################################
@@ -2334,7 +2334,7 @@ BackUp=1
 [NPC31] 'Sastre Lindos (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Ven aquí! Te puedo ofrecer las mejores ropas de la isla...
+Desc=Ven aqui! Te puedo ofrecer las mejores ropas de la isla...
 Head=7
 Heading=3
 Body=46
@@ -2350,12 +2350,12 @@ NROITEMS=15
 Obj1=31-1000 'Vestimentas Comunes
 Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
-Obj4=135-1000 'Túnica Roja Burda
-Obj5=238-1000 'Túnica Azul
-Obj6=239-1000 'Túnica Roja
-Obj7=381-1000 'Túnica de Monje
-Obj8=196-1000 'Túnica de Mago
-Obj9=986-1000 'Túnica de Druida
+Obj4=135-1000 'Tunica Roja Burda
+Obj5=238-1000 'Tunica Azul
+Obj6=239-1000 'Tunica Roja
+Obj7=381-1000 'Tunica de Monje
+Obj8=196-1000 'Tunica de Mago
+Obj9=986-1000 'Tunica de Druida
 Obj10=873-1000 'Guantes de Hurto
 Obj11=1010-1000 'Sombrero de Pirata
 Obj12=383-1000 'Sombrero Magico
@@ -2369,7 +2369,7 @@ BackUp=1
 [NPC32] 'Sastre Lindos (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Ven y mira estas vestimentas, seguro te encantarán!
+Desc=Ven y mira estas vestimentas, seguro te encantaran!
 Head=75
 Heading=3
 Body=118
@@ -2394,7 +2394,7 @@ BackUp=1
 [NPC39] 'Sastre Lindos (enanos)
 Name=Sastre
 NpcType=0
-Desc=¡Hola forastero! confeccionamos las mejores ropas de la zona.
+Desc=Hola forastero! confeccionamos las mejores ropas de la zona.
 Head=304
 Heading=3
 Body=135
@@ -2410,9 +2410,9 @@ NROITEMS=7
 Obj1=507-1000 'Ropa Violeta (E/G)
 Obj2=502-1000 'Ropa de Campesino (E/G)
 Obj3=707-1000 'Vestimenta de Noble (E/G)
-Obj4=671-1000 'Túnica de Monje (E/G)
-Obj5=670-1000 'Túnica de Mago (E/G)
-Obj6=524-1000 'Túnica Roja Especial (E/G)
+Obj4=671-1000 'Tunica de Monje (E/G)
+Obj5=670-1000 'Tunica de Mago (E/G)
+Obj6=524-1000 'Tunica Roja Especial (E/G)
 Obj7=370-1000 'Capucha de Cazador
 BackUp=1
 
@@ -2420,7 +2420,7 @@ BackUp=1
 
 [NPC113] 'Armaduras Lindos
 Name=Armaduras
-Desc=¡Tengo a la venta las mejores armaduras de la isla!
+Desc=Tengo a la venta las mejores armaduras de la isla!
 Head=6
 Body=93
 Heading=4
@@ -2452,7 +2452,7 @@ BackUp=1
 [NPC103] 'Provisiones Arghal
 Name=Carahuel
 NpcType=0
-Desc=¡Hola, pequeño amigo! ¿Estás buscando algo para llenar tu estómago? Creo que puedo ayudarte...
+Desc=Hola, pequeño amigo! Estas buscando algo para llenar tu estomago? Creo que puedo ayudarte...
 Head=474
 Heading=3
 Body=309
@@ -2491,7 +2491,7 @@ BackUp=1
 [NPC57] 'Provisiones Arghal (Taberna)
 Name=Bhoemond
 NpcType=0
-Desc= ¡Sea bienvenido a la famosa Taberna de Arghal!, Aquí podrá saciarse con la mejor comida y la mejor bebida de toda la zona.
+Desc= Sea bienvenido a la famosa Taberna de Arghal!, Aqui podra saciarse con la mejor comida y la mejor bebida de toda la zona.
 Head=17
 Heading=3
 Body=100
@@ -2530,7 +2530,7 @@ BackUp=1
 [NPC112] 'Herrero Arghal
 Name=Herrero
 NpcType=0
-Desc=Con estas manos he construído algunas armas que te podrán servir en tus aventuras... ¡paga por ellas y serán tuyas!
+Desc=Con estas manos he construido algunas armas que te podran servir en tus aventuras... paga por ellas y seran tuyas!
 Head=16
 Heading=3
 Body=199
@@ -2557,7 +2557,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -2567,7 +2567,7 @@ BackUp=1
 
 [NPC59] 'VendeMagia Arghal
 Name=Mago
-Desc=Bienvenido, neófito a ésta, a mi pequeña escuela de Magia, ubicada en el corazón mismo de la ciudad de Arghal.
+Desc=Bienvenido, neofito a esta, a mi pequeña escuela de Magia, ubicada en el corazon mismo de la ciudad de Arghal.
 Head=20
 Heading=3
 Body=34
@@ -2583,27 +2583,27 @@ NROITEMS=24
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=658-1000 'Vara de Fresno
-Obj20=659-1000 'Bastón nudoso
-Obj21=696-1000 'Laúd Mágico
-Obj22=208-1000 'Flauta Mágica
+Obj20=659-1000 'Baston nudoso
+Obj21=696-1000 'Laud Magico
+Obj22=208-1000 'Flauta Magica
 Obj23=532-1000 'Apocalipsis
-Obj24=531-1000 'Descarga Eléctrica
+Obj24=531-1000 'Descarga Electrica
 BackUp=1
 
 #############################################
@@ -2611,7 +2611,7 @@ BackUp=1
 [NPC63] 'Sastre Arghal (hombres)
 Name=Steve
 NpcType=0
-Desc=Ven, acércate, que tengo para ofrecerte las mejores prendas masculinas de todo Arghal...
+Desc=Ven, acercate, que tengo para ofrecerte las mejores prendas masculinas de todo Arghal...
 Head=22
 Heading=3
 Body=342
@@ -2629,9 +2629,9 @@ Obj2=32-1000 'Vestimentas Comunes
 Obj3=35-1000 'Vestimentas Comunes
 Obj4=641-1000 'Ropa de Pordiosero
 Obj5=501-1000 'Ropa de Campesino
-Obj6=135-1000 'Túnica Roja Burda
-obj7=238-1000 'Túnica Azul
-obj8=239-1000 'Túnica Roja
+Obj6=135-1000 'Tunica Roja Burda
+obj7=238-1000 'Tunica Azul
+obj8=239-1000 'Tunica Roja
 obj9=873-1000 'Guantes de Hurto
 obj10=1036-1000 'Guantes de Lucha
 BackUp=1
@@ -2641,7 +2641,7 @@ BackUp=1
 [NPC64] 'Sastre Arghal (mujeres)
 Name=Virgin
 NpcType=0
-Desc=¡Bienvenida jovencita! Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercadería.
+Desc=Bienvenida jovencita! Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercaderia.
 Head=70
 Heading=3
 Body=80
@@ -2666,7 +2666,7 @@ BackUp=1
 [NPC68] 'Sastre Arghal (enanos)
 Name=Odkon
 NpcType=0
-Desc=¡Acérquese pequeño vistante de Arghal... Tengo prendas a su medida.
+Desc=Acerquese pequeño vistante de Arghal... Tengo prendas a su medida.
 Head=404
 Heading=3
 Body=371
@@ -2685,12 +2685,12 @@ Obj3=486-1000 'Ropa de Estilo (E/G)
 Obj4=507-1000 'Ropa Violeta (E/G)
 Obj5=502-1000 'Ropa de Campesino (E/G)
 Obj6=707-1000 'Vestimenta de Noble (E/G)
-Obj7=867-1000 'Túnica de Gnomo (E/G)
+Obj7=867-1000 'Tunica de Gnomo (E/G)
 BackUp=1
 
 [NPC73] 'Armaduras Arghal
 Name=Armaduras
-Desc=Si tienes agallas como para abandonar la ciudad y enfrentar el peligro de los bosques, deberás comprar una de las armaduras que he fabricado.
+Desc=Si tienes agallas como para abandonar la ciudad y enfrentar el peligro de los bosques, deberas comprar una de las armaduras que he fabricado.
 Head=39
 Body=93
 Heading=3
@@ -2717,7 +2717,7 @@ BackUp=1
 [NPC40] 'Provisiones Arkhein
 Name=Tolloz
 NpcType=0
-Desc=¡Hola! Bienvenido a la Taberna de Arkhein, ¿Qué desea que le sirva?
+Desc=Hola! Bienvenido a la Taberna de Arkhein, Que desea que le sirva?
 Head=505
 Heading=3
 Body=202
@@ -2756,7 +2756,7 @@ BackUp=1
 [NPC55] 'Herrero Arkhein
 Name=Herrero
 NpcType=0
-Desc=¡Ven, pasa, que he fabricado las más poderosas armas de Arkhein para tí!
+Desc=Ven, pasa, que he fabricado las mas poderosas armas de Arkhein para ti!
 Head=505
 Heading=3
 Body=199
@@ -2783,7 +2783,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -2793,7 +2793,7 @@ BackUp=1
 
 [NPC61] 'VendeMagia Arkhein
 Name=Mago
-Desc=Bienvenido a mi pequeña tienda de Arkhein... Tengo algunos hechizos que podrían interesarte.
+Desc=Bienvenido a mi pequeña tienda de Arkhein... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2809,19 +2809,19 @@ NROITEMS=16
 Obj1=395-1000 'Llamado Nigromante
 Obj2=203-1000 'Aura Sanadora Avanzada
 obj3=207-1000 'Devolver Movilidad
-obj4=657-1000 'Quitar la turbación
+obj4=657-1000 'Quitar la turbacion
 obj5=206-1000 'Paralizar
 obj6=361-1000 'Tormenta de Fuego
 obj7=673-1000 'Mimetismo
 obj8=202-1000 'Toxina
-Obj9=531-1000 'Descarga Eléctrica
+Obj9=531-1000 'Descarga Electrica
 Obj10=318-1000 'Invisibilidad
 Obj11=537-1000 'Invocar Elemental de Agua
 Obj12=662-1000 'Sombrero de Mago
 Obj13=658-1000 'Vara de Fresno
-Obj14=659-1000 'Bastón nudoso
-Obj15=696-1000 'Laúd Mágico
-Obj16=208-1000 'Flauta Mágica
+Obj14=659-1000 'Baston nudoso
+Obj15=696-1000 'Laud Magico
+Obj16=208-1000 'Flauta Magica
 BackUp=1
 
 #############################################
@@ -2829,7 +2829,7 @@ BackUp=1
 [NPC28] 'Sastre Arkhein (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Entrad Valiente Viajero! En la Sastrería de Arkhein están las mejores ropas del continente.
+Desc=Entrad Valiente Viajero! En la Sastreria de Arkhein estan las mejores ropas del continente.
 Head=15
 Heading=3
 Body=56
@@ -2846,13 +2846,13 @@ Obj1=45-1000 'Ropa de Clan
 Obj2=80-1000 'Ropa de Clan
 Obj3=641-1000 'Ropa de Pordiosero
 Obj4=501-1000 'Ropa de Campesino
-Obj5=135-1000 'Túnica Roja Burda
-Obj6=238-1000 'Túnica Azul
-Obj7=239-1000 'Túnica Roja
-Obj8=381-1000 'Túnica de Monje
-Obj9=196-1000 'Túnica de Mago
-Obj10=357-1000 'Túnica de Druida
-Obj11=986-1000 'Túnica de Druida
+Obj5=135-1000 'Tunica Roja Burda
+Obj6=238-1000 'Tunica Azul
+Obj7=239-1000 'Tunica Roja
+Obj8=381-1000 'Tunica de Monje
+Obj9=196-1000 'Tunica de Mago
+Obj10=357-1000 'Tunica de Druida
+Obj11=986-1000 'Tunica de Druida
 Obj12=873-1000 'Guantes de Hurto
 Obj13=1036-1000 'Guantes de Lucha
 Obj14=1010-1000 'Sombrero de Pirata
@@ -2867,7 +2867,7 @@ BackUp=1
 [NPC29] 'Sastre Arkhein (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Ven y mira estas vestimentas, seguro te encantarán!
+Desc=Ven y mira estas vestimentas, seguro te encantaran!
 Head=173
 Heading=3
 Body=80
@@ -2891,7 +2891,7 @@ BackUp=1
 [NPC30] 'Sastre Arkhein (enanos)
 Name=Sastre
 NpcType=0
-Desc=Aquí encontrarás las mejores prendas para enanos ¡Y a muy buen precio!
+Desc=Aqui encontraras las mejores prendas para enanos Y a muy buen precio!
 Head=404
 Heading=3
 Body=159
@@ -2908,8 +2908,8 @@ Obj1=486-1000 'Ropa de Estilo (E/G)
 Obj2=507-1000 'Ropa Violeta (E/G)
 Obj3=502-1000 'Ropa de Campesino (E/G)
 Obj4=707-1000 'Vestimenta de Noble (E/G)
-Obj5=671-1000 'Túnica de Monje (E/G)
-Obj6=670-1000 'Túnica de Mago (E/G)
+Obj5=671-1000 'Tunica de Monje (E/G)
+Obj6=670-1000 'Tunica de Mago (E/G)
 BackUp=1
 
 #############################################
@@ -2947,7 +2947,7 @@ BackUp=1
 [NPC53] 'Provisiones Esperanza
 Name=Roksar
 NpcType=0
-Desc=¡Hola, buen viajero! Dispongo de todo tipo de provisiones... ¿Qué deseas?
+Desc=Hola, buen viajero! Dispongo de todo tipo de provisiones... Que deseas?
 Head=505
 Heading=3
 Body=202
@@ -2991,7 +2991,7 @@ BackUp=1
 [NPC71] 'Herrero Ciudad Perdida
 Name=Herrero
 NpcType=0
-Desc=Tened aquí las armas más poderosas de estas tierras... ¡Pasad y ved!
+Desc=Tened aqui las armas mas poderosas de estas tierras... Pasad y ved!
 Head=505
 Heading=3
 Body=199
@@ -3018,7 +3018,7 @@ Obj11=123-1000 	'Vikinga
 Obj12=124-1000 	'Katana
 Obj13=126-1000 	'Hacha Larga de Guerra
 Obj14=129-1000 	'Hacha de Guerra Dos Filos
-Obj15=159-1000 	'Hacha de Bárbaro
+Obj15=159-1000 	'Hacha de Barbaro
 Obj16=399-1000 	'Cimitarra
 Obj17=990-1000 	'Mazo del Juicio
 Obj18=403-1000 	'Espada de Plata
@@ -3029,7 +3029,7 @@ BackUp=1
 [NPC99] 'VendeMagia Ciudad Perdida
 Name=Mago
 NpcType=0
-Desc=¿Estás buscando los hechizos más poderosos? A buen puerto has llegado...
+Desc=Estas buscando los hechizos mas poderosos? A buen puerto has llegado...
 Head=110
 Heading=3
 Body=46
@@ -3045,26 +3045,26 @@ NROITEMS=22
 Obj1=363-1000 'Ataque de Hambre
 Obj2=470-1000 'Fuerza
 Obj3=396-1000 'Celeridad
-Obj4=199-1000 'Dardo Mágico
-Obj5=200-1000 'Antídoto Mágico
-Obj6=197-1000 'Flecha Mágica
+Obj4=199-1000 'Dardo Magico
+Obj5=200-1000 'Antidoto Magico
+Obj6=197-1000 'Flecha Magica
 Obj7=361-1000 'Tormenta de Fuego
 Obj8=201-1000 'Curar Heridas Leves
 Obj9=203-1000 'Curar Heridas Graves
-Obj10=204-1000 'Flecha Eléctrica
+Obj10=204-1000 'Flecha Electrica
 Obj11=206-1000 'Paralizar
 Obj12=530-1000 'Inmovilizar
 Obj13=207-1000 'Devolver Movilidad
 Obj14=318-1000 'Invisibilidad
 Obj15=319-1000 'Resucitar
-Obj16=380-1000 'Invocación de Ultratumba
+Obj16=380-1000 'Invocacion de Ultratumba
 Obj17=394-1000 'Llamado a la Naturaleza
 Obj18=395-1000 'Llamado Nigromante
 Obj19=658-1000 'Vara de Fresno
-Obj20=659-1000 'Bastón nudoso
-Obj21=696-1000 'Laúd Mágico
-Obj22=208-1000 'Flauta Mágica
-Obj23=531-1000 'Descarga Eléctrica
+Obj20=659-1000 'Baston nudoso
+Obj21=696-1000 'Laud Magico
+Obj22=208-1000 'Flauta Magica
+Obj23=531-1000 'Descarga Electrica
 BackUp=1
 
 #############################################
@@ -3072,7 +3072,7 @@ BackUp=1
 [NPC109] 'Sastre Ciudad Perdida (hombres)
 Name=Sastre
 NpcType=0
-Desc=¡Bienvenidos a la Gran Sastrería de la Ciudad Perdida! Aquí encontrarán las ropas más exóticas del mundo...
+Desc=Bienvenidos a la Gran Sastreria de la Ciudad Perdida! Aqui encontraran las ropas mas exoticas del mundo...
 Head=406
 Heading=3
 Body=130
@@ -3087,11 +3087,11 @@ TipoItems=3
 NROITEMS=14
 Obj1=515-1000 'Ropa Legendaria
 Obj2=490-1000 'Ropa de Minero
-Obj3=381-1000 'Túnica de Monje
-Obj4=196-1000 'Túnica de Mago
-Obj5=357-1000 'Túnica de Monje
-Obj6=519-1000 'Túnica Legendaria
-Obj7=986-1000 'Túnica de Druida
+Obj3=381-1000 'Tunica de Monje
+Obj4=196-1000 'Tunica de Mago
+Obj5=357-1000 'Tunica de Monje
+Obj6=519-1000 'Tunica Legendaria
+Obj7=986-1000 'Tunica de Druida
 Obj8=873-1000 'Guantes de Hurto
 Obj9=1036-1000 'Guantes de Lucha
 Obj10=1010-1000 'Sombrero de Pirata
@@ -3106,7 +3106,7 @@ BackUp=1
 [NPC110] 'Sastre Ciudad Perdida (mujeres)
 Name=Sastre
 NpcType=0
-Desc=¡Entra! Jamás verás prendas más bellas que las que tengo para ofrecerte...
+Desc=Entra! Jamas veras prendas mas bellas que las que tengo para ofrecerte...
 Head=474
 Heading=3
 Body=124
@@ -3132,7 +3132,7 @@ BackUp=1
 [NPC117] 'Sastre Ciudad Perdida (enanos)
 Name=Sastre
 NpcType=0
-Desc=¡Aquí en la Ciudad Perdida encontrarán las mejores ropas pequeñas de todo el mundo!
+Desc=Aqui en la Ciudad Perdida encontraran las mejores ropas pequeñas de todo el mundo!
 Head=402
 Heading=3
 Body=136
@@ -3145,19 +3145,19 @@ Alineacion=0
 Comercia=1
 TipoItems=3
 NROITEMS=6
-Obj1=671-1000 'Túnica de Monje (E/G)
-Obj2=670-1000 'Túnica de Mago (E/G)
+Obj1=671-1000 'Tunica de Monje (E/G)
+Obj2=670-1000 'Tunica de Mago (E/G)
 Obj3=512-1000 'Vestido Calipso (E/G-M)
 Obj4=672-1000 'Armadura de Elite (E/G)
-Obj5=525-1000 'Túnica Combinada (E/G)
-Obj6=526-1000 'Túnica Combinada de Mujer (E/G-M)
+Obj5=525-1000 'Tunica Combinada (E/G)
+Obj6=526-1000 'Tunica Combinada de Mujer (E/G-M)
 BackUp=1
 
 #############################################
 
 [NPC116] 'Armaduras Ciudad Perdida
 Name=Armaduras
-Desc=Si estás buscando las mejores armaduras de estas tierras, has llegado al lugar correcto...
+Desc=Si estas buscando las mejores armaduras de estas tierras, has llegado al lugar correcto...
 Head=6
 Body=93
 Heading=4
@@ -3191,10 +3191,10 @@ BackUp=1
 ####################NPCS GUARDIAS ARMADA######################
 ##############################################################
 
-[NPC6] 'Guardia Armada (Común)
+[NPC6] 'Guardia Armada (Comun)
 Name=Guardia Imperial
 NpcType=2
-Desc=¡Daré cárcel a todos los criminales!
+Desc=Dare carcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -3220,10 +3220,10 @@ BackUp=0
 
 #############################################
 
-[NPC100] 'Guardia Armada (Común II)
+[NPC100] 'Guardia Armada (Comun II)
 Name=Guardia Imperial
 NpcType=2
-Desc=¡Daré cárcel a todos los criminales y los perseguiré hasta el fin!
+Desc=Dare carcel a todos los criminales y los perseguire hasta el fin!
 Head=0
 Heading=3
 Body=15
@@ -3251,7 +3251,7 @@ BackUp=0
 [NPC49] 'Guardia Armada (Movimiento random)
 Name=Guardia Imperial
 NpcType=2
-Desc=¡Daré cárcel a todos los criminales!
+Desc=Dare carcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -3280,7 +3280,7 @@ BackUp=0
 [NPC102] 'Guardia Armada WACHO
 Name=Guardia Imperial
 NpcType=2
-Desc=¡Daré cárcel a todos los criminales!
+Desc=Dare carcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -3309,7 +3309,7 @@ BackUp=0
 [NPC106] 'Guardia Armada (Arquera)
 Name=Arquera Real
 NpcType=2
-Desc=Ningún criminal escapará de mi puntería.
+Desc=Ningun criminal escapara de mi punteria.
 Head=172
 Heading=3
 Body=131
@@ -3341,7 +3341,7 @@ BackUp=0
 [NPC81] 'Guardia Armada (Sacerdote)
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=4
 Heading=3
 Body=101
@@ -3372,7 +3372,7 @@ BackUp=0
 [NPC82] 'Guardia Armada (Sacerdote II)
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=5
 Heading=3
 Body=101
@@ -3403,7 +3403,7 @@ BackUp=0
 [NPC83] 'Guardia Armada (Druida)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=101
 Heading=3
 Body=56
@@ -3435,7 +3435,7 @@ BackUp=0
 [NPC84] 'Guardia Armada (Druida II)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=102
 Heading=3
 Body=56
@@ -3467,7 +3467,7 @@ BackUp=0
 [NPC85] 'Guardia Armada (Druida III)
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=103
 Heading=3
 Body=56
@@ -3499,7 +3499,7 @@ BackUp=0
 [NPC86] 'Guardia Armada (Mago)
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=6
 Heading=3
 Body=130
@@ -3530,7 +3530,7 @@ BackUp=0
 [NPC87] 'guardia armada
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
+Desc=Ohhh hijo mio!! que la llama de la virtud arda en tu corazon!!!
 Head=6
 Heading=3
 Body=128
@@ -3561,7 +3561,7 @@ BackUp=0
 [NPC148] 'Guardia Armada en micro ao
 Name=Guardia Imperial
 NpcType=0
-Desc=¡Atención! Si eres criminal e ingresas aquí seras atacado por los guardias reales.
+Desc=Atencion! Si eres criminal e ingresas aqui seras atacado por los guardias reales.
 Head=0
 Heading=3
 Body=15
@@ -3589,7 +3589,7 @@ BackUp=0
 [NPC150] 'npc gobernador de nix
 Name=Gobernador de Nix
 NpcType=11
-Desc=Hola, soy el gobernador de Nix ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Nix Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3608,7 +3608,7 @@ BackUp=0
 [NPC151] 'npc gobernador de Banderbill
 Name=Gobernador de Banderbill
 NpcType=11
-Desc=Hola, soy el gobernador de Banderbill ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Banderbill Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3627,7 +3627,7 @@ BackUp=0
 [NPC152] 'npc gobernador de Lindos
 Name=Gobernador de Lindos
 NpcType=11
-Desc=Hola, soy el gobernador de Lindos ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Lindos Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3646,7 +3646,7 @@ BackUp=0
 [NPC153] 'npc gobernador de Arghal
 Name=Gobernador de Arghal
 NpcType=11
-Desc=Hola, soy el gobernador de Arghal ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Arghal Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3665,7 +3665,7 @@ BackUp=0
 [NPC158] 'npc gobernador de Arkhein
 Name=Gobernador de Arkhein
 NpcType=11
-Desc=Hola, soy el gobernador de Arkhein ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
+Desc=Hola, soy el gobernador de Arkhein Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3680,13 +3680,13 @@ Comercia=0
 BackUp=0
 
 ##############################################################
-####################NPCS GUARDIAS LEGIÓN######################
+####################NPCS GUARDIAS LEGION######################
 ##############################################################
 
-[NPC127] 'Guardia Legión (Común)
+[NPC127] 'Guardia Legion (Comun)
 Name=Guardia Infernal
 NpcType=8
-Desc=¡Por el Señor Oscuro, aniquilaré a quienes lo deshonran!
+Desc=Por el Señor Oscuro, aniquilare a quienes lo deshonran!
 Head=201
 Heading=3
 Body=170
@@ -3712,10 +3712,10 @@ BackUp=0
 
 #############################################
 
-[NPC105] 'Guardia Legión (con Magia)
+[NPC105] 'Guardia Legion (con Magia)
 Name=Mago del Caos
 NpcType=8
-Desc=¡El mal prevalecerá sobre estas tierras!
+Desc=El mal prevalecera sobre estas tierras!
 Head=202
 Heading=3
 Body=129
@@ -3743,7 +3743,7 @@ BackUp=0
 
 #############################################
 
-[NPC107] 'Guardia Legión (Golem)
+[NPC107] 'Guardia Legion (Golem)
 Name=Golem Oscuro
 NpcType=8
 Head=0
@@ -3772,10 +3772,10 @@ BackUp=0
 #############################################
 
 
-[NPC149] 'Guardia Legión En micro ao
+[NPC149] 'Guardia Legion En micro ao
 Name=Guardia Infernal
 NpcType=0
-Desc=¡Atención! Si eres ciudadano e ingresas aquí seras atacado por los guardias de la Legión.
+Desc=Atencion! Si eres ciudadano e ingresas aqui seras atacado por los guardias de la Legion.
 Head=201
 Heading=3
 Body=170
@@ -3816,11 +3816,11 @@ Domable=0
 Comercia=1
 TipoItems=11
 NROITEMS=5
-Obj1=855-1000 'Poción Amarilla (newbie)
-Obj2=856-1000 'Poción Azul (newbie)
-Obj3=857-1000 'Poción Roja (newbie)
-Obj4=858-1000 'Poción Verde (newbie)
-Obj5=166-1000 'Poción Violeta
+Obj1=855-1000 'Pocion Amarilla (newbie)
+Obj2=856-1000 'Pocion Azul (newbie)
+Obj3=857-1000 'Pocion Roja (newbie)
+Obj4=858-1000 'Pocion Verde (newbie)
+Obj5=166-1000 'Pocion Violeta
 BackUp=1
 
 #############################################
@@ -3828,7 +3828,7 @@ BackUp=1
 [NPC155] 'Vende Armaduras newbie
 Name=Armaduras Newbie
 NpcType=0
-Desc=Si estás buscando túnicas y armaduras para principiantes, has llegado al lugar indicado.
+Desc=Si estas buscando tunicas y armaduras para principiantes, has llegado al lugar indicado.
 Head=6
 Heading=3
 Body=93
@@ -3840,8 +3840,8 @@ Domable=0
 Comercia=1
 TipoItems=3
 NROITEMS=7
-Obj1=1044-1000 'Túnica (Newbie) (H/E/EO)
-Obj2=1045-1000 'Túnica (Newbie) (E/G)
+Obj1=1044-1000 'Tunica (Newbie) (H/E/EO)
+Obj2=1045-1000 'Tunica (Newbie) (E/G)
 Obj3=1046-1000 'Armadura de Cuero (Newbie) (H/E/EO)
 Obj4=1047-1000 'Armadura de Cuero (Newbie) (E/G)
 Obj5=1048-1000 'Escudo (Newbie)
@@ -3881,7 +3881,7 @@ BackUp=1
 [NPC157] 'Vende Magia newbie
 Name=Magia Newbie
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda. Tengo algunos hechizos que podrían interesarte.
+Desc=Bienvenido a mi pequeña tienda. Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -4049,9 +4049,9 @@ BackUp=0
 #############################################
 
 [NPC45] 'No atacable
-Name=Espíritu
+Name=Espiritu
 NpcType=0
-Desc=¡Huye de aquí mientras puedas!
+Desc=Huye de aqui mientras puedas!
 Head=514
 Heading=3
 Body=8
@@ -4402,7 +4402,7 @@ BackUp=0
 
 #############################################
 
-[NPC92] 'NO RESPAWN (para el hechizo Invocación)
+[NPC92] 'NO RESPAWN (para el hechizo Invocacion)
 Name=Elemental de Agua
 NpcType=0
 Head=0
@@ -4429,7 +4429,7 @@ BackUp=0
 
 #############################################
 
-[NPC93] 'NO RESPAWN (para el hechizo Invocación)
+[NPC93] 'NO RESPAWN (para el hechizo Invocacion)
 Name=Elemental de Fuego
 NpcType=0
 Head=0
@@ -4458,7 +4458,7 @@ BackUp=0
 
 #############################################
 
-[NPC94] 'NO RESPAWN (para el hechizo Invocación)
+[NPC94] 'NO RESPAWN (para el hechizo Invocacion)
 Name=Elemental de Tierra
 NpcType=0
 Head=0
@@ -4488,7 +4488,7 @@ BackUp=0
 #############################################
 
 [NPC95]
-Name=Jabalí
+Name=Jabali
 NpcType=0
 Head=0
 Heading=3
@@ -4576,7 +4576,7 @@ BackUp=0
 ##############################################################
 
 [NPC500]
-Name=Murciélago
+Name=Murcielago
 NpcType=0
 Head=0
 Heading=3
@@ -4730,7 +4730,7 @@ SND2=103
 BackUp=0
 NROITEMS=5
 Drop3=38-10 'Pociones Rojas
-Drop4=200-1 'Antídoto Mágico
+Drop4=200-1 'Antidoto Magico
 Drop5=202-1 'Toxina
 
 ############################################
@@ -4859,12 +4859,12 @@ NROITEMS=5
 Drop1=12-25 'Oro
 Drop3=132-1 'Casco de Hierro
 Drop4=126-1 'Hacha Larga de Guerra
-Drop5=380-1 'Invocación de Ultratumba
+Drop5=380-1 'Invocacion de Ultratumba
 
 ############################################
 
 [NPC509]
-Name=Dragón Rojo
+Name=Dragon Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -4890,10 +4890,10 @@ Snd3=160
 BackUp=0
 NROITEMS=5
 Drop1=12-1000 'Oro
-Drop2=239-1 'Túnica Roja
+Drop2=239-1 'Tunica Roja
 Drop3=12-4700 'Oro
 Drop4=981-2 'Piwafwi de Fuego
-Drop5=481-1 'Armadura de Dragón
+Drop5=481-1 'Armadura de Dragon
 
 ############################################
 
@@ -4959,7 +4959,7 @@ NROITEMS=5
 Drop1=12-350 'Oro
 Drop2=37-55 'Pociones Azul
 Drop3=401-1 'Martillo de Guerra
-Drop5=697-1 'Anillo Mágico
+Drop5=697-1 'Anillo Magico
 
 ############################################
 
@@ -4993,7 +4993,7 @@ BackUp=0
 ############################################
 
 [NPC513]
-Name=Cíclope Guardián
+Name=Ciclope Guardian
 NpcType=0
 Head=0
 Heading=3
@@ -5019,9 +5019,9 @@ snd2=78
 BackUp=0
 NROITEMS=5
 Drop1=12-900 'Oro
-Drop2=37-145 'Poción Azul
+Drop2=37-145 'Pocion Azul
 Drop3=990-1 'Mazo de Juicio
-Drop4=698-1 'Anillo de Resitencia Mágica
+Drop4=698-1 'Anillo de Resitencia Magica
 Drop5=359-3 'Cotas de Mallas
 
 ############################################
@@ -5053,9 +5053,9 @@ SND2=103
 BackUp=0
 NROITEMS=5
 Drop1=12-3000 'Oro
-Drop2=697-3 'Anillo Mágico
-Drop3=698-2 'Anillo de Resistencia Mágica
-Drop4=699-1 'Anillo de Disolución Mágica
+Drop2=697-3 'Anillo Magico
+Drop3=698-2 'Anillo de Resistencia Magica
+Drop4=699-1 'Anillo de Disolucion Magica
 Drop5=503-2 'Trampa Visual
 
 ############################################
@@ -5086,10 +5086,10 @@ PoderEvasion=70
 BackUp=0
 NROITEMS=5
 Drop1=12-175 'Oro
-Drop2=38-30 'Poción Roja
-Drop3=37-50 'Poción Azul
+Drop2=38-30 'Pocion Roja
+Drop3=37-50 'Pocion Azul
 Drop4=480-310 'Flechas
-Drop5=697-2 'Anillo Mágico
+Drop5=697-2 'Anillo Magico
 
 ############################################
 
@@ -5150,12 +5150,12 @@ Drop1=12-1200 'Oro
 Drop2=12-1550 'Oro
 Drop3=37-175 'Pociones Azules
 Drop4=206-1 'Paralizar
-Drop5=531-1 'Descarga Eléctrica
+Drop5=531-1 'Descarga Electrica
 
 ############################################
 
 [NPC518]
-Name=Dragón de las Profundidades
+Name=Dragon de las Profundidades
 NpcType=0
 Head=0
 Heading=3
@@ -5215,13 +5215,13 @@ Veneno=1
 BackUp=0
 NROITEMS=5
 Drop1=12-175 'Oro
-Drop2=38-30 'Poción Roja
-Drop3=36-10 'Poción Amarilla
+Drop2=38-30 'Pocion Roja
+Drop3=36-10 'Pocion Amarilla
 Drop4=480-365 'Flechas
 
 ############################################
 
-[NPC520] 'NO RESPAWN (para el hechizo Invocación de Ultratumba)
+[NPC520] 'NO RESPAWN (para el hechizo Invocacion de Ultratumba)
 Name=Esqueleto Guerrero
 NpcType=0
 Head=0
@@ -5305,7 +5305,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-114 'Oro
 Drop2=3-1 'Hacha
-Drop3=39-10 'Poción Verde
+Drop3=39-10 'Pocion Verde
 Drop4=990-2 'Mazos de Juicio
 Drop5=359-2 'Cotas de Malla
 
@@ -5337,7 +5337,7 @@ PoderEvasion=75
 NROITEMS=5
 Drop1=12-114 'Oro
 Drop2=3-1 'Hacha
-Drop3=39-10 'Poción Verde
+Drop3=39-10 'Pocion Verde
 Drop4=990-2 'Mazos de Juicio
 Drop5=359-2 'Cotas de Malla
 BackUp=0
@@ -5442,7 +5442,7 @@ Drop5=174-1 'Llave Catacumbas de Ulla
 ############################################
 
 [NPC527] 'NO RESPAWN (tira llave dungeon malaheing)
-Name=Dragón Rojo
+Name=Dragon Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -5506,7 +5506,7 @@ Drop3=12-50 'Oro
 ############################################
 
 [NPC529]
-Name=Escorpión
+Name=Escorpion
 NpcType=0
 Head=0
 Heading=3
@@ -5757,7 +5757,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-2 'Oro
 Drop3=28-10 'Queso de Cabra
-Drop4=534-10 'Odre Vacía
+Drop4=534-10 'Odre Vacia
 Drop5=12-100 'Oro
 
 ############################################
@@ -5884,8 +5884,8 @@ BackUp=0
 NROITEMS=5
 Drop1=12-23 'Oro
 Drop3=12-150 'Oro
-Drop4=197-1 'Flecha Mágica
-Drop5=204-1 'Flecha Eléctrica
+Drop4=197-1 'Flecha Magica
+Drop5=204-1 'Flecha Electrica
 
 ############################################
 
@@ -5923,7 +5923,7 @@ Drop5=698-1
 ############################################
 
 [NPC542]
-Name=Gran Dragón Rojo
+Name=Gran Dragon Rojo
 NpcType=6
 Head=0
 Heading=3
@@ -5957,7 +5957,7 @@ Drop1=12-65000 'Oro
 Drop2= 194-5000 'Minerales de Oro
 Drop3=402-1 'Espada Mata Dragones
 Drop4=532-1 'Apocalipsis
-Drop5=481-3 'Armaduras de Dragón
+Drop5=481-3 'Armaduras de Dragon
 
 ############################################
 
@@ -6021,13 +6021,13 @@ NROITEMS=5
 Drop1=12-50 'Oro
 Drop2=12-80 'Oro
 Drop3=12-150 'Oro
-Drop4=37-50 'Poción Azul
+Drop4=37-50 'Pocion Azul
 Drop5=12-5000 'Oro
 
 ############################################
 
 [NPC545]
-Name=Licántropo
+Name=Licantropo
 NpcType=0
 Head=0
 Heading=3
@@ -6051,7 +6051,7 @@ PoderEvasion=65
 BackUp=0 
 NROITEMS=5
 Drop1=12-100 'Oro
-Drop2=38-10 'Poción Roja
+Drop2=38-10 'Pocion Roja
 Drop3=414-30 'Piel de Lobo
 Drop4=1002-1 'Casco de Lobo
 Drop5=394-1 'Llamado a la Naturaleza.
@@ -6087,7 +6087,7 @@ BackUp=0
 ############################################
 
 [NPC547]
-Name=Tarántula
+Name=Tarantula
 NpcType=0
 Head=0
 Heading=3
@@ -6113,9 +6113,9 @@ BackUp=0
 NROITEMS=5
 Drop1=12-175 'Oro
 Drop2=38-25 'Pociones Rojas
-Drop3=36-15 'Poción Amarilla
-Drop4=39-20 'Poción Verde
-Drop5=159-5 'Hachas de Bárbaro
+Drop3=36-15 'Pocion Amarilla
+Drop4=39-20 'Pocion Verde
+Drop5=159-5 'Hachas de Barbaro
 
 ############################################
 
@@ -6146,10 +6146,10 @@ Snd2=59
 BackUp=0
 NROITEMS=5
 Drop1=12-2100 'Oro
-Drop2=36-30 'Poción Amarilla
-Drop3=39-30 'Poción Verde
+Drop2=36-30 'Pocion Amarilla
+Drop3=39-30 'Pocion Verde
 Drop4=537-1 'Invocar Elemental de Agua
-Drop5=496-1 'Armadura de las Ciénagas
+Drop5=496-1 'Armadura de las Cienagas
 
 ############################################
 
@@ -6182,9 +6182,9 @@ BackUp=0
 NROITEMS=5
 Drop1=12-500 'Oro
 Drop2=12-650 'Oro
-Drop3=205-1 'Proyectil Etéreo
-Drop4=38-300 'Poción Roja
-Drop5=37-500 'Poción Azul
+Drop3=205-1 'Proyectil Etereo
+Drop4=38-300 'Pocion Roja
+Drop5=37-500 'Pocion Azul
 
 ############################################
 
@@ -6256,9 +6256,9 @@ BackUp=0
 NROITEMS=5
 Drop1=12-1500 'Oro
 Drop2=12-2000 'Oro
-Drop3=524-2 'Túnica Roja Especial (E/G)
+Drop3=524-2 'Tunica Roja Especial (E/G)
 Drop4=206-1 'Paralizar
-Drop5=660-5 'Báculos Engarzados
+Drop5=660-5 'Baculos Engarzados
 
 ############################################
 
@@ -6329,7 +6329,7 @@ Drop1=12-1200 'Oro
 Drop2=38-100 'Pociones Rojas
 Drop3=12-7500 'Oro
 Drop4=206-1 'Paralizar
-Drop5=531-1 'Descarga Eléctrica
+Drop5=531-1 'Descarga Electrica
 
 ############################################
 
@@ -6360,9 +6360,9 @@ BackUp=0
 NROITEMS=5
 Drop1=12-1000 'Oro
 Drop2=12-2000 'Oro
-Drop3=196-5 'Túnica de Mago
-Drop4=380-1 'Invocación de Ultratumba
-Drop5=660-5 'Báculos Engarzados
+Drop3=196-5 'Tunica de Mago
+Drop4=380-1 'Invocacion de Ultratumba
+Drop5=660-5 'Baculos Engarzados
 
 ############################################
 
@@ -6431,7 +6431,7 @@ Drop5=12-750 'Oro
 ############################################
 
 [NPC557]
-Name=Jabalí Salvaje
+Name=Jabali Salvaje
 NpcType=0
 Head=0
 Heading=3
@@ -6597,7 +6597,7 @@ BackUp=0
 ############################################
 
 [NPC564] 'NO RESPAWN (npc para entrenador)
-Name=Escorpión
+Name=Escorpion
 NpcType=0
 Head=0
 Heading=3
@@ -6654,7 +6654,7 @@ BackUp=0
 ############################################
 
 [NPC566] 'NO RESPAWN (npc para entrenador)
-Name=Murciélago
+Name=Murcielago
 NpcType=0
 Head=0
 Heading=3
@@ -6681,7 +6681,7 @@ BackUp=0
 #############################################
 
 [NPC567]
-Name=Duende Mágico
+Name=Duende Magico
 NpcType=0
 Head=0
 Heading=3
@@ -6709,12 +6709,12 @@ NROITEMS=5
 Drop1=12-50 'Oro
 Drop2=12-75 'Oro
 Drop3=12-150' Oro
-Drop4=199-5 'Dardo Mágico
+Drop4=199-5 'Dardo Magico
 
 ############################################
 
 [NPC568]
-Name=Galeón Pirata
+Name=Galeon Pirata
 NpcType=0
 Head=0
 Heading=3
@@ -6742,12 +6742,12 @@ NROITEMS=5
 Drop2=12-5000 'Oro (Poner alforja despues)
 Drop3=474-1 'Barca
 Drop4=475-1 'Galera
-Drop5=476-1 'Galeón
+Drop5=476-1 'Galeon
 
 ############################################
 
 [NPC569]
-Name=Galeón Fantasmal
+Name=Galeon Fantasmal
 NpcType=0
 Head=0
 Heading=3
@@ -6782,7 +6782,7 @@ Drop4=475-1 'Galera
 [NPC573]
 Name=Árbol Encantado
 NpcType=0
-Desc=¡Odio los leñadores!
+Desc=Odio los leñadores!
 Head=0
 Heading=4
 Body=25
@@ -6872,8 +6872,8 @@ Veneno=1
 BackUp=0
 NROITEMS=5
 Drop1=58-10 'Leña
-Drop2=208-1 'Flauta Mágica
-Drop3=696-5 'Laúd Mágico
+Drop2=208-1 'Flauta Magica
+Drop3=696-5 'Laud Magico
 
 ############################################
 
@@ -6936,7 +6936,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-50 'Oro
 Drop2=12-100 'Oro
-Drop3=645-1 'Poción Negra
+Drop3=645-1 'Pocion Negra
 
 ############################################
 
@@ -7028,7 +7028,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-500 'Oro
 Drop2=38-50 'Pociones Rojas
-Drop3=159-1 'Hacha de Bárbaro
+Drop3=159-1 'Hacha de Barbaro
 Drop4=243-2 'Armadura de Placas Completas (E/G)
 Drop5=393-3 'Armadura de Placas Completas + 2 (E/G)
 
@@ -7105,7 +7105,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC585]
-Name=Dragón Rojo Infernal
+Name=Dragon Rojo Infernal
 NpcType=0
 Head=0
 Heading=3
@@ -7204,7 +7204,7 @@ Drop1=12-2500 'Oro
 Drop2=37-200 'Pociones Azules
 Drop3=361-1 'Tormentas de Fuego
 Drop4=530-2 'Inmovilizar
-Drop5=699-3 'Anillo de Disolución Mágica
+Drop5=699-3 'Anillo de Disolucion Magica
 
 ############################################
 
@@ -7236,8 +7236,8 @@ BackUp=0
 NROITEMS=5
 Drop1=12-500 'Oro
 Drop2=38-100 'Pociones Rojas
-Drop3=239-1 'Túnica Roja
-Drop4=205-1 'Proyectil Etéreo
+Drop3=239-1 'Tunica Roja
+Drop4=205-1 'Proyectil Etereo
 
 ############################################
 
@@ -7435,7 +7435,7 @@ Drop3=12-600 'Oro
 ############################################
 
 [NPC595]
-Name=Tentáculo Putrefacto
+Name=Tentaculo Putrefacto
 NpcType=0
 Head=0
 Heading=3
@@ -7465,7 +7465,7 @@ Drop3=12-200' Oro
 ############################################
 
 [NPC596]
-Name=Espíritu chocarrero
+Name=Espiritu chocarrero
 NpcType=0
 Head=0
 Heading=3
@@ -7551,7 +7551,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-75 'Oro
 Drop2=978-2 'Harapos de la Cueva
-Drop4=697-2 'Anillos Mágicos
+Drop4=697-2 'Anillos Magicos
 Drop5=513-1 'Vestido de Bruja
 
 ############################################
@@ -7619,7 +7619,7 @@ Drop3=552-50 'Flechas +2
 ############################################
 
 [NPC601]
-Name=Licántropo
+Name=Licantropo
 NpcType=0
 Head=0
 Heading=3
@@ -7710,8 +7710,8 @@ Sp1=9
 BackUp=0
 NROITEMS=5
 Drop1=12-230 'Oro
-Drop3=208-2 'Flauta Mágica
-Drop5=542-1 'Turbación
+Drop3=208-2 'Flauta Magica
+Drop5=542-1 'Turbacion
 
 ############################################
 
@@ -7780,7 +7780,7 @@ Drop4=12-13500 'Oro
 ############################################
 
 [NPC606]
-Name=Tiburón
+Name=Tiburon
 NpcType=0
 Head=0
 Heading=3
@@ -7813,7 +7813,7 @@ Drop4=12-2100 'Oro
 ############################################
 
 [NPC607]
-Name=Capitán Pirata
+Name=Capitan Pirata
 NpcType=0
 Head=512
 Heading=3
@@ -7845,7 +7845,7 @@ Drop4=474-1 'Barca
 ############################################
 
 [NPC608]
-Name=Guardián de las Profundidades
+Name=Guardian de las Profundidades
 NpcType=0
 Head=0
 Heading=3
@@ -7909,8 +7909,8 @@ BackUp=0
 NROITEMS=5
 Drop1=12-10000 'Oro
 Drop2=12-19050 'Oro
-Drop3=657-1 'Quitar la Turbación
-Drop4=542-1 'Turbación
+Drop3=657-1 'Quitar la Turbacion
+Drop4=542-1 'Turbacion
 Drop5=537-1 'Invocar Elemental de Agua
 
 ############################################
@@ -8047,14 +8047,14 @@ NROITEMS=5
 Drop1=12-150 'Oro
 Drop2=37-23 'Pociones Azules
 Drop3=658-1 'Vara de Frezno
-Drop4=697-1 'Anillo Mágico
-Drop5=698-1 'Anillo de Resistencia Mágica
+Drop4=697-1 'Anillo Magico
+Drop5=698-1 'Anillo de Resistencia Magica
 
 
 ############################################
 
 [NPC614]
-Name=Elfo Guardián
+Name=Elfo Guardian
 NpcType=0
 Head=0
 Heading=3
@@ -8121,7 +8121,7 @@ AfectaParalisis=1
 BackUp=0
 NROITEMS=5
 Drop1=12-1000 'Oro
-Drop2=1005-2 'Hachas de Madera Élfia
+Drop2=1005-2 'Hachas de Madera Elfia
 Drop3=38-300 'Pociones Rojas
 Drop4=203-1 'Aura Sanadora Avanzada
 
@@ -8185,8 +8185,8 @@ PoderEvasion=25
 BackUp=0
 NROITEMS=5
 Drop1=12-10  ' Oro
-Drop2=855-10 ' Poción amarilla (newbie)
-Drop3=858-20 ' Poción verde(newbie)
+Drop2=855-10 ' Pocion amarilla (newbie)
+Drop3=858-20 ' Pocion verde(newbie)
 Drop5=126-1  ' Hacha larga de guerra
 
 ############################################
@@ -8216,7 +8216,7 @@ PoderEvasion=100
 BackUp=0
 NROITEMS=5
 Drop1=12-65  ' Oro
-Drop2=856-24 ' Poción Azul (newbie)
+Drop2=856-24 ' Pocion Azul (newbie)
 Drop4=208-1  ' Flauta Magica
 Drop5=696-1  ' Laud Magico
 
@@ -8249,7 +8249,7 @@ BackUp=0
 NROITEMS=5 
 Drop1=12-40  ' Oro
 Drop2=12-85  ' Oro
-Drop3=857-20 ' Poción roja (newbie)
+Drop3=857-20 ' Pocion roja (newbie)
 Drop4=658-1  ' Vara de fresno
 Drop5=205-1  ' Misil Magico
 
@@ -8315,13 +8315,13 @@ BackUp=0
 NROITEMS=5
 Drop1=12-20   ' Oro
 Drop2=480-15  ' Flechas 
-Drop3=855-30  ' Poción amarilla (newbie)
+Drop3=855-30  ' Pocion amarilla (newbie)
 Drop4=1009-20 ' cuchillas
 
 ############################################
 
 [NPC622]
-Name=Pequeño Dragón Mágico
+Name=Pequeño Dragon Magico
 NpcType=0
 Head=0
 Heading=3
@@ -8382,13 +8382,13 @@ BackUp=0
 NROITEMS=5
 Drop1=12-50 ' Oro 
 Drop2=12-75 ' Oro 
-Drop4=205-1 ' Proyectil Mágico
+Drop4=205-1 ' Proyectil Magico
 Drop5=123-3 ' Espada Vikinga
 
 ############################################
 
 [NPC624]
-Name=Pequeño Dragón Rojo
+Name=Pequeño Dragon Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -8414,13 +8414,13 @@ BackUp=0
 NROITEMS=5
 Drop1=12-25 ' Oro
 Drop2=12-25 ' Oro
-Drop4=204-1 ' Flecha Eléctrica
+Drop4=204-1 ' Flecha Electrica
 Drop5=990-3 ' Mazo del juicio
 
 ############################################
 
 [NPC625]
-Name=Víbora
+Name=Vibora
 NpcType=0
 Head=0
 Heading=3
@@ -8514,7 +8514,7 @@ Drop5=470-1 ' Fuerza
 ############################################
 
 [NPC628]
-Name=Tarántula venenosa
+Name=Tarantula venenosa
 NpcType=0
 Head=0
 Heading=3
@@ -8547,7 +8547,7 @@ Drop4=396-1 ' Celeridad
 [NPC629]
 Name=Guerrero tutor I
 NpcType=0
-Desc= Los guerreros se especializan en el combate cuerpo a cuerpo por lo que las criaturas más adecuadas para ellos son aquellas que no poseen demasiada evasión y poder de ataque.
+Desc= Los guerreros se especializan en el combate cuerpo a cuerpo por lo que las criaturas mas adecuadas para ellos son aquellas que no poseen demasiada evasion y poder de ataque.
 Head=301
 Heading=3
 Body=54
@@ -8565,7 +8565,7 @@ BackUp=0
 [NPC630]
 Name=Guerrero tutor II
 NpcType=0
-Desc= Debido a sus características, dentro de esta isla, los guerreros prefieren entrenar en el desierto al este de la ciudad.
+Desc= Debido a sus caracteristicas, dentro de esta isla, los guerreros prefieren entrenar en el desierto al este de la ciudad.
 Head=370
 Heading=3
 Body=54
@@ -8583,7 +8583,7 @@ BackUp=0
 [NPC631]
 Name= Cazador tutor I
 NpcType=0
-Desc= Los cazadores se especializan en el combate a distancia, por lo que las criaturas más indicadas para ellos, son las que no tengan un gran poder de evasión.
+Desc= Los cazadores se especializan en el combate a distancia, por lo que las criaturas mas indicadas para ellos, son las que no tengan un gran poder de evasion.
 Head=303
 Heading=3
 Body=155
@@ -8601,7 +8601,7 @@ BackUp=0
 [NPC632]
 Name= Cazador tutor II
 NpcType=0
-Desc= Debido a sus características, dentro de esta isla, los cazadores, prefieren entrenar en el bosque, al oeste de la ciudad
+Desc= Debido a sus caracteristicas, dentro de esta isla, los cazadores, prefieren entrenar en el bosque, al oeste de la ciudad
 Head=4
 Heading=3
 Body=58
@@ -8619,7 +8619,7 @@ BackUp=0
 [NPC633]
 Name= Pirata tutor I
 NpcType=0
-Desc= Los piratas pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas más adecuadas para ellos, son aquellas que no posean gran poder de evasión ni de ataque.
+Desc= Los piratas pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas mas adecuadas para ellos, son aquellas que no posean gran poder de evasion ni de ataque.
 Head=380
 Heading=3
 Body=161
@@ -8637,7 +8637,7 @@ BackUp=0
 [NPC634]
 Name= Pirata tutor II
 NpcType=0
-Desc= Por sus características, dentro de esta isla, los piratas, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
+Desc= Por sus caracteristicas, dentro de esta isla, los piratas, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
 Head=305
 Heading=3
 Body=161
@@ -8655,7 +8655,7 @@ BackUp=0
 [NPC635]
 Name= Bandido tutor I
 NpcType=0
-Desc= Los bandidos se especializan en el combate cuerpo a cuerpo, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
+Desc= Los bandidos se especializan en el combate cuerpo a cuerpo, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean un gran poder de evasion ni de ataque.
 Head=9
 Heading=3
 Body=321
@@ -8673,7 +8673,7 @@ BackUp=0
 [NPC636]
 Name= Bandido tutor II
 NpcType=0
-Desc= Debido a sus características, dentro de esta isla, los bandidos, prefieren entrenar en el desierto, al este de la ciudad.
+Desc= Debido a sus caracteristicas, dentro de esta isla, los bandidos, prefieren entrenar en el desierto, al este de la ciudad.
 Head=72
 Heading=3
 Body=321
@@ -8691,7 +8691,7 @@ BackUp=0
 [NPC637]
 Name= Ladron tutor I
 NpcType=0
-Desc= Los ladrones se destacan en el arte de ocultarse y el combate a distancia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean gran poder de evasión.
+Desc= Los ladrones se destacan en el arte de ocultarse y el combate a distancia, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean gran poder de evasion.
 Head=75
 Heading=3
 Body=337
@@ -8709,7 +8709,7 @@ BackUp=0
 [NPC638]
 Name= Ladron tutor II
 NpcType=0
-Desc= Debido a sus características, dentro de esta isla, los ladrones, prefieren entrenar en el bosque, al oeste de la ciudad
+Desc= Debido a sus caracteristicas, dentro de esta isla, los ladrones, prefieren entrenar en el bosque, al oeste de la ciudad
 Head=37
 Heading=3
 Body=337
@@ -8727,7 +8727,7 @@ BackUp=0
 [NPC639]
 Name= Mago tutor I
 NpcType=0
-Desc= Los magos se especializan en ataques mágicos, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean defensa mágica.
+Desc= Los magos se especializan en ataques magicos, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean defensa magica.
 Head=407
 Heading=3
 Body=159
@@ -8745,7 +8745,7 @@ BackUp=0
 [NPC640]
 Name= Mago tutor II
 NpcType=0
-Desc= Debido a sus características, dentro de esta isla, los magos, prefieren entrenar en el bosque, al norte de la ciudad
+Desc= Debido a sus caracteristicas, dentro de esta isla, los magos, prefieren entrenar en el bosque, al norte de la ciudad
 Head=109
 Heading=3
 Body=353
@@ -8763,7 +8763,7 @@ BackUp=0
 [NPC641]
 Name=Bardo Tutor I
 NpcType=0
-Desc=Los bardos se especializan en conjurar hechizos y evadir golpes, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean defensa mágica.
+Desc=Los bardos se especializan en conjurar hechizos y evadir golpes, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean defensa magica.
 Head=220
 Heading=3
 Body=130
@@ -8781,7 +8781,7 @@ BackUp=0
 [NPC642]
 Name=Bardo Tutor II
 NpcType=0
-Desc=Debido a sus características, dentro de esta isla, los bardos, prefieren entrenar en el bosque, al norte de la ciudad
+Desc=Debido a sus caracteristicas, dentro de esta isla, los bardos, prefieren entrenar en el bosque, al norte de la ciudad
 Head=179
 Heading=3
 Body=319
@@ -8797,9 +8797,9 @@ BackUp=0
 ############################################
 
 [NPC643]
-Name=Clérigo Tutor I
+Name=Clerigo Tutor I
 NpcType=0
-Desc=Los clérigos combinan la magia con el combate cuerpo a cuerpo, por lo tanto, las criaturas más adecuadas para ellos, son las que no posean defensa mágica o posean bajo ataque y evasión.
+Desc=Los clerigos combinan la magia con el combate cuerpo a cuerpo, por lo tanto, las criaturas mas adecuadas para ellos, son las que no posean defensa magica o posean bajo ataque y evasion.
 Head=22
 Heading=3
 Body=314
@@ -8815,9 +8815,9 @@ BackUp=0
 ############################################
 
 [NPC644]
-Name=Clérigo Tutor II
+Name=Clerigo Tutor II
 NpcType=0
-Desc=Por sus características, dentro de esta isla, los clérigos, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (magia), al este o norte de la ciudad.
+Desc=Por sus caracteristicas, dentro de esta isla, los clerigos, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (magia), al este o norte de la ciudad.
 Head=112
 Heading=3
 Body=314
@@ -8835,7 +8835,7 @@ BackUp=0
 [NPC645]
 Name=Druida Tutor I
 NpcType=0
-Desc=Los druidas se especializan en ataques mágicos, por lo tanto, las criaturas más adecuadas para esta clase, son las que no posean defensa mágica. También pueden entrenar con mascotas al domar
+Desc=Los druidas se especializan en ataques magicos, por lo tanto, las criaturas mas adecuadas para esta clase, son las que no posean defensa magica. Tambien pueden entrenar con mascotas al domar
 Head=284
 Heading=3
 Body=56
@@ -8853,7 +8853,7 @@ BackUp=0
 [NPC646]
 Name=Druida Tutor II
 NpcType=0
-Desc=Debido a sus características, dentro de esta isla, los druidas, prefieren entrenar en el bosque, al norte de la ciudad
+Desc=Debido a sus caracteristicas, dentro de esta isla, los druidas, prefieren entrenar en el bosque, al norte de la ciudad
 Head=115
 Heading=3
 Body=56
@@ -8869,9 +8869,9 @@ BackUp=0
 ############################################
 
 [NPC647]
-Name=Paladín Tutor I
+Name=Paladin Tutor I
 NpcType=0
-Desc=Los paladines combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
+Desc=Los paladines combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean un gran poder de evasion ni de ataque.
 Head=30
 Heading=3
 Body=45
@@ -8887,9 +8887,9 @@ BackUp=0
 ############################################
 
 [NPC648]
-Name=Paladín Tutor II
+Name=Paladin Tutor II
 NpcType=0
-Desc=Debido a sus características, dentro de esta isla los paladines prefieren entrenar en el desierto al este de la ciudad.
+Desc=Debido a sus caracteristicas, dentro de esta isla los paladines prefieren entrenar en el desierto al este de la ciudad.
 Head=382
 Heading=3
 Body=54
@@ -8907,7 +8907,7 @@ BackUp=0
 [NPC649]
 Name=Asesino Tutor I
 NpcType=0
-Desc=Los asesinos combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
+Desc=Los asesinos combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas mas adecuadas para esta clase, son aquellas que no posean un gran poder de evasion ni de ataque.
 Head=288
 Heading=3
 Body=48
@@ -8925,7 +8925,7 @@ BackUp=0
 [NPC650]
 Name=Asesino Tutor II
 NpcType=0
-Desc=Debido a sus características, dentro de esta isla los asesinos prefieren entrenar en el desierto al este de la ciudad.
+Desc=Debido a sus caracteristicas, dentro de esta isla los asesinos prefieren entrenar en el desierto al este de la ciudad.
 Head=309
 Heading=3
 Body=539
@@ -8943,7 +8943,7 @@ BackUp=0
 [NPC651]
 Name=Herrero Tutor
 NpcType=0
-Desc=Se considera Herrero al trabajador que tenga 100 skills en la habilidad Herrería. Los mismos se encargan de construir armas y armaduras para los aventureros de estas tierras.
+Desc=Se considera Herrero al trabajador que tenga 100 skills en la habilidad Herreria. Los mismos se encargan de construir armas y armaduras para los aventureros de estas tierras.
 Head=7
 Heading=3
 Body=93
@@ -8961,7 +8961,7 @@ BackUp=0
 [NPC652]
 Name=Minero Tutor
 NpcType=0
-Desc=Se considera Minero al trabajador que tenga 100 skills en la habilidad Minería. Los mismos se encargan de extraer minerales y transformarlos en lingotes para el uso de los herreros.
+Desc=Se considera Minero al trabajador que tenga 100 skills en la habilidad Mineria. Los mismos se encargan de extraer minerales y transformarlos en lingotes para el uso de los herreros.
 Head=109
 Heading=3
 Body=100
@@ -8979,7 +8979,7 @@ BackUp=0
 [NPC653]
 Name=Carpintero Tutor
 NpcType=0
-Desc=Se considera Carpintero al trabajador que tenga 100 skills en la habilidad Carpintería. Los mismos se encargan de construir todo tipo de objetos que requieran madera.
+Desc=Se considera Carpintero al trabajador que tenga 100 skills en la habilidad Carpinteria. Los mismos se encargan de construir todo tipo de objetos que requieran madera.
 Head=308
 Heading=3
 Body=373
@@ -8997,7 +8997,7 @@ BackUp=0
 [NPC654]
 Name=Leñador Tutor
 NpcType=0
-Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña común y leña élfica para el uso de los carpinteros.
+Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
 Head=216
 Heading=3
 Body=382
@@ -9015,7 +9015,7 @@ BackUp=0
 [NPC655]
 Name=Pescador Tutor
 NpcType=0
-Desc=Se considera Pescador al trabajador que tenga 100 skills en la habilidad Pesca. Los mismos se encargan de extraer peces de los ríos y mares para el venderselos al mejor postor.
+Desc=Se considera Pescador al trabajador que tenga 100 skills en la habilidad Pesca. Los mismos se encargan de extraer peces de los rios y mares para el venderselos al mejor postor.
 Head=410
 Heading=3
 Body=301
@@ -9033,7 +9033,7 @@ BackUp=0
 [NPC656]
 Name=Trabajador Tutor I
 NpcType=0
-Desc=Los trabajadores pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas más adecuadas para ellos, son aquellas que no posean gran poder de evasión ni de ataque.
+Desc=Los trabajadores pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas mas adecuadas para ellos, son aquellas que no posean gran poder de evasion ni de ataque.
 Head=172
 Heading=3
 Body=348
@@ -9051,7 +9051,7 @@ BackUp=0
 [NPC657]
 Name=Trabajador Tutor II
 NpcType=0
-Desc=Por sus características, dentro de esta isla, los trabajadores, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
+Desc=Por sus caracteristicas, dentro de esta isla, los trabajadores, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
 Head=372
 Heading=3
 Body=376
@@ -9685,7 +9685,7 @@ Drop6=194-600 'Minerales de Oro
 [NPC750] ' Hija de ZeuS
 Name=ReyarB Artemisa
 NpcType=3
-Desc=¡Hola amigo! Soy la hija de ZeuS, si deseas que traiga una criatura solo debes pedirmelo. (Escribe /ENTRENAR)
+Desc=Hola amigo! Soy la hija de ZeuS, si deseas que traiga una criatura solo debes pedirmelo. (Escribe /ENTRENAR)
 Head=71
 Body=170
 Heading=3
@@ -9729,7 +9729,7 @@ Domable=0
 ##############################################################
 #####################NPCS PRETORIANOS#########################
 ##############################################################
-###############no cambiar los índices asignados###############
+###############no cambiar los indices asignados###############
 
 [NPC900] ' Alto
 Name=Rey Pretoriano
@@ -9917,7 +9917,7 @@ Obj2=519-1   ' Tunica legendaria
 Obj3=37-300  ' Pocion Azul
 Obj4=38-300  ' Pocion Roja
 Obj5=132-1   ' Casco de Hierro
-Obj6=1049-1  ' Laud Élfico
+Obj6=1049-1  ' Laud Elfico
 BackUp=0
 
 ############################################
@@ -9956,7 +9956,7 @@ Obj2=525-1   ' Tunica Combinada
 Obj3=37-300  ' Pocion Azul
 Obj4=38-300  ' Pocion Roja
 Obj5=132-1   ' Casco de Hierro
-Obj6=1049-1  ' Laud Élfico
+Obj6=1049-1  ' Laud Elfico
 BackUp=0
 
 ############################################
@@ -10023,7 +10023,7 @@ Sp1=25
 Sp2=38
 NROITEMS=5
 Obj1=12-10000 ' Oro
-Obj2=670-1    ' Túnica de mago 
+Obj2=670-1    ' Tunica de mago 
 Obj3=37-400   ' Pocion Azul
 Obj4=660-1    ' Baculo Engarzado
 Obj5=662-1    ' Sombrero de Mago
@@ -10060,7 +10060,7 @@ NROITEMS=5
 Obj1=12-10000 ' Oro
 Obj2=986-1    ' Tunica de Druida
 Obj3=37-400   ' Pocion Azul
-Obj4=1050-1   ' Flauta Élfica
+Obj4=1050-1   ' Flauta Elfica
 Obj5=1004-1   ' Casco de Tigre
 BackUp=0
 
@@ -10093,9 +10093,9 @@ Sp1=25
 Sp2=38
 NROITEMS=5
 Obj1=12-10000 ' Oro
-Obj2=524-1    ' Túnica roja especial
+Obj2=524-1    ' Tunica roja especial
 Obj3=37-400   ' Pocion Azul
-Obj4=1050-1   ' Flauta Élfica
+Obj4=1050-1   ' Flauta Elfica
 Obj5=1004-1   ' Casco de Tigre
 BackUp=0
 
@@ -10132,8 +10132,8 @@ Obj3=553-125  ' Flecha +3
 Obj4=360-1    ' Armadura de Cazador 
 Obj5=370-1    ' Capucha de Cazador 
 Obj6=128-1    ' Escudo de Hierro
-Obj7=36-20    ' Poción Amarilla
-Obj8=39-20    ' Poción Verde
+Obj7=36-20    ' Pocion Amarilla
+Obj8=39-20    ' Pocion Verde
 BackUp=0
 
 ############################################
@@ -10169,8 +10169,8 @@ Obj3=553-125  ' Flecha +3
 Obj4=648-1    ' Armadura de Cazador (E/G) 
 Obj5=370-1    ' Capucha de Cazador 
 Obj6=128-1    ' Escudo de Hierro
-Obj7=36-20    ' Poción Amarilla
-Obj8=39-20    ' Poción Verde
+Obj7=36-20    ' Pocion Amarilla
+Obj8=39-20    ' Pocion Verde
 BackUp=0
 
 ############################################
@@ -10204,8 +10204,8 @@ Obj1=12-8000  ' Oro
 Obj2=1009-125 ' Cuchillas
 Obj3=519-1    ' Tunica Legendaria
 Obj4=1010-1   ' Sombrero Pirata 
-Obj5=36-20    ' Poción Amarilla
-Obj6=39-20    ' Poción Verde
+Obj5=36-20    ' Pocion Amarilla
+Obj6=39-20    ' Pocion Verde
 BackUp=0
 
 ############################################
@@ -10237,10 +10237,10 @@ Sp1=37
 NROITEMS=6
 Obj1=12-8000  ' Oro
 Obj2=1009-125 ' Cuchillas
-Obj3=525-1    ' Túnica Combinada (E/G)
+Obj3=525-1    ' Tunica Combinada (E/G)
 Obj4=1010-1   ' Sombrero Pirata 
-Obj5=36-20    ' Poción Amarilla
-Obj6=39-20    ' Poción Verde
+Obj5=36-20    ' Pocion Amarilla
+Obj6=39-20    ' Pocion Verde
 BackUp=0
 
 ############################################
@@ -10274,9 +10274,9 @@ Obj2=129-1   ' Hacha de Guerra Dos Filos
 Obj3=195-1   ' Armadura de Placas Completa
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
-Obj6=36-30   ' Poción Amarilla
-Obj7=39-30   ' Poción Verde
-Obj8=38-300  ' Poción Roja
+Obj6=36-30   ' Pocion Amarilla
+Obj7=39-30   ' Pocion Verde
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10310,9 +10310,9 @@ Obj2=129-1   ' Hacha de Guerra Dos Filos
 Obj3=243-1   ' Armadura de Placas Completa (E/G)
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
-Obj6=36-30   ' Poción Amarilla
-Obj7=39-30   ' Poción Verde
-Obj8=38-300  ' Poción Roja
+Obj6=36-30   ' Pocion Amarilla
+Obj7=39-30   ' Pocion Verde
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10346,8 +10346,8 @@ Obj2=129-1   ' Hacha de Guerra Dos Filos
 Obj3=195-1   ' Armadura de Placas Completa
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
-Obj6=37-450  ' Poción Azul
-Obj7=38-300  ' Poción Roja
+Obj6=37-450  ' Pocion Azul
+Obj7=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10381,8 +10381,8 @@ Obj2=129-1   ' Hacha de Guerra Dos Filos
 Obj3=243-1   ' Armadura de Placas Completa (E/G)
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
-Obj6=37-450  ' Poción Azul
-Obj7=38-300  ' Poción Roja
+Obj6=37-450  ' Pocion Azul
+Obj7=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10416,9 +10416,9 @@ Obj2=367-2   ' Daga +4
 Obj3=356-1   ' Armadura de las sombras
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=404-1   ' Escudo de Tortuga
-Obj6=697-1   ' Anillo mágico
-Obj7=37-450  ' Poción Azul
-Obj8=38-300  ' Poción Roja
+Obj6=697-1   ' Anillo magico
+Obj7=37-450  ' Pocion Azul
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10452,9 +10452,9 @@ Obj2=367-2   ' Daga +4
 Obj3=854-1   ' Armadura de las sombras (E/G)
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=404-1   ' Escudo de Tortuga
-Obj6=697-1   ' Anillo mágico
-Obj7=37-450  ' Poción Azul
-Obj8=38-300  ' Poción Roja
+Obj6=697-1   ' Anillo magico
+Obj7=37-450  ' Pocion Azul
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10489,8 +10489,8 @@ Obj3=195-1   ' Armadura de Placas Completa
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
 Obj6=873-1   ' Guantes de hurto
-Obj7=37-450  ' Poción Azul
-Obj8=38-300  ' Poción Roja
+Obj7=37-450  ' Pocion Azul
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
@@ -10525,14 +10525,14 @@ Obj3=243-1   ' Armadura de Placas Completa (E/G)
 Obj4=131-1   ' Casco de Hierro Completo
 Obj5=128-1   ' Escudo de Hierro
 Obj6=873-1   ' Guantes de hurto
-Obj7=37-450  ' Poción Azul
-Obj8=38-300  ' Poción Roja
+Obj7=37-450  ' Pocion Azul
+Obj8=38-300  ' Pocion Roja
 BackUp=0
 
 ############################################
 
 [NPC922]
-Name=Ladrón Pretoriano
+Name=Ladron Pretoriano
 NpcType=10
 Head=7
 Heading=3
@@ -10566,7 +10566,7 @@ BackUp=0
 ############################################
 
 [NPC923] ' Bajo (Asignar cabeza default)
-Name=Ladrón Pretoriano
+Name=Ladron Pretoriano
 NpcType=10
 Head=7
 Heading=3
@@ -10601,12 +10601,12 @@ BackUp=0
 ##############################################################
 #####################NPCS QUESTS##############################
 ##############################################################
-###############no cambiar los índices asignados###############
+###############no cambiar los indices asignados###############
 
 [NPC924]
 Name=Mark Quest
 NpcType=0
-Desc=¡Buen día amigo mío! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
+Desc=Buen dia amigo mio! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
 Head=101
 Heading=3
 Body=348
@@ -10657,7 +10657,7 @@ QuestNumber=3
 [NPC927]
 Name=Novia cornuda
 NpcType=0
-Desc=¡ME CAMBIASTE POR UNA GNOMA! No vuelvas a hablarme nunca mas en tu puta vida.
+Desc=ME CAMBIASTE POR UNA GNOMA! No vuelvas a hablarme nunca mas en tu puta vida.
 Head=77
 Heading=3
 Body=511
@@ -10673,7 +10673,7 @@ BackUp=0
 [NPC928]
 Name=Novio cagador
 NpcType=0
-Desc=¡NO ES LO QUE PARECE!.
+Desc=NO ES LO QUE PARECE!.
 Head=0
 Heading=3
 Body=4
