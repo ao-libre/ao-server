@@ -8659,14 +8659,15 @@ DefensaMagicaMax=210
 DefensaMagicaMin=200
 Valor=1500000
 Crucial=0
-LingH=3000
+LingH=2000
 LingP=2000
-LingO=3000
+LingO=2000
 SkHerreria=101
 ImpideParalizar=1
 ImpideInmobilizar=1
 ImpideAturdir=1
 ImpideCegar=1
+Nosecae=1
 Log=1
 
 [OBJ701]
