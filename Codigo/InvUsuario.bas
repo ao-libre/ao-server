@@ -591,8 +591,8 @@ End Sub
 Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) As Boolean
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: 17/12/2019
+    'Obtengo el numero de getMaxInventorySlots antes que nada para que funcionen correctamente las mochilas y alforjas (Recox)
     '***************************************************
 
     On Error GoTo errHandler
@@ -600,6 +600,11 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
     Dim Slot As Byte
 
     With UserList(UserIndex)
+        'Chequeamos la cantidad maxima de items en inventario para poder activar/desactivar 
+        'la mochila sin tener que reiniciar el juego
+        'Ya que en en el unico lugar donde se setea este valor es en ConnectUser (Recox)
+        .CurrentInventorySlots = getMaxInventorySlots(Userindex)
+        
         'el user ya tiene un objeto del mismo tipo?
         Slot = 1
         
