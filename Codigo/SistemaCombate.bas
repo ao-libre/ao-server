@@ -1185,14 +1185,14 @@ Public Sub UsuarioAtaca(ByVal Userindex As Integer)
         If index > 0 Then
             If Npclist(index).Attackable Then
                 If Npclist(index).MaestroUser > 0 And MapInfo(Npclist(index).Pos.Map).Pk = False Then
-                    Call WriteConsoleMsg(Userindex, "No puedes atacar mascotas en zona segura.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(Userindex, "No puedes atacar mascotas en zona segura.", FontTypeNames.FONTTYPE_WARNING)
                     Exit Sub
 
                 End If
                 
                 Call UsuarioAtacaNpc(Userindex, index)
             Else
-                Call WriteConsoleMsg(Userindex, "No puedes atacar a este NPC.", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(Userindex, "No puedes atacar a este NPC.", FontTypeNames.FONTTYPE_WARNING)
 
             End If
             

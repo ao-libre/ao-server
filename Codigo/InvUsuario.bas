@@ -903,43 +903,25 @@ Function EsUsable(ByVal ObjIndex As Integer)
 '*************************************************
 'Author: Jopi
 'Revisa si el objeto puede ser equipado/usado.
+'Todas las opciones no usables estan en un solo case en ves de muchos diferentes (Recox)
 '*************************************************
     Dim obj As ObjData
         obj = ObjData(ObjIndex)
     
     Select Case obj.OBJType
     
-        Case eOBJType.otArbolElfico
-            EsUsable = False
-        
-        Case eOBJType.otArboles
-            EsUsable = False
-        
-        Case eOBJType.otCarteles
-            EsUsable = False
-        
-        Case eOBJType.otForos
-            EsUsable = False
-        
-        Case eOBJType.otFragua
-            EsUsable = False
-        
-        Case eOBJType.otMuebles
-            EsUsable = False
-        
-        Case eOBJType.otPuertas
-            EsUsable = False
-        
-        Case eOBJType.otTeleport
-            EsUsable = False
-        
-        Case eOBJType.otYacimiento
-            EsUsable = False
-        
-        Case eOBJType.otYacimientoPez
-            EsUsable = False
-        
-        Case eOBJType.otYunque
+         Case eOBJType.otArbolElfico, _
+              eOBJType.otArboles, _
+              eOBJType.otCarteles, _
+              eOBJType.otForos, _
+              eOBJType.otFragua, _
+              eOBJType.otMuebles, _
+              eOBJType.otPuertas, _
+              eOBJType.otTeleport, _
+              eOBJType.otYacimiento, _
+              eOBJType.otYacimientoPez, _
+              eOBJType.otYunque, _
+         
             EsUsable = False
         
         Case Else
