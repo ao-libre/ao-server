@@ -598,7 +598,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
     On Error GoTo errHandler
 
     Dim Slot As Byte
-    
+
     With UserList(UserIndex)
         'el user ya tiene un objeto del mismo tipo?
         Slot = 1
@@ -621,7 +621,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
                 Slot = Slot + 1
 
                 If Slot > .CurrentInventorySlots Then
-                    Call WriteConsoleMsg(UserIndex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_WARNING)
                     MeterItemEnInventario = False
                     Exit Function
 
@@ -634,7 +634,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As Obj) A
     
         If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
             If Not ItemSeCae(MiObj.ObjIndex) Then
-                Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_FIGHT)
+                Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_WARNING)
                 MeterItemEnInventario = False
                 Exit Function
 

@@ -2910,12 +2910,15 @@ End Function
 Public Function getMaxInventorySlots(ByVal Userindex As Integer) As Byte
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: Recox
+    'Puse un comentario y hago uso de una constante SLOTS_PER_ROW_INVENTORY, en ves de un integer harcodeado. (17/12/2019)
     '***************************************************
 
     If UserList(Userindex).Invent.MochilaEqpObjIndex > 0 Then
-        getMaxInventorySlots = MAX_NORMAL_INVENTORY_SLOTS + ObjData(UserList(Userindex).Invent.MochilaEqpObjIndex).MochilaType * 5 '5=slots por fila, hacer constante
+        'Pongo este comentario aca para entender un poco mas facil en el futuro como funciona esto
+        'Hay 2 tipos de objeto de mochila, tipo 1 y 2 que son mochila grande y chica
+        'Basicamente hace una multiplicacion por con el mochilaType y con eso se suman los items que puedo transportar.
+        getMaxInventorySlots = MAX_NORMAL_INVENTORY_SLOTS + ObjData(UserList(Userindex).Invent.MochilaEqpObjIndex).MochilaType * SLOTS_PER_ROW_INVENTORY
     Else
         getMaxInventorySlots = MAX_NORMAL_INVENTORY_SLOTS
 
