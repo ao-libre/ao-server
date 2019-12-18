@@ -5252,7 +5252,7 @@ Crucial=0
 
 [OBJ461] 'Repone HP
 Name=Pocion Roja (Newbie)
-GrhIndex=542
+GrhIndex=5736
 ObjType=11
 Agarrable=0
 newbie=1
@@ -5263,7 +5263,7 @@ Crucial=0
 
 [OBJ462] 'Mod Fuerza
 Name=Pocion Verde (Newbie)
-GrhIndex=543
+GrhIndex=5737
 ObjType=11
 Agarrable=0
 newbie=1
@@ -8655,8 +8655,8 @@ Name=Anillo de los Dioses
 GrhIndex=4903
 ObjType=18
 Agarrable=0
-DefensaMagicaMax=210
-DefensaMagicaMin=200
+DefensaMagicaMax=400
+DefensaMagicaMin=400
 Valor=1500000
 Crucial=0
 LingH=2000
@@ -9200,12 +9200,12 @@ ObjType=20
 Agarrable=1
 
 [OBJ775]
-Name=Hipocampo
+Name=Caballito de Mar
 GrhIndex=848
 ObjType=1
 Agarrable=0
 MinHam=75
-Valor=13
+Valor=15
 Crucial=0
 
 [OBJ776]
@@ -9739,7 +9739,7 @@ SkHerreria=75
 
 [OBJ855]
 Name=Pocion Amarilla (Newbie)
-GrhIndex=540
+GrhIndex=5733
 ObjType=11
 Agarrable=0
 TipoPocion=1
@@ -9752,7 +9752,7 @@ Crucial=1
 
 [OBJ856] 
 Name=Pocion Azul (Newbie)
-GrhIndex=541
+GrhIndex=5734
 ObjType=11
 Agarrable=0
 TipoPocion=4
@@ -9764,7 +9764,7 @@ Crucial=1
 
 [OBJ857]
 Name=Pocion Roja (Newbie)
-GrhIndex=542
+GrhIndex=5736
 ObjType=11
 Agarrable=0
 TipoPocion=3
@@ -9776,7 +9776,7 @@ Crucial=1
 
 [OBJ858]
 Name=Pocion Verde (Newbie)
-GrhIndex=543
+GrhIndex=5737
 ObjType=11
 Agarrable=0
 TipoPocion=2
