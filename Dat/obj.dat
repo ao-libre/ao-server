@@ -6179,7 +6179,6 @@ MinDef=30
 Valor=20000
 Crucial=1
 CP1=GUERRERO
-CP2=MAGO
 
 [OBJ520]
 Name=Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)
@@ -13984,7 +13983,7 @@ GrhIndex=1470
 ObjType=3
 NumRopaje=255
 Agarrable=0
-MaxDef=70
+MaxDef=80
 MinDef=70
 NoSeCae=1
 LingH=9
