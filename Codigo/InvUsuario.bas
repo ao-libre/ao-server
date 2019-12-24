@@ -925,7 +925,7 @@ Function EsUsable(ByVal ObjIndex As Integer)
               eOBJType.otTeleport, _
               eOBJType.otYacimiento, _
               eOBJType.otYacimientoPez, _
-              eOBJType.otYunque,
+              eOBJType.otYunque
          
             EsUsable = False
         
