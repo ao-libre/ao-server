@@ -822,3 +822,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.19:
 * 09/12/2019: Uso Long en la variable packetID del HandleIncomingData() - https://www.gs-zone.org/temas/las-consecuencias-de-usar-byte-en-handleincomingdata.99245/ (jopiortiz)
+* 25/12/2019: Se eliminaron acentos y caracteres que se rompen en el archivo NPCs.dat y Obj.dat (Recox)
+* 25/12/2019: Modifico los colores de algunos mensajes y hago un poco mas facil de leer el codigo. (Recox)
+* 25/12/2019: Todos los npcs que venden provisiones venden todas las comidas y bebidas. (Neo)
+* 25/12/2019: Espada Argentum modificadas estadisticas. (Neo)
+* 25/12/2019: Actualizadas armas, armaduras de herrero y ObjCarpintero. (Neo)
+* 25/12/2019: Se arregla el inventario para que no arroje mas el Error en MeterItemEnInventario. Error 9 : Subscript out of range (Recox)
+* 25/12/2019: Deleted banco de iglesia de obj.dat ya que el index estaba repetido (Recox)
