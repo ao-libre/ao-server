@@ -130,15 +130,14 @@ Option Explicit
 Private Sub Form_Load()
     Label1(2).Caption = GetVersionOfTheServer()
     Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
-    Me.Analizar
-
+    Me.VerifyIfUsingLastVersion
 End Sub
 
-Function Analizar()
+Function VerifyIfUsingLastVersion()
 
     On Error Resume Next
            
-    If Not (CheckIfRunningLastVersion = True) Then
+    If Not (CheckIfRunningLastVersion) Then
         If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
             Call ShellExecute(Me.hWnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
             End

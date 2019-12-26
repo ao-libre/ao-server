@@ -139,11 +139,11 @@ Public Lloviendo                         As Boolean
 
 Public DeNoche                           As Boolean
 
-Public PescarSuerte                      As Integer
+Public DificultadPescar                      As Integer
 
-Public TalarSuerte                       As Integer
+Public DificultadTalar                       As Integer
 
-Public MinarSuerte                       As Integer
+Public DificultadMinar                       As Integer
 
 
 Function VersionOK(ByVal Ver As String) As Boolean

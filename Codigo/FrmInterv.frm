@@ -1213,9 +1213,9 @@ Public Sub AplicarIntervalos()
     
     '///////////////////Suerte \\\\\\\\\\\\\\\\\\
     
-    PescarSuerte = val(txtPescarSuerte.Text)
-    TalarSuerte = val(txtTalarSuerte.Text)
-    MinarSuerte = val(txtMinarSuerte.Text)
+    DificultadPescar = val(txtPescarSuerte.Text)
+    DificultadTalar = val(txtTalarSuerte.Text)
+    DificultadMinar = val(txtMinarSuerte.Text)
 End Sub
 
 Private Sub Command1_Click()
@@ -1253,9 +1253,9 @@ Private Sub Command2_Click()
     
     '&&&&&&&&&&&&&&&&&&&& Suerte desde INIT &&&&&&&&&&&&&&&&&&&&&&&&&
     
-    Call WriteVar(IniPath & "Server.ini", "INIT", "PescarSuerte", str(PescarSuerte))
-    Call WriteVar(IniPath & "Server.ini", "INIT", "TalarSuerte", str(TalarSuerte))
-    Call WriteVar(IniPath & "Server.ini", "INIT", "MinarSuerte", str(MinarSuerte))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadPescar", str(DificultadPescar))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadTalar", str(DificultadTalar))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadMinar", str(DificultadMinar))
     
     
     MsgBox "Los intervalos se han guardado sin problemas."
@@ -1268,9 +1268,9 @@ End Sub
 
 Private Sub Form_Load()
     With Me
-        .txtPescarSuerte.Text = PescarSuerte
-        .txtTalarSuerte.Text = TalarSuerte
-        .txtMinarSuerte.Text = MinarSuerte
+        .txtPescarSuerte.Text = DificultadPescar
+        .txtTalarSuerte.Text = DificultadTalar
+        .txtMinarSuerte.Text = DificultadMinar
         .txtSanaIntervaloSinDescansar.Text = SanaIntervaloSinDescansar
         .txtStaminaIntervaloSinDescansar.Text = StaminaIntervaloSinDescansar
         .txtSanaIntervaloDescansar.Text = SanaIntervaloDescansar
