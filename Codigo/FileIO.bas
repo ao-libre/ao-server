@@ -1783,9 +1783,9 @@ Sub LoadSini()
     IntervaloGolpeUsar = val(Lector.GetValue("INTERVALOS", "IntervaloGolpeUsar"))
     
     '&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
-    IntervaloPuedeSerAtacado = 5000 ' Cargar desde balance.dat
-    IntervaloAtacable = 60000 ' Cargar desde balance.dat
-    IntervaloOwnedNpc = 18000 ' Cargar desde balance.dat
+    IntervaloPuedeSerAtacado = val(Lector.GetValue("INTERVALOS", "IntervaloPuedeSerAtacado"))
+    IntervaloAtacable = val(Lector.GetValue("INTERVALOS", "IntervaloAtacable"))
+    IntervaloOwnedNpc = val(Lector.GetValue("INTERVALOS", "IntervaloOwnedNpc"))
 
     MinutosWs = val(Lector.GetValue("INTERVALOS", "IntervaloWS"))
 
@@ -1799,9 +1799,9 @@ Sub LoadSini()
     IntervaloOculto = val(Lector.GetValue("INTERVALOS", "IntervaloOculto"))
     
     '&&&&&&&&&&&&&&&&&&&&& SUERTE &&&&&&&&&&&&&&&&&&&&&&&
-    PescarSuerte = val(Lector.GetValue("INIT", "PescarSuerte"))
-    TalarSuerte = val(Lector.GetValue("INIT", "TalarSuerte"))
-    MinarSuerte = val(Lector.GetValue("INIT", "MinarSuerte"))
+    DificultadPescar = val(Lector.GetValue("DIFICULTAD", "DificultadPescar"))
+    DificultadTalar = val(Lector.GetValue("DIFICULTAD", "DificultadTalar"))
+    DificultadMinar = val(Lector.GetValue("DIFICULTAD", "DificultadMinar"))
     '&&&&&&&&&&&&&&&&&&&&& FIN TIMERS &&&&&&&&&&&&&&&&&&&&&&&
       
     RECORDusuarios = val(Lector.GetValue("INIT", "Record"))
@@ -1815,8 +1815,14 @@ Sub LoadSini()
         sDayName = Lector.GetValue("HAPPYHOUR", "Dia" & lDayNumberTemp)
         HappyHourDays(lDayNumberTemp).Hour = val(ReadField(1, sDayName, 45)) ' GSZAO
         HappyHourDays(lDayNumberTemp).Multi = val(ReadField(2, sDayName, 45)) ' 0.13.5
-        If HappyHourDays(lDayNumberTemp).Hour < 0 Or HappyHourDays(lDayNumberTemp).Hour > 23 Then HappyHourDays(lDayNumberTemp).Hour = 20 ' Hora de 0 a 23.
-        If HappyHourDays(lDayNumberTemp).Multi < 0 Then HappyHourDays(lDayNumberTemp).Multi = 0
+        
+        If HappyHourDays(lDayNumberTemp).Hour < 0 Or HappyHourDays(lDayNumberTemp).Hour > 23 Then 
+            HappyHourDays(lDayNumberTemp).Hour = 20 ' Hora de 0 a 23.
+        End If
+        
+        If HappyHourDays(lDayNumberTemp).Multi < 0 Then 
+            HappyHourDays(lDayNumberTemp).Multi = 0
+        End If
     Next
 
     'Conexion con la API hecha en Node.js

@@ -1829,7 +1829,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
     
         res = RandomNumber(1, Suerte)
     
-        If res <= PescarSuerte Then
+        If res <= DificultadPescar Then
 
             Dim MiObj As obj
         
@@ -1935,7 +1935,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
         If Suerte > 0 Then
             res = RandomNumber(1, Suerte)
             
-            If res <= PescarSuerte Then
+            If res <= DificultadPescar Then
             
                 Dim MiObj As obj
                 
@@ -2577,7 +2577,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
     
         res = RandomNumber(1, Suerte)
     
-        If res <= TalarSuerte Then
+        If res <= DificultadTalar Then
 
             Dim MiObj As obj
         
@@ -2679,7 +2679,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
     
         res = RandomNumber(1, Suerte)
     
-        If res <= MinarSuerte Then
+        If res <= DificultadMinar Then
 
             Dim MiObj As obj
         
