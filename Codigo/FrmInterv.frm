@@ -1253,9 +1253,9 @@ Private Sub Command2_Click()
     
     '&&&&&&&&&&&&&&&&&&&& Suerte desde INIT &&&&&&&&&&&&&&&&&&&&&&&&&
     
-    Call WriteVar(IniPath & "Server.ini", "INIT", "DificultadPescar", str(DificultadPescar))
-    Call WriteVar(IniPath & "Server.ini", "INIT", "DificultadTalar", str(DificultadTalar))
-    Call WriteVar(IniPath & "Server.ini", "INIT", "DificultadMinar", str(DificultadMinar))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadPescar", str(DificultadPescar))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadTalar", str(DificultadTalar))
+    Call WriteVar(IniPath & "Server.ini", "DIFICULTAD", "DificultadMinar", str(DificultadMinar))
     
     
     MsgBox "Los intervalos se han guardado sin problemas."
