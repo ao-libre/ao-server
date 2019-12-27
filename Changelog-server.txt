@@ -832,4 +832,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 25/12/2019: Deleted banco de iglesia de obj.dat ya que el index estaba repetido (Recox)
 
 - v0.13.20
-* 27/12/2019: Se agregaron los valores de intervalos de algunos timers que estaban hardcodeados al server.ini, se cambiaron los nombre de las suertes para oficios por dificultadDeleted banco de iglesia de obj.dat ya que el index estaba repetido (Recox)
+
+* 27/12/2019: Se agregaron los valores de intervalos de algunos timers que estaban hardcodeados al server.ini, se cambiaron los nombre de las suertes para oficios por dificultad. (Recox)
+* 27/12/2019: Se elimino "Banco de Iglesia" de obj.dat ya que el index estaba repetido. (Recox)
