@@ -835,3 +835,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 * 27/12/2019: Se agregaron los valores de intervalos de algunos timers que estaban hardcodeados al server.ini, se cambiaron los nombre de las suertes para oficios por dificultad. (Recox)
 * 27/12/2019: Se elimino "Banco de Iglesia" de obj.dat ya que el index estaba repetido. (Recox)
+* 02/01/2020: Eliminados los paquetes `ShowBlacksmithForm` y `ShowCarpenterForm`.
+              Meto su comportamiento en los paquetes donde se solicitan los datos al servidor de los elementos construibles para su respectiva profesion.
