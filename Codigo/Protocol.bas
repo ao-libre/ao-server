@@ -64,8 +64,6 @@ Private Enum ServerPacketID
     UserCommerceEnd         ' FINCOMUSUOK
     UserOfferConfirm
     CommerceChat
-    ShowBlacksmithForm      ' SFH
-    ShowCarpenterForm       ' SFC
     UpdateSta               ' ASS
     UpdateMana              ' ASM
     UpdateHP                ' ASH
@@ -104,7 +102,7 @@ Private Enum ServerPacketID
     Atributes               ' ATR
     BlacksmithWeapons       ' LAH
     BlacksmithArmors        ' LAR
-    CarpenterObjects        ' OBR
+    InitCarpenting          ' OBR
     RestOK                  ' DOK
     errorMsg                ' ERR
     Blind                   ' CEGU
@@ -17903,62 +17901,6 @@ ErrHandler:
 End Sub
 
 ''
-' Writes the "ShowBlacksmithForm" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowBlacksmithForm(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowBlacksmithForm" message to the given user's outgoing data buffer
-    '***************************************************
-    On Error GoTo ErrHandler
-
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.ShowBlacksmithForm)
-    Exit Sub
-
-ErrHandler:
-
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
-        Resume
-
-    End If
-
-End Sub
-
-''
-' Writes the "ShowCarpenterForm" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowCarpenterForm(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowCarpenterForm" message to the given user's outgoing data buffer
-    '***************************************************
-    On Error GoTo ErrHandler
-
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.ShowCarpenterForm)
-    Exit Sub
-
-ErrHandler:
-
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
-        Resume
-
-    End If
-
-End Sub
-
-''
 ' Writes the "UpdateSta" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -19355,11 +19297,8 @@ Public Sub WriteBlacksmithWeapons(ByVal Userindex As Integer)
     On Error GoTo ErrHandler
 
     Dim i              As Long
-
     Dim obj            As ObjData
-
     Dim validIndexes() As Integer
-
     Dim Count          As Integer
     
     ReDim validIndexes(1 To UBound(ArmasHerrero()))
@@ -19423,11 +19362,8 @@ Public Sub WriteBlacksmithArmors(ByVal Userindex As Integer)
     On Error GoTo ErrHandler
 
     Dim i              As Long
-
     Dim obj            As ObjData
-
     Dim validIndexes() As Integer
-
     Dim Count          As Integer
     
     ReDim validIndexes(1 To UBound(ArmadurasHerrero()))
@@ -19476,33 +19412,30 @@ ErrHandler:
 End Sub
 
 ''
-' Writes the "CarpenterObjects" message to the given user's outgoing data buffer.
+' Writes the "InitCarpenting" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteCarpenterObjects(ByVal Userindex As Integer)
+Public Sub WriteInitCarpenting(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
-    'Writes the "CarpenterObjects" message to the given user's outgoing data buffer
+    'Writes the "InitCarpenting" message to the given user's outgoing data buffer
     '***************************************************
     On Error GoTo ErrHandler
 
     Dim i              As Long
-
     Dim obj            As ObjData
-
     Dim validIndexes() As Integer
-
     Dim Count          As Integer
     
     ReDim validIndexes(1 To UBound(ObjCarpintero()))
     
     With UserList(Userindex).outgoingData
-        Call .WriteByte(ServerPacketID.CarpenterObjects)
-        
+        Call .WriteByte(ServerPacketID.InitCarpenting)
+
         For i = 1 To UBound(ObjCarpintero())
 
             ' Can the user create this object? If so add it to the list....
@@ -19527,7 +19460,7 @@ Public Sub WriteCarpenterObjects(ByVal Userindex As Integer)
             Call .WriteInteger(ObjCarpintero(validIndexes(i)))
             Call .WriteInteger(obj.Upgrade)
         Next i
-
+        
     End With
 
     Exit Sub

@@ -1540,8 +1540,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                             
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call EnivarObjConstruibles(UserIndex)
-                                Call WriteShowCarpenterForm(UserIndex)
+                                Call EnivarObjConstruibles(Userindex)
                             Else
                                 Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
@@ -2032,7 +2031,7 @@ Sub EnivarObjConstruibles(ByVal UserIndex As Integer)
     '
     '***************************************************
 
-    Call WriteCarpenterObjects(UserIndex)
+    Call WriteInitCarpenting(Userindex)
 
 End Sub
 
