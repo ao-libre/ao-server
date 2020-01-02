@@ -59,10 +59,9 @@ Public Function parse(ByRef str As String) As Object
     m_groupSep = GetRegionalSettings(LOCALE_SGROUPING)
 
     Dim index As Long
+        index = 1
 
-    index = 1
-
-    GenerateStringArray str
+    Call GenerateStringArray(str)
 
     m_parserrors = vbNullString
 
@@ -106,7 +105,6 @@ Private Function parseObject(ByRef str As String, ByRef index As Long) As Dictio
     Set parseObject = New Dictionary
 
     Dim sKey    As String
-
     Dim charint As Integer
 
     Call skipChar(index)
@@ -123,27 +121,32 @@ Private Function parseObject(ByRef str As String, ByRef index As Long) As Dictio
         Call skipChar(index)
     
         charint = m_str(index)
-    
-        If charint = A_COMMA Then
-            index = index + 1
-            Call skipChar(index)
-        ElseIf charint = A_CURLY_BRACKET_CLOSE Then
-            index = index + 1
-            Exit Do
-        ElseIf index > m_length Then
-            m_parserrors = m_parserrors & "Falta '}': " & Right$(str, 20) & vbCrLf
-            Exit Do
-        End If
+        
+        Select Case charint
+        
+            Case A_COMMA
+                index = index + 1
+                Call skipChar(index)
+            
+            Case A_CURLY_BRACKET_CLOSE
+                index = index + 1
+                Exit Do
+                
+            Case index > m_length
+                m_parserrors = m_parserrors & "Falta '}': " & Right$(str, 20) & vbCrLf
+                Exit Do
+                
+        End Select
 
         ' add key/value pair
         sKey = parseKey(index)
 
         On Error Resume Next
 
-        parseObject.Add sKey, parseValue(str, index)
+        Call parseObject.Add(sKey, parseValue(str, index))
 
-        If Err.number <> 0 Then
-            m_parserrors = m_parserrors & Err.Description & ": " & sKey & vbCrLf
+        If Err.Number <> 0 Then
+            m_parserrors = m_parserrors & Err.description & ": " & sKey & vbCrLf
             Exit Do
         End If
 
@@ -185,10 +188,10 @@ Private Function parseArray(ByRef str As String, ByRef index As Long) As Collect
         'add value
         On Error Resume Next
 
-        parseArray.Add parseValue(str, index)
+        Call parseArray.Add(parseValue(str, index))
 
-        If Err.number <> 0 Then
-            m_parserrors = m_parserrors & Err.Description & ": " & mid$(str, index, 20) & vbCrLf
+        If Err.Number <> 0 Then
+            m_parserrors = m_parserrors & Err.description & ": " & mid$(str, index, 20) & vbCrLf
             Exit Do
 
         End If
@@ -234,9 +237,7 @@ End Function
 Private Function parseString(ByRef str As String, ByRef index As Long) As String
 
     Dim quoteint As Integer
-
     Dim charint  As Integer
-
     Dim Code     As String
    
     Call skipChar(index)
@@ -286,13 +287,12 @@ Private Function parseString(ByRef str As String, ByRef index As Long) As String
                         index = index + 1
                         Code = mid$(str, index, 4)
 
-                        parseString = parseString & ChrW$(Val("&h" + Code))
+                        parseString = parseString & ChrW$(val("&h" + Code))
                         index = index + 4
 
                 End Select
 
             Case quoteint
-        
                 index = index + 1
                 Exit Function
 
@@ -308,8 +308,7 @@ End Function
 
 Private Function parseNumber(ByRef str As String, ByRef index As Long)
 
-    Dim value As String
-
+    Dim Value As String
     Dim Char  As String
 
     Call skipChar(index)
@@ -318,22 +317,22 @@ Private Function parseNumber(ByRef str As String, ByRef index As Long)
         Char = mid$(str, index, 1)
 
         If InStr("+-0123456789.eE", Char) Then
-            value = value & Char
+            Value = Value & Char
             index = index + 1
         Else
 
             'check what is the grouping seperator
             If Not m_decSep = "." Then
-                value = Replace(value, ".", m_decSep)
+                Value = Replace(Value, ".", m_decSep)
 
             End If
      
             If m_groupSep = "." Then
-                value = Replace(value, ".", m_decSep)
+                Value = Replace(Value, ".", m_decSep)
 
             End If
      
-            parseNumber = CDec(value)
+            parseNumber = CDec(Value)
             Exit Function
 
         End If
@@ -376,9 +375,7 @@ End Function
 Private Function parseKey(ByRef index As Long) As String
 
     Dim dquote  As Boolean
-
     Dim squote  As Boolean
-
     Dim charint As Integer
    
     Call skipChar(index)
@@ -453,9 +450,7 @@ End Function
 Private Sub skipChar(ByRef index As Long)
 
     Dim bComment      As Boolean
-
     Dim bStartComment As Boolean
-
     Dim bLongComment  As Boolean
 
     Do While index > 0 And index <= m_length
@@ -525,18 +520,13 @@ End Sub
 Public Function GetRegionalSettings(ByVal regionalsetting As Long) As String
     ' Devuelve la configuracion regional del sistema
 
-    On Error GoTo errorHandler
+    On Error GoTo ErrorHandler
 
     Dim Locale      As Long
-
     Dim Symbol      As String
-
     Dim iRet1       As Long
-
     Dim iRet2       As Long
-
     Dim lpLCDataVar As String
-
     Dim Pos         As Integer
       
     Locale = GetUserDefaultLCID()
@@ -548,18 +538,17 @@ Public Function GetRegionalSettings(ByVal regionalsetting As Long) As String
 
     If Pos > 0 Then
         Symbol = Left$(Symbol, Pos - 1)
-
     End If
       
-errorHandler:
+ErrorHandler:
     GetRegionalSettings = Symbol
 
-    Select Case Err.number
+    Select Case Err.Number
 
         Case 0
 
         Case Else
-            Err.Raise 123, "GetRegionalSetting", "GetRegionalSetting: " & regionalsetting
+            Call Err.Raise(123, "GetRegionalSetting", "GetRegionalSetting: " & regionalsetting)
 
     End Select
 
@@ -574,32 +563,25 @@ Private Function Encode(str) As String
     Dim SB  As New cStringBuilder
 
     Dim i   As Long
-
     Dim j   As Long
 
     Dim aL1 As Variant
-
     Dim aL2 As Variant
 
     Dim c   As String
-
     Dim p   As Boolean
-    
-    Dim Len_str As Long
 
     aL1 = Array(&H22, &H5C, &H2F, &H8, &HC, &HA, &HD, &H9)
     aL2 = Array(&H22, &H5C, &H2F, &H62, &H66, &H6E, &H72, &H74)
-    
-    Len_str = LenB(str)
-    
-    For i = 1 To Len_str
+
+    For i = 1 To LenB(str)
         p = True
         c = mid$(str, i, 1)
 
         For j = 0 To 7
 
             If c = Chr$(aL1(j)) Then
-                SB.Append "\" & Chr$(aL2(j))
+                Call SB.Append("\" & Chr$(aL2(j)))
                 p = False
                 Exit For
 
@@ -609,15 +591,13 @@ Private Function Encode(str) As String
 
         If p Then
 
-            Dim a
-
-            a = AscW(c)
+            Dim a As Integer
+                a = AscW(c)
 
             If a > 31 And a < 127 Then
-                SB.Append c
+                Call SB.Append(c)
             ElseIf a > -1 Or a < 65535 Then
-                SB.Append "\u" & String$(4 - LenB(Hex$(a)), "0") & Hex$(a)
-
+                Call SB.Append("\u" & String$(4 - LenB(Hex$(a)), "0") & Hex$(a))
             End If
 
         End If
@@ -625,6 +605,7 @@ Private Function Encode(str) As String
     Next
    
     Encode = SB.toString
+    
     Set SB = Nothing
    
 End Function
@@ -632,22 +613,15 @@ End Function
 Public Function StringToJSON(st As String) As String
    
     Const FIELD_SEP = "~"
-
     Const RECORD_SEP = "|"
 
     Dim sFlds   As String
-
     Dim sRecs   As New cStringBuilder
-
     Dim lRecCnt As Long
-
     Dim lFld    As Long
-
     Dim fld     As Variant
-
     Dim rows    As Variant
     
-    Dim Lower_rows As Long, Upper_rows As Long
     Dim Lower_fld As Long, Upper_fld As Long
 
     lRecCnt = 0
@@ -657,21 +631,15 @@ Public Function StringToJSON(st As String) As String
     Else
         rows = Split(st, RECORD_SEP)
         
-        Lower_rows = LBound(rows)
-        Upper_rows = UBound(rows)
-        
-        For lRecCnt = Lower_rows To Upper_rows
+        For lRecCnt = LBound(rows) To UBound(rows)
             sFlds = vbNullString
             fld = Split(rows(lRecCnt), FIELD_SEP)
-            
-            Lower_fld = LBound(fld)
-            Upper_fld = UBound(fld)
-            
-            For lFld = Lower_fld To Upper_fld Step 2
+
+            For lFld = LBound(fld) To UBound(fld) Step 2
                 sFlds = (sFlds & IIf(sFlds <> "", ",", "") & """" & fld(lFld) & """:""" & toUnicode(fld(lFld + 1) & "") & """")
             Next 'fld
 
-            sRecs.Append IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}"
+            Call sRecs.Append(IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}")
         Next 'rec
 
         StringToJSON = ("( {""Records"": [" & vbNewLine & sRecs.toString & vbNewLine & "], " & """RecordCount"":""" & lRecCnt & """ } )")
@@ -684,11 +652,8 @@ Public Function RStoJSON(rs As ADODB.Recordset) As String
     On Error GoTo ErrHandler
 
     Dim sFlds   As String
-
     Dim sRecs   As New cStringBuilder
-
     Dim lRecCnt As Long
-
     Dim fld     As ADODB.Field
 
     lRecCnt = 0
@@ -699,6 +664,7 @@ Public Function RStoJSON(rs As ADODB.Recordset) As String
 
         If rs.EOF Or rs.BOF Then
             RStoJSON = "null"
+            
         Else
 
             Do While Not rs.EOF And Not rs.BOF
@@ -706,13 +672,13 @@ Public Function RStoJSON(rs As ADODB.Recordset) As String
                 sFlds = vbNullString
 
                 For Each fld In rs.Fields
-
-                    sFlds = (sFlds & IIf(sFlds <> "", ",", "") & """" & fld.Name & """:""" & toUnicode(fld.value & "") & """")
+                    sFlds = (sFlds & IIf(sFlds <> "", ",", "") & """" & fld.Name & """:""" & toUnicode(fld.Value & "") & """")
                 Next 'fld
 
-                sRecs.Append IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}"
-                rs.MoveNext
+                Call sRecs.Append(IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}")
+                Call rs.MoveNext
             Loop
+            
             RStoJSON = ("( {""Records"": [" & vbNewLine & sRecs.toString & vbNewLine & "], " & """RecordCount"":""" & lRecCnt & """ } )")
 
         End If
@@ -727,56 +693,53 @@ End Function
 Public Function toUnicode(str As String) As String
 
     Dim X        As Long
-
     Dim uStr     As New cStringBuilder
-
     Dim uChrCode As Integer
-    
-    Dim Len_str As Long
-        Len_str = LenB(str)
 
-    For X = 1 To Len_str
+    For X = 1 To LenB(str)
         uChrCode = Asc(mid$(str, X, 1))
 
         Select Case uChrCode
 
             Case 8:   ' backspace
-                uStr.Append "\b"
+                Call uStr.Append("\b")
 
             Case 9: ' tab
-                uStr.Append "\t"
+                Call uStr.Append("\t")
 
             Case 10:  ' line feed
-                uStr.Append "\n"
+                Call uStr.Append("\n")
 
             Case 12:  ' formfeed
-                uStr.Append "\f"
+                Call uStr.Append("\f")
 
             Case 13: ' carriage return
-                uStr.Append "\r"
+                Call uStr.Append("\r")
 
             Case 34: ' quote
-                uStr.Append "\"""
+                Call uStr.Append("\""")
 
             Case 39:  ' apostrophe
-                uStr.Append "\'"
+                Call uStr.Append("\'")
 
             Case 92: ' backslash
-                uStr.Append "\\"
+                Call uStr.Append("\\")
 
             Case 123, 125:  ' "{" and "}"
-                uStr.Append ("\u" & Right$("0000" & Hex$(uChrCode), 4))
+                Call uStr.Append("\u" & Right$("0000" & Hex$(uChrCode), 4))
 
             Case Is < 32, Is > 127: ' non-ascii characters
-                uStr.Append ("\u" & Right$("0000" & Hex$(uChrCode), 4))
+                Call uStr.Append("\u" & Right$("0000" & Hex$(uChrCode), 4))
 
             Case Else
-                uStr.Append Chr$(uChrCode)
+                Call uStr.Append(Chr$(uChrCode))
 
         End Select
 
     Next
+    
     toUnicode = uStr.toString
+    
     Exit Function
 
 End Function
