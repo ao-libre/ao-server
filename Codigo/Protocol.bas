@@ -3700,7 +3700,6 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
                     If ObjData(.flags.TargetObj).OBJType = eOBJType.otYunque Then
                         Call EnivarArmasConstruibles(Userindex)
                         Call EnivarArmadurasConstruibles(Userindex)
-                        Call WriteShowBlacksmithForm(Userindex)
                     Else
                         Call WriteConsoleMsg(Userindex, "Ahi no hay ningUn yunque.", FontTypeNames.FONTTYPE_INFO)
 
