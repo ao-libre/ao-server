@@ -1,7 +1,9 @@
 # Codigo Fuente Servidor Argentum Online.
 ![AO Logo](https://github.com/ao-libre/ao-server/raw/master/Logo.jpg)
 
-![Screenshot](https://preview.ibb.co/cojUf0/Screen-Shot-2018-11-04-at-6-53-52-PM.png)
+![ScreenshotVersionNueva](https://user-images.githubusercontent.com/5874806/71722874-71a41080-2e8f-11ea-94c8-e4784a24613f.png)
+
+![ScreenshotVersionVieja](https://preview.ibb.co/cojUf0/Screen-Shot-2018-11-04-at-6-53-52-PM.png)
 
 
 ## Wiki Desarrollo Argentum Online
