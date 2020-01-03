@@ -1,6 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.ocx"
 Begin VB.Form frmCargando 
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
@@ -39,13 +38,6 @@ Begin VB.Form frmCargando
       TabIndex        =   0
       Top             =   0
       Width           =   6615
-      Begin InetCtlsObjects.Inet Inet1 
-         Left            =   1440
-         Top             =   1200
-         _ExtentX        =   1005
-         _ExtentY        =   1005
-         _Version        =   393216
-      End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
@@ -128,43 +120,88 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Form_Load()
+
     Label1(2).Caption = GetVersionOfTheServer()
+    
     Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
-    Me.VerifyIfUsingLastVersion
+    
+    Call Me.VerifyIfUsingLastVersion
+    
 End Sub
 
 Function VerifyIfUsingLastVersion()
 
     On Error Resume Next
-           
-    If Not (CheckIfRunningLastVersion) Then
-        If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
-            Call ShellExecute(Me.hWnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
-            End
+    
+    Dim AOUpdater_Path As String
+        AOUpdater_Path = App.Path & "\Autoupdate.exe"
 
+    If FileExist(AOUpdater_Path, vbNormal) Then
+    
+        If Not (CheckIfRunningLastVersion) Then
+            
+            If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
+                Call ShellExecute(Me.hWnd, "open", AOUpdater_Path, vbNullString, vbNullString, 1)
+                End
+            End If
+    
         End If
-
+        
     End If
-
+    
 End Function
 
 Private Function CheckIfRunningLastVersion() As Boolean
 
-    Dim responseGithub As String, versionNumberMaster As String, versionNumberLocal As String
+    On Error GoTo errorHandler
 
+    'Declaramos los objetos a usar.
     Dim JsonObject     As Object
-
-    responseGithub = Inet1.OpenURL("https://api.github.com/repos/ao-libre/ao-server/releases/latest")
-    Set JsonObject = JSON.parse(responseGithub)
+    Dim Inet           As clsInet: Set Inet = New clsInet
     
-    versionNumberMaster = JsonObject.Item("tag_name")
-    versionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
+    Dim responseGithub As String
+    Dim versionNumberMaster As String, versionNumberLocal As String
     
-    If versionNumberMaster = versionNumberLocal Then
-        CheckIfRunningLastVersion = True
-    Else
-        CheckIfRunningLastVersion = False
-
+    'Nos conectamos a GitHub
+    responseGithub = Inet.OpenRequest("https://api.github.com/repos/ao-libre/ao-server/releases/latest", "GET")
+    responseGithub = Inet.Execute
+    responseGithub = Inet.GetResponseAsString
+    
+    'Chequeamos si recibimos algo en primer lugar.
+    If LenB(responseGithub) <> 0 Then
+        
+        'Trato de parsear el JSON obtenido a traves del control Inet.
+        Set JsonObject = JSON.parse(responseGithub)
+        
+        'Si hay algun error, devolvemos FALSE.
+        If LenB(JSON.GetParserErrors) <> 0 Then GoTo errorHandler
+        
+        'Comparamos la version obtenida de GitHub con la local.
+        versionNumberMaster = JsonObject.Item("tag_name")
+        versionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
+        
+        If versionNumberMaster = versionNumberLocal Then
+            Set JsonObject = Nothing
+            Set Inet = Nothing
+            
+            CheckIfRunningLastVersion = True
+        End If
+        
     End If
+    
+    'Si llegamos a este punto significa que algo paso.
+    GoTo errorHandler
+
+errorHandler:
+
+    'Liberamos los recursos.
+    Set JsonObject = Nothing
+    Set Inet = Nothing
+    
+    If Err.Number Then
+        Call LogError("Error: " & Err.Number & " Descripcion: " & Err.description)
+    End If
+    
+    CheckIfRunningLastVersion = False
 
 End Function
