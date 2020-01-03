@@ -283,10 +283,6 @@ Sub Main()
     
     UltimoSlotLimpieza = -1
     
-    Dim MundoSeleccionado As String
-    MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
-    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado
-    
     ' Start loading..
     frmCargando.Show
     
@@ -379,6 +375,16 @@ Sub Main()
     
     tInicioServer = GetTickCount() And &H7FFFFFFF
 
+    'Aca ponemos la ip y puerto en el label del frmMain
+    frmMain.lblIp.Caption = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/") & ":" & Puerto
+
+    Dim MundoSeleccionado As String
+    MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado
+
+    'Este ultimo es para saber siempre los records en el frmMain
+    frmMain.txtRecordOnline.Text = RecordUsuariosOnline
+        
     Call MainLoop
 
 End Sub
@@ -652,7 +658,7 @@ Private Sub SocketConfig()
     
     #End If
     
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
+    frmMain.txtStatus.Text = Date & " " & time & " - Escuchando conexiones entrantes ..."
     
 End Sub
 
@@ -751,7 +757,7 @@ Sub Restart()
     'Se asegura de que los sockets estan cerrados e ignora cualquier err
     On Error Resume Next
 
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Reiniciando."
     
     Dim LoopC As Long
   
@@ -837,7 +843,7 @@ Sub Restart()
 
     #End If
 
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " servidor reiniciado correctamente. - Escuchando conexiones entrantes ..."
     
     'Log it
     Dim n As Integer
@@ -1514,12 +1520,15 @@ Public Sub CargaNpcsDat()
     'Last Modification: -
     '
     '***************************************************
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
 
     Dim npcfile As String
     
     npcfile = DatPath & "NPCs.dat"
     Set LeerNPCs = New clsIniManager
     Call LeerNPCs.Initialize(npcfile)
+
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 
 End Sub
 

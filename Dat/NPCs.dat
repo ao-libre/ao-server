@@ -10604,7 +10604,7 @@ BackUp=0
 ###############no cambiar los indices asignados###############
 
 [NPC924]
-Name=Mark Quest
+Name=Mark [Quest]
 NpcType=0
 Desc=Buen dia amigo mio! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
 Head=101
@@ -10621,7 +10621,7 @@ BackUp=0
 QuestNumber=1
 
 [NPC925]
-Name=Willdon
+Name=Willdon [Quest]
 NpcType=0
 Desc=Que onda? Necesito pieles de oso y lobo para hacer un par de cosas copadas, si queres ayudarme escribe /QUEST.
 Head=101
@@ -10638,7 +10638,7 @@ BackUp=0
 QuestNumber=2
 
 [NPC926]
-Name=Selenna
+Name=Selenna [Quest]
 NpcType=0
 Desc=Esta ciudad es un peligro con estas criaturas alrededor, hay que traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
 Head=71
@@ -10653,6 +10653,12 @@ Alineacion=0
 Comercia=0
 BackUp=0
 QuestNumber=3
+
+##############################################################
+##############################################################
+#####################END NPCS QUESTS##############################
+##############################################################
+###############no cambiar los indices asignados###############
 
 [NPC927]
 Name=Novia cornuda

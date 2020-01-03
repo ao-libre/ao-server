@@ -1883,7 +1883,7 @@ Public ListaClases(1 To NUMCLASES)        As String
 
 Public ListaAtributos(1 To NUMATRIBUTOS)  As String
 
-Public RECORDusuarios                     As Long
+Public RecordUsuariosOnline                     As Long
 
 '
 'Directorios

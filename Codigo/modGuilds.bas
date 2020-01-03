@@ -24,7 +24,7 @@ Option Explicit
 
 'guilds nueva version. Hecho por el oso, eliminando los problemas
 'de sincronizacion con los datos en el HD... entre varios otros
-'º¬
+'ï¿½ï¿½
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -98,6 +98,7 @@ Public Sub LoadGuildsDB()
     'Last Modification: -
     '
     '***************************************************
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando guildsinfo.inf."
 
     Dim CantClanes As String
 
@@ -124,6 +125,8 @@ Public Sub LoadGuildsDB()
         Alin = String2Alineacion(GetVar(GUILDINFOFILE, "GUILD" & i, "Alineacion"))
         Call guilds(i).Inicializar(TempStr, i, Alin)
     Next i
+
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo guildsinfo.inf."
     
 End Sub
 
