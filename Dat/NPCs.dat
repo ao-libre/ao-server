@@ -1156,13 +1156,13 @@ BackUp=0
 #############################################
 
 [NPC128] 'Pregonero
-Name=Nelmasil
+Name=Nelmasil - [Pregonero Ulla]
 NpcType=0
 Desc=El pueblo de Ullathorpe en contra del alcalde... Todos aquellos que esten en contra se presenten en el castillo del rey en Banderbill!
 Head=0
 Body=410
 Heading=3
-Movement=1
+Movement=2
 Attackable=0
 ReSpawn=0
 Hostile=0
@@ -1309,13 +1309,13 @@ Comercia=0
 ##############################################
 
 [NPC137] 'Mendigo
-Name=Manrique
+Name=Manrique - [Mendigo Ulla]
 NpcType=0
 Desc=El Rey es avaro y sus terratenientes tambien, dame algo por favor, no seas como el...
 Head=0
 Body=411
 Heading=3
-Movement=1
+Movement=2
 Attackable=0
 ReSpawn=0
 Hostile=0

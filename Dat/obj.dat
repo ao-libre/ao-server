@@ -6642,7 +6642,7 @@ Crucial=0
 LingH=500
 LingP=400
 LingO=300
-SkHerreria=101
+SkHerreria=100
 
 [OBJ557]
 Name=Vino de canela
@@ -8668,7 +8668,7 @@ Crucial=0
 LingH=2000
 LingP=2000
 LingO=2000
-SkHerreria=101
+SkHerreria=100
 ImpideParalizar=1
 ImpideInmobilizar=1
 ImpideAturdir=1
@@ -14014,7 +14014,7 @@ Crucial=0
 LingH=1
 LingP=0
 LingO=0
-SkHerreria=101
+SkHerreria=100
 
 [OBJ1134]
 Name=Arco Divino
@@ -14054,10 +14054,10 @@ MaxDef=200
 MinDef=200
 Valor=2000000
 Crucial=0
-LingH=1
-LingP=0
-LingO=0
-SkHerreria=101
+LingH=1000
+LingP=1000
+LingO=1000
+SkHerreria=100
 
 [OBJ1137]
 Name=Armadura Omnineo (E/G)
@@ -14070,10 +14070,10 @@ MaxDef=200
 MinDef=200
 Valor=2000000
 Crucial=0
-LingH=1
-LingP=0
-LingO=0
-SkHerreria=101
+LingH=1000
+LingP=1000
+LingO=1000
+SkHerreria=100
 
 [OBJ1138]
 Name=Espada Argentum
