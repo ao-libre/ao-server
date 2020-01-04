@@ -153,7 +153,7 @@ End Function
 
 Private Function CheckIfRunningLastVersion() As Boolean
 
-    On Error GoTo errorHandler
+    On Error GoTo ErrorHandler
 
     'Declaramos los objetos a usar.
     Dim JsonObject     As Object
@@ -174,12 +174,16 @@ Private Function CheckIfRunningLastVersion() As Boolean
         Set JsonObject = JSON.parse(responseGithub)
         
         'Si hay algun error, devolvemos FALSE.
-        If LenB(JSON.GetParserErrors) <> 0 Then GoTo errorHandler
+        If LenB(JSON.GetParserErrors) <> 0 Then
+            Call LogError("Recibimos un JSON mal-formado.")
+            GoTo ErrorHandler
+        End If
         
         'Comparamos la version obtenida de GitHub con la local.
         versionNumberMaster = JsonObject.Item("tag_name")
         versionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
         
+        'Todo bien...
         If versionNumberMaster = versionNumberLocal Then
             Set JsonObject = Nothing
             Set Inet = Nothing
@@ -187,12 +191,16 @@ Private Function CheckIfRunningLastVersion() As Boolean
             CheckIfRunningLastVersion = True
         End If
         
+    Else
+            
+        Call LogError("No hemos recibido respuesta de GitHub.")
+        
+        'Si llegamos a este punto significa que algo paso.
+        GoTo ErrorHandler
+        
     End If
-    
-    'Si llegamos a este punto significa que algo paso.
-    GoTo errorHandler
 
-errorHandler:
+ErrorHandler:
 
     'Liberamos los recursos.
     Set JsonObject = Nothing
