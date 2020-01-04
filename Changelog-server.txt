@@ -837,3 +837,9 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 27/12/2019: Se elimino "Banco de Iglesia" de obj.dat ya que el index estaba repetido. (Recox)
 * 02/01/2020: Eliminados los paquetes `ShowBlacksmithForm` y `ShowCarpenterForm`.
               Meto su comportamiento en los paquetes donde se solicitan los datos al servidor de los elementos construibles para su respectiva profesion.
+
+- v0.13.21
+* 04/01/2020: Fixed Dificultad in WriteVar (Recox)
+* 04/01/2020: Se mejoro el log de acciones con los diferentes botones, se agrego record usuarios online en el frmMain y se agrego informacion de ip y puerto en el cliente para que sea simple para cualquiera saber la ip y puerto, tambien si se clickea en los mismos se copia en el clipboard (Recox)
+* 04/01/2020: El MOTD ahora se envia por la funcion de chat de clanes otra ves (Recox)
+* 04/01/2020: Se corrigieron unos errores de armaduras y lingotes y se modifico un poco el mapa 1 (Recox)
