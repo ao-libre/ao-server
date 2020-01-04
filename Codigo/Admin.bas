@@ -166,6 +166,8 @@ Sub ReSpawnOrigPosNpcs()
 
     On Error Resume Next
 
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Haciendo ReSpawn de NPCS en posicion original"
+
     Dim i     As Integer
 
     Dim MiNPC As npc
@@ -190,6 +192,8 @@ Sub ReSpawnOrigPosNpcs()
        
     Next i
     
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Respawn NPCS en posicion original finalizado."
+
 End Sub
 
 Sub WorldSave()

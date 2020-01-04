@@ -417,7 +417,7 @@ Private Sub cmdLoadWorldBackup_Click()
     'Se asegura de que los sockets estan cerrados e ignora cualquier err
     On Error Resume Next
 
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Reiniciando."
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Reiniciando."
     
     FrmStat.Show
     
@@ -475,8 +475,7 @@ Private Sub cmdLoadWorldBackup_Click()
         frmMain.Socket1.listen
     #End If
 
-    If frmMain.Visible Then frmMain.txStatus.Caption = "Escuchando conexiones entrantes ..."
-
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Reiniciando Terminado. Escuchando conexiones entrantes ..."
 End Sub
 
 Private Sub cmdPausarServidor_Click()

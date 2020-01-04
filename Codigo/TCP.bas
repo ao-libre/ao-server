@@ -1817,11 +1817,13 @@ Sub ConnectUser(ByVal Userindex As Integer, _
 
         End If
     
-        If NumUsers > RECORDusuarios Then
+        If NumUsers > RecordUsuariosOnline Then
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente. Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFOBOLD))
-            RECORDusuarios = NumUsers
-            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RECORDusuarios))
-        
+            RecordUsuariosOnline = NumUsers
+            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RecordUsuariosOnline))
+
+            'Este ultimo es para saber siempre los records en el frmMain
+            frmMain.txtRecordOnline.Text = RecordUsuariosOnline
         End If
     
         If .NroMascotas > 0 And MapInfo(.Pos.Map).Pk Then
