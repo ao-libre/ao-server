@@ -1922,16 +1922,16 @@ End Sub
 Sub SendMOTD(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
+    'Last Modification: Puse devuelta esto con WriteGuildChat (Recox)
     '
     '***************************************************
 
     Dim j As Long
     
-    Call WriteConsoleMsg(Userindex, "Mensajes de entrada:", FontTypeNames.FONTTYPE_INFO)
+    Call WriteGuildChat(Userindex, "Mensajes de entrada:")
 
     For j = 1 To MaxLines
-        Call WriteConsoleMsg(Userindex, MOTD(j).texto, FontTypeNames.FONTTYPE_INFO)
+        Call WriteGuildChat(Userindex, MOTD(j).texto)
     Next j
 
 End Sub
