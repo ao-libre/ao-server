@@ -215,7 +215,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   5400
       TabIndex        =   21
-      Top             =   3480
+      Top             =   3120
       Width           =   3975
    End
    Begin VB.Label Label1 
@@ -258,7 +258,7 @@ Begin VB.Form frmMain
       Height          =   225
       Left            =   5400
       TabIndex        =   19
-      Top             =   3000
+      Top             =   2760
       Width           =   2970
    End
    Begin VB.Label lblRecordOnline 
@@ -287,7 +287,7 @@ Begin VB.Form frmMain
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
-      Caption         =   "Ip y Puerto - Comparti esta informacion a quien quieras que se conecte a tu servidor."
+      Caption         =   "IP:PUERTO - Comparti esta informacion a quien quieras que se conecte a tu servidor."
       BeginProperty Font 
          Name            =   "Comic Sans MS"
          Size            =   14.25
@@ -318,7 +318,7 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
+      Height          =   495
       Left            =   5400
       TabIndex        =   14
       Top             =   2160
