@@ -7051,28 +7051,7 @@ Private Sub HandleUpTime(ByVal Userindex As Integer)
 
     Dim UpTimeStr As String
     
-    'Get total time in seconds
-    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
-    
-    'Get times in dd:hh:mm:ss format
-    UpTimeStr = (time Mod 60) & " segundos."
-    time = time \ 60
-    
-    UpTimeStr = (time Mod 60) & " minutos, " & UpTimeStr
-    time = time \ 60
-    
-    UpTimeStr = (time Mod 24) & " horas, " & UpTimeStr
-    time = time \ 24
-    
-    If time = 1 Then
-        UpTimeStr = time & " dia, " & UpTimeStr
-    Else
-        UpTimeStr = time & " dias, " & UpTimeStr
-
-    End If
-    
-    Call WriteConsoleMsg(Userindex, "Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
-
+    Call WriteConsoleServerUpTimeMsg(Userindex)
 End Sub
 
 ''
