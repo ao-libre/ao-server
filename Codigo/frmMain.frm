@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "msinet.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -57,7 +57,7 @@ Begin VB.Form frmMain
       MultiLine       =   -1  'True
       TabIndex        =   15
       Text            =   "frmMain.frx":1042
-      Top             =   5040
+      Top             =   4680
       Width           =   4935
    End
    Begin InetCtlsObjects.Inet Inet1 
@@ -68,7 +68,7 @@ Begin VB.Form frmMain
       _Version        =   393216
    End
    Begin VB.CommandButton cmdForzarCierre 
-      BackColor       =   &H00C0C0FF&
+      BackColor       =   &H008080FF&
       Caption         =   "Forzar Cierre del Servidor Sin Backup"
       Height          =   375
       Left            =   120
@@ -207,6 +207,37 @@ Begin VB.Form frmMain
          Width           =   4695
       End
    End
+   Begin VB.Label lblWorldSave 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "El proximo WORLD SAVE sera en 10 minutos."
+      ForeColor       =   &H0080FF80&
+      Height          =   255
+      Left            =   5400
+      TabIndex        =   21
+      Top             =   3120
+      Width           =   3975
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      BackColor       =   &H80000007&
+      Caption         =   "http://www.ArgentumOnline.org"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000018&
+      Height          =   375
+      Left            =   6360
+      TabIndex        =   20
+      Top             =   6480
+      Width           =   3975
+   End
    Begin VB.Label lblIpHelpText 
       Appearance      =   0  'Flat
       AutoSize        =   -1  'True
@@ -225,9 +256,9 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00000000&
       Height          =   225
-      Left            =   6120
+      Left            =   5400
       TabIndex        =   19
-      Top             =   3360
+      Top             =   2760
       Width           =   2970
    End
    Begin VB.Label lblRecordOnline 
@@ -255,7 +286,8 @@ Begin VB.Form frmMain
    Begin VB.Label lblIpTitle 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Ip y Puerto - Comparti esta informacion a quien quieras que se conecte a tu servidor."
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "IP:PUERTO - Comparti esta informacion a quien quieras que se conecte a tu servidor."
       BeginProperty Font 
          Name            =   "Comic Sans MS"
          Size            =   14.25
@@ -286,10 +318,10 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
+      Height          =   495
       Left            =   5400
       TabIndex        =   14
-      Top             =   2400
+      Top             =   2160
       Width           =   4335
    End
    Begin VB.Label Escuch 
