@@ -734,7 +734,13 @@ Public Sub MakeNPCChar(ByVal toMap As Boolean, _
     MapData(Map, x, Y).NpcIndex = NpcIndex
     
     If Not toMap Then
-        Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, x, Y, 0, 0, 0, 0, 0, vbNullString, 0, 0)
+        'En caso de que sea hostil no mostramos el nombre, si es un npc no hostil mostramos nombre. (Recox)
+        If Not Npclist(NpcIndex).Hostile = 1 Then
+            Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, x, Y, 0, 0, 0, 0, 0, Npclist(NpcIndex).Name, 0, 0)
+        Else
+            Call WriteCharacterCreate(sndIndex, Npclist(NpcIndex).Char.body, Npclist(NpcIndex).Char.Head, Npclist(NpcIndex).Char.heading, Npclist(NpcIndex).Char.CharIndex, x, Y, 0, 0, 0, 0, 0, vbNullString , 0, 0)
+        End If
+
         Call FlushBuffer(sndIndex)
     Else
         Call AgregarNpc(NpcIndex)
