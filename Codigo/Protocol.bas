@@ -5898,6 +5898,32 @@ ErrHandler:
 
 End Sub
 
+Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer) 
+    Dim Time As Long
+    Dim UpTimeStr As String
+    
+    'Get total time in seconds
+    Time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    
+    'Get times in dd:hh:mm:ss format
+    UpTimeStr = (Time Mod 60) & " segundos."
+    Time = Time \ 60
+    
+    UpTimeStr = (Time Mod 60) & " minutos, " & UpTimeStr
+    Time = Time \ 60
+    
+    UpTimeStr = (Time Mod 24) & " horas, " & UpTimeStr
+    Time = Time \ 24
+    
+    If Time = 1 Then
+        UpTimeStr = Time & " dia, " & UpTimeStr
+    Else
+        UpTimeStr = Time & " dias, " & UpTimeStr
+    End If
+
+    Call WriteConsoleMsg(UserIndex, "Tiempo del Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
+End Sub
+
 ''
 ' Handles the "Online" message.
 '
@@ -5935,10 +5961,12 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
         Next i
         
-        Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
         Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
 
     End With
+
+    Call WriteConsoleServerUpTimeMsg(Userindex)
 
 End Sub
 
@@ -7023,28 +7051,7 @@ Private Sub HandleUpTime(ByVal Userindex As Integer)
 
     Dim UpTimeStr As String
     
-    'Get total time in seconds
-    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
-    
-    'Get times in dd:hh:mm:ss format
-    UpTimeStr = (time Mod 60) & " segundos."
-    time = time \ 60
-    
-    UpTimeStr = (time Mod 60) & " minutos, " & UpTimeStr
-    time = time \ 60
-    
-    UpTimeStr = (time Mod 24) & " horas, " & UpTimeStr
-    time = time \ 24
-    
-    If time = 1 Then
-        UpTimeStr = time & " dia, " & UpTimeStr
-    Else
-        UpTimeStr = time & " dias, " & UpTimeStr
-
-    End If
-    
-    Call WriteConsoleMsg(Userindex, "Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
-
+    Call WriteConsoleServerUpTimeMsg(Userindex)
 End Sub
 
 ''
