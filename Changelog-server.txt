@@ -839,7 +839,16 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
               Meto su comportamiento en los paquetes donde se solicitan los datos al servidor de los elementos construibles para su respectiva profesion.
 
 - v0.13.21
+
 * 04/01/2020: Fixed Dificultad in WriteVar (Recox)
 * 04/01/2020: Se mejoro el log de acciones con los diferentes botones, se agrego record usuarios online en el frmMain y se agrego informacion de ip y puerto en el cliente para que sea simple para cualquiera saber la ip y puerto, tambien si se clickea en los mismos se copia en el clipboard (Recox)
 * 04/01/2020: El MOTD ahora se envia por la funcion de chat de clanes otra ves (Recox)
 * 04/01/2020: Se corrigieron unos errores de armaduras y lingotes y se modifico un poco el mapa 1 (Recox)
+* 05/01/2020: Se mejoro el log de acciones con los diferentes botones, se agrego record usuarios online en el frmMain y se agrego informacion de ip y puerto en el cliente para que sea simple para cualquiera saber la ip y puerto, tambien si se clickea en los mismos se copia en el clipboard (Recox)
+* 05/01/2020: Se agrego pagina web en frmMain y se agrego cantidad de minutos restantes para el worldsave (Recox)
+* 05/01/2020: Arreglos visuales (Recox)
+* 06/01/2020: Ahora los nombres de los NPCS no hostiles se muestran en el render 
+* 06/01/2020: Se encapsulo comportamiento WriteConsoleServerUpTimeMsg
+* 06/01/2020: Se agrega uptime del server en el comando /online 
+* 06/01/2020: Ahora mostramos mucha mas informacion de los personajes, como clan, nivel, vida, etc al hacerles click
+* 07/01/2020: Se agrego soporte para los comandos /forcemp3 y /forcemp3map
