@@ -6631,7 +6631,7 @@ Private Sub HandleHeal(ByVal Userindex As Integer)
         
         .Stats.MinHp = .Stats.MaxHp
 
-        'Enviamos sonido de resucitacion (Recox)
+        'Enviamos sonido de curar (Recox)
         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_CURAR_SACERDOTE, .Pos.X, .Pos.Y))
         
         Call WriteUpdateHP(Userindex)
