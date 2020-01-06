@@ -50,7 +50,6 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 Private auxiliarBuffer  As clsByteQueue
 
 Private Enum ServerPacketID
-
     Logged                  ' LOGGED
     RemoveDialogs           ' QTDL
     RemoveCharDialog        ' QDL
@@ -88,6 +87,7 @@ Private Enum ServerPacketID
     ObjectCreate            ' HO
     ObjectDelete            ' BO
     BlockPosition           ' BQ
+    PlayMp3                 
     PlayMidi                ' TM
     PlayWave                ' TW
     guildList               ' GL
@@ -1199,6 +1199,9 @@ Private Sub HandleGMCommands(ByVal Userindex As Integer)
         
             Case eGMCommands.SetCharDescription      '/SETDESC
                 Call HandleSetCharDescription(Userindex)
+
+            Case eGMCommands.ForceMP3ToMap          '/FORCEMP3MAP
+                Call HanldeForceMP3ToMap(Userindex)
         
             Case eGMCommands.ForceMIDIToMap          '/FORCEMIDIMAP
                 Call HanldeForceMIDIToMap(Userindex)
@@ -1280,6 +1283,9 @@ Private Sub HandleGMCommands(ByVal Userindex As Integer)
         
             Case eGMCommands.RoyalArmyKick           '/NOREAL
                 Call HandleRoyalArmyKick(Userindex)
+
+            Case eGMCommands.ForceMP3All            '/FORCEMP3
+                Call HandleForceMP3All(Userindex)
         
             Case eGMCommands.ForceMIDIAll            '/FORCEMIDI
                 Call HandleForceMIDIAll(Userindex)
@@ -13177,6 +13183,59 @@ ErrHandler:
 End Sub
 
 ''
+' Handles the "ForceMP3ToMap" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HanldeForceMP3ToMap(ByVal Userindex As Integer)
+
+'***************************************************
+'Author: Lucas Recoaro(Recox)
+'Last Modification: 07/01/20
+'
+'***************************************************
+    If UserList(Userindex).incomingData.Length < 4 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+
+    End If
+    
+    With UserList(Userindex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Dim Mp3Id As Byte
+
+        Dim Mapa   As Integer
+        
+        Mp3Id = .incomingData.ReadByte
+        Mapa = .incomingData.ReadInteger
+        
+        'Solo dioses, admins y RMS
+        If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
+
+            'Si el mapa no fue enviado tomo el actual
+            If Not InMapBounds(Mapa, 50, 50) Then
+                Mapa = .Pos.Map
+
+            End If
+        
+            If Mp3Id = 0 Then
+                'Ponemos el default del mapa
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMp3(MapInfo(.Pos.Map).Music))
+            Else
+                'Ponemos el pedido por el GM
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessagePlayMp3(Mp3Id))
+
+            End If
+
+        End If
+
+    End With
+
+End Sub
+
+''
 ' Handles the "ForceMIDIToMap" message.
 '
 ' @param    userIndex The index of the user sending the message.
@@ -14813,6 +14872,42 @@ ErrHandler:
 End Sub
 
 ''
+' Handles the "ForceMP3All" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleForceMP3All(ByVal Userindex As Integer)
+
+    '***************************************************
+    'Author: Lucas Recoaro(Recox)
+    'Last Modification: 07/01/20
+    '
+    '***************************************************
+    If UserList(Userindex).incomingData.Length < 2 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+
+    End If
+    
+    With UserList(Userindex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+
+        Dim Mp3Id As Byte
+
+        Mp3Id = .incomingData.ReadByte()
+        
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " broadcast musica MP3: " & Mp3Id, FontTypeNames.FONTTYPE_SERVER))
+        
+        Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayMp3(Mp3Id))
+
+    End With
+
+End Sub
+
+''
 ' Handles the "ForceMIDIAll" message.
 '
 ' @param    userIndex The index of the user sending the message.
@@ -14840,7 +14935,7 @@ Private Sub HandleForceMIDIAll(ByVal Userindex As Integer)
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
         
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " broadcast musica: " & midiID, FontTypeNames.FONTTYPE_SERVER))
+        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " broadcast musica MIDI: " & midiID, FontTypeNames.FONTTYPE_SERVER))
         
         Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayMidi(midiID))
 
@@ -18805,6 +18900,38 @@ ErrHandler:
 End Sub
 
 ''
+' Writes the "PlayMp3" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @param    mp3 The mp3 to be played.
+' @param    loops Number of repets for the midi.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WritePlayMp3(ByVal Userindex As Integer, _
+                         ByVal mp3 As Integer, _
+                         Optional ByVal loops As Integer = -1)
+
+    '***************************************************
+    'Author: Lucas Recoaro (Recox)
+    'Last Modification: 05/17/06
+    'Writes the "PlayMp3" message to the given user's outgoing data buffer
+    '***************************************************
+    On Error GoTo ErrHandler
+
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayMp3(mp3, loops))
+    Exit Sub
+
+ErrHandler:
+
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
+        Resume
+
+    End If
+
+End Sub
+
+''
 ' Writes the "PlayMidi" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -21568,6 +21695,33 @@ Public Function PrepareMessageShowMessageBox(ByVal Chat As String) As String
 End Function
 
 ''
+' Prepares the "PlayMp3" message and returns it.
+'
+' @param    mp3 The mp3 to be played.
+' @param    loops Number of repets for the midi.
+' @return   The formated message ready to be writen as is on outgoing buffers.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Function PrepareMessagePlayMp3(ByVal mp3 As Integer, _
+                                       Optional ByVal loops As Integer = -1) As String
+
+    '***************************************************
+    'Author: Lucas Recoaro (Recox)
+    'Last Modification: 05/17/06
+    'Prepares the "PlayMp3" message and returns it
+    '***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.PlayMp3)
+        Call .WriteInteger(mp3)
+        Call .WriteInteger(loops)
+        
+        PrepareMessagePlayMp3 = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function
+
+''
 ' Prepares the "PlayMidi" message and returns it.
 '
 ' @param    midi The midi to be played.
@@ -21581,7 +21735,7 @@ Public Function PrepareMessagePlayMidi(ByVal midi As Integer, _
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
     'Last Modification: 05/17/06
-    'Prepares the "GuildChat" message and returns it
+    'Prepares the "PlayMidi" message and returns it
     '***************************************************
     With auxiliarBuffer
         Call .WriteByte(ServerPacketID.PlayMidi)
