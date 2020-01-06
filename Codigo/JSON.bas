@@ -54,9 +54,7 @@ Public Function GetParserErrors() As String
 End Function
 
 Public Function parse(ByRef str As String) As Object
-    
-    If LenB(str) = 0 Then Exit Function
-    
+
     m_decSep = GetRegionalSettings(LOCALE_SDECIMAL)
     m_groupSep = GetRegionalSettings(LOCALE_SGROUPING)
 
@@ -519,7 +517,7 @@ Private Sub skipChar(ByRef index As Long)
 
 End Sub
 
-Private Function GetRegionalSettings(ByVal regionalsetting As Long) As String
+Public Function GetRegionalSettings(ByVal regionalsetting As Long) As String
     ' Devuelve la configuracion regional del sistema
 
     On Error GoTo ErrorHandler
