@@ -21706,7 +21706,7 @@ Public Function PrepareMessagePlayMp3(ByVal mp3 As Integer, _
                                        Optional ByVal loops As Integer = -1) As String
 
     '***************************************************
-    'Author: Lucas Recparp (Recox)
+    'Author: Lucas Recoaro (Recox)
     'Last Modification: 05/17/06
     'Prepares the "PlayMp3" message and returns it
     '***************************************************
