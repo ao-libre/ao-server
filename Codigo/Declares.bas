@@ -2183,6 +2183,7 @@ Public Enum eGMCommands
     TeleportDestroy         '/DT
     RainToggle              '/LLUVIA
     SetCharDescription      '/SETDESC
+    ForceMP3ToMap          '/FORCEMP3MAP
     ForceMIDIToMap          '/FORCEMIDIMAP
     ForceWAVEToMap          '/FORCEWAVMAP
     RoyalArmyMessage        '/REALMSG
@@ -2210,6 +2211,7 @@ Public Enum eGMCommands
     DestroyItems            '/DEST
     ChaosLegionKick         '/NOCAOS
     RoyalArmyKick           '/NOREAL
+    ForceMP3All             '/FORCEMP3
     ForceMIDIAll            '/FORCEMIDI
     ForceWAVEAll            '/FORCEWAV
     RemovePunishment        '/BORRARPENA
