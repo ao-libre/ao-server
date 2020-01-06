@@ -6500,6 +6500,9 @@ Private Sub HandleResucitate(ByVal Userindex As Integer)
             Exit Sub
 
         End If
+
+        'Enviamos sonido de resucitacion (Recox)
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_RESUCITAR_SACERDOTE, .Pos.X, .Pos.Y))
         
         Call RevivirUsuario(Userindex)
         Call WriteConsoleMsg(Userindex, "Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
@@ -6627,6 +6630,9 @@ Private Sub HandleHeal(ByVal Userindex As Integer)
         End If
         
         .Stats.MinHp = .Stats.MaxHp
+
+        'Enviamos sonido de resucitacion (Recox)
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_CURAR_SACERDOTE, .Pos.X, .Pos.Y))
         
         Call WriteUpdateHP(Userindex)
         

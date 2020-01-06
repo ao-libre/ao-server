@@ -708,11 +708,15 @@ Public Const SND_SACARARMA              As Byte = 25
 
 Public Const SND_ESCUDO                 As Byte = 37
 
-Public Const MARTILLOHERRERO            As Byte = 41
+Public Const SND_TRABAJO_HERRERO        As Byte = 41
 
-Public Const LABUROCARPINTERO           As Byte = 42
+Public Const SND_TRABAJO_CARPINTERO     As Byte = 42
 
 Public Const SND_BEBER                  As Byte = 46
+
+Public Const SND_RESUCITAR_SACERDOTE    As Byte = 213
+
+Public Const SND_CURAR_SACERDOTE        As Byte = 214
 
 ''
 ' Cantidad maxima de objetos por slot de inventario
