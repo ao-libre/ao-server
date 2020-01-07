@@ -1423,3 +1423,78 @@ Sub NpcLanzaUnSpellSobreNpc(ByVal NpcIndex As Integer, ByVal TargetNPC As Intege
     Call NpcLanzaSpellSobreNpc(NpcIndex, TargetNPC, Npclist(NpcIndex).Spells(K))
 
 End Sub
+
+Public Sub SacerdoteHealUser(ByVal Userindex As Integer)
+
+    With UserList(Userindex)
+
+        'Enviamos sonido de curar (Recox)
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_CURAR_SACERDOTE, .Pos.X, .Pos.Y))
+
+        .Stats.MinHp = .Stats.MaxHp
+
+        Call WriteUpdateHP(Userindex)
+
+        Call WriteConsoleMsg(Userindex, "El sacerdote te ha curado!!", FontTypeNames.FONTTYPE_INFO)
+
+        'Si es newbie le sacamos todo, sino solo lo curamos. (Recox)
+        If EsNewbie(Userindex) Then
+            Call SacerdoteHealEffectsAndRestoreMana(Userindex)
+        End If
+
+        Call WriteUpdateUserStats(Userindex)
+    End With
+
+End Sub
+
+Public Sub SacerdoteResucitateUser(ByVal Userindex As Integer)
+    With UserList(Userindex)
+
+        'Enviamos sonido de resucitacion (Recox)
+        Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_RESUCITAR_SACERDOTE, .Pos.X, .Pos.Y))
+        
+        Call RevivirUsuario(Userindex)
+        Call WriteConsoleMsg(Userindex, "Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
+
+        'Si es newbie le sacamos todo, sino solo lo revivimos. (Recox)
+        If EsNewbie(Userindex) Then
+            Call SacerdoteHealEffectsAndRestoreMana(Userindex)
+        End If
+
+    End With
+End Sub
+
+
+Private Sub SacerdoteHealEffectsAndRestoreMana(ByVal Userindex As Integer)
+    Dim MensajeAyuda As String
+    MensajeAyuda = "Cuando dejes de ser newbie no lo hara mas el sacerdote y deberas comprar pociones o curarte con hechizos"
+
+    With UserList(Userindex)
+        ' Sacamos la maldicion.
+        If .flags.Maldicion = 1 Then 
+            .flags.Maldicion = 0
+            Call WriteConsoleMsg(Userindex, "El sacerdote te ha curado de la maldicion.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, MensajeAyuda, FontTypeNames.FONTTYPE_INFO)
+        End If
+ 
+        ' Sacamos la ceguera.
+        If .flags.Ceguera = 1 Then 
+            .flags.Ceguera = 0
+            Call WriteConsoleMsg(Userindex, "El sacerdote te ha curado de la ceguera.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, MensajeAyuda, FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        ' Curamos su envenenamiento.
+        If .flags.Envenenado = 1 Then
+            .flags.Envenenado = 0
+            Call WriteConsoleMsg(Userindex, "El sacerdote te ha curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, MensajeAyuda, FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        ' Restauramos su mana.
+        .Stats.MinMAN = .Stats.MaxMAN
+        Call WriteUpdateMana(Userindex)
+        Call WriteConsoleMsg(Userindex, "El sacerdote te ha restaurado el mana completamente.", FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, MensajeAyuda, FontTypeNames.FONTTYPE_INFO)
+    End With
+End Sub

@@ -132,26 +132,11 @@ Sub Accion(ByVal Userindex As Integer, _
                     
                     'Revivimos si es necesario
                     If .flags.Muerto = 1 And (Npclist(tempIndex).NPCtype = eNPCType.Revividor Or EsNewbie(Userindex)) Then
-                        Call RevivirUsuario(Userindex)
-
+                        Call SacerdoteResucitateUser(Userindex)
                     End If
                     
                     If Npclist(tempIndex).NPCtype = eNPCType.Revividor Or EsNewbie(Userindex) Then
-                        'TODO: ya hay una funcion que hace esto, la del comando /Curar habria que refactorizar
-                        'curamos totalmente
-                        .Stats.MinHp = .Stats.MaxHp
-                        
-                        Call WriteConsoleMsg(Userindex, "Te has curado!", FontTypeNames.FONTTYPE_INFO)
-                        
-                        If .flags.Envenenado = 1 Then
-                            'curamos veneno
-                            .flags.Envenenado = 0
-                            Call WriteConsoleMsg(Userindex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
-
-                        End If
-                        
-                        Call WriteUpdateUserStats(Userindex)
-
+                        Call SacerdoteHealUser(Userindex)
                     End If
 
                 End If
@@ -436,50 +421,25 @@ Sub AccionParaRamita(ByVal Map As Integer, _
 End Sub
 
 Public Sub AccionParaSacerdote(ByVal UserIndex As Integer)
-
-    '******************************
-    'Adaptacion a 13.0: Kaneidra
-    'Last Modification: 15/05/2012
-    '******************************
+'******************************
+'Adaptacion a 13.0: Kaneidra
+'Last Modification: 07/01/2020
+'Refactorizo para que el Sacerdote haga una sola cosa y no 20 diferentes alrededor del codigo dependiendo de como se usa (Recox)
+'******************************
     
     With UserList(UserIndex)
         
         ' Si esta muerto...
         If .flags.Muerto = 1 Then
-            
-            ' Lo resucitamos.
-            Call RevivirUsuario(UserIndex)
-            
-            ' Restauramos su mana.
-            .Stats.MinMAN = .Stats.MaxMAN
-            Call WriteUpdateMana(UserIndex)
-            
-            ' Lo curamos.
-            .Stats.MinHp = .Stats.MaxHp
-            Call WriteUpdateHP(UserIndex)
-            
-            ' Le avisamos.
-            Call WriteConsoleMsg(UserIndex, "El sacerdote te ha resucitado y curado.", FontTypeNames.FONTTYPE_INFO)
+            Call SacerdoteResucitateUser(UserIndex)
 
         End If
         
         ' Si esta herido... lo curamos.
         If .Stats.MinHp < .Stats.MaxHp Then
-            .Stats.MinHp = .Stats.MaxHp
-            Call WriteUpdateHP(UserIndex)
-            Call WriteConsoleMsg(UserIndex, "El sacerdote te ha curado.", FontTypeNames.FONTTYPE_INFO)
-
+            Call SacerdoteHealUser(UserIndex)
         End If
         
-        ' Curamos su envenenamiento.
-        If .flags.Envenenado = 1 Then .flags.Envenenado = 0
-        
-        ' Sacamos la maldicion.
-        If .flags.Maldicion = 1 Then .flags.Maldicion = 0
-        
-        ' Sacamos la ceguera.
-        If .flags.Ceguera = 1 Then .flags.Ceguera = 0
-
     End With
  
 End Sub
