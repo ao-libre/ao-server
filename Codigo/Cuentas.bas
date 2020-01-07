@@ -68,6 +68,7 @@ Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
 
 
         For LoopC = 1 To NumberOfCharacters
+            CurrentCharacter = GetVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC)
 
             If UCase$(CurrentCharacter) = UserName Then
                 'Movemos el ultimo personaje al slot del borrado
@@ -79,7 +80,7 @@ Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
                 'Restamos uno la cantidad de personajes del archivo ach
                 Call WriteVar(AccountCharfile, "INIT", "CANTIDADPERSONAJES", NumberOfCharacters - 1)
 
-                'Por ultimo luego borramos el archivo.
+                'Por ultimo borramos el archivo.
                 Kill(CharPath & UCase$(UserName) & ".chr")
                 
                 Exit Sub
