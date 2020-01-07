@@ -6541,8 +6541,8 @@ Private Sub HandleResucitate(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
+    'Last Modification: 07/01/20
+    'Arreglo validacion de NPC para que funcione el comando. (Recox)
     '***************************************************
     With UserList(Userindex)
         'Remove packet ID
@@ -6556,7 +6556,7 @@ Private Sub HandleResucitate(ByVal Userindex As Integer)
         End If
         
         'Validate NPC and make sure player is dead
-        If Npclist(.flags.TargetNPC).NPCtype = eNPCType.Revividor Or .flags.Muerto = 0 Then Exit Sub
+        If Npclist(.flags.TargetNPC).NPCtype <> eNPCType.Revividor Or .flags.Muerto = 0 Then Exit Sub
         
         'Make sure it's close enough
         If Distancia(.Pos, Npclist(.flags.TargetNPC).Pos) > 5 Then
@@ -6564,10 +6564,8 @@ Private Sub HandleResucitate(ByVal Userindex As Integer)
             Exit Sub
 
         End If
-        
-        Call RevivirUsuario(Userindex)
-        Call WriteConsoleMsg(Userindex, "Has sido resucitado!!", FontTypeNames.FONTTYPE_INFO)
 
+        Call SacerdoteResucitateUser(Userindex)
     End With
 
 End Sub
@@ -6690,12 +6688,7 @@ Private Sub HandleHeal(ByVal Userindex As Integer)
 
         End If
         
-        .Stats.MinHp = .Stats.MaxHp
-        
-        Call WriteUpdateHP(Userindex)
-        
-        Call WriteConsoleMsg(Userindex, "Has sido curado!!", FontTypeNames.FONTTYPE_INFO)
-
+        Call SacerdoteHealUser(Userindex)
     End With
 
 End Sub

@@ -852,3 +852,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 06/01/2020: Se agrega uptime del server en el comando /online 
 * 06/01/2020: Ahora mostramos mucha mas informacion de los personajes, como clan, nivel, vida, etc al hacerles click
 * 07/01/2020: Se agrego soporte para los comandos /forcemp3 y /forcemp3map
+* 07/01/2020: Se agregaron sonidos para cuando el sacerdote revive y cura (Recox)
+* 07/01/2020: Se refactorizo el sacerdote, el codigo esta mas prolijo y ahora te cura los efectos negativos y mana completo solo cuando sos newbie (Recox)

@@ -822,7 +822,7 @@ Public Sub HerreroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex As I
             End If
         
             Call SubirSkill(Userindex, eSkill.Herreria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_TRABAJO_HERRERO, .Pos.X, .Pos.Y))
         
             If Not criminal(Userindex) Then
                 .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
@@ -989,7 +989,7 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
             End If
             
             Call SubirSkill(Userindex, eSkill.Carpinteria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_TRABAJO_CARPINTERO, .Pos.X, .Pos.Y))
             
             If Not criminal(Userindex) Then
                 .Reputacion.PlebeRep = .Reputacion.PlebeRep + vlProleta
@@ -1292,7 +1292,7 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
             End Select
         
             Call SubirSkill(Userindex, eSkill.Herreria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(MARTILLOHERRERO, .Pos.X, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_TRABAJO_HERRERO, .Pos.X, .Pos.Y))
     
         ElseIf PuedeConstruirCarpintero(ItemUpgrade) Then
         
@@ -1324,7 +1324,7 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
             End Select
         
             Call SubirSkill(Userindex, eSkill.Carpinteria, True)
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(LABUROCARPINTERO, .Pos.X, .Pos.Y))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_TRABAJO_CARPINTERO, .Pos.X, .Pos.Y))
         Else
             Exit Sub
 
