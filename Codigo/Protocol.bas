@@ -22948,14 +22948,14 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
                                   ByVal NumberOfCharacters As Byte, _
                                   ByRef Characters() As AccountUser)
 
-    '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 12/10/2018
-    'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
-    '***************************************************
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 12/10/2018
+'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
+'***************************************************
     On Error GoTo ErrHandler
 
-    Dim i As Byte
+    Dim i As Long
 
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.AccountLogged)
@@ -22983,6 +22983,9 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
             Next i
 
         End If
+
+        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
+        Call .WriteByte(STAT_MAXELV)
 
     End With
 
