@@ -854,3 +854,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 07/01/2020: Se agrego soporte para los comandos /forcemp3 y /forcemp3map
 * 07/01/2020: Se agregaron sonidos para cuando el sacerdote revive y cura (Recox)
 * 07/01/2020: Se refactorizo el sacerdote, el codigo esta mas prolijo y ahora te cura los efectos negativos y mana completo solo cuando sos newbie (Recox)
+* 07/01/2020: Se arreglo y puso en funcionamiento BorrarCharfile, por lo que ahora esta habilitado poder borrar pjs de las cuentas (Recox)
