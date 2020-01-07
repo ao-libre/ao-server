@@ -169,6 +169,7 @@ Private Enum ServerPacketID
     CreateDamage            ' CDMG
     UserInEvent
     RenderMsg
+    DeletedChar
 End Enum
 
 Private Enum ClientPacketID
@@ -322,11 +323,12 @@ Private Enum ClientPacketID
     FightAccept = 147
     CloseGuild = 148
     Discord = 149
+    DeleteChar = 150
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 149
+Private Const LAST_CLIENT_PACKET_ID As Byte = 150
 
 Public Enum FontTypeNames
 
@@ -415,7 +417,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         '    Exit Function
 
         'End If
-        
+
+        'Se castea a long por que VB6 cuando usa SELECT CASE
+        'Lo hace de manera mas efectiva https://www.gs-zone.org/temas/las-consecuencias-de-usar-byte-en-handleincomingdata.99245/
         Dim packetID As Long: packetID = CLng(.incomingData.PeekByte())
 
         'Verifico si el paquete necesita que el user este logeado
@@ -424,6 +428,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
                 Or packetID = ClientPacketID.LoginNewChar _
                 Or packetID = ClientPacketID.LoginNewAccount _
                 Or packetID = ClientPacketID.LoginExistingAccount _
+                Or packetID = ClientPacketID.DeleteChar _
                 Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
@@ -464,6 +469,9 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         Case ClientPacketID.LoginNewChar            'NLOGIN
             Call HandleLoginNewChar(Userindex)
+
+        Case ClientPacketID.DeleteChar              
+            Call HandleDeleteChar(Userindex)
         
         Case ClientPacketID.Talk                    ';
             Call HandleTalk(Userindex)
@@ -1553,6 +1561,62 @@ Private Sub HandleHome(ByVal Userindex As Integer)
         End If
 
     End With
+
+End Sub
+
+''
+' Handles the "DeleteChar" message.
+'
+' @param    userIndex The index of the user sending the message.
+
+Private Sub HandleDeleteChar(ByVal Userindex As Integer)
+
+'***************************************************
+'Author: Lucas Recoaro (Recox)
+'Last Modification: 07/01/20
+'
+'***************************************************
+    If UserList(Userindex).incomingData.Length < 6 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+
+    End If
+    
+    On Error GoTo ErrHandler
+
+    'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+    Dim buffer As clsByteQueue
+    Set buffer = New clsByteQueue
+
+    Call buffer.CopyBuffer(UserList(Userindex).incomingData)
+    
+    'Remove packet ID
+    Call buffer.ReadByte
+
+    Dim UserName    As String
+    UserName = buffer.ReadASCIIString()
+
+    Call BorrarUsuario(UserName)
+
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    'Enviamos paquete para mostrar mensaje satisfactorio en el cliente
+    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.DeletedChar)
+    Exit Sub
+    
+ErrHandler:
+
+    Dim Error As Long
+
+    Error = Err.Number
+
+    On Error GoTo 0
+    
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+    
+    If Error <> 0 Then Err.Raise Error
 
 End Sub
 
