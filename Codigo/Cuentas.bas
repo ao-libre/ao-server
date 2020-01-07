@@ -41,16 +41,55 @@ End Function
 
 Public Sub BorrarUsuarioCharfile(ByVal UserName As String)
 
-    '***************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last Modification: 18/09/2018
-    '***************************************************
-    On Error Resume Next
+'***************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last Modification: 07/01/2020
+'Ahora se pueden borrar los charfiles de la cuenta correctamente (Recox)
+'***************************************************
+    On Error GoTo ErrorHandler
+
 
     If PersonajeExiste(UserName) Then
-        Kill CharPath & UCase$(UserName) & ".chr"
+        UserName = UCase$(UserName)
 
+        Dim AccountHash        As String
+        Dim LoopC              As Long
+        Dim NumberOfCharacters As Byte
+        Dim LastCharacterName  As String
+        Dim AccountCharfile    As String
+        Dim CurrentCharacter   As String
+
+        AccountHash = GetVar(CharPath & UserName & ".chr", "INIT", "AccountHash")
+        AccountCharfile = AccountPath & AccountHash & ".ach"
+        NumberOfCharacters = val(GetVar(AccountCharfile, "INIT", "CantidadPersonajes"))
+
+        'Informacion del ultimo pj
+        LastCharacterName = GetVar(AccountCharfile, "PERSONAJES", "Personaje" & NumberOfCharacters)
+
+
+        For LoopC = 1 To NumberOfCharacters
+
+            If UCase$(CurrentCharacter) = UserName Then
+                'Movemos el ultimo personaje al slot del borrado
+                Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & LoopC, LastCharacterName)
+                
+                'Borramos el nombre del pj de la ultima posicion
+                Call WriteVar(AccountCharfile, "PERSONAJES", "Personaje" & NumberOfCharacters, vbNullString)
+
+                'Restamos uno la cantidad de personajes del archivo ach
+                Call WriteVar(AccountCharfile, "INIT", "CANTIDADPERSONAJES", NumberOfCharacters - 1)
+
+                'Por ultimo luego borramos el archivo.
+                Kill(CharPath & UCase$(UserName) & ".chr")
+                
+                Exit Sub
+            End If
+
+        Next LoopC
     End If
+
+ErrorHandler:
+    Call LogError("Error in BorrarUsuarioCharfile: " & UserName & ". " & Err.Number & " - " & Err.description)
 
 End Sub
 
@@ -103,7 +142,7 @@ Public Sub CopyUserCharfile(ByVal UserName As String, ByVal newName As String)
 
     Dim AccountHash        As String
 
-    Dim LoopC              As Byte
+    Dim LoopC              As Long
 
     Dim NumberOfCharacters As Byte
 
@@ -791,7 +830,7 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
     '***************************************************
     On Error GoTo ErrorHandler
 
-    Dim i                  As Byte
+    Dim i                  As Long
 
     Dim AccountHash        As String
 
