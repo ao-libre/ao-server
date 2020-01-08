@@ -17603,11 +17603,8 @@ Public Sub HandleCreatePretorianClan(ByVal Userindex As Integer)
     On Error GoTo ErrHandler
 
     Dim Map   As Integer
-
     Dim X     As Byte
-
     Dim Y     As Byte
-
     Dim index As Long
     
     With UserList(Userindex)
@@ -17631,10 +17628,9 @@ Public Sub HandleCreatePretorianClan(ByVal Userindex As Integer)
         
         ' Choose pretorian clan index
         If Map = MAPA_PRETORIANO Then
-            index = 1 ' Default clan
+            index = ePretorianType.Default ' Default clan
         Else
-            index = 2 ' Custom Clan
-
+            index = ePretorianType.Custom ' Custom Clan
         End If
             
         ' Is already active any clan?

@@ -370,7 +370,6 @@ Sub Main()
         Call frmMain.InitMain(1)
     Else
         Call frmMain.InitMain(0)
-
     End If
     
     tInicioServer = GetTickCount() And &H7FFFFFFF
@@ -379,12 +378,19 @@ Sub Main()
     frmMain.lblIp.Caption = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/") & ":" & Puerto
 
     Dim MundoSeleccionado As String
-    MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+        MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+    
     frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado
-
+    
     'Este ultimo es para saber siempre los records en el frmMain
     frmMain.txtRecordOnline.Text = RecordUsuariosOnline
-        
+    
+    'Invocamos al Clan Pretoriano en su respectivo mapa.
+    'Activando su respawn automatico.
+    If Not ClanPretoriano(ePretorianType.Default).SpawnClan(MAPA_PRETORIANO, PRETORIANO_X, PRETORIANO_Y, ePretorianType.Default, True) Then
+        Call LogError("No se pudo invocar al Clan Pretoriano.")
+    End If
+    
     Call MainLoop
 
 End Sub

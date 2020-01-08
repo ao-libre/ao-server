@@ -34,6 +34,13 @@ Attribute VB_Exposed = False
 Option Explicit
 
 '####################
+' Pretorians Clan Type (Define wether it is default or custom clan)
+Public Enum ePretorianType
+    Default = 1
+    Custom = 2
+End Enum
+
+'####################
 ' Pretorians Map Vars (Only used for the default map)
 Private LeftSpawnPos  As WorldPos
 
@@ -271,8 +278,8 @@ Public Function SpawnClan(ByVal mapa As Integer, _
 
     Exit Function
 
-errHandler:
-    LogError ("Error en CrearClanPretoriano. Error: " & Err.Number & " - " & Err.description)
+ErrHandler:
+    Call LogError("Error en CrearClanPretoriano. Error: " & Err.Number & " - " & Err.description)
 
 End Function
 
