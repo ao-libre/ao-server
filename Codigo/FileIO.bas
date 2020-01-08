@@ -1769,7 +1769,9 @@ Sub LoadSini()
     TunicaEgregiaEnano = val(Lector.GetValue("INIT", "TunicaEgregiaEnano"))
     SacerdoteDemoniaco = val(Lector.GetValue("INIT", "SacerdoteDemoniaco"))
     
-    MAPA_PRETORIANO = val(Lector.GetValue("INIT", "MapaPretoriano"))
+    MAPA_PRETORIANO = val(Lector.GetValue("CLAN-PRETORIANO", "Mapa"))
+    PRETORIANO_X = val(Lector.GetValue("CLAN-PRETORIANO", "X"))
+    PRETORIANO_Y = val(Lector.GetValue("CLAN-PRETORIANO", "Y"))
     
     EnTesting = CBool(Lector.GetValue("INIT", "Testing"))
     

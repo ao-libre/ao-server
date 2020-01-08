@@ -855,3 +855,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 07/01/2020: Se agregaron sonidos para cuando el sacerdote revive y cura (Recox)
 * 07/01/2020: Se refactorizo el sacerdote, el codigo esta mas prolijo y ahora te cura los efectos negativos y mana completo solo cuando sos newbie (Recox)
 * 07/01/2020: Se arreglo y puso en funcionamiento BorrarCharfile, por lo que ahora esta habilitado poder borrar pjs de las cuentas (Recox)
+
+- v0.13.22
+
+* 08/01/2020: Ahora se invoca el Clan Pretoriano(con Respawn) al abrir el servidor en su respectivo mapa. [Mapa 163] (jopiortiz)

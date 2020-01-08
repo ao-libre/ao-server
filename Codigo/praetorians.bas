@@ -52,6 +52,8 @@ Attribute VB_Name = "PraetoriansCoopNPC"
 ''donde estan los NPCs!).
 ''Se extrae el dato del server.ini en sub LoadSIni
 Public MAPA_PRETORIANO          As Integer
+Public PRETORIANO_X             As Byte
+Public PRETORIANO_Y             As Byte
 
 ''''''''''''''''''''''''''''''''''''''''''''''
 ''Estos numeros son necesarios por cuestiones de
@@ -204,9 +206,9 @@ Public Sub LoadPretorianData()
     PretorianAIOffset(ePretorianAI.Last) = PretorianIndex
 
     ' Inicializa los clanes pretorianos
-    ReDim ClanPretoriano(1 To 2) As clsClanPretoriano
-    Set ClanPretoriano(1) = New clsClanPretoriano ' Clan default
-    Set ClanPretoriano(2) = New clsClanPretoriano ' Invocable por gms
+    ReDim ClanPretoriano(ePretorianType.Default To ePretorianType.Custom) As clsClanPretoriano
+    Set ClanPretoriano(ePretorianType.Default) = New clsClanPretoriano ' Clan default
+    Set ClanPretoriano(ePretorianType.Custom) = New clsClanPretoriano ' Invocable por gms
 
 End Sub
 
