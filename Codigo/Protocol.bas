@@ -22952,6 +22952,7 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
+'Mandamos nivel maximo al cliente (Recox)
 '***************************************************
     On Error GoTo ErrHandler
 
@@ -22962,6 +22963,9 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(AccountHash)
         Call .WriteByte(NumberOfCharacters)
+
+        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
+        Call .WriteByte(STAT_MAXELV)
 
         If NumberOfCharacters > 0 Then
 
@@ -22983,9 +22987,6 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
             Next i
 
         End If
-
-        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
-        Call .WriteByte(STAT_MAXELV)
 
     End With
 
