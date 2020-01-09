@@ -394,7 +394,9 @@ Sub Main()
     'En caso que la API este activada, la abrimos :)
     'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
-    If ConexionAPI Then Call Shell ("cmd echo foo", vbNormalFocus)
+    If ConexionAPI Then
+        ApiNodeJsTaskId = Shell("cmd /c cd c:\ao-api-server\ && npm start")
+    End If
     
     Call MainLoop
 
@@ -1814,3 +1816,13 @@ Public Function Tilde(ByRef data As String) As String
     Tilde = temp
         
 End Function
+
+Public Sub CloseServer()
+    
+    'Si tenemos la API activada, la matamos.
+    If ConexionAPI Then
+        Shell("taskkill /PID " & ApiNodeJsTaskId)
+    End If
+    
+    End
+End Sub

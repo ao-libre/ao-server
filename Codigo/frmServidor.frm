@@ -379,7 +379,7 @@ Private Sub cmdForzarCierre_Click()
         
     If MsgBox("Desea FORZAR el CIERRE del SERVIDOR?", vbYesNo, "CIERRE DEL SERVIDOR!!!") = vbNo Then Exit Sub
         
-    End
+    Call CloseServer
 
 End Sub
 
@@ -691,4 +691,3 @@ Private Sub cmdRecargarAdministradores_Click()
     loadAdministrativeUsers
 
 End Sub
-
