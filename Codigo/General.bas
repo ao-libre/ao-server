@@ -390,6 +390,11 @@ Sub Main()
     If Not ClanPretoriano(ePretorianType.Default).SpawnClan(MAPA_PRETORIANO, PRETORIANO_X, PRETORIANO_Y, ePretorianType.Default, True) Then
         Call LogError("No se pudo invocar al Clan Pretoriano.")
     End If
+
+    'En caso que la API este activada, la abrimos :)
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then Call Shell ("cmd echo foo", vbNormalFocus)
     
     Call MainLoop
 
