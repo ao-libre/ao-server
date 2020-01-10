@@ -395,7 +395,7 @@ Sub Main()
     'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
     If ConexionAPI Then
-        ApiNodeJsTaskId = Shell("cmd /c cd c:\ao-api-server\ && npm start")
+        ApiNodeJsTaskId = Shell("cmd /c cd " & ApiPath & " && npm start")
     End If
     
     Call MainLoop

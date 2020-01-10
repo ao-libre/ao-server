@@ -1856,6 +1856,8 @@ Sub LoadSini()
     'Conexion con la API hecha en Node.js
     'Mas info aqui: https://github.com/ao-libre/ao-api-server/
     ConexionAPI = CBool(Lector.GetValue("CONEXIONAPI", "Activado"))
+    ApiUrlServer = Lector.GetValue("CONEXIONAPI", "UrlServer")
+    ApiPath = Lector.GetValue("CONEXIONAPI", "ApiPath")
 
     'CHOTS | Database
     Database_Enabled = CBool(val(Lector.GetValue("DATABASE", "Enabled")))
