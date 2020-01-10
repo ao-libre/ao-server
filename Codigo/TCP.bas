@@ -977,12 +977,12 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
                    ByRef UserName As String, _
                    ByRef Password As String)
 
-    '*************************************************
-    'Author: Juan Andres Dalmasso (CHOTS)
-    'Last modified: 12/10/2018
-    'Crea una nueva cuenta
-    '*************************************************
-    'SHA256
+'*************************************************
+'Author: Juan Andres Dalmasso (CHOTS)
+'Last modified: 12/10/2018
+'Se conecta a una cuenta existente
+'*************************************************
+'SHA256
     Dim oSHA256 As CSHA256
 
     Dim Salt    As String
