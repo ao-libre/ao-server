@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmServidor 
    BackColor       =   &H00FFC0C0&
    Caption         =   "Configuracion del Servidor"
-   ClientHeight    =   6000
+   ClientHeight    =   6015
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   6600
@@ -17,10 +17,17 @@ Begin VB.Form frmServidor
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   400
+   ScaleHeight     =   401
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   440
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ListBox listDats 
+      Height          =   1425
+      Left            =   3840
+      TabIndex        =   24
+      Top             =   360
+      Width           =   2535
+   End
    Begin VB.CommandButton cmdReiniciar 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Reiniciar"
@@ -28,7 +35,7 @@ Begin VB.Form frmServidor
       Height          =   375
       Left            =   1920
       Style           =   1  'Graphical
-      TabIndex        =   17
+      TabIndex        =   11
       Top             =   5520
       Width           =   1695
    End
@@ -37,7 +44,7 @@ Begin VB.Form frmServidor
       Caption         =   "Administracion"
       Height          =   2415
       Left            =   120
-      TabIndex        =   16
+      TabIndex        =   10
       Top             =   2040
       Width           =   6375
       Begin VB.CommandButton cmdResetListen 
@@ -46,7 +53,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
-         TabIndex        =   28
+         TabIndex        =   22
          Top             =   1920
          Width           =   1935
       End
@@ -56,7 +63,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   27
+         TabIndex        =   21
          Top             =   1920
          Width           =   1935
       End
@@ -66,7 +73,7 @@ Begin VB.Form frmServidor
          Height          =   495
          Left            =   4320
          Style           =   1  'Graphical
-         TabIndex        =   26
+         TabIndex        =   20
          Top             =   1320
          Width           =   1935
       End
@@ -76,7 +83,7 @@ Begin VB.Form frmServidor
          Height          =   495
          Left            =   2280
          Style           =   1  'Graphical
-         TabIndex        =   25
+         TabIndex        =   19
          Top             =   1320
          Width           =   1935
       End
@@ -86,7 +93,7 @@ Begin VB.Form frmServidor
          Height          =   495
          Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   24
+         TabIndex        =   18
          Top             =   1320
          Width           =   1935
       End
@@ -96,7 +103,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   4320
          Style           =   1  'Graphical
-         TabIndex        =   23
+         TabIndex        =   17
          Top             =   840
          Width           =   1935
       End
@@ -106,7 +113,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
-         TabIndex        =   22
+         TabIndex        =   16
          Top             =   840
          Width           =   1935
       End
@@ -116,7 +123,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   21
+         TabIndex        =   15
          Top             =   840
          Width           =   1935
       End
@@ -126,7 +133,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   4320
          Style           =   1  'Graphical
-         TabIndex        =   20
+         TabIndex        =   14
          Top             =   360
          Width           =   1935
       End
@@ -136,7 +143,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
-         TabIndex        =   19
+         TabIndex        =   13
          Top             =   360
          Width           =   1935
       End
@@ -146,7 +153,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   18
+         TabIndex        =   12
          Top             =   360
          Width           =   1935
       End
@@ -158,7 +165,7 @@ Begin VB.Form frmServidor
       Height          =   375
       Left            =   120
       Style           =   1  'Graphical
-      TabIndex        =   15
+      TabIndex        =   9
       Top             =   5520
       Width           =   1695
    End
@@ -168,7 +175,7 @@ Begin VB.Form frmServidor
       Height          =   375
       Left            =   3720
       Style           =   1  'Graphical
-      TabIndex        =   14
+      TabIndex        =   8
       Top             =   5520
       Width           =   2775
    End
@@ -177,7 +184,7 @@ Begin VB.Form frmServidor
       Caption         =   "Backup"
       Height          =   735
       Left            =   120
-      TabIndex        =   10
+      TabIndex        =   4
       Top             =   4560
       Width           =   6375
       Begin VB.CommandButton cmdLoadWorldBackup 
@@ -186,7 +193,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   4320
          Style           =   1  'Graphical
-         TabIndex        =   13
+         TabIndex        =   7
          Top             =   240
          Width           =   1935
       End
@@ -196,7 +203,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   2280
          Style           =   1  'Graphical
-         TabIndex        =   12
+         TabIndex        =   6
          Top             =   240
          Width           =   1935
       End
@@ -206,7 +213,7 @@ Begin VB.Form frmServidor
          Height          =   375
          Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   11
+         TabIndex        =   5
          Top             =   240
          Width           =   1935
       End
@@ -223,101 +230,41 @@ Begin VB.Form frmServidor
          BackColor       =   &H0080C0FF&
          Caption         =   "Administradores"
          Height          =   375
-         Left            =   1680
+         Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   29
-         Top             =   1320
-         Width           =   1455
+         TabIndex        =   23
+         Top             =   720
+         Width           =   1575
       End
       Begin VB.CommandButton cmdRecargarGuardiasPosOrig 
          BackColor       =   &H00FFC0C0&
          Caption         =   "Guardias en pos originales"
-         Height          =   375
-         Left            =   3240
+         Height          =   495
+         Left            =   2040
          Style           =   1  'Graphical
-         TabIndex        =   9
-         Top             =   1320
-         Width           =   3015
-      End
-      Begin VB.CommandButton cmdRecargarMOTD 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "MOTD"
-         Height          =   375
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   8
-         Top             =   1320
+         TabIndex        =   3
+         Top             =   240
          Width           =   1455
       End
       Begin VB.CommandButton cmdRecargarClanes 
          BackColor       =   &H00FFC0C0&
          Caption         =   "Clanes"
          Height          =   375
-         Left            =   3240
+         Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   7
-         Top             =   360
-         Width           =   1455
+         TabIndex        =   2
+         Top             =   1200
+         Width           =   1575
       End
       Begin VB.CommandButton cmdRecargarServerIni 
          BackColor       =   &H00FFC0C0&
          Caption         =   "Server.ini"
          Height          =   375
-         Left            =   4800
-         Style           =   1  'Graphical
-         TabIndex        =   6
-         Top             =   360
-         Width           =   1455
-      End
-      Begin VB.CommandButton cmdRecargarNombresInvalidos 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "NombresInvalidos.txt"
-         Height          =   375
-         Left            =   3240
-         Style           =   1  'Graphical
-         TabIndex        =   5
-         Top             =   840
-         Width           =   3015
-      End
-      Begin VB.CommandButton cmdRecargarNPCs 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "Npcs.dat"
-         Height          =   375
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   4
-         Top             =   840
-         Width           =   1455
-      End
-      Begin VB.CommandButton cmdRecargarBalance 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "Balance.dat"
-         Height          =   375
-         Left            =   1680
-         Style           =   1  'Graphical
-         TabIndex        =   3
-         Top             =   840
-         Width           =   1455
-      End
-      Begin VB.CommandButton cmdRecargarHechizos 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "Hechizos.dat"
-         Height          =   375
-         Left            =   1680
-         Style           =   1  'Graphical
-         TabIndex        =   2
-         Top             =   360
-         Width           =   1455
-      End
-      Begin VB.CommandButton cmdRecargarObjetos 
-         BackColor       =   &H00FFC0C0&
-         Caption         =   "Obj.dat"
-         Height          =   375
          Left            =   120
          Style           =   1  'Graphical
          TabIndex        =   1
-         Top             =   360
-         Width           =   1455
+         Top             =   240
+         Width           =   1575
       End
    End
 End
@@ -372,7 +319,18 @@ Private Sub Form_Load()
         cmdResetSockets.Visible = True
         cmdResetListen.Visible = False
     #End If
-
+        
+        
+    Dim sFilename As String
+        sFilename = Dir$(DatPath)
+    
+    Do While sFilename > ""
+    
+      Call listDats.AddItem(sFilename)
+      sFilename = Dir()
+    
+    Loop
+  
 End Sub
 
 Private Sub cmdForzarCierre_Click()
@@ -690,4 +648,68 @@ End Sub
 Private Sub cmdRecargarAdministradores_Click()
     loadAdministrativeUsers
 
+End Sub
+
+Private Sub listDats_Click()
+    
+    'Chequeamos si hay algun item seleccionado.
+    'Lo pongo para prevenir errores.
+    If listDats.ListIndex < 0 Then Exit Sub
+    
+    Select Case UCase$(listDats.Text)
+        
+        Case "APUESTAS.DAT"
+            Call CargaApuestas
+            
+        Case "ARMASHERRERO.DAT"
+            Call LoadArmasHerreria
+        
+        Case "ARMADURASHERRERO.DAT"
+            Call LoadArmadurasHerreria
+        
+        Case "ARMADURASFACCIONARIAS.DAT"
+            Call LoadArmadurasFaccion
+        
+        Case "BALANCE.DAT"
+            Call LoadBalance
+        
+        Case "CUIDADES.DAT"
+            Call CargarCiudades
+        
+        Case "CONSULTAS.DAT"
+            Call ConsultaPopular.LoadData
+        
+        Case "HECHIZOS.DAT"
+            Call CargarHechizos
+        
+        Case "INVOKAR.DAT"
+            Call CargarSpawnList
+            
+        Case "MOTD.INI"
+            Call LoadMotd
+
+        Case "NOMBRESINVALIDOS.txt"
+            Call CargarForbidenWords
+          
+        Case "NPCS.DAT"
+            Call CargaNpcsDat
+
+        Case "OBJ.DAT"
+            Call ResetForums
+            Call LoadOBJData
+        
+        Case "OBJCARPINTERO.DAT"
+            Call LoadObjCarpintero
+        
+        Case "RETOS.DAT"
+            Call LoadArenas
+           
+        Case "QUESTS.DAT"
+            Call LoadQuests
+            
+        Case Else
+            Exit Sub
+            
+    End Select
+    
 End Sub
