@@ -75,7 +75,7 @@ Actual Npc con Nro mas alto: 616
 [INIT]
 'aca va el numero de NPC mas alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=929
+NumNPCs=937
 
 
 
@@ -10921,3 +10921,33 @@ Drop2= 194-5000 'Minerales de Oro
 Drop3=402-1 'Espada Mata Dragones
 Drop4=532-1 'Apocalipsis
 Drop5=1158-1 'Montura de Dragon Negro
+
+[NPC937] 'Rick
+Name=Pickle Rick
+NpcType=0
+Head=0
+Heading=3
+Body=615
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=0
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=9999999
+MinHP=30000000
+MaxHP=30000000
+MaxHIT=10000
+MinHIT=10000
+DEF=8
+AfectaParalisis=1
+PoderAtaque=300
+PoderEvasion=100
+SND1=30
+SND2=31
+SND3=32
+BackUp=0
+NROITEMS=1
+Drop1=12-10000000 'Oro
