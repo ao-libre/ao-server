@@ -2285,7 +2285,7 @@ Public Enum eGMCommands
     ToggleCentinelActivated '/CENTINELAACTIVADO
     SearchNpc               '/BUSCAR
     SearchObj               '/BUSCAR
-
+    LimpiarMundo            '/LIMPIARMUNDO
 End Enum
 
 Public Const MATRIX_INITIAL_MAP                     As Integer = 1
