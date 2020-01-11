@@ -319,15 +319,15 @@ Private Sub Form_Load()
         cmdResetSockets.Visible = True
         cmdResetListen.Visible = False
     #End If
-        
-        
+    
+    'Listamos el contenido de la carpeta Dats
     Dim sFilename As String
         sFilename = Dir$(DatPath)
     
-    Do While sFilename > ""
+    Do While sFilename > vbNullString
     
       Call listDats.AddItem(sFilename)
-      sFilename = Dir()
+      sFilename = Dir$()
     
     Loop
   
