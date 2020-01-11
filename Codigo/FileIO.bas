@@ -1932,8 +1932,7 @@ Sub CargarCiudades()
             .X = Lector.GetValue("Banderbill", "X")
             .Y = Lector.GetValue("Banderbill", "Y")
         End With
-
-        
+      
         With Lindos
             .Map = Lector.GetValue("Lindos", "Mapa")
             .X = Lector.GetValue("Lindos", "X")
@@ -1956,6 +1955,18 @@ Sub CargarCiudades()
             .Map = Lector.GetValue("Nemahuak", "Mapa")
             .X = Lector.GetValue("Nemahuak", "X")
             .Y = Lector.GetValue("Nemahuak", "Y")
+        End With
+        
+        With Prision
+            .Map = Lector.GetValue("Prision", "Mapa")
+            .X = Lector.GetValue("Prision", "X")
+            .Y = Lector.GetValue("Prision", "Y")
+        End With
+        
+        With Libertad
+            .Map = Lector.GetValue("Prision-Afuera", "Mapa")
+            .X = Lector.GetValue("Prision-Afuera", "X")
+            .Y = Lector.GetValue("Prision-Afuera", "Y")
         End With
 
     Set Lector = Nothing
