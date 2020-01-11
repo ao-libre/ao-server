@@ -1499,6 +1499,9 @@ Private Sub HandleGMCommands(ByVal Userindex As Integer)
             Case eGMCommands.SearchObj                          '/BUSCAR
                 Call HandleSearchObj(Userindex)
                                            
+            Case eGMCommands.LimpiarMundo                       '/LIMPIARMUNDO
+                Call HandleLimpiarMundo(Userindex)
+                                           
         End Select
 
     End With
@@ -23793,3 +23796,23 @@ ErrHandler:
     If Error <> 0 Then Err.Raise Error
 
 End Sub
+
+Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
+'***************************************************
+'Author: Jopi
+'Last Modification: 11/01/2020
+'Fuerza una limpieza del mundo.
+'***************************************************
+    
+    'Remove packet ID
+    Call UserList(Userindex).incomingData.ReadByte
+    
+    'Me fijo si es GM
+    If Not EsGm(Userindex) Then Exit Sub
+    
+    'Forzamos la ejecucion de la limpieza del mundo con cuenta regresiva.
+    'Y de paso nos ahorramos en repetir codigo.
+    counterSV.Limpieza = 6
+    
+End Sub
+
