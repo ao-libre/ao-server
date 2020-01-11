@@ -548,20 +548,6 @@ Private Sub LoadConstants()
     Set Denuncias = New cCola
     Denuncias.MaxLenght = MAX_DENOUNCES
 
-    With Prision
-        .Map = 66
-        .X = 75
-        .Y = 47
-
-    End With
-    
-    With Libertad
-        .Map = 66
-        .X = 75
-        .Y = 65
-
-    End With
-
     MaxUsers = 0
 
     ' Initialize classes

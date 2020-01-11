@@ -32,3 +32,13 @@ MAPA=286
 X=40
 Y=48
 MAPA=151
+
+[Prision]
+X=75
+Y=47
+MAPA=66
+
+[Prision-Afuera]
+X=75
+Y=65
+MAPA=66
