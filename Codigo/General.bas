@@ -390,6 +390,13 @@ Sub Main()
     If Not ClanPretoriano(ePretorianType.Default).SpawnClan(MAPA_PRETORIANO, PRETORIANO_X, PRETORIANO_Y, ePretorianType.Default, True) Then
         Call LogError("No se pudo invocar al Clan Pretoriano.")
     End If
+
+    'En caso que la API este activada, la abrimos :)
+    'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
+    'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
+    If ConexionAPI Then
+        ApiNodeJsTaskId = Shell("cmd /c cd " & ApiPath & " && npm start")
+    End If
     
     Call MainLoop
 
@@ -1809,3 +1816,13 @@ Public Function Tilde(ByRef data As String) As String
     Tilde = temp
         
 End Function
+
+Public Sub CloseServer()
+    
+    'Si tenemos la API activada, la matamos.
+    If ConexionAPI Then
+        Shell("taskkill /PID " & ApiNodeJsTaskId)
+    End If
+    
+    End
+End Sub

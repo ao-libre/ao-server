@@ -2404,6 +2404,13 @@ Public UsarMundoPropio As Boolean
 
 Public ConexionAPI As Boolean
 
+Public ApiUrlServer As String
+
+Public ApiPath As String
+
+'Esta variable es para poder luego cerrar el programa cuando cerramos el cliente.
+Public ApiNodeJsTaskId As Double
+
 
 
 

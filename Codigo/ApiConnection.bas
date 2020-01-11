@@ -8,16 +8,16 @@ Attribute VB_Name = "ApiConnection"
 
 Option Explicit
 Private XmlHttp As Object
-Private UrlServer As String
+Private Endpoint As String
 Private Parameters As String
 
 Public Sub ApiEndpointBackupCharfiles()
     'Este endpoint hace una copia de todos los charfiles a una base de datos mysql
     'No todos los parametros estan incluidos, es mas que nada para usar de rankings
     
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/charfiles/backupcharfiles"
+    Endpoint = ApiUrlServer & "/api/v1/charfiles/backupcharfiles"
     
-    Call SendGETRequest(UrlServer)
+    Call SendGETRequest(Endpoint)
 End Sub
 
 Public Sub ApiEndpointBackupCuentas()
@@ -25,118 +25,118 @@ Public Sub ApiEndpointBackupCuentas()
     'Es mas que nada para poder hacer cosas con los usuarios
     'De forma mas facil en javascript
     
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/accounts/backupaccountfiles"
+    Endpoint = ApiUrlServer & "/api/v1/accounts/backupaccountfiles"
     
-    Call SendGETRequest(UrlServer)
+    Call SendGETRequest(Endpoint)
 End Sub
 
 Public Sub ApiEndpointBackupLogs()
     'Este endpoint hace una copia de todos los logs a una base de datos mysql
     
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/logs/backuplogs"
+    Endpoint = ApiUrlServer & "/api/v1/logs/backuplogs"
 
-    Call SendGETRequest(UrlServer)
+    Call SendGETRequest(Endpoint)
 End Sub
 
 Public Sub ApiEndpointSendWelcomeEmail(ByVal UserName As String, ByVal Password As String, ByVal Email As String)
     'Este endpoint envia un email de bienvenida al usuario, con su nombre de usuario y password para que no lo pierda :)
     
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/emails/welcome"
+    Endpoint = ApiUrlServer & "/api/v1/emails/welcome"
     
     Parameters = "username=" & UserName & "&password=" & Password & "&emailTo=" & Email
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendLoginAccountEmail(ByVal Email As String)
     'Este endpoint envia un email de login cada ves que un usuario se conecta
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/emails/loginAccount"
+    Endpoint = ApiUrlServer & "/api/v1/emails/loginAccount"
     
     Parameters = "emailTo=" & Email
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendResetPasswordAccountEmail(ByVal Email As String, ByVal NewPassword As String)
     'Este endpoint envia un email para cambiar password al usuario
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/emails/resetAccountPassword"
+    Endpoint = ApiUrlServer & "/api/v1/emails/resetAccountPassword"
 
     Parameters = "newPassword=" & NewPassword & "&emailTo=" & Email
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendUserConnectedMessageDiscord(ByVal UserName As String, ByVal desc As String, ByVal EsCriminal As Boolean, ByVal Clase As String)
     'Este endpoint envia un mensaje al chat avisando que alguien se conecto
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendConnectedMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendConnectedMessage"
     Parameters = "userName=" & UserName & "&desc=" & desc & "&esCriminal=" & EsCriminal & "&clase=" & Clase
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendHappyHourStartedMessageDiscord(ByVal Message As String)
     'Este endpoint envia un mensaje al chat avisando que empezo el happy hour
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendHappyHourStartMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendHappyHourStartMessage"
     Parameters = "message=" & Message
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendHappyHourEndedMessageDiscord(ByVal Message As String)
     'Este endpoint envia un mensaje al chat avisando que termino el happy hour
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendHappyHourEndMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendHappyHourEndMessage"
     Parameters = "message=" & Message
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendHappyHourModifiedMessageDiscord(ByVal Message As String)
     'Este endpoint envia un mensaje al chat avisando que termino el happy hour
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendHappyHourModifiedMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendHappyHourModifiedMessage"
     Parameters = "message=" & Message
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendNewGuildCreatedMessageDiscord(ByVal Message As String, ByVal Desc As String, ByVal GuildName As String, ByVal Site As String)
     'Este endpoint envia un mensaje al chat avisando que se creo un clan
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendNewGuildCreated"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendNewGuildCreated"
     Parameters = "message=" & Message & "&desc=" & Desc & "&guildname=" & Guildname & "&site=" & Site
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendCustomCharacterMessageDiscord(ByVal Chat As String, ByVal Name As String, ByVal desc As String)
     'Este endpoint envia un mensaje al discord desde dentro del juego por un usuario con el comando /discord
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendCustomCharacterMessageDiscord"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendCustomCharacterMessageDiscord"
     Parameters = "userName=" & Name & "&desc=" & desc & "&chat=" & Chat
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 
 Public Sub ApiEndpointSendWorldSaveMessageDiscord()
     'Este endpoint envia un mensaje al chat avisando que se creo un clan
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendWorldSaveMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendWorldSaveMessage"
     Parameters = ""
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 Public Sub ApiEndpointSendCreateNewCharacterMessageDiscord(ByVal Name As String)
     'Este endpoint envia un mensaje al chat avisando que se creo un clan
 
-    UrlServer = GetVar(IniPath & "Server.ini", "CONEXIONAPI", "UrlServer") & "/api/v1/discord/sendCreatedNewCharacterMessage"
+    Endpoint = ApiUrlServer & "/api/v1/discord/sendCreatedNewCharacterMessage"
     Parameters = "name=" & Name
 
-    Call SendPOSTRequest(UrlServer, Parameters)
+    Call SendPOSTRequest(Endpoint, Parameters)
 End Sub
 
 
