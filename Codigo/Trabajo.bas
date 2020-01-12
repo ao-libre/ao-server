@@ -3184,7 +3184,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
 End Sub
 
-Private Sub UnmountMontura(ByVal Userindex As Integer)
+Public Sub UnmountMontura(ByVal Userindex As Integer)
     With UserList(Userindex)
         .Invent.MonturaObjIndex = 0
         .Invent.MonturaEqpSlot = 0
