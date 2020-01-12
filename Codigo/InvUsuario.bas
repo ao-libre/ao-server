@@ -1979,8 +1979,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
 
-                        '<-------------> MONTURAS <----------->
-        
+        '<-------------> MONTURAS <----------->
         Case eOBJType.otMonturas
             If ClasePuedeUsarItem(UserIndex, ObjIndex) Then
                 If UserList(UserIndex).flags.Muerto = 1 Then
