@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=66
+NumArmaduras=61
 
 
 [Armadura1] ' Casco de hierro
@@ -184,21 +184,3 @@ Index=695
 
 [Armadura61] ' Armadura Infame
 Index=701
-
-[Armadura62] ' Anillo de los dioses
-Index=700
-
-[Armadura63] ' Ropaje Sombrio
-Index=1132
-
-[Armadura64] ' Armadura de campeon
-Index=616
-
-[Armadura65] ' Neo's SHields
-Index=1133
-
-[Armadura66] ' Armadura Omnineo
-Index=1136
-
-[Armadura67] ' Armadura Omnineo E/G
-Index=1137

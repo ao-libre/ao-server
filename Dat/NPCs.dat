@@ -5951,12 +5951,11 @@ SND2=31
 SND3=32
 AfectaParalisis=1
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-65000 'Oro
-Drop2= 194-5000 'Minerales de Oro
-Drop3=402-1 'Espada Mata Dragones
-Drop4=532-1 'Apocalipsis
-Drop5=481-3 'Armaduras de Dragon
+Drop2=402-1 'Espada Mata Dragones
+Drop3=532-1 'Apocalipsis
+Drop4=481-3 'Armaduras de Dragon
 
 ############################################
 
@@ -10878,12 +10877,11 @@ SND2=31
 SND3=32
 AfectaParalisis=1
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-65000 'Oro
-Drop2= 194-5000 'Minerales de Oro
-Drop3=402-1 'Espada Mata Dragones
-Drop4=532-1 'Apocalipsis
-Drop5=1157-1 'Montura de Dragon Dorado
+Drop2=402-1 'Espada Mata Dragones
+Drop3=532-1 'Apocalipsis
+Drop4=1158-1 'Montura de Dragon Negro
 
 [NPC935]
 Name=Gran Dragon Negro
@@ -10914,12 +10912,11 @@ SND2=31
 SND3=32
 AfectaParalisis=1
 BackUp=0
-NROITEMS=5
+NROITEMS=4
 Drop1=12-65000 'Oro
-Drop2= 194-5000 'Minerales de Oro
-Drop3=402-1 'Espada Mata Dragones
-Drop4=532-1 'Apocalipsis
-Drop5=1158-1 'Montura de Dragon Negro
+Drop2=402-1 'Espada Mata Dragones
+Drop3=532-1 'Apocalipsis
+Drop4=1158-1 'Montura de Dragon Negro
 
 [NPC937] 'Rick
 Name=Pickle Rick
