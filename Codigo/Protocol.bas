@@ -2316,9 +2316,11 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         'If exiting, cancel
         Call CancelExit(Userindex)
         
-        'TODO: Deberia decirle por consola que no puede?
         'Esta usando el /HOGAR, no se puede mover
-        If .flags.Traveling = 1 Then Exit Sub
+        If .flags.Traveling = 1 Then 
+            Call WriteConsoleMsg(Userindex, "No puedes moverte mientras estas viajando a tu hogar con el comando /HOGAR.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
         
         If .flags.Paralizado = 0 Then
             If .flags.Meditando Then
