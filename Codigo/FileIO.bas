@@ -1362,7 +1362,15 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         .Invent.EscudoEqpSlot = CByte(UserFile.GetValue("Inventory", "EscudoEqpSlot"))
         .Invent.CascoEqpSlot = CByte(UserFile.GetValue("Inventory", "CascoEqpSlot"))
         .Invent.BarcoSlot = CByte(UserFile.GetValue("Inventory", "BarcoSlot"))
-        .Invent.MonturaEqpSlot = CByte(UserFile.GetValue("Inventory", "MonturaEqpSlot"))
+        
+        'Si no existe MonturaEqpSlot, se agrega al charfile.
+        If Not UserFile.KeyExists("MonturaEqpSlot") Then
+            Call UserFile.ChangeValue("Inventory", "MonturaEqpSlot", 0)
+            .Invent.MonturaEqpSlot = 0
+        Else
+            .Invent.MonturaEqpSlot = CByte(UserFile.GetValue("Inventory", "MonturaEqpSlot"))
+        End If
+        
         .Invent.MunicionEqpSlot = CByte(UserFile.GetValue("Inventory", "MunicionSlot"))
         .Invent.AnilloEqpSlot = CByte(UserFile.GetValue("Inventory", "AnilloSlot"))
         .Invent.MochilaEqpSlot = CByte(UserFile.GetValue("Inventory", "MochilaSlot"))
