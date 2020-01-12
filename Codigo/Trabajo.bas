@@ -3144,8 +3144,10 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
         End If
 
         If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Then
-            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura ahi!", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+            'TODO: SACAR ESTA VALIDACION DE ACA, Y HACER UN legalpos HAY TECHO en el cliente
+            If .flags.Equitando = 0 Then Exit Sub
+
+            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura bajo techo!", FontTypeNames.FONTTYPE_INFO)
         End If
 
         ' If .flags.Metamorfosis = 1 Then 'Metamorfosis
@@ -3171,15 +3173,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
         ' Estaba equitando
         Else
-            .Invent.MonturaObjIndex = 0
-            .Invent.MonturaEqpSlot = 0
-
-            .Char.Head = .OrigChar.Head
-
-            Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
-
-            ' Termina de equitar
-            .flags.Equitando = 0
+            Call UnmountMontura(Userindex)
         End If
 
         Call ChangeUserChar(Userindex, .Char.Body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
@@ -3188,6 +3182,20 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
     
     Call WriteEquitandoToggle(Userindex)
 
+End Sub
+
+Private Sub UnmountMontura(ByVal Userindex As Integer)
+    With UserList(Userindex)
+        .Invent.MonturaObjIndex = 0
+        .Invent.MonturaEqpSlot = 0
+
+        .Char.Head = .OrigChar.Head
+
+        Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
+
+        ' Termina de equitar
+        .flags.Equitando = 0
+    End With
 End Sub
 
 Private Function ModEquitacion(ByVal UserClase As Byte) As Integer
