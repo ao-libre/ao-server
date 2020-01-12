@@ -2246,14 +2246,13 @@ End Sub
 ' @param    userIndex The index of the user sending the message.
 
 Private Sub HandleWalk(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 12/01/2012 (Recox)
-    '11/19/09 Pato - Now the class bandit can walk hidden.
-    '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
-    '12/01/2020: Recox - TiempoDeWalk agregado para las monturas
-    '***************************************************
+'***************************************************
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
+'Last Modification: 12/01/2012 (Recox)
+'11/19/09 Pato - Now the class bandit can walk hidden.
+'13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
+'12/01/2020: Recox - TiempoDeWalk agregado para las monturas
+'***************************************************
     If UserList(Userindex).incomingData.Length < 2 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
