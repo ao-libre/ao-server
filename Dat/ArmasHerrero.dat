@@ -1,5 +1,5 @@
 [INIT]
-NumArmas=28
+NumArmas=26
 
 [Arma1] ' Daga
 Index=15
@@ -78,10 +78,3 @@ Index=198
 
 [Arma26] ' Hacha de Leñador
 Index=127
-
-[Arma27] ' Mata Dragones Natos
-Index=556
-
-
-[Arma28] ' Espada Argentum
-Index=1138
