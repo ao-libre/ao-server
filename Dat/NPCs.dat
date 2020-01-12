@@ -5956,7 +5956,7 @@ NROITEMS=4
 Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
-Drop4=481-3 'Armaduras de Dragon
+Drop4=1140-1 'Montura Gran Dragon Rojo
 
 ############################################
 
@@ -10882,7 +10882,7 @@ NROITEMS=4
 Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
-Drop4=1158-1 'Montura de Dragon Negro
+Drop4=1157-1 'Montura de Gran Dragon Dorado
 
 [NPC935]
 Name=Gran Dragon Negro
