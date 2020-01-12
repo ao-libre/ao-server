@@ -175,18 +175,23 @@ End Sub
 Public Sub DoNavega(ByVal Userindex As Integer, _
                     ByRef Barco As ObjData, _
                     ByVal Slot As Integer)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 12/01/2020 (Recox)
-    '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
-    '16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
-    '10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
-    '12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas .
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: 12/01/2020 (Recox)
+'13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
+'16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
+'10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
+'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas .
+'***************************************************
 
     Dim ModNave As Single
     
     With UserList(Userindex)
+        If .flags.Equitando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes navegar mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
         ModNave = ModNavegacion(.Clase, Userindex)
         
         If .Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
@@ -229,14 +234,6 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
             If .flags.Muerto = 0 Then
                 .Char.Head = .OrigChar.Head
                 
-                If .Clase = eClass.Pirat Then
-                    If .flags.Oculto = 1 Then
-                        ' Al desequipar barca, perdio el ocultar
-                        Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
-                    End If
-
-                End If
-
                 Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
                 
                 ' Al dejar de navegar, si estaba invisible actualizo los clientes
@@ -3137,7 +3134,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
     With UserList(Userindex)
 
         If .flags.Muerto = 1 Then
-            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura mientras cuando estas muerto !!", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura mientras estas muerto !!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
 

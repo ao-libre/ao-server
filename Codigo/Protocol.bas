@@ -2249,7 +2249,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 12/01/2012 (Recpx)
+    'Last Modification: 12/01/2012 (Recox)
     '11/19/09 Pato - Now the class bandit can walk hidden.
     '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
     '12/01/2020: Recox - TiempoDeWalk agregado para las monturas
@@ -6071,15 +6071,22 @@ Private Sub HandleQuit(ByVal Userindex As Integer)
     'Last Modification: 04/15/2008 (NicoNZ)
     'If user is invisible, it automatically becomes
     'visible before doing the countdown to exit
-    '04/15/2008 - No se reseteaban lso contadores de invi ni de ocultar. (NicoNZ)
+    '15/04/2008 - No se reseteaban lso contadores de invi ni de ocultar. (NicoNZ)
+    '13/01/2020 - Se pusieron nuevas validaciones para las monturas. (Recox)
     '***************************************************
     Dim tUser        As Integer
 
-    Dim isNotVisible As Boolean
-    
     With UserList(Userindex)
         'Remove packet ID
         Call .incomingData.ReadByte
+
+        'Se hace esta validacion para prevenir errores saliendo con personajes con monturas y entrando con otros sin. 
+        'Por lo que todos los pjs cuando salen del juego deberan estar fuera de su montura. (Recox)
+        If .flags.Equitando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes salir estando en tu montura!!", FontTypeNames.FONTTYPE_WARNING)
+            Exit Sub
+        End If
+        
         
         If .flags.Paralizado = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes salir estando paralizado.", FontTypeNames.FONTTYPE_WARNING)
@@ -6093,18 +6100,18 @@ Private Sub HandleQuit(ByVal Userindex As Integer)
             
             If UserList(tUser).flags.UserLogged Then
                 If UserList(tUser).ComUsu.DestUsu = Userindex Then
-                    Call WriteConsoleMsg(tUser, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(tUser, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_WARNING)
                     Call FinComerciarUsu(tUser)
 
                 End If
 
             End If
             
-            Call WriteConsoleMsg(Userindex, "Comercio cancelado.", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(Userindex, "Comercio cancelado.", FontTypeNames.FONTTYPE_WARNING)
             Call FinComerciarUsu(Userindex)
 
         End If
-        
+
         Call Cerrar_Usuario(Userindex)
 
     End With
@@ -6136,7 +6143,7 @@ Private Sub HandleGuildLeave(ByVal Userindex As Integer)
             Call WriteConsoleMsg(Userindex, "Dejas el clan.", FontTypeNames.FONTTYPE_GUILD)
             Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
         Else
-            Call WriteConsoleMsg(Userindex, "TU no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(Userindex, "Tu no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
 
         End If
 
