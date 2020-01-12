@@ -170,6 +170,7 @@ Private Enum ServerPacketID
     UserInEvent
     RenderMsg
     DeletedChar
+    EquitandoToggle
 End Enum
 
 Private Enum ClientPacketID
@@ -2248,9 +2249,10 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 13/01/2010 (ZaMa)
+    'Last Modification: 12/01/2012 (Recpx)
     '11/19/09 Pato - Now the class bandit can walk hidden.
     '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
+    '12/01/2020: Recox - TiempoDeWalk agregado para las monturas
     '***************************************************
     If UserList(Userindex).incomingData.Length < 2 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
@@ -2269,9 +2271,16 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         Call .incomingData.ReadByte
         
         heading = .incomingData.ReadByte()
+
+        Dim TiempoDeWalk As Byte
+        If .flags.Equitando = 1 Then
+            TiempoDeWalk = 36
+        Else
+            TiempoDeWalk = 30
+        End If
         
         'Prevent SpeedHack
-        If .flags.TimesWalk >= 30 Then
+        If .flags.TimesWalk >= TiempoDeWalk Then
             TempTick = GetTickCount And &H7FFFFFFF
             dummy = (TempTick - .flags.StartWalk)
             
@@ -4705,6 +4714,13 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
 
             End If
             
+            If .flags.Equitando = 1 Then
+                If .Invent.MonturaEqpSlot = Slot Then
+                    Call WriteConsoleMsg(UserIndex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Exit Sub
+                End If
+            End If
+
             If .Invent.MochilaEqpSlot > 0 Then
                 If .Invent.MochilaEqpSlot = Slot Then
                     Call WriteCommerceChat(Userindex, "No puedes vender tu mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
@@ -23722,9 +23738,6 @@ Private Sub HandleCloseGuild(ByVal Userindex As Integer)
 
 End Sub
 
-
-
-
 ''
 ' Handles the "Discord" message.
 '
@@ -23814,5 +23827,29 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     'Y de paso nos ahorramos en repetir codigo.
     counterSV.Limpieza = 6
     
+End Sub
+
+''
+' Writes the "EquitandoToggle" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteEquitandoToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lorwik
+'Last Modification: 23/08/11
+'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
+'***************************************************
+On Error GoTo Errhandler
+
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+    Exit Sub
+
+Errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
 End Sub
 

@@ -614,6 +614,7 @@ Public Enum eSkill
     Proyectiles = 18
     Wrestling = 19
     Navegacion = 20
+    Equitacion = 21
 
 End Enum
 
@@ -752,6 +753,7 @@ Public Enum eOBJType
     otLlaves = 9
     otForos = 10
     otPociones = 11
+    otLibros = 12 'Hacer algo con esto, no en uso
     otBebidas = 13
     otLena = 14
     otFogata = 15
@@ -760,12 +762,16 @@ Public Enum eOBJType
     otAnillo = 18
     otTeleport = 19
     otMuebles = 20
+    otJoyas = 21 'Hacer algo con esto, no en uso
     otYacimiento = 22
     otMinerales = 23
     otPergaminos = 24
+    otMonturas = 25
     otInstrumentos = 26
     otYunque = 27
     otFragua = 28
+    otGemas = 29 'No en uso, hacer algo con las gemas :)
+    otFlores = 30 'No en uso, hacer algo con las flores :)
     otBarcos = 31
     otFlechas = 32
     otBotellaVacia = 33
@@ -929,7 +935,6 @@ Public Type UserObj
 End Type
 
 Public Type Inventario
-
     Object(1 To MAX_INVENTORY_SLOTS) As UserObj
     WeaponEqpObjIndex As Integer
     WeaponEqpSlot As Byte
@@ -947,8 +952,9 @@ Public Type Inventario
     BarcoSlot As Byte
     MochilaEqpObjIndex As Integer
     MochilaEqpSlot As Byte
+    MonturaObjIndex As Integer
+    MonturaEqpSlot As Byte
     NroItems As Integer
-
 End Type
 
 Public Type tPartyData
@@ -1382,6 +1388,7 @@ Public Type UserFlags
     
     Vuela As Byte
     Navegando As Byte
+    Equitando As Byte
     Seguro As Boolean
     SeguroResu As Boolean
     

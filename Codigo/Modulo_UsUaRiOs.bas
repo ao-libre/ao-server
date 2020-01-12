@@ -295,6 +295,27 @@ Public Sub ToggleBoatBody(ByVal Userindex As Integer)
 
 End Sub
 
+
+Public Sub ToggleMonturaBody(ByVal Userindex As Integer)
+    '***************************************************
+    'Author: Recix
+    'Last Modification: 12/01/2020
+    'Gives montura body
+    '***************************************************
+
+    With UserList(Userindex)
+        
+        If .Invent.MonturaObjIndex = 0 Then Exit Sub
+ 
+        .Char.body = ObjData(.Invent.MonturaObjIndex).Ropaje
+        .Char.ShieldAnim = NingunEscudo
+        .Char.WeaponAnim = NingunArma
+        .Char.CascoAnim = NingunCasco
+
+    End With
+
+End Sub
+
 Public Sub ChangeUserChar(ByVal Userindex As Integer, _
                           ByVal body As Integer, _
                           ByVal Head As Integer, _

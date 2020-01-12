@@ -212,7 +212,9 @@ Sub LimpiarInventario(ByVal UserIndex As Integer)
     
         .Invent.MochilaEqpObjIndex = 0
         .Invent.MochilaEqpSlot = 0
-
+        
+        .Invent.MonturaObjIndex = 0
+        .Invent.MonturaEqpSlot = 0
     End With
 
 End Sub
@@ -1976,6 +1978,25 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     Call WriteConsoleMsg(UserIndex, "Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
 
                 End If
+
+                        '<-------------> MONTURAS <----------->
+        
+        Case eOBJType.otMonturas
+            If ClasePuedeUsarItem(UserIndex, ObjIndex) Then
+                If UserList(UserIndex).flags.Muerto = 1 Then
+                    Call WriteConsoleMsg(UserIndex, "Estas muerto!!", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
+                
+                If UserList(UserIndex).flags.Navegando = 1 Then
+                    Call WriteConsoleMsg(UserIndex, "Estas navegando!!", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
+                
+                Call DoEquita(UserIndex, Obj, Slot)
+            Else
+                Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
+            End If
                 
             Case eOBJType.otManuales
             

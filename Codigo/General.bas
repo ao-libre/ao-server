@@ -1723,7 +1723,10 @@ Sub LoadUser(ByVal Userindex As Integer)
 
         If .Invent.MochilaEqpSlot > 0 Then
             .Invent.MochilaEqpObjIndex = .Invent.Object(.Invent.MochilaEqpSlot).ObjIndex
+        End If
 
+        If .Invent.MonturaObjIndex > 0 Then
+            .Invent.MonturaObjIndex = .Invent.Object(.Invent.MonturaObjIndex).ObjIndex
         End If
 
         If .flags.Muerto = 0 Then
