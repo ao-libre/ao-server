@@ -247,7 +247,7 @@ Public Sub loadAdministrativeUsers()
     
     Set ServerIni = Nothing
 
-    If frmMain.Visible Then frmMain.txtStatus.Text =  Date & " " & time & " - Los Administradores/Dioses/Gms se han cargado correctamente."
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Los Administradores/Dioses/Gms se han cargado correctamente."
 
 End Sub
 
@@ -495,7 +495,7 @@ Sub LoadMotd()
         MOTD(i).Formato = vbNullString
     Next i
 
-    If frmMain.Visible Then frmMain.txtStatus.Text =  Date & " " & time & " - El archivo MOTD.INI fue cargado con exito"
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - El archivo MOTD.INI fue cargado con exito"
 
 End Sub
 
@@ -748,7 +748,9 @@ Sub LoadArmasHerreria()
     'Last Modification: -
     '
     '***************************************************
-
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando armas crafteables por Herreria."
+    
     Dim n As Integer, lc As Integer
     
     n = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
@@ -758,7 +760,9 @@ Sub LoadArmasHerreria()
     For lc = 1 To n
         ArmasHerrero(lc) = val(GetVar(DatPath & "ArmasHerrero.dat", "Arma" & lc, "Index"))
     Next lc
-
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo las armas crafteables por Herreria. Operacion Realizada con exito."
+    
 End Sub
 
 Sub LoadArmadurasHerreria()
@@ -767,6 +771,8 @@ Sub LoadArmadurasHerreria()
     'Last Modification: -
     '
     '***************************************************
+        
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando armaduras crafteables por Herreria."
 
     Dim n As Integer, lc As Integer
     
@@ -777,7 +783,9 @@ Sub LoadArmadurasHerreria()
     For lc = 1 To n
         ArmadurasHerrero(lc) = val(GetVar(DatPath & "ArmadurasHerrero.dat", "Armadura" & lc, "Index"))
     Next lc
-
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo las armaduras crafteables por Herreria. Operacion Realizada con exito."
+    
 End Sub
 
 Sub LoadBalance()
@@ -857,7 +865,9 @@ Sub LoadObjCarpintero()
     'Last Modification: -
     '
     '***************************************************
-
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando los objetos crafteables via Carpinteria"
+    
     Dim n As Integer, lc As Integer
     
     n = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
@@ -867,6 +877,8 @@ Sub LoadObjCarpintero()
     For lc = 1 To n
         ObjCarpintero(lc) = val(GetVar(DatPath & "ObjCarpintero.dat", "Obj" & lc, "Index"))
     Next lc
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo con exito los objetos crafteables via Carpinteria."
 
 End Sub
 
