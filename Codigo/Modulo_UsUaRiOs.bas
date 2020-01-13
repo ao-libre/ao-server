@@ -295,6 +295,27 @@ Public Sub ToggleBoatBody(ByVal Userindex As Integer)
 
 End Sub
 
+
+Public Sub ToggleMonturaBody(ByVal Userindex As Integer)
+    '***************************************************
+    'Author: Recix
+    'Last Modification: 12/01/2020
+    'Gives montura body
+    '***************************************************
+
+    With UserList(Userindex)
+        
+        If .Invent.MonturaObjIndex = 0 Then Exit Sub
+ 
+        .Char.body = ObjData(.Invent.MonturaObjIndex).Ropaje
+        .Char.ShieldAnim = NingunEscudo
+        .Char.WeaponAnim = NingunArma
+        .Char.CascoAnim = NingunCasco
+
+    End With
+
+End Sub
+
 Public Sub ChangeUserChar(ByVal Userindex As Integer, _
                           ByVal body As Integer, _
                           ByVal Head As Integer, _
@@ -2423,6 +2444,11 @@ Sub Cerrar_Usuario(ByVal Userindex As Integer)
                 .flags.Traveling = 0
                 .Counters.goHome = 0
 
+            End If
+
+            ' Si esta equitando, lo bajamos de la montura
+            If .flags.Equitando = 1 Then
+                Call UnmountMontura(Userindex)
             End If
             
             Call WriteConsoleMsg(Userindex, "Cerrando...Se cerrara el juego en " & .Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)

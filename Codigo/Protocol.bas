@@ -170,6 +170,7 @@ Private Enum ServerPacketID
     UserInEvent
     RenderMsg
     DeletedChar
+    EquitandoToggle
 End Enum
 
 Private Enum ClientPacketID
@@ -2245,13 +2246,13 @@ End Sub
 ' @param    userIndex The index of the user sending the message.
 
 Private Sub HandleWalk(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 13/01/2010 (ZaMa)
-    '11/19/09 Pato - Now the class bandit can walk hidden.
-    '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
-    '***************************************************
+'***************************************************
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
+'Last Modification: 12/01/2012 (Recox)
+'11/19/09 Pato - Now the class bandit can walk hidden.
+'13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
+'12/01/2020: Recox - TiempoDeWalk agregado para las monturas
+'***************************************************
     If UserList(Userindex).incomingData.Length < 2 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -2269,9 +2270,16 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         Call .incomingData.ReadByte
         
         heading = .incomingData.ReadByte()
+
+        Dim TiempoDeWalk As Byte
+        If .flags.Equitando = 1 Then
+            TiempoDeWalk = 36
+        Else
+            TiempoDeWalk = 30
+        End If
         
         'Prevent SpeedHack
-        If .flags.TimesWalk >= 30 Then
+        If .flags.TimesWalk >= TiempoDeWalk Then
             TempTick = GetTickCount And &H7FFFFFFF
             dummy = (TempTick - .flags.StartWalk)
             
@@ -2308,9 +2316,11 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         'If exiting, cancel
         Call CancelExit(Userindex)
         
-        'TODO: Deberia decirle por consola que no puede?
         'Esta usando el /HOGAR, no se puede mover
-        If .flags.Traveling = 1 Then Exit Sub
+        If .flags.Traveling = 1 Then 
+            Call WriteConsoleMsg(Userindex, "No puedes moverte mientras estas viajando a tu hogar con el comando /HOGAR.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
         
         If .flags.Paralizado = 0 Then
             If .flags.Meditando Then
@@ -4705,6 +4715,13 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
 
             End If
             
+            If .flags.Equitando = 1 Then
+                If .Invent.MonturaEqpSlot = Slot Then
+                    Call WriteConsoleMsg(UserIndex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Exit Sub
+                End If
+            End If
+
             If .Invent.MochilaEqpSlot > 0 Then
                 If .Invent.MochilaEqpSlot = Slot Then
                     Call WriteCommerceChat(Userindex, "No puedes vender tu mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
@@ -6055,15 +6072,22 @@ Private Sub HandleQuit(ByVal Userindex As Integer)
     'Last Modification: 04/15/2008 (NicoNZ)
     'If user is invisible, it automatically becomes
     'visible before doing the countdown to exit
-    '04/15/2008 - No se reseteaban lso contadores de invi ni de ocultar. (NicoNZ)
+    '15/04/2008 - No se reseteaban lso contadores de invi ni de ocultar. (NicoNZ)
+    '13/01/2020 - Se pusieron nuevas validaciones para las monturas. (Recox)
     '***************************************************
     Dim tUser        As Integer
 
-    Dim isNotVisible As Boolean
-    
     With UserList(Userindex)
         'Remove packet ID
         Call .incomingData.ReadByte
+
+        'Se hace esta validacion para prevenir errores saliendo con personajes con monturas y entrando con otros sin. 
+        'Por lo que todos los pjs cuando salen del juego deberan estar fuera de su montura. (Recox)
+        If .flags.Equitando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes salir estando en tu montura!!", FontTypeNames.FONTTYPE_WARNING)
+            Exit Sub
+        End If
+        
         
         If .flags.Paralizado = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes salir estando paralizado.", FontTypeNames.FONTTYPE_WARNING)
@@ -6077,18 +6101,18 @@ Private Sub HandleQuit(ByVal Userindex As Integer)
             
             If UserList(tUser).flags.UserLogged Then
                 If UserList(tUser).ComUsu.DestUsu = Userindex Then
-                    Call WriteConsoleMsg(tUser, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(tUser, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_WARNING)
                     Call FinComerciarUsu(tUser)
 
                 End If
 
             End If
             
-            Call WriteConsoleMsg(Userindex, "Comercio cancelado.", FontTypeNames.FONTTYPE_TALK)
+            Call WriteConsoleMsg(Userindex, "Comercio cancelado.", FontTypeNames.FONTTYPE_WARNING)
             Call FinComerciarUsu(Userindex)
 
         End If
-        
+
         Call Cerrar_Usuario(Userindex)
 
     End With
@@ -6120,7 +6144,7 @@ Private Sub HandleGuildLeave(ByVal Userindex As Integer)
             Call WriteConsoleMsg(Userindex, "Dejas el clan.", FontTypeNames.FONTTYPE_GUILD)
             Call SendData(SendTarget.ToGuildMembers, GuildIndex, PrepareMessageConsoleMsg(.Name & " deja el clan.", FontTypeNames.FONTTYPE_GUILD))
         Else
-            Call WriteConsoleMsg(Userindex, "TU no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
+            Call WriteConsoleMsg(Userindex, "Tu no puedes salir de este clan.", FontTypeNames.FONTTYPE_GUILD)
 
         End If
 
@@ -23722,9 +23746,6 @@ Private Sub HandleCloseGuild(ByVal Userindex As Integer)
 
 End Sub
 
-
-
-
 ''
 ' Handles the "Discord" message.
 '
@@ -23814,5 +23835,29 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     'Y de paso nos ahorramos en repetir codigo.
     counterSV.Limpieza = 6
     
+End Sub
+
+''
+' Writes the "EquitandoToggle" message to the given user's outgoing data buffer.
+'
+' @param    UserIndex User to which the message is intended.
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+
+Public Sub WriteEquitandoToggle(ByVal UserIndex As Integer)
+'***************************************************
+'Author: Lorwik
+'Last Modification: 23/08/11
+'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
+'***************************************************
+On Error GoTo Errhandler
+
+    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+    Exit Sub
+
+Errhandler:
+    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(UserIndex)
+        Resume
+    End If
 End Sub
 

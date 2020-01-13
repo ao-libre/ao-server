@@ -26,7 +26,7 @@
 ' 22: yacimiento
 ' 23: metales
 ' 24: pergaminos
-' 25: aura
+' 25: Monturas
 ' 26: Instrumentos Musicales
 ' 27: Yunque
 ' 28: Fragua
@@ -2559,7 +2559,7 @@ Agarrable=1
 MineralIndex=193
 
 [OBJ236]
-Name=Atlas Argentum
+Name=Atlas Argentum 2
 GrhIndex=538
 ObjType=12
 Agarrable=0
@@ -13949,6 +13949,7 @@ GrhIndex=25332
 ObjType=29
 Agarrable=0
 Crucial=0
+Valor=100000
 
 [OBJ1127]
 Name=Manual de Liderazgo
@@ -14115,13 +14116,15 @@ SkHerreria=90
 [OBJ1140]
 Name=Montura de Gran Dragon rojo
 GrhIndex=29340
-ObjType=3
+ObjType=25
 NumRopaje=604
 Agarrable=0
 MaxDef=150
 MinDef=120
 Valor=1200000
 Crucial=0
+MinSkill=50
+
 
 [OBJ1141]
 Name=Espada de las almas
@@ -14417,21 +14420,23 @@ SkHerreria=100
 [OBJ1157]
 Name=Montura de Gran Dragon dorado
 GrhIndex=29674
-ObjType=3
+ObjType=25
 NumRopaje=612
 Agarrable=0
 MaxDef=150
 MinDef=120
 Valor=1200000
 Crucial=0
+MinSkill=50
 
 [OBJ1158]
 Name=Montura de Gran Dragon negro
 GrhIndex=29779
-ObjType=3
+ObjType=25
 NumRopaje=614
 Agarrable=0
 MaxDef=150
 MinDef=120
 Valor=1200000
 Crucial=0
+MinSkill=50

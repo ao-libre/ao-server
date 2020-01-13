@@ -47,8 +47,7 @@ NPCS QUESTS
 ##############NUMEROS LIBRES##################
 ##############################################
 
-36
-149 a 499
+161 a 499
 563
 570
 571
@@ -56,7 +55,7 @@ NPCS QUESTS
 580
 581
 
-Actual Npc con Nro mas alto: 616
+Actual Npc con Nro mas alto: 938
 
 
 ##############################################
@@ -10948,3 +10947,26 @@ SND3=32
 BackUp=0
 NROITEMS=1
 Drop1=12-10000000 'Oro
+
+#############################################
+
+[NPC160] 'Monturas
+Name=Mario [Vendedor Monturas]
+NpcType=0
+Desc=Ven joven, seguro que te interesa una de mis monturas mas rapidas.
+Head=3
+Heading=3
+Body=265
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=25
+NROITEMS=3
+Obj1=1140-1000 'Montura de Gran Dragon rojo
+Obj2=1157-1000 'Montura de Gran Dragon dorado
+Obj3=1158-1000 Montura de Gran Dragon negro
+BackUp=1

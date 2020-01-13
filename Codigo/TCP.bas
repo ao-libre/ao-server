@@ -2177,6 +2177,7 @@ Sub ResetUserFlags(ByVal Userindex As Integer)
         .Descansar = False
         .Vuela = 0
         .Navegando = 0
+        .Equitando = 0
         .Oculto = 0
         .Envenenado = 0
         .invisible = 0

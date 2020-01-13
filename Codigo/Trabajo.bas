@@ -175,17 +175,23 @@ End Sub
 Public Sub DoNavega(ByVal Userindex As Integer, _
                     ByRef Barco As ObjData, _
                     ByVal Slot As Integer)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 13/01/2010 (ZaMa)
-    '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
-    '16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
-    '10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: 12/01/2020 (Recox)
+'13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
+'16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
+'10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
+'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas .
+'***************************************************
 
     Dim ModNave As Single
     
     With UserList(Userindex)
+        If .flags.Equitando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes navegar mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
         ModNave = ModNavegacion(.Clase, Userindex)
         
         If .Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
@@ -204,24 +210,10 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
             
             ' No esta muerto
             If .flags.Muerto = 0 Then
-            
                 Call ToggleBoatBody(Userindex)
+                Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
                 
-                ' Pierde el ocultar
-                If .flags.Oculto = 1 Then
-                    .flags.Oculto = 0
-                    Call SetInvisible(Userindex, .Char.CharIndex, False)
-                    Call WriteConsoleMsg(Userindex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
-
-                End If
-               
-                ' Siempre se ve la barca (Nunca esta invisible), pero solo para el cliente.
-                If .flags.invisible = 1 Then
-                    Call SetInvisible(Userindex, .Char.CharIndex, False)
-
-                End If
-                
-                ' Esta muerto
+            ' Esta muerto
             Else
                 .Char.body = iFragataFantasmal
                 .Char.ShieldAnim = NingunEscudo
@@ -233,7 +225,7 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
             ' Comienza a navegar
             .flags.Navegando = 1
         
-            ' Estaba navegando
+        ' Estaba navegando
         Else
             .Invent.BarcoObjIndex = 0
             .Invent.BarcoSlot = 0
@@ -242,37 +234,12 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
             If .flags.Muerto = 0 Then
                 .Char.Head = .OrigChar.Head
                 
-                If .Clase = eClass.Pirat Then
-                    If .flags.Oculto = 1 Then
-                        ' Al desequipar barca, perdio el ocultar
-                        .flags.Oculto = 0
-                        .Counters.Ocultando = 0
-                        Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
-
-                    End If
-
-                End If
-                
-                If .Invent.ArmourEqpObjIndex > 0 Then
-                    .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
-                Else
-                    Call DarCuerpoDesnudo(Userindex)
-
-                End If
-                
-                If .Invent.EscudoEqpObjIndex > 0 Then .Char.ShieldAnim = ObjData(.Invent.EscudoEqpObjIndex).ShieldAnim
-
-                If .Invent.WeaponEqpObjIndex > 0 Then .Char.WeaponAnim = GetWeaponAnim(Userindex, .Invent.WeaponEqpObjIndex)
-
-                If .Invent.CascoEqpObjIndex > 0 Then .Char.CascoAnim = ObjData(.Invent.CascoEqpObjIndex).CascoAnim
+                Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
                 
                 ' Al dejar de navegar, si estaba invisible actualizo los clientes
-                If .flags.invisible = 1 Then
-                    Call SetInvisible(Userindex, .Char.CharIndex, True)
-
-                End If
+                Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
                 
-                ' Esta muerto
+            ' Esta muerto
             Else
                 .Char.body = iCuerpoMuerto
                 .Char.Head = iCabezaMuerto
@@ -3146,3 +3113,140 @@ Public Sub ImitateNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
     
 End Sub
 
+Public Sub DoEquita(ByVal Userindex As Integer, _
+                    ByRef Montura As ObjData, _
+                    ByVal Slot As Integer)
+'***************************************************
+'Author: Recox
+'Last Modification: 12/01/2020
+'Podemos usar monturas ahora
+'***************************************************
+    'Dim ModEqui As Long
+
+    'ModEqui = ModEquitacion(UserList(Userindex).clase)
+
+    ' Comento esto por que aun no implementamos en el frmSkills la posibilidad de agregar skills de equitacion
+    'If UserList(Userindex).Stats.UserSkills(Equitacion) / ModEqui < Montura.MinSkill Then
+    '    Call WriteConsoleMsg(Userindex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitaci�n.", FontTypeNames.FONTTYPE_INFO)
+    '    Exit Sub
+    'End If
+
+    With UserList(Userindex)
+
+        If .flags.Muerto = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura mientras estas muerto !!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
+        If .flags.Navegando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura mientras navegas !!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
+        If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Then
+            'TODO: SACAR ESTA VALIDACION DE ACA, Y HACER UN legalpos HAY TECHO en el cliente
+            If .flags.Equitando = 0 Then Exit Sub
+
+            Call WriteConsoleMsg(Userindex, "No puedes utilizar la montura bajo techo!", FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        ' If .flags.Metamorfosis = 1 Then 'Metamorfosis
+        '     Call WriteConsoleMsg(Userindex, "No puedes montar mientras estas metamorfoseado.", FontTypeNames.FONTTYPE_INFO)
+        '     Exit Sub
+        ' End If
+
+        ' No estaba equitando
+        If .flags.Equitando = 0 Then
+            .Invent.MonturaObjIndex = .Invent.Object(Slot).ObjIndex
+            .Invent.MonturaEqpSlot = Slot
+
+            Call ToggleMonturaBody(Userindex)
+            Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
+
+            .Char.Head = .OrigChar.Head
+            .Char.CascoAnim = .Char.CascoAnim
+            .Char.ShieldAnim = NingunEscudo
+            .Char.WeaponAnim = NingunArma
+
+            '  Comienza a equitar
+            .flags.Equitando = 1
+
+        ' Estaba equitando
+        Else
+            Call UnmountMontura(Userindex)
+        End If
+
+        Call ChangeUserChar(Userindex, .Char.Body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+    
+    End With
+    
+    Call WriteEquitandoToggle(Userindex)
+
+End Sub
+
+Public Sub UnmountMontura(ByVal Userindex As Integer)
+    With UserList(Userindex)
+        .Invent.MonturaObjIndex = 0
+        .Invent.MonturaEqpSlot = 0
+
+        .Char.Head = .OrigChar.Head
+
+        Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
+
+        ' Termina de equitar
+        .flags.Equitando = 0
+    End With
+End Sub
+
+Private Function ModEquitacion(ByVal UserClase As Byte) As Integer
+
+    Select Case UserClase
+        Case eClass.Cleric
+            ModEquitacion = 1
+        Case Else
+            ModEquitacion = 1.5
+    End Select
+
+End Function
+
+Private Sub SetVisibleStateForUserAfterNavigateOrEquitate(ByVal Userindex As Integer)
+
+    With UserList(Userindex)
+
+        ' Pierde el ocultar
+        If .flags.Oculto = 1 Then
+            .flags.Oculto = 0
+            .Counters.Ocultando = 0
+            Call SetInvisible(Userindex, .Char.CharIndex, False)
+            Call WriteConsoleMsg(Userindex, "Has vuelto a ser visible!", FontTypeNames.FONTTYPE_INFO)
+        End If
+
+        ' Siempre se ve la montura (Nunca esta invisible), pero solo para el cliente.
+        If .flags.invisible = 1 Then
+            Call SetInvisible(Userindex, .Char.CharIndex, False)
+        End If
+
+    End With
+
+End Sub
+
+Private Sub SetEquipmentOnCharAfterNavigateOrEquitate(ByVal Userindex As Integer)
+
+    With UserList(Userindex)
+
+        If .Invent.ArmourEqpObjIndex > 0 Then
+            .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
+        Else
+            Call DarCuerpoDesnudo(Userindex)
+
+        End If
+        
+        If .Invent.EscudoEqpObjIndex > 0 Then .Char.ShieldAnim = ObjData(.Invent.EscudoEqpObjIndex).ShieldAnim
+
+        If .Invent.WeaponEqpObjIndex > 0 Then .Char.WeaponAnim = GetWeaponAnim(Userindex, .Invent.WeaponEqpObjIndex)
+
+        If .Invent.CascoEqpObjIndex > 0 Then .Char.CascoAnim = ObjData(.Invent.CascoEqpObjIndex).CascoAnim
+    
+    End With
+
+End Sub
