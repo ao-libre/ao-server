@@ -5441,7 +5441,7 @@ Drop5=174-1 'Llave Catacumbas de Ulla
 ############################################
 
 [NPC527] 'NO RESPAWN (tira llave dungeon malaheing)
-Name=Dragon Rojo
+Name=Dragon Llave de Malaheing
 NpcType=0
 Head=0
 Heading=3
@@ -10849,41 +10849,6 @@ NROITEMS=1
 Drop1=12-100000 'Oro
 
 [NPC935]
-Name=Gran Dragon Dorado
-NpcType=6
-Head=0
-Heading=3
-Body=611
-Movement=3
-AguaValida=0
-Attackable=1
-ReSpawn=0
-Hostile=1
-Domable=0
-Alineacion=2
-Comercia=0
-GiveEXP=265000
-MinHP=200000
-MaxHP=200000
-MaxHIT=5000
-MinHIT=1000
-DEF=0
-PoderAtaque=400
-PoderEvasion=320
-LanzaSpells=1
-Sp1=51
-SND1=30
-SND2=31
-SND3=32
-AfectaParalisis=1
-BackUp=0
-NROITEMS=4
-Drop1=12-65000 'Oro
-Drop2=402-1 'Espada Mata Dragones
-Drop3=532-1 'Apocalipsis
-Drop4=1157-1 'Montura de Gran Dragon Dorado
-
-[NPC935]
 Name=Gran Dragon Negro
 NpcType=6
 Head=0
@@ -10917,6 +10882,41 @@ Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
 Drop4=1158-1 'Montura de Dragon Negro
+
+[NPC936]
+Name=Gran Dragon Dorado
+NpcType=6
+Head=0
+Heading=3
+Body=611
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=0
+Hostile=1
+Domable=0
+Alineacion=2
+Comercia=0
+GiveEXP=265000
+MinHP=200000
+MaxHP=200000
+MaxHIT=5000
+MinHIT=1000
+DEF=0
+PoderAtaque=400
+PoderEvasion=320
+LanzaSpells=1
+Sp1=51
+SND1=30
+SND2=31
+SND3=32
+AfectaParalisis=1
+BackUp=0
+NROITEMS=4
+Drop1=12-65000 'Oro
+Drop2=402-1 'Espada Mata Dragones
+Drop3=532-1 'Apocalipsis
+Drop4=1157-1 'Montura de Gran Dragon Dorado
 
 [NPC937] 'Rick
 Name=Pickle Rick
@@ -10965,8 +10965,10 @@ Domable=0
 Alineacion=0
 Comercia=1
 TipoItems=25
-NROITEMS=3
-Obj1=1140-1000 'Montura de Gran Dragon rojo
-Obj2=1157-1000 'Montura de Gran Dragon dorado
-Obj3=1158-1000 Montura de Gran Dragon negro
+NROITEMS=2
+'Obj1=1140-1000 'Montura de Gran Dragon rojo
+'Obj2=1157-1000 'Montura de Gran Dragon dorado
+'Obj3=1158-1000 'Montura de Gran Dragon negro
+Obj1=1159-1000 'Montura de Elefante
+Obj2=1160-1000 'Montura de caballo
 BackUp=1

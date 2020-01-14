@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1158
+NumOBJs=1160
 
 
 
@@ -14025,8 +14025,8 @@ Anim=105
 RazaEnanaAnim=40
 Proyectil=1
 Municiones=1
-MinHit=50
-MaxHit=70
+MinHit=20
+MaxHit=35
 Valor=1000000
 Crucial=0
 Madera=1
@@ -14052,7 +14052,7 @@ NumRopaje=603
 Agarrable=0
 MaxDef=90
 MinDef=85
-Valor=1000000
+Valor=3000000
 Crucial=0
 LingH=1
 LingP=0
@@ -14084,12 +14084,12 @@ Anim=101
 RazaEnanaAnim=65
 MinHit=30
 MaxHit=45
-Apunala=1
-Valor=1000000
+Apunala=0
+Valor=5000000
 Crucial=0
-LingH=1000
-LingP=1000
-LingO=1000
+LingH=5000
+LingP=5000
+LingO=5000
 SkHerreria=100
 
 [OBJ1139]
@@ -14125,7 +14125,6 @@ Valor=1200000
 Crucial=0
 MinSkill=50
 
-
 [OBJ1141]
 Name=Espada de las almas
 GrhIndex=29313
@@ -14135,7 +14134,7 @@ Anim=108
 RazaEnanaAnim=63
 MinHit=35
 MaxHit=40
-Valor=1000000
+Valor=6000000
 Crucial=0
 CP1=MAGO
 CP2=CLERIGO
@@ -14157,10 +14156,9 @@ NumRopaje=600
 Agarrable=0
 MaxDef=60
 MinDef=50
-Valor=1000000
+Valor=3000000
 Crucial=1
 CP1=GUERRERO
-CP2=MAGO
 
 [OBJ1143]
 Name=Gorro de navidad
@@ -14191,7 +14189,7 @@ Agarrable=0
 MaxDef=115
 MinDef=110
 NoSeCae=1
-Valor=1000000
+Valor=10000000
 LingH=9
 LingP=9
 LingO=9
@@ -14203,7 +14201,7 @@ GrhIndex=29163
 ObjType=3
 NumRopaje=602
 Agarrable=0
-Valor=1000000
+Valor=10000000
 MaxDef=115
 MinDef=100
 NoSeCae=1
@@ -14223,9 +14221,6 @@ MaxDef=40
 MinDef=20
 Valor=1000000
 Crucial=0
-CP1=MAGO
-CP2=DRUIDA
-CP3=PIRATA
 LingH=10
 LingP=0
 LingO=0
@@ -14241,7 +14236,7 @@ Anim=106
 RazaEnanaAnim=65
 MinHit=70
 MaxHit=75
-Valor=1000000
+Valor=10000000
 Crucial=0
 LingH=500
 LingP=400
@@ -14357,7 +14352,7 @@ NumRopaje=605
 Agarrable=0
 MAXDEF=100
 MINDEF=90
-Valor=1000000
+Valor=10000000
 Crucial=0
 
 [OBJ1154]
@@ -14370,7 +14365,7 @@ RazaEnanaAnim=65
 MinHit=50
 MaxHit=70
 Apunala=1
-Valor=1000000
+Valor=10000000
 Crucial=0
 
 [OBJ1155]
@@ -14383,7 +14378,7 @@ RazaEnanaAnim=53
 MinHit=10
 MaxHit=15
 Apunala=1
-Valor=100000
+Valor=1000000
 Crucial=0
 CP1=PIRATA
 CP2=MAGO
@@ -14440,3 +14435,25 @@ MinDef=120
 Valor=1200000
 Crucial=0
 MinSkill=50
+
+[OBJ1159]
+Name=Montura de Elefante
+GrhIndex=29854
+ObjType=25
+NumRopaje=616
+Agarrable=0
+MaxDef=130
+MinDef=120
+Valor=1200000
+Crucial=0
+
+[OBJ1160]
+Name=Montura de Caballo
+GrhIndex=29873
+ObjType=25
+NumRopaje=617
+Agarrable=0
+MaxDef=130
+MinDef=120
+Valor=1200000
+Crucial=0

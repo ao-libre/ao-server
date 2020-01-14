@@ -859,3 +859,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.22
 
 * 08/01/2020: Ahora se invoca el Clan Pretoriano(con Respawn) al abrir el servidor en su respectivo mapa. [Mapa 163] (jopiortiz)
+* 14/01/2020: Implemento limpieza del mundo via comando. (jopiortiz)
+* 14/01/2020: Actualizaciones en herreros, carpinteros y Npcs. (Neo)
+* 14/01/2020: Se mejoro un poco el codigo de ApiConnection.bas y se termino que se abra automaticamente y cierre la API con el servidor. (Recox)
+* 14/01/2020: EL server manda nivel maximo del servidor al logear una cuenta (Recox)
+
