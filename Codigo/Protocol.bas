@@ -21486,8 +21486,7 @@ Public Sub WritePong(ByVal Userindex As Integer)
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList
-    (Userindex).outgoingData.WriteByte(ServerPacketID.Pong)
+    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.Pong)
     Exit Sub
 
 ErrHandler:
@@ -23869,13 +23868,7 @@ Errhandler:
 End Sub
 
 Private Sub HandleObtenerDatosServer(ByVal Userindex As Integer)
-    
-    'Verifico si llegan todos los datos
-    If UserList(Userindex).incomingData.Length < 5 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
-        Exit Sub
-    End If
-    
+      
     On Error GoTo ErrHandler
     
     With UserList(Userindex)
