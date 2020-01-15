@@ -171,6 +171,7 @@ Private Enum ServerPacketID
     RenderMsg
     DeletedChar
     EquitandoToggle
+    EnviarDatosServer
 End Enum
 
 Private Enum ClientPacketID
@@ -325,6 +326,7 @@ Private Enum ClientPacketID
     CloseGuild = 148
     Discord = 149
     DeleteChar = 150
+    ObtenerDatosServer = 151
 End Enum
 
 ''
@@ -430,6 +432,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
                 Or packetID = ClientPacketID.LoginNewAccount _
                 Or packetID = ClientPacketID.LoginExistingAccount _
                 Or packetID = ClientPacketID.DeleteChar _
+                Or packetID = ClientPacketID.ObtenerDatosServer _
                 Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
@@ -908,7 +911,10 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         Case ClientPacketID.Discord                  '/Discord
             Call HandleDiscord(Userindex)
-            
+          
+        Case ClientPacketID.ObtenerDatosServer
+            Call HandleObtenerDatosServer(Userindex)
+
         Case Else
             'ERROR : Abort!
             Call CloseSocket(Userindex)
@@ -21480,7 +21486,8 @@ Public Sub WritePong(ByVal Userindex As Integer)
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.Pong)
+    Call UserList
+    (Userindex).outgoingData.WriteByte(ServerPacketID.Pong)
     Exit Sub
 
 ErrHandler:
@@ -23861,3 +23868,64 @@ Errhandler:
     End If
 End Sub
 
+Private Sub HandleObtenerDatosServer(ByVal Userindex As Integer)
+    
+    'Verifico si llegan todos los datos
+    If UserList(Userindex).incomingData.Length < 5 Then
+        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Exit Sub
+    End If
+    
+    On Error GoTo ErrHandler
+    
+    With UserList(Userindex)
+        
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Leemos el ID del paquete
+        Call buffer.ReadByte
+
+        Call WriteEnviarDatosServer(Userindex)
+        
+    End With
+    
+ErrHandler:
+    
+    Dim Error As Long: Error = Err.Number
+    
+    Call FlushBuffer(Userindex)
+    Call CloseSocket(Userindex)
+    
+    On Error GoTo 0
+
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
+
+    With UserList(Userindex)
+        Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
+        Call .outgoingData.WriteASCIIString(MundoSeleccionado)
+        Call .outgoingData.WriteASCIIString(NombreServidor)
+        Call .outgoingData.WriteASCIIString(DescripcionServidor)
+        Call .outgoingData.WriteASCIIString(IpPublicaServidor)
+        Call .outgoingData.WriteInteger(Puerto)
+        
+
+        'If we got here then packet is complete, copy data back to original queue
+        Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+        'If we got here then packet is complete, copy data back to original queue
+        'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
+        Call FlushBuffer(Userindex)
+        Call CloseSocket(Userindex)
+        
+    End With
+
+End Sub
