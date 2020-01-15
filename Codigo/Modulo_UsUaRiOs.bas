@@ -2445,11 +2445,6 @@ Sub Cerrar_Usuario(ByVal Userindex As Integer)
                 .Counters.goHome = 0
 
             End If
-
-            ' Si esta equitando, lo bajamos de la montura
-            If .flags.Equitando = 1 Then
-                Call UnmountMontura(Userindex)
-            End If
             
             Call WriteConsoleMsg(Userindex, "Cerrando...Se cerrara el juego en " & .Counters.Salir & " segundos...", FontTypeNames.FONTTYPE_INFO)
 

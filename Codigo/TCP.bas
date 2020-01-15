@@ -1076,9 +1076,15 @@ End Sub
 
             End If
             
-            ' Retos nVSn. Usuario cierra conexi�n.
+            ' Retos nVSn. Usuario cierra conexion.
             If .flags.SlotReto > 0 Then
                 Call Retos.UserdieFight(Userindex, 0, True)
+            End If
+
+            ' Desequipamos la montura justo antes de cerrar el socket
+            ' para prevenir que se la equipe durante el conteo de salida (WyroX)
+            If .flags.Equitando = 1 Then
+                Call UnmountMontura(Userindex)
             End If
             
             'Empty buffer for reuse
