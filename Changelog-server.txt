@@ -862,5 +862,12 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 14/01/2020: Implemento limpieza del mundo via comando. (jopiortiz)
 * 14/01/2020: Actualizaciones en herreros, carpinteros y Npcs. (Neo)
 * 14/01/2020: Se mejoro un poco el codigo de ApiConnection.bas y se termino que se abra automaticamente y cierre la API con el servidor. (Recox)
+* 14/01/2020: Implemento /LIMPIARMUNDO (jopiortiz)
+* 14/01/2020: Nuevo listbox para recargar los Dats. (jopiortiz)
+* 14/01/2020: Asigno el mapa y la pos de prision desde Ciudades.dat (jopiortiz)
 * 14/01/2020: EL server manda nivel maximo del servidor al logear una cuenta (Recox)
+* 16/01/2020: Agregados nuevos npcs titanes en mapas [184-266-285] (Neo)
+* 16/01/2020: Se agregaron monturas (Recox)
+* 16/01/2020: bugfix: podian equipar la montura mientras estaba el conteo de salida (WyroX)
+* 16/01/2020: Se agrego NPCs que venden monturas en algunas ciudades y se pusieron los dragones negro, rojo y dorado en dungeons para que dropeen su respectiva montura http://wiki.argentumonline.org/indexd895.html?seccion=navegacion#ver (Recox)
 
