@@ -35,7 +35,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, value, ErrHandler, punishments, Length, obj, index As Variant
+    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, Value, ErrHandler, punishments, Length, obj, index As Variant
 
 #End If
 
@@ -87,7 +87,7 @@ Private Enum ServerPacketID
     ObjectCreate            ' HO
     ObjectDelete            ' BO
     BlockPosition           ' BQ
-    PlayMp3                 
+    PlayMp3
     PlayMidi                ' TM
     PlayWave                ' TW
     guildList               ' GL
@@ -474,7 +474,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         Case ClientPacketID.LoginNewChar            'NLOGIN
             Call HandleLoginNewChar(Userindex)
 
-        Case ClientPacketID.DeleteChar              
+        Case ClientPacketID.DeleteChar
             Call HandleDeleteChar(Userindex)
         
         Case ClientPacketID.Talk                    ';
@@ -2323,7 +2323,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         Call CancelExit(Userindex)
         
         'Esta usando el /HOGAR, no se puede mover
-        If .flags.Traveling = 1 Then 
+        If .flags.Traveling = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes moverte mientras estas viajando a tu hogar con el comando /HOGAR.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -3474,7 +3474,7 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
 
                 End If
             
-            Case eSkill.Pesca
+            Case eSkill.pesca
                 WeaponIndex = .Invent.WeaponEqpObjIndex
 
                 If WeaponIndex = 0 Then Exit Sub
@@ -4723,7 +4723,7 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
             
             If .flags.Equitando = 1 Then
                 If .Invent.MonturaEqpSlot = Slot Then
-                    Call WriteConsoleMsg(UserIndex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(Userindex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
@@ -5994,30 +5994,30 @@ ErrHandler:
 
 End Sub
 
-Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer) 
-    Dim Time As Long
+Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer)
+    Dim time As Long
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    Time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
-    UpTimeStr = (Time Mod 60) & " segundos."
-    Time = Time \ 60
+    UpTimeStr = (time Mod 60) & " segundos."
+    time = time \ 60
     
-    UpTimeStr = (Time Mod 60) & " minutos, " & UpTimeStr
-    Time = Time \ 60
+    UpTimeStr = (time Mod 60) & " minutos, " & UpTimeStr
+    time = time \ 60
     
-    UpTimeStr = (Time Mod 24) & " horas, " & UpTimeStr
-    Time = Time \ 24
+    UpTimeStr = (time Mod 24) & " horas, " & UpTimeStr
+    time = time \ 24
     
-    If Time = 1 Then
-        UpTimeStr = Time & " dia, " & UpTimeStr
+    If time = 1 Then
+        UpTimeStr = time & " dia, " & UpTimeStr
     Else
-        UpTimeStr = Time & " dias, " & UpTimeStr
+        UpTimeStr = time & " dias, " & UpTimeStr
     End If
 
-    Call WriteConsoleMsg(UserIndex, "Tiempo del Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(Userindex, "Tiempo del Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
 End Sub
 
 ''
@@ -16985,11 +16985,11 @@ Public Sub HandleServerOpenToUsersToggle(ByVal Userindex As Integer)
         If ServerSoloGMs > 0 Then
             Call WriteConsoleMsg(Userindex, "Servidor habilitado para todos.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 0
-            frmMain.chkServerHabilitado.value = vbUnchecked
+            frmMain.chkServerHabilitado.Value = vbUnchecked
         Else
             Call WriteConsoleMsg(Userindex, "Servidor restringido a administradores.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 1
-            frmMain.chkServerHabilitado.value = vbChecked
+            frmMain.chkServerHabilitado.Value = vbChecked
 
         End If
 
@@ -23841,20 +23841,20 @@ End Sub
 ' @param    UserIndex User to which the message is intended.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteEquitandoToggle(ByVal UserIndex As Integer)
+Public Sub WriteEquitandoToggle(ByVal Userindex As Integer)
 '***************************************************
 'Author: Lorwik
 'Last Modification: 23/08/11
 'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
-    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
     Exit Sub
 
-Errhandler:
-    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(UserIndex)
+ErrHandler:
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
         Resume
     End If
 End Sub
@@ -23864,16 +23864,23 @@ Private Sub HandleObtenerDatosServer(ByVal Userindex As Integer)
     On Error GoTo ErrHandler
     
     With UserList(Userindex)
-        
-        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
-        Dim buffer As New clsByteQueue
-        Call buffer.CopyBuffer(.incomingData)
-        
-        'Leemos el ID del paquete
-        Call buffer.ReadByte
+        Dim MundoSeleccionadoWithoutPath As String
+        MundoSeleccionadoWithoutPath = Replace(MundoSeleccionado, "\Mundos\", "")
+        MundoSeleccionadoWithoutPath = Replace(MundoSeleccionadoWithoutPath, "\", "")
 
-        Call WriteEnviarDatosServer(Userindex)
-        
+        Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
+        Call .outgoingData.WriteASCIIString(MundoSeleccionadoWithoutPath)
+        Call .outgoingData.WriteASCIIString(NombreServidor)
+        Call .outgoingData.WriteASCIIString(DescripcionServidor)
+        Call .outgoingData.WriteASCIIString(IpPublicaServidor)
+        Call .outgoingData.WriteInteger(Puerto)
+
+        'If we got here then packet is complete, copy data back to original queue
+        'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
+        Call FlushBuffer(Userindex)
+        Call CloseSocket(Userindex)
+
+
     End With
     
 ErrHandler:
@@ -23885,32 +23892,6 @@ ErrHandler:
     
     On Error GoTo 0
 
-    'Destroy auxiliar buffer
-    Set buffer = Nothing
-
     If Error <> 0 Then Err.Raise Error
-
-End Sub
-
-Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
-
-    With UserList(Userindex)
-        Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
-        Call .outgoingData.WriteASCIIString(MundoSeleccionado)
-        Call .outgoingData.WriteASCIIString(NombreServidor)
-        Call .outgoingData.WriteASCIIString(DescripcionServidor)
-        Call .outgoingData.WriteASCIIString(IpPublicaServidor)
-        Call .outgoingData.WriteInteger(Puerto)
-        
-
-        'If we got here then packet is complete, copy data back to original queue
-        Call UserList(Userindex).incomingData.CopyBuffer(buffer)
-    
-        'If we got here then packet is complete, copy data back to original queue
-        'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
-        Call FlushBuffer(Userindex)
-        Call CloseSocket(Userindex)
-        
-    End With
 
 End Sub
