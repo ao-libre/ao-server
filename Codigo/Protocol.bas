@@ -6087,14 +6087,6 @@ Private Sub HandleQuit(ByVal Userindex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
 
-        'Se hace esta validacion para prevenir errores saliendo con personajes con monturas y entrando con otros sin. 
-        'Por lo que todos los pjs cuando salen del juego deberan estar fuera de su montura. (Recox)
-        If .flags.Equitando = 1 Then
-            Call WriteConsoleMsg(Userindex, "No puedes salir estando en tu montura!!", FontTypeNames.FONTTYPE_WARNING)
-            Exit Sub
-        End If
-        
-        
         If .flags.Paralizado = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes salir estando paralizado.", FontTypeNames.FONTTYPE_WARNING)
             Exit Sub
