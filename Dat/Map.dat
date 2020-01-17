@@ -4,5 +4,11 @@
 'y podria llegar a explotar la aplicacion
 
 [INIT]
-MapPath=\Mundos\Alkon\
-NumMaps=294
+MapPath=\Mundos\Hispano\
+'NumMaps=93
+NumMaps=128
+
+'[INIT]
+'MapPath=\Mundos\Alkon\
+'NumMaps=294
+
