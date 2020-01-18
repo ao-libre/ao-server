@@ -108,10 +108,8 @@ Public Sub FinishQuest(ByVal Userindex As Integer, _
     'Maneja el evento de terminar una quest.
     'Last modified: 29/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    Dim i              As Integer
-
+    Dim i              As Long
     Dim InvSlotsLibres As Byte
-
     Dim NpcIndex       As Integer
  
     NpcIndex = UserList(Userindex).flags.TargetNPC
@@ -396,14 +394,10 @@ Public Sub LoadQuests()
     On Error GoTo ErrorHandler
 
     Dim Reader    As clsIniManager
-
     Dim NumQuests As Integer
-
     Dim tmpStr    As String
-
-    Dim i         As Integer
-
-    Dim j         As Integer
+    Dim i         As Long
+    Dim j         As Long
     
     'Cargamos el clsIniManager en memoria
     Set Reader = New clsIniManager
@@ -420,7 +414,7 @@ Public Sub LoadQuests()
 
         With QuestList(i)
             .Nombre = Reader.GetValue("QUEST" & i, "Nombre")
-            .desc = Reader.GetValue("QUEST" & i, "Desc")
+            .Desc = Reader.GetValue("QUEST" & i, "Desc")
             .RequiredLevel = val(Reader.GetValue("QUEST" & i, "RequiredLevel"))
             
             'CARGAMOS OBJETOS REQUERIDOS
@@ -490,10 +484,8 @@ Public Sub LoadQuestStats(ByVal Userindex As Integer, ByRef UserFile As clsIniMa
     'Carga las QuestStats del usuario.
     'Last modified: 28/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    Dim i      As Integer
-
-    Dim j      As Integer
-
+    Dim i      As Long
+    Dim j      As Long
     Dim tmpStr As String
  
     For i = 1 To MAXUSERQUESTS
@@ -543,10 +535,8 @@ Public Sub SaveQuestStats(ByVal Userindex As Integer, ByVal UserFile As String)
     'Guarda las QuestStats del usuario.
     'Last modified: 29/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    Dim i      As Integer
-
-    Dim j      As Integer
-
+    Dim i      As Long
+    Dim j      As Long
     Dim tmpStr As String
  
     For i = 1 To MAXUSERQUESTS
@@ -607,9 +597,8 @@ Public Sub ArrangeUserQuests(ByVal Userindex As Integer)
     'Ordena las quests del usuario de manera que queden todas al principio del arreglo.
     'Last modified: 30/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    Dim i As Integer
-
-    Dim j As Integer
+    Dim i As Long
+    Dim j As Long
  
     With UserList(Userindex).QuestStats
 

@@ -344,6 +344,10 @@ Sub Main()
 
     End If
     
+    ' Quests.dat
+    frmCargando.Label1(2).Caption = "Cargando Quests.dat"
+    Call LoadQuests
+    
     'Arenas de Retos
     Call LoadArenas
     
