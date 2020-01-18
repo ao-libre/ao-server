@@ -48,7 +48,7 @@ Function Distancia(ByRef wp1 As WorldPos, ByRef wp2 As WorldPos) As Long
     '***************************************************
 
     'Encuentra la distancia entre dos WorldPos
-    Distancia = Abs(wp1.x - wp2.x) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100)
+    Distancia = Abs(wp1.X - wp2.X) + Abs(wp1.Y - wp2.Y) + (Abs(wp1.Map - wp2.Map) * 100)
 
 End Function
 
@@ -76,7 +76,7 @@ Public Function RandomNumber(ByVal LowerBound As Variant, _
     'Generates a random number in the range given - recoded to use longs and work properly with ranges
     '25/08/2018 Cucsijuan: agregue el Randomize cambie los argumentos a tipo Variant
     '**************************************************************
-    Randomize GetTickCount()
+    Randomize timeGetTime()
     RandomNumber = Int((UpperBound - LowerBound + 1) * Rnd) + LowerBound
 
     If RandomNumber > UpperBound Then RandomNumber = UpperBound
