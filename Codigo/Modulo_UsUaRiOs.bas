@@ -1903,7 +1903,7 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         ' Retos nVSn. User muere
         If AttackerIndex <> 0 Then
             If .flags.SlotReto > 0 Then
-                Call Retos.UserdieFight(Userindex, AttackerIndex, False)
+                Call Retos.UserDieFight(Userindex, AttackerIndex, False)
             End If
         End If
     End With
@@ -2571,7 +2571,7 @@ Public Sub SetInvisible(ByVal Userindex As Integer, _
     Dim sndNick As String
 
     With UserList(Userindex)
-        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible))
+        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible, IIf(invisible, (IntervaloInvisible - .Counters.Invisibilidad), 0)))
     
         sndNick = .Name
     
