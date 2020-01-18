@@ -548,7 +548,7 @@ Public Sub DoBackUp()
 
     nfile = FreeFile ' obtenemos un canal
     Open App.Path & "\logs\BackUps.log" For Append Shared As #nfile
-    Print #nfile, Date & " " & time
+        Print #nfile, Date & " " & time
     Close #nfile
 
 End Sub

@@ -206,51 +206,51 @@ Sub WorldSave()
     On Error Resume Next
 
     Dim loopX As Integer
-
     Dim hFile As Integer
+    Dim j     As Integer, K As Integer
     
     Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Iniciando WorldSave", FontTypeNames.FONTTYPE_SERVER))
     
-    Call ReSpawnOrigPosNpcs 'respawn de los guardias en las pos originales
-    
-    Dim j As Integer, K As Integer
+    'respawn de los guardias en las pos originales
+    Call ReSpawnOrigPosNpcs
     
     For j = 1 To NumMaps
 
         If MapInfo(j).BackUp = 1 Then K = K + 1
     Next j
     
-    FrmStat.ProgressBar1.min = 0
-    FrmStat.ProgressBar1.max = K
-    FrmStat.ProgressBar1.Value = 0
-    
-    For loopX = 1 To NumMaps
-        'DoEvents
-        
-        If MapInfo(loopX).BackUp = 1 Then
-            Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
-            FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
+    With FrmStat.ProgressBar1
+        .min = 0
+        .max = K
+        .Value = 0
 
-        End If
+        For loopX = 1 To NumMaps
+        
+            If MapInfo(loopX).BackUp = 1 Then
+                Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
+                .Value = .Value + 1
+
+            End If
     
-    Next loopX
+        Next loopX
+    
+    End With
     
     FrmStat.Visible = False
     
     If FileExist(DatPath & "\bkNpcs.dat") Then Kill (DatPath & "bkNpcs.dat")
     
     hFile = FreeFile()
-    
     Open DatPath & "\bkNpcs.dat" For Output As hFile
     
-    For loopX = 1 To LastNPC
-
-        If Npclist(loopX).flags.BackUp = 1 Then
-            Call BackUPnPc(loopX, hFile)
-
-        End If
-
-    Next loopX
+        For loopX = 1 To LastNPC
+    
+            If Npclist(loopX).flags.BackUp = 1 Then
+                Call BackUPnPc(loopX, hFile)
+    
+            End If
+    
+        Next loopX
         
     Close hFile
     
