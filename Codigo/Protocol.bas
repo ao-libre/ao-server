@@ -408,17 +408,17 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         'Contamos cuantos paquetes recibimos.
         .Counters.PacketsTick = .Counters.PacketsTick + 1
+
+        'Si recibis mas de 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
+        'Excepto cuando hacemos WorldSave debido a que al parecer envia mas paquetes en 40ms y desconecta al personaje.
+        If Not haciendoBK Then
+            If .Counters.PacketsTick > 10 Then
+                Call CloseSocket(Userindex)
+                Exit Function
+    
+            End If
+        End If
         
-        'Comento esto por ahora, por que cuando hago worldsave, envia mas paquetes en 40ms
-        'y desconecta al pj, hay que reveer que hacer con esto y como solucionarlo.
-
-        'Si recibis 10 paquetes en 40ms (intervalo del GameTimer), cierro la conexion.
-        'If .Counters.PacketsTick > 10 Then
-        '    Call CloseSocket(Userindex)
-        '    Exit Function
-
-        'End If
-
         'Se castea a long por que VB6 cuando usa SELECT CASE
         'Lo hace de manera mas efectiva https://www.gs-zone.org/temas/las-consecuencias-de-usar-byte-en-handleincomingdata.99245/
         Dim packetID As Long: packetID = CLng(.incomingData.PeekByte())
