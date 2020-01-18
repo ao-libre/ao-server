@@ -2280,7 +2280,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'Prevent SpeedHack
         If .flags.TimesWalk >= TiempoDeWalk Then
-            TempTick = GetTickCount And &H7FFFFFFF
+            TempTick = timeGetTime And &H7FFFFFFF
             dummy = (TempTick - .flags.StartWalk)
             
             ' 5800 is actually less than what would be needed in perfect conditions to take 30 steps
@@ -5993,7 +5993,7 @@ Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer)
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    time = ((timeGetTime() And &H7FFFFFFF) - tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
     UpTimeStr = (time Mod 60) & " segundos."
@@ -6513,7 +6513,7 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
         
         'Barrin 3/10/03 Tiempo de inicio al meditar
         If .flags.Meditando Then
-            .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
+            .Counters.tInicioMeditar = timeGetTime() And &H7FFFFFFF
             
             Call WriteConsoleMsg(Userindex, "Te estas concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzaras a meditar.", FontTypeNames.FONTTYPE_INFO)
             
@@ -20948,7 +20948,7 @@ Public Sub WriteParalizeOK(ByVal Userindex As Integer)
     On Error GoTo ErrHandler
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.ParalizeOK)
-        Call .WriteInteger(IIf(UserList(Userindex).flags.Paralizado, UserList(Userindex).Counters.Paralisis - IntervaloParalizado, 0))
+        Call .WriteInteger(IIf(UserList(Userindex).flags.Paralizado, UserList(Userindex).Counters.Paralisis, 0))
     End With
     Call WritePosUpdate(Userindex)
     Exit Sub
