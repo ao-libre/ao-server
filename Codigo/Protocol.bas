@@ -22976,7 +22976,6 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
-'Mandamos nivel maximo al cliente (Recox)
 '***************************************************
     On Error GoTo ErrHandler
 
@@ -22987,9 +22986,6 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(AccountHash)
         Call .WriteByte(NumberOfCharacters)
-
-        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
-        Call .WriteByte(STAT_MAXELV)
 
         If NumberOfCharacters > 0 Then
 
@@ -23896,18 +23892,46 @@ ErrHandler:
 End Sub
 
 Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
+'***************************************************
+'Author: Recox
+'Last Modification: 19/01/20
+'Writes the "WriteEnviarDatosServer" message to the given user's outgoing data buffer
+'Mandamos informacion del server al cliente (Recox)
+'***************************************************
+    Dim MundoSeleccionadoWithoutPath As String
+    MundoSeleccionadoWithoutPath = Replace(MundoSeleccionado, "\Mundos\", "")
+    MundoSeleccionadoWithoutPath = Replace(MundoSeleccionadoWithoutPath, "\", "")
 
     With UserList(Userindex)
+
         Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
         Call .outgoingData.WriteASCIIString(MundoSeleccionado)
         Call .outgoingData.WriteASCIIString(NombreServidor)
         Call .outgoingData.WriteASCIIString(DescripcionServidor)
         Call .outgoingData.WriteASCIIString(IpPublicaServidor)
         Call .outgoingData.WriteInteger(Puerto)
-        
 
-        'If we got here then packet is complete, copy data back to original queue
-        Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
+        Call .outgoingData.WriteInteger(STAT_MAXELV)
+        
+        ' Mandamos maxima cantidad de usuarios simultaneos soportada por el servidor.
+        Call .outgoingData.WriteInteger(MaxUsers)
+        
+        ' Mandamos cantidad usuarios online.
+        Dim i as Long
+        Dim QuantityUsersOnline as Integer
+
+        For i = 1 To LastUser
+            QuantityUsersOnline = QuantityUsersOnline + 1
+        Next i
+
+        Call .outgoingData.WriteInteger(QuantityUsersOnline)
+
+        ' Mandamos multiplicadores de oro, exp y trabajo
+        Call .outgoingData.WriteInteger(ExpMultiplier)
+        Call .outgoingData.WriteInteger(OroMultiplier)
+        Call .outgoingData.WriteInteger(OficioMultiplier)
+
     
         'If we got here then packet is complete, copy data back to original queue
         'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
