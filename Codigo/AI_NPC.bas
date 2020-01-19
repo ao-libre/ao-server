@@ -427,30 +427,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                             If UserList(OwnerIndex).flags.invisible = 0 And UserList(OwnerIndex).flags.Oculto = 0 And Not UserList(OwnerIndex).flags.EnConsulta And Not UserList(OwnerIndex).flags.Ignorado Then
                                 If .flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, OwnerIndex)
                                     
-                                If Not .PFINFO.PathLenght > 0 Then tHeading = FindDirection(.Pos, UserList(OwnerIndex).Pos)
-                                If tHeading = 0 Then
-                                    If ReCalculatePath(NpcIndex) Then
-                                        Call PathFindingAI(NpcIndex)
-
-                                        'Existe el camino?
-                                        If .PFINFO.NoPath Then 'Si no existe nos movemos al azar
-                                            'Move randomly
-                                            Call MoveNPCChar(NpcIndex, RandomNumber(eHeading.NORTH, eHeading.WEST))
-                                        End If
-                                    Else
-
-                                        If Not PathEnd(NpcIndex) Then
-                                            Call FollowPath(NpcIndex)
-                                        Else
-                                            .PFINFO.PathLenght = 0
-                                        End If
-                                    End If
-                                Else
-
-                                    If Not .PFINFO.PathLenght > 0 Then Call MoveNPCChar(NpcIndex, tHeading)
-                                    Exit Sub
-                                End If
-
+                                tHeading = FindDirection(.Pos, UserList(OwnerIndex).Pos)
+                                Call MoveNPCChar(NpcIndex, tHeading)
                                 Exit Sub
 
                             End If
@@ -485,29 +463,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
                                 
                                 If Npclist(NpcIndex).flags.LanzaSpells <> 0 Then Call NpcLanzaUnSpell(NpcIndex, Userindex)
                                 
-                                If Not Npclist(NpcIndex).PFINFO.PathLenght > 0 Then tHeading = FindDirection(Npclist(NpcIndex).Pos, .Pos)
-                                If tHeading = 0 Then
-                                    If ReCalculatePath(NpcIndex) Then
-                                        Call PathFindingAI(NpcIndex)
-
-                                        'Existe el camino?
-                                        If Npclist(NpcIndex).PFINFO.NoPath Then 'Si no existe nos movemos al azar
-                                            'Move randomly
-                                            Call MoveNPCChar(NpcIndex, RandomNumber(eHeading.NORTH, eHeading.WEST))
-                                        End If
-                                    Else
-
-                                        If Not PathEnd(NpcIndex) Then
-                                            Call FollowPath(NpcIndex)
-                                        Else
-                                            Npclist(NpcIndex).PFINFO.PathLenght = 0
-                                        End If
-                                    End If
-                                Else
-
-                                    If Not Npclist(NpcIndex).PFINFO.PathLenght > 0 Then Call MoveNPCChar(NpcIndex, tHeading)
-                                    Exit Sub
-                                End If
+                                tHeading = FindDirection(Npclist(NpcIndex).Pos, .Pos)
+                                Call MoveNPCChar(NpcIndex, tHeading)
                                 Exit Sub
 
                             End If

@@ -1595,7 +1595,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'NE
     If Sgn(x) = -1 And Sgn(y) = 1 Then
         FindDirection = IIf(RandomNumber(0, 1), eHeading.NORTH, eHeading.EAST)
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1603,7 +1602,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'NW
     If Sgn(x) = 1 And Sgn(y) = 1 Then
         FindDirection = IIf(RandomNumber(0, 1), eHeading.WEST, eHeading.NORTH)
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1611,7 +1609,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'SW
     If Sgn(x) = 1 And Sgn(y) = -1 Then
         FindDirection = IIf(RandomNumber(0, 1), eHeading.WEST, eHeading.SOUTH)
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1619,7 +1616,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'SE
     If Sgn(x) = -1 And Sgn(y) = -1 Then
         FindDirection = IIf(RandomNumber(0, 1), eHeading.SOUTH, eHeading.EAST)
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1627,7 +1623,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'Sur
     If Sgn(x) = 0 And Sgn(y) = -1 Then
         FindDirection = eHeading.SOUTH
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1635,7 +1630,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'norte
     If Sgn(x) = 0 And Sgn(y) = 1 Then
         FindDirection = eHeading.NORTH
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1643,7 +1637,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'oeste
     If Sgn(x) = 1 And Sgn(y) = 0 Then
         FindDirection = eHeading.WEST
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If
@@ -1651,7 +1644,6 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
     'este
     If Sgn(x) = -1 And Sgn(y) = 0 Then
         FindDirection = eHeading.EAST
-        If Not LegalPos(Pos.Map, Pos.x - Sgn(x), Pos.y - Sgn(y)) Then FindDirection = 0
         Exit Function
 
     End If

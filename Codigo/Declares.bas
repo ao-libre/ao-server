@@ -29,6 +29,9 @@ Attribute VB_Name = "Declaraciones"
 
 Option Explicit
 
+Public Declare Function timeGetTime Lib "winmm.dll" () As Long
+
+
 #If False Then
 
     Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
@@ -237,7 +240,7 @@ Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
 
-    desc As String * 255
+    Desc As String * 255
     crc As Long
     MagicWord As Long
 
@@ -605,7 +608,7 @@ Public Enum eSkill
     Talar = 9
     Comerciar = 10
     Defensa = 11
-    Pesca = 12
+    pesca = 12
     Mineria = 13
     Carpinteria = 14
     Herreria = 15
@@ -1264,7 +1267,7 @@ End Type
 Public Type tQuest
 
     Nombre As String
-    desc As String
+    Desc As String
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
@@ -1590,7 +1593,7 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    desc As String ' Descripcion
+    Desc As String ' Descripcion
     DescRM As String
     
     Clase As eClass
@@ -1768,7 +1771,7 @@ Public Type npc
 
     Name As String
     Char As Char 'Define como se vera
-    desc As String
+    Desc As String
 
     NPCtype As eNPCType
     Numero As Integer
@@ -2072,7 +2075,7 @@ Public Denuncias       As cCola
 
 Public ConsultaPopular As ConsultasPopulares
 
-Public Declare Function GetTickCount Lib "kernel32" () As Long
+Public Declare Function getTickCount Lib "kernel32" () As Long
 
 Public Declare Function writeprivateprofilestring _
                Lib "kernel32" _

@@ -344,6 +344,10 @@ Sub Main()
 
     End If
     
+    ' Quests.dat
+    frmCargando.Label1(2).Caption = "Cargando Quests.dat"
+    Call LoadQuests
+    
     'Arenas de Retos
     Call LoadArenas
     
@@ -372,7 +376,7 @@ Sub Main()
         Call frmMain.InitMain(0)
     End If
     
-    tInicioServer = GetTickCount() And &H7FFFFFFF
+    tInicioServer = timeGetTime() And &H7FFFFFFF
 
     'Aca ponemos la ip y puerto en el label del frmMain
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
@@ -519,7 +523,7 @@ Private Sub LoadConstants()
     SkillsNames(eSkill.Talar) = "Talar"
     SkillsNames(eSkill.Comerciar) = "Comercio"
     SkillsNames(eSkill.Defensa) = "Defensa con escudos"
-    SkillsNames(eSkill.Pesca) = "Pesca"
+    SkillsNames(eSkill.pesca) = "Pesca"
     SkillsNames(eSkill.Mineria) = "Mineria"
     SkillsNames(eSkill.Carpinteria) = "Carpinteria"
     SkillsNames(eSkill.Herreria) = "Herreria"
@@ -1814,7 +1818,7 @@ Public Sub CloseServer()
     
     'Si tenemos la API activada, la matamos.
     If ConexionAPI Then
-        Shell("taskkill /PID " & ApiNodeJsTaskId)
+        Shell ("taskkill /PID " & ApiNodeJsTaskId)
     End If
     
     End

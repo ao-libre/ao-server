@@ -35,7 +35,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, value, ErrHandler, punishments, Length, obj, index As Variant
+    Dim Map, X, Y, n, Mapa, race, helmet, weapon, shield, color, Value, ErrHandler, punishments, Length, obj, index As Variant
 
 #End If
 
@@ -87,7 +87,7 @@ Private Enum ServerPacketID
     ObjectCreate            ' HO
     ObjectDelete            ' BO
     BlockPosition           ' BQ
-    PlayMp3                 
+    PlayMp3
     PlayMidi                ' TM
     PlayWave                ' TW
     guildList               ' GL
@@ -474,7 +474,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         Case ClientPacketID.LoginNewChar            'NLOGIN
             Call HandleLoginNewChar(Userindex)
 
-        Case ClientPacketID.DeleteChar              
+        Case ClientPacketID.DeleteChar
             Call HandleDeleteChar(Userindex)
         
         Case ClientPacketID.Talk                    ';
@@ -2286,7 +2286,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'Prevent SpeedHack
         If .flags.TimesWalk >= TiempoDeWalk Then
-            TempTick = GetTickCount And &H7FFFFFFF
+            TempTick = timeGetTime And &H7FFFFFFF
             dummy = (TempTick - .flags.StartWalk)
             
             ' 5800 is actually less than what would be needed in perfect conditions to take 30 steps
@@ -2323,7 +2323,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         Call CancelExit(Userindex)
         
         'Esta usando el /HOGAR, no se puede mover
-        If .flags.Traveling = 1 Then 
+        If .flags.Traveling = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes moverte mientras estas viajando a tu hogar con el comando /HOGAR.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
@@ -3474,7 +3474,7 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
 
                 End If
             
-            Case eSkill.Pesca
+            Case eSkill.pesca
                 WeaponIndex = .Invent.WeaponEqpObjIndex
 
                 If WeaponIndex = 0 Then Exit Sub
@@ -3836,7 +3836,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc      As String
+        Dim Desc      As String
 
         Dim GuildName As String
 
@@ -3846,12 +3846,12 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
 
         Dim errorStr  As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         GuildName = Trim$(buffer.ReadASCIIString())
         Site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(Userindex, desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
+        If modGuilds.CrearNuevoClan(Userindex, Desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
             Dim Message As String
             Message = .Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex)
 
@@ -3865,7 +3865,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
             'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
-                Call ApiEndpointSendNewGuildCreatedMessageDiscord(Message, desc, GuildName, Site)
+                Call ApiEndpointSendNewGuildCreatedMessageDiscord(Message, Desc, GuildName, Site)
             End If
         Else
             Call WriteConsoleMsg(Userindex, errorStr, FontTypeNames.FONTTYPE_GUILD)
@@ -4573,14 +4573,14 @@ Private Sub HandleClanCodexUpdate(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc    As String
+        Dim Desc    As String
 
         Dim codex() As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(desc, codex, .GuildIndex)
+        Call modGuilds.ChangeCodexAndDesc(Desc, codex, .GuildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -4723,7 +4723,7 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
             
             If .flags.Equitando = 1 Then
                 If .Invent.MonturaEqpSlot = Slot Then
-                    Call WriteConsoleMsg(UserIndex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteConsoleMsg(Userindex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
                 End If
             End If
@@ -5994,30 +5994,30 @@ ErrHandler:
 
 End Sub
 
-Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer) 
-    Dim Time As Long
+Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer)
+    Dim time As Long
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    Time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    time = ((timeGetTime() And &H7FFFFFFF) - tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
-    UpTimeStr = (Time Mod 60) & " segundos."
-    Time = Time \ 60
+    UpTimeStr = (time Mod 60) & " segundos."
+    time = time \ 60
     
-    UpTimeStr = (Time Mod 60) & " minutos, " & UpTimeStr
-    Time = Time \ 60
+    UpTimeStr = (time Mod 60) & " minutos, " & UpTimeStr
+    time = time \ 60
     
-    UpTimeStr = (Time Mod 24) & " horas, " & UpTimeStr
-    Time = Time \ 24
+    UpTimeStr = (time Mod 24) & " horas, " & UpTimeStr
+    time = time \ 24
     
-    If Time = 1 Then
-        UpTimeStr = Time & " dia, " & UpTimeStr
+    If time = 1 Then
+        UpTimeStr = time & " dia, " & UpTimeStr
     Else
-        UpTimeStr = Time & " dias, " & UpTimeStr
+        UpTimeStr = time & " dias, " & UpTimeStr
     End If
 
-    Call WriteConsoleMsg(UserIndex, "Tiempo del Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
+    Call WriteConsoleMsg(Userindex, "Tiempo del Server Online: " & UpTimeStr, FontTypeNames.FONTTYPE_INFO)
 End Sub
 
 ''
@@ -6519,7 +6519,7 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
         
         'Barrin 3/10/03 Tiempo de inicio al meditar
         If .flags.Meditando Then
-            .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
+            .Counters.tInicioMeditar = timeGetTime() And &H7FFFFFFF
             
             Call WriteConsoleMsg(Userindex, "Te estas concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzaras a meditar.", FontTypeNames.FONTTYPE_INFO)
             
@@ -6792,7 +6792,7 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
 
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
+                If LenB(Npclist(.flags.TargetNPC).Desc) <> 0 Then
                     Call WriteChatOverHead(Userindex, "No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
 
                 End If
@@ -7804,7 +7804,7 @@ Private Sub HandleChangeDescription(ByVal Userindex As Integer)
         If Not AsciiValidos(description) Then
             Call WriteConsoleMsg(Userindex, "La descripcion tiene caracteres invalidos.", FontTypeNames.FONTTYPE_INFO)
         Else
-            .desc = Trim$(description)
+            .Desc = Trim$(description)
             Call WriteConsoleMsg(Userindex, "La descripcion ha cambiado.", FontTypeNames.FONTTYPE_INFO)
 
         End If
@@ -13228,15 +13228,15 @@ Private Sub HandleSetCharDescription(ByVal Userindex As Integer)
         
         Dim tUser As Integer
 
-        Dim desc  As String
+        Dim Desc  As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         
         If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or (.flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
             tUser = .flags.TargetUser
 
             If tUser > 0 Then
-                UserList(tUser).DescRM = desc
+                UserList(tUser).DescRM = Desc
             Else
                 Call WriteConsoleMsg(Userindex, "Haz click sobre un personaje antes.", FontTypeNames.FONTTYPE_INFO)
 
@@ -16985,11 +16985,11 @@ Public Sub HandleServerOpenToUsersToggle(ByVal Userindex As Integer)
         If ServerSoloGMs > 0 Then
             Call WriteConsoleMsg(Userindex, "Servidor habilitado para todos.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 0
-            frmMain.chkServerHabilitado.value = vbUnchecked
+            frmMain.chkServerHabilitado.Value = vbUnchecked
         Else
             Call WriteConsoleMsg(Userindex, "Servidor restringido a administradores.", FontTypeNames.FONTTYPE_INFO)
             ServerSoloGMs = 1
-            frmMain.chkServerHabilitado.value = vbChecked
+            frmMain.chkServerHabilitado.Value = vbChecked
 
         End If
 
@@ -20167,7 +20167,7 @@ Public Sub WriteSetInvisible(ByVal Userindex As Integer, _
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible))
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible, IIf(invisible, (IntervaloInvisible - UserList(Userindex).Counters.Invisibilidad), 0)))
     Exit Sub
 
 ErrHandler:
@@ -20952,8 +20952,10 @@ Public Sub WriteParalizeOK(ByVal Userindex As Integer)
     'And updates user position
     '***************************************************
     On Error GoTo ErrHandler
-
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.ParalizeOK)
+    With UserList(Userindex).outgoingData
+        Call .WriteByte(ServerPacketID.ParalizeOK)
+        Call .WriteInteger(IIf(UserList(Userindex).flags.Paralizado, UserList(Userindex).Counters.Paralisis, 0))
+    End With
     Call WritePosUpdate(Userindex)
     Exit Sub
 
@@ -21526,7 +21528,7 @@ End Sub
 ' @remarks  The message is written to no outgoing buffer, but only prepared in a single string to be easily sent to several clients.
 
 Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
-                                           ByVal invisible As Boolean) As String
+                                           ByVal invisible As Boolean, Optional ByVal timeRemaining As Integer = 0) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -21538,6 +21540,7 @@ Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
         
         Call .WriteInteger(CharIndex)
         Call .WriteBoolean(invisible)
+        Call .WriteInteger(timeRemaining)
         
         PrepareMessageSetInvisible = .ReadASCIIStringFixed(.Length)
 
@@ -22339,7 +22342,7 @@ Public Sub HandleSetDialog(ByVal Userindex As Integer)
             ' Dsgm/Dsrm/Rm
             If Not ((.flags.Privilegios And PlayerType.Dios) = 0 And (.flags.Privilegios And (PlayerType.SemiDios Or PlayerType.RoleMaster)) <> (PlayerType.SemiDios Or PlayerType.RoleMaster)) Then
                 'Replace the NPC's dialog.
-                Npclist(.flags.TargetNPC).desc = NewDialog
+                Npclist(.flags.TargetNPC).Desc = NewDialog
 
             End If
 
@@ -23387,7 +23390,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         
         'Enviamos nombre, descripci�n y nivel requerido de la quest
         Call .WriteASCIIString(QuestList(QuestIndex).Nombre)
-        Call .WriteASCIIString(QuestList(QuestIndex).desc)
+        Call .WriteASCIIString(QuestList(QuestIndex).Desc)
         Call .WriteByte(QuestList(QuestIndex).RequiredLevel)
         
         'Enviamos la cantidad de npcs requeridos
@@ -23504,7 +23507,7 @@ ErrHandler:
 
 End Sub
 
-Public Function PrepareMessageCreateDamage(ByVal X As Byte, ByVal Y As Byte, ByVal DamageValue As Integer, ByVal DamageType As Byte)
+Public Function PrepareMessageCreateDamage(ByVal X As Byte, ByVal Y As Byte, ByVal DamageValue As Long, ByVal DamageType As Byte)
  
 ' @ Envia el paquete para crear dano (Y)
  
@@ -23512,7 +23515,7 @@ With auxiliarBuffer
      .WriteByte ServerPacketID.CreateDamage
      .WriteByte X
      .WriteByte Y
-     .WriteInteger DamageValue
+     .WriteLong DamageValue
      .WriteByte DamageType
      
      PrepareMessageCreateDamage = .ReadASCIIStringFixed(.Length)
@@ -23786,7 +23789,7 @@ Private Sub HandleDiscord(ByVal Userindex As Integer)
             'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
-                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .desc)
+                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
                 Call WriteConsoleMsg(Userindex, "Link Discord: https://discord.gg/xbAuHcf - El bot de Discord recibio y envio lo siguiente: " & Chat, FontTypeNames.FONTTYPE_INFOBOLD)
 
             Else
@@ -23841,20 +23844,20 @@ End Sub
 ' @param    UserIndex User to which the message is intended.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Sub WriteEquitandoToggle(ByVal UserIndex As Integer)
+Public Sub WriteEquitandoToggle(ByVal Userindex As Integer)
 '***************************************************
 'Author: Lorwik
 'Last Modification: 23/08/11
 'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
 '***************************************************
-On Error GoTo Errhandler
+On Error GoTo ErrHandler
 
-    Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
     Exit Sub
 
-Errhandler:
-    If Err.Number = UserList(UserIndex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(UserIndex)
+ErrHandler:
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
         Resume
     End If
 End Sub

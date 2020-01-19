@@ -2729,7 +2729,7 @@ Public Sub DoMeditar(ByVal Userindex As Integer)
         'Esperamos a que se termine de concentrar
         Dim TActual      As Long
 
-        TActual = GetTickCount() And &H7FFFFFFF
+        TActual = timeGetTime() And &H7FFFFFFF
 
         If TActual - .Counters.tInicioMeditar < TIEMPO_INICIOMEDITAR Then
             Exit Sub
@@ -3143,7 +3143,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
             Exit Sub
         End If
 
-        If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Then
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Then
             'TODO: SACAR ESTA VALIDACION DE ACA, Y HACER UN legalpos HAY TECHO en el cliente
             If .flags.Equitando = 0 Then Exit Sub
 
@@ -3176,7 +3176,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
             Call UnmountMontura(Userindex)
         End If
 
-        Call ChangeUserChar(Userindex, .Char.Body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
     
     End With
     

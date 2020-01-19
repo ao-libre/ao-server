@@ -67,7 +67,7 @@ Public Sub UserConnected(ByVal Userindex As Integer)
     'A new user connected, load it's training time count
     trainingInfo(Userindex).trainingTime = GetUserTrainingTime(UserList(Userindex).Name)
     
-    trainingInfo(Userindex).startTick = (GetTickCount() And &H7FFFFFFF)
+    trainingInfo(Userindex).startTick = (timeGetTime() And &H7FFFFFFF)
 
 End Sub
 
@@ -80,9 +80,9 @@ Public Sub UserDisconnected(ByVal Userindex As Integer)
 
     With trainingInfo(Userindex)
         'Update training time
-        .trainingTime = .trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
+        .trainingTime = .trainingTime + ((timeGetTime() And &H7FFFFFFF) - .startTick) / 1000
         
-        .startTick = (GetTickCount() And &H7FFFFFFF)
+        .startTick = (timeGetTime() And &H7FFFFFFF)
         
         'Store info in char file
         Call SaveUserTrainingTime(UserList(Userindex).Name, .trainingTime)
@@ -106,13 +106,13 @@ Public Sub UserLevelUp(ByVal Userindex As Integer)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(Userindex).Name) & " completo el nivel " & CStr(UserList(Userindex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(Userindex).Name) & " completo el nivel " & CStr(UserList(Userindex).Stats.ELV) & " en " & CStr(.trainingTime + ((timeGetTime() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         
         'Reset data
         .trainingTime = 0
-        .startTick = (GetTickCount() And &H7FFFFFFF)
+        .startTick = (timeGetTime() And &H7FFFFFFF)
 
     End With
 
@@ -125,7 +125,7 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     '
     '***************************************************
 
-    Dim clase     As Integer
+    Dim Clase     As Integer
 
     Dim raza      As Integer
 
@@ -133,28 +133,28 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
     
     If UserList(victim).Stats.ELV > 50 Or UserList(killer).Stats.ELV > 50 Then Exit Sub
     
-    Select Case UserList(killer).clase
+    Select Case UserList(killer).Clase
 
         Case eClass.Assasin
-            clase = 1
+            Clase = 1
         
         Case eClass.Bard
-            clase = 2
+            Clase = 2
         
         Case eClass.Mage
-            clase = 3
+            Clase = 3
         
         Case eClass.Paladin
-            clase = 4
+            Clase = 4
         
         Case eClass.Warrior
-            clase = 5
+            Clase = 5
         
         Case eClass.Cleric
-            clase = 6
+            Clase = 6
         
         Case eClass.Hunter
-            clase = 7
+            Clase = 7
         
         Case Else
             Exit Sub
@@ -202,9 +202,9 @@ Public Sub StoreFrag(ByVal killer As Integer, ByVal victim As Integer)
 
     End If
     
-    fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(clase).matrix(UserList(killer).Stats.ELV, raza) + 1
+    fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) = fragLvlRaceData(Clase).matrix(UserList(killer).Stats.ELV, raza) + 1
     
-    fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
+    fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) = fragLvlLvlData(Clase).matrix(UserList(killer).Stats.ELV, UserList(victim).Stats.ELV) + 1
     
     fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) = fragAlignmentLvlData(UserList(killer).Stats.ELV, alignment) + 1
 
