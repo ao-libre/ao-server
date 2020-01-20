@@ -2523,7 +2523,7 @@ Sub VolverCiudadano(ByVal Userindex As Integer)
     '**************************************************************
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = ZONAPELEA Then Exit Sub
+        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         .Reputacion.LadronesRep = 0
         .Reputacion.BandidoRep = 0

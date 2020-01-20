@@ -883,18 +883,27 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
     With UserList(Userindex)
 
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> BAJOTECHO And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> CASA And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> ZONASEGURA Then Intemperie = True
-        Else
-            Intemperie = False
+            
+            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Or _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then
+               
+                Intemperie = False
+        
+            Else
+            
+                Intemperie = True
 
+            End If
+            
         End If
-
+        
     End With
     
-    'En las arenas no te afecta la lluvia
-    If IsArena(Userindex) Then Intemperie = False
+        'En las arenas no te afecta la lluvia
+        If IsArena(Userindex) Then Intemperie = False
 
-End Function
+    End Function
 
 Public Sub EfectoLluvia(ByVal Userindex As Integer)
     '***************************************************
