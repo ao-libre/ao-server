@@ -884,7 +884,9 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
 
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
             
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger And (eTrigger.BAJOTECHO Or eTrigger.CASA Or eTrigger.ZONAPELEA) Then
+            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Or _
+               MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then
                
                 Intemperie = False
         
