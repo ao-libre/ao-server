@@ -171,6 +171,7 @@ Private Enum ServerPacketID
     RenderMsg
     DeletedChar
     EquitandoToggle
+    EnviarDatosServer
 End Enum
 
 Private Enum ClientPacketID
@@ -325,6 +326,7 @@ Private Enum ClientPacketID
     CloseGuild = 148
     Discord = 149
     DeleteChar = 150
+    ObtenerDatosServer = 151
 End Enum
 
 ''
@@ -430,6 +432,7 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
                 Or packetID = ClientPacketID.LoginNewAccount _
                 Or packetID = ClientPacketID.LoginExistingAccount _
                 Or packetID = ClientPacketID.DeleteChar _
+                Or packetID = ClientPacketID.ObtenerDatosServer _
                 Or packetID = ClientPacketID.CambiarContrasena) Then
             
             'Vierifico si el user esta logeado
@@ -908,7 +911,10 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
         
         Case ClientPacketID.Discord                  '/Discord
             Call HandleDiscord(Userindex)
-            
+          
+        Case ClientPacketID.ObtenerDatosServer
+            Call HandleObtenerDatosServer(Userindex)
+
         Case Else
             'ERROR : Abort!
             Call CloseSocket(Userindex)
@@ -22970,7 +22976,6 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
 'Author: Juan Andres Dalmasso (CHOTS)
 'Last Modification: 12/10/2018
 'Writes the "AccountLogged" message to the given user with the data of the account he just logged in
-'Mandamos nivel maximo al cliente (Recox)
 '***************************************************
     On Error GoTo ErrHandler
 
@@ -22981,9 +22986,6 @@ Public Sub WriteUserAccountLogged(ByVal Userindex As Integer, _
         Call .WriteASCIIString(UserName)
         Call .WriteASCIIString(AccountHash)
         Call .WriteByte(NumberOfCharacters)
-
-        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
-        Call .WriteByte(STAT_MAXELV)
 
         If NumberOfCharacters > 0 Then
 
@@ -23856,3 +23858,77 @@ ErrHandler:
     End If
 End Sub
 
+Private Sub HandleObtenerDatosServer(ByVal Userindex As Integer)
+      
+    On Error GoTo ErrHandler
+    
+    With UserList(Userindex)
+        
+        'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+        
+        'Leemos el ID del paquete
+        Call buffer.ReadByte
+
+        Call WriteEnviarDatosServer(Userindex)
+        
+    End With
+    
+ErrHandler:
+    
+    Dim Error As Long: Error = Err.Number
+    
+    Call FlushBuffer(Userindex)
+    Call CloseSocket(Userindex)
+    
+    On Error GoTo 0
+
+    'Destroy auxiliar buffer
+    Set buffer = Nothing
+
+    If Error <> 0 Then Err.Raise Error
+
+End Sub
+
+Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
+'***************************************************
+'Author: Recox
+'Last Modification: 19/01/20
+'Writes the "WriteEnviarDatosServer" message to the given user's outgoing data buffer
+'Mandamos informacion del server al cliente (Recox)
+'***************************************************
+    Dim MundoSeleccionadoWithoutPath As String
+    MundoSeleccionadoWithoutPath = Replace(MundoSeleccionado, "\Mundos\", "")
+    MundoSeleccionadoWithoutPath = Replace(MundoSeleccionadoWithoutPath, "\", "")
+
+    With UserList(Userindex)
+
+        Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
+        Call .outgoingData.WriteASCIIString(MundoSeleccionadoWithoutPath)
+        Call .outgoingData.WriteASCIIString(NombreServidor)
+        Call .outgoingData.WriteASCIIString(DescripcionServidor)
+
+        ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
+        Call .outgoingData.WriteInteger(STAT_MAXELV)
+        
+        ' Mandamos maxima cantidad de usuarios simultaneos soportada por el servidor.
+        Call .outgoingData.WriteInteger(MaxUsers)
+        
+        ' Mandamos cantidad usuarios online. Ponemos -1 sino nos cuenta a nosotros mismos y no es la idea
+        Call .outgoingData.WriteInteger(LastUser - 1)
+
+        ' Mandamos multiplicadores de oro, exp y trabajo
+        Call .outgoingData.WriteInteger(ExpMultiplier)
+        Call .outgoingData.WriteInteger(OroMultiplier)
+        Call .outgoingData.WriteInteger(OficioMultiplier)
+
+    
+        'If we got here then packet is complete, copy data back to original queue
+        'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
+        Call FlushBuffer(Userindex)
+        Call CloseSocket(Userindex)
+        
+    End With
+
+End Sub

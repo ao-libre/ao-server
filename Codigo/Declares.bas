@@ -2421,6 +2421,10 @@ Public ApiPath As String
 'Esta variable es para poder luego cerrar el programa cuando cerramos el cliente.
 Public ApiNodeJsTaskId As Double
 
+Public MundoSeleccionado As String
 
+Public DescripcionServidor As String
+
+Public NombreServidor As String
 
 
