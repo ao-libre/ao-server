@@ -379,6 +379,7 @@ Sub Main()
     tInicioServer = timeGetTime() And &H7FFFFFFF
 
     'Aca ponemos la ip y puerto en el label del frmMain
+    Dim IpPublicaServidor As String
     IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
     frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
 

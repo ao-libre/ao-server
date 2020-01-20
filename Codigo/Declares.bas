@@ -2427,7 +2427,4 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
-Public IpPublicaServidor As String
-
-
 
