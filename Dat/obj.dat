@@ -14124,6 +14124,7 @@ MinDef=120
 Valor=1200000
 Crucial=0
 MinSkill=50
+Nosecae=1
 
 [OBJ1141]
 Name=Espada de las almas
@@ -14423,6 +14424,7 @@ MinDef=120
 Valor=1200000
 Crucial=0
 MinSkill=50
+Nosecae=1
 
 [OBJ1158]
 Name=Montura de Gran Dragon negro
@@ -14435,6 +14437,7 @@ MinDef=120
 Valor=1200000
 Crucial=0
 MinSkill=50
+Nosecae=1
 
 [OBJ1159]
 Name=Montura de Elefante
