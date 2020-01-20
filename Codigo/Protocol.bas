@@ -3478,7 +3478,7 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
                 
                 'Basado en la idea de Barrin
                 'Comentario por Barrin: jah, "basado", caradura ! ^^
-                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Or MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = CASA Then
+                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger And (eTrigger.BAJOTECHO Or eTrigger.CASA) Then
                     Call WriteConsoleMsg(Userindex, "No puedes pescar desde donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
