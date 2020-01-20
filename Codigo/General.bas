@@ -878,7 +878,7 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
     With UserList(Userindex)
 
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
-            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> 4 Then Intemperie = True
+            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> BAJOTECHO And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> CASA And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger <> ZONASEGURA Then Intemperie = True
         Else
             Intemperie = False
 
@@ -1334,8 +1334,6 @@ Public Sub RecStamina(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
-        
         Dim massta As Integer
 
         If .Stats.MinSta < .Stats.MaxSta Then
@@ -1491,8 +1489,6 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
 
-        If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 2 And MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 4 Then Exit Sub
-        
         Dim mashit As Integer
 
         'con el paso del tiempo va sanando....pero muy lentamente ;-)

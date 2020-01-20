@@ -41,7 +41,10 @@ Public Sub BorrarObjetosLimpieza()
     For i = 0 To MAXITEMS
 
         With ArrayLimpieza(i)
-            Call EraseObj(10000, .Map, .x, .Y)
+
+            If MapData(.Map, .X, .Y).trigger <> CASA Then
+                Call EraseObj(10000, .Map, .X, .Y)
+            End If
 
         End With
 
