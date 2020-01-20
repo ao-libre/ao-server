@@ -10734,7 +10734,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100000
+GiveEXP=1000000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -10747,8 +10747,9 @@ SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=1
+NROITEMS=2
 Drop1=12-100000 'Oro
+Drop2=1147-1 'Espada de Fuego
 
 [NPC931]
 Name=Momia Guerrera
@@ -10816,7 +10817,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100000
+GiveEXP=1000000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -10829,8 +10830,9 @@ SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=1
+NROITEMS=2
 Drop1=12-100000 'Oro
+Drop2=1141-1 'Espada de las almas
 
 [NPC934]
 Name=Titan de Agua
@@ -10840,13 +10842,14 @@ Heading=3
 Body=610
 Movement=3
 AguaValida=1
+TierraInvalida=1
 Attackable=1
 ReSpawn=0
 Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100000
+GiveEXP=1000000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600
@@ -10859,8 +10862,9 @@ SND1=30
 SND2=31
 SND3=32
 BackUp=0
-NROITEMS=1
+NROITEMS=2
 Drop1=12-100000 'Oro
+Drop2=1156-1 'Espada del fuego eterno
 
 [NPC935]
 Name=Gran Dragon Negro
