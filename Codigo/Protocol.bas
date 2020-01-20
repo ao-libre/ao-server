@@ -23905,11 +23905,9 @@ Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
     With UserList(Userindex)
 
         Call .outgoingData.WriteByte(ServerPacketID.EnviarDatosServer)
-        Call .outgoingData.WriteASCIIString(MundoSeleccionado)
+        Call .outgoingData.WriteASCIIString(MundoSeleccionadoWithoutPath)
         Call .outgoingData.WriteASCIIString(NombreServidor)
         Call .outgoingData.WriteASCIIString(DescripcionServidor)
-        Call .outgoingData.WriteASCIIString(IpPublicaServidor)
-        Call .outgoingData.WriteInteger(Puerto)
 
         ' Mandamos tambien el nivel maximo del server, ya que esto puede variar de servidor en servidor (Recox)
         Call .outgoingData.WriteInteger(STAT_MAXELV)
@@ -23917,15 +23915,8 @@ Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
         ' Mandamos maxima cantidad de usuarios simultaneos soportada por el servidor.
         Call .outgoingData.WriteInteger(MaxUsers)
         
-        ' Mandamos cantidad usuarios online.
-        Dim i as Long
-        Dim QuantityUsersOnline as Integer
-
-        For i = 1 To LastUser
-            QuantityUsersOnline = QuantityUsersOnline + 1
-        Next i
-
-        Call .outgoingData.WriteInteger(QuantityUsersOnline)
+        ' Mandamos cantidad usuarios online. Ponemos -1 sino nos cuenta a nosotros mismos y no es la idea
+        Call .outgoingData.WriteInteger(LastUser - 1)
 
         ' Mandamos multiplicadores de oro, exp y trabajo
         Call .outgoingData.WriteInteger(ExpMultiplier)
