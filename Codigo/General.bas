@@ -879,17 +879,19 @@ Public Function Intemperie(ByVal Userindex As Integer) As Boolean
 
         If MapInfo(.Pos.Map).Zona <> "DUNGEON" Then
             
-            If Not MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger And (eTrigger.BAJOTECHO Or eTrigger.CASA Or eTrigger.ZONAPELEA) Then
+            If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger And (eTrigger.BAJOTECHO Or eTrigger.CASA Or eTrigger.ZONAPELEA) Then
                
-                Intemperie = True
+                Intemperie = False
         
             Else
             
-                Intemperie = False
+                Intemperie = True
 
             End If
-
-        End With
+            
+        End If
+        
+    End With
     
         'En las arenas no te afecta la lluvia
         If IsArena(Userindex) Then Intemperie = False
