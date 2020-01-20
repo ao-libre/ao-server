@@ -2288,6 +2288,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         End If
 
     End With
+    
+    Call SaveQuestStats(Userindex, Manager)
 
     Call Manager.DumpFile(UserFile)
 
