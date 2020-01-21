@@ -1823,7 +1823,9 @@ End Function
 Public Sub CloseServer()
 
     On Error GoTo ErrorHandler:
-
+    
+    Dim LoopC As Long
+    
     'Cerramos TODOS los formularios solicitando que se liberen los recursos de los mismos.
     Dim frm As Form
     For Each frm In Forms
@@ -1896,7 +1898,7 @@ Public Sub CloseServer()
 
     Exit Sub
 
-ErrHandler:
+ErrorHandler:
     Call MsgBox("Error: " & Err.Number & " Descripcion: " & Err.description)
     
 End Sub
