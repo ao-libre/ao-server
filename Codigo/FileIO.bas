@@ -35,6 +35,8 @@ Option Explicit
 
 #End If
 
+Private Lector As clsIniManager
+
 Public Sub CargarSpawnList()
     '***************************************************
     'Author: Unknown
