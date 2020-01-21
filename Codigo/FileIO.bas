@@ -568,23 +568,14 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     On Error Resume Next
 
     Dim FreeFileMap As Long
-
     Dim FreeFileInf As Long
-
     Dim Y           As Long
-
     Dim X           As Long
-
     Dim ByFlags     As Byte
-
     Dim LoopC       As Long
-
     Dim MapWriter   As clsByteBuffer
-
     Dim InfWriter   As clsByteBuffer
-
     Dim IniManager  As clsIniManager
-
     Dim NpcInvalido As Boolean
     
     Set MapWriter = New clsByteBuffer
@@ -592,12 +583,12 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     Set IniManager = New clsIniManager
     
     If FileExist(MAPFILE & ".map", vbNormal) Then
-        Kill MAPFILE & ".map"
+        Call Kill(MAPFILE & ".map")
 
     End If
     
     If FileExist(MAPFILE & ".inf", vbNormal) Then
-        Kill MAPFILE & ".inf"
+        Call Kill(MAPFILE & ".inf")
 
     End If
     
@@ -756,13 +747,19 @@ Sub LoadArmasHerreria()
     
     Dim n As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ArmasHerrero.dat", "INIT", "NumArmas"))
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "ArmasHerrero.dat")
     
+    n = val(Lector.GetValue("INIT", "NumArmas"))
     ReDim Preserve ArmasHerrero(1 To n) As Integer
     
     For lc = 1 To n
-        ArmasHerrero(lc) = val(GetVar(DatPath & "ArmasHerrero.dat", "Arma" & lc, "Index"))
+        ArmasHerrero(lc) = val(Lector.GetValue("Arma" & lc, "Index"))
     Next lc
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
     
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo las armas crafteables por Herreria. Operacion Realizada con exito."
     
@@ -779,13 +776,19 @@ Sub LoadArmadurasHerreria()
 
     Dim n As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ArmadurasHerrero.dat", "INIT", "NumArmaduras"))
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "ArmadurasHerrero.dat")
     
+    n = val(Lector.GetValue("INIT", "NumArmaduras"))
     ReDim Preserve ArmadurasHerrero(1 To n) As Integer
     
     For lc = 1 To n
-        ArmadurasHerrero(lc) = val(GetVar(DatPath & "ArmadurasHerrero.dat", "Armadura" & lc, "Index"))
+        ArmadurasHerrero(lc) = val(Lector.GetValue("Armadura" & lc, "Index"))
     Next lc
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
     
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo las armaduras crafteables por Herreria. Operacion Realizada con exito."
     
@@ -802,18 +805,22 @@ Sub LoadBalance()
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando el archivo Balance.dat"
     
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "ArmadurasHerrero.dat")
+    
     'Modificadores de Clase
     For i = 1 To NUMCLASES
 
         With ModClase(i)
-            .Evasion = val(GetVar(DatPath & "Balance.dat", "MODEVASION", ListaClases(i)))
-            .AtaqueArmas = val(GetVar(DatPath & "Balance.dat", "MODATAQUEARMAS", ListaClases(i)))
-            .AtaqueProyectiles = val(GetVar(DatPath & "Balance.dat", "MODATAQUEPROYECTILES", ListaClases(i)))
-            .AtaqueWrestling = val(GetVar(DatPath & "Balance.dat", "MODATAQUEWRESTLING", ListaClases(i)))
-            .DanoArmas = val(GetVar(DatPath & "Balance.dat", "MODDANOARMAS", ListaClases(i)))
-            .DanoProyectiles = val(GetVar(DatPath & "Balance.dat", "MODDANOPROYECTILES", ListaClases(i)))
-            .DanoWrestling = val(GetVar(DatPath & "Balance.dat", "MODDANOWRESTLING", ListaClases(i)))
-            .Escudo = val(GetVar(DatPath & "Balance.dat", "MODESCUDO", ListaClases(i)))
+            .Evasion = val(Lector.GetValue("MODEVASION", ListaClases(i)))
+            .AtaqueArmas = val(Lector.GetValue("MODATAQUEARMAS", ListaClases(i)))
+            .AtaqueProyectiles = val(Lector.GetValue("MODATAQUEPROYECTILES", ListaClases(i)))
+            .AtaqueWrestling = val(Lector.GetValue("MODATAQUEWRESTLING", ListaClases(i)))
+            .DanoArmas = val(Lector.GetValue("MODDANOARMAS", ListaClases(i)))
+            .DanoProyectiles = val(Lector.GetValue("MODDANOPROYECTILES", ListaClases(i)))
+            .DanoWrestling = val(Lector.GetValue("MODDANOWRESTLING", ListaClases(i)))
+            .Escudo = val(Lector.GetValue("MODESCUDO", ListaClases(i)))
 
         End With
 
@@ -823,11 +830,11 @@ Sub LoadBalance()
     For i = 1 To NUMRAZAS
 
         With ModRaza(i)
-            .Fuerza = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Fuerza"))
-            .Agilidad = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Agilidad"))
-            .Inteligencia = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Inteligencia"))
-            .Carisma = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Carisma"))
-            .Constitucion = val(GetVar(DatPath & "Balance.dat", "MODRAZA", ListaRazas(i) + "Constitucion"))
+            .Fuerza = val(Lector.GetValue("MODRAZA", ListaRazas(i) + "Fuerza"))
+            .Agilidad = val(Lector.GetValue("MODRAZA", ListaRazas(i) + "Agilidad"))
+            .Inteligencia = val(Lector.GetValue("MODRAZA", ListaRazas(i) + "Inteligencia"))
+            .Carisma = val(Lector.GetValue("MODRAZA", ListaRazas(i) + "Carisma"))
+            .Constitucion = val(Lector.GetValue("MODRAZA", ListaRazas(i) + "Constitucion"))
 
         End With
 
@@ -835,28 +842,31 @@ Sub LoadBalance()
     
     'Modificadores de Vida
     For i = 1 To NUMCLASES
-        ModVida(i) = val(GetVar(DatPath & "Balance.dat", "MODVIDA", ListaClases(i)))
+        ModVida(i) = val(Lector.GetValue("MODVIDA", ListaClases(i)))
     Next i
     
     'Distribucion de Vida
     For i = 1 To 5
-        DistribucionEnteraVida(i) = val(GetVar(DatPath & "Balance.dat", "DISTRIBUCION", "E" + CStr(i)))
+        DistribucionEnteraVida(i) = val(Lector.GetValue("DISTRIBUCION", "E" + CStr(i)))
     Next i
 
     For i = 1 To 4
-        DistribucionSemienteraVida(i) = val(GetVar(DatPath & "Balance.dat", "DISTRIBUCION", "S" + CStr(i)))
+        DistribucionSemienteraVida(i) = val(Lector.GetValue("DISTRIBUCION", "S" + CStr(i)))
     Next i
     
     'Extra
-    PorcentajeRecuperoMana = val(GetVar(DatPath & "Balance.dat", "EXTRA", "PorcentajeRecuperoMana"))
+    PorcentajeRecuperoMana = val(Lector.GetValue("EXTRA", "PorcentajeRecuperoMana"))
 
     'Party
-    ExponenteNivelParty = val(GetVar(DatPath & "Balance.dat", "PARTY", "ExponenteNivelParty"))
+    ExponenteNivelParty = val(Lector.GetValue("PARTY", "ExponenteNivelParty"))
     
     ' Recompensas faccionarias
     For i = 1 To NUM_RANGOS_FACCION
-        RecompensaFacciones(i - 1) = val(GetVar(DatPath & "Balance.dat", "RECOMPENSAFACCION", "Rango" & i))
+        RecompensaFacciones(i - 1) = val(Lector.GetValue("RECOMPENSAFACCION", "Rango" & i))
     Next i
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
     
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo con exito el archivo Balance.dat"
 
