@@ -1824,11 +1824,84 @@ Public Function Tilde(ByRef data As String) As String
 End Function
 
 Public Sub CloseServer()
+
+    On Error GoTo ErrorHandler:
+    
+    Dim LoopC As Long
+    
+    'Cerramos TODOS los formularios solicitando que se liberen los recursos de los mismos.
+    Dim frm As Form
+    For Each frm In Forms
+        Call Unload(frm)
+        Set frm = Nothing
+    Next
+    
+    'Kickeo a todos los jugadores
+    For LoopC = 1 To MaxUsers
+        Call FlushBuffer(LoopC)
+        Call CloseSocket(LoopC)
+    Next
+
+    'Cierro y limpio los recursos de los sockets.
+    #If UsarQueSocket = 0 Then
+        frmMain.Socket1.Cleanup
+        frmMain.Socket2(0).Cleanup
+
+    #ElseIf UsarQueSocket = 1 Then
+        'Cierra el socket de escucha
+        If SockListen >= 0 Then Call apiclosesocket(SockListen)
+    #End If
+
+    For LoopC = 1 To UBound(UserList())
+        Set UserList(LoopC).incomingData = Nothing
+        Set UserList(LoopC).outgoingData = Nothing
+    Next LoopC
+
+    'Release all NPC Indexes
+    Call FreeNPCs
+    
+    'Release all char indexes
+    Call FreeCharIndexes
+    
+    'Liberamos los recursos de TODOS los arrays publicos.
+    Erase UserList
+    Erase Npclist
+    Erase MapData
+    Erase MapInfo
+    Erase Hechizos
+    Erase CharList
+    Erase ObjData
+    Erase FX
+    Erase SpawnList
+    Erase LevelSkill
+    Erase ForbidenNames
+    Erase ArmasHerrero
+    Erase ArmadurasHerrero
+    Erase ObjCarpintero
+    Erase Parties
+    Erase ModClase
+    Erase ModRaza
+    Erase ModVida
+    Erase DistribucionEnteraVida
+    Erase DistribucionSemienteraVida
+    Erase Ciudades
+    Erase distanceToCities
+    Erase QuestList
+    Erase Records
+    
+    'Liberamos los recursos de TODOS los objetos publicos.
+    Set BanIps = Nothing
+    Set LeerNPCs = Nothing
+    Set aClon = Nothing
     
     'Si tenemos la API activada, la matamos.
     If ConexionAPI Then
-        Shell ("taskkill /PID " & ApiNodeJsTaskId)
+        Call Shell("taskkill /PID " & ApiNodeJsTaskId)
     End If
+
+    Exit Sub
+
+ErrorHandler:
+    Call MsgBox("Error: " & Err.Number & " Descripcion: " & Err.description)
     
-    End
 End Sub
