@@ -635,8 +635,20 @@ Private Sub SocketConfig()
     
     #If UsarQueSocket = 1 Then
     
+        If LastSockListen >= 0 Then
+            Call apiclosesocket(LastSockListen) 'Cierra el socket de escucha
+        End If
+        
         Call IniciaWsApi(frmMain.hWnd)
-        SockListen = ListenForConnect(Puerto, hWndMsg, "")
+        SockListen = ListenForConnect(Puerto, hWndMsg, vbNullString)
+
+        If SockListen <> -1 Then
+            ' Guarda el socket escuchando
+            Call WriteVar(IniPath & "Server.ini", "INIT", "LastSockListen", SockListen)
+        Else
+            Call MsgBox("Ha ocurrido un error al iniciar el socket del Servidor.", vbCritical + vbOKOnly)
+
+        End If
     
     #ElseIf UsarQueSocket = 0 Then
     

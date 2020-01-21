@@ -109,7 +109,9 @@ Option Explicit
     ' ====================================================================================
     ' ====================================================================================
 
-    Public SockListen    As Long
+    Public SockListen       As Long
+    
+    Public LastSockListen   As Long
 
 #End If
 
@@ -679,8 +681,9 @@ Public Sub WSApiReiniciarSockets()
     
         Call LimpiaWsApi
         Call Sleep(100)
+        
         Call IniciaWsApi(frmMain.hWnd)
-        SockListen = ListenForConnect(Puerto, hWndMsg, "")
+        SockListen = ListenForConnect(Puerto, hWndMsg, vbNullString)
 
     #End If
 
