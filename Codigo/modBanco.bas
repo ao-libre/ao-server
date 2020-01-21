@@ -33,8 +33,6 @@ Sub IniciarDeposito(ByVal Userindex As Integer)
 
     'Hacemos un Update del inventario del usuario
     Call UpdateBanUserInv(True, Userindex, 0)
-    'Actualizamos el dinero
-    Call WriteUpdateUserStats(Userindex)
     'Mostramos la ventana pa' comerciar y ver ladear la osamenta. jajaja
     Call WriteBankInit(Userindex)
     UserList(Userindex).flags.Comerciando = True
@@ -104,7 +102,7 @@ Sub UpdateBanUserInv(ByVal UpdateAll As Boolean, _
 End Sub
 
 Sub UserRetiraItem(ByVal Userindex As Integer, _
-                   ByVal i As Integer, _
+                   ByVal Slot As Integer, _
                    ByVal Cantidad As Integer)
     '***************************************************
     'Author: Unknown
@@ -116,46 +114,46 @@ Sub UserRetiraItem(ByVal Userindex As Integer, _
 
     Dim ObjIndex As Integer
 
-    If Cantidad < 1 Then Exit Sub
-    
-    Call WriteUpdateUserStats(Userindex)
+    Dim InvSlotChanged As Integer
 
-    If UserList(Userindex).BancoInvent.Object(i).Amount > 0 Then
+    If Cantidad < 1 Then Exit Sub
+
+    If UserList(Userindex).BancoInvent.Object(Slot).Amount > 0 Then
     
-        If Cantidad > UserList(Userindex).BancoInvent.Object(i).Amount Then Cantidad = UserList(Userindex).BancoInvent.Object(i).Amount
+        If Cantidad > UserList(Userindex).BancoInvent.Object(Slot).Amount Then Cantidad = UserList(Userindex).BancoInvent.Object(Slot).Amount
             
-        ObjIndex = UserList(Userindex).BancoInvent.Object(i).ObjIndex
+        ObjIndex = UserList(Userindex).BancoInvent.Object(Slot).ObjIndex
         
         'Agregamos el obj que compro al inventario
-        Call UserReciveObj(Userindex, CInt(i), Cantidad)
+        InvSlotChanged = UserReciveObj(Userindex, CInt(Slot), Cantidad)
         
-        If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(Userindex).Name & " retiro " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
-
+        If InvSlotChanged > 0 Then
+            If ObjData(ObjIndex).Log = 1 Then
+                Call LogDesarrollo(UserList(Userindex).Name & " retiro " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+            End If
+            
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(False, Userindex, InvSlotChanged)
+            'Actualizamos el banco
+            Call UpdateBanUserInv(False, Userindex, Slot)
         End If
-        
-        'Actualizamos el inventario del usuario
-        Call UpdateUserInv(True, Userindex, 0)
-        'Actualizamos el banco
-        Call UpdateBanUserInv(True, Userindex, 0)
 
     End If
-    
-    'Actualizamos la ventana de comercio
-    Call UpdateVentanaBanco(Userindex)
 
 errHandler:
 
 End Sub
 
-Sub UserReciveObj(ByVal Userindex As Integer, _
-                  ByVal ObjIndex As Integer, _
-                  ByVal Cantidad As Integer)
+Function UserReciveObj(ByVal Userindex As Integer, _
+                       ByVal ObjIndex As Integer, _
+                       ByVal Cantidad As Integer) As Integer
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
+
+    UserReciveObj = 0
 
     Dim Slot As Integer
 
@@ -163,7 +161,7 @@ Sub UserReciveObj(ByVal Userindex As Integer, _
 
     With UserList(Userindex)
 
-        If .BancoInvent.Object(ObjIndex).Amount <= 0 Then Exit Sub
+        If .BancoInvent.Object(ObjIndex).Amount <= 0 Then Exit Function
     
         obji = .BancoInvent.Object(ObjIndex).ObjIndex
     
@@ -190,7 +188,7 @@ Sub UserReciveObj(ByVal Userindex As Integer, _
 
                 If Slot > .CurrentInventorySlots Then
                     Call WriteConsoleMsg(Userindex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
+                    Exit Function
 
                 End If
 
@@ -206,6 +204,8 @@ Sub UserReciveObj(ByVal Userindex As Integer, _
             .Invent.Object(Slot).Amount = .Invent.Object(Slot).Amount + Cantidad
         
             Call QuitarBancoInvItem(Userindex, CByte(ObjIndex), Cantidad)
+
+            UserReciveObj = Slot
         Else
             Call WriteConsoleMsg(Userindex, "No podes tener mas objetos.", FontTypeNames.FONTTYPE_INFO)
 
@@ -213,7 +213,7 @@ Sub UserReciveObj(ByVal Userindex As Integer, _
 
     End With
 
-End Sub
+End Function
 
 Sub QuitarBancoInvItem(ByVal Userindex As Integer, _
                        ByVal Slot As Byte, _
@@ -244,19 +244,8 @@ Sub QuitarBancoInvItem(ByVal Userindex As Integer, _
     
 End Sub
 
-Sub UpdateVentanaBanco(ByVal Userindex As Integer)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Call WriteBankOK(Userindex)
-
-End Sub
-
 Sub UserDepositaItem(ByVal Userindex As Integer, _
-                     ByVal Item As Integer, _
+                     ByVal Slot As Integer, _
                      ByVal Cantidad As Integer)
     '***************************************************
     'Author: Unknown
@@ -268,48 +257,52 @@ Sub UserDepositaItem(ByVal Userindex As Integer, _
 
     Dim ObjIndex As Integer
 
-    If UserList(Userindex).Invent.Object(Item).Amount > 0 And Cantidad > 0 Then
+    Dim BankSlot As Integer
+
+    If UserList(Userindex).Invent.Object(Slot).Amount > 0 And Cantidad > 0 Then
     
-        If Cantidad > UserList(Userindex).Invent.Object(Item).Amount Then Cantidad = UserList(Userindex).Invent.Object(Item).Amount
+        If Cantidad > UserList(Userindex).Invent.Object(Slot).Amount Then Cantidad = UserList(Userindex).Invent.Object(Slot).Amount
         
-        ObjIndex = UserList(Userindex).Invent.Object(Item).ObjIndex
+        ObjIndex = UserList(Userindex).Invent.Object(Slot).ObjIndex
         
         'Agregamos el obj que deposita al banco
-        Call UserDejaObj(Userindex, CInt(Item), Cantidad)
+        BankSlot = UserDejaObj(Userindex, CInt(Slot), Cantidad)
         
-        If ObjData(ObjIndex).Log = 1 Then
-            Call LogDesarrollo(UserList(Userindex).Name & " deposito " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+        If BankSlot > 0 Then
+            If ObjData(ObjIndex).Log = 1 Then
+                Call LogDesarrollo(UserList(Userindex).Name & " deposito " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
 
+            End If
+            
+            'Actualizamos el inventario del usuario
+            Call UpdateUserInv(False, Userindex, Slot)
+            
+            'Actualizamos el inventario del banco
+            Call UpdateBanUserInv(False, Userindex, BankSlot)
         End If
-        
-        'Actualizamos el inventario del usuario
-        Call UpdateUserInv(True, Userindex, 0)
-        
-        'Actualizamos el inventario del banco
-        Call UpdateBanUserInv(True, Userindex, 0)
 
     End If
-    
-    'Actualizamos la ventana del banco
-    Call UpdateVentanaBanco(Userindex)
+
 errHandler:
 
 End Sub
 
-Sub UserDejaObj(ByVal Userindex As Integer, _
-                ByVal ObjIndex As Integer, _
-                ByVal Cantidad As Integer)
+Function UserDejaObj(ByVal Userindex As Integer, _
+                     ByVal ObjIndex As Integer, _
+                     ByVal Cantidad As Integer) As Integer
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
+    UserDejaObj = 0
+
     Dim Slot As Integer
 
     Dim obji As Integer
     
-    If Cantidad < 1 Then Exit Sub
+    If Cantidad < 1 Then Exit Function
     
     With UserList(Userindex)
         obji = .Invent.Object(ObjIndex).ObjIndex
@@ -336,7 +329,7 @@ Sub UserDejaObj(ByVal Userindex As Integer, _
                 
                 If Slot > MAX_BANCOINVENTORY_SLOTS Then
                     Call WriteConsoleMsg(Userindex, "No tienes mas espacio en el banco!!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
+                    Exit Function
 
                 End If
 
@@ -356,6 +349,8 @@ Sub UserDejaObj(ByVal Userindex As Integer, _
                 .BancoInvent.Object(Slot).Amount = .BancoInvent.Object(Slot).Amount + Cantidad
                 
                 Call QuitarUserInvItem(Userindex, CByte(ObjIndex), Cantidad)
+
+                UserDejaObj = Slot
             Else
                 Call WriteConsoleMsg(Userindex, "El banco no puede cargar tantos objetos.", FontTypeNames.FONTTYPE_INFO)
 
@@ -365,7 +360,7 @@ Sub UserDejaObj(ByVal Userindex As Integer, _
 
     End With
 
-End Sub
+End Function
 
 Sub SendUserBovedaTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
     '***************************************************
