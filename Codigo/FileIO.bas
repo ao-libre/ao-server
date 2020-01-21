@@ -2390,7 +2390,7 @@ Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
 
         End If
         
-        Print #hFile, ""
+        Print #hFile, vbNullString
 
     End With
 
@@ -2408,50 +2408,54 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
     
     Dim npcfile As String
     
+    Set Lector = New clsIniManager
+
     'If NpcNumber > 499 Then
     '    npcfile = DatPath & "bkNPCs-HOSTILES.dat"
     'Else
     npcfile = DatPath & "bkNPCs.dat"
     'End If
     
+    'Abrimos el archivo.
+    Call Lector.Initialize(npcfile)
+    
     With Npclist(NpcIndex)
     
         .Numero = NpcNumber
-        .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-        .Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
-        .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
-        .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
+        .Name = Lector.GetValue("NPC" & NpcNumber, "Name")
+        .Desc = Lector.GetValue("NPC" & NpcNumber, "Desc")
+        .Movement = val(Lector.GetValue("NPC" & NpcNumber, "Movement"))
+        .NPCtype = val(Lector.GetValue("NPC" & NpcNumber, "NpcType"))
         
-        .Char.body = val(GetVar(npcfile, "NPC" & NpcNumber, "Body"))
-        .Char.Head = val(GetVar(npcfile, "NPC" & NpcNumber, "Head"))
-        .Char.heading = val(GetVar(npcfile, "NPC" & NpcNumber, "Heading"))
+        .Char.body = val(Lector.GetValue("NPC" & NpcNumber, "Body"))
+        .Char.Head = val(Lector.GetValue("NPC" & NpcNumber, "Head"))
+        .Char.heading = val(Lector.GetValue("NPC" & NpcNumber, "Heading"))
         
-        .Attackable = val(GetVar(npcfile, "NPC" & NpcNumber, "Attackable"))
-        .Comercia = val(GetVar(npcfile, "NPC" & NpcNumber, "Comercia"))
-        .Hostile = val(GetVar(npcfile, "NPC" & NpcNumber, "Hostile"))
-        .GiveEXP = val(GetVar(npcfile, "NPC" & NpcNumber, "GiveEXP"))
+        .Attackable = val(Lector.GetValue("NPC" & NpcNumber, "Attackable"))
+        .Comercia = val(Lector.GetValue("NPC" & NpcNumber, "Comercia"))
+        .Hostile = val(Lector.GetValue("NPC" & NpcNumber, "Hostile"))
+        .GiveEXP = val(Lector.GetValue("NPC" & NpcNumber, "GiveEXP"))
         
-        .GiveGLD = val(GetVar(npcfile, "NPC" & NpcNumber, "GiveGLD"))
+        .GiveGLD = val(Lector.GetValue("NPC" & NpcNumber, "GiveGLD"))
         
-        .InvReSpawn = val(GetVar(npcfile, "NPC" & NpcNumber, "InvReSpawn"))
+        .InvReSpawn = val(Lector.GetValue("NPC" & NpcNumber, "InvReSpawn"))
         
-        .Stats.MaxHp = val(GetVar(npcfile, "NPC" & NpcNumber, "MaxHP"))
-        .Stats.MinHp = val(GetVar(npcfile, "NPC" & NpcNumber, "MinHP"))
-        .Stats.MaxHIT = val(GetVar(npcfile, "NPC" & NpcNumber, "MaxHIT"))
-        .Stats.MinHIT = val(GetVar(npcfile, "NPC" & NpcNumber, "MinHIT"))
-        .Stats.def = val(GetVar(npcfile, "NPC" & NpcNumber, "DEF"))
-        .Stats.Alineacion = val(GetVar(npcfile, "NPC" & NpcNumber, "Alineacion"))
+        .Stats.MaxHp = val(Lector.GetValue("NPC" & NpcNumber, "MaxHP"))
+        .Stats.MinHp = val(Lector.GetValue("NPC" & NpcNumber, "MinHP"))
+        .Stats.MaxHIT = val(Lector.GetValue("NPC" & NpcNumber, "MaxHIT"))
+        .Stats.MinHIT = val(Lector.GetValue("NPC" & NpcNumber, "MinHIT"))
+        .Stats.def = val(Lector.GetValue("NPC" & NpcNumber, "DEF"))
+        .Stats.Alineacion = val(Lector.GetValue("NPC" & NpcNumber, "Alineacion"))
         
         Dim LoopC As Integer
-
         Dim ln    As String
 
-        .Invent.NroItems = val(GetVar(npcfile, "NPC" & NpcNumber, "NROITEMS"))
+        .Invent.NroItems = val(Lector.GetValue("NPC" & NpcNumber, "NROITEMS"))
 
         If .Invent.NroItems > 0 Then
 
             For LoopC = 1 To MAX_INVENTORY_SLOTS
-                ln = GetVar(npcfile, "NPC" & NpcNumber, "Obj" & LoopC)
+                ln = Lector.GetValue("NPC" & NpcNumber, "Obj" & LoopC)
                 .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
                 .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
                
@@ -2467,22 +2471,25 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
         End If
         
         For LoopC = 1 To MAX_NPC_DROPS
-            ln = GetVar(npcfile, "NPC" & NpcNumber, "Drop" & LoopC)
+            ln = Lector.GetValue("NPC" & NpcNumber, "Drop" & LoopC)
             .Drop(LoopC).ObjIndex = val(ReadField(1, ln, 45))
             .Drop(LoopC).Amount = val(ReadField(2, ln, 45))
         Next LoopC
         
         .flags.NPCActive = True
-        .flags.Respawn = val(GetVar(npcfile, "NPC" & NpcNumber, "ReSpawn"))
-        .flags.BackUp = val(GetVar(npcfile, "NPC" & NpcNumber, "BackUp"))
-        .flags.Domable = val(GetVar(npcfile, "NPC" & NpcNumber, "Domable"))
-        .flags.RespawnOrigPos = val(GetVar(npcfile, "NPC" & NpcNumber, "OrigPos"))
+        .flags.Respawn = val(Lector.GetValue("NPC" & NpcNumber, "ReSpawn"))
+        .flags.BackUp = val(Lector.GetValue("NPC" & NpcNumber, "BackUp"))
+        .flags.Domable = val(Lector.GetValue("NPC" & NpcNumber, "Domable"))
+        .flags.RespawnOrigPos = val(Lector.GetValue("NPC" & NpcNumber, "OrigPos"))
         
         'Tipo de items con los que comercia
-        .TipoItems = val(GetVar(npcfile, "NPC" & NpcNumber, "TipoItems"))
+        .TipoItems = val(Lector.GetValue("NPC" & NpcNumber, "TipoItems"))
 
     End With
-
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo bkNPCs.dat"
 
 End Sub
