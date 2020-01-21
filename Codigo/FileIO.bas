@@ -45,15 +45,22 @@ Public Sub CargarSpawnList()
     '***************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando Invokar.dat"
 
-    Dim n As Integer, LoopC As Integer
+    Dim NumNPCS As Integer, LoopC As Integer
+    
+    'Abrimos el archivo.
+    Set Lector = clsIniManager
+    Call Lector.Initialize(App.Path & "\Dat\Invokar.dat")
+    
+    NumNPCS = val(Lector.GetValue("NumNPCs"))
+    ReDim SpawnList(NumNPCS) As tCriaturasEntrenador
 
-    n = val(GetVar(App.Path & "\Dat\Invokar.dat", "INIT", "NumNPCs"))
-    ReDim SpawnList(n) As tCriaturasEntrenador
-
-    For LoopC = 1 To n
-        SpawnList(LoopC).NpcIndex = val(GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NI" & LoopC))
-        SpawnList(LoopC).NpcName = GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NN" & LoopC)
+    For LoopC = 1 To NumNPCS
+        SpawnList(LoopC).NpcIndex = val(Lector.GetValue("LIST", "NI" & LoopC))
+        SpawnList(LoopC).NpcName = Lector.GetValue("LIST", "NN" & LoopC)
     Next LoopC
+    
+    'Lo cerramos y liberamos los recursos.
+    Set Lector = Nothing
     
     If frmMain.Visible Then frmMain.txtStatus.Text = "Invokar.dat se cargo correctamente"
     
