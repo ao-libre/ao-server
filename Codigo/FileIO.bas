@@ -2668,91 +2668,97 @@ Public Sub LoadArmadurasFaccion()
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando armaduras faccionarias"
     
     Dim ClassIndex    As Long
-    
     Dim ArmaduraIndex As Integer
+    
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "ArmadurasFaccionarias.dat")
     
     For ClassIndex = 1 To NUMCLASES
     
         ' Defensa minima para armadas altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMinArmyAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMinArmyAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Armada(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Armada(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Armada(eTipoDefArmors.ieBaja) = ArmaduraIndex
         
         ' Defensa minima para armadas bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMinArmyBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMinArmyBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Armada(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Armada(eTipoDefArmors.ieBaja) = ArmaduraIndex
         
         ' Defensa minima para caos altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMinCaosAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMinCaosAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Caos(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Caos(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Caos(eTipoDefArmors.ieBaja) = ArmaduraIndex
         
         ' Defensa minima para caos bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMinCaosBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMinCaosBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Caos(eTipoDefArmors.ieBaja) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Caos(eTipoDefArmors.ieBaja) = ArmaduraIndex
     
         ' Defensa media para armadas altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMedArmyAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMedArmyAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Armada(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Armada(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Armada(eTipoDefArmors.ieMedia) = ArmaduraIndex
         
         ' Defensa media para armadas bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMedArmyBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMedArmyBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Armada(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Armada(eTipoDefArmors.ieMedia) = ArmaduraIndex
         
         ' Defensa media para caos altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMedCaosAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMedCaosAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Caos(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Caos(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Caos(eTipoDefArmors.ieMedia) = ArmaduraIndex
         
         ' Defensa media para caos bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefMedCaosBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefMedCaosBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Caos(eTipoDefArmors.ieMedia) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Caos(eTipoDefArmors.ieMedia) = ArmaduraIndex
     
         ' Defensa alta para armadas altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefAltaArmyAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefAltaArmyAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Armada(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Armada(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Armada(eTipoDefArmors.ieAlta) = ArmaduraIndex
         
         ' Defensa alta para armadas bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefAltaArmyBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefAltaArmyBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Armada(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Armada(eTipoDefArmors.ieAlta) = ArmaduraIndex
         
         ' Defensa alta para caos altos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefAltaCaosAlto"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefAltaCaosAlto"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Drow).Caos(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Elfo).Caos(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Humano).Caos(eTipoDefArmors.ieAlta) = ArmaduraIndex
         
         ' Defensa alta para caos bajos
-        ArmaduraIndex = val(GetVar(DatPath & "ArmadurasFaccionarias.dat", "CLASE" & ClassIndex, "DefAltaCaosBajo"))
+        ArmaduraIndex = val(Lector.GetValue("CLASE" & ClassIndex, "DefAltaCaosBajo"))
         
         ArmadurasFaccion(ClassIndex, eRaza.Enano).Caos(eTipoDefArmors.ieAlta) = ArmaduraIndex
         ArmadurasFaccion(ClassIndex, eRaza.Gnomo).Caos(eTipoDefArmors.ieAlta) = ArmaduraIndex
     
     Next ClassIndex
-
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo ArmadurasFaccionarias.dat"
 
 End Sub
