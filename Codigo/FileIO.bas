@@ -162,9 +162,7 @@ Public Sub loadAdministrativeUsers()
 
     'Si esta mierda tuviese array asociativos el codigo seria tan lindo.
     Dim buf  As Integer
-
     Dim i    As Long
-
     Dim Name As String
        
     ' Public container
@@ -172,8 +170,6 @@ Public Sub loadAdministrativeUsers()
     
     ' Server ini info file
     Dim ServerIni As clsIniManager
-
-    Set ServerIni = New clsIniManager
     
     Call ServerIni.Initialize(IniPath & "Server.ini")
        
