@@ -35,6 +35,8 @@ Option Explicit
 
 #End If
 
+Public LeerNPCs As clsIniManager
+
 Private Lector As clsIniManager
 
 Public Sub CargarSpawnList()

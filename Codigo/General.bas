@@ -35,8 +35,6 @@ Option Explicit
 
 #End If
 
-Global LeerNPCs As clsIniManager
-
 Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
                      Optional ByVal Mimetizado As Boolean = False)
     '***************************************************
@@ -1536,11 +1534,16 @@ Public Sub CargaNpcsDat()
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
 
     Dim npcfile As String
+        npcfile = DatPath & "NPCs.dat"
     
-    npcfile = DatPath & "NPCs.dat"
+    'Me aseguro de que no queden datos del NPC's.dat anterior.
+    If Not LeerNPCs Is Nothing Then
+        Set LeerNPCs = Nothing
+    End If
+    
     Set LeerNPCs = New clsIniManager
     Call LeerNPCs.Initialize(npcfile)
-
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 
 End Sub
