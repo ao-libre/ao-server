@@ -48,11 +48,11 @@ Public Sub CargarSpawnList()
     Dim NumNPCS As Integer, LoopC As Integer
     
     'Abrimos el archivo.
-    Set Lector = clsIniManager
+    Set Lector = New clsIniManager
     Call Lector.Initialize(App.Path & "\Dat\Invokar.dat")
     
-    NumNPCS = val(Lector.GetValue("NumNPCs"))
-    ReDim SpawnList(NumNPCS) As tCriaturasEntrenador
+    NumNPCs = val(Lector.GetValue("INIT", "NumNPCs"))
+    ReDim SpawnList(NumNPCs) As tCriaturasEntrenador
 
     For LoopC = 1 To NumNPCS
         SpawnList(LoopC).NpcIndex = val(Lector.GetValue("LIST", "NI" & LoopC))
@@ -1746,7 +1746,6 @@ Sub LoadSini()
 
     Dim Temporal As Long
     
-    Dim Lector As clsIniManager
     Set Lector = New clsIniManager
     
     If frmMain.Visible Then
