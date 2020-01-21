@@ -922,8 +922,6 @@ Sub LoadOBJData()
     '
     '###################################################
 
-    'Call LogTarea("Sub LoadOBJData")
-
     On Error GoTo ErrHandler
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando base de datos de los objetos."
@@ -932,15 +930,13 @@ Sub LoadOBJData()
     'Carga la lista de objetos
     '*****************************************************************
     Dim Object As Integer
-
-    Dim Leer   As clsIniManager
-
-    Set Leer = New clsIniManager
     
-    Call Leer.Initialize(DatPath & "Obj.dat")
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "Obj.dat")
     
     'obtiene el numero de obj
-    NumObjDatas = val(Leer.GetValue("INIT", "NumObjs"))
+    NumObjDatas = val(Lector.GetValue("INIT", "NumObjs"))
     
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumObjDatas
@@ -952,190 +948,188 @@ Sub LoadOBJData()
     For Object = 1 To NumObjDatas
 
         With ObjData(Object)
-            .Name = Leer.GetValue("OBJ" & Object, "Name")
+            .Name = Lector.GetValue("OBJ" & Object, "Name")
             
             'Pablo (ToxicWaste) Log de Objetos.
-            .Log = val(Leer.GetValue("OBJ" & Object, "Log"))
-            .NoLog = val(Leer.GetValue("OBJ" & Object, "NoLog"))
+            .Log = val(Lector.GetValue("OBJ" & Object, "Log"))
+            .NoLog = val(Lector.GetValue("OBJ" & Object, "NoLog"))
             '07/09/07
             
-            .GrhIndex = val(Leer.GetValue("OBJ" & Object, "GrhIndex"))
+            .GrhIndex = val(Lector.GetValue("OBJ" & Object, "GrhIndex"))
 
             If .GrhIndex = 0 Then
                 .GrhIndex = .GrhIndex
 
             End If
             
-            .OBJType = val(Leer.GetValue("OBJ" & Object, "ObjType"))
+            .OBJType = val(Lector.GetValue("OBJ" & Object, "ObjType"))
             
-            .Newbie = val(Leer.GetValue("OBJ" & Object, "Newbie"))
+            .Newbie = val(Lector.GetValue("OBJ" & Object, "Newbie"))
             
             Select Case .OBJType
 
                 Case eOBJType.otarmadura
-                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
-                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
-                    .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-                    .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-                    .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-                    .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
+                    .Real = val(Lector.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Lector.GetValue("OBJ" & Object, "Caos"))
+                    .LingH = val(Lector.GetValue("OBJ" & Object, "LingH"))
+                    .LingP = val(Lector.GetValue("OBJ" & Object, "LingP"))
+                    .LingO = val(Lector.GetValue("OBJ" & Object, "LingO"))
+                    .SkHerreria = val(Lector.GetValue("OBJ" & Object, "SkHerreria"))
                 
                 Case eOBJType.otescudo
-                    .ShieldAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
-                    .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-                    .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-                    .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-                    .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
-                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .ShieldAnim = val(Lector.GetValue("OBJ" & Object, "Anim"))
+                    .LingH = val(Lector.GetValue("OBJ" & Object, "LingH"))
+                    .LingP = val(Lector.GetValue("OBJ" & Object, "LingP"))
+                    .LingO = val(Lector.GetValue("OBJ" & Object, "LingO"))
+                    .SkHerreria = val(Lector.GetValue("OBJ" & Object, "SkHerreria"))
+                    .Real = val(Lector.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Lector.GetValue("OBJ" & Object, "Caos"))
                 
                 Case eOBJType.otcasco
-                    .CascoAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
-                    .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-                    .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-                    .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-                    .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
-                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .CascoAnim = val(Lector.GetValue("OBJ" & Object, "Anim"))
+                    .LingH = val(Lector.GetValue("OBJ" & Object, "LingH"))
+                    .LingP = val(Lector.GetValue("OBJ" & Object, "LingP"))
+                    .LingO = val(Lector.GetValue("OBJ" & Object, "LingO"))
+                    .SkHerreria = val(Lector.GetValue("OBJ" & Object, "SkHerreria"))
+                    .Real = val(Lector.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Lector.GetValue("OBJ" & Object, "Caos"))
                 
                 Case eOBJType.otWeapon
-                    .WeaponAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
-                    .Apunala = val(Leer.GetValue("OBJ" & Object, "Apunala"))
-                    .Envenena = val(Leer.GetValue("OBJ" & Object, "Envenena"))
-                    .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
-                    .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
-                    .proyectil = val(Leer.GetValue("OBJ" & Object, "Proyectil"))
-                    .Municion = val(Leer.GetValue("OBJ" & Object, "Municiones"))
-                    .StaffPower = val(Leer.GetValue("OBJ" & Object, "StaffPower"))
-                    .StaffDamageBonus = val(Leer.GetValue("OBJ" & Object, "StaffDamageBonus"))
-                    .Refuerzo = val(Leer.GetValue("OBJ" & Object, "Refuerzo"))
+                    .WeaponAnim = val(Lector.GetValue("OBJ" & Object, "Anim"))
+                    .Apunala = val(Lector.GetValue("OBJ" & Object, "Apunala"))
+                    .Envenena = val(Lector.GetValue("OBJ" & Object, "Envenena"))
+                    .MaxHIT = val(Lector.GetValue("OBJ" & Object, "MaxHIT"))
+                    .MinHIT = val(Lector.GetValue("OBJ" & Object, "MinHIT"))
+                    .proyectil = val(Lector.GetValue("OBJ" & Object, "Proyectil"))
+                    .Municion = val(Lector.GetValue("OBJ" & Object, "Municiones"))
+                    .StaffPower = val(Lector.GetValue("OBJ" & Object, "StaffPower"))
+                    .StaffDamageBonus = val(Lector.GetValue("OBJ" & Object, "StaffDamageBonus"))
+                    .Refuerzo = val(Lector.GetValue("OBJ" & Object, "Refuerzo"))
                     
-                    .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-                    .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-                    .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-                    .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
-                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .LingH = val(Lector.GetValue("OBJ" & Object, "LingH"))
+                    .LingP = val(Lector.GetValue("OBJ" & Object, "LingP"))
+                    .LingO = val(Lector.GetValue("OBJ" & Object, "LingO"))
+                    .SkHerreria = val(Lector.GetValue("OBJ" & Object, "SkHerreria"))
+                    .Real = val(Lector.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Lector.GetValue("OBJ" & Object, "Caos"))
                     
-                    .WeaponRazaEnanaAnim = val(Leer.GetValue("OBJ" & Object, "RazaEnanaAnim"))
+                    .WeaponRazaEnanaAnim = val(Lector.GetValue("OBJ" & Object, "RazaEnanaAnim"))
                 
                 Case eOBJType.otInstrumentos
-                    .Snd1 = val(Leer.GetValue("OBJ" & Object, "SND1"))
-                    .Snd2 = val(Leer.GetValue("OBJ" & Object, "SND2"))
-                    .Snd3 = val(Leer.GetValue("OBJ" & Object, "SND3"))
+                    .Snd1 = val(Lector.GetValue("OBJ" & Object, "SND1"))
+                    .Snd2 = val(Lector.GetValue("OBJ" & Object, "SND2"))
+                    .Snd3 = val(Lector.GetValue("OBJ" & Object, "SND3"))
                     'Pablo (ToxicWaste)
-                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
-                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .Real = val(Lector.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Lector.GetValue("OBJ" & Object, "Caos"))
                 
                 Case eOBJType.otMinerales
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinSkill = val(Lector.GetValue("OBJ" & Object, "MinSkill"))
                 
                 Case eOBJType.otPuertas, eOBJType.otBotellaVacia, eOBJType.otBotellaLlena
-                    .IndexAbierta = val(Leer.GetValue("OBJ" & Object, "IndexAbierta"))
-                    .IndexCerrada = val(Leer.GetValue("OBJ" & Object, "IndexCerrada"))
-                    .IndexCerradaLlave = val(Leer.GetValue("OBJ" & Object, "IndexCerradaLlave"))
+                    .IndexAbierta = val(Lector.GetValue("OBJ" & Object, "IndexAbierta"))
+                    .IndexCerrada = val(Lector.GetValue("OBJ" & Object, "IndexCerrada"))
+                    .IndexCerradaLlave = val(Lector.GetValue("OBJ" & Object, "IndexCerradaLlave"))
                 
                 Case otPociones
-                    .TipoPocion = val(Leer.GetValue("OBJ" & Object, "TipoPocion"))
-                    .MaxModificador = val(Leer.GetValue("OBJ" & Object, "MaxModificador"))
-                    .MinModificador = val(Leer.GetValue("OBJ" & Object, "MinModificador"))
-                    .DuracionEfecto = val(Leer.GetValue("OBJ" & Object, "DuracionEfecto"))
+                    .TipoPocion = val(Lector.GetValue("OBJ" & Object, "TipoPocion"))
+                    .MaxModificador = val(Lector.GetValue("OBJ" & Object, "MaxModificador"))
+                    .MinModificador = val(Lector.GetValue("OBJ" & Object, "MinModificador"))
+                    .DuracionEfecto = val(Lector.GetValue("OBJ" & Object, "DuracionEfecto"))
                 
                 Case eOBJType.otBarcos
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
-                    .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
-                    .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+                    .MinSkill = val(Lector.GetValue("OBJ" & Object, "MinSkill"))
+                    .MaxHIT = val(Lector.GetValue("OBJ" & Object, "MaxHIT"))
+                    .MinHIT = val(Lector.GetValue("OBJ" & Object, "MinHIT"))
                 
                 Case eOBJType.otFlechas
-                    .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
-                    .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
-                    .Envenena = val(Leer.GetValue("OBJ" & Object, "Envenena"))
-                    .Paraliza = val(Leer.GetValue("OBJ" & Object, "Paraliza"))
+                    .MaxHIT = val(Lector.GetValue("OBJ" & Object, "MaxHIT"))
+                    .MinHIT = val(Lector.GetValue("OBJ" & Object, "MinHIT"))
+                    .Envenena = val(Lector.GetValue("OBJ" & Object, "Envenena"))
+                    .Paraliza = val(Lector.GetValue("OBJ" & Object, "Paraliza"))
 
                 Case eOBJType.otMonturas
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
-                    .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
-                    .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+                    .MinSkill = val(Lector.GetValue("OBJ" & Object, "MinSkill"))
+                    .MaxHIT = val(Lector.GetValue("OBJ" & Object, "MaxHIT"))
+                    .MinHIT = val(Lector.GetValue("OBJ" & Object, "MinHIT"))
 
                 Case eOBJType.otAnillo 'Pablo (ToxicWaste)
-                    .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
-                    .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
-                    .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
-                    .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-                    .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
-                    .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+                    .LingH = val(Lector.GetValue("OBJ" & Object, "LingH"))
+                    .LingP = val(Lector.GetValue("OBJ" & Object, "LingP"))
+                    .LingO = val(Lector.GetValue("OBJ" & Object, "LingO"))
+                    .SkHerreria = val(Lector.GetValue("OBJ" & Object, "SkHerreria"))
+                    .MaxHIT = val(Lector.GetValue("OBJ" & Object, "MaxHIT"))
+                    .MinHIT = val(Lector.GetValue("OBJ" & Object, "MinHIT"))
                     
                 Case eOBJType.otTeleport
-                    .Radio = val(Leer.GetValue("OBJ" & Object, "Radio"))
+                    .Radio = val(Lector.GetValue("OBJ" & Object, "Radio"))
                     
                 Case eOBJType.otMochilas
-                    .MochilaType = val(Leer.GetValue("OBJ" & Object, "MochilaType"))
+                    .MochilaType = val(Lector.GetValue("OBJ" & Object, "MochilaType"))
                     
                 Case eOBJType.otForos
-                    Call AddForum(Leer.GetValue("OBJ" & Object, "ID"))
+                    Call AddForum(Lector.GetValue("OBJ" & Object, "ID"))
                     
             End Select
             
-            .Ropaje = val(Leer.GetValue("OBJ" & Object, "NumRopaje"))
-            .HechizoIndex = val(Leer.GetValue("OBJ" & Object, "HechizoIndex"))
+            .Ropaje = val(Lector.GetValue("OBJ" & Object, "NumRopaje"))
+            .HechizoIndex = val(Lector.GetValue("OBJ" & Object, "HechizoIndex"))
             
-            .LingoteIndex = val(Leer.GetValue("OBJ" & Object, "LingoteIndex"))
+            .LingoteIndex = val(Lector.GetValue("OBJ" & Object, "LingoteIndex"))
             
-            .MineralIndex = val(Leer.GetValue("OBJ" & Object, "MineralIndex"))
+            .MineralIndex = val(Lector.GetValue("OBJ" & Object, "MineralIndex"))
             
-            .MaxHp = val(Leer.GetValue("OBJ" & Object, "MaxHP"))
-            .MinHp = val(Leer.GetValue("OBJ" & Object, "MinHP"))
+            .MaxHp = val(Lector.GetValue("OBJ" & Object, "MaxHP"))
+            .MinHp = val(Lector.GetValue("OBJ" & Object, "MinHP"))
             
-            .Mujer = val(Leer.GetValue("OBJ" & Object, "Mujer"))
-            .Hombre = val(Leer.GetValue("OBJ" & Object, "Hombre"))
+            .Mujer = val(Lector.GetValue("OBJ" & Object, "Mujer"))
+            .Hombre = val(Lector.GetValue("OBJ" & Object, "Hombre"))
             
-            .MinHam = val(Leer.GetValue("OBJ" & Object, "MinHam"))
-            .MinSed = val(Leer.GetValue("OBJ" & Object, "MinAgu"))
+            .MinHam = val(Lector.GetValue("OBJ" & Object, "MinHam"))
+            .MinSed = val(Lector.GetValue("OBJ" & Object, "MinAgu"))
             
-            .MinDef = val(Leer.GetValue("OBJ" & Object, "MINDEF"))
-            .MaxDef = val(Leer.GetValue("OBJ" & Object, "MAXDEF"))
+            .MinDef = val(Lector.GetValue("OBJ" & Object, "MINDEF"))
+            .MaxDef = val(Lector.GetValue("OBJ" & Object, "MAXDEF"))
             .def = (.MinDef + .MaxDef) / 2
             
-            .RazaEnana = val(Leer.GetValue("OBJ" & Object, "RazaEnana"))
-            .RazaDrow = val(Leer.GetValue("OBJ" & Object, "RazaDrow"))
-            .RazaElfa = val(Leer.GetValue("OBJ" & Object, "RazaElfa"))
-            .RazaGnoma = val(Leer.GetValue("OBJ" & Object, "RazaGnoma"))
-            .RazaHumana = val(Leer.GetValue("OBJ" & Object, "RazaHumana"))
+            .RazaEnana = val(Lector.GetValue("OBJ" & Object, "RazaEnana"))
+            .RazaDrow = val(Lector.GetValue("OBJ" & Object, "RazaDrow"))
+            .RazaElfa = val(Lector.GetValue("OBJ" & Object, "RazaElfa"))
+            .RazaGnoma = val(Lector.GetValue("OBJ" & Object, "RazaGnoma"))
+            .RazaHumana = val(Lector.GetValue("OBJ" & Object, "RazaHumana"))
             
-            .Valor = val(Leer.GetValue("OBJ" & Object, "Valor"))
+            .Valor = val(Lector.GetValue("OBJ" & Object, "Valor"))
             
-            .Crucial = val(Leer.GetValue("OBJ" & Object, "Crucial"))
+            .Crucial = val(Lector.GetValue("OBJ" & Object, "Crucial"))
             
-            .Cerrada = val(Leer.GetValue("OBJ" & Object, "abierta"))
+            .Cerrada = val(Lector.GetValue("OBJ" & Object, "abierta"))
 
             If .Cerrada = 1 Then
-                .Llave = val(Leer.GetValue("OBJ" & Object, "Llave"))
-                .Clave = val(Leer.GetValue("OBJ" & Object, "Clave"))
+                .Llave = val(Lector.GetValue("OBJ" & Object, "Llave"))
+                .Clave = val(Lector.GetValue("OBJ" & Object, "Clave"))
 
             End If
             
             'Puertas y llaves
-            .Clave = val(Leer.GetValue("OBJ" & Object, "Clave"))
+            .Clave = val(Lector.GetValue("OBJ" & Object, "Clave"))
             
-            .texto = Leer.GetValue("OBJ" & Object, "Texto")
-            .GrhSecundario = val(Leer.GetValue("OBJ" & Object, "VGrande"))
+            .texto = Lector.GetValue("OBJ" & Object, "Texto")
+            .GrhSecundario = val(Lector.GetValue("OBJ" & Object, "VGrande"))
             
-            .Agarrable = val(Leer.GetValue("OBJ" & Object, "Agarrable"))
-            .ForoID = Leer.GetValue("OBJ" & Object, "ID")
+            .Agarrable = val(Lector.GetValue("OBJ" & Object, "Agarrable"))
+            .ForoID = Lector.GetValue("OBJ" & Object, "ID")
             
-            .Acuchilla = val(Leer.GetValue("OBJ" & Object, "Acuchilla"))
+            .Acuchilla = val(Lector.GetValue("OBJ" & Object, "Acuchilla"))
             
-            .Guante = val(Leer.GetValue("OBJ" & Object, "Guante"))
+            .Guante = val(Lector.GetValue("OBJ" & Object, "Guante"))
             
             'CHECK: !!! Esto es provisorio hasta que los de Dateo cambien los valores de string a numerico
             Dim i As Integer
-
             Dim n As Integer
-
             Dim S As String
 
             For i = 1 To NUMCLASES
-                S = UCase$(Leer.GetValue("OBJ" & Object, "CP" & i))
+                S = UCase$(Lector.GetValue("OBJ" & Object, "CP" & i))
                 n = 1
 
                 Do While LenB(S) > 0 And UCase$(ListaClases(n)) <> S
@@ -1144,20 +1138,20 @@ Sub LoadOBJData()
                 .ClaseProhibida(i) = IIf(LenB(S) > 0, n, 0)
             Next i
             
-            .DefensaMagicaMax = val(Leer.GetValue("OBJ" & Object, "DefensaMagicaMax"))
-            .DefensaMagicaMin = val(Leer.GetValue("OBJ" & Object, "DefensaMagicaMin"))
+            .DefensaMagicaMax = val(Lector.GetValue("OBJ" & Object, "DefensaMagicaMax"))
+            .DefensaMagicaMin = val(Lector.GetValue("OBJ" & Object, "DefensaMagicaMin"))
             
-            .SkCarpinteria = val(Leer.GetValue("OBJ" & Object, "SkCarpinteria"))
+            .SkCarpinteria = val(Lector.GetValue("OBJ" & Object, "SkCarpinteria"))
             
-            If .SkCarpinteria > 0 Then .Madera = val(Leer.GetValue("OBJ" & Object, "Madera"))
-            .MaderaElfica = val(Leer.GetValue("OBJ" & Object, "MaderaElfica"))
+            If .SkCarpinteria > 0 Then .Madera = val(Lector.GetValue("OBJ" & Object, "Madera"))
+            .MaderaElfica = val(Lector.GetValue("OBJ" & Object, "MaderaElfica"))
             
             'Bebidas
-            .MinSta = val(Leer.GetValue("OBJ" & Object, "MinST"))
+            .MinSta = val(Lector.GetValue("OBJ" & Object, "MinST"))
             
-            .NoSeCae = val(Leer.GetValue("OBJ" & Object, "NoSeCae"))
+            .NoSeCae = val(Lector.GetValue("OBJ" & Object, "NoSeCae"))
             
-            .Upgrade = val(Leer.GetValue("OBJ" & Object, "Upgrade"))
+            .Upgrade = val(Lector.GetValue("OBJ" & Object, "Upgrade"))
             
             frmCargando.cargar.Value = frmCargando.cargar.Value + 1
 
@@ -1165,7 +1159,8 @@ Sub LoadOBJData()
 
     Next Object
     
-    Set Leer = Nothing
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
     
     ' Inicializo los foros faccionarios
     Call AddForum(FORO_CAOS_ID)
