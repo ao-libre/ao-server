@@ -4537,7 +4537,6 @@ Private Sub HandleMoveBank(ByVal Userindex As Integer)
     End With
     
     Call UpdateBanUserInv(True, Userindex, 0)
-    Call UpdateVentanaBanco(Userindex)
 
 End Sub
 

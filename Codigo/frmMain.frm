@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00FFC0C0&
    BorderStyle     =   3  'Fixed Dialog
@@ -701,11 +701,8 @@ Private Sub cmdApagarServidor_Click()
 
     'Guardar Pjs
     Call GuardarUsuarios
-
-    'Chauuu
-    Unload frmMain
-
-    Call CloseServer
+    
+    prgRun = False
     
 End Sub
 
@@ -731,8 +728,9 @@ End Sub
 Private Sub cmdForzarCierre_Click()
         
     If MsgBox("Desea FORZAR el CIERRE del SERVIDOR?", vbYesNo, "CIERRE DEL SERVIDOR!!!") = vbNo Then Exit Sub
-        
-    Call CloseServer
+    
+    'Usar esto para cerrar el servidor correctamente.
+    prgRun = False
 
 End Sub
 

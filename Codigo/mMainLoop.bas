@@ -34,7 +34,7 @@ Public Sub MainLoop()
     
     prgRun = True
     
-    Do While prgRun
+    Do
         frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & MinutosWs & " Minutos"
 
         For LoopC = 1 To NumTimers
@@ -44,9 +44,17 @@ Public Sub MainLoop()
             End If
 
             DoEvents
+
         Next LoopC
 
-    Loop
+    Loop Until prgRun = False
+    
+    DoEvents
+    
+    'Esperamos a que termine el ciclo y cerramos el servidor.
+    Call CloseServer
+    
+    Exit Sub
     
 End Sub
  
