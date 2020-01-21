@@ -880,3 +880,12 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 19/01/2020: Fix - Ahora el tiempo restante de paralisis e invisibilidad se envia desde el servidor. (FrankoH)
 * 19/01/2020: Fix - Se revirtió la mejora del pathfinding del PR #179 xq hacia demasiado lenta la IA. (jopiortiz)
 * 19/01/2020: Fix - Los nuevos dragones desaparecian. (Neo)
+
+- v0.13.24
+
+* 21/01/2020: Fix - Los sockets que se quedan abiertos. Creditos a ^[GS]^ (jopiortiz)
+* 21/01/2020: Ahora se liberan todos los arrays y objetos publicos de forma explicita al cerrar el servidor.
+			  Ahora esperamos a que termine el ciclo actual del MainLoop para cerrar el servidor, sacamos las llamadas End. (jopiortiz)
+* 21/01/2020: Se redujo el tamaño de los paquetes al comprar objetos. (Wyr0X)
+* 21/01/2020: Fix - Ullathorpe era zona insegura. (Wyr0X)
+* 21/01/2020: Se redujo enormemente el uso de la API usada por GetVar y WriteVar conocida por ser lenta y usamos clsIniManager en su lugar. (jopiortiz)
