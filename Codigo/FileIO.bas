@@ -2493,16 +2493,21 @@ Sub Ban(ByVal BannedName As String, ByVal Baneador As String, ByVal Motivo As St
     'Last Modification: -
     '
     '***************************************************
-
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "BannedBy", Baneador)
-    Call WriteVar(App.Path & "\logs\" & "BanDetail.dat", BannedName, "Reason", Motivo)
     
     'Log interno del servidor, lo usa para hacer un UNBAN general de toda la gente banned
     Dim mifile As Integer
-
+    
+    Set Lector = New clsIniManager
+    
+    Call Lector.ChangeValue("BannedName", "BannedBy", Baneador)
+    Call Lector.ChangeValue("BannedName", "Reason", Motivo)
+    Call Lector.DumpFile(App.Path & "\logs\" & "BanDetail.dat")
+    
+    Set Lector = Nothing
+    
     mifile = FreeFile
     Open App.Path & "\logs\GenteBanned.log" For Append Shared As #mifile
-    Print #mifile, BannedName
+        Print #mifile, BannedName
     Close #mifile
 
 End Sub
@@ -2514,11 +2519,20 @@ Public Sub CargaApuestas()
     '
     '***************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando apuestas.dat"
-
-    Apuestas.Ganancias = val(GetVar(DatPath & "apuestas.dat", "Main", "Ganancias"))
-    Apuestas.Perdidas = val(GetVar(DatPath & "apuestas.dat", "Main", "Perdidas"))
-    Apuestas.Jugadas = val(GetVar(DatPath & "apuestas.dat", "Main", "Jugadas"))
-
+    
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "apuestas.dat")
+    
+    With Apuestas
+        .Ganancias = val(Lector.GetValue("Main", "Ganancias"))
+        .Perdidas = val(Lector.GetValue("Main", "Perdidas"))
+        .Jugadas = val(Lector.GetValue("Main", "Jugadas"))
+    End With
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo apuestas.dat"
 
 End Sub
@@ -2531,7 +2545,6 @@ Public Sub generateMatrix(ByVal Mapa As Integer)
     '***************************************************
 
     Dim i As Integer
-
     Dim j As Integer
     
     ReDim distanceToCities(1 To NumMaps) As HomeDistance
