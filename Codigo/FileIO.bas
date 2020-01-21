@@ -807,7 +807,7 @@ Sub LoadBalance()
     
     'Abrimos el archivo.
     Set Lector = New clsIniManager
-    Call Lector.Initialize(DatPath & "ArmadurasHerrero.dat")
+    Call Lector.Initialize(DatPath & "Balance.dat")
     
     'Modificadores de Clase
     For i = 1 To NUMCLASES
@@ -883,13 +883,19 @@ Sub LoadObjCarpintero()
     
     Dim n As Integer, lc As Integer
     
-    n = val(GetVar(DatPath & "ObjCarpintero.dat", "INIT", "NumObjs"))
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "ObjCarpintero.dat")
     
+    n = val(Lector.GetValue("INIT", "NumObjs"))
     ReDim Preserve ObjCarpintero(1 To n) As Integer
     
     For lc = 1 To n
-        ObjCarpintero(lc) = val(GetVar(DatPath & "ObjCarpintero.dat", "Obj" & lc, "Index"))
+        ObjCarpintero(lc) = val(Lector.GetValue("Obj" & lc, "Index"))
     Next lc
+    
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
     
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo con exito los objetos crafteables via Carpinteria."
 
