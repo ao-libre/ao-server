@@ -2499,8 +2499,8 @@ Sub Ban(ByVal BannedName As String, ByVal Baneador As String, ByVal Motivo As St
     
     Set Lector = New clsIniManager
     
-    Call Lector.ChangeValue("BannedName", "BannedBy", Baneador)
-    Call Lector.ChangeValue("BannedName", "Reason", Motivo)
+    Call Lector.ChangeValue(BannedName, "BannedBy", Baneador)
+    Call Lector.ChangeValue(BannedName, "Reason", Motivo)
     Call Lector.DumpFile(App.Path & "\logs\" & "BanDetail.dat")
     
     Set Lector = Nothing
