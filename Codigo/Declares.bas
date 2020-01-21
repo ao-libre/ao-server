@@ -1993,53 +1993,29 @@ Public HappyHourDays(1 To 7) As tHappyHour    ' 0.13.5
 
 '*****************ARRAYS PUBLICOS*************************
 Public UserList()                         As User 'USUARIOS
-
 Public Npclist(1 To MAXNPCS)              As npc 'NPCS
-
 Public MapData()                          As MapBlock
-
 Public MapInfo()                          As MapInfo
-
 Public Hechizos()                         As tHechizo
-
 Public CharList(1 To MAXCHARS)            As Integer
-
 Public ObjData()                          As ObjData
-
 Public FX()                               As FXdata
-
 Public SpawnList()                        As tCriaturasEntrenador
-
 Public LevelSkill(1 To 50)                As LevelSkill
-
 Public ForbidenNames()                    As String
-
 Public ArmasHerrero()                     As Integer
-
 Public ArmadurasHerrero()                 As Integer
-
 Public ObjCarpintero()                    As Integer
-
 Public BanIps                             As Collection
-
 Public Parties(1 To MAX_PARTIES)          As clsParty
-
 Public ModClase(1 To NUMCLASES)           As ModClase
-
 Public ModRaza(1 To NUMRAZAS)             As ModRaza
-
 Public ModVida(1 To NUMCLASES)            As Double
-
 Public DistribucionEnteraVida(1 To 5)     As Integer
-
 Public DistribucionSemienteraVida(1 To 4) As Integer
-
 Public Ciudades(1 To NUMCIUDADES)         As WorldPos
-
 Public distanceToCities()                 As HomeDistance
-
 Public QuestList()                        As tQuest
-
 Public Records()                          As tRecord
 '*********************************************************
 
