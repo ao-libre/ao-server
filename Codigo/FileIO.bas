@@ -168,16 +168,15 @@ Public Sub loadAdministrativeUsers()
     ' Public container
     Set Administradores = New clsIniManager
     
-    ' Server ini info file
-    Dim ServerIni As clsIniManager
-    
-    Call ServerIni.Initialize(IniPath & "Server.ini")
+    ' Server.ini info file
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(IniPath & "Server.ini")
        
     ' Admines
-    buf = val(ServerIni.GetValue("INIT", "Admines"))
+    buf = val(Lector.GetValue("INIT", "Admines"))
     
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("Admines", "Admin" & i))
+        Name = UCase$(Lector.GetValue("Admines", "Admin" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -187,10 +186,10 @@ Public Sub loadAdministrativeUsers()
     Next i
     
     ' Dioses
-    buf = val(ServerIni.GetValue("INIT", "Dioses"))
+    buf = val(Lector.GetValue("INIT", "Dioses"))
     
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("Dioses", "Dios" & i))
+        Name = UCase$(Lector.GetValue("Dioses", "Dios" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -200,10 +199,10 @@ Public Sub loadAdministrativeUsers()
     Next i
     
     ' Especiales
-    buf = val(ServerIni.GetValue("INIT", "Especiales"))
+    buf = val(Lector.GetValue("INIT", "Especiales"))
     
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("Especiales", "Especial" & i))
+        Name = UCase$(Lector.GetValue("Especiales", "Especial" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -213,10 +212,10 @@ Public Sub loadAdministrativeUsers()
     Next i
     
     ' SemiDioses
-    buf = val(ServerIni.GetValue("INIT", "SemiDioses"))
+    buf = val(Lector.GetValue("INIT", "SemiDioses"))
     
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("SemiDioses", "SemiDios" & i))
+        Name = UCase$(Lector.GetValue("SemiDioses", "SemiDios" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -226,10 +225,10 @@ Public Sub loadAdministrativeUsers()
     Next i
     
     ' Consejeros
-    buf = val(ServerIni.GetValue("INIT", "Consejeros"))
+    buf = val(Lector.GetValue("INIT", "Consejeros"))
         
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("Consejeros", "Consejero" & i))
+        Name = UCase$(Lector.GetValue("Consejeros", "Consejero" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -239,10 +238,10 @@ Public Sub loadAdministrativeUsers()
     Next i
     
     ' RolesMasters
-    buf = val(ServerIni.GetValue("INIT", "RolesMasters"))
+    buf = val(Lector.GetValue("INIT", "RolesMasters"))
         
     For i = 1 To buf
-        Name = UCase$(ServerIni.GetValue("RolesMasters", "RM" & i))
+        Name = UCase$(Lector.GetValue("RolesMasters", "RM" & i))
         
         If Left$(Name, 1) = "*" Or Left$(Name, 1) = "+" Then Name = Right$(Name, Len(Name) - 1)
         
@@ -250,7 +249,8 @@ Public Sub loadAdministrativeUsers()
         Call Administradores.ChangeValue("RM", Name, "1")
     Next i
     
-    Set ServerIni = Nothing
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Los Administradores/Dioses/Gms se han cargado correctamente."
 
@@ -359,16 +359,13 @@ Public Sub CargarHechizos()
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando Hechizos."
     
     Dim Hechizo As Integer
-
-    Dim Leer    As clsIniManager
-
-    Set Leer = New clsIniManager
     
-    Call Leer.Initialize(DatPath & "Hechizos.dat")
+    'Abrimos el archivo.
+    Set Lector = New clsIniManager
+    Call Lector.Initialize(DatPath & "Hechizos.dat")
     
     'obtiene el numero de hechizos
-    NumeroHechizos = val(Leer.GetValue("INIT", "NumeroHechizos"))
-    
+    NumeroHechizos = val(Lector.GetValue("INIT", "NumeroHechizos"))
     ReDim Hechizos(1 To NumeroHechizos) As tHechizo
     
     frmCargando.cargar.min = 0
@@ -379,98 +376,99 @@ Public Sub CargarHechizos()
     For Hechizo = 1 To NumeroHechizos
 
         With Hechizos(Hechizo)
-            '.Nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-            '.desc = Leer.GetValue("Hechizo" & Hechizo, "Desc")
-            '.PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
+            '.Nombre = Lector.GetValue("Hechizo" & Hechizo, "Nombre")
+            '.desc = Lector.GetValue("Hechizo" & Hechizo, "Desc")
+            '.PalabrasMagicas = Lector.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
             
-            '.HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
-            '.TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
-            '.PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
+            '.HechizeroMsg = Lector.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
+            '.TargetMsg = Lector.GetValue("Hechizo" & Hechizo, "TargetMsg")
+            '.PropioMsg = Lector.GetValue("Hechizo" & Hechizo, "PropioMsg")
             
-            .Tipo = val(Leer.GetValue("Hechizo" & Hechizo, "Tipo"))
-            .WAV = val(Leer.GetValue("Hechizo" & Hechizo, "WAV"))
-            .FXgrh = val(Leer.GetValue("Hechizo" & Hechizo, "Fxgrh"))
+            .Tipo = val(Lector.GetValue("Hechizo" & Hechizo, "Tipo"))
+            .WAV = val(Lector.GetValue("Hechizo" & Hechizo, "WAV"))
+            .FXgrh = val(Lector.GetValue("Hechizo" & Hechizo, "Fxgrh"))
             
-            .loops = val(Leer.GetValue("Hechizo" & Hechizo, "Loops"))
+            .loops = val(Lector.GetValue("Hechizo" & Hechizo, "Loops"))
             
-            '    .Resis = val(Leer.GetValue("Hechizo" & Hechizo, "Resis"))
+            '.Resis = val(Lector.GetValue("Hechizo" & Hechizo, "Resis"))
             
-            .SubeHP = val(Leer.GetValue("Hechizo" & Hechizo, "SubeHP"))
-            .MinHp = val(Leer.GetValue("Hechizo" & Hechizo, "MinHP"))
-            .MaxHp = val(Leer.GetValue("Hechizo" & Hechizo, "MaxHP"))
+            .SubeHP = val(Lector.GetValue("Hechizo" & Hechizo, "SubeHP"))
+            .MinHp = val(Lector.GetValue("Hechizo" & Hechizo, "MinHP"))
+            .MaxHp = val(Lector.GetValue("Hechizo" & Hechizo, "MaxHP"))
             
-            .SubeMana = val(Leer.GetValue("Hechizo" & Hechizo, "SubeMana"))
-            .MiMana = val(Leer.GetValue("Hechizo" & Hechizo, "MinMana"))
-            .MaMana = val(Leer.GetValue("Hechizo" & Hechizo, "MaxMana"))
+            .SubeMana = val(Lector.GetValue("Hechizo" & Hechizo, "SubeMana"))
+            .MiMana = val(Lector.GetValue("Hechizo" & Hechizo, "MinMana"))
+            .MaMana = val(Lector.GetValue("Hechizo" & Hechizo, "MaxMana"))
             
-            .SubeSta = val(Leer.GetValue("Hechizo" & Hechizo, "SubeSta"))
-            .MinSta = val(Leer.GetValue("Hechizo" & Hechizo, "MinSta"))
-            .MaxSta = val(Leer.GetValue("Hechizo" & Hechizo, "MaxSta"))
+            .SubeSta = val(Lector.GetValue("Hechizo" & Hechizo, "SubeSta"))
+            .MinSta = val(Lector.GetValue("Hechizo" & Hechizo, "MinSta"))
+            .MaxSta = val(Lector.GetValue("Hechizo" & Hechizo, "MaxSta"))
             
-            .SubeHam = val(Leer.GetValue("Hechizo" & Hechizo, "SubeHam"))
-            .MinHam = val(Leer.GetValue("Hechizo" & Hechizo, "MinHam"))
-            .MaxHam = val(Leer.GetValue("Hechizo" & Hechizo, "MaxHam"))
+            .SubeHam = val(Lector.GetValue("Hechizo" & Hechizo, "SubeHam"))
+            .MinHam = val(Lector.GetValue("Hechizo" & Hechizo, "MinHam"))
+            .MaxHam = val(Lector.GetValue("Hechizo" & Hechizo, "MaxHam"))
             
-            .SubeSed = val(Leer.GetValue("Hechizo" & Hechizo, "SubeSed"))
-            .MinSed = val(Leer.GetValue("Hechizo" & Hechizo, "MinSed"))
-            .MaxSed = val(Leer.GetValue("Hechizo" & Hechizo, "MaxSed"))
+            .SubeSed = val(Lector.GetValue("Hechizo" & Hechizo, "SubeSed"))
+            .MinSed = val(Lector.GetValue("Hechizo" & Hechizo, "MinSed"))
+            .MaxSed = val(Lector.GetValue("Hechizo" & Hechizo, "MaxSed"))
             
-            .SubeAgilidad = val(Leer.GetValue("Hechizo" & Hechizo, "SubeAG"))
-            .MinAgilidad = val(Leer.GetValue("Hechizo" & Hechizo, "MinAG"))
-            .MaxAgilidad = val(Leer.GetValue("Hechizo" & Hechizo, "MaxAG"))
+            .SubeAgilidad = val(Lector.GetValue("Hechizo" & Hechizo, "SubeAG"))
+            .MinAgilidad = val(Lector.GetValue("Hechizo" & Hechizo, "MinAG"))
+            .MaxAgilidad = val(Lector.GetValue("Hechizo" & Hechizo, "MaxAG"))
             
-            .SubeFuerza = val(Leer.GetValue("Hechizo" & Hechizo, "SubeFU"))
-            .MinFuerza = val(Leer.GetValue("Hechizo" & Hechizo, "MinFU"))
-            .MaxFuerza = val(Leer.GetValue("Hechizo" & Hechizo, "MaxFU"))
+            .SubeFuerza = val(Lector.GetValue("Hechizo" & Hechizo, "SubeFU"))
+            .MinFuerza = val(Lector.GetValue("Hechizo" & Hechizo, "MinFU"))
+            .MaxFuerza = val(Lector.GetValue("Hechizo" & Hechizo, "MaxFU"))
             
-            .SubeCarisma = val(Leer.GetValue("Hechizo" & Hechizo, "SubeCA"))
-            .MinCarisma = val(Leer.GetValue("Hechizo" & Hechizo, "MinCA"))
-            .MaxCarisma = val(Leer.GetValue("Hechizo" & Hechizo, "MaxCA"))
+            .SubeCarisma = val(Lector.GetValue("Hechizo" & Hechizo, "SubeCA"))
+            .MinCarisma = val(Lector.GetValue("Hechizo" & Hechizo, "MinCA"))
+            .MaxCarisma = val(Lector.GetValue("Hechizo" & Hechizo, "MaxCA"))
             
-            .Invisibilidad = val(Leer.GetValue("Hechizo" & Hechizo, "Invisibilidad"))
-            .Paraliza = val(Leer.GetValue("Hechizo" & Hechizo, "Paraliza"))
-            .Inmoviliza = val(Leer.GetValue("Hechizo" & Hechizo, "Inmoviliza"))
-            .RemoverParalisis = val(Leer.GetValue("Hechizo" & Hechizo, "RemoverParalisis"))
-            .RemoverEstupidez = val(Leer.GetValue("Hechizo" & Hechizo, "RemoverEstupidez"))
-            .RemueveInvisibilidadParcial = val(Leer.GetValue("Hechizo" & Hechizo, "RemueveInvisibilidadParcial"))
+            .Invisibilidad = val(Lector.GetValue("Hechizo" & Hechizo, "Invisibilidad"))
+            .Paraliza = val(Lector.GetValue("Hechizo" & Hechizo, "Paraliza"))
+            .Inmoviliza = val(Lector.GetValue("Hechizo" & Hechizo, "Inmoviliza"))
+            .RemoverParalisis = val(Lector.GetValue("Hechizo" & Hechizo, "RemoverParalisis"))
+            .RemoverEstupidez = val(Lector.GetValue("Hechizo" & Hechizo, "RemoverEstupidez"))
+            .RemueveInvisibilidadParcial = val(Lector.GetValue("Hechizo" & Hechizo, "RemueveInvisibilidadParcial"))
             
-            .CuraVeneno = val(Leer.GetValue("Hechizo" & Hechizo, "CuraVeneno"))
-            .Envenena = val(Leer.GetValue("Hechizo" & Hechizo, "Envenena"))
-            .Maldicion = val(Leer.GetValue("Hechizo" & Hechizo, "Maldicion"))
-            .RemoverMaldicion = val(Leer.GetValue("Hechizo" & Hechizo, "RemoverMaldicion"))
-            .Bendicion = val(Leer.GetValue("Hechizo" & Hechizo, "Bendicion"))
-            .Revivir = val(Leer.GetValue("Hechizo" & Hechizo, "Revivir"))
+            .CuraVeneno = val(Lector.GetValue("Hechizo" & Hechizo, "CuraVeneno"))
+            .Envenena = val(Lector.GetValue("Hechizo" & Hechizo, "Envenena"))
+            .Maldicion = val(Lector.GetValue("Hechizo" & Hechizo, "Maldicion"))
+            .RemoverMaldicion = val(Lector.GetValue("Hechizo" & Hechizo, "RemoverMaldicion"))
+            .Bendicion = val(Lector.GetValue("Hechizo" & Hechizo, "Bendicion"))
+            .Revivir = val(Lector.GetValue("Hechizo" & Hechizo, "Revivir"))
             
-            .Ceguera = val(Leer.GetValue("Hechizo" & Hechizo, "Ceguera"))
-            .Estupidez = val(Leer.GetValue("Hechizo" & Hechizo, "Estupidez"))
+            .Ceguera = val(Lector.GetValue("Hechizo" & Hechizo, "Ceguera"))
+            .Estupidez = val(Lector.GetValue("Hechizo" & Hechizo, "Estupidez"))
             
-            .Warp = val(Leer.GetValue("Hechizo" & Hechizo, "Warp"))
+            .Warp = val(Lector.GetValue("Hechizo" & Hechizo, "Warp"))
             
-            .Invoca = val(Leer.GetValue("Hechizo" & Hechizo, "Invoca"))
-            .NumNpc = val(Leer.GetValue("Hechizo" & Hechizo, "NumNpc"))
-            .cant = val(Leer.GetValue("Hechizo" & Hechizo, "Cant"))
-            .Mimetiza = val(Leer.GetValue("hechizo" & Hechizo, "Mimetiza"))
+            .Invoca = val(Lector.GetValue("Hechizo" & Hechizo, "Invoca"))
+            .NumNpc = val(Lector.GetValue("Hechizo" & Hechizo, "NumNpc"))
+            .cant = val(Lector.GetValue("Hechizo" & Hechizo, "Cant"))
+            .Mimetiza = val(Lector.GetValue("hechizo" & Hechizo, "Mimetiza"))
             
-            '    .Materializa = val(Leer.GetValue("Hechizo" & Hechizo, "Materializa"))
-            '    .ItemIndex = val(Leer.GetValue("Hechizo" & Hechizo, "ItemIndex"))
+            '.Materializa = val(Lector.GetValue("Hechizo" & Hechizo, "Materializa"))
+            '.ItemIndex = val(Lector.GetValue("Hechizo" & Hechizo, "ItemIndex"))
             
-            .MinSkill = val(Leer.GetValue("Hechizo" & Hechizo, "MinSkill"))
-            .ManaRequerido = val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
+            .MinSkill = val(Lector.GetValue("Hechizo" & Hechizo, "MinSkill"))
+            .ManaRequerido = val(Lector.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
             
             'Barrin 30/9/03
-            .StaRequerido = val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
+            .StaRequerido = val(Lector.GetValue("Hechizo" & Hechizo, "StaRequerido"))
             
-            .Target = val(Leer.GetValue("Hechizo" & Hechizo, "Target"))
+            .Target = val(Lector.GetValue("Hechizo" & Hechizo, "Target"))
             frmCargando.cargar.Value = frmCargando.cargar.Value + 1
             
-            .NeedStaff = val(Leer.GetValue("Hechizo" & Hechizo, "NeedStaff"))
-            .StaffAffected = CBool(val(Leer.GetValue("Hechizo" & Hechizo, "StaffAffected")))
+            .NeedStaff = val(Lector.GetValue("Hechizo" & Hechizo, "NeedStaff"))
+            .StaffAffected = CBool(val(Lector.GetValue("Hechizo" & Hechizo, "StaffAffected")))
 
         End With
 
     Next Hechizo
     
-    Set Leer = Nothing
+    'Cerramos el archivo y liberamos los recursos.
+    Set Lector = Nothing
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Los hechizos se han cargado con exito."
     
