@@ -10706,7 +10706,7 @@ Alineacion=0
 Comercia=0
 BackUp=0
 
-[NPC930]
+[NPC718]
 Name=Titan de Fuego
 NpcType=0
 Head=0
@@ -10737,7 +10737,7 @@ NROITEMS=2
 Drop1=12-100000 'Oro
 Drop2=1147-1 'Espada de Fuego
 
-[NPC931]
+[NPC719]
 Name=Momia Guerrera
 NpcType=0
 Head=0
@@ -10763,7 +10763,7 @@ BackUp=0
 NROITEMS=1
 Drop1=12-10000 'Oro
 
-[NPC932]
+[NPC720]
 Name=Momia Faraon
 NpcType=0
 Head=0
@@ -10789,7 +10789,7 @@ BackUp=0
 NROITEMS=1
 Drop1=12-100000 'Oro
 
-[NPC933]
+[NPC721]
 Name=Titan de Tierra
 NpcType=0
 Head=0
@@ -10820,7 +10820,7 @@ NROITEMS=2
 Drop1=12-100000 'Oro
 Drop2=1141-1 'Espada de las almas
 
-[NPC934]
+[NPC722]
 Name=Titan de Agua
 NpcType=0
 Head=0
@@ -10852,7 +10852,7 @@ NROITEMS=2
 Drop1=12-100000 'Oro
 Drop2=1156-1 'Espada del fuego eterno
 
-[NPC935]
+[NPC723]
 Name=Gran Dragon Negro
 NpcType=6
 Head=0
@@ -10887,7 +10887,7 @@ Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
 Drop4=1158-1 'Montura de Dragon Negro
 
-[NPC936]
+[NPC724]
 Name=Gran Dragon Dorado
 NpcType=6
 Head=0
@@ -10922,7 +10922,7 @@ Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
 Drop4=1157-1 'Montura de Gran Dragon Dorado
 
-[NPC937] 'Rick
+[NPC725] 'Rick
 Name=Pickle Rick
 NpcType=0
 Head=0
