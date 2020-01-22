@@ -1745,6 +1745,7 @@ Sub LoadSini()
     
     'Misc
     Puerto = val(Lector.GetValue("INIT", "StartPort"))
+    LastSockListen = val(Lector.GetValue("INIT", "LastSockListen"))
     HideMe = CBool(Lector.GetValue("INIT", "Hide"))
     AllowMultiLogins = CBool(val(Lector.GetValue("INIT", "AllowMultiLogins")))
     IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
