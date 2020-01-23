@@ -436,20 +436,22 @@ Public Sub CopyUser(ByVal UserName As String, ByVal newName As String)
 
 End Sub
 
-Public Sub BanIpAgrega(ByVal ip As String)
+Public Sub BanIpAgrega(ByVal IP As String)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    BanIps.Add ip
-    
+    Call BanIps.Add(IP)
     Call BanIpGuardar
-
+    
+    ' Agrego la regla al firewall para que bloquee la IP
+    Call Shell("netsh.exe advfirewall firewall add rule name=""Baneo de IP " & IP & """ dir=in protocol=any action=block remoteip=" & IP)
+    
 End Sub
 
-Public Function BanIpBuscar(ByVal ip As String) As Long
+Public Function BanIpBuscar(ByVal IP As String) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -457,14 +459,13 @@ Public Function BanIpBuscar(ByVal ip As String) As Long
     '***************************************************
 
     Dim Dale  As Boolean
-
     Dim LoopC As Long
     
     Dale = True
     LoopC = 1
 
     Do While LoopC <= BanIps.Count And Dale
-        Dale = (BanIps.Item(LoopC) <> ip)
+        Dale = (BanIps.Item(LoopC) <> IP)
         LoopC = LoopC + 1
     Loop
     
@@ -477,7 +478,7 @@ Public Function BanIpBuscar(ByVal ip As String) As Long
 
 End Function
 
-Public Function BanIpQuita(ByVal ip As String) As Boolean
+Public Function BanIpQuita(ByVal IP As String) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -488,11 +489,15 @@ Public Function BanIpQuita(ByVal ip As String) As Boolean
 
     Dim n As Long
     
-    n = BanIpBuscar(ip)
+    n = BanIpBuscar(IP)
 
     If n > 0 Then
-        BanIps.Remove n
-        BanIpGuardar
+        Call BanIps.Remove(n)
+        Call BanIpGuardar
+        
+        ' Agrego la regla al firewall para que borre la regla de la IP a desbanear.
+        Call Shell("netsh.exe advfirewall firewall delete rule name=""Baneo de IP " & IP & """ dir=in protocol=any action=block remoteip=" & IP)
+        
         BanIpQuita = True
     Else
         BanIpQuita = False
