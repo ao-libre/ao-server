@@ -175,8 +175,8 @@ End Enum
 
 Private Enum ClientPacketID
 
-    LoginExistingChar = 1     'OLOGIN = 
-    ThrowDices = 2            'TIRDAD = 
+    LoginExistingChar = 1     'OLOGIN
+    ThrowDices = 2            'TIRDAD
     LoginNewChar = 3          'NLOGIN
     Talk = 4                  ';
     Yell = 5                  '-
