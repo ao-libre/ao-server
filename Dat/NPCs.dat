@@ -751,7 +751,7 @@ BackUp=1
 [NPC115] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
 Name=SC
 NpcType=0
-Desc=AQUI OBTENDRÁS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
 Head=0
 Heading=3
 Body=69
@@ -783,7 +783,7 @@ BackUp=1
 [NPC160] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
 Name=SC
 NpcType=0
-Desc=AQUI OBTENDRÁS TU ARMADURA LEGIONARIA!
+Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
 Head=318
 Heading=3
 Body=177
@@ -1726,7 +1726,7 @@ NROITEMS=5
 Obj1=30-1000 'Armadura de Cuero
 Obj2=529-1000 'Armadura de Cuero (H/E/EO-M)
 Obj3=668-1000 'Armadura de Cuero (E/G)
-Obj4=1001-1000 'Casco de Águila
+Obj4=1001-1000 'Casco de Aguila
 Obj5=1002-1000 'Casco de Lobo
 BackUp=1
 
@@ -1961,7 +1961,7 @@ Obj3=668-1000 'Armadura de Cuero (E/G)
 Obj4=359-1000 'Cota de Mallas
 Obj5=499-1000 'Cota de Mallas (H/E/EO-M)
 Obj6=667-1000 'Cota de Mallas (E/G)
-Obj7=1001-1000 'Casco de Águila
+Obj7=1001-1000 'Casco de Aguila
 Obj8=1002-1000 'Casco de Lobo
 BackUp=1
 
@@ -4375,7 +4375,7 @@ BackUp=0
 #############################################
 
 [NPC91]
-Name=Gran Águila
+Name=Gran Aguila
 NpcType=0
 Head=0
 Heading=3
@@ -5377,7 +5377,7 @@ Drop5=183-1 'Llave Fuerte
 ############################################
 
 [NPC525]
-Name=Águila
+Name=Aguila
 NpcType=0
 Head=0
 Heading=3
@@ -6778,7 +6778,7 @@ Drop4=475-1 'Galera
 ############################################
 
 [NPC573]
-Name=Árbol Encantado
+Name=Arbol Encantado
 NpcType=0
 Desc=Odio los leñadores!
 Head=0
@@ -6843,7 +6843,7 @@ Drop5=58-10000 'Leña
 ############################################
 
 [NPC575] 'Ent de movimiento camuflado
-Name=Árbol de Jungla
+Name=Arbol de Jungla
 NpcType=0
 Head=0
 Heading=3
@@ -6876,7 +6876,7 @@ Drop3=696-5 'Laud Magico
 ############################################
 
 [NPC576]
-Name=Árbol de Jungla
+Name=Arbol de Jungla
 NpcType=0
 Head=0
 Heading=4
@@ -8088,7 +8088,7 @@ Drop5=665-6 'Arcos de Cazador
 ############################################
 
 [NPC615]
-Name=Árbol capturador de Almas
+Name=Arbol capturador de Almas
 NpcType=0
 Head=0
 Heading=3
