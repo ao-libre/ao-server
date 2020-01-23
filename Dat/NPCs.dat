@@ -9102,7 +9102,7 @@ Drop5=400-1 'Vara de mago
 ############################################
 
 [NPC700]
-Name=NPC1
+Name=Chupavida
 NpcType=0
 Head=0
 Heading=3
@@ -9135,7 +9135,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC701]
-Name=NPC2
+Name=Lobo Zombie
 NpcType=0
 Head=0
 Heading=3
@@ -9168,7 +9168,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC702]
-Name=NPC3
+Name=Lobo de las nieves
 NpcType=0
 Head=0
 Heading=3
@@ -9202,7 +9202,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC703]
-Name=NPC4
+Name=Lobo oscuro
 NpcType=0
 Head=0
 Heading=3
@@ -9235,7 +9235,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC704]
-Name=NPC5
+Name=Guardia de Sefiroth
 NpcType=0
 Head=0
 Heading=3
@@ -9267,7 +9267,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC705]
-Name=NPC6
+Name=Araña oscura
 NpcType=0
 Head=0
 Heading=3
@@ -9298,7 +9298,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC706]
-Name=NPC7
+Name=Viuda negra
 NpcType=0
 Head=0
 Heading=3
@@ -9330,7 +9330,7 @@ Drop5=495-2 'Armaduras Escarlata
 
 
 [NPC707]
-Name=NPC8
+Name=Monstruo verde
 NpcType=0
 Head=0
 Heading=3
@@ -9361,7 +9361,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC708]
-Name=NPC9
+Name=Bicharraco mutante
 NpcType=0
 Head=0
 Heading=3
@@ -9392,7 +9392,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC709]
-Name=NPC10
+Name=Hombre lobo
 NpcType=0
 Head=0
 Heading=3
@@ -9423,7 +9423,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC710]
-Name=NPC11
+Name=Demonio infernal
 NpcType=0
 Head=0
 Heading=3
@@ -9454,7 +9454,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC711]
-Name=NPC11
+Name=Golem de plata
 NpcType=0
 Head=0
 Heading=3
@@ -9485,7 +9485,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC712]
-Name=NPC12
+Name=Golem de oro
 NpcType=0
 Head=0
 Heading=3
@@ -9516,7 +9516,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC713]
-Name=NPC13
+Name=Golem de bronce
 NpcType=0
 Head=0
 Heading=3
@@ -9547,7 +9547,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC714]
-Name=NPC14
+Name=Jefe orco
 NpcType=0
 Head=0
 Heading=3
