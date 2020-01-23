@@ -6058,7 +6058,6 @@ MaxDef=10
 MinDef=6
 Valor=3075
 Crucial=1
-CP1=GUERRERO
 
 [OBJ513]
 Name=Vestido de Bruja (H/E/EO-M)
@@ -6071,7 +6070,6 @@ MaxDef=20
 MinDef=15
 Valor=10500
 Crucial=1
-CP1=GUERRERO
 
 [OBJ514]
 Name=Vestido de Bruja Especial (H/E/EO-M)
@@ -6084,8 +6082,6 @@ MaxDef=26
 MinDef=19
 Valor=15200
 Crucial=1
-CP1=GUERRERO
-CP2=MAGO
 
 [OBJ515]
 Name=Ropa Legendaria
