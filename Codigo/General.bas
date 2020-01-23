@@ -375,12 +375,17 @@ Sub Main()
     tInicioServer = GetTickCount() And &H7FFFFFFF
 
     'Aca ponemos la ip y puerto en el label del frmMain
-    frmMain.lblIp.Caption = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/") & ":" & Puerto
+    Dim IpPublicaServidor As String
+    IpPublicaServidor = frmMain.Inet1.OpenURL("http://ip1.dynupdate.no-ip.com:8245/")
+    frmMain.lblIp.Caption = IpPublicaServidor & ":" & Puerto
 
-    Dim MundoSeleccionado As String
-        MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
-    
-    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado
+    MundoSeleccionado = GetVar(App.Path & "\Dat\Map.dat", "INIT", "MapPath")
+    NombreServidor = GetVar(App.Path & "\Server.ini", "INIT", "Nombre")
+
+    frmMain.Caption = GetVersionOfTheServer() & " - Mundo Seleccionado: " & MundoSeleccionado & " - " & NombreServidor
+
+    'Esta descripcion de servidor se muestra en la lista de servers.
+    DescripcionServidor = GetVar(App.Path & "\Server.ini", "INIT", "Descripcion")
     
     'Este ultimo es para saber siempre los records en el frmMain
     frmMain.txtRecordOnline.Text = RecordUsuariosOnline
