@@ -3163,11 +3163,6 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
             Call ToggleMonturaBody(Userindex)
             Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
 
-            .Char.Head = .OrigChar.Head
-            .Char.CascoAnim = .Char.CascoAnim
-            .Char.ShieldAnim = NingunEscudo
-            .Char.WeaponAnim = NingunArma
-
             '  Comienza a equitar
             .flags.Equitando = 1
 

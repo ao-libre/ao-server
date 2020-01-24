@@ -310,7 +310,6 @@ Public Sub ToggleMonturaBody(ByVal Userindex As Integer)
         .Char.body = ObjData(.Invent.MonturaObjIndex).Ropaje
         .Char.ShieldAnim = NingunEscudo
         .Char.WeaponAnim = NingunArma
-        .Char.CascoAnim = NingunCasco
 
     End With
 
