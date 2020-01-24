@@ -392,7 +392,7 @@ Sub Main()
     
     'Invocamos al Clan Pretoriano en su respectivo mapa.
     'Activando su respawn automatico.
-    If Not ClanPretoriano(ePretorianType.Default).SpawnClan(MAPA_PRETORIANO, PRETORIANO_X, PRETORIANO_Y, ePretorianType.Default, True) Then
+    If Not ClanPretoriano(ePretorianType.Default).SpawnClan(MAPA_PRETORIANO, PRETORIANO_X, PRETORIANO_Y, ePretorianType.Default) Then
         Call LogError("No se pudo invocar al Clan Pretoriano.")
     End If
 
