@@ -1671,8 +1671,12 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         .Stats.MinSta = 0
         .flags.AtacadoPorUser = 0
         .flags.Envenenado = 0
-        .flags.Equitando = 0
         .flags.Muerto = 1
+
+        If .flags.Equitando = 1 Then
+            Call WriteEquitandoToggle(Userindex)
+            Call UnmountMontura(Userindex)
+        End If
         
         .Counters.Trabajando = 0
         
