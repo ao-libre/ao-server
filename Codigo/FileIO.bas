@@ -1533,19 +1533,13 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     On Error GoTo errh
 
     Dim hFile     As Integer
-
     Dim X         As Long
-
     Dim Y         As Long
-
     Dim ByFlags   As Byte
-
     Dim npcfile   As String
-
+    
     Dim Leer      As clsIniManager
-
     Dim MapReader As clsByteBuffer
-
     Dim InfReader As clsByteBuffer
 
     Dim Buff()    As Byte
@@ -1557,24 +1551,21 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     npcfile = DatPath & "NPCs.dat"
     
     hFile = FreeFile
-
-    Open MAPFl & ".map" For Binary As #hFile
-    Seek hFile, 1
-
-    ReDim Buff(LOF(hFile) - 1) As Byte
     
-    Get #hFile, , Buff
+    'Leemos el archivo ".MAP"
+    Open MAPFl & ".map" For Binary As #hFile
+        Seek hFile, 1
+        ReDim Buff(LOF(hFile) - 1) As Byte
+        Get #hFile, , Buff
     Close hFile
     
     Call MapReader.initializeReader(Buff)
 
-    'inf
+    'Leemos el archivo ".INF"
     Open MAPFl & ".inf" For Binary As #hFile
-    Seek hFile, 1
-
-    ReDim Buff(LOF(hFile) - 1) As Byte
-    
-    Get #hFile, , Buff
+        Seek hFile, 1
+        ReDim Buff(LOF(hFile) - 1) As Byte
+        Get #hFile, , Buff
     Close hFile
     
     Call InfReader.initializeReader(Buff)
@@ -1582,9 +1573,11 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     'map Header
     MapInfo(Map).MapVersion = MapReader.getInteger
     
-    MiCabecera.Desc = MapReader.getString(Len(MiCabecera.Desc))
-    MiCabecera.crc = MapReader.getLong
-    MiCabecera.MagicWord = MapReader.getLong
+    With MiCabecera
+        .Desc = MapReader.getString(Len(MiCabecera.Desc))
+        .crc = MapReader.getLong
+        .MagicWord = MapReader.getLong
+    End With
     
     Call MapReader.getDouble
 
@@ -1600,17 +1593,18 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
                 ByFlags = MapReader.getByte
 
                 If ByFlags And 1 Then .Blocked = 1
-
-                .Graphic(1) = MapReader.getInteger
+                
+                'Layer 1
+                .Graphic(1) = MapReader.getLong
 
                 'Layer 2 used?
-                If ByFlags And 2 Then .Graphic(2) = MapReader.getInteger
+                If ByFlags And 2 Then .Graphic(2) = MapReader.getLong
 
                 'Layer 3 used?
-                If ByFlags And 4 Then .Graphic(3) = MapReader.getInteger
+                If ByFlags And 4 Then .Graphic(3) = MapReader.getLong
 
                 'Layer 4 used?
-                If ByFlags And 8 Then .Graphic(4) = MapReader.getInteger
+                If ByFlags And 8 Then .Graphic(4) = MapReader.getLong
 
                 'Trigger used?
                 If ByFlags And 16 Then .trigger = MapReader.getInteger
@@ -1622,7 +1616,6 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
                     .TileExit.Map = InfReader.getInteger
                     .TileExit.X = InfReader.getInteger
                     .TileExit.Y = InfReader.getInteger
-
                 End If
 
                 If ByFlags And 2 Then

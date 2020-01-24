@@ -18882,7 +18882,7 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
 Public Sub WriteObjectCreate(ByVal Userindex As Integer, _
-                             ByVal GrhIndex As Integer, _
+                             ByVal GrhIndex As Long, _
                              ByVal X As Byte, _
                              ByVal Y As Byte)
 
@@ -21934,7 +21934,7 @@ End Function
 ' @return   The formated message ready to be writen as is on outgoing buffers.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, _
+Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Long, _
                                            ByVal X As Byte, _
                                            ByVal Y As Byte) As String
 

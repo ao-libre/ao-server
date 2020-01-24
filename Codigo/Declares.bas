@@ -983,7 +983,7 @@ End Type
 Public Type FXdata
 
     Nombre As String
-    GrhIndex As Integer
+    GrhIndex As Long
     Delay As Integer
 
 End Type
@@ -1013,7 +1013,7 @@ Public Type ObjData
     
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
-    GrhIndex As Integer ' Indice del grafico que representa el obj
+    GrhIndex As Long ' Indice del grafico que representa el obj
     GrhSecundario As Integer
     
     'Solo contenedores
@@ -1840,7 +1840,7 @@ End Type
 Public Type MapBlock
 
     Blocked As Byte
-    Graphic(1 To 4) As Integer
+    Graphic(1 To 4) As Long
     Userindex As Integer
     NpcIndex As Integer
     ObjInfo As obj
