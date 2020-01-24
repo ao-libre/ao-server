@@ -2082,7 +2082,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         Call TirarTodosLosItems(UserIndex)
         
@@ -2225,7 +2225,7 @@ Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         For i = 1 To UserList(UserIndex).CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
@@ -2273,7 +2273,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         For i = MAX_NORMAL_INVENTORY_SLOTS + 1 To .CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex

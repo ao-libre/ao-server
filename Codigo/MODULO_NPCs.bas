@@ -571,7 +571,9 @@ Private Function TestSpawnTrigger(Pos As WorldPos, _
     '***************************************************
     
     If LegalPos(Pos.Map, Pos.x, Pos.Y, PuedeAgua) Then
-        TestSpawnTrigger = MapData(Pos.Map, Pos.x, Pos.Y).trigger <> 3 And MapData(Pos.Map, Pos.x, Pos.Y).trigger <> 2 And MapData(Pos.Map, Pos.x, Pos.Y).trigger <> 1
+        TestSpawnTrigger = MapData(Pos.Map, Pos.x, Pos.Y).trigger <> eTrigger.POSINVALIDA And _
+                           MapData(Pos.Map, Pos.x, Pos.Y).trigger <> eTrigger.CASA And _
+                           MapData(Pos.Map, Pos.x, Pos.Y).trigger <> eTrigger.BAJOTECHO
 
     End If
     

@@ -293,7 +293,7 @@ End Enum
 '
 ' @param NADA nada
 ' @param BAJOTECHO bajo techo
-' @param trigger_2 ???
+' @param CASA dentro de una casa de las que se compran, para evitar limpiar items
 ' @param POSINVALIDA los npcs no pueden pisar tiles con este trigger
 ' @param ZONASEGURA no se puede robar o pelear desde este trigger
 ' @param ANTIPIQUETE
@@ -303,7 +303,7 @@ Public Enum eTrigger
 
     NADA = 0
     BAJOTECHO = 1
-    trigger_2 = 2
+    CASA = 2
     POSINVALIDA = 3
     ZONASEGURA = 4
     ANTIPIQUETE = 5
