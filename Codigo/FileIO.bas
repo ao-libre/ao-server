@@ -638,11 +638,11 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 
                 Call MapWriter.putByte(ByFlags)
                 
-                Call MapWriter.putInteger(.Graphic(1))
+                Call MapWriter.putLong(.Graphic(1))
                 
                 For LoopC = 2 To 4
 
-                    If .Graphic(LoopC) Then Call MapWriter.putInteger(.Graphic(LoopC))
+                    If .Graphic(LoopC) Then Call MapWriter.putLong(.Graphic(LoopC))
                 Next LoopC
                 
                 If .trigger Then Call MapWriter.putInteger(CInt(.trigger))

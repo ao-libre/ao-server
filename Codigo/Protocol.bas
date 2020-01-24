@@ -19818,7 +19818,7 @@ Public Sub WriteShowSignal(ByVal Userindex As Integer, ByVal ObjIndex As Integer
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.ShowSignal)
         Call .WriteASCIIString(ObjData(ObjIndex).texto)
-        Call .WriteInteger(ObjData(ObjIndex).GrhSecundario)
+        Call .WriteLong(ObjData(ObjIndex).GrhSecundario)
 
     End With
 

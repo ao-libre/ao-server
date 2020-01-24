@@ -1014,7 +1014,7 @@ Public Type ObjData
     OBJType As eOBJType 'Tipo enum que determina cuales son las caract del obj
     
     GrhIndex As Long ' Indice del grafico que representa el obj
-    GrhSecundario As Integer
+    GrhSecundario As Long
     
     'Solo contenedores
     MAXITEMS As Integer
