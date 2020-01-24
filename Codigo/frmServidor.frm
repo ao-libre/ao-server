@@ -556,7 +556,6 @@ End Sub
 Private Sub cmdUnbanAllIps_Click()
 
     Dim i        As Long, n As Long
-    
     Dim sENtrada As String
     
     sENtrada = InputBox("Escribe ""estoy DE acuerdo"" sin comillas y con distincion de mayusculas minusculas para desbanear a todos los personajes", "UnBan", "hola")
@@ -566,7 +565,7 @@ Private Sub cmdUnbanAllIps_Click()
         n = BanIps.Count
 
         For i = 1 To BanIps.Count
-            BanIps.Remove 1
+            Call BanIpQuita(BanIps(i))
         Next i
         
         MsgBox "Se han habilitado " & n & " ipes"
