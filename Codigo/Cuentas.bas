@@ -831,6 +831,10 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
     '***************************************************
     On Error GoTo ErrorHandler
 
+    Dim Account            As clsInitManager
+
+    Dim CharFile           As clsIniManager
+
     Dim i                  As Long
 
     Dim AccountHash        As String
@@ -841,31 +845,41 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
 
     Dim CurrentCharacter   As String
 
+    Set Account = New clsIniManager
+    Set CharFile = New clsIniManager
+
     AccountHash = GetVar(AccountPath & UCase$(UserName) & ".acc", "INIT", "Hash")
-    NumberOfCharacters = val(GetVar(AccountPath & AccountHash & ".ach", "INIT", "CantidadPersonajes"))
+    Call Account.Initialize(AccountPath & AccountHash & ".ach")
+    NumberOfCharacters = val(Account.GetValue("INIT", "CantidadPersonajes"))
 
     If NumberOfCharacters > 0 Then
         ReDim Characters(1 To NumberOfCharacters) As AccountUser
 
         For i = 1 To NumberOfCharacters
-            CurrentCharacter = GetVar(AccountPath & AccountHash & ".ach", "PERSONAJES", "Personaje" & i)
+            CurrentCharacter = Account.GetValue("PERSONAJES", "Personaje" & i)
+
+            Call CharFile.Initialize(CharPath & CurrentCharacter & ".chr")
+
             Characters(i).Name = CurrentCharacter
-            Characters(i).body = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Body"))
-            Characters(i).Head = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Head"))
-            Characters(i).weapon = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Arma"))
-            Characters(i).shield = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Escudo"))
-            Characters(i).helmet = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Casco"))
-            Characters(i).Class = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Clase"))
-            Characters(i).race = val(GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Raza"))
-            Characters(i).Map = CInt(ReadField(1, GetVar(CharPath & CurrentCharacter & ".chr", "INIT", "Position"), 45))
-            Characters(i).level = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "ELV"))
-            Characters(i).Gold = val(GetVar(CharPath & CurrentCharacter & ".chr", "STATS", "GLD"))
-            Characters(i).criminal = (val(GetVar(CharPath & CurrentCharacter & ".chr", "REP", "Promedio")) < 0)
-            Characters(i).dead = CBool(val(GetVar(CharPath & CurrentCharacter & ".chr", "FLAGS", "Muerto")))
+            Characters(i).body = val(CharFile.GetValue("INIT", "Body"))
+            Characters(i).Head = val(CharFile.GetValue("INIT", "Head"))
+            Characters(i).weapon = val(CharFile.GetValue("INIT", "Arma"))
+            Characters(i).shield = val(CharFile.GetValue("INIT", "Escudo"))
+            Characters(i).helmet = val(CharFile.GetValue("INIT", "Casco"))
+            Characters(i).Class = val(CharFile.GetValue("INIT", "Clase"))
+            Characters(i).race = val(CharFile.GetValue("INIT", "Raza"))
+            Characters(i).Map = val(ReadField(1, CharFile.GetValue("INIT", "Position"), 45))
+            Characters(i).level = val(CharFile.GetValue("STATS", "ELV"))
+            Characters(i).Gold = val(CharFile.GetValue("STATS", "GLD"))
+            Characters(i).criminal = (val(CharFile.GetValue("REP", "Promedio")) < 0)
+            Characters(i).dead = CBool(val(CharFile.GetValue("FLAGS", "Muerto")))
             Characters(i).gameMaster = EsGmChar(CurrentCharacter)
         Next i
 
     End If
+
+    Set Account = Nothing
+    Set CharFile = Nothing
 
     Call WriteUserAccountLogged(Userindex, UserName, AccountHash, NumberOfCharacters, Characters)
 

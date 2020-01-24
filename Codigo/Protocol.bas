@@ -23426,7 +23426,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         'Enviamos la cantidad de objs de recompensa
         Call .WriteByte(QuestList(QuestIndex).RewardOBJs)
 
-        If QuestList(QuestIndex).RequiredOBJs Then
+        If QuestList(QuestIndex).RewardOBJs Then
 
             'si hay objs entonces enviamos la lista
             For i = 1 To QuestList(QuestIndex).RewardOBJs
