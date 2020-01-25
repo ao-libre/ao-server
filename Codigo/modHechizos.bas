@@ -2802,7 +2802,7 @@ Public Sub DisNobAuBan(ByVal UserIndex As Integer, NoblePts As Long, BandidoPts 
     With UserList(UserIndex)
 
         'Si estamos en la arena no hacemos nada
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
             'pierdo nobleza...
