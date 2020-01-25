@@ -310,7 +310,6 @@ Public Sub ToggleMonturaBody(ByVal Userindex As Integer)
         .Char.body = ObjData(.Invent.MonturaObjIndex).Ropaje
         .Char.ShieldAnim = NingunEscudo
         .Char.WeaponAnim = NingunArma
-        .Char.CascoAnim = NingunCasco
 
     End With
 
@@ -1673,6 +1672,11 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         .flags.AtacadoPorUser = 0
         .flags.Envenenado = 0
         .flags.Muerto = 1
+
+        If .flags.Equitando = 1 Then
+            Call WriteEquitandoToggle(Userindex)
+            Call UnmountMontura(Userindex)
+        End If
         
         .Counters.Trabajando = 0
         
