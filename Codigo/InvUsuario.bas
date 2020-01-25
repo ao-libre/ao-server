@@ -1137,7 +1137,16 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
             Case eOBJType.otarmadura
 
-                If .flags.Navegando = 1 Then Exit Sub
+                If .flags.Navegando = 1 Then
+                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
+
+                'Parchesin para que no se saquen una armadura mientras estan en montura y dsp les queda el cuerpo de la armadura y velocidad de montura (Recox)
+                If .flags.Equitando = 1 Then
+                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas en tu montura.", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
                 
                 'Nos aseguramos que puede usarla
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And SexoPuedeUsarItem(UserIndex, ObjIndex, sMotivo) And CheckRazaUsaRopa(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
@@ -2082,7 +2091,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         Call TirarTodosLosItems(UserIndex)
         
@@ -2225,7 +2234,7 @@ Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         For i = 1 To UserList(UserIndex).CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
@@ -2273,7 +2282,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal UserIndex As Integer)
     
     With UserList(UserIndex)
 
-        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = 6 Then Exit Sub
+        If MapData(.Pos.Map, .Pos.x, .Pos.y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
         For i = MAX_NORMAL_INVENTORY_SLOTS + 1 To .CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex

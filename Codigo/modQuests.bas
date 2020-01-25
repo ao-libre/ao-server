@@ -490,26 +490,37 @@ Public Sub LoadQuestStats(ByVal Userindex As Integer, ByRef UserFile As clsIniMa
     'Carga las QuestStats del usuario.
     'Last modified: 28/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    Dim i      As Integer
+    Dim i           As Integer
 
-    Dim j      As Integer
+    Dim j           As Integer
 
-    Dim tmpStr As String
+    Dim tmpStr      As String
+
+    Dim Fields()    As String
  
     For i = 1 To MAXUSERQUESTS
 
         With UserList(Userindex).QuestStats.Quests(i)
             tmpStr = UserFile.GetValue("QUESTS", "Q" & i)
             
-            .QuestIndex = val(ReadField(1, tmpStr, 45))
+            ' Para evitar modificar TODOS los charfiles
+            If tmpStr = vbNullString Then
+                .QuestIndex = 0
 
-            If .QuestIndex Then
-                If QuestList(.QuestIndex).RequiredNPCs Then
-                    ReDim .NPCsKilled(1 To QuestList(.QuestIndex).RequiredNPCs)
-                    
-                    For j = 1 To QuestList(.QuestIndex).RequiredNPCs
-                        .NPCsKilled(j) = val(ReadField(j + 1, tmpStr, 45))
-                    Next j
+            Else
+                Fields = Split(tmpStr, "-")
+
+                .QuestIndex = val(Fields(0))
+
+                If .QuestIndex Then
+                    If QuestList(.QuestIndex).RequiredNPCs Then
+                        ReDim .NPCsKilled(1 To QuestList(.QuestIndex).RequiredNPCs)
+
+                        For j = 1 To QuestList(.QuestIndex).RequiredNPCs
+                            .NPCsKilled(j) = val(Fields(j))
+                        Next j
+
+                    End If
 
                 End If
 
@@ -522,14 +533,22 @@ Public Sub LoadQuestStats(ByVal Userindex As Integer, ByRef UserFile As clsIniMa
     With UserList(Userindex).QuestStats
         tmpStr = UserFile.GetValue("QUESTS", "QuestsDone")
         
-        .NumQuestsDone = val(ReadField(1, tmpStr, 45))
+        If tmpStr = vbNullString Then
+            .NumQuestsDone = 0
         
-        If .NumQuestsDone Then
-            ReDim .QuestsDone(1 To .NumQuestsDone)
+        Else
+            Fields = Split(tmpStr, "-")
 
-            For i = 1 To .NumQuestsDone
-                .QuestsDone(i) = val(ReadField(i + 1, tmpStr, 45))
-            Next i
+            .NumQuestsDone = val(Fields(0))
+
+            If .NumQuestsDone Then
+                ReDim .QuestsDone(1 To .NumQuestsDone)
+
+                For i = 1 To .NumQuestsDone
+                    .QuestsDone(i) = val(Fields(i))
+                Next i
+
+            End If
 
         End If
 
@@ -537,7 +556,7 @@ Public Sub LoadQuestStats(ByVal Userindex As Integer, ByRef UserFile As clsIniMa
                    
 End Sub
  
-Public Sub SaveQuestStats(ByVal Userindex As Integer, ByVal UserFile As String)
+Public Sub SaveQuestStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Guarda las QuestStats del usuario.
@@ -565,7 +584,7 @@ Public Sub SaveQuestStats(ByVal Userindex As Integer, ByVal UserFile As String)
 
             End If
         
-            Call WriteVar(UserFile, "QUESTS", "Q" & i, tmpStr)
+            Call UserFile.ChangeValue("QUESTS", "Q" & i, tmpStr)
 
         End With
 
@@ -582,7 +601,7 @@ Public Sub SaveQuestStats(ByVal Userindex As Integer, ByVal UserFile As String)
 
         End If
         
-        Call WriteVar(UserFile, "QUESTS", "QuestsDone", tmpStr)
+        Call UserFile.ChangeValue("QUESTS", "QuestsDone", tmpStr)
 
     End With
 

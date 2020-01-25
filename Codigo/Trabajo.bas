@@ -3143,7 +3143,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
             Exit Sub
         End If
 
-        If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = BAJOTECHO Then
+        If MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or MapData(.Pos.map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Then
             'TODO: SACAR ESTA VALIDACION DE ACA, Y HACER UN legalpos HAY TECHO en el cliente
             If .flags.Equitando = 0 Then Exit Sub
 
@@ -3162,11 +3162,6 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
             Call ToggleMonturaBody(Userindex)
             Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
-
-            .Char.Head = .OrigChar.Head
-            .Char.CascoAnim = .Char.CascoAnim
-            .Char.ShieldAnim = NingunEscudo
-            .Char.WeaponAnim = NingunArma
 
             '  Comienza a equitar
             .flags.Equitando = 1

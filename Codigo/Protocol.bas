@@ -133,45 +133,43 @@ Private Enum ServerPacketID
     ShowGuildFundationForm = 81  ' SHOWFUN
     ParalizeOK = 82              ' PARADOK
     ShowUserRequest = 83         ' PETICIO
-    TradeOK = 84                 ' TRANSOK
-    BankOK = 85                  ' BANCOOK
-    ChangeUserTradeSlot = 86     ' COMUSUINV
-    SendNight = 87               ' NOC
-    Pong = 88
-    UpdateTagAndStatus = 89
+    ChangeUserTradeSlot = 84     ' COMUSUINV
+    SendNight = 85               ' NOC
+    Pong = 86
+    UpdateTagAndStatus = 87
     
     'GM =  messages
-    SpawnList = 90               ' SPL
-    ShowSOSForm = 91             ' MSOS
-    ShowMOTDEditionForm = 92     ' ZMOTD
-    ShowGMPanelForm = 93         ' ABPANEL
-    UserNameList = 94            ' LISTUSU
-    ShowDenounces = 95
-    RecordList = 96
-    RecordDetails = 97
+    SpawnList = 88               ' SPL
+    ShowSOSForm = 89             ' MSOS
+    ShowMOTDEditionForm = 90     ' ZMOTD
+    ShowGMPanelForm = 91         ' ABPANEL
+    UserNameList = 92            ' LISTUSU
+    ShowDenounces = 93
+    RecordList = 94
+    RecordDetails = 95
     
-    ShowGuildAlign = 98
-    ShowPartyForm = 99
-    UpdateStrenghtAndDexterity = 100
-    UpdateStrenght = 101
-    UpdateDexterity = 102
-    AddSlots = 103
-    MultiMessage = 104
-    StopWorking = 105
-    CancelOfferItem = 106
-    PalabrasMagicas = 107
-    PlayAttackAnim = 108
-    FXtoMap = 109
-    AccountLogged = 110 'CHOTS | Accounts
-    SearchList = 111
-    QuestDetails = 112
-    QuestListSend = 113
-    CreateDamage = 114            ' CDMG
-    UserInEvent = 115
-    RenderMsg = 116
-    DeletedChar = 117
-    EquitandoToggle = 118
-    EnviarDatosServer = 119
+    ShowGuildAlign = 96
+    ShowPartyForm = 97
+    UpdateStrenghtAndDexterity = 98
+    UpdateStrenght = 99
+    UpdateDexterity = 100
+    AddSlots = 101
+    MultiMessage = 102
+    StopWorking = 103
+    CancelOfferItem = 104
+    PalabrasMagicas = 105
+    PlayAttackAnim = 106
+    FXtoMap = 107
+    AccountLogged = 108 'CHOTS | Accounts
+    SearchList = 109
+    QuestDetails = 110
+    QuestListSend = 111
+    CreateDamage = 112           ' CDMG
+    UserInEvent = 113
+    RenderMsg = 114
+    DeletedChar = 115
+    EquitandoToggle = 116
+    EnviarDatosServer = 117
 End Enum
 
 Private Enum ClientPacketID
@@ -3484,7 +3482,7 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
                 
                 'Basado en la idea de Barrin
                 'Comentario por Barrin: jah, "basado", caradura ! ^^
-                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = 1 Then
+                If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.BAJOTECHO Or MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.CASA Then
                     Call WriteConsoleMsg(Userindex, "No puedes pescar desde donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
@@ -4528,17 +4526,19 @@ Private Sub HandleMoveBank(ByVal Userindex As Integer)
             .BancoInvent.Object(Slot) = .BancoInvent.Object(Slot - 1)
             .BancoInvent.Object(Slot - 1).ObjIndex = TempItem.ObjIndex
             .BancoInvent.Object(Slot - 1).Amount = TempItem.Amount
+
+            Call UpdateBanUserInv(False, Userindex, Slot - 1)
         Else 'mover abajo
             .BancoInvent.Object(Slot) = .BancoInvent.Object(Slot + 1)
             .BancoInvent.Object(Slot + 1).ObjIndex = TempItem.ObjIndex
             .BancoInvent.Object(Slot + 1).Amount = TempItem.Amount
 
+            Call UpdateBanUserInv(False, Userindex, Slot + 1)
         End If
 
+        Call UpdateBanUserInv(False, Userindex, Slot)
+
     End With
-    
-    Call UpdateBanUserInv(True, Userindex, 0)
-    Call UpdateVentanaBanco(Userindex)
 
 End Sub
 
@@ -21003,62 +21003,6 @@ ErrHandler:
 End Sub
 
 ''
-' Writes the "TradeOK" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteTradeOK(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "TradeOK" message to the given user's outgoing data buffer
-    '***************************************************
-    On Error GoTo ErrHandler
-
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.TradeOK)
-    Exit Sub
-
-ErrHandler:
-
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
-        Resume
-
-    End If
-
-End Sub
-
-''
-' Writes the "BankOK" message to the given user's outgoing data buffer.
-'
-' @param    UserIndex User to which the message is intended.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteBankOK(ByVal Userindex As Integer)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "BankOK" message to the given user's outgoing data buffer
-    '***************************************************
-    On Error GoTo ErrHandler
-
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.BankOK)
-    Exit Sub
-
-ErrHandler:
-
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
-        Resume
-
-    End If
-
-End Sub
-
-''
 ' Writes the "ChangeUserTradeSlot" message to the given user's outgoing data buffer.
 '
 ' @param    UserIndex User to which the message is intended.
@@ -23426,7 +23370,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         'Enviamos la cantidad de objs de recompensa
         Call .WriteByte(QuestList(QuestIndex).RewardOBJs)
 
-        If QuestList(QuestIndex).RequiredOBJs Then
+        If QuestList(QuestIndex).RewardOBJs Then
 
             'si hay objs entonces enviamos la lista
             For i = 1 To QuestList(QuestIndex).RewardOBJs
