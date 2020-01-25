@@ -1,25 +1,12 @@
-[MAPA292]
-MagiaSinefecto=0
-InviSinEfecto=0
-ResuSinEfecto=0
-NoEncriptarMP=0
-BackUp= 0
-Pk=0
-[MAPA291]
-MagiaSinefecto=0
-InviSinEfecto=0
-ResuSinEfecto=0
-NoEncriptarMP=0
-BackUp= 0
-Pk=0
 [MAPA293]
-MagiaSinefecto=0
-InviSinEfecto=0
-ResuSinEfecto=0
-NoEncriptarMP=0
-BackUp= 1
-Pk=0
-Name=Catas Interciudades
-MusicNum=80
-Zona=DUNGEON
-Terreno=DESIERTO
+BACKUP= 1
+INVISINEFECTO=0
+MAGIASINEFECTO=0
+MUSICNUM=80
+NOENCRIPTARMP=0
+PK=0
+RESTRINGIR=
+RESUSINEFECTO=0
+TERRENO=DESIERTO
+ZONA=DUNGEON
+
