@@ -592,25 +592,16 @@ Public Function CrearNPC(NroNPC As Integer, _
     'Crea un NPC del tipo NRONPC
 
     Dim Pos            As WorldPos
-
     Dim NEWPOS         As WorldPos
-
     Dim altpos         As WorldPos
-
     Dim nIndex         As Integer
-
     Dim PosicionValida As Boolean
-
     Dim Iteraciones    As Long
-
     Dim PuedeAgua      As Boolean
-
     Dim PuedeTierra    As Boolean
 
     Dim Map            As Integer
-
-    Dim x              As Integer
-
+    Dim X              As Integer
     Dim Y              As Integer
 
     nIndex = OpenNPC(NroNPC) 'Conseguimos un indice
@@ -649,7 +640,11 @@ Public Function CrearNPC(NroNPC As Integer, _
             End If
 
             'Si X e Y son iguales a 0 significa que no se encontro posicion valida
-            If LegalPos(NEWPOS.Map, NEWPOS.x, NEWPOS.Y, PuedeAgua, PuedeTierra) And Not HayPCarea(NEWPOS) And TestSpawnTrigger(NEWPOS, PuedeAgua) Then
+            If LegalPos(NEWPOS.Map, NEWPOS.X, NEWPOS.Y, PuedeAgua, PuedeTierra) _
+                And Not HayPCarea(NEWPOS) _
+                And TestSpawnTrigger(NEWPOS, PuedeAgua) _
+                And MapData(NEWPOS.Map, NEWPOS.X, NEWPOS.Y).TileExit.Map > 0 Then
+                
                 'Asignamos las nuevas coordenas solo si son validas
                 Npclist(nIndex).Pos.Map = NEWPOS.Map
                 Npclist(nIndex).Pos.x = NEWPOS.x
