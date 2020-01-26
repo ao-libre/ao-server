@@ -831,18 +831,12 @@ Public Sub LoginAccountCharfile(ByVal Userindex As Integer, ByVal UserName As St
     '***************************************************
     On Error GoTo ErrorHandler
 
-    Dim Account            As clsInitManager
-
+    Dim Account            As clsIniManager
     Dim CharFile           As clsIniManager
-
     Dim i                  As Long
-
     Dim AccountHash        As String
-
     Dim NumberOfCharacters As Byte
-
     Dim Characters()       As AccountUser
-
     Dim CurrentCharacter   As String
 
     Set Account = New clsIniManager

@@ -18882,7 +18882,7 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
 Public Sub WriteObjectCreate(ByVal Userindex As Integer, _
-                             ByVal GrhIndex As Integer, _
+                             ByVal GrhIndex As Long, _
                              ByVal X As Byte, _
                              ByVal Y As Byte)
 
@@ -19324,7 +19324,7 @@ Public Sub WriteChangeInventorySlot(ByVal Userindex As Integer, ByVal Slot As By
         Call .WriteASCIIString(obData.Name)
         Call .WriteInteger(UserList(Userindex).Invent.Object(Slot).Amount)
         Call .WriteBoolean(UserList(Userindex).Invent.Object(Slot).Equipped)
-        Call .WriteInteger(obData.GrhIndex)
+        Call .WriteLong(obData.GrhIndex)
         Call .WriteByte(obData.OBJType)
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
@@ -19397,7 +19397,7 @@ Public Sub WriteChangeBankSlot(ByVal Userindex As Integer, ByVal Slot As Byte)
         
         Call .WriteASCIIString(obData.Name)
         Call .WriteInteger(UserList(Userindex).BancoInvent.Object(Slot).Amount)
-        Call .WriteInteger(obData.GrhIndex)
+        Call .WriteLong(obData.GrhIndex)
         Call .WriteByte(obData.OBJType)
         Call .WriteInteger(obData.MaxHIT)
         Call .WriteInteger(obData.MinHIT)
@@ -19535,7 +19535,7 @@ Public Sub WriteBlacksmithWeapons(ByVal Userindex As Integer)
         For i = 1 To Count
             obj = ObjData(ArmasHerrero(validIndexes(i)))
             Call .WriteASCIIString(obj.Name)
-            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteLong(obj.GrhIndex)
             Call .WriteInteger(obj.LingH)
             Call .WriteInteger(obj.LingP)
             Call .WriteInteger(obj.LingO)
@@ -19600,7 +19600,7 @@ Public Sub WriteBlacksmithArmors(ByVal Userindex As Integer)
         For i = 1 To Count
             obj = ObjData(ArmadurasHerrero(validIndexes(i)))
             Call .WriteASCIIString(obj.Name)
-            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteLong(obj.GrhIndex)
             Call .WriteInteger(obj.LingH)
             Call .WriteInteger(obj.LingP)
             Call .WriteInteger(obj.LingO)
@@ -19665,7 +19665,7 @@ Public Sub WriteInitCarpenting(ByVal Userindex As Integer)
         For i = 1 To Count
             obj = ObjData(ObjCarpintero(validIndexes(i)))
             Call .WriteASCIIString(obj.Name)
-            Call .WriteInteger(obj.GrhIndex)
+            Call .WriteLong(obj.GrhIndex)
             Call .WriteInteger(obj.Madera)
             Call .WriteInteger(obj.MaderaElfica)
             Call .WriteInteger(ObjCarpintero(validIndexes(i)))
@@ -19818,7 +19818,7 @@ Public Sub WriteShowSignal(ByVal Userindex As Integer, ByVal ObjIndex As Integer
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.ShowSignal)
         Call .WriteASCIIString(ObjData(ObjIndex).texto)
-        Call .WriteInteger(ObjData(ObjIndex).GrhSecundario)
+        Call .WriteLong(ObjData(ObjIndex).GrhSecundario)
 
     End With
 
@@ -19870,7 +19870,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal Userindex As Integer, _
         Call .WriteASCIIString(ObjInfo.Name)
         Call .WriteInteger(obj.Amount)
         Call .WriteSingle(price)
-        Call .WriteInteger(ObjInfo.GrhIndex)
+        Call .WriteLong(ObjInfo.GrhIndex)
         Call .WriteInteger(obj.ObjIndex)
         Call .WriteByte(ObjInfo.OBJType)
         Call .WriteInteger(ObjInfo.MaxHIT)
@@ -21032,7 +21032,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal Userindex As Integer, _
         Call .WriteLong(Amount)
         
         If ObjIndex > 0 Then
-            Call .WriteInteger(ObjData(ObjIndex).GrhIndex)
+            Call .WriteLong(ObjData(ObjIndex).GrhIndex)
             Call .WriteByte(ObjData(ObjIndex).OBJType)
             Call .WriteInteger(ObjData(ObjIndex).MaxHIT)
             Call .WriteInteger(ObjData(ObjIndex).MinHIT)
@@ -21878,7 +21878,7 @@ End Function
 ' @return   The formated message ready to be writen as is on outgoing buffers.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, _
+Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Long, _
                                            ByVal X As Byte, _
                                            ByVal Y As Byte) As String
 
@@ -21891,7 +21891,7 @@ Public Function PrepareMessageObjectCreate(ByVal GrhIndex As Integer, _
         Call .WriteByte(ServerPacketID.ObjectCreate)
         Call .WriteByte(X)
         Call .WriteByte(Y)
-        Call .WriteInteger(GrhIndex)
+        Call .WriteLong(GrhIndex)
         
         PrepareMessageObjectCreate = .ReadASCIIStringFixed(.Length)
 
