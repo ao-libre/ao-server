@@ -1,5 +1,5 @@
 [INIT]
-NumArmas=26
+NumArmas=28
 
 [Arma1] ' Daga
 Index=15
@@ -78,3 +78,9 @@ Index=198
 
 [Arma26] ' Hacha de Leñador
 Index=127
+
+[Arma27] ' Espada Argentum
+Index=1138
+
+[Arma28] ' Daga +5
+Index=1155
