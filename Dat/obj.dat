@@ -13989,10 +13989,10 @@ Agarrable=0
 MaxDef=40
 MinDef=50
 NoSeCae=1
-LingH=9
-LingP=9
-LingO=9
-SkHerreria=101
+LingH=5000
+LingP=3000
+LingO=1250
+SkHerreria=100
 
 [OBJ1133]
 Name=Escudo Oscuro
@@ -14007,10 +14007,10 @@ DefensaMagicaMin=20
 DefensaMagicaMax=20
 Valor=1000000
 Crucial=0
-LingH=1
-LingP=0
+LingH=5000
+LingP=5000
 LingO=0
-SkHerreria=101
+SkHerreria=100
 
 [OBJ1134]
 Name=Arco Argentum
@@ -14025,8 +14025,9 @@ MinHit=12
 MaxHit=15
 Valor=1000000
 Crucial=0
-Madera=1
-SkCarpinteria=101
+Madera=10000
+Maderaelfica=5000
+SkCarpinteria=100
 
 [OBJ1135]
 Name=Ira de Dios
@@ -14050,9 +14051,9 @@ MaxDef=40
 MinDef=50
 Valor=3000000
 Crucial=0
-LingH=1
-LingP=0
-LingO=0
+LingH=5500
+LingP=5000
+LingO=1250
 SkHerreria=100
 
 [OBJ1137]
@@ -14066,9 +14067,9 @@ MaxDef=50
 MinDef=55
 Valor=1000000
 Crucial=0
-LingH=1
-LingP=0
-LingO=0
+LingH=5500
+LingP=5000
+LingO=1250
 SkHerreria=100
 
 [OBJ1138]
@@ -14104,8 +14105,8 @@ CP2=DRUIDA
 CP3=LADRON
 CP4=BARDO
 CP5=PIRATA
-LingH=500
-LingP=250
+LingH=5000
+LingP=2500
 LingO=0
 SkHerreria=90
 
@@ -14165,7 +14166,7 @@ MaxDef=1
 MinDef=1
 Valor=1
 Crucial=0
-LingH=10
+LingH=100
 LingP=0
 LingO=0
 Upgrade=131
@@ -14181,10 +14182,6 @@ MaxDef=115
 MinDef=110
 NoSeCae=1
 Valor=10000000
-LingH=9
-LingP=9
-LingO=9
-SkHerreria=101
 
 [OBJ1145]
 Name=Alas de demonio
@@ -14196,10 +14193,6 @@ Valor=10000000
 MaxDef=115
 MinDef=100
 NoSeCae=1
-LingH=9
-LingP=9
-LingO=9
-SkHerreria=101
 
 [OBJ1146]
 Name=Corona De rey
@@ -14212,8 +14205,8 @@ MaxDef=40
 MinDef=20
 Valor=1000000
 Crucial=0
-LingH=10
-LingP=0
+LingH=4000
+LingP=5000
 LingO=0
 Upgrade=131
 SkHerreria=45
@@ -14229,10 +14222,6 @@ MinHit=35
 MaxHit=40
 Valor=10000000
 Crucial=0
-LingH=500
-LingP=400
-LingO=300
-SkHerreria=101
 
 [OBJ1148]
 Name=Vara del nigromante
@@ -14258,9 +14247,9 @@ CP8=GUERRERO
 CP9=BARDO
 CP10=DRUIDA
 CP11=TRABAJADOR
-LingH=50
-LingP=100
-LingO=200
+LingH=4000
+LingP=1000
+LingO=2000
 SkHerreria=90
 
 [OBJ1149]
@@ -14291,8 +14280,8 @@ CP2=DRUIDA
 CP3=LADRON
 CP4=BARDO
 CP5=PIRATA
-LingH=150
-LingP=130
+LingH=1500
+LingP=1300
 LingO=0
 SkHerreria=85
 
@@ -14345,6 +14334,10 @@ MAXDEF=75
 MINDEF=70
 Valor=10000000
 Crucial=0
+LingH=10000
+LingP=10000
+LingO=10000
+SkHerreria=100
 
 [OBJ1154]
 Name=Espada Llameante (JiEm)
@@ -14381,9 +14374,9 @@ CP7=BANDIDO
 CP8=GUERRERO
 CP9=BARDO
 CP10=DRUIDA
-LingH=500
-LingP=350
-LingO=300
+LingH=5000
+LingP=5000
+LingO=5000
 SkHerreria=100
 
 [OBJ1156]
@@ -14398,10 +14391,6 @@ MaxHit=30
 Apunala=0
 Valor=1000000
 Crucial=0
-LingH=5000
-LingP=3000
-LingO=2000
-SkHerreria=100
 
 [OBJ1157]
 Name=Montura de Gran Dragon dorado
