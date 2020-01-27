@@ -462,7 +462,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
         If Num > 0 Then
             
             'Validacion para que no podamos tirar nuestra monturas mientras la usamos.
-            If UserList(UserIndex).flags.Equitando = 1 And UserList(UserIndex).Invent.MonturaEqpSlot = Slot Then
+            If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
                 Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
