@@ -871,3 +871,20 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 16/01/2020: bugfix: podian equipar la montura mientras estaba el conteo de salida (WyroX)
 * 16/01/2020: Se agrego NPCs que venden monturas en algunas ciudades y se pusieron los dragones negro, rojo y dorado en dungeons para que dropeen su respectiva montura http://wiki.argentumonline.org/indexd895.html?seccion=navegacion#ver (Recox)
 
+- v0.13.23 - v0.13.24 - v0.13.25
+* 19/01/2020: Fix - Sistema de quests y se mejoro el LoginAccountCharfile. (Wyr0X)
+* 19/01/2020: Nuevo trigger CASA que ignora la limpieza del mundo al dropear items. (Wyr0X)
+* 19/01/2020: Se muestra informacion mas detallada del servidor en el frmConnect. (Recox)
+* 19/01/2020: Fix - El clan pretoriano no respawneaba. (Wyr0X)
+* 19/01/2020: Fix - Se revirtió la mejora del pathfinding del PR #179 xq hacia demasiado lenta la IA. (jopiortiz)
+* 19/01/2020: Fix - Los nuevos dragones desaparecian. (Neo)
+* 21/01/2020: Fix - Ullathorpe era zona insegura. (Wyr0X)
+* 21/01/2020: Se redujo enormemente el uso de la API usada por GetVar y WriteVar conocida por ser lenta y usamos clsIniManager en su lugar. (jopiortiz)
+* 27/01/2020: Lectura de indices de graficos en Long. (jopiortiz-Wyr0X)
+* 27/01/2020: Se saca traslados a derecha e izquierda no corresponden (ReyarB)
+* 27/01/2020: Ahora cuando el personaje muere se desequipa de la montura correctamente (Recox)
+* 27/01/2020: Se agrego validacion para que no se puedan tirar las monturas usadas mientras estamos equitando (Recox)
+* 27/01/2020: Reducidos paquetes de comercio y boveda (Wyr0X)
+* 27/01/2020: Al banear una IP agrego una regla en el firewall para bloquear conexiones entrantes. (jopiortiz)
+* 27/01/2020: Fix - Los sockets que se quedan abiertos. Creditos a ^[GS]^ (jopiortiz)
+
