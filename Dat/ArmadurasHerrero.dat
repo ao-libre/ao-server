@@ -1,5 +1,5 @@
 [INIT]
-NumArmaduras=61
+NumArmaduras=71
 
 
 [Armadura1] ' Casco de hierro
@@ -184,3 +184,39 @@ Index=695
 
 [Armadura61] ' Armadura Infame
 Index=701
+
+[Armadura62] ' Ropaje Sombrio
+Index=1132
+
+[Armadura63] ' Escudo oscuro
+Index=1133
+
+[Armadura64] ' Manto Alado
+Index=1136
+
+[Armadura65] ' Armadura omnineo e/G
+Index=1137
+
+
+[Armadura66] ' Casco de plata completo
+Index=1139
+
+
+[Armadura67] ' Gorro de navidad
+Index=1143
+
+
+[Armadura68] ' Corona de Rey
+Index=1146
+
+
+[Armadura69] ' Vara del nigromante
+Index=1148
+
+
+[Armadura70] ' Casco Kuia
+Index=1150
+
+
+[Armadura71] ' Coraza del mal
+Index=1153
