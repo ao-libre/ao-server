@@ -1793,6 +1793,8 @@ Sub LoadSini()
     DiceMaximum = val(Lector.GetValue("INIT", "MaxDados"))
     
     DropItemsAlMorir = CBool(Lector.GetValue("INIT", "DropItemsAlMorir"))
+    
+    ArtesaniaCosto = val(Lector.GetValue("INIT", "ArtesaniaCosto"))
 
     'Esto es para ver si el centinela esta activo o no.
     isCentinelaActivated = CBool(val(Lector.GetValue("INIT", "CentinelaAuditoriaTrabajoActivo")))

@@ -984,6 +984,12 @@ Public Sub ArtesanoConstruirItem(ByVal UserIndex As Integer, ByVal Item As Integ
     Dim NpcIndex As Integer
     NpcIndex = UserList(UserIndex).flags.TargetNPC
 
+    ' Revisamos si tiene las monedas para la comision
+    If UserList(UserIndex).Stats.Gld < ArtesaniaCosto Then
+        Call WriteChatOverHead(UserIndex, "No tienes suficientes monedas de oro para pagarme!", Npclist(NpcIndex).Char.CharIndex, vbWhite)
+        Exit Sub
+    End If
+
     ' Revisamos si tiene los materiales necesarios
     Dim i As Integer
     For i = 1 To UBound(ArtesanoObj.ItemCrafteo)
@@ -998,6 +1004,12 @@ Public Sub ArtesanoConstruirItem(ByVal UserIndex As Integer, ByVal Item As Integ
         End With
 
     Next i
+
+    ' Le sacamos el oro
+    UserList(UserIndex).Stats.Gld = UserList(UserIndex).Stats.Gld - ArtesaniaCosto
+    Call WriteUpdateGold(UserIndex)
+    
+    Call WriteConsoleMsg(UserIndex, "Le has pagado " & Format$(ArtesaniaCosto, "##,##") & " monedas de oro al artesano.", FontTypeNames.FONTTYPE_INFO)
 
     ' Le sacamos los materiales
     For i = 1 To UBound(ArtesanoObj.ItemCrafteo)

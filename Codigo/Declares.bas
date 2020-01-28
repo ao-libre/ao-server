@@ -2410,6 +2410,8 @@ Public DiceMaximum          As Integer
 
 Public DropItemsAlMorir     As Boolean
 
+Public ArtesaniaCosto       As Long
+
 Public ContadorAntiPiquete  As Integer
 
 Public MinutosCarcelPiquete As Integer

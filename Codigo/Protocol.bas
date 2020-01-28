@@ -19708,6 +19708,9 @@ Public Sub WriteInitCraftsman(ByVal UserIndex As Integer)
     With UserList(UserIndex).outgoingData
         Call .WriteByte(ServerPacketID.InitCraftman)
         
+        ' Write cost of crafting
+        Call .WriteLong(ArtesaniaCosto)
+        
         ' Write the number of objects in the list
         Call .WriteInteger(UBound(ObjArtesano))
         
