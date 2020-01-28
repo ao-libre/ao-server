@@ -74,7 +74,7 @@ Actual Npc con Nro mas alto: 938
 [INIT]
 'aca va el numero de NPC mas alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=937
+NumNPCs=938
 
 
 
@@ -10951,6 +10951,21 @@ SND3=32
 BackUp=0
 NROITEMS=1
 Drop1=12-10000000 'Oro
+
+[NPC938]
+Name=Artesano
+NpcType=9
+Desc=Hola, viajero! Traeme los materiales que necesito y puedo crearte unos objetos interesantes
+Head=307
+Heading=3
+Body=359
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
 
 #############################################
 

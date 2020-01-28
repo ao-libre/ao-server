@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
+    Dim Map, X, Y, body, clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -501,7 +501,7 @@ Public Enum eNPCType
     DRAGON = 6
     Timbero = 7
     Guardiascaos = 8
-    'ATENCION: [SLOT LIBRE] Si vas a agregar un NPC agregalo aca.
+    Artesano = 9
     Pretoriano = 10
     Gobernador = 11
 
@@ -605,7 +605,7 @@ Public Enum eSkill
     Talar = 9
     Comerciar = 10
     Defensa = 11
-    Pesca = 12
+    pesca = 12
     Mineria = 13
     Carpinteria = 14
     Herreria = 15
@@ -1006,6 +1006,13 @@ Public Type Char
 
 End Type
 
+Public Type CraftingItem
+    ObjIndex As Integer
+    Amount As Integer
+End Type
+
+Public Const MAX_ITEMS_CRAFTEO As Byte = 4
+
 'Tipos de objetos
 Public Type ObjData
 
@@ -1104,6 +1111,8 @@ Public Type ObjData
     
     SkHerreria As Integer
     SkCarpinteria As Integer
+    
+    ItemCrafteo() As CraftingItem
     
     texto As String
     
@@ -1593,7 +1602,7 @@ Public Type User
     desc As String ' Descripcion
     DescRM As String
     
-    Clase As eClass
+    clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1630,7 +1639,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    ip As String
+    IP As String
     
     ComUsu As tCOmercioUsuario
     
@@ -1841,7 +1850,7 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Long
-    Userindex As Integer
+    UserIndex As Integer
     NpcIndex As Integer
     ObjInfo As obj
     TileExit As WorldPos
@@ -2016,6 +2025,8 @@ Public ArmasHerrero()                     As Integer
 Public ArmadurasHerrero()                 As Integer
 
 Public ObjCarpintero()                    As Integer
+
+Public ObjArtesano()                      As Integer
 
 Public BanIps                             As Collection
 
