@@ -2284,7 +2284,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
         
         'Prevent SpeedHack
         If .flags.TimesWalk >= TiempoDeWalk Then
-            TempTick = GetTickCount And &H7FFFFFFF
+            TempTick = timeGetTime And &H7FFFFFFF
             dummy = (TempTick - .flags.StartWalk)
             
             ' 5800 is actually less than what would be needed in perfect conditions to take 30 steps
@@ -5999,7 +5999,7 @@ Private Sub WriteConsoleServerUpTimeMsg(ByVal Userindex As Integer)
     Dim UpTimeStr As String
     
     'Get total time in seconds
-    Time = ((GetTickCount() And &H7FFFFFFF) - tInicioServer) \ 1000
+    Time = ((timeGetTime() And &H7FFFFFFF) - tInicioServer) \ 1000
     
     'Get times in dd:hh:mm:ss format
     UpTimeStr = (Time Mod 60) & " segundos."
@@ -6519,7 +6519,7 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
         
         'Barrin 3/10/03 Tiempo de inicio al meditar
         If .flags.Meditando Then
-            .Counters.tInicioMeditar = GetTickCount() And &H7FFFFFFF
+            .Counters.tInicioMeditar = timeGetTime() And &H7FFFFFFF
             
             Call WriteConsoleMsg(Userindex, "Te estas concentrando. En " & Fix(TIEMPO_INICIOMEDITAR / 1000) & " segundos comenzaras a meditar.", FontTypeNames.FONTTYPE_INFO)
             
@@ -20167,7 +20167,7 @@ Public Sub WriteSetInvisible(ByVal Userindex As Integer, _
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible))
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible, IIf(invisible, (IntervaloInvisible - UserList(Userindex).Counters.Invisibilidad), 0)))
     Exit Sub
 
 ErrHandler:
@@ -20953,7 +20953,10 @@ Public Sub WriteParalizeOK(ByVal Userindex As Integer)
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.ParalizeOK)
+    With UserList(Userindex).outgoingData
+        Call .WriteByte(ServerPacketID.ParalizeOK)
+        Call .WriteInteger(IIf(UserList(Userindex).flags.Paralizado, UserList(Userindex).Counters.Paralisis, 0))
+    End With
     Call WritePosUpdate(Userindex)
     Exit Sub
 
@@ -21470,7 +21473,7 @@ End Sub
 ' @remarks  The message is written to no outgoing buffer, but only prepared in a single string to be easily sent to several clients.
 
 Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
-                                           ByVal invisible As Boolean) As String
+                                           ByVal invisible As Boolean, Optional ByVal timeRemaining As Integer = 0) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -21482,6 +21485,7 @@ Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
         
         Call .WriteInteger(CharIndex)
         Call .WriteBoolean(invisible)
+        Call .WriteInteger(timeRemaining)
         
         PrepareMessageSetInvisible = .ReadASCIIStringFixed(.Length)
 

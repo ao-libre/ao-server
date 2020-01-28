@@ -88,7 +88,7 @@ Sub EnviarAUsuario(ByVal Userindex As Integer, ByVal CIndex As Byte)
         Call AvisarUsuario(Userindex, CIndex)
      
         'Setea el tiempo.
-        .TiempoInicio = GetTickCount()
+        .TiempoInicio = timeGetTime()
      
         'Setea UI del usuario
         .RevisandoSlot = Userindex
@@ -143,7 +143,7 @@ Sub AvisarUsuario(ByVal userSlot As Integer, _
         If Not IngresoFallido Then
 
             'Paso la mitad de tiempo?
-            If (GetTickCount() - .TiempoInicio) > (LIMITE_TIEMPO / 2) Then
+            If (timeGetTime() - .TiempoInicio) > (LIMITE_TIEMPO / 2) Then
                 'Prepara el paquete a enviar.
                 DataSend = PrepareMessageChatOverHead("CONTROL DE MACRO INASISTIDO, Debes escribir /CENTINELA " & .CodigoCheck & " En menos de 2 minutos.", Npclist(.MiNpcIndex).Char.CharIndex, vbYellow)
             Else
@@ -181,7 +181,7 @@ Sub ChekearUsuarios()
                 If .Counters.Trabajando <> 0 Then
 
                     'Si todavia no lo revisaron o si paso mas del tiempo sin revisar, vuelve a enviar.
-                    If Not .CentinelaUsuario.CentinelaCheck Or ((GetTickCount() - .CentinelaUsuario.UltimaRevision) > REVISION_TIEMPO) Then
+                    If Not .CentinelaUsuario.CentinelaCheck Or ((timeGetTime() - .CentinelaUsuario.UltimaRevision) > REVISION_TIEMPO) Then
                         'Busca un slot para centinela y se lo envia.
                         CIndex = ProximoCentinela
 
@@ -250,7 +250,7 @@ Sub AprobarUsuario(ByVal Userindex As Integer, ByVal CIndex As Byte)
             .centinelaIndex = 0
             .Codigo = vbNullString
             .Revisando = False
-            .UltimaRevision = GetTickCount()
+            .UltimaRevision = timeGetTime()
         End With
  
         Call Protocol.WriteConsoleMsg(Userindex, "El control ha finalizado.", FontTypeNames.FONTTYPE_DIOS)
@@ -293,7 +293,7 @@ Sub TiempoUsuario(ByVal Userindex As Integer)
         If Not centinelaIndex <> 0 Then Exit Sub
      
         'Acabo el tiempo y no ingreso la clave.
-        If (GetTickCount - Centinelas(centinelaIndex).TiempoInicio) > LIMITE_TIEMPO Then
+        If (timeGetTime - Centinelas(centinelaIndex).TiempoInicio) > LIMITE_TIEMPO Then
             Call UsuarioInActivo(Userindex)
         End If
  
