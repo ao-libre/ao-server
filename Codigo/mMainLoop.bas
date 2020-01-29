@@ -39,7 +39,7 @@ Public Sub MainLoop()
 
         For LoopC = 1 To NumTimers
 
-            If GetTickCount - MainLoops(LoopC).LastCheck >= MainLoops(LoopC).MAXINT Then
+            If timeGetTime > MainLoops(LoopC).LastCheck Then
                 Call MakeProcces(LoopC)
 
             End If
@@ -69,7 +69,7 @@ Private Sub MakeProcces(ByVal Index As Integer)
             
     End Select
     
-    MainLoops(Index).LastCheck = GetTickCount
+    MainLoops(Index).LastCheck = timeGetTime + MainLoops(index).MAXINT
     
 End Sub
 

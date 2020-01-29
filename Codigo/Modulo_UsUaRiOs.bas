@@ -2575,7 +2575,7 @@ Public Sub SetInvisible(ByVal Userindex As Integer, _
     Dim sndNick As String
 
     With UserList(Userindex)
-        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible))
+        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible, IIf(invisible, (IntervaloInvisible - .Counters.Invisibilidad), 0)))
     
         sndNick = .Name
     
@@ -3077,7 +3077,7 @@ Public Function GetHomeArrivalTime(ByVal Userindex As Integer) As Integer
     '**************************************************************
     Dim TActual As Long
     
-    TActual = GetTickCount() And &H7FFFFFFF
+    TActual = timeGetTime() And &H7FFFFFFF
     
     With UserList(Userindex)
         GetHomeArrivalTime = (.Counters.goHome - TActual) * 0.001

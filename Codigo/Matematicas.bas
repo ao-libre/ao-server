@@ -76,7 +76,7 @@ Public Function RandomNumber(ByVal LowerBound As Variant, _
     'Generates a random number in the range given - recoded to use longs and work properly with ranges
     '25/08/2018 Cucsijuan: agregue el Randomize cambie los argumentos a tipo Variant
     '**************************************************************
-    Randomize GetTickCount()
+    Randomize timeGetTime()
     RandomNumber = Int((UpperBound - LowerBound + 1) * Rnd) + LowerBound
 
     If RandomNumber > UpperBound Then RandomNumber = UpperBound
