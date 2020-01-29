@@ -613,7 +613,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     'map Header
     Call MapWriter.putInteger(MapInfo(Map).MapVersion)
         
-    Call MapWriter.putString(MiCabecera.Desc, False)
+    Call MapWriter.putString(MiCabecera.desc, False)
     Call MapWriter.putLong(MiCabecera.crc)
     Call MapWriter.putLong(MiCabecera.MagicWord)
     
@@ -882,6 +882,28 @@ Sub LoadObjCarpintero()
 
 End Sub
 
+Sub LoadObjArtesano()
+    '***************************************************
+    'Author: WyroX
+    'Last Modification: 27/01/2020
+    '***************************************************
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando los objetos crafteables del Artesano"
+    
+    Dim n As Integer, lc As Integer
+    
+    n = val(GetVar(DatPath & "ObjArtesano.dat", "INIT", "NumObjs"))
+    
+    ReDim Preserve ObjArtesano(1 To n) As Integer
+    
+    For lc = 1 To n
+        ObjArtesano(lc) = val(GetVar(DatPath & "ObjArtesano.dat", "Obj" & lc, "Index"))
+    Next lc
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo con exito los objetos crafteables del Artesano."
+
+End Sub
+
 Sub LoadOBJData()
     '***************************************************
     'Author: Unknown
@@ -1133,6 +1155,22 @@ Sub LoadOBJData()
             If .SkCarpinteria > 0 Then .Madera = val(Leer.GetValue("OBJ" & Object, "Madera"))
             .MaderaElfica = val(Leer.GetValue("OBJ" & Object, "MaderaElfica"))
             
+            ReDim .ItemCrafteo(1 To MAX_ITEMS_CRAFTEO) As CraftingItem
+            
+            For i = 1 To MAX_ITEMS_CRAFTEO
+                S = Leer.GetValue("OBJ" & Object, "ItemCrafteo" & i)
+                If Len(S) <= 0 Then Exit For
+
+                .ItemCrafteo(i).ObjIndex = val(ReadField(1, S, Asc("-")))
+                .ItemCrafteo(i).Amount = val(ReadField(2, S, Asc("-")))
+            Next i
+            
+            If i > 1 Then
+                ReDim Preserve .ItemCrafteo(1 To i - 1) As CraftingItem
+            Else
+                Erase .ItemCrafteo
+            End If
+            
             'Bebidas
             .MinSta = val(Leer.GetValue("OBJ" & Object, "MinST"))
             
@@ -1160,7 +1198,7 @@ ErrHandler:
 
 End Sub
 
-Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserStats(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 
     '*************************************************
     'Author: Unknown
@@ -1169,7 +1207,7 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
     '*************************************************
     Dim LoopC As Long
 
-    With UserList(Userindex)
+    With UserList(UserIndex)
         With .Stats
 
             For LoopC = 1 To NUMATRIBUTOS
@@ -1231,14 +1269,14 @@ Sub LoadUserStats(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
 End Sub
 
-Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserReputacion(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
     '***************************************************
     'Author: Unknown
     'Last Modification: Recox
     'Recox - Castie todo a long para que sea el mismo tipo de dato que en Declares
     '***************************************************
 
-    With UserList(Userindex).Reputacion
+    With UserList(UserIndex).Reputacion
         .AsesinoRep = CLng(UserFile.GetValue("REP", "Asesino"))
         .BandidoRep = CLng(UserFile.GetValue("REP", "Bandido"))
         .BurguesRep = CLng(UserFile.GetValue("REP", "Burguesia"))
@@ -1251,7 +1289,7 @@ Sub LoadUserReputacion(ByVal Userindex As Integer, ByRef UserFile As clsIniManag
     
 End Sub
 
-Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
+Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
 
     '*************************************************
     'Author: Unknown
@@ -1265,7 +1303,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
     Dim ln    As String
     
-    With UserList(Userindex)
+    With UserList(UserIndex)
         With .Faccion
             .ArmadaReal = CByte(UserFile.GetValue("FACCIONES", "EjercitoReal"))
             .FuerzasCaos = CByte(UserFile.GetValue("FACCIONES", "EjercitoCaos"))
@@ -1308,7 +1346,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         
         .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
         .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
-        .Clase = CByte(UserFile.GetValue("INIT", "Clase"))
+        .clase = CByte(UserFile.GetValue("INIT", "Clase"))
         .raza = CByte(UserFile.GetValue("INIT", "Raza"))
         .Hogar = CByte(UserFile.GetValue("INIT", "Hogar"))
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
@@ -1327,7 +1365,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
 
-        .Desc = UserFile.GetValue("INIT", "Desc")
+        .desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
         .Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
@@ -1574,7 +1612,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     MapInfo(Map).MapVersion = MapReader.getInteger
     
     With MiCabecera
-        .Desc = MapReader.getString(Len(MiCabecera.Desc))
+        .desc = MapReader.getString(Len(MiCabecera.desc))
         .crc = MapReader.getLong
         .MagicWord = MapReader.getLong
     End With
@@ -1755,6 +1793,8 @@ Sub LoadSini()
     DiceMaximum = val(Lector.GetValue("INIT", "MaxDados"))
     
     DropItemsAlMorir = CBool(Lector.GetValue("INIT", "DropItemsAlMorir"))
+    
+    ArtesaniaCosto = val(Lector.GetValue("INIT", "ArtesaniaCosto"))
 
     'Esto es para ver si el centinela esta activo o no.
     isCentinelaActivated = CBool(val(Lector.GetValue("INIT", "CentinelaAuditoriaTrabajoActivo")))
@@ -2016,7 +2056,7 @@ Sub WriteVar(ByVal File As String, _
     
 End Sub
 
-Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
+Sub SaveUserToCharfile(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
     'Author: Unknown
     'Last modified: 10/10/2010 (Pato)
@@ -2037,7 +2077,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
 
     Dim UserFile As String
 
-    With UserList(Userindex)
+    With UserList(UserIndex)
 
         UserFile = CharPath & UCase$(.Name) & ".chr"
     
@@ -2117,8 +2157,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
         Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
         Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))
-        Call Manager.ChangeValue("INIT", "Clase", CByte(.Clase))
-        Call Manager.ChangeValue("INIT", "Desc", CStr(.Desc))
+        Call Manager.ChangeValue("INIT", "Clase", CByte(.clase))
+        Call Manager.ChangeValue("INIT", "Desc", CStr(.desc))
     
         Call Manager.ChangeValue("INIT", "Heading", CByte(.Char.heading))
         Call Manager.ChangeValue("INIT", "Head", CInt(.OrigChar.Head))
@@ -2152,9 +2192,9 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
     
         'First time around?
         If Manager.GetValue("INIT", "LastIP1") = vbNullString Then
-            Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+            Call Manager.ChangeValue("INIT", "LastIP1", .IP & " - " & Date & ":" & time)
             'Is it a different ip from last time?
-        ElseIf .ip <> Left$(Manager.GetValue("INIT", "LastIP1"), InStr(1, Manager.GetValue("INIT", "LastIP1"), " ") - 1) Then
+        ElseIf .IP <> Left$(Manager.GetValue("INIT", "LastIP1"), InStr(1, Manager.GetValue("INIT", "LastIP1"), " ") - 1) Then
 
             Dim i As Integer
 
@@ -2162,10 +2202,10 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
                 Call Manager.ChangeValue("INIT", "LastIP" & i, Manager.GetValue("INIT", "LastIP" & CStr(i - 1)))
             Next i
 
-            Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+            Call Manager.ChangeValue("INIT", "LastIP1", .IP & " - " & Date & ":" & time)
             'Same ip, just update the date
         Else
-            Call Manager.ChangeValue("INIT", "LastIP1", .ip & " - " & Date & ":" & time)
+            Call Manager.ChangeValue("INIT", "LastIP1", .IP & " - " & Date & ":" & time)
 
         End If
     
@@ -2283,7 +2323,7 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
 
     End With
 
-    Call SaveQuestStats(Userindex, Manager)
+    Call SaveQuestStats(UserIndex, Manager)
 
     Call Manager.DumpFile(UserFile)
 
@@ -2300,7 +2340,7 @@ ErrorHandler:
 
 End Sub
 
-Function criminal(ByVal Userindex As Integer) As Boolean
+Function criminal(ByVal UserIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2309,7 +2349,7 @@ Function criminal(ByVal Userindex As Integer) As Boolean
 
     Dim L As Long
     
-    With UserList(Userindex).Reputacion
+    With UserList(UserIndex).Reputacion
         L = (-.AsesinoRep) + (-.BandidoRep) + .BurguesRep + (-.LadronesRep) + .NobleRep + .PlebeRep
         L = L / 6
         criminal = (L < 0)
@@ -2332,7 +2372,7 @@ Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
     With Npclist(NpcIndex)
         'General
         Print #hFile, "Name=" & .Name
-        Print #hFile, "Desc=" & .Desc
+        Print #hFile, "Desc=" & .desc
         Print #hFile, "Head=" & val(.Char.Head)
         Print #hFile, "Body=" & val(.Char.body)
         Print #hFile, "Heading=" & val(.Char.heading)
@@ -2398,7 +2438,7 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
     
         .Numero = NpcNumber
         .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-        .Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+        .desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
         .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
         .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
         

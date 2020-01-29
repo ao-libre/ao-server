@@ -661,6 +661,9 @@ Private Sub listDats_Click()
         
         Case "OBJCARPINTERO.DAT"
             Call LoadObjCarpintero
+            
+        Case "OBJARTESANO.DAT"
+            Call LoadObjArtesano
         
         Case "RETOS.DAT"
             Call LoadArenas
