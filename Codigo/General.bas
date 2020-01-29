@@ -376,7 +376,7 @@ Sub Main()
         Call frmMain.InitMain(0)
     End If
     
-    tInicioServer = timeGetTime() And &H7FFFFFFF
+    tInicioServer = GetTickCount() And &H7FFFFFFF
 
     'Aca ponemos la ip y puerto en el label del frmMain
     Dim IpPublicaServidor As String
