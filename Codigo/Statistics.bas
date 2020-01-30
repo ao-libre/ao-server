@@ -67,7 +67,7 @@ Public Sub UserConnected(ByVal Userindex As Integer)
     'A new user connected, load it's training time count
     trainingInfo(Userindex).trainingTime = GetUserTrainingTime(UserList(Userindex).Name)
     
-    trainingInfo(Userindex).startTick = (timeGetTime() And &H7FFFFFFF)
+    trainingInfo(Userindex).startTick = (GetTickCount() And &H7FFFFFFF)
 
 End Sub
 
@@ -80,9 +80,9 @@ Public Sub UserDisconnected(ByVal Userindex As Integer)
 
     With trainingInfo(Userindex)
         'Update training time
-        .trainingTime = .trainingTime + ((timeGetTime() And &H7FFFFFFF) - .startTick) / 1000
+        .trainingTime = .trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000
         
-        .startTick = (timeGetTime() And &H7FFFFFFF)
+        .startTick = (GetTickCount() And &H7FFFFFFF)
         
         'Store info in char file
         Call SaveUserTrainingTime(UserList(Userindex).Name, .trainingTime)
@@ -106,13 +106,13 @@ Public Sub UserLevelUp(ByVal Userindex As Integer)
         'Log the data
         Open App.Path & "\logs\statistics.log" For Append Shared As handle
         
-        Print #handle, UCase$(UserList(Userindex).Name) & " completo el nivel " & CStr(UserList(Userindex).Stats.ELV) & " en " & CStr(.trainingTime + ((timeGetTime() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
+        Print #handle, UCase$(UserList(Userindex).Name) & " completo el nivel " & CStr(UserList(Userindex).Stats.ELV) & " en " & CStr(.trainingTime + ((GetTickCount() And &H7FFFFFFF) - .startTick) / 1000) & " segundos."
         
         Close handle
         
         'Reset data
         .trainingTime = 0
-        .startTick = (timeGetTime() And &H7FFFFFFF)
+        .startTick = (GetTickCount() And &H7FFFFFFF)
 
     End With
 
