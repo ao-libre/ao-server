@@ -115,8 +115,8 @@ Public Function IpSecurityAceptarNuevaConexion(ByVal ip As Long) As Boolean
     IpTableIndex = FindTableIp(ip, IP_INTERVALOS)
     
     If IpTableIndex >= 0 Then
-        If IpTables(IpTableIndex + 1) + IntervaloEntreConexiones <= timeGetTime Then   'No esta saturando de connects?
-            IpTables(IpTableIndex + 1) = timeGetTime
+        If IpTables(IpTableIndex + 1) + IntervaloEntreConexiones <= GetTickCount Then   'No esta saturando de connects?
+            IpTables(IpTableIndex + 1) = GetTickCount
             IpSecurityAceptarNuevaConexion = True
             Debug.Print "CONEXION ACEPTADA"
             Exit Function
@@ -131,7 +131,7 @@ Public Function IpSecurityAceptarNuevaConexion(ByVal ip As Long) As Boolean
     Else
         IpTableIndex = Not IpTableIndex
         AddNewIpIntervalo ip, IpTableIndex
-        IpTables(IpTableIndex + 1) = timeGetTime
+        IpTables(IpTableIndex + 1) = GetTickCount
         IpSecurityAceptarNuevaConexion = True
         Exit Function
 
