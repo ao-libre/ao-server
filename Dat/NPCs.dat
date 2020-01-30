@@ -1,4 +1,4 @@
-##############################################
+﻿##############################################
 ############TIPOS NPC (NpcType)###############
 ##############################################
 
@@ -47,7 +47,7 @@ NPCS QUESTS
 ##############NUMEROS LIBRES##################
 ##############################################
 
-161 a 499
+162 a 499
 563
 570
 571
@@ -780,13 +780,13 @@ BackUp=1
 
 ##############################################
 
-[NPC160] 'Sastre Legion Oscura. NO CAMBIAR EL NAME=SC
-Name=SC
+[NPC160] 'Monturas
+Name=Mario [Vendedor Monturas]
 NpcType=0
-Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
-Head=318
+Desc=Ven joven, seguro que te interesa una de mis monturas mas rapidas.
+Head=3
 Heading=3
-Body=177
+Body=265
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -794,19 +794,50 @@ Hostile=0
 Domable=0
 Alineacion=0
 Comercia=1
-TipoItems=3
-NROITEMS=10
-Obj1=678-1000 'Vestimenta Legionaria (E/G)
-Obj2=558-1000 'Tunica de Mago Oscuro (E/G)
-Obj3=1041-1000 'Manto de Sacerdote Demoniaco (E/G)
-Obj4=379-1000 'Armadura Legionaria (E/G)
-Obj5=686-1000 'Tunica Egregia de Mago Oscuro (E/G)
-Obj6=1042-1000 'Armadura de Gran Sacerdote Demoniaco (E/G)
-Obj7=685-1000 'Armadura Lobrega (E/G)
-Obj8=690-1000 'Pequeña Tunica Avernal (E/G)
-Obj9=695-1000 'Armadura de Pequeño Pandemonium (E/G)
-Obj10=1037-1000 'Escudo Legionario
+TipoItems=25
+NROITEMS=2
+'Obj1=1140-1000 'Montura de Gran Dragon rojo
+'Obj2=1157-1000 'Montura de Gran Dragon dorado
+'Obj3=1158-1000 'Montura de Gran Dragon negro
+Obj1=1159-1000 'Montura de Elefante
+Obj2=1160-1000 'Montura de caballo
 BackUp=1
+
+[NPC161]
+Name=SC
+Desc=AQUI OBTENDRAS TU ARMADURA LEGIONARIA!
+Head=318
+Body=177
+Heading=3
+Movement=1
+Attackable=0
+Comercia=1
+TipoItems=3
+Hostil=0
+GiveEXP=0
+GiveGLD=0
+InvReSpawn=0
+NpcType=0
+Alineacion=0
+DEF=0
+MaxHit=0
+MaxHp=0
+MinHit=0
+MinHp=0
+ReSpawn=0
+BackUp=1
+Domable=0
+NroItems=10
+Obj1=678-1000
+Obj2=558-1000
+Obj3=1041-1000
+Obj4=379-1000
+Obj5=686-1000
+Obj6=1042-1000
+Obj7=685-1000
+Obj8=690-1000
+Obj9=695-1000
+Obj10=1037-1000
 
 ##############################################
 
@@ -10971,25 +11002,4 @@ Comercia=0
 
 #############################################
 
-[NPC160] 'Monturas
-Name=Mario [Vendedor Monturas]
-NpcType=0
-Desc=Ven joven, seguro que te interesa una de mis monturas mas rapidas.
-Head=3
-Heading=3
-Body=265
-Movement=1
-Attackable=0
-ReSpawn=0
-Hostile=0
-Domable=0
-Alineacion=0
-Comercia=1
-TipoItems=25
-NROITEMS=2
-'Obj1=1140-1000 'Montura de Gran Dragon rojo
-'Obj2=1157-1000 'Montura de Gran Dragon dorado
-'Obj3=1158-1000 'Montura de Gran Dragon negro
-Obj1=1159-1000 'Montura de Elefante
-Obj2=1160-1000 'Montura de caballo
-BackUp=1
+
