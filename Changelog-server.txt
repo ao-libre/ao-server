@@ -905,4 +905,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 01/02/2020: Se arreglo mapa 164 por falta de graficos. (ReyarB)
 * 01/02/2020: Agrego ArtesaniaCosto a Server.ini (Wyr0X)
 * 01/02/2020: Se arreglo el tiempo restante para invisivilidad y paralisis (Wyr0X-FrankoH)
-* 01/02/2020: Nuevos objetos en herreria, carpinteria (Wyr0X)
+* 01/02/2020: Nuevos objetos en herreria, carpinteria (Neo)
