@@ -888,3 +888,21 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 27/01/2020: Al banear una IP agrego una regla en el firewall para bloquear conexiones entrantes. (jopiortiz)
 * 27/01/2020: Fix - Los sockets que se quedan abiertos. Creditos a ^[GS]^ (jopiortiz)
 
+- v0.13.26
+* 01/02/2020: Los npcs vendedores de magia en ciudades ahora vendend proyectil magico. (Recox)
+* 01/02/2020: Se agregaron/corrigieron nombres en algunos mapas (ReyarB)
+* 01/02/2020: actualización del mapa 183 y 285 por Neo - ReyarB
+* 01/02/2020: Mapa 1 saco llaves y cosas de la paredes
+* 01/02/2020: Mapa 34 Se arreglan traslados de Catas Ullathorpe Nix Jopy - ReyarB
+* 01/02/2020: Mapa 35 se modifica costas del rio ReyarB
+* 01/02/2020: Mapa 36 y 36 arreglo costa del rio ReyarB
+* 01/02/2020: Mapa 45 Arreglo de salida de Catas  Jopi - ReyarB
+* 01/02/2020: Mapa 47 saco traslado a la derecha ReyarB
+* 01/02/2020: Mapa 162 arreglo cambio de mapa al 164 - ReyarB
+* 01/02/2020: Mapa 164 cambio de mapa y agrego entrenadora Hija de ZeuS - ReyarB
+* 01/02/2020: Mapa 199 arreglo salida de las Catas - ReyarB
+* 01/02/2020: Mapa 279 arreglo entrada a Catas Inter ciudades - ReyarB
+* 01/02/2020: Se arreglo mapa 164 por falta de graficos. (ReyarB)
+* 01/02/2020: Agrego ArtesaniaCosto a Server.ini (Wyr0X)
+* 01/02/2020: Se arreglo el tiempo restante para invisivilidad y paralisis (Wyr0X-FrankoH)
+* 01/02/2020: Nuevos objetos en herreria, carpinteria (Wyr0X)
