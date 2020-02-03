@@ -907,8 +907,9 @@ End Sub
 Sub LoadOBJData()
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: 03/02/2020
+    '03/02/2020: WyroX - Agrego nivel y skill minimo a
+    'ciertos objetos. Nuevas habilidades para anillos
     '***************************************************
 
     '###################################################
@@ -975,15 +976,17 @@ Sub LoadOBJData()
             
             Select Case .OBJType
 
-                Case eOBJType.otarmadura
+                Case eOBJType.otArmadura
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
                     .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
                     .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
                     .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
+                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
-                Case eOBJType.otescudo
+                Case eOBJType.otEscudo
                     .ShieldAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
                     .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
                     .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
@@ -991,8 +994,10 @@ Sub LoadOBJData()
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
-                Case eOBJType.otcasco
+                Case eOBJType.otCasco
                     .CascoAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
                     .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
                     .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
@@ -1000,6 +1005,8 @@ Sub LoadOBJData()
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
+                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otWeapon
                     .WeaponAnim = val(Leer.GetValue("OBJ" & Object, "Anim"))
@@ -1021,6 +1028,8 @@ Sub LoadOBJData()
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
                     
                     .WeaponRazaEnanaAnim = val(Leer.GetValue("OBJ" & Object, "RazaEnanaAnim"))
+                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otInstrumentos
                     .Snd1 = val(Leer.GetValue("OBJ" & Object, "SND1"))
@@ -1046,17 +1055,22 @@ Sub LoadOBJData()
                 
                 Case eOBJType.otBarcos
                     .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+                    .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
+                    .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
                 
                 Case eOBJType.otFlechas
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
                     .Envenena = val(Leer.GetValue("OBJ" & Object, "Envenena"))
                     .Paraliza = val(Leer.GetValue("OBJ" & Object, "Paraliza"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
 
                 Case eOBJType.otMonturas
                     .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
 
@@ -1067,16 +1081,26 @@ Sub LoadOBJData()
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
+                    '(WyroX)
+                    .ImpideParalizar = val(Leer.GetValue("OBJ" & Object, "ImpideParalizar")) <> 0
+                    .ImpideAturdir = val(Leer.GetValue("OBJ" & Object, "ImpideAturdir")) <> 0
+                    .ImpideCegar = val(Leer.GetValue("OBJ" & Object, "ImpideCegar")) <> 0
+                    '(/WyroX)
                     
                 Case eOBJType.otTeleport
                     .Radio = val(Leer.GetValue("OBJ" & Object, "Radio"))
                     
                 Case eOBJType.otMochilas
                     .MochilaType = val(Leer.GetValue("OBJ" & Object, "MochilaType"))
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                     
                 Case eOBJType.otForos
                     Call AddForum(Leer.GetValue("OBJ" & Object, "ID"))
                     
+                Case eOBJType.otPergaminos
+                    .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
+
             End Select
             
             .Ropaje = val(Leer.GetValue("OBJ" & Object, "NumRopaje"))
@@ -1170,7 +1194,7 @@ Sub LoadOBJData()
             Else
                 Erase .ItemCrafteo
             End If
-            
+
             'Bebidas
             .MinSta = val(Leer.GetValue("OBJ" & Object, "MinST"))
             

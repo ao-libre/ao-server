@@ -424,7 +424,7 @@ Public Function ArmaduraRandom() As Integer
         YAObjIndex = RandomNumber(1, NumObjDatas)
    
         'Ya tengo?
-        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otarmadura)
+        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otArmadura)
 
         If (ObjData(YAObjIndex).Real <> 0) Or (ObjData(YAObjIndex).Caos <> 0) Or (ObjData(YAObjIndex).NoSeCae <> 0) Or (ObjData(YAObjIndex).MinDef >= 30) Then
             YATengo = False
@@ -476,7 +476,7 @@ Public Function CascoRandom() As Integer
         YAObjIndex = RandomNumber(1, NumObjDatas)
    
         'Ya tengo?
-        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otcasco)
+        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otCasco)
 
         If (ObjData(YAObjIndex).MinDef >= 20) Or (ObjData(YAObjIndex).Real <> 0) Or (ObjData(YAObjIndex).Caos <> 0) Or (ObjData(YAObjIndex).NoSeCae <> 0) Then
             YATengo = False
@@ -502,7 +502,7 @@ Public Function EscudoRandom() As Integer
         YAObjIndex = RandomNumber(1, NumObjDatas)
    
         'Ya tengo?
-        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otescudo)
+        YATengo = (ObjData(YAObjIndex).OBJType = eOBJType.otEscudo)
 
         If (ObjData(YAObjIndex).Real <> 0) Or (ObjData(YAObjIndex).Caos <> 0) Or (ObjData(YAObjIndex).NoSeCae <> 0) Then
             YATengo = False

@@ -832,7 +832,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End With
             
-            Case eOBJType.otarmadura
+            Case eOBJType.otArmadura
 
                 With .Invent
                     .Object(Slot).Equipped = 0
@@ -848,7 +848,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End With
                  
-            Case eOBJType.otcasco
+            Case eOBJType.otCasco
 
                 With .Invent
                     .Object(Slot).Equipped = 0
@@ -867,7 +867,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
             
-            Case eOBJType.otescudo
+            Case eOBJType.otEscudo
 
                 With .Invent
                     .Object(Slot).Equipped = 0
@@ -1010,9 +1010,10 @@ End Function
 Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     '*************************************************
     'Author: Unknown
-    'Last modified: 14/01/2010 (ZaMa)
+    'Last modified: 03/02/2020
     '01/08/2009: ZaMa - Now it's not sent any sound made by an invisible admin
     '14/01/2010: ZaMa - Agrego el motivo especifico por el que no puede equipar/usar el item.
+    '03/02/2020: WyroX - Nivel minimo y skill minimo para poder equipar
     '*************************************************
 
     On Error GoTo ErrHandler
@@ -1036,12 +1037,24 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             Exit Sub
 
         End If
+
+        ' Nivel minimo
+        If .Stats.ELV < obj.MinLevel Then
+            Call WriteConsoleMsg(UserIndex, "Necesitas ser nivel " & obj.MinLevel & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
                 
         Select Case obj.OBJType
 
             Case eOBJType.otWeapon
 
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+
+                    'Check skill
+                    If .Stats.UserSkills(eSkill.Armas) < obj.MinSkill Then
+                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Combate con armas para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
@@ -1141,7 +1154,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
             
-            Case eOBJType.otarmadura
+            Case eOBJType.otArmadura
 
                 If .flags.Navegando = 1 Then
                     Call WriteConsoleMsg(UserIndex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
@@ -1156,7 +1169,13 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 
                 'Nos aseguramos que puede usarla
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And SexoPuedeUsarItem(UserIndex, ObjIndex, sMotivo) And CheckRazaUsaRopa(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-                   
+
+                    'Check skill
+                    If .Stats.UserSkills(eSkill.Tacticas) < obj.MinSkill Then
+                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Evasion en combate para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(UserIndex, Slot)
@@ -1196,10 +1215,16 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
             
-            Case eOBJType.otcasco
+            Case eOBJType.otCasco
 
                 If .flags.Navegando = 1 Then Exit Sub
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+
+                    'Check skill
+                    If .Stats.UserSkills(eSkill.Tacticas) < obj.MinSkill Then
+                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Evasion en combate para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
@@ -1242,12 +1267,18 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
             
-            Case eOBJType.otescudo
+            Case eOBJType.otEscudo
 
                 If .flags.Navegando = 1 Then Exit Sub
                 
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-        
+
+                    'Check skill
+                    If .Stats.UserSkills(eSkill.Defensa) < obj.MinSkill Then
+                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Defensa con escudos para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(UserIndex, Slot)
@@ -1369,7 +1400,7 @@ End Function
 Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     '*************************************************
     'Author: Unknown
-    'Last modified: 10/12/2009
+    'Last modified: 03/02/2020
     'Handels the usage of items from inventory box.
     '24/01/2007 Pablo (ToxicWaste) - Agrego el Cuerno de la Armada y la Legion.
     '24/01/2007 Pablo (ToxicWaste) - Utilizacion nueva de Barco en lvl 20 por clase Pirata y Pescador.
@@ -1378,6 +1409,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     '27/11/2009: Budi - Se envia indivualmente cuando se modifica a la Agilidad o la Fuerza del personaje.
     '08/12/2009: ZaMa - Agrego el uso de hacha de madera elfica.
     '10/12/2009: ZaMa - Arreglos y validaciones en todos las herramientas de trabajo.
+    '03/02/2020: WyroX - Nivel minimo para poder usar y clase prohibida a pergaminos y barcas
     '*************************************************
 
     Dim obj      As ObjData
@@ -1387,7 +1419,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     Dim TargObj  As ObjData
 
     Dim MiObj    As obj
-    
+
+    Dim sMotivo As String
+
     With UserList(UserIndex)
     
         If .Invent.Object(Slot).Amount = 0 Then Exit Sub
@@ -1424,7 +1458,13 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
         
         ' No se pueden usar muebles.
         If Not EsUsable(ObjIndex) Then Exit Sub
-        
+
+        ' Nivel minimo
+        If .Stats.ELV < obj.MinLevel Then
+            Call WriteConsoleMsg(UserIndex, "Necesitas ser nivel " & obj.MinLevel & " para poder usar este objeto.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+
         Select Case obj.OBJType
 
             Case eOBJType.otUseOnce
@@ -1855,6 +1895,12 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 
                 If .Stats.MaxMAN > 0 Then
                     If .flags.Hambre = 0 And .flags.Sed = 0 Then
+
+                        If Not ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                            Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                            Exit Sub
+                        End If
+
                         Call AgregarHechizo(UserIndex, Slot)
                         Call UpdateUserInv(False, UserIndex, Slot)
                     Else
@@ -1948,6 +1994,11 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 End If
                
             Case eOBJType.otBarcos
+
+                If Not ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Or Not FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
 
                 'Verifica si esta aproximado al agua antes de permitirle navegar
                 If .Stats.ELV < 25 Then

@@ -744,7 +744,7 @@ Public Enum eOBJType
 
     otUseOnce = 1
     otWeapon = 2
-    otarmadura = 3
+    otArmadura = 3
     otArboles = 4
     otOro = 5
     otPuertas = 6
@@ -757,8 +757,8 @@ Public Enum eOBJType
     otBebidas = 13
     otLena = 14
     otFogata = 15
-    otescudo = 16
-    otcasco = 17
+    otEscudo = 16
+    otCasco = 17
     otAnillo = 18
     otTeleport = 19
     otMuebles = 20
@@ -1053,7 +1053,6 @@ Public Type ObjData
     MaxModificador As Integer
     MinModificador As Integer
     DuracionEfecto As Long
-    MinSkill As Integer
     LingoteIndex As Integer
     
     MinHIT As Integer 'Minimo golpe
@@ -1113,7 +1112,10 @@ Public Type ObjData
     SkCarpinteria As Integer
     
     ItemCrafteo() As CraftingItem
-    
+
+    MinSkill As Byte
+    MinLevel As Byte
+
     texto As String
     
     'Clases que no tienen permitido usar este obj
@@ -1134,6 +1136,10 @@ Public Type ObjData
     DefensaMagicaMin As Integer
     Refuerzo As Byte
     
+    ImpideParalizar As Boolean
+    ImpideAturdir As Boolean
+    ImpideCegar As Boolean
+
     Log As Byte 'es un objeto que queremos loguear? Pablo (ToxicWaste) 07/09/07
     NoLog As Byte 'es un objeto que esta prohibido loguear?
     
