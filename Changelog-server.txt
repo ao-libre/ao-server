@@ -906,3 +906,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 01/02/2020: Agrego ArtesaniaCosto a Server.ini (Wyr0X)
 * 01/02/2020: Se arreglo el tiempo restante para invisivilidad y paralisis (Wyr0X-FrankoH)
 * 01/02/2020: Nuevos objetos en herreria, carpinteria (Neo)
+
+- v0.13.27
+* 05/02/2020: MinLevel, MinSkill, anillos anti-efectos, hechizos por clase (Wyr0X)
