@@ -761,13 +761,13 @@ Public Sub HerreroConstruirItem(ByVal UserIndex As Integer, ByVal ItemIndex As I
                 Case eOBJType.otWeapon
                     Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armas!", "el arma!"), FontTypeNames.FONTTYPE_INFO)
 
-                Case eOBJType.otescudo
+                Case eOBJType.otEscudo
                     Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " escudos!", "el escudo!"), FontTypeNames.FONTTYPE_INFO)
 
-                Case Is = eOBJType.otcasco
+                Case Is = eOBJType.otCasco
                     Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " cascos!", "el casco!"), FontTypeNames.FONTTYPE_INFO)
 
-                Case eOBJType.otarmadura
+                Case eOBJType.otArmadura
                     Call WriteConsoleMsg(UserIndex, "Has construido " & IIf(CantidadItems > 1, CantidadItems & " armaduras", "la armadura!"), FontTypeNames.FONTTYPE_INFO)
         
             End Select
@@ -1305,13 +1305,13 @@ Public Sub DoUpgrade(ByVal UserIndex As Integer, ByVal ItemIndex As Integer)
                 Case eOBJType.otWeapon
                     Call WriteConsoleMsg(UserIndex, "Has mejorado el arma!", FontTypeNames.FONTTYPE_INFO)
                 
-                Case eOBJType.otescudo 'Todavia no hay, pero just in case
+                Case eOBJType.otEscudo 'Todavia no hay, pero just in case
                     Call WriteConsoleMsg(UserIndex, "Has mejorado el escudo!", FontTypeNames.FONTTYPE_INFO)
             
-                Case eOBJType.otcasco
+                Case eOBJType.otCasco
                     Call WriteConsoleMsg(UserIndex, "Has mejorado el casco!", FontTypeNames.FONTTYPE_INFO)
             
-                Case eOBJType.otarmadura
+                Case eOBJType.otArmadura
                     Call WriteConsoleMsg(UserIndex, "Has mejorado la armadura!", FontTypeNames.FONTTYPE_INFO)
 
             End Select
@@ -3181,11 +3181,11 @@ Public Sub DoEquita(ByVal UserIndex As Integer, _
 '***************************************************
     'Dim ModEqui As Long
 
-    'ModEqui = ModEquitacion(UserList(Userindex).clase)
+    'ModEqui = ModEquitacion(UserList(UserIndex).clase)
 
     ' Comento esto por que aun no implementamos en el frmSkills la posibilidad de agregar skills de equitacion
-    'If UserList(Userindex).Stats.UserSkills(Equitacion) / ModEqui < Montura.MinSkill Then
-    '    Call WriteConsoleMsg(Userindex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitaci�n.", FontTypeNames.FONTTYPE_INFO)
+    'If UserList(UserIndex).Stats.UserSkills(Equitacion) / ModEqui < Montura.MinSkill Then
+    '    Call WriteConsoleMsg(UserIndex, "Para usar esta montura necesitas " & Montura.MinSkill * ModEqui & " puntos en equitaci�n.", FontTypeNames.FONTTYPE_INFO)
     '    Exit Sub
     'End If
 
@@ -3209,7 +3209,7 @@ Public Sub DoEquita(ByVal UserIndex As Integer, _
         End If
 
         ' If .flags.Metamorfosis = 1 Then 'Metamorfosis
-        '     Call WriteConsoleMsg(Userindex, "No puedes montar mientras estas metamorfoseado.", FontTypeNames.FONTTYPE_INFO)
+        '     Call WriteConsoleMsg(UserIndex, "No puedes montar mientras estas metamorfoseado.", FontTypeNames.FONTTYPE_INFO)
         '     Exit Sub
         ' End If
 
