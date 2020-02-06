@@ -1113,7 +1113,13 @@ Public Type ObjData
     
     ItemCrafteo() As CraftingItem
 
+    ' Usado por barcos y lingotes [WyroX: Lo dejo para no romper codigo donde no es necesario :)]
     MinSkill As Byte
+
+    ' Usado por equipables
+    SkillRequerido As eSkill
+    SkillCantidad As Byte
+
     MinLevel As Byte
 
     texto As String

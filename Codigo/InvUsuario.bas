@@ -1043,18 +1043,20 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             Call WriteConsoleMsg(UserIndex, "Necesitas ser nivel " & obj.MinLevel & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
+
+        'Skills minimos
+        If obj.SkillRequerido Then
+            If .Stats.UserSkills(obj.SkillRequerido) < obj.SkillCantidad Then
+                Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.SkillCantidad & " puntos en " & SkillsNames(obj.SkillRequerido) & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            End If
+        End If
                 
         Select Case obj.OBJType
 
             Case eOBJType.otWeapon
 
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-
-                    'Check skill
-                    If .Stats.UserSkills(eSkill.Armas) < obj.MinSkill Then
-                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Combate con armas para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
-                        Exit Sub
-                    End If
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
@@ -1170,12 +1172,6 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 'Nos aseguramos que puede usarla
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And SexoPuedeUsarItem(UserIndex, ObjIndex, sMotivo) And CheckRazaUsaRopa(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
 
-                    'Check skill
-                    If .Stats.UserSkills(eSkill.Tacticas) < obj.MinSkill Then
-                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Evasion en combate para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
-                        Exit Sub
-                    End If
-
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         Call Desequipar(UserIndex, Slot)
@@ -1219,12 +1215,6 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Navegando = 1 Then Exit Sub
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-
-                    'Check skill
-                    If .Stats.UserSkills(eSkill.Tacticas) < obj.MinSkill Then
-                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Evasion en combate para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
-                        Exit Sub
-                    End If
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
@@ -1272,12 +1262,6 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 If .flags.Navegando = 1 Then Exit Sub
                 
                 If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-
-                    'Check skill
-                    If .Stats.UserSkills(eSkill.Defensa) < obj.MinSkill Then
-                        Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.MinSkill & " puntos en Defensa con escudos para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
-                        Exit Sub
-                    End If
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then

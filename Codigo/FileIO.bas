@@ -905,12 +905,13 @@ Sub LoadObjArtesano()
 End Sub
 
 Sub LoadOBJData()
-    '***************************************************
+    '*****************************************************************************************
     'Author: Unknown
-    'Last Modification: 03/02/2020
-    '03/02/2020: WyroX - Agrego nivel y skill minimo a
-    'ciertos objetos. Nuevas habilidades para anillos
-    '***************************************************
+    'Last Modification: 06/02/2020
+    '03/02/2020: WyroX - Agrego nivel y skill minimo a ciertos objetos. Nuevas habilidades para anillos
+    '06/02/2020: WyroX - MinSkill queda solo para barcos y lingotes (porque tienen una comprobacion especial).
+    '                             - Skill requerido modificable para items equipables
+    '*****************************************************************************************
 
     '###################################################
     '#               ATENCION PELIGRO                  #
@@ -983,7 +984,6 @@ Sub LoadOBJData()
                     .LingP = val(Leer.GetValue("OBJ" & Object, "LingP"))
                     .LingO = val(Leer.GetValue("OBJ" & Object, "LingO"))
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
                     .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otEscudo
@@ -994,7 +994,6 @@ Sub LoadOBJData()
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
                     .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otCasco
@@ -1005,7 +1004,6 @@ Sub LoadOBJData()
                     .SkHerreria = val(Leer.GetValue("OBJ" & Object, "SkHerreria"))
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
                     .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otWeapon
@@ -1028,7 +1026,6 @@ Sub LoadOBJData()
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
                     
                     .WeaponRazaEnanaAnim = val(Leer.GetValue("OBJ" & Object, "RazaEnanaAnim"))
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
                     .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                 
                 Case eOBJType.otInstrumentos
@@ -1038,9 +1035,6 @@ Sub LoadOBJData()
                     'Pablo (ToxicWaste)
                     .Real = val(Leer.GetValue("OBJ" & Object, "Real"))
                     .Caos = val(Leer.GetValue("OBJ" & Object, "Caos"))
-                
-                Case eOBJType.otMinerales
-                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
                 
                 Case eOBJType.otPuertas, eOBJType.otBotellaVacia, eOBJType.otBotellaLlena
                     .IndexAbierta = val(Leer.GetValue("OBJ" & Object, "IndexAbierta"))
@@ -1073,6 +1067,9 @@ Sub LoadOBJData()
                     .MinLevel = val(Leer.GetValue("OBJ" & Object, "MinLevel"))
                     .MaxHIT = val(Leer.GetValue("OBJ" & Object, "MaxHIT"))
                     .MinHIT = val(Leer.GetValue("OBJ" & Object, "MinHIT"))
+
+                Case eOBJType.otMinerales
+                    .MinSkill = val(Leer.GetValue("OBJ" & Object, "MinSkill"))
 
                 Case eOBJType.otAnillo 'Pablo (ToxicWaste)
                     .LingH = val(Leer.GetValue("OBJ" & Object, "LingH"))
@@ -1193,6 +1190,20 @@ Sub LoadOBJData()
                 ReDim Preserve .ItemCrafteo(1 To i - 1) As CraftingItem
             Else
                 Erase .ItemCrafteo
+            End If
+
+           ' Skill minimo
+            S = Leer.GetValue("OBJ" & Object, "SkillRequerido")
+            If Len(S) > 0 Then
+                .SkillCantidad = val(ReadField(2, S, Asc("-")))
+    
+                S = Replace(UCase$(ReadField(1, S, Asc("-"))), "+", " ")
+                For i = 1 To NUMSKILLS
+                    If S = UCase$(SkillsNames(i)) Then
+                        .SkillRequerido = i
+                        Exit For
+                    End If
+                Next i
             End If
 
             'Bebidas
