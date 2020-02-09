@@ -909,3 +909,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.27
 * 05/02/2020: MinLevel, MinSkill, anillos anti-efectos, hechizos por clase (Wyr0X)
+* 10/02/2020: SkillRequerido versión mejorada de MinSkill (Wyr0X)
