@@ -1875,6 +1875,7 @@ Type MapInfo
 
     NumUsers As Integer
     Music As String
+    MusicMp3 As String
     Name As String
     StartPos As WorldPos
     OnDeathGoTo As WorldPos

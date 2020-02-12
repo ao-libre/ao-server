@@ -1746,8 +1746,13 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Info
         Call WriteUserIndexInServer(Userindex) 'Enviamos el User index
         Call WriteChangeMap(Userindex, .Pos.Map, MapInfo(.Pos.Map).MapVersion) 'Carga el mapa
-        Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(.Pos.Map).Music, 45)))
-    
+
+        If MapInfo(.Pos.Map).MusicMp3 <> 0 Then
+            Call WritePlayMp3(Userindex, MapInfo(.Pos.Map).MusicMp3)
+        Else
+            Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(.Pos.Map).Music, 45)))
+        End If
+        
         If .flags.Privilegios = PlayerType.Dios Then
             .flags.ChatColor = RGB(250, 250, 150)
         ElseIf .flags.Privilegios <> PlayerType.User And .flags.Privilegios <> (PlayerType.User Or PlayerType.ChaosCouncil) And .flags.Privilegios <> (PlayerType.User Or PlayerType.RoyalCouncil) Then

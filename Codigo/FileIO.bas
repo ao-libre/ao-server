@@ -1736,6 +1736,8 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     With MapInfo(Map)
         .Name = Leer.GetValue("Mapa" & Map, "Name")
         .Music = Leer.GetValue("Mapa" & Map, "MusicNum")
+        .MusicMp3 = Leer.GetValue("Mapa" & Map, "MusicNumMp3")
+        
         .StartPos.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         .StartPos.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
         .StartPos.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
