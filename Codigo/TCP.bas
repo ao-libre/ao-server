@@ -1747,7 +1747,8 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call WriteUserIndexInServer(Userindex) 'Enviamos el User index
         Call WriteChangeMap(Userindex, .Pos.Map, MapInfo(.Pos.Map).MapVersion) 'Carga el mapa
 
-        If MapInfo(.Pos.Map).MusicMp3 <> 0 Then
+        'Si tiene MP3 el mapa mandamos que lo reproduzca, sino reproducimos el MIDI de toda la vida
+        If MapInfo(.Pos.Map).MusicMp3 <> vbNullString Then
             Call WritePlayMp3(Userindex, MapInfo(.Pos.Map).MusicMp3)
         Else
             Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(.Pos.Map).Music, 45)))

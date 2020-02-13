@@ -2101,8 +2101,9 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
                 End If
 
             End If
-            
-            If MapInfo(Map).MusicMp3 <> 0 Then
+
+            'Si tiene MP3 el mapa mandamos que lo reproduzca, sino reproducimos el MIDI de toda la vida
+            If MapInfo(Map).MusicMp3 <> vbNullString Then
                 Call WritePlayMp3(Userindex, MapInfo(Map).MusicMp3)
             Else
                 Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(Map).Music, 45)))
