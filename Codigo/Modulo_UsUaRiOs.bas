@@ -2101,9 +2101,14 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
                 End If
 
             End If
-            
-            Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(Map).Music, 45)))
-            
+
+            'Si tiene MP3 el mapa mandamos que lo reproduzca, sino reproducimos el MIDI de toda la vida
+            If MapInfo(Map).MusicMp3 <> vbNullString Then
+                Call WritePlayMp3(Userindex, MapInfo(Map).MusicMp3)
+            Else
+                Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(Map).Music, 45)))
+            End If
+
             'Update new Map Users
             MapInfo(Map).NumUsers = MapInfo(Map).NumUsers + 1
             
@@ -2112,7 +2117,6 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
 
             If MapInfo(OldMap).NumUsers < 0 Then
                 MapInfo(OldMap).NumUsers = 0
-
             End If
         
             'Si el mapa al que entro NO ES superficial AND en el que estaba TAMPOCO ES superficial, ENTONCES
