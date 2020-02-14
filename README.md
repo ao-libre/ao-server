@@ -5,6 +5,8 @@
 
 ![ScreenshotVersionVieja](https://preview.ibb.co/cojUf0/Screen-Shot-2018-11-04-at-6-53-52-PM.png)
 
+## Diagrama Arquitectura Aplicaciones AO-LIBRE
+https://www.reddit.com/r/argentumonlineoficial/comments/f402p9/argentum_online_libre_diagrama_arquitectura/
 
 ## Wiki Desarrollo Argentum Online
 [Manual para entender el codigo de Argentum Online](http://es.dao.wikia.com/wiki/Wiki_Desarrollo_Argentum_Online).
