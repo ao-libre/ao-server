@@ -910,3 +910,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.27
 * 05/02/2020: MinLevel, MinSkill, anillos anti-efectos, hechizos por clase (Wyr0X)
 * 10/02/2020: SkillRequerido versión mejorada de MinSkill (Wyr0X)
+* 16/02/2020: Se agrego posibilidad de ponerle musica mp3s a los mapas desde el .dat del mapa, en caso que el mapa no tenga seteado el mp3 se utiliza el clasico midi (Recox)
+
+
