@@ -299,7 +299,7 @@ Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String, B
     '09/03/2020 Lorwik: Agregado chequeos PersonajeExiste y PersonajePerteneceCuenta
     '********************************************************************************
     
-    'Podria estar de mas, pero... �Existe el personaje?
+    'Podria estar de mas, pero... Existe el personaje?
     If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(UserIndex, "El personaje no existe.")
         Call FlushBuffer(UserIndex)
@@ -307,7 +307,7 @@ Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String, B
         Exit Sub
     End If
 
-    'IMPORTANTE! �El personaje pertenece a esta cuenta?
+    'IMPORTANTE! - El personaje pertenece a esta cuenta?
     If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
         Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
         Call FlushBuffer(UserIndex)
