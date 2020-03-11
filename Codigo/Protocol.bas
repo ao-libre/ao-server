@@ -1607,15 +1607,18 @@ Private Sub HandleDeleteChar(ByVal UserIndex As Integer)
     Call buffer.ReadByte
 
     Dim UserName    As String
+    Dim AccountHash As String
     UserName = buffer.ReadASCIIString()
-
-    Call BorrarUsuario(UserName)
-
+    AccountHash = buffer.ReadASCIIString()
+    
     'If we got here then packet is complete, copy data back to original queue
     Call UserList(UserIndex).incomingData.CopyBuffer(buffer)
     
+    Call BorrarUsuario(UserIndex, UserName, AccountHash)
+
     'Enviamos paquete para mostrar mensaje satisfactorio en el cliente
     Call UserList(UserIndex).outgoingData.WriteByte(ServerPacketID.DeletedChar)
+    
     Exit Sub
     
 ErrHandler:
