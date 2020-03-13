@@ -613,7 +613,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     'map Header
     Call MapWriter.putInteger(MapInfo(Map).MapVersion)
         
-    Call MapWriter.putString(MiCabecera.desc, False)
+    Call MapWriter.putString(MiCabecera.Desc, False)
     Call MapWriter.putLong(MiCabecera.crc)
     Call MapWriter.putLong(MiCabecera.MagicWord)
     
@@ -1379,9 +1379,15 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
         
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
+        'Cargando Amigos
+        For LoopC = 1 To MAXAMIGOS
+        .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "Nombre" & LoopC)
+        .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
+        Next LoopC
+        
         .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
         .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
-        .clase = CByte(UserFile.GetValue("INIT", "Clase"))
+        .Clase = CByte(UserFile.GetValue("INIT", "Clase"))
         .raza = CByte(UserFile.GetValue("INIT", "Raza"))
         .Hogar = CByte(UserFile.GetValue("INIT", "Hogar"))
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
@@ -1400,7 +1406,7 @@ Sub LoadUserInit(ByVal UserIndex As Integer, ByRef UserFile As clsIniManager)
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
 
-        .desc = UserFile.GetValue("INIT", "Desc")
+        .Desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
         .Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
@@ -1647,7 +1653,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     MapInfo(Map).MapVersion = MapReader.getInteger
     
     With MiCabecera
-        .desc = MapReader.getString(Len(MiCabecera.desc))
+        .Desc = MapReader.getString(Len(MiCabecera.Desc))
         .crc = MapReader.getLong
         .MagicWord = MapReader.getLong
     End With
@@ -2146,7 +2152,12 @@ Sub SaveUserToCharfile(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline
     
         Call Manager.ChangeValue("CONSEJO", "PERTENECE", IIf(.flags.Privilegios And PlayerType.RoyalCouncil, "1", "0"))
         Call Manager.ChangeValue("CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
-    
+      
+        For LoopC = 1 To MAXAMIGOS
+        Call Manager.ChangeValue("AMIGOS", "Nombre" & LoopC, .Amigos(LoopC).Nombre)
+        Call Manager.ChangeValue("AMIGOS", "IGNORADO" & LoopC, CStr(.Amigos(LoopC).Ignorado))
+        Next LoopC
+  
         Call Manager.ChangeValue("COUNTERS", "Pena", CLng(.Counters.Pena))
         Call Manager.ChangeValue("COUNTERS", "SkillsAsignados", CByte(.Counters.AsignedSkills))
     
@@ -2194,8 +2205,8 @@ Sub SaveUserToCharfile(ByVal UserIndex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
         Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
         Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))
-        Call Manager.ChangeValue("INIT", "Clase", CByte(.clase))
-        Call Manager.ChangeValue("INIT", "Desc", CStr(.desc))
+        Call Manager.ChangeValue("INIT", "Clase", CByte(.Clase))
+        Call Manager.ChangeValue("INIT", "Desc", CStr(.Desc))
     
         Call Manager.ChangeValue("INIT", "Heading", CByte(.Char.heading))
         Call Manager.ChangeValue("INIT", "Head", CInt(.OrigChar.Head))
@@ -2409,7 +2420,7 @@ Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
     With Npclist(NpcIndex)
         'General
         Print #hFile, "Name=" & .Name
-        Print #hFile, "Desc=" & .desc
+        Print #hFile, "Desc=" & .Desc
         Print #hFile, "Head=" & val(.Char.Head)
         Print #hFile, "Body=" & val(.Char.body)
         Print #hFile, "Heading=" & val(.Char.heading)
@@ -2475,7 +2486,7 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
     
         .Numero = NpcNumber
         .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-        .desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+        .Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
         .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
         .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
         
