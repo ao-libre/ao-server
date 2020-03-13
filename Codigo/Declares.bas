@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, body, clase, race, Email, obj, Length As Variant
+    Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -76,6 +76,8 @@ Public Const MAXSPAWNATTEMPS = 60
 Public Const INFINITE_LOOPS As Integer = -1
 
 Public Const FXSANGRE = 14
+
+Public Const MAXAMIGOS As Byte = 20   'Cantidad máxima de Amigos
 
 ''
 ' The color of chats over head of dead characters.
@@ -237,7 +239,7 @@ Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
 
-    desc As String * 255
+    Desc As String * 255
     crc As Long
     MagicWord As Long
 
@@ -1285,7 +1287,7 @@ End Type
 Public Type tQuest
 
     Nombre As String
-    desc As String
+    Desc As String
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
@@ -1596,6 +1598,14 @@ Public Type tUserRetoTemp
     Accepts() As Byte
 End Type
 
+'Info de los Amigos
+Public Type Amigos
+  Nombre As String
+  Ignorado As Byte
+index As Integer
+
+End Type
+
 'Tipo de los Usuarios
 Public Type User
     PosAnt As WorldPos
@@ -1607,14 +1617,17 @@ Public Type User
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
+    Amigos(1 To MAXAMIGOS) As Amigos
+    Quien As String
+
     Char As Char 'Define la apariencia
     CharMimetizado As Char
     OrigChar As Char
     
-    desc As String ' Descripcion
+    Desc As String ' Descripcion
     DescRM As String
     
-    clase As eClass
+    Clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1789,7 +1802,7 @@ Public Type npc
 
     Name As String
     Char As Char 'Define como se vera
-    desc As String
+    Desc As String
 
     NPCtype As eNPCType
     Numero As Integer
@@ -1862,7 +1875,7 @@ Public Type MapBlock
 
     Blocked As Byte
     Graphic(1 To 4) As Long
-    UserIndex As Integer
+    Userindex As Integer
     NpcIndex As Integer
     ObjInfo As obj
     TileExit As WorldPos
