@@ -651,25 +651,6 @@ Public Const AumentoSTMago              As Byte = AumentoSTDef - 1
 
 Public Const AumentoSTTrabajador        As Byte = AumentoSTDef + 25
 
-'Tamano del mapa
-Public Const XMaxMapSize                As Byte = 100
-
-Public Const XMinMapSize                As Byte = 1
-
-Public Const YMaxMapSize                As Byte = 100
-
-Public Const YMinMapSize                As Byte = 1
-
-'Tamano del tileset
-Public Const TileSizeX                  As Byte = 32
-
-Public Const TileSizeY                  As Byte = 32
-
-'Tamano en Tiles de la pantalla de visualizacion
-Public Const XWindow                    As Byte = 17
-
-Public Const YWindow                    As Byte = 13
-
 'Sonidos
 Public Const SND_SWING                  As Byte = 2
 

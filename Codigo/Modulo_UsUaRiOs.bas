@@ -1043,7 +1043,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
                     End With
                 
                     'Actualizamos las areas de ser necesario
-                    Call ModAreas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
+                    Call Areas.CheckUpdateNeededUser(CasperIndex, CasperHeading)
 
                 End If
 
@@ -1079,7 +1079,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             End With
             
             'Actualizamos las areas de ser necesario
-            Call ModAreas.CheckUpdateNeededUser(Userindex, nHeading)
+            Call Areas.CheckUpdateNeededUser(UserIndex, nHeading)
         Else
             Call WritePosUpdate(Userindex)
 

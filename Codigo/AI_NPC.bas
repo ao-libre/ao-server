@@ -56,11 +56,6 @@ Public Const ELEMENTALTIERRA As Integer = 94
 
 Public Const ELEMENTALAGUA   As Integer = 92
 
-'Damos a los NPCs el mismo rango de visi�n que un PJ
-Public Const RANGO_VISION_X  As Byte = 8
-
-Public Const RANGO_VISION_Y  As Byte = 6
-
 '?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
 '?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
 '?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�
@@ -588,8 +583,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
 
         Else
 
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                UI = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                UI = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(UI).Pos.x - .Pos.x) <= RANGO_VISION_X Then
@@ -764,8 +759,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 
             End Select
             
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                UserIndex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X And Sgn(UserList(Userindex).Pos.x - .Pos.x) = SignoEO Then
@@ -801,8 +796,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 
         Else
 
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                UserIndex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X Then
@@ -1046,8 +1041,8 @@ Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
     
     With Npclist(NpcIndex)
 
-        For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+        For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+            UserIndex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
             
             'Is it in it's range of vision??
             If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X Then

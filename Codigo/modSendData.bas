@@ -1,7 +1,7 @@
 Attribute VB_Name = "modSendData"
 '**************************************************************
 ' SendData.bas - Has all methods to send data to different user groups.
-' Makes use of the modAreas module.
+' Makes use of the Areas module.
 '
 ' Implemented by Juan Martin Sotuyo Dodero (Maraxus) (juansotuyo@gmail.com)
 '**************************************************************
@@ -22,7 +22,7 @@ Attribute VB_Name = "modSendData"
 
 ''
 ' Contains all methods to send data to different user groups.
-' Makes use of the modAreas module.
+' Makes use of the Areas module.
 '
 ' @author Juan Martin Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
 ' @version 1.0.0
@@ -452,8 +452,8 @@ Private Sub SendToUserArea(ByVal Userindex As Integer, ByVal sdData As String)
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
                     Call EnviarDatosASlot(tempIndex, sdData)
 
@@ -495,13 +495,13 @@ Private Sub SendToUserAreaButindex(ByVal Userindex As Integer, ByVal sdData As S
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
             
-        TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
+        TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX
 
         If TempInt Then  'Esta en el area?
-            TempInt = UserList(tempIndex).AreasInfo.AreaReciveY And AreaY
+            TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY
 
             If TempInt Then
-                If tempIndex <> Userindex Then
+                If tempIndex <> UserIndex Then
                     If UserList(tempIndex).ConnIDValida Then
                         Call EnviarDatosASlot(tempIndex, sdData)
 
@@ -543,8 +543,8 @@ Private Sub SendToDeadUserArea(ByVal Userindex As Integer, ByVal sdData As Strin
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
 
                 'Dead and admins read
                 If UserList(tempIndex).ConnIDValida = True And (UserList(tempIndex).flags.Muerto = 1 Or (UserList(tempIndex).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)) <> 0) Then
@@ -588,9 +588,9 @@ Private Sub SendToUserGuildArea(ByVal Userindex As Integer, ByVal sdData As Stri
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(tempIndex).ConnIDValida And (UserList(tempIndex).GuildIndex = UserList(Userindex).GuildIndex Or ((UserList(tempIndex).flags.Privilegios And PlayerType.Dios) And (UserList(tempIndex).flags.Privilegios And PlayerType.RoleMaster) = 0)) Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
+                If UserList(tempIndex).ConnIDValida And (UserList(tempIndex).GuildIndex = UserList(UserIndex).GuildIndex Or ((UserList(tempIndex).flags.Privilegios And PlayerType.Dios) And (UserList(tempIndex).flags.Privilegios And PlayerType.RoleMaster) = 0)) Then
                     Call EnviarDatosASlot(tempIndex, sdData)
 
                 End If
@@ -631,9 +631,9 @@ Private Sub SendToUserPartyArea(ByVal Userindex As Integer, ByVal sdData As Stri
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
-                If UserList(tempIndex).ConnIDValida And UserList(tempIndex).PartyIndex = UserList(Userindex).PartyIndex Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
+                If UserList(tempIndex).ConnIDValida And UserList(tempIndex).PartyIndex = UserList(UserIndex).PartyIndex Then
                     Call EnviarDatosASlot(tempIndex, sdData)
 
                 End If
@@ -673,8 +673,8 @@ Private Sub SendToAdminsButConsejerosArea(ByVal Userindex As Integer, _
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
                     If UserList(tempIndex).flags.Privilegios And (PlayerType.SemiDios Or PlayerType.Dios Or PlayerType.Admin) Then Call EnviarDatosASlot(tempIndex, sdData)
 
@@ -716,10 +716,10 @@ Private Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
+        TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX
 
         If TempInt Then  'Esta en el area?
-            TempInt = UserList(tempIndex).AreasInfo.AreaReciveY And AreaY
+            TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY
 
             If TempInt Then
                 If UserList(tempIndex).ConnIDValida Then
@@ -759,10 +759,10 @@ Public Sub SendToAreaByPos(ByVal Map As Integer, _
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
             
-        TempInt = UserList(tempIndex).AreasInfo.AreaReciveX And AreaX
+        TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX
 
         If TempInt Then  'Esta en el area?
-            TempInt = UserList(tempIndex).AreasInfo.AreaReciveY And AreaY
+            TempInt = UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY
 
             If TempInt Then
                 If UserList(tempIndex).ConnIDValida Then
@@ -862,8 +862,8 @@ Private Sub SendToGMsAreaButRmsOrCounselors(ByVal Userindex As Integer, _
         
         With UserList(tempIndex)
 
-            If .AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-                If .AreasInfo.AreaReciveY And AreaY Then
+            If .AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+                If .AreasInfo.AreaPerteneceY And AreaY Then
                     If .ConnIDValida Then
 
                         ' Exclusivo para dioses, admins y gms
@@ -910,8 +910,8 @@ Private Sub SendToUsersAreaButGMs(ByVal Userindex As Integer, ByVal sdData As St
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
                     If UserList(tempIndex).flags.Privilegios And PlayerType.User Then
                         Call EnviarDatosASlot(tempIndex, sdData)
@@ -955,8 +955,8 @@ Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal Userindex As Integer,
     For LoopC = 1 To ConnGroups(Map).CountEntrys
         tempIndex = ConnGroups(Map).UserEntrys(LoopC)
         
-        If UserList(tempIndex).AreasInfo.AreaReciveX And AreaX Then  'Esta en el area?
-            If UserList(tempIndex).AreasInfo.AreaReciveY And AreaY Then
+        If UserList(tempIndex).AreasInfo.AreaPerteneceX And AreaX Then  'Esta en el area?
+            If UserList(tempIndex).AreasInfo.AreaPerteneceY And AreaY Then
                 If UserList(tempIndex).ConnIDValida Then
                     If UserList(tempIndex).flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.RoleMaster) Then
                         Call EnviarDatosASlot(tempIndex, sdData)
