@@ -28,8 +28,8 @@ Public Const RANGO_VISION_Y     As Byte = 9
 
 Private Const USER_NUEVO         As Byte = 255
 
-Private Const tiles_Area_X      As Byte = 11
-Private Const tiles_Area_Y      As Byte = 11
+Public Const tiles_Area_X      As Byte = 11
+Public Const tiles_Area_Y      As Byte = 11
 
 Public ConnGroups()             As ConnGroup
 Public idAreaX()                As Integer

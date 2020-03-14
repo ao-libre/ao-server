@@ -376,8 +376,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
 
             End Select
             
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X And Sgn(UserList(Userindex).Pos.x - .Pos.x) = SignoEO Then
@@ -442,8 +442,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
             End If
             
             ' No le pertenece a nadie o el dueno no esta en el rango de vision, sigue a cualquiera
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X Then
@@ -533,8 +533,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
 
             End Select
 
-            For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-                UI = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+                UI = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
 
                 'Is it in it's range of vision??
                 If Abs(UserList(UI).Pos.x - .Pos.x) <= RANGO_VISION_X And Sgn(UserList(UI).Pos.x - .Pos.x) = SignoEO Then
@@ -676,8 +676,8 @@ Private Sub PersigueCiudadano(ByVal NpcIndex As Integer)
     
     With Npclist(NpcIndex)
 
-        For i = 1 To ModAreas.ConnGroups(.Pos.Map).CountEntrys
-            Userindex = ModAreas.ConnGroups(.Pos.Map).UserEntrys(i)
+        For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
+            Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
                 
             'Is it in it's range of vision??
             If Abs(UserList(Userindex).Pos.x - .Pos.x) <= RANGO_VISION_X Then
