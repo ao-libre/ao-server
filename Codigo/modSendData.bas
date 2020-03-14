@@ -751,8 +751,8 @@ Public Sub SendToAreaByPos(ByVal Map As Integer, _
 
     Dim tempIndex As Integer
     
-    AreaX = 2 ^ (AreaX \ 9)
-    AreaY = 2 ^ (AreaY \ 9)
+    AreaX = 2 ^ (AreaX \ Areas.tiles_Area_X)
+    AreaY = 2 ^ (AreaY \ Areas.tiles_Area_Y)
     
     If Not MapaValido(Map) Then Exit Sub
 
