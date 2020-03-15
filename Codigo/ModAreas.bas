@@ -66,6 +66,8 @@ Public Const AREAS_Y            As Byte = RANGO_VISION_Y + TileBufferSize
 '*               Otras variables                *
 '************************************************
 
+Private AreasIO As clsIniManager
+
 Private Const USER_NUEVO        As Byte = 255
 Private CountOptimization       As Byte
 
@@ -89,13 +91,17 @@ End Type
 '* to es uno.                                   *
 '************************************************
 Public Sub GenerarAreas()
-
+    
+    Set AreasIO = New clsIniManager
+    Call AreasIO.Initialize(DatPath & "AreasStats.dat")
+    
     ReDim ConnGroups(1 To NumMaps) As ConnGroup
 
     Dim i As Integer
     For i = 1 To NumMaps
+        
         ' Leemos el valor guardado para el tamanio optimo
-        ConnGroups(i).OptValue = val(GetVar(DatPath & "AreasStats.dat", "Areas", "Mapa" & i))
+        ConnGroups(i).OptValue = val(AreasIO.GetValue("Areas", "Mapa" & i))
 
         ' Si es cero, lo dejamos en uno
         If ConnGroups(i).OptValue = 0 Then ConnGroups(i).OptValue = 1
@@ -104,28 +110,34 @@ Public Sub GenerarAreas()
         ReDim ConnGroups(i).UserEntrys(1 To ConnGroups(i).OptValue) As Long
 
     Next i
-
+    
+    Set AreasIO = Nothing
+    
 End Sub
 
 
-'************************************************
-'* AreasOptimizacion: funcion llamada cada un   *
-'* minuto cuyo objetivo es modificar el tamanio *
-'* optimo del array de usuarios segun la canti- *
-'* dad que haya en el mapa en ese momento.      *
-'************************************************
+'*************************************************************************************************************
+'* AreasOptimizacion: Funcion llamada cada {TimeOptimization} segundos cuyo objetivo es modificar el tamanio *
+'                     optimo del array de usuarios segun la cantidad que haya en el mapa en ese momento.     *
+'*************************************************************************************************************
 Public Sub AreasOptimizacion()
-    ' Solo modificamos los valores cada (TimeOptimization) minutos
+    
+    'Objeto donde almacenamos la info. que vamos a escribir en el archivo "AreasStats.dat"
+    Set AreasIO = New clsIniManager
+    
+    ' Solo modificamos los valores cada (TimeOptimization) segundos.
     CountOptimization = CountOptimization + 1
+    
     If CountOptimization > TimeOptimization Then
 
         Dim i As Integer
         For i = 1 To NumMaps
+            
             ' Modificamos el valor optimo haciendo un promedio entre el tamanio anterior y la cantidad de usuarios actual
             ConnGroups(i).OptValue = (ConnGroups(i).OptValue + ConnGroups(i).CountEntrys) \ 2
 
             ' Escribimos en el archivo de areas
-            Call WriteVar(DatPath & "AreasStats.dat", "Areas", "Mapa" & i, ConnGroups(i).OptValue)
+            Call AreasIO.ChangeValue("Areas", "Mapa" & i, ConnGroups(i).OptValue)
 
             ' Si es cero, lo dejamos en uno
             If ConnGroups(i).OptValue = 0 Then ConnGroups(i).OptValue = 1
@@ -134,29 +146,35 @@ Public Sub AreasOptimizacion()
             If ConnGroups(i).OptValue > ConnGroups(i).CountEntrys Then
                 ReDim Preserve ConnGroups(i).UserEntrys(1 To ConnGroups(i).OptValue) As Long
             End If
+            
         Next i
 
         CountOptimization = 0
+        
     End If
+    
+    'Escribimos la informacion en el objeto en el archivo "AreasStats.dat"
+    Call AreasIO.DumpFile(DatPath & "AreasStats.dat")
+    Set AreasIO = Nothing
+    
 End Sub
 
 
-'************************************************
-'* AgregarUser: agrega el usuario al mapa, en-  *
-'* viando los datos correspondientes a su area  *
-'* y notificando al resto de usuarios.          *
-'************************************************
-Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)
+'*****************************************************************************************
+'* AgregarUser: Agrega el usuario al mapa, enviando los datos correspondientes a su area *
+'               y notificando al resto de usuarios.                                      *
+'*****************************************************************************************
+Public Sub AgregarUser(ByVal UserIndex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)
 
     If Not MapaValido(Map) Then Exit Sub
     
     Dim EsNuevo As Boolean
-    EsNuevo = True
+        EsNuevo = True
     
     ' Evitamos agregar usuarios repetidos
     Dim i As Integer
     For i = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(i) = Userindex Then
+        If ConnGroups(Map).UserEntrys(i) = UserIndex Then
             EsNuevo = False
             Exit For
         End If
@@ -164,6 +182,7 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
 
     ' Si es nuevo en el mapa
     If EsNuevo Then
+        
         ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys + 1
 
         ' Aumentamos el tamanio del array de ser necesario
@@ -171,22 +190,21 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
             ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
         End If
 
-        ConnGroups(Map).UserEntrys(ConnGroups(Map).CountEntrys) = Userindex
+        ConnGroups(Map).UserEntrys(ConnGroups(Map).CountEntrys) = UserIndex
     End If
     
-    With UserList(Userindex)
+    With UserList(UserIndex)
         .AreasInfo.AreaPerteneceX = 0
         .AreasInfo.AreaPerteneceY = 0
     End With
 
-    Call CheckUpdateNeededUser(Userindex, USER_NUEVO, ButIndex)
+    Call CheckUpdateNeededUser(UserIndex, USER_NUEVO, ButIndex)
+    
 End Sub
 
-
-'************************************************
-'* AgregarNpc: agrega el npc al mapa, notifican-*
-'* do a los usuarios dentro de su area.         *
-'************************************************
+'************************************************************************************
+'* AgregarNpc: agrega el npc al mapa, notificando a los usuarios dentro de su area. *
+'************************************************************************************
 Public Sub AgregarNpc(ByVal NpcIndex As Integer)
 
     With Npclist(NpcIndex)
@@ -195,19 +213,18 @@ Public Sub AgregarNpc(ByVal NpcIndex As Integer)
     End With
 
     Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
+    
 End Sub
 
-
-'************************************************
-'* QuitarUser: remueve el usuario del array del *
-'* mapa en el que se encuentra.                 *
-'************************************************
-Public Sub QuitarUser(ByVal Userindex As Integer, ByVal Map As Integer)
+'*****************************************************************************
+'* QuitarUser: remueve el usuario del array del mapa en el que se encuentra. *
+'*****************************************************************************
+Public Sub QuitarUser(ByVal UserIndex As Integer, ByVal Map As Integer)
 
     ' Buscamos el index dentro del array
     Dim LoopC As Long
     For LoopC = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(LoopC) = Userindex Then Exit For
+        If ConnGroups(Map).UserEntrys(LoopC) = UserIndex Then Exit For
     Next LoopC
     
     ' Si no existe salimos
@@ -227,29 +244,26 @@ Public Sub QuitarUser(ByVal Userindex As Integer, ByVal Map As Integer)
 
 End Sub
 
+'***************************************************************************************************************
+'* CheckUpdateNeededUser: Comprueba si es necesario modificar el area del usuario,                             *
+'                         de ser asi, le envia todos los datos nuevos y avisa a los demas usuarios de la zona. *
+'***************************************************************************************************************
+Public Sub CheckUpdateNeededUser(ByVal UserIndex As Integer, ByVal Heading As Byte, Optional ByVal ButIndex As Boolean = False, Optional verInvis As Byte = 0)
 
-'************************************************
-'* CheckUpdateNeededUser: comprueba si es nece- *
-'* sario modificar el area del usuario, y de ser*
-'* asi, le envia todos los datos nuevos y avisa *
-'* a los demas usuarios de la zona.             *
-'************************************************
-Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As Byte, Optional ByVal ButIndex As Boolean = False, Optional verInvis As Byte = 0)
-
-    With UserList(Userindex)
+    With UserList(UserIndex)
 
         ' Comprobamos si cambio de area
         If .AreasInfo.AreaPerteneceX = .Pos.X \ AREAS_X And _
-            .AreasInfo.AreaPerteneceY = .Pos.Y \ AREAS_Y Then _
+           .AreasInfo.AreaPerteneceY = .Pos.Y \ AREAS_Y Then _
                 Exit Sub
 
         Dim MinX As Integer, MaxX As Integer, MinY As Integer, MaxY As Integer, X As Integer, Y As Integer, CurUser As Long, Map As Long
 
         ' Calculamos segun la direccion del usuario el area nueva que tenemos que mandarle
-        Call CalcularNuevaArea(.Pos.X, .Pos.Y, heading, MinX, MaxX, MinY, MaxY)
+        Call CalcularNuevaArea(.Pos.X, .Pos.Y, Heading, MinX, MaxX, MinY, MaxY)
 
         ' Avisamos al cliente para que borre todo lo que esta fuera del area
-        Call WriteAreaChanged(Userindex)
+        Call WriteAreaChanged(UserIndex)
 
         Map = .Pos.Map
 
@@ -257,35 +271,35 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
             For Y = MinY To MaxY
 
                 '<<< User >>>
-                If MapData(Map, X, Y).Userindex Then
+                If MapData(Map, X, Y).UserIndex Then
 
-                    CurUser = MapData(Map, X, Y).Userindex
+                    CurUser = MapData(Map, X, Y).UserIndex
 
                     ' No nos enviamos a nosotros mismos...
-                    If Userindex <> CurUser Then
+                    If UserIndex <> CurUser Then
 
                         ' No vemos admins invisibles
                         If Not (UserList(CurUser).flags.AdminInvisible = 1) Then
                             ' Creamos el char del usuario
-                            Call MakeUserChar(False, Userindex, CurUser, Map, X, Y)
+                            Call MakeUserChar(False, UserIndex, CurUser, Map, X, Y)
 
                             ' Enviamos la invisibilidad de ser necesario
                             If UserList(CurUser).flags.invisible Or UserList(CurUser).flags.Oculto Then
-                                If UserList(Userindex).flags.Privilegios And PlayerType.User Then
-                                    Call WriteSetInvisible(Userindex, UserList(CurUser).Char.CharIndex, True)
+                                If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+                                    Call WriteSetInvisible(UserIndex, UserList(CurUser).Char.CharIndex, True)
                                 End If
                             End If
                         End If
 
                         ' Si no somos un admin invisible
-                        If Not (UserList(Userindex).flags.AdminInvisible = 1) Then
+                        If Not (UserList(UserIndex).flags.AdminInvisible = 1) Then
                             ' Enviamos nuestro char al usuario
-                            Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
+                            Call MakeUserChar(False, CurUser, UserIndex, .Pos.Map, .Pos.X, .Pos.Y)
 
                             ' Enviamos la invisibilidad de ser necesario
-                            If UserList(Userindex).flags.invisible Or UserList(Userindex).flags.Oculto Then
+                            If UserList(UserIndex).flags.invisible Or UserList(UserIndex).flags.Oculto Then
                                 If UserList(CurUser).flags.Privilegios And PlayerType.User Then
-                                    Call WriteSetInvisible(CurUser, UserList(Userindex).Char.CharIndex, True)
+                                    Call WriteSetInvisible(CurUser, UserList(UserIndex).Char.CharIndex, True)
                                 End If
                             End If
                         End If
@@ -293,25 +307,25 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                         Call FlushBuffer(CurUser)
 
                     '... excepto que nos hayamos warpeado al mapa
-                    ElseIf heading = USER_NUEVO Then
-                        Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
+                    ElseIf Heading = USER_NUEVO Then
+                        Call MakeUserChar(False, UserIndex, UserIndex, Map, X, Y)
                     End If
                 End If
 
                 '<<< Npc >>>
                 If MapData(Map, X, Y).NpcIndex Then
-                    Call MakeNPCChar(False, Userindex, MapData(Map, X, Y).NpcIndex, Map, X, Y)
+                    Call MakeNPCChar(False, UserIndex, MapData(Map, X, Y).NpcIndex, Map, X, Y)
                 End If
 
                 'Objs
                 If MapData(Map, X, Y).ObjInfo.ObjIndex Then
                     CurUser = MapData(Map, X, Y).ObjInfo.ObjIndex
                     If Not EsObjetoFijo(ObjData(CurUser).OBJType) Then
-                        Call WriteObjectCreate(Userindex, ObjData(CurUser).GrhIndex, X, Y)
+                        Call WriteObjectCreate(UserIndex, ObjData(CurUser).GrhIndex, X, Y)
 
                         If ObjData(CurUser).OBJType = eOBJType.otPuertas Then
-                            Call Bloquear(False, Userindex, X, Y, MapData(Map, X, Y).Blocked)
-                            Call Bloquear(False, Userindex, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X, Y, MapData(Map, X, Y).Blocked)
+                            Call Bloquear(False, UserIndex, X - 1, Y, MapData(Map, X - 1, Y).Blocked)
                         End If
                     End If
                 End If
@@ -326,23 +340,21 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
 End Sub
 
 
-'************************************************
-'* CheckUpdateNeededNpc: comprueba si el NPC    *
-'* cambio de area y le avisa a todos los usua-  *
-'* que sea necesario.                           *
-'************************************************
-Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal heading As Byte)
+'***************************************************************************************************************
+'* CheckUpdateNeededNpc: comprueba si el NPC cambio de area y le avisa a todos los usuarios que sea necesario. *
+'***************************************************************************************************************
+Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal Heading As Byte)
     With Npclist(NpcIndex)
 
         ' Comprobamos si cambio de area
         If .AreasInfo.AreaPerteneceX = .Pos.X \ AREAS_X And _
-            .AreasInfo.AreaPerteneceY = .Pos.Y \ AREAS_Y Then _
+           .AreasInfo.AreaPerteneceY = .Pos.Y \ AREAS_Y Then _
                 Exit Sub
 
-        Dim MinX As Integer, MaxX As Integer, MinY As Integer, MaxY As Integer, X As Integer, Y As Integer, Userindex As Long
+        Dim MinX As Integer, MaxX As Integer, MinY As Integer, MaxY As Integer, X As Integer, Y As Integer, UserIndex As Long
 
         ' Calculamos el area nueva segun la direccion del NPC
-        Call CalcularNuevaArea(.Pos.X, .Pos.Y, heading, MinX, MaxX, MinY, MaxY)
+        Call CalcularNuevaArea(.Pos.X, .Pos.Y, Heading, MinX, MaxX, MinY, MaxY)
 
         ' Si no hay usuarios en el mapa ahorramos tiempo y salimos
         If MapInfo(.Pos.Map).NumUsers <> 0 Then
@@ -350,8 +362,8 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal heading As Byte
             For X = MinX To MaxX
                 For Y = MinY To MaxY
                     ' Si hay un usuario le enviamos el NPC
-                    If MapData(.Pos.Map, X, Y).Userindex Then _
-                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).Userindex, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
+                    If MapData(.Pos.Map, X, Y).UserIndex Then _
+                        Call MakeNPCChar(False, MapData(.Pos.Map, X, Y).UserIndex, NpcIndex, .Pos.Map, .Pos.X, .Pos.Y)
                 Next Y
             Next X
         
@@ -363,13 +375,10 @@ Public Sub CheckUpdateNeededNpc(ByVal NpcIndex As Integer, ByVal heading As Byte
     End With
 End Sub
 
-
-'************************************************
-'* CalcularNuevaArea: segun la posicion actual  *
-'* y la direccion dada, se calcula el area en   *
-'* tiles que debe ser actualizada.              *
-'************************************************
-Private Sub CalcularNuevaArea(ByVal X As Integer, ByVal Y As Integer, ByVal heading As Byte, ByRef MinX As Integer, ByRef MaxX As Integer, ByRef MinY As Integer, ByRef MaxY As Integer)
+'**************************************************************************************************************************
+'* CalcularNuevaArea: segun la posicion actual y la direccion dada, se calcula el area en tiles que debe ser actualizada. *
+'**************************************************************************************************************************
+Private Sub CalcularNuevaArea(ByVal X As Integer, ByVal Y As Integer, ByVal Heading As Byte, ByRef MinX As Integer, ByRef MaxX As Integer, ByRef MinY As Integer, ByRef MaxY As Integer)
 
     Dim AreaX As Integer, AreaY As Integer
     Dim MinAreaX As Integer, MaxAreaX As Integer, MinAreaY As Integer, MaxAreaY As Integer
@@ -379,7 +388,7 @@ Private Sub CalcularNuevaArea(ByVal X As Integer, ByVal Y As Integer, ByVal head
     AreaY = Y \ AREAS_Y
 
     ' Calculamos el conjunto de areas nuevas
-    Select Case heading
+    Select Case Heading
         Case eHeading.NORTH
             ' 3 areas nuevas arriba
             MinAreaX = AreaX - 1
@@ -430,32 +439,26 @@ Private Sub CalcularNuevaArea(ByVal X As Integer, ByVal Y As Integer, ByVal head
 
 End Sub
 
-
-'************************************************
-'* EstanMismoArea: devuelve verdadero si los    *
-'* usuarios deben enviarse paquetes mutuamente. *
-'************************************************
+'******************************************************************************************
+'* EstanMismoArea: devuelve verdadero si los usuarios deben enviarse paquetes mutuamente. *
+'******************************************************************************************
 Public Function EstanMismoArea(ByVal UserA As Integer, ByVal UserB As Integer) As Boolean
     EstanMismoArea = Abs(UserList(UserA).AreasInfo.AreaPerteneceX - UserList(UserB).AreasInfo.AreaPerteneceX) <= 1 And _
                      Abs(UserList(UserA).AreasInfo.AreaPerteneceY - UserList(UserB).AreasInfo.AreaPerteneceY) <= 1
 End Function
 
-
-'************************************************
-'* EstanMismoAreaNPC: devuelve verdadero si el  *
-'* usuario esta en el mismo area que el NPC.    *
-'************************************************
-Public Function EstanMismoAreaNPC(ByVal NpcIndex As Integer, ByVal Userindex As Integer) As Boolean
-    EstanMismoAreaNPC = Abs(UserList(Userindex).AreasInfo.AreaPerteneceX - Npclist(NpcIndex).AreasInfo.AreaPerteneceX) <= 1 And _
-                        Abs(UserList(Userindex).AreasInfo.AreaPerteneceY - Npclist(NpcIndex).AreasInfo.AreaPerteneceY) <= 1
+'*****************************************************************************************
+'* EstanMismoAreaNPC: devuelve verdadero si el usuario esta en el mismo area que el NPC. *
+'*****************************************************************************************
+Public Function EstanMismoAreaNPC(ByVal NpcIndex As Integer, ByVal UserIndex As Integer) As Boolean
+    EstanMismoAreaNPC = Abs(UserList(UserIndex).AreasInfo.AreaPerteneceX - Npclist(NpcIndex).AreasInfo.AreaPerteneceX) <= 1 And _
+                        Abs(UserList(UserIndex).AreasInfo.AreaPerteneceY - Npclist(NpcIndex).AreasInfo.AreaPerteneceY) <= 1
 End Function
 
-
-'************************************************
-'* EstanMismoAreaPos: devuelve verdadero si el  *
-'* usuario esta en el mismo area que la posicion*
-'************************************************
-Public Function EstanMismoAreaPos(ByVal Userindex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
-    EstanMismoAreaPos = Abs(UserList(Userindex).AreasInfo.AreaPerteneceX - X \ AREAS_X) <= 1 And _
-                        Abs(UserList(Userindex).AreasInfo.AreaPerteneceY - Y \ AREAS_Y) <= 1
+'**********************************************************************************************
+'* EstanMismoAreaPos: devuelve verdadero si el usuario esta en el mismo area que la posicion. *
+'**********************************************************************************************
+Public Function EstanMismoAreaPos(ByVal UserIndex As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
+    EstanMismoAreaPos = Abs(UserList(UserIndex).AreasInfo.AreaPerteneceX - X \ AREAS_X) <= 1 And _
+                        Abs(UserList(UserIndex).AreasInfo.AreaPerteneceY - Y \ AREAS_Y) <= 1
 End Function
