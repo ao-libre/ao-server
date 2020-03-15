@@ -914,4 +914,4 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.28
 * 09/03/2020: Arreglada vulnerabilidad que te permitia borrar personajes ajenos. (Lorwik)
-
+* 15/03/2020: Nuevo sistema de Areas mas dinámico, basado en el modulo aportado por Agushh. (Wyr0X)
