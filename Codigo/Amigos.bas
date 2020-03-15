@@ -1,6 +1,24 @@
 Attribute VB_Name = "Amigos"
 Option Explicit
 
+Public Sub ResetAmigos(ByVal Userindex As Integer)
+
+    Dim i As Integer
+    
+    With UserList(Userindex)
+    
+        For i = 1 To MAXAMIGOS
+            .Amigos(i).Nombre = vbNullString
+            .Amigos(i).Ignorado = 0
+            .Amigos(i).index = 0
+        Next i
+
+        .Quien = vbNullString
+    
+    End With
+
+End Sub
+
 Public Function NoTieneEspacioAmigos(ByVal Userindex As Integer) As Boolean
 
     Dim i     As Long
@@ -45,7 +63,7 @@ Public Function BuscarSlotAmigoName(ByVal Userindex As Integer, _
             BuscarSlotAmigoName = True
             Exit Function
         End If
-		
+                
     Next i
 
 End Function
@@ -92,7 +110,7 @@ Public Sub BorrarAmigo(ByVal charName As String, ByVal Amigo As String)
 
 End Sub
 
-Public Function IntentarAgregarAmigo(ByVal Userindex As Integer, _
+Public Function AgregarAmigo(ByVal Userindex As Integer, _
                                      ByVal Otro As Integer, _
                                      ByRef razon As String) As Boolean
 
@@ -100,42 +118,42 @@ Public Function IntentarAgregarAmigo(ByVal Userindex As Integer, _
 
         If Otro = 0 Or Userindex = 0 Then
             razon = "Usuario Desconectado"
-            IntentarAgregarAmigo = False
+            AgregarAmigo = False
             Exit Function
 
         ElseIf Userindex = Otro Then
             razon = "Usuario Invalido"
-            IntentarAgregarAmigo = False
+            AgregarAmigo = False
             Exit Function
 
         ElseIf EsGm(Otro) = True Then
-            razon = "Usuario Desconectado"
-            IntentarAgregarAmigo = False
+            razon = "No podes agregar a un Game Master como amigo."
+            AgregarAmigo = False
             Exit Function
 
         ElseIf EsGm(Userindex) = True Then
-            razon = "Los Administradores no pueden agregar a usuarios"
-            IntentarAgregarAmigo = False
+            razon = "Los Game Masters no pueden agregar a usuarios como amigos."
+            AgregarAmigo = False
             Exit Function
-			
+                        
         ElseIf NoTieneEspacioAmigos(Userindex) = True Then
-            razon = "No tienes mas espacio para poder agregar amigos"
-            IntentarAgregarAmigo = False
+            razon = "No tienes mas espacio para poder agregar amigos."
+            AgregarAmigo = False
             Exit Function
 
         ElseIf NoTieneEspacioAmigos(Otro) = True Then
-            razon = "El otro usuario no tiene mas espacio para aceptar Amigos"
-            IntentarAgregarAmigo = False
+            razon = "El otro usuario no tiene mas espacio para aceptar amigos."
+            AgregarAmigo = False
             Exit Function
 
         ElseIf BuscarSlotAmigoName(Userindex, UserList(Otro).Name) = True Then
-            razon = "Tu y " & UserList(Otro).Name & "Ya son amigos"
-            IntentarAgregarAmigo = False
+            razon = "Tu y " & UserList(Otro).Name & " ya son amigos."
+            AgregarAmigo = False
             Exit Function
 
         End If
 
-        IntentarAgregarAmigo = True
+        AgregarAmigo = True
 
     End With
 
@@ -184,7 +202,7 @@ Public Function ObtenerIndexUsuado(ByVal Userindex As Integer, _
     Dim i As Long
 
     For i = 1 To MAXAMIGOS
-	
+        
         If UserList(Userindex).Amigos(i).index = Otro Then
             ObtenerIndexUsuado = i
             Exit Function
@@ -302,7 +320,7 @@ ErrHandler:
 
     Dim Error As Long
         Error = Err.Number
-		
+                
     On Error GoTo 0
 
     'Destroy auxiliar buffer
@@ -373,7 +391,7 @@ Public Sub HandleAddAmigo(ByVal Userindex As Integer)
         'Mandar solicitudad de amistad
         If caso = 1 Then
 
-            If IntentarAgregarAmigo(Userindex, tUser, razon) = True Then
+            If AgregarAmigo(Userindex, tUser, razon) = True Then
                 Call WriteConsoleMsg(Userindex, "Se ha enviado una solicitud de amistad a " & UserList(tUser).Name, FontTypeNames.FONTTYPE_CONSEJO)
                 Call WriteConsoleMsg(tUser, UserList(Userindex).Name & " quiere ser tu amigo. Para aceptarlo usa el comando /FADD " & .Name, FontTypeNames.FONTTYPE_CONSEJO)
                 UserList(tUser).Quien = .Name
@@ -386,7 +404,7 @@ Public Sub HandleAddAmigo(ByVal Userindex As Integer)
 
         ElseIf caso > 1 Then
 
-            If IntentarAgregarAmigo(Userindex, tUser, razon) = True Then
+            If AgregarAmigo(Userindex, tUser, razon) = True Then
 
                 If LenB(.Quien) >= 3 Then
 

@@ -2576,14 +2576,3 @@ Function RandomString(cb As Integer) As String
     Next
 
 End Function
-
-Public Sub ResetUserExtras(ByVal UserIndex As Integer)
-
-  Dim i As Integer
-  For i = 1 To MAXAMIGOS
-  UserList(UserIndex).Amigos(i).Nombre = vbNullString
-  UserList(UserIndex).Amigos(i).Ignorado = 0
-UserList(UserIndex).Amigos(i).index = 0
-  Next i
-UserList(UserIndex).Quien = vbNullString
-End Sub
