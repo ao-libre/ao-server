@@ -1509,7 +1509,7 @@ Sub CargarBackUp()
         
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
     
-    Call Areas.generarIDAreas
+    Call Areas.GenerarAreas
         
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumMaps

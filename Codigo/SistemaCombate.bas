@@ -36,10 +36,6 @@ Attribute VB_Name = "SistemaCombate"
 
 Option Explicit
 
-Public Const MAXDISTANCIAARCO  As Byte = 18
-
-Public Const MAXDISTANCIAMAGIA As Byte = 18
-
 Public Function MinimoInt(ByVal a As Integer, ByVal b As Integer) As Integer
 
     If a > b Then
@@ -1363,10 +1359,9 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     
     With UserList(AtacanteIndex)
 
-        If Distancia(.Pos, UserList(VictimaIndex).Pos) > MAXDISTANCIAARCO Then
+        If Abs(.Pos.X - UserList(VictimaIndex).Pos.X) > RANGO_VISION_X Or Abs(.Pos.Y - UserList(VictimaIndex).Pos.Y) > RANGO_VISION_Y Then
             Call WriteConsoleMsg(AtacanteIndex, "Estas muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Function
-
         End If
         
         Call UsuarioAtacadoPorUsuario(AtacanteIndex, VictimaIndex)
@@ -2012,7 +2007,7 @@ Public Function PuedeAtacarNPC(ByVal AttackerIndex As Integer, _
         End If
         
         'Es valida la distancia a la cual estamos atacando?
-        If Distancia(UserList(AttackerIndex).Pos, .Pos) >= MAXDISTANCIAARCO Then
+        If Abs(.Pos.X - UserList(AttackerIndex).Pos.X) > RANGO_VISION_X Or Abs(.Pos.Y - UserList(AttackerIndex).Pos.Y) > RANGO_VISION_Y Then
             Call WriteConsoleMsg(AttackerIndex, "Estas muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Function
 
@@ -2717,7 +2712,7 @@ Public Sub LanzarProyectil(ByVal Userindex As Integer, ByVal X As Byte, ByVal Y 
         If TargetUserIndex > 0 Then
 
             'Only allow to atack if the other one can retaliate (can see us)
-            If Abs(UserList(TargetUserIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y Then
+            If Abs(UserList(TargetUserIndex).Pos.X - .Pos.X) > RANGO_VISION_X Or Abs(UserList(TargetUserIndex).Pos.Y - .Pos.Y) > RANGO_VISION_Y Then
                 Call WriteConsoleMsg(Userindex, "Estas demasiado lejos para atacar.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
