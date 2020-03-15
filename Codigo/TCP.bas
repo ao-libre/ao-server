@@ -881,9 +881,9 @@ Private Sub AddItemsToNewUser(ByVal UserIndex As Integer, ByVal UserClase As eCl
         
         Dim i As Long
         For i = 1 To MAXAMIGOS
-        .Amigos(i).Nombre = "------"
-        .Amigos(i).Ignorado = 0
-        .Amigos(i).index = 0
+            .Amigos(i).Nombre = vbNullString
+            .Amigos(i).Ignorado = 0
+            .Amigos(i).index = 0
         Next i
         
      End With

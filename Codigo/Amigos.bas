@@ -26,7 +26,7 @@ Public Function NoTieneEspacioAmigos(ByVal Userindex As Integer) As Boolean
 
     For i = 1 To MAXAMIGOS
 
-        If Not UserList(Userindex).Amigos(i).Nombre = "------" Then
+        If LenB(UserList(Userindex).Amigos(i).Nombre) > 0 Then
             Count = Count + 1
         End If
 
@@ -44,7 +44,7 @@ Public Function BuscarSlotAmigoVacio(ByVal Userindex As Integer) As Byte
 
     For i = 1 To MAXAMIGOS
 
-        If UserList(Userindex).Amigos(i).Nombre = "------" Then
+        If LenB(UserList(Userindex).Amigos(i).Nombre) = 0 Then
             BuscarSlotAmigoVacio = i
             Exit Function
         End If
@@ -102,7 +102,7 @@ Public Sub BorrarAmigo(ByVal charName As String, ByVal Amigo As String)
 
         If Tiene Then
             'Lo borramos
-            Call WriteVar(CharFile, "AMIGOS", "NOMBRE" & i, "------")
+            Call WriteVar(CharFile, "AMIGOS", "NOMBRE" & i, vbNullString)
             Call WriteVar(CharFile, "AMIGOS", "IGNORADO" & i, 0)
         End If
 
@@ -488,7 +488,7 @@ Public Sub HandleDelAmigo(ByVal Userindex As Integer)
         If Slot <= 0 Or Slot > MAXAMIGOS Then Exit Sub
 
         'Por las duditas :P
-        If .Amigos(Slot).Nombre = "------" Then Exit Sub
+        If LenB(.Amigos(Slot).Nombre) = 0 Then Exit Sub
 
         tUser = NameIndex(.Amigos(Slot).Nombre)
         UserName = .Amigos(Slot).Nombre
@@ -496,7 +496,7 @@ Public Sub HandleDelAmigo(ByVal Userindex As Integer)
         Call WriteConsoleMsg(Userindex, .Amigos(Slot).Nombre & " ha sido borrado de la lista de amigos.", FontTypeNames.FONTTYPE_GMMSG)
 
         'reseteamos el slot
-        .Amigos(Slot).Nombre = "------"
+        .Amigos(Slot).Nombre = vbNullString
         .Amigos(Slot).Ignorado = 0
         Call ActualizarSlotAmigo(Userindex, Slot)
 
@@ -510,7 +510,7 @@ Public Sub HandleDelAmigo(ByVal Userindex As Integer)
                 Slot = BuscarSlotAmigoNameSlot(tUser, .Name)
 
                 UserList(tUser).Amigos(Slot).Ignorado = 0
-                UserList(tUser).Amigos(Slot).Nombre = "------"
+                UserList(tUser).Amigos(Slot).Nombre = vbNullString
 
                 Call ActualizarSlotAmigo(tUser, Slot)
 
