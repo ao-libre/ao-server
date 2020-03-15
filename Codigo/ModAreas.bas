@@ -34,8 +34,9 @@ Public Const XMinMapSize        As Byte = 1
 Public Const YMaxMapSize        As Byte = 100
 Public Const YMinMapSize        As Byte = 1
 
-' Tamanio en tiles de la pantalla
-Public Const XWindow            As Byte = 24
+' Tamanio en tiles de la pantalla.
+'ADVERTENCIA: TIENEN QUE SER IMPAR!
+Public Const XWindow            As Byte = 25
 Public Const YWindow            As Byte = 19
 
 ' Cantidad de tiles buffer
