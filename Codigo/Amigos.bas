@@ -220,7 +220,7 @@ Public Sub ObtenerIndexAmigos(ByVal Userindex As Integer, ByVal Desconectar As B
 
         If Desconectar = False Then
 
-            For i = LBound(.Amigos()) To UBound(.Amigos())
+            For i = 1 To LastUser
 
                 If LenB(UserList(i).Name) > 0 Then
 
