@@ -77,8 +77,6 @@ Public Const INFINITE_LOOPS As Integer = -1
 
 Public Const FXSANGRE = 14
 
-Public Const MAXAMIGOS As Byte = 20   'Cantidad máxima de Amigos
-
 ''
 ' The color of chats over head of dead characters.
 Public Const CHAT_COLOR_DEAD_CHAR As Long = &HC0C0C0
@@ -1617,7 +1615,7 @@ Public Type User
     
     showName As Boolean 'Permite que los GMs oculten su nick con el comando /SHOWNAME
     
-    Amigos(1 To MAXAMIGOS) As Amigos
+    Amigos() As Amigos
     Quien As String
 
     Char As Char 'Define la apariencia
