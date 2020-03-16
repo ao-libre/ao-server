@@ -36,7 +36,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, n, mapa, Email, Length As Variant
+    Dim X, Y, n, Mapa, Email, Length As Variant
 
 #End If
 
@@ -552,7 +552,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         End If
     
         If UserList(Userindex).flags.UserLogged Then
-            Call LogCheating("El usuario " & UserList(Userindex).Name & " ha intentado crear a " & Name & " desde la IP " & UserList(Userindex).ip)
+            Call LogCheating("El usuario " & UserList(Userindex).Name & " ha intentado crear a " & Name & " desde la IP " & UserList(Userindex).IP)
         
             'Kick player ( and leave character inside :D )!
             Call CloseSocketSL(Userindex)
@@ -577,7 +577,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         End If
     
         If Not ValidarCabeza(UserRaza, UserSexo, Head) Then
-            Call LogCheating("El usuario " & Name & " ha seleccionado la cabeza " & Head & " desde la IP " & .ip)
+            Call LogCheating("El usuario " & Name & " ha seleccionado la cabeza " & Head & " desde la IP " & .IP)
         
             Call WriteErrorMsg(Userindex, "Cabeza invalida, elija una cabeza seleccionable.")
             Exit Sub
@@ -878,6 +878,14 @@ Private Sub AddItemsToNewUser(ByVal Userindex As Integer, ByVal UserClase As eCl
 
         ' Total Items
         .Invent.NroItems = Slot
+
+        Dim i As Long
+        For i = 1 To MAXAMIGOS
+            .Amigos(i).Nombre = vbNullString
+            .Amigos(i).Ignorado = 0
+            .Amigos(i).index = 0
+        Next i
+
      End With
 End Sub
 
@@ -1026,7 +1034,7 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
     If Not Database_Enabled Then
         Call LoginAccountCharfile(Userindex, UserName)
     Else
-        Call SaveAccountLastLoginDatabase(UserName, UserList(Userindex).ip)
+        Call SaveAccountLastLoginDatabase(UserName, UserList(Userindex).IP)
         Call LoginAccountDatabase(Userindex, UserName)
 
     End If
@@ -1046,7 +1054,7 @@ End Sub
 
         With UserList(Userindex)
 
-            Call SecurityIp.IpRestarConexion(GetLongIp(.ip))
+            Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
         
             If .ConnID <> -1 Then
                 Call CloseSocketSL(Userindex)
@@ -1078,7 +1086,7 @@ End Sub
             
             ' Retos nVSn. Usuario cierra conexion.
             If .flags.SlotReto > 0 Then
-                Call Retos.UserdieFight(Userindex, 0, True)
+                Call Retos.UserDieFight(Userindex, 0, True)
             End If
 
             ' Desequipamos la montura justo antes de cerrar el socket
@@ -1447,7 +1455,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     With UserList(Userindex)
 
         If .flags.UserLogged Then
-            Call LogCheating("El usuario " & .Name & " ha intentado loguear a " & Name & " desde la IP " & .ip)
+            Call LogCheating("El usuario " & .Name & " ha intentado loguear a " & Name & " desde la IP " & .IP)
             'Kick player ( and leave character inside :D )!
             Call CloseSocketSL(Userindex)
             Call Cerrar_Usuario(Userindex)
@@ -1474,7 +1482,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Este IP ya esta conectado?
         If AllowMultiLogins = False Then
-            If CheckForSameIP(Userindex, .ip) = True Then
+            If CheckForSameIP(Userindex, .IP) = True Then
                 Call WriteErrorMsg(Userindex, "No es posible usar mas de un personaje al mismo tiempo.")
                 Call FlushBuffer(Userindex)
                 Call CloseSocket(Userindex)
@@ -1523,19 +1531,19 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Vemos que clase de user es (se lo usa para setear los privilegios al loguear el PJ)
         If EsAdmin(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Admin
-            Call LogGM(Name, "Se conecto con ip:" & .ip)
+            Call LogGM(Name, "Se conecto con ip:" & .IP)
         ElseIf EsDios(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Dios
-            Call LogGM(Name, "Se conecto con ip:" & .ip)
+            Call LogGM(Name, "Se conecto con ip:" & .IP)
         ElseIf EsSemiDios(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.SemiDios
         
             .flags.PrivEspecial = EsGmEspecial(Name)
         
-            Call LogGM(Name, "Se conecto con ip:" & .ip)
+            Call LogGM(Name, "Se conecto con ip:" & .IP)
         ElseIf EsConsejero(Name) Then
             .flags.Privilegios = .flags.Privilegios Or PlayerType.Consejero
-            Call LogGM(Name, "Se conecto con ip:" & .ip)
+            Call LogGM(Name, "Se conecto con ip:" & .IP)
         Else
             .flags.Privilegios = .flags.Privilegios Or PlayerType.User
             .flags.AdminPerseguible = True
@@ -1595,31 +1603,31 @@ Sub ConnectUser(ByVal Userindex As Integer, _
 
         End If
     
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
     
         'Posicion de comienzo
-        If mapa = 0 Then
+        If Mapa = 0 Then
 
             'Configurable desde el Server.ini / CustomWorld
             'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
             'Caso contrario sigue modo Alkon'
             If UsarMundoPropio Then
                 .Pos = CustomSpawnMap
-                mapa = CustomSpawnMap.Map
+                Mapa = CustomSpawnMap.Map
             Else
                 'Dejo esto comentado aqui por si se quiere utilizar la ciudad elegida desde el menu
                 'Crear personaje, ahora se utiliza solo Nemahuak ya que es una ciudad nw utilizada desde la 0.13
                 ' .Pos = Ciudades(.Hogar)
                 ' mapa = Ciudades(.Hogar).Map
                 .Pos = Nemahuak
-                mapa = Nemahuak.Map
+                Mapa = Nemahuak.Map
             End If
 
         Else
     
-            If Not MapaValido(mapa) Then
+            If Not MapaValido(Mapa) Then
                 Call WriteErrorMsg(Userindex, "El PJ se encuenta en un mapa invalido.")
                 Call CloseSocket(Userindex)
                 Exit Sub
@@ -1629,12 +1637,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             ' If map has different initial coords, update it
             Dim StartMap As Integer
 
-            StartMap = MapInfo(mapa).StartPos.Map
+            StartMap = MapInfo(Mapa).StartPos.Map
 
             If StartMap <> 0 Then
                 If MapaValido(StartMap) Then
-                    .Pos = MapInfo(mapa).StartPos
-                    mapa = StartMap
+                    .Pos = MapInfo(Mapa).StartPos
+                    Mapa = StartMap
 
                 End If
 
@@ -1644,7 +1652,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
         'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martin Sotuyo Dodero (Maraxus)
-        If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
+        If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
 
             Dim FoundPlace As Boolean
 
@@ -1655,7 +1663,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Dim tY         As Long
         
             FoundPlace = False
-            esAgua = HayAgua(mapa, .Pos.X, .Pos.Y)
+            esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
         
             For tY = .Pos.Y - 1 To .Pos.Y + 1
                 For tX = .Pos.X - 1 To .Pos.X + 1
@@ -1663,7 +1671,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     If esAgua Then
 
                         'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, True, False) Then
+                        If LegalPos(Mapa, tX, tY, True, False) Then
                             FoundPlace = True
                             Exit For
 
@@ -1672,7 +1680,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     Else
 
                         'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, False, True) Then
+                        If LegalPos(Mapa, tX, tY, False, True) Then
                             FoundPlace = True
                             Exit For
 
@@ -1691,30 +1699,30 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Else
 
                 'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-                If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
+                If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
 
                     'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                    If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
+                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
 
                         'Le avisamos al que estaba comerciando que se tuvo que ir.
-                        If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
-                            Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
-                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
-                            Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                        If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
+                            Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                            Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
+                            Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
 
                         'Lo sacamos.
-                        If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
-                            Call FinComerciarUsu(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
-                            Call WriteErrorMsg(MapData(mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                            Call FlushBuffer(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
+                        If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
+                            Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
+                            Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
+                            Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                         End If
 
                     End If
                 
-                    Call CloseSocket(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
+                    Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                 End If
 
@@ -1725,7 +1733,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         .showName = True 'Por default los nombres son visibles
     
         'If in the water, and has a boat, equip it!
-        If .Invent.BarcoObjIndex > 0 And (HayAgua(mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+        If .Invent.BarcoObjIndex > 0 And (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
             .Char.Head = 0
 
@@ -2074,7 +2082,7 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
         .Pos.Map = 0
         .Pos.X = 0
         .Pos.Y = 0
-        .ip = vbNullString
+        .IP = vbNullString
         .Clase = 0
         .Email = vbNullString
         .Genero = 0
@@ -2330,6 +2338,7 @@ Sub ResetUserSlot(ByVal Userindex As Integer)
     Call ResetUserPets(Userindex)
     Call ResetUserBanco(Userindex)
     Call ResetQuestStats(Userindex)
+    Call ResetUserExtras(Userindex)
 
     With UserList(Userindex).ComUsu
         .Acepto = False
@@ -2407,6 +2416,9 @@ Sub CloseUser(ByVal Userindex As Integer)
 
         End If
     
+        'Actualizamos los index de los amigos
+        Call ObtenerIndexAmigos(Userindex, True)
+
         'si esta en party le devolvemos la experiencia
         If .PartyIndex > 0 Then Call mdParty.SalirDeParty(Userindex)
     
@@ -2561,3 +2573,21 @@ Function RandomString(cb As Integer) As String
     Next
 
 End Function
+
+
+Public Sub ResetUserExtras(ByVal Userindex As Integer)
+
+  Dim i As Integer
+  For i = 1 To MAXAMIGOS
+
+  UserList(Userindex).Amigos(i).Nombre = vbNullString
+
+  UserList(Userindex).Amigos(i).Ignorado = 0
+
+  UserList(Userindex).Amigos(i).index = 0
+
+  Next i
+
+UserList(Userindex).Quien = vbNullString
+
+End Sub
