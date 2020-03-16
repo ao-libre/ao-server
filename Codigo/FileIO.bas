@@ -1823,6 +1823,8 @@ Sub LoadSini()
     HideMe = CBool(Lector.GetValue("INIT", "Hide"))
     AllowMultiLogins = CBool(val(Lector.GetValue("INIT", "AllowMultiLogins")))
     IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
+    MAXAMIGOS = val(Lector.GetValue("INIT", "MaxAmigos"))
+    ReDim Amigos(1 to MAXAMIGOS)
     
     'Lee la version correcta del cliente
     ULTIMAVERSION = Lector.GetValue("INIT", "VersionBuildCliente")
