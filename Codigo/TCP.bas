@@ -2577,7 +2577,6 @@ Function RandomString(cb As Integer) As String
 
 End Function
 
-
 Public Sub ResetUserExtras(ByVal Userindex As Integer)
 
   Dim i As Integer
