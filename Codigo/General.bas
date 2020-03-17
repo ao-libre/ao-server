@@ -581,6 +581,8 @@ Private Sub LoadArrays()
     Call LoadRecords
     ' Load guilds info
     Call LoadGuildsDB
+    ' Load quests list
+    Call LoadQuests
     ' Load spawn list
     Call CargarSpawnList
     ' Load forbidden words
