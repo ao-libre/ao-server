@@ -47,7 +47,7 @@ NPCS QUESTS
 ##############NUMEROS LIBRES##################
 ##############################################
 
-162 a 499
+165 a 499
 563
 570
 571
@@ -464,8 +464,8 @@ BackUp=1
 
 #############################################
 
-[NPC33] 'Talador
-Name=Talador
+[NPC33] 'Leñador
+Name=Leñador
 NpcType=0
 Desc=Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
@@ -479,7 +479,7 @@ Domable=0
 Comercia=1
 TipoItems=14
 NROITEMS=2
-Obj1=127-1000 'Hacha de Talador
+Obj1=127-1000 'Hacha de Leñador
 Obj2=1005-1000 'Hacha de leña Elfica
 BackUp=1
 
@@ -839,6 +839,106 @@ Obj8=690-1000
 Obj9=695-1000
 Obj10=1037-1000
 
+#############################################
+[NPC162] 'VendeMagia Basica
+Name=Vito
+NpcType=0
+Desc=Bienvenido a nuestra tienda, yo vendo hechizos que no requieren alto conocimiento de las artes arcanas, son buenos para comenzar.
+Head=110
+Heading=3
+Body=46
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=24
+NROITEMS=16
+Obj1=199-1000 #Dardo Magico
+Obj2=200-1000 #Antidoto Magico
+Obj3=363-1000 #Ataque de hambre
+Obj4=364-1000 #Terrible hambre de Igor
+Obj5=541-1000 #Ceguera
+Obj6=542-1000 #Aturdir
+Obj7=657-1000 #Desaturdir
+Obj8=397-1000 #Torpeza
+Obj9=471-1000 #Debilidad
+Obj10=202-1000 #Toxina
+Obj11=197-1000 #Flecha magica
+Obj12=204-1000 #Flecha electrica
+Obj13=201-1000 #Curar heridas leves
+Obj14=396-1000 #Celeridad
+Obj15=470-1000 #Fuerza
+Obj16=206-1000 #Paralizar
+BackUp=1
+
+[NPC163] 'VendeMagia Avanazada
+Name=Tovi
+NpcType=0
+Desc=Bienvenido a nuestra tienda, yo vendo hechizos que requieren un alto conocimiento de las artes arcanas, unicamente los mejores hechizeros podrar dominarlos.
+Head=110
+Heading=3
+Body=46
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=24
+NROITEMS=17
+Obj1=205-1000 #Proyectil Magico
+Obj2=203-1000 #Curar heridas graves
+Obj3=207-1000 #Devolver movilidad
+Obj4=380-1000 #Invocacion de ultratumba
+Obj5=394-1000 #LLamado a la naturaleza
+Obj6=395-1000 #Llamado nigromante
+Obj7=530-1000 #Inmovilizar
+Obj8=673-1000 #Mimetismo
+Obj9=536-1000 #Invocar elemental de fuego
+Obj10=537-1000 #Invocar elemental de agua
+Obj11=538-1000 #Invocar elemental de tierra
+Obj12=539-1000 #Implorar ayuda
+Obj13=361-1000 #Tormenta de fuego
+Obj14=531-1000 #Descarga electrica
+Obj15=318-1000 #Invisibilidad
+Obj16=319-1000 #Resucitar
+Obj17=532-1000 #Apocalipsis
+BackUp=1
+
+[NPC164] 'VendeMagia Propia por clase
+Name=Gandalf
+NpcType=0
+Desc=Dejame desbloquearte potencial que creias oculto, liberando poderes que estan fuera de la comprension de los simples mortales
+Head=110
+Heading=3
+Body=46
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=1
+TipoItems=24
+NROITEMS=12
+Obj1= #Determinacion (paladin)
+Obj2= #??? (Mago)
+Obj3= #??? (Guerrero)
+Obj4= #??? (Bardo)
+Obj5= #??? (Cazador)
+Obj6= #??? (Trabajador)
+Obj7= #??? (Asesino)
+Obj8= #??? (Druida)
+Obj9= #??? (Ladron)
+Obj10= #??? (Clerigo)
+Obj11= #??? (Bandido)
+Obj12= #??? (universal)
+BackUp=1
+
 ##############################################
 
 [NPC120] 'Sastre Razas (humanos mujer)
@@ -1025,7 +1125,7 @@ NROITEMS=18
 Obj1=957-1000 'Vestido de Enana (E/G-M)
 Obj2=958-1000 'Vestimenta Comun (E/G)
 Obj3=959-1000 'Ropa de Carpintero Enano (E/G)
-Obj4=960-1000 'Ropa de Talador (E/G)
+Obj4=960-1000 'Ropa de Leñador (E/G)
 Obj5=961-1000 'Ropa de Minero (E/G)
 Obj6=962-1000 'Tunica Elegante (E/G)
 Obj7=963-1000 'Ropaje de Luchador de Las Minas (E/G)
@@ -3909,7 +4009,7 @@ Obj3=860-1000 'Flecha (Newbie)
 Obj4=564-1000 'Serrucho (Newbie)
 Obj5=565-1000 'Martillo de Herrero (Newbie)
 Obj6=562-1000 'Piquete de minero (Newbie)
-Obj7=561-1000 'Hacha de Talador (Newbie)
+Obj7=561-1000 'Hacha de Leñador (Newbie)
 Obj8=563-1000 'Caña de PEscar (Newbie)
 BackUp=1
 
@@ -6818,7 +6918,7 @@ Drop4=475-1 'Galera
 [NPC573]
 Name=Arbol Encantado
 NpcType=0
-Desc=Odio los taladores!
+Desc=Odio los leñadores!
 Head=0
 Heading=4
 Body=25
@@ -9031,9 +9131,9 @@ BackUp=0
 ############################################
 
 [NPC654]
-Name=Talador Tutor
+Name=Leñador Tutor
 NpcType=0
-Desc=Se considera Talador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
+Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
 Head=216
 Heading=3
 Body=382
@@ -11007,4 +11107,4 @@ Domable=0
 Alineacion=0
 Comercia=0
 
-#############################################
+
