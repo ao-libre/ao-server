@@ -1,7 +1,21 @@
 [INIT]
-NumQuests=3
- 
+NumQuests=6
+
+
 [QUEST1]
+Nombre=Bichos Molestos
+Desc=Se han reportado una plaga de molestos murciélagos en todo el territorio. Por favor mata 10 murciélagos
+RequiredLevel=1
+ 
+RequiredNPCs=1
+RequiredNPC1=500-1
+ 
+RewardGLD=100
+RewardEXP=500
+ 
+RewardOBJs=0
+ 
+[QUEST2]
 Nombre=Cacería de lobo
 Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Ullathorpe. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Debes matar 15 Lobos y conseguir 15 Pieles de Lobo para recibir una recompensa de 200 monedas de oro y 1000 puntos de experiencia.
 RequiredLevel=5
@@ -17,7 +31,7 @@ RewardEXP=1000
  
 RewardOBJs=0
  
-[QUEST2]
+[QUEST3]
 Nombre=Una gran aventura
 Desc=Un simpático personaje de la ciudad de Ullathorpe, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y está dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
 RequiredLevel=10
@@ -27,11 +41,28 @@ RequiredOBJ1=414-10
 RequiredOBJ2=415-10
  
 RewardEXP=2000
+RewardGLD=1500
  
 RewardOBJs=1
 RewardOBJ1=238-1
+
+
+[QUEST4]
+Nombre=Contra los muertos Vivos
+Desc=Ayuda por favor!! Una horda de zombies y esqueletos están acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendrás una gran recompensa.
+RequiredLevel=15
  
-[QUEST3]
+RequiredNPCs=2
+RequiredNPC1=502-10
+RequiredNPC1=503-10
+
+RewardEXP=4500
+RewardGLD=3000
+ 
+RewardOBJs=1
+RewardOBJ1=559-1
+
+[QUEST5]
 Nombre=El peligroso Dorck
 Desc=Selenna, una importante miembro del círculo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine 10 Arañas Gigantes, 10 Orcos y consiga 10 Hachas, será recompensado con 4000 puntos de experiencia, 4000 monedas de oro y una corona de Laureles, como muestra de colaborador con el círculo de Druidas del Imperio.
 RequiredLevel=20
@@ -43,8 +74,23 @@ RequiredNPCs=2
 RequiredNPC1=510-10
 RequiredNPC2=523-10
  
-RewardGLD=4000
-RewardEXP=4000
+RewardGLD=5000
+RewardEXP=5000
  
 RewardOBJs=1
 RewardOBJ1=851-1
+
+[QUEST6]
+Nombre=De Bandidos y Asesinos
+Desc=El clan de Asesinos y Bandidos no para de fastidiar a los ciudadanos de Argentum por eso te pedimos que acabes con ésta plaga de una vez por todas. Con que mates a 10 asesinos y a 10 bandidos nos alcanza.
+RequiredLevel=25
+
+RequiredNPCs=2
+RequiredNPC1=531-10
+RequiredNPC2=530-10
+ 
+RewardEXP=7000
+RewardGLD=7000
+ 
+RewardOBJs=1
+RewardOBJ1=1003-1

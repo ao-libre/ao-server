@@ -290,18 +290,35 @@ Public Sub Encarcelar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub BorrarUsuario(ByVal UserName As String)
+Public Sub BorrarUsuario(ByVal UserIndex As Integer, ByVal UserName As String, ByVal AccountHash As String)
 
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 18/09/2018
+    '********************************************************************************
+    'Author: Recox
+    'Last Modification: 09/03/2020
     '18/09/2018 CHOTS: Checks database too
-    '***************************************************
-    If Not Database_Enabled Then
-        BorrarUsuarioCharfile (UserName)
-    Else
-        BorrarUsuarioDatabase (UserName)
+    '09/03/2020 Lorwik: Agregado chequeos PersonajeExiste y PersonajePerteneceCuenta
+    '********************************************************************************
+    
+    'Podria estar de mas, pero... Existe el personaje?
+    If Not PersonajeExiste(UserName) Then
+        Call WriteErrorMsg(UserIndex, "El personaje no existe.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
 
+    'IMPORTANTE! - El personaje pertenece a esta cuenta?
+    If Not PersonajePerteneceCuenta(UserName, AccountHash) Then
+        Call WriteErrorMsg(UserIndex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
+        Call FlushBuffer(UserIndex)
+        Call CloseSocket(UserIndex)
+        Exit Sub
+    End If
+    
+    If Not Database_Enabled Then
+        Call BorrarUsuarioCharfile(UserName)
+    Else
+        Call BorrarUsuarioDatabase(UserName)
     End If
 
 End Sub
