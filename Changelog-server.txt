@@ -912,4 +912,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 10/02/2020: SkillRequerido versión mejorada de MinSkill (Wyr0X)
 * 16/02/2020: Se agrego posibilidad de ponerle musica mp3s a los mapas desde el .dat del mapa, en caso que el mapa no tenga seteado el mp3 se utiliza el clasico midi (Recox)
 
+- v0.13.28
+* 09/03/2020: Arreglada vulnerabilidad que te permitia borrar personajes ajenos. (Lorwik)
 
