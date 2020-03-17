@@ -1438,7 +1438,7 @@ LingO=0
 SkHerreria=90
 
 [OBJ127]
-Name=Hacha de Leñador
+Name=Hacha de Talador
 GrhIndex=565
 ObjType=2
 Agarrable=0
@@ -6698,7 +6698,7 @@ Agarrable=0
 Crucial=0
 
 [OBJ561]
-Name=Hacha de Leñador (Newbie)
+Name=Hacha de Talador (Newbie)
 GrhIndex=565
 ObjType=2
 Agarrable=0
@@ -11401,7 +11401,7 @@ CP10=CAZADOR
 CP11=CLERIGO
 
 [OBJ960] 'enano
-Name=Ropa de Leñador (E/G)
+Name=Ropa de Talador (E/G)
 GrhIndex=17085
 ObjType=3
 NumRopaje=368
@@ -12315,12 +12315,12 @@ Agarrable=1
 Texto=Gremio de Trabajadores
 
 [OBJ1032]
-Name=Cartel Leñadores
+Name=Cartel Taladores
 GrhIndex=3716
 VGrande=501
 ObjType=8
 Agarrable=1
-Texto=Leñadores
+Texto=Taladores
 
 [OBJ1033]' Cartel Ulla
 Name=Cartel

@@ -464,8 +464,8 @@ BackUp=1
 
 #############################################
 
-[NPC33] 'Leñador
-Name=Leñador
+[NPC33] 'Talador
+Name=Talador
 NpcType=0
 Desc=Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
@@ -479,7 +479,7 @@ Domable=0
 Comercia=1
 TipoItems=14
 NROITEMS=2
-Obj1=127-1000 'Hacha de Leñador
+Obj1=127-1000 'Hacha de Talador
 Obj2=1005-1000 'Hacha de leña Elfica
 BackUp=1
 
@@ -1025,7 +1025,7 @@ NROITEMS=18
 Obj1=957-1000 'Vestido de Enana (E/G-M)
 Obj2=958-1000 'Vestimenta Comun (E/G)
 Obj3=959-1000 'Ropa de Carpintero Enano (E/G)
-Obj4=960-1000 'Ropa de Leñador (E/G)
+Obj4=960-1000 'Ropa de Talador (E/G)
 Obj5=961-1000 'Ropa de Minero (E/G)
 Obj6=962-1000 'Tunica Elegante (E/G)
 Obj7=963-1000 'Ropaje de Luchador de Las Minas (E/G)
@@ -3909,7 +3909,7 @@ Obj3=860-1000 'Flecha (Newbie)
 Obj4=564-1000 'Serrucho (Newbie)
 Obj5=565-1000 'Martillo de Herrero (Newbie)
 Obj6=562-1000 'Piquete de minero (Newbie)
-Obj7=561-1000 'Hacha de Leñador (Newbie)
+Obj7=561-1000 'Hacha de Talador (Newbie)
 Obj8=563-1000 'Caña de PEscar (Newbie)
 BackUp=1
 
@@ -6818,7 +6818,7 @@ Drop4=475-1 'Galera
 [NPC573]
 Name=Arbol Encantado
 NpcType=0
-Desc=Odio los leñadores!
+Desc=Odio los taladores!
 Head=0
 Heading=4
 Body=25
@@ -9031,9 +9031,9 @@ BackUp=0
 ############################################
 
 [NPC654]
-Name=Leñador Tutor
+Name=Talador Tutor
 NpcType=0
-Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
+Desc=Se considera Talador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
 Head=216
 Heading=3
 Body=382
