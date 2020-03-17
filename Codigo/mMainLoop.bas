@@ -35,7 +35,7 @@ Public Sub MainLoop()
     prgRun = True
     
     Do While prgRun
-        frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & MinutosWs & " Minutos"
+        frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & Minutos & " Minutos"
 
         For LoopC = 1 To NumTimers
 
