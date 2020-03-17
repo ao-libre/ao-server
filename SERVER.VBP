@@ -79,6 +79,7 @@ Module=ApiConnection; Codigo\ApiConnection.bas
 Module=Retos; Codigo\Retos.bas
 Module=Cuentas; Codigo\Cuentas.bas
 Module=Logs; Codigo\Logs.bas
+Module=Amigos; Codigo\Amigos.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
