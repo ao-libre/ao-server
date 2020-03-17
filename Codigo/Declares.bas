@@ -1939,12 +1939,24 @@ Public DatPath                            As String
 ''
 'Bordes del mapa
 Public MinXBorder                         As Byte
-
 Public MaxXBorder                         As Byte
-
 Public MinYBorder                         As Byte
-
 Public MaxYBorder                         As Byte
+
+'Tamano del mapa
+Public Const XMaxMapSize                As Byte = 100
+Public Const XMinMapSize                As Byte = 1
+Public Const YMaxMapSize                As Byte = 100
+Public Const YMinMapSize                As Byte = 1
+
+'Tamano del tileset
+Public Const TileSizeX                  As Byte = 32
+Public Const TileSizeY                  As Byte = 32
+
+'Tamano en Tiles de la pantalla de visualizacion
+Public Const XWindow                    As Byte = 17
+Public Const YWindow                    As Byte = 13
+
 
 ''
 'Numero de usuarios actual
