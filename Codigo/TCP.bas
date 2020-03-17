@@ -776,7 +776,7 @@ Private Sub AddItemsToNewUser(ByVal Userindex As Integer, ByVal UserClase As eCl
 '*************************************************
 'Author: Lucas Recoaro (Recox)
 'Last modified: 19/03/2019
-'Añade items al usuario recien creado
+'Agrega items al usuario recien creado
 '*************************************************
     Dim Slot As Byte
     Dim IsPaladin As Boolean
@@ -893,7 +893,7 @@ Private Sub AddItemsCustomToNewUser(ByVal Userindex As Integer)
 '*************************************************
 'Author: Lucas Recoaro (Recox)
 'Last modified: 19/03/2019
-'Añade items customizados al usuario recien creado
+'Agrega items customizados al usuario recien creado
 '*************************************************
     Dim CantidadItemsIniciales As Integer
     Dim Slot As Long

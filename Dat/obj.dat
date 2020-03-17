@@ -15,7 +15,7 @@
 ' 11: Pociones
 ' 12: Libros
 ' 13: Bebida
-' 14: Leña
+' 14: Madera
 ' 15: Fogata
 ' 16: escudos
 ' 17: cascos
@@ -651,7 +651,7 @@ Llave=1
 Clave=3
 
 [OBJ58]
-Name=Leña
+Name=Madera
 GrhIndex=550
 ObjType=14
 Agarrable=0
@@ -1438,7 +1438,7 @@ LingO=0
 SkHerreria=90
 
 [OBJ127]
-Name=Hacha de Leñador
+Name=Hacha de Talador
 GrhIndex=565
 ObjType=2
 Agarrable=0
@@ -1623,7 +1623,7 @@ ObjType=10
 Agarrable=1
 
 [OBJ138]
-Name=Caña de Pescar
+Name=Equipo de Pescar
 GrhIndex=574
 ObjType=2
 Agarrable=0
@@ -4174,7 +4174,7 @@ GrhIndex=513
 VGrande=514
 ObjType=8
 Agarrable=1
-Texto=Bajo este marmol descansan los restos del Dios Nebeth, ese pequeño demiurgo de grandes sueños.
+Texto=Bajo este marmol descansan los restos del Dios Nebeth, ese diminuto demiurgo de grandes sueños.
 
 [OBJ372]
 Name=Manto de Sacerdote del Imperio
@@ -5863,7 +5863,7 @@ LingO=0
 SkHerreria=65
 
 [OBJ500]
-Name=Armadura Bruñida (E/G)
+Name=Armadura de Ceramica (E/G)
 GrhIndex=776
 ObjType=3
 NumRopaje=110
@@ -6698,7 +6698,7 @@ Agarrable=0
 Crucial=0
 
 [OBJ561]
-Name=Hacha de Leñador (Newbie)
+Name=Hacha de Talador (Newbie)
 GrhIndex=565
 ObjType=2
 Agarrable=0
@@ -11401,7 +11401,7 @@ CP10=CAZADOR
 CP11=CLERIGO
 
 [OBJ960] 'enano
-Name=Ropa de Leñador (E/G)
+Name=Ropa de Talador (E/G)
 GrhIndex=17085
 ObjType=3
 NumRopaje=368
@@ -12067,7 +12067,7 @@ CP10=CLERIGO
 CP11=TRABAJADOR
 
 [OBJ1005]
-Name=Hacha de leña Elfica
+Name=Hacha de madera Elfica
 GrhIndex=603
 ObjType=2
 Agarrable=0
@@ -12082,7 +12082,7 @@ LingO=0
 SkHerreria=30
 
 [OBJ1006]
-Name=Leña Elfica
+Name=Madera Elfica
 GrhIndex=1999
 ObjType=14
 Agarrable=0
@@ -12315,12 +12315,12 @@ Agarrable=1
 Texto=Gremio de Trabajadores
 
 [OBJ1032]
-Name=Cartel Leñadores
+Name=Cartel Taladores
 GrhIndex=3716
 VGrande=501
 ObjType=8
 Agarrable=1
-Texto=Leñadores
+Texto=Taladores
 
 [OBJ1033]' Cartel Ulla
 Name=Cartel

@@ -86,7 +86,7 @@ NumNPCs=938
 [NPC34] 'Propiedades Ulla 
 Name=Cullighan
 NpcType=0
-Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. acerquese y sea dueño de una de las exclusivas casas de Ullathorpe. Sera admirado por toda la poblacion!
+Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. acerquese y sea poseedor de una de las exclusivas casas de Ullathorpe. Sera admirado por toda la poblacion!
 Head=33
 Heading=3
 Body=240
@@ -464,8 +464,8 @@ BackUp=1
 
 #############################################
 
-[NPC33] 'Leñador
-Name=Leñador
+[NPC33] 'Talador
+Name=Talador
 NpcType=0
 Desc=Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
@@ -479,8 +479,8 @@ Domable=0
 Comercia=1
 TipoItems=14
 NROITEMS=2
-Obj1=127-1000 'Hacha de Leñador
-Obj2=1005-1000 'Hacha de leña Elfica
+Obj1=127-1000 'Hacha de Talador
+Obj2=1005-1000 'Hacha de madera Elfica
 BackUp=1
 
 #############################################
@@ -610,7 +610,7 @@ BackUp=1
 [NPC9] 'Provisiones Newbie Dungeon
 Name=Ralph
 NpcType=0
-Desc=Hola, pequeño aventurero, tengo aqui unas mercaderias para saciar tu hambre y sed!.
+Desc=Hola, aventurero, tengo aqui unas mercaderias para saciar tu hambre y sed!.
 Head=504
 Heading=3
 Body=202
@@ -741,7 +741,7 @@ Obj4=492-1000 'Armadura Real (E/G)
 Obj5=682-1000 'Tunica Conspicua de Mago Imperial (E/G)
 Obj6=1040-1000 'Armadura de Gran Sacerdote Imperial (E/G)
 Obj7=681-1000 'Armadura Nobilisima (E/G)
-Obj8=688-1000 'Pequeña Tunica Palatina (E/G)
+Obj8=688-1000 'Minuscula Tunica Palatina (E/G)
 Obj9=694-1000 'Armadura de Ilustre Caballero (E/G)
 Obj10=1038-1000 'Escudo Real
 BackUp=1
@@ -1020,11 +1020,11 @@ Obj1=908-1000 'Vestimentas de Pescador (E/G)
 Obj2=910-1000 'Atuendo de Gnomo (E/G)
 Obj3=911-1000 'Vestimenta Bordo de Poblador (E/G)
 Obj4=912-1000 'Vestimenta Verde de Poblador (E/G)
-Obj5=913-1000 'Ropaje de Ermitaño (E/G)
+Obj5=913-1000 'Ropaje de Eremita (E/G)
 Obj6=915-1000 'Ropaje de Aldeano (E/G)
 Obj7=916-1000 'Vestimenta Elegante (E/G)
 Obj8=917-1000 'Vestimenta de Minero (E/G)
-Obj9=918-1000 'Gaban de Cuero Pequeño (E/G)
+Obj9=918-1000 'Gaban de Cuero Reducido (E/G)
 Obj10=919-1000 'Alifafe de Serpiente (E/G)
 Obj11=920-1000 'Ropaje de Herrero (E/G)
 Obj12=921-1000 'Tunica Sirica Elegante (E/G)
@@ -1090,7 +1090,7 @@ Comercia=1
 TipoItems=3
 NROITEMS=14
 Obj1=943-1000 'Sobrevesta Elfica (H/E/EO)
-Obj2=944-1000 'Vestido Aurë (H/E/EO-M)
+Obj2=944-1000 'Vestido Aure (H/E/EO-M)
 Obj3=945-1000 'Vestido de Gala Alcarinqua (H/E/EO-M)
 Obj4=946-1000 'Vestimentas de Poblador Elfico (H/E/EO)
 Obj5=947-1000 'Habito Liviano de Ritual (H/E/EO)
@@ -1125,7 +1125,7 @@ NROITEMS=18
 Obj1=957-1000 'Vestido de Enana (E/G-M)
 Obj2=958-1000 'Vestimenta Comun (E/G)
 Obj3=959-1000 'Ropa de Carpintero Enano (E/G)
-Obj4=960-1000 'Ropa de Leñador (E/G)
+Obj4=960-1000 'Ropa de Talador (E/G)
 Obj5=961-1000 'Ropa de Minero (E/G)
 Obj6=962-1000 'Tunica Elegante (E/G)
 Obj7=963-1000 'Ropaje de Luchador de Las Minas (E/G)
@@ -1251,7 +1251,7 @@ BackUp=0
 [NPC13] 'npc gobernador de ulla
 Name=Gobernador de Ulla
 NpcType=11
-Desc=Hola, soy el gobernador de Ullathorpe Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Ullathorpe Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Ciudad=1
 Heading=3
@@ -1322,7 +1322,7 @@ Comercia=0
 [NPC130] 'Pescador
 Name=Altair de Oteren
 NpcType=0
-Desc=Aprovechad que la pesca es buena a estas horas... Si deseas pescar, puedes comprarle una caña al comerciante que se encuentra al oeste del muelle.
+Desc=Aprovechad que la pesca es buena a estas horas... Si deseas pescar, puedes comprarle un equipo de pesca al comerciante que se encuentra al oeste del muelle.
 Head=60
 Body=75
 Heading=3
@@ -1339,7 +1339,7 @@ Comercia=0
 [NPC131] 'Viajero
 Name=Linderoth
 NpcType=0
-Desc=Hey tu, que me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un niño...
+Desc=Hey tu, que me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un joven...
 Head=2280
 Body=285
 Heading=3
@@ -1593,7 +1593,7 @@ Comercia=0
 [NPC146] 'VendeBebidas Fiesta de la Cerveza
 Name=Unurbar Gorog
 NpcType=0
-Desc=Hola! Poseo las mejores y mas extrañas bebidas de estas tierras, Que desea que le sirva?
+Desc=Hola! Poseo las mejores y mas raras bebidas de estas tierras, Que desea que le sirva?
 Head=304
 Heading=3
 Body=372
@@ -1718,7 +1718,7 @@ BackUp=1
 [NPC46] 'VendeMagia Ulla
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda de Ullathorpe... Tengo algunos hechizos que podrian interesarte.
+Desc=Bienvenido a mi tienda de Ullathorpe... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1817,7 +1817,7 @@ BackUp=1
 [NPC20] 'Sastre Ulla (enanos)
 Name=Sastre
 NpcType=0
-Desc=Acerquese! Tengo pequeñas prendas que seran de su agrado...
+Desc=Acerquese! Tengo prendas que seran de su agrado...
 Head=303
 Heading=3
 Body=180
@@ -1949,7 +1949,7 @@ BackUp=1
 [NPC47] 'VendeMagia NIX
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda de Nix... Tengo algunos hechizos que podrian interesarte.
+Desc=Bienvenido a mi tienda de Nix... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2050,7 +2050,7 @@ BackUp=1
 [NPC23] 'Sastre Nix (enanos)
 Name=Sastre
 NpcType=0
-Desc=Acerquese! Tengo pequeñas prendas que seran de su agrado...
+Desc=Acerquese! Tengo prendas que seran de su agrado...
 Head=404
 Heading=3
 Body=180
@@ -2185,7 +2185,7 @@ BackUp=1
 [NPC51] 'VendeMagia Bander
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi pequeña Tienda de Banderbill... Tengo algunos hechizos que podrian interesarte.
+Desc=Bienvenido a mi Tienda de Banderbill... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2265,7 +2265,7 @@ BackUp=1
 [NPC26] 'Sastre Bander (mujeres)
 Name=Sastre
 NpcType=0
-Desc=Adelante hermosa niña! En mi tienda encontraras vestidos hechos para ti!
+Desc=Adelante hermosa! En mi tienda encontraras vestidos hechos para ti!
 Head=173
 Heading=3
 Body=121
@@ -2586,7 +2586,7 @@ BackUp=1
 [NPC103] 'Provisiones Arghal
 Name=Carahuel
 NpcType=0
-Desc=Hola, pequeño amigo! Estas buscando algo para llenar tu estomago? Creo que puedo ayudarte...
+Desc=Hola, amigo! Estas buscando algo para llenar tu estomago? Creo que puedo ayudarte...
 Head=474
 Heading=3
 Body=309
@@ -2701,7 +2701,7 @@ BackUp=1
 
 [NPC59] 'VendeMagia Arghal
 Name=Mago
-Desc=Bienvenido, neofito a esta, a mi pequeña escuela de Magia, ubicada en el corazon mismo de la ciudad de Arghal.
+Desc=Bienvenido, neofito a esta, a mi escuela de Magia, ubicada en el corazon mismo de la ciudad de Arghal.
 Head=20
 Heading=3
 Body=34
@@ -2801,7 +2801,7 @@ BackUp=1
 [NPC68] 'Sastre Arghal (enanos)
 Name=Odkon
 NpcType=0
-Desc=Acerquese pequeño vistante de Arghal... Tengo prendas a su medida.
+Desc=Acerquese vistante de Arghal... Tengo prendas a su medida.
 Head=404
 Heading=3
 Body=371
@@ -2928,7 +2928,7 @@ BackUp=1
 
 [NPC61] 'VendeMagia Arkhein
 Name=Mago
-Desc=Bienvenido a mi pequeña tienda de Arkhein... Tengo algunos hechizos que podrian interesarte.
+Desc=Bienvenido a mi tienda de Arkhein... Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -3269,7 +3269,7 @@ BackUp=1
 [NPC117] 'Sastre Ciudad Perdida (enanos)
 Name=Sastre
 NpcType=0
-Desc=Aqui en la Ciudad Perdida encontraran las mejores ropas pequeñas de todo el mundo!
+Desc=Aqui en la Ciudad Perdida encontraran las mejores ropas de todo el mundo!
 Head=402
 Heading=3
 Body=136
@@ -3726,7 +3726,7 @@ BackUp=0
 [NPC150] 'npc gobernador de nix
 Name=Gobernador de Nix
 NpcType=11
-Desc=Hola, soy el gobernador de Nix Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Nix Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3745,7 +3745,7 @@ BackUp=0
 [NPC151] 'npc gobernador de Banderbill
 Name=Gobernador de Banderbill
 NpcType=11
-Desc=Hola, soy el gobernador de Banderbill Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Banderbill Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3764,7 +3764,7 @@ BackUp=0
 [NPC152] 'npc gobernador de Lindos
 Name=Gobernador de Lindos
 NpcType=11
-Desc=Hola, soy el gobernador de Lindos Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Lindos Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3783,7 +3783,7 @@ BackUp=0
 [NPC153] 'npc gobernador de Arghal
 Name=Gobernador de Arghal
 NpcType=11
-Desc=Hola, soy el gobernador de Arghal Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Arghal Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3802,7 +3802,7 @@ BackUp=0
 [NPC158] 'npc gobernador de Arkhein
 Name=Gobernador de Arkhein
 NpcType=11
-Desc=Hola, soy el gobernador de Arkhein Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadania.
+Desc=Hola, soy el gobernador de Arkhein Bienvenido a nuestra aldea! Escribe /Hogar para obtener la ciudadania.
 Head=0
 Heading=3
 Body=4
@@ -3823,7 +3823,7 @@ BackUp=0
 [NPC127] 'Guardia Legion (Comun)
 Name=Guardia Infernal
 NpcType=8
-Desc=Por el Señor Oscuro, aniquilare a quienes lo deshonran!
+Desc=Por el Hombre Oscuro, aniquilare a quienes lo deshonran!
 Head=201
 Heading=3
 Body=170
@@ -4009,8 +4009,8 @@ Obj3=860-1000 'Flecha (Newbie)
 Obj4=564-1000 'Serrucho (Newbie)
 Obj5=565-1000 'Martillo de Herrero (Newbie)
 Obj6=562-1000 'Piquete de minero (Newbie)
-Obj7=561-1000 'Hacha de Leñador (Newbie)
-Obj8=563-1000 'Caña de PEscar (Newbie)
+Obj7=561-1000 'Hacha de Talador (Newbie)
+Obj8=563-1000 'Equipo de Pescar (Newbie)
 BackUp=1
 
 #############################################
@@ -4018,7 +4018,7 @@ BackUp=1
 [NPC157] 'Vende Magia newbie
 Name=Magia Newbie
 NpcType=0
-Desc=Bienvenido a mi pequeña tienda. Tengo algunos hechizos que podrian interesarte.
+Desc=Bienvenido a mi tienda. Tengo algunos hechizos que podrian interesarte.
 Head=110
 Heading=3
 Body=46
@@ -5035,7 +5035,7 @@ Drop5=481-1 'Armadura de Dragon
 ############################################
 
 [NPC510]
-Name=Araña Gigante
+Name=Aracnido Gigante
 NpcType=0
 Head=0
 Heading=3
@@ -5545,7 +5545,7 @@ Drop3=544-5 'Pez Dorado
 ############################################
 
 [NPC526] 'NO RESPAWN (tira llave dungeon malaheing)
-Name=Araña Malaheing
+Name=Aracnido Malaheing
 NpcType=0
 Head=0
 Heading=3
@@ -6354,7 +6354,7 @@ Sp2=9
 Sp3=15
 BackUp=0
 NROITEMS=5
-Drop1=12-1000 Òro
+Drop1=12-1000 Oro
 Drop2=659-1 'Baston Nudoso
 Drop3=514-1 'Vestido de Bruja Especial
 Drop4=12-5000 'Oro
@@ -6918,7 +6918,7 @@ Drop4=475-1 'Galera
 [NPC573]
 Name=Arbol Encantado
 NpcType=0
-Desc=Odio los leñadores!
+Desc=Odio los Taladores!
 Head=0
 Heading=4
 Body=25
@@ -6941,7 +6941,7 @@ PoderEvasion=10
 Veneno=1
 BackUp=0
 NROITEMS=5
-Drop2=58-15 'Leña
+Drop2=58-15 'Madera
 
 ############################################
 
@@ -6972,11 +6972,11 @@ Snd2=13
 Veneno=1
 BackUp=0
 NROITEMS=5
-Drop1=58-50 'Leña
-Drop2=58-100 'Leña
-Drop3=58-500 'Leña
-Drop4=58-3000 'Leña
-Drop5=58-10000 'Leña
+Drop1=58-50 'Madera
+Drop2=58-100 'Madera
+Drop3=58-500 'Madera
+Drop4=58-3000 'Madera
+Drop5=58-10000 'Madera
 
 ############################################
 
@@ -7007,7 +7007,7 @@ Snd2=13
 Veneno=1
 BackUp=0
 NROITEMS=5
-Drop1=58-10 'Leña
+Drop1=58-10 'Madera
 Drop2=208-1 'Flauta Magica
 Drop3=696-5 'Laud Magico
 
@@ -7038,14 +7038,14 @@ PoderEvasion=10
 Veneno=1
 BackUp=0
 NROITEMS=5
-Drop2=58-15 'Leña
+Drop2=58-15 'Madera
 
 ############################################
 
 [NPC577]
 Name=Alma Putrefacta
 NpcType=0
-Desc=Soy un esclavo del mi señor del mal
+Desc=Soy un esclavo del mi hombre del mal
 Head=514
 Heading=3
 Body=145
@@ -7480,7 +7480,7 @@ Drop5=12-1500 'Oro
 ############################################
 
 [NPC592]
-Name=Araña de los Rincones
+Name=Aracnido de los Rincones
 NpcType=0
 Head=0
 Heading=3
@@ -7786,7 +7786,7 @@ Drop5=1002-5 'Cascos de Lobo
 ############################################
 
 [NPC602]
-Name=Piraña
+Name=Piranha
 NpcType=0
 Head=0
 Heading=3
@@ -8296,7 +8296,7 @@ Drop5=12-5000 'Oro
 ############################################
 
 [NPC617]
-Name=Pequeño Escarabajo
+Name=Diminuto Escarabajo
 NpcType=0
 Head=0
 Heading=3
@@ -8328,7 +8328,7 @@ Drop5=126-1  ' Hacha larga de guerra
 ############################################
 
 [NPC618]
-Name=Pequeño Duende
+Name=Diminuto Duende
 NpcType=0
 Head=0
 Heading=3
@@ -8392,7 +8392,7 @@ Drop5=205-1  ' Misil Magico
 ############################################
 
 [NPC620]
-Name=Pequeña Araña
+Name=Insignificante Aracnido
 NpcType=0
 Head=0
 Heading=3
@@ -8424,7 +8424,7 @@ Drop5=30-1   ' Armadura de cuero
 ############################################
 
 [NPC621]
-Name=Piraña
+Name=Piranha
 NpcType=0
 Head=0
 Heading=3
@@ -8457,7 +8457,7 @@ Drop4=1009-20 ' cuchillas
 ############################################
 
 [NPC622]
-Name=Pequeño Dragon Magico
+Name=Diminuto Dragon Magico
 NpcType=0
 Head=0
 Heading=3
@@ -8524,7 +8524,7 @@ Drop5=123-3 ' Espada Vikinga
 ############################################
 
 [NPC624]
-Name=Pequeño Dragon Rojo
+Name=Diminuto Dragon Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -8643,7 +8643,7 @@ BackUp=0
 NROITEMS=5
 Drop1=12-41 ' Oro
 Drop2=12-41 ' Oro
-Drop3=364-1 ' Terrible hambre de Igôr
+Drop3=364-1 ' Terrible hambre de Igor
 Drop4=19-2  ' Espada dos manos
 Drop5=470-1 ' Fuerza
 
@@ -9131,9 +9131,9 @@ BackUp=0
 ############################################
 
 [NPC654]
-Name=Leñador Tutor
+Name=Talador Tutor
 NpcType=0
-Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña comun y leña elfica para el uso de los carpinteros.
+Desc=Se considera Talador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer madera comun y madera elfica para el uso de los carpinteros.
 Head=216
 Heading=3
 Body=382
@@ -9405,7 +9405,7 @@ Drop5=495-2 'Armaduras Escarlata
 ############################################
 
 [NPC705]
-Name=Araña oscura
+Name=Aracnido oscura
 NpcType=0
 Head=0
 Heading=3
