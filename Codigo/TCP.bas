@@ -1597,7 +1597,10 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         Call UpdateUserInv(True, Userindex, 0)
         Call UpdateUserHechizos(True, Userindex, 0)
-    
+                                                                                            
+        Call ActualizarSlotAmigo(UserIndex, 0, True)
+        Call ObtenerIndexAmigos(UserIndex, False)
+                                                                                            
         If .flags.Paralizado Then
             Call WriteParalizeOK(Userindex)
 
