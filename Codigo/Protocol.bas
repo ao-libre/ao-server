@@ -171,6 +171,7 @@ Private Enum ServerPacketID
     EquitandoToggle = 116
     EnviarDatosServer = 117
     InitCraftman = 118
+    EnviarListDeAmigos = 119
 End Enum
 
 Private Enum ClientPacketID
@@ -327,6 +328,10 @@ Private Enum ClientPacketID
     DeleteChar = 150
     ObtenerDatosServer = 151
     CraftsmanCreate = 152
+    AddAmigos = 153
+    DelAmigos = 154
+    OnAmigos = 155
+    MsgAmigos = 156
 End Enum
 
 ''
@@ -917,6 +922,18 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             
         Case ClientPacketID.CraftsmanCreate
             Call HandleCraftsmanCreate(Userindex)
+      
+        Case ClientPacketID.AddAmigos
+            Call Amigos.HandleAddAmigo(Userindex)
+
+        Case ClientPacketID.DelAmigos
+            Call Amigos.HandleDelAmigo(Userindex)
+
+        Case ClientPacketID.OnAmigos
+            Call Amigos.HandleOnAmigo(Userindex)
+
+        Case ClientPacketID.MsgAmigos
+            Call Amigos.HandleMsgAmigo(Userindex)
             
         Case Else
             'ERROR : Abort!
@@ -3839,7 +3856,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc      As String
+        Dim Desc      As String
 
         Dim GuildName As String
 
@@ -3849,16 +3866,16 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
 
         Dim errorStr  As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         GuildName = Trim$(buffer.ReadASCIIString())
         Site = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        If modGuilds.CrearNuevoClan(Userindex, desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
-            Dim message As String
-            message = .Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex)
+        If modGuilds.CrearNuevoClan(Userindex, Desc, GuildName, Site, codex, .FundandoGuildAlineacion, errorStr) Then
+            Dim Message As String
+            Message = .Name & " fundo el clan " & GuildName & " de alineacion " & modGuilds.GuildAlignment(.GuildIndex)
 
-            Call SendData(SendTarget.ToAll, Userindex, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_GUILD))
+            Call SendData(SendTarget.ToAll, Userindex, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_GUILD))
             Call SendData(SendTarget.ToAll, 0, PrepareMessagePlayWave(44, NO_3D_SOUND, NO_3D_SOUND))
             
             'Update tag
@@ -3868,7 +3885,7 @@ Private Sub HandleCreateNewGuild(ByVal Userindex As Integer)
             'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
-                Call ApiEndpointSendNewGuildCreatedMessageDiscord(message, desc, GuildName, Site)
+                Call ApiEndpointSendNewGuildCreatedMessageDiscord(Message, Desc, GuildName, Site)
             End If
         Else
             Call WriteConsoleMsg(Userindex, errorStr, FontTypeNames.FONTTYPE_GUILD)
@@ -4578,14 +4595,14 @@ Private Sub HandleClanCodexUpdate(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim desc    As String
+        Dim Desc    As String
 
         Dim codex() As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         codex = Split(buffer.ReadASCIIString(), SEPARATOR)
         
-        Call modGuilds.ChangeCodexAndDesc(desc, codex, .GuildIndex)
+        Call modGuilds.ChangeCodexAndDesc(Desc, codex, .GuildIndex)
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -6797,9 +6814,9 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
 
             'Does the NPC want to trade??
             If Npclist(.flags.TargetNPC).Comercia = 0 Then
-                If LenB(Npclist(.flags.TargetNPC).desc) <> 0 Then
-                    Call WriteChatOverHead(Userindex, "No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
 
+                If LenB(Npclist(.flags.TargetNPC).Desc) <> 0 Then
+                    Call WriteChatOverHead(Userindex, "No tengo ningun interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite)
                 End If
                 
                 Exit Sub
@@ -7809,7 +7826,7 @@ Private Sub HandleChangeDescription(ByVal Userindex As Integer)
         If Not AsciiValidos(description) Then
             Call WriteConsoleMsg(Userindex, "La descripcion tiene caracteres invalidos.", FontTypeNames.FONTTYPE_INFO)
         Else
-            .desc = Trim$(description)
+            .Desc = Trim$(description)
             Call WriteConsoleMsg(Userindex, "La descripcion ha cambiado.", FontTypeNames.FONTTYPE_INFO)
 
         End If
@@ -9047,18 +9064,18 @@ Private Sub HandleGMMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
         
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         If Not .flags.Privilegios And PlayerType.User Then
-            Call LogGM(.Name, "Mensaje a Gms:" & message)
+            Call LogGM(.Name, "Mensaje a Gms:" & Message)
         
-            If LenB(message) <> 0 Then
+            If LenB(Message) <> 0 Then
                 'Analize chat...
-                Call Statistics.ParseChat(message)
+                Call Statistics.ParseChat(Message)
             
-                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & "> " & message, FontTypeNames.FONTTYPE_GMMSG))
+                Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & "> " & Message, FontTypeNames.FONTTYPE_GMMSG))
 
             End If
 
@@ -11650,7 +11667,7 @@ Private Sub HandleRequestCharSkills(ByVal Userindex As Integer)
 
         Dim LoopC    As Long
 
-        Dim message  As String
+        Dim Message  As String
         
         UserName = buffer.ReadASCIIString()
         tUser = NameIndex(UserName)
@@ -11670,10 +11687,11 @@ Private Sub HandleRequestCharSkills(ByVal Userindex As Integer)
                 End If
                 
                 For LoopC = 1 To NUMSKILLS
-                    message = message & GetUserSkills(UserName)
+                    Message = Message & GetUserSkills(UserName)
                 Next LoopC
                 
-                Call WriteConsoleMsg(Userindex, message & "CHAR> Libres: " & GetUserFreeSkills(UserName), FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, Message & "CHAR> Libres: " & GetUserFreeSkills(UserName), FontTypeNames.FONTTYPE_INFO)
+
             Else
                 Call SendUserSkillsTxt(Userindex, tUser)
 
@@ -12561,14 +12579,14 @@ Private Sub HandleServerMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
-            If LenB(message) <> 0 Then
-                Call LogGM(.Name, "Mensaje Broadcast:" & message)
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
+            If LenB(Message) <> 0 Then
+                Call LogGM(.Name, "Mensaje Broadcast:" & Message)
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_TALK))
 
                 ''''''''''''''''SOLO PARA EL TESTEO'''''''
                 ''''''''''SE USA PARA COMUNICARSE CON EL SERVER'''''''''''
@@ -12627,19 +12645,18 @@ Private Sub HandleMapMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
-            If LenB(message) <> 0 Then
+            If LenB(Message) <> 0 Then
                 
                 Dim mapa As Integer
+					mapa = .Pos.Map
 
-                mapa = .Pos.Map
-                
-                Call LogGM(.Name, "Mensaje a mapa " & mapa & ":" & message)
-                Call SendData(SendTarget.toMap, mapa, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_TALK))
+                Call LogGM(.Name, "Mensaje a mapa " & Mapa & ":" & Message)
+                Call SendData(SendTarget.toMap, Mapa, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_TALK))
 
             End If
 
@@ -12971,13 +12988,12 @@ Private Sub HandleTeleportCreate(ByVal Userindex As Integer)
         
         If MapData(.Pos.Map, .Pos.X, .Pos.Y - 1).TileExit.Map > 0 Then Exit Sub
         
-        If MapData(mapa, X, Y).ObjInfo.ObjIndex > 0 Then
+        If MapData(Mapa, X, Y).ObjInfo.ObjIndex > 0 Then
             Call WriteConsoleMsg(Userindex, "Hay un objeto en el piso en ese lugar.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
-
         End If
-        
-        If MapData(mapa, X, Y).TileExit.Map > 0 Then
+
+        If MapData(Mapa, X, Y).TileExit.Map > 0 Then
             Call WriteConsoleMsg(Userindex, "No puedes crear un teleport que apunte a la entrada de otro.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -13039,7 +13055,8 @@ Private Sub HandleTeleportDestroy(ByVal Userindex As Integer)
             If .ObjInfo.ObjIndex = 0 Then Exit Sub
             
             If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otTeleport And .TileExit.Map > 0 Then
-                Call LogGM(UserList(Userindex).Name, "/DT: " & mapa & "," & X & "," & Y)
+                
+				Call LogGM(UserList(Userindex).Name, "/DT: " & Mapa & "," & X & "," & Y)
                 
                 Call EraseObj(.ObjInfo.Amount, mapa, X, Y)
                 
@@ -13102,7 +13119,7 @@ Private Sub HandleExitDestroy(ByVal Userindex As Integer)
 
             End If
 
-            Call LogGM(UserList(Userindex).Name, "/DE: " & mapa & "," & X & "," & Y)
+            Call LogGM(UserList(Userindex).Name, "/DE: " & Mapa & "," & X & "," & Y)
                 
             .TileExit.Map = 0
             .TileExit.X = 0
@@ -13233,15 +13250,15 @@ Private Sub HandleSetCharDescription(ByVal Userindex As Integer)
         
         Dim tUser As Integer
 
-        Dim desc  As String
+        Dim Desc  As String
         
-        desc = buffer.ReadASCIIString()
+        Desc = buffer.ReadASCIIString()
         
         If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or (.flags.Privilegios And PlayerType.RoleMaster) <> 0 Then
             tUser = .flags.TargetUser
 
             If tUser > 0 Then
-                UserList(tUser).DescRM = desc
+                UserList(tUser).DescRM = Desc
             Else
                 Call WriteConsoleMsg(Userindex, "Haz click sobre un personaje antes.", FontTypeNames.FONTTYPE_INFO)
 
@@ -13461,13 +13478,13 @@ Private Sub HandleRoyalArmyMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         'Solo dioses, admins, semis y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then
-            Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("EJERCITO REAL> " & message, FontTypeNames.FONTTYPE_TALK))
+            Call SendData(SendTarget.ToRealYRMs, 0, PrepareMessageConsoleMsg("EJERCITO REAL> " & Message, FontTypeNames.FONTTYPE_TALK))
 
         End If
         
@@ -13522,13 +13539,13 @@ Private Sub HandleChaosLegionMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         'Solo dioses, admins, semis y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then
-            Call SendData(SendTarget.ToCaosYRMs, 0, PrepareMessageConsoleMsg("FUERZAS DEL CAOS> " & message, FontTypeNames.FONTTYPE_TALK))
+            Call SendData(SendTarget.ToCaosYRMs, 0, PrepareMessageConsoleMsg("FUERZAS DEL CAOS> " & Message, FontTypeNames.FONTTYPE_TALK))
 
         End If
         
@@ -13583,13 +13600,13 @@ Private Sub HandleCitizenMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         'Solo dioses, admins, semis y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.SemiDios Or PlayerType.RoleMaster) Then
-            Call SendData(SendTarget.ToCiudadanosYRMs, 0, PrepareMessageConsoleMsg("CIUDADANOS> " & message, FontTypeNames.FONTTYPE_TALK))
+            Call SendData(SendTarget.ToCiudadanosYRMs, 0, PrepareMessageConsoleMsg("CIUDADANOS> " & Message, FontTypeNames.FONTTYPE_TALK))
 
         End If
         
@@ -13644,13 +13661,13 @@ Private Sub HandleCriminalMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
-            Call SendData(SendTarget.ToCriminalesYRMs, 0, PrepareMessageConsoleMsg("CRIMINALES> " & message, FontTypeNames.FONTTYPE_TALK))
+            Call SendData(SendTarget.ToCriminalesYRMs, 0, PrepareMessageConsoleMsg("CRIMINALES> " & Message, FontTypeNames.FONTTYPE_TALK))
 
         End If
         
@@ -13705,16 +13722,16 @@ Private Sub HandleTalkAsNPC(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         'Solo dioses, admins y RMS
         If .flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin Or PlayerType.RoleMaster) Then
 
             'Asegurarse haya un NPC seleccionado
             If .flags.TargetNPC > 0 Then
-                Call SendData(SendTarget.ToNPCArea, .flags.TargetNPC, PrepareMessageChatOverHead(message, Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+                Call SendData(SendTarget.ToNPCArea, .flags.TargetNPC, PrepareMessageChatOverHead(Message, Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
             Else
                 Call WriteConsoleMsg(Userindex, "Debes seleccionar el NPC por el que quieres hablar antes de usar este comando.", FontTypeNames.FONTTYPE_INFO)
 
@@ -16320,9 +16337,9 @@ Public Sub HandleChangeMapInfoNoOcultar(ByVal Userindex As Integer)
             Call LogGM(.Name, .Name & " ha cambiado la informacion sobre si esta permitido ocultarse en el mapa " & mapa & ".")
             
             MapInfo(mapa).OcultarSinEfecto = NoOcultar
-            
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "OcultarSinEfecto", NoOcultar)
-            Call WriteConsoleMsg(Userindex, "Mapa " & mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
+
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "OcultarSinEfecto", NoOcultar)
+            Call WriteConsoleMsg(Userindex, "Mapa " & Mapa & " OcultarSinEfecto: " & NoOcultar, FontTypeNames.FONTTYPE_INFO)
 
         End If
         
@@ -16366,9 +16383,9 @@ Public Sub HandleChangeMapInfoNoInvocar(ByVal Userindex As Integer)
             Call LogGM(.Name, .Name & " ha cambiado la informacion sobre si esta permitido invocar en el mapa " & mapa & ".")
             
             MapInfo(mapa).InvocarSinEfecto = NoInvocar
-            
-            Call WriteVar(App.Path & MapPath & "mapa" & mapa & ".dat", "Mapa" & mapa, "InvocarSinEfecto", NoInvocar)
-            Call WriteConsoleMsg(Userindex, "Mapa " & mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
+
+            Call WriteVar(App.Path & MapPath & "mapa" & Mapa & ".dat", "Mapa" & Mapa, "InvocarSinEfecto", NoInvocar)
+            Call WriteConsoleMsg(Userindex, "Mapa " & Mapa & " InvocarSinEfecto: " & NoInvocar, FontTypeNames.FONTTYPE_INFO)
 
         End If
         
@@ -17354,14 +17371,14 @@ Public Sub HandleSystemMessage(ByVal Userindex As Integer)
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim message As String
+        Dim Message As String
 
-        message = buffer.ReadASCIIString()
+        Message = buffer.ReadASCIIString()
         
         If (Not .flags.Privilegios And PlayerType.RoleMaster) <> 0 And (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
-            Call LogGM(.Name, "Mensaje de sistema:" & message)
+            Call LogGM(.Name, "Mensaje de sistema:" & Message)
             
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(message))
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageShowMessageBox(Message))
 
         End If
         
@@ -18596,19 +18613,18 @@ End Sub
 ' @param    UserIndex User to which the message is intended.
 ' @param    Message Text to be displayed in the message box.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteShowMessageBox(ByVal Userindex As Integer, ByVal message As String)
-
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    'Writes the "ShowMessageBox" message to the given user's outgoing data buffer
-    '***************************************************
-    On Error GoTo ErrHandler
+Public Sub WriteShowMessageBox(ByVal Userindex As Integer, ByVal Message As String)
+'***************************************************
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
+'Last Modification: 05/17/06
+'Writes the "ShowMessageBox" message to the given user's outgoing data buffer
+'***************************************************
+    
+	On Error GoTo ErrHandler
 
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.ShowMessageBox)
-        Call .WriteASCIIString(message)
+        Call .WriteASCIIString(Message)
 
     End With
 
@@ -19779,8 +19795,7 @@ End Sub
 ' @param    UserIndex User to which the message is intended.
 ' @param    message The error message to be displayed.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-
-Public Sub WriteErrorMsg(ByVal Userindex As Integer, ByVal message As String)
+Public Sub WriteErrorMsg(ByVal Userindex As Integer, ByVal Message As String)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -19789,7 +19804,8 @@ Public Sub WriteErrorMsg(ByVal Userindex As Integer, ByVal message As String)
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageErrorMsg(message))
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageErrorMsg(Message))
+
     Exit Sub
 
 ErrHandler:
@@ -20114,7 +20130,7 @@ Public Sub WriteAddForumMsg(ByVal Userindex As Integer, _
                             ByVal ForumType As eForumType, _
                             ByRef Title As String, _
                             ByRef Author As String, _
-                            ByRef message As String)
+                            ByRef Message As String)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -20129,7 +20145,7 @@ Public Sub WriteAddForumMsg(ByVal Userindex As Integer, _
         Call .WriteByte(ForumType)
         Call .WriteASCIIString(Title)
         Call .WriteASCIIString(Author)
-        Call .WriteASCIIString(message)
+        Call .WriteASCIIString(Message)
 
     End With
 
@@ -22229,7 +22245,7 @@ End Function
 ' @param    message The error message to be displayed.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 
-Public Function PrepareMessageErrorMsg(ByVal message As String) As String
+Public Function PrepareMessageErrorMsg(ByVal Message As String) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -22238,7 +22254,7 @@ Public Function PrepareMessageErrorMsg(ByVal message As String) As String
     '***************************************************
     With auxiliarBuffer
         Call .WriteByte(ServerPacketID.errorMsg)
-        Call .WriteASCIIString(message)
+        Call .WriteASCIIString(Message)
         
         PrepareMessageErrorMsg = .ReadASCIIStringFixed(.Length)
 
@@ -22349,7 +22365,7 @@ Public Sub HandleSetDialog(ByVal Userindex As Integer)
             ' Dsgm/Dsrm/Rm
             If Not ((.flags.Privilegios And PlayerType.Dios) = 0 And (.flags.Privilegios And (PlayerType.SemiDios Or PlayerType.RoleMaster)) <> (PlayerType.SemiDios Or PlayerType.RoleMaster)) Then
                 'Replace the NPC's dialog.
-                Npclist(.flags.TargetNPC).desc = NewDialog
+                Npclist(.flags.TargetNPC).Desc = NewDialog
 
             End If
 
@@ -23393,7 +23409,7 @@ Public Sub WriteQuestDetails(ByVal Userindex As Integer, _
         
         'Enviamos nombre, descripci�n y nivel requerido de la quest
         Call .WriteASCIIString(QuestList(QuestIndex).Nombre)
-        Call .WriteASCIIString(QuestList(QuestIndex).desc)
+        Call .WriteASCIIString(QuestList(QuestIndex).Desc)
         Call .WriteByte(QuestList(QuestIndex).RequiredLevel)
         
         'Enviamos la cantidad de npcs requeridos
@@ -23792,7 +23808,8 @@ Private Sub HandleDiscord(ByVal Userindex As Integer)
             'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
-                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .desc)
+                
+				Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
                 Call WriteConsoleMsg(Userindex, "Link Discord: https://discord.gg/xbAuHcf - El bot de Discord recibio y envio lo siguiente: " & Chat, FontTypeNames.FONTTYPE_INFOBOLD)
 
             Else
@@ -23985,5 +24002,31 @@ Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
         Call CloseSocket(Userindex)
 
     End With
+
+End Sub
+
+
+Public Sub WriteCargarListaDeAmigos(ByVal Userindex As Integer, ByVal Slot As Byte)
+
+    On Error GoTo ErrHandler
+
+    Dim i As Integer
+
+    With UserList(Userindex).outgoingData
+        
+		Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
+        Call .WriteByte(Slot)
+        Call .WriteASCIIString(UserList(Userindex).Amigos(Slot).Nombre)
+
+    End With
+
+    Exit Sub
+
+ErrHandler:
+
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
+        Resume
+    End If
 
 End Sub
