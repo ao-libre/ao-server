@@ -1380,7 +1380,24 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
         'Cargando Amigos
-        For LoopC = 1 To MAXAMIGOS
+        If UserFile.KeyExists("AMIGOS") Then
+        
+            For LoopC = 1 To MAXAMIGOS
+            .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "NOMBRE" & LoopC)
+            .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
+            Next LoopC
+            
+        Else
+        
+            Dim i As Long
+            For i = 1 To MAXAMIGOS
+                .Amigos(i).Nombre = vbNullString
+                .Amigos(i).Ignorado = 0
+                .Amigos(i).index = 0
+            Next i
+        
+        End If
+                        
         .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "Nombre" & LoopC)
         .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
         Next LoopC
