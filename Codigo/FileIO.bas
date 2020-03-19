@@ -1374,10 +1374,27 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         .Email = UserFile.GetValue("CONTACTO", "Email")
         
         'Cargando Amigos
-        For LoopC = 1 To MAXAMIGOS
-        .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "Nombre" & LoopC)
-        .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
-        Next LoopC
+        If UserFile.KeyExists("AMIGOS") Then
+
+            For LoopC = 1 To MAXAMIGOS
+                                    
+                .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "NOMBRE" & LoopC)
+                .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
+                                    
+            Next LoopC
+
+        Else ' Si no existe AMIGOS entonces se crean:
+
+            Dim i As Long
+            For i = 1 To MAXAMIGOS
+                
+                .Amigos(i).Nombre = vbNullString
+                .Amigos(i).Ignorado = 0
+                .Amigos(i).index = 0
+
+            Next i
+
+        End If
 
         .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
         .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
@@ -1438,7 +1455,6 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         
         'Si no existe MonturaEqpSlot, se agrega al charfile.
         If Not UserFile.KeyExists("MonturaEqpSlot") Then
-            Call UserFile.ChangeValue("Inventory", "MonturaEqpSlot", 0)
             .Invent.MonturaEqpSlot = 0
         Else
             .Invent.MonturaEqpSlot = CByte(UserFile.GetValue("Inventory", "MonturaEqpSlot"))
