@@ -52,12 +52,12 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H0080FFFF&
-      Height          =   1695
+      Height          =   1575
       Left            =   5280
       MultiLine       =   -1  'True
       TabIndex        =   15
       Text            =   "frmMain.frx":1042
-      Top             =   4680
+      Top             =   4800
       Width           =   4935
    End
    Begin InetCtlsObjects.Inet Inet1 
@@ -207,18 +207,51 @@ Begin VB.Form frmMain
          Width           =   4695
       End
    End
+   Begin VB.Label lblLloviendoInfo 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "Esta lloviendo? Cargando..."
+      ForeColor       =   &H00FFFF80&
+      Height          =   255
+      Left            =   5400
+      TabIndex        =   24
+      Top             =   4440
+      Width           =   4455
+   End
+   Begin VB.Label lblRespawnNpcs 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "Tiempo restante para Respawn Npc : Cargando..."
+      ForeColor       =   &H00E0E0E0&
+      Height          =   255
+      Left            =   5400
+      TabIndex        =   23
+      Top             =   3720
+      Width           =   4455
+   End
+   Begin VB.Label lblCharSave 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "Tiempo restante para Char Save : Cargando..."
+      ForeColor       =   &H000080FF&
+      Height          =   255
+      Left            =   5400
+      TabIndex        =   22
+      Top             =   3360
+      Width           =   4455
+   End
    Begin VB.Label lblWorldSave 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
-      Caption         =   "El proximo WORLD SAVE sera en 10 minutos."
+      Caption         =   "Tiempo Restante para World Save: Cargando..."
       ForeColor       =   &H0080FF80&
       Height          =   255
       Left            =   5400
       TabIndex        =   21
-      Top             =   3120
-      Width           =   3975
+      Top             =   4080
+      Width           =   4455
    End
-   Begin VB.Label Label1 
+   Begin VB.Label lblFooter 
       Alignment       =   2  'Center
       BackColor       =   &H80000007&
       Caption         =   "http://www.ArgentumOnline.org"
@@ -231,7 +264,7 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H80000018&
+      ForeColor       =   &H00E0E0E0&
       Height          =   375
       Left            =   6360
       TabIndex        =   20
@@ -258,7 +291,7 @@ Begin VB.Form frmMain
       Height          =   225
       Left            =   5400
       TabIndex        =   19
-      Top             =   2760
+      Top             =   2880
       Width           =   2970
    End
    Begin VB.Label lblRecordOnline 
@@ -297,7 +330,7 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C00000&
+      ForeColor       =   &H00000080&
       Height          =   1215
       Left            =   5280
       TabIndex        =   16
@@ -310,16 +343,17 @@ Begin VB.Form frmMain
       BorderStyle     =   1  'Fixed Single
       Caption         =   "245.234.555.777:1234"
       BeginProperty Font 
-         Name            =   "Comic Sans MS"
-         Size            =   15.75
+         Name            =   "Consolas"
+         Size            =   18
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   495
+      Height          =   615
       Left            =   5400
+      MousePointer    =   3  'I-Beam
       TabIndex        =   14
       Top             =   2160
       Width           =   4335
@@ -635,9 +669,7 @@ Private Sub AutoSave_Timer()
         Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Worldsave en 1 minuto ...", FontTypeNames.FONTTYPE_SERVER))
         KillLog
 
-    End If
-
-    If Minutos >= MinutosWs Then
+    ElseIf Minutos >= MinutosWs Then
         Call ES.DoBackUp
         Call aClon.VaciarColeccion
         Minutos = 0
@@ -662,6 +694,10 @@ Private Sub AutoSave_Timer()
     End If
 
     Call CheckIdleUser
+
+    frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & MinutosWs - Minutos & " Minutos"
+    frmMain.lblCharSave.Caption = "Proximo CharSave: " & MinutosGuardarUsuarios - MinsPjesSave & " Minutos"
+    frmMain.lblRespawnNpcs.Caption = "Respawn Npcs a POS originales: " & 15 - MinutosLatsClean & " Minutos"
 
     '<<<<<-------- Log the number of users online ------>>>
     Dim n As Integer
@@ -997,7 +1033,7 @@ On Error GoTo errorHandlerNC
         If NewIndex > LastUser Then LastUser = NewIndex
 
         UserList(NewIndex).ConnID = ID
-        UserList(NewIndex).ip = TCPServ.GetIP(ID)
+        UserList(NewIndex).IP = TCPServ.GetIP(ID)
         UserList(NewIndex).ConnIDValida = True
         Set UserList(NewIndex).CommandsBuffer = New CColaArray
         

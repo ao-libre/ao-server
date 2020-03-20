@@ -596,6 +596,19 @@ ErrHandler:
 
 End Sub
 
+Private Sub cmdRecargarGuardiasPosOrig_Click()
+
+    On Error GoTo ErrHandler
+
+    ReSpawnOrigPosNpcs
+    Exit Sub
+
+ErrHandler:
+    Call LogError("Error en cmdRecargarGuardiasPosOrig")
+
+End Sub
+
+
 Private Sub Form_Deactivate()
     frmServidor.Visible = False
 
