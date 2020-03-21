@@ -33,7 +33,7 @@ RewardOBJs=0
  
 [QUEST3]
 Nombre=Una gran aventura
-Desc=Un simpático personaje de la ciudad de Ullathorpe, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y esta dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
+Desc=Un simpatico personaje de la ciudad de Ullathorpe, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y esta dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
 RequiredLevel=10
  
 RequiredOBJs=2
@@ -49,7 +49,7 @@ RewardOBJ1=238-1
 
 [QUEST4]
 Nombre=Contra los muertos Vivos
-Desc=Ayuda por favor!! Una horda de zombies y esqueletos están acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa.
+Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa.
 RequiredLevel=15
  
 RequiredNPCs=2
@@ -64,7 +64,7 @@ RewardOBJ1=559-1
 
 [QUEST5]
 Nombre=El peligroso Dorck
-Desc=Selenna, una importante miembro del circulo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine 10 Arañas Gigantes, 10 Orcos y consiga 10 Hachas, será recompensado con 4000 puntos de experiencia, 4000 monedas de oro y una corona de Laureles, como muestra de colaborador con el círculo de Druidas del Imperio.
+Desc=Selenna, una importante miembro del circulo de Druidas del Imperio, se encuentra preocupada por el peligro que significan las malignas criaturas que habitan en el bosque de Dorck. Cualquier aventurero que asesine 10 Aracnidos Gigantes, 10 Orcos y consiga 10 Hachas, sera recompensado con 4000 puntos de experiencia, 4000 monedas de oro y una corona de Laureles, como muestra de colaborador con el círculo de Druidas del Imperio.
 RequiredLevel=20
  
 RequiredOBJs=1
