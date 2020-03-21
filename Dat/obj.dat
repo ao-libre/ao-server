@@ -4174,7 +4174,7 @@ GrhIndex=513
 VGrande=514
 ObjType=8
 Agarrable=1
-Texto=Bajo este marmol descansan los restos del Dios Nebeth, ese diminuto demiurgo de grandes sueños.
+Texto=Bajo este marmol descansan los restos del Dios Nebeth, ese diminuto demiurgo de grandes ambiciones.
 
 [OBJ372]
 Name=Manto de Sacerdote del Imperio
@@ -6723,7 +6723,7 @@ Newbie=1
 Crucial=1
 
 [OBJ563]
-Name=Caña de pescar (Newbie)
+Name=Equipo de pescar (Newbie)
 GrhIndex=574
 ObjType=2
 Agarrable=0
@@ -7791,7 +7791,7 @@ GrhIndex=500
 VGrande=501
 ObjType=8
 Agarrable=1
-Texto=La reglamentacion del robo de NPCs no se aplica aqui. Es un lugar de entrenamiento comun y nadie puede proclamarse dueño de las criaturas.
+Texto=La reglamentacion del robo de NPCs no se aplica aqui. Es un lugar de entrenamiento comun y nadie puede proclamarse poseedor de las criaturas.
 
 [OBJ650]
 Name=Tunica Pretoriana
@@ -8417,7 +8417,7 @@ Crucial=1
 CP1=MAGO
 
 [OBJ688]
-Name=Pequeña Tunica Palatina (E/G)
+Name=Tunica Palatina Reducida (E/G)
 GrhIndex=4915
 ObjType=3
 NumRopaje=166
@@ -8444,7 +8444,7 @@ Crucial=1
 CP1=MAGO
 
 [OBJ690]
-Name=Pequeña Tunica Avernal (E/G)
+Name=Tunica Avernal Reducida (E/G)
 GrhIndex=4914
 ObjType=3
 NumRopaje=165
@@ -8538,7 +8538,7 @@ LingO=0
 SkHerreria=80
 
 [OBJ695]
-Name=Armadura de Pequeño Pandemonium (E/G)
+Name=Armadura de Minusculo Pandemonium (E/G)
 GrhIndex=4910
 ObjType=3
 NumRopaje=163
@@ -8774,7 +8774,7 @@ GrhIndex=513
 VGrande=514
 ObjType=8
 Agarrable=1
-Texto=Aqui descansan los restos de la Diosa Valkira, quien dejo todo de ella para ser la gran fuerza ordenadora de estas tierras durante largos años. El mundo de Argentum siempre te lo agradecera.
+Texto=Aqui descansan los restos de la Diosa Valkira, quien dejo todo de ella para ser la gran fuerza ordenadora de estas tierras durante largas temporadas. El mundo de Argentum siempre te lo agradecera.
 
 [OBJ712]
 Name=Tumba de Jennifer
@@ -9030,13 +9030,13 @@ ObjType=20
 Agarrable=1
 
 [OBJ751]
-Name=Barril Pequeño
+Name=Barril Chico
 GrhIndex=580
 ObjType=20
 Agarrable=1
 
 [OBJ752]
-Name=Barril Pequeño
+Name=Barril Chiquito
 GrhIndex=582
 ObjType=20
 Agarrable=1
@@ -10677,7 +10677,7 @@ Crucial=1
 RazaEnana=1
 
 [OBJ913] 'gnomo
-Name=Ropaje de Ermitaño (E/G)
+Name=Ropaje de Eremita (E/G)
 GrhIndex=14736
 ObjType=3
 NumRopaje=281
@@ -10749,7 +10749,7 @@ CP10=CAZADOR
 CP11=CLERIGO
 
 [OBJ918] 'gnomo
-Name=Gaban de Cuero Pequeño (E/G)
+Name=Gaban de Cuero Reducido (E/G)
 GrhIndex=14574
 ObjType=3
 NumRopaje=282
