@@ -154,10 +154,11 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
                 
                 Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
                 
-                If ObjData(.Invent.AnilloEqpObjIndex).ImpideParalizar Then
-                    Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                    Exit Sub
-
+                If .Invent.AnilloEqpObjIndex > 0 Then
+                    If ObjData(.Invent.AnilloEqpObjIndex).ImpideParalizar Then
+                        Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                        Exit Sub
+                    End If
                 End If
                 
                 If Hechizos(Spell).Inmoviliza = 1 Then
@@ -181,10 +182,11 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
             
                 Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
             
-                If ObjData(.Invent.AnilloEqpObjIndex).ImpideAturdir Then
-                    Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                    Exit Sub
-
+                If .Invent.AnilloEqpObjIndex > 0 Then
+                    If ObjData(.Invent.AnilloEqpObjIndex).ImpideAturdir Then
+                        Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                        Exit Sub
+                    End If
                 End If
                   
                 .flags.Estupidez = 1
@@ -203,10 +205,11 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
             
                 Call SendSpellEffects(UserIndex, NpcIndex, Spell, DecirPalabras)
             
-                If ObjData(.Invent.AnilloEqpObjIndex).ImpideCegar Then
-                    Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                    Exit Sub
-
+                If .Invent.AnilloEqpObjIndex > 0 Then
+                    If ObjData(.Invent.AnilloEqpObjIndex).ImpideCegar Then
+                        Call WriteConsoleMsg(UserIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                        Exit Sub
+                    End If
                 End If
                   
                 .flags.Ceguera = 1
@@ -1326,12 +1329,13 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
                 Call InfoHechizo(UserIndex)
                 HechizoCasteado = True
 
-                If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideParalizar Then
-                    Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                    Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
-                    Call FlushBuffer(targetIndex)
-                    Exit Sub
-
+                If UserList(targetIndex).Invent.AnilloEqpObjIndex > 0 Then
+                    If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideParalizar Then
+                        Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                        Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
+                        Call FlushBuffer(targetIndex)
+                        Exit Sub
+                    End If
                 End If
             
                 If Hechizos(HechizoIndex).Inmoviliza = 1 Then UserList(targetIndex).flags.Inmovilizado = 1
@@ -1539,10 +1543,12 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
             
             If Not PuedeAtacar(UserIndex, targetIndex) Then Exit Sub
 
-            If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideCegar Then
-                Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
-                Exit Sub
+            If UserList(targetIndex).Invent.AnilloEqpObjIndex > 0 Then
+                If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideCegar Then
+                    Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
+                    Exit Sub
+                End If
             End If
 
             If UserIndex <> targetIndex Then
@@ -1576,10 +1582,12 @@ Sub HechizoEstadoUsuario(ByVal UserIndex As Integer, ByRef HechizoCasteado As Bo
             
             If Not PuedeAtacar(UserIndex, targetIndex) Then Exit Sub
 
-            If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideAturdir Then
-                Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
-                Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
-                Exit Sub
+            If UserList(targetIndex).Invent.AnilloEqpObjIndex > 0 Then
+                If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideAturdir Then
+                    Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteConsoleMsg(UserIndex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
+                    Exit Sub
+                End If
             End If
 
             If UserIndex <> targetIndex Then
