@@ -172,10 +172,10 @@ Private Enum ServerPacketID
     EnviarDatosServer = 117
     InitCraftman = 118
     EnviarListDeAmigos = 119
+    PlayIsInChatMode = 120
 End Enum
 
 Private Enum ClientPacketID
-
     LoginExistingChar = 1     'OLOGIN
     ThrowDices = 2            'TIRDAD
     LoginNewChar = 3          'NLOGIN
@@ -23089,6 +23089,23 @@ Public Function PrepareMessageCharacterAttackAnim(ByVal CharIndex As Integer) As
 
 End Function
 
+Public Function PrepareMessageCharacterIsInChatMode(ByVal CharIndex As Integer) As String
+
+'***************************************************
+'Author: Recox
+'Last Modification: 2/9/2018
+'Prepares the InChatMode animation message.
+'***************************************************
+    With auxiliarBuffer
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+    
+        PrepareMessageCharacterIsInChatMode = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function
+
 Public Function PrepareMessageFXtoMap(ByVal FxIndex As Integer, _
                                       ByVal loops As Byte, _
                                       ByVal X As Integer, _
@@ -24042,10 +24059,11 @@ Public Sub HandleSendIfCharIsInChatMode(ByVal Userindex As Integer)
 
     On Error GoTo ErrHandler
 
-    Dim i As Integer
-
-    With UserList(Userindex).outgoingData
-        .flags.IsInChatMode = True
+    With UserList(Userindex)
+        'Remove packet ID
+        Call .incomingData.ReadByte
+        
+        Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterIsInChatMode(.Char.CharIndex))
     End With
 
     Exit Sub
