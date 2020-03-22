@@ -332,11 +332,12 @@ Private Enum ClientPacketID
     DelAmigos = 154
     OnAmigos = 155
     MsgAmigos = 156
+    SendIfCharIsInChatMode = 157
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 150
+Private Const LAST_CLIENT_PACKET_ID As Byte = 157
 
 Public Enum FontTypeNames
 
@@ -934,7 +935,10 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
 
         Case ClientPacketID.MsgAmigos
             Call Amigos.HandleMsgAmigo(Userindex)
-            
+
+        Case ClientPacketID.SendIfCharIsInChatMode        '... Chat Mode
+            Call HandleSendIfCharIsInChatMode(Userindex)
+
         Case Else
             'ERROR : Abort!
             Call CloseSocket(Userindex)
@@ -1881,14 +1885,15 @@ End Sub
 ' @param    userIndex The index of the user sending the message.
 
 Private Sub HandleTalk(ByVal Userindex As Integer)
+'***************************************************
+'Author: Juan Martin Sotuyo Dodero (Maraxus)
+'Last Modification: 13/01/2010
+'15/07/2009: ZaMa - Now invisible admins talk by console.
+'23/09/2009: ZaMa - Now invisible admins can't send empty chat.
+'13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
+'22/03/2020: Recox - Now hidden ... in the chats when an user send a text.
+'***************************************************
 
-    '***************************************************
-    'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 13/01/2010
-    '15/07/2009: ZaMa - Now invisible admins talk by console.
-    '23/09/2009: ZaMa - Now invisible admins can't send empty chat.
-    '13/01/2010: ZaMa - Now hidden on boat pirats recover the proper boat body.
-    '***************************************************
     If UserList(Userindex).incomingData.Length < 3 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
         Exit Sub
@@ -1966,6 +1971,9 @@ Private Sub HandleTalk(ByVal Userindex As Integer)
             End If
 
         End If
+
+        'Sacamos el ... indicando que esta chateando del personaje
+        .flags.IsInChatMode = 0
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
@@ -24017,6 +24025,27 @@ Public Sub WriteCargarListaDeAmigos(ByVal Userindex As Integer, ByVal Slot As By
         Call .WriteByte(Slot)
         Call .WriteASCIIString(UserList(Userindex).Amigos(Slot).Nombre)
 
+    End With
+
+    Exit Sub
+
+ErrHandler:
+
+    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
+        Call FlushBuffer(Userindex)
+        Resume
+    End If
+
+End Sub
+
+Public Sub HandleSendIfCharIsInChatMode(ByVal Userindex As Integer)
+
+    On Error GoTo ErrHandler
+
+    Dim i As Integer
+
+    With UserList(Userindex).outgoingData
+        .flags.IsInChatMode = True
     End With
 
     Exit Sub

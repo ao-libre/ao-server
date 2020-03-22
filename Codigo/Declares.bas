@@ -1464,6 +1464,7 @@ Public Type UserFlags
     ParalizedByIndex As Integer
     ParalizedByNpcIndex As Integer
 
+    IsInChatMode As Boolean
 End Type
 
 Public Type UserCounters
