@@ -35,7 +35,7 @@ Public Sub MainLoop()
     prgRun = True
     
     Do While prgRun
-        frmMain.lblWorldSave.Caption = "Proximo WorldSave: " & Minutos & " Minutos"
+        frmMain.lblLloviendoInfo.Caption = "Esta lloviendo? - " & IIf(Lloviendo, "Si, usa paraguas", "No, totalmente soleado")
 
         For LoopC = 1 To NumTimers
 
@@ -51,9 +51,9 @@ Public Sub MainLoop()
     
 End Sub
  
-Private Sub MakeProcces(ByVal Index As Integer)
+Private Sub MakeProcces(ByVal index As Integer)
     
-    Select Case Index
+    Select Case index
     
         Case eTimers.eGameTimer
             Call GameTimer
@@ -69,7 +69,7 @@ Private Sub MakeProcces(ByVal Index As Integer)
             
     End Select
     
-    MainLoops(Index).LastCheck = GetTickCount
+    MainLoops(index).LastCheck = GetTickCount
     
 End Sub
 
@@ -106,7 +106,7 @@ Private Sub packetResend()
     'Last Modification: 04/01/07
     'Attempts to resend to the user all data that may be enqueued.
     '***************************************************
-    On Error GoTo errHandler:
+    On Error GoTo ErrHandler:
 
     Dim i As Long
     
@@ -124,7 +124,7 @@ Private Sub packetResend()
 
     Exit Sub
 
-errHandler:
+ErrHandler:
     LogError ("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
 
     Resume Next
@@ -137,7 +137,7 @@ Private Sub TIMER_AI()
 
     Dim NpcIndex As Long
 
-    Dim mapa     As Integer
+    Dim Mapa     As Integer
 
     Dim e_p      As Integer
     
@@ -169,10 +169,10 @@ Private Sub TIMER_AI()
 
                             End If
                             
-                            mapa = .Pos.Map
+                            Mapa = .Pos.Map
                             
-                            If mapa > 0 Then
-                                If MapInfo(mapa).NumUsers > 0 Then
+                            If Mapa > 0 Then
+                                If MapInfo(Mapa).NumUsers > 0 Then
                                     If .Movement <> TipoAI.ESTATICO Then
                                         Call NPCAI(NpcIndex)
 

@@ -36,7 +36,7 @@ Public Const YMinMapSize        As Byte = 1
 
 ' Tamanio en tiles de la pantalla.
 'ADVERTENCIA: TIENEN QUE SER IMPAR!
-Public Const XWindow            As Byte = 25
+Public Const XWindow            As Byte = 23
 Public Const YWindow            As Byte = 19
 
 ' Cantidad de tiles buffer
@@ -206,8 +206,8 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
     End If
     
     With UserList(Userindex)
-        .AreasInfo.AreaPerteneceX = 0
-        .AreasInfo.AreaPerteneceY = 0
+        .AreasInfo.AreaPerteneceX = -1
+        .AreasInfo.AreaPerteneceY = -1
     End With
 
     Call CheckUpdateNeededUser(Userindex, USER_NUEVO, ButIndex)
@@ -220,8 +220,8 @@ End Sub
 Public Sub AgregarNpc(ByVal NpcIndex As Integer)
 
     With Npclist(NpcIndex)
-        .AreasInfo.AreaPerteneceX = 0
-        .AreasInfo.AreaPerteneceY = 0
+        .AreasInfo.AreaPerteneceX = -1
+        .AreasInfo.AreaPerteneceY = -1
     End With
 
     Call CheckUpdateNeededNpc(NpcIndex, USER_NUEVO)
