@@ -1673,6 +1673,7 @@ Public Type User
     
     QuestStats As tQuestStats
 
+    IsInChatMode As Boolean
 End Type
 
 '*********************************************************

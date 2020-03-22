@@ -1973,7 +1973,7 @@ Private Sub HandleTalk(ByVal Userindex As Integer)
         End If
 
         'Sacamos el ... indicando que esta chateando del personaje
-        .flags.IsInChatMode = 0
+        Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterIsInChatMode(.Char.CharIndex))
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
