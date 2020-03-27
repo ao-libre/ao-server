@@ -918,4 +918,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 18/03/2020: Se agregaron contadores para saber el tiempo restante de char save, respawns guardias (Recox)
 * 18/03/2020: Te dice si llueve el server (Recox)
 * 18/03/2020: Se arreglo tiempo restante de world save en el frmmain (Recox)
-* 18/03/2020: Se cambiaron mas palabras en obj.dat, npcs y quests para que eviten usar acentos o caracteres especiales (Recox-Neoranger)
+* 27/03/2020: Se cambiaron mas palabras en obj.dat, npcs y quests para que eviten usar acentos o caracteres especiales (Recox-Neoranger)
+* 27/03/2020: Cambio de gráfico a los manuales (Wyr0X)
+* 27/03/2020: Fix inmovilizar (Wyr0X)
+* 27/03/2020: Cambio los hechizos de "inmeo" de tipo 2 (npc) a tipo 3 (usuario y npc) quiza con eso se solucione el error del inmo (Neo)
