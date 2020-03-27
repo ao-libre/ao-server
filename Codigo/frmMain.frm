@@ -654,7 +654,7 @@ Private Sub AutoSave_Timer()
     Call HappyHourManager
 
     '??????????
-    Call ModAreas.AreasOptimizacion
+    Call Areas.AreasOptimizacion
     '??????????
 
     'Actualizamos el Centinela en caso de que este activo en el server.ini

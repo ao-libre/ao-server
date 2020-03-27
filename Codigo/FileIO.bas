@@ -565,11 +565,9 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     On Error Resume Next
 
     Dim FreeFileMap As Long
-
     Dim FreeFileInf As Long
 
     Dim Y           As Long
-
     Dim X           As Long
 
     Dim ByFlags     As Byte
@@ -577,9 +575,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     Dim LoopC       As Long
 
     Dim MapWriter   As clsByteBuffer
-
     Dim InfWriter   As clsByteBuffer
-
     Dim IniManager  As clsIniManager
 
     Dim NpcInvalido As Boolean
@@ -589,17 +585,16 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     Set IniManager = New clsIniManager
     
     If FileExist(MAPFILE & ".map", vbNormal) Then
-        Kill MAPFILE & ".map"
-
+        Call Kill(MAPFILE & ".map")
     End If
     
     If FileExist(MAPFILE & ".inf", vbNormal) Then
-        Kill MAPFILE & ".inf"
-
+        Call Kill(MAPFILE & ".inf")
     End If
     
     'Open .map file
     FreeFileMap = FreeFile
+    
     Open MAPFILE & ".Map" For Binary As FreeFileMap
     
     Call MapWriter.initializeWriter(FreeFileMap)
@@ -641,7 +636,6 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 Call MapWriter.putLong(.Graphic(1))
                 
                 For LoopC = 2 To 4
-
                     If .Graphic(LoopC) Then Call MapWriter.putLong(.Graphic(LoopC))
                 Next LoopC
                 
@@ -651,10 +645,10 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 ByFlags = 0
                 
                 If .ObjInfo.ObjIndex > 0 Then
+                    
                     If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otFogata Then
                         .ObjInfo.ObjIndex = 0
                         .ObjInfo.Amount = 0
-
                     End If
 
                 End If
@@ -663,7 +657,9 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 
                 ' No hacer backup de los NPCs invalidos (Pretorianos, Mascotas, Invocados )
                 If .NpcIndex Then
-                    NpcInvalido = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano) Or (Npclist(.NpcIndex).MaestroUser > 0)
+                    
+                    NpcInvalido = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano) Or _
+                                  (Npclist(.NpcIndex).MaestroUser > 0)
                     
                     If Not NpcInvalido Then ByFlags = ByFlags Or 2
 
@@ -677,7 +673,6 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                     Call InfWriter.putInteger(.TileExit.Map)
                     Call InfWriter.putInteger(.TileExit.X)
                     Call InfWriter.putInteger(.TileExit.Y)
-
                 End If
                 
                 If .NpcIndex And Not NpcInvalido Then Call InfWriter.putInteger(Npclist(.NpcIndex).Numero)
@@ -685,7 +680,6 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
                 If .ObjInfo.ObjIndex Then
                     Call InfWriter.putInteger(.ObjInfo.ObjIndex)
                     Call InfWriter.putInteger(.ObjInfo.Amount)
-
                 End If
                 
                 NpcInvalido = False
@@ -1531,7 +1525,7 @@ Sub CargarBackUp()
         
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
     
-    Call ModAreas.InitAreas
+    Call Areas.GenerarAreas
         
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumMaps
@@ -1590,7 +1584,7 @@ Sub LoadMapData()
         
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
     
-    Call ModAreas.InitAreas
+    Call Areas.GenerarAreas
         
     frmCargando.cargar.min = 0
     frmCargando.cargar.max = NumMaps
