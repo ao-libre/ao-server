@@ -3,10 +3,6 @@ BACKUP= 1
 INVISINEFECTO=0
 MAGIASINEFECTO=0
 MUSICNUM=81
-<<<<<<< HEAD
-=======
-NAME=Ciudad de Arkhein, muelle
->>>>>>> afb37de32b07dc708aa5c74e2008a8580a01be00
 NOENCRIPTARMP=0
 PK=0
 RESTRINGIR=No
@@ -14,7 +10,4 @@ RESUSINEFECTO=0
 TERRENO=BOSQUE
 ZONA=CIUDAD
 
-<<<<<<< HEAD
 Name=Ciudad de Arkhein, muelle
-=======
->>>>>>> afb37de32b07dc708aa5c74e2008a8580a01be00

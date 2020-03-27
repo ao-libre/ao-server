@@ -2,12 +2,7 @@
 BACKUP= 1
 INVISINEFECTO=0
 MAGIASINEFECTO=0
-<<<<<<< HEAD
 MUSICNUMMP3=19
-=======
-MUSICNUM=19
-NAME=Isla Nueva Esperanza. oeste
->>>>>>> afb37de32b07dc708aa5c74e2008a8580a01be00
 NOENCRIPTARMP=0
 PK=0
 RESTRINGIR=No
@@ -15,7 +10,4 @@ RESUSINEFECTO=0
 TERRENO=BOSQUE
 ZONA=CAMPO
 
-<<<<<<< HEAD
 Name=Isla Nueva Esperanza. oeste
-=======
->>>>>>> afb37de32b07dc708aa5c74e2008a8580a01be00
