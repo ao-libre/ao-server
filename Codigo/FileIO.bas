@@ -36,24 +36,37 @@ Option Explicit
 #End If
 
 Public Sub CargarSpawnList()
-    '***************************************************
+    '****************************************************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
+    'Last Modification: 27/03/2020
+    'Cargo la lista de NPC's hostiles desde el NPC's.dat
+    ' - Omitimos los NPC's pretorianos ya que deben invocarse mediante su respectivo comando.
+    '****************************************************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando Invokar.dat"
-
-    Dim n As Integer, LoopC As Integer
-
-    n = val(GetVar(App.Path & "\Dat\Invokar.dat", "INIT", "NumNPCs"))
-    ReDim SpawnList(n) As tCriaturasEntrenador
-
-    For LoopC = 1 To n
-        SpawnList(LoopC).NpcIndex = val(GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NI" & LoopC))
-        SpawnList(LoopC).NpcName = GetVar(App.Path & "\Dat\Invokar.dat", "LIST", "NN" & LoopC)
-    Next LoopC
     
-    If frmMain.Visible Then frmMain.txtStatus.Text = "Invokar.dat se cargo correctamente"
+    ReDim SpawnList(1 To val(LeerNPCs.GetValue("INIT", "NumNPCs"))) As tCriaturasEntrenador
+    
+    Dim i As Integer: i = 0
+    
+    Dim LoopC As Long
+    For LoopC = 1 To UBound(SpawnList)
+        
+        If val(LeerNPCs.GetValue("NPC" & LoopC, "Hostile")) = 1 And _
+           val(LeerNPCs.GetValue("NPC" & LoopC, "NpcType")) <> 10 Then
+            
+            i = i + 1
+            
+            SpawnList(i).NpcIndex = LoopC
+            SpawnList(i).NpcName = LeerNPCs.GetValue("NPC" & LoopC, "Name")
+            
+        End If
+        
+    Next
+    
+    ' Hacemos el trim a la lista.
+    ReDim Preserve SpawnList(1 To i) As tCriaturasEntrenador
+    
+    If frmMain.Visible Then frmMain.txtStatus.Text = "Lista de NPC's hostiles se cargo correctamente"
     
 End Sub
 
