@@ -2022,12 +2022,17 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End If
                 
-                If ((LegalPos(.Pos.Map, .Pos.X - 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y - 1, True, False) Or LegalPos(.Pos.Map, .Pos.X + 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y + 1, True, False)) And .flags.Navegando = 0) Or .flags.Navegando = 1 Then
-                    Call DoNavega(UserIndex, obj, Slot)
+                If (LegalPos(.Pos.Map, .Pos.X - 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y - 1, True, False) Or LegalPos(.Pos.Map, .Pos.X + 1, .Pos.Y, True, False) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y + 1, True, False)) And .flags.Navegando = 0 Then
+                    Call DoNavega(Userindex, obj, Slot)
+                
+                ElseIf (LegalPos(.Pos.Map, .Pos.X - 1, .Pos.Y, False, True) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y - 1, False, True) Or LegalPos(.Pos.Map, .Pos.X + 1, .Pos.Y, False, True) Or LegalPos(.Pos.Map, .Pos.X, .Pos.Y + 1, False, True)) And .flags.Navegando = 1 Then
+                    Call DoNavega(Userindex, obj, Slot)
+                    
                 Else
-                    Call WriteConsoleMsg(UserIndex, "Debes aproximarte al agua para usar el barco!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Debes aproximarte al agua para usar un barco y a la tierra para desembarcar!", FontTypeNames.FONTTYPE_INFO)
 
                 End If
+
 
         '<-------------> MONTURAS <----------->
         Case eOBJType.otMonturas
