@@ -133,7 +133,7 @@ End Sub
 '                     optimo del array de usuarios segun la cantidad que haya en el mapa en ese momento.     *
 '*************************************************************************************************************
 Public Sub AreasOptimizacion()
-    
+    Debug.Print ("Optimizando")
     'Objeto donde almacenamos la info. que vamos a escribir en el archivo {FILE_AREAS}
     Set AreasIO = New clsIniManager
     
@@ -201,7 +201,7 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
         If ConnGroups(Map).CountEntrys > UBound(ConnGroups(Map).UserEntrys) Then
             ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
         End If
-
+        
         ConnGroups(Map).UserEntrys(ConnGroups(Map).CountEntrys) = Userindex
     End If
     
@@ -209,7 +209,6 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
         .AreasInfo.AreaPerteneceX = -1
         .AreasInfo.AreaPerteneceY = -1
     End With
-
     Call CheckUpdateNeededUser(Userindex, USER_NUEVO, ButIndex)
     
 End Sub
@@ -234,25 +233,25 @@ End Sub
 Public Sub QuitarUser(ByVal Userindex As Integer, ByVal Map As Integer)
 
     ' Buscamos el index dentro del array
-    Dim LoopC As Long
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(LoopC) = Userindex Then Exit For
-    Next LoopC
-    
-    ' Si no existe salimos
-    If LoopC > ConnGroups(Map).CountEntrys Then Exit Sub
-    
-    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
-    
-    ' Corremos el array para llenar el hueco que dejo
-    For LoopC = LoopC To ConnGroups(Map).CountEntrys - 1
-        ConnGroups(Map).UserEntrys(LoopC) = ConnGroups(Map).UserEntrys(LoopC + 1)
-    Next LoopC
-    
-    ' Reducimos el array
-    If ConnGroups(Map).CountEntrys >= ConnGroups(Map).OptValue Then
-        ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
-    End If
+    Dim LoopA As Long
+    Dim LoopB As Long
+    For LoopA = 1 To ConnGroups(Map).CountEntrys
+        If ConnGroups(Map).UserEntrys(LoopA) = Userindex Then
+            LoopB = LoopA
+            ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
+            
+            ' Corremos el array para llenar el hueco que dejo
+            For LoopB = LoopB To ConnGroups(Map).CountEntrys
+                ConnGroups(Map).UserEntrys(LoopB) = ConnGroups(Map).UserEntrys(LoopB + 1)
+            Next LoopB
+            
+            ' Reducimos el array
+            If ConnGroups(Map).CountEntrys >= ConnGroups(Map).OptValue Then
+                ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
+            End If
+            Exit For
+        End If
+    Next LoopA
 
 End Sub
 
