@@ -43,12 +43,6 @@ Public Const YWindow            As Byte = 19
 ' (para que graficos grandes se vean desde fuera de la pantalla)
 Private Const TileBufferSize    As Byte = 5
 
-' Intervalo en minutos para actualizar el tamanio
-' optimo del array de usuarios de los mapa
-Private Const TimeOptimization  As Byte = 60
-
-
-
 '************************************************
 '*      Valores calculados automaticamente      *
 '************************************************
@@ -73,120 +67,35 @@ Private FILE_AREAS As String
 
 Private Const USER_NUEVO        As Byte = 255
 
-Private CountOptimization       As Byte
-
-Public ConnGroups()             As ConnGroup
+Public ConnGroups()             As Collection
 
 Public Type AreaInfo
     AreaPerteneceX              As Integer
     AreaPerteneceY              As Integer
 End Type
 
-Public Type ConnGroup
-    CountEntrys                 As Long
-    OptValue                    As Long
-    UserEntrys()                As Long
-End Type
-
-
-'************************************************
-'* GenerarAreas: leemos por cada mapa el tamanio*
-'* optimo para el array de usuarios o por defec-*
-'* to es uno.                                   *
-'************************************************
-Public Sub GenerarAreas()
-    
-    FILE_AREAS = DatPath & "\AreasStats.dat"
-    
-    'Si no existe {FILE_AREAS}, crea un archivo vacio con su nombre.
-    If Not FileExist(FILE_AREAS, vbNormal) Then
-        Open FILE_AREAS For Output As #1
-        Close #1
-    End If
-    
-    Set AreasIO = New clsIniManager
-    Call AreasIO.Initialize(FILE_AREAS)
-    
-    ReDim ConnGroups(1 To NumMaps) As ConnGroup
-
-    Dim i As Integer
+Public Sub InitializeAreas()
+    Dim i As Long
+    ReDim ConnGroups(1 To NumMaps) As Collection
     For i = 1 To NumMaps
-        
-        ' Leemos el valor guardado para el tamanio optimo
-        ConnGroups(i).OptValue = val(AreasIO.GetValue("Areas", "Mapa" & i))
-
-        ' Si es cero, lo dejamos en uno
-        If ConnGroups(i).OptValue = 0 Then ConnGroups(i).OptValue = 1
-
-        ' Redimensionamos
-        ReDim ConnGroups(i).UserEntrys(1 To ConnGroups(i).OptValue) As Long
-
+        Set ConnGroups(i) = New Collection
     Next i
-    
-    Set AreasIO = Nothing
-    
 End Sub
-
-
-'*************************************************************************************************************
-'* AreasOptimizacion: Funcion llamada cada {TimeOptimization} segundos cuyo objetivo es modificar el tamanio *
-'                     optimo del array de usuarios segun la cantidad que haya en el mapa en ese momento.     *
-'*************************************************************************************************************
-Public Sub AreasOptimizacion()
-    
-    'Objeto donde almacenamos la info. que vamos a escribir en el archivo {FILE_AREAS}
-    Set AreasIO = New clsIniManager
-    
-    ' Solo modificamos los valores cada (TimeOptimization) segundos.
-    CountOptimization = CountOptimization + 1
-    
-    If CountOptimization > TimeOptimization Then
-
-        Dim i As Integer
-        For i = 1 To NumMaps
-            
-            ' Modificamos el valor optimo haciendo un promedio entre el tamanio anterior y la cantidad de usuarios actual
-            ConnGroups(i).OptValue = (ConnGroups(i).OptValue + ConnGroups(i).CountEntrys) \ 2
-
-            ' Escribimos en el archivo de areas
-            Call AreasIO.ChangeValue("Areas", "Mapa" & i, ConnGroups(i).OptValue)
-
-            ' Si es cero, lo dejamos en uno
-            If ConnGroups(i).OptValue = 0 Then ConnGroups(i).OptValue = 1
-
-            ' Redimensionamos si es necesario
-            If ConnGroups(i).OptValue > ConnGroups(i).CountEntrys Then
-                ReDim Preserve ConnGroups(i).UserEntrys(1 To ConnGroups(i).OptValue) As Long
-            End If
-            
-        Next i
-
-        CountOptimization = 0
-        
-    End If
-    
-    'Escribimos la informacion en el objeto en el archivo {FILE_AREAS}
-    Call AreasIO.DumpFile(FILE_AREAS)
-    Set AreasIO = Nothing
-    
-End Sub
-
 
 '*****************************************************************************************
 '* AgregarUser: Agrega el usuario al mapa, enviando los datos correspondientes a su area *
 '               y notificando al resto de usuarios.                                      *
 '*****************************************************************************************
 Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)
-
     If Not MapaValido(Map) Then Exit Sub
-    
+    Debug.Print (ConnGroups(Map).Count)
     Dim EsNuevo As Boolean
         EsNuevo = True
     
     ' Evitamos agregar usuarios repetidos
     Dim i As Integer
-    For i = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(i) = Userindex Then
+    For i = 1 To ConnGroups(Map).Count()
+        If ConnGroups(Map).Item(i) = Userindex Then
             EsNuevo = False
             Exit For
         End If
@@ -194,22 +103,13 @@ Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optiona
 
     ' Si es nuevo en el mapa
     If EsNuevo Then
-        
-        ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys + 1
-
-        ' Aumentamos el tamanio del array de ser necesario
-        If ConnGroups(Map).CountEntrys > UBound(ConnGroups(Map).UserEntrys) Then
-            ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
-        End If
-
-        ConnGroups(Map).UserEntrys(ConnGroups(Map).CountEntrys) = Userindex
+        Call ConnGroups(Map).Add(Userindex)
     End If
     
     With UserList(Userindex)
         .AreasInfo.AreaPerteneceX = -1
         .AreasInfo.AreaPerteneceY = -1
     End With
-
     Call CheckUpdateNeededUser(Userindex, USER_NUEVO, ButIndex)
     
 End Sub
@@ -234,25 +134,13 @@ End Sub
 Public Sub QuitarUser(ByVal Userindex As Integer, ByVal Map As Integer)
 
     ' Buscamos el index dentro del array
-    Dim LoopC As Long
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        If ConnGroups(Map).UserEntrys(LoopC) = Userindex Then Exit For
-    Next LoopC
-    
-    ' Si no existe salimos
-    If LoopC > ConnGroups(Map).CountEntrys Then Exit Sub
-    
-    ConnGroups(Map).CountEntrys = ConnGroups(Map).CountEntrys - 1
-    
-    ' Corremos el array para llenar el hueco que dejo
-    For LoopC = LoopC To ConnGroups(Map).CountEntrys - 1
-        ConnGroups(Map).UserEntrys(LoopC) = ConnGroups(Map).UserEntrys(LoopC + 1)
-    Next LoopC
-    
-    ' Reducimos el array
-    If ConnGroups(Map).CountEntrys >= ConnGroups(Map).OptValue Then
-        ReDim Preserve ConnGroups(Map).UserEntrys(1 To ConnGroups(Map).CountEntrys) As Long
-    End If
+    Dim LoopA As Long
+    For LoopA = 1 To ConnGroups(Map).Count()
+        If ConnGroups(Map).Item(LoopA) = Userindex Then
+            Call ConnGroups(Map).Remove(LoopA)
+            Exit For
+        End If
+    Next LoopA
 
 End Sub
 

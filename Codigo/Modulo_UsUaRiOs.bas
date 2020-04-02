@@ -729,7 +729,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
             End If
             
             'Calculo subida de vida
-            Promedio = ModVida(.Clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
+            Promedio = ModVida(.clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
             aux = RandomNumber(0, 100)
             
             If Promedio - Int(Promedio) = 0.5 Then
@@ -773,7 +773,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
                 
             End If
         
-            Select Case .Clase
+            Select Case .clase
 
                 Case eClass.Warrior
                     AumentoHIT = IIf(.Stats.ELV > 35, 2, 3)
@@ -1079,7 +1079,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             End With
             
             'Actualizamos las areas de ser necesario
-            Call Areas.CheckUpdateNeededUser(UserIndex, nHeading)
+            Call Areas.CheckUpdateNeededUser(Userindex, nHeading)
         Else
             Call WritePosUpdate(Userindex)
 
@@ -1177,19 +1177,20 @@ Function NextOpenUser() As Integer
 
 End Function
 
-Public Sub LiberarSlot(ByVal Userindex As Integer)
+Public Sub LiberarSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
     '***************************************************
     'Author: Torres Patricio (Pato)
     'Last Modification: 01/10/2012
     '
     '***************************************************
-
-    With UserList(Userindex)
-        .ConnID = -1
-        .ConnIDValida = False
-
-    End With
-
+    If Not Reconnect Then
+        With UserList(Userindex)
+            .ConnID = -1
+            .ConnIDValida = False
+    
+        End With
+    End If
+    
     If Userindex = LastUser Then
 
         Do While (LastUser > 0) And (UserList(LastUser).ConnID = -1)
@@ -1294,7 +1295,7 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
         Call WriteConsoleMsg(sendIndex, "Pj: " & .Name, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Ciudadanos matados: " & .Faccion.CiudadanosMatados & " Criminales matados: " & .Faccion.CriminalesMatados & " usuarios matados: " & .Stats.UsuariosMatados, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "NPCs muertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.Clase), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Pena: " & (.Counters.Pena / 40), FontTypeNames.FONTTYPE_INFO)
         
         If .Faccion.ArmadaReal = 1 Then
@@ -1508,7 +1509,7 @@ Public Function PuedeApunalar(ByVal Userindex As Integer) As Boolean
         
         If WeaponIndex > 0 Then
             If ObjData(WeaponIndex).Apunala = 1 Then
-                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .Clase = eClass.Assasin
+                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .clase = eClass.Assasin
 
             End If
 
@@ -1529,7 +1530,7 @@ Public Function PuedeAcuchillar(ByVal Userindex As Integer) As Boolean
     
     With UserList(Userindex)
 
-        If .Clase = eClass.Pirat Then
+        If .clase = eClass.Pirat Then
         
             WeaponIndex = .Invent.WeaponEqpObjIndex
 
@@ -1890,24 +1891,24 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         Call LimpiarComercioSeguro(Userindex)
         
         ' Hay que teletransportar?
-        Dim Mapa As Integer
+        Dim mapa As Integer
 
-        Mapa = .Pos.Map
+        mapa = .Pos.Map
 
         Dim MapaTelep As Integer
 
-        MapaTelep = MapInfo(Mapa).OnDeathGoTo.Map
+        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
             Call WriteConsoleMsg(Userindex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
-            Call WarpUserChar(Userindex, MapaTelep, MapInfo(Mapa).OnDeathGoTo.X, MapInfo(Mapa).OnDeathGoTo.Y, True, True)
+            Call WarpUserChar(Userindex, MapaTelep, MapInfo(mapa).OnDeathGoTo.X, MapInfo(mapa).OnDeathGoTo.Y, True, True)
 
         End If
         
         ' Retos nVSn. User muere
         If AttackerIndex <> 0 Then
             If .flags.SlotReto > 0 Then
-                Call Retos.UserdieFight(Userindex, AttackerIndex, False)
+                Call Retos.UserDieFight(Userindex, AttackerIndex, False)
             End If
         End If
     End With
@@ -2421,7 +2422,7 @@ Sub Cerrar_Usuario(ByVal Userindex As Integer)
                 
                 If .flags.Oculto Then
                     If .flags.Navegando = 1 Then
-                        If .Clase = eClass.Pirat Then
+                        If .clase = eClass.Pirat Then
                             ' Pierde la apariencia de fragata fantasmal
                             Call ToggleBoatBody(Userindex)
                             Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -2712,18 +2713,18 @@ Public Sub ApropioNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGm(Userindex) Then Exit Sub
         
-        Dim Mapa As Integer
+        Dim mapa As Integer
 
-        Mapa = .Pos.Map
+        mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(Mapa).Pk = False Then Exit Sub
+        If MapInfo(mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
