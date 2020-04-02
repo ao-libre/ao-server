@@ -441,8 +441,8 @@ Private Sub SendToUserArea(ByVal Userindex As Integer, ByVal sdData As String)
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -469,8 +469,8 @@ Private Sub SendToUserAreaButindex(ByVal Userindex As Integer, ByVal sdData As S
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If tempIndex <> Userindex Then
             If EstanMismoArea(Userindex, tempIndex) Then
@@ -499,8 +499,8 @@ Private Sub SendToDeadUserArea(ByVal Userindex As Integer, ByVal sdData As Strin
     
     If Not MapaValido(Map) Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             'Dead and admins read
@@ -530,8 +530,8 @@ Private Sub SendToUserGuildArea(ByVal Userindex As Integer, ByVal sdData As Stri
 
     If UserList(Userindex).GuildIndex = 0 Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
         
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida And (UserList(tempIndex).GuildIndex = UserList(Userindex).GuildIndex Or ((UserList(tempIndex).flags.Privilegios And PlayerType.Dios) And (UserList(tempIndex).flags.Privilegios And PlayerType.RoleMaster) = 0)) Then
@@ -560,8 +560,8 @@ Private Sub SendToUserPartyArea(ByVal Userindex As Integer, ByVal sdData As Stri
     
     If UserList(Userindex).PartyIndex = 0 Then Exit Sub
     
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida And UserList(tempIndex).PartyIndex = UserList(Userindex).PartyIndex Then
@@ -589,8 +589,8 @@ Private Sub SendToAdminsButConsejerosArea(ByVal Userindex As Integer, _
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -617,8 +617,8 @@ Private Sub SendToNpcArea(ByVal NpcIndex As Long, ByVal sdData As String)
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoAreaNPC(NpcIndex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -645,8 +645,8 @@ Public Sub SendToAreaByPos(ByVal Map As Integer, _
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoAreaPos(tempIndex, X, Y) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -671,8 +671,8 @@ Public Sub SendToMap(ByVal Map As Integer, ByVal sdData As String)
     
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
         
         If UserList(tempIndex).ConnIDValida Then
             Call EnviarDatosASlot(tempIndex, sdData)
@@ -700,8 +700,8 @@ Public Sub SendToMapButIndex(ByVal Userindex As Integer, ByVal sdData As String)
     
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
         
         If tempIndex <> Userindex And UserList(tempIndex).ConnIDValida Then
             Call EnviarDatosASlot(tempIndex, sdData)
@@ -729,8 +729,8 @@ Private Sub SendToGMsAreaButRmsOrCounselors(ByVal Userindex As Integer, _
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
         
         With UserList(tempIndex)
 
@@ -764,8 +764,8 @@ Private Sub SendToUsersAreaButGMs(ByVal Userindex As Integer, ByVal sdData As St
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -795,8 +795,8 @@ Private Sub SendToUsersAndRmsAndCounselorsAreaButGMs(ByVal Userindex As Integer,
 
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
 
         If EstanMismoArea(Userindex, tempIndex) Then
             If UserList(tempIndex).ConnIDValida Then
@@ -836,8 +836,8 @@ Public Sub AlertarFaccionarios(ByVal Userindex As Integer)
     
     If Not MapaValido(Map) Then Exit Sub
 
-    For LoopC = 1 To ConnGroups(Map).CountEntrys
-        tempIndex = ConnGroups(Map).UserEntrys(LoopC)
+    For LoopC = 1 To ConnGroups(Map).Count()
+        tempIndex = ConnGroups(Map).Item(LoopC)
         
         If UserList(tempIndex).ConnIDValida Then
             If tempIndex <> Userindex Then

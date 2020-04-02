@@ -137,7 +137,7 @@ Private Sub TIMER_AI()
 
     Dim NpcIndex As Long
 
-    Dim Mapa     As Integer
+    Dim mapa     As Integer
 
     Dim e_p      As Integer
     
@@ -169,10 +169,10 @@ Private Sub TIMER_AI()
 
                             End If
                             
-                            Mapa = .Pos.Map
+                            mapa = .Pos.Map
                             
-                            If Mapa > 0 Then
-                                If MapInfo(Mapa).NumUsers > 0 Then
+                            If mapa > 0 Then
+                                If MapInfo(mapa).NumUsers > 0 Then
                                     If .Movement <> TipoAI.ESTATICO Then
                                         Call NPCAI(NpcIndex)
 
@@ -413,8 +413,6 @@ Public Sub PasarSegundo()
     On Error GoTo ErrHandler
 
     Dim i As Long
-    
-    Call Areas.AreasOptimizacion
     
     'Limpieza del mundo
     If counterSV.Limpieza > 0 Then

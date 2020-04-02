@@ -380,8 +380,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
 
             End Select
             
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X And Sgn(UserList(Userindex).Pos.X - .Pos.X) = SignoEO Then
@@ -446,8 +446,8 @@ Private Sub IrUsuarioCercano(ByVal NpcIndex As Integer)
             End If
             
             ' No le pertenece a nadie o el dueno no esta en el rango de vision, sigue a cualquiera
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X Then
@@ -537,8 +537,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
 
             End Select
 
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                UI = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                UI = Areas.ConnGroups(.Pos.Map).Item(i)
 
                 'Is it in it's range of vision??
                 If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X And Sgn(UserList(UI).Pos.X - .Pos.X) = SignoEO Then
@@ -587,8 +587,8 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
 
         Else
 
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                UI = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                UI = Areas.ConnGroups(.Pos.Map).Item(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(UI).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X Then
@@ -680,8 +680,8 @@ Private Sub PersigueCiudadano(ByVal NpcIndex As Integer)
     
     With Npclist(NpcIndex)
 
-        For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-            Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+        For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+            Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
                 
             'Is it in it's range of vision??
             If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X Then
@@ -763,8 +763,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 
             End Select
             
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X And Sgn(UserList(Userindex).Pos.X - .Pos.X) = SignoEO Then
@@ -800,8 +800,8 @@ Private Sub PersigueCriminal(ByVal NpcIndex As Integer)
 
         Else
 
-            For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-                Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+            For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+                Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
                 
                 'Is it in it's range of vision??
                 If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X Then
@@ -1045,8 +1045,8 @@ Public Sub AiNpcObjeto(ByVal NpcIndex As Integer)
     
     With Npclist(NpcIndex)
 
-        For i = 1 To Areas.ConnGroups(.Pos.Map).CountEntrys
-            Userindex = Areas.ConnGroups(.Pos.Map).UserEntrys(i)
+        For i = 1 To Areas.ConnGroups(.Pos.Map).Count()
+            Userindex = Areas.ConnGroups(.Pos.Map).Item(i)
             
             'Is it in it's range of vision??
             If Abs(UserList(Userindex).Pos.X - .Pos.X) <= RANGO_VISION_NPC_X Then
