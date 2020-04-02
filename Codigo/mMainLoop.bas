@@ -414,8 +414,6 @@ Public Sub PasarSegundo()
 
     Dim i As Long
     
-    Call Areas.AreasOptimizacion
-    
     'Limpieza del mundo
     If counterSV.Limpieza > 0 Then
         counterSV.Limpieza = counterSV.Limpieza - 1
