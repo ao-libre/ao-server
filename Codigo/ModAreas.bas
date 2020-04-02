@@ -133,7 +133,6 @@ End Sub
 '                     optimo del array de usuarios segun la cantidad que haya en el mapa en ese momento.     *
 '*************************************************************************************************************
 Public Sub AreasOptimizacion()
-    Debug.Print ("Optimizando")
     'Objeto donde almacenamos la info. que vamos a escribir en el archivo {FILE_AREAS}
     Set AreasIO = New clsIniManager
     
