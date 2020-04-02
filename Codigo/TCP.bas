@@ -36,7 +36,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, n, Mapa, Email, Length As Variant
+    Dim X, Y, n, mapa, Email, Length As Variant
 
 #End If
 
@@ -597,7 +597,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Reputacion.Promedio = 30 / 6
     
         .Name = Name
-        .Clase = UserClase
+        .clase = UserClase
         .raza = UserRaza
         .Genero = UserSexo
         .Hogar = Hogar
@@ -1021,7 +1021,8 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
         Exit Sub
 
     End If
-
+    
+    UserList(Userindex).mail = UserName
     'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
     'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
@@ -1043,7 +1044,7 @@ End Sub
 
 #If UsarQueSocket = 1 Or UsarQueSocket = 2 Then
 
-    Sub CloseSocket(ByVal Userindex As Integer)
+    Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
         '***************************************************
         'Author: Unknown
         'Last Modification: -
@@ -1053,14 +1054,14 @@ End Sub
         On Error GoTo ErrHandler
 
         With UserList(Userindex)
-
-            Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
-        
-            If .ConnID <> -1 Then
-                Call CloseSocketSL(Userindex)
-
+            If Not Reconnect Then
+                Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
+            
+                If .ConnID <> -1 Then
+                    Call CloseSocketSL(Userindex)
+    
+                End If
             End If
-        
             ' Hunger Games
             If .flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
         
@@ -1100,14 +1101,14 @@ End Sub
         
             If .flags.UserLogged Then
                 If NumUsers > 0 Then NumUsers = NumUsers - 1
-                Call CloseUser(Userindex)
+                Call CloseUser(Userindex, Reconnect)
             
             Else
-                Call ResetUserSlot(Userindex)
+                Call ResetUserSlot(Userindex, Reconnect)
 
             End If
             
-            Call LiberarSlot(Userindex)
+            Call LiberarSlot(Userindex, Reconnect)
             
         End With
 
@@ -1598,39 +1599,39 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         Call UpdateUserInv(True, Userindex, 0)
         Call UpdateUserHechizos(True, Userindex, 0)
                                                                                             
-        Call ActualizarSlotAmigo(UserIndex, 0, True)
-        Call ObtenerIndexAmigos(UserIndex, False)
+        Call ActualizarSlotAmigo(Userindex, 0, True)
+        Call ObtenerIndexAmigos(Userindex, False)
                                                                                             
         If .flags.Paralizado Then
             Call WriteParalizeOK(Userindex)
 
         End If
     
-        Dim Mapa As Integer
+        Dim mapa As Integer
 
-        Mapa = .Pos.Map
+        mapa = .Pos.Map
     
         'Posicion de comienzo
-        If Mapa = 0 Then
+        If mapa = 0 Then
 
             'Configurable desde el Server.ini / CustomWorld
             'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
             'Caso contrario sigue modo Alkon'
             If UsarMundoPropio Then
                 .Pos = CustomSpawnMap
-                Mapa = CustomSpawnMap.Map
+                mapa = CustomSpawnMap.Map
             Else
                 'Dejo esto comentado aqui por si se quiere utilizar la ciudad elegida desde el menu
                 'Crear personaje, ahora se utiliza solo Nemahuak ya que es una ciudad nw utilizada desde la 0.13
                 ' .Pos = Ciudades(.Hogar)
                 ' mapa = Ciudades(.Hogar).Map
                 .Pos = Nemahuak
-                Mapa = Nemahuak.Map
+                mapa = Nemahuak.Map
             End If
 
         Else
     
-            If Not MapaValido(Mapa) Then
+            If Not MapaValido(mapa) Then
                 Call WriteErrorMsg(Userindex, "El PJ se encuenta en un mapa invalido.")
                 Call CloseSocket(Userindex)
                 Exit Sub
@@ -1640,12 +1641,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             ' If map has different initial coords, update it
             Dim StartMap As Integer
 
-            StartMap = MapInfo(Mapa).StartPos.Map
+            StartMap = MapInfo(mapa).StartPos.Map
 
             If StartMap <> 0 Then
                 If MapaValido(StartMap) Then
-                    .Pos = MapInfo(Mapa).StartPos
-                    Mapa = StartMap
+                    .Pos = MapInfo(mapa).StartPos
+                    mapa = StartMap
 
                 End If
 
@@ -1655,7 +1656,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
         'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martin Sotuyo Dodero (Maraxus)
-        If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
+        If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
 
             Dim FoundPlace As Boolean
 
@@ -1666,7 +1667,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Dim tY         As Long
         
             FoundPlace = False
-            esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
+            esAgua = HayAgua(mapa, .Pos.X, .Pos.Y)
         
             For tY = .Pos.Y - 1 To .Pos.Y + 1
                 For tX = .Pos.X - 1 To .Pos.X + 1
@@ -1674,7 +1675,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     If esAgua Then
 
                         'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                        If LegalPos(Mapa, tX, tY, True, False) Then
+                        If LegalPos(mapa, tX, tY, True, False) Then
                             FoundPlace = True
                             Exit For
 
@@ -1683,7 +1684,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     Else
 
                         'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                        If LegalPos(Mapa, tX, tY, False, True) Then
+                        If LegalPos(mapa, tX, tY, False, True) Then
                             FoundPlace = True
                             Exit For
 
@@ -1702,30 +1703,30 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Else
 
                 'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-                If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
+                If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
 
                     'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
+                    If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
 
                         'Le avisamos al que estaba comerciando que se tuvo que ir.
-                        If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
-                            Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
-                            Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
-                            Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                        If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
+                            Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
+                            Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
 
                         'Lo sacamos.
-                        If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
-                            Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
-                            Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                            Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
+                        If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
+                            Call FinComerciarUsu(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
+                            Call WriteErrorMsg(MapData(mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
+                            Call FlushBuffer(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
 
                         End If
 
                     End If
                 
-                    Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
+                    Call CloseSocket(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
 
                 End If
 
@@ -1736,7 +1737,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         .showName = True 'Por default los nombres son visibles
     
         'If in the water, and has a boat, equip it!
-        If .Invent.BarcoObjIndex > 0 And (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+        If .Invent.BarcoObjIndex > 0 And (HayAgua(mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
             .Char.Head = 0
 
@@ -1926,7 +1927,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
         'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
         If ConexionAPI Then
-            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .Desc, criminal(Userindex), ListaClases(.Clase))
+            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .desc, criminal(Userindex), ListaClases(.clase))
         End If
 
         n = FreeFile
@@ -2080,13 +2081,13 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
         .Name = vbNullString
         .ID = 0
         .AccountHash = vbNullString
-        .Desc = vbNullString
+        .desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
         .Pos.X = 0
         .Pos.Y = 0
         .IP = vbNullString
-        .Clase = 0
+        .clase = 0
         .Email = vbNullString
         .Genero = 0
         .Hogar = 0
@@ -2316,7 +2317,7 @@ Public Sub LimpiarComercioSeguro(ByVal Userindex As Integer)
 
 End Sub
 
-Sub ResetUserSlot(ByVal Userindex As Integer)
+Sub ResetUserSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2324,10 +2325,10 @@ Sub ResetUserSlot(ByVal Userindex As Integer)
     '***************************************************
 
     Dim i As Long
-
-    UserList(Userindex).ConnIDValida = False
-    UserList(Userindex).ConnID = -1
-
+    If Not Reconnect Then
+        UserList(Userindex).ConnIDValida = False
+        UserList(Userindex).ConnID = -1
+    End If
     Call LimpiarComercioSeguro(Userindex)
     Call ResetFacciones(Userindex)
     Call ResetContadores(Userindex)
@@ -2359,7 +2360,7 @@ Sub ResetUserSlot(ByVal Userindex As Integer)
  
 End Sub
 
-Sub CloseUser(ByVal Userindex As Integer)
+Sub CloseUser(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2471,7 +2472,7 @@ Sub CloseUser(ByVal Userindex As Integer)
         ' Si el usuario habia dejado un msg en la gm's queue lo borramos
         If Ayuda.Existe(.Name) Then Call Ayuda.Quitar(.Name)
     
-        Call ResetUserSlot(Userindex)
+        Call ResetUserSlot(Userindex, Reconnect)
     
         Call MostrarNumUsers
     
