@@ -43,12 +43,6 @@ Public Const YWindow            As Byte = 19
 ' (para que graficos grandes se vean desde fuera de la pantalla)
 Private Const TileBufferSize    As Byte = 5
 
-' Intervalo en minutos para actualizar el tamanio
-' optimo del array de usuarios de los mapa
-Private Const TimeOptimization  As Byte = 60
-
-
-
 '************************************************
 '*      Valores calculados automaticamente      *
 '************************************************
@@ -87,6 +81,7 @@ Public Sub InitializeAreas()
         Set ConnGroups(i) = New Collection
     Next i
 End Sub
+
 '*****************************************************************************************
 '* AgregarUser: Agrega el usuario al mapa, enviando los datos correspondientes a su area *
 '               y notificando al resto de usuarios.                                      *

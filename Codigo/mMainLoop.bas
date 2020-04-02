@@ -442,9 +442,10 @@ Public Sub PasarSegundo()
                     If .Counters.Salir <= 0 Then
                         Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
                         Call WriteDisconnect(i)
+                        Call CloseSocket(i, True)
                         Call FlushBuffer(i)
-                        
-                        Call CloseSocket(i)
+                        Call LoginAccountCharfile(i, UserList(i).mail)
+                        Call FlushBuffer(i)
 
                     End If
 
