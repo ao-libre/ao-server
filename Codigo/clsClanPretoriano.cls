@@ -799,7 +799,6 @@ Private Sub KingPerformAction(ByVal NpcIndex As Integer, _
     
     ' Resets if anyone is around, else increases
     KingIdleTime = IdleTime
-    Debug.Print KingIdleTime
     Exit Sub
 
 ErrHandler:
@@ -2093,7 +2092,7 @@ Private Function ThiefBestTarget(ByVal NpcIndex As Integer, _
                 If UserReachable(NpcIndex, Userindex) Then
                 
                     ' Is it a hunter? => Has priority
-                    If UserList(Userindex).Clase = eClass.Hunter Then
+                    If UserList(Userindex).clase = eClass.Hunter Then
                         BestTarget = Userindex
                         BestTargetDistance = UserDistance(Userindex, NpcX, NpcY)
                         Exit For
@@ -2478,7 +2477,7 @@ Private Function EsClaseMagica(ByVal Userindex As Integer) As Boolean
     On Error GoTo ErrHandler
 
     With UserList(Userindex)
-        EsClaseMagica = .Clase = eClass.Mage Or .Clase = eClass.Cleric Or .Clase = eClass.Druid Or .Clase = eClass.Bard
+        EsClaseMagica = .clase = eClass.Mage Or .clase = eClass.Cleric Or .clase = eClass.Druid Or .clase = eClass.Bard
 
     End With
     
