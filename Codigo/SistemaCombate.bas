@@ -1390,7 +1390,7 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
 
             ' Invisible admins doesn't make sound to other clients except itself
             If .flags.AdminInvisible = 1 Then
-                Call EnviarDatosASlot(AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
+                Call UserList(AtacanteIndex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
             Else
                 Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
 

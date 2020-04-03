@@ -934,36 +934,6 @@ Sub CloseSocketSL(ByVal Userindex As Integer)
 
 End Sub
 
-''
-' Send an string to a Slot
-'
-' @param userIndex The index of the User
-' @param Datos The string that will be send
-Public Function EnviarDatosASlot(ByVal Userindex As Integer, ByRef Datos As String) As Long
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 01/10/07
-    'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-    'Now it uses the clsByteQueue class and don`t make a FIFO Queue of String
-    '***************************************************
-
-    On Error GoTo Err
-    
-    Dim ret As Long
-        ret = WsApiEnviar(Userindex, Datos)
-    
-    If ret <> 0 And ret <> WSAEWOULDBLOCK Then
-        ' Close the socket avoiding any critical error
-        Call CloseSocketSL(Userindex)
-        Call Cerrar_Usuario(Userindex)
-    End If
-
-    Exit Function
-    
-Err:
-
-End Function
-
 Function EstaPCarea(index As Integer, Index2 As Integer) As Boolean
     '***************************************************
     'Author: Unknown

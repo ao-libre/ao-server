@@ -18620,7 +18620,7 @@ Public Sub WriteShowMessageBox(ByVal Userindex As Integer, ByVal Message As Stri
 'Writes the "ShowMessageBox" message to the given user's outgoing data buffer
 '***************************************************
     
-	On Error GoTo ErrHandler
+        On Error GoTo ErrHandler
 
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.ShowMessageBox)
@@ -21535,10 +21535,18 @@ Public Sub FlushBuffer(ByVal Userindex As Integer)
         If .Length = 0 Then Exit Sub
         
         sndData = .ReadASCIIStringFixed(.Length)
-        
-        Call EnviarDatosASlot(Userindex, sndData)
 
     End With
+    
+    ' Tratamos de enviar los datos.
+    Dim ret As Long: ret = WsApiEnviar(Userindex, sndData)
+    
+    ' Si recibimos un error como respuesta de la API, cerramos el socket.
+    If ret <> 0 And ret <> WSAEWOULDBLOCK Then
+        ' Close the socket avoiding any critical error
+        Call CloseSocketSL(Userindex)
+        Call Cerrar_Usuario(Userindex)
+    End If
 
 End Sub
 

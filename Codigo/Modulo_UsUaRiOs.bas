@@ -416,7 +416,7 @@ Public Sub EraseUserChar(ByVal Userindex As Integer, ByVal IsAdminInvisible As B
         
         ' Si esta invisible, solo el sabe de su propia existencia, es innecesario borrarlo en los demas clientes
         If IsAdminInvisible Then
-            Call EnviarDatosASlot(Userindex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCharacterRemove(.Char.CharIndex))
         Else
             'Le mandamos el mensaje para que borre el personaje a los clientes que esten cerca
             Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCharacterRemove(.Char.CharIndex))

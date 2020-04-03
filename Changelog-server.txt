@@ -937,3 +937,4 @@ v0.13.29
 * 02/04/2020: Al desconectarse del personaje, sin cerrar el socket, te envia a la pestaña de tu cuenta. (FrankoH298)
 * 02/04/2020: MD universal y Daga +4 ahora la puede usar el bardo (Neo)
 * 02/04/2020: Fix QuitarUser() and moved Areas.AreasOptimizacion() (FrankoH298)
+* 02/04/2020: Usamos clsByteQueue para enviar TODOS los paquetes de manera ordenada, sacamos las llamadas a EnviarDatosASlot(id, sndData) y usamos WriteASCIIStringFixed(data).

@@ -109,23 +109,14 @@ Private Sub packetResend()
     On Error GoTo ErrHandler:
 
     Dim i As Long
-    
     For i = 1 To LastUser
-
-        If UserList(i).ConnIDValida Then
-            If UserList(i).outgoingData.Length > 0 Then
-                Call EnviarDatosASlot(i, UserList(i).outgoingData.ReadASCIIStringFixed(UserList(i).outgoingData.Length))
-
-            End If
-
-        End If
-
+        If UserList(i).ConnIDValida Then Call FlushBuffer(i)
     Next i
 
     Exit Sub
 
 ErrHandler:
-    LogError ("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
+    Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
 
     Resume Next
 

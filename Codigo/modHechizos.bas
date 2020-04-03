@@ -1946,11 +1946,10 @@ Sub InfoHechizo(ByVal Userindex As Integer)
     '25/07/2009: ZaMa - Now invisible admins magic sounds are not sent to anyone but themselves
     '***************************************************
     Dim SpellIndex As Integer
-
     Dim tUser      As Integer
-
     Dim tNPC       As Integer
- 
+    Dim tempData   As String
+    
     With UserList(Userindex)
         SpellIndex = .flags.Hechizo
         tUser = .flags.TargetUser
@@ -1962,8 +1961,13 @@ Sub InfoHechizo(ByVal Userindex As Integer)
 
             ' Los admins invisibles no producen sonidos ni fx's
             If .flags.AdminInvisible = 1 And Userindex = tUser Then
-                Call EnviarDatosASlot(Userindex, PrepareMessageCreateFX(UserList(tUser).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
-                Call EnviarDatosASlot(Userindex, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, UserList(tUser).Pos.X, UserList(tUser).Pos.Y))
+                
+                tempData = PrepareMessageCreateFX(UserList(tUser).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops)
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+                
+                tempData = PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, UserList(tUser).Pos.X, UserList(tUser).Pos.Y)
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+
             Else
                 Call SendData(SendTarget.ToPCArea, tUser, PrepareMessageCreateFX(UserList(tUser).Char.CharIndex, Hechizos(SpellIndex).FXgrh, Hechizos(SpellIndex).loops))
                 Call SendData(SendTarget.ToPCArea, tUser, PrepareMessagePlayWave(Hechizos(SpellIndex).WAV, UserList(tUser).Pos.X, UserList(tUser).Pos.Y)) 'Esta linea faltaba. Pablo (ToxicWaste)
