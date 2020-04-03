@@ -309,16 +309,8 @@ End Sub
 
 Private Sub Form_Load()
 
-    #If UsarQueSocket = 1 Then
-        cmdResetSockets.Visible = True
-        cmdResetListen.Visible = True
-    #ElseIf UsarQueSocket = 0 Then
-        cmdResetSockets.Visible = False
-        cmdResetListen.Visible = False
-    #ElseIf UsarQueSocket = 2 Then
-        cmdResetSockets.Visible = True
-        cmdResetListen.Visible = False
-    #End If
+    cmdResetSockets.Visible = True
+    cmdResetListen.Visible = True
     
     'Listamos el contenido de la carpeta Dats
     Dim sFilename As String
@@ -386,17 +378,9 @@ Private Sub cmdLoadWorldBackup_Click()
     If FileExist(App.Path & "\logs\Resurrecciones.log", vbNormal) Then Kill App.Path & "\logs\Resurrecciones.log"
     If FileExist(App.Path & "\logs\Teleports.Log", vbNormal) Then Kill App.Path & "\logs\Teleports.Log"
 
-    #If UsarQueSocket = 1 Then
-        Call apiclosesocket(SockListen)
-    #ElseIf UsarQueSocket = 0 Then
-        frmMain.Socket1.Cleanup
-        frmMain.Socket2(0).Cleanup
-    #ElseIf UsarQueSocket = 2 Then
-        frmMain.Serv.Detener
-    #End If
+    Call apiclosesocket(SockListen)
 
     Dim LoopC As Integer
-    
     For LoopC = 1 To MaxUsers
         Call CloseSocket(LoopC)
     Next
@@ -411,27 +395,7 @@ Private Sub cmdLoadWorldBackup_Click()
     Call CargarBackUp
     Call LoadOBJData
 
-    #If UsarQueSocket = 1 Then
-        SockListen = ListenForConnect(Puerto, hWndMsg, "")
-
-    #ElseIf UsarQueSocket = 0 Then
-        frmMain.Socket1.AddressFamily = AF_INET
-        frmMain.Socket1.Protocol = IPPROTO_IP
-        frmMain.Socket1.SocketType = SOCK_STREAM
-        frmMain.Socket1.Binary = False
-        frmMain.Socket1.Blocking = False
-        frmMain.Socket1.BufferSize = 1024
-    
-        frmMain.Socket2(0).AddressFamily = AF_INET
-        frmMain.Socket2(0).Protocol = IPPROTO_IP
-        frmMain.Socket2(0).SocketType = SOCK_STREAM
-        frmMain.Socket2(0).Blocking = False
-        frmMain.Socket2(0).BufferSize = 2048
-    
-        'Escucha
-        frmMain.Socket1.LocalPort = Puerto
-        frmMain.Socket1.listen
-    #End If
+    SockListen = ListenForConnect(Puerto, hWndMsg, vbNullString)
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Reiniciando Terminado. Escuchando conexiones entrantes ..."
 End Sub
@@ -466,47 +430,19 @@ End Sub
 
 Private Sub cmdResetListen_Click()
 
-    #If UsarQueSocket = 1 Then
-
-        'Cierra el socket de escucha
-        If SockListen >= 0 Then Call apiclosesocket(SockListen)
+    'Cierra el socket de escucha
+    If SockListen >= 0 Then Call apiclosesocket(SockListen)
     
-        'Inicia el socket de escucha
-        SockListen = ListenForConnect(Puerto, hWndMsg, "")
-    #End If
+    'Inicia el socket de escucha
+    SockListen = ListenForConnect(Puerto, hWndMsg, vbNullString)
 
 End Sub
 
 Private Sub cmdResetSockets_Click()
 
-    #If UsarQueSocket = 1 Then
-
-        If MsgBox("Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
-            Call WSApiReiniciarSockets
-
-        End If
-
-    #ElseIf UsarQueSocket = 2 Then
-
-        Dim LoopC As Integer
-    
-        If MsgBox("Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
-
-            For LoopC = 1 To MaxUsers
-
-                If UserList(LoopC).ConnID <> -1 And UserList(LoopC).ConnIDValida Then
-                    Call CloseSocket(LoopC)
-
-                End If
-
-            Next LoopC
-        
-            Call frmMain.Serv.Detener
-            Call frmMain.Serv.Iniciar(Puerto)
-
-        End If
-
-    #End If
+    If MsgBox("Esta seguro que desea reiniciar los sockets? Se cerraran todas las conexiones activas.", vbYesNo, "Reiniciar Sockets") = vbYes Then
+        Call WSApiReiniciarSockets
+    End If
 
 End Sub
 
@@ -520,11 +456,8 @@ Private Sub cmdUnbanAll_Click()
     On Error Resume Next
 
     Dim Fn       As String
-
     Dim cad$
-
     Dim n        As Integer, K As Integer
-    
     Dim sENtrada As String
     
     sENtrada = InputBox("Escribe ""estoy DE acuerdo"" entre comillas y con distincion de mayusculas minusculas para desbanear a todos los personajes.", "UnBan", "hola")

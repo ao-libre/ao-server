@@ -36,217 +36,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, n, mapa, Email, Length As Variant
-
-#End If
-
-#If UsarQueSocket = 0 Then
-
-    ' General constants used with most of the controls
-    Public Const INVALID_HANDLE     As Integer = -1
-
-    Public Const CONTROL_ERRIGNORE  As Integer = 0
-
-    Public Const CONTROL_ERRDISPLAY As Integer = 1
-
-    ' SocietWrench Control Actions
-    Public Const SOCKET_OPEN        As Integer = 1
-
-    Public Const SOCKET_CONNECT     As Integer = 2
-
-    Public Const SOCKET_LISTEN      As Integer = 3
-
-    Public Const SOCKET_ACCEPT      As Integer = 4
-
-    Public Const SOCKET_CANCEL      As Integer = 5
-
-    Public Const SOCKET_FLUSH       As Integer = 6
-
-    Public Const SOCKET_CLOSE       As Integer = 7
-
-    Public Const SOCKET_DISCONNECT  As Integer = 7
-
-    Public Const SOCKET_ABORT       As Integer = 8
-
-    ' SocketWrench Control States
-    Public Const SOCKET_NONE        As Integer = 0
-
-    Public Const SOCKET_IDLE        As Integer = 1
-
-    Public Const SOCKET_LISTENING   As Integer = 2
-
-    Public Const SOCKET_CONNECTING  As Integer = 3
-
-    Public Const SOCKET_ACCEPTING   As Integer = 4
-
-    Public Const SOCKET_RECEIVING   As Integer = 5
-
-    Public Const SOCKET_SENDING     As Integer = 6
-
-    Public Const SOCKET_CLOSING     As Integer = 7
-
-    ' Societ Address Families
-    Public Const AF_UNSPEC          As Integer = 0
-
-    Public Const AF_UNIX            As Integer = 1
-
-    Public Const AF_INET            As Integer = 2
-
-    ' Societ Types
-    Public Const SOCK_STREAM        As Integer = 1
-
-    Public Const SOCK_DGRAM         As Integer = 2
-
-    Public Const SOCK_RAW           As Integer = 3
-
-    Public Const SOCK_RDM           As Integer = 4
-
-    Public Const SOCK_SEQPACKET     As Integer = 5
-
-    ' Protocol Types
-    Public Const IPPROTO_IP         As Integer = 0
-
-    Public Const IPPROTO_ICMP       As Integer = 1
-
-    Public Const IPPROTO_GGP        As Integer = 2
-
-    Public Const IPPROTO_TCP        As Integer = 6
-
-    Public Const IPPROTO_PUP        As Integer = 12
-
-    Public Const IPPROTO_UDP        As Integer = 17
-
-    Public Const IPPROTO_IDP        As Integer = 22
-
-    Public Const IPPROTO_ND         As Integer = 77
-
-    Public Const IPPROTO_RAW        As Integer = 255
-
-    Public Const IPPROTO_MAX        As Integer = 256
-
-    ' Network Addpesses
-    Public Const INADDR_ANY         As String = "0.0.0.0"
-
-    Public Const INADDR_LOOPBACK    As String = "127.0.0.1"
-
-    Public Const INADDR_NONE        As String = "255.055.255.255"
-
-    ' Shutdown Values
-    Public Const SOCKET_READ        As Integer = 0
-
-    Public Const SOCKET_WRITE       As Integer = 1
-
-    Public Const SOCKET_READWRITE   As Integer = 2
-
-    ' SocketWrench Error Pesponse
-    Public Const SOCKET_ERRIGNORE   As Integer = 0
-
-    Public Const SOCKET_ERRDISPLAY  As Integer = 1
-
-    ' SocketWrench Error Codes
-    Public Const WSABASEERR         As Integer = 24000
-
-    Public Const WSAEINTR           As Integer = 24004
-
-    Public Const WSAEBADF           As Integer = 24009
-
-    Public Const WSAEACCES          As Integer = 24013
-
-    Public Const WSAEFAULT          As Integer = 24014
-
-    Public Const WSAEINVAL          As Integer = 24022
-
-    Public Const WSAEMFILE          As Integer = 24024
-
-    Public Const WSAEWOULDBLOCK     As Integer = 24035
-
-    Public Const WSAEINPROGRESS     As Integer = 24036
-
-    Public Const WSAEALREADY        As Integer = 24037
-
-    Public Const WSAENOTSOCK        As Integer = 24038
-
-    Public Const WSAEDESTADDRREQ    As Integer = 24039
-
-    Public Const WSAEMSGSIZE        As Integer = 24040
-
-    Public Const WSAEPROTOTYPE      As Integer = 24041
-
-    Public Const WSAENOPROTOOPT     As Integer = 24042
-
-    Public Const WSAEPROTONOSUPPORT As Integer = 24043
-
-    Public Const WSAESOCKTNOSUPPORT As Integer = 24044
-
-    Public Const WSAEOPNOTSUPP      As Integer = 24045
-
-    Public Const WSAEPFNOSUPPORT    As Integer = 24046
-
-    Public Const WSAEAFNOSUPPORT    As Integer = 24047
-
-    Public Const WSAEADDRINUSE      As Integer = 24048
-
-    Public Const WSAEADDRNOTAVAIL   As Integer = 24049
-
-    Public Const WSAENETDOWN        As Integer = 24050
-
-    Public Const WSAENETUNREACH     As Integer = 24051
-
-    Public Const WSAENETRESET       As Integer = 24052
-
-    Public Const WSAECONNABORTED    As Integer = 24053
-
-    Public Const WSAECONNRESET      As Integer = 24054
-
-    Public Const WSAENOBUFS         As Integer = 24055
-
-    Public Const WSAEISCONN         As Integer = 24056
-
-    Public Const WSAENOTCONN        As Integer = 24057
-
-    Public Const WSAESHUTDOWN       As Integer = 24058
-
-    Public Const WSAETOOMANYREFS    As Integer = 24059
-
-    Public Const WSAETIMEDOUT       As Integer = 24060
-
-    Public Const WSAECONNREFUSED    As Integer = 24061
-
-    Public Const WSAELOOP           As Integer = 24062
-
-    Public Const WSAENAMETOOLONG    As Integer = 24063
-
-    Public Const WSAEHOSTDOWN       As Integer = 24064
-
-    Public Const WSAEHOSTUNREACH    As Integer = 24065
-
-    Public Const WSAENOTEMPTY       As Integer = 24066
-
-    Public Const WSAEPROCLIM        As Integer = 24067
-
-    Public Const WSAEUSERS          As Integer = 24068
-
-    Public Const WSAEDQUOT          As Integer = 24069
-
-    Public Const WSAESTALE          As Integer = 24070
-
-    Public Const WSAEREMOTE         As Integer = 24071
-
-    Public Const WSASYSNOTREADY     As Integer = 24091
-
-    Public Const WSAVERNOTSUPPORTED As Integer = 24092
-
-    Public Const WSANOTINITIALISED  As Integer = 24093
-
-    Public Const WSAHOST_NOT_FOUND  As Integer = 25001
-
-    Public Const WSATRY_AGAIN       As Integer = 25002
-
-    Public Const WSANO_RECOVERY     As Integer = 25003
-
-    Public Const WSANO_DATA         As Integer = 25004
-
-    Public Const WSANO_ADDRESS      As Integer = 2500
+    Dim X, Y, n, Mapa, Email, Length As Variant
 
 #End If
 
@@ -597,7 +387,7 @@ Sub ConnectNewUser(ByVal Userindex As Integer, _
         .Reputacion.Promedio = 30 / 6
     
         .Name = Name
-        .clase = UserClase
+        .Clase = UserClase
         .raza = UserRaza
         .Genero = UserSexo
         .Hogar = Hogar
@@ -1037,219 +827,110 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
     Else
         Call SaveAccountLastLoginDatabase(UserName, UserList(Userindex).IP)
         Call LoginAccountDatabase(Userindex, UserName)
-
     End If
 
 End Sub
 
-#If UsarQueSocket = 1 Or UsarQueSocket = 2 Then
-
-    Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
-        '***************************************************
-        'Author: Unknown
-        'Last Modification: -
-        '
-        '***************************************************
-
-        On Error GoTo ErrHandler
-
-        With UserList(Userindex)
-            If Not Reconnect Then
-                Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
-            
-                If .ConnID <> -1 Then
-                    Call CloseSocketSL(Userindex)
-    
-                End If
-            End If
-            ' Hunger Games
-            If .flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
-        
-            'Nuevo centinela - maTih.-
-            If .CentinelaUsuario.centinelaIndex <> 0 Then
-                Call modCentinela.UsuarioInActivo(Userindex)
-
-            End If
-        
-            'mato los comercios seguros
-            If .ComUsu.DestUsu > 0 Then
-                If UserList(.ComUsu.DestUsu).flags.UserLogged Then
-                    If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
-                        Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
-                        Call FinComerciarUsu(.ComUsu.DestUsu)
-                        Call FlushBuffer(.ComUsu.DestUsu)
-
-                    End If
-
-                End If
-
-            End If
-            
-            ' Retos nVSn. Usuario cierra conexion.
-            If .flags.SlotReto > 0 Then
-                Call Retos.UserDieFight(Userindex, 0, True)
-            End If
-
-            ' Desequipamos la montura justo antes de cerrar el socket
-            ' para prevenir que se la equipe durante el conteo de salida (WyroX)
-            If .flags.Equitando = 1 Then
-                Call UnmountMontura(Userindex)
-            End If
-            
-            'Empty buffer for reuse
-            Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
-        
-            If .flags.UserLogged Then
-                If NumUsers > 0 Then NumUsers = NumUsers - 1
-                Call CloseUser(Userindex, Reconnect)
-            
-            Else
-                Call ResetUserSlot(Userindex, Reconnect)
-
-            End If
-            
-            Call LiberarSlot(Userindex, Reconnect)
-            
-        End With
-
-        Exit Sub
-
-ErrHandler:
-
-        Call ResetUserSlot(Userindex)
-        
-        Call LiberarSlot(Userindex)
-        
-        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & Userindex)
-
-    End Sub
-
-#ElseIf UsarQueSocket = 0 Then
-
-Sub CloseSocket(ByVal Userindex As Integer)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-
-On Error GoTo ErrHandler
-    UserList(Userindex).ConnID = -1
-
-    Call LiberarSlot(Userindex)
-
-    If UserList(Userindex).flags.UserLogged Then
-            If NumUsers <> 0 Then NumUsers = NumUsers - 1
-            Call CloseUser(Userindex)
-    End If
-
-    frmMain.Socket2(Userindex).Cleanup
-    Unload frmMain.Socket2(Userindex)
-    Call ResetUserSlot(Userindex)
-
-Exit Sub
-
-ErrHandler:
-    UserList(Userindex).ConnID = -1
-    Call ResetUserSlot(Userindex)
-End Sub
-
-
-#ElseIf UsarQueSocket = 3 Then
-
-Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal cerrarlo As Boolean = True)
-'***************************************************
-'Author: Unknown
-'Last Modification: -
-'
-'***************************************************
-On Error GoTo ErrHandler
-
-Dim NURestados As Boolean
-Dim CoNnEcTiOnId As Long
-
-
-    NURestados = False
-    CoNnEcTiOnId = UserList(Userindex).ConnID
-    
-    'call logindex(UserIndex, "******> Sub CloseSocket. ConnId: " & CoNnEcTiOnId & " Cerrarlo: " & Cerrarlo)
-  
-    UserList(Userindex).ConnID = -1 'inabilitamos operaciones en socket
-
-    Call LiberarSlot(Userindex)
-
-    If UserList(Userindex).flags.UserLogged Then
-            If NumUsers <> 0 Then NumUsers = NumUsers - 1
-            NURestados = True
-            Call CloseUser(Userindex)
-    End If
-    
-    Call ResetUserSlot(Userindex)
-    
-    'limpiada la userlist... reseteo el socket, si me lo piden
-    'Me lo piden desde: cerrada intecional del servidor (casi todas
-    'las llamadas a CloseSocket del codigo)
-    'No me lo piden desde: disconnect remoto (el on_close del control
-    'de alejo realiza la desconexion automaticamente). Esto puede pasar
-    'por ejemplo, si el cliente cierra el AO.
-    If cerrarlo Then Call frmMain.TCPServ.CerrarSocket(CoNnEcTiOnId)
-
-Exit Sub
-
-ErrHandler:
-    Call LogError("CLOSESOCKETERR: " & Err.description & " UI:" & Userindex)
-    
-    If Not NURestados Then
-        If UserList(Userindex).flags.UserLogged Then
-            If NumUsers > 0 Then
-                NumUsers = NumUsers - 1
-            End If
-            Call LogError("Cerre sin grabar a: " & UserList(Userindex).Name)
-        End If
-    End If
-    
-    Call LogError("El usuario no guardado tenia ConnID " & CoNnEcTiOnId & ". Socket no liberado.")
-    Call ResetUserSlot(Userindex)
-
-End Sub
-
-#End If
-
-'[Alejo-21-5]: Cierra un socket sin limpiar el slot
-Sub CloseSocketSL(ByVal Userindex As Integer)
+Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    #If UsarQueSocket = 1 Then
+    On Error GoTo ErrHandler
 
-        If UserList(Userindex).ConnID <> -1 And UserList(Userindex).ConnIDValida Then
-            Call BorraSlotSock(UserList(Userindex).ConnID)
-            Call WSApiCloseSocket(UserList(Userindex).ConnID)
-            UserList(Userindex).ConnIDValida = False
+    With UserList(Userindex)
 
-        End If
-
-    #ElseIf UsarQueSocket = 0 Then
-
-        If UserList(Userindex).ConnID <> -1 And UserList(Userindex).ConnIDValida Then
-            frmMain.Socket2(Userindex).Cleanup
-            Unload frmMain.Socket2(Userindex)
-            UserList(Userindex).ConnIDValida = False
+        If Not Reconnect Then
+            Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
+            
+            If .ConnID <> -1 Then
+                Call CloseSocketSL(Userindex)
+    
+            End If
 
         End If
 
-    #ElseIf UsarQueSocket = 2 Then
+        ' Hunger Games
+        If .flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
+        
+        'Nuevo centinela - maTih.-
+        If .CentinelaUsuario.centinelaIndex <> 0 Then
+            Call modCentinela.UsuarioInActivo(Userindex)
+        End If
+        
+        'mato los comercios seguros
+        If .ComUsu.DestUsu > 0 Then
+            
+            If UserList(.ComUsu.DestUsu).flags.UserLogged Then
+                
+                If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
+                    
+                    Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
+                    Call FinComerciarUsu(.ComUsu.DestUsu)
+                    Call FlushBuffer(.ComUsu.DestUsu)
 
-        If UserList(Userindex).ConnID <> -1 And UserList(Userindex).ConnIDValida Then
-            Call frmMain.Serv.CerrarSocket(UserList(Userindex).ConnID)
-            UserList(Userindex).ConnIDValida = False
+                End If
+
+            End If
+
+        End If
+            
+        ' Retos nVSn. Usuario cierra conexion.
+        If .flags.SlotReto > 0 Then
+            Call Retos.UserDieFight(Userindex, 0, True)
 
         End If
 
-    #End If
+        ' Desequipamos la montura justo antes de cerrar el socket
+        ' para prevenir que se la equipe durante el conteo de salida (WyroX)
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+
+        End If
+            
+        'Empty buffer for reuse
+        Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
+        
+        If .flags.UserLogged Then
+            If NumUsers > 0 Then NumUsers = NumUsers - 1
+            Call CloseUser(Userindex, Reconnect)
+        Else
+            Call ResetUserSlot(Userindex, Reconnect)
+        End If
+            
+        Call LiberarSlot(Userindex, Reconnect)
+            
+    End With
+
+    Exit Sub
+
+ErrHandler:
+
+    Call ResetUserSlot(Userindex)
+        
+    Call LiberarSlot(Userindex)
+        
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & Userindex)
+
+End Sub
+
+'[Alejo-21-5]: Cierra un socket sin limpiar el slot
+Sub CloseSocketSL(ByVal Userindex As Integer)
+    
+    '***************************************************
+    'Author: Unknown
+    'Last Modification: -
+    '
+    '***************************************************
+
+    If UserList(Userindex).ConnID <> -1 And UserList(Userindex).ConnIDValida Then
+        Call BorraSlotSock(UserList(Userindex).ConnID)
+        Call WSApiCloseSocket(UserList(Userindex).ConnID)
+        UserList(Userindex).ConnIDValida = False
+
+    End If
 
 End Sub
 
@@ -1258,10 +939,7 @@ End Sub
 '
 ' @param userIndex The index of the User
 ' @param Datos The string that will be send
-' @remarks If UsarQueSocket is 3 it won`t use the clsByteQueue
-
-Public Function EnviarDatosASlot(ByVal Userindex As Integer, _
-                                 ByRef Datos As String) As Long
+Public Function EnviarDatosASlot(ByVal Userindex As Integer, ByRef Datos As String) As Long
     '***************************************************
     'Author: Unknown
     'Last Modification: 01/10/07
@@ -1269,79 +947,20 @@ Public Function EnviarDatosASlot(ByVal Userindex As Integer, _
     'Now it uses the clsByteQueue class and don`t make a FIFO Queue of String
     '***************************************************
 
-    #If UsarQueSocket = 1 Then '**********************************************
-
-        On Error GoTo Err
+    On Error GoTo Err
     
-        Dim ret As Long
-    
+    Dim ret As Long
         ret = WsApiEnviar(Userindex, Datos)
     
-        If ret <> 0 And ret <> WSAEWOULDBLOCK Then
-            ' Close the socket avoiding any critical error
-            Call CloseSocketSL(Userindex)
-            Call Cerrar_Usuario(Userindex)
+    If ret <> 0 And ret <> WSAEWOULDBLOCK Then
+        ' Close the socket avoiding any critical error
+        Call CloseSocketSL(Userindex)
+        Call Cerrar_Usuario(Userindex)
+    End If
 
-        End If
-
-        Exit Function
+    Exit Function
     
 Err:
-
-    #ElseIf UsarQueSocket = 0 Then '**********************************************
-    
-        If frmMain.Socket2(Userindex).Write(Datos, Len(Datos)) < 0 Then
-            If frmMain.Socket2(Userindex).LastError = WSAEWOULDBLOCK Then
-                ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(Datos)
-            Else
-                'Close the socket avoiding any critical error
-                Call Cerrar_Usuario(Userindex)
-
-            End If
-
-        End If
-
-    #ElseIf UsarQueSocket = 2 Then '**********************************************
-
-        'Return value for this Socket:
-        '--0) OK
-        '--1) WSAEWOULDBLOCK
-        '--2) ERROR
-    
-        Dim ret As Long
-
-        ret = frmMain.Serv.Enviar(.ConnID, Datos, Len(Datos))
-            
-        If ret = 1 Then
-            ' WSAEWOULDBLOCK, put the data again in the outgoingData Buffer
-            Call .outgoingData.WriteASCIIStringFixed(Datos)
-        ElseIf ret = 2 Then
-            'Close socket avoiding any critical error
-            Call CloseSocketSL(Userindex)
-            Call Cerrar_Usuario(Userindex)
-
-        End If
-
-    #ElseIf UsarQueSocket = 3 Then
-
-        'THIS SOCKET DOESN`T USE THE BYTE QUEUE CLASS
-        'al carajo, esto encola solo!!! che, me aprobara los
-        'parciales tambien?, este control hace todo solo!!!!
-        On Error GoTo ErrorHandler
-        
-        If UserList(Userindex).ConnID = -1 Then
-            Call LogError("TCP::EnviardatosASlot, se intento enviar datos a un userIndex con ConnId=-1")
-            Exit Function
-
-        End If
-        
-        If frmMain.TCPServ.Enviar(UserList(Userindex).ConnID, Datos, Len(Datos)) = 2 Then Call CloseSocket(Userindex)
-
-        Exit Function
-ErrorHandler:
-        Call LogError("TCP::EnviarDatosASlot. UI/ConnId/Datos: " & Userindex & "/" & UserList(Userindex).ConnID & "/" & Datos)
-    #End If '**********************************************
 
 End Function
 
@@ -1607,31 +1226,31 @@ Sub ConnectUser(ByVal Userindex As Integer, _
 
         End If
     
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
     
         'Posicion de comienzo
-        If mapa = 0 Then
+        If Mapa = 0 Then
 
             'Configurable desde el Server.ini / CustomWorld
             'En caso que usemos mundo propio, cargamos el mapa y la coordeanas donde se hara el spawn inicial'
             'Caso contrario sigue modo Alkon'
             If UsarMundoPropio Then
                 .Pos = CustomSpawnMap
-                mapa = CustomSpawnMap.Map
+                Mapa = CustomSpawnMap.Map
             Else
                 'Dejo esto comentado aqui por si se quiere utilizar la ciudad elegida desde el menu
                 'Crear personaje, ahora se utiliza solo Nemahuak ya que es una ciudad nw utilizada desde la 0.13
                 ' .Pos = Ciudades(.Hogar)
                 ' mapa = Ciudades(.Hogar).Map
                 .Pos = Nemahuak
-                mapa = Nemahuak.Map
+                Mapa = Nemahuak.Map
             End If
 
         Else
     
-            If Not MapaValido(mapa) Then
+            If Not MapaValido(Mapa) Then
                 Call WriteErrorMsg(Userindex, "El PJ se encuenta en un mapa invalido.")
                 Call CloseSocket(Userindex)
                 Exit Sub
@@ -1641,12 +1260,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             ' If map has different initial coords, update it
             Dim StartMap As Integer
 
-            StartMap = MapInfo(mapa).StartPos.Map
+            StartMap = MapInfo(Mapa).StartPos.Map
 
             If StartMap <> 0 Then
                 If MapaValido(StartMap) Then
-                    .Pos = MapInfo(mapa).StartPos
-                    mapa = StartMap
+                    .Pos = MapInfo(Mapa).StartPos
+                    Mapa = StartMap
 
                 End If
 
@@ -1656,7 +1275,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         'Tratamos de evitar en lo posible el "Telefrag". Solo 1 intento de loguear en pos adjacentes.
         'Codigo por Pablo (ToxicWaste) y revisado por Nacho (Integer), corregido para que realmetne ande y no tire el server por Juan Martin Sotuyo Dodero (Maraxus)
-        If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
+        If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Or MapData(Mapa, .Pos.X, .Pos.Y).NpcIndex <> 0 Then
 
             Dim FoundPlace As Boolean
 
@@ -1667,7 +1286,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Dim tY         As Long
         
             FoundPlace = False
-            esAgua = HayAgua(mapa, .Pos.X, .Pos.Y)
+            esAgua = HayAgua(Mapa, .Pos.X, .Pos.Y)
         
             For tY = .Pos.Y - 1 To .Pos.Y + 1
                 For tX = .Pos.X - 1 To .Pos.X + 1
@@ -1675,7 +1294,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     If esAgua Then
 
                         'reviso que sea pos legal en agua, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, True, False) Then
+                        If LegalPos(Mapa, tX, tY, True, False) Then
                             FoundPlace = True
                             Exit For
 
@@ -1684,7 +1303,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                     Else
 
                         'reviso que sea pos legal en tierra, que no haya User ni NPC para poder loguear.
-                        If LegalPos(mapa, tX, tY, False, True) Then
+                        If LegalPos(Mapa, tX, tY, False, True) Then
                             FoundPlace = True
                             Exit For
 
@@ -1703,30 +1322,30 @@ Sub ConnectUser(ByVal Userindex As Integer, _
             Else
 
                 'Si no encontramos un lugar, sacamos al usuario que tenemos abajo, y si es un NPC, lo pisamos.
-                If MapData(mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
+                If MapData(Mapa, .Pos.X, .Pos.Y).Userindex <> 0 Then
 
                     'Si no encontramos lugar, y abajo teniamos a un usuario, lo pisamos y cerramos su comercio seguro
-                    If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
+                    If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu > 0 Then
 
                         'Le avisamos al que estaba comerciando que se tuvo que ir.
-                        If UserList(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
-                            Call FinComerciarUsu(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
-                            Call WriteConsoleMsg(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
-                            Call FlushBuffer(UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                        If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
+                            Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
+                            Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
+                            Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
 
                         'Lo sacamos.
-                        If UserList(MapData(mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
-                            Call FinComerciarUsu(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
-                            Call WriteErrorMsg(MapData(mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                            Call FlushBuffer(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
+                        If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
+                            Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
+                            Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
+                            Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                         End If
 
                     End If
                 
-                    Call CloseSocket(MapData(mapa, .Pos.X, .Pos.Y).Userindex)
+                    Call CloseSocket(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                 End If
 
@@ -1737,7 +1356,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         .showName = True 'Por default los nombres son visibles
     
         'If in the water, and has a boat, equip it!
-        If .Invent.BarcoObjIndex > 0 And (HayAgua(mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
+        If .Invent.BarcoObjIndex > 0 And (HayAgua(Mapa, .Pos.X, .Pos.Y) Or BodyIsBoat(.Char.body)) Then
 
             .Char.Head = 0
 
@@ -1927,7 +1546,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
         'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
         If ConexionAPI Then
-            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .desc, criminal(Userindex), ListaClases(.clase))
+            Call ApiEndpointSendUserConnectedMessageDiscord(Name, .Desc, criminal(Userindex), ListaClases(.Clase))
         End If
 
         n = FreeFile
@@ -2081,13 +1700,13 @@ Sub ResetBasicUserInfo(ByVal Userindex As Integer)
         .Name = vbNullString
         .ID = 0
         .AccountHash = vbNullString
-        .desc = vbNullString
+        .Desc = vbNullString
         .DescRM = vbNullString
         .Pos.Map = 0
         .Pos.X = 0
         .Pos.Y = 0
         .IP = vbNullString
-        .clase = 0
+        .Clase = 0
         .Email = vbNullString
         .Genero = 0
         .Hogar = 0
@@ -2499,28 +2118,17 @@ Sub ReloadSokcet()
 
     On Error GoTo ErrHandler
 
-    #If UsarQueSocket = 1 Then
-
-        Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
+    Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
     
-        If NumUsers <= 0 Then
-            Call WSApiReiniciarSockets
-        Else
-
-            '       Call apiclosesocket(SockListen)
-            '       SockListen = ListenForConnect(Puerto, hWndMsg, "")
-        End If
-
-    #ElseIf UsarQueSocket = 0 Then
-
-        frmMain.Socket1.Cleanup
-        Call ConfigListeningSocket(frmMain.Socket1, Puerto)
-    
-    #ElseIf UsarQueSocket = 2 Then
-
-    #End If
+    If NumUsers <= 0 Then
+        Call WSApiReiniciarSockets
+    Else
+        'Call apiclosesocket(SockListen)
+        'SockListen = ListenForConnect(Puerto, hWndMsg, vbNullString)
+    End If
 
     Exit Sub
+    
 ErrHandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 

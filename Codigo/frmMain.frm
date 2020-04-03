@@ -857,27 +857,17 @@ Private Sub Form_Unload(Cancel As Integer)
 
     Call QuitarIconoSystray
 
-    #If UsarQueSocket = 1 Then
-        Call LimpiaWsApi
-    #ElseIf UsarQueSocket = 0 Then
-        Socket1.Cleanup
-    #ElseIf UsarQueSocket = 2 Then
-        Serv.Detener
-    #End If
+    Call LimpiaWsApi
 
     Dim LoopC As Integer
-
     For LoopC = 1 To MaxUsers
-
         If UserList(LoopC).ConnID <> -1 Then Call CloseSocket(LoopC)
     Next
 
     'Log
-    Dim n As Integer
-
-    n = FreeFile
+    Dim n As Integer: n = FreeFile
     Open App.Path & "\logs\Main.log" For Append Shared As #n
-    Print #n, Date & " " & time & " server cerrado."
+        Print #n, Date & " " & time & " server cerrado."
     Close #n
 
     End
@@ -943,7 +933,6 @@ End Sub
 Private Sub tLluviaEvent()
 
     Static MinutosLloviendo As Long
-
     Static MinutosSinLluvia As Long
 
     If Not Lloviendo Then
@@ -985,108 +974,3 @@ Private Sub tLluviaEvent()
     End If
 
 End Sub
-
-
-
-
-
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''USO DEL CONTROL TCPSERV'''''''''''''''''''''''''''
-'''''''''''''Compilar con UsarQueSocket = 3''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-#If UsarQueSocket = 3 Then
-
-Private Sub TCPServ_Eror(ByVal Numero As Long, ByVal Descripcion As String)
-    Call LogError("TCPSERVER SOCKET ERROR: " & Numero & "/" & Descripcion)
-End Sub
-
-Private Sub TCPServ_NuevaConn(ByVal ID As Long)
-On Error GoTo errorHandlerNC
-
-    ESCUCHADAS = ESCUCHADAS + 1
-    Escuch.Caption = ESCUCHADAS
-    
-    Dim i As Integer
-    
-    Dim NewIndex As Integer
-    NewIndex = NextOpenUser
-    
-    If NewIndex <= MaxUsers Then
-        'call logindex(NewIndex, "******> Accept. ConnId: " & ID)
-        
-        TCPServ.SetDato ID, NewIndex
-        
-        If aDos.MaxConexiones(TCPServ.GetIP(ID)) Then
-            Call aDos.RestarConexion(TCPServ.GetIP(ID))
-            Call ResetUserSlot(NewIndex)
-            Exit Sub
-        End If
-
-        If NewIndex > LastUser Then LastUser = NewIndex
-
-        UserList(NewIndex).ConnID = ID
-        UserList(NewIndex).IP = TCPServ.GetIP(ID)
-        UserList(NewIndex).ConnIDValida = True
-        Set UserList(NewIndex).CommandsBuffer = New CColaArray
-        
-        For i = 1 To BanIps.Count
-            If BanIps.Item(i) = TCPServ.GetIP(ID) Then
-                Call ResetUserSlot(NewIndex)
-                Exit Sub
-            End If
-        Next i
-
-    Else
-        Call CloseSocket(NewIndex, True)
-        LogCriticEvent ("NEWINDEX > MAXUSERS. IMPOSIBLE ALOCATEAR SOCKETS")
-    End If
-
-Exit Sub
-
-errorHandlerNC:
-Call LogError("TCPServer::NuevaConexion " & Err.description)
-End Sub
-
-Private Sub TCPServ_Close(ByVal ID As Long, ByVal MiDato As Long)
-    On Error GoTo eh
-    '' No cierro yo el socket. El on_close lo cierra por mi.
-    'call logindex(MiDato, "******> Remote Close. ConnId: " & ID & " Midato: " & MiDato)
-    Call CloseSocket(MiDato, False)
-Exit Sub
-eh:
-    Call LogError("Ocurrio un error en el evento TCPServ_Close. ID/miDato:" & ID & "/" & MiDato)
-End Sub
-
-Private Sub TCPServ_Read(ByVal ID As Long, Datos As Variant, ByVal Cantidad As Long, ByVal MiDato As Long)
-On Error GoTo errorh
-
-With UserList(MiDato)
-    Datos = StrConv(StrConv(Datos, vbUnicode), vbFromUnicode)
-    
-    Call .incomingData.WriteASCIIStringFixed(Datos)
-    
-    If .ConnID <> -1 Then
-        Do While HandleIncomingData(MiDato) = True
-        Loop
-    Else
-        Exit Sub
-    End If
-End With
-
-Exit Sub
-
-errorh:
-Call LogError("Error socket read: " & MiDato & " dato:" & RD & " userlogged: " & UserList(MiDato).flags.UserLogged & " connid:" & UserList(MiDato).ConnID & " ID Parametro" & ID & " error:" & Err.description)
-
-End Sub
-
-#End If
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''''''''''''''FIN  USO DEL CONTROL TCPSERV'''''''''''''''''''''''''
-'''''''''''''Compilar con UsarQueSocket = 3''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
