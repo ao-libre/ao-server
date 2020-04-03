@@ -2735,9 +2735,6 @@ Sub ChangeUserHechizo(ByVal Userindex As Integer, _
     
     If Hechizo > 0 And Hechizo < NumeroHechizos + 1 Then
         Call WriteChangeSpellSlot(Userindex, Slot)
-    Else
-        Call WriteChangeSpellSlot(Userindex, Slot)
-
     End If
 
 End Sub
