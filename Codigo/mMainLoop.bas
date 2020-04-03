@@ -115,7 +115,6 @@ Private Sub packetResend()
         If UserList(i).ConnIDValida Then
             If UserList(i).outgoingData.Length > 0 Then
                 Call EnviarDatosASlot(i, UserList(i).outgoingData.ReadASCIIStringFixed(UserList(i).outgoingData.Length))
-
             End If
 
         End If
