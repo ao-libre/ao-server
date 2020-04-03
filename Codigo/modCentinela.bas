@@ -156,7 +156,7 @@ Sub AvisarUsuario(ByVal userSlot As Integer, _
         End If
      
         'Envia.
-        Call EnviarDatosASlot(userSlot, DataSend)
+        Call UserList(userSlot).outgoingData.WriteASCIIStringFixed(DataSend)
     
     End With
  

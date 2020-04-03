@@ -1670,7 +1670,9 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
     '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados cuando pierden el efecto del mimetismo.
     '***************************************************
     
-    With UserList(UserIndex)
+    Dim tempData As String
+    
+    With UserList(Userindex)
 
         If .flags.AdminInvisible = 0 Then
 
@@ -1697,9 +1699,12 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             .Char.Head = 0
             
             ' Solo el admin sabe que se hace invi
-            Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, True))
+            tempData = PrepareMessageSetInvisible(.Char.CharIndex, True)
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+            
             'Le mandamos el mensaje para que borre el personaje a los clientes que esten cerca
-            Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterRemove(.Char.CharIndex))
+            
         Else
             .flags.AdminInvisible = 0
             .flags.invisible = 0
@@ -1709,11 +1714,14 @@ Sub DoAdminInvisible(ByVal UserIndex As Integer)
             .Char.Head = .flags.OldHead
             
             ' Solo el admin sabe que se hace visible
-            Call EnviarDatosASlot(UserIndex, PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim))
-            Call EnviarDatosASlot(UserIndex, PrepareMessageSetInvisible(.Char.CharIndex, False))
+            tempData = PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim)
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
+            
+            tempData = PrepareMessageSetInvisible(.Char.CharIndex, False)
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(tempData)
              
             'Le mandamos el mensaje para crear el personaje a los clientes que esten cerca
-            Call MakeUserChar(True, .Pos.Map, UserIndex, .Pos.Map, .Pos.X, .Pos.Y, True)
+            Call MakeUserChar(True, .Pos.Map, Userindex, .Pos.Map, .Pos.X, .Pos.Y, True)
 
         End If
 
