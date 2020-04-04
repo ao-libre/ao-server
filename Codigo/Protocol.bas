@@ -1676,16 +1676,13 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
 
     Dim UserName    As String
-
     Dim AccountHash As String
-
     Dim version     As String
     
     UserName = buffer.ReadASCIIString()
@@ -1694,6 +1691,9 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
     
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+                
     If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(Userindex, "Nombre invalido.")
         Call CloseSocket(Userindex)
@@ -1716,12 +1716,8 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectUser(Userindex, UserName, AccountHash)
-
     End If
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
-    
+ 
 ErrHandler:
 
     Dim Error As Long
@@ -1787,27 +1783,34 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
 
     Dim UserName    As String
-
     Dim AccountHash As String
-
     Dim version     As String
-
     Dim race        As eRaza
-
     Dim gender      As eGenero
-
     Dim homeland    As eCiudad
-
     Dim Class As eClass
-
     Dim Head As Integer
+
+    UserName = buffer.ReadASCIIString()
+    AccountHash = buffer.ReadASCIIString()
+    
+    'Convert version number to string
+    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
+    
+    race = buffer.ReadByte()
+    gender = buffer.ReadByte()
+    Class = buffer.ReadByte()
+    Head = buffer.ReadInteger
+    homeland = buffer.ReadByte()
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
     
     If PuedeCrearPersonajes = 0 Then
         Call WriteErrorMsg(Userindex, "La creacion de personajes en este servidor se ha deshabilitado.")
@@ -1832,29 +1835,14 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
         Exit Sub
 
     End If
-    
-    UserName = buffer.ReadASCIIString()
-    AccountHash = buffer.ReadASCIIString()
-    
-    'Convert version number to string
-    version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
-    
-    race = buffer.ReadByte()
-    gender = buffer.ReadByte()
-    Class = buffer.ReadByte()
-    Head = buffer.ReadInteger
-    homeland = buffer.ReadByte()
-        
+                                        
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectNewUser(Userindex, UserName, AccountHash, race, gender, Class, homeland, Head)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
-    
+  
 ErrHandler:
 
     Dim Error As Long
