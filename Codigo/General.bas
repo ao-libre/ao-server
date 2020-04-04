@@ -557,12 +557,13 @@ Private Sub LoadArrays()
 
     ' Load Records
     Call LoadRecords
+    
     ' Load guilds info
     Call LoadGuildsDB
+    
     ' Load quests list
     Call LoadQuests
-    ' Load spawn list
-    Call CargarSpawnList
+    
     ' Load forbidden words
     Call CargarForbidenWords
 
@@ -1453,12 +1454,13 @@ Public Sub CargaNpcsDat()
     '
     '***************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
-
-    Dim npcfile As String
     
-    npcfile = DatPath & "NPCs.dat"
+    ' Leemos el NPCs.dat y lo almacenamos en la memoria.
     Set LeerNPCs = New clsIniManager
-    Call LeerNPCs.Initialize(npcfile)
+    Call LeerNPCs.Initialize(DatPath & "NPCs.dat")
+    
+    ' Cargamos la lista de NPC's hostiles disponibles para spawnear.
+    Call CargarSpawnList
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 
