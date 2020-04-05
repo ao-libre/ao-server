@@ -548,7 +548,6 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                             If .MaestroUser > 0 Then
                                 If Not criminal(.MaestroUser) And Not criminal(UI) And (UserList(.MaestroUser).flags.Seguro Or UserList(.MaestroUser).Faccion.ArmadaReal = 1) Then
                                     Call WriteConsoleMsg(.MaestroUser, "La mascota no atacara a ciudadanos si eres miembro del ejercito real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
-                                    Call FlushBuffer(.MaestroUser)
                                     .flags.AttackedBy = vbNullString
                                     Exit Sub
 
@@ -598,7 +597,6 @@ Private Sub SeguirAgresor(ByVal NpcIndex As Integer)
                             If .MaestroUser > 0 Then
                                 If Not criminal(.MaestroUser) And Not criminal(UI) And (UserList(.MaestroUser).flags.Seguro Or UserList(.MaestroUser).Faccion.ArmadaReal = 1) Then
                                     Call WriteConsoleMsg(.MaestroUser, "La mascota no atacara a ciudadanos si eres miembro del ejercito real o tienes el seguro activado.", FontTypeNames.FONTTYPE_INFO)
-                                    Call FlushBuffer(.MaestroUser)
                                     .flags.AttackedBy = vbNullString
                                     Call FollowAmo(NpcIndex)
                                     Exit Sub

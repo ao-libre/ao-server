@@ -94,8 +94,6 @@ Public Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer
         Call WriteMultiMessage(AttackerIndex, eMessages.HaveKilledUser, VictimIndex, DaExp)
         Call WriteMultiMessage(VictimIndex, eMessages.UserKill, AttackerIndex)
         
-        Call FlushBuffer(VictimIndex)
-        
         'Log
         Call LogAsesinato(.Name & " asesino a " & UserList(VictimIndex).Name)
 
@@ -729,7 +727,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
             End If
             
             'Calculo subida de vida
-            Promedio = ModVida(.clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
+            Promedio = ModVida(.Clase) - (21 - .Stats.UserAtributos(eAtributos.Constitucion)) * 0.5
             aux = RandomNumber(0, 100)
             
             If Promedio - Int(Promedio) = 0.5 Then
@@ -773,7 +771,7 @@ Public Sub CheckUserLevel(ByVal Userindex As Integer, Optional ByVal PrintInCons
                 
             End If
         
-            Select Case .clase
+            Select Case .Clase
 
                 Case eClass.Warrior
                     AumentoHIT = IIf(.Stats.ELV > 35, 2, 3)
@@ -1295,7 +1293,7 @@ Sub SendUserMiniStatsTxt(ByVal sendIndex As Integer, ByVal Userindex As Integer)
         Call WriteConsoleMsg(sendIndex, "Pj: " & .Name, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Ciudadanos matados: " & .Faccion.CiudadanosMatados & " Criminales matados: " & .Faccion.CriminalesMatados & " usuarios matados: " & .Stats.UsuariosMatados, FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "NPCs muertos: " & .Stats.NPCsMuertos, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.clase), FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(sendIndex, "Clase: " & ListaClases(.Clase), FontTypeNames.FONTTYPE_INFO)
         Call WriteConsoleMsg(sendIndex, "Pena: " & (.Counters.Pena / 40), FontTypeNames.FONTTYPE_INFO)
         
         If .Faccion.ArmadaReal = 1 Then
@@ -1509,7 +1507,7 @@ Public Function PuedeApunalar(ByVal Userindex As Integer) As Boolean
         
         If WeaponIndex > 0 Then
             If ObjData(WeaponIndex).Apunala = 1 Then
-                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .clase = eClass.Assasin
+                PuedeApunalar = .Stats.UserSkills(eSkill.Apunalar) >= MIN_APUNALAR Or .Clase = eClass.Assasin
 
             End If
 
@@ -1530,7 +1528,7 @@ Public Function PuedeAcuchillar(ByVal Userindex As Integer) As Boolean
     
     With UserList(Userindex)
 
-        If .clase = eClass.Pirat Then
+        If .Clase = eClass.Pirat Then
         
             WeaponIndex = .Invent.WeaponEqpObjIndex
 
@@ -1891,17 +1889,17 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         Call LimpiarComercioSeguro(Userindex)
         
         ' Hay que teletransportar?
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
 
         Dim MapaTelep As Integer
 
-        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
+        MapaTelep = MapInfo(Mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
             Call WriteConsoleMsg(Userindex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
-            Call WarpUserChar(Userindex, MapaTelep, MapInfo(mapa).OnDeathGoTo.X, MapInfo(mapa).OnDeathGoTo.Y, True, True)
+            Call WarpUserChar(Userindex, MapaTelep, MapInfo(Mapa).OnDeathGoTo.X, MapInfo(Mapa).OnDeathGoTo.Y, True, True)
 
         End If
         
@@ -2149,9 +2147,6 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         Call WriteUserCharIndexInServer(Userindex)
         
         Call DoTileEvents(Userindex, Map, X, Y)
-        
-        'Force a flush, so user index is in there before it's destroyed for teleporting
-        Call FlushBuffer(Userindex)
         
         'Seguis invisible al pasar de mapa
         If (.flags.invisible = 1 Or .flags.Oculto = 1) And (Not .flags.AdminInvisible = 1) Then
@@ -2422,7 +2417,7 @@ Sub Cerrar_Usuario(ByVal Userindex As Integer)
                 
                 If .flags.Oculto Then
                     If .flags.Navegando = 1 Then
-                        If .clase = eClass.Pirat Then
+                        If .Clase = eClass.Pirat Then
                             ' Pierde la apariencia de fragata fantasmal
                             Call ToggleBoatBody(Userindex)
                             Call WriteConsoleMsg(Userindex, "Has recuperado tu apariencia normal!", FontTypeNames.FONTTYPE_INFO)
@@ -2713,18 +2708,18 @@ Public Sub ApropioNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGm(Userindex) Then Exit Sub
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa).Pk = False Then Exit Sub
+        If MapInfo(Mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0

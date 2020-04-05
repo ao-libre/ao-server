@@ -840,7 +840,7 @@ Public Sub EfectoLluvia(ByVal Userindex As Integer)
 
             modifi = Porcentaje(UserList(Userindex).Stats.MaxSta, 3)
             Call QuitarSta(Userindex, modifi)
-            Call FlushBuffer(Userindex)
+            
 
         End If
 

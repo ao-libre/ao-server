@@ -806,7 +806,6 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 
     If oSHA256.SHA256(Password & Salt) <> GetAccountPassword(UserName) Then
         Call WriteErrorMsg(Userindex, "Password incorrecto.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
 
@@ -835,11 +834,13 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
     '***************************************************
     'Author: Unknown
     'Last Modification: -
+    'Last Modification: 4/4/2020
+    '4/4/2020: FrankoH298 - Flusheamos el buffer antes de cerrar el socket.
     '
     '***************************************************
 
     On Error GoTo ErrHandler
-
+    
     With UserList(Userindex)
 
         If Not Reconnect Then
@@ -869,8 +870,6 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
                     
                     Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
                     Call FinComerciarUsu(.ComUsu.DestUsu)
-                    Call FlushBuffer(.ComUsu.DestUsu)
-
                 End If
 
             End If
@@ -1064,7 +1063,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Controlamos no pasar el maximo de usuarios
         If NumUsers >= MaxUsers Then
             Call WriteErrorMsg(Userindex, "El servidor ha alcanzado el maximo de usuarios soportado, por favor vuelva a intertarlo mas tarde.")
-            Call FlushBuffer(Userindex)
             Call CloseSocket(Userindex)
             Exit Sub
 
@@ -1074,7 +1072,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If AllowMultiLogins = False Then
             If CheckForSameIP(Userindex, .IP) = True Then
                 Call WriteErrorMsg(Userindex, "No es posible usar mas de un personaje al mismo tiempo.")
-                Call FlushBuffer(Userindex)
                 Call CloseSocket(Userindex)
                 Exit Sub
 
@@ -1085,7 +1082,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Existe el personaje?
         If Not PersonajeExiste(Name) Then
             Call WriteErrorMsg(Userindex, "El personaje no existe.")
-            Call FlushBuffer(Userindex)
             Call CloseSocket(Userindex)
             Exit Sub
 
@@ -1094,7 +1090,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         'Es el passwd valido?
         If Not PersonajePerteneceCuenta(Name, AccountHash) Then
             Call WriteErrorMsg(Userindex, "Ha ocurrido un error, por favor inicie sesion nuevamente.")
-            Call FlushBuffer(Userindex)
             Call CloseSocket(Userindex)
             Exit Sub
 
@@ -1108,9 +1103,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                 Call WriteErrorMsg(Userindex, "Un usuario con el mismo nombre esta conectado.")
                 Call Cerrar_Usuario(NameIndex(Name))
             End If
-
-            Call FlushBuffer(Userindex)
-            'Call CloseSocket(Userindex) 'QUITADO PARA QUE NO CIERRE LA CONEXION AL TIRARSE EL MENSAJE
             Exit Sub
 
         End If
@@ -1149,7 +1141,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If ServerSoloGMs > 0 Then
             If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero)) = 0 Then
                 Call WriteErrorMsg(Userindex, "Servidor restringido a administradores. Por favor reintente en unos momentos.")
-                Call FlushBuffer(Userindex)
                 Call CloseSocket(Userindex)
                 Exit Sub
 
@@ -1301,7 +1292,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                         If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
                             Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
                             Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
-                            Call FlushBuffer(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
 
                         End If
 
@@ -1309,7 +1299,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                         If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
                             Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
                             Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                            Call FlushBuffer(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
 
                         End If
 
@@ -1407,7 +1396,6 @@ Sub ConnectUser(ByVal Userindex As Integer, _
     
         If EnTesting And .Stats.ELV >= 18 Then
             Call WriteErrorMsg(Userindex, "Servidor en Testing por unos minutos, conectese con PJs de nivel menor a 18. No se conecte con Pjs que puedan resultar importantes por ahora pues pueden arruinarse.")
-            Call FlushBuffer(Userindex)
             Call CloseSocket(Userindex)
             Exit Sub
 

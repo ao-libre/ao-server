@@ -1,6 +1,8 @@
 Attribute VB_Name = "mMainLoop"
 Option Explicit
 
+Private Declare Function timeGetTime Lib "winmm.dll" () As Long
+
 Public Type tMainLoop
 
     MAXINT As Long
@@ -8,7 +10,7 @@ Public Type tMainLoop
 
 End Type
  
-Private Const NumTimers          As Byte = 4
+Private Const NumTimers          As Long = 4
 
 Public MainLoops(1 To NumTimers) As tMainLoop
 
@@ -24,7 +26,12 @@ End Enum
 Public prgRun As Boolean
  
 Public Sub MainLoop()
-    
+'***************************************************************
+'Author           : Unknown
+'Description      : Bucle del servidor.
+'Last Modification: 04/04/2020
+'04/04/2020: FrankoH298 - Cambiamos getTickCount por timeGetTime para mas precision.
+'***************************************************************
     Dim LoopC As Integer
 
     MainLoops(eTimers.eGameTimer).MAXINT = 40
@@ -35,24 +42,25 @@ Public Sub MainLoop()
     prgRun = True
     
     Do While prgRun
+    
         frmMain.lblLloviendoInfo.Caption = "Esta lloviendo? - " & IIf(Lloviendo, "Si, usa paraguas", "No, totalmente soleado")
-
+        
         For LoopC = 1 To NumTimers
-
-            If GetTickCount - MainLoops(LoopC).LastCheck >= MainLoops(LoopC).MAXINT Then
-                Call MakeProcces(LoopC)
-
-            End If
-
+            If timeGetTime >= MainLoops(LoopC).LastCheck Then Call MakeProcces(LoopC)
             DoEvents
         Next LoopC
 
     Loop
     
 End Sub
- 
+
 Private Sub MakeProcces(ByVal index As Integer)
-    
+'***************************************************************
+'Author           : Unknown
+'Description      : Llama a los timers.
+'Last Modification: 04/04/2020
+'04/04/2020: FrankoH298 - Cambiamos getTickCount por timeGetTime para mas precision.
+'***************************************************************
     Select Case index
     
         Case eTimers.eGameTimer
@@ -69,7 +77,7 @@ Private Sub MakeProcces(ByVal index As Integer)
             
     End Select
     
-    MainLoops(index).LastCheck = GetTickCount
+    MainLoops(index).LastCheck = timeGetTime + MainLoops(index).MAXINT
     
 End Sub
 
@@ -128,7 +136,7 @@ Private Sub TIMER_AI()
 
     Dim NpcIndex As Long
 
-    Dim mapa     As Integer
+    Dim Mapa     As Integer
 
     Dim e_p      As Integer
     
@@ -160,10 +168,10 @@ Private Sub TIMER_AI()
 
                             End If
                             
-                            mapa = .Pos.Map
+                            Mapa = .Pos.Map
                             
-                            If mapa > 0 Then
-                                If MapInfo(mapa).NumUsers > 0 Then
+                            If Mapa > 0 Then
+                                If MapInfo(Mapa).NumUsers > 0 Then
                                     If .Movement <> TipoAI.ESTATICO Then
                                         Call NPCAI(NpcIndex)
 
@@ -375,9 +383,6 @@ Private Sub GameTimer()
 
                 End If 'UserLogged
                 
-                'Si quedo algo para mandar, lo mandamos.
-                Call FlushBuffer(iUserIndex)
-                
                 'Ya terminamos de procesar el paquete, sigamos recibiendo.
                 .Counters.PacketsTick = 0
                 
@@ -434,9 +439,7 @@ Public Sub PasarSegundo()
                         Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
                         Call WriteDisconnect(i)
                         Call CloseSocket(i, True)
-                        Call FlushBuffer(i)
                         Call LoginAccountCharfile(i, UserList(i).mail)
-                        Call FlushBuffer(i)
 
                     End If
 
@@ -468,7 +471,6 @@ Public Sub PasarSegundo()
                             .Counters.Pena = 0
                             Call WarpUserChar(i, Libertad.Map, Libertad.X, Libertad.Y, True)
                             Call WriteConsoleMsg(i, "Has sido liberado!", FontTypeNames.FONTTYPE_INFO)
-                            Call FlushBuffer(i)
 
                         End If
 
@@ -495,8 +497,6 @@ Public Sub PasarSegundo()
                                     .Counters.ContadorPiquete = 0
                                     Call Encarcelar(i, MinutosCarcelPiquete)
                                 End If
-                                
-                            Call FlushBuffer(i)
                         Else
                             .Counters.PiqueteC = 0
 

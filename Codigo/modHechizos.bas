@@ -665,19 +665,19 @@ Sub HechizoInvocacion(ByVal Userindex As Integer, ByRef HechizoCasteado As Boole
 
     With UserList(Userindex)
 
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
     
         'No permitimos se invoquen criaturas en zonas seguras
-        If MapInfo(mapa).Pk = False Or MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+        If MapInfo(Mapa).Pk = False Or MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
             Call WriteConsoleMsg(Userindex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
         End If
     
         'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
-        If MapInfo(mapa).InvocarSinEfecto = 1 Then
+        If MapInfo(Mapa).InvocarSinEfecto = 1 Then
             Call WriteConsoleMsg(Userindex, "Invocar no esta permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -1309,7 +1309,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                     If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideParalizar Then
                         Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                         Call WriteConsoleMsg(Userindex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
-                        Call FlushBuffer(targetIndex)
                         Exit Sub
                     End If
                 End If
@@ -1322,7 +1321,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 UserList(targetIndex).flags.ParalizedBy = UserList(Userindex).Name
             
                 Call WriteParalizeOK(targetIndex)
-                Call FlushBuffer(targetIndex)
 
             End If
 
@@ -1361,7 +1359,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             
                 'no need to crypt this
                 Call WriteDumbNoMore(targetIndex)
-                Call FlushBuffer(targetIndex)
                 Call InfoHechizo(Userindex)
         
             End If
@@ -1536,7 +1533,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             UserList(targetIndex).Counters.Ceguera = IntervaloParalizado / 3
     
             Call WriteBlind(targetIndex)
-            Call FlushBuffer(targetIndex)
             Call InfoHechizo(Userindex)
             HechizoCasteado = True
 
@@ -1578,7 +1574,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             End If
 
             Call WriteDumb(targetIndex)
-            Call FlushBuffer(targetIndex)
     
             Call InfoHechizo(Userindex)
             HechizoCasteado = True
@@ -2440,8 +2435,6 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
     End With
 
     HechizoPropUsuario = True
-
-    Call FlushBuffer(targetIndex)
 
 End Function
 

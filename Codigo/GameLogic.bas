@@ -627,7 +627,7 @@ ErrHandler:
 
 End Function
 
-Public Function HayObjeto(ByVal mapa As Integer, _
+Public Function HayObjeto(ByVal Mapa As Integer, _
                           ByVal X As Long, _
                           ByVal Y As Long, _
                           ByVal ObjIndex As Integer, _
@@ -640,7 +640,7 @@ Public Function HayObjeto(ByVal mapa As Integer, _
     '***************************************************
     Dim MapObjIndex As Integer
 
-    MapObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
+    MapObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
             
     ' Hay un objeto tirado?
     If MapObjIndex <> 0 Then
@@ -648,7 +648,7 @@ Public Function HayObjeto(ByVal mapa As Integer, _
         ' Es el mismo objeto?
         If MapObjIndex = ObjIndex Then
             ' La suma es menor a 10k?
-            HayObjeto = (MapData(mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
+            HayObjeto = (MapData(Mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
         Else
             HayObjeto = True
 
@@ -1008,7 +1008,6 @@ Public Sub FindLegalPos(ByVal Userindex As Integer, _
                     If UserList(UserList(OtherUserIndex).ComUsu.DestUsu).flags.UserLogged Then
                         Call FinComerciarUsu(UserList(OtherUserIndex).ComUsu.DestUsu)
                         Call WriteConsoleMsg(UserList(OtherUserIndex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_TALK)
-                        Call FlushBuffer(UserList(OtherUserIndex).ComUsu.DestUsu)
 
                     End If
 
@@ -1016,7 +1015,6 @@ Public Sub FindLegalPos(ByVal Userindex As Integer, _
                     If UserList(OtherUserIndex).flags.UserLogged Then
                         Call FinComerciarUsu(OtherUserIndex)
                         Call WriteErrorMsg(OtherUserIndex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-                        Call FlushBuffer(OtherUserIndex)
 
                     End If
 
@@ -1271,8 +1269,8 @@ Sub LookatTile(ByVal Userindex As Integer, _
                             Stat = Stat & " Nivel: " & UserList(TempCharIndex).Stats.ELV
 
                             'Aqui ponemos o no la descripcion si tiene
-                            If Len(UserList(TempCharIndex).desc) > 1 Then
-                                Stat = UserList(TempCharIndex).Name & " - " & UserList(TempCharIndex).desc & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & "  " & " | "
+                            If Len(UserList(TempCharIndex).Desc) > 1 Then
+                                Stat = UserList(TempCharIndex).Name & " - " & UserList(TempCharIndex).Desc & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & "  " & " | "
                             Else
                                 Stat = UserList(TempCharIndex).Name & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & " " & " | "
                             End If
@@ -1448,8 +1446,8 @@ Sub LookatTile(ByVal Userindex As Integer, _
                         
                     End If
                     
-                    If Len(Npclist(TempCharIndex).desc) > 1 Then
-                        Stat = Npclist(TempCharIndex).desc
+                    If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                        Stat = Npclist(TempCharIndex).Desc
                     
                         'Es el rey o el demonio?
                         If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then

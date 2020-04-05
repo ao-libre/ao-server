@@ -2674,7 +2674,6 @@ Public Sub LoginAccountDatabase(ByVal Userindex As Integer, ByVal UserName As St
 
     If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
         Call WriteErrorMsg(Userindex, "Error al cargar la cuenta.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
 
