@@ -841,6 +841,8 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
 
     On Error GoTo ErrHandler
     
+    Call FlushBuffer(Userindex)
+    
     With UserList(Userindex)
 
         If Not Reconnect Then

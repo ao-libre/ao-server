@@ -440,7 +440,6 @@ Public Sub PasarSegundo()
                         Call WriteDisconnect(i)
                         Call CloseSocket(i, True)
                         Call LoginAccountCharfile(i, UserList(i).mail)
-
                     End If
 
                 End If
