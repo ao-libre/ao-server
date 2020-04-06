@@ -2357,8 +2357,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
                 .flags.Meditando = False
                 .Char.FX = 0
                 .Char.loops = 0
-                
-                Call WriteMeditateToggle(Userindex)
+
                 Call WriteConsoleMsg(Userindex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
@@ -2475,7 +2474,6 @@ Private Sub HandleAttack(ByVal Userindex As Integer)
             Exit Sub
 
         End If
-        
         'If equiped weapon is ranged, can't attack this way
         If .Invent.WeaponEqpObjIndex > 0 Then
             If ObjData(.Invent.WeaponEqpObjIndex).proyectil = 1 Then
@@ -4309,7 +4307,7 @@ Private Sub HandleCommerceSell(ByVal Userindex As Integer)
         
         'El NPC puede comerciar?
         If Npclist(.flags.TargetNPC).Comercia = 0 Then
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageChatOverHead("No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageChatOverHead("No tengo ningun interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
             Exit Sub
 
         End If
@@ -6515,6 +6513,11 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
             Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
             Exit Sub
 
+        End If
+        
+        If .flags.Equitando Then
+            Call WriteConsoleMsg(Userindex, "No puedes meditar mientras si estas montado.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
         End If
         
         'Can he meditate?
@@ -23881,8 +23884,13 @@ Public Sub WriteEquitandoToggle(ByVal Userindex As Integer)
 'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo ErrHandler
+    With UserList(Userindex)
+        Call .outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+        
+        Call .outgoingData.WriteLong(.Counters.MonturaCounter)
+        
+    End With
 
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
     Exit Sub
 
 ErrHandler:

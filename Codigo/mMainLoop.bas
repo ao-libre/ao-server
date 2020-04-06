@@ -128,7 +128,7 @@ Private Sub TIMER_AI()
 
     Dim NpcIndex As Long
 
-    Dim mapa     As Integer
+    Dim Mapa     As Integer
 
     Dim e_p      As Integer
     
@@ -160,10 +160,10 @@ Private Sub TIMER_AI()
 
                             End If
                             
-                            mapa = .Pos.Map
+                            Mapa = .Pos.Map
                             
-                            If mapa > 0 Then
-                                If MapInfo(mapa).NumUsers > 0 Then
+                            If Mapa > 0 Then
+                                If MapInfo(Mapa).NumUsers > 0 Then
                                     If .Movement <> TipoAI.ESTATICO Then
                                         Call NPCAI(NpcIndex)
 
@@ -224,7 +224,6 @@ Private Sub GameTimer()
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
                     If .flags.Ceguera = 1 Or .flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
-                    
                     If .flags.Muerto = 0 Then
                         
                         '[Consejeros]
@@ -425,7 +424,7 @@ Public Sub PasarSegundo()
         With UserList(i)
 
             If .flags.UserLogged Then
-
+            
                 'Cerrar usuario
                 If .Counters.Saliendo Then
                     .Counters.Salir = .Counters.Salir - 1
@@ -441,7 +440,10 @@ Public Sub PasarSegundo()
                     End If
 
                 End If
-            
+                
+                ' Tiempo para volver a utilizar la montura
+                If .Counters.MonturaCounter > 0 Then .Counters.MonturaCounter = .Counters.MonturaCounter - 1
+                
                 ' Conteo de los Retos
                 If .Counters.TimeFight > 0 Then
                     .Counters.TimeFight = .Counters.TimeFight - 1

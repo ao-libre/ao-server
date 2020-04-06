@@ -36,18 +36,27 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
                            Optional ByVal IgnoreVisibilityCheck As Boolean = False)
     '***************************************************
     'Autor: Unknown (orginal version)
-    'Last Modification: 11/11/2010
+    'Last Modification: 06/04/2020
     '13/02/2009: ZaMa - Los npcs que tiren magias, no podran hacerlo en mapas donde no se permita usarla.
     '13/07/2010: ZaMa - Ahora no se contabiliza la muerte de un atacable.
     '21/09/2010: ZaMa - Amplio los tipos de hechizos que pueden lanzar los npcs.
     '21/09/2010: ZaMa - Permito que se ignore el chequeo de visibilidad (pueden atacar a invis u ocultos).
     '11/11/2010: ZaMa - No se envian los efectos del hechizo si no lo castea.
+    '06/04/2020: FrankoH298 - Si te lanzan un hechizo te desmonta
     '***************************************************
 
     If Not IntervaloPermiteAtacarNpc(NpcIndex) Then Exit Sub
 
     With UserList(Userindex)
     
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+            
+        End If
+        
         ' Doesn't consider if the user is hidden/invisible or not.
         If Not IgnoreVisibilityCheck Then
             If UserList(Userindex).flags.invisible = 1 Or UserList(Userindex).flags.Oculto = 1 Then Exit Sub
@@ -665,19 +674,19 @@ Sub HechizoInvocacion(ByVal Userindex As Integer, ByRef HechizoCasteado As Boole
 
     With UserList(Userindex)
 
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
     
         'No permitimos se invoquen criaturas en zonas seguras
-        If MapInfo(mapa).Pk = False Or MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
+        If MapInfo(Mapa).Pk = False Or MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then
             Call WriteConsoleMsg(Userindex, "No puedes invocar criaturas en zona segura.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
         End If
     
         'No permitimos se invoquen criaturas en mapas donde esta prohibido hacerlo
-        If MapInfo(mapa).InvocarSinEfecto = 1 Then
+        If MapInfo(Mapa).InvocarSinEfecto = 1 Then
             Call WriteConsoleMsg(Userindex, "Invocar no esta permitido aqui! Retirate de la Zona si deseas utilizar el Hechizo.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -911,7 +920,7 @@ Sub HandleHechizoNPC(ByVal Userindex As Integer, ByVal HechizoIndex As Integer)
     Dim ManaRequerida   As Long
     
     With UserList(Userindex)
-
+        
         Select Case Hechizos(HechizoIndex).Tipo
 
             Case TipoHechizo.uEstado
@@ -1677,7 +1686,15 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                     Exit Sub
 
                 End If
-
+                With UserList(Userindex)
+                    '<<<< Equitando >>>
+                    If .flags.Equitando = 1 Then
+                        Call UnmountMontura(Userindex)
+                        Call WriteEquitandoToggle(Userindex)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+                        
+                    End If
+                End With
                 Call NPCAtacado(NpcIndex, Userindex)
                 Call InfoHechizo(Userindex)
                 .flags.Paralizado = 1
@@ -1758,7 +1775,15 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                     Exit Sub
 
                 End If
-                                                                                                                                          
+                With UserList(Userindex)
+                '<<<< Equitando >>>
+                    If .flags.Equitando = 1 Then
+                        Call UnmountMontura(Userindex)
+                        Call WriteEquitandoToggle(Userindex)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+                        
+                    End If
+                End With
                 If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
                     If Not EsGm(Userindex) Then
                         Call WriteConsoleMsg(Userindex, "No puedes paralizar criaturas en esa posicion.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
@@ -1838,10 +1863,11 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
                    ByRef HechizoCasteado As Boolean)
     '***************************************************
     'Autor: Unknown (orginal version)
-    'Last Modification: 18/09/2010
+    'Last Modification: 06/04/2020
     'Handles the Spells that afect the Life NPC
     '14/08/2007 Pablo (ToxicWaste) - Orden general.
     '18/09/2010: ZaMa - Ahora valida si podes ayudar a un npc.
+    '06/04/2020: FrankoH298 - Si le lanza un hechizo al npc lo desmonta.
     '***************************************************
 
     Dim dano As Long
@@ -1852,7 +1878,6 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
 
         tempX = .Pos.X
         tempY = .Pos.Y
-
         'Salud
         If Hechizos(SpellIndex).SubeHP = 1 Then
         
@@ -1880,7 +1905,15 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
                 Exit Sub
 
             End If
-        
+            With UserList(Userindex)
+                '<<<< Equitando >>>
+                If .flags.Equitando = 1 Then
+                    Call UnmountMontura(Userindex)
+                    Call WriteEquitandoToggle(Userindex)
+                    Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+                    
+                End If
+            End With
             Call NPCAtacado(NpcIndex, Userindex)
             dano = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
             dano = dano + Porcentaje(dano, 3 * UserList(Userindex).Stats.ELV)
@@ -2007,9 +2040,10 @@ End Sub
 Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
     '***************************************************
     'Autor: Unknown (orginal version)
-    'Last Modification: 28/04/2010
+    'Last Modification: 06/04/2020
     '02/01/2008 Marcos (ByVal) - No permite tirar curar heridas a usuarios muertos.
     '28/04/2010: ZaMa - Agrego Restricciones para ciudas respecto al estado atacable.
+    '06/04/2020: FrankoH298 - Si le lanza un hechizo a un usuario lo desmonta.
     '***************************************************
 
     Dim SpellIndex  As Integer
@@ -2029,7 +2063,15 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
             Exit Function
 
         End If
-          
+        
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(targetIndex)
+            Call WriteEquitandoToggle(targetIndex)
+            Call ChangeUserChar(targetIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+            
+        End If
+
         ' <-------- Aumenta Hambre ---------->
         If Hechizos(SpellIndex).SubeHam = 1 Then
         
@@ -2733,9 +2775,7 @@ Sub ChangeUserHechizo(ByVal Userindex As Integer, _
     
     UserList(Userindex).Stats.UserHechizos(Slot) = Hechizo
     
-    If Hechizo > 0 And Hechizo < NumeroHechizos + 1 Then
-        Call WriteChangeSpellSlot(Userindex, Slot)
-    End If
+    Call WriteChangeSpellSlot(Userindex, Slot)
 
 End Sub
 
