@@ -1713,8 +1713,8 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         
         '<<<< Equitando >>>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(Userindex)
             Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
             
         End If
         

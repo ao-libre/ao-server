@@ -837,8 +837,8 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
         
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(Userindex)
             Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
             Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
@@ -1083,8 +1083,8 @@ Public Function UsuarioAtacaNpc(ByVal Userindex As Integer, _
     With UserList(Userindex)
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(Userindex)
             Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
             Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
@@ -1378,8 +1378,8 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
         
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(AtacanteIndex)
             Call UnmountMontura(AtacanteIndex)
+            Call WriteEquitandoToggle(AtacanteIndex)
             Call ChangeUserChar(AtacanteIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If

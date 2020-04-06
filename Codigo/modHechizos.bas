@@ -51,8 +51,8 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
     
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(Userindex)
             Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
             Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
@@ -1689,8 +1689,8 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                 With UserList(Userindex)
                     '<<<< Equitando >>>
                     If .flags.Equitando = 1 Then
-                        Call WriteEquitandoToggle(Userindex)
                         Call UnmountMontura(Userindex)
+                        Call WriteEquitandoToggle(Userindex)
                         Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                         
                     End If
@@ -1778,8 +1778,8 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                 With UserList(Userindex)
                 '<<<< Equitando >>>
                     If .flags.Equitando = 1 Then
-                        Call WriteEquitandoToggle(Userindex)
                         Call UnmountMontura(Userindex)
+                        Call WriteEquitandoToggle(Userindex)
                         Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                         
                     End If
@@ -1908,8 +1908,8 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
             With UserList(Userindex)
                 '<<<< Equitando >>>
                 If .flags.Equitando = 1 Then
-                    Call WriteEquitandoToggle(Userindex)
                     Call UnmountMontura(Userindex)
+                    Call WriteEquitandoToggle(Userindex)
                     Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                     
                 End If
@@ -2066,8 +2066,8 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
         
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(targetIndex)
             Call UnmountMontura(targetIndex)
+            Call WriteEquitandoToggle(targetIndex)
             Call ChangeUserChar(targetIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
@@ -2775,9 +2775,7 @@ Sub ChangeUserHechizo(ByVal Userindex As Integer, _
     
     UserList(Userindex).Stats.UserHechizos(Slot) = Hechizo
     
-    If Hechizo > 0 And Hechizo < NumeroHechizos + 1 Then
-        Call WriteChangeSpellSlot(Userindex, Slot)
-    End If
+    Call WriteChangeSpellSlot(Userindex, Slot)
 
 End Sub
 

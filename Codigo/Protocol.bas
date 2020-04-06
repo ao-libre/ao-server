@@ -23884,8 +23884,13 @@ Public Sub WriteEquitandoToggle(ByVal Userindex As Integer)
 'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo ErrHandler
+    With UserList(Userindex)
+        Call .outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+        
+        Call .outgoingData.WriteLong(.Counters.MonturaCounter)
+        
+    End With
 
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
     Exit Sub
 
 ErrHandler:
