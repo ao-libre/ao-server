@@ -14118,7 +14118,8 @@ NumRopaje=604
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=3500000
 Crucial=0
 MinSkill=50
 
@@ -14179,7 +14180,6 @@ Crucial=0
 LingH=100
 LingP=0
 LingO=0
-Upgrade=131
 SkHerreria=45
 
 [OBJ1143]
@@ -14218,7 +14218,6 @@ Crucial=0
 LingH=4000
 LingP=5000
 LingO=0
-Upgrade=131
 SkHerreria=45
 
 [OBJ1146]
@@ -14439,7 +14438,8 @@ NumRopaje=612
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=5000000
 Crucial=0
 MinSkill=50
 
@@ -14451,7 +14451,8 @@ NumRopaje=614
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=5000000
 Crucial=0
 MinSkill=50
 
@@ -14463,7 +14464,8 @@ NumRopaje=616
 Agarrable=0
 MaxDef=130
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=2400000
 Crucial=0
 
 [OBJ1159]
@@ -14474,7 +14476,8 @@ NumRopaje=617
 Agarrable=0
 MaxDef=130
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=2400000
 Crucial=0
 
 [OBJ1160]
