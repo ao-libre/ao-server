@@ -975,7 +975,6 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
     '*************************************************
     
     Dim MasterIndex As Integer
-    
     With Npclist(Atacante)
         
         'Es el Rey Preatoriano?
@@ -990,7 +989,8 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         End If
         
         ' El npc puede atacar ???
-        If IntervaloPermiteAtacarNpc(Victima) Then
+        
+        If IntervaloPermiteAtacarNpc(Atacante) Then
             If cambiarMOvimiento Then
                 Npclist(Victima).TargetNPC = Atacante
                 Npclist(Victima).Movement = TipoAI.NpcAtacaNpc
@@ -1056,7 +1056,6 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         End If
 
     End With
-
 End Sub
 
 Public Function UsuarioAtacaNpc(ByVal Userindex As Integer, _
