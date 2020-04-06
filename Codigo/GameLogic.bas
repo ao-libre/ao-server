@@ -1649,8 +1649,7 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
 
 End Function
 
-Public Function ItemNoEsDeMapa(ByVal index As Integer, _
-                               ByVal bIsExit As Boolean) As Boolean
+Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1658,7 +1657,7 @@ Public Function ItemNoEsDeMapa(ByVal index As Integer, _
     '***************************************************
 
     With ObjData(index)
-        ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And .OBJType <> eOBJType.otForos And .OBJType <> eOBJType.otCarteles And .OBJType <> eOBJType.otArboles And .OBJType <> eOBJType.otYacimiento And Not (.OBJType = eOBJType.otTeleport And bIsExit)
+        ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And .OBJType <> eOBJType.otForos And .OBJType <> eOBJType.otCarteles And .OBJType <> eOBJType.otArboles And .OBJType <> eOBJType.otYacimiento And .OBJType <> eOBJType.otTeleport
     
     End With
 
@@ -1685,7 +1684,7 @@ Public Function EsObjetoFijo(ByVal OBJType As eOBJType) As Boolean
     '
     '***************************************************
 
-    EsObjetoFijo = OBJType = eOBJType.otForos Or OBJType = eOBJType.otCarteles Or OBJType = eOBJType.otArboles Or OBJType = eOBJType.otYacimiento Or OBJType = eOBJType.otTeleport
+    EsObjetoFijo = OBJType = eOBJType.otForos Or OBJType = eOBJType.otCarteles Or OBJType = eOBJType.otArboles Or OBJType = eOBJType.otYacimiento
 
 End Function
 

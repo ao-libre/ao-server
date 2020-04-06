@@ -13793,9 +13793,8 @@ Private Sub HandleDestroyAllItemsInArea(ByVal Userindex As Integer)
 
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
-                        bIsExit = MapData(.Pos.Map, X, Y).TileExit.Map > 0
 
-                        If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex, bIsExit) Then
+                        If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
                             Call EraseObj(MAX_INVENTORY_OBJS, .Pos.Map, X, Y)
 
                         End If

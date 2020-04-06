@@ -796,11 +796,11 @@ Alineacion=0
 Comercia=1
 TipoItems=25
 NROITEMS=2
-'Obj1=1140-1000 'Montura de Gran Dragon rojo
-'Obj2=1157-1000 'Montura de Gran Dragon dorado
-'Obj3=1158-1000 'Montura de Gran Dragon negro
-Obj1=1159-1000 'Montura de Elefante
-Obj2=1160-1000 'Montura de caballo
+'Obj1=1139-1000 'Montura de Gran Dragon rojo
+'Obj2=1156-1000 'Montura de Gran Dragon dorado
+'Obj3=1157-1000 'Montura de Gran Dragon negro
+Obj1=1158-1000 'Montura de Elefante
+Obj2=1159-1000 'Montura de caballo
 BackUp=1
 
 [NPC161]
@@ -6093,7 +6093,7 @@ NROITEMS=4
 Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
-Drop4=1140-1 'Montura Gran Dragon Rojo
+Drop4=1139-1 'Montura Gran Dragon Rojo
 
 ############################################
 
@@ -10873,7 +10873,7 @@ SND3=32
 BackUp=0
 NROITEMS=2
 Drop1=12-100000 'Oro
-Drop2=1147-1 'Espada de Fuego
+Drop2=1146-1 'Espada de Fuego
 
 [NPC931]
 Name=Momia Guerrera
@@ -10956,7 +10956,7 @@ SND3=32
 BackUp=0
 NROITEMS=2
 Drop1=12-100000 'Oro
-Drop2=1141-1 'Espada de las almas
+Drop2=1140-1 'Espada de las almas
 
 [NPC934]
 Name=Titan de Agua
@@ -10988,7 +10988,7 @@ SND3=32
 BackUp=0
 NROITEMS=2
 Drop1=12-100000 'Oro
-Drop2=1156-1 'Espada del fuego eterno
+Drop2=1155-1 'Espada del fuego eterno
 
 [NPC935]
 Name=Gran Dragon Negro
@@ -11024,7 +11024,7 @@ NROITEMS=4
 Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
-Drop4=1158-1 'Montura de Dragon Negro
+Drop4=1157-1 'Montura de Dragon Negro
 
 [NPC936]
 Name=Gran Dragon Dorado
@@ -11060,7 +11060,7 @@ NROITEMS=4
 Drop1=12-65000 'Oro
 Drop2=402-1 'Espada Mata Dragones
 Drop3=532-1 'Apocalipsis
-Drop4=1157-1 'Montura de Gran Dragon Dorado
+Drop4=1156-1 'Montura de Gran Dragon Dorado
 
 [NPC937] 'Rick
 Name=Pickle Rick
