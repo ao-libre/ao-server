@@ -42,8 +42,8 @@ Public Sub BorrarObjetosLimpieza()
 
         With ArrayLimpieza(i)
 
-            If MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Then
-                Call EraseObj(10000, .Map, .x, .Y)
+            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And MapData(.Map, .X, .Y).Blocked <> 1 Then
+                Call EraseObj(10000, .Map, .X, .Y)
             End If
 
         End With
