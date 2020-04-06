@@ -627,7 +627,7 @@ ErrHandler:
 
 End Function
 
-Public Function HayObjeto(ByVal mapa As Integer, _
+Public Function HayObjeto(ByVal Mapa As Integer, _
                           ByVal X As Long, _
                           ByVal Y As Long, _
                           ByVal ObjIndex As Integer, _
@@ -640,7 +640,7 @@ Public Function HayObjeto(ByVal mapa As Integer, _
     '***************************************************
     Dim MapObjIndex As Integer
 
-    MapObjIndex = MapData(mapa, X, Y).ObjInfo.ObjIndex
+    MapObjIndex = MapData(Mapa, X, Y).ObjInfo.ObjIndex
             
     ' Hay un objeto tirado?
     If MapObjIndex <> 0 Then
@@ -648,7 +648,7 @@ Public Function HayObjeto(ByVal mapa As Integer, _
         ' Es el mismo objeto?
         If MapObjIndex = ObjIndex Then
             ' La suma es menor a 10k?
-            HayObjeto = (MapData(mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
+            HayObjeto = (MapData(Mapa, X, Y).ObjInfo.Amount + ObjAmount > MAX_INVENTORY_OBJS)
         Else
             HayObjeto = True
 
@@ -900,9 +900,10 @@ Function MoveToLegalPos(ByVal Map As Integer, _
                         Optional ByVal PuedeTierra As Boolean = True) As Boolean
     '***************************************************
     'Autor: ZaMa
-    'Last Modification: 13/07/2009
+    'Last Modification: 06/04/2020
     'Checks if the position is Legal, but considers that if there's a casper, it's a legal movement.
     '13/07/2009: ZaMa - Now it's also legal move where an invisible admin is.
+    '06/04/2020: FrankoH298 - Si estamos por movernos a dentro de una casa montado, no nos deja.
     '***************************************************
 
     Dim Userindex        As Integer
@@ -927,7 +928,7 @@ Function MoveToLegalPos(ByVal Map As Integer, _
                 IsAdminInvisible = False
 
             End If
-        
+
             If PuedeAgua And PuedeTierra Then
                 MoveToLegalPos = (.Blocked <> 1) And (Userindex = 0 Or IsDeadChar Or IsAdminInvisible) And (.NpcIndex = 0)
             ElseIf PuedeTierra And Not PuedeAgua Then
@@ -1271,8 +1272,8 @@ Sub LookatTile(ByVal Userindex As Integer, _
                             Stat = Stat & " Nivel: " & UserList(TempCharIndex).Stats.ELV
 
                             'Aqui ponemos o no la descripcion si tiene
-                            If Len(UserList(TempCharIndex).desc) > 1 Then
-                                Stat = UserList(TempCharIndex).Name & " - " & UserList(TempCharIndex).desc & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & "  " & " | "
+                            If Len(UserList(TempCharIndex).Desc) > 1 Then
+                                Stat = UserList(TempCharIndex).Name & " - " & UserList(TempCharIndex).Desc & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & "  " & " | "
                             Else
                                 Stat = UserList(TempCharIndex).Name & " (" & ListaClases(UserList(TempCharIndex).Clase) & " " & ListaRazas(UserList(TempCharIndex).raza) & Stat & " " & " | "
                             End If
@@ -1448,8 +1449,8 @@ Sub LookatTile(ByVal Userindex As Integer, _
                         
                     End If
                     
-                    If Len(Npclist(TempCharIndex).desc) > 1 Then
-                        Stat = Npclist(TempCharIndex).desc
+                    If Len(Npclist(TempCharIndex).Desc) > 1 Then
+                        Stat = Npclist(TempCharIndex).Desc
                     
                         'Es el rey o el demonio?
                         If Npclist(TempCharIndex).NPCtype = eNPCType.Noble Then

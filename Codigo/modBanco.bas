@@ -29,7 +29,7 @@ Sub IniciarDeposito(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     'Hacemos un Update del inventario del usuario
     Call UpdateBanUserInv(True, Userindex, 0)
@@ -37,7 +37,7 @@ Sub IniciarDeposito(ByVal Userindex As Integer)
 
     UserList(Userindex).flags.Comerciando = True
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -110,7 +110,7 @@ Sub UserRetiraItem(ByVal Userindex As Integer, _
     '
     '***************************************************
 
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
 
     Dim ObjIndex As Integer
     Dim InvSlot As Integer
@@ -141,7 +141,7 @@ Sub UserRetiraItem(ByVal Userindex As Integer, _
 
     End If
 
-errHandler:
+ErrHandler:
 
 End Sub
 
@@ -248,36 +248,42 @@ Sub UserDepositaItem(ByVal Userindex As Integer, _
                      ByVal Cantidad As Integer)
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: 06/04/2020
+    '06/04/2020: FrankoH298 - No podemos vender monturas en uso.
     '***************************************************
 
     Dim ObjIndex As Integer
     Dim BankSlot As Integer
-
-    If UserList(Userindex).Invent.Object(InvSlot).Amount > 0 And Cantidad > 0 Then
-    
-        If Cantidad > UserList(Userindex).Invent.Object(InvSlot).Amount Then Cantidad = UserList(Userindex).Invent.Object(InvSlot).Amount
-        
-        ObjIndex = UserList(Userindex).Invent.Object(InvSlot).ObjIndex
-        
-        'Agregamos el obj que deposita al banco
-        BankSlot = UserDejaObj(Userindex, InvSlot, Cantidad)
-        
-        If BankSlot > 0 Then
-            If ObjData(ObjIndex).Log = 1 Then
-                Call LogDesarrollo(UserList(Userindex).Name & " deposito " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+    With UserList(Userindex)
+        If .flags.Equitando = 1 Then
+            If .Invent.MonturaEqpSlot = InvSlot Then
+                Call WriteConsoleMsg(Userindex, "No podes depositar tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                Exit Sub
             End If
-            
-            'Actualizamos el inventario del usuario
-            Call UpdateUserInv(False, Userindex, InvSlot)
-            
-            'Actualizamos el inventario del banco
-            Call UpdateBanUserInv(False, Userindex, BankSlot)
         End If
-
-    End If
-
+        If .Invent.Object(InvSlot).Amount > 0 And Cantidad > 0 Then
+        
+            If Cantidad > .Invent.Object(InvSlot).Amount Then Cantidad = .Invent.Object(InvSlot).Amount
+            
+            ObjIndex = .Invent.Object(InvSlot).ObjIndex
+            
+            'Agregamos el obj que deposita al banco
+            BankSlot = UserDejaObj(Userindex, InvSlot, Cantidad)
+            
+            If BankSlot > 0 Then
+                If ObjData(ObjIndex).Log = 1 Then
+                    Call LogDesarrollo(.Name & " deposito " & Cantidad & " " & ObjData(ObjIndex).Name & "[" & ObjIndex & "]")
+                End If
+                
+                'Actualizamos el inventario del usuario
+                Call UpdateUserInv(False, Userindex, InvSlot)
+                
+                'Actualizamos el inventario del banco
+                Call UpdateBanUserInv(False, Userindex, BankSlot)
+            End If
+    
+        End If
+    End With
 End Sub
 
 Function UserDejaObj(ByVal Userindex As Integer, _

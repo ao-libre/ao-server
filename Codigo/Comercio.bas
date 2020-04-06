@@ -48,18 +48,27 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
 
     '*************************************************
     'Author: Nacho (Integer)
-    'Last modified: 24/01/2020
+    'Last Modification: 06/04/2020
     '27/07/08 (MarKoxX) | New changes in the way of trading (now when you buy it rounds to ceil and when you sell it rounds to floor)
     '  - 06/13/08 (NicoNZ)
     '07/06/2010: ZaMa - Los objetos se loguean si superan la cantidad de 1k (antes era solo si eran 1k).
     '24/01/2020: WyroX = Reduzco la cantidad de paquetes que se envian, actualizo solo los slots necesarios y solo el oro, no todos los stats.
+    '06/04/2020: FrankoH298 - No podemos vender monturas en uso.
     '*************************************************
     Dim Precio As Long
 
     Dim Objeto As obj
 
     If Cantidad < 1 Or Slot < 1 Then Exit Sub
-
+    With UserList(Userindex)
+        If .flags.Equitando = 1 Then
+            If .Invent.MonturaEqpSlot = Slot Then
+                Call WriteConsoleMsg(Userindex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                Exit Sub
+            End If
+        End If
+    End With
+    
     If Modo = eModoComercio.Compra Then
         If Slot > MAX_INVENTORY_SLOTS Then
             Exit Sub
@@ -96,7 +105,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
         Call WriteUpdateGold(Userindex)
 
         Call QuitarNpcInvItem(NpcIndex, Slot, Cantidad)
-        Call UpdateNpcInvToAll(False, NPCIndex, Slot)
+        Call UpdateNpcInvToAll(False, NpcIndex, Slot)
 
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
         'Es un Objeto que tenemos que loguear?
@@ -152,7 +161,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
         End If
 
         Call QuitarUserInvItem(Userindex, Slot, Cantidad)
-        Call UpdateUserInv(False, UserIndex, Slot)
+        Call UpdateUserInv(False, Userindex, Slot)
 
         'Precio = Round(ObjData(Objeto.ObjIndex).valor / REDUCTOR_PRECIOVENTA * Cantidad, 0)
         Precio = Fix(SalePrice(Objeto.ObjIndex) * Cantidad)
@@ -160,7 +169,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
         
         If UserList(Userindex).Stats.Gld > MAXORO Then UserList(Userindex).Stats.Gld = MAXORO
 
-        Call WriteUpdateGold(UserIndex)
+        Call WriteUpdateGold(Userindex)
 
         Dim NpcSlot As Integer
 
@@ -175,7 +184,7 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
                 Npclist(NpcIndex).Invent.Object(NpcSlot).Amount = MAX_INVENTORY_OBJS
             End If
 
-            Call UpdateNpcInvToAll(False, NPCIndex, NpcSlot)
+            Call UpdateNpcInvToAll(False, NpcIndex, NpcSlot)
         End If
 
         'Bien, ahora logueo de ser necesario. Pablo (ToxicWaste) 07/09/07
@@ -258,39 +267,39 @@ End Function
 ' @param npcIndex The index of the NPC
 ' @param slot The slot to update
 
-Private Sub UpdateNpcInv(ByVal UpdateAll As Boolean, ByVal UserIndex As Integer, ByVal NPCIndex As Integer, ByVal Slot As Byte)
+Private Sub UpdateNpcInv(ByVal UpdateAll As Boolean, ByVal Userindex As Integer, ByVal NpcIndex As Integer, ByVal Slot As Byte)
 '***************************************************
-    Dim Obj As Obj
+    Dim obj As obj
     Dim LoopC As Byte
     Dim Desc As Single
     Dim val As Single
     
-    Desc = Descuento(UserIndex)
+    Desc = Descuento(Userindex)
     
     'Actualiza un solo slot
     If Not UpdateAll Then
-        With Npclist(NPCIndex).Invent.Object(Slot)
-            Obj.ObjIndex = .ObjIndex
-            Obj.Amount = .Amount
+        With Npclist(NpcIndex).Invent.Object(Slot)
+            obj.ObjIndex = .ObjIndex
+            obj.Amount = .Amount
             
             If .ObjIndex > 0 Then
                 val = (ObjData(.ObjIndex).Valor) / Desc
             End If
             
-            Call WriteChangeNPCInventorySlot(UserIndex, Slot, Obj, val)
+            Call WriteChangeNPCInventorySlot(Userindex, Slot, obj, val)
         End With
     Else
     'Actualiza todos los slots
         For LoopC = 1 To MAX_NORMAL_INVENTORY_SLOTS
-            With Npclist(NPCIndex).Invent.Object(LoopC)
-                Obj.ObjIndex = .ObjIndex
-                Obj.Amount = .Amount
+            With Npclist(NpcIndex).Invent.Object(LoopC)
+                obj.ObjIndex = .ObjIndex
+                obj.Amount = .Amount
                 
                 If .ObjIndex > 0 Then
                     val = (ObjData(.ObjIndex).Valor) / Desc
                 End If
                 
-                Call WriteChangeNPCInventorySlot(UserIndex, LoopC, Obj, val)
+                Call WriteChangeNPCInventorySlot(Userindex, LoopC, obj, val)
             End With
         Next LoopC
     End If
@@ -303,7 +312,7 @@ End Sub
 ' @param npcIndex The index of the NPC
 ' @param slot The slot to update
 
-Public Sub UpdateNpcInvToAll(ByVal UpdateAll As Boolean, ByVal NPCIndex As Integer, ByVal Slot As Byte)
+Public Sub UpdateNpcInvToAll(ByVal UpdateAll As Boolean, ByVal NpcIndex As Integer, ByVal Slot As Byte)
 '***************************************************
     Dim LoopC As Byte
     
@@ -313,9 +322,9 @@ Public Sub UpdateNpcInvToAll(ByVal UpdateAll As Boolean, ByVal NPCIndex As Integ
             ' Si esta comerciando
             If .flags.Comerciando Then
                 ' Si el ultimo NPC que cliqueo es el que hay que actualizar
-                If .flags.TargetNPC = NPCIndex Then
+                If .flags.TargetNPC = NpcIndex Then
                     ' Actualizamos el inventario del NPC
-                    Call UpdateNpcInv(UpdateAll, LoopC, NPCIndex, Slot)
+                    Call UpdateNpcInv(UpdateAll, LoopC, NpcIndex, Slot)
                 End If
             End If
         End With
