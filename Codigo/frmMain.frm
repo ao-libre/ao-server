@@ -533,7 +533,6 @@ Sub CheckIdleUser()
                                 If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = iUserIndex Then
                                     Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario.", FontTypeNames.FONTTYPE_TALK)
                                     Call FinComerciarUsu(.ComUsu.DestUsu)
-                                    Call FlushBuffer(.ComUsu.DestUsu) 'flush the buffer to send the message right away
 
                                 End If
 
@@ -573,7 +572,7 @@ Private Sub HappyHourManager()
     
         ' HappyHour
         Dim iDay As Integer ' 0.13.5
-        Dim message As String
+        Dim Message As String
 
         iDay = Weekday(Date)
         tmpHappyHour = HappyHourDays(iDay).Multi
@@ -585,12 +584,12 @@ Private Sub HappyHourManager()
             End If
            
             If tmpHappyHour = 1 Then ' Desactiva
-                message = "Ha concluido la Happy Hour!"
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+                Message = "Ha concluido la Happy Hour!"
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
                 HappyHourActivated = False
 
                 If ConexionAPI Then
-                    Call ApiEndpointSendHappyHourEndedMessageDiscord(message)
+                    Call ApiEndpointSendHappyHourEndedMessageDiscord(Message)
                 End If
            
             Else ' Activa?
@@ -598,22 +597,22 @@ Private Sub HappyHourManager()
                     UpdateNpcsExp tmpHappyHour
                     
                     If HappyHour <> 1 Then
-                        message = "Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%"
-                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+                        Message = "Se ha modificado la Happy Hour, a partir de ahora las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%"
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
 
                         If ConexionAPI Then
-                            Call ApiEndpointSendHappyHourModifiedMessageDiscord(message)
+                            Call ApiEndpointSendHappyHourModifiedMessageDiscord(Message)
                         End If
                     Else
-                        message = "Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!"
+                        Message = "Ha comenzado la Happy Hour! Las criaturas aumentan su experiencia en un " & Round((tmpHappyHour - 1) * 100, 2) & "%!"
 
-                       Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(message, FontTypeNames.FONTTYPE_SERVER))
+                       Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(Message, FontTypeNames.FONTTYPE_SERVER))
                     
                         'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
                         'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
                         'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
                         If ConexionAPI Then
-                            Call ApiEndpointSendHappyHourStartedMessageDiscord(message)
+                            Call ApiEndpointSendHappyHourStartedMessageDiscord(Message)
                         End If
 
                     End If

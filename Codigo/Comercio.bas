@@ -77,7 +77,6 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
             Call Ban(UserList(Userindex).Name, "Sistema Anti Cheats", "Intentar hackear el sistema de comercio. Quiso comprar demasiados items:" & Cantidad)
             UserList(Userindex).flags.Ban = 1
             Call WriteErrorMsg(Userindex, "Has sido baneado por el Sistema AntiCheat.")
-            Call FlushBuffer(Userindex)
             Call CloseSocket(Userindex)
             Exit Sub
         ElseIf Not Npclist(NpcIndex).Invent.Object(Slot).Amount > 0 Then

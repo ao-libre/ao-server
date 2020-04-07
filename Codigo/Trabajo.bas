@@ -687,7 +687,6 @@ Public Sub HerreroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex As I
                 Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
             
                 Call LimpiarComercioSeguro(Userindex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
 
@@ -859,7 +858,6 @@ Public Sub CarpinteroConstruirItem(ByVal Userindex As Integer, ByVal ItemIndex A
                 Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(Userindex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
 
@@ -1088,7 +1086,6 @@ Public Sub DoLingotes(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(Userindex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
 
@@ -1171,7 +1168,6 @@ Public Sub DoFundir(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                 
                 Call LimpiarComercioSeguro(Userindex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
 
@@ -1248,7 +1244,6 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
                 Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
             
                 Call LimpiarComercioSeguro(Userindex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
 
@@ -2149,7 +2144,6 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
                         Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_TALK)
                         
                         Call LimpiarComercioSeguro(VictimaIndex)
-                        Call Protocol.FlushBuffer(OtroUserIndex)
 
                     End If
 
@@ -2195,7 +2189,6 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
                         Call WriteUpdateGold(LadrOnIndex) 'Le actualizamos la billetera al ladron
                         
                         Call WriteUpdateGold(VictimaIndex) 'Le actualizamos la billetera a la victima
-                        Call FlushBuffer(VictimaIndex)
                     Else
                         Call WriteConsoleMsg(LadrOnIndex, UserList(VictimaIndex).Name & " no tiene oro.", FontTypeNames.FONTTYPE_INFO)
 
@@ -2207,7 +2200,6 @@ Public Sub DoRobar(ByVal LadrOnIndex As Integer, ByVal VictimaIndex As Integer)
             Else
                 Call WriteConsoleMsg(LadrOnIndex, "No has logrado robar nada!", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(VictimaIndex, "" & .Name & " ha intentado robarte!", FontTypeNames.FONTTYPE_INFO)
-                Call FlushBuffer(VictimaIndex)
                 
                 Call SubirSkill(LadrOnIndex, eSkill.Robar, False)
 
@@ -2421,7 +2413,6 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
 
             End With
         
-            Call FlushBuffer(VictimUserIndex)
         Else
             
             With Npclist(VictimNpcIndex)
@@ -2923,8 +2914,6 @@ Public Sub DoDesequipar(ByVal Userindex As Integer, ByVal VictimIndex As Integer
 
                 End If
                 
-                Call FlushBuffer(VictimIndex)
-                
                 Exit Sub
 
             End If
@@ -2949,8 +2938,6 @@ Public Sub DoDesequipar(ByVal Userindex As Integer, ByVal VictimIndex As Integer
 
                 End If
                 
-                Call FlushBuffer(VictimIndex)
-                
                 Exit Sub
 
             End If
@@ -2974,8 +2961,6 @@ Public Sub DoDesequipar(ByVal Userindex As Integer, ByVal VictimIndex As Integer
                     Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desequipado el casco!", FontTypeNames.FONTTYPE_FIGHT)
 
                 End If
-                
-                Call FlushBuffer(VictimIndex)
                 
                 Exit Sub
 
@@ -3030,7 +3015,6 @@ Public Sub DoHurtar(ByVal Userindex As Integer, ByVal VictimaIndex As Integer)
                     Call WriteConsoleMsg(OtroUserIndex, "Comercio cancelado por el otro usuario!!", FontTypeNames.FONTTYPE_WARNING)
                 
                     Call LimpiarComercioSeguro(VictimaIndex)
-                    Call Protocol.FlushBuffer(OtroUserIndex)
 
                 End If
 
@@ -3106,8 +3090,6 @@ Public Sub Desarmar(ByVal Userindex As Integer, ByVal VictimIndex As Integer)
                 Call WriteConsoleMsg(VictimIndex, "Tu oponente te ha desarmado!", FontTypeNames.FONTTYPE_FIGHT)
 
             End If
-
-            Call FlushBuffer(VictimIndex)
 
         End If
 

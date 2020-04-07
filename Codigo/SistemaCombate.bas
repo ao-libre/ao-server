@@ -1339,8 +1339,6 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
             Call SubirSkill(AtacanteIndex, Skill, False)
 
         End If
-        
-        Call FlushBuffer(VictimaIndex)
 
     End With
     
@@ -1664,8 +1662,6 @@ Public Sub UserDanoUser(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As In
     'Controla el nivel del usuario
     Call CheckUserLevel(AtacanteIndex)
     
-    Call FlushBuffer(VictimaIndex)
-    
     Exit Sub
     
 ErrHandler:
@@ -1761,7 +1757,6 @@ Sub UsuarioAtacadoPorUsuario(ByVal AttackerIndex As Integer, ByVal VictimIndex A
     
     'Si la victima esta saliendo se cancela la salida
     Call CancelExit(VictimIndex)
-    Call FlushBuffer(VictimIndex)
 
 End Sub
 
@@ -2617,7 +2612,6 @@ Sub UserEnvenena(ByVal AtacanteIndex As Integer, ByVal VictimaIndex As Integer)
 
     End If
     
-    Call FlushBuffer(VictimaIndex)
 
 End Sub
 

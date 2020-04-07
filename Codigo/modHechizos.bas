@@ -1318,7 +1318,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                     If ObjData(UserList(targetIndex).Invent.AnilloEqpObjIndex).ImpideParalizar Then
                         Call WriteConsoleMsg(targetIndex, "Tu anillo rechaza los efectos del hechizo.", FontTypeNames.FONTTYPE_FIGHT)
                         Call WriteConsoleMsg(Userindex, "El hechizo no tiene efecto!", FontTypeNames.FONTTYPE_FIGHT)
-                        Call FlushBuffer(targetIndex)
                         Exit Sub
                     End If
                 End If
@@ -1331,7 +1330,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
                 UserList(targetIndex).flags.ParalizedBy = UserList(Userindex).Name
             
                 Call WriteParalizeOK(targetIndex)
-                Call FlushBuffer(targetIndex)
 
             End If
 
@@ -1370,7 +1368,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             
                 'no need to crypt this
                 Call WriteDumbNoMore(targetIndex)
-                Call FlushBuffer(targetIndex)
                 Call InfoHechizo(Userindex)
         
             End If
@@ -1545,7 +1542,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             UserList(targetIndex).Counters.Ceguera = IntervaloParalizado / 3
     
             Call WriteBlind(targetIndex)
-            Call FlushBuffer(targetIndex)
             Call InfoHechizo(Userindex)
             HechizoCasteado = True
 
@@ -1587,7 +1583,6 @@ Sub HechizoEstadoUsuario(ByVal Userindex As Integer, ByRef HechizoCasteado As Bo
             End If
 
             Call WriteDumb(targetIndex)
-            Call FlushBuffer(targetIndex)
     
             Call InfoHechizo(Userindex)
             HechizoCasteado = True
@@ -2482,8 +2477,6 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
     End With
 
     HechizoPropUsuario = True
-
-    Call FlushBuffer(targetIndex)
 
 End Function
 

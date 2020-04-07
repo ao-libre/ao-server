@@ -1676,16 +1676,13 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
 
     Dim UserName    As String
-
     Dim AccountHash As String
-
     Dim version     As String
     
     UserName = buffer.ReadASCIIString()
@@ -1694,9 +1691,11 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     'Convert version number to string
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
     
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+                
     If Not AsciiValidos(UserName) Then
         Call WriteErrorMsg(Userindex, "Nombre invalido.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         
         Exit Sub
@@ -1705,7 +1704,6 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     
     If Not PersonajeExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "El personaje no existe.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         
         Exit Sub
@@ -1718,12 +1716,8 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectUser(Userindex, UserName, AccountHash)
-
     End If
-    
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
-    
+ 
 ErrHandler:
 
     Dim Error As Long
@@ -1789,55 +1783,20 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
     Dim buffer As clsByteQueue
     Set buffer = New clsByteQueue
-
     Call buffer.CopyBuffer(UserList(Userindex).incomingData)
     
     'Remove packet ID
     Call buffer.ReadByte
 
     Dim UserName    As String
-
     Dim AccountHash As String
-
     Dim version     As String
-
     Dim race        As eRaza
-
     Dim gender      As eGenero
-
     Dim homeland    As eCiudad
-
     Dim Class As eClass
-
     Dim Head As Integer
-    
-    If PuedeCrearPersonajes = 0 Then
-        Call WriteErrorMsg(Userindex, "La creacion de personajes en este servidor se ha deshabilitado.")
-        Call FlushBuffer(Userindex)
-        Call CloseSocket(Userindex)
-        
-        Exit Sub
 
-    End If
-    
-    If ServerSoloGMs <> 0 Then
-        Call WriteErrorMsg(Userindex, "Servidor restringido a administradores. Consulte la pagina oficial o el foro oficial para mas informacion.")
-        Call FlushBuffer(Userindex)
-        Call CloseSocket(Userindex)
-        
-        Exit Sub
-
-    End If
-    
-    If aClon.MaxPersonajes(UserList(Userindex).IP) Then
-        Call WriteErrorMsg(Userindex, "Has creado demasiados personajes.")
-        Call FlushBuffer(Userindex)
-        Call CloseSocket(Userindex)
-        
-        Exit Sub
-
-    End If
-    
     UserName = buffer.ReadASCIIString()
     AccountHash = buffer.ReadASCIIString()
     
@@ -1849,17 +1808,41 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     Class = buffer.ReadByte()
     Head = buffer.ReadInteger
     homeland = buffer.ReadByte()
+    
+    'If we got here then packet is complete, copy data back to original queue
+    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
+    
+    If PuedeCrearPersonajes = 0 Then
+        Call WriteErrorMsg(Userindex, "La creacion de personajes en este servidor se ha deshabilitado.")
+        Call CloseSocket(Userindex)
         
+        Exit Sub
+
+    End If
+    
+    If ServerSoloGMs <> 0 Then
+        Call WriteErrorMsg(Userindex, "Servidor restringido a administradores. Consulte la pagina oficial o el foro oficial para mas informacion.")
+        Call CloseSocket(Userindex)
+        
+        Exit Sub
+
+    End If
+    
+    If aClon.MaxPersonajes(UserList(Userindex).IP) Then
+        Call WriteErrorMsg(Userindex, "Has creado demasiados personajes.")
+        Call CloseSocket(Userindex)
+        
+        Exit Sub
+
+    End If
+                                        
     If Not VersionOK(version) Then
         Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectNewUser(Userindex, UserName, AccountHash, race, gender, Class, homeland, Head)
 
     End If
-
-    'If we got here then packet is complete, copy data back to original queue
-    Call UserList(Userindex).incomingData.CopyBuffer(buffer)
-    
+  
 ErrHandler:
 
     Dim Error As Long
@@ -2221,7 +2204,6 @@ Private Sub HandleWhisper(ByVal Userindex As Integer)
                         ElseIf Not (.flags.AdminInvisible = 1) Then
                             Call WriteChatOverHead(Userindex, Chat, .Char.CharIndex, vbBlue)
                             Call WriteChatOverHead(TargetUserIndex, Chat, .Char.CharIndex, vbBlue)
-                            Call FlushBuffer(TargetUserIndex)
                             
                             '[CDT 17-02-2004]
                             If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then
@@ -2751,9 +2733,6 @@ Private Sub HandleUserCommerceEnd(ByVal Userindex As Integer)
             If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
                 Call WriteConsoleMsg(.ComUsu.DestUsu, .Name & " ha dejado de comerciar con vos.", FontTypeNames.FONTTYPE_TALK)
                 Call FinComerciarUsu(.ComUsu.DestUsu)
-                
-                'Send data in the outgoing buffer of the other user
-                Call FlushBuffer(.ComUsu.DestUsu)
 
             End If
 
@@ -2921,9 +2900,6 @@ Private Sub HandleUserCommerceReject(ByVal Userindex As Integer)
             If UserList(otherUser).flags.UserLogged Then
                 Call WriteConsoleMsg(otherUser, .Name & " ha rechazado tu oferta.", FontTypeNames.FONTTYPE_TALK)
                 Call FinComerciarUsu(otherUser)
-                
-                'Send data in the outgoing buffer of the other user
-                Call FlushBuffer(otherUser)
 
             End If
 
@@ -3260,7 +3236,6 @@ Private Sub HandleUseSpellMacro(ByVal Userindex As Integer)
         
         Call SendData(SendTarget.ToAdmins, Userindex, PrepareMessageConsoleMsg(.Name & " fue expulsado por Anti-macro de hechizos.", FontTypeNames.FONTTYPE_FIGHT))
         Call WriteErrorMsg(Userindex, "Has sido expulsado por usar macro de hechizos. Recomendamos leer el reglamento sobre el tema macros.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
 
     End With
@@ -3776,7 +3751,6 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
                             
                             ''FUISTE
                             Call WriteErrorMsg(Userindex, "Has sido expulsado por el sistema anti cheats.")
-                            Call FlushBuffer(Userindex)
                             Call CloseSocket(Userindex)
                             Exit Sub
 
@@ -4669,7 +4643,6 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
         
             If tUser <= 0 Or tUser > MaxUsers Then
                 Call FinComerciarUsu(tUser)
-                Call Protocol.FlushBuffer(tUser)
 
             End If
         
@@ -9889,9 +9862,6 @@ Private Sub HandleSilence(ByVal Userindex As Integer)
                     Call WriteConsoleMsg(Userindex, "Usuario silenciado.", FontTypeNames.FONTTYPE_INFO)
                     Call WriteShowMessageBox(tUser, "Estimado usuario, ud. ha sido silenciado por los administradores. Sus denuncias seran ignoradas por el servidor de aqui en mas. Utilice /GM para contactar un administrador.")
                     Call LogGM(.Name, "/silenciar " & UserList(tUser).Name)
-                
-                    'Flush the other user's buffer
-                    Call FlushBuffer(tUser)
                 Else
                     UserList(tUser).flags.Silenciado = 0
                     Call WriteConsoleMsg(Userindex, "Usuario des silenciado.", FontTypeNames.FONTTYPE_INFO)
@@ -10119,7 +10089,6 @@ Private Sub HandleGoToChar(ByVal Userindex As Integer)
                     
                     If .flags.AdminInvisible = 0 Then
                         Call WriteConsoleMsg(tUser, .Name & " se ha trasportado hacia donde te encuentras.", FontTypeNames.FONTTYPE_INFO)
-                        Call FlushBuffer(tUser)
 
                     End If
                     
@@ -11815,8 +11784,6 @@ Private Sub HandleReviveChar(ByVal Userindex As Integer)
                 End With
                 
                 Call WriteUpdateHP(tUser)
-                
-                Call FlushBuffer(tUser)
                 
                 Call LogGM(.Name, "Resucito a " & UserName)
 
@@ -14132,7 +14099,6 @@ Private Sub HandleMakeDumbNoMore(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(Userindex, "Usuario offline.", FontTypeNames.FONTTYPE_INFO)
             Else
                 Call WriteDumbNoMore(tUser)
-                Call FlushBuffer(tUser)
 
             End If
 
@@ -14851,7 +14817,6 @@ Private Sub HandleChaosLegionKick(ByVal Userindex As Integer)
                 UserList(tUser).Faccion.Reenlistadas = 200
                 Call WriteConsoleMsg(Userindex, UserName & " expulsado de las fuerzas del caos y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(tUser, .Name & " te ha expulsado en forma definitiva de las fuerzas del caos.", FontTypeNames.FONTTYPE_FIGHT)
-                Call FlushBuffer(tUser)
             Else
 
                 If PersonajeExiste(UserName) Then
@@ -14944,7 +14909,6 @@ Private Sub HandleRoyalArmyKick(ByVal Userindex As Integer)
                 UserList(tUser).Faccion.Reenlistadas = 200
                 Call WriteConsoleMsg(Userindex, UserName & " expulsado de las fuerzas reales y prohibida la reenlistada.", FontTypeNames.FONTTYPE_INFO)
                 Call WriteConsoleMsg(tUser, .Name & " te ha expulsado en forma definitiva de las fuerzas reales.", FontTypeNames.FONTTYPE_FIGHT)
-                Call FlushBuffer(tUser)
             Else
 
                 If PersonajeExiste(UserName) Then
@@ -22896,7 +22860,6 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
 
     If Not CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta no existe.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
 
@@ -22969,7 +22932,6 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
 
     If CuentaExiste(UserName) Then
         Call WriteErrorMsg(Userindex, "La cuenta ya existe.")
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         Exit Sub
     End If
@@ -23586,7 +23548,6 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
             'Correo = UserName es lo mismo para aca el Jopi le puso correo :)
             If Not CuentaExiste(Correo) Then
                 Call WriteErrorMsg(Userindex, "La cuenta no existe.")
-                Call FlushBuffer(Userindex)
                 Call CloseSocket(Userindex)
                 Exit Sub
 
@@ -23605,8 +23566,6 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
         'If we got here then packet is complete, copy data back to original queue
         'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
         Call .incomingData.CopyBuffer(buffer)
-        
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
         
     End With
@@ -23614,8 +23573,7 @@ Public Sub HandleCambiarContrasena(ByVal Userindex As Integer)
 ErrHandler:
     
     Dim Error As Long: Error = Err.Number
-    
-    Call FlushBuffer(Userindex)
+
     Call CloseSocket(Userindex)
     
     On Error GoTo 0
@@ -23920,7 +23878,6 @@ ErrHandler:
 
     Dim Error As Long: Error = Err.Number
 
-    Call FlushBuffer(Userindex)
     Call CloseSocket(Userindex)
 
     On Error GoTo 0
@@ -24015,7 +23972,6 @@ Private Sub WriteEnviarDatosServer(ByVal Userindex As Integer)
 
         'If we got here then packet is complete, copy data back to original queue
         'Por ultimo limpia el buffer nunca poner exit sub antes de limpiar el buffer porque explota
-        Call FlushBuffer(Userindex)
         Call CloseSocket(Userindex)
 
     End With

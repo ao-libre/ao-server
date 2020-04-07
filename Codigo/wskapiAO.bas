@@ -403,7 +403,6 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
 
             If BanIps.Item(i) = UserList(NewIndex).IP Then
                 Call WriteErrorMsg(NewIndex, "Su IP se encuentra bloqueada en este servidor.")
-                Call FlushBuffer(NewIndex)
                 Call SecurityIp.IpRestarConexion(sa.sin_addr)
                 Call WSApiCloseSocket(NuevoSock)
                 Exit Sub

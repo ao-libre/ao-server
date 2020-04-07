@@ -204,8 +204,6 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                             End If
                         End If
 
-                        Call FlushBuffer(CurUser)
-
                     '... excepto que nos hayamos warpeado al mapa
                     ElseIf heading = USER_NUEVO Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)

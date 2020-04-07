@@ -94,8 +94,6 @@ Public Sub ActStats(ByVal VictimIndex As Integer, ByVal AttackerIndex As Integer
         Call WriteMultiMessage(AttackerIndex, eMessages.HaveKilledUser, VictimIndex, DaExp)
         Call WriteMultiMessage(VictimIndex, eMessages.UserKill, AttackerIndex)
         
-        Call FlushBuffer(VictimIndex)
-        
         'Log
         Call LogAsesinato(.Name & " asesino a " & UserList(VictimIndex).Name)
 
@@ -2152,9 +2150,6 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         Call WriteUserCharIndexInServer(Userindex)
         
         Call DoTileEvents(Userindex, Map, X, Y)
-        
-        'Force a flush, so user index is in there before it's destroyed for teleporting
-        Call FlushBuffer(Userindex)
         
         'Seguis invisible al pasar de mapa
         If (.flags.invisible = 1 Or .flags.Oculto = 1) And (Not .flags.AdminInvisible = 1) Then

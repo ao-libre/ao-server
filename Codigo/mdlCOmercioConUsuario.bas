@@ -59,7 +59,7 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
     'Last Modification: 25/11/2009
     '
     '***************************************************
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     
     'Si ambos pusieron /comerciar entonces
     If UserList(Origen).ComUsu.DestUsu = Destino And UserList(Destino).ComUsu.DestUsu = Origen Then
@@ -91,10 +91,8 @@ Public Sub IniciarComercioConUsuario(ByVal Origen As Integer, ByVal Destino As I
         
     End If
     
-    Call FlushBuffer(Destino)
-    
     Exit Sub
-errHandler:
+ErrHandler:
     Call LogError("Error en IniciarComercioConUsuario: " & Err.description)
 
 End Sub
@@ -129,7 +127,6 @@ Public Sub EnviarOferta(ByVal Userindex As Integer, ByVal OfferSlot As Byte)
     End With
    
     Call WriteChangeUserTradeSlot(Userindex, OfferSlot, ObjIndex, ObjAmount)
-    Call FlushBuffer(Userindex)
 
 End Sub
 
@@ -205,7 +202,6 @@ Public Sub AceptarComercioUsu(ByVal Userindex As Integer)
         
         Call FinComerciarUsu(Userindex)
         Call FinComerciarUsu(OtroUserIndex)
-        Call Protocol.FlushBuffer(OtroUserIndex)
         
         Exit Sub
         
@@ -216,7 +212,6 @@ Public Sub AceptarComercioUsu(ByVal Userindex As Integer)
         
         Call FinComerciarUsu(Userindex)
         Call FinComerciarUsu(OtroUserIndex)
-        Call Protocol.FlushBuffer(OtroUserIndex)
         
         Exit Sub
         
@@ -334,7 +329,6 @@ Public Sub AceptarComercioUsu(ByVal Userindex As Integer)
     ' End Trade
     Call FinComerciarUsu(Userindex)
     Call FinComerciarUsu(OtroUserIndex)
-    Call Protocol.FlushBuffer(OtroUserIndex)
     
 End Sub
 
@@ -463,7 +457,6 @@ Public Function PuedeSeguirComerciando(ByVal Userindex As Integer) As Boolean
         
             If OtroUserIndex > 0 And OtroUserIndex <= MaxUsers Then
                 Call FinComerciarUsu(OtroUserIndex)
-                Call Protocol.FlushBuffer(OtroUserIndex)
 
             End If
         
