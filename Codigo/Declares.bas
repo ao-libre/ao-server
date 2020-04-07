@@ -428,9 +428,9 @@ Public Const TAG_CONSULT_MODE               As String = "[CONSULTA]"
 
 Public Const MAXREP                         As Long = 6000000
 
-Public Const MAXORO                         As Long = 90000000
+Public Const MAXORO                         As Long = 200000000
 
-Public Const MAXEXP                         As Long = 99999999
+Public Const MAXEXP                         As Long = 999999999
 
 Public Const MAXUSERMATADOS                 As Long = 65000
 
