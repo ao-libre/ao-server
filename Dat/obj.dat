@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1161
+NumOBJs=1160
 
 
 
@@ -94,9 +94,8 @@ Valor=210
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
+CP3=PIRATA
 CP4=BARDO
-CP5=PIRATA
 LingH=3
 LingP=0
 LingO=0
@@ -175,10 +174,9 @@ Valor=70
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
+CP3=CLERIGO
 CP4=BARDO
 CP5=ASESINO
-CP6=CLERIGO
 LingH=1
 LingP=0
 LingO=0
@@ -287,10 +285,9 @@ Valor=1120
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
+CP3=CLERIGO
 CP4=BARDO
 CP5=ASESINO
-CP6=CLERIGO
 LingH=16
 LingP=0
 LingO=0
@@ -1379,8 +1376,7 @@ Valor=3010
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
+CP3=BARDO
 LingH=43
 LingP=0
 LingO=0
@@ -1559,6 +1555,7 @@ Crucial=0
 CP1=MAGO
 CP2=DRUIDA
 CP3=PIRATA
+CP4=LADRON
 LingH=10
 LingP=0
 LingO=0
@@ -4528,8 +4525,7 @@ Valor=100
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
+CP3=BARDO
 
 [OBJ399]
 Name=Cimitarra
@@ -4544,8 +4540,7 @@ Valor=3500
 Crucial=0
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
-CP4=PIRATA
+CP3=PIRATA
 LingH=50
 LingP=0
 LingO=0
@@ -4561,7 +4556,7 @@ RazaEnanaAnim=58
 MinHit=5
 MaxHit=15
 StaffPower=2
-StaffDamageBonus=38
+StaffDamageBonus=36
 Valor=85500
 Crucial=0
 CP1=PIRATA
@@ -4593,8 +4588,7 @@ Valor=2310
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
+CP3=BARDO
 LingH=33
 LingP=0
 LingO=0
@@ -4611,9 +4605,9 @@ MinHit=100
 MaxHit=100
 Valor=188000
 Crucial=0
-LingH=500
-LingP=400
-LingO=300
+LingH=600
+LingP=500
+LingO=700
 SkHerreria=100
 Log=1
 
@@ -4657,8 +4651,6 @@ Valor=350
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=PIRATA
-CP4=LADRON
 LingH=5
 LingP=0
 LingO=0
@@ -9047,8 +9039,7 @@ Valor=140
 Crucial=1
 CP1=MAGO
 CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
+CP3=BARDO
 LingH=2
 LingP=0
 LingO=0
@@ -11995,7 +11986,6 @@ MaxDef=5
 MinDef=1
 Valor=2500
 Crucial=0
-CP1=PIRATA
 
 [OBJ1002]
 Name=Casco de Lobo
@@ -12115,7 +12105,7 @@ LingH=1
 SkHerreria=10
 CP1=MAGO
 CP2=PALADIN
-CP3=LADRON
+CP3=TRABAJADOR
 CP4=BARDO
 CP5=DRUIDA
 CP6=GUERRERO
@@ -12123,7 +12113,6 @@ CP7=ASESINO
 CP8=BANDIDO
 CP9=CAZADOR
 CP10=CLERIGO
-CP11=TRABAJADOR
 
 [OBJ1010]
 Name=Sombrero Pirata
@@ -13982,11 +13971,17 @@ NumRopaje=255
 Agarrable=0
 MaxDef=40
 MinDef=50
-NoSeCae=1
 LingH=5000
 LingP=3000
 LingO=1250
 SkHerreria=100
+CP1=CAZADOR
+CP2=PALADIN
+CP3=CLERIGO
+CP4=GUERRERO
+CP5=BARDO
+CP6=DRUIDA
+CP7=MAGO
 
 [OBJ1133]
 Name=Escudo Oscuro
@@ -13997,14 +13992,21 @@ Agarrable=0
 Anim=25
 MaxDef=20
 MinDef=15
-DefensaMagicaMin=20
-DefensaMagicaMax=20
 Valor=1000000
 Crucial=0
 LingH=5000
 LingP=5000
 LingO=0
 SkHerreria=100
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=LADRON
+CP5=BANDIDO
+CP6=GUERRERO
+CP7=DRUIDA
+CP8=TRABAJADOR
+CP9=MAGO
 
 [OBJ1134]
 Name=Arco Argentum
@@ -14022,6 +14024,17 @@ Crucial=0
 Madera=10000
 Maderaelfica=5000
 SkCarpinteria=100
+CP1=PIRATA
+CP2=PALADIN
+CP3=CLERIGO
+CP4=ASESINO
+CP5=LADRON
+CP6=BANDIDO
+CP7=GUERRERO
+CP8=BARDO
+CP9=DRUIDA
+CP10=TRABAJADOR
+CP11=MAGO
 
 [OBJ1135]
 Name=Ira de Dios
@@ -14051,22 +14064,6 @@ LingO=1250
 SkHerreria=100
 
 [OBJ1137]
-Name=Armadura Omnineo (E/G)
-GrhIndex=758
-ObjType=3
-NumRopaje=91
-Agarrable=0
-RazaEnana=1
-MaxDef=50
-MinDef=55
-Valor=1000000
-Crucial=0
-LingH=5500
-LingP=5000
-LingO=1250
-SkHerreria=100
-
-[OBJ1138]
 Name=Espada Argentum
 GrhIndex=18997
 ObjType=2
@@ -14082,8 +14079,17 @@ LingH=5000
 LingP=5000
 LingO=5000
 SkHerreria=100
+CP1=PIRATA
+CP2=CAZADOR
+CP3=ASESINO
+CP4=LADRON
+CP5=BANDIDO
+CP6=BARDO
+CP7=DRUIDA
+CP8=TRABAJADOR
+CP9=MAGO
 
-[OBJ1139]
+[OBJ1138]
 Name=Casco de Plata Completo
 GrhIndex=29126
 ObjType=17
@@ -14104,19 +14110,20 @@ LingP=2500
 LingO=0
 SkHerreria=90
 
-[OBJ1140]
+[OBJ1139]
 Name=Montura de Gran Dragon rojo
 GrhIndex=29340
-ObjType=25
+ObType=25
 NumRopaje=604
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=3500000
 Crucial=0
 MinSkill=50
 
-[OBJ1141]
+[OBJ1140]
 Name=Espada de las almas
 GrhIndex=29313
 ObjType=2
@@ -14137,19 +14144,29 @@ CP8=ASESINO
 CP9=BANDIDO
 Log=1
 
-[OBJ1142]
+[OBJ1141]
 Name=Tunica del Mago sangriento
 GrhIndex=29046
 ObjType=3
 NumRopaje=600
 Agarrable=0
-MaxDef=65
-MinDef=60
-Valor=3000000
+MaxDef=45
+MinDef=40
+Valor=2000000
 Crucial=1
-CP1=GUERRERO
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=BARDO
+CP10=DRUIDA
+CP11=TRABAJADOR
 
-[OBJ1143]
+[OBJ1142]
 Name=Gorro de navidad
 GrhIndex=29131
 ObjType=17
@@ -14163,32 +14180,31 @@ Crucial=0
 LingH=100
 LingP=0
 LingO=0
-Upgrade=131
 SkHerreria=45
 
-[OBJ1144]
+[OBJ1143]
 Name=Alas de angel
 GrhIndex=29136
 ObjType=3
 NumRopaje=601
 Agarrable=0
-MaxDef=115
-MinDef=110
+MaxDef=55
+MinDef=50
 NoSeCae=1
 Valor=10000000
 
-[OBJ1145]
+[OBJ1144]
 Name=Alas de demonio
 GrhIndex=29163
 ObjType=3
 NumRopaje=602
 Agarrable=0
 Valor=10000000
-MaxDef=115
-MinDef=100
+MaxDef=55
+MinDef=50
 NoSeCae=1
 
-[OBJ1146]
+[OBJ1145]
 Name=Corona De rey
 GrhIndex=29190
 ObjType=17
@@ -14202,10 +14218,9 @@ Crucial=0
 LingH=4000
 LingP=5000
 LingO=0
-Upgrade=131
 SkHerreria=45
 
-[OBJ1147]
+[OBJ1146]
 Name=Espada de fuego
 GrhIndex=29222
 ObjType=2
@@ -14216,8 +14231,19 @@ MinHit=35
 MaxHit=40
 Valor=10000000
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=BARDO
+CP9=DRUIDA
+CP10=TRABAJADOR
+CP11=MAGO
 
-[OBJ1148]
+[OBJ1147]
 Name=Vara del nigromante
 GrhIndex=29249
 ObjType=2
@@ -14227,7 +14253,7 @@ RazaEnanaAnim=58
 MinHit=5
 MaxHit=15
 StaffPower=2
-StaffDamageBonus=42
+StaffDamageBonus=38
 Valor=1000000
 Crucial=0
 CP1=PIRATA
@@ -14246,7 +14272,7 @@ LingP=1000
 LingO=2000
 SkHerreria=90
 
-[OBJ1149]
+[OBJ1148]
 Name=Bendicion Espiritual
 GrhIndex=609
 ObjType=24
@@ -14258,7 +14284,7 @@ Madera=1
 SkCarpinteria=101
 Log=1
 
-[OBJ1150]
+[OBJ1149]
 Name=Casco Kuia
 GrhIndex=29276
 ObjType=17
@@ -14279,8 +14305,8 @@ LingP=1300
 LingO=0
 SkHerreria=85
 
-[OBJ1151]
-Name=Sombrero ecpectral magico
+[OBJ1150]
+Name=Sombrero espectral magico
 GrhIndex=29281
 ObjType=17
 NumRopaje=2
@@ -14304,36 +14330,54 @@ CP9=BARDO
 CP10=DRUIDA
 CP11=TRABAJADOR
 
-[OBJ1152]
+[OBJ1151]
 Name=Escudo de Dragon
 GrhIndex=29286
 ObjType=16
 NumRopaje=2
 Agarrable=0
 Anim=26
-MAXDEF=45
-MINDEF=30
-DefensaMagicaMin=20
-DefensaMagicaMax=35
+MAXDEF=30
+MINDEF=25
 Valor=1000000
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=CLERIGO
+CP4=ASESINO
+CP5=LADRON
+CP6=BANDIDO
+CP7=BARDO
+CP8=DRUIDA
+CP9=TRABAJADOR
+CP10=MAGO
 
-[OBJ1153]
+[OBJ1152]
 Name=Coraza del Mal
 GrhIndex=29392
 ObjType=3
 NumRopaje=605
 Agarrable=0
-MAXDEF=75
-MINDEF=70
+MAXDEF=60
+MINDEF=50
 Valor=10000000
 Crucial=0
 LingH=10000
 LingP=10000
 LingO=10000
 SkHerreria=100
+CP1=PIRATA
+CP2=CAZADOR
+CP3=CLERIGO
+CP4=ASESINO
+CP5=LADRON
+CP6=BANDIDO
+CP7=BARDO
+CP8=DRUIDA
+CP9=TRABAJADOR
+CP10=MAGO
 
-[OBJ1154]
+[OBJ1153]
 Name=Espada Llameante (JiEm)
 GrhIndex=29435
 ObjType=2
@@ -14346,7 +14390,7 @@ Apunala=1
 Valor=10000000
 Crucial=0
 
-[OBJ1155]
+[OBJ1154]
 Name=Daga +5
 GrhIndex=29552
 ObjType=2
@@ -14373,7 +14417,7 @@ LingP=5000
 LingO=5000
 SkHerreria=100
 
-[OBJ1156]
+[OBJ1155]
 Name=Espada del fuego eterno
 GrhIndex=29524
 ObjType=2
@@ -14386,7 +14430,7 @@ Apunala=0
 Valor=1000000
 Crucial=0
 
-[OBJ1157]
+[OBJ1156]
 Name=Montura de Gran Dragon dorado
 GrhIndex=29674
 ObjType=25
@@ -14394,11 +14438,12 @@ NumRopaje=612
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=5000000
 Crucial=0
 MinSkill=50
 
-[OBJ1158]
+[OBJ1157]
 Name=Montura de Gran Dragon negro
 GrhIndex=29779
 ObjType=25
@@ -14406,11 +14451,12 @@ NumRopaje=614
 Agarrable=0
 MaxDef=150
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=5000000
 Crucial=0
 MinSkill=50
 
-[OBJ1159]
+[OBJ1158]
 Name=Montura de Elefante
 GrhIndex=29854
 ObjType=25
@@ -14418,10 +14464,11 @@ NumRopaje=616
 Agarrable=0
 MaxDef=130
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=2400000
 Crucial=0
 
-[OBJ1160]
+[OBJ1159]
 Name=Montura de Caballo
 GrhIndex=29873
 ObjType=25
@@ -14429,10 +14476,11 @@ NumRopaje=617
 Agarrable=0
 MaxDef=130
 MinDef=120
-Valor=1200000
+NoSeCae=1
+Valor=2400000
 Crucial=0
 
-[OBJ1161]
+[OBJ1160]
 Name=Cuchara Legendaria (Prueba)
 GrhIndex=587
 ObjType=20

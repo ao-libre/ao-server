@@ -48,18 +48,27 @@ Public Sub Comercio(ByVal Modo As eModoComercio, _
 
     '*************************************************
     'Author: Nacho (Integer)
-    'Last modified: 24/01/2020
+    'Last Modification: 06/04/2020
     '27/07/08 (MarKoxX) | New changes in the way of trading (now when you buy it rounds to ceil and when you sell it rounds to floor)
     '  - 06/13/08 (NicoNZ)
     '07/06/2010: ZaMa - Los objetos se loguean si superan la cantidad de 1k (antes era solo si eran 1k).
     '24/01/2020: WyroX = Reduzco la cantidad de paquetes que se envian, actualizo solo los slots necesarios y solo el oro, no todos los stats.
+    '06/04/2020: FrankoH298 - No podemos vender monturas en uso.
     '*************************************************
     Dim Precio As Long
 
     Dim Objeto As obj
 
     If Cantidad < 1 Or Slot < 1 Then Exit Sub
-
+    With UserList(Userindex)
+        If .flags.Equitando = 1 Then
+            If .Invent.MonturaEqpSlot = Slot Then
+                Call WriteConsoleMsg(Userindex, "No podes vender tu montura mientras lo estes usando.", FontTypeNames.FONTTYPE_TALK)
+                Exit Sub
+            End If
+        End If
+    End With
+    
     If Modo = eModoComercio.Compra Then
         If Slot > MAX_INVENTORY_SLOTS Then
             Exit Sub

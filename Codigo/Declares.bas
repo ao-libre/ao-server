@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim Map, X, Y, body, clase, race, Email, obj, Length As Variant
+    Dim Map, X, Y, body, Clase, race, Email, obj, Length As Variant
 
 #End If
 
@@ -239,7 +239,7 @@ Public Const LimiteNewbie As Byte = 12
 
 Public Type tCabecera 'Cabecera de los con
 
-    desc As String * 255
+    Desc As String * 255
     crc As Long
     MagicWord As Long
 
@@ -428,9 +428,9 @@ Public Const TAG_CONSULT_MODE               As String = "[CONSULTA]"
 
 Public Const MAXREP                         As Long = 6000000
 
-Public Const MAXORO                         As Long = 90000000
+Public Const MAXORO                         As Long = 200000000
 
-Public Const MAXEXP                         As Long = 99999999
+Public Const MAXEXP                         As Long = 999999999
 
 Public Const MAXUSERMATADOS                 As Long = 65000
 
@@ -1268,7 +1268,7 @@ End Type
 Public Type tQuest
 
     Nombre As String
-    desc As String
+    Desc As String
     RequiredLevel As Byte
     
     RequiredOBJs As Byte
@@ -1481,6 +1481,8 @@ Public Type UserCounters
     Ceguera As Integer
     Estupidez As Integer
     
+    MonturaCounter As Long
+    
     Invisibilidad As Integer
     TiempoOculto As Integer
     
@@ -1605,10 +1607,10 @@ Public Type User
     CharMimetizado As Char
     OrigChar As Char
     
-    desc As String ' Descripcion
+    Desc As String ' Descripcion
     DescRM As String
     
-    clase As eClass
+    Clase As eClass
     raza As eRaza
     Genero As eGenero
     Email As String
@@ -1783,7 +1785,7 @@ Public Type npc
 
     Name As String
     Char As Char 'Define como se vera
-    desc As String
+    Desc As String
 
     NPCtype As eNPCType
     Numero As Integer

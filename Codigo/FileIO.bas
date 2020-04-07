@@ -31,7 +31,7 @@ Option Explicit
 
 #If False Then
 
-    Dim X, Y, n, Map, mapa, Email, max, Value As Variant
+    Dim X, Y, n, Map, Mapa, Email, max, Value As Variant
 
 #End If
 
@@ -621,7 +621,7 @@ Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
     'map Header
     Call MapWriter.putInteger(MapInfo(Map).MapVersion)
         
-    Call MapWriter.putString(MiCabecera.desc, False)
+    Call MapWriter.putString(MiCabecera.Desc, False)
     Call MapWriter.putLong(MiCabecera.crc)
     Call MapWriter.putLong(MiCabecera.MagicWord)
     
@@ -1411,7 +1411,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
 
         .AccountHash = CStr(UserFile.GetValue("INIT", "AccountHash"))
         .Genero = CByte(UserFile.GetValue("INIT", "Genero"))
-        .clase = CByte(UserFile.GetValue("INIT", "Clase"))
+        .Clase = CByte(UserFile.GetValue("INIT", "Clase"))
         .raza = CByte(UserFile.GetValue("INIT", "Raza"))
         .Hogar = CByte(UserFile.GetValue("INIT", "Hogar"))
         .Char.heading = CInt(UserFile.GetValue("INIT", "Heading"))
@@ -1430,7 +1430,7 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
             .UpTime = CLng(UserFile.GetValue("INIT", "UpTime"))
         #End If
 
-        .desc = UserFile.GetValue("INIT", "Desc")
+        .Desc = UserFile.GetValue("INIT", "Desc")
         
         .Pos.Map = CInt(ReadField(1, UserFile.GetValue("INIT", "Position"), 45))
         .Pos.X = CInt(ReadField(2, UserFile.GetValue("INIT", "Position"), 45))
@@ -1438,26 +1438,33 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         
         .Invent.NroItems = CInt(UserFile.GetValue("Inventory", "CantidadItems"))
         
-        '[KEVIN]--------------------------------------------------------------------
-        '***********************************************************************************
         .BancoInvent.NroItems = CInt(UserFile.GetValue("BancoInventory", "CantidadItems"))
 
         'Lista de objetos del banco
         For LoopC = 1 To MAX_BANCOINVENTORY_SLOTS
             ln = UserFile.GetValue("BancoInventory", "Obj" & LoopC)
-            .BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
-            .BancoInvent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
+            If (val(ReadField(1, ln, 45))) > NumObjDatas Then
+                .BancoInvent.Object(LoopC).ObjIndex = 0
+                .BancoInvent.Object(LoopC).Amount = 0
+            Else
+                .BancoInvent.Object(LoopC).ObjIndex = CInt(ReadField(1, ln, 45))
+                .BancoInvent.Object(LoopC).Amount = CInt(ReadField(2, ln, 45))
+            End If
         Next LoopC
-
-        '------------------------------------------------------------------------------------
-        '[/KEVIN]*****************************************************************************
         
         'Lista de objetos
         For LoopC = 1 To MAX_INVENTORY_SLOTS
             ln = UserFile.GetValue("Inventory", "Obj" & LoopC)
-            .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
-            .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
-            .Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
+            If (val(ReadField(1, ln, 45))) > NumObjDatas Then
+                .Invent.Object(LoopC).ObjIndex = 0
+                .Invent.Object(LoopC).Amount = 0
+                .Invent.Object(LoopC).Equipped = 0
+            Else
+                .Invent.Object(LoopC).ObjIndex = val(ReadField(1, ln, 45))
+                .Invent.Object(LoopC).Amount = val(ReadField(2, ln, 45))
+                .Invent.Object(LoopC).Equipped = val(ReadField(3, ln, 45))
+            End If
+
         Next LoopC
         
         .Invent.WeaponEqpSlot = CByte(UserFile.GetValue("Inventory", "WeaponEqpSlot"))
@@ -1674,7 +1681,7 @@ Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
     MapInfo(Map).MapVersion = MapReader.getInteger
     
     With MiCabecera
-        .desc = MapReader.getString(Len(MiCabecera.desc))
+        .Desc = MapReader.getString(Len(MiCabecera.Desc))
         .crc = MapReader.getLong
         .MagicWord = MapReader.getLong
     End With
@@ -2226,8 +2233,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("INIT", "Genero", CByte(.Genero))
         Call Manager.ChangeValue("INIT", "Raza", CByte(.raza))
         Call Manager.ChangeValue("INIT", "Hogar", CByte(.Hogar))
-        Call Manager.ChangeValue("INIT", "Clase", CByte(.clase))
-        Call Manager.ChangeValue("INIT", "Desc", CStr(.desc))
+        Call Manager.ChangeValue("INIT", "Clase", CByte(.Clase))
+        Call Manager.ChangeValue("INIT", "Desc", CStr(.Desc))
     
         Call Manager.ChangeValue("INIT", "Heading", CByte(.Char.heading))
         Call Manager.ChangeValue("INIT", "Head", CInt(.OrigChar.Head))
@@ -2441,7 +2448,7 @@ Sub BackUPnPc(ByVal NpcIndex As Integer, ByVal hFile As Integer)
     With Npclist(NpcIndex)
         'General
         Print #hFile, "Name=" & .Name
-        Print #hFile, "Desc=" & .desc
+        Print #hFile, "Desc=" & .Desc
         Print #hFile, "Head=" & val(.Char.Head)
         Print #hFile, "Body=" & val(.Char.body)
         Print #hFile, "Heading=" & val(.Char.heading)
@@ -2507,7 +2514,7 @@ Sub CargarNpcBackUp(ByVal NpcIndex As Integer, ByVal NpcNumber As Integer)
     
         .Numero = NpcNumber
         .Name = GetVar(npcfile, "NPC" & NpcNumber, "Name")
-        .desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
+        .Desc = GetVar(npcfile, "NPC" & NpcNumber, "Desc")
         .Movement = val(GetVar(npcfile, "NPC" & NpcNumber, "Movement"))
         .NPCtype = val(GetVar(npcfile, "NPC" & NpcNumber, "NpcType"))
         
@@ -2612,7 +2619,7 @@ Public Sub CargaApuestas()
 
 End Sub
 
-Public Sub generateMatrix(ByVal mapa As Integer)
+Public Sub generateMatrix(ByVal Mapa As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2655,7 +2662,7 @@ Public Sub generateMatrix(ByVal mapa As Integer)
 
 End Sub
 
-Public Sub setDistance(ByVal mapa As Integer, _
+Public Sub setDistance(ByVal Mapa As Integer, _
                        ByVal city As Byte, _
                        ByVal side As Integer, _
                        Optional ByVal X As Integer = 0, _
@@ -2670,19 +2677,19 @@ Public Sub setDistance(ByVal mapa As Integer, _
 
     Dim lim As Integer
 
-    If mapa <= 0 Or mapa > NumMaps Then Exit Sub
+    If Mapa <= 0 Or Mapa > NumMaps Then Exit Sub
 
-    If distanceToCities(mapa).distanceToCity(city) >= 0 Then Exit Sub
+    If distanceToCities(Mapa).distanceToCity(city) >= 0 Then Exit Sub
 
-    If mapa = Ciudades(city).Map Then
-        distanceToCities(mapa).distanceToCity(city) = 0
+    If Mapa = Ciudades(city).Map Then
+        distanceToCities(Mapa).distanceToCity(city) = 0
     Else
-        distanceToCities(mapa).distanceToCity(city) = Abs(X) + Abs(Y)
+        distanceToCities(Mapa).distanceToCity(city) = Abs(X) + Abs(Y)
 
     End If
 
     For i = 1 To 4
-        lim = getLimit(mapa, i)
+        lim = getLimit(Mapa, i)
 
         If lim > 0 Then
 
@@ -2708,7 +2715,7 @@ Public Sub setDistance(ByVal mapa As Integer, _
 
 End Sub
 
-Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
+Public Function getLimit(ByVal Mapa As Integer, ByVal side As Byte) As Integer
 
     '***************************************************
     'Author: Budi
@@ -2720,7 +2727,7 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
 
     Dim Y As Long
 
-    If mapa <= 0 Then Exit Function
+    If Mapa <= 0 Then Exit Function
 
     For X = 15 To 87
         For Y = 0 To 3
@@ -2728,16 +2735,16 @@ Public Function getLimit(ByVal mapa As Integer, ByVal side As Byte) As Integer
             Select Case side
 
                 Case eHeading.NORTH
-                    getLimit = MapData(mapa, X, 7 + Y).TileExit.Map
+                    getLimit = MapData(Mapa, X, 7 + Y).TileExit.Map
 
                 Case eHeading.EAST
-                    getLimit = MapData(mapa, 92 - Y, X).TileExit.Map
+                    getLimit = MapData(Mapa, 92 - Y, X).TileExit.Map
 
                 Case eHeading.SOUTH
-                    getLimit = MapData(mapa, X, 94 - Y).TileExit.Map
+                    getLimit = MapData(Mapa, X, 94 - Y).TileExit.Map
 
                 Case eHeading.WEST
-                    getLimit = MapData(mapa, 9 + Y, X).TileExit.Map
+                    getLimit = MapData(Mapa, 9 + Y, X).TileExit.Map
 
             End Select
 

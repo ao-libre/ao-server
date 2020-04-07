@@ -3164,11 +3164,12 @@ End Sub
 Public Sub DoEquita(ByVal Userindex As Integer, _
                     ByRef Montura As ObjData, _
                     ByVal Slot As Integer)
-'***************************************************
-'Author: Recox
-'Last Modification: 12/01/2020
-'Podemos usar monturas ahora
-'***************************************************
+    '***************************************************
+    'Author: Recox
+    'Last Modification: 06/04/2020
+    'Podemos usar monturas ahora
+    '06/04/2020: FrankoH298 - Ahora hay un timer para poder montarte
+    '***************************************************
     'Dim ModEqui As Long
 
     'ModEqui = ModEquitacion(UserList(UserIndex).clase)
@@ -3205,25 +3206,26 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
         ' No estaba equitando
         If .flags.Equitando = 0 Then
-            .Invent.MonturaObjIndex = .Invent.Object(Slot).ObjIndex
-            .Invent.MonturaEqpSlot = Slot
-
-            Call ToggleMonturaBody(Userindex)
-            Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
-
-            '  Comienza a equitar
-            .flags.Equitando = 1
-
+            If .Counters.MonturaCounter <= 0 Then
+                .Invent.MonturaObjIndex = .Invent.Object(Slot).ObjIndex
+                .Invent.MonturaEqpSlot = Slot
+    
+                Call ToggleMonturaBody(Userindex)
+                Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
+    
+                '  Comienza a equitar
+                .flags.Equitando = 1
+                Call WriteEquitandoToggle(Userindex)
+                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            End If
         ' Estaba equitando
         Else
             Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
         End If
-
-        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
-    
+        
     End With
-    
-    Call WriteEquitandoToggle(Userindex)
 
 End Sub
 
@@ -3238,6 +3240,7 @@ Public Sub UnmountMontura(ByVal Userindex As Integer)
 
         ' Termina de equitar
         .flags.Equitando = 0
+        .Counters.MonturaCounter = 10
     End With
 End Sub
 

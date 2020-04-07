@@ -232,7 +232,6 @@ Private Sub GameTimer()
                     
                     If .flags.Paralizado = 1 Then Call EfectoParalisisUser(iUserIndex)
                     If .flags.Ceguera = 1 Or .flags.Estupidez Then Call EfectoCegueEstu(iUserIndex)
-                    
                     If .flags.Muerto = 0 Then
                         
                         '[Consejeros]
@@ -430,7 +429,7 @@ Public Sub PasarSegundo()
         With UserList(i)
 
             If .flags.UserLogged Then
-
+            
                 'Cerrar usuario
                 If .Counters.Saliendo Then
                     .Counters.Salir = .Counters.Salir - 1
@@ -443,7 +442,10 @@ Public Sub PasarSegundo()
                     End If
 
                 End If
-            
+                
+                ' Tiempo para volver a utilizar la montura
+                If .Counters.MonturaCounter > 0 Then .Counters.MonturaCounter = .Counters.MonturaCounter - 1
+                
                 ' Conteo de los Retos
                 If .Counters.TimeFight > 0 Then
                     .Counters.TimeFight = .Counters.TimeFight - 1

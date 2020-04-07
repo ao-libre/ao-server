@@ -29,7 +29,7 @@ Attribute VB_Name = "InvUsuario"
 
 Option Explicit
 
-Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
+Public Function TieneObjetosRobables(ByVal Userindex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -45,8 +45,8 @@ Public Function TieneObjetosRobables(ByVal UserIndex As Integer) As Boolean
 
     Dim ObjIndex As Integer
     
-    For i = 1 To UserList(UserIndex).CurrentInventorySlots
-        ObjIndex = UserList(UserIndex).Invent.Object(i).ObjIndex
+    For i = 1 To UserList(Userindex).CurrentInventorySlots
+        ObjIndex = UserList(Userindex).Invent.Object(i).ObjIndex
 
         If ObjIndex > 0 Then
             If (ObjData(ObjIndex).OBJType <> eOBJType.otLlaves And ObjData(ObjIndex).OBJType <> eOBJType.otBarcos And Not ItemNewbie(ObjIndex)) Then
@@ -66,7 +66,7 @@ ErrHandler:
 
 End Function
 
-Function ClasePuedeUsarItem(ByVal UserIndex As Integer, _
+Function ClasePuedeUsarItem(ByVal Userindex As Integer, _
                             ByVal ObjIndex As Integer, _
                             Optional ByRef sMotivo As String) As Boolean
     '***************************************************
@@ -80,14 +80,14 @@ Function ClasePuedeUsarItem(ByVal UserIndex As Integer, _
     On Error GoTo manejador
   
     'Admins can use ANYTHING!
-    If UserList(UserIndex).flags.Privilegios And PlayerType.User Then
+    If UserList(Userindex).flags.Privilegios And PlayerType.User Then
         If ObjData(ObjIndex).ClaseProhibida(1) <> 0 Then
 
             Dim i As Integer
 
             For i = 1 To NUMCLASES
 
-                If ObjData(ObjIndex).ClaseProhibida(i) = UserList(UserIndex).clase Then
+                If ObjData(ObjIndex).ClaseProhibida(i) = UserList(Userindex).Clase Then
               
                     '//Si es un hechizo
                     If ObjData(ObjIndex).OBJType = eOBJType.otPergaminos Then
@@ -117,7 +117,7 @@ manejador:
 
 End Function
 
-Sub QuitarNewbieObj(ByVal UserIndex As Integer)
+Sub QuitarNewbieObj(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -126,14 +126,14 @@ Sub QuitarNewbieObj(ByVal UserIndex As Integer)
 
     Dim j As Integer
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
-        For j = 1 To UserList(UserIndex).CurrentInventorySlots
+        For j = 1 To UserList(Userindex).CurrentInventorySlots
 
             If .Invent.Object(j).ObjIndex > 0 Then
              
-                If ObjData(.Invent.Object(j).ObjIndex).Newbie = 1 Then Call QuitarUserInvItem(UserIndex, j, MAX_INVENTORY_OBJS)
-                Call UpdateUserInv(False, UserIndex, j)
+                If ObjData(.Invent.Object(j).ObjIndex).Newbie = 1 Then Call QuitarUserInvItem(Userindex, j, MAX_INVENTORY_OBJS)
+                Call UpdateUserInv(False, Userindex, j)
         
             End If
 
@@ -161,7 +161,7 @@ Sub QuitarNewbieObj(ByVal UserIndex As Integer)
 
             End Select
         
-            Call WarpUserChar(UserIndex, DeDonde.Map, DeDonde.X, DeDonde.Y, True)
+            Call WarpUserChar(Userindex, DeDonde.Map, DeDonde.X, DeDonde.Y, True)
     
         End If
 
@@ -170,7 +170,7 @@ Sub QuitarNewbieObj(ByVal UserIndex As Integer)
 
 End Sub
 
-Sub LimpiarInventario(ByVal UserIndex As Integer)
+Sub LimpiarInventario(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -179,7 +179,7 @@ Sub LimpiarInventario(ByVal UserIndex As Integer)
 
     Dim j As Integer
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         For j = 1 To .CurrentInventorySlots
             .Invent.Object(j).ObjIndex = 0
@@ -219,7 +219,7 @@ Sub LimpiarInventario(ByVal UserIndex As Integer)
 
 End Sub
 
-Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
+Sub TirarOro(ByVal Cantidad As Long, ByVal Userindex As Integer)
 
     '***************************************************
     'Autor: Unknown (orginal version)
@@ -230,7 +230,7 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
 
     'If Cantidad > 100000 Then Exit Sub
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         'SI EL Pjta TIENE ORO LO TIRAMOS
         If (Cantidad > 0) And (Cantidad <= .Stats.Gld) Then
@@ -257,8 +257,8 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
                     For K = .Pos.Y - 10 To .Pos.Y + 10
 
                         If InMapBounds(M, j, K) Then
-                            If MapData(M, j, K).UserIndex > 0 Then
-                                Cercanos = Cercanos & UserList(MapData(M, j, K).UserIndex).Name & ","
+                            If MapData(M, j, K).Userindex > 0 Then
+                                Cercanos = Cercanos & UserList(MapData(M, j, K).Userindex).Name & ","
 
                             End If
 
@@ -297,11 +297,11 @@ Sub TirarOro(ByVal Cantidad As Long, ByVal UserIndex As Integer)
     
                 MiObj.ObjIndex = iORO
                 
-                If EsGm(UserIndex) Then Call LogGM(.Name, "Tiro cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
+                If EsGm(Userindex) Then Call LogGM(.Name, "Tiro cantidad:" & MiObj.Amount & " Objeto:" & ObjData(MiObj.ObjIndex).Name)
 
                 Dim AuxPos As WorldPos
                 
-                If .clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
+                If .Clase = eClass.Pirat And .Invent.BarcoObjIndex = 476 Then
                     AuxPos = TirarItemAlPiso(.Pos, MiObj, False)
 
                     If AuxPos.X <> 0 And AuxPos.Y <> 0 Then
@@ -347,7 +347,7 @@ ErrHandler:
 
 End Sub
 
-Sub QuitarUserInvItem(ByVal UserIndex As Integer, _
+Sub QuitarUserInvItem(ByVal Userindex As Integer, _
                       ByVal Slot As Byte, _
                       ByVal Cantidad As Integer)
     '***************************************************
@@ -358,12 +358,12 @@ Sub QuitarUserInvItem(ByVal UserIndex As Integer, _
 
     On Error GoTo ErrHandler
 
-    If Slot < 1 Or Slot > UserList(UserIndex).CurrentInventorySlots Then Exit Sub
+    If Slot < 1 Or Slot > UserList(Userindex).CurrentInventorySlots Then Exit Sub
     
-    With UserList(UserIndex).Invent.Object(Slot)
+    With UserList(Userindex).Invent.Object(Slot)
 
         If .Amount <= Cantidad And .Equipped = 1 Then
-            Call Desequipar(UserIndex, Slot)
+            Call Desequipar(Userindex, Slot)
 
         End If
         
@@ -372,7 +372,7 @@ Sub QuitarUserInvItem(ByVal UserIndex As Integer, _
 
         'Quedan mas?
         If .Amount <= 0 Then
-            UserList(UserIndex).Invent.NroItems = UserList(UserIndex).Invent.NroItems - 1
+            UserList(Userindex).Invent.NroItems = UserList(Userindex).Invent.NroItems - 1
             .ObjIndex = 0
             .Amount = 0
 
@@ -388,7 +388,7 @@ ErrHandler:
 End Sub
 
 Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
-                  ByVal UserIndex As Integer, _
+                  ByVal Userindex As Integer, _
                   ByVal Slot As Byte)
     '***************************************************
     'Author: Unknown
@@ -402,16 +402,16 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
 
     Dim LoopC   As Long
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         'Actualiza un solo slot
         If Not UpdateAll Then
     
             'Actualiza el inventario
             If .Invent.Object(Slot).ObjIndex > 0 Then
-                Call ChangeUserInv(UserIndex, Slot, .Invent.Object(Slot))
+                Call ChangeUserInv(Userindex, Slot, .Invent.Object(Slot))
             Else
-                Call ChangeUserInv(UserIndex, Slot, NullObj)
+                Call ChangeUserInv(Userindex, Slot, NullObj)
 
             End If
     
@@ -422,9 +422,9 @@ Sub UpdateUserInv(ByVal UpdateAll As Boolean, _
 
                 'Actualiza el inventario
                 If .Invent.Object(LoopC).ObjIndex > 0 Then
-                    Call ChangeUserInv(UserIndex, LoopC, .Invent.Object(LoopC))
+                    Call ChangeUserInv(Userindex, LoopC, .Invent.Object(LoopC))
                 Else
-                    Call ChangeUserInv(UserIndex, LoopC, NullObj)
+                    Call ChangeUserInv(Userindex, LoopC, NullObj)
 
                 End If
 
@@ -441,7 +441,7 @@ ErrHandler:
 
 End Sub
 
-Sub DropObj(ByVal UserIndex As Integer, _
+Sub DropObj(ByVal Userindex As Integer, _
             ByVal Slot As Byte, _
             ByVal Num As Integer, _
             ByVal Map As Integer, _
@@ -457,20 +457,20 @@ Sub DropObj(ByVal UserIndex As Integer, _
 
     Dim MapObj  As obj
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If Num > 0 Then
             
             'Validacion para que no podamos tirar nuestra monturas mientras la usamos.
             If .flags.Equitando = 1 And .Invent.MonturaEqpSlot = Slot Then
-                Call WriteConsoleMsg(UserIndex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         
             DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
         
             If (ItemNewbie(DropObj.ObjIndex) And (.flags.Privilegios And PlayerType.User)) Then
-                Call WriteConsoleMsg(UserIndex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(Userindex, "No puedes tirar objetos newbie.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
 
             End If
@@ -484,7 +484,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
             If MapObj.ObjIndex = 0 Or MapObj.ObjIndex = DropObj.ObjIndex Then
         
                 If MapObj.Amount = MAX_INVENTORY_OBJS Then
-                    Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_WARNING)
                     Exit Sub
 
                 End If
@@ -495,11 +495,11 @@ Sub DropObj(ByVal UserIndex As Integer, _
                 End If
             
                 Call MakeObj(DropObj, Map, X, Y)
-                Call QuitarUserInvItem(UserIndex, Slot, DropObj.Amount)
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call QuitarUserInvItem(Userindex, Slot, DropObj.Amount)
+                Call UpdateUserInv(False, Userindex, Slot)
             
                 If ObjData(DropObj.ObjIndex).OBJType = eOBJType.otBarcos Then
-                    Call WriteConsoleMsg(UserIndex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(Userindex, "ATENCION!! ACABAS DE TIRAR TU BARCA!", FontTypeNames.FONTTYPE_WARNING)
 
                 End If
             
@@ -520,7 +520,7 @@ Sub DropObj(ByVal UserIndex As Integer, _
                 End If
 
             Else
-                Call WriteConsoleMsg(UserIndex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "No hay espacio en el piso.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
@@ -579,14 +579,13 @@ Sub MakeObj(ByRef obj As obj, _
             End If
             
             '//Agregamos las pos de los objetos
-            If ObjData(obj.ObjIndex).OBJType <> otFogata And Not EsObjetoFijo(ObjData(obj.ObjIndex).OBJType) Then
-
+            If ObjData(obj.ObjIndex).OBJType <> otFogata And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
                 xPos.X = X
                 xPos.Y = Y
-                AgregarObjetoLimpieza xPos
+                If (MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA Or MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO) And MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1 Then AgregarObjetoLimpieza xPos
 
             End If
 
@@ -596,7 +595,7 @@ Sub MakeObj(ByRef obj As obj, _
 
 End Sub
 
-Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As obj) As Boolean
+Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: 17/12/2019
@@ -607,11 +606,11 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As obj) A
 
     Dim Slot As Byte
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
         'Chequeamos la cantidad maxima de items en inventario para poder activar/desactivar
         'la mochila sin tener que reiniciar el juego
         'Ya que en en el unico lugar donde se setea este valor es en ConnectUser (Recox)
-        .CurrentInventorySlots = getMaxInventorySlots(UserIndex)
+        .CurrentInventorySlots = getMaxInventorySlots(Userindex)
         
         'el user ya tiene un objeto del mismo tipo?
         Slot = 1
@@ -634,7 +633,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As obj) A
                 Slot = Slot + 1
 
                 If Slot > .CurrentInventorySlots Then
-                    Call WriteConsoleMsg(UserIndex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_WARNING)
+                    Call WriteConsoleMsg(Userindex, "No puedes cargar mas objetos.", FontTypeNames.FONTTYPE_WARNING)
                     MeterItemEnInventario = False
                     Exit Function
 
@@ -647,7 +646,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As obj) A
     
         If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
             If Not ItemSeCae(MiObj.ObjIndex) Then
-                Call WriteConsoleMsg(UserIndex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(Userindex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_WARNING)
                 MeterItemEnInventario = False
                 Exit Function
 
@@ -669,7 +668,7 @@ Function MeterItemEnInventario(ByVal UserIndex As Integer, ByRef MiObj As obj) A
     
     MeterItemEnInventario = True
            
-    Call UpdateUserInv(False, UserIndex, Slot)
+    Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Function
 ErrHandler:
@@ -677,7 +676,7 @@ ErrHandler:
 
 End Function
 
-Sub GetObj(ByVal UserIndex As Integer)
+Sub GetObj(ByVal Userindex As Integer)
     '***************************************************
     'Autor: Unknown (orginal version)
     'Last Modification: 18/12/2009
@@ -690,7 +689,7 @@ Sub GetObj(ByVal UserIndex As Integer)
 
     Dim ObjPos As String
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         'Hay algun obj?
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).ObjInfo.ObjIndex > 0 Then
@@ -721,14 +720,14 @@ Sub GetObj(ByVal UserIndex As Integer)
                         'Quitamos el objeto
                         Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
                             
-                        Call WriteUpdateGold(UserIndex)
+                        Call WriteUpdateGold(Userindex)
                     Else
-                        Call WriteConsoleMsg(UserIndex, "No puedes juntar este oro por que tendrias mas del maximo disponible (2147483647)", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "No puedes juntar este oro por que tendrias mas del maximo disponible (2147483647)", FontTypeNames.FONTTYPE_INFO)
                     End If
 
                 Else
 
-                    If MeterItemEnInventario(UserIndex, MiObj) Then
+                    If MeterItemEnInventario(Userindex, MiObj) Then
                     
                         'Quitamos el objeto
                         Call EraseObj(MapData(.Pos.Map, X, Y).ObjInfo.Amount, .Pos.Map, .Pos.X, .Pos.Y)
@@ -759,7 +758,7 @@ Sub GetObj(ByVal UserIndex As Integer)
             End If
 
         Else
-            Call WriteConsoleMsg(UserIndex, "No hay nada aqui.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "No hay nada aqui.", FontTypeNames.FONTTYPE_INFO)
 
         End If
 
@@ -767,7 +766,7 @@ Sub GetObj(ByVal UserIndex As Integer)
 
 End Sub
 
-Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
+Public Sub Desequipar(ByVal Userindex As Integer, ByVal Slot As Byte)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -779,7 +778,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
     'Desequipa el item slot del inventario
     Dim obj As ObjData
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
         With .Invent
 
             If (Slot < LBound(.Object)) Or (Slot > UBound(.Object)) Then
@@ -808,7 +807,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                     With .Char
                         .WeaponAnim = NingunArma
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                     End With
 
@@ -841,10 +840,10 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End With
                 
-                Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
+                Call DarCuerpoDesnudo(Userindex, .flags.Mimetizado = 1)
 
                 With .Char
-                    Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                    Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                 End With
                  
@@ -861,7 +860,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                     With .Char
                         .CascoAnim = NingunCasco
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                     End With
 
@@ -880,7 +879,7 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                     With .Char
                         .ShieldAnim = NingunEscudo
-                        Call ChangeUserChar(UserIndex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
+                        Call ChangeUserChar(Userindex, .body, .Head, .heading, .WeaponAnim, .ShieldAnim, .CascoAnim)
 
                     End With
 
@@ -895,15 +894,15 @@ Public Sub Desequipar(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 End With
                 
-                Call InvUsuario.TirarTodosLosItemsEnMochila(UserIndex)
+                Call InvUsuario.TirarTodosLosItemsEnMochila(Userindex)
                 .CurrentInventorySlots = MAX_NORMAL_INVENTORY_SLOTS
 
         End Select
 
     End With
     
-    Call WriteUpdateUserStats(UserIndex)
-    Call UpdateUserInv(False, UserIndex, Slot)
+    Call WriteUpdateUserStats(Userindex)
+    Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Sub
 
@@ -944,7 +943,7 @@ Function EsUsable(ByVal ObjIndex As Integer)
 
 End Function
 
-Function SexoPuedeUsarItem(ByVal UserIndex As Integer, _
+Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
                            ByVal ObjIndex As Integer, _
                            Optional ByRef sMotivo As String) As Boolean
     '***************************************************
@@ -956,9 +955,9 @@ Function SexoPuedeUsarItem(ByVal UserIndex As Integer, _
     On Error GoTo ErrHandler
     
     If ObjData(ObjIndex).Mujer = 1 Then
-        SexoPuedeUsarItem = UserList(UserIndex).Genero <> eGenero.Hombre
+        SexoPuedeUsarItem = UserList(Userindex).Genero <> eGenero.Hombre
     ElseIf ObjData(ObjIndex).Hombre = 1 Then
-        SexoPuedeUsarItem = UserList(UserIndex).Genero <> eGenero.Mujer
+        SexoPuedeUsarItem = UserList(Userindex).Genero <> eGenero.Mujer
     Else
         SexoPuedeUsarItem = True
 
@@ -972,7 +971,7 @@ ErrHandler:
 
 End Function
 
-Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
+Function FaccionPuedeUsarItem(ByVal Userindex As Integer, _
                               ByVal ObjIndex As Integer, _
                               Optional ByRef sMotivo As String) As Boolean
     '***************************************************
@@ -982,8 +981,8 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
     '***************************************************
 
     If ObjData(ObjIndex).Real = 1 Then
-        If Not criminal(UserIndex) Then
-            FaccionPuedeUsarItem = esArmada(UserIndex)
+        If Not criminal(Userindex) Then
+            FaccionPuedeUsarItem = esArmada(Userindex)
         Else
             FaccionPuedeUsarItem = False
 
@@ -991,8 +990,8 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
 
     ElseIf ObjData(ObjIndex).Caos = 1 Then
 
-        If criminal(UserIndex) Then
-            FaccionPuedeUsarItem = esCaos(UserIndex)
+        If criminal(Userindex) Then
+            FaccionPuedeUsarItem = esCaos(Userindex)
         Else
             FaccionPuedeUsarItem = False
 
@@ -1007,7 +1006,7 @@ Function FaccionPuedeUsarItem(ByVal UserIndex As Integer, _
 
 End Function
 
-Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
+Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     '*************************************************
     'Author: Unknown
     'Last modified: 03/02/2020
@@ -1025,29 +1024,29 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
     Dim sMotivo  As String
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
         ObjIndex = .Invent.Object(Slot).ObjIndex
         obj = ObjData(ObjIndex)
         
         ' No se pueden usar muebles.
         If Not EsUsable(ObjIndex) Then Exit Sub
         
-        If obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
-            Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
+        If obj.Newbie = 1 And Not EsNewbie(Userindex) Then
+            Call WriteConsoleMsg(Userindex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
         End If
 
         ' Nivel minimo
         If .Stats.ELV < obj.MinLevel Then
-            Call WriteConsoleMsg(UserIndex, "Necesitas ser nivel " & obj.MinLevel & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "Necesitas ser nivel " & obj.MinLevel & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
 
         'Skills minimos
         If obj.SkillRequerido Then
             If .Stats.UserSkills(obj.SkillRequerido) < obj.SkillCantidad Then
-                Call WriteConsoleMsg(UserIndex, "Necesitas " & obj.SkillCantidad & " puntos en " & SkillsNames(obj.SkillRequerido) & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Necesitas " & obj.SkillCantidad & " puntos en " & SkillsNames(obj.SkillRequerido) & " para poder equipar este objeto.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
         End If
@@ -1056,19 +1055,19 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
             Case eOBJType.otWeapon
 
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         'Quitamos del inv el item
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(Userindex, Slot)
 
                         'Animacion por defecto
                         If .flags.Mimetizado = 1 Then
                             .CharMimetizado.WeaponAnim = NingunArma
                         Else
                             .Char.WeaponAnim = NingunArma
-                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                         End If
 
@@ -1078,7 +1077,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     
                     'Quitamos el elemento anterior
                     If .Invent.WeaponEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.WeaponEqpSlot)
+                        Call Desequipar(Userindex, .Invent.WeaponEqpSlot)
 
                     End If
                     
@@ -1087,36 +1086,36 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     .Invent.WeaponEqpSlot = Slot
                     
                     'El sonido solo se envia si no lo produce un admin invisible
-                    If Not (.flags.AdminInvisible = 1) Then Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_SACARARMA, .Pos.X, .Pos.Y))
+                    If Not (.flags.AdminInvisible = 1) Then Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_SACARARMA, .Pos.X, .Pos.Y))
                     
                     If .flags.Mimetizado = 1 Then
-                        .CharMimetizado.WeaponAnim = GetWeaponAnim(UserIndex, ObjIndex)
+                        .CharMimetizado.WeaponAnim = GetWeaponAnim(Userindex, ObjIndex)
                     Else
-                        .Char.WeaponAnim = GetWeaponAnim(UserIndex, ObjIndex)
-                        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        .Char.WeaponAnim = GetWeaponAnim(Userindex, ObjIndex)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                     End If
 
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
             
             Case eOBJType.otAnillo
 
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         'Quitamos del inv el item
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(Userindex, Slot)
                         Exit Sub
 
                     End If
                         
                     'Quitamos el elemento anterior
                     If .Invent.AnilloEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.AnilloEqpSlot)
+                        Call Desequipar(Userindex, .Invent.AnilloEqpSlot)
 
                     End If
                 
@@ -1125,25 +1124,25 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     .Invent.AnilloEqpSlot = Slot
                         
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
             
             Case eOBJType.otFlechas
 
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
                         
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
                         'Quitamos del inv el item
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(Userindex, Slot)
                         Exit Sub
 
                     End If
                         
                     'Quitamos el elemento anterior
                     If .Invent.MunicionEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.MunicionEqpSlot)
+                        Call Desequipar(Userindex, .Invent.MunicionEqpSlot)
 
                     End If
                 
@@ -1152,33 +1151,33 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     .Invent.MunicionEqpSlot = Slot
                         
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
             
             Case eOBJType.otArmadura
 
                 If .flags.Navegando = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas navegando.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
 
                 'Parchesin para que no se saquen una armadura mientras estan en montura y dsp les queda el cuerpo de la armadura y velocidad de montura (Recox)
                 If .flags.Equitando = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas en tu montura.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "No podes equiparte o desequiparte vestimentas o armaduras mientras estas en tu montura.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
                 'Nos aseguramos que puede usarla
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And SexoPuedeUsarItem(UserIndex, ObjIndex, sMotivo) And CheckRazaUsaRopa(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And SexoPuedeUsarItem(Userindex, ObjIndex, sMotivo) And CheckRazaUsaRopa(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
-                        Call Desequipar(UserIndex, Slot)
-                        Call DarCuerpoDesnudo(UserIndex, .flags.Mimetizado = 1)
+                        Call Desequipar(Userindex, Slot)
+                        Call DarCuerpoDesnudo(Userindex, .flags.Mimetizado = 1)
 
                         If Not .flags.Mimetizado = 1 Then
-                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                         End If
 
@@ -1188,7 +1187,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
                     'Quita el anterior
                     If .Invent.ArmourEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.ArmourEqpSlot)
+                        Call Desequipar(Userindex, .Invent.ArmourEqpSlot)
 
                     End If
             
@@ -1201,30 +1200,30 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         .CharMimetizado.body = obj.Ropaje
                     Else
                         .Char.body = obj.Ropaje
-                        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                     End If
 
                     .flags.Desnudo = 0
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
             
             Case eOBJType.otCasco
 
                 If .flags.Navegando = 1 Then Exit Sub
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(Userindex, Slot)
 
                         If .flags.Mimetizado = 1 Then
                             .CharMimetizado.CascoAnim = NingunCasco
                         Else
                             .Char.CascoAnim = NingunCasco
-                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                         End If
 
@@ -1234,7 +1233,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             
                     'Quita el anterior
                     If .Invent.CascoEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.CascoEqpSlot)
+                        Call Desequipar(Userindex, .Invent.CascoEqpSlot)
 
                     End If
             
@@ -1248,12 +1247,12 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         .CharMimetizado.CascoAnim = obj.CascoAnim
                     Else
                         .Char.CascoAnim = obj.CascoAnim
-                        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                     End If
 
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
             
@@ -1261,17 +1260,17 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Navegando = 1 Then Exit Sub
                 
-                If ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
+                If ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) And FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
 
                     'Si esta equipado lo quita
                     If .Invent.Object(Slot).Equipped Then
-                        Call Desequipar(UserIndex, Slot)
+                        Call Desequipar(Userindex, Slot)
 
                         If .flags.Mimetizado = 1 Then
                             .CharMimetizado.ShieldAnim = NingunEscudo
                         Else
                             .Char.ShieldAnim = NingunEscudo
-                            Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                         End If
 
@@ -1281,7 +1280,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
              
                     'Quita el anterior
                     If .Invent.EscudoEqpObjIndex > 0 Then
-                        Call Desequipar(UserIndex, .Invent.EscudoEqpSlot)
+                        Call Desequipar(Userindex, .Invent.EscudoEqpSlot)
 
                     End If
              
@@ -1296,12 +1295,12 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                     Else
                         .Char.ShieldAnim = obj.ShieldAnim
                          
-                        Call ChangeUserChar(UserIndex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
 
                     End If
 
                 Else
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
 
                 End If
                  
@@ -1309,19 +1308,19 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo podes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
 
                 If .Invent.Object(Slot).Equipped Then
-                    Call Desequipar(UserIndex, Slot)
+                    Call Desequipar(Userindex, Slot)
                     Exit Sub
 
                 End If
 
                 If .Invent.MochilaEqpObjIndex > 0 Then
-                    Call Desequipar(UserIndex, .Invent.MochilaEqpSlot)
+                    Call Desequipar(Userindex, .Invent.MochilaEqpSlot)
 
                 End If
 
@@ -1334,7 +1333,7 @@ Sub EquiparInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
     End With
     
     'Actualiza
-    Call UpdateUserInv(False, UserIndex, Slot)
+    Call UpdateUserInv(False, Userindex, Slot)
     
     Exit Sub
     
@@ -1343,7 +1342,7 @@ ErrHandler:
 
 End Sub
 
-Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, _
+Private Function CheckRazaUsaRopa(ByVal Userindex As Integer, _
                                   ItemIndex As Integer, _
                                   Optional ByRef sMotivo As String) As Boolean
     '***************************************************
@@ -1354,7 +1353,7 @@ Private Function CheckRazaUsaRopa(ByVal UserIndex As Integer, _
 
     On Error GoTo ErrHandler
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         'Verifica si la raza puede usar la ropa
         If .raza = eRaza.Humano Or .raza = eRaza.Elfo Or .raza = eRaza.Drow Then
@@ -1381,7 +1380,7 @@ ErrHandler:
 
 End Function
 
-Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
+Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
     '*************************************************
     'Author: Unknown
     'Last modified: 03/02/2020
@@ -1406,14 +1405,14 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
     Dim sMotivo As String
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
     
         If .Invent.Object(Slot).Amount = 0 Then Exit Sub
         
         obj = ObjData(.Invent.Object(Slot).ObjIndex)
         
-        If obj.Newbie = 1 And Not EsNewbie(UserIndex) Then
-            Call WriteConsoleMsg(UserIndex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
+        If obj.Newbie = 1 And Not EsNewbie(Userindex) Then
+            Call WriteConsoleMsg(Userindex, "Solo los newbies pueden usar estos objetos.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
         End If
@@ -1422,17 +1421,17 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
             If obj.proyectil = 1 Then
                 
                 'valido para evitar el flood pero no bloqueo. El bloqueo se hace en WLC con proyectiles.
-                If Not IntervaloPermiteUsar(UserIndex, False) Then Exit Sub
+                If Not IntervaloPermiteUsar(Userindex, False) Then Exit Sub
             Else
 
                 'dagas
-                If Not IntervaloPermiteUsar(UserIndex) Then Exit Sub
+                If Not IntervaloPermiteUsar(Userindex) Then Exit Sub
 
             End If
 
         Else
 
-            If Not IntervaloPermiteUsar(UserIndex) Then Exit Sub
+            If Not IntervaloPermiteUsar(Userindex) Then Exit Sub
 
         End If
         
@@ -1445,7 +1444,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
         ' Nivel minimo
         If .Stats.ELV < obj.MinLevel Then
-            Call WriteConsoleMsg(UserIndex, "Necesitas ser nivel " & obj.MinLevel & " para poder usar este objeto.", FontTypeNames.FONTTYPE_INFO)
+            Call WriteConsoleMsg(Userindex, "Necesitas ser nivel " & obj.MinLevel & " para poder usar este objeto.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
 
@@ -1455,7 +1454,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1465,26 +1464,26 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .Stats.MinHam > .Stats.MaxHam Then .Stats.MinHam = .Stats.MaxHam
                 .flags.Hambre = 0
-                Call WriteUpdateHungerAndThirst(UserIndex)
+                Call WriteUpdateHungerAndThirst(Userindex)
                 'Sonido
                 
                 If ObjIndex = e_ObjetosCriticos.Manzana Or ObjIndex = e_ObjetosCriticos.Manzana2 Or ObjIndex = e_ObjetosCriticos.ManzanaNewbie Then
-                    Call ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.MORFAR_MANZANA)
+                    Call ReproducirSonido(SendTarget.ToPCArea, Userindex, e_SoundIndex.MORFAR_MANZANA)
                 Else
-                    Call ReproducirSonido(SendTarget.ToPCArea, UserIndex, e_SoundIndex.SOUND_COMIDA)
+                    Call ReproducirSonido(SendTarget.ToPCArea, Userindex, e_SoundIndex.SOUND_COMIDA)
 
                 End If
                 
                 'Quitamos del inv el item
-                Call QuitarUserInvItem(UserIndex, Slot, 1)
+                Call QuitarUserInvItem(Userindex, Slot, 1)
                 
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call UpdateUserInv(False, Userindex, Slot)
         
             Case eOBJType.otOro
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1494,42 +1493,42 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 .Invent.Object(Slot).ObjIndex = 0
                 .Invent.NroItems = .Invent.NroItems - 1
                 
-                Call UpdateUserInv(False, UserIndex, Slot)
-                Call WriteUpdateGold(UserIndex)
+                Call UpdateUserInv(False, Userindex, Slot)
+                Call WriteUpdateGold(Userindex)
                 
             Case eOBJType.otWeapon
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
                 
                 If Not .Stats.MinSta > 0 Then
-                    Call WriteConsoleMsg(UserIndex, "Estas muy cansad" & IIf(.Genero = eGenero.Hombre, "o", "a") & ".", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Estas muy cansad" & IIf(.Genero = eGenero.Hombre, "o", "a") & ".", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
                 End If
                 
                 If ObjData(ObjIndex).proyectil = 1 Then
                     If .Invent.Object(Slot).Equipped = 0 Then
-                        Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If
 
-                    Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Proyectiles)  'Call WriteWorkRequestTarget(UserIndex, Proyectiles)
+                    Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, eSkill.Proyectiles)  'Call WriteWorkRequestTarget(UserIndex, Proyectiles)
                 ElseIf .flags.TargetObj = Lena Then
 
                     If .Invent.Object(Slot).ObjIndex = DAGA Then
                         If .Invent.Object(Slot).Equipped = 0 Then
-                            Call WriteConsoleMsg(UserIndex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
 
                         End If
                             
-                        Call TratarDeHacerFogata(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY, UserIndex)
+                        Call TratarDeHacerFogata(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY, Userindex)
 
                     End If
 
@@ -1541,9 +1540,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                             
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.pesca)  'Call WriteWorkRequestTarget(UserIndex, eSkill.Pesca)
+                                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, eSkill.pesca)  'Call WriteWorkRequestTarget(UserIndex, eSkill.Pesca)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -1551,9 +1550,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                             
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Talar)
+                                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, eSkill.Talar)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -1561,9 +1560,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Mineria)
+                                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, eSkill.Mineria)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -1571,9 +1570,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, eSkill.Herreria)
+                                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, eSkill.Herreria)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -1581,9 +1580,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                             
                             ' Lo tiene equipado?
                             If .Invent.WeaponEqpObjIndex = ObjIndex Then
-                                Call EnivarObjConstruibles(UserIndex)
+                                Call EnivarObjConstruibles(Userindex)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Debes tener equipada la herramienta para trabajar.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -1591,7 +1590,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                             If ObjData(ObjIndex).SkHerreria > 0 Then
                                 ' Solo objetos que pueda hacer el herrero
-                                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, FundirMetal) 'Call WriteWorkRequestTarget(UserIndex, FundirMetal)
+                                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, FundirMetal) 'Call WriteWorkRequestTarget(UserIndex, FundirMetal)
 
                             End If
 
@@ -1603,13 +1602,13 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo. ", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
                 
-                If Not IntervaloPermiteGolpeUsar(UserIndex, False) Then
-                    Call WriteConsoleMsg(UserIndex, "Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
+                If Not IntervaloPermiteGolpeUsar(Userindex, False) Then
+                    Call WriteConsoleMsg(Userindex, "Debes esperar unos momentos para tomar otra pocion!!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
                 End If
@@ -1630,17 +1629,17 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .Stats.UserAtributos(eAtributos.Agilidad) > 2 * .Stats.UserAtributosBackUP(Agilidad) Then .Stats.UserAtributos(eAtributos.Agilidad) = 2 * .Stats.UserAtributosBackUP(Agilidad)
                         
                         'Quitamos del inv el item
-                        Call QuitarUserInvItem(UserIndex, Slot, 1)
+                        Call QuitarUserInvItem(Userindex, Slot, 1)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                         End If
 
-                        Call WriteUpdateDexterity(UserIndex)
+                        Call WriteUpdateDexterity(Userindex)
                         
                     Case 2 'Modif la fuerza
                         .flags.DuracionEfecto = obj.DuracionEfecto
@@ -1653,17 +1652,17 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .Stats.UserAtributos(eAtributos.Fuerza) > 2 * .Stats.UserAtributosBackUP(Fuerza) Then .Stats.UserAtributos(eAtributos.Fuerza) = 2 * .Stats.UserAtributosBackUP(Fuerza)
                         
                         'Quitamos del inv el item
-                        Call QuitarUserInvItem(UserIndex, Slot, 1)
+                        Call QuitarUserInvItem(Userindex, Slot, 1)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                         End If
 
-                        Call WriteUpdateStrenght(UserIndex)
+                        Call WriteUpdateStrenght(Userindex)
                         
                     Case 3 'Pocion roja, restaura HP
                         'Usa el item
@@ -1672,13 +1671,13 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .Stats.MinHp > .Stats.MaxHp Then .Stats.MinHp = .Stats.MaxHp
                         
                         'Quitamos del inv el item
-                        Call QuitarUserInvItem(UserIndex, Slot, 1)
+                        Call QuitarUserInvItem(Userindex, Slot, 1)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                         End If
                     
@@ -1690,13 +1689,13 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .Stats.MinMAN > .Stats.MaxMAN Then .Stats.MinMAN = .Stats.MaxMAN
                         
                         'Quitamos del inv el item
-                        Call QuitarUserInvItem(UserIndex, Slot, 1)
+                        Call QuitarUserInvItem(Userindex, Slot, 1)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                         End If
                         
@@ -1704,18 +1703,18 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                         If .flags.Envenenado = 1 Then
                             .flags.Envenenado = 0
-                            Call WriteConsoleMsg(UserIndex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "Te has curado del envenenamiento.", FontTypeNames.FONTTYPE_INFO)
 
                         End If
 
                         'Quitamos del inv el item
-                        Call QuitarUserInvItem(UserIndex, Slot, 1)
+                        Call QuitarUserInvItem(Userindex, Slot, 1)
                         
                         ' Los admin invisibles solo producen sonidos a si mismos
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                         Else
-                            Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                         End If
                         
@@ -1723,22 +1722,22 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .flags.SlotReto > 0 Then Exit Sub
                         
                         If .flags.Privilegios And PlayerType.User Then
-                            Call QuitarUserInvItem(UserIndex, Slot, 1)
-                            Call UserDie(UserIndex)
-                            Call WriteConsoleMsg(UserIndex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)
+                            Call QuitarUserInvItem(Userindex, Slot, 1)
+                            Call UserDie(Userindex)
+                            Call WriteConsoleMsg(Userindex, "Sientes un gran mareo y pierdes el conocimiento.", FontTypeNames.FONTTYPE_FIGHT)
 
                         End If
 
                 End Select
 
-                Call WriteUpdateUserStats(UserIndex)
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call WriteUpdateUserStats(Userindex)
+                Call UpdateUserInv(False, Userindex, Slot)
         
             Case eOBJType.otBebidas
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1747,26 +1746,26 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .Stats.MinAGU > .Stats.MaxAGU Then .Stats.MinAGU = .Stats.MaxAGU
                 .flags.Sed = 0
-                Call WriteUpdateHungerAndThirst(UserIndex)
+                Call WriteUpdateHungerAndThirst(Userindex)
                 
                 'Quitamos del inv el item
-                Call QuitarUserInvItem(UserIndex, Slot, 1)
+                Call QuitarUserInvItem(Userindex, Slot, 1)
                 
                 ' Los admin invisibles solo producen sonidos a si mismos
                 If .flags.AdminInvisible = 1 Then
                     Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
                 Else
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_BEBER, .Pos.X, .Pos.Y))
 
                 End If
                 
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call UpdateUserInv(False, Userindex, Slot)
             
             Case eOBJType.otLlaves
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1786,10 +1785,10 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                  
                                 MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex = ObjData(MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex).IndexCerrada
                                 .flags.TargetObj = MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex
-                                Call WriteConsoleMsg(UserIndex, "Has abierto la puerta.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Has abierto la puerta.", FontTypeNames.FONTTYPE_INFO)
                                 Exit Sub
                             Else
-                                Call WriteConsoleMsg(UserIndex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
                                 Exit Sub
 
                             End If
@@ -1798,11 +1797,11 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                             If TargObj.Clave = obj.Clave Then
                                 MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex = ObjData(MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex).IndexCerradaLlave
-                                Call WriteConsoleMsg(UserIndex, "Has cerrado con llave la puerta.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Has cerrado con llave la puerta.", FontTypeNames.FONTTYPE_INFO)
                                 .flags.TargetObj = MapData(.flags.TargetObjMap, .flags.TargetObjX, .flags.TargetObjY).ObjInfo.ObjIndex
                                 Exit Sub
                             Else
-                                Call WriteConsoleMsg(UserIndex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "La llave no sirve.", FontTypeNames.FONTTYPE_INFO)
                                 Exit Sub
 
                             End If
@@ -1810,7 +1809,7 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         End If
 
                     Else
-                        Call WriteConsoleMsg(UserIndex, "No esta cerrada.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "No esta cerrada.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If
@@ -1821,33 +1820,33 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
 
                 If Not HayAgua(.Pos.Map, .flags.TargetX, .flags.TargetY) Then
-                    Call WriteConsoleMsg(UserIndex, "No hay agua alli.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "No hay agua alli.", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
                 End If
 
                 MiObj.Amount = 1
                 MiObj.ObjIndex = ObjData(.Invent.Object(Slot).ObjIndex).IndexAbierta
-                Call QuitarUserInvItem(UserIndex, Slot, 1)
+                Call QuitarUserInvItem(Userindex, Slot, 1)
 
-                If Not MeterItemEnInventario(UserIndex, MiObj) Then
+                If Not MeterItemEnInventario(Userindex, MiObj) Then
                     Call TirarItemAlPiso(.Pos, MiObj)
 
                 End If
                 
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call UpdateUserInv(False, Userindex, Slot)
             
             Case eOBJType.otBotellaLlena
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1856,23 +1855,23 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .Stats.MinAGU > .Stats.MaxAGU Then .Stats.MinAGU = .Stats.MaxAGU
                 .flags.Sed = 0
-                Call WriteUpdateHungerAndThirst(UserIndex)
+                Call WriteUpdateHungerAndThirst(Userindex)
                 MiObj.Amount = 1
                 MiObj.ObjIndex = ObjData(.Invent.Object(Slot).ObjIndex).IndexCerrada
-                Call QuitarUserInvItem(UserIndex, Slot, 1)
+                Call QuitarUserInvItem(Userindex, Slot, 1)
 
-                If Not MeterItemEnInventario(UserIndex, MiObj) Then
+                If Not MeterItemEnInventario(Userindex, MiObj) Then
                     Call TirarItemAlPiso(.Pos, MiObj)
 
                 End If
                 
-                Call UpdateUserInv(False, UserIndex, Slot)
+                Call UpdateUserInv(False, Userindex, Slot)
             
             Case eOBJType.otPergaminos
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
@@ -1880,20 +1879,20 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 If .Stats.MaxMAN > 0 Then
                     If .flags.Hambre = 0 And .flags.Sed = 0 Then
 
-                        If Not ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-                            Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                        If Not ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
+                            Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
                         End If
 
-                        Call AgregarHechizo(UserIndex, Slot)
-                        Call UpdateUserInv(False, UserIndex, Slot)
+                        Call AgregarHechizo(Userindex, Slot)
+                        Call UpdateUserInv(False, Userindex, Slot)
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Estas demasiado hambriento y sediento.", FontTypeNames.FONTTYPE_INFO)
 
                     End If
 
                 Else
-                    Call WriteConsoleMsg(UserIndex, "No tienes conocimientos de las Artes Arcanas.", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "No tienes conocimientos de las Artes Arcanas.", FontTypeNames.FONTTYPE_INFO)
 
                 End If
 
@@ -1901,26 +1900,26 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
 
-                Call WriteMultiMessage(UserIndex, eMessages.WorkRequestTarget, FundirMetal) 'Call WriteWorkRequestTarget(UserIndex, FundirMetal)
+                Call WriteMultiMessage(Userindex, eMessages.WorkRequestTarget, FundirMetal) 'Call WriteWorkRequestTarget(UserIndex, FundirMetal)
                
             Case eOBJType.otInstrumentos
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
-                    Call WriteMultiMessage(UserIndex, eMessages.UserMuerto)
+                    Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
                     Exit Sub
 
                 End If
                 
                 If obj.Real Then 'Es el Cuerno Real?
-                    If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
+                    If FaccionPuedeUsarItem(Userindex, ObjIndex) Then
                         If MapInfo(.Pos.Map).Pk = False Then
-                            Call WriteConsoleMsg(UserIndex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
 
                         End If
@@ -1929,23 +1928,23 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
                         Else
-                            Call AlertarFaccionarios(UserIndex)
+                            Call AlertarFaccionarios(Userindex)
                             Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
 
                         End If
                         
                         Exit Sub
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Solo miembros del ejercito real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Solo miembros del ejercito real pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If
 
                 ElseIf obj.Caos Then 'Es el Cuerno Legion?
 
-                    If FaccionPuedeUsarItem(UserIndex, ObjIndex) Then
+                    If FaccionPuedeUsarItem(Userindex, ObjIndex) Then
                         If MapInfo(.Pos.Map).Pk = False Then
-                            Call WriteConsoleMsg(UserIndex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
+                            Call WriteConsoleMsg(Userindex, "No hay peligro aqui. Es zona segura.", FontTypeNames.FONTTYPE_INFO)
                             Exit Sub
 
                         End If
@@ -1954,14 +1953,14 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         If .flags.AdminInvisible = 1 Then
                             Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
                         Else
-                            Call AlertarFaccionarios(UserIndex)
+                            Call AlertarFaccionarios(Userindex)
                             Call SendData(SendTarget.toMap, .Pos.Map, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
 
                         End If
                         
                         Exit Sub
                     Else
-                        Call WriteConsoleMsg(UserIndex, "Solo miembros de la legion oscura pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Solo miembros de la legion oscura pueden usar este cuerno.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If
@@ -1973,14 +1972,14 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 If .flags.AdminInvisible = 1 Then
                     Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
                 Else
-                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(obj.Snd1, .Pos.X, .Pos.Y))
 
                 End If
                
             Case eOBJType.otBarcos
 
-                If Not ClasePuedeUsarItem(UserIndex, ObjIndex, sMotivo) Or Not FaccionPuedeUsarItem(UserIndex, ObjIndex, sMotivo) Then
-                    Call WriteConsoleMsg(UserIndex, sMotivo, FontTypeNames.FONTTYPE_INFO)
+                If Not ClasePuedeUsarItem(Userindex, ObjIndex, sMotivo) Or Not FaccionPuedeUsarItem(Userindex, ObjIndex, sMotivo) Then
+                    Call WriteConsoleMsg(Userindex, sMotivo, FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
 
@@ -1988,18 +1987,18 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                 If .Stats.ELV < 25 Then
 
                     ' Solo pirata y trabajador pueden navegar antes
-                    If .clase <> eClass.Worker And .clase <> eClass.Pirat Then
-                        Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
+                    If .Clase <> eClass.Worker And .Clase <> eClass.Pirat Then
+                        Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 25 o superior.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
                     Else
 
                         ' Pero a partir de 20
                         If .Stats.ELV < 20 Then
                             
-                            If .clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
-                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
+                            If .Clase = eClass.Worker And .Stats.UserSkills(eSkill.pesca) <> 100 Then
+                                Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                             Else
-                                Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
+                                Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior.", FontTypeNames.FONTTYPE_INFO)
 
                             End If
                             
@@ -2007,9 +2006,9 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         Else
 
                             ' Esta entre 20 y 25, si es trabajador necesita tener 100 en pesca
-                            If .clase = eClass.Worker Then
+                            If .Clase = eClass.Worker Then
                                 If .Stats.UserSkills(eSkill.pesca) <> 100 Then
-                                    Call WriteConsoleMsg(UserIndex, "Para recorrer los mares debes ser nivel 20 o superior y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
+                                    Call WriteConsoleMsg(Userindex, "Para recorrer los mares debes ser nivel 20 o superior y ademas tu skill en pesca debe ser 100.", FontTypeNames.FONTTYPE_INFO)
                                     Exit Sub
 
                                 End If
@@ -2036,25 +2035,25 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
         '<-------------> MONTURAS <----------->
         Case eOBJType.otMonturas
-            If ClasePuedeUsarItem(UserIndex, ObjIndex) Then
+            If ClasePuedeUsarItem(Userindex, ObjIndex) Then
                 If .flags.invisible = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "Estas invisible, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Estas invisible, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
 
                 If .flags.Muerto = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "Estas muerto, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Estas muerto, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
                 If .flags.Navegando = 1 Then
-                    Call WriteConsoleMsg(UserIndex, "Estas navegando, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                    Call WriteConsoleMsg(Userindex, "Estas navegando, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
                 End If
                 
-                Call DoEquita(UserIndex, obj, Slot)
+                Call DoEquita(Userindex, obj, Slot)
             Else
-                Call WriteConsoleMsg(UserIndex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(Userindex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
             End If
                 
             Case eOBJType.otManuales
@@ -2065,24 +2064,24 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
                         
                         If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
                             .Stats.UserSkills(eSkill.Liderazgo) = 100
-                            Call QuitarUserInvItem(UserIndex, Slot, 1)
-                            Call UpdateUserInv(False, UserIndex, Slot)
+                            Call QuitarUserInvItem(Userindex, Slot, 1)
+                            Call UpdateUserInv(False, Userindex, Slot)
                         End If
                         
                     Case 1128   ' Manual de Supervivencia
                         
                         If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
                             .Stats.UserSkills(eSkill.Supervivencia) = 100
-                            Call QuitarUserInvItem(UserIndex, Slot, 1)
-                            Call UpdateUserInv(False, UserIndex, Slot)
+                            Call QuitarUserInvItem(Userindex, Slot, 1)
+                            Call UpdateUserInv(False, Userindex, Slot)
                         End If
                         
                     Case 1129   ' Manual de Navegacion
                         
                         If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
                             .Stats.UserSkills(eSkill.Navegacion) = 100
-                            Call QuitarUserInvItem(UserIndex, Slot, 1)
-                            Call UpdateUserInv(False, UserIndex, Slot)
+                            Call QuitarUserInvItem(Userindex, Slot, 1)
+                            Call UpdateUserInv(False, Userindex, Slot)
                         End If
                         
                 End Select
@@ -2093,40 +2092,40 @@ Sub UseInvItem(ByVal UserIndex As Integer, ByVal Slot As Byte)
 
 End Sub
 
-Sub EnivarArmasConstruibles(ByVal UserIndex As Integer)
+Sub EnivarArmasConstruibles(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    Call WriteBlacksmithWeapons(UserIndex)
+    Call WriteBlacksmithWeapons(Userindex)
 
 End Sub
  
-Sub EnivarObjConstruibles(ByVal UserIndex As Integer)
+Sub EnivarObjConstruibles(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    Call WriteInitCarpenting(UserIndex)
+    Call WriteInitCarpenting(Userindex)
 
 End Sub
 
-Sub EnivarArmadurasConstruibles(ByVal UserIndex As Integer)
+Sub EnivarArmadurasConstruibles(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
     '***************************************************
 
-    Call WriteBlacksmithArmors(UserIndex)
+    Call WriteBlacksmithArmors(Userindex)
 
 End Sub
 
-Sub TirarTodo(ByVal UserIndex As Integer)
+Sub TirarTodo(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2135,11 +2134,11 @@ Sub TirarTodo(ByVal UserIndex As Integer)
 
     On Error GoTo ErrHandler
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
-        Call TirarTodosLosItems(UserIndex)
+        Call TirarTodosLosItems(Userindex)
         
         Dim Cantidad As Long: Cantidad = .Stats.Gld - CLng(.Stats.ELV) * 10000
        
@@ -2147,7 +2146,7 @@ Sub TirarTodo(ByVal UserIndex As Integer)
         If MapInfo(.Pos.Map).Pk Then
             
             If Cantidad > 0 Then
-                Call TirarOro(Cantidad, UserIndex)
+                Call TirarOro(Cantidad, Userindex)
             End If
             
         End If
@@ -2175,7 +2174,7 @@ Public Function ItemSeCae(ByVal index As Integer) As Boolean
 
 End Function
 
-Sub TirarTodosLosItems(ByVal UserIndex As Integer)
+Sub TirarTodosLosItems(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Unknown
@@ -2194,7 +2193,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
 
     Dim DropAgua  As Boolean
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         For i = 1 To .CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
@@ -2211,7 +2210,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                     DropAgua = True
 
                     ' Es pirata?
-                    If .clase = eClass.Pirat Then
+                    If .Clase = eClass.Pirat Then
 
                         ' Si tiene galeon equipado
                         If .Invent.BarcoObjIndex = 476 Then
@@ -2230,7 +2229,7 @@ Sub TirarTodosLosItems(ByVal UserIndex As Integer)
                     Call Tilelibre(.Pos, NuevaPos, MiObj, DropAgua, True)
                     
                     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
                     End If
 
@@ -2262,7 +2261,7 @@ Function ItemNewbie(ByVal ItemIndex As Integer) As Boolean
 
 End Function
 
-Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
+Sub TirarTodosLosItemsNoNewbies(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Unknown
@@ -2278,11 +2277,11 @@ Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
 
     Dim ItemIndex As Integer
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
-        For i = 1 To UserList(UserIndex).CurrentInventorySlots
+        For i = 1 To UserList(Userindex).CurrentInventorySlots
             ItemIndex = .Invent.Object(i).ObjIndex
 
             If ItemIndex > 0 Then
@@ -2298,7 +2297,7 @@ Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
                     Tilelibre .Pos, NuevaPos, MiObj, True, True
 
                     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
                     End If
 
@@ -2312,7 +2311,7 @@ Sub TirarTodosLosItemsNoNewbies(ByVal UserIndex As Integer)
 
 End Sub
 
-Sub TirarTodosLosItemsEnMochila(ByVal UserIndex As Integer)
+Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Unknown
@@ -2326,7 +2325,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal UserIndex As Integer)
 
     Dim ItemIndex As Integer
     
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If MapData(.Pos.Map, .Pos.X, .Pos.Y).trigger = eTrigger.ZONAPELEA Then Exit Sub
         
@@ -2344,7 +2343,7 @@ Sub TirarTodosLosItemsEnMochila(ByVal UserIndex As Integer)
                     Tilelibre .Pos, NuevaPos, MiObj, True, True
 
                     If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(UserIndex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
                     End If
 
@@ -2372,7 +2371,7 @@ Public Function getObjType(ByVal ObjIndex As Integer) As eOBJType
     
 End Function
 
-Public Sub moveItem(ByVal UserIndex As Integer, _
+Public Sub moveItem(ByVal Userindex As Integer, _
                     ByVal originalSlot As Integer, _
                     ByVal newSlot As Integer)
 
@@ -2382,7 +2381,7 @@ Public Sub moveItem(ByVal UserIndex As Integer, _
 
     If (originalSlot <= 0) Or (newSlot <= 0) Then Exit Sub
 
-    With UserList(UserIndex)
+    With UserList(Userindex)
 
         If (originalSlot > .CurrentInventorySlots) Or (newSlot > .CurrentInventorySlots) Then Exit Sub
     
@@ -2447,8 +2446,8 @@ Public Sub moveItem(ByVal UserIndex As Integer, _
 
         End If
 
-        Call UpdateUserInv(False, UserIndex, originalSlot)
-        Call UpdateUserInv(False, UserIndex, newSlot)
+        Call UpdateUserInv(False, Userindex, originalSlot)
+        Call UpdateUserInv(False, Userindex, newSlot)
 
     End With
 

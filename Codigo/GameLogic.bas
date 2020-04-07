@@ -900,9 +900,10 @@ Function MoveToLegalPos(ByVal Map As Integer, _
                         Optional ByVal PuedeTierra As Boolean = True) As Boolean
     '***************************************************
     'Autor: ZaMa
-    'Last Modification: 13/07/2009
+    'Last Modification: 06/04/2020
     'Checks if the position is Legal, but considers that if there's a casper, it's a legal movement.
     '13/07/2009: ZaMa - Now it's also legal move where an invisible admin is.
+    '06/04/2020: FrankoH298 - Si estamos por movernos a dentro de una casa montado, no nos deja.
     '***************************************************
 
     Dim Userindex        As Integer
@@ -927,7 +928,7 @@ Function MoveToLegalPos(ByVal Map As Integer, _
                 IsAdminInvisible = False
 
             End If
-        
+
             If PuedeAgua And PuedeTierra Then
                 MoveToLegalPos = (.Blocked <> 1) And (Userindex = 0 Or IsDeadChar Or IsAdminInvisible) And (.NpcIndex = 0)
             ElseIf PuedeTierra And Not PuedeAgua Then
@@ -1646,8 +1647,7 @@ Function FindDirection(Pos As WorldPos, Target As WorldPos) As eHeading
 
 End Function
 
-Public Function ItemNoEsDeMapa(ByVal index As Integer, _
-                               ByVal bIsExit As Boolean) As Boolean
+Public Function ItemNoEsDeMapa(ByVal index As Integer) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1655,7 +1655,7 @@ Public Function ItemNoEsDeMapa(ByVal index As Integer, _
     '***************************************************
 
     With ObjData(index)
-        ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And .OBJType <> eOBJType.otForos And .OBJType <> eOBJType.otCarteles And .OBJType <> eOBJType.otArboles And .OBJType <> eOBJType.otYacimiento And Not (.OBJType = eOBJType.otTeleport And bIsExit)
+        ItemNoEsDeMapa = .OBJType <> eOBJType.otPuertas And .OBJType <> eOBJType.otForos And .OBJType <> eOBJType.otCarteles And .OBJType <> eOBJType.otArboles And .OBJType <> eOBJType.otYacimiento And .OBJType <> eOBJType.otTeleport
     
     End With
 

@@ -826,15 +826,22 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
                              ByVal Userindex As Integer) As Boolean
     '*************************************************
     'Author: Unknown
-    'Last modified: -
-    '
+    'Last Modification: 06/04/2020
+    '06/04/2020: FrankoH298 - Si un npc ataca a un usuario lo desmonta.
     '*************************************************
 
     With UserList(Userindex)
 
         If .flags.AdminInvisible = 1 Then Exit Function
         If (Not .flags.Privilegios And PlayerType.User) <> 0 And Not .flags.AdminPerseguible Then Exit Function
-
+        
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+            
+        End If
     End With
     
     With Npclist(NpcIndex)
@@ -975,7 +982,6 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
     '*************************************************
     
     Dim MasterIndex As Integer
-    
     With Npclist(Atacante)
         
         'Es el Rey Preatoriano?
@@ -990,7 +996,8 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         End If
         
         ' El npc puede atacar ???
-        If IntervaloPermiteAtacarNpc(Victima) Then
+        
+        If IntervaloPermiteAtacarNpc(Atacante) Then
             If cambiarMOvimiento Then
                 Npclist(Victima).TargetNPC = Atacante
                 Npclist(Victima).Movement = TipoAI.NpcAtacaNpc
@@ -1056,23 +1063,31 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
         End If
 
     End With
-
 End Sub
 
 Public Function UsuarioAtacaNpc(ByVal Userindex As Integer, _
                                 ByVal NpcIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
-    'Last Modification: 13/02/2011 (Amraphen)
+    'Last Modification: 06/04/2020
     '12/01/2010: ZaMa - Los druidas pierden la inmunidad de ser atacados por npcs cuando los atacan.
     '14/01/2010: ZaMa - Lo transformo en funcion, para que no se pierdan municiones al atacar targets invalidos.
     '13/02/2011: Amraphen - Ahora la stamina es quitada cuando efectivamente se ataca al NPC.
+    '06/04/2020: FrankoH298 - Si un usuario ataca a un npc lo desmonta.
     '***************************************************
 
     On Error GoTo ErrHandler
 
     If Not PuedeAtacarNPC(Userindex, NpcIndex) Then Exit Function
-    
+    With UserList(Userindex)
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+            
+        End If
+    End With
     Call NPCAtacado(NpcIndex, Userindex)
     
     If UserImpactoNpc(Userindex, NpcIndex) Then
@@ -1346,9 +1361,10 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
                                     ByVal VictimaIndex As Integer) As Boolean
     '***************************************************
     'Author: Unknown
-    'Last Modification: 14/01/2010 (ZaMa)
+    'Last Modification: 06/04/2020
     '14/01/2010: ZaMa - Lo transformo en funcion, para que no se pierdan municiones al atacar targets
     '                    invalidos, y evitar un doble chequeo innecesario
+    '06/04/2020: FrankoH298 - Si un usuario ataca a un npc lo desmonta.
     '***************************************************
 
     On Error GoTo ErrHandler
@@ -1356,7 +1372,15 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
     If Not PuedeAtacar(AtacanteIndex, VictimaIndex) Then Exit Function
     
     With UserList(AtacanteIndex)
-
+        
+        '<<<< Equitando >>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(AtacanteIndex)
+            Call WriteEquitandoToggle(AtacanteIndex)
+            Call ChangeUserChar(AtacanteIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
+            
+        End If
+        
         If Abs(.Pos.X - UserList(VictimaIndex).Pos.X) > RANGO_VISION_X Or Abs(.Pos.Y - UserList(VictimaIndex).Pos.Y) > RANGO_VISION_Y Then
             Call WriteConsoleMsg(AtacanteIndex, "Estas muy lejos para disparar.", FontTypeNames.FONTTYPE_FIGHT)
             Exit Function

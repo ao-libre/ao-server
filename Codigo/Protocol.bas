@@ -2339,8 +2339,7 @@ Private Sub HandleWalk(ByVal Userindex As Integer)
                 .flags.Meditando = False
                 .Char.FX = 0
                 .Char.loops = 0
-                
-                Call WriteMeditateToggle(Userindex)
+
                 Call WriteConsoleMsg(Userindex, "Dejas de meditar.", FontTypeNames.FONTTYPE_INFO)
                 
                 Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateFX(.Char.CharIndex, 0, 0))
@@ -2457,7 +2456,6 @@ Private Sub HandleAttack(ByVal Userindex As Integer)
             Exit Sub
 
         End If
-        
         'If equiped weapon is ranged, can't attack this way
         If .Invent.WeaponEqpObjIndex > 0 Then
             If ObjData(.Invent.WeaponEqpObjIndex).proyectil = 1 Then
@@ -4283,7 +4281,7 @@ Private Sub HandleCommerceSell(ByVal Userindex As Integer)
         
         'El NPC puede comerciar?
         If Npclist(.flags.TargetNPC).Comercia = 0 Then
-            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageChatOverHead("No tengo ningUn interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
+            Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageChatOverHead("No tengo ningun interes en comerciar.", Npclist(.flags.TargetNPC).Char.CharIndex, vbWhite))
             Exit Sub
 
         End If
@@ -6488,6 +6486,11 @@ Private Sub HandleMeditate(ByVal Userindex As Integer)
             Call WriteMultiMessage(Userindex, eMessages.UserMuerto)
             Exit Sub
 
+        End If
+        
+        If .flags.Equitando Then
+            Call WriteConsoleMsg(Userindex, "No puedes meditar mientras si estas montado.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
         End If
         
         'Can he meditate?
@@ -10309,6 +10312,8 @@ Private Sub HandleJail(ByVal Userindex As Integer)
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
     'Last Modification: 07/06/2010
     '07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
+    'Last Modification: 04/04/2020
+    '4/4/2020: FrankoH298 - Ahora calcula bien el tiempo de carcel
     '***************************************************
     If UserList(Userindex).incomingData.Length < 6 Then
         Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
@@ -10367,7 +10372,7 @@ Private Sub HandleJail(ByVal Userindex As Integer)
 
                     If Not UserList(tUser).flags.Privilegios And PlayerType.User Then
                         Call WriteConsoleMsg(Userindex, "No puedes encarcelar a administradores.", FontTypeNames.FONTTYPE_INFO)
-                    ElseIf jailTime > (60 * 40) Then
+                    ElseIf jailTime > (60) Then
                         Call WriteConsoleMsg(Userindex, "No puedes encarcelar por mas de 60 minutos.", FontTypeNames.FONTTYPE_INFO)
                     Else
 
@@ -10387,7 +10392,7 @@ Private Sub HandleJail(ByVal Userindex As Integer)
 
                         End If
                         
-                        Call Encarcelar(tUser, jailTime * 40, .Name)
+                        Call Encarcelar(tUser, jailTime, .Name)
                         Call LogGM(.Name, " encarcelo a " & UserName)
 
                     End If
@@ -13755,9 +13760,8 @@ Private Sub HandleDestroyAllItemsInArea(ByVal Userindex As Integer)
 
                 If X > 0 And Y > 0 And X < 101 And Y < 101 Then
                     If MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex > 0 Then
-                        bIsExit = MapData(.Pos.Map, X, Y).TileExit.Map > 0
 
-                        If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex, bIsExit) Then
+                        If ItemNoEsDeMapa(MapData(.Pos.Map, X, Y).ObjInfo.ObjIndex) Then
                             Call EraseObj(MAX_INVENTORY_OBJS, .Pos.Map, X, Y)
 
                         End If
@@ -23837,8 +23841,13 @@ Public Sub WriteEquitandoToggle(ByVal Userindex As Integer)
 'Writes the "EquitandoToggle" message to the given user's outgoing data buffer
 '***************************************************
 On Error GoTo ErrHandler
+    With UserList(Userindex)
+        Call .outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
+        
+        Call .outgoingData.WriteLong(.Counters.MonturaCounter)
+        
+    End With
 
-    Call UserList(Userindex).outgoingData.WriteByte(ServerPacketID.EquitandoToggle)
     Exit Sub
 
 ErrHandler:

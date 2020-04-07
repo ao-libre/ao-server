@@ -980,12 +980,13 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
 
     '*************************************************
     'Author: Unknown
-    'Last modified: 13/07/2009
+    'Last Modification: 06/04/2020
     'Moves the char, sending the message to everyone in range.
     '30/03/2009: ZaMa - Now it's legal to move where a casper is, changing its pos to where the moving char was.
     '28/05/2009: ZaMa - When you are moved out of an Arena, the resurrection safe is activated.
     '13/07/2009: ZaMa - Now all the clients don't know when an invisible admin moves, they force the admin to move.
     '13/07/2009: ZaMa - Invisible admins aren't allowed to force dead characater to move
+    '06/04/2020: FrankoH298 - Ahora no se puede entrar a las casas montado.
     '*************************************************
     Dim nPos          As WorldPos
 
@@ -1004,7 +1005,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
     isAdminInvi = (UserList(Userindex).flags.AdminInvisible = 1)
     
     If MoveToLegalPos(UserList(Userindex).Pos.Map, nPos.X, nPos.Y, sailing, Not sailing) Then
-
+        If UserList(Userindex).flags.Equitando And (MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.CASA Or MapData(UserList(Userindex).Pos.Map, nPos.X, nPos.Y).trigger = eTrigger.BAJOTECHO) Then Exit Sub
         'si no estoy solo en el mapa...
         If MapInfo(UserList(Userindex).Pos.Map).NumUsers > 1 Then
                
@@ -1672,11 +1673,6 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         .flags.Envenenado = 0
         .flags.Muerto = 1
 
-        If .flags.Equitando = 1 Then
-            Call WriteEquitandoToggle(Userindex)
-            Call UnmountMontura(Userindex)
-        End If
-        
         .Counters.Trabajando = 0
         
         ' No se activa en arenas
@@ -1712,6 +1708,13 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         .flags.NPCAtacado = 0
         
         Call PerdioNpc(Userindex, False)
+        
+        '<<<< Equitando >>>>
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+            Call WriteEquitandoToggle(Userindex)
+            
+        End If
         
         '<<<< Atacable >>>>
         If .flags.AtacablePor > 0 Then
