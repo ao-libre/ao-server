@@ -305,38 +305,35 @@ Private Enum ClientPacketID
     StopSharingNpc = 127
     Consultation = 128
     moveItem = 129
-    LoginExistingAccount = 130 'CHOTS | Accounts
-    LoginNewAccount = 131 'CHOTS | Accounts
+    LoginExistingAccount = 130  'CHOTS | Accounts
+    LoginNewAccount = 131       'CHOTS | Accounts
     CentinelReport = 132
     Ecvc = 133
     Acvc = 134
     IrCvc = 135
     DragAndDropHechizos = 136
-    HungerGamesCreate = 137
-    HungerGamesJoin = 138
-    HungerGamesDelete = 139
-    Quest = 140                  '/QUEST
-    QuestAccept = 141
-    QuestListRequest = 142
-    QuestDetailsRequest = 143
-    QuestAbandon = 144
-    CambiarContrasena = 145
-    FightSend = 146
-    FightAccept = 147
-    CloseGuild = 148
-    Discord = 149
-    DeleteChar = 150
-    ObtenerDatosServer = 151
-    CraftsmanCreate = 152
-    AddAmigos = 153
-    DelAmigos = 154
-    OnAmigos = 155
-    MsgAmigos = 156
+    Quest = 137                  '/QUEST
+    QuestAccept = 138
+    QuestListRequest = 139
+    QuestDetailsRequest = 140
+    QuestAbandon = 141
+    CambiarContrasena = 142
+    FightSend = 143
+    FightAccept = 144
+    CloseGuild = 145
+    Discord = 146
+    DeleteChar = 147
+    ObtenerDatosServer = 148
+    CraftsmanCreate = 149
+    AddAmigos = 150
+    DelAmigos = 151
+    OnAmigos = 152
+    MsgAmigos = 153
 End Enum
 
 ''
 'The last existing client packet id.
-Private Const LAST_CLIENT_PACKET_ID As Byte = 150
+Private Const LAST_CLIENT_PACKET_ID As Byte = 153
 
 Public Enum FontTypeNames
 
@@ -877,15 +874,6 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             
         Case ClientPacketID.DragAndDropHechizos
             Call HandleDragAndDropHechizos(Userindex)
-            
-        Case ClientPacketID.HungerGamesCreate
-            Call HandleHungerGamesCreate(Userindex)
-    
-        Case ClientPacketID.HungerGamesJoin
-            Call HandleHungerGamesJoin(Userindex)
-        
-        Case ClientPacketID.HungerGamesDelete
-            Call HandleHungerGamesDelete(Userindex)
   
         Case ClientPacketID.Quest
             Call Quests.HandleQuest(Userindex)
@@ -23268,96 +23256,6 @@ Public Sub HandleDragAndDropHechizos(ByVal Userindex As Integer)
         .Stats.UserHechizos(NuevaPosicion) = .Stats.UserHechizos(AnteriorPosicion)
         .Stats.UserHechizos(AnteriorPosicion) = Hechizo
              
-    End With
-
-End Sub
-
-Public Sub HandleHungerGamesCreate(ByVal Userindex As Integer)
-
-    With UserList(Userindex)
-
-        .incomingData.ReadByte
-
-        Dim Gld   As Long 'oro pa entra
-
-        Dim Cupos As Byte 'max cupos
-
-        Dim Drop  As Boolean ' items
-
-        Cupos = .incomingData.ReadByte
-        Gld = .incomingData.ReadLong
-        Drop = .incomingData.ReadBoolean
-
-        Dim Errmsg As String
-
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
-
-        If modHungerGames.HungerGamesCanCreate(Cupos, Gld, Drop, Errmsg) = True Then
-            modHungerGames.HungerGamesCreate Cupos, Gld, Drop
-        Else
-            WriteConsoleMsg Userindex, Errmsg, FontTypeNames.FONTTYPE_TALK
-            Exit Sub
-
-        End If
-
-    End With
-
-End Sub
-
-Public Sub HandleHungerGamesDelete(ByVal Userindex As Integer)
-
-    With UserList(Userindex)
-
-        .incomingData.ReadByte
-
-        If .flags.Privilegios And PlayerType.User Then Exit Sub
-        If SurvivalG.Created = 0 Then
-            WriteConsoleMsg Userindex, "Los juegos del hambre no han iniciado!", FontTypeNames.FONTTYPE_INFO
-            Exit Sub
-
-        End If
-
-        If SurvivalG.Cuonter <> 0 Then
-            WriteConsoleMsg Userindex, "Espere a que la cuenta termine para cancelar los Juegos del Hambre!", FontTypeNames.FONTTYPE_INFO
-            Exit Sub
-
-        End If
-
-        Dim i As Long
-
-        For i = 1 To LastUser
-
-            If UserList(i).flags.SG.HungerIndex <> 0 Then
-                WarpUserChar i, .flags.BeforeMap, .flags.BeforeX, .flags.BeforeY, False
-
-            End If
-
-        Next i
-
-        CleanHGMap
-        CleanSg
-        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Juegos del Hambre> Ha sido cancelado.", FontTypeNames.FONTTYPE_WARNING))
-
-    End With
-
-End Sub
-
-Public Sub HandleHungerGamesJoin(ByVal Userindex As Integer)
-
-    With UserList(Userindex)
-
-        .incomingData.ReadByte
-
-        Dim Errmsg As String
-
-        If HungerGamesCanJoin(Userindex, Errmsg) = True Then
-            modHungerGames.HungerGamesJoin Userindex, SurvivalG.Oro, SurvivalG.Cupos + 1
-        Else
-            WriteConsoleMsg Userindex, Errmsg, FontTypeNames.FONTTYPE_INFO
-            Exit Sub
-
-        End If
-
     End With
 
 End Sub

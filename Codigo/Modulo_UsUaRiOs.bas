@@ -1664,9 +1664,6 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         'Quitar el dialogo del user muerto
         Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageRemoveCharDialog(.Char.CharIndex))
         
-        ' Hunger Games
-        If UserList(Userindex).flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDie Userindex
-        
         .Stats.MinHp = 0
         .Stats.MinSta = 0
         .flags.AtacadoPorUser = 0
