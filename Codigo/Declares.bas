@@ -1352,13 +1352,7 @@ Public Type UserFlags
     ' Retos
     SlotReto As Byte
     SlotRetoUser As Byte
-    
-    ' Hunger Games
-    SG As SurvivalGames
-    BeforeMap As Integer 'Antes mapa
-    BeforeX As Integer 'AntesX
-    BeforeY As Integer 'AntesY
-    
+
     SlotCarcel As Integer
     Muerto As Byte 'Esta muerto?
     Escondido As Byte 'Esta escondido?

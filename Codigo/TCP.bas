@@ -854,9 +854,6 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
             End If
 
         End If
-
-        ' Hunger Games
-        If .flags.SG.HungerIndex <> 0 Then modHungerGames.HungerDesconect Userindex
         
         'Nuevo centinela - maTih.-
         If .CentinelaUsuario.centinelaIndex <> 0 Then
@@ -869,7 +866,6 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
             If UserList(.ComUsu.DestUsu).flags.UserLogged Then
                 
                 If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
-                    
                     Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
                     Call FinComerciarUsu(.ComUsu.DestUsu)
                 End If
