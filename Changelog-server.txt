@@ -939,4 +939,18 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 02/04/2020: Fix QuitarUser() and moved Areas.AreasOptimizacion() (FrankoH298)
 * 02/04/2020: Usamos clsByteQueue para enviar TODOS los paquetes de manera ordenada, sacamos las llamadas a EnviarDatosASlot(id, sndData) y usamos WriteASCIIStringFixed(data).
 
+- v0.13.30
+* 09/04/2020: Eliminados triggers mapa 265. (ReyarB)
+* 09/04/2020: Eliminado evento Hunger Games. (jopiortiz)
+* 09/04/2020: Aumentado el oro y la experiencia maxima (FrankoH298)
+* 09/04/2020: Arreglos debido al retiro de 1 item (FrankoH298)
+* 09/04/2020: Aumentado intervalo de trabajo (FrankoH298)
+* 09/04/2020: Agregadas clases prohibidas a los items nuevos y balanceados daño magico y resistencia de algunos items (FrankoH298)
+* 09/04/2020: agregado ObjType.Teleport a la funcion EsObjetoFijo (FrankoH298)
+* 09/04/2020: Hechos cambios en el Server.ini del battleserver (Recox)
+* 09/04/2020: Aumentado intervalo de trabajo (FrankoH298)
+* 09/04/2020: Arreglado bug grave en el intervalo de ataque de npc, y buffeados todos los elementales (#425) (FrankoH298)
+* 09/04/2020: Se dejaron totalmente funcionales las monturas. (#424) (FrankoH298)
+* 09/04/2020: fix paralizar e inmo (FrankoH298)
+* 09/04/2020: Arreglado tiempo de carcel (FrankoH298)
 ---
