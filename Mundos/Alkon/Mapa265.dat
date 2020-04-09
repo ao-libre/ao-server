@@ -1,13 +1,13 @@
 [MAPA265]
-BACKUP= 1
-INVISINEFECTO=0
-MAGIASINEFECTO=1
+BackUp= 1
+InviSinEfecto=0
+MagiaSinefecto=1
 MUSICNUMMP3=110
-NOENCRIPTARMP=0
-PK=0
-RESTRINGIR=No
-RESUSINEFECTO=0
-TERRENO=NIEVE
-ZONA=DUNGEON
+NoEncriptarMP=0
+Name=Montaña de ZeuS.
+Pk=0
+Restringir=No
+ResuSinEfecto=0
+Terreno=NIEVE
+Zona=DUNGEON
 
-Name=Monta�a de ZeuS.
