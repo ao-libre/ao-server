@@ -14064,6 +14064,22 @@ LingO=1250
 SkHerreria=100
 
 [OBJ1137]
+Name=Armadura Omnineo (E/G)
+GrhIndex=758
+ObjType=3
+NumRopaje=91
+Agarrable=0
+RazaEnana=1
+MaxDef=50
+MinDef=55
+Valor=1000000
+Crucial=0
+LingH=5500
+LingP=5000
+LingO=1250
+SkHerreria=100
+
+[OBJ1138]
 Name=Espada Argentum
 GrhIndex=18997
 ObjType=2
@@ -14089,7 +14105,7 @@ CP7=DRUIDA
 CP8=TRABAJADOR
 CP9=MAGO
 
-[OBJ1138]
+[OBJ1139]
 Name=Casco de Plata Completo
 GrhIndex=29126
 ObjType=17
@@ -14110,7 +14126,7 @@ LingP=2500
 LingO=0
 SkHerreria=90
 
-[OBJ1139]
+[OBJ1140]
 Name=Montura de Gran Dragon rojo
 GrhIndex=29340
 ObType=25
@@ -14123,7 +14139,7 @@ Valor=3500000
 Crucial=0
 MinSkill=50
 
-[OBJ1140]
+[OBJ1141]
 Name=Espada de las almas
 GrhIndex=29313
 ObjType=2
@@ -14144,7 +14160,7 @@ CP8=ASESINO
 CP9=BANDIDO
 Log=1
 
-[OBJ1141]
+[OBJ1142]
 Name=Tunica del Mago sangriento
 GrhIndex=29046
 ObjType=3
@@ -14166,7 +14182,7 @@ CP9=BARDO
 CP10=DRUIDA
 CP11=TRABAJADOR
 
-[OBJ1142]
+[OBJ1143]
 Name=Gorro de navidad
 GrhIndex=29131
 ObjType=17
@@ -14182,7 +14198,7 @@ LingP=0
 LingO=0
 SkHerreria=45
 
-[OBJ1143]
+[OBJ1144]
 Name=Alas de angel
 GrhIndex=29136
 ObjType=3
@@ -14193,7 +14209,7 @@ MinDef=50
 NoSeCae=1
 Valor=10000000
 
-[OBJ1144]
+[OBJ1145]
 Name=Alas de demonio
 GrhIndex=29163
 ObjType=3
@@ -14204,7 +14220,7 @@ MaxDef=55
 MinDef=50
 NoSeCae=1
 
-[OBJ1145]
+[OBJ1146]
 Name=Corona De rey
 GrhIndex=29190
 ObjType=17
@@ -14220,7 +14236,7 @@ LingP=5000
 LingO=0
 SkHerreria=45
 
-[OBJ1146]
+[OBJ1147]
 Name=Espada de fuego
 GrhIndex=29222
 ObjType=2
@@ -14243,7 +14259,7 @@ CP9=DRUIDA
 CP10=TRABAJADOR
 CP11=MAGO
 
-[OBJ1147]
+[OBJ1148]
 Name=Vara del nigromante
 GrhIndex=29249
 ObjType=2
@@ -14272,7 +14288,7 @@ LingP=1000
 LingO=2000
 SkHerreria=90
 
-[OBJ1148]
+[OBJ1149]
 Name=Bendicion Espiritual
 GrhIndex=609
 ObjType=24
@@ -14284,7 +14300,7 @@ Madera=1
 SkCarpinteria=101
 Log=1
 
-[OBJ1149]
+[OBJ1150]
 Name=Casco Kuia
 GrhIndex=29276
 ObjType=17
@@ -14305,7 +14321,7 @@ LingP=1300
 LingO=0
 SkHerreria=85
 
-[OBJ1150]
+[OBJ1151]
 Name=Sombrero espectral magico
 GrhIndex=29281
 ObjType=17
@@ -14330,7 +14346,7 @@ CP9=BARDO
 CP10=DRUIDA
 CP11=TRABAJADOR
 
-[OBJ1151]
+[OBJ1152]
 Name=Escudo de Dragon
 GrhIndex=29286
 ObjType=16
@@ -14352,7 +14368,7 @@ CP8=DRUIDA
 CP9=TRABAJADOR
 CP10=MAGO
 
-[OBJ1152]
+[OBJ1153]
 Name=Coraza del Mal
 GrhIndex=29392
 ObjType=3
@@ -14377,7 +14393,7 @@ CP8=DRUIDA
 CP9=TRABAJADOR
 CP10=MAGO
 
-[OBJ1153]
+[OBJ1154]
 Name=Espada Llameante (JiEm)
 GrhIndex=29435
 ObjType=2
@@ -14390,7 +14406,7 @@ Apunala=1
 Valor=10000000
 Crucial=0
 
-[OBJ1154]
+[OBJ1155]
 Name=Daga +5
 GrhIndex=29552
 ObjType=2
@@ -14417,7 +14433,7 @@ LingP=5000
 LingO=5000
 SkHerreria=100
 
-[OBJ1155]
+[OBJ1156]
 Name=Espada del fuego eterno
 GrhIndex=29524
 ObjType=2
@@ -14430,7 +14446,7 @@ Apunala=0
 Valor=1000000
 Crucial=0
 
-[OBJ1156]
+[OBJ1157]
 Name=Montura de Gran Dragon dorado
 GrhIndex=29674
 ObjType=25
@@ -14443,7 +14459,7 @@ Valor=5000000
 Crucial=0
 MinSkill=50
 
-[OBJ1157]
+[OBJ1158]
 Name=Montura de Gran Dragon negro
 GrhIndex=29779
 ObjType=25
@@ -14456,7 +14472,7 @@ Valor=5000000
 Crucial=0
 MinSkill=50
 
-[OBJ1158]
+[OBJ1159]
 Name=Montura de Elefante
 GrhIndex=29854
 ObjType=25
@@ -14468,7 +14484,7 @@ NoSeCae=1
 Valor=2400000
 Crucial=0
 
-[OBJ1159]
+[OBJ1160]
 Name=Montura de Caballo
 GrhIndex=29873
 ObjType=25
@@ -14480,7 +14496,7 @@ NoSeCae=1
 Valor=2400000
 Crucial=0
 
-[OBJ1160]
+[OBJ1161]
 Name=Cuchara Legendaria (Prueba)
 GrhIndex=587
 ObjType=20
