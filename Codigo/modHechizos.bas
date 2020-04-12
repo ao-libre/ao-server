@@ -53,7 +53,6 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
         If .flags.Equitando = 1 Then
             Call UnmountMontura(Userindex)
             Call WriteEquitandoToggle(Userindex)
-            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
         
@@ -1681,15 +1680,16 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                     Exit Sub
 
                 End If
+
                 With UserList(Userindex)
                     '<<<< Equitando >>>
                     If .flags.Equitando = 1 Then
                         Call UnmountMontura(Userindex)
                         Call WriteEquitandoToggle(Userindex)
-                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                         
                     End If
                 End With
+
                 Call NPCAtacado(NpcIndex, Userindex)
                 Call InfoHechizo(Userindex)
                 .flags.Paralizado = 1
@@ -1770,15 +1770,16 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
                     Exit Sub
 
                 End If
+
                 With UserList(Userindex)
                 '<<<< Equitando >>>
                     If .flags.Equitando = 1 Then
                         Call UnmountMontura(Userindex)
                         Call WriteEquitandoToggle(Userindex)
-                        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                         
                     End If
                 End With
+
                 If MapData(Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y).TileExit.Map > 0 Then
                     If Not EsGm(Userindex) Then
                         Call WriteConsoleMsg(Userindex, "No puedes paralizar criaturas en esa posicion.", FontTypeNames.FONTTYPE_INFOBOLD)   '"El NPC es inmune al hechizo."
@@ -1900,15 +1901,16 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
                 Exit Sub
 
             End If
+
             With UserList(Userindex)
                 '<<<< Equitando >>>
                 If .flags.Equitando = 1 Then
                     Call UnmountMontura(Userindex)
                     Call WriteEquitandoToggle(Userindex)
-                    Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
                     
                 End If
             End With
+
             Call NPCAtacado(NpcIndex, Userindex)
             dano = RandomNumber(Hechizos(SpellIndex).MinHp, Hechizos(SpellIndex).MaxHp)
             dano = dano + Porcentaje(dano, 3 * UserList(Userindex).Stats.ELV)
@@ -2063,7 +2065,6 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
         If .flags.Equitando = 1 Then
             Call UnmountMontura(targetIndex)
             Call WriteEquitandoToggle(targetIndex)
-            Call ChangeUserChar(targetIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
 
