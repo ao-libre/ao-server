@@ -207,8 +207,7 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                     '... excepto que nos hayamos warpeado al mapa
                     ElseIf heading = USER_NUEVO Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
-                        
-                        If .flags.AdminInvisible = 1 Then
+                        If .flags.AdminInvisible = 1 Or .flags.invisible Or .flags.Oculto Then
                             Call WriteSetInvisible(Userindex, .Char.CharIndex, True)
                         End If
                     End If
