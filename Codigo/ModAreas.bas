@@ -88,7 +88,7 @@ End Sub
 '*****************************************************************************************
 Public Sub AgregarUser(ByVal Userindex As Integer, ByVal Map As Integer, Optional ByVal ButIndex As Boolean = False)
     If Not MapaValido(Map) Then Exit Sub
-    Debug.Print (ConnGroups(Map).Count)
+
     Dim EsNuevo As Boolean
         EsNuevo = True
     
@@ -192,14 +192,14 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                         End If
 
                         ' Si no somos un admin invisible
-                        If Not (UserList(Userindex).flags.AdminInvisible = 1) Then
+                        If Not (.flags.AdminInvisible = 1) Then
                             ' Enviamos nuestro char al usuario
                             Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
 
                             ' Enviamos la invisibilidad de ser necesario
-                            If UserList(Userindex).flags.invisible Or UserList(Userindex).flags.Oculto Then
+                            If .flags.invisible Or .flags.Oculto Then
                                 If UserList(CurUser).flags.Privilegios And PlayerType.User Then
-                                    Call WriteSetInvisible(CurUser, UserList(Userindex).Char.CharIndex, True)
+                                    Call WriteSetInvisible(CurUser, .Char.CharIndex, True)
                                 End If
                             End If
                         End If
@@ -207,6 +207,9 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                     '... excepto que nos hayamos warpeado al mapa
                     ElseIf heading = USER_NUEVO Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
+                        If .flags.AdminInvisible = 1 Or .flags.invisible Or .flags.Oculto Then
+                            Call WriteSetInvisible(Userindex, .Char.CharIndex, True)
+                        End If
                     End If
                 End If
 

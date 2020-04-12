@@ -1688,10 +1688,6 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
             .flags.AdminInvisible = 1
             .flags.invisible = 1
             .flags.Oculto = 1
-            .flags.OldBody = .Char.body
-            .flags.OldHead = .Char.Head
-            .Char.body = 0
-            .Char.Head = 0
             
             ' Solo el admin sabe que se hace invi
             tempData = PrepareMessageSetInvisible(.Char.CharIndex, True)
@@ -1705,8 +1701,6 @@ Sub DoAdminInvisible(ByVal Userindex As Integer)
             .flags.invisible = 0
             .flags.Oculto = 0
             .Counters.TiempoOculto = 0
-            .Char.body = .flags.OldBody
-            .Char.Head = .flags.OldHead
             
             ' Solo el admin sabe que se hace visible
             tempData = PrepareMessageCharacterChange(.Char.body, .Char.Head, .Char.heading, .Char.CharIndex, .Char.WeaponAnim, .Char.ShieldAnim, .Char.FX, .Char.loops, .Char.CascoAnim)
