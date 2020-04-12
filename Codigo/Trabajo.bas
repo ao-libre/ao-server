@@ -3206,6 +3206,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
 
         ' No estaba equitando
         If .flags.Equitando = 0 Then
+
             If .Counters.MonturaCounter <= 0 Then
                 .Invent.MonturaObjIndex = .Invent.Object(Slot).ObjIndex
                 .Invent.MonturaEqpSlot = Slot
@@ -3215,16 +3216,21 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
     
                 '  Comienza a equitar
                 .flags.Equitando = 1
+
                 Call WriteEquitandoToggle(Userindex)
                 Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+            Else
+                Call WriteConsoleMsg(Userindex, "Debe esperar " & .Counters.MonturaCounter & " segundos para volver a usar tu montura", FontTypeNames.FONTTYPE_INFO)
             End If
+            
         ' Estaba equitando
         Else
             Call UnmountMontura(Userindex)
             Call WriteEquitandoToggle(Userindex)
-            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+
         End If
-        
+
+
     End With
 
 End Sub
@@ -3236,11 +3242,14 @@ Public Sub UnmountMontura(ByVal Userindex As Integer)
 
         .Char.Head = .OrigChar.Head
 
+        ' Seteamos el equipo que tiene y lo mostramos en el render.
         Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
-
+        Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+  
         ' Termina de equitar
         .flags.Equitando = 0
         .Counters.MonturaCounter = 10
+
     End With
 End Sub
 
@@ -3292,7 +3301,8 @@ Private Sub SetEquipmentOnCharAfterNavigateOrEquitate(ByVal Userindex As Integer
         If .Invent.WeaponEqpObjIndex > 0 Then .Char.WeaponAnim = GetWeaponAnim(Userindex, .Invent.WeaponEqpObjIndex)
 
         If .Invent.CascoEqpObjIndex > 0 Then .Char.CascoAnim = ObjData(.Invent.CascoEqpObjIndex).CascoAnim
-    
+        
     End With
+
 
 End Sub
