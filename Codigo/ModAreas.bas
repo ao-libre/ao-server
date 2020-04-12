@@ -203,6 +203,10 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                                         Call WriteSetInvisible(CurUser, .Char.CharIndex, True)
                                     End If
                                 End If
+                            
+                            Else
+                                Call WriteConsoleMsg(CurUser, "No podes hacerte invisible navegando.", FONTTYPE_INFO)
+                                
                             End If
                             
                         End If
