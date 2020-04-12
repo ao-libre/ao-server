@@ -192,25 +192,30 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                         End If
 
                         ' Si no somos un admin invisible
-                        If Not (.flags.AdminInvisible = 1) Then
-                            ' Enviamos nuestro char al usuario
-                            Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
-
-                            ' Enviamos la invisibilidad de ser necesario
-                            If .flags.invisible Or .flags.Oculto Then
-                                If UserList(CurUser).flags.Privilegios And PlayerType.User Then
-                                    Call WriteSetInvisible(CurUser, .Char.CharIndex, True)
+                        If .flags.Navegando = 0 Then
+                            If Not (.flags.AdminInvisible = 1) Then
+                                ' Enviamos nuestro char al usuario
+                                Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
+    
+                                ' Enviamos la invisibilidad de ser necesario
+                                If .flags.invisible Or .flags.Oculto Then
+                                    If UserList(CurUser).flags.Privilegios And PlayerType.User Then
+                                        Call WriteSetInvisible(CurUser, .Char.CharIndex, True)
+                                    End If
                                 End If
                             End If
                         End If
-
+                        
                     '... excepto que nos hayamos warpeado al mapa
                     ElseIf heading = USER_NUEVO Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
+                        
                         If .flags.AdminInvisible = 1 Or .flags.invisible Or .flags.Oculto Then
                             Call WriteSetInvisible(Userindex, .Char.CharIndex, True)
                         End If
+                    
                     End If
+                    
                 End If
 
                 '<<< Npc >>>
