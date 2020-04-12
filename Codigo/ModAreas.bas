@@ -192,11 +192,11 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                         End If
 
                         ' Si no somos un admin invisible
-                        If .flags.Navegando = 0 Then
-                            If Not (.flags.AdminInvisible = 1) Then
-                                ' Enviamos nuestro char al usuario
-                                Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
-    
+                        If Not (.flags.AdminInvisible = 1) Then
+                            ' Enviamos nuestro char al usuario
+                            Call MakeUserChar(False, CurUser, Userindex, .Pos.Map, .Pos.X, .Pos.Y)
+                            
+                            If .flags.Navegando = 0 Then
                                 ' Enviamos la invisibilidad de ser necesario
                                 If .flags.invisible Or .flags.Oculto Then
                                     If UserList(CurUser).flags.Privilegios And PlayerType.User Then
@@ -204,6 +204,7 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                                     End If
                                 End If
                             End If
+                            
                         End If
                         
                     '... excepto que nos hayamos warpeado al mapa
