@@ -237,7 +237,9 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
                 Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
                 
                 ' Al dejar de navegar, si estaba invisible actualizo los clientes
-                Call SetVisibleStateForUserAfterNavigateOrEquitate(Userindex)
+                If .flags.invisible = 1 Then
+                    Call SetInvisible(Userindex, .Char.CharIndex, True)
+                End If
                 
             ' Esta muerto
             Else

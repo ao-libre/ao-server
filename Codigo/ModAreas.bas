@@ -184,9 +184,11 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                             Call MakeUserChar(False, Userindex, CurUser, Map, X, Y)
 
                             ' Enviamos la invisibilidad de ser necesario
-                            If UserList(CurUser).flags.invisible Or UserList(CurUser).flags.Oculto Then
-                                If UserList(Userindex).flags.Privilegios And PlayerType.User Then
-                                    Call WriteSetInvisible(Userindex, UserList(CurUser).Char.CharIndex, True)
+                            If UserList(CurUser).flags.Navegando = 0 Then
+                                If UserList(CurUser).flags.invisible Or UserList(CurUser).flags.Oculto Then
+                                    If UserList(Userindex).flags.Privilegios And PlayerType.User Then
+                                        Call WriteSetInvisible(Userindex, UserList(CurUser).Char.CharIndex, True)
+                                    End If
                                 End If
                             End If
                         End If
@@ -215,10 +217,9 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                     ElseIf heading = USER_NUEVO Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
                         
-                        If .flags.AdminInvisible = 1 Or .flags.invisible Or .flags.Oculto Then
+                        If .flags.AdminInvisible = 1 Or .flags.Navegando = 0 And (.flags.invisible Or .flags.Oculto) Then
                             Call WriteSetInvisible(Userindex, .Char.CharIndex, True)
                         End If
-                    
                     End If
                     
                 End If
