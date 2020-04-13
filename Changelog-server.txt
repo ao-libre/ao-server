@@ -961,5 +961,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 12/04/2020: Mas fixes al pasar de mapa invisible y navegando (Wyr0X)
 * 12/04/2020: Fix/Patch function HayAgua() (jopiortiz)
 * 12/04/2020: Se modifico el nombre montana de zeus por cordillera de zeus para evitar la enie (Recox)
+* 12/04/2020: Prohibido trabajar usando monturas y equiparse y desequiparse en las mismas (Recox)
 
 ---
