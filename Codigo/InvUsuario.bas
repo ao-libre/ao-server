@@ -1030,6 +1030,11 @@ Sub EquiparInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
         
         ' No se pueden usar muebles.
         If Not EsUsable(ObjIndex) Then Exit Sub
+
+        If .flags.Equitando = 1 Then
+            Call WriteConsoleMsg(Userindex, "No puedes equiparte o desequiparte mientras estas en tu montura!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
         
         If obj.Newbie = 1 And Not EsNewbie(Userindex) Then
             Call WriteConsoleMsg(Userindex, "Solo los newbies pueden usar este objeto.", FontTypeNames.FONTTYPE_INFO)
@@ -1497,6 +1502,11 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 Call WriteUpdateGold(Userindex)
                 
             Case eOBJType.otWeapon
+
+                If .flags.Equitando = 1 Then
+                    Call WriteConsoleMsg(Userindex, "No puedes usar una herramienta mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
+                    Exit Sub
+                End If
 
                 If .flags.Muerto = 1 Then
                     'Call WriteConsoleMsg(UserIndex, "Estas muerto!! Solo puedes usar items cuando estas vivo.", FontTypeNames.FONTTYPE_INFO)
@@ -2033,29 +2043,29 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 End If
 
 
-        '<-------------> MONTURAS <----------->
-        Case eOBJType.otMonturas
-            If ClasePuedeUsarItem(Userindex, ObjIndex) Then
-                If .flags.invisible = 1 Then
-                    Call WriteConsoleMsg(Userindex, "Estas invisible, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
-                End If
+            '<-------------> MONTURAS <----------->
+            Case eOBJType.otMonturas
+                If ClasePuedeUsarItem(Userindex, ObjIndex) Then
+                    If .flags.invisible = 1 Then
+                        Call WriteConsoleMsg(Userindex, "Estas invisible, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
 
-                If .flags.Muerto = 1 Then
-                    Call WriteConsoleMsg(Userindex, "Estas muerto, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
+                    If .flags.Muerto = 1 Then
+                        Call WriteConsoleMsg(Userindex, "Estas muerto, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    If .flags.Navegando = 1 Then
+                        Call WriteConsoleMsg(Userindex, "Estas navegando, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
+                        Exit Sub
+                    End If
+                    
+                    Call DoEquita(Userindex, obj, Slot)
+                Else
+                    Call WriteConsoleMsg(Userindex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
                 End If
-                
-                If .flags.Navegando = 1 Then
-                    Call WriteConsoleMsg(Userindex, "Estas navegando, no puedes montarte ni desmontarte en este estado!!", FontTypeNames.FONTTYPE_INFO)
-                    Exit Sub
-                End If
-                
-                Call DoEquita(Userindex, obj, Slot)
-            Else
-                Call WriteConsoleMsg(Userindex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
-            End If
-                
+                    
             Case eOBJType.otManuales
             
                 Select Case ObjIndex
@@ -2085,8 +2095,8 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                         End If
                         
                 End Select
-                
-        End Select
+                    
+            End Select
     
     End With
 
