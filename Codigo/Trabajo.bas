@@ -3218,7 +3218,9 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
                 .flags.Equitando = 1
 
                 Call WriteEquitandoToggle(Userindex)
-                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, .Char.WeaponAnim, .Char.ShieldAnim, .Char.CascoAnim)
+
+                'Mostramos solo el casco de los items equipados por que los demas items quedan mal en el render, solo es un tema visual (Recox)
+                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, .Char.CascoAnim) 
             Else
                 Call WriteConsoleMsg(Userindex, "Debe esperar " & .Counters.MonturaCounter & " segundos para volver a usar tu montura", FontTypeNames.FONTTYPE_INFO)
             End If
