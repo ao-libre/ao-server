@@ -839,7 +839,6 @@ Public Function NpcAtacaUser(ByVal NpcIndex As Integer, _
         If .flags.Equitando = 1 Then
             Call UnmountMontura(Userindex)
             Call WriteEquitandoToggle(Userindex)
-            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
     End With
@@ -1079,15 +1078,16 @@ Public Function UsuarioAtacaNpc(ByVal Userindex As Integer, _
     On Error GoTo ErrHandler
 
     If Not PuedeAtacarNPC(Userindex, NpcIndex) Then Exit Function
+    
     With UserList(Userindex)
         '<<<< Equitando >>>
         If .flags.Equitando = 1 Then
             Call UnmountMontura(Userindex)
             Call WriteEquitandoToggle(Userindex)
-            Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
     End With
+
     Call NPCAtacado(NpcIndex, Userindex)
     
     If UserImpactoNpc(Userindex, NpcIndex) Then
@@ -1377,7 +1377,6 @@ Public Function UsuarioAtacaUsuario(ByVal AtacanteIndex As Integer, _
         If .flags.Equitando = 1 Then
             Call UnmountMontura(AtacanteIndex)
             Call WriteEquitandoToggle(AtacanteIndex)
-            Call ChangeUserChar(AtacanteIndex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, NingunCasco)
             
         End If
         
