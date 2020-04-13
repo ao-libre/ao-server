@@ -956,5 +956,10 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.31
 * 12/04/2020: /INVISIBLE te pone transparente (solo vos te ves). (Wyr0X)
-              Se arreglo la invisibilidad/ocultarse al pasar de mala (Wyr0X)
-              Si vos te tiras invisibilidad arriba de la barca no hace efecto, pero cuando pasas de mapa hacia efecto y te hacias invisible. (BelerianD)
+* 12/04/2020: Se arreglo la invisibilidad/ocultarse al pasar de mala (Wyr0X)
+* 12/04/2020: Si vos te tiras invisibilidad arriba de la barca no hace efecto, pero cuando pasas de mapa hacia efecto y te hacias invisible. (BelerianD)
+* 12/04/2020: Mas fixes al pasar de mapa invisible y navegando (Wyr0X)
+* 12/04/2020: Fix/Patch function HayAgua() (jopiortiz)
+* 12/04/2020: Se modifico el nombre montana de zeus por cordillera de zeus para evitar la enie (Recox)
+
+---
