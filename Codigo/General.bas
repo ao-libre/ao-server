@@ -136,24 +136,18 @@ Sub Bloquear(ByVal toMap As Boolean, _
 End Sub
 
 Function HayAgua(ByVal Map As Integer, ByVal X As Integer, ByVal Y As Integer) As Boolean
-    '*******************************************
+    '***************************************************
     'Author: Unknown
     'Last Modification: -
     '
-    '*******************************************
+    '***************************************************
 
     If Map > 0 And Map < NumMaps + 1 And X > 0 And X < 101 And Y > 0 And Y < 101 Then
 
         With MapData(Map, X, Y)
 
-            If ((.Graphic(1) >= 1505 And .Graphic(1) <= 1520) Or _
-                (.Graphic(1) >= 12439 And .Graphic(1) <= 12454) Or _
-                (.Graphic(1) >= 5665 And .Graphic(1) <= 5680) Or _
-                (.Graphic(1) >= 13547 And .Graphic(1) <= 13562)) And _
-                .Graphic(2) = 0 Then
-                
+            If ((.Graphic(1) >= 1505 And .Graphic(1) <= 1520) Or (.Graphic(1) >= 5837 And .Graphic(1) <= 5852) Or (.Graphic(1) >= 5665 And .Graphic(1) <= 5680) Or (.Graphic(1) >= 13547 And .Graphic(1) <= 13562)) And .Graphic(2) = 0 Then
                 HayAgua = True
-            
             Else
                 HayAgua = False
 
