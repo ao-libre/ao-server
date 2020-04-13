@@ -604,7 +604,7 @@ Public Sub MakeUserChar(ByVal toMap As Boolean, _
                             If LenB(ClanTag) <> 0 Then UserName = UserName & " <" & ClanTag & ">"
                         Else
 
-                            If (.flags.invisible Or .flags.Oculto) And (Not .flags.AdminInvisible = 1) Then
+                            If (.flags.invisible Or .flags.Oculto) And (Not .flags.AdminInvisible = 1) And .flags.Navegando = 0 Then
                                 UserName = UserName & " " & TAG_USER_INVISIBLE
                             Else
 
@@ -1889,17 +1889,17 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         Call LimpiarComercioSeguro(Userindex)
         
         ' Hay que teletransportar?
-        Dim Mapa As Integer
+        Dim mapa As Integer
 
-        Mapa = .Pos.Map
+        mapa = .Pos.Map
 
         Dim MapaTelep As Integer
 
-        MapaTelep = MapInfo(Mapa).OnDeathGoTo.Map
+        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
             Call WriteConsoleMsg(Userindex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
-            Call WarpUserChar(Userindex, MapaTelep, MapInfo(Mapa).OnDeathGoTo.X, MapInfo(Mapa).OnDeathGoTo.Y, True, True)
+            Call WarpUserChar(Userindex, MapaTelep, MapInfo(mapa).OnDeathGoTo.X, MapInfo(mapa).OnDeathGoTo.Y, True, True)
 
         End If
         
@@ -2147,17 +2147,6 @@ Sub WarpUserChar(ByVal Userindex As Integer, _
         Call WriteUserCharIndexInServer(Userindex)
         
         Call DoTileEvents(Userindex, Map, X, Y)
-        
-        'Seguis invisible al pasar de mapa
-        If (.flags.invisible = 1 Or .flags.Oculto = 1) And (Not .flags.AdminInvisible = 1) Then
-            
-            ' No si estas navegando
-            If .flags.Navegando = 0 Then
-                Call SetInvisible(Userindex, .Char.CharIndex, True)
-
-            End If
-
-        End If
         
         If Teletransported Then
             If .flags.Traveling = 1 Then
@@ -2708,18 +2697,18 @@ Public Sub ApropioNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGm(Userindex) Then Exit Sub
         
-        Dim Mapa As Integer
+        Dim mapa As Integer
 
-        Mapa = .Pos.Map
+        mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(Mapa).Pk = False Then Exit Sub
+        If MapInfo(mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0
