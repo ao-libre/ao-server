@@ -14129,7 +14129,7 @@ CP9=MAGO
 [OBJ1139]
 Name=Montura de Gran Dragon rojo
 GrhIndex=29340
-ObType=25
+ObjType=25
 NumRopaje=604
 Agarrable=0
 MaxDef=150
