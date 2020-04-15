@@ -14106,27 +14106,6 @@ CP8=TRABAJADOR
 CP9=MAGO
 
 [OBJ1139]
-Name=Casco de Plata Completo
-GrhIndex=29126
-ObjType=17
-NumRopaje=2
-Agarrable=0
-Anim=18
-MaxDef=35
-MinDef=30
-Valor=1000000
-Crucial=0
-CP1=MAGO
-CP2=DRUIDA
-CP3=LADRON
-CP4=BARDO
-CP5=PIRATA
-LingH=5000
-LingP=2500
-LingO=0
-SkHerreria=90
-
-[OBJ1140]
 Name=Montura de Gran Dragon rojo
 GrhIndex=29340
 ObType=25
@@ -14139,7 +14118,7 @@ Valor=3500000
 Crucial=0
 MinSkill=50
 
-[OBJ1141]
+[OBJ1140]
 Name=Espada de las almas
 GrhIndex=29313
 ObjType=2
@@ -14159,6 +14138,27 @@ CP7=CAZADOR
 CP8=ASESINO
 CP9=BANDIDO
 Log=1
+
+[OBJ1141]
+Name=Casco de Plata Completo
+GrhIndex=29126
+ObjType=17
+NumRopaje=2
+Agarrable=0
+Anim=18
+MaxDef=35
+MinDef=30
+Valor=1000000
+Crucial=0
+CP1=MAGO
+CP2=DRUIDA
+CP3=LADRON
+CP4=BARDO
+CP5=PIRATA
+LingH=5000
+LingP=2500
+LingO=0
+SkHerreria=90
 
 [OBJ1142]
 Name=Tunica del Mago sangriento
@@ -14407,6 +14407,45 @@ Valor=10000000
 Crucial=0
 
 [OBJ1155]
+Name=Espada del fuego eterno
+GrhIndex=29524
+ObjType=2
+Agarrable=0
+Anim=110
+RazaEnanaAnim=65
+MinHit=25
+MaxHit=30
+Apunala=0
+Valor=1000000
+Crucial=0
+
+[OBJ1156]
+Name=Montura de Gran Dragon dorado
+GrhIndex=29674
+ObjType=25
+NumRopaje=612
+Agarrable=0
+MaxDef=150
+MinDef=120
+NoSeCae=1
+Valor=5000000
+Crucial=0
+MinSkill=50
+
+[OBJ1157]
+Name=Montura de Gran Dragon negro
+GrhIndex=29779
+ObjType=25
+NumRopaje=614
+Agarrable=0
+MaxDef=150
+MinDef=120
+NoSeCae=1
+Valor=5000000
+Crucial=0
+MinSkill=50
+
+[OBJ1158]
 Name=Daga +5
 GrhIndex=29552
 ObjType=2
@@ -14432,45 +14471,6 @@ LingH=5000
 LingP=5000
 LingO=5000
 SkHerreria=100
-
-[OBJ1156]
-Name=Espada del fuego eterno
-GrhIndex=29524
-ObjType=2
-Agarrable=0
-Anim=110
-RazaEnanaAnim=65
-MinHit=25
-MaxHit=30
-Apunala=0
-Valor=1000000
-Crucial=0
-
-[OBJ1157]
-Name=Montura de Gran Dragon dorado
-GrhIndex=29674
-ObjType=25
-NumRopaje=612
-Agarrable=0
-MaxDef=150
-MinDef=120
-NoSeCae=1
-Valor=5000000
-Crucial=0
-MinSkill=50
-
-[OBJ1158]
-Name=Montura de Gran Dragon negro
-GrhIndex=29779
-ObjType=25
-NumRopaje=614
-Agarrable=0
-MaxDef=150
-MinDef=120
-NoSeCae=1
-Valor=5000000
-Crucial=0
-MinSkill=50
 
 [OBJ1159]
 Name=Montura de Elefante
