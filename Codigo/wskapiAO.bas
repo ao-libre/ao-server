@@ -352,21 +352,24 @@ Public Sub EventoSockAccept(ByVal SockID As Long)
         Exit Sub
     End If
     
-    If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
-        
-        str = Protocol.PrepareMessageErrorMsg("Limite de conexiones para su IP alcanzado.")
-        
-        ReDim Preserve data(Len(str) - 1) As Byte
-        
-        data = StrConv(str, vbFromUnicode)
-        
-        Call send(ByVal NuevoSock, data(0), ByVal UBound(data()) + 1, ByVal 0)
-        
-        Call WSApiCloseSocket(NuevoSock)
-        
-        Exit Sub
 
-    End If
+    ' Comento esto por que hay un BUG que no deja jugar a la gente y casi siempre les aparece esto
+    ' TODO: REVISAR Y ARREGLAR POR FAVOR
+    ' If SecurityIp.IPSecuritySuperaLimiteConexiones(sa.sin_addr) Then
+        
+    '     str = Protocol.PrepareMessageErrorMsg("Limite de conexiones para su IP alcanzado.")
+        
+    '     ReDim Preserve data(Len(str) - 1) As Byte
+        
+    '     data = StrConv(str, vbFromUnicode)
+        
+    '     Call send(ByVal NuevoSock, data(0), ByVal UBound(data()) + 1, ByVal 0)
+        
+    '     Call WSApiCloseSocket(NuevoSock)
+        
+    '     Exit Sub
+
+    ' End If
     
     'Seteamos el tamano del buffer de entrada
     If setsockopt(NuevoSock, SOL_SOCKET, SO_RCVBUFFER, SIZE_RCVBUF, 4) <> 0 Then
