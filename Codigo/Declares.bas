@@ -106,28 +106,28 @@ Public Const iGaleon = 86
 ' Embarcaciones ciudas
 Public Const iBarcaCiuda = 395
 
-Public Const iBarcaCiudaAtacable = 552
+Public Const iBarcaCiudaAtacable = 562
 
 Public Const iGaleraCiuda = 397
 
-Public Const iGaleraCiudaAtacable = 560
+Public Const iGaleraCiudaAtacable = 567
 
 Public Const iGaleonCiuda = 399
 
-Public Const iGaleonCiudaAtacable = 556
+Public Const iGaleonCiudaAtacable = 564 'falta dejo este ReyarB
 
 ' Embarcaciones reales
-Public Const iBarcaReal = 550
+Public Const iBarcaReal = 560
 
-Public Const iBarcaRealAtacable = 553
+Public Const iBarcaRealAtacable = 563
 
-Public Const iGaleraReal = 558
+Public Const iGaleraReal = 565
 
-Public Const iGaleraRealAtacable = 561
+Public Const iGaleraRealAtacable = 568
 
-Public Const iGaleonReal = 554
+Public Const iGaleonReal = 399 'falta Dejo este ReyarB
 
-Public Const iGaleonRealAtacable = 557
+Public Const iGaleonRealAtacable = 564
 
 ' Embarcaciones pk
 Public Const iBarcaPk = 396
@@ -137,11 +137,11 @@ Public Const iGaleraPk = 398
 Public Const iGaleonPk = 400
 
 ' Embarcaciones caos
-Public Const iBarcaCaos = 551
+Public Const iBarcaCaos = 561
 
-Public Const iGaleraCaos = 559
+Public Const iGaleraCaos = 566
 
-Public Const iGaleonCaos = 555
+Public Const iGaleonCaos = 400 ' falta dejo este ReyarB
 
 Public Enum iMinerales
 
