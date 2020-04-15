@@ -9705,13 +9705,12 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=6
-Drop1=12-1200 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=37-100 'Pociones Azules`
-Drop4=12-7500 'Oro
-Drop5=386-10 'Lingote de Hierro
-Drop6=192-900 'Minerales de Bronce
+NROITEMS=5
+Drop1=386-10 'Lingote de Hierro
+Drop2=192-900 'Minerales de Bronce
+Drop3=38-100 'Pociones Rojas
+Drop4=37-100 'Pociones Azules`
+Drop5=12-10000 'Oro
 
 [NPC716]
 Name=Etognil Plata
@@ -9739,13 +9738,12 @@ PoderAtaque=280
 PoderEvasion=250
 Snd3=100
 BackUp=0
-NROITEMS=6
-Drop1=12-1200 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=37-100 'Pociones Azules
-Drop4=12-7500 'Oro
-Drop5=387-10 'Lingote de Plata
-Drop6=193-700 'Minerales de Plata
+NROITEMS=5
+Drop1=193-700 'Minerales de Plata
+Drop2=387-10 'Lingote de Plata
+Drop3=38-100 'Pociones Rojas
+Drop4=37-100 'Pociones Azules
+Drop5=12-7500 'Oro
 
 [NPC717]
 Name=Etognil Oro
@@ -9773,13 +9771,13 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=6
-Drop1=12-1200 'Oro
-Drop2=38-100 'Pociones Rojas
-Drop3=37-100 'Pociones Azules
-Drop4=12-7500 'Oro
-Drop5=388-10 'Lingote de Oro
-Drop6=194-600 'Minerales de Oro
+NROITEMS=5
+Drop1=388-10 'Lingote de Oro
+Drop2=194-600 'Minerales de Oro
+Drop3=38-100 'Pociones Rojas
+Drop4=37-100 'Pociones Azules
+Drop5=12-7500 'Oro
+
 ############################################
 
 [NPC750] ' Hija de ZeuS
