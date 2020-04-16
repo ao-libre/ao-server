@@ -176,7 +176,7 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     cad = LCase$(cad)
 
     For i = 1 To Len(cad)
-        car = Asc(Mid$(cad, i, 1))
+        car = Asc(mid$(cad, i, 1))
     
         If (car < 97 Or car > 122) And (car <> 255) And (car <> 32) Then
             AsciiValidos = False
@@ -212,7 +212,7 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
         For lX = 0 To Len(sString) - 1
 
             If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
-                iAsc = Asc(Mid$(sString, (lX + 1), 1))
+                iAsc = Asc(mid$(sString, (lX + 1), 1))
 
                 If Not CMSValidateChar_(iAsc) Then Exit Function
 
@@ -249,7 +249,7 @@ Function Numeric(ByVal cad As String) As Boolean
     cad = LCase$(cad)
 
     For i = 1 To Len(cad)
-        car = Asc(Mid$(cad, i, 1))
+        car = Asc(mid$(cad, i, 1))
     
         If (car < 48 Or car > 57) Then
             Numeric = False
@@ -451,11 +451,11 @@ End Sub
 Private Sub SetAttributesCustomToNewUser(ByVal Userindex As Integer)
 
     With UserList(Userindex)
-        .Stats.Gld = CLng(Val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
-        .Stats.Banco = CLng(Val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
+        .Stats.Gld = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Oro")))
+        .Stats.Banco = CLng(val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Banco")))
 
         Dim InitialLevel, Experiencia As Long
-        InitialLevel = Val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Nivel"))
+        InitialLevel = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "Nivel"))
         
         Dim i As Long
         For i = 1 To InitialLevel
@@ -470,7 +470,7 @@ Private Sub SetAttributesCustomToNewUser(ByVal Userindex As Integer)
         Next i
 
         Dim SkillPointsIniciales As Long
-        SkillPointsIniciales = Val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
+        SkillPointsIniciales = val(GetVar(IniPath & "Server.ini", "ESTADISTICASINICIALESPJ", "SkillPoints"))
         For i = 1 To NUMSKILLS
             .Stats.UserSkills(i) = SkillPointsIniciales
         Next i
@@ -708,7 +708,7 @@ Private Sub CargarObjetosIniciales()
 
     Dim Slot As Long, sTemp As String
 
-    MAX_OBJ_INICIAL = Val(Leer.GetValue("INVENTARIO", "CantidadItemsIniciales"))
+    MAX_OBJ_INICIAL = val(Leer.GetValue("INVENTARIO", "CantidadItemsIniciales"))
 
     ReDim ItemsIniciales(1 To MAX_OBJ_INICIAL) As UserObj
 
@@ -716,9 +716,9 @@ Private Sub CargarObjetosIniciales()
 
         sTemp = Leer.GetValue("INVENTARIO", "Item" & Slot)
 
-        ItemsIniciales(Slot).ObjIndex = Val(ReadField(1, sTemp, 45))
-        ItemsIniciales(Slot).Amount = Val(ReadField(2, sTemp, 45))
-        ItemsIniciales(Slot).Equipped = Val(ReadField(3, sTemp, 45))
+        ItemsIniciales(Slot).ObjIndex = val(ReadField(1, sTemp, 45))
+        ItemsIniciales(Slot).Amount = val(ReadField(2, sTemp, 45))
+        ItemsIniciales(Slot).Equipped = val(ReadField(3, sTemp, 45))
 
     Next Slot
 
@@ -830,11 +830,10 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 
 End Sub
 
-Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
+Sub CloseSocket(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
     'Last Modification: 4/4/2020
     '4/4/2020: FrankoH298 - Flusheamos el buffer antes de cerrar el socket.
     '
@@ -845,78 +844,69 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
     
     With UserList(Userindex)
 
-        With UserList(Userindex)
+        Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
+        
+        If .ConnID <> -1 Then
+            Call CloseSocketSL(Userindex)
+        End If
 
-            Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
+        'Nuevo centinela - maTih.-
+        If .CentinelaUsuario.centinelaIndex <> 0 Then
+            Call modCentinela.UsuarioInActivo(Userindex)
+        End If
         
-            If .ConnID <> -1 Then
-                Call CloseSocketSL(Userindex)
-
-            End If
-        
-            ' Hunger Games
-            If .flags.SG.HungerIndex <> 0 Then
-                Call modHungerGames.HungerDesconect(Userindex)
-            End If
+        'mato los comercios seguros
+        If .ComUsu.DestUsu > 0 Then
             
-            'Nuevo centinela - maTih.-
-            If .CentinelaUsuario.centinelaIndex <> 0 Then
-                Call modCentinela.UsuarioInActivo(Userindex)
-            End If
-        
-            'mato los comercios seguros
-            If .ComUsu.DestUsu > 0 Then
-            
-                If UserList(.ComUsu.DestUsu).flags.UserLogged Then
+            If UserList(.ComUsu.DestUsu).flags.UserLogged Then
                 
-                    If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
-                        Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
-                        Call FinComerciarUsu(.ComUsu.DestUsu)
-
-                    End If
-
+                If UserList(.ComUsu.DestUsu).ComUsu.DestUsu = Userindex Then
+                    Call WriteConsoleMsg(.ComUsu.DestUsu, "Comercio cancelado por el otro usuario", FontTypeNames.FONTTYPE_WARNING)
+                    Call FinComerciarUsu(.ComUsu.DestUsu)
                 End If
 
             End If
-            
-            ' Retos nVSn. Usuario cierra conexion.
-            If .flags.SlotReto > 0 Then
-                Call Retos.UserDieFight(Userindex, 0, True)
-            End If
 
-            ' Desequipamos la montura justo antes de cerrar el socket
-            ' para prevenir que se la equipe durante el conteo de salida (WyroX)
-            If .flags.Equitando = 1 Then
-                Call UnmountMontura(Userindex)
-            End If
+        End If
             
-            'Empty buffer for reuse
-            Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
+        ' Retos nVSn. Usuario cierra conexion.
+        If .flags.SlotReto > 0 Then
+            Call Retos.UserDieFight(Userindex, 0, True)
+        End If
 
-            If .flags.UserLogged Then
-                If NumUsers > 0 Then NumUsers = NumUsers - 1
-                Call CloseUser(Userindex)
+        ' Desequipamos la montura justo antes de cerrar el socket
+        ' para prevenir que se la equipe durante el conteo de salida (WyroX)
+        If .flags.Equitando = 1 Then
+            Call UnmountMontura(Userindex)
+        End If
             
-            Else
-                Call ResetUserSlot(Userindex)
+        'Empty buffer for reuse
+        Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
 
-            End If
+        If .flags.UserLogged Then
+            If NumUsers > 0 Then NumUsers = NumUsers - 1
+            Call CloseUser(Userindex)
             
-            Call LiberarSlot(Userindex)
-            
-        End With
+        Else
+            Call ResetUserSlot(Userindex)
 
-        Exit Sub
+        End If
+            
+        Call LiberarSlot(Userindex)
+            
+    End With
+
+    Exit Sub
 
 ErrHandler:
 
-        Call ResetUserSlot(Userindex)
+    Call ResetUserSlot(Userindex)
         
-        Call LiberarSlot(Userindex)
+    Call LiberarSlot(Userindex)
         
-        Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.Description & " - UserIndex = " & Userindex)
+    Call LogError("CloseSocket - Error = " & Err.Number & " - Descripcion = " & Err.description & " - UserIndex = " & Userindex)
 
-    End Sub
+End Sub
 
 '[Alejo-21-5]: Cierra un socket sin limpiar el slot
 Sub CloseSocketSL(ByVal Userindex As Integer)
@@ -1342,7 +1332,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If MapInfo(.Pos.Map).MusicMp3 <> vbNullString Then
             Call WritePlayMp3(Userindex, MapInfo(.Pos.Map).MusicMp3)
         Else
-            Call WritePlayMidi(Userindex, Val(ReadField(1, MapInfo(.Pos.Map).Music, 45)))
+            Call WritePlayMidi(Userindex, val(ReadField(1, MapInfo(.Pos.Map).Music, 45)))
         End If
         
         If .flags.Privilegios = PlayerType.Dios Then
@@ -1422,7 +1412,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If NumUsers > RecordUsuariosOnline Then
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente. Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFOBOLD))
             RecordUsuariosOnline = NumUsers
-            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", Str(RecordUsuariosOnline))
+            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RecordUsuariosOnline))
 
             'Este ultimo es para saber siempre los records en el frmMain
             frmMain.txtRecordOnline.Text = RecordUsuariosOnline
@@ -1516,7 +1506,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         n = FreeFile
         'Log
         Open App.Path & "\logs\Connect.log" For Append Shared As #n
-        Print #n, .Name & " ha entrado al juego. UserIndex:" & Userindex & " " & Time & " " & Date
+        Print #n, .Name & " ha entrado al juego. UserIndex:" & Userindex & " " & time & " " & Date
         Close #n
 
     End With
@@ -2056,7 +2046,7 @@ Sub CloseUser(ByVal Userindex As Integer)
     
         n = FreeFile(1)
         Open App.Path & "\logs\Connect.log" For Append Shared As #n
-        Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & Time & " " & Date
+        Print #n, Name & " ha dejado el juego. " & "User Index:" & Userindex & " " & time & " " & Date
         Close #n
 
     End With
@@ -2064,7 +2054,7 @@ Sub CloseUser(ByVal Userindex As Integer)
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error en CloseUser. Numero " & Err.Number & " Descripcion: " & Err.Description)
+    Call LogError("Error en CloseUser. Numero " & Err.Number & " Descripcion: " & Err.description)
 
 End Sub
 
@@ -2089,7 +2079,7 @@ Sub ReloadSokcet()
     Exit Sub
     
 ErrHandler:
-    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.Description)
+    Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub
 
@@ -2140,7 +2130,7 @@ Function RandomString(cb As Integer) As String
     Dim i As Long
 
     For i = 1 To cb
-        RandomString = RandomString & Mid$(rgch, Int(Rnd() * Len(rgch) + 1), 1)
+        RandomString = RandomString & mid$(rgch, Int(Rnd() * Len(rgch) + 1), 1)
     Next
 
 End Function
