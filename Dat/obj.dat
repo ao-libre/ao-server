@@ -2346,6 +2346,9 @@ CP10=BARDO
 CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
+SND1=217
+SND2=217
+SND3=217
 
 [OBJ209]
 Name=Cartel Mineros
@@ -5330,8 +5333,8 @@ ObjType=26
 Agarrable=0
 Valor=2200
 Crucial=0
-SND1=39
-SND2=49
+SND1=40
+SND2=40
 SND3=40
 Madera=800
 SkCarpinteria=75
@@ -7798,7 +7801,7 @@ ObjType=30
 Agarrable=1
 
 [OBJ652]
-Name=Piedra de Arghâl
+Name=Piedra de Arghal
 GrhIndex=705
 ObjType=29
 
@@ -8571,6 +8574,9 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
+SND1=219
+SND2=219
+SND3=219
 
 [OBJ697]
 Name=Anillo de defensa Magica
@@ -9864,6 +9870,9 @@ CP8=GUERRERO
 CP9=MAGO
 CP10=BARDO
 CP11=TRABAJADOR
+SND1=216
+SND2=216
+SND3=216
 
 [OBJ864]
 Name=Laud Magico (Newbie)
@@ -9886,6 +9895,9 @@ CP8=GUERRERO
 CP9=MAGO
 CP10=DRUIDA
 CP11=TRABAJADOR
+SND1=218
+SND2=218
+SND3=218
 
 [OBJ865]
 Name=Alforja
@@ -12592,6 +12604,9 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 MaderaElfica=1150
 SkCarpinteria=100
+SND1=220
+SND2=220
+SND3=220
 
 [OBJ1050]
 Name=Flauta Elfica
@@ -12616,6 +12631,9 @@ CP10=BARDO
 CP11=TRABAJADOR
 MaderaElfica=1000
 SkCarpinteria=100
+SND1=215
+SND2=215
+SND3=215
 
 [OBJ1051]
 Name=Casco Simple (Newbie)
@@ -13853,6 +13871,9 @@ CP11=TRABAJADOR
 Log=1
 NoSeCae=1
 NoRobable=1
+SND1=221
+SND2=221
+SND3=221
 
 [OBJ1120]
 Name=Arco Compuesto Reforzado Especial
@@ -14206,7 +14227,6 @@ NumRopaje=601
 Agarrable=0
 MaxDef=55
 MinDef=50
-NoSeCae=1
 Valor=10000000
 
 [OBJ1145]
@@ -14218,7 +14238,6 @@ Agarrable=0
 Valor=10000000
 MaxDef=55
 MinDef=50
-NoSeCae=1
 
 [OBJ1146]
 Name=Corona De rey
