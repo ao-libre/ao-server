@@ -74,7 +74,7 @@ Actual Npc con Nro mas alto: 938
 [INIT]
 'aca va el numero de NPC mas alto, NO la cantidad de NPCs.
 'esto sirve para que los GMS puedan ver la lista completa de npcs a invocar en una ventanita.
-NumNPCs=940
+NumNPCs=945
 
 
 
@@ -10761,7 +10761,7 @@ BackUp=0
 ###############no cambiar los indices asignados###############
 
 [NPC924]
-Name=Mark [Quest 1]
+Name=Mark [Quest 1 Neumahak]
 NpcType=0
 Desc=Buen dia amigo mio! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
 Head=101
@@ -10778,7 +10778,7 @@ BackUp=0
 QuestNumber=1
 
 [NPC925]
-Name=Willdon [Quest 3]
+Name=Willdon [Quest 3 Ullathorpe]
 NpcType=0
 Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Ullathorpe. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Debes matar 15 Lobos y conseguir 15 Pieles de Lobo para recibir una recompensa de 200 monedas de oro y 1000 puntos de experiencia, si queres ayudarme escribe /QUEST.
 Head=101
@@ -10795,7 +10795,7 @@ BackUp=0
 QuestNumber=3
 
 [NPC926]
-Name=Selenna [Quest 5]
+Name=Selenna [Quest 5 Nix]
 NpcType=0
 Desc=Esta ciudad es un peligro con estas criaturas alrededor, hay que traer paz a la metropolis, si eres capaz de ayudarnos escribe /QUEST.
 Head=71
@@ -11129,12 +11129,12 @@ Alineacion=0
 Comercia=0
 
 [NPC939]
-Name=Eduardo [Quest 4]
+Name=Pele [Quest 4 Cementerio]
 NpcType=0
 Desc=Ayuda por favor!! Una horda de zombies y esqueletos estan acechando mi granja!! Por favor mata 10 zombies y 10 esqueletos!! Tendras una gran recompensa, escribe /QUEST.
 Head=101
 Heading=3
-Body=348
+Body=345
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -11146,12 +11146,12 @@ BackUp=0
 QuestNumber=4
 
 [NPC940]
-Name=Pedro [Quest 2]
+Name=Maradona [Quest 2 Banderbill]
 NpcType=0
-Desc=Buen dia amigo mio! Soy el que te va a dar tu la aventura de esta hermosa ciudad. Si deseas cooperar con la milicia de la ciudad y recibir una recompensa, escribe /QUEST.
+Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Escribe /QUEST.
 Head=101
 Heading=3
-Body=348
+Body=346
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -11160,4 +11160,91 @@ Domable=0
 Alineacion=0
 Comercia=0
 BackUp=0
-QuestNumber=3
+QuestNumber=2
+
+[NPC941]
+Name=Alfonsin [Quest 6 Banderbill]
+NpcType=0
+Desc=El clan de Asesinos y Bandidos no para de fastidiar a los ciudadanos de Argentum por eso te pedimos que acabes con esta plaga de una vez por todas. Escribe /QUEST.
+Head=101
+Heading=3
+Body=349
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=6
+
+[NPC942]
+Name=Charly Garcia [Quest 7 Arkhein]
+NpcType=0
+Desc=Necesitamos minerales para construir el anillo de bodas del primer ministro, tenes que matar 3 Etogniles de cada raza Bronce, Plata y Oro. Me ayudas? Escribe /QUEST.
+Head=101
+Heading=3
+Body=343
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=7
+
+[NPC943]
+Name=Favaloro [Quest 8 Lindos]
+NpcType=0
+Desc=Venga a mis hijos que murieron en manos de los titanes, necesito que mates a todos ellos por mi, podrias? Escribe /QUEST.
+Head=101
+Heading=3
+Body=342
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=8
+
+[NPC944]
+Name=Calamaro [Quest 9 Arghal]
+NpcType=0
+Desc=Alguien se fumo mi marihuana, necesito recuperarla! Escribe /QUEST.
+Head=101
+Heading=3
+Body=341
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=9
+
+[NPC945]
+Name=Leon Gieco [Quest 10 Ciudad Abandonada]
+NpcType=0
+Desc=Tengo un buen premio, te estaba esperando hace mucho tiempo viajero, queres un buen desafio? Escribe /QUEST.
+Head=101
+Heading=3
+Body=339
+Movement=1
+Attackable=0
+ReSpawn=0
+Hostile=0
+Domable=0
+Alineacion=0
+Comercia=0
+BackUp=0
+QuestNumber=10
+
+
