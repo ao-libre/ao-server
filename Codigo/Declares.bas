@@ -125,7 +125,7 @@ Public Const iGaleraReal = 565
 
 Public Const iGaleraRealAtacable = 568
 
-Public Const iGaleonReal = 399 'falta Dejo este ReyarB
+Public Const iGaleonReal = 572 
 
 Public Const iGaleonRealAtacable = 564
 
@@ -141,7 +141,7 @@ Public Const iBarcaCaos = 561
 
 Public Const iGaleraCaos = 566
 
-Public Const iGaleonCaos = 400 ' falta dejo este ReyarB
+Public Const iGaleonCaos = 573 
 
 Public Enum iMinerales
 
