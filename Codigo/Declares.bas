@@ -1641,7 +1641,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    IP As String
+    ip As String
     
     ComUsu As tCOmercioUsuario
     
@@ -1665,7 +1665,7 @@ Public Type User
     CentinelaUsuario As CentinelaUser
     
     cvcUser As cvc_User
-    mail As String
+    
     QuestStats As tQuestStats
 
 End Type

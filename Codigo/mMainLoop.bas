@@ -103,7 +103,7 @@ Private Sub Auditoria()
 
 errhand:
 
-    Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
+    Call LogError("Error en Timer Auditoria. Err: " & Err.Description & " - " & Err.Number)
 
 End Sub
 
@@ -124,7 +124,7 @@ Private Sub packetResend()
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
+    Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.Description)
 
     Resume Next
 
@@ -394,7 +394,7 @@ Private Sub GameTimer()
     Exit Sub
 
 hayerror:
-    LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
+    LogError ("Error en GameTimer: " & Err.Description & " UserIndex = " & iUserIndex)
 
 End Sub
 
@@ -437,8 +437,8 @@ Public Sub PasarSegundo()
                     If .Counters.Salir <= 0 Then
                         Call WriteConsoleMsg(i, "Gracias por jugar Argentum Online", FontTypeNames.FONTTYPE_INFO)
                         Call WriteDisconnect(i)
-                        Call CloseSocket(i, True)
-                        Call LoginAccountCharfile(i, UserList(i).mail)
+                        Call FlushBuffer(i)
+                        Call CloseSocket(i)
                     End If
 
                 End If
@@ -452,14 +452,17 @@ Public Sub PasarSegundo()
                     
                     ' Cuenta regresiva de retos y eventos
                     If .Counters.TimeFight = 0 Then
-                        WriteConsoleMsg i, "Cuenta -> YA!", FontTypeNames.FONTTYPE_FIGHT
+                        Call WriteConsoleMsg(i, "Cuenta -> YA!", FontTypeNames.FONTTYPE_FIGHT)
                                              
                         If .flags.SlotReto > 0 Then
                             Call WriteUserInEvent(i)
                         End If
+                    
                     Else
-                        WriteConsoleMsg i, "Cuenta -> " & .Counters.TimeFight, FontTypeNames.FONTTYPE_GUILD
+                        Call WriteConsoleMsg(i, "Cuenta -> " & .Counters.TimeFight, FontTypeNames.FONTTYPE_GUILD)
+                    
                     End If
+                
                 End If
                 
                 If .Counters.Pena > 0 Then
@@ -519,7 +522,7 @@ Public Sub PasarSegundo()
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
+    Call LogError("Error en PasarSegundo. Err: " & Err.Description & " - " & Err.Number & " - UserIndex: " & i)
 
     Resume Next
 
