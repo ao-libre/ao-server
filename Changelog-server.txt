@@ -965,6 +965,6 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.32
 * 15/04/2020: Se arreglaron el GRH de algunos items como montura de dragon rojo y espada de fuego, se nerfearon a los titanes, Murcielago te envenena (Recox - ReyarB)
-* 15/04/2020: Se comento codigo de IPSecuritySuperaLimiteConexiones por que esta ROTO. TODO: Arreglar (Recox)
+* 15/04/2020: Se arreglo IPSecuritySuperaLimiteConexiones implementando la solucion de BelerianD. (Recox - jopiortiz - BelerianD)
 
 ---
