@@ -47,7 +47,7 @@ NPCS QUESTS
 ##############NUMEROS LIBRES##################
 ##############################################
 
-165 a 499
+166 a 499
 563
 570
 571
@@ -940,6 +940,35 @@ Obj12= #??? (universal)
 BackUp=1
 
 ##############################################
+[NPC165]
+Name=Oso Blanco
+NpcType=0
+Head=0
+Heading=3
+Body=184
+Movement=3
+AguaValida=0
+Attackable=1
+ReSpawn=0
+Hostile=1
+Domable=2010
+Alineacion=2
+Comercia=0
+GiveEXP=8500
+MinHP=600
+MaxHP=600
+MaxHIT=100
+MinHIT=65
+DEF=0
+PoderAtaque=250
+PoderEvasion=165
+BackUp=0
+NROITEMS=5
+Drop1=415-1 'Piel Oso Pardo
+Drop2=12-26 'Oro
+Drop3=480-50 'Flechas
+Drop4=479-1 'Arco Compuesto
+Drop5=38-100 'Pociones Rojas
 
 [NPC120] 'Sastre Razas (humanos mujer)
 Name=Ireth
