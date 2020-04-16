@@ -1,5 +1,5 @@
 [INIT]
-NumQuests=8
+NumQuests=10
 
 
 [QUEST1]
@@ -18,7 +18,7 @@ RewardOBJs=0
 [QUEST2]
 Nombre=Caceria de lobo
 Desc=Se han reportado muchas muertes en los alrededores de la ciudad de Banderbill. La milicia ha hecho un llamado a la comunidad para intentar solucionar este problema. Debes matar 15 Lobos y conseguir 15 Pieles de Lobo para recibir una recompensa de 200 monedas de oro y 1000 puntos de experiencia.
-RequiredLevel=5
+RequiredLevel=2
  
 RequiredOBJs=1
 RequiredOBJ1=414-15
@@ -33,8 +33,8 @@ RewardOBJs=0
  
 [QUEST3]
 Nombre=Una gran aventura
-Desc=Un simpatico personaje de la ciudad de Lindos, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y esta dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
-RequiredLevel=10
+Desc=Un simpatico personaje de la ciudad de Ullathorpe, de nombre Willdon, precisa 10 Pieles de Lobo y 10 Pieles de Oso pardo y esta dispuesto a recompensar con 2000 puntos de experiencia y una Túnica Azul a quien le entregue estos objetos.
+RequiredLevel=5
  
 RequiredOBJs=2
 RequiredOBJ1=414-10
@@ -126,8 +126,43 @@ RequiredNPC3=934-3
 RewardEXP=300000
 RewardGLD=100000
  
-RewardOBJs=3
-RewardOBJ1=402-10
-RewardOBJ2=562-1
+RewardOBJs=2
+RewardOBJ1=402-50
 RewardOBJ3=540-1
+
+[QUEST9]
+Nombre=Soy un fumado loco
+Desc=Alguien se fumo mi marihuana, necesito recuperarla!
+RequiredLevel=25
+
+RequiredNPCs=3
+RequiredNPC1=531-100
+RequiredNPC2=530-100
+RequiredNPC3=522-100
+ 
+RewardEXP=50000
+RewardGLD=100000
+ 
+RewardOBJs=2
+RewardOBJ1=1138-1
+RewardOBJ1=705-1
+
+[QUEST10]
+Nombre=Al fin alguien me encontro
+Desc=Tengo un gran premio de Argentum para darte si me complaces.
+RequiredLevel=25
+
+RequiredNPCs=3
+RequiredNPC1=510-2000
+RequiredNPC2=518-5
+RequiredNPC3=542-2
+RequiredNPC3=552-2
+
+RewardEXP=50000
+RewardGLD=500000
+ 
+RewardOBJs=2
+RewardOBJ1=1138-1
+RewardOBJ1=1134-1
+
 
