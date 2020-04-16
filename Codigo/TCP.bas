@@ -32,12 +32,13 @@ Attribute VB_Name = "TCP"
     Dim ErrHandler, Length, index As Variant
 
 #End If
+
 Option Explicit
 
 #If False Then
 
     Dim X, Y, n, Mapa, Email, Length As Variant
-
+    
 #End If
 
 Private MAX_OBJ_INICIAL As Byte
@@ -810,8 +811,7 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
         Exit Sub
 
     End If
-    
-    UserList(Userindex).mail = UserName
+
     'Aqui solo vamos a hacer un request a los endpoints de la aplicacion en Node.js
     'el repositorio para hacer funcionar esto, es este: https://github.com/ao-libre/ao-api-server
     'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
@@ -830,31 +830,26 @@ Sub ConnectAccount(ByVal Userindex As Integer, _
 
 End Sub
 
-Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
+Sub CloseSocket(ByVal Userindex As Integer)
+
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
     'Last Modification: 4/4/2020
     '4/4/2020: FrankoH298 - Flusheamos el buffer antes de cerrar el socket.
     '
     '***************************************************
-
     On Error GoTo ErrHandler
     
     Call FlushBuffer(Userindex)
     
     With UserList(Userindex)
 
-        If Not Reconnect Then
-            Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
-            
-            If .ConnID <> -1 Then
-                Call CloseSocketSL(Userindex)
-    
-            End If
-
-        End If
+        Call SecurityIp.IpRestarConexion(GetLongIp(.IP))
         
+        If .ConnID <> -1 Then
+            Call CloseSocketSL(Userindex)
+        End If
+
         'Nuevo centinela - maTih.-
         If .CentinelaUsuario.centinelaIndex <> 0 Then
             Call modCentinela.UsuarioInActivo(Userindex)
@@ -877,27 +872,27 @@ Sub CloseSocket(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean 
         ' Retos nVSn. Usuario cierra conexion.
         If .flags.SlotReto > 0 Then
             Call Retos.UserDieFight(Userindex, 0, True)
-
         End If
 
         ' Desequipamos la montura justo antes de cerrar el socket
         ' para prevenir que se la equipe durante el conteo de salida (WyroX)
         If .flags.Equitando = 1 Then
             Call UnmountMontura(Userindex)
-
         End If
             
         'Empty buffer for reuse
         Call .incomingData.ReadASCIIStringFixed(.incomingData.Length)
-        
+
         If .flags.UserLogged Then
             If NumUsers > 0 Then NumUsers = NumUsers - 1
-            Call CloseUser(Userindex, Reconnect)
+            Call CloseUser(Userindex)
+            
         Else
-            Call ResetUserSlot(Userindex, Reconnect)
+            Call ResetUserSlot(Userindex)
+
         End If
             
-        Call LiberarSlot(Userindex, Reconnect)
+        Call LiberarSlot(Userindex)
             
     End With
 
@@ -1290,14 +1285,12 @@ Sub ConnectUser(ByVal Userindex As Integer, _
                         If UserList(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu).flags.UserLogged Then
                             Call FinComerciarUsu(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu)
                             Call WriteConsoleMsg(UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).ComUsu.DestUsu, "Comercio cancelado. El otro usuario se ha desconectado.", FontTypeNames.FONTTYPE_WARNING)
-
                         End If
 
                         'Lo sacamos.
                         If UserList(MapData(Mapa, .Pos.X, .Pos.Y).Userindex).flags.UserLogged Then
                             Call FinComerciarUsu(MapData(Mapa, .Pos.X, .Pos.Y).Userindex)
                             Call WriteErrorMsg(MapData(Mapa, .Pos.X, .Pos.Y).Userindex, "Alguien se ha conectado donde te encontrabas, por favor reconectate...")
-
                         End If
 
                     End If
@@ -1892,7 +1885,7 @@ Public Sub LimpiarComercioSeguro(ByVal Userindex As Integer)
 
 End Sub
 
-Sub ResetUserSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
+Sub ResetUserSlot(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -1900,10 +1893,10 @@ Sub ResetUserSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolea
     '***************************************************
 
     Dim i As Long
-    If Not Reconnect Then
-        UserList(Userindex).ConnIDValida = False
-        UserList(Userindex).ConnID = -1
-    End If
+
+    UserList(Userindex).ConnIDValida = False
+    UserList(Userindex).ConnID = -1
+
     Call LimpiarComercioSeguro(Userindex)
     Call ResetFacciones(Userindex)
     Call ResetContadores(Userindex)
@@ -1935,7 +1928,7 @@ Sub ResetUserSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolea
  
 End Sub
 
-Sub CloseUser(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
+Sub CloseUser(ByVal Userindex As Integer)
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -2047,7 +2040,7 @@ Sub CloseUser(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = 
         ' Si el usuario habia dejado un msg en la gm's queue lo borramos
         If Ayuda.Existe(.Name) Then Call Ayuda.Quitar(.Name)
     
-        Call ResetUserSlot(Userindex, Reconnect)
+        Call ResetUserSlot(Userindex)
     
         Call MostrarNumUsers
     
