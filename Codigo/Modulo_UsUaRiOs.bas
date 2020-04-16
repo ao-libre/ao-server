@@ -1078,7 +1078,7 @@ Sub MoveUserChar(ByVal Userindex As Integer, ByVal nHeading As eHeading)
             End With
             
             'Actualizamos las areas de ser necesario
-            Call Areas.CheckUpdateNeededUser(Userindex, nHeading)
+            Call Areas.CheckUpdateNeededUser(UserIndex, nHeading)
         Else
             Call WritePosUpdate(Userindex)
 
@@ -1176,20 +1176,19 @@ Function NextOpenUser() As Integer
 
 End Function
 
-Public Sub LiberarSlot(ByVal Userindex As Integer, Optional ByVal Reconnect As Boolean = False)
+Public Sub LiberarSlot(ByVal Userindex As Integer)
     '***************************************************
     'Author: Torres Patricio (Pato)
     'Last Modification: 01/10/2012
     '
     '***************************************************
-    If Not Reconnect Then
-        With UserList(Userindex)
-            .ConnID = -1
-            .ConnIDValida = False
-    
-        End With
-    End If
-    
+
+    With UserList(Userindex)
+        .ConnID = -1
+        .ConnIDValida = False
+
+    End With
+
     If Userindex = LastUser Then
 
         Do While (LastUser > 0) And (UserList(LastUser).ConnID = -1)
@@ -1889,24 +1888,24 @@ Public Sub UserDie(ByVal Userindex As Integer, Optional ByVal AttackerIndex As I
         Call LimpiarComercioSeguro(Userindex)
         
         ' Hay que teletransportar?
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
 
         Dim MapaTelep As Integer
 
-        MapaTelep = MapInfo(mapa).OnDeathGoTo.Map
+        MapaTelep = MapInfo(Mapa).OnDeathGoTo.Map
         
         If MapaTelep <> 0 Then
             Call WriteConsoleMsg(Userindex, "Tu estado no te permite permanecer en el mapa!!!", FontTypeNames.FONTTYPE_INFOBOLD)
-            Call WarpUserChar(Userindex, MapaTelep, MapInfo(mapa).OnDeathGoTo.X, MapInfo(mapa).OnDeathGoTo.Y, True, True)
+            Call WarpUserChar(Userindex, MapaTelep, MapInfo(Mapa).OnDeathGoTo.X, MapInfo(Mapa).OnDeathGoTo.Y, True, True)
 
         End If
         
         ' Retos nVSn. User muere
         If AttackerIndex <> 0 Then
             If .flags.SlotReto > 0 Then
-                Call Retos.UserDieFight(Userindex, AttackerIndex, False)
+                Call Retos.UserdieFight(Userindex, AttackerIndex, False)
             End If
         End If
     End With
@@ -2697,18 +2696,18 @@ Public Sub ApropioNpc(ByVal Userindex As Integer, ByVal NpcIndex As Integer)
         ' Los admins no se pueden apropiar de npcs
         If EsGm(Userindex) Then Exit Sub
         
-        Dim mapa As Integer
+        Dim Mapa As Integer
 
-        mapa = .Pos.Map
+        Mapa = .Pos.Map
         
         ' No aplica a triggers seguras
-        If MapData(mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
+        If MapData(Mapa, .Pos.X, .Pos.Y).trigger = eTrigger.ZONASEGURA Then Exit Sub
         
         ' No se aplica a mapas seguros
-        If MapInfo(mapa).Pk = False Then Exit Sub
+        If MapInfo(Mapa).Pk = False Then Exit Sub
         
         ' No aplica a algunos mapas que permiten el robo de npcs
-        If MapInfo(mapa).RoboNpcsPermitido = 1 Then Exit Sub
+        If MapInfo(Mapa).RoboNpcsPermitido = 1 Then Exit Sub
         
         ' Pierde el npc anterior
         If .flags.OwnedNpc > 0 Then Npclist(.flags.OwnedNpc).Owner = 0

@@ -8695,6 +8695,12 @@ ObjType=8
 Agarrable=1
 Texto=Aqui yace el alma de Cronos, un dios que ha dado mucho por nuestro mundo. Descansa, hermano... el pueblo de Argentum jamas te olvidara!
 
+[OBJ704]
+Name=Arbol
+GrhIndex=30680
+ObjType=4
+Agarrable=1
+
 [OBJ705]
 Name=El Ojo del Demiurgo
 GrhIndex=609
@@ -13811,6 +13817,30 @@ CP9=PALADIN
 CP10=CAZADOR
 CP11=TRABAJADOR
 
+[OBJ1113]
+Name=Arbol
+GrhIndex=30685
+ObjType=4
+Agarrable=1
+
+[OBJ1114]
+Name=Arbol
+GrhIndex=30686
+ObjType=4
+Agarrable=1
+
+[OBJ1115]
+Name=Arbol
+GrhIndex=30683
+ObjType=4
+Agarrable=1
+
+[OBJ1116]
+Name=Arbol
+GrhIndex=30686
+ObjType=4
+Agarrable=1
+
 [OBJ1117]
 Name=Baston Nudoso Especial
 GrhIndex=959
@@ -13898,6 +13928,18 @@ CP9=TRABAJADOR
 Log=1
 NoSeCae=1
 NoRobable=1
+
+[OBJ1121]
+Name=Arbol
+GrhIndex=30682
+ObjType=4
+Agarrable=1
+
+[OBJ1122]
+Name=Arbol
+GrhIndex=30681
+ObjType=4
+Agarrable=1
 
 [OBJ1123]
 Name=Vestimenta de Campeon (E/G)

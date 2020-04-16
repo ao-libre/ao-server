@@ -763,8 +763,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 - v0.13.11
 
 * 13/08/2019: Retos 1vs1,2vs2,3vs3,nVSn (MarinoLautaro)
-		- Para retar, /RETOS
-		- Para aceptar, /ACEPTAR NICK
+* 13/08/2019: - Para retar, /RETOS
+* 13/08/2019: - Para aceptar, /ACEPTAR NICK
 * 14/08/2019: Se cambiaron los mapas de duelos por otros que no sean ciudades. (Recox)
 
 - v0.13.12
@@ -836,7 +836,7 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 27/12/2019: Se agregaron los valores de intervalos de algunos timers que estaban hardcodeados al server.ini, se cambiaron los nombre de las suertes para oficios por dificultad. (Recox)
 * 27/12/2019: Se elimino "Banco de Iglesia" de obj.dat ya que el index estaba repetido. (Recox)
 * 02/01/2020: Eliminados los paquetes `ShowBlacksmithForm` y `ShowCarpenterForm`.
-              Meto su comportamiento en los paquetes donde se solicitan los datos al servidor de los elementos construibles para su respectiva profesion.
+* 02/01/2020: Meto su comportamiento en los paquetes donde se solicitan los datos al servidor de los elementos construibles para su respectiva profesion.
 
 - v0.13.21
 
@@ -965,6 +965,9 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 
 - v0.13.32
 * 15/04/2020: Se arreglaron el GRH de algunos items como montura de dragon rojo y espada de fuego, se nerfearon a los titanes, Murcielago te envenena (Recox - ReyarB)
-* 15/04/2020: Se comento codigo de IPSecuritySuperaLimiteConexiones por que esta ROTO. TODO: Arreglar (Recox)
+* 15/04/2020: Se arreglo IPSecuritySuperaLimiteConexiones implementando la solucion de BelerianD. (Recox - jopiortiz - BelerianD)
+* 15/04/2020: Se arreglo problema de montura Gran Dragon Rojo, Barcas como Lobos y Barcas de armadas y facciones. (ReyarB)
+* 15/04/2020: Se arreglaron algunos mapas (ReyarB)
+* 15/04/2020: Se agregaron NPCs nuevos para quests y se incluyeron el Artesano, Quests en Nix, Bander y Ulla (Recox)
 
 ---
