@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1181
+NumOBJs=1201
 
 
 
@@ -14810,3 +14810,162 @@ MaxDef=45
 MinDef=40
 Valor=2000000
 Crucial=1
+[OBJ1182]
+Name=Cartel Arkhein
+GrhIndex=25927
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Arkhein vas bien sigue al Sur
+
+[OBJ1183]
+Name=Cartel Banderbill
+GrhIndex=25942
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Banderbill vas bien sigue al Norte
+
+[OBJ1184]
+Name=Cartel Banderbill Nix
+GrhIndex=25943
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Viajero si sigues al Norte llegaras a Banderbill y al Sur a Nix.
+
+[OBJ1185]
+Name=Cartel Cementerio
+GrhIndex=25928
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Viajero si quieres llegar al Cementerio sigue al Este.
+
+[OBJ1186]
+Name=Cartel Dungeon Marabel
+GrhIndex=25943
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Bienvenido a Dungeon Marabel.
+
+[OBJ1187]
+Name=Cartel Dungeon Marabel
+GrhIndex=25941
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras al Dungeon Marabel.
+
+[OBJ1188]
+Name=Cartel Dungeon Newbie
+GrhIndex=25944
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Bienvenido a Dungeon Marabel.
+
+[OBJ1189]
+Name=Cartel Entranadora hija de ZeuS
+GrhIndex=25937
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras a la entrenadora con Criaturas especiales para entrenar Fuerte.
+
+[OBJ1190]
+Name=Cartel Entranadora hija de ZeuS
+GrhIndex=25919
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Oeste y llegaras a la entrenadora con Criaturas especiales para entrenar Fuerte.
+
+[OBJ1191]
+Name=Cartel Entranadora hija de ZeuS
+GrhIndex=25929
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Entrada a catacumbas interciudades podras llegar rapidamente a otra ciudad poe ellas OJO son inseguras.
+
+[OBJ1192]
+Name=Cartel Laberinto
+GrhIndex=25922
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Entrada al Laberinto de ReyarB recomendamos no entrar.
+
+[OBJ1193]
+Name=Cartel Lindos
+GrhIndex=25931
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Bienvenido a Lindos.
+
+[OBJ1194]
+Name=Cartel Minas de Hierro
+GrhIndex=25926
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras a las minas de Hierro.
+
+[OBJ1195]
+Name=Cartel Minas de Hierro
+GrhIndex=25925
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras a las minas de Hierro de Arkhein.
+
+[OBJ1196]
+Name=Cartel Minas de Oro
+GrhIndex=25926
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Oeste y llegaras a las minas de Oro.
+
+[OBJ1197]
+Name=Cartel Minas de Oro
+GrhIndex=25926
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua y llegaras a las minas de Oro.
+
+[OBJ1198]
+Name=Cartel Nemahuak
+GrhIndex=25915
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Bienvenidoa la ciudad de Nemahuak.
+
+[OBJ1199]
+Name=Cartel Rothenburg
+GrhIndex=25920
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras las Ciudad de Rothenburg.
+
+[OBJ1200]
+Name=Cartel Stonehenge
+GrhIndex=25921
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Continua al Este y llegaras a las misticas piedras de Stonehenge.
+
+[OBJ1201]
+Name=Cartel torneoa
+GrhIndex=25930
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
