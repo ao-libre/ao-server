@@ -1966,6 +1966,8 @@ Public AllowMultiLogins                   As Boolean
 
 Public IdleLimit                          As Integer
 
+Public LimiteConexionesPorIp              As Byte
+
 Public MaxUsers                           As Integer
 
 Public HideMe                             As Boolean
