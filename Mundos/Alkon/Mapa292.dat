@@ -1,12 +1,13 @@
 [MAPA292]
-BACKUP= 1
-INVISINEFECTO=0
-MAGIASINEFECTO=0
-MUSICNUM=81
-NOENCRIPTARMP=0
-PK=0
-RESUSINEFECTO=0
-TERRENO=DESIERTO
-ZONA=DUNGEON
-
+BackUp= 1
+InviSinEfecto=0
+MagiaSinefecto=0
+MusicNum=81
+NoEncriptarMP=0
 Name=Catas Interciudades
+Pk=0
+Restringir=
+ResuSinEfecto=0
+Terreno=DESIERTO
+Zona=DUNGEON
+
