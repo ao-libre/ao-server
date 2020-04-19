@@ -57,8 +57,6 @@ Private MaxConTables()                 As Long
 
 Private MaxConTablesEntry              As Long     'puntero a la ultima insertada
 
-Private Const LIMITECONEXIONESxIP      As Long = 10
-
 Private Enum e_SecurityIpTabla
 
     IP_INTERVALOS = 1
@@ -179,7 +177,7 @@ Public Function IPSecuritySuperaLimiteConexiones(ByVal ip As Long) As Boolean
     
     If IpTableIndex >= 0 Then
         
-        If MaxConTables(IpTableIndex + 1) < LIMITECONEXIONESxIP Then
+        If MaxConTables(IpTableIndex + 1) < LimiteConexionesPorIp Then
             LogIP ("Agregamos conexion a " & ip & " iptableindex=" & IpTableIndex & ". Conexiones: " & MaxConTables(IpTableIndex + 1))
             Debug.Print "suma conexion a " & ip & " total " & MaxConTables(IpTableIndex + 1) + 1
             MaxConTables(IpTableIndex + 1) = MaxConTables(IpTableIndex + 1) + 1

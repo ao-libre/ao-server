@@ -1851,6 +1851,7 @@ Sub LoadSini()
     HideMe = CBool(Lector.GetValue("INIT", "Hide"))
     AllowMultiLogins = CBool(val(Lector.GetValue("INIT", "AllowMultiLogins")))
     IdleLimit = val(Lector.GetValue("INIT", "IdleLimit"))
+    LimiteConexionesPorIp = val(Lector.GetValue("INIT", "LimiteConexionesPorIp"))
     
     'Lee la version correcta del cliente
     ULTIMAVERSION = Lector.GetValue("INIT", "VersionBuildCliente")
