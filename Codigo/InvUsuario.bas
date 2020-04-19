@@ -646,7 +646,7 @@ Function MeterItemEnInventario(ByVal Userindex As Integer, ByRef MiObj As obj) A
     
         If Slot > MAX_NORMAL_INVENTORY_SLOTS And Slot <= MAX_INVENTORY_SLOTS Then
             If Not ItemSeCae(MiObj.ObjIndex) Then
-                Call WriteConsoleMsg(Userindex, "No puedes contener objetos especiales en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ".", FontTypeNames.FONTTYPE_WARNING)
+                Call WriteConsoleMsg(Userindex, "No puedes agarrar objetos especiales y ponerlos directamente en tu " & ObjData(.Invent.MochilaEqpObjIndex).Name & ". Puedes acomodar los items en tu inventario con drag and drop y asi si poder moverlos dentro de tu alforja. Recuerda que items que no se caen normalmente si estan dentro de la mochila caeran", FontTypeNames.FONTTYPE_WARNING)
                 MeterItemEnInventario = False
                 Exit Function
 
@@ -2343,19 +2343,20 @@ Sub TirarTodosLosItemsEnMochila(ByVal Userindex As Integer)
             ItemIndex = .Invent.Object(i).ObjIndex
 
             If ItemIndex > 0 Then
-                If ItemSeCae(ItemIndex) Then
-                    NuevaPos.X = 0
-                    NuevaPos.Y = 0
-                    
-                    'Creo MiObj
-                    MiObj.Amount = .Invent.Object(i).Amount
-                    MiObj.ObjIndex = ItemIndex
-                    Tilelibre .Pos, NuevaPos, MiObj, True, True
+                If Not ItemSeCae(ItemIndex) Then
+                    Call WriteConsoleMsg(UserIndex, "Acabas de tirar un objeto que no se cae normalmente ya que lo tenias en tu mochila u alforja y la desequipaste o tiraste", FontTypeNames.FONTTYPE_WARNING)
+                End If
 
-                    If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
-                        Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
+                NuevaPos.X = 0
+                NuevaPos.Y = 0
+                
+                'Creo MiObj
+                MiObj.Amount = .Invent.Object(i).Amount
+                MiObj.ObjIndex = ItemIndex
+                Tilelibre .Pos, NuevaPos, MiObj, True, True
 
-                    End If
+                If NuevaPos.X <> 0 And NuevaPos.Y <> 0 Then
+                    Call DropObj(Userindex, i, MAX_INVENTORY_OBJS, NuevaPos.Map, NuevaPos.X, NuevaPos.Y)
 
                 End If
 
