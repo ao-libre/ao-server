@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1169
+NumOBJs=1181
 
 
 
@@ -14673,6 +14673,138 @@ Name=Tunica Nueva no veo el GrhIndex
 GrhIndex=6576
 ObjType=3
 NumRopaje=589
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1170]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6576
+ObjType=3
+NumRopaje=588
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1171]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6576
+ObjType=3
+NumRopaje=587
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1172]
+Name=Tunica Nueva
+GrhIndex=6771
+ObjType=3
+NumRopaje=586
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1173]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6764
+ObjType=3
+NumRopaje=585
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1174]
+Name=Tunica Nueva
+GrhIndex=6576
+ObjType=3
+NumRopaje=584
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1175]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6576
+ObjType=3
+NumRopaje=583
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1176]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6576
+ObjType=3
+NumRopaje=582
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1177]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=5917
+ObjType=3
+NumRopaje=581
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1178]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6576
+ObjType=3
+NumRopaje=5771
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1179]
+Name=Tunica Nueva 
+GrhIndex=6561
+ObjType=3
+NumRopaje=579
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1180]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=5760
+ObjType=3
+NumRopaje=578
+Agarrable=0
+MaxDef=45
+MinDef=40
+Valor=2000000
+Crucial=1
+
+[OBJ1181]
+Name=Tunica Nueva no veo el GrhIndex
+GrhIndex=6561
+ObjType=3
+NumRopaje=577
 Agarrable=0
 MaxDef=45
 MinDef=40
