@@ -213,8 +213,8 @@ Public Sub CheckUpdateNeededUser(ByVal Userindex As Integer, ByVal heading As By
                             
                         End If
                         
-                    '... excepto que nos hayamos warpeado al mapa
-                    ElseIf heading = USER_NUEVO Then
+                    '... excepto que nos hayamos warpeado al mapa y ButIndex = false
+                    ElseIf heading = USER_NUEVO And Not ButIndex Then
                         Call MakeUserChar(False, Userindex, Userindex, Map, X, Y)
                         
                         If .flags.AdminInvisible = 1 Or .flags.Navegando = 0 And (.flags.invisible Or .flags.Oculto) Then
