@@ -975,4 +975,8 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 * 20/04/2020: El limite de conxexiones por IP se pone en el server.ini (Recox)
 * 20/04/2020: Saco minería de las Inter-ciudades (ReyarB)
 * 20/04/2020: Se agregaron nuevos NPCS, Modificaciones en mapas (ReyarB)
+* 21/04/2020: Nix - Mapa 34 Costa Oeste Nueva. Quedo de 10. Se arreglo la costa Sur, paso de mapa, traslados. Se agrego nuevamente la conexion de Nix(34) con el mapa de la derecha, el 32. Se movieron las murallas hacia adentro, se hizo lugar, traslados, etc. Se saco el arbol que no permitia caminar hacia la derecha al salir de nix. Muchos cambios mas para adaptar la ciudad. No tan importantes. (Jabyar)
+* 21/04/2020: Mapas Modificados. Traslados, reflejos, errores graficos, bloqueos, costas, de todo en los mapas alrededor de Nix. 
+Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292 (Jabyar)
+* 21/04/2020: Fix traslado mapa 148 (Jabyar)
 ---
