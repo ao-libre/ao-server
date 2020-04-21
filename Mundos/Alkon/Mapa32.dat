@@ -2,9 +2,9 @@
 BackUp= 1
 InviSinEfecto=0
 MagiaSinefecto=0
-MusicNum=3
-NoEncriptarMP=0
+MusicNumMp3=3
 Name=Bosque al este de Nix.
+NoEncriptarMP=0
 Pk=0
 Restringir=No
 ResuSinEfecto=0
