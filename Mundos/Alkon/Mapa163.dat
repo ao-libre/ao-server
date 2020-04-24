@@ -1,13 +1,14 @@
 [MAPA163]
-BACKUP= 1
-INVISINEFECTO=0
-MAGIASINEFECTO=0
-MUSICNUMMP3=20
-NOENCRIPTARMP=0
-PK=0
-RESTRINGIR=No
-RESUSINEFECTO=0
-TERRENO=BOSQUE
-ZONA=CIUDAD
-
+BackUp= 1
+InviSinEfecto=0
+MagiaSinefecto=0
+MusicNum=
+MusicNumMp3=20
 Name=Fuerte Pretoriano.
+NoEncriptarMP=0
+Pk=0
+Restringir=No
+ResuSinEfecto=0
+Terreno=BOSQUE
+Zona=CIUDAD
+
