@@ -749,11 +749,11 @@ IndexCerradaLlave=68
 
 '<<<<<<<<<<<casa 3 Ullathorpe>>>>>>>>>>>>
 [OBJ69] 
-Name=Llave Ullathorpe Casa Nro 3
+Name=Llave entrada a mapa pretoriano
 GrhIndex=509
 ObjType=9
 Agarrable=0
-Clave=5
+Clave=50
 Valor=10000000
 Crucial=0
 
@@ -764,7 +764,7 @@ ObjType=6
 Agarrable=1
 Abierta=0
 Llave=0
-Clave=5
+Clave=50
 IndexAbierta=70
 IndexCerrada=71
 IndexCerradaLlave=72
@@ -776,7 +776,7 @@ ObjType=6
 Agarrable=1
 Abierta=1
 Llave=0
-Clave=5
+Clave=50
 IndexAbierta=70
 IndexCerrada=71
 IndexCerradaLlave=72
@@ -788,7 +788,7 @@ ObjType=6
 Agarrable=1
 Abierta=1
 Llave=1
-Clave=5
+Clave=50
 IndexAbierta=70
 IndexCerrada=71
 IndexCerradaLlave=72
