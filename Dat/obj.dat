@@ -747,9 +747,9 @@ IndexAbierta=66
 IndexCerrada=67
 IndexCerradaLlave=68
 
-'<<<<<<<<<<<casa 3 Pretoriano>>>>>>>>>>>>
+'<<<<<<<<<<<casa 3 Ullathorpe>>>>>>>>>>>>
 [OBJ69] 
-Name=Llave Pretoriano Casa Nro 3
+Name=Llave Ullathorpe Nro 3
 GrhIndex=509
 ObjType=9
 Agarrable=0
@@ -14969,3 +14969,51 @@ VGrande=501
 ObjType=8
 Agarrable=1
 Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
+
+
+'<<<<<<<<<<<casa 3 Pretorianos>>>>>>>>>>>>
+
+[OBJ1202] 
+Name=Llave Casa Nro 3
+GrhIndex=509
+ObjType=9
+Agarrable=0
+Clave=60
+Valor=10000000
+Crucial=0
+
+[OBJ1203]
+Name=Puerta de madera abierta
+GrhIndex=5592
+ObjType=6
+Agarrable=1
+Abierta=0
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1204]
+Name=Puerta de madera cerrada
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1205]
+Name=Puerta de madera cerrada
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=1
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
