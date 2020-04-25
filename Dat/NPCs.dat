@@ -9483,12 +9483,11 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
+NROITEMS=3
 Drop1=12-8000 'Oro
 Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
+Drop3=1202-1 'Llave casa 3
+
 
 
 [NPC707]
