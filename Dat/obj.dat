@@ -15007,7 +15007,7 @@ IndexCerrada=1204
 IndexCerradaLlave=1205
 
 [OBJ1205]
-Name=Puerta Pretoriana de Madera cerrada
+Name=Puerta Pretoriana de Madera cerrada con llave
 GrhIndex=5593
 ObjType=6
 Agarrable=1
