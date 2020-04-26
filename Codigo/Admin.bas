@@ -228,7 +228,7 @@ Sub WorldSave()
         'DoEvents
         
         If MapInfo(loopX).BackUp = 1 Then
-            Call GrabarMapa(loopX, App.Path & "\WorldBackUp\Mapa" & loopX)
+            Call GrabarMapa(App.Path & "\WorldBackUp\Mapa" & loopX, loopX)
             FrmStat.ProgressBar1.Value = FrmStat.ProgressBar1.Value + 1
 
         End If

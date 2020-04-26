@@ -35,6 +35,105 @@ Option Explicit
 
 #End If
 
+'********************************
+'Load Map with .CSM format
+'********************************
+Private Type tMapHeader
+    NumeroBloqueados As Long
+    NumeroLayers(2 To 4) As Long
+    NumeroTriggers As Long
+    NumeroLuces As Long
+    NumeroParticulas As Long
+    NumeroNPCs As Long
+    NumeroOBJs As Long
+    NumeroTE As Long
+End Type
+
+Private Type tDatosBloqueados
+    X As Integer
+    Y As Integer
+End Type
+
+Private Type tDatosGrh
+    X As Integer
+    Y As Integer
+    GrhIndex As Long
+End Type
+
+Private Type tDatosTrigger
+    X As Integer
+    Y As Integer
+    Trigger As Integer
+End Type
+
+Private Type tDatosLuces
+    X As Integer
+    Y As Integer
+    light_value(3) As Long
+    base_light(0 To 3) As Boolean 'Indica si el tile tiene luz propia.
+End Type
+
+Private Type tDatosParticulas
+    X As Integer
+    Y As Integer
+    Particula As Long
+End Type
+
+Private Type tDatosNPC
+    X As Integer
+    Y As Integer
+    NpcIndex As Integer
+End Type
+
+Private Type tDatosObjs
+    X As Integer
+    Y As Integer
+    ObjIndex As Integer
+    ObjAmount As Integer
+End Type
+
+Private Type tDatosTE
+    X As Integer
+    Y As Integer
+    DestM As Integer
+    DestX As Integer
+    DestY As Integer
+End Type
+
+Private Type tMapSize
+
+    XMax As Integer
+    XMin As Integer
+    YMax As Integer
+    YMin As Integer
+
+End Type
+
+Private Type tMapDat
+    map_name As String
+    battle_mode As Boolean
+    backup_mode As Boolean
+    restrict_mode As String
+    midi_number As String
+    mp3_number As String
+    zone As String
+    terrain As String
+    ambient As String
+    lvlMinimo As String
+    SePuedeDomar As Boolean
+    ResuSinEfecto As Boolean
+    MagiaSinEfecto As Boolean
+    InviSinEfecto As Boolean
+    NoEncriptarMP As Boolean
+    version As Long
+End Type
+
+Public MapSize As tMapSize
+Public MapDat As tMapDat
+'********************************
+'END - Load Map with .CSM format
+'********************************
+
 Public Sub CargarSpawnList()
     '****************************************************************************************
     'Author: Unknown
@@ -566,188 +665,218 @@ Public Sub DoBackUp()
 
 End Sub
 
-Public Sub GrabarMapa(ByVal Map As Long, ByRef MAPFILE As String)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 12/01/2011
-    '10/08/2010 - Pato: Implemento el clsByteBuffer para el grabado de mapas
-    '28/10/2010:ZaMa - Ahora no se hace backup de los pretorianos.
-    '12/01/2011 - Amraphen: Ahora no se hace backup de NPCs prohibidos (Pretorianos, Mascotas, Invocados )
-    '***************************************************
+Public Function GrabarMapa(ByVal MapFile As String, ByVal Map As Integer)
 
-    On Error Resume Next
+    On Error GoTo ErrorHandler
 
-    Dim FreeFileMap As Long
-    Dim FreeFileInf As Long
+    Dim fh           As Integer
+    Dim MH           As tMapHeader
+    Dim Blqs()       As tDatosBloqueados
 
-    Dim Y           As Long
-    Dim X           As Long
+    Dim L1()         As Long
+    Dim L2()         As tDatosGrh
+    Dim L3()         As tDatosGrh
+    Dim L4()         As tDatosGrh
 
-    Dim ByFlags     As Byte
+    Dim Triggers()   As tDatosTrigger
+    Dim Luces()      As tDatosLuces
+    Dim Particulas() As tDatosParticulas
+    Dim Objetos()    As tDatosObjs
+    Dim NPCs()       As tDatosNPC
+    Dim TEs()        As tDatosTE
+    
+    Dim i            As Integer
+    Dim j            As Integer
 
-    Dim LoopC       As Long
+    ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax)
 
-    Dim MapWriter   As clsByteBuffer
-    Dim InfWriter   As clsByteBuffer
-    Dim IniManager  As clsIniManager
+    For j = MapSize.YMin To MapSize.YMax
+        For i = MapSize.XMin To MapSize.XMax
 
-    Dim NpcInvalido As Boolean
-    
-    Set MapWriter = New clsByteBuffer
-    Set InfWriter = New clsByteBuffer
-    Set IniManager = New clsIniManager
-    
-    If FileExist(MAPFILE & ".map", vbNormal) Then
-        Call Kill(MAPFILE & ".map")
-    End If
-    
-    If FileExist(MAPFILE & ".inf", vbNormal) Then
-        Call Kill(MAPFILE & ".inf")
-    End If
-    
-    'Open .map file
-    FreeFileMap = FreeFile
-    
-    Open MAPFILE & ".Map" For Binary As FreeFileMap
-    
-    Call MapWriter.initializeWriter(FreeFileMap)
-    
-    'Open .inf file
-    FreeFileInf = FreeFile
-    Open MAPFILE & ".Inf" For Binary As FreeFileInf
-    
-    Call InfWriter.initializeWriter(FreeFileInf)
-    
-    'map Header
-    Call MapWriter.putInteger(MapInfo(Map).MapVersion)
-        
-    Call MapWriter.putString(MiCabecera.Desc, False)
-    Call MapWriter.putLong(MiCabecera.crc)
-    Call MapWriter.putLong(MiCabecera.MagicWord)
-    
-    Call MapWriter.putDouble(0)
-    
-    'inf Header
-    Call InfWriter.putDouble(0)
-    Call InfWriter.putInteger(0)
-    
-    'Write .map file
-    For Y = YMinMapSize To YMaxMapSize
-        For X = XMinMapSize To XMaxMapSize
+            With MapData(i, j)
 
-            With MapData(Map, X, Y)
-                ByFlags = 0
+                If .Blocked Then
+                    MH.NumeroBloqueados = MH.NumeroBloqueados + 1
+                    ReDim Preserve Blqs(1 To MH.NumeroBloqueados)
+                    
+                    Blqs(MH.NumeroBloqueados).X = i
+                    Blqs(MH.NumeroBloqueados).Y = j
+
+                End If
+            
+                L1(i, j) = .Graphic(1)
                 
-                If .Blocked Then ByFlags = ByFlags Or 1
-                If .Graphic(2) Then ByFlags = ByFlags Or 2
-                If .Graphic(3) Then ByFlags = ByFlags Or 4
-                If .Graphic(4) Then ByFlags = ByFlags Or 8
-                If .trigger Then ByFlags = ByFlags Or 16
-                
-                Call MapWriter.putByte(ByFlags)
-                
-                Call MapWriter.putLong(.Graphic(1))
-                
-                For LoopC = 2 To 4
-                    If .Graphic(LoopC) Then Call MapWriter.putLong(.Graphic(LoopC))
-                Next LoopC
-                
-                If .trigger Then Call MapWriter.putInteger(CInt(.trigger))
-                
-                '.inf file
-                ByFlags = 0
-                
+                If .Graphic(2) > 0 Then
+                    MH.NumeroLayers(2) = MH.NumeroLayers(2) + 1
+                    ReDim Preserve L2(1 To MH.NumeroLayers(2))
+                    
+                    L2(MH.NumeroLayers(2)).X = i
+                    L2(MH.NumeroLayers(2)).Y = j
+                    L2(MH.NumeroLayers(2)).GrhIndex = .Graphic(2)
+
+                End If
+            
+                If .Graphic(3) > 0 Then
+                    MH.NumeroLayers(3) = MH.NumeroLayers(3) + 1
+                    ReDim Preserve L3(1 To MH.NumeroLayers(3))
+                    
+                    L3(MH.NumeroLayers(3)).X = i
+                    L3(MH.NumeroLayers(3)).Y = j
+                    L3(MH.NumeroLayers(3)).GrhIndex = .Graphic(3)
+
+                End If
+            
+                If .Graphic(4) > 0 Then
+                    MH.NumeroLayers(4) = MH.NumeroLayers(4) + 1
+                    ReDim Preserve L4(1 To MH.NumeroLayers(4))
+                    
+                    L4(MH.NumeroLayers(4)).X = i
+                    L4(MH.NumeroLayers(4)).Y = j
+                    L4(MH.NumeroLayers(4)).GrhIndex = .Graphic(4)
+
+                End If
+            
+                If .Trigger > 0 Then
+                    MH.NumeroTriggers = MH.NumeroTriggers + 1
+                    ReDim Preserve Triggers(1 To MH.NumeroTriggers)
+                    
+                    Triggers(MH.NumeroTriggers).X = i
+                    Triggers(MH.NumeroTriggers).Y = j
+                    Triggers(MH.NumeroTriggers).Trigger = .Trigger
+
+                End If
+            
+                If .particle_group_index > 0 Then
+                    MH.NumeroParticulas = MH.NumeroParticulas + 1
+                    ReDim Preserve Particulas(1 To MH.NumeroParticulas)
+                    
+                    Particulas(MH.NumeroParticulas).X = i
+                    Particulas(MH.NumeroParticulas).Y = j
+                    Particulas(MH.NumeroParticulas).Particula = 0
+
+                End If
+
                 If .ObjInfo.ObjIndex > 0 Then
                     
                     If ObjData(.ObjInfo.ObjIndex).OBJType = eOBJType.otFogata Then
                         .ObjInfo.ObjIndex = 0
                         .ObjInfo.Amount = 0
                     End If
+                    
+                    MH.NumeroOBJs = MH.NumeroOBJs + 1
+                    ReDim Preserve Objetos(1 To MH.NumeroOBJs)
+                        
+                    Objetos(MH.NumeroOBJs).ObjIndex = .ObjInfo.ObjIndex
+                    Objetos(MH.NumeroOBJs).ObjAmount = .ObjInfo.Amount
 
                 End If
-    
-                If .TileExit.Map Then ByFlags = ByFlags Or 1
+            
+                If .NpcIndex > 0 Then
                 
-                ' No hacer backup de los NPCs invalidos (Pretorianos, Mascotas, Invocados )
-                If .NpcIndex Then
-                    
+                    ' No hacer backup de los NPCs invalidos (Pretorianos, Mascotas, Invocados )
+                    Dim NpcInvalido As Boolean
                     NpcInvalido = (Npclist(.NpcIndex).NPCtype = eNPCType.Pretoriano) Or _
                                   (Npclist(.NpcIndex).MaestroUser > 0)
                     
-                    If Not NpcInvalido Then ByFlags = ByFlags Or 2
+                    If Not NpcInvalido Then
+    
+                        MH.NumeroNPCs = MH.NumeroNPCs + 1
+                        ReDim Preserve NPCs(1 To MH.NumeroNPCs)
+                        
+                        NPCs(MH.NumeroNPCs).NpcIndex = .NpcIndex
+                        NPCs(MH.NumeroNPCs).X = i
+                        NPCs(MH.NumeroNPCs).Y = j
+                    
+                    End If
+                    
+                End If
+            
+                If .TileExit.Map > 0 Then
+                    MH.NumeroTE = MH.NumeroTE + 1
+                    ReDim Preserve TEs(1 To MH.NumeroTE)
+                    
+                    TEs(MH.NumeroTE).DestM = .TileExit.Map
+                    TEs(MH.NumeroTE).DestX = .TileExit.X
+                    TEs(MH.NumeroTE).DestY = .TileExit.Y
+                    TEs(MH.NumeroTE).X = i
+                    TEs(MH.NumeroTE).Y = j
 
                 End If
-                
-                If .ObjInfo.ObjIndex Then ByFlags = ByFlags Or 4
-                
-                Call InfWriter.putByte(ByFlags)
-                
-                If .TileExit.Map Then
-                    Call InfWriter.putInteger(.TileExit.Map)
-                    Call InfWriter.putInteger(.TileExit.X)
-                    Call InfWriter.putInteger(.TileExit.Y)
-                End If
-                
-                If .NpcIndex And Not NpcInvalido Then Call InfWriter.putInteger(Npclist(.NpcIndex).Numero)
-                
-                If .ObjInfo.ObjIndex Then
-                    Call InfWriter.putInteger(.ObjInfo.ObjIndex)
-                    Call InfWriter.putInteger(.ObjInfo.Amount)
-                End If
-                
-                NpcInvalido = False
 
             End With
 
-        Next X
-    Next Y
-    
-    Call MapWriter.saveBuffer
-    Call InfWriter.saveBuffer
-    
-    'Close .map file
-    Close FreeFileMap
+        Next i
+    Next j
 
-    'Close .inf file
-    Close FreeFileInf
+    With MapDat
     
-    Set MapWriter = Nothing
-    Set InfWriter = Nothing
-
-    With MapInfo(Map)
-        'write .dat file
-        Call IniManager.ChangeValue("Mapa" & Map, "Name", .Name)
-        Call IniManager.ChangeValue("Mapa" & Map, "MusicNum", .Music)
-        Call IniManager.ChangeValue("Mapa" & Map, "MagiaSinefecto", .MagiaSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "InviSinEfecto", .InviSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "ResuSinEfecto", .ResuSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "StartPos", .StartPos.Map & "-" & .StartPos.X & "-" & .StartPos.Y)
-        Call IniManager.ChangeValue("Mapa" & Map, "OnDeathGoTo", .OnDeathGoTo.Map & "-" & .OnDeathGoTo.X & "-" & .OnDeathGoTo.Y)
+        .map_name = MapInfo(Map).Name
+        .midi_number = MapInfo(Map).Music
+        .mp3_number = MapInfo(Map).MusicMp3
+        .MagiaSinEfecto = MapInfo(Map).MagiaSinEfecto
+        .InviSinEfecto = MapInfo(Map).InviSinEfecto
+        .ResuSinEfecto = MapInfo(Map).ResuSinEfecto
+        .NoEncriptarMP = MapInfo(Map).NoEncriptarMP
+        .lvlMinimo = MapInfo(Map).NivelMinimo
+        .version = MapInfo(Map).MapVersion
+        .battle_mode = MapInfo(Map).Pk
+        .terrain = MapInfo(Map).Terreno
+        .zone = MapInfo(Map).Zona
+        .restrict_mode = MapInfo(Map).Restringir
+        .backup_mode = MapInfo(Map).BackUp
     
-        Call IniManager.ChangeValue("Mapa" & Map, "Terreno", TerrainByteToString(.Terreno))
-        Call IniManager.ChangeValue("Mapa" & Map, "Zona", .Zona)
-        Call IniManager.ChangeValue("Mapa" & Map, "Restringir", RestrictByteToString(.Restringir))
-        Call IniManager.ChangeValue("Mapa" & Map, "BackUp", str(.BackUp))
-    
-        If .Pk Then
-            Call IniManager.ChangeValue("Mapa" & Map, "Pk", "0")
-        Else
-            Call IniManager.ChangeValue("Mapa" & Map, "Pk", "1")
-
-        End If
-        
-        Call IniManager.ChangeValue("Mapa" & Map, "OcultarSinEfecto", .OcultarSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "InvocarSinEfecto", .InvocarSinEfecto)
-        Call IniManager.ChangeValue("Mapa" & Map, "NoEncriptarMP", .NoEncriptarMP)
-        Call IniManager.ChangeValue("Mapa" & Map, "RoboNpcsPermitido", .RoboNpcsPermitido)
-    
-        Call IniManager.DumpFile(MAPFILE & ".dat")
-
     End With
     
-    Set IniManager = Nothing
+    '***************************************************
+    'Aca se escribe la información al archivo ".csm"
+    '***************************************************
+    
+    'Si existe, lo borramos.
+    If FileExist(MapFile & ".csm", vbNormal) Then
+        Call Kill(MapFile & ".csm")
+    End If
+    
+    fh = FreeFile
+    Open MapFile & ".csm" For Binary As fh
+    
+    Put #fh, , MH
+    Put #fh, , MapSize
+    Put #fh, , MapDat
+    Put #fh, , L1
 
-End Sub
+    With MH
+
+        If .NumeroBloqueados > 0 Then Put #fh, , Blqs
+
+        If .NumeroLayers(2) > 0 Then Put #fh, , L2
+
+        If .NumeroLayers(3) > 0 Then Put #fh, , L3
+
+        If .NumeroLayers(4) > 0 Then Put #fh, , L4
+
+        If .NumeroTriggers > 0 Then Put #fh, , Triggers
+
+        If .NumeroParticulas > 0 Then Put #fh, , Particulas
+
+        If .NumeroLuces > 0 Then Put #fh, , Luces
+
+        If .NumeroOBJs > 0 Then Put #fh, , Objetos
+
+        If .NumeroNPCs > 0 Then Put #fh, , NPCs
+
+        If .NumeroTE > 0 Then Put #fh, , TEs
+
+    End With
+
+    Close fh
+
+    Exit Function
+
+ErrorHandler:
+
+    If fh <> 0 Then Close fh
+
+End Function
 
 Sub LoadArmasHerreria()
     '***************************************************
@@ -1537,9 +1666,8 @@ Sub CargarBackUp()
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando backup."
     
-    Dim Map       As Integer
-
-    Dim tFileName As String
+    Dim Map        As Long
+    Dim OpenBackup As Boolean
     
     On Error GoTo man
         
@@ -1556,20 +1684,20 @@ Sub CargarBackUp()
         
     For Map = 1 To NumMaps
 
-        If val(GetVar(App.Path & MapPath & "Mapa" & Map & ".Dat", "Mapa" & Map, "BackUp")) <> 0 Then
-            tFileName = App.Path & "\WorldBackUp\Mapa" & Map
+        If MapInfo(Map).BackUp <> 0 Then
                 
-            If Not FileExist(tFileName & ".*") Then 'Miramos que exista al menos uno de los 3 archivos, sino lo cargamos de la carpeta de los mapas
-                tFileName = App.Path & MapPath & "Mapa" & Map
-
+            If FileExist(App.Path & "\WorldBackUp\Mapa" & Map & ".*") Then 'Miramos que exista al menos uno de los 3 archivos, sino lo cargamos de la carpeta de los mapas
+                OpenBackup = True
+            Else
+                OpenBackup = False
             End If
 
         Else
-            tFileName = App.Path & MapPath & "Mapa" & Map
+            OpenBackup = False
 
         End If
             
-        Call CargarMapa(Map, tFileName)
+        Call CargarMapa(Map, OpenBackup)
             
         frmCargando.cargar.Value = frmCargando.cargar.Value + 1
         DoEvents
@@ -1594,30 +1722,27 @@ Sub LoadMapData()
 
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando mapas..."
     
-    Dim Map       As Integer
+    Dim Map       As Long
 
-    Dim tFileName As String
-    
     On Error GoTo man
         
     NumMaps = val(GetVar(DatPath & "Map.dat", "INIT", "NumMaps"))
         
     frmCargando.cargar.min = 0
-    frmCargando.cargar.max = NumMaps
     frmCargando.cargar.Value = 0
-        
-    MapPath = GetVar(DatPath & "Map.dat", "INIT", "MapPath")
-        
+    frmCargando.cargar.max = NumMaps
+          
     ReDim MapData(1 To NumMaps, XMinMapSize To XMaxMapSize, YMinMapSize To YMaxMapSize) As MapBlock
     ReDim MapInfo(1 To NumMaps) As MapInfo
           
     For Map = 1 To NumMaps
-            
-        tFileName = App.Path & MapPath & "Mapa" & Map
-        Call CargarMapa(Map, tFileName)
+        
+        Call CargarMapa(Map)
             
         frmCargando.cargar.Value = frmCargando.cargar.Value + 1
+        
         DoEvents
+        
     Next Map
     
     Exit Sub
@@ -1625,198 +1750,224 @@ Sub LoadMapData()
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargaron todos los mapas. Operacion Realizada con exito."
 
 man:
-    MsgBox ("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
+    Call MsgBox("Error durante la carga de mapas, el mapa " & Map & " contiene errores")
     Call LogError(Date & " " & Err.description & " " & Err.HelpContext & " " & Err.HelpFile & " " & Err.source)
 
 End Sub
 
-Public Sub CargarMapa(ByVal Map As Long, ByRef MAPFl As String)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 10/08/2010
-    '10/08/2010 - Pato: Implemento el clsByteBuffer y el clsIniManager para la carga de mapa
-    '***************************************************
+Public Sub CargarMapa(ByVal Mapa As Long, Optional ByVal BackUp As Boolean = False)
 
     On Error GoTo errh
+    
+    Dim FileName     As String
+    Dim fh           As Integer
+    Dim MH           As tMapHeader
 
-    Dim hFile     As Integer
-    Dim X         As Long
-    Dim Y         As Long
-    Dim ByFlags   As Byte
-    Dim npcfile   As String
-    
-    Dim Leer      As clsIniManager
-    Dim MapReader As clsByteBuffer
-    Dim InfReader As clsByteBuffer
+    Dim Blqs()       As tDatosBloqueados
 
-    Dim Buff()    As Byte
+    Dim L1()         As Long
+    Dim L2()         As tDatosGrh
+    Dim L3()         As tDatosGrh
+    Dim L4()         As tDatosGrh
     
-    Set MapReader = New clsByteBuffer
-    Set InfReader = New clsByteBuffer
-    Set Leer = New clsIniManager
-    
-    npcfile = DatPath & "NPCs.dat"
-    
-    hFile = FreeFile
-    
-    'Leemos el archivo ".MAP"
-    Open MAPFl & ".map" For Binary As #hFile
-        Seek hFile, 1
-        ReDim Buff(LOF(hFile) - 1) As Byte
-        Get #hFile, , Buff
-    Close hFile
-    
-    Call MapReader.initializeReader(Buff)
+    Dim Triggers()   As tDatosTrigger
+    Dim Luces()      As tDatosLuces
+    Dim Particulas() As tDatosParticulas
+    Dim Objetos()    As tDatosObjs
+    Dim NPCs()       As tDatosNPC
+    Dim TEs()        As tDatosTE
 
-    'Leemos el archivo ".INF"
-    Open MAPFl & ".inf" For Binary As #hFile
-        Seek hFile, 1
-        ReDim Buff(LOF(hFile) - 1) As Byte
-        Get #hFile, , Buff
-    Close hFile
-    
-    Call InfReader.initializeReader(Buff)
-    
-    'map Header
-    MapInfo(Map).MapVersion = MapReader.getInteger
-    
-    With MiCabecera
-        .Desc = MapReader.getString(Len(MiCabecera.Desc))
-        .crc = MapReader.getLong
-        .MagicWord = MapReader.getLong
-    End With
-    
-    Call MapReader.getDouble
+    Dim MapSize      As tMapSize
+    Dim MapDat       As tMapDat
 
-    'inf Header
-    Call InfReader.getDouble
-    Call InfReader.getInteger
-
-    For Y = YMinMapSize To YMaxMapSize
-        For X = XMinMapSize To XMaxMapSize
-
-            With MapData(Map, X, Y)
-                '.map file
-                ByFlags = MapReader.getByte
-
-                If ByFlags And 1 Then .Blocked = 1
+    Dim i            As Long
+    Dim j            As Long
+    
+    If BackUp Then
+        FileName = App.Path & "\WorldBackUp\Mapa" & CStr(Mapa) & ".csm"
+    Else
+        FileName = App.Path & "\Mundos\Alkon\Mapa" & CStr(Mapa) & ".csm"
+    End If
+    
+    If Not FileExist(FileName, vbNormal) Then
+        Call MsgBox("El mapa " & FileName & " no existe.")
+        Exit Sub
+    End If
+    
+    fh = FreeFile
+    Open FileName For Binary Access Read As fh
+    
+    Get #fh, , MH
+    Get #fh, , MapSize
+    Get #fh, , MapDat
+            
+    ReDim L1(MapSize.XMin To MapSize.XMax, MapSize.YMin To MapSize.YMax) As Long
+            
+    Get #fh, , L1
+            
+    With MH
+    
+        If .NumeroBloqueados > 0 Then
+            ReDim Blqs(1 To .NumeroBloqueados)
+            Get #fh, , Blqs
+    
+            For i = 1 To .NumeroBloqueados
+                MapData(Mapa, Blqs(i).X, Blqs(i).Y).Blocked = 1
+            Next i
+    
+        End If
                 
-                'Layer 1
-                .Graphic(1) = MapReader.getLong
+        If .NumeroLayers(2) > 0 Then
+            ReDim L2(1 To .NumeroLayers(2))
+            Get #fh, , L2
+    
+            For i = 1 To .NumeroLayers(2)
+                MapData(Mapa, L2(i).X, L2(i).Y).Graphic(2) = L2(i).GrhIndex
+            Next i
+    
+        End If
+                
+        If .NumeroLayers(3) > 0 Then
+            ReDim L3(1 To .NumeroLayers(3))
+            Get #fh, , L3
+    
+            For i = 1 To .NumeroLayers(3)
+                MapData(Mapa, L3(i).X, L3(i).Y).Graphic(3) = L3(i).GrhIndex
+            Next i
+    
+        End If
+                
+        If .NumeroLayers(4) > 0 Then
+            ReDim L4(1 To .NumeroLayers(4))
+            Get #fh, , L4
+    
+            For i = 1 To .NumeroLayers(4)
+                MapData(Mapa, L4(i).X, L4(i).Y).Graphic(4) = L4(i).GrhIndex
+            Next i
+    
+        End If
+                
+        If .NumeroTriggers > 0 Then
+            ReDim Triggers(1 To .NumeroTriggers)
+            Get #fh, , Triggers
+    
+            For i = 1 To .NumeroTriggers
+                MapData(Mapa, Triggers(i).X, Triggers(i).Y).Trigger = Triggers(i).Trigger
+            Next i
+    
+        End If
+                
+        If .NumeroParticulas > 0 Then
+            ReDim Particulas(1 To .NumeroParticulas)
+            Get #fh, , Particulas
+                
+            'Se lee, pero no se necesita.
+        End If
+                
+        If .NumeroLuces > 0 Then
+            ReDim Luces(1 To .NumeroLuces)
+            Get #fh, , Luces
+    
+            'Se lee, pero no se necesita.
+        End If
+                
+        If .NumeroOBJs > 0 Then
+            ReDim Objetos(1 To .NumeroOBJs)
+            Get #fh, , Objetos
+    
+            For i = 1 To .NumeroOBJs
+                MapData(Mapa, Objetos(i).X, Objetos(i).Y).ObjInfo.ObjIndex = Objetos(i).ObjIndex
+                MapData(Mapa, Objetos(i).X, Objetos(i).Y).ObjInfo.Amount = Objetos(i).ObjAmount
+            Next i
+    
+        End If
+                    
+        If .NumeroNPCs > 0 Then
+            ReDim NPCs(1 To .NumeroNPCs)
+            Get #fh, , NPCs
+                
+            For i = 1 To .NumeroNPCs
 
-                'Layer 2 used?
-                If ByFlags And 2 Then .Graphic(2) = MapReader.getLong
+                With NPCs(i)
+                    MapData(Mapa, .X, .Y).NpcIndex = .NpcIndex
+        
+                    If MapData(Mapa, .X, .Y).NpcIndex > 0 Then
 
-                'Layer 3 used?
-                If ByFlags And 4 Then .Graphic(3) = MapReader.getLong
-
-                'Layer 4 used?
-                If ByFlags And 8 Then .Graphic(4) = MapReader.getLong
-
-                'Trigger used?
-                If ByFlags And 16 Then .trigger = MapReader.getInteger
-
-                '.inf file
-                ByFlags = InfReader.getByte
-
-                If ByFlags And 1 Then
-                    .TileExit.Map = InfReader.getInteger
-                    .TileExit.X = InfReader.getInteger
-                    .TileExit.Y = InfReader.getInteger
-                End If
-
-                If ByFlags And 2 Then
-                    'Get and make NPC
-                    .NpcIndex = InfReader.getInteger
-
-                    If .NpcIndex > 0 Then
-
-                        'Si el npc debe hacer respawn en la pos
-                        'original la guardamos
-                        If val(GetVar(npcfile, "NPC" & .NpcIndex, "PosOrig")) = 1 Then
-                            .NpcIndex = OpenNPC(.NpcIndex)
-                            Npclist(.NpcIndex).Orig.Map = Map
-                            Npclist(.NpcIndex).Orig.X = X
-                            Npclist(.NpcIndex).Orig.Y = Y
+                        If val(GetVar(DatPath & "NPCs.dat", "NPC" & MapData(Mapa, .X, .Y).NpcIndex, "PosOrig")) = 1 Then
+                            MapData(Mapa, .X, .Y).NpcIndex = OpenNPC(MapData(Mapa, .X, .Y).NpcIndex)
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Orig.Map = Mapa
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Orig.X = .X
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Orig.Y = .Y
+                            
                         Else
-                            .NpcIndex = OpenNPC(.NpcIndex)
-
+                            MapData(Mapa, .X, .Y).NpcIndex = OpenNPC(MapData(Mapa, .X, .Y).NpcIndex)
+        
                         End If
-
-                        Npclist(.NpcIndex).Pos.Map = Map
-                        Npclist(.NpcIndex).Pos.X = X
-                        Npclist(.NpcIndex).Pos.Y = Y
-
-                        Call MakeNPCChar(True, 0, .NpcIndex, Map, X, Y)
-
+        
+                        If Not MapData(Mapa, .X, .Y).NpcIndex = 0 Then
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Pos.Map = Mapa
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Pos.X = .X
+                            Npclist(MapData(Mapa, .X, .Y).NpcIndex).Pos.Y = .Y
+                                    
+                            Call MakeNPCChar(True, 0, MapData(Mapa, .X, .Y).NpcIndex, Mapa, .X, .Y)
+        
+                        End If
+        
                     End If
 
-                End If
+                End With
 
-                If ByFlags And 4 Then
-                    'Get and make Object
-                    .ObjInfo.ObjIndex = InfReader.getInteger
-                    .ObjInfo.Amount = InfReader.getInteger
-
-                End If
-
-            End With
-
-        Next X
-    Next Y
+            Next i
     
-    Call Leer.Initialize(MAPFl & ".dat")
-    
-    With MapInfo(Map)
-        .Name = Leer.GetValue("Mapa" & Map, "Name")
-        .Music = Leer.GetValue("Mapa" & Map, "MusicNum")
-        .MusicMp3 = Leer.GetValue("Mapa" & Map, "MusicNumMp3")
-        
-        .StartPos.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
-        .StartPos.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
-        .StartPos.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "StartPos"), Asc("-")))
-        
-        .OnDeathGoTo.Map = val(ReadField(1, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
-        .OnDeathGoTo.X = val(ReadField(2, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
-        .OnDeathGoTo.Y = val(ReadField(3, Leer.GetValue("Mapa" & Map, "OnDeathGoTo"), Asc("-")))
-        
-        .MagiaSinEfecto = val(Leer.GetValue("Mapa" & Map, "MagiaSinEfecto"))
-        .InviSinEfecto = val(Leer.GetValue("Mapa" & Map, "InviSinEfecto"))
-        .ResuSinEfecto = val(Leer.GetValue("Mapa" & Map, "ResuSinEfecto"))
-        .OcultarSinEfecto = val(Leer.GetValue("Mapa" & Map, "OcultarSinEfecto"))
-        .InvocarSinEfecto = val(Leer.GetValue("Mapa" & Map, "InvocarSinEfecto"))
-        
-        .NoEncriptarMP = val(Leer.GetValue("Mapa" & Map, "NoEncriptarMP"))
-
-        .RoboNpcsPermitido = val(Leer.GetValue("Mapa" & Map, "RoboNpcsPermitido"))
-        
-        If val(Leer.GetValue("Mapa" & Map, "Pk")) = 0 Then
-            .Pk = True
-        Else
-            .Pk = False
-
         End If
-        
-        .Terreno = TerrainStringToByte(Leer.GetValue("Mapa" & Map, "Terreno"))
-        .Zona = Leer.GetValue("Mapa" & Map, "Zona")
-        .Restringir = RestrictStringToByte(Leer.GetValue("Mapa" & Map, "Restringir"))
-        .BackUp = val(Leer.GetValue("Mapa" & Map, "BACKUP"))
-
+                    
+        If .NumeroTE > 0 Then
+            ReDim TEs(1 To .NumeroTE)
+            Get #fh, , TEs
+    
+            For i = 1 To .NumeroTE
+                MapData(Mapa, TEs(i).X, TEs(i).Y).TileExit.Map = TEs(i).DestM
+                MapData(Mapa, TEs(i).X, TEs(i).Y).TileExit.X = TEs(i).DestX
+                MapData(Mapa, TEs(i).X, TEs(i).Y).TileExit.Y = TEs(i).DestY
+            Next i
+    
+        End If
+                
     End With
     
-    Set MapReader = Nothing
-    Set InfReader = Nothing
-    Set Leer = Nothing
+    Close fh
     
-    Erase Buff
+    For j = MapSize.YMin To MapSize.YMax
+        For i = MapSize.XMin To MapSize.XMax
+
+            If L1(i, j) > 0 Then
+                MapData(Mapa, i, j).Graphic(1) = L1(i, j)
+            End If
+
+        Next i
+    Next j
+
+    With MapInfo(Mapa)
+    
+        .Name = Trim$(MapDat.map_name)
+        .Music = MapDat.midi_number
+        .MagiaSinEfecto = MapDat.MagiaSinEfecto
+        .InviSinEfecto = MapDat.InviSinEfecto
+        .ResuSinEfecto = MapDat.ResuSinEfecto
+        .NoEncriptarMP = MapDat.NoEncriptarMP
+        .Pk = MapDat.battle_mode
+        .Terreno = MapDat.terrain
+        .Zona = MapDat.zone
+        .Restringir = MapDat.restrict_mode
+        .BackUp = MapDat.backup_mode
+    
+    End With
+    
+    
     Exit Sub
 
 errh:
-    Call LogError("Error cargando mapa: " & Map & " - Pos: " & X & "," & Y & "." & Err.description)
-
-    Set MapReader = Nothing
-    Set InfReader = Nothing
-    Set Leer = Nothing
+    Call LogError("Error cargando mapa: " & Mapa & " ." & Err.description)
 
 End Sub
 
