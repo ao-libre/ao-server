@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1201
+NumOBJs=1205
 
 
 
@@ -748,8 +748,8 @@ IndexCerrada=67
 IndexCerradaLlave=68
 
 '<<<<<<<<<<<casa 3 Ullathorpe>>>>>>>>>>>>
-[OBJ69] 
-Name=Llave Ullathorpe Casa Nro 3
+[OBJ69]
+Name=Llave Ullathorpe Casa Nro 3 
 GrhIndex=509
 ObjType=9
 Agarrable=0
@@ -14969,3 +14969,51 @@ VGrande=501
 ObjType=8
 Agarrable=1
 Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
+
+
+'<<<<<<<<<<<casa 3 Pretorianos>>>>>>>>>>>>
+
+[OBJ1202] 
+Name=Llave Pretoriana Casa Nro 3
+GrhIndex=509
+ObjType=9
+Agarrable=0
+Clave=60
+Valor=100000
+Crucial=0
+
+[OBJ1203]
+Name=Puerta Pretoriana de Madera abierta
+GrhIndex=5592
+ObjType=6
+Agarrable=1
+Abierta=0
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1204]
+Name=Puerta Pretoriana de Madera cerrada
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1205]
+Name=Puerta Pretoriana de Madera cerrada con llave
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=1
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
