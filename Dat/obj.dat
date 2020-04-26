@@ -14974,7 +14974,7 @@ Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
 '<<<<<<<<<<<casa 3 Pretorianos>>>>>>>>>>>>
 
 [OBJ1202] 
-Name=Llave Casa Nro 3
+Name=Llave Casa Pretoriana Nro 3
 GrhIndex=509
 ObjType=9
 Agarrable=0
@@ -14983,7 +14983,7 @@ Valor=100000
 Crucial=0
 
 [OBJ1203]
-Name=Puerta de madera abierta
+Name=Puerta Pretoriana de Madera abierta
 GrhIndex=5592
 ObjType=6
 Agarrable=1
@@ -14995,7 +14995,7 @@ IndexCerrada=1204
 IndexCerradaLlave=1205
 
 [OBJ1204]
-Name=Puerta de madera cerrada
+Name=Puerta Pretoriana de Madera cerrada
 GrhIndex=5593
 ObjType=6
 Agarrable=1
@@ -15007,7 +15007,7 @@ IndexCerrada=1204
 IndexCerradaLlave=1205
 
 [OBJ1205]
-Name=Puerta de madera cerrada
+Name=Puerta Pretoriana de Madera cerrada
 GrhIndex=5593
 ObjType=6
 Agarrable=1
