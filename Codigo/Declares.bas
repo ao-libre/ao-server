@@ -125,7 +125,7 @@ Public Const iGaleraReal = 565
 
 Public Const iGaleraRealAtacable = 568
 
-Public Const iGaleonReal = 572 
+Public Const iGaleonReal = 572
 
 Public Const iGaleonRealAtacable = 564
 
@@ -141,7 +141,7 @@ Public Const iBarcaCaos = 561
 
 Public Const iGaleraCaos = 566
 
-Public Const iGaleonCaos = 573 
+Public Const iGaleonCaos = 573
 
 Public Enum iMinerales
 
@@ -1146,7 +1146,7 @@ End Type
 
 Public Type tQuestNpc
 
-    NpcIndex As Integer
+    NPCIndex As Integer
     Amount As Integer
 
 End Type
@@ -1642,7 +1642,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    ip As String
+    IP As String
     
     ComUsu As tCOmercioUsuario
     
@@ -1741,7 +1741,7 @@ End Type
 
 Public Type tCriaturasEntrenador
 
-    NpcIndex As Integer
+    NPCIndex As Integer
     NpcName As String
     tmpIndex As Integer
 
@@ -1854,11 +1854,11 @@ Public Type MapBlock
     Blocked As Byte
     Graphic(1 To 4) As Long
     Userindex As Integer
-    NpcIndex As Integer
+    NPCIndex As Integer
     ObjInfo As obj
     TileExit As WorldPos
-    trigger As eTrigger
-
+    Trigger As eTrigger
+    particle_group_index As Long
 End Type
 
 'Info del mapa
@@ -1888,6 +1888,8 @@ Type MapInfo
     Zona As String
     Restringir As Byte
     BackUp As Byte
+    
+    NivelMinimo As Byte
 
 End Type
 
