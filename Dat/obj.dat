@@ -14974,7 +14974,7 @@ Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
 '<<<<<<<<<<<casa 3 Pretorianos>>>>>>>>>>>>
 
 [OBJ1202] 
-Name=Llave Casa Pretoriana Nro 3
+Name=Llave Pretoriana Casa Nro 3
 GrhIndex=509
 ObjType=9
 Agarrable=0
