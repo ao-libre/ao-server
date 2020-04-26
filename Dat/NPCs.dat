@@ -9460,7 +9460,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC706]
-Name=Viuda negra
+Name=Viuda negra [Llave Pretoriano]
 NpcType=0
 Head=0
 Heading=3
@@ -9554,7 +9554,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC709]
-Name=Hombre lobo
+Name=Hombre lobo [Llave Pretoriano]
 NpcType=0
 Head=0
 Heading=3
