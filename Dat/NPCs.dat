@@ -9460,7 +9460,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC706]
-Name=Viuda negra
+Name=Viuda negra [Llave Pretoriano]
 NpcType=0
 Head=0
 Heading=3
@@ -9483,13 +9483,13 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
+NROITEMS=6
 Drop1=12-8000 'Oro
 Drop2=12-16000 'Oro
 Drop3=126-3 'Hacha Larga de Guerra
-Drop4=129-5 'Hachas Doble Filo
-Drop5=495-2 'Armaduras Escarlata
-
+Drop4=1202-1 'Llave casa pretoriano 3
+Drop5=129-5 'Hachas Doble Filo
+Drop6=495-2 'Armaduras Escarlata
 
 [NPC707]
 Name=Monstruo verde
@@ -9554,7 +9554,7 @@ Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
 
 [NPC709]
-Name=Hombre lobo
+Name=Hombre lobo [Llave Pretoriano]
 NpcType=0
 Head=0
 Heading=3
@@ -9577,13 +9577,14 @@ PoderAtaque=230
 PoderEvasion=220
 Snd3=100
 BackUp=0
-NROITEMS=5
+NROITEMS=6
 Drop1=12-8000 'Oro
 Drop2=12-16000 'Oro
-Drop3=126-3 'Hacha Larga de Guerra
+Drop3=69-1 'LLave a Mapa Pretoriano
 Drop4=129-5 'Hachas Doble Filo
 Drop5=495-2 'Armaduras Escarlata
-
+Drop6=126-3 'Hacha Larga de Guerra 
+ 
 [NPC710]
 Name=Demonio infernal
 NpcType=0
