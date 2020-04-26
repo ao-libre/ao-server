@@ -748,8 +748,8 @@ IndexCerrada=67
 IndexCerradaLlave=68
 
 '<<<<<<<<<<<casa 3 Ullathorpe>>>>>>>>>>>>
-[OBJ69] 
-Name=Llave Ullathorpe Nro 3
+[OBJ69]
+Name=Llave Ullathorpe Casa Nro 3 
 GrhIndex=509
 ObjType=9
 Agarrable=0
