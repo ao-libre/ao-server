@@ -1,13 +1,14 @@
 [MAPA135]
-BACKUP= 0
-INVISINEFECTO=0
-MAGIASINEFECTO=0
-MUSICNUMMP3=17
-NOENCRIPTARMP=0
-PK=0
-RESTRINGIR=No
-RESUSINEFECTO=0
-TERRENO=BOSQUE
-ZONA=CAMPO
-
+BackUp= 0
+InviSinEfecto=0
+MagiaSinefecto=0
+MusicNum=
+MusicNumMp3=17
 Name=Mar Nordico.
+NoEncriptarMP=0
+Pk=0
+Restringir=No
+ResuSinEfecto=0
+Terreno=BOSQUE
+Zona=CAMPO
+
