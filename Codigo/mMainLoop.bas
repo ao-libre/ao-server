@@ -1,87 +1,9 @@
 Attribute VB_Name = "mMainLoop"
 Option Explicit
 
-Private Declare Function timeGetTime Lib "winmm.dll" () As Long
-
-Public Type tMainLoop
-
-    MAXINT As Long
-    LastCheck As Long
-
-End Type
- 
-Private Const NumTimers          As Long = 4
-
-Public MainLoops(1 To NumTimers) As tMainLoop
-
-Public Enum eTimers
-
-    eGameTimer = 1      'Stats entre otros
-    epacketResend = 2   'Socket
-    eAuditoria = 3      'Centinela
-    TimerAI = 4         'Npc's
-
-End Enum
-
 Public prgRun As Boolean
- 
-Public Sub MainLoop()
-'***************************************************************
-'Author           : Unknown
-'Description      : Bucle del servidor.
-'Last Modification: 04/04/2020
-'04/04/2020: FrankoH298 - Cambiamos getTickCount por timeGetTime para mas precision.
-'***************************************************************
-    Dim LoopC As Integer
 
-    MainLoops(eTimers.eGameTimer).MAXINT = 40
-    MainLoops(eTimers.epacketResend).MAXINT = 10
-    MainLoops(eTimers.eAuditoria).MAXINT = 1000
-    MainLoops(eTimers.TimerAI).MAXINT = 380
-    
-    prgRun = True
-    
-    Do While prgRun
-    
-        frmMain.lblLloviendoInfo.Caption = "Esta lloviendo? - " & IIf(Lloviendo, "Si, usa paraguas", "No, totalmente soleado")
-        
-        For LoopC = 1 To NumTimers
-            If timeGetTime >= MainLoops(LoopC).LastCheck Then Call MakeProcces(LoopC)
-            DoEvents
-        Next LoopC
-
-    Loop
-    
-End Sub
-
-Private Sub MakeProcces(ByVal index As Integer)
-'***************************************************************
-'Author           : Unknown
-'Description      : Llama a los timers.
-'Last Modification: 04/04/2020
-'04/04/2020: FrankoH298 - Cambiamos getTickCount por timeGetTime para mas precision.
-'***************************************************************
-    Select Case index
-    
-        Case eTimers.eGameTimer
-            Call GameTimer
- 
-        Case eTimers.epacketResend
-            Call packetResend
-            
-        Case eTimers.eAuditoria
-            Call Auditoria
-            
-        Case eTimers.TimerAI
-            Call TIMER_AI
-            
-    End Select
-    
-    MainLoops(index).LastCheck = timeGetTime + MainLoops(index).MAXINT
-    
-End Sub
-
-Private Sub Auditoria()
+Public Sub Auditoria()
 
     On Error GoTo errhand
     
@@ -103,11 +25,11 @@ Private Sub Auditoria()
 
 errhand:
 
-    Call LogError("Error en Timer Auditoria. Err: " & Err.Description & " - " & Err.Number)
+    Call LogError("Error en Timer Auditoria. Err: " & Err.description & " - " & Err.Number)
 
 End Sub
 
-Private Sub packetResend()
+Public Sub PacketResend()
 
     '***************************************************
     'Autor: Juan Martin Sotuyo Dodero (Maraxus)
@@ -124,20 +46,18 @@ Private Sub packetResend()
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.Description)
+    Call LogError("Error en packetResend - Error: " & Err.Number & " - Desc: " & Err.description)
 
     Resume Next
 
 End Sub
 
-Private Sub TIMER_AI()
+Public Sub TIMER_AI()
 
     On Error GoTo ErrorHandler
 
     Dim NpcIndex As Long
-
     Dim Mapa     As Integer
-
     Dim e_p      As Integer
     
     'Barrin 29/9/03
@@ -201,16 +121,14 @@ ErrorHandler:
 
 End Sub
 
-Private Sub GameTimer()
+Public Sub GameTimer()
 
     '********************************************************
     'Author: Unknown
     'Last Modify Date: -
     '********************************************************
     Dim iUserIndex   As Long
-
     Dim bEnviarStats As Boolean
-
     Dim bEnviarAyS   As Boolean
     
     On Error GoTo hayerror
@@ -394,7 +312,7 @@ Private Sub GameTimer()
     Exit Sub
 
 hayerror:
-    LogError ("Error en GameTimer: " & Err.Description & " UserIndex = " & iUserIndex)
+    LogError ("Error en GameTimer: " & Err.description & " UserIndex = " & iUserIndex)
 
 End Sub
 
@@ -522,7 +440,7 @@ Public Sub PasarSegundo()
     Exit Sub
 
 ErrHandler:
-    Call LogError("Error en PasarSegundo. Err: " & Err.Description & " - " & Err.Number & " - UserIndex: " & i)
+    Call LogError("Error en PasarSegundo. Err: " & Err.description & " - " & Err.Number & " - UserIndex: " & i)
 
     Resume Next
 

@@ -340,12 +340,12 @@ Sub Main()
     
     ' Connections
     Call ResetUsersConnections
+
+    ' Sockets
+    Call SocketConfig
     
     ' Timers
     Call InitMainTimers
-    
-    ' Sockets
-    Call SocketConfig
     
     ' End loading..
     Unload frmCargando
@@ -390,8 +390,6 @@ Sub Main()
     If ConexionAPI Then
         ApiNodeJsTaskId = Shell("cmd /c cd " & ApiPath & " && npm start")
     End If
-    
-    Call MainLoop
 
 End Sub
 
@@ -606,12 +604,16 @@ Private Sub InitMainTimers()
 
     With frmMain
         .AutoSave.Enabled = True
-
+        .GameTimer.Enabled = True
+        .PacketResend.Enabled = True
+        .TIMER_AI.Enabled = True
+        .Auditoria.Enabled = True
     End With
     
 End Sub
 
 Private Sub SocketConfig()
+
 
     '*****************************************************************
     'Author: ZaMa
