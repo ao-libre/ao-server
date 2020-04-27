@@ -151,6 +151,28 @@ Begin VB.Form frmMain
       TabIndex        =   1
       Top             =   720
       Width           =   4935
+      Begin VB.Timer GameTimer 
+         Interval        =   40
+         Left            =   2160
+         Top             =   1440
+      End
+      Begin VB.Timer TIMER_AI 
+         Interval        =   380
+         Left            =   1680
+         Top             =   1440
+      End
+      Begin VB.Timer PacketResend 
+         Enabled         =   0   'False
+         Interval        =   10
+         Left            =   1200
+         Top             =   1440
+      End
+      Begin VB.Timer Auditoria 
+         Enabled         =   0   'False
+         Interval        =   1000
+         Left            =   720
+         Top             =   1440
+      End
       Begin VB.TextBox txtChat 
          BackColor       =   &H00C0FFFF&
          Height          =   2175
@@ -636,6 +658,10 @@ Private Sub HappyHourManager()
     End If
 End Sub
 
+Private Sub Auditoria_Timer()
+    Call mMainLoop.Auditoria
+End Sub
+
 Private Sub AutoSave_Timer()
 
     On Error GoTo ErrHandler
@@ -873,6 +899,10 @@ Private Sub Form_Unload(Cancel As Integer)
 
 End Sub
 
+Private Sub GameTimer_Timer()
+    Call mMainLoop.GameTimer
+End Sub
+
 Private Sub lblIp_Click()
     Clipboard.Clear
     Clipboard.SetText (lblIp.Caption)
@@ -890,7 +920,7 @@ Public Sub mnuMostrar_Click()
     On Error Resume Next
 
     WindowState = vbNormal
-    Form_MouseMove 0, 0, 7725, 0
+    Call Form_MouseMove(0, 0, 7725, 0)
 
 End Sub
 
@@ -972,4 +1002,12 @@ Private Sub tLluviaEvent()
 
     End If
 
+End Sub
+
+Private Sub PacketResend_Timer()
+    Call mMainLoop.PacketResend
+End Sub
+
+Private Sub TIMER_AI_Timer()
+    Call mMainLoop.TIMER_AI
 End Sub
