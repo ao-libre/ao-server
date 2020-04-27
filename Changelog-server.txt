@@ -980,4 +980,5 @@ ARGENTUM ONLINE - CHANGELOG DEL SERVER
 Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292 (Jabyar)
 * 21/04/2020: Fix traslado mapa 148 (Jabyar)
 * 26/04/2020: Un pequenio fix en el SV. Si un mapa no permite hacerce Invisible, tampoco permita Ocultarse. Por ejemplo, para usar en un mapa de agite, un Death, un Torneo, etc. (Jabyar)
+* 27/04/2020: Fix traslados (ReyarB)
 ---
