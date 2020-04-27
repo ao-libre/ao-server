@@ -982,4 +982,7 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 26/04/2020: Un pequenio fix en el SV. Si un mapa no permite hacerce Invisible, tampoco permita Ocultarse. Por ejemplo, para usar en un mapa de agite, un Death, un Torneo, etc. (Jabyar)
 * 27/04/2020: Fix traslados (ReyarB)
 
+- v0.13.34
+* 20/04/2020: Se agregaron mas mapas faltantes (ReyarB)
+
 ---
