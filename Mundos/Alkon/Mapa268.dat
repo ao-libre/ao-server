@@ -1,14 +1,13 @@
 [MAPA268]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=1
-MusicNum=
-MusicNumMp3=110
-Name=Cordillera de ZeuS.
-NoEncriptarMP=0
-Pk=0
-Restringir=No
-ResuSinEfecto=0
-Terreno=NIEVE
-Zona=DUNGEON
+BACKUP= 1
+INVISINEFECTO=0
+MAGIASINEFECTO=1
+MUSICNUMMP3=110
+NOENCRIPTARMP=0
+PK=0
+RESTRINGIR=No
+RESUSINEFECTO=0
+TERRENO=NIEVE
+ZONA=DUNGEON
 
+Name=Cordillera de ZeuS.

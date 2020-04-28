@@ -1,14 +1,13 @@
 [MAPA286]
-BackUp= 0
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=
-MusicNumMp3=1
-Name=Ciudad de Nemahuak
-NoEncriptarMP=0
-Pk=1
-Restringir=NEWBIE
-ResuSinEfecto=0
-Terreno=BOSQUE
-Zona=DUNGEON
+BACKUP= 0
+INVISINEFECTO=0
+MAGIASINEFECTO=0
+MUSICNUMMP3=1
+NOENCRIPTARMP=0
+PK=1
+RESTRINGIR=NEWBIE
+RESUSINEFECTO=0
+TERRENO=BOSQUE
+ZONA=DUNGEON
 
+Name=Ciudad de Nemahuak

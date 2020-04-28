@@ -1,14 +1,13 @@
 [MAPA263]
-BackUp= 0
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=
-MusicNumMp3=116
-Name=Mar sureste del Dungeon Veriil.
-NoEncriptarMP=0
-Pk=0
-Restringir=No
-ResuSinEfecto=0
-Terreno=BOSQUE
-Zona=CAMPO
+BACKUP= 0
+INVISINEFECTO=0
+MAGIASINEFECTO=0
+MUSICNUMMP3=116
+NOENCRIPTARMP=0
+PK=0
+RESTRINGIR=No
+RESUSINEFECTO=0
+TERRENO=BOSQUE
+ZONA=CAMPO
 
+Name=Mar sureste del Dungeon Veriil.
