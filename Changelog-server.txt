@@ -983,6 +983,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 27/04/2020: Fix traslados (ReyarB)
 
 - v0.13.34
-* 20/04/2020: Se agregaron mas mapas faltantes (ReyarB)
-
+* 28/04/2020: Se agregaron mas mapas faltantes (ReyarB)
+* 28/04/2020: Se mejoro consumo de CPU notablemente (CHOTS - BelerianD - jopiortiz)
 ---
