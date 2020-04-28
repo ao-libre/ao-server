@@ -1,12 +1,14 @@
-[MAPA11]
+[MAPA163]
 BackUp= 1
 InviSinEfecto=0
 MagiaSinefecto=0
-MusicNumMp3=3
-Name=Bosque este de Ullathorpe
+MusicNum=20
+MusicNumMp3=
+Name=Fuerte Pretoriano.
 NoEncriptarMP=0
 Pk=0
 Restringir=No
 ResuSinEfecto=0
 Terreno=BOSQUE
-Zona=CAMPO
+Zona=CIUDAD
+
