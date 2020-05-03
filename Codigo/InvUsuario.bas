@@ -466,6 +466,14 @@ Sub DropObj(ByVal Userindex As Integer, _
                 Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
+
+            'Validacion para que no podamos tirar nuestra mochila mientras la usamos.
+            If .Invent.MochilaEqpSlot > 0 Then
+                If .Invent.MochilaEqpSlot = Slot Then
+                    Call WriteConsoleMsg(Userindex, "No puedes tirar tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Exit Sub
+                End If
+            End If
         
             DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
         
