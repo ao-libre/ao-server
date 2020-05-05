@@ -994,4 +994,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 
 - v0.13.37
 * 01/05/2020: Se parchea bug de clon de mochila y alforja prohibiendo tirar la misma al piso mientras esta equipada (Recox)
+* 05/05/2020: Se parchea bug de limpiar mundo, ahora no borra el grafico del teleport (Recox)
+* 05/05/2020: Se actualizan muchos mapas (ReyarB)
 ---
