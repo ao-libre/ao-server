@@ -587,13 +587,28 @@ Sub MakeObj(ByRef obj As obj, _
             End If
             
             '//Agregamos las pos de los objetos
-            If ObjData(obj.ObjIndex).OBJType <> otFogata And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
+            Dim IsNotObjFogata As Boolean
+            Dim IsNotObjTeleport As Boolean
+
+            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
+            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport 
+
+            If IsNotObjFogata And IsNotObjTeleport And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
                 xPos.X = X
                 xPos.Y = Y
-                If (MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA Or MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO) And MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1 Then AgregarObjetoLimpieza xPos
+
+                Dim IsNotTileCasaTrigger As Boolean
+                Dim IsNotTileBajoTecho As Boolean
+                Dim IsNotTileBlocked As Boolean
+
+                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA 
+                IsNotTileBajoTecho = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO
+                IsNotTileBlocked = MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1
+
+                If (IsNotTileCasaTrigger Or IsNotTileBajoTecho) And IsNotTileBlocked Then AgregarObjetoLimpieza xPos
 
             End If
 
