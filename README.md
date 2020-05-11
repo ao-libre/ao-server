@@ -1,4 +1,11 @@
 # Codigo Fuente Servidor Argentum Online.
+Importante, no bajar el codigo con el boton Download as a ZIP de github por que lo descarga mal, muchos archivos por el encoding quedan corruptos.
+
+Tenes que bajar el codigo con un cliente de git, con el cliente original de la linea de comandos seria:
+```
+git clone https://www.github.com/ao-libre/ao-server
+```
+
 ![AO Logo](https://github.com/ao-libre/ao-server/raw/master/Logo.jpg)
 
 ![ScreenshotVersionNueva](https://user-images.githubusercontent.com/5874806/71776741-358dbe80-2ffb-11ea-8f52-e95391197fb5.png)
