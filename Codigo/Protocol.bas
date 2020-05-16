@@ -6042,6 +6042,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
         Next i
         
         Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Atencion: En esta lista de personajes no aparecen ni GMs ni la clase trabajador para evitar abusos.", FontTypeNames.FONTTYPE_INFOBOLD)
         Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
 
     End With
