@@ -99,7 +99,7 @@ ErrorHandler:
 
 End Sub
 
-Function GetCantidadPersonajesEnDatabase(ByVal AccountHash As String)
+Function GetCantidadPersonajesEnDatabase(ByVal AccountHash As String) As Byte
     
     Dim query  As String
     Dim result As Byte
