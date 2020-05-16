@@ -99,33 +99,48 @@ ErrorHandler:
 
 End Sub
 
-Function GetCantidadPersonajesEnDatabase(ByVal AccountHash As String) As Byte
-    
-    Dim query  As String
-    Dim result As Byte
-    
-    'Ejecuto una query para obtener el numero de usuarios en la cuenta.
-    query = "SELECT COUNT(*) FROM name WHERE account_id = " & AccountHash
-    
+Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
+
+    '***************************************************
+    'Author: Lorwik
+    'Last Modification: 17/05/2020
+    '***************************************************
+    On Error GoTo ErrorHandler
+
+    Dim query As String
+
+    Call Database_Connect
+
+    query = "SELECT COUNT(*) FROM usuario WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
+
     Set Database_RecordSet = Database_Connection.Execute(query)
-        
-        'Lo guardo en una variable
-        result = val(Database_RecordSet.Fields(0).Value)
-            
-    'Limpio el objeto
+
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        GetCountUserAccount = 0
+        Exit Function
+
+    End If
+
+    GetCountUserAccount = val(Database_RecordSet.Fields(0).Value)
+    
     Set Database_RecordSet = Nothing
     
-    'Devuelvo el valor.
-    GetCantidadPersonajesEnDatabase = result
+    Call Database_Close
+
+    Exit Function
     
+ErrorHandler:
+    Call LogDatabaseError("Error in GetCountUserAccount: " & HashAccount & ". " & Err.Number & " - " & Err.description)
+
 End Function
 
 Sub InsertUserToDatabase(ByVal Userindex As Integer, _
                          Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
-    'Last modified: 04/10/2018
+    'Last modified: 16/05/2020
     'Inserts a new user to the database, then gets its ID and assigns it
+    '16/05/2020 Lorwik: Verifica si ya alcanzaste el limite de PJ's creados.
     '*************************************************
 
     On Error GoTo ErrorHandler
@@ -139,8 +154,9 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
     'Basic user data
     With UserList(Userindex)
     
-        If GetCantidadPersonajesEnDatabase(.AccountHash) = 10 Then
-            Call LogDatabaseError("Se trato de crear mas PJ's de lo permitido.")
+        If GetCountUserAccount(AccountHash) >= 10 Then
+            Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
+            Call CloseSocket(Userindex)
             Exit Sub
         End If
 
