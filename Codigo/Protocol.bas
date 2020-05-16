@@ -6026,11 +6026,14 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
         For i = 1 To LastUser
 
             If LenB(UserList(i).Name) <> 0 Then
-
-                If i = LastUser Then
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
-                Else
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                
+                ' Si no es GM ni tampoco trabajador mostramos el nombre en el resultado. Sino no lo mostramos
+                If Not EsGm(Userindex) Or .Clase <> eClass.Worker
+                    If i = LastUser Then
+                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
+                    Else
+                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                    End If
                 End If
                 
                 Count = Count + 1
