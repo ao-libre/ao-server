@@ -99,6 +99,27 @@ ErrorHandler:
 
 End Sub
 
+Function GetCantidadPersonajesEnDatabase(ByVal AccountHash As String)
+    
+    Dim query  As String
+    Dim result As Byte
+    
+    'Ejecuto una query para obtener el numero de usuarios en la cuenta.
+    query = "SELECT COUNT(*) FROM name WHERE account_id = " & AccountHash
+    
+    Set Database_RecordSet = Database_Connection.Execute(query)
+        
+        'Lo guardo en una variable
+        result = val(Database_RecordSet.Fields(0).Value)
+            
+    'Limpio el objeto
+    Set Database_RecordSet = Nothing
+    
+    'Devuelvo el valor.
+    GetCantidadPersonajesEnDatabase = result
+    
+End Function
+
 Sub InsertUserToDatabase(ByVal Userindex As Integer, _
                          Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
@@ -110,15 +131,19 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
     On Error GoTo ErrorHandler
 
     Dim query  As String
-
     Dim UserId As Integer
-
     Dim LoopC  As Byte
 
     Call Database_Connect
 
     'Basic user data
     With UserList(Userindex)
+    
+        If GetCantidadPersonajesEnDatabase(.AccountHash) = 10 Then
+            Call LogDatabaseError("Se trato de crear mas PJ's de lo permitido.")
+            Exit Sub
+        End If
+
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
         query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .AccountHash & "'), "
@@ -168,7 +193,6 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
 
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
             UserId = 1
-
         End If
 
         UserId = val(Database_RecordSet.Fields(0).Value)
@@ -281,9 +305,7 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
     On Error GoTo ErrorHandler
 
     Dim query  As String
-
     Dim UserId As Integer
-
     Dim LoopC  As Byte
 
     Call Database_Connect
