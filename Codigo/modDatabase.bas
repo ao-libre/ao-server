@@ -82,12 +82,17 @@ Sub SaveUserToDatabase(ByVal Userindex As Integer, _
     On Error GoTo ErrorHandler
 
     With UserList(Userindex)
+    
+        If GetCountUserAccount(.AccountHash) >= 10 Then
+            Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
+            Call CloseSocket(Userindex)
+            Exit Sub
+        End If
 
         If .ID > 0 Then
             Call UpdateUserToDatabase(Userindex, SaveTimeOnline)
         Else
             Call InsertUserToDatabase(Userindex, SaveTimeOnline)
-
         End If
 
     End With
@@ -163,12 +168,6 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
 
     'Basic user data
     With UserList(Userindex)
-    
-        If GetCountUserAccount(.AccountHash) >= 10 Then
-            Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
-            Call CloseSocket(Userindex)
-            Exit Sub
-        End If
 
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "

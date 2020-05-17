@@ -1568,6 +1568,7 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
             .Char.WeaponAnim = .CharMimetizado.WeaponAnim
             .Counters.Mimetismo = 0
             .flags.Mimetizado = 0
+            
             ' Se fue el efecto del mimetismo, puede ser atacado por npcs
             .flags.Ignorado = False
 
