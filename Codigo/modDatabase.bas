@@ -108,25 +108,35 @@ Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
     On Error GoTo ErrorHandler
 
     Dim query As String
-
-    Call Database_Connect
-
-    query = "SELECT COUNT(*) FROM usuario WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
-
-    Set Database_RecordSet = Database_Connection.Execute(query)
-
-    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
-        GetCountUserAccount = 0
-        Exit Function
-
-    End If
-
-    GetCountUserAccount = val(Database_RecordSet.Fields(0).Value)
+    Dim result As String
     
+    'Nos conectamos a la DB.
+    Call Database_Connect
+    
+    'Hacemos la query.
+    query = "SELECT COUNT(*) FROM usuario WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
+    
+    'La ejecutamos y la guardamos en un objeto.
+    Set Database_RecordSet = Database_Connection.Execute(query)
+    
+    'Verificamos que la query no devuelva un resultado vacio.
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        result = 0
+        Exit Function
+    
+    Else 'Obtenemos la cantidad de PJ's en la cuenta.
+        result = val(Database_RecordSet.Fields(0).Value)
+        
+    End If
+    
+    'Limpiamos el objeto donde almacenamos el resultado de la query.
     Set Database_RecordSet = Nothing
     
+    'Cerramos la conexion con la DB.
     Call Database_Close
-
+    
+    GetCountUserAccount = result
+    
     Exit Function
     
 ErrorHandler:
