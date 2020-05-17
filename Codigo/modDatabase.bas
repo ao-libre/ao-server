@@ -164,7 +164,7 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
     'Basic user data
     With UserList(Userindex)
     
-        If GetCountUserAccount(AccountHash) >= 10 Then
+        If GetCountUserAccount(.AccountHash) >= 10 Then
             Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
             Call CloseSocket(Userindex)
             Exit Sub
