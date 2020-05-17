@@ -114,7 +114,7 @@ Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
     Call Database_Connect
     
     'Hacemos la query.
-    query = "SELECT COUNT(*) FROM usuario WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
+    query = "SELECT COUNT(*) FROM user WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
     
     'La ejecutamos y la guardamos en un objeto.
     Set Database_RecordSet = Database_Connection.Execute(query)
