@@ -6026,11 +6026,14 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
         For i = 1 To LastUser
 
             If LenB(UserList(i).Name) <> 0 Then
-
-                If i = LastUser Then
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
-                Else
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                
+                ' Si no es GM ni tampoco trabajador mostramos el nombre en el resultado. Sino no lo mostramos
+                If Not EsGm(Userindex) Or .Clase <> eClass.Worker
+                    If i = LastUser Then
+                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
+                    Else
+                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                    End If
                 End If
                 
                 Count = Count + 1
@@ -6039,6 +6042,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
         Next i
         
         Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Atencion: En esta lista de personajes no aparecen ni GMs ni la clase trabajador para evitar abusos.", FontTypeNames.FONTTYPE_INFOBOLD)
         Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
 
     End With
