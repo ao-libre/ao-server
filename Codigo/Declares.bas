@@ -590,7 +590,7 @@ Public Enum PECES_POSIBLES
 
 End Enum
 
-Public Const NUM_PECES            As Integer = 4
+Public Const NUM_PECES            As Integer = 5
 
 Public ListaPeces(1 To NUM_PECES) As Integer
 
