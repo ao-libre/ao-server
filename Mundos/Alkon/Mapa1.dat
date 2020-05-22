@@ -1,14 +1,13 @@
 [MAPA1]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=
-MusicNumMp3=4
-Name=Ciudad de Ullathorpe
-NoEncriptarMP=0
-Pk=1
-Restringir=NO
-ResuSinEfecto=0
-Terreno=BOSQUE
-Zona=CIUDAD
+BACKUP= 1
+INVISINEFECTO=0
+MAGIASINEFECTO=0
+MUSICNUMMP3=4
+NOENCRIPTARMP=0
+PK=1
+RESTRINGIR=NO
+RESUSINEFECTO=0
+TERRENO=BOSQUE
+ZONA=CIUDAD
 
+Name=Ciudad de Ullathorpe

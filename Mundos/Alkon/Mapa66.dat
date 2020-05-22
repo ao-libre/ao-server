@@ -1,14 +1,13 @@
 [MAPA66]
-BackUp= 0
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=
-MusicNumMp3=14
-Name=C�rcel de Banderbill.
-NoEncriptarMP=0
-Pk=0
-Restringir=No
-ResuSinEfecto=0
-Terreno=BOSQUE
-Zona=CIUDAD
+BACKUP= 0
+INVISINEFECTO=0
+MAGIASINEFECTO=0
+MUSICNUMMP3=14
+NOENCRIPTARMP=0
+PK=0
+RESTRINGIR=No
+RESUSINEFECTO=0
+TERRENO=BOSQUE
+ZONA=CIUDAD
 
+Name=C�rcel de Banderbill.
