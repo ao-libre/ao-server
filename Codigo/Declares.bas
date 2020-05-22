@@ -586,6 +586,7 @@ Public Enum PECES_POSIBLES
     PESCADO2 = 544
     PESCADO3 = 545
     PESCADO4 = 546
+    PESCADO5 = 775
 
 End Enum
 

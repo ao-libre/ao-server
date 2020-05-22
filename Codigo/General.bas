@@ -528,6 +528,7 @@ Private Sub LoadConstants()
     ListaPeces(2) = PECES_POSIBLES.PESCADO2
     ListaPeces(3) = PECES_POSIBLES.PESCADO3
     ListaPeces(4) = PECES_POSIBLES.PESCADO4
+    ListaPeces(5) = PECES_POSIBLES.PESCADO5
 
     'Bordes del mapa
     MinXBorder = XMinMapSize + (XWindow \ 2)
