@@ -15217,3 +15217,10 @@ GrhIndex=30684
 ObjType=4
 Agarrable=1
 
+[OBJ1240]
+Name=Cartel Monturas
+GrhIndex=6856
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Tenemos las mejores monturas para los mas feroces aventureros.
