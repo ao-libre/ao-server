@@ -3675,6 +3675,9 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
 
                     End If
 
+                    'Fix Sonido by Fakkerz 24/05/2020
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_MINERO, .Pos.X, .Pos.Y))
+
                 Else
                     Call WriteConsoleMsg(Userindex, "Ahi no hay ningUn yacimiento.", FontTypeNames.FONTTYPE_INFO)
 
