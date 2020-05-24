@@ -1246,9 +1246,6 @@ Domable=0
 Alineacion=0
 Comercia=0
 
-
-
-
 ##############################################################
 ####################NPCS DECORATIVOS##########################
 ##############################################################
@@ -1890,7 +1887,7 @@ Name=Armaduras
 Desc=Acercate, tengo algunas armaduras que podrian protegerte.
 Head=6
 Body=93
-Heading=4
+Heading=3
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -2110,7 +2107,7 @@ Name=Armaduras
 Desc=Acercate, tengo algunas armaduras que podrian protegerte.
 Head=6
 Body=93
-Heading=4
+Heading=3
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -2571,7 +2568,7 @@ Name=Armaduras
 Desc=Tengo a la venta las mejores armaduras de la isla!
 Head=6
 Body=93
-Heading=4
+Heading=3
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -3059,7 +3056,7 @@ Name=Armaduras
 Desc=Ven, tengo resistentes armaduras para ofrecerte.
 Head=6
 Body=93
-Heading=4
+Heading=3
 Movement=1
 Attackable=0
 ReSpawn=0
@@ -3298,7 +3295,7 @@ Name=Armaduras
 Desc=Si estas buscando las mejores armaduras de estas tierras, has llegado al lugar correcto...
 Head=6
 Body=93
-Heading=4
+Heading=3
 Movement=1
 Attackable=0
 ReSpawn=0
