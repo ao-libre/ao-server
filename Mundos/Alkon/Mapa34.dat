@@ -1,14 +1,12 @@
 [MAPA34]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=
+Name=Ciudad de Nix
 MusicNumMp3=5
-Name=Ciudad de Nix.
-NoEncriptarMP=0
-Pk=1
-Restringir=No
+MagiaSinefecto=0
+InviSinEfecto=0
 ResuSinEfecto=0
+NoEncriptarMP=0
 Terreno=BOSQUE
 Zona=CIUDAD
-
+Restringir=No
+BackUp= 1
+Pk=1
