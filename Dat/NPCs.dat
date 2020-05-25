@@ -799,8 +799,8 @@ NROITEMS=2
 'Obj1=1139-1000 'Montura de Gran Dragon rojo
 'Obj2=1156-1000 'Montura de Gran Dragon dorado
 'Obj3=1157-1000 'Montura de Gran Dragon negro
-Obj1=1158-1000 'Montura de Elefante
-Obj2=1159-1000 'Montura de caballo
+Obj1=1159-1000 'Montura de Elefante
+Obj2=1160-1000 'Montura de caballo
 BackUp=1
 
 [NPC161]
