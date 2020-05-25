@@ -68,7 +68,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1239
+NumOBJs=1240
 
 
 
