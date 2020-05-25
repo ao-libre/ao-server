@@ -82,12 +82,17 @@ Sub SaveUserToDatabase(ByVal Userindex As Integer, _
     On Error GoTo ErrorHandler
 
     With UserList(Userindex)
+    
+        If GetCountUserAccount(.AccountHash) >= 10 Then
+            Call WriteErrorMsg(Userindex, "No puedes crear mas de 10 personajes.")
+            Call CloseSocket(Userindex)
+            Exit Sub
+        End If
 
         If .ID > 0 Then
             Call UpdateUserToDatabase(Userindex, SaveTimeOnline)
         Else
             Call InsertUserToDatabase(Userindex, SaveTimeOnline)
-
         End If
 
     End With
@@ -99,26 +104,71 @@ ErrorHandler:
 
 End Sub
 
+Public Function GetCountUserAccount(ByVal HashAccount As String) As Byte
+
+    '***************************************************
+    'Author: Lorwik
+    'Last Modification: 17/05/2020
+    '***************************************************
+    On Error GoTo ErrorHandler
+
+    Dim query As String
+    Dim result As String
+    
+    'Nos conectamos a la DB.
+    Call Database_Connect
+    
+    'Hacemos la query.
+    query = "SELECT COUNT(*) FROM user WHERE deleted = 0 AND account_id = (SELECT id FROM account WHERE hash = '" & HashAccount & "');"
+    
+    'La ejecutamos y la guardamos en un objeto.
+    Set Database_RecordSet = Database_Connection.Execute(query)
+    
+    'Verificamos que la query no devuelva un resultado vacio.
+    If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
+        result = 0
+        Exit Function
+    
+    Else 'Obtenemos la cantidad de PJ's en la cuenta.
+        result = val(Database_RecordSet.Fields(0).Value)
+        
+    End If
+    
+    'Limpiamos el objeto donde almacenamos el resultado de la query.
+    Set Database_RecordSet = Nothing
+    
+    'Cerramos la conexion con la DB.
+    Call Database_Close
+    
+    GetCountUserAccount = result
+    
+    Exit Function
+    
+ErrorHandler:
+    Call LogDatabaseError("Error in GetCountUserAccount: " & HashAccount & ". " & Err.Number & " - " & Err.description)
+
+End Function
+
 Sub InsertUserToDatabase(ByVal Userindex As Integer, _
                          Optional ByVal SaveTimeOnline As Boolean = True)
     '*************************************************
     'Author: Juan Andres Dalmasso (CHOTS)
-    'Last modified: 04/10/2018
+    'Last modified: 16/05/2020
     'Inserts a new user to the database, then gets its ID and assigns it
+    '16/05/2020 Lorwik: Verifica si ya alcanzaste el limite de PJ's creados.
     '*************************************************
 
     On Error GoTo ErrorHandler
 
     Dim query  As String
-
     Dim UserId As Integer
-
     Dim LoopC  As Byte
 
     Call Database_Connect
 
     'Basic user data
     With UserList(Userindex)
+
         query = "INSERT INTO user SET "
         query = query & "name = '" & .Name & "', "
         query = query & "account_id = (SELECT id FROM account WHERE hash = '" & .AccountHash & "'), "
@@ -168,7 +218,6 @@ Sub InsertUserToDatabase(ByVal Userindex As Integer, _
 
         If Database_RecordSet.BOF Or Database_RecordSet.EOF Then
             UserId = 1
-
         End If
 
         UserId = val(Database_RecordSet.Fields(0).Value)
@@ -281,9 +330,7 @@ Sub UpdateUserToDatabase(ByVal Userindex As Integer, _
     On Error GoTo ErrorHandler
 
     Dim query  As String
-
     Dim UserId As Integer
-
     Dim LoopC  As Byte
 
     Call Database_Connect
