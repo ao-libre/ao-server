@@ -586,14 +586,48 @@ Sub MakeObj(ByRef obj As obj, _
 
             End If
             
-            '//Agregamos las pos de los objetos
+            'Validamos que sea un objeto valido para borrar del mapa
             Dim IsNotObjFogata As Boolean
             Dim IsNotObjTeleport As Boolean
+            Dim IsNotFragua As Boolean
+            Dim IsNotYacimientoPez As Boolean
+            Dim IsNotYacimiento As Boolean
+            Dim IsNotMueble As Boolean
+            Dim IsNotArbolElfico As Boolean
+            Dim IsNotArbol As Boolean
+            Dim IsNotCartel As Boolean
+            Dim IsNotBarco As Boolean
+            Dim IsNotMontura As Boolean
+            Dim IsNotYunque As Boolean
+            Dim IsNotManual As Boolean
+            Dim IsNotForo As Boolean
+            Dim IsNotPuerta As Boolean
+            Dim IsValidObjectToClean As Boolean
 
             IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
             IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport 
+            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua 
+            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez 
+            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento 
+            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles 
+            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico 
+            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles 
+            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles 
+            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos 
+            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas 
+            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque 
+            IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales 
+            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos 
+            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas 
 
-            If IsNotObjFogata And IsNotObjTeleport And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
+            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta Then 
+                IsValidObjectToClean = True
+            Else
+                IsValidObjectToClean = False
+            End If
+
+            '//Agregamos las pos de los objetos
+            If IsValidObjectToClean And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
