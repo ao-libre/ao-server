@@ -1922,7 +1922,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
     'Author: Unknown
     'Last Modification: 26/05/2020
     '26/10/2018: CHOTS - Multiplicador de oficios
-    '26/05/2020: Fakkerz - Agregado render de daño faltante
+    '26/05/2020: Fakkerz - Agregado render de dano faltante
     '***************************************************
     On Error GoTo ErrHandler
 
