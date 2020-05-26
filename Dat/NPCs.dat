@@ -531,8 +531,8 @@ Comercia=1
 TipoItems=1
 NROITEMS=3
 Obj1=138-1000 'Cana de Pescar
-Obj2=139-1000 'Pescado
-Obj3=543-1000 'Red de Pesca
+Obj2=543-1000 'Red de Pesca
+Obj3=139-1000 'Pescado
 BackUp=1
 
 #############################################
@@ -554,8 +554,8 @@ Comercia=1
 TipoItems=1
 NROITEMS=3
 Obj1=138-1000 'Cana de Pescar
-Obj2=139-1000 'Pescado
-Obj3=543-1000 'Red de Pesca
+Obj2=543-1000 'Red de Pesca
+Obj3=139-1000 'Pescado
 BackUp=1
 
 #############################################
