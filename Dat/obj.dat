@@ -14562,17 +14562,7 @@ Name=Cuchara Legendaria (Prueba)
 GrhIndex=587
 ObjType=20
 Agarrable=0
-Valor=99999
-Crucial=0
-ItemCrafteo1=1-100
-ItemCrafteo2=43-100
-
-[OBJ1161]
-Name=Cuchara Legendaria (Prueba)
-GrhIndex=587
-ObjType=20
-Agarrable=0
-Valor=99999
+Valor=2000
 Crucial=0
 ItemCrafteo1=1-100
 ItemCrafteo2=43-100
