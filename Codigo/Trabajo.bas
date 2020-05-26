@@ -1920,8 +1920,9 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Unknown
-    'Last Modification: 26/10/2018
+    'Last Modification: 26/05/2020
     '26/10/2018: CHOTS - Multiplicador de oficios
+    '26/05/2020: Fakkerz - Agregado render de daño faltante
     '***************************************************
     On Error GoTo ErrHandler
 
@@ -1982,7 +1983,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
                 
                 Call WriteConsoleMsg(Userindex, "Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
                 
-                'Renderizo el dano en render. [Agregado en DoPescarRed by Fakkerz - 26/05/2020]
+                'Renderizo el dano en render.
                 Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))                                                                                 
                 
                 Call SubirSkill(Userindex, eSkill.pesca, True)
