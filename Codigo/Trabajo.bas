@@ -1,4 +1,3 @@
-Attribute VB_Name = "Trabajo"
 'Argentum Online 0.12.2
 'Copyright (C) 2002 Marquez Pablo Ignacio
 '
@@ -1982,6 +1981,9 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
                 End If
                 
                 Call WriteConsoleMsg(Userindex, "Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
+                
+                'Renderizo el dano en render. [Agregado en DoPescarRed by Fakkerz - 26/05/2020]
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))                                                                                 
                 
                 Call SubirSkill(Userindex, eSkill.pesca, True)
             Else
