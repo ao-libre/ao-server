@@ -1638,7 +1638,7 @@ Name=Pescado
 GrhIndex=573
 ObjType=1
 Agarrable=0
-MinHam=75
+MinHam=40
 Valor=8
 Crucial=1
 
@@ -6462,12 +6462,12 @@ Valor=5000
 Crucial=0
 
 [OBJ544]
-Name=Pez Dorado
+Name=Trucha
 GrhIndex=845
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=16
+MinHam=50
+Valor=14
 Crucial=0
 
 [OBJ545]
@@ -6476,7 +6476,7 @@ GrhIndex=846
 ObjType=1
 Agarrable=0
 MinHam=75
-Valor=13
+Valor=26
 Crucial=0
 
 [OBJ546]
@@ -6484,8 +6484,8 @@ Name=Merluza
 GrhIndex=847
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=13
+MinHam=60
+Valor=20
 Crucial=0
 
 [OBJ547]
@@ -9198,12 +9198,12 @@ ObjType=20
 Agarrable=1
 
 [OBJ775]
-Name=Caballito de mar
+Name=Hipocampo
 GrhIndex=848
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=13
+MinHam=100
+Valor=30
 Crucial=0
 
 [OBJ776]
@@ -14562,17 +14562,7 @@ Name=Cuchara Legendaria (Prueba)
 GrhIndex=587
 ObjType=20
 Agarrable=0
-Valor=99999
-Crucial=0
-ItemCrafteo1=1-100
-ItemCrafteo2=43-100
-
-[OBJ1161]
-Name=Cuchara Legendaria (Prueba)
-GrhIndex=587
-ObjType=20
-Agarrable=0
-Valor=99999
+Valor=2000
 Crucial=0
 ItemCrafteo1=1-100
 ItemCrafteo2=43-100
