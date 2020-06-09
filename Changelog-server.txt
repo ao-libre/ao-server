@@ -1002,4 +1002,7 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 27/05/2020: Se mejoro validacion para que no se borren todos los objetos en el limpiar mundo (Recox)
 * 27/05/2020: Se agrego la posibilidad de obtener hipocampo en pesca con red (Fakkerz - Recox)
 * 27/05/2020: Se renderiza correctamente contadores en render cuando se pesca con red (Fakkerz)
+
+-v0.13.39
+* 09/06/2020: Cambios en muchos Dats y Mapas (ReyarB - Fakkerz)
 ---
