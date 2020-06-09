@@ -1,14 +1,12 @@
 [MAPA282]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=56
-MusicNumMp3=
 Name=Isla Otto
-NoEncriptarMP=0
-Pk=1
-Restringir=No
+MagiaSinefecto=0
+InviSinEfecto=0
 ResuSinEfecto=0
+NoEncriptarMP=0
 Terreno=BOSQUE
 Zona=CAMPO
-
+Restringir=No
+BackUp= 1
+Pk=1
+MusicNumMp3=

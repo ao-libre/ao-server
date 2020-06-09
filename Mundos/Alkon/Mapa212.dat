@@ -1,13 +1,12 @@
 [MAPA212]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNumMp3=98
 Name=Gran Isla del Oro, sur de Nix.
-NoEncriptarMP=0
-Pk=1
-Restringir=No
+MusicNumMp3=98
+MagiaSinefecto=0
+InviSinEfecto=0
 ResuSinEfecto=0
+NoEncriptarMP=0
 Terreno=BOSQUE
 Zona=CAMPO
-
+Restringir=No
+BackUp= 1
+Pk=1
