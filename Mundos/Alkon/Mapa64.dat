@@ -1,14 +1,12 @@
 [MAPA64]
-BackUp= 1
-InviSinEfecto=0
 MagiaSinefecto=0
-MusicNum=
-MusicNumMp3=16
-Name=Ciudad de Lindos.
-NoEncriptarMP=0
-Pk=1
-Restringir=No
+InviSinEfecto=0
 ResuSinEfecto=0
+NoEncriptarMP=0
+BackUp= 1
+Pk=1
+Name=Casas de Lindos
+MusicNumMp3=16
 Terreno=BOSQUE
 Zona=CIUDAD
-
+Restringir=No

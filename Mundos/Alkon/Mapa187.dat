@@ -1,14 +1,12 @@
 [MAPA187]
-BackUp= 1
-InviSinEfecto=0
-MagiaSinefecto=0
-MusicNum=67
-MusicNumMp3=
 Name=Paraiso.
-NoEncriptarMP=0
-Pk=0
-Restringir=No
+MagiaSinefecto=0
+InviSinEfecto=0
 ResuSinEfecto=0
+NoEncriptarMP=0
 Terreno=BOSQUE
 Zona=CAMPO
-
+Restringir=No
+BackUp= 1
+Pk=0
+MusicNumMp3=

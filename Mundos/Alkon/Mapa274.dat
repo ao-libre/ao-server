@@ -1,13 +1,12 @@
 [MAPA274]
-BACKUP= 1
-INVISINEFECTO=0
-MAGIASINEFECTO=0
-MUSICNUMMP3=10
-NOENCRIPTARMP=0
-PK=1
-RESTRINGIR=GM
-RESUSINEFECTO=0
-TERRENO=DESIERTO
-ZONA=DUNGEON
-
 Name=(Parten�n de los Dioses / Biblioteca)
+MusicNumMp3=10
+MagiaSinefecto=0
+InviSinEfecto=0
+ResuSinEfecto=0
+NoEncriptarMP=0
+Terreno=DESIERTO
+Zona=DUNGEON
+Restringir=GM
+BackUp= 1
+Pk=1
