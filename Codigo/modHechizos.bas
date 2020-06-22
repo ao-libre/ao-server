@@ -108,7 +108,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
                 Call WriteConsoleMsg(Userindex, Npclist(NpcIndex).Name & " te ha quitado " & dano & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
                 
                 'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
                 
                 Call WriteUpdateUserStats(Userindex)
                 
@@ -117,7 +117,7 @@ Sub NpcLanzaSpellSobreUser(ByVal NpcIndex As Integer, _
                     .Stats.MinHp = 0
 
                     If Npclist(NpcIndex).NPCtype = eNPCType.GuardiaReal Then
-                        RestarCriminalidad (Userindex)
+                        Call RestarCriminalidad(Userindex)
 
                     End If
                     
@@ -1890,7 +1890,7 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
                 Call WriteConsoleMsg(Userindex, "Has curado " & dano & " puntos de vida a la criatura.", FontTypeNames.FONTTYPE_FIGHT)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
                 
             End If
         
@@ -1949,9 +1949,12 @@ Sub HechizoPropNPC(ByVal SpellIndex As Integer, _
             If dano < 0 Then dano = 0
         
             .Stats.MinHp = .Stats.MinHp - dano
-            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+            
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+            
             'Call WriteConsoleMsg(UserIndex, "Le has quitado " & dano & " puntos de vida a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
             Call WriteMultiMessage(Userindex, eMessages.UserHitNPC, dano)
+            
             Call CalcularDarExp(Userindex, NpcIndex, dano)
     
             If .Stats.MinHp < 1 Then
@@ -2291,14 +2294,14 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
                 Call WriteConsoleMsg(targetIndex, UserList(Userindex).Name & " te ha restaurado " & dano & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
-                Call SendData(SendTarget.ToPCArea, targetIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
+                Call UserList(targetIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
                 
             Else
                 Call WriteConsoleMsg(Userindex, "Te has restaurado " & dano & " puntos de vida.", FontTypeNames.FONTTYPE_FIGHT)
                 
                 'Renderizo el dano en render
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
+                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_CURAR))
 
             End If
         
@@ -2359,7 +2362,8 @@ Public Function HechizoPropUsuario(ByVal Userindex As Integer) As Boolean
             .Stats.MinHp = .Stats.MinHp - dano
             
             'Renderizo el dano en render
-            Call SendData(SendTarget.ToPCArea, targetIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
+            Call UserList(targetIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, dano, DAMAGE_NORMAL))
             
             Call WriteUpdateHP(targetIndex)
         

@@ -23401,20 +23401,24 @@ ErrHandler:
 
 End Sub
 
-Public Function PrepareMessageCreateDamage(ByVal X As Byte, ByVal Y As Byte, ByVal DamageValue As Long, ByVal DamageType As Byte)
+Public Function PrepareMessageCreateDamage(ByVal X As Byte, _
+                                           ByVal Y As Byte, _
+                                           ByVal DamageValue As Long, _
+                                           ByVal DamageType As Byte)
  
-' @ Envia el paquete para crear dano (Y)
+    ' @ Envia el paquete para crear dano (Y)
  
-With auxiliarBuffer
-     .WriteByte ServerPacketID.CreateDamage
-     .WriteByte X
-     .WriteByte Y
-     .WriteLong DamageValue
-     .WriteByte DamageType
+    With auxiliarBuffer
+        
+        Call .WriteByte(ServerPacketID.CreateDamage)
+        Call .WriteByte(X)
+        Call .WriteByte(Y)
+        Call .WriteLong(DamageValue)
+        Call .WriteByte(DamageType)
      
-     PrepareMessageCreateDamage = .ReadASCIIStringFixed(.Length)
+        PrepareMessageCreateDamage = .ReadASCIIStringFixed(.Length)
      
-End With
+    End With
  
 End Function
 
