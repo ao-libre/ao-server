@@ -937,40 +937,42 @@ Private Function NpcImpactoNpc(ByVal Atacante As Integer, _
 End Function
 
 Public Sub NpcDanoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
-
-    Dim dano        As Integer
     
+    '**********************************************************************************
+    'Author: Unknown
+    'Last Modification: 22/06/2020 (BelerianD)
+    '22/06/2020 (BelerianD) - Renderizamos el dano causado por los elementales en el render.
+    '                        (solo lo ve el maestro del NPC)
+    '**********************************************************************************
+
+    Dim Dano As Long
+    Dim MasterIndex As Integer
+
     With Npclist(Atacante)
-        dano = RandomNumber(.Stats.MinHIT, .Stats.MaxHIT)
-        Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - dano
-        
+        Dano = RandomNumber(.Stats.MinHIT, .Stats.MaxHIT)
+        Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - Dano
+
         'Renderizo el dano en render.
-        Call SendDamageToRender(.MaestroUser, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL), DAMAGE_NORMAL)
-        
+        Call UserList(.MaestroUser).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, Dano, DAMAGE_NORMAL))
+
         If Npclist(Victima).Stats.MinHp < 1 Then
             .Movement = .flags.OldMovement
-            
+
             If LenB(.flags.AttackedBy) <> 0 Then
                 .Hostile = .flags.OldHostil
-
             End If
 
-            If .MaestroUser > 0 Then
+            MasterIndex = .MaestroUser
+
+            If MasterIndex > 0 Then
                 Call FollowAmo(Atacante)
-
             End If
-            
-            Call MuereNpc(Victima, .MaestroUser)
 
+            Call MuereNpc(Victima, MasterIndex)
         End If
- 
+        
     End With
-
+    
 End Sub
 
 Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
