@@ -23422,10 +23422,10 @@ Public Function PrepareMessageCreateDamage(ByVal X As Byte, _
  
 End Function
 
-Public Sub SendDamageToRender(ByVal TargetIndex As Integer, _
+Public Sub SendDamageToRender(ByVal targetIndex As Integer, _
                               ByVal PreparedData As String, _
                               ByVal DamageType As Byte, _
-                              Optional ByVal SendTarget As SendTarget = SendTarget.ToPCArea)
+                              Optional ByVal SendTo As SendTarget = SendTarget.ToPCArea)
 '***********************************************************
 'Author: Jopi
 'Last Modification: 22/06/2020 (Jopi)
@@ -23437,7 +23437,7 @@ Public Sub SendDamageToRender(ByVal TargetIndex As Integer, _
         ' Si atacas o fallas, se lo enviamos a los que estan en el rango de vision.
         Case DAMAGE_NORMAL
         Case DAMAGE_FALLO
-            Call SendData(SendTarget, TargetIndex, PreparedData)
+            Call SendData(SendTo, targetIndex, PreparedData)
 
         ' Se lo enviamos SOLO AL USUARIO
         Case Else
