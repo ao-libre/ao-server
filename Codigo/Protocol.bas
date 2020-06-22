@@ -23435,8 +23435,7 @@ Public Sub SendDamageToRender(ByVal targetIndex As Integer, _
     Select Case DamageType
         
         ' Si atacas o fallas, se lo enviamos a los que estan en el rango de vision.
-        Case DAMAGE_NORMAL
-        Case DAMAGE_FALLO
+        Case DAMAGE_NORMAL, DAMAGE_FALLO
             Call SendData(SendTo, targetIndex, PreparedData)
 
         ' Se lo enviamos SOLO AL USUARIO
