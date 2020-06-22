@@ -1005,4 +1005,7 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 
 -v0.13.39
 * 09/06/2020: Cambios en muchos Dats y Mapas (ReyarB - Fakkerz)
----
+
+-v0.13.40
+* 22/06/2020: Optimización: Daño sobre la cabeza. (jopiortiz)
+              Ahora solo se le envía el dato al UserIndex correspondiente (en vez de enviarlo a todos en el área del UserIndex)
