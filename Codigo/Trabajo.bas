@@ -1881,7 +1881,7 @@ Public Sub DoPescar(ByVal Userindex As Integer)
             Call WriteConsoleMsg(Userindex, "Has pescado un lindo pez!", FontTypeNames.FONTTYPE_INFO)
             
             'Renderizo el dano en render.
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            Call SendDamageToRender(Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO), DAMAGE_TRABAJO)
             
             Call SubirSkill(Userindex, eSkill.pesca, True)
         Else
@@ -2406,7 +2406,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call UserList(VictimUserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(UserList(VictimUserIndex).Pos.X, UserList(VictimUserIndex).Pos.Y, dano, DAMAGE_PUNAL))
+                Call SendDamageToRender(Userindex, PrepareMessageCreateDamage(UserList(VictimUserIndex).Pos.X, UserList(VictimUserIndex).Pos.Y, dano, DAMAGE_PUNAL), DAMAGE_PUNAL)
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado a " & .Name & " por " & dano, FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteConsoleMsg(VictimUserIndex, "Te ha apunalado " & UserList(Userindex).Name & " por " & dano, FontTypeNames.FONTTYPE_FIGHT)
@@ -2419,7 +2419,7 @@ Public Sub DoApunalar(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - Int(dano * 2)
                 
                 'Renderizo el dano en render
-                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendDamageToRender(Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL), DAMAGE_PUNAL)
                 
                 Call WriteConsoleMsg(Userindex, "Has apunalado la criatura por " & Int(dano * 2), FontTypeNames.FONTTYPE_FIGHT)
                 Call CalcularDarExp(Userindex, VictimNpcIndex, dano * 2)
@@ -2512,7 +2512,7 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call UserList(VictimUserIndex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendDamageToRender(VictimUserIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL), DAMAGE_PUNAL)
                 
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a " & .Name & " por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 Call WriteConsoleMsg(VictimUserIndex, UserList(Userindex).Name & " te ha golpeado criticamente por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
@@ -2525,7 +2525,7 @@ Public Sub DoGolpeCritico(ByVal Userindex As Integer, _
                 .Stats.MinHp = .Stats.MinHp - dano
                 
                 'Renderizo el dano en render
-                Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL))
+                Call SendDamageToRender(VictimUserIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, Int(dano * 2), DAMAGE_PUNAL), DAMAGE_PUNAL)
                 
                 Call WriteConsoleMsg(Userindex, "Has golpeado criticamente a la criatura por " & dano & ".", FontTypeNames.FONTTYPE_FIGHT)
                 
@@ -2630,7 +2630,7 @@ Public Sub DoTalar(ByVal Userindex As Integer, _
             Call WriteConsoleMsg(Userindex, "Has conseguido algo de lena!", FontTypeNames.FONTTYPE_INFO)
             
             'Renderizo el dano en render.
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            Call SendDamageToRender(VictimUserIndex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO), DAMAGE_TRABAJO)
             
             Call SubirSkill(Userindex, eSkill.Talar, True)
         Else
@@ -2729,7 +2729,7 @@ Public Sub DoMineria(ByVal Userindex As Integer)
             Call WriteConsoleMsg(Userindex, "Has extraido algunos minerales!", FontTypeNames.FONTTYPE_INFO)
             
             'Renderizo el dano en render.
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
+            Call SendDamageToRender(Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO), DAMAGE_TRABAJO)
             
             Call SubirSkill(Userindex, eSkill.Mineria, True)
         Else
@@ -2854,7 +2854,7 @@ Public Sub DoMeditar(ByVal Userindex As Integer)
             End If
             
             'Renderizo el dano en render.
-            Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageCreateDamage(.Pos.X, .Pos.Y, cant, DAMAGE_TRABAJO))
+            Call SendDamageToRender(Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, cant, DAMAGE_TRABAJO), DAMAGE_TRABAJO)
             
             Call WriteUpdateMana(Userindex)
             Call SubirSkill(Userindex, eSkill.Meditar, True)
