@@ -602,6 +602,10 @@ Sub MakeObj(ByRef obj As obj, _
             Dim IsNotManual As Boolean
             Dim IsNotForo As Boolean
             Dim IsNotPuerta As Boolean
+            Dim IsNotInstrumentos As Boolean
+            Dim IsNotPergaminos As Boolean
+            Dim IsNotGemas As Boolean
+            Dim IsNotMochilas As Boolean
             Dim IsValidObjectToClean As Boolean
 
             IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
@@ -619,8 +623,13 @@ Sub MakeObj(ByRef obj As obj, _
             IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales 
             IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos 
             IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas 
+            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos 
+            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos 
+            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas 
+            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas 
+            
 
-            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta Then 
+            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then 
                 IsValidObjectToClean = True
             Else
                 IsValidObjectToClean = False
