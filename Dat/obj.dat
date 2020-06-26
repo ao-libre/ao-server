@@ -37,6 +37,9 @@
 ' 33: botellas vacias
 ' 34: botellas llenas
 ' 35: Manuales
+' 36: Arbol Elfico
+' 37: Mochilas
+' 38: Yacimiento Pez
 
 
 ##############################################
@@ -4350,7 +4353,6 @@ Agarrable=1
 [OBJ386]
 Name=Lingote de Hierro
 GrhIndex=724
-ObjType=29
 Agarrable=0
 Valor=70
 Crucial=0
@@ -4358,7 +4360,6 @@ Crucial=0
 [OBJ387]
 Name=Lingote de Plata
 GrhIndex=725
-ObjType=29
 Agarrable=0
 Valor=120
 Crucial=0
@@ -4366,7 +4367,6 @@ Crucial=0
 [OBJ388]
 Name=Lingote de Oro
 GrhIndex=723
-ObjType=29
 Agarrable=0
 Valor=350
 Crucial=0
@@ -7253,7 +7253,7 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 NoSeCae=1
 
-[OBJ615]]'2da Jerarq
+[OBJ615]'2da Jerarq
 Name=Tunica de Archimago (E/G)
 GrhIndex=657
 ObjType=3
@@ -7277,7 +7277,7 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 NoSeCae=1
 
-[OBJ616]]'2da Jerarq
+[OBJ616]'2da Jerarq
 Name=Armadura de Guerrero Campeon
 GrhIndex=756
 ObjType=3
@@ -7297,7 +7297,7 @@ CP7=ASESINO
 CP8=TRABAJADOR
 NoSeCae=1
 
-[OBJ617]]]'2da Jerarq
+[OBJ617] '2da Jerarq
 Name=Armadura de Guerrero Campeon (E/G)
 GrhIndex=758
 ObjType=3
@@ -7321,7 +7321,6 @@ NoSeCae=1
 [OBJ618]
 Name=Monedas de Oro
 GrhIndex=511
-ObjType=29
 Agarrable=0
 
 [OBJ619]
