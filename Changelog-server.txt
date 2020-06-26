@@ -1005,4 +1005,28 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 
 -v0.13.39
 * 09/06/2020: Cambios en muchos Dats y Mapas (ReyarB - Fakkerz)
+
+-v0.13.40
+* 27/06/2020: Ahora gemas, mochilas, pergaminos e instrumentos no se borran con el limpiar mundo (Recox)
+* 27/06/2020: los lobos del mapa de arriba de DN eran los lobos del hechizo de invocacion, no daban experiencia. ahora puse los normales. (waltersit0)
+* 27/06/2020: QuickFix: Etognil Bronce, Plata y Oro No-Respawn. (Fakkerz)
+* 27/06/2020: Solución: Salida de Minas Bloqueada. (Fakkerz)
+* 27/06/2020: se modifico exp de Etognil oro etognil plata etognil bronce se subio exp y se modifico drop (Fakkerz)
+* 27/06/2020: Se ordenaron los items para que aparezcan: Caña, Red y luego Peces. (Fakkerz)
+* 27/06/2020: Había una fogata q con el tiempo desaparece y qda solo la particula. La elimino Mapa 34. (Fakkerz)
+* 27/06/2020: Ciudad de Nix mejorada. (Fakkerz)
+* 27/06/2020: Fix: NPC Armaduras ahora mira para abajo. (Heading=3). (Fakkerz)
+* 27/06/2020: Corrección Index 'Gorro de Navidad' (Fakkerz)
+* 27/06/2020: ArmadurasHerrero Indexs Correctos.' (Fakkerz)
+* 27/06/2020: Agrego "Cartel Monturas" para mapeo. (Fakkerz)
+* 27/06/2020: Oso Blanco: Tira piel de Oso Polar. (Fakkerz)
+* 27/06/2020: Solución: no hace ruido al minar. (Fakkerz)
+* 27/06/2020: Corrección de Indexs ArmasHerrero.dat (Fakkerz)
+* 27/06/2020: Agrego "Cartel Monturas" para mapeo. (Fakkerz)
+* 27/06/2020: Fix: Espada Corta no aparecía. (Fakkerz)
+* 27/06/2020: Se modifico la vida de Oso Blanco (Vortex)
+* 27/06/2020: Saco trigger´s para poder entrar a ducto escape  (ReyarB)
+
+
+  
 ---
