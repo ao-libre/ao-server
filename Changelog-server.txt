@@ -1026,6 +1026,7 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 27/06/2020: Fix: Espada Corta no aparecía. (Fakkerz)
 * 27/06/2020: Se modifico la vida de Oso Blanco (Vortex)
 * 27/06/2020: Saco trigger´s para poder entrar a ducto escape  (ReyarB)
+* 27/06/2020: Se balancean algunos npcs de dungeons interciudades, se arregla sombrero invernal +1  (Xavi)
 
 
   
