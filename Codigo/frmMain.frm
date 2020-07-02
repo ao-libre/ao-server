@@ -499,6 +499,8 @@ Const WM_LBUTTONDBLCLK = &H203
 
 Const WM_RBUTTONUP = &H205
 
+Const CANTIDAD_MINUTOS_NUEVA_LLUVIA_EN_JUEGO = 65
+
 Private Declare Function GetWindowThreadProcessId _
                 Lib "user32" (ByVal hWnd As Long, _
                               lpdwProcessId As Long) As Long
@@ -966,16 +968,8 @@ Private Sub tLluviaEvent()
 
     If Not Lloviendo Then
         MinutosSinLluvia = MinutosSinLluvia + 1
-
-        If MinutosSinLluvia >= 15 And MinutosSinLluvia < 1440 Then
-            If RandomNumber(1, 100) <= 2 Then
-                Lloviendo = True
-                MinutosSinLluvia = 0
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
-
-            End If
-
-        ElseIf MinutosSinLluvia >= 1440 Then
+        
+        If MinutosSinLluvia >= CANTIDAD_MINUTOS_NUEVA_LLUVIA_EN_JUEGO Then
             Lloviendo = True
             MinutosSinLluvia = 0
             Call SendData(SendTarget.ToAll, 0, PrepareMessageRainToggle())
