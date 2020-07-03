@@ -4353,6 +4353,7 @@ Agarrable=1
 [OBJ386]
 Name=Lingote de Hierro
 GrhIndex=724
+ObjType=29
 Agarrable=0
 Valor=70
 Crucial=0
@@ -4360,6 +4361,7 @@ Crucial=0
 [OBJ387]
 Name=Lingote de Plata
 GrhIndex=725
+ObjType=29
 Agarrable=0
 Valor=120
 Crucial=0
@@ -4367,6 +4369,7 @@ Crucial=0
 [OBJ388]
 Name=Lingote de Oro
 GrhIndex=723
+ObjType=29
 Agarrable=0
 Valor=350
 Crucial=0
@@ -7321,6 +7324,7 @@ NoSeCae=1
 [OBJ618]
 Name=Monedas de Oro
 GrhIndex=511
+ObjType=29
 Agarrable=0
 
 [OBJ619]
@@ -12728,16 +12732,29 @@ Valor=0
 Crucial=0
 
 [OBJ1057]
-Name=Sombrero invernal
-GrhIndex=24143
+Name=Sombrero Magico +1
+GrhIndex=18994
 ObjType=17
 NumRopaje=2
 Agarrable=0
-Anim=17
-MaxDef=0
-MinDef=0
-Valor=0
-Crucial=0
+Anim=7
+MaxDef=2
+MinDef=1
+DefensaMagicaMin=7
+DefensaMagicaMax=11
+Valor=11000
+Crucial=1
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=BARDO
+CP10=DRUIDA
+CP11=TRABAJADOR
 
 [OBJ1058]
 Name=Arbol navidad
