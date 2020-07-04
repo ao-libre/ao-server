@@ -6016,6 +6016,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
     'Last Modification: 03/07/2020 (Jopi)
     '14/07/19 (Recox) - Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista.
     '03/07/2020 (Jopi) - Usamos la clase cStringBuilder para generar la lista de usuarios online.
+    '03/07/2020 (Jopi) - Mostramos quienes son trabajadores y cuantos estan online.
     '***************************************************
     
     ' Generador de strings
@@ -6040,6 +6041,15 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
                 ' Agregamos el nombre al final del string.
                 Call SB.Append(UserList(i).Name)
                 
+                ' Si es trabajador...
+                If UserList(i).Clase = eClass.Worker Then
+                    ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
+                    CountTrabajadores = CountTrabajadores + 1
+                    
+                    ' Agregamos un sufijo que indique que es un trabajador.
+                    Call SB.Append(" [T]")
+                End If
+                
                 ' Si no terminamos de recorrer la lista, agregamos el separador.
                 If i <> LastUser Then
                     Call SB.Append(", ")
@@ -6047,12 +6057,7 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
                 
                 ' Incrementa en 1 el contador de jugadores online TOTALES
                 Count = Count + 1
-                
-                ' Incrementa en 1 el contador de jugadores online que son trabajadores.
-                If UserList(i).Clase = eClass.Worker Then
-                    CountTrabajadores = CountTrabajadores + 1
-                End If
-                
+
             End If
 
         Next i
