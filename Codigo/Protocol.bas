@@ -6013,37 +6013,56 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 14/07/19 (Recox)
-    'Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista (Recox)
+    'Last Modification: 03/07/2020 (Jopi)
+    '14/07/19 (Recox) - Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista.
+    '03/07/2020 (Jopi) - Usamos la clase cStringBuilder para generar la lista de usuarios online.
     '***************************************************
-    Dim i     As Long
+    
+    ' Generador de strings
+    Dim SB As cStringBuilder
+    Set SB = New cStringBuilder
 
+    ' Contadores
+    Dim i     As Long
     Dim Count As Long
+    Dim CountTrabajadores As Long
     
     With UserList(Userindex)
+        
         'Remove packet ID
         Call .incomingData.ReadByte
-
-        Dim UsersNamesOnlines As String
-
+        
+        ' Recorremos la lista de usuarios online.
         For i = 1 To LastUser
 
             If LenB(UserList(i).Name) <> 0 Then
                 
-                    If i = LastUser Then
-                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
-                    Else
-                        UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
-                    End If
+                ' Agregamos el nombre al final del string.
+                Call SB.Append(UserList(i).Name)
                 
+                ' Si no terminamos de recorrer la lista, agregamos el separador.
+                If i <> LastUser Then
+                    Call SB.Append(", ")
+                End If
+                
+                ' Incrementa en 1 el contador de jugadores online TOTALES
                 Count = Count + 1
+                
+                ' Incrementa en 1 el contador de jugadores online que son trabajadores.
+                If UserList(i).Clase = eClass.Worker Then
+                    CountTrabajadores = CountTrabajadores + 1
+                End If
+                
             End If
 
         Next i
         
-        Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
-
+        Call WriteConsoleMsg(Userindex, SB.toString, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Usuarios en linea: " & CStr(Count) & " (" & CStr(CountTrabajadores) & " trabajando)", FontTypeNames.FONTTYPE_INFOBOLD)
+        
+        ' Liberamos los recursos del generador de strings
+        Set SB = Nothing
+        
     End With
 
     Call WriteConsoleServerUpTimeMsg(Userindex)
