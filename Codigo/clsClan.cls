@@ -724,8 +724,8 @@ Public Function RevisarElecciones() As Boolean
     RevisarElecciones = False
     Temps = Trim$(GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "EleccionesFinalizan"))
     
-    If Temps = 0 Then Exit Function
-    
+    If LenB(Temps) = 0 Then Exit Function
+
     If IsDate(Temps) Then
         FechaSufragio = CDate(Temps)
 
