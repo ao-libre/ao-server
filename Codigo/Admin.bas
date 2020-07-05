@@ -609,7 +609,16 @@ Public Function CompararPrivilegios(ByVal Personaje1 As Integer, ByVal Personaje
 '       - Si los privilegios de el de la izquierda [Personaje1] son IGUALES que el de la derecha [Personaje2], devuelve 0
 '       - Si los privilegios de el de la izquierda [Personaje1] son MENORES que el de la derecha [Personaje2], devuelve 1
 '**************************************************************************************************************************
- 
+    
+    ' Si tratamos de comparar personajes del Consejo Real/Caos devolvemos 0
+    ' Debido a que deben gozar de los mismos privilegios.
+    If (UserList(Personaje1).flags.Privilegios And (PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil)) Or _
+        (UserList(Personaje2).flags.Privilegios And (PlayerType.ChaosCouncil Or PlayerType.RoyalCouncil)) Then
+        
+        CompararPrivilegios = 0
+    
+    End If
+    
     Dim PrivilegiosGM As PlayerType
     Dim Izquierda As PlayerType
     Dim Derecha As PlayerType
