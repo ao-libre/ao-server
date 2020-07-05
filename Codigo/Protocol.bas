@@ -12371,9 +12371,8 @@ Private Sub HandleSummonChar(ByVal Userindex As Integer)
     '26/03/2009: ZaMa - Chequeo que no se teletransporte donde haya un char o npc
     '***************************************************
     If UserList(Userindex).incomingData.Length < 3 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
     
     On Error GoTo ErrHandler
@@ -12383,53 +12382,59 @@ Private Sub HandleSummonChar(ByVal Userindex As Integer)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As clsByteQueue
         Set buffer = New clsByteQueue
-
         Call buffer.CopyBuffer(.incomingData)
         
         'Remove packet ID
         Call buffer.ReadByte
         
-        Dim UserName As String
-
-        Dim tUser    As Integer
-
-        Dim X        As Integer
-
-        Dim Y        As Integer
-        
-        UserName = buffer.ReadASCIIString()
-        
-        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
-            tUser = NameIndex(UserName)
-            
-            If tUser <= 0 Then
-                If EsDios(UserName) Or EsAdmin(UserName) Then
-                    Call WriteConsoleMsg(Userindex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
-                Else
-                    Call WriteConsoleMsg(Userindex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
-
-                End If
-                
-            Else
-
-                If (.flags.Privilegios And (PlayerType.Dios Or PlayerType.Admin)) <> 0 Or (UserList(tUser).flags.Privilegios And (PlayerType.Consejero Or PlayerType.User)) <> 0 Then
-                    Call WriteConsoleMsg(tUser, .Name & " te ha trasportado.", FontTypeNames.FONTTYPE_INFO)
-                    X = .Pos.X
-                    Y = .Pos.Y + 1
-                    Call FindLegalPos(tUser, .Pos.Map, X, Y)
-                    Call WarpUserChar(tUser, .Pos.Map, X, Y, True, True)
-                    Call LogGM(.Name, "/SUM " & UserName & " Map:" & .Pos.Map & " X:" & .Pos.X & " Y:" & .Pos.Y)
-                Else
-                    Call WriteConsoleMsg(Userindex, "No puedes invocar a dioses y admins.", FontTypeNames.FONTTYPE_INFO)
-
-                End If
-
-            End If
-
-        End If
+        Dim UserName As String: UserName = buffer.ReadASCIIString()
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
+        
+        ' Es Game Master?
+        If EsGm(Userindex) Then
+            
+            ' Obtenemos el indice del usuario a invocar.
+            Dim tUser As Integer: tUser = NameIndex(UserName)
+            
+            ' Te estas sumoneando a vos mismo?
+            If Userindex = tUser Then
+            
+                ' Esta online?
+                If tUser <= 0 Then
+                    
+                    Call WriteConsoleMsg(Userindex, "El jugador no esta online.", FontTypeNames.FONTTYPE_INFO)
+    
+                Else
+                    
+                    'Queres invocar a un Admin o un Dios?
+                    If (UserList(tUser).flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) Then
+                        
+                        Dim X As Integer
+                        Dim Y As Integer
+                        
+                        ' Seteamos la posicion destino.
+                        X = .Pos.X
+                        Y = .Pos.Y + 1
+                        Call FindLegalPos(tUser, .Pos.Map, X, Y)
+                        
+                        Call WarpUserChar(tUser, .Pos.Map, X, Y, True, True)
+                        
+                        Call WriteConsoleMsg(tUser, .Name & " te ha trasportado.", FontTypeNames.FONTTYPE_INFO)
+                        
+                        Call LogGM(.Name, "/SUM " & UserName & " Map: " & .Pos.Map & " X: " & .Pos.X & " Y: " & .Pos.Y)
+                        
+                    Else
+                        Call WriteConsoleMsg(Userindex, "No puedes invocar a Dioses ni Administradores.", FontTypeNames.FONTTYPE_INFO)
+    
+                    End If
+    
+                End If
+            
+            End If
+            
+        End If
 
     End With
 
