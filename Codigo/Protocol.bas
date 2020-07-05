@@ -23704,7 +23704,7 @@ Private Sub HandleDiscord(ByVal Userindex As Integer)
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
                 
-                                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
+                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
                 Call WriteConsoleMsg(Userindex, "Link Discord: https://discord.gg/xbAuHcf - El bot de Discord recibio y envio lo siguiente: " & Chat, FontTypeNames.FONTTYPE_INFOBOLD)
 
             Else
