@@ -599,6 +599,42 @@ Public Function UserDarPrivilegioLevel(ByVal Name As String) As PlayerType
 
 End Function
 
+Public Function CompararPrivilegios(ByVal Personaje1 As Integer, ByVal Personaje2 As Integer) As Byte
+'**************************************************************************************************************************
+'Author: Jopi
+'Last Modification: 05/07/2020
+'   Funcion encargada de comparar los privilegios entre 2 Game Masters.
+'   Funciona de la misma forma que el operador spaceship de PHP.
+'       - Si los privilegios de el de la izquierda [Personaje1] son MAYORES que el de la derecha [Personaje2], devuelve -1
+'       - Si los privilegios de el de la izquierda [Personaje1] son IGUALES que el de la derecha [Personaje2], devuelve 0
+'       - Si los privilegios de el de la izquierda [Personaje1] son MENORES que el de la derecha [Personaje2], devuelve 1
+'**************************************************************************************************************************
+ 
+    Dim PrivilegiosGM As PlayerType
+    Dim Izquierda As PlayerType
+    Dim Derecha As PlayerType
+    
+    PrivilegiosGM = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero Or PlayerType.RoleMaster
+    
+    ' Obtenemos el rango de los 2 personajes.
+    Izquierda = (UserList(Personaje1).flags.Privilegios And PrivilegiosGM)
+    Derecha = (UserList(Personaje2).flags.Privilegios And PrivilegiosGM)
+    
+    Select Case Izquierda
+    
+        Case Is > Derecha
+            CompararPrivilegios = -1
+        
+        Case Is = Derecha
+            CompararPrivilegios = 0
+            
+        Case Is < Derecha
+            CompararPrivilegios = 1
+            
+    End Select
+    
+End Function
+
 Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                         ByVal UserName As String, _
                         ByVal Reason As String)
@@ -611,19 +647,13 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
     Dim tUser     As Integer
 
     Dim UserPriv  As Byte
-
     Dim cantPenas As Byte
-
-    Dim rank      As Integer
     
     If InStrB(UserName, "+") Then
-        UserName = Replace(UserName, "+", " ")
-
+        UserName = Replace$(UserName, "+", " ")
     End If
     
     tUser = NameIndex(UserName)
-    
-    rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
     
     With UserList(bannerUserIndex)
 
@@ -633,24 +663,25 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
             If PersonajeExiste(UserName) Then
                 UserPriv = UserDarPrivilegioLevel(UserName)
                 
-                If (UserPriv And rank) > (.flags.Privilegios And rank) Then
-                    Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
+                If CompararPrivilegios(tUser, bannerUserIndex) = -1 Or _
+                   CompararPrivilegios(tUser, bannerUserIndex) = 0 Then
+                   
+                    Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor o igual jerarquia.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    Call LogGM(.Name, "Trato de banear a " & UserName)
+                    
                 Else
 
                     If BANCheck(UserName) Then
                         Call WriteConsoleMsg(bannerUserIndex, "El personaje ya se encuentra baneado.", FontTypeNames.FONTTYPE_INFO)
+                    
                     Else
+                        
                         Call LogBanFromName(UserName, bannerUserIndex, Reason)
+                        
                         Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg("Servidor> " & .Name & " ha baneado a " & UserName & ".", FontTypeNames.FONTTYPE_SERVER))
                         
                         Call SaveBan(UserName, Reason, .Name)
-                        
-                        If (UserPriv And rank) = (.flags.Privilegios And rank) Then
-                            .flags.Ban = 1
-                            Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                            Call CloseSocket(bannerUserIndex)
-
-                        End If
                         
                         Call LogGM(.Name, "BAN a " & UserName)
 
@@ -659,14 +690,17 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 End If
 
             Else
-                Call WriteConsoleMsg(bannerUserIndex, "El pj " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
+                Call WriteConsoleMsg(bannerUserIndex, "El personaje " & UserName & " no existe.", FontTypeNames.FONTTYPE_INFO)
 
             End If
 
         Else
 
-            If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
-                Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor jerarquia.", FontTypeNames.FONTTYPE_INFO)
+            If CompararPrivilegios(tUser, bannerUserIndex) = -1 Or _
+                CompararPrivilegios(tUser, bannerUserIndex) = 0 Then
+                   
+                Call WriteConsoleMsg(bannerUserIndex, "No puedes banear a al alguien de mayor o igual jerarquia.", FontTypeNames.FONTTYPE_INFO)
+            
             Else
             
                 Call LogBan(tUser, bannerUserIndex, Reason)
@@ -674,13 +708,6 @@ Public Sub BanCharacter(ByVal bannerUserIndex As Integer, _
                 
                 'Ponemos el flag de ban a 1
                 UserList(tUser).flags.Ban = 1
-                
-                If (UserList(tUser).flags.Privilegios And rank) = (.flags.Privilegios And rank) Then
-                    .flags.Ban = 1
-                    Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(.Name & " banned by the server por bannear un Administrador.", FontTypeNames.FONTTYPE_FIGHT))
-                    Call CloseSocket(bannerUserIndex)
-
-                End If
                 
                 Call LogGM(.Name, "BAN a " & UserName)
                 
