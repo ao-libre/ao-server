@@ -157,25 +157,14 @@ End Enum
 Public Enum PlayerType
 
     User = &H1
-    Consejero = &H2
-    SemiDios = &H4
-    Dios = &H8
-    Admin = &H10
-    RoleMaster = &H20
-    ChaosCouncil = &H40
-    RoyalCouncil = &H80
-
-End Enum
-
-Public Enum ePrivileges
-
-    Admin = 1
-    Dios
-    Especial
-    SemiDios
-    Consejero
-    RoleMaster
-
+    ChaosCouncil = &H2
+    RoyalCouncil = &H4
+    RoleMaster = &H8
+    Consejero = &H10
+    SemiDios = &H20
+    Dios = &H40
+    Admin = &H80
+    
 End Enum
 
 Public Enum eClass
