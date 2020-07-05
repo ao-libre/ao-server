@@ -3121,7 +3121,7 @@ Private Sub HandleWork(ByVal Userindex As Integer)
             Case Ocultarse
                 
                 ' Verifico si se peude ocultar en este mapa
-                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
+                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) Or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
                     Call WriteConsoleMsg(Userindex, "Ocultarse no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
@@ -6629,7 +6629,7 @@ Private Sub HandleConsultation(ByVal Userindex As String)
         Call .incomingData.ReadByte
         
         ' Comando exclusivo para gms
-        If Not EsGm(Userindex) Then Exit Sub
+        If Not EsGM(Userindex) Then Exit Sub
         
         UserConsulta = .flags.TargetUser
         
@@ -6644,7 +6644,7 @@ Private Sub HandleConsultation(ByVal Userindex As String)
         If UserConsulta = Userindex Then Exit Sub
         
         ' No podes estra en consulta con otro gm
-        If EsGm(UserConsulta) Then
+        If EsGM(UserConsulta) Then
             Call WriteConsoleMsg(Userindex, "No puedes iniciar el modo consulta con otro administrador.", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -7237,7 +7237,7 @@ Private Sub HandleShareNpc(ByVal Userindex As Integer)
         If TargetUserIndex = 0 Then Exit Sub
         
         ' Can't share with admins
-        If EsGm(TargetUserIndex) Then
+        If EsGM(TargetUserIndex) Then
             Call WriteConsoleMsg(Userindex, "No puedes compartir npcs con administradores!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
 
@@ -10601,10 +10601,10 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
     '18/09/2010: ZaMa - Ahora se puede editar la vida del propio pj (cualquier rm o dios).
     '11/05/2019: Jopi - No registramos en los logs si te editas a vos mismo.
     '***************************************************
+    
     If UserList(Userindex).incomingData.Length < 8 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
     
     On Error GoTo ErrHandler
@@ -10621,34 +10621,23 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
         Call buffer.ReadByte
         
         Dim UserName      As String
-
         Dim tUser         As Integer
-
         Dim opcion        As Byte
-
         Dim Arg1          As String
-
         Dim Arg2          As String
-
         Dim valido        As Boolean
-
         Dim LoopC         As Byte
-
         Dim CommandString As String
-
         Dim n             As Byte
-
         Dim UserCharPath  As String
-
         Dim Var           As Long
         
-        UserName = Replace(buffer.ReadASCIIString(), "+", " ")
+        UserName = Replace$(buffer.ReadASCIIString(), "+", " ")
         
         If UCase$(UserName) = "YO" Then
             tUser = Userindex
         Else
             tUser = NameIndex(UserName)
-
         End If
         
         opcion = buffer.ReadByte()
@@ -10661,16 +10650,26 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
 
                 Case PlayerType.Consejero
                     ' Los RMs consejeros solo se pueden editar su head, body, level y vida
-                    valido = tUser = Userindex And (opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida)
+                    valido = tUser = Userindex And (opcion = eEditOptions.eo_Body Or _
+                                                    opcion = eEditOptions.eo_Head Or _
+                                                    opcion = eEditOptions.eo_Level Or _
+                                                    opcion = eEditOptions.eo_Vida)
                 
                 Case PlayerType.SemiDios
                     ' Los RMs solo se pueden editar su level o vida y el head y body de cualquiera
-                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = Userindex) Or opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head
+                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = Userindex) Or _
+                                opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head
                     
                 Case PlayerType.Dios
                     ' Los DRMs pueden aplicar los siguientes comandos sobre cualquiera
                     ' pero si quiere modificar el level o vida solo lo puede hacer sobre si mismo
-                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = Userindex) Or opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or opcion = eEditOptions.eo_CiticensKilled Or opcion = eEditOptions.eo_CriminalsKilled Or opcion = eEditOptions.eo_Class Or opcion = eEditOptions.eo_Skills Or opcion = eEditOptions.eo_addGold
+                    valido = ((opcion = eEditOptions.eo_Level Or opcion = eEditOptions.eo_Vida) And tUser = Userindex) Or _
+                                opcion = eEditOptions.eo_Body Or opcion = eEditOptions.eo_Head Or _
+                                opcion = eEditOptions.eo_CiticensKilled Or _
+                                opcion = eEditOptions.eo_CriminalsKilled Or _
+                                opcion = eEditOptions.eo_Class Or _
+                                opcion = eEditOptions.eo_Skills Or _
+                                opcion = eEditOptions.eo_addGold
 
             End Select
         
@@ -10682,7 +10681,6 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                 valido = (tUser = Userindex)
             Else
                 valido = True
-
             End If
             
         ElseIf .flags.PrivEspecial Then
@@ -10704,7 +10702,9 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
             If tUser <= 0 And Not FileExist(UserCharPath) Then
                 Call WriteConsoleMsg(Userindex, "Estas intentando editar un usuario inexistente.", FontTypeNames.FONTTYPE_INFO)
                 Call LogGM(.Name, "Intento editar un usuario inexistente.")
+            
             Else
+                
                 'For making the Log
                 CommandString = "/MOD "
                 
@@ -10713,9 +10713,11 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                     Case eEditOptions.eo_Gold
 
                         If val(Arg1) <= MAX_ORO_EDIT Then
+                            
                             If tUser <= 0 Then ' Esta offline?
                                 Call WriteVar(UserCharPath, "STATS", "GLD", val(Arg1))
                                 Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            
                             Else ' Online
                                 UserList(tUser).Stats.Gld = val(Arg1)
                                 Call WriteUpdateGold(tUser)
@@ -10724,7 +10726,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
 
                         Else
                             Call WriteConsoleMsg(Userindex, "No esta permitido utilizar valores mayores a " & MAX_ORO_EDIT & ". Su comando ha quedado en los logs del juego.", FontTypeNames.FONTTYPE_INFO)
-
+                            
                         End If
                     
                         ' Log it
@@ -10734,13 +10736,13 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
 
                         If val(Arg1) > 20000000 Then
                             Arg1 = 20000000
-
                         End If
                         
                         If tUser <= 0 Then ' Offline
                             Var = GetVar(UserCharPath, "STATS", "EXP")
                             Call WriteVar(UserCharPath, "STATS", "EXP", Var + val(Arg1))
                             Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        
                         Else ' Online
                             UserList(tUser).Stats.Exp = UserList(tUser).Stats.Exp + val(Arg1)
                             Call CheckUserLevel(tUser)
@@ -10822,7 +10824,6 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                                 GI = GetVar(UserCharPath, "GUILD", "GUILDINDEX")
                             Else
                                 GI = UserList(tUser).GuildIndex
-
                             End If
                             
                             If GI > 0 Then
@@ -10856,7 +10857,6 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                     Case eEditOptions.eo_Class
 
                         For LoopC = 1 To NUMCLASES
-
                             If UCase$(ListaClases(LoopC)) = UCase$(Arg1) Then Exit For
                         Next LoopC
                             
@@ -10867,9 +10867,9 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                             If tUser <= 0 Then ' Offline
                                 Call WriteVar(UserCharPath, "INIT", "Clase", LoopC)
                                 Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                            
                             Else ' Online
                                 UserList(tUser).Clase = LoopC
-
                             End If
 
                         End If
@@ -10930,6 +10930,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "REP", "Nobles", Var)
                             Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        
                         Else ' Online
                             UserList(tUser).Reputacion.NobleRep = Var
 
@@ -10944,6 +10945,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                         If tUser <= 0 Then ' Offline
                             Call WriteVar(UserCharPath, "REP", "Asesino", Var)
                             Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
+                        
                         Else ' Online
                             UserList(tUser).Reputacion.AsesinoRep = Var
 
@@ -10960,6 +10962,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                         Sex = IIf(UCase(Arg1) = "HOMBRE", eGenero.Hombre, Sex) ' Hombre?
                         
                         If Sex <> 0 Then ' Es Hombre o mujer?
+                            
                             If tUser <= 0 Then ' OffLine
                                 Call WriteVar(UserCharPath, "INIT", "Genero", Sex)
                                 Call WriteConsoleMsg(Userindex, "Charfile Alterado: " & UserName, FontTypeNames.FONTTYPE_INFO)
@@ -11006,6 +11009,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                             
                         If raza = 0 Then
                             Call WriteConsoleMsg(Userindex, "Raza desconocida. Intente nuevamente.", FontTypeNames.FONTTYPE_INFO)
+                        
                         Else
 
                             If tUser <= 0 Then
@@ -11027,6 +11031,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                         
                         If Abs(Arg1) > MAX_ORO_EDIT Then
                             Call WriteConsoleMsg(Userindex, "No esta permitido utilizar valores mayores a " & MAX_ORO_EDIT & ".", FontTypeNames.FONTTYPE_INFO)
+                        
                         Else
 
                             If tUser <= 0 Then
@@ -11064,9 +11069,7 @@ Private Sub HandleEditChar(ByVal Userindex As Integer)
                     Case eEditOptions.eo_Poss
                     
                         Dim Map As Integer
-
                         Dim X   As Integer
-
                         Dim Y   As Integer
                         
                         Map = val(ReadField(1, Arg1, 45))
@@ -12393,7 +12396,7 @@ Private Sub HandleSummonChar(ByVal Userindex As Integer)
         Call .incomingData.CopyBuffer(buffer)
         
         ' Es Game Master?
-        If EsGm(Userindex) Then
+        If EsGM(Userindex) Then
             
             ' Obtenemos el indice del usuario a invocar.
             Dim tUser As Integer: tUser = NameIndex(UserName)
@@ -13167,7 +13170,7 @@ Private Sub HandleEnableDenounces(ByVal Userindex As Integer)
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If Not EsGm(Userindex) Then Exit Sub
+        If Not EsGM(Userindex) Then Exit Sub
         
         Dim Activado As Boolean
 
@@ -16818,7 +16821,7 @@ Public Sub HandleCreateNPC(ByVal Userindex As Integer)
         Dim Respawn As Boolean: Respawn = .incomingData.ReadBoolean()
         
         'Nos fijamos que sea GM.
-        If Not EsGm(Userindex) Then Exit Sub
+        If Not EsGM(Userindex) Then Exit Sub
         
         'Nos fijamos si es pretoriano.
         If Npclist(NpcIndex).NPCtype = eNPCType.Pretoriano Then
@@ -20173,12 +20176,12 @@ Public Sub WriteShowForumForm(ByVal Userindex As Integer)
         
         Visibilidad = eForumVisibility.ieGENERAL_MEMBER
         
-        If esCaos(Userindex) Or EsGm(Userindex) Then
+        If esCaos(Userindex) Or EsGM(Userindex) Then
             Visibilidad = Visibilidad Or eForumVisibility.ieCAOS_MEMBER
 
         End If
         
-        If esArmada(Userindex) Or EsGm(Userindex) Then
+        If esArmada(Userindex) Or EsGM(Userindex) Then
             Visibilidad = Visibilidad Or eForumVisibility.ieREAL_MEMBER
 
         End If
@@ -20186,7 +20189,7 @@ Public Sub WriteShowForumForm(ByVal Userindex As Integer)
         Call .outgoingData.WriteByte(Visibilidad)
         
         ' Pueden mandar sticky los gms o los del consejo de armada/caos
-        If EsGm(Userindex) Then
+        If EsGM(Userindex) Then
             CanMakeSticky = 2
         ElseIf (.flags.Privilegios And PlayerType.ChaosCouncil) <> 0 Then
             CanMakeSticky = 1
@@ -23750,7 +23753,7 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     Call UserList(Userindex).incomingData.ReadByte
     
     'Me fijo si es GM
-    If Not EsGm(Userindex) Then Exit Sub
+    If Not EsGM(Userindex) Then Exit Sub
     
     'Forzamos la ejecucion de la limpieza del mundo con cuenta regresiva.
     'Y de paso nos ahorramos en repetir codigo.
