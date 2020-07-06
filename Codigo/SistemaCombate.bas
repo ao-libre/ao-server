@@ -947,7 +947,7 @@ Public Sub NpcDanoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
         Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - dano
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, .MaestroUser, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL))
+        Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL))
         
         If Npclist(Victima).Stats.MinHp < 1 Then
             .Movement = .flags.OldMovement
@@ -1048,14 +1048,14 @@ Public Sub NpcAtacaNpc(ByVal Atacante As Integer, _
             If MasterIndex > 0 Then
                 Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessagePlayWave(SND_SWING, .Pos.X, .Pos.Y))
                 
-                'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
+                'Renderizo el daño en render.
+                Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             Else
                 Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessagePlayWave(SND_SWING, Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y))
                 
-                'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Victima, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
+                'Renderizo el daño en render.
+                Call SendData(SendTarget.ToNPCArea, Victima, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, 1, DAMAGE_FALLO))
                 
             End If
 
