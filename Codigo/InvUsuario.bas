@@ -1589,7 +1589,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 
                 If ObjData(ObjIndex).proyectil = 1 Then
                     If .Invent.Object(Slot).Equipped = 0 Then
-                        Call WriteConsoleMsg(Userindex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Antes de usar el arco deberias equipartelo.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If

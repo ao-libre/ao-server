@@ -1941,9 +1941,9 @@ Sub LoadSini()
     IntervaloGolpeUsar = val(Lector.GetValue("INTERVALOS", "IntervaloGolpeUsar"))
     
     '&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
-    IntervaloPuedeSerAtacado = val(Lector.GetValue("INTERVALOS", "IntervaloPuedeSerAtacado"))
-    IntervaloAtacable = val(Lector.GetValue("INTERVALOS", "IntervaloAtacable"))
-    IntervaloOwnedNpc = val(Lector.GetValue("INTERVALOS", "IntervaloOwnedNpc"))
+    IntervaloPuedeSerAtacado = val(Lector.GetValue("TIMERS", "IntervaloPuedeSerAtacado"))
+    IntervaloAtacable = val(Lector.GetValue("TIMERS", "IntervaloAtacable"))
+    IntervaloOwnedNpc = val(Lector.GetValue("TIMERS", "IntervaloOwnedNpc"))
 
     MinutosWs = val(Lector.GetValue("INTERVALOS", "IntervaloWS"))
 
