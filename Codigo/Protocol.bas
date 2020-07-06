@@ -21105,7 +21105,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal Userindex As Integer, _
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
         Else ' Borra el item
-            Call .WriteInteger(0)
+            Call .WriteLong(0)
             Call .WriteByte(0)
             Call .WriteInteger(0)
             Call .WriteInteger(0)
