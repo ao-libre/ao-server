@@ -334,15 +334,17 @@ Public Sub PasarSegundo()
         Select Case tickLimpieza
             Case 15
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 15 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
             Case 10
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 10 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
-            Case 5
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 5 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
-            Case 4, 3, 2, 1
+                
+            Case 5 To 1
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en " & tickLimpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            
             Case 0
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
                 Call BorrarObjetosLimpieza
+                
         End Select
         
     End If

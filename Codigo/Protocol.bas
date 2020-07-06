@@ -23747,7 +23747,7 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     'Me fijo si es GM
     If Not EsGm(Userindex) Then Exit Sub
     
-    Call LogGM(UserList(Userindex).Name, "forz� la limpieza del mundo.")
+    Call LogGM(UserList(Userindex).Name, "forzo la limpieza del mundo.")
     
     tickLimpieza = 16
     
