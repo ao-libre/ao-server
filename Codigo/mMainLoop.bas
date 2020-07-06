@@ -328,20 +328,23 @@ Public Sub PasarSegundo()
     Dim i As Long
     
     'Limpieza del mundo
-    If counterSV.Limpieza > 0 Then
-        counterSV.Limpieza = counterSV.Limpieza - 1
+    If tickLimpieza > 0 Then
+        tickLimpieza = tickLimpieza - 1
+                
+        Select Case tickLimpieza
+            Case 15
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 15 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            Case 10
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 10 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            Case 5
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 5 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            Case 4, 3, 2, 1
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en " & tickLimpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+            Case 0
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
+                Call BorrarObjetosLimpieza
+        End Select
         
-        If counterSV.Limpieza <= mLimpieza.CUENTA_REGRESIVA_LIMPIEZA Then
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
-        End If
-
-        If counterSV.Limpieza = 0 Then
-            Call BorrarObjetosLimpieza
-            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
-            UltimoSlotLimpieza = -1
-
-        End If
-
     End If
     
     For i = 1 To LastUser

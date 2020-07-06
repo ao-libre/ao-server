@@ -23737,7 +23737,7 @@ End Sub
 Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
 '***************************************************
 'Author: Jopi
-'Last Modification: 11/01/2020
+'Last Modification: 06/07/2020
 'Fuerza una limpieza del mundo.
 '***************************************************
     
@@ -23747,9 +23747,9 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     'Me fijo si es GM
     If Not EsGm(Userindex) Then Exit Sub
     
-    'Forzamos la ejecucion de la limpieza del mundo con cuenta regresiva.
-    'Y de paso nos ahorramos en repetir codigo.
-    counterSV.Limpieza = mLimpieza.CUENTA_REGRESIVA_LIMPIEZA
+    Call LogGM(UserList(Userindex).Name, "forz� la limpieza del mundo.")
+    
+    tickLimpieza = 16
     
 End Sub
 
