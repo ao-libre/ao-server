@@ -332,6 +332,7 @@ Public Sub PasarSegundo()
         tickLimpieza = tickLimpieza - 1
                 
         Select Case tickLimpieza
+        
             Case 15
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en 15 segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
             
