@@ -6782,6 +6782,7 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
     Dim i As Integer
 
     With UserList(Userindex)
+    
         'Remove packet ID
         Call .incomingData.ReadByte
         
@@ -6823,42 +6824,48 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
             'Start commerce....
             Call IniciarComercioNPC(Userindex)
             '[Alejo]
+        
         ElseIf .flags.TargetUser > 0 Then
 
             'User commerce...
             'Can he commerce??
-            If .flags.Privilegios And PlayerType.Consejero Then
-                Call WriteConsoleMsg(Userindex, "No puedes vender items.", FontTypeNames.FONTTYPE_WARNING)
+            
+            'Soy GM? No puedo comerciar entonces.
+            If EsGm(Userindex) Then
+                Call WriteConsoleMsg(Userindex, "Los Game Masters no pueden comerciar.", FontTypeNames.FONTTYPE_WARNING)
                 Exit Sub
-
             End If
             
+            'El PJ con el que quiero comerciar, es GM?
+            If EsGm(.flags.TargetUser) Then
+                Call WriteConsoleMsg(Userindex, "No puedes comerciar con Game Masters.", FontTypeNames.FONTTYPE_WARNING)
+                Exit Sub
+            End If
+
             'Is the other one dead??
             If UserList(.flags.TargetUser).flags.Muerto = 1 Then
                 Call WriteConsoleMsg(Userindex, "No puedes comerciar con los muertos!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
-
             End If
             
             'Is it me??
             If .flags.TargetUser = Userindex Then
                 Call WriteConsoleMsg(Userindex, "No puedes comerciar con vos mismo!!", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
-
             End If
             
             'Check distance
             If Distancia(UserList(.flags.TargetUser).Pos, .Pos) > 3 Then
                 Call WriteConsoleMsg(Userindex, "Estas demasiado lejos del usuario.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
-
             End If
             
             'Is he already trading?? is it with me or someone else??
-            If UserList(.flags.TargetUser).flags.Comerciando = True And UserList(.flags.TargetUser).ComUsu.DestUsu <> Userindex Then
+            If UserList(.flags.TargetUser).flags.Comerciando = True And _
+                UserList(.flags.TargetUser).ComUsu.DestUsu <> Userindex Then
+                
                 Call WriteConsoleMsg(Userindex, "No puedes comerciar con el usuario en este momento.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
-
             End If
             
             'Initialize some variables...
@@ -6877,6 +6884,7 @@ Private Sub HandleCommerceStart(ByVal Userindex As Integer)
             
             'Rutina para comerciar con otro usuario
             Call IniciarComercioConUsuario(Userindex, .flags.TargetUser)
+       
         Else
             Call WriteConsoleMsg(Userindex, "Primero haz click izquierdo sobre el personaje.", FontTypeNames.FONTTYPE_INFO)
 
