@@ -12057,7 +12057,7 @@ Private Sub HandleKick(ByVal Userindex As Integer)
                     
                 Else
                     
-                    'Tengo mas jerarquia que mi target?
+                    'Tengo mayor o igual jerarquia que mi objetivo?
                     If CompararPrivilegios(tUser, Userindex) = -1 Or _
                         CompararPrivilegios(tUser, Userindex) = 0 Then
                         
