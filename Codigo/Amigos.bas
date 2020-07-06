@@ -306,7 +306,7 @@ Public Sub HandleMsgAmigo(ByVal Userindex As Integer)
 
         For i = 1 To MAXAMIGOS
 
-            If .Amigos(i).index > 0 Then
+            If .Amigos(i).index > 0 And .Amigos(i).index <> Userindex Then
                 Call WriteConsoleMsg(.Amigos(i).index, "FMSG[" & .Name & "]: " & Mensaje, FontTypeNames.FONTTYPE_GM)
             End If
 

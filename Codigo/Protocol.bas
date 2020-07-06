@@ -23912,7 +23912,7 @@ Public Sub WriteCargarListaDeAmigos(ByVal Userindex As Integer, ByVal Slot As By
 
     With UserList(Userindex).outgoingData
         
-                Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
+        Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
         Call .WriteByte(Slot)
         Call .WriteASCIIString(UserList(Userindex).Amigos(Slot).Nombre)
 

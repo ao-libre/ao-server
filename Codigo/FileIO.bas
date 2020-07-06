@@ -1390,10 +1390,8 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         If UserFile.KeyExists("AMIGOS") Then
 
             For LoopC = 1 To MAXAMIGOS
-                                    
                 .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "NOMBRE" & LoopC)
                 .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
-                                    
             Next LoopC
 
         Else ' Si no existe AMIGOS entonces se crean:
@@ -2183,8 +2181,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
     
         For LoopC = 1 To MAXAMIGOS
-        Call Manager.ChangeValue("AMIGOS", "Nombre" & LoopC, .Amigos(LoopC).Nombre)
-        Call Manager.ChangeValue("AMIGOS", "IGNORADO" & LoopC, CStr(.Amigos(LoopC).Ignorado))
+            Call Manager.ChangeValue("AMIGOS", "Nombre" & LoopC, .Amigos(LoopC).Nombre)
+            Call Manager.ChangeValue("AMIGOS", "IGNORADO" & LoopC, CStr(.Amigos(LoopC).Ignorado))
         Next LoopC
 
         Call Manager.ChangeValue("COUNTERS", "Pena", CLng(.Counters.Pena))
