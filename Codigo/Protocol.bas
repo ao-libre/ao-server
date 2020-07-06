@@ -12017,9 +12017,8 @@ Private Sub HandleKick(ByVal Userindex As Integer)
     '07/06/2010: ZaMa - Ahora no se puede usar para saber si hay dioses/admins online.
     '***************************************************
     If UserList(Userindex).incomingData.Length < 3 Then
-        Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+        Call Err.Raise(UserList(Userindex).incomingData.NotEnoughDataErrCode)
         Exit Sub
-
     End If
     
     On Error GoTo ErrHandler
@@ -12029,53 +12028,56 @@ Private Sub HandleKick(ByVal Userindex As Integer)
         'This packet contains strings, make a copy of the data to prevent losses if it's not complete yet...
         Dim buffer As clsByteQueue
         Set buffer = New clsByteQueue
-
         Call buffer.CopyBuffer(.incomingData)
         
         'Remove packet ID
         Call buffer.ReadByte
         
         Dim UserName As String
-
         Dim tUser    As Integer
-
         Dim rank     As Integer
 
-        Dim IsAdmin  As Boolean
-        
-        rank = PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios Or PlayerType.Consejero
-        
         UserName = buffer.ReadASCIIString()
-        IsAdmin = (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios)) <> 0
-        
-        If (.flags.Privilegios And PlayerType.SemiDios) Or IsAdmin Then
-            tUser = NameIndex(UserName)
-            
-            If tUser <= 0 Then
-                If Not (EsDios(UserName) Or EsAdmin(UserName)) Or IsAdmin Then
-                    Call WriteConsoleMsg(Userindex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
-                Else
-                    Call WriteConsoleMsg(Userindex, "No puedes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
-
-                End If
-
-            Else
-
-                If (UserList(tUser).flags.Privilegios And rank) > (.flags.Privilegios And rank) Then
-                    Call WriteConsoleMsg(Userindex, "No puedes echar a alguien con jerarquia mayor a la tuya.", FontTypeNames.FONTTYPE_INFO)
-                Else
-                    Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
-                    Call CloseSocket(tUser)
-                    Call LogGM(.Name, "Echo a " & UserName)
-
-                End If
-
-            End If
-
-        End If
         
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
+
+        'Soy Admin, Dios o Semi-Dios?
+        If (.flags.Privilegios And (PlayerType.Admin Or PlayerType.Dios Or PlayerType.SemiDios)) Then
+            
+            tUser = NameIndex(UserName)
+            
+            'El que quiero echar... no soy yo, no?
+            If Userindex <> tUser Then
+              
+                'Esta offline?
+                If tUser <= 0 Then
+                    
+                    Call WriteConsoleMsg(Userindex, "El usuario no esta online.", FontTypeNames.FONTTYPE_INFO)
+                    
+                Else
+                    
+                    'Tengo mas jerarquia que mi target?
+                    If CompararPrivilegios(tUser, Userindex) = -1 Or _
+                        CompararPrivilegios(tUser, Userindex) = 0 Then
+                        
+                        Call WriteConsoleMsg(Userindex, "No puedes echar a alguien con jerarquia mayor o igual a la tuya.", FontTypeNames.FONTTYPE_INFO)
+                    
+                    Else
+                        
+                        Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg(.Name & " echo a " & UserName & ".", FontTypeNames.FONTTYPE_INFO))
+                        
+                        Call CloseSocket(tUser)
+                        
+                        Call LogGM(.Name, "Echo a " & UserName)
+    
+                    End If
+    
+                End If
+            
+            End If
+            
+        End If
 
     End With
 
