@@ -1981,12 +1981,11 @@ Sub CloseUser(ByVal Userindex As Integer)
         .Counters.Saliendo = False
     
         'Le devolvemos el body y head originales
-        If .flags.AdminInvisible = 1 Then
-            .Char.body = .flags.OldBody
-            .Char.Head = .flags.OldHead
-            .flags.AdminInvisible = 0
-
-        End If
+        'If .flags.AdminInvisible = 1 Then
+        '    .Char.body = .flags.OldBody
+        '    .Char.Head = .flags.OldHead
+        .flags.AdminInvisible = 0
+        'End If
     
         'Actualizamos los index de los amigos
         Call ObtenerIndexAmigos(Userindex, True)
