@@ -15174,10 +15174,11 @@ Private Sub HandleTileBlockedToggle(ByVal Userindex As Integer)
     '
     '***************************************************
     With UserList(Userindex)
+    
         'Remove packet ID
         Call .incomingData.ReadByte
         
-        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero Or PlayerType.SemiDios) Then Exit Sub
+        If .flags.Privilegios And (PlayerType.User Or PlayerType.Consejero) Then Exit Sub
 
         Call LogGM(.Name, "/BLOQ")
         
