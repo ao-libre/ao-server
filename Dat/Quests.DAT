@@ -1,7 +1,6 @@
 [INIT]
 NumQuests=10
 
-
 [QUEST1]
 Nombre=Bichos Molestos
 Desc=Se han reportado una plaga de molestos murcielagos en todo el territorio. Por favor mata 10 murcielagos
@@ -54,7 +53,7 @@ RequiredLevel=15
  
 RequiredNPCs=2
 RequiredNPC1=502-10
-RequiredNPC1=503-10
+RequiredNPC2=503-10
 
 RewardEXP=4500
 RewardGLD=3000
@@ -128,7 +127,7 @@ RewardGLD=100000
  
 RewardOBJs=2
 RewardOBJ1=402-50
-RewardOBJ3=540-1
+RewardOBJ2=540-1
 
 [QUEST9]
 Nombre=Soy un fumado loco
@@ -145,24 +144,22 @@ RewardGLD=100000
  
 RewardOBJs=2
 RewardOBJ1=1138-1
-RewardOBJ1=705-1
+RewardOBJ2=705-1
 
 [QUEST10]
 Nombre=Al fin alguien me encontro
 Desc=Tengo un gran premio de Argentum para darte si me complaces.
 RequiredLevel=25
 
-RequiredNPCs=3
+RequiredNPCs=4
 RequiredNPC1=510-2000
 RequiredNPC2=518-5
 RequiredNPC3=542-2
-RequiredNPC3=552-2
+RequiredNPC4=552-2
 
 RewardEXP=50000
 RewardGLD=500000
  
 RewardOBJs=2
 RewardOBJ1=1138-1
-RewardOBJ1=1134-1
-
-
+RewardOBJ2=1134-1
