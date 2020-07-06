@@ -331,8 +331,10 @@ Public Sub PasarSegundo()
     If counterSV.Limpieza > 0 Then
         counterSV.Limpieza = counterSV.Limpieza - 1
         
-        If counterSV.Limpieza < 6 Then Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
-        
+        If counterSV.Limpieza <= mLimpieza.CUENTA_REGRESIVA_LIMPIEZA Then
+            Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo en " & counterSV.Limpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
+        End If
+
         If counterSV.Limpieza = 0 Then
             Call BorrarObjetosLimpieza
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))

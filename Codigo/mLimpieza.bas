@@ -5,6 +5,8 @@ Option Explicit
 
 Const MAXITEMS                  As Integer = 1000
 
+Public Const CUENTA_REGRESIVA_LIMPIEZA As Byte = 15
+
 Private ArrayLimpieza(MAXITEMS) As WorldPos
 
 '//Desde aca establecemos el ultimo slot que se uso

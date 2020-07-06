@@ -23749,7 +23749,7 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     
     'Forzamos la ejecucion de la limpieza del mundo con cuenta regresiva.
     'Y de paso nos ahorramos en repetir codigo.
-    counterSV.Limpieza = 6
+    counterSV.Limpieza = mLimpieza.CUENTA_REGRESIVA_LIMPIEZA
     
 End Sub
 
