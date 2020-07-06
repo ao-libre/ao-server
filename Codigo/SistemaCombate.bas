@@ -947,7 +947,7 @@ Public Sub NpcDanoNpc(ByVal Atacante As Integer, ByVal Victima As Integer)
         Npclist(Victima).Stats.MinHp = Npclist(Victima).Stats.MinHp - dano
         
         'Renderizo el dano en render.
-        Call SendData(SendTarget.ToPCArea, .MaestroUser, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL))
+        Call SendData(SendTarget.ToNPCArea, Atacante, PrepareMessageCreateDamage(Npclist(Victima).Pos.X, Npclist(Victima).Pos.Y, dano, DAMAGE_NORMAL))
         
         If Npclist(Victima).Stats.MinHp < 1 Then
             .Movement = .flags.OldMovement
