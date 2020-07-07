@@ -3056,7 +3056,7 @@ Sub SendUserStatsTxtCharfile(ByVal sendIndex As Integer, ByVal Nombre As String)
 
 End Sub
 
-Public Function ReloadNPCIndexByFile(ByVal NpcIndex As Integer)
+Public Sub ReloadNPCByIndex(ByVal NpcIndex As Integer)
     
     On Error GoTo ErrHandler
 
@@ -3195,9 +3195,9 @@ Public Function ReloadNPCIndexByFile(ByVal NpcIndex As Integer)
 
     End With
     
-    Exit Function
+    Exit Sub
     
 ErrHandler:
-    Call LogError("Error en ReloadNPCIndexByFile en " & Erl & ". Err: " & Err.Number & " " & Err.description)
+    Call LogError("Error en ReloadNPCIndexByFile - Err: " & Err.Number & " " & Err.description)
     
-End Function
+End Sub
