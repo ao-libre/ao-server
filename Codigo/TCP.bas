@@ -1981,12 +1981,11 @@ Sub CloseUser(ByVal Userindex As Integer)
         .Counters.Saliendo = False
     
         'Le devolvemos el body y head originales
-        If .flags.AdminInvisible = 1 Then
-            .Char.body = .flags.OldBody
-            .Char.Head = .flags.OldHead
-            .flags.AdminInvisible = 0
-
-        End If
+        'If .flags.AdminInvisible = 1 Then
+        '    .Char.body = .flags.OldBody
+        '    .Char.Head = .flags.OldHead
+        .flags.AdminInvisible = 0
+        'End If
     
         'Actualizamos los index de los amigos
         Call ObtenerIndexAmigos(Userindex, True)
@@ -2138,17 +2137,14 @@ End Function
 
 Public Sub ResetUserExtras(ByVal Userindex As Integer)
 
-  Dim i As Integer
-  For i = 1 To MAXAMIGOS
+    Dim i As Long
+    
+    For i = 1 To MAXAMIGOS
+        UserList(Userindex).Amigos(i).Nombre = vbNullString
+        UserList(Userindex).Amigos(i).Ignorado = 0
+        UserList(Userindex).Amigos(i).index = 0
+    Next i
 
-  UserList(Userindex).Amigos(i).Nombre = vbNullString
-
-  UserList(Userindex).Amigos(i).Ignorado = 0
-
-  UserList(Userindex).Amigos(i).index = 0
-
-  Next i
-
-UserList(Userindex).Quien = vbNullString
+    UserList(Userindex).Quien = vbNullString
 
 End Sub
