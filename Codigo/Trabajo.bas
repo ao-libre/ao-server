@@ -231,7 +231,9 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         
             ' No esta muerto
             If .flags.Muerto = 0 Then
-                .Char.Head = .OrigChar.Head
+                If .flags.Mimetizado = 0 Then
+                    .Char.Head = .OrigChar.Head
+                End If
                 
                 Call SetEquipmentOnCharAfterNavigateOrEquitate(Userindex)
                 
@@ -1984,7 +1986,7 @@ Public Sub DoPescarRed(ByVal Userindex As Integer)
                 Call WriteConsoleMsg(Userindex, "Has pescado algunos peces!", FontTypeNames.FONTTYPE_INFO)
                 
                 'Renderizo el dano en render.
-                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))                                                                                 
+                Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessageCreateDamage(.Pos.X, .Pos.Y, MiObj.Amount, DAMAGE_TRABAJO))
                 
                 Call SubirSkill(Userindex, eSkill.pesca, True)
             Else
@@ -3219,7 +3221,7 @@ Public Sub DoEquita(ByVal Userindex As Integer, _
                 Call WriteEquitandoToggle(Userindex)
 
                 'Mostramos solo el casco de los items equipados por que los demas items quedan mal en el render, solo es un tema visual (Recox)
-                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, .Char.CascoAnim) 
+                Call ChangeUserChar(Userindex, .Char.body, .Char.Head, .Char.heading, NingunArma, NingunEscudo, .Char.CascoAnim)
             Else
                 Call WriteConsoleMsg(Userindex, "Debe esperar " & .Counters.MonturaCounter & " segundos para volver a usar tu montura", FontTypeNames.FONTTYPE_INFO)
             End If
@@ -3289,12 +3291,13 @@ End Sub
 Private Sub SetEquipmentOnCharAfterNavigateOrEquitate(ByVal Userindex As Integer)
 
     With UserList(Userindex)
-
-        If .Invent.ArmourEqpObjIndex > 0 Then
-            .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
-        Else
-            Call DarCuerpoDesnudo(Userindex)
-
+        
+        If .flags.Mimetizado = 0 Then
+            If .Invent.ArmourEqpObjIndex > 0 Then
+                .Char.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
+            Else
+                Call DarCuerpoDesnudo(Userindex)
+            End If
         End If
         
         If .Invent.EscudoEqpObjIndex > 0 Then .Char.ShieldAnim = ObjData(.Invent.EscudoEqpObjIndex).ShieldAnim

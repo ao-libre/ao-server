@@ -1820,9 +1820,18 @@ Sub HechizoEstadoNPC(ByVal NpcIndex As Integer, _
             
             If .Clase = eClass.Druid Then
                 'copio el char original al mimetizado
-            
-                .CharMimetizado.body = .Char.body
-                .CharMimetizado.Head = .Char.Head
+                If .Invent.ArmourEqpObjIndex <> 0 Then
+                    .CharMimetizado.body = ObjData(.Invent.ArmourEqpObjIndex).Ropaje
+                Else
+                    .CharMimetizado.body = DarCuerpoDesnudo(Userindex, True) '.Char.body
+                End If
+                
+                If .flags.Navegando <> 0 Then
+                    .CharMimetizado.Head = .OrigChar.Head
+                Else
+                    .CharMimetizado.Head = .Char.Head
+                    .CharMimetizado.body = .Char.body
+                End If
                 .CharMimetizado.CascoAnim = .Char.CascoAnim
                 .CharMimetizado.ShieldAnim = .Char.ShieldAnim
                 .CharMimetizado.WeaponAnim = .Char.WeaponAnim

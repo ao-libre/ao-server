@@ -21107,7 +21107,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal Userindex As Integer, _
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
         Else ' Borra el item
-            Call .WriteInteger(0)
+            Call .WriteLong(0)
             Call .WriteByte(0)
             Call .WriteInteger(0)
             Call .WriteInteger(0)
@@ -23913,7 +23913,7 @@ Public Sub WriteCargarListaDeAmigos(ByVal Userindex As Integer, ByVal Slot As By
 
     With UserList(Userindex).outgoingData
         
-                Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
+        Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
         Call .WriteByte(Slot)
         Call .WriteASCIIString(UserList(Userindex).Amigos(Slot).Nombre)
 
