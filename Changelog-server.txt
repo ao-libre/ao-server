@@ -1037,5 +1037,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 07/07/2020: El NPC atacante puede no tener asignado un MaestroUser y causa que crashee si intentamos enviarle a éste) (Ruthnar)
 * 07/07/2020: Cambio el mensaje de equipar herramienta por equipar arco (Recox)
 * 07/07/2020: Cambios en mapas (ReyarB)
+* 06/07/2020: Ahora el servidor envia los intervalos de Invisibilidad y dopas (Cuicui)
   
 ---
