@@ -198,7 +198,7 @@ Public Sub InicializarNuevoClan(ByRef Fundador As String)
     
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "GuildName", p_GuildName)
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Founder", Fundador)
-    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date$)
+    Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Date", Date)
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Antifaccion", "0")
     Call WriteVar(GUILDINFOFILE, "GUILD" & NewQ, "Alineacion", Alineacion2String(p_Alineacion))
 
@@ -724,8 +724,8 @@ Public Function RevisarElecciones() As Boolean
     RevisarElecciones = False
     Temps = Trim$(GetVar(GUILDINFOFILE, "GUILD" & p_GuildNumber, "EleccionesFinalizan"))
     
-    If Temps = vbNullString Then Exit Function
-    
+    If LenB(Temps) = 0 Then Exit Function
+
     If IsDate(Temps) Then
         FechaSufragio = CDate(Temps)
 
@@ -1051,3 +1051,4 @@ Private Sub ReplaceInvalidChars(ByRef S As String)
     End If
 
 End Sub
+ 

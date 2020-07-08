@@ -828,7 +828,7 @@ Public Function GrabarMapa(ByVal MapFile As String, ByVal Map As Integer)
     End With
     
     '***************************************************
-    'Aca se escribe la información al archivo ".csm"
+    'Aca se escribe la informaciï¿½n al archivo ".csm"
     '***************************************************
     
     'Si existe, lo borramos.
@@ -1519,10 +1519,8 @@ Sub LoadUserInit(ByVal Userindex As Integer, ByRef UserFile As clsIniManager)
         If UserFile.KeyExists("AMIGOS") Then
 
             For LoopC = 1 To MAXAMIGOS
-                                    
                 .Amigos(LoopC).Nombre = UserFile.GetValue("AMIGOS", "NOMBRE" & LoopC)
                 .Amigos(LoopC).Ignorado = CByte(UserFile.GetValue("AMIGOS", "IGNORADO" & LoopC))
-                                    
             Next LoopC
 
         Else ' Si no existe AMIGOS entonces se crean:
@@ -2094,9 +2092,9 @@ Sub LoadSini()
     IntervaloGolpeUsar = val(Lector.GetValue("INTERVALOS", "IntervaloGolpeUsar"))
     
     '&&&&&&&&&&&&&&&&&&&&& TIMERS &&&&&&&&&&&&&&&&&&&&&&&
-    IntervaloPuedeSerAtacado = val(Lector.GetValue("INTERVALOS", "IntervaloPuedeSerAtacado"))
-    IntervaloAtacable = val(Lector.GetValue("INTERVALOS", "IntervaloAtacable"))
-    IntervaloOwnedNpc = val(Lector.GetValue("INTERVALOS", "IntervaloOwnedNpc"))
+    IntervaloPuedeSerAtacado = val(Lector.GetValue("TIMERS", "IntervaloPuedeSerAtacado"))
+    IntervaloAtacable = val(Lector.GetValue("TIMERS", "IntervaloAtacable"))
+    IntervaloOwnedNpc = val(Lector.GetValue("TIMERS", "IntervaloOwnedNpc"))
 
     MinutosWs = val(Lector.GetValue("INTERVALOS", "IntervaloWS"))
 
@@ -2334,8 +2332,8 @@ Sub SaveUserToCharfile(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline
         Call Manager.ChangeValue("CONSEJO", "PERTENECECAOS", IIf(.flags.Privilegios And PlayerType.ChaosCouncil, "1", "0"))
     
         For LoopC = 1 To MAXAMIGOS
-        Call Manager.ChangeValue("AMIGOS", "Nombre" & LoopC, .Amigos(LoopC).Nombre)
-        Call Manager.ChangeValue("AMIGOS", "IGNORADO" & LoopC, CStr(.Amigos(LoopC).Ignorado))
+            Call Manager.ChangeValue("AMIGOS", "Nombre" & LoopC, .Amigos(LoopC).Nombre)
+            Call Manager.ChangeValue("AMIGOS", "IGNORADO" & LoopC, CStr(.Amigos(LoopC).Ignorado))
         Next LoopC
 
         Call Manager.ChangeValue("COUNTERS", "Pena", CLng(.Counters.Pena))

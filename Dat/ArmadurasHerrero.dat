@@ -2,34 +2,34 @@
 NumArmaduras=70
 
 
-[Armadura1] ' Casco de hierro
+[Armadura1] ' Casco de Hierro
 Index=132
 
-[Armadura2] ' Casco de hierro completo
+[Armadura2] ' Casco de Hierro Completo
 Index=131
 
-[Armadura3] ' Casco de plata
+[Armadura3] ' Casco de Plata
 Index=405
 
-[Armadura4] ' Escudo de tortuga
+[Armadura4] ' Escudo de Tortuga
 Index=404
 
-[Armadura5] ' Escudo de hierro
+[Armadura5] ' Escudo de Hierro
 Index=128
 
-[Armadura6] ' Escudo de plata
+[Armadura6] ' Escudo de Plata
 Index=130
 
 [Armadura7] ' Escudo Real
 Index=1038
 
-[Armadura8] ' Escudo imperial
+[Armadura8] ' Escudo Imperial
 Index=133
 
 [Armadura9] ' Escudo Legionario
 Index=1037
 
-[Armadura10] ' Escudo infernal
+[Armadura10] ' Escudo Infernal
 Index=708
 
 [Armadura11] ' Manto de Noble
@@ -50,22 +50,22 @@ Index=975
 [Armadura16] ' Armadura de Campeón
 Index=903
 
-[Armadura17] ' Armadura placas
+[Armadura17] ' Armadura de Placas
 Index=195
 
-[Armadura18] ' Armadura placas + 1
+[Armadura18] ' Armadura de Placas + 1
 Index=390
 
-[Armadura19] ' Armadura placas + 2
+[Armadura19] ' Armadura de Placas + 2
 Index=391
 
-[Armadura20] ' Armadura placas enanos
+[Armadura20] ' Armadura de Placas (E/G)
 Index=243
 
-[Armadura21] ' Armadura placas enanos + 1
+[Armadura21] ' Armadura de Placas + 1 (E/G)
 Index=392
 
-[Armadura22] ' Armadura placas enanos + 2
+[Armadura22] ' Armadura de Placas + 2 (E/G)
 Index=393
 
 [Armadura23] ' Armadura de Placas Rojas
@@ -98,13 +98,13 @@ Index=500
 [Armadura32] ' Armadura Pesada de Hierro y Bronce (E/G)
 Index=976
 
-[Armadura33] ' Cienaga
+[Armadura33] ' Ciénaga
 Index=496
 
 [Armadura34] ' Escarlata
 Index=495
 
-[Armadura35] ' Dama de las tinieblas
+[Armadura35] ' Dama de las Tinieblas
 Index=487
 
 [Armadura36] ' Armadura Legendaria
@@ -125,7 +125,7 @@ Index=906
 [Armadura41] ' Anillo Mágico
 Index=697
 
-[Armadura42] ' Anillo de resistencia Mágica
+[Armadura42] ' Anillo de Resistencia Mágica
 Index=698
 
 [Armadura43] ' Anillo de Disolución Mágica
@@ -179,40 +179,35 @@ Index=635
 [Armadura59] ' Armadura Lóbrega (E/G)
 Index=685
 
-[Armadura60] ' Armadura de Minusculo Pandemonium (E/G)
+[Armadura60] ' Armadura de Minúsculo Pandemonium (E/G)
 Index=695
 
 [Armadura61] ' Armadura Infame
 Index=701
 
-[Armadura62] ' Ropaje Sombrio
+[Armadura62] ' Ropaje Sombrío
 Index=1132
 
-[Armadura63] ' Escudo oscuro
+[Armadura63] ' Escudo Oscuro
 Index=1133
 
 [Armadura64] ' Manto Alado
 Index=1136
 
-[Armadura65] ' Casco de plata completo
-Index=1138
+[Armadura65] ' Casco de Plata Completo
+Index=1141
 
-
-[Armadura66] ' Gorro de navidad
-Index=1142
-
+[Armadura66] ' Gorro de Navidad
+Index=1143
 
 [Armadura67] ' Corona de Rey
-Index=1145
+Index=1146
 
+[Armadura68] ' Casco Kuia
+Index=1150
 
-[Armadura68] ' Vara del nigromante
-Index=1147
+[Armadura69] ' Coraza del Mal
+Index=1153
 
-
-[Armadura69] ' Casco Kuia
-Index=1149
-
-
-[Armadura70] ' Coraza del mal
-Index=1152
+[Armadura70] ' Armadura Omnineo (E/G)
+Index=1137

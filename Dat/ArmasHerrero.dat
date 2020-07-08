@@ -1,5 +1,5 @@
 [INIT]
-NumArmas=28
+NumArmas=29
 
 [Arma1] ' Daga
 Index=15
@@ -80,7 +80,10 @@ Index=198
 Index=127
 
 [Arma27] ' Espada Argentum
-Index=1137
+Index=1138
 
 [Arma28] ' Daga +5
-Index=1154
+Index=1158
+
+[Arma29] ' Vara del Nigromante
+Index=1148

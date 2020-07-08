@@ -466,6 +466,14 @@ Sub DropObj(ByVal Userindex As Integer, _
                 Call WriteConsoleMsg(Userindex, "No podes tirar tu montura mientras la estas usando.", FontTypeNames.FONTTYPE_INFO)
                 Exit Sub
             End If
+
+            'Validacion para que no podamos tirar nuestra mochila mientras la usamos.
+            If .Invent.MochilaEqpSlot > 0 Then
+                If .Invent.MochilaEqpSlot = Slot Then
+                    Call WriteConsoleMsg(Userindex, "No puedes tirar tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Exit Sub
+                End If
+            End If
         
             DropObj.ObjIndex = .Invent.Object(Slot).ObjIndex
         
@@ -578,14 +586,72 @@ Sub MakeObj(ByRef obj As obj, _
 
             End If
             
+            'Validamos que sea un objeto valido para borrar del mapa
+            Dim IsNotObjFogata As Boolean
+            Dim IsNotObjTeleport As Boolean
+            Dim IsNotFragua As Boolean
+            Dim IsNotYacimientoPez As Boolean
+            Dim IsNotYacimiento As Boolean
+            Dim IsNotMueble As Boolean
+            Dim IsNotArbolElfico As Boolean
+            Dim IsNotArbol As Boolean
+            Dim IsNotCartel As Boolean
+            Dim IsNotBarco As Boolean
+            Dim IsNotMontura As Boolean
+            Dim IsNotYunque As Boolean
+            Dim IsNotManual As Boolean
+            Dim IsNotForo As Boolean
+            Dim IsNotPuerta As Boolean
+            Dim IsNotInstrumentos As Boolean
+            Dim IsNotPergaminos As Boolean
+            Dim IsNotGemas As Boolean
+            Dim IsNotMochilas As Boolean
+            Dim IsValidObjectToClean As Boolean
+
+            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
+            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport 
+            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua 
+            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez 
+            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento 
+            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles 
+            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico 
+            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles 
+            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles 
+            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos 
+            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas 
+            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque 
+            IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales 
+            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos 
+            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas 
+            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos 
+            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos 
+            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas 
+            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas 
+            
+
+            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then 
+                IsValidObjectToClean = True
+            Else
+                IsValidObjectToClean = False
+            End If
+
             '//Agregamos las pos de los objetos
-            If ObjData(obj.ObjIndex).OBJType <> otFogata And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
+            If IsValidObjectToClean And ItemNoEsDeMapa(ObjData(obj.ObjIndex).OBJType) Then
                 Dim xPos As WorldPos
 
                 xPos.Map = Map
                 xPos.X = X
                 xPos.Y = Y
-                If (MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA Or MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO) And MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1 Then AgregarObjetoLimpieza xPos
+
+                Dim IsNotTileCasaTrigger As Boolean
+                Dim IsNotTileBajoTecho As Boolean
+                Dim IsNotTileBlocked As Boolean
+
+                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA 
+                IsNotTileBajoTecho = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO
+                IsNotTileBlocked = MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1
+
+                If (IsNotTileCasaTrigger Or IsNotTileBajoTecho) And IsNotTileBlocked Then AgregarObjetoLimpieza xPos
 
             End If
 
@@ -1523,7 +1589,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 
                 If ObjData(ObjIndex).proyectil = 1 Then
                     If .Invent.Object(Slot).Equipped = 0 Then
-                        Call WriteConsoleMsg(Userindex, "Antes de usar la herramienta deberias equipartela.", FontTypeNames.FONTTYPE_INFO)
+                        Call WriteConsoleMsg(Userindex, "Antes de usar el arco deberias equipartelo.", FontTypeNames.FONTTYPE_INFO)
                         Exit Sub
 
                     End If

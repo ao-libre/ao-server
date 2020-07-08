@@ -3675,6 +3675,9 @@ Private Sub HandleWorkLeftClick(ByVal Userindex As Integer)
 
                     End If
 
+                    'Fix Sonido by Fakkerz 24/05/2020
+                    Call SendData(SendTarget.ToPCArea, Userindex, PrepareMessagePlayWave(SND_MINERO, .Pos.X, .Pos.Y))
+
                 Else
                     Call WriteConsoleMsg(Userindex, "Ahi no hay ningUn yacimiento.", FontTypeNames.FONTTYPE_INFO)
 
@@ -4711,7 +4714,7 @@ Private Sub HandleUserCommerceOffer(ByVal Userindex As Integer)
 
             If .Invent.MochilaEqpSlot > 0 Then
                 If .Invent.MochilaEqpSlot = Slot Then
-                    Call WriteCommerceChat(Userindex, "No puedes vender tu mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
+                    Call WriteCommerceChat(Userindex, "No puedes vender tu alforja o mochila mientras la estes usando.", FontTypeNames.FONTTYPE_TALK)
                     Exit Sub
 
                 End If
@@ -6010,37 +6013,61 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
-    'Last Modification: 14/07/19 (Recox)
-    'Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista (Recox)
+    'Last Modification: 03/07/2020 (Jopi)
+    '14/07/19 (Recox) - Ahora se muestra una lista de nombres de jugadores online, se suman los gms tambien a la lista.
+    '03/07/2020 (Jopi) - Usamos la clase cStringBuilder para generar la lista de usuarios online.
+    '03/07/2020 (Jopi) - Mostramos quienes son trabajadores y cuantos estan online.
     '***************************************************
-    Dim i     As Long
+    
+    ' Generador de strings
+    Dim SB As cStringBuilder
+    Set SB = New cStringBuilder
 
+    ' Contadores
+    Dim i     As Long
     Dim Count As Long
+    Dim CountTrabajadores As Long
     
     With UserList(Userindex)
+        
         'Remove packet ID
         Call .incomingData.ReadByte
-
-        Dim UsersNamesOnlines As String
-
+        
+        ' Recorremos la lista de usuarios online.
         For i = 1 To LastUser
 
             If LenB(UserList(i).Name) <> 0 Then
-
-                If i = LastUser Then
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name
-                Else
-                    UsersNamesOnlines = UsersNamesOnlines + UserList(i).Name + ", "
+                
+                ' Agregamos el nombre al final del string.
+                Call SB.Append(UserList(i).Name)
+                
+                ' Si es trabajador...
+                If UserList(i).Clase = eClass.Worker Then
+                    ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
+                    CountTrabajadores = CountTrabajadores + 1
+                    
+                    ' Agregamos un sufijo que indique que es un trabajador.
+                    Call SB.Append(" [T]")
                 End If
                 
+                ' Si no terminamos de recorrer la lista, agregamos el separador.
+                If i <> LastUser Then
+                    Call SB.Append(", ")
+                End If
+                
+                ' Incrementa en 1 el contador de jugadores online TOTALES
                 Count = Count + 1
+
             End If
 
         Next i
         
-        Call WriteConsoleMsg(Userindex, UsersNamesOnlines, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(Userindex, "Numero de usuarios: " & CStr(Count), FontTypeNames.FONTTYPE_INFOBOLD)
-
+        Call WriteConsoleMsg(Userindex, SB.toString, FontTypeNames.FONTTYPE_INFO)
+        Call WriteConsoleMsg(Userindex, "Usuarios en linea: " & CStr(Count) & " (" & CStr(CountTrabajadores) & " trabajando)", FontTypeNames.FONTTYPE_INFOBOLD)
+        
+        ' Liberamos los recursos del generador de strings
+        Set SB = Nothing
+        
     End With
 
     Call WriteConsoleServerUpTimeMsg(Userindex)
@@ -17729,9 +17756,8 @@ Public Sub WriteLoggedMessage(ByVal Userindex As Integer)
 
     With UserList(Userindex)
         Call .outgoingData.WriteByte(ServerPacketID.Logged)
-    
         Call .outgoingData.WriteByte(.Clase)
-
+        Call .outgoingData.WriteLong(IntervaloInvisible)
     End With
 
     Exit Sub
@@ -18274,6 +18300,7 @@ Public Sub WriteUpdateStrenghtAndDexterity(ByVal Userindex As Integer)
         Call .WriteByte(ServerPacketID.UpdateStrenghtAndDexterity)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Fuerza))
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Agilidad))
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
 
     End With
 
@@ -18306,6 +18333,7 @@ Public Sub WriteUpdateDexterity(ByVal Userindex As Integer)
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.UpdateDexterity)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Agilidad))
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
 
     End With
 
@@ -18338,7 +18366,8 @@ Public Sub WriteUpdateStrenght(ByVal Userindex As Integer)
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.UpdateStrenght)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Fuerza))
-
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
+        
     End With
 
     Exit Sub
@@ -20198,7 +20227,7 @@ Public Sub WriteSetInvisible(ByVal Userindex As Integer, _
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible, IIf(invisible, (IntervaloInvisible - UserList(Userindex).Counters.Invisibilidad), 0)))
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible))
     
     Exit Sub
 
@@ -21078,7 +21107,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal Userindex As Integer, _
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
         Else ' Borra el item
-            Call .WriteInteger(0)
+            Call .WriteLong(0)
             Call .WriteByte(0)
             Call .WriteInteger(0)
             Call .WriteInteger(0)
@@ -21515,7 +21544,7 @@ End Sub
 ' @remarks  The message is written to no outgoing buffer, but only prepared in a single string to be easily sent to several clients.
 
 Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
-                                           ByVal invisible As Boolean, Optional ByVal timeRemaining As Integer = 0) As String
+                                           ByVal invisible As Boolean) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -21527,7 +21556,6 @@ Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
         
         Call .WriteInteger(CharIndex)
         Call .WriteBoolean(invisible)
-        Call .WriteInteger(timeRemaining)
         
         PrepareMessageSetInvisible = .ReadASCIIStringFixed(.Length)
 
@@ -23677,7 +23705,7 @@ Private Sub HandleDiscord(ByVal Userindex As Integer)
             'Si no tienen interes en usarlo pueden desactivarlo en el Server.ini
             If ConexionAPI Then
                 
-                                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
+                Call ApiEndpointSendCustomCharacterMessageDiscord(Chat, .Name, .Desc)
                 Call WriteConsoleMsg(Userindex, "Link Discord: https://discord.gg/xbAuHcf - El bot de Discord recibio y envio lo siguiente: " & Chat, FontTypeNames.FONTTYPE_INFOBOLD)
 
             Else
@@ -23885,7 +23913,7 @@ Public Sub WriteCargarListaDeAmigos(ByVal Userindex As Integer, ByVal Slot As By
 
     With UserList(Userindex).outgoingData
         
-                Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
+        Call .WriteByte(ServerPacketID.EnviarListDeAmigos)
         Call .WriteByte(Slot)
         Call .WriteASCIIString(UserList(Userindex).Amigos(Slot).Nombre)
 

@@ -37,6 +37,9 @@
 ' 33: botellas vacias
 ' 34: botellas llenas
 ' 35: Manuales
+' 36: Arbol Elfico
+' 37: Mochilas
+' 38: Yacimiento Pez
 
 
 ##############################################
@@ -68,7 +71,7 @@ usar primero los nros mas bajos.
 [INIT]
 'aca va el numero de OBJ mas alto, NO la cantidad de OBJs.
 'esto sirve para que los GMS puedan ver la lista completa de items para crear en una ventanita.
-NumOBJs=1201
+NumOBJs=1240
 
 
 
@@ -748,8 +751,8 @@ IndexCerrada=67
 IndexCerradaLlave=68
 
 '<<<<<<<<<<<casa 3 Ullathorpe>>>>>>>>>>>>
-[OBJ69] 
-Name=Llave Ullathorpe Casa Nro 3
+[OBJ69]
+Name=Llave Ullathorpe Casa Nro 3 
 GrhIndex=509
 ObjType=9
 Agarrable=0
@@ -1638,7 +1641,7 @@ Name=Pescado
 GrhIndex=573
 ObjType=1
 Agarrable=0
-MinHam=75
+MinHam=40
 Valor=8
 Crucial=1
 
@@ -6462,12 +6465,12 @@ Valor=5000
 Crucial=0
 
 [OBJ544]
-Name=Pez Dorado
+Name=Trucha
 GrhIndex=845
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=16
+MinHam=50
+Valor=14
 Crucial=0
 
 [OBJ545]
@@ -6476,7 +6479,7 @@ GrhIndex=846
 ObjType=1
 Agarrable=0
 MinHam=75
-Valor=13
+Valor=26
 Crucial=0
 
 [OBJ546]
@@ -6484,8 +6487,8 @@ Name=Merluza
 GrhIndex=847
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=13
+MinHam=60
+Valor=20
 Crucial=0
 
 [OBJ547]
@@ -7253,7 +7256,7 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 NoSeCae=1
 
-[OBJ615]]'2da Jerarq
+[OBJ615]'2da Jerarq
 Name=Tunica de Archimago (E/G)
 GrhIndex=657
 ObjType=3
@@ -7277,7 +7280,7 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 NoSeCae=1
 
-[OBJ616]]'2da Jerarq
+[OBJ616]'2da Jerarq
 Name=Armadura de Guerrero Campeon
 GrhIndex=756
 ObjType=3
@@ -7297,7 +7300,7 @@ CP7=ASESINO
 CP8=TRABAJADOR
 NoSeCae=1
 
-[OBJ617]]]'2da Jerarq
+[OBJ617] '2da Jerarq
 Name=Armadura de Guerrero Campeon (E/G)
 GrhIndex=758
 ObjType=3
@@ -9198,12 +9201,12 @@ ObjType=20
 Agarrable=1
 
 [OBJ775]
-Name=Caballito de mar
+Name=Hipocampo
 GrhIndex=848
 ObjType=1
 Agarrable=0
-MinHam=75
-Valor=13
+MinHam=100
+Valor=30
 Crucial=0
 
 [OBJ776]
@@ -12729,16 +12732,29 @@ Valor=0
 Crucial=0
 
 [OBJ1057]
-Name=Sombrero invernal
-GrhIndex=24143
+Name=Sombrero Magico +1
+GrhIndex=18994
 ObjType=17
 NumRopaje=2
 Agarrable=0
-Anim=17
-MaxDef=0
-MinDef=0
-Valor=0
-Crucial=0
+Anim=7
+MaxDef=2
+MinDef=1
+DefensaMagicaMin=7
+DefensaMagicaMax=11
+Valor=11000
+Crucial=1
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=BARDO
+CP10=DRUIDA
+CP11=TRABAJADOR
 
 [OBJ1058]
 Name=Arbol navidad
@@ -14562,17 +14578,7 @@ Name=Cuchara Legendaria (Prueba)
 GrhIndex=587
 ObjType=20
 Agarrable=0
-Valor=99999
-Crucial=0
-ItemCrafteo1=1-100
-ItemCrafteo2=43-100
-
-[OBJ1161]
-Name=Cuchara Legendaria (Prueba)
-GrhIndex=587
-ObjType=20
-Agarrable=0
-Valor=99999
+Valor=2000
 Crucial=0
 ItemCrafteo1=1-100
 ItemCrafteo2=43-100
@@ -14969,3 +14975,258 @@ VGrande=501
 ObjType=8
 Agarrable=1
 Texto=Catacumbas que comunical la ciudad de Ullathorpe con Nix.
+
+
+'<<<<<<<<<<<casa 3 Pretorianos>>>>>>>>>>>>
+
+[OBJ1202] 
+Name=Llave Pretoriana Casa Nro 3
+GrhIndex=509
+ObjType=9
+Agarrable=0
+Clave=60
+Valor=100000
+Crucial=0
+
+[OBJ1203]
+Name=Puerta Pretoriana de Madera abierta
+GrhIndex=5592
+ObjType=6
+Agarrable=1
+Abierta=0
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1204]
+Name=Puerta Pretoriana de Madera cerrada
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=0
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+[OBJ1205]
+Name=Puerta Pretoriana de Madera cerrada con llave
+GrhIndex=5593
+ObjType=6
+Agarrable=1
+Abierta=1
+Llave=1
+Clave=60
+IndexAbierta=1203
+IndexCerrada=1204
+IndexCerradaLlave=1205
+
+
+[OBJ1206]
+Name=Arbol
+GrhIndex=32501
+ObjType=4
+Agarrable=1
+
+[OBJ1207]
+Name=Arbol
+GrhIndex=32499
+ObjType=4
+Agarrable=1
+
+[OBJ1208]
+Name=Arbol
+GrhIndex=32498
+ObjType=4
+Agarrable=1
+
+[OBJ1209]
+Name=Arbol
+GrhIndex=32497
+ObjType=4
+Agarrable=1
+
+[OBJ1210]
+Name=Arbol
+GrhIndex=32496
+ObjType=4
+Agarrable=1
+
+[OBJ1211]
+Name=Arbol
+GrhIndex=32495
+ObjType=4
+Agarrable=1
+
+[OBJ1212]
+Name=Arbol
+GrhIndex=32494
+ObjType=4
+Agarrable=1
+
+[OBJ1213]
+Name=Arbol
+GrhIndex=32493
+ObjType=4
+Agarrable=1
+
+[OBJ1214]
+Name=Arbol
+GrhIndex=32492
+ObjType=4
+Agarrable=1
+
+[OBJ1215]
+Name=Arbol
+GrhIndex=32491
+ObjType=4
+Agarrable=1
+
+[OBJ1216]
+Name=Arbol
+GrhIndex=32490
+ObjType=4
+Agarrable=1
+
+[OBJ1217]
+Name=Arbol
+GrhIndex=32489
+ObjType=4
+Agarrable=1
+
+[OBJ1218]
+Name=Arbol
+GrhIndex=32488
+ObjType=4
+Agarrable=1
+
+[OBJ1219]
+Name=Arbol
+GrhIndex=32469
+ObjType=4
+Agarrable=1
+
+[OBJ1220]
+Name=Arbol
+GrhIndex=32470
+ObjType=4
+Agarrable=1
+
+[OBJ1221]
+Name=Arbol
+GrhIndex=32471
+ObjType=4
+Agarrable=1
+
+[OBJ1222]
+Name=Arbol
+GrhIndex=32472
+ObjType=4
+Agarrable=1
+
+[OBJ1223]
+Name=Arbol
+GrhIndex=32473
+ObjType=4
+Agarrable=1
+
+[OBJ1224]
+Name=Arbol
+GrhIndex=32474
+ObjType=4
+Agarrable=1
+
+[OBJ1225]
+Name=Cantero de Arbol
+GrhIndex=32475
+ObjType=4
+Agarrable=1
+
+[OBJ1226]
+Name=Arbol
+GrhIndex=32476
+ObjType=4
+Agarrable=1
+
+[OBJ1228]
+Name=Cantero de Arbol
+GrhIndex=32477
+ObjType=4
+Agarrable=1
+
+[OBJ1229]
+Name=Arbol
+GrhIndex=32478
+ObjType=4
+Agarrable=1
+
+[OBJ1230]
+Name=Arbol
+GrhIndex=32479
+ObjType=4
+Agarrable=1
+
+[OBJ1231]
+Name=Arbol
+GrhIndex=32480
+ObjType=4
+Agarrable=1
+
+[OBJ1232]
+Name=Arbol
+GrhIndex=32481
+ObjType=4
+Agarrable=1
+
+[OBJ1233]
+Name=Arbol
+GrhIndex=32482
+ObjType=4
+Agarrable=1
+
+[OBJ1234]
+Name=Arbol
+GrhIndex=32483
+ObjType=4
+Agarrable=1
+
+[OBJ1235]
+Name=Arbol
+GrhIndex=32484
+ObjType=4
+Agarrable=1
+
+[OBJ1236]
+Name=Arbol
+GrhIndex=32485
+ObjType=4
+Agarrable=1
+
+[OBJ1237]
+Name=Arbol
+GrhIndex=32486
+ObjType=4
+Agarrable=1
+
+[OBJ1238]
+Name=Arbol
+GrhIndex=32487
+ObjType=4
+Agarrable=1
+
+[OBJ1239]
+Name=Arbol
+GrhIndex=30684
+ObjType=4
+Agarrable=1
+
+[OBJ1240]
+Name=Cartel Monturas
+GrhIndex=6856
+VGrande=501
+ObjType=8
+Agarrable=1
+Texto=Tenemos las mejores monturas para los mas feroces aventureros.

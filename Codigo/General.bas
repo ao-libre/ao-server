@@ -37,16 +37,15 @@ Option Explicit
 
 Global LeerNPCs As clsIniManager
 
-Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
-                     Optional ByVal Mimetizado As Boolean = False)
+Function DarCuerpoDesnudo(ByVal Userindex As Integer, _
+                     Optional ByVal Mimetizado As Boolean = False) As Integer
     '***************************************************
     'Autor: Nacho (Integer)
-    'Last Modification: 03/14/07
+    'Last Modification: 06/07/2020
     'Da cuerpo desnudo a un usuario
     '23/11/2009: ZaMa - Optimizacion de codigo.
+    '06/07/2020: Cuicui - Ahora devuelve el número del body aplicado
     '***************************************************
-
-    Dim CuerpoDesnudo As Integer
 
     With UserList(Userindex)
 
@@ -57,19 +56,19 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
                 Select Case .raza
 
                     Case eRaza.Humano
-                        CuerpoDesnudo = 21
+                        DarCuerpoDesnudo = 21
 
                     Case eRaza.Drow
-                        CuerpoDesnudo = 32
+                        DarCuerpoDesnudo = 32
 
                     Case eRaza.Elfo
-                        CuerpoDesnudo = 210
+                        DarCuerpoDesnudo = 210
 
                     Case eRaza.Gnomo
-                        CuerpoDesnudo = 222
+                        DarCuerpoDesnudo = 222
 
                     Case eRaza.Enano
-                        CuerpoDesnudo = 53
+                        DarCuerpoDesnudo = 53
 
                 End Select
 
@@ -78,28 +77,28 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
                 Select Case .raza
 
                     Case eRaza.Humano
-                        CuerpoDesnudo = 39
+                        DarCuerpoDesnudo = 39
 
                     Case eRaza.Drow
-                        CuerpoDesnudo = 40
+                        DarCuerpoDesnudo = 40
 
                     Case eRaza.Elfo
-                        CuerpoDesnudo = 259
+                        DarCuerpoDesnudo = 259
 
                     Case eRaza.Gnomo
-                        CuerpoDesnudo = 260
+                        DarCuerpoDesnudo = 260
 
                     Case eRaza.Enano
-                        CuerpoDesnudo = 60
+                        DarCuerpoDesnudo = 60
 
                 End Select
 
         End Select
     
         If Mimetizado Then
-            .CharMimetizado.body = CuerpoDesnudo
+            .CharMimetizado.body = DarCuerpoDesnudo
         Else
-            .Char.body = CuerpoDesnudo
+            .Char.body = DarCuerpoDesnudo
 
         End If
     
@@ -107,7 +106,7 @@ Sub DarCuerpoDesnudo(ByVal Userindex As Integer, _
 
     End With
 
-End Sub
+End Function
 
 Sub Bloquear(ByVal toMap As Boolean, _
              ByVal sndIndex As Integer, _
@@ -340,12 +339,12 @@ Sub Main()
     
     ' Connections
     Call ResetUsersConnections
+
+    ' Sockets
+    Call SocketConfig
     
     ' Timers
     Call InitMainTimers
-    
-    ' Sockets
-    Call SocketConfig
     
     ' End loading..
     Unload frmCargando
@@ -390,8 +389,6 @@ Sub Main()
     If ConexionAPI Then
         ApiNodeJsTaskId = Shell("cmd /c cd " & ApiPath & " && npm start")
     End If
-    
-    Call MainLoop
 
 End Sub
 
@@ -530,6 +527,7 @@ Private Sub LoadConstants()
     ListaPeces(2) = PECES_POSIBLES.PESCADO2
     ListaPeces(3) = PECES_POSIBLES.PESCADO3
     ListaPeces(4) = PECES_POSIBLES.PESCADO4
+    ListaPeces(5) = PECES_POSIBLES.PESCADO5
 
     'Bordes del mapa
     MinXBorder = XMinMapSize + (XWindow \ 2)
@@ -606,12 +604,16 @@ Private Sub InitMainTimers()
 
     With frmMain
         .AutoSave.Enabled = True
-
+        .GameTimer.Enabled = True
+        .PacketResend.Enabled = True
+        .TIMER_AI.Enabled = True
+        .Auditoria.Enabled = True
     End With
     
 End Sub
 
 Private Sub SocketConfig()
+
 
     '*****************************************************************
     'Author: ZaMa
@@ -1092,7 +1094,7 @@ Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
         If .Counters.Invisibilidad < IntervaloInvisible Then
             .Counters.Invisibilidad = .Counters.Invisibilidad + 1
         Else
-            .Counters.Invisibilidad = RandomNumber(-100, 100) ' Invi variable :D
+            .Counters.Invisibilidad = 0 'RandomNumber(-100, 100) ' Invi variable :D
             .flags.invisible = 0
 
             If .flags.Oculto = 0 Then
@@ -1566,6 +1568,7 @@ Sub SaveUser(ByVal Userindex As Integer, Optional ByVal SaveTimeOnline As Boolea
             .Char.WeaponAnim = .CharMimetizado.WeaponAnim
             .Counters.Mimetismo = 0
             .flags.Mimetizado = 0
+            
             ' Se fue el efecto del mimetismo, puede ser atacado por npcs
             .flags.Ignorado = False
 
