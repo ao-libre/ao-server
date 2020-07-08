@@ -1965,6 +1965,9 @@ Public Sub CargarMapa(ByVal Mapa As Long, Optional ByVal BackUp As Boolean = Fal
     Exit Sub
 
 errh:
+    
+    Close fh
+    
     Call LogError("Error cargando mapa: " & Mapa & " ." & Err.description)
 
 End Sub
