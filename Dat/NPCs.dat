@@ -10058,7 +10058,7 @@ NROITEMS=1
 Drop1=12-50000 'Oro
 
 [NPC757]
-Name=Sin Nombre
+Name=Ave Del Inframundo
 NpcType=0
 Head=0
 Heading=3
@@ -10071,24 +10071,21 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=2000
+GiveEXP=15000
 GiveGLD=0
-MinHP=80000
-MaxHP=80000
-MaxHIT=280
+MinHP=5500
+MaxHP=5500
+MaxHIT=140
 MinHIT=120
 DEF=30
 AfectaParalisis=0
 PoderAtaque=230
-PoderEvasion=220
-Snd3=100
+PoderEvasion=30
+Snd3=52
 BackUp=0
-NROITEMS=5
-Drop1=388-500 'Lingote de Oro
-Drop2=194-10000 'Minerales de Oro
-Drop3=38-100 'Pociones Rojas
-Drop4=37-100 'Pociones Azules
-Drop5=12-7500 'Oro
+NROITEMS=2
+Drop1=12-2500 'Oro
+Drop2=619-1 'Daga Envenenada
 
 [NPC758]
 Name=Sin Nombre
