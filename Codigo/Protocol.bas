@@ -3121,7 +3121,7 @@ Private Sub HandleWork(ByVal Userindex As Integer)
             Case Ocultarse
                 
                 ' Verifico si se peude ocultar en este mapa
-                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
+                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) Or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
                     Call WriteConsoleMsg(Userindex, "Ocultarse no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
@@ -17758,6 +17758,10 @@ Public Sub WriteLoggedMessage(ByVal Userindex As Integer)
         Call .outgoingData.WriteByte(ServerPacketID.Logged)
         Call .outgoingData.WriteByte(.Clase)
         Call .outgoingData.WriteLong(IntervaloInvisible)
+        #If AntiExternos Then
+            UserList(Userindex).Redundance = RandomNumber(15, 250)
+            Call UserList(Userindex).outgoingData.WriteByte(UserList(Userindex).Redundance)
+        #End If
     End With
 
     Exit Sub
