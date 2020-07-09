@@ -1094,7 +1094,7 @@ Public Sub EfectoInvisibilidad(ByVal Userindex As Integer)
         If .Counters.Invisibilidad < IntervaloInvisible Then
             .Counters.Invisibilidad = .Counters.Invisibilidad + 1
         Else
-            .Counters.Invisibilidad = RandomNumber(-100, 100) ' Invi variable :D
+            .Counters.Invisibilidad = 0 'RandomNumber(-100, 100) ' Invi variable :D
             .flags.invisible = 0
 
             If .flags.Oculto = 0 Then

@@ -2563,7 +2563,7 @@ Public Sub SetInvisible(ByVal Userindex As Integer, _
     Dim sndNick As String
 
     With UserList(Userindex)
-        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible, IIf(invisible, (IntervaloInvisible - .Counters.Invisibilidad), 0)))
+        Call SendData(SendTarget.ToUsersAndRmsAndCounselorsAreaButGMs, Userindex, PrepareMessageSetInvisible(userCharIndex, invisible))
     
         sndNick = .Name
     
@@ -2960,7 +2960,11 @@ Public Sub goHome(ByVal Userindex As Integer)
 
             End If
             
-            Tiempo = (Distance + 1) * 30 'seg
+            Tiempo = (Distance + 1) * 20 'seg
+            
+            If Tiempo > 60 Then
+                Tiempo = 60
+            End If
             
             Call IntervaloGoHome(Userindex, Tiempo * 1000, True)
                 

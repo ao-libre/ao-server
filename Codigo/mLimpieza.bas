@@ -28,22 +28,25 @@ Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     'Alcanzamos los slots que permite almacenar?
     '//Reservamos 100 slots por si cuando empieza a limpiar el mundo, siguen tirando objetos.
     If UltimoSlotLimpieza = MAXITEMS - 100 Then
-        counterSV.Limpieza = 30
-
+        tickLimpieza = 30
     End If
 
 End Sub
 
 Public Sub BorrarObjetosLimpieza()
 
+    UltimoSlotLimpieza = -1
+    
     Dim i As Long
 
     For i = 0 To MAXITEMS
 
         With ArrayLimpieza(i)
 
-            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And MapData(.Map, .X, .Y).Blocked <> 1 Then
-                Call EraseObj(10000, .Map, .X, .Y)
+            If (MapData(.Map, .X, .Y).trigger <> eTrigger.CASA Or MapData(.Map, .X, .Y).trigger <> eTrigger.BAJOTECHO) And _
+                MapData(.Map, .X, .Y).Blocked <> 1 Then
+                
+                Call EraseObj(MapData(.Map, .X, .Y).ObjInfo.Amount, .Map, .X, .Y)
             End If
 
         End With
