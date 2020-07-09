@@ -17757,9 +17757,8 @@ Public Sub WriteLoggedMessage(ByVal Userindex As Integer)
 
     With UserList(Userindex)
         Call .outgoingData.WriteByte(ServerPacketID.Logged)
-    
         Call .outgoingData.WriteByte(.Clase)
-
+        Call .outgoingData.WriteLong(IntervaloInvisible)
     End With
 
     Exit Sub
@@ -18302,6 +18301,7 @@ Public Sub WriteUpdateStrenghtAndDexterity(ByVal Userindex As Integer)
         Call .WriteByte(ServerPacketID.UpdateStrenghtAndDexterity)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Fuerza))
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Agilidad))
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
 
     End With
 
@@ -18334,6 +18334,7 @@ Public Sub WriteUpdateDexterity(ByVal Userindex As Integer)
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.UpdateDexterity)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Agilidad))
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
 
     End With
 
@@ -18366,7 +18367,8 @@ Public Sub WriteUpdateStrenght(ByVal Userindex As Integer)
     With UserList(Userindex).outgoingData
         Call .WriteByte(ServerPacketID.UpdateStrenght)
         Call .WriteByte(UserList(Userindex).Stats.UserAtributos(eAtributos.Fuerza))
-
+        Call .WriteLong(UserList(Userindex).flags.DuracionEfecto)
+        
     End With
 
     Exit Sub
@@ -20226,7 +20228,7 @@ Public Sub WriteSetInvisible(ByVal Userindex As Integer, _
     '***************************************************
     On Error GoTo ErrHandler
 
-    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible, IIf(invisible, (IntervaloInvisible - UserList(Userindex).Counters.Invisibilidad), 0)))
+    Call UserList(Userindex).outgoingData.WriteASCIIStringFixed(PrepareMessageSetInvisible(CharIndex, invisible))
     
     Exit Sub
 
@@ -21543,7 +21545,7 @@ End Sub
 ' @remarks  The message is written to no outgoing buffer, but only prepared in a single string to be easily sent to several clients.
 
 Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
-                                           ByVal invisible As Boolean, Optional ByVal timeRemaining As Integer = 0) As String
+                                           ByVal invisible As Boolean) As String
 
     '***************************************************
     'Author: Juan Martin Sotuyo Dodero (Maraxus)
@@ -21555,7 +21557,6 @@ Public Function PrepareMessageSetInvisible(ByVal CharIndex As Integer, _
         
         Call .WriteInteger(CharIndex)
         Call .WriteBoolean(invisible)
-        Call .WriteInteger(timeRemaining)
         
         PrepareMessageSetInvisible = .ReadASCIIStringFixed(.Length)
 
@@ -23738,7 +23739,7 @@ End Sub
 Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
 '***************************************************
 'Author: Jopi
-'Last Modification: 11/01/2020
+'Last Modification: 06/07/2020
 'Fuerza una limpieza del mundo.
 '***************************************************
     
@@ -23748,9 +23749,9 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     'Me fijo si es GM
     If Not EsGm(Userindex) Then Exit Sub
     
-    'Forzamos la ejecucion de la limpieza del mundo con cuenta regresiva.
-    'Y de paso nos ahorramos en repetir codigo.
-    counterSV.Limpieza = 6
+    Call LogGM(UserList(Userindex).Name, "forzo la limpieza del mundo.")
+    
+    tickLimpieza = 16
     
 End Sub
 

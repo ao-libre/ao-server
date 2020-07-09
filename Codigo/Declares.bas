@@ -55,13 +55,7 @@ Type CentinelaUser
 
 End Type
 
-Private Type tCountersServidor
-
-    Limpieza As Integer
-
-End Type
-
-Public counterSV      As tCountersServidor
+Public tickLimpieza      As Integer
 
 ''
 ' Modulo de declaraciones. Aca hay de todo.
@@ -125,7 +119,7 @@ Public Const iGaleraReal = 565
 
 Public Const iGaleraRealAtacable = 568
 
-Public Const iGaleonReal = 572 
+Public Const iGaleonReal = 572
 
 Public Const iGaleonRealAtacable = 564
 
@@ -141,7 +135,7 @@ Public Const iBarcaCaos = 561
 
 Public Const iGaleraCaos = 566
 
-Public Const iGaleonCaos = 573 
+Public Const iGaleonCaos = 573
 
 Public Enum iMinerales
 
@@ -1642,7 +1636,7 @@ Public Type User
         UpTime As Long
     #End If
 
-    ip As String
+    IP As String
     
     ComUsu As tCOmercioUsuario
     
