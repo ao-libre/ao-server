@@ -1504,7 +1504,7 @@ Public Type UserCounters
     
     Trabajando As Long  ' Para el centinela
     Ocultando As Long   ' Unico trabajo no revisado por el centinela
-    
+    Cheat As modAntiCheat.TimeIntervalos
     failedUsageAttempts As Long
     
     goHome As Long

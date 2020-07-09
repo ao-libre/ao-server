@@ -68,11 +68,11 @@ End Function
 ' CASTING DE HECHIZOS
 Public Function IntervaloPermiteLanzarSpell(ByVal Userindex As Integer, _
                                             Optional ByVal Actualizar As Boolean = True) As Boolean
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
 
     Dim TActual As Long
 
@@ -84,21 +84,23 @@ Public Function IntervaloPermiteLanzarSpell(ByVal Userindex As Integer, _
 
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 0, 0, 1)
         IntervaloPermiteLanzarSpell = True
     Else
         IntervaloPermiteLanzarSpell = False
 
+        Call modAntiCheat.AddCount(Userindex, 0, 0, 1, 0)
     End If
 
 End Function
 
 Public Function IntervaloPermiteAtacar(ByVal Userindex As Integer, _
                                        Optional ByVal Actualizar As Boolean = True) As Boolean
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
 
     Dim TActual As Long
 
@@ -111,10 +113,12 @@ Public Function IntervaloPermiteAtacar(ByVal Userindex As Integer, _
 
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 0, 0, 1)
         IntervaloPermiteAtacar = True
     Else
         IntervaloPermiteAtacar = False
 
+        Call modAntiCheat.AddCount(Userindex, 0, 0, 1, 0)
     End If
 
 End Function
@@ -254,56 +258,54 @@ End Function
 ' USAR OBJETOS
 Public Function IntervaloPermiteUsar(ByVal Userindex As Integer, _
                                      Optional ByVal Actualizar As Boolean = True) As Boolean
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: 25/01/2010 (ZaMa)
-    '25/01/2010: ZaMa - General adjustments.
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: 25/01/2010 (ZaMa)
+'25/01/2010: ZaMa - General adjustments.
+'***************************************************
 
     Dim TActual As Long
-    
+
     TActual = GetTickCount() And &H7FFFFFFF
-    
+
     If TActual - UserList(Userindex).Counters.TimerUsar >= IntervaloUserPuedeUsar Then
         If Actualizar Then
             UserList(Userindex).Counters.TimerUsar = TActual
 
-            'UserList(UserIndex).Counters.failedUsageAttempts = 0
+
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 0, 0, 1)
         IntervaloPermiteUsar = True
     Else
         IntervaloPermiteUsar = False
-        
-        'UserList(UserIndex).Counters.failedUsageAttempts = UserList(UserIndex).Counters.failedUsageAttempts + 1
-        
-        'Tolerancia arbitraria - 20 es MUY alta, la esta chiteando zarpado
-        'If UserList(UserIndex).Counters.failedUsageAttempts = 20 Then
-        'Call SendData(SendTarget.ToAdmins, 0, PrepareMessageConsoleMsg(UserList(UserIndex).name & " kicked by the server por posible modificacion de intervalos.", FontTypeNames.FONTTYPE_FIGHT))
-        'Call CloseSocket(UserIndex)
-        'End If
+
+        Call modAntiCheat.AddCount(Userindex, 0, 0, 0, 1)
     End If
 
 End Function
 
 Public Function IntervaloPermiteUsarArcos(ByVal Userindex As Integer, _
                                           Optional ByVal Actualizar As Boolean = True) As Boolean
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
+'***************************************************
+'Author: Unknown
+'Last Modification: -
+'
+'***************************************************
 
     Dim TActual As Long
-    
+
     TActual = GetTickCount() And &H7FFFFFFF
-    
+
     If TActual - UserList(Userindex).Counters.TimerPuedeUsarArco >= IntervaloFlechasCazadores Then
         If Actualizar Then UserList(Userindex).Counters.TimerPuedeUsarArco = TActual
+
+        Call modAntiCheat.RestaCount(Userindex, 1, 0, 0, 0)
         IntervaloPermiteUsarArcos = True
     Else
         IntervaloPermiteUsarArcos = False
 
+        Call modAntiCheat.AddCount(Userindex, 1, 0, 0, 0)
     End If
 
 End Function
