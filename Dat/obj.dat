@@ -5321,16 +5321,6 @@ SND1=40
 Madera=800
 SkCarpinteria=75
 
-
-[OBJ1119]
-Name=Laud Capusotto
-GrhIndex=685
-ObjType=26
-Log=1
-NoSeCae=1
-NoRobable=1
-SND1=221
-
 [OBJ470]
 Name=Fuerza
 GrhIndex=609
