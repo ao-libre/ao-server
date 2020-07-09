@@ -343,8 +343,8 @@ Public Sub PasarSegundo()
                 Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo en " & tickLimpieza & " segundos. Atentos!!", FontTypeNames.FONTTYPE_SERVER))
             
             Case 0
-                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
                 Call BorrarObjetosLimpieza
+                Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Servidor> Limpieza del mundo finalizada.", FontTypeNames.FONTTYPE_SERVER))
                 
         End Select
         
