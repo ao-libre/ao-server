@@ -1009,6 +1009,24 @@ Function EsUsable(ByVal ObjIndex As Integer)
 
 End Function
 
+Public Function EsBarca(ByRef Objeto As ObjData) As Boolean
+    
+    EsBarca = (Objeto.Ropaje And (iFragataFantasmal Or iFragataReal Or iFragataCaos Or iBarca Or iBarcaCiuda Or iBarcaCiudaAtacable Or iBarcaReal Or iBarcaRealAtacable Or iBarcaPk Or iBarcaCaos))
+
+End Function
+
+Public Function EsGalera(ByRef Objeto As ObjData) As Boolean
+    
+    EsGalera = (Objeto.Ropaje And (iGalera Or iGaleraCiuda Or iGaleraCiudaAtacable Or iGaleraReal Or iGaleraRealAtacable Or iGaleraPk Or iGaleraCaos))
+
+End Function
+
+Public Function EsGaleon(ByRef Objeto As ObjData) As Boolean
+    
+    EsGaleon = (Objeto.Ropaje And (iGaleon Or iGaleonCiuda Or iGaleonCiudaAtacable Or iGaleonReal Or iGaleonRealAtacable Or iGaleonPk Or iGaleonCaos))
+
+End Function
+
 Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
                            ByVal ObjIndex As Integer, _
                            Optional ByRef sMotivo As String) As Boolean

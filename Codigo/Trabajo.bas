@@ -176,28 +176,41 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
                     ByVal Slot As Integer)
 '***************************************************
 'Author: Unknown
-'Last Modification: 12/01/2020 (Recox)
+'Last Modification: 09/07/2020: Jopi
 '13/01/2010: ZaMa - El pirata pierde el ocultar si desequipa barca.
 '16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
 '10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
-'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas .
+'12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas.
+'09/07/2020: Jopi - Dejamos de usar los modificadores de barca por clase y refactoriz el chequeo.
 '***************************************************
 
-    Dim ModNave As Single
-    
     With UserList(Userindex)
+    
         If .flags.Equitando = 1 Then
             Call WriteConsoleMsg(Userindex, "No puedes navegar mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
 
-        ModNave = ModNavegacion(.Clase, Userindex)
-        
-        If .Stats.UserSkills(eSkill.Navegacion) / ModNave < Barco.MinSkill Then
-            Call WriteConsoleMsg(Userindex, "No tienes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
-            Call WriteConsoleMsg(Userindex, "Para usar este barco necesitas " & Barco.MinSkill * ModNave & " puntos en navegacion.", FontTypeNames.FONTTYPE_INFO)
+        ' Si no es Pirata o Trabajador y quiere equipar Galera...
+        If (.Clase <> (eClass.Worker Or eClass.Pirat Or eClass.Thief)) And EsGalera(Barco) Then
+            Call WriteConsoleMsg(Userindex, "Solo los Trabajadores y Piratas pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
-
+        End If
+        
+        ' Si no es Pirata y quiere equipar Galeon...
+        If .Clase <> eClass.Pirat And EsGaleon(Barco) Then
+            Call WriteConsoleMsg(Userindex, "Solo los Piratas pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
+        End If
+        
+        ' Acordate que el Trabajador solo necesita 60 de Navegacion para usar barca!
+        Dim SkillNecesario As Byte
+            SkillNecesario = IIf(.Clase = eClass.Worker, 60, Barco.MinSkill)
+        
+        ' Tiene el skill necesario?
+        If .Stats.UserSkills(eSkill.Navegacion) < SkillNecesario Then
+            Call WriteConsoleMsg(Userindex, "No tienes suficientes conocimientos para usar este barco.", FontTypeNames.FONTTYPE_INFO)
+            Exit Sub
         End If
         
         ' No estaba navegando
@@ -1376,35 +1389,6 @@ Public Sub DoUpgrade(ByVal Userindex As Integer, ByVal ItemIndex As Integer)
     End With
 
 End Sub
-
-Function ModNavegacion(ByVal Clase As eClass, ByVal Userindex As Integer) As Single
-
-    '***************************************************
-    'Autor: Unknown (orginal version)
-    'Last Modification: 27/11/2009
-    '27/11/2009: ZaMa - A worker can navigate before only if it's an expert fisher
-    '12/04/2010: ZaMa - Arreglo modificador de pescador, para que navegue con 60 skills.
-    '***************************************************
-    Select Case Clase
-
-        Case eClass.Pirat
-            ModNavegacion = 1
-
-        Case eClass.Worker
-
-            If UserList(Userindex).Stats.UserSkills(eSkill.pesca) = 100 Then
-                ModNavegacion = 1.71
-            Else
-                ModNavegacion = 2
-
-            End If
-
-        Case Else
-            ModNavegacion = 2
-
-    End Select
-
-End Function
 
 Function ModFundicion(ByVal Clase As eClass) As Single
     '***************************************************
