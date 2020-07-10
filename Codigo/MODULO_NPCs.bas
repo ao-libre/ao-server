@@ -831,11 +831,9 @@ Public Function MoveNPCChar(ByVal NpcIndex As Integer, ByVal nHeading As Byte) A
         oldPos = .Pos
         oldHeading = .Char.heading
         Call HeadtoPos(nHeading, nPos)
-        If .NPCtype <> eNPCType.Pretoriano Then
-            If oldHeading <> nHeading Or (oldPos.X <> nPos.X Or oldPos.Y <> nPos.Y) Then
-                .Char.heading = nHeading
-                Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageHeadingChange(nHeading, .Char.CharIndex))
-            End If
+        If oldHeading <> nHeading Or (oldPos.X <> nPos.X Or oldPos.Y <> nPos.Y) Then
+            .Char.heading = nHeading
+            Call SendData(SendTarget.ToNPCArea, NpcIndex, PrepareMessageHeadingChange(nHeading, .Char.CharIndex))
         End If
         
         ' es una posicion legal
