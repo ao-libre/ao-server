@@ -181,7 +181,7 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
 '16/09/2010: ZaMa - Ahora siempre se va el invi para los clientes al equipar la barca (Evita cortes de cabeza).
 '10/12/2010: Pato - Limpio las variables del inventario que hacen referencia a la barca, sino el pirata que la ultima barca que equipo era el galeon no explotaba(Y capaz no la tenia equipada :P).
 '12/01/2020: Recox - Se refactorizo un poco para reutilizar con monturas.
-'09/07/2020: Jopi - Dejamos de usar los modificadores de barca por clase y refactoriz el chequeo.
+'09/07/2020: Jopi - Dejamos de usar los modificadores de barca por clase y refactorizo los chequeos por clase.
 '***************************************************
 
     With UserList(Userindex)
@@ -190,17 +190,31 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
             Call WriteConsoleMsg(Userindex, "No puedes navegar mientras estas en tu montura!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
-
-        ' Si no es Pirata o Trabajador y quiere equipar Galera...
-        If (.Clase <> eClass.Worker Or .Clase <> eClass.Pirat <> eClass.Thief) And EsGalera(Barco) Then
-            Call WriteConsoleMsg(Userindex, "Solo los Trabajadores, Piratas y Ladrones pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+        
+        If EsGalera(Barco) Then
+            
+            If .Clase <> eClass.Assasin And _
+                .Clase <> eClass.Bandit And _
+                .Clase <> eClass.Cleric And _
+                .Clase <> eClass.Thief And _
+                .Clase <> eClass.Paladin Then
+            
+                Call WriteConsoleMsg(Userindex, "Solo los Asesinos, Bandidos, Clerigos, Bandidos y Paladines pueden usar Galera!!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            
+            End If
+            
         End If
         
-        ' Si no es Pirata y quiere equipar Galeon...
-        If .Clase <> eClass.Pirat And EsGaleon(Barco) Then
-            Call WriteConsoleMsg(Userindex, "Solo los Piratas pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
-            Exit Sub
+        If EsGaleon(Barco) Then
+            
+            If .Clase <> eClass.Thief Then
+            
+                Call WriteConsoleMsg(Userindex, "Solo los Ladrones pueden usar Galeon!!", FontTypeNames.FONTTYPE_INFO)
+                Exit Sub
+            
+            End If
+            
         End If
         
         ' Acordate que el Trabajador solo necesita 60 de Navegacion para usar barca!
