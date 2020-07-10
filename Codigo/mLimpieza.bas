@@ -28,7 +28,7 @@ Public Sub AgregarObjetoLimpieza(Pos As WorldPos)
     'Alcanzamos los slots que permite almacenar?
     '//Reservamos 100 slots por si cuando empieza a limpiar el mundo, siguen tirando objetos.
     If UltimoSlotLimpieza = MAXITEMS - 100 Then
-        tickLimpieza = 30
+        tickLimpieza = 301
     End If
 
 End Sub
