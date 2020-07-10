@@ -192,8 +192,8 @@ Public Sub DoNavega(ByVal Userindex As Integer, _
         End If
 
         ' Si no es Pirata o Trabajador y quiere equipar Galera...
-        If (.Clase <> (eClass.Worker Or eClass.Pirat Or eClass.Thief)) And EsGalera(Barco) Then
-            Call WriteConsoleMsg(Userindex, "Solo los Trabajadores y Piratas pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
+        If (.Clase <> eClass.Worker Or .Clase <> eClass.Pirat <> eClass.Thief) And EsGalera(Barco) Then
+            Call WriteConsoleMsg(Userindex, "Solo los Trabajadores, Piratas y Ladrones pueden usar " & Barco.Name & "!!", FontTypeNames.FONTTYPE_INFO)
             Exit Sub
         End If
         

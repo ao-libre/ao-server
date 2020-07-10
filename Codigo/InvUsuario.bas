@@ -1011,20 +1011,50 @@ End Function
 
 Public Function EsBarca(ByRef Objeto As ObjData) As Boolean
     
-    EsBarca = (Objeto.Ropaje And (iFragataFantasmal Or iFragataReal Or iFragataCaos Or iBarca Or iBarcaCiuda Or iBarcaCiudaAtacable Or iBarcaReal Or iBarcaRealAtacable Or iBarcaPk Or iBarcaCaos))
-
+    Select Case Objeto.Ropaje
+        
+        Case iFragataFantasmal, iFragataReal, iFragataCaos, iBarca, iBarcaCiuda, iBarcaCiudaAtacable, iBarcaReal, iBarcaRealAtacable, iBarcaPk, iBarcaCaos
+            EsBarca = True
+            Exit Function
+            
+        Case EsBarca
+            EsGalera = False
+            Exit Function
+            
+    End Select
+    
 End Function
 
 Public Function EsGalera(ByRef Objeto As ObjData) As Boolean
     
-    EsGalera = (Objeto.Ropaje And (iGalera Or iGaleraCiuda Or iGaleraCiudaAtacable Or iGaleraReal Or iGaleraRealAtacable Or iGaleraPk Or iGaleraCaos))
-
+    Select Case Objeto.Ropaje
+        
+        Case iGalera, iGaleraCiuda, iGaleraCiudaAtacable, iGaleraReal, iGaleraRealAtacable, iGaleraRealAtacable, iGaleraPk, iGaleraCaos
+            EsGalera = True
+            Exit Function
+            
+        Case Else
+            EsGalera = False
+            Exit Function
+            
+    End Select
+    
 End Function
 
 Public Function EsGaleon(ByRef Objeto As ObjData) As Boolean
     
-    EsGaleon = (Objeto.Ropaje And (iGaleon Or iGaleonCiuda Or iGaleonCiudaAtacable Or iGaleonReal Or iGaleonRealAtacable Or iGaleonPk Or iGaleonCaos))
-
+    Select Case Objeto.Ropaje
+        
+        Case iGaleon, iGaleonCiuda, iGaleonCiudaAtacable, iGaleonReal, iGaleonRealAtacable, iGaleonPk, iGaleonCaos
+            EsGaleon = True
+            Exit Function
+            
+        Case Else
+            EsGaleon = False
+            Exit Function
+            
+    End Select
+    
 End Function
 
 Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
