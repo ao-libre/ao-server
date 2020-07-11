@@ -44,7 +44,7 @@ Function DarCuerpoDesnudo(ByVal Userindex As Integer, _
     'Last Modification: 06/07/2020
     'Da cuerpo desnudo a un usuario
     '23/11/2009: ZaMa - Optimizacion de codigo.
-    '06/07/2020: Cuicui - Ahora devuelve el número del body aplicado
+    '06/07/2020: Cuicui - Ahora devuelve el nï¿½mero del body aplicado
     '***************************************************
 
     With UserList(Userindex)
@@ -1455,11 +1455,11 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub CargaNpcsDat()
+Public Sub CargaNpcsDat(Optional ByVal ForzarActualizacionNpcsExistentes As Boolean = False) 
     '***************************************************
     'Author: Unknown
-    'Last Modification: -
-    '
+    'Last Modification: 06/07/2020 (Cuicui)
+    ' 06/07/2020 (Cuicui) - Actualizamos la informacion de los NPC's ya spawneados.
     '***************************************************
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
     
@@ -1469,6 +1469,23 @@ Public Sub CargaNpcsDat()
     
     ' Cargamos la lista de NPC's hostiles disponibles para spawnear.
     Call CargarSpawnList
+
+    ' Actualizamos la informacion de los NPC's ya spawneados.
+    If ForzarActualizacionNpcsExistentes Then
+
+        Dim i As Long
+
+        For i = 1 To MAXNPCS
+
+            If Npclist(i).flags.NPCActive Then
+                Call ReloadNPCByIndex(i)
+            End If
+
+            DoEvents
+
+        Next i
+
+    End If
 
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 
