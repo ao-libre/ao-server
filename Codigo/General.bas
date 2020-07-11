@@ -1455,12 +1455,13 @@ Public Sub Sanar(ByVal Userindex As Integer, _
 
 End Sub
 
-Public Sub CargaNpcsDat()
-    '***************************************************
-    'Author: Unknown
-    'Last Modification: -
-    '
-    '***************************************************
+Public Sub CargaNpcsDat(Optional ByVal Hard As Boolean = False)
+'*******************************************************************************
+'Author: Unknown
+'Last Modification: 06/07/2020 (Cuicui)
+' 06/07/2020 (Cuicui) - Actualizamos la informacion de los NPC's ya spawneados.
+'*******************************************************************************
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = "Cargando NPCs.dat."
     
     ' Leemos el NPCs.dat y lo almacenamos en la memoria.
@@ -1469,13 +1470,28 @@ Public Sub CargaNpcsDat()
     
     ' Cargamos la lista de NPC's hostiles disponibles para spawnear.
     Call CargarSpawnList
-
+    
+    ' Actualizamos la informacion de los NPC's ya spawneados.
+    If Hard Then
+    
+        Dim i As Long
+        
+        For i = 1 To MAXNPCS
+            
+            If Npclist(i).flags.NPCActive Then
+                Call ReloadNPCByIndex(i)
+            End If
+            
+            DoEvents
+            
+        Next i
+        
+    End If
+    
     If frmMain.Visible Then frmMain.txtStatus.Text = Date & " " & time & " - Se cargo el archivo NPCs.dat."
 
 End Sub
 
-
- 
 Public Function ReiniciarAutoUpdate() As Double
     '***************************************************
     'Author: Unknown
