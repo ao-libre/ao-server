@@ -44,7 +44,7 @@ Function DarCuerpoDesnudo(ByVal Userindex As Integer, _
     'Last Modification: 06/07/2020
     'Da cuerpo desnudo a un usuario
     '23/11/2009: ZaMa - Optimizacion de codigo.
-    '06/07/2020: Cuicui - Ahora devuelve el n�mero del body aplicado
+    '06/07/2020: Cuicui - Ahora devuelve el numero del body aplicado
     '***************************************************
 
     With UserList(Userindex)
