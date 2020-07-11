@@ -1013,12 +1013,23 @@ Public Function EsBarca(ByRef Objeto As ObjData) As Boolean
     
     Select Case Objeto.Ropaje
         
-        Case iFragataFantasmal, iFragataReal, iFragataCaos, iBarca, iBarcaCiuda, iBarcaCiudaAtacable, iBarcaReal, iBarcaRealAtacable, iBarcaPk, iBarcaCaos
+        Case iFragataFantasmal, _
+             iFragataReal, _
+             iFragataCaos, _
+             iBarca, _
+             iBarcaCiuda, _
+             iBarcaCiudaAtacable, _
+             iBarcaReal, _
+             iBarcaRealAtacable, _
+             iBarcaPk, _
+             iBarcaCaos
+            
             EsBarca = True
+            
             Exit Function
             
         Case EsBarca
-            EsGalera = False
+            EsBarca = False
             Exit Function
             
     End Select
@@ -1029,7 +1040,15 @@ Public Function EsGalera(ByRef Objeto As ObjData) As Boolean
     
     Select Case Objeto.Ropaje
         
-        Case iGalera, iGaleraCiuda, iGaleraCiudaAtacable, iGaleraReal, iGaleraRealAtacable, iGaleraRealAtacable, iGaleraPk, iGaleraCaos
+        Case iGalera, _
+             iGaleraCiuda, _
+             iGaleraCiudaAtacable, _
+             iGaleraReal, _
+             iGaleraRealAtacable, _
+             iGaleraRealAtacable, _
+             iGaleraPk, _
+             iGaleraCaos
+            
             EsGalera = True
             Exit Function
             
