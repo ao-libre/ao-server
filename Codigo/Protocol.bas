@@ -17766,12 +17766,18 @@ Public Sub WriteLoggedMessage(ByVal Userindex As Integer)
         Call .outgoingData.WriteLong(IntervaloInvisible)
     End With
 
+    #If AntiExternos Then
+        UserList(Userindex).Redundance = RandomNumber(15, 250)
+        Call UserList(Userindex).outgoingData.WriteByte(UserList(Userindex).Redundance)
+    #End If
+
     Exit Sub
 
 ErrHandler:
 
     If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
         Call FlushBuffer(Userindex)
+
         Resume
 
     End If

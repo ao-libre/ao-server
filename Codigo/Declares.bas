@@ -1662,6 +1662,8 @@ Public Type User
     cvcUser As cvc_User
     
     QuestStats As tQuestStats
+    
+    Redundance As Byte
 
 End Type
 
@@ -2436,4 +2438,6 @@ Public DescripcionServidor As String
 
 Public NombreServidor As String
 
-
+#If AntiExternos Then
+Public Security As New clsSecurity
+#End If
