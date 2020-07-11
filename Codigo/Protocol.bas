@@ -1002,9 +1002,10 @@ Public Sub WriteMultiMessage(ByVal Userindex As Integer, _
             
             Case eMessages.UserKill '"" & .name & " te ha matado!"
                 Call .WriteInteger(UserList(Arg1).Char.CharIndex) 'AttackerIndex
-            
+
             Case eMessages.EarnExp
-            
+                Call .WriteLong(Arg1)
+                
             Case eMessages.Home
                 Call .WriteByte(CByte(Arg1))
                 Call .WriteInteger(CInt(Arg2))

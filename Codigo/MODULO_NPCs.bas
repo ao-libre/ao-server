@@ -147,14 +147,18 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
             
             '[KEVIN]
             If MiNPC.flags.ExpCount > 0 Then
+                
                 If .PartyIndex > 0 Then
                     Call mdParty.ObtenerExito(Userindex, MiNPC.flags.ExpCount, MiNPC.Pos.Map, MiNPC.Pos.X, MiNPC.Pos.Y)
+                
                 Else
                     .Stats.Exp = .Stats.Exp + MiNPC.flags.ExpCount
 
                     If .Stats.Exp > MAXEXP Then .Stats.Exp = MAXEXP
-                    Call WriteConsoleMsg(Userindex, "Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
-
+                    
+                    'Call WriteConsoleMsg(Userindex, "Has ganado " & MiNPC.flags.ExpCount & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+                    Call WriteMultiMessage(Userindex, eMessages.EarnExp, MiNPC.flags.ExpCount)
+                    
                 End If
 
                 MiNPC.flags.ExpCount = 0
@@ -162,7 +166,8 @@ Public Sub MuereNpc(ByVal NpcIndex As Integer, ByVal Userindex As Integer)
             End If
             
             '[/KEVIN]
-            Call WriteConsoleMsg(Userindex, "Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+            'Call WriteConsoleMsg(Userindex, "Has matado a la criatura!", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteMultiMessage(Userindex, eMessages.NPCKill)
 
             If .Stats.NPCsMuertos < 32000 Then .Stats.NPCsMuertos = .Stats.NPCsMuertos + 1
             
