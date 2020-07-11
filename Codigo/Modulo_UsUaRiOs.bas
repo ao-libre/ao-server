@@ -1587,6 +1587,7 @@ Sub SubirSkill(ByVal Userindex As Integer, _
                 
                 If .ExpSkills(Skill) >= .EluSkills(Skill) Then
                     .UserSkills(Skill) = .UserSkills(Skill) + 1
+                    
                     Call WriteConsoleMsg(Userindex, "Has mejorado tu skill " & SkillsNames(Skill) & " en un punto! Ahora tienes " & .UserSkills(Skill) & " pts.", FontTypeNames.FONTTYPE_INFO)
                     
                     .Exp = .Exp + 50
