@@ -2327,14 +2327,31 @@ Crucial=1
 HechizoIndex=10
 
 [OBJ208]
-Name=Flauta Dancing Mood
+Name=Flauta Magica
 GrhIndex=686
-ObjType=26
+ObjType=18
+Agarrable=0
+StaffPower=2
+MinHit=1
+MaxHit=1
 Valor=4500
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=BARDO
+CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
 SND1=217
+SND2=217
+SND3=217
 
 [OBJ209]
 Name=Cartel Mineros
@@ -4014,6 +4031,8 @@ Agarrable=0
 Valor=2200
 Crucial=0
 SND1=48
+SND2=48
+SND3=48
 Madera=800
 SkCarpinteria=75
 
@@ -5311,13 +5330,15 @@ MinAgu=30
 Crucial=0
 
 [OBJ469]
-Name=Laud Elfico
+Name=Laud
 GrhIndex=685
 ObjType=26
 Agarrable=0
 Valor=2200
 Crucial=0
 SND1=40
+SND2=40
+SND3=40
 Madera=800
 SkCarpinteria=75
 
@@ -6405,13 +6426,15 @@ Crucial=1
 HechizoIndex=29
 
 [OBJ540]
-Name=Flauta Gardel
+Name=Flauta
 GrhIndex=686
 ObjType=26
 Agarrable=0
 Valor=2200
 Crucial=0
 SND1=51
+SND2=51
+SND3=51
 Madera=800
 SkCarpinteria=75
 
@@ -8532,15 +8555,31 @@ LingO=0
 SkHerreria=80
 
 [OBJ696]
-Name=Laud de los Gnomos
+Name=Laud Magico
 GrhIndex=685
-ObjType=26
+ObjType=18
 Agarrable=0
+StaffPower=2
+MinHit=1
+MaxHit=1
 Valor=6030
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
 SND1=219
+SND2=219
+SND3=219
 
 [OBJ697]
 Name=Anillo de defensa Magica
@@ -9820,22 +9859,54 @@ CP10=DRUIDA
 CP11=TRABAJADOR
 
 [OBJ863]
-Name=Flauta Les Luthier's
+Name=Flauta Magica (Newbie)
 GrhIndex=686
-ObjType=26
+ObjType=18
 Agarrable=0
-Valor=5000
+MinHit=1
+MaxHit=1
+Newbie=1
+Valor=100
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=BARDO
+CP11=TRABAJADOR
 SND1=216
+SND2=216
+SND3=216
 
 [OBJ864]
-Name=Laud Spinetta
+Name=Laud Magico (Newbie)
 GrhIndex=685
-ObjType=26
+ObjType=18
 Agarrable=0
-Valor=10000
+Newbie=1
+MinHit=1
+MaxHit=1
+Valor=100
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
 SND1=218
+SND2=218
+SND3=218
 
 [OBJ865]
 Name=Alforja
@@ -12520,26 +12591,58 @@ CP3=PIRATA
 CP4=LADRON
 
 [OBJ1049]
-Name=Laud Luca Prodan
+Name=Laud Elfico
 GrhIndex=1523
-ObjType=26
+ObjType=18
 Agarrable=0
+StaffPower=2
+MinHit=1
+MaxHit=1
 Valor=11000
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
 MaderaElfica=1150
 SkCarpinteria=100
 SND1=220
+SND2=220
+SND3=220
 
 [OBJ1050]
 Name=Flauta Elfica
 GrhIndex=1522
-ObjType=26
+ObjType=18
 Agarrable=0
+StaffPower=2
+MinHit=1
+MaxHit=1
 Valor=10000
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=BARDO
+CP11=TRABAJADOR
 MaderaElfica=1000
 SkCarpinteria=100
 SND1=215
+SND2=215
+SND3=215
 
 [OBJ1051]
 Name=Casco Simple (Newbie)
@@ -13794,14 +13897,29 @@ NoSeCae=1
 NoRobable=1
 
 [OBJ1119]
-Name=Laud Capusotto
+Name=Laud Magico Especial
 GrhIndex=685
-ObjType=26
-Agarrable=0
+ObjType=18
+StaffPower=2
+MinHit=1
+MaxHit=1
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
 Log=1
 NoSeCae=1
 NoRobable=1
 SND1=221
+SND2=221
+SND3=221
 
 [OBJ1120]
 Name=Arco Compuesto Reforzado Especial

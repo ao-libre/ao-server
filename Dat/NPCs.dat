@@ -1914,7 +1914,7 @@ BackUp=1
 [NPC15] 'Provisiones Nix
 Name=Thorkis
 NpcType=0
-Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de Nix!
+Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de todo Aergentum!
 Head=504
 Heading=3
 Body=202
@@ -13326,7 +13326,7 @@ Drop1=12-100000 'Oro
 Drop2=1146-1 'Espada de Fuego
 
 [NPC931]
-Name=Momia Guerrera
+Name=Destructor
 NpcType=0
 Head=0
 Heading=3
@@ -13339,20 +13339,20 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=10000
-MinHP=10000
-MaxHP=10000
-MaxHIT=175
+GiveEXP=20000
+MinHP=7500
+MaxHP=7500
+MaxHIT=140
 MinHIT=100
 DEF=5
 PoderAtaque=100
 PoderEvasion=100
 BackUp=0
 NROITEMS=1
-Drop1=12-10000 'Oro
+Drop1=12-1000 'Oro
 
 [NPC932]
-Name=Momia Faraon
+Name=Momia Del Desierto
 NpcType=0
 Head=0
 Heading=3
@@ -13365,17 +13365,17 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=500000
-MinHP=100000
-MaxHP=100000
-MaxHIT=300
+GiveEXP=60000
+MinHP=30000
+MaxHP=30000
+MaxHIT=250
 MinHIT=200
 DEF=20
 PoderAtaque=200
-PoderEvasion=200
+PoderEvasion=30
 BackUp=0
 NROITEMS=1
-Drop1=12-100000 'Oro
+Drop1=12-3000 'Oro
 
 [NPC933]
 Name=Titan de Tierra
@@ -13423,7 +13423,7 @@ Hostile=1
 Domable=0
 Alineacion=2
 Comercia=0
-GiveEXP=100000
+GiveEXP=600000
 MinHP=300000
 MaxHP=300000
 MaxHIT=600

@@ -2523,13 +2523,19 @@ Sub CalcularDarExp(ByVal Userindex As Integer, _
     
     '[Nacho] Le damos la exp al user
     If ExpaDar > 0 Then
+    
         If UserList(Userindex).PartyIndex > 0 Then
             Call mdParty.ObtenerExito(Userindex, ExpaDar, Npclist(NpcIndex).Pos.Map, Npclist(NpcIndex).Pos.X, Npclist(NpcIndex).Pos.Y)
+        
         Else
             UserList(Userindex).Stats.Exp = UserList(Userindex).Stats.Exp + ExpaDar
 
-            If UserList(Userindex).Stats.Exp > MAXEXP Then UserList(Userindex).Stats.Exp = MAXEXP
-            Call WriteConsoleMsg(Userindex, "Has ganado " & ExpaDar & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+            If UserList(Userindex).Stats.Exp > MAXEXP Then
+                UserList(Userindex).Stats.Exp = MAXEXP
+            End If
+            
+            'Call WriteConsoleMsg(Userindex, "Has ganado " & ExpaDar & " puntos de experiencia.", FontTypeNames.FONTTYPE_FIGHT)
+            Call WriteMultiMessage(Userindex, eMessages.EarnExp, ExpaDar)
 
         End If
         
