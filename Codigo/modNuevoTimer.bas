@@ -67,7 +67,7 @@ End Function
 
 ' CASTING DE HECHIZOS
 Public Function IntervaloPermiteLanzarSpell(ByVal Userindex As Integer, _
-                                            Optional ByVal Actualizar As Boolean = True) As Boolean
+   Optional ByVal Actualizar As Boolean = True) As Boolean
     '***************************************************
     'Author: Unknown
     'Last Modification: -
@@ -84,10 +84,11 @@ Public Function IntervaloPermiteLanzarSpell(ByVal Userindex As Integer, _
 
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 0, 1, 0)
         IntervaloPermiteLanzarSpell = True
     Else
         IntervaloPermiteLanzarSpell = False
-
+        Call modAntiCheat.AddCount(Userindex, 0, 0, 1, 0)
     End If
 
 End Function
@@ -111,10 +112,11 @@ Public Function IntervaloPermiteAtacar(ByVal Userindex As Integer, _
 
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 1, 0, 0)
         IntervaloPermiteAtacar = True
     Else
         IntervaloPermiteAtacar = False
-
+        Call modAntiCheat.AddCount(Userindex, 0, 1, 0, 0)
     End If
 
 End Function
@@ -271,10 +273,11 @@ Public Function IntervaloPermiteUsar(ByVal Userindex As Integer, _
             'UserList(UserIndex).Counters.failedUsageAttempts = 0
         End If
 
+        Call modAntiCheat.RestaCount(Userindex, 0, 0, 0, 1)
         IntervaloPermiteUsar = True
     Else
         IntervaloPermiteUsar = False
-        
+        Call modAntiCheat.AddCount(Userindex, 0, 0, 0, 1)
         'UserList(UserIndex).Counters.failedUsageAttempts = UserList(UserIndex).Counters.failedUsageAttempts + 1
         
         'Tolerancia arbitraria - 20 es MUY alta, la esta chiteando zarpado
@@ -300,10 +303,11 @@ Public Function IntervaloPermiteUsarArcos(ByVal Userindex As Integer, _
     
     If TActual - UserList(Userindex).Counters.TimerPuedeUsarArco >= IntervaloFlechasCazadores Then
         If Actualizar Then UserList(Userindex).Counters.TimerPuedeUsarArco = TActual
+        Call modAntiCheat.RestaCount(Userindex, 1, 0, 0, 0)
         IntervaloPermiteUsarArcos = True
     Else
         IntervaloPermiteUsarArcos = False
-
+        Call modAntiCheat.AddCount(Userindex, 1, 0, 0, 0)
     End If
 
 End Function
