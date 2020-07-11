@@ -23750,7 +23750,7 @@ Public Sub HandleLimpiarMundo(ByVal Userindex As Integer)
     
     Call LogGM(UserList(Userindex).Name, "forzo la limpieza del mundo.")
     
-    tickLimpieza = 16
+    tickLimpieza = 301
     
 End Sub
 
