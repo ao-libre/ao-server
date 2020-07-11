@@ -3122,7 +3122,7 @@ Private Sub HandleWork(ByVal Userindex As Integer)
             Case Ocultarse
                 
                 ' Verifico si se peude ocultar en este mapa
-                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
+                If (MapInfo(.Pos.Map).OcultarSinEfecto = 1) Or (MapInfo(.Pos.Map).InviSinEfecto = 1) Then
                     Call WriteConsoleMsg(Userindex, "Ocultarse no funciona aqui!", FontTypeNames.FONTTYPE_INFO)
                     Exit Sub
 
@@ -6039,16 +6039,23 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
             If LenB(UserList(i).Name) <> 0 Then
                 
-                ' Agregamos el nombre al final del string.
-                Call SB.Append(UserList(i).Name)
-                
                 ' Si es trabajador...
                 If UserList(i).Clase = eClass.Worker Then
+
                     ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
                     CountTrabajadores = CountTrabajadores + 1
-                    
-                    ' Agregamos un sufijo que indique que es un trabajador.
-                    Call SB.Append(" [T]")
+
+                    If .Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100 Then
+                        ' Agregamos el nombre al final del string.
+                        Call SB.Append(UserList(i).Name)
+                        
+                        ' Agregamos un sufijo que indique que es un trabajador.
+                        Call SB.Append(" [T]")
+                    End If
+                
+                Else 
+                    ' Agregamos el nombre al final del string.
+                    Call SB.Append(UserList(i).Name)
                 End If
                 
                 ' Si no terminamos de recorrer la lista, agregamos el separador.
