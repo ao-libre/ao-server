@@ -1009,6 +1009,54 @@ Function EsUsable(ByVal ObjIndex As Integer)
 
 End Function
 
+Public Function EsBarca(ByRef Objeto As ObjData) As Boolean
+    
+    Select Case Objeto.Ropaje
+        
+        Case iFragataFantasmal, iFragataReal, iFragataCaos, iBarca, iBarcaCiuda, iBarcaCiudaAtacable, iBarcaReal, iBarcaRealAtacable, iBarcaPk, iBarcaCaos
+            EsBarca = True
+            Exit Function
+            
+        Case EsBarca
+            EsGalera = False
+            Exit Function
+            
+    End Select
+    
+End Function
+
+Public Function EsGalera(ByRef Objeto As ObjData) As Boolean
+    
+    Select Case Objeto.Ropaje
+        
+        Case iGalera, iGaleraCiuda, iGaleraCiudaAtacable, iGaleraReal, iGaleraRealAtacable, iGaleraRealAtacable, iGaleraPk, iGaleraCaos
+            EsGalera = True
+            Exit Function
+            
+        Case Else
+            EsGalera = False
+            Exit Function
+            
+    End Select
+    
+End Function
+
+Public Function EsGaleon(ByRef Objeto As ObjData) As Boolean
+    
+    Select Case Objeto.Ropaje
+        
+        Case iGaleon, iGaleonCiuda, iGaleonCiudaAtacable, iGaleonReal, iGaleonRealAtacable, iGaleonPk, iGaleonCaos
+            EsGaleon = True
+            Exit Function
+            
+        Case Else
+            EsGaleon = False
+            Exit Function
+            
+    End Select
+    
+End Function
+
 Function SexoPuedeUsarItem(ByVal Userindex As Integer, _
                            ByVal ObjIndex As Integer, _
                            Optional ByRef sMotivo As String) As Boolean
