@@ -1914,7 +1914,7 @@ BackUp=1
 [NPC15] 'Provisiones Nix
 Name=Thorkis
 NpcType=0
-Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de Nix!
+Desc=Que tal amigo! Entra, pues tengo las mejores provisiones de todo Aergentum!
 Head=504
 Heading=3
 Body=202
