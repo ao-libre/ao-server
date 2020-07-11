@@ -1046,4 +1046,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 07/07/2020: Se agregan Gargola Zombie Infernal, Guerrero Protector, Lord Kraken, Conjuradora Del Bosque, Dama De Las Tinieblas y Colmillo De Sable Ancestral (Lorelei)
 * 07/07/2020: Ahora el servidor envia los intervalos de Invisibilidad y dopas (Cuicui)
 * 09/07/2020: Arreglado: Te pedia skills mayores a 100 para usar Galera o Galeón. (jopiortiz)
+* 07/07/2020: Al actualizar el NPC's.dat, actualizamos la info. de los NPC's spawneados. (Cuicui)
+* 07/07/2020: Ahora el servidor envia los intervalos de Invisibilidad y dopas (Cuicui)
 * 12/07/2020: Ahora solo gms y cazadores con 100 skills en supervivencia pueden ver los trabajadores en la lista de /online (RecoX)
