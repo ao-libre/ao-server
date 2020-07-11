@@ -2545,11 +2545,15 @@ Agarrable=1
 MineralIndex=193
 
 [OBJ236]
-Name=Atlas Argentum 2
-GrhIndex=538
-ObjType=12
+Name=Laud de los Gnomos
+GrhIndex=685
+ObjType=26
 Agarrable=0
+Valor=6030
 Crucial=0
+Madera=1500
+SkCarpinteria=100
+SND1=219
 
 [OBJ238]
 Name=Tunica Azul
@@ -8532,15 +8536,29 @@ LingO=0
 SkHerreria=80
 
 [OBJ696]
-Name=Laud de los Gnomos
+Name=Laud Magico
 GrhIndex=685
-ObjType=26
+ObjType=18
 Agarrable=0
+StaffPower=2
+MinHit=1
+MaxHit=1
 Valor=6030
 Crucial=0
+CP1=PIRATA
+CP2=CAZADOR
+CP3=PALADIN
+CP4=CLERIGO
+CP5=ASESINO
+CP6=LADRON
+CP7=BANDIDO
+CP8=GUERRERO
+CP9=MAGO
+CP10=DRUIDA
+CP11=TRABAJADOR
 Madera=1500
 SkCarpinteria=100
-SND1=219
+
 
 [OBJ697]
 Name=Anillo de defensa Magica
