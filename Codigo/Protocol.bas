@@ -6039,23 +6039,21 @@ Private Sub HandleOnline(ByVal Userindex As Integer)
 
             If LenB(UserList(i).Name) <> 0 Then
                 
+                ' Agregamos el nombre al final del string.
+                Call SB.Append(UserList(i).Name)
+                
+                ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
+                CountTrabajadores = CountTrabajadores + 1
+                
                 ' Si es trabajador...
                 If UserList(i).Clase = eClass.Worker Then
-
-                    ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
-                    CountTrabajadores = CountTrabajadores + 1
-
-                    If .Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100 Then
-                        ' Agregamos el nombre al final del string.
-                        Call SB.Append(UserList(i).Name)
-                        
+                    
+                    ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
+                    If EsGm(Userindex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
                         ' Agregamos un sufijo que indique que es un trabajador.
                         Call SB.Append(" [T]")
                     End If
-                
-                Else 
-                    ' Agregamos el nombre al final del string.
-                    Call SB.Append(UserList(i).Name)
+
                 End If
                 
                 ' Si no terminamos de recorrer la lista, agregamos el separador.
