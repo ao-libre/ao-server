@@ -600,7 +600,7 @@ Private Sub listDats_Click()
             Call CargarForbidenWords
           
         Case "NPCS.DAT"
-            Call CargaNpcsDat(True)
+            Call CargaNpcsDat
 
         Case "OBJ.DAT"
             Call LoadOBJData
