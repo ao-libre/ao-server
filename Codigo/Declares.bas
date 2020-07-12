@@ -754,7 +754,6 @@ Public Enum eOBJType
     otFlechas = 32
     otBotellaVacia = 33
     otBotellaLlena = 34
-    otManuales = 35
     otArbolElfico = 36
     otMochilas = 37
     otYacimientoPez = 38

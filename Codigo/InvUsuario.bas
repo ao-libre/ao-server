@@ -599,7 +599,6 @@ Sub MakeObj(ByRef obj As obj, _
             Dim IsNotBarco As Boolean
             Dim IsNotMontura As Boolean
             Dim IsNotYunque As Boolean
-            Dim IsNotManual As Boolean
             Dim IsNotForo As Boolean
             Dim IsNotPuerta As Boolean
             Dim IsNotInstrumentos As Boolean
@@ -608,28 +607,27 @@ Sub MakeObj(ByRef obj As obj, _
             Dim IsNotMochilas As Boolean
             Dim IsValidObjectToClean As Boolean
 
-            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata 
-            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport 
-            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua 
-            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez 
-            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento 
-            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles 
-            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico 
-            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles 
-            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles 
-            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos 
-            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas 
-            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque 
-            IsNotManual = ObjData(obj.ObjIndex).OBJType <> otManuales 
-            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos 
-            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas 
-            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos 
-            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos 
-            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas 
-            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas 
+            IsNotObjFogata = ObjData(obj.ObjIndex).OBJType <> otFogata
+            IsNotObjTeleport = ObjData(obj.ObjIndex).OBJType <> otTeleport
+            IsNotFragua = ObjData(obj.ObjIndex).OBJType <> otFragua
+            IsNotYacimientoPez = ObjData(obj.ObjIndex).OBJType <> otYacimientoPez
+            IsNotYacimiento = ObjData(obj.ObjIndex).OBJType <> otYacimiento
+            IsNotMueble = ObjData(obj.ObjIndex).OBJType <> otMuebles
+            IsNotArbolElfico = ObjData(obj.ObjIndex).OBJType <> otArbolElfico
+            IsNotArbol = ObjData(obj.ObjIndex).OBJType <> otArboles
+            IsNotCartel = ObjData(obj.ObjIndex).OBJType <> otCarteles
+            IsNotBarco = ObjData(obj.ObjIndex).OBJType <> otBarcos
+            IsNotMontura = ObjData(obj.ObjIndex).OBJType <> otMonturas
+            IsNotYunque = ObjData(obj.ObjIndex).OBJType <> otYunque
+            IsNotForo = ObjData(obj.ObjIndex).OBJType <> otForos
+            IsNotPuerta = ObjData(obj.ObjIndex).OBJType <> otPuertas
+            IsNotInstrumentos = ObjData(obj.ObjIndex).OBJType <> otInstrumentos
+            IsNotPergaminos = ObjData(obj.ObjIndex).OBJType <> otPergaminos
+            IsNotGemas = ObjData(obj.ObjIndex).OBJType <> otGemas
+            IsNotMochilas = ObjData(obj.ObjIndex).OBJType <> otMochilas
             
 
-            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotManual And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then 
+            If IsNotObjFogata And IsNotObjTeleport And IsNotFragua And IsNotYacimientoPez And IsNotYacimiento And IsNotMueble And IsNotArbolElfico And IsNotArbol And IsNotCartel And IsNotBarco And IsNotMontura And IsNotYunque And IsNotForo And IsNotPuerta And IsNotInstrumentos And IsNotPergaminos And IsNotGemas And IsNotMochilas Then
                 IsValidObjectToClean = True
             Else
                 IsValidObjectToClean = False
@@ -647,7 +645,7 @@ Sub MakeObj(ByRef obj As obj, _
                 Dim IsNotTileBajoTecho As Boolean
                 Dim IsNotTileBlocked As Boolean
 
-                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA 
+                IsNotTileCasaTrigger = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.CASA
                 IsNotTileBajoTecho = MapData(xPos.Map, xPos.X, xPos.Y).trigger <> eTrigger.BAJOTECHO
                 IsNotTileBlocked = MapData(xPos.Map, xPos.X, xPos.Y).Blocked <> 1
 
@@ -2198,36 +2196,6 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 Else
                     Call WriteConsoleMsg(Userindex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
                 End If
-                    
-            Case eOBJType.otManuales
-            
-                Select Case ObjIndex
-                
-                    Case 1127   ' Manual de Liderazgo
-                        
-                        If .Stats.UserSkills(eSkill.Liderazgo) < 100 Then
-                            .Stats.UserSkills(eSkill.Liderazgo) = 100
-                            Call QuitarUserInvItem(Userindex, Slot, 1)
-                            Call UpdateUserInv(False, Userindex, Slot)
-                        End If
-                        
-                    Case 1128   ' Manual de Supervivencia
-                        
-                        If .Stats.UserSkills(eSkill.Supervivencia) < 100 Then
-                            .Stats.UserSkills(eSkill.Supervivencia) = 100
-                            Call QuitarUserInvItem(Userindex, Slot, 1)
-                            Call UpdateUserInv(False, Userindex, Slot)
-                        End If
-                        
-                    Case 1129   ' Manual de Navegacion
-                        
-                        If .Stats.UserSkills(eSkill.Navegacion) < 100 Then
-                            .Stats.UserSkills(eSkill.Navegacion) = 100
-                            Call QuitarUserInvItem(Userindex, Slot, 1)
-                            Call UpdateUserInv(False, Userindex, Slot)
-                        End If
-                        
-                End Select
                     
             End Select
     
