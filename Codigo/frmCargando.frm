@@ -127,6 +127,9 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+Private VersionNumberMaster As String
+Private VersionNumberLocal As String
+
 Private Sub Form_Load()
     Label1(2).Caption = GetVersionOfTheServer()
     Picture1.Picture = LoadPicture(App.Path & "\logo.jpg")
@@ -138,7 +141,7 @@ Function VerifyIfUsingLastVersion()
     On Error Resume Next
            
     If Not (CheckIfRunningLastVersion) Then
-        If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador automatico?.", vbYesNo) = vbYes Then
+        If MsgBox("Tu version no es la actual, Deseas ejecutar el actualizador?. - Tu version: " & VersionNumberLocal & " Ultima version: " & VersionNumberMaster & " -- Your version is not up to date, open the launcher to update? ", vbYesNo) = vbYes Then
             Call ShellExecute(Me.hWnd, "open", App.Path & "\Autoupdate.exe", "", "", 1)
             End
 
@@ -150,17 +153,17 @@ End Function
 
 Private Function CheckIfRunningLastVersion() As Boolean
 
-    Dim responseGithub As String, versionNumberMaster As String, versionNumberLocal As String
+    Dim responseGithub As String
 
     Dim JsonObject     As Object
 
     responseGithub = Inet1.OpenURL("https://api.github.com/repos/ao-libre/ao-server/releases/latest")
     Set JsonObject = JSON.parse(responseGithub)
     
-    versionNumberMaster = JsonObject.Item("tag_name")
-    versionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
+    VersionNumberMaster = JsonObject.Item("tag_name")
+    VersionNumberLocal = GetVar(App.Path & "\Server.ini", "INIT", "VersionTagRelease")
     
-    If versionNumberMaster = versionNumberLocal Then
+    If VersionNumberMaster = VersionNumberLocal Then
         CheckIfRunningLastVersion = True
     Else
         CheckIfRunningLastVersion = False

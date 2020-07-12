@@ -1712,7 +1712,7 @@ Private Sub HandleLoginExistingChar(ByVal Userindex As Integer)
     If BANCheck(UserName) Then
         Call WriteErrorMsg(Userindex, "Se te ha prohibido la entrada a Argentum Online debido a tu mal comportamiento. Puedes consultar el reglamento y el sistema de soporte desde www.argentumonline.org")
     ElseIf Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectUser(Userindex, UserName, AccountHash)
     End If
@@ -1836,7 +1836,8 @@ Private Sub HandleLoginNewChar(ByVal Userindex As Integer)
     End If
                                         
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectNewUser(Userindex, UserName, AccountHash, race, gender, Class, homeland, Head)
 
@@ -22901,7 +22902,7 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
 
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
@@ -22972,7 +22973,7 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
 
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la ultima version es la " & ULTIMAVERSION & ". Tu Version " & version & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call CreateNewAccount(Userindex, UserName, Password)
     End If

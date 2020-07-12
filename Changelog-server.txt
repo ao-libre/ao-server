@@ -1038,7 +1038,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 07/07/2020: Cambio el mensaje de equipar herramienta por equipar arco (Recox)
 * 07/07/2020: Cambios en mapas (ReyarB)
 
-
 -v0.13.42
 * 07/07/2020: Ahora al salir del mimetismo después de estar embarcado te devuelve el cuerpo y cabeza original (Cuicui)
 * 07/07/2020: Fix: El comercio entre usuarios daba error por un mal envío de información (Cuicui)
@@ -1048,4 +1047,18 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 09/07/2020: Arreglado: Te pedia skills mayores a 100 para usar Galera o Galeón. (jopiortiz)
 * 07/07/2020: Al actualizar el NPC's.dat, actualizamos la info. de los NPC's spawneados. (Cuicui)
 * 07/07/2020: Ahora el servidor envia los intervalos de Invisibilidad y dopas (Cuicui)
+* 12/07/2020: Replanteamos las restricciones para la navegacion. (jopiortiz)
 * 12/07/2020: Ahora solo gms y cazadores con 100 skills en supervivencia pueden ver los trabajadores en la lista de /online (RecoX)
+* 12/07/2020: Se agrega comando /verprocesos nick para ver los procesos corriendo de algun pj para tratar de disminuir los cheats (RecoX)
+* 12/07/2020: Ahora se avisa con mas tiempo sobre el avisar mundo, 5 minutos antes y varias veces en ese intervalo de tiempo. (jopiortiz - ReyarB)
+* 12/07/2020: Se logea en los logs cuando un gm manda /limpiarmundo. (jopiortiz)
+* 12/07/2020: Momia Guerrera se renombra a destructor (grafico no coincidia) (Lorelei)
+* 12/07/2020: Se datea y rebalancea Momia Faraon se Renombra a Momia del desierto ( se datea y rebalancea para zonas deserticas ) (Lorelei)
+* 12/07/2020: Titan de agua Se rebalancea con un valor al igual que los demas tiranes en exp (Lorelei)
+* 12/07/2020: Momia Guerrera se renombra a destructor (grafico no coincidia) se datea y rebalancea (Lorelei)
+* 12/07/2020: Momia Faraon se Renombra a Momia del desierto ( se datea y rebalancea para zonas deserticas ) (Lorelei)
+* 12/07/2020: Titan de agua Se rebalancea con un valor al igual que los demas tiranes en exp (Lorelei)
+* 12/07/2020: Se agregan Tigre De Bengala, Jabali Adulto, Destructor De Almas y Archimago De Fuego (Lorelei)
+* 12/07/2020: Solo se pueden actualizar los NPC's activos desde el frmServidor. Debido a que es una operacion costosa en terminos de rendimiento para el servidor. (jopiortiz)
+* 12/07/2020: Se agregan :Gargola Zombie Infernal,Guerrero Protector,Lord Kraken,Conjuradora Del Bosque,Dama De Las Tinieblas y Colmillo De Sable Ancestral (Lorelei)
+* 12/07/2020: Cuando aparece MsgBox diciendo que no es la ultima version, mostramos cual es la ultima y que version tenemos (RecoX)
