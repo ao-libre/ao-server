@@ -1,4 +1,3 @@
-Attribute VB_Name = "modAntiCheat"
 Option Explicit
  
 Public Type TimeIntervalos
@@ -207,4 +206,3 @@ Private Sub LogIntervalos(ByVal Nombre As String, ByVal Str As String)
 errHandler:
  
 End Sub
-
