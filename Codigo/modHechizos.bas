@@ -445,11 +445,10 @@ Sub DecirPalabrasMagicas(ByVal SpellIndex As Integer, ByVal Userindex As Integer
 
     '***************************************************
     'Author: Unknown
-    'Last Modification: 17/11/2009
+    'Last Modification: 28/12/2016
     '25/07/2009: ZaMa - Invisible admins don't say any word when casting a spell
     '17/11/2009: ZaMa - Now the user become visible when casting a spell, if it is hidden
     '28/12/2016: Shak - Palabras magicas
-    '21/02/2019: Jopi - Amuleto del Silencio
     '***************************************************
     On Error GoTo ErrHandler
 
