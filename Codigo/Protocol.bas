@@ -22900,7 +22900,7 @@ Private Sub HandleLoginExistingAccount(ByVal Userindex As Integer)
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
 
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call ConnectAccount(Userindex, UserName, Password)
 
@@ -22971,7 +22971,7 @@ Private Sub HandleLoginNewAccount(ByVal Userindex As Integer)
     version = CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte()) & "." & CStr(buffer.ReadByte())
 
     If Not VersionOK(version) Then
-        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.com.ar")
+        Call WriteErrorMsg(Userindex, "Esta version del juego es obsoleta, la version correcta es la " & ULTIMAVERSION & ". La misma se encuentra disponible en www.argentumonline.org")
     Else
         Call CreateNewAccount(Userindex, UserName, Password)
     End If
