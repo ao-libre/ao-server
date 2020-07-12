@@ -2196,7 +2196,7 @@ Sub UseInvItem(ByVal Userindex As Integer, ByVal Slot As Byte)
                 Else
                     Call WriteConsoleMsg(Userindex, "Tu clase no puede usar este objeto.", FontTypeNames.FONTTYPE_INFO)
                 End If
-                    
+
             End Select
     
     End With
