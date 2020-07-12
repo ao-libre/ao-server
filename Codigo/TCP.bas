@@ -29,7 +29,7 @@ Attribute VB_Name = "TCP"
 
 #If False Then
 
-    Dim ErrHandler, Length, index As Variant
+    Dim errHandler, Length, index As Variant
 
 #End If
 
@@ -838,7 +838,7 @@ Sub CloseSocket(ByVal Userindex As Integer)
     '4/4/2020: FrankoH298 - Flusheamos el buffer antes de cerrar el socket.
     '
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     
     Call FlushBuffer(Userindex)
     
@@ -898,7 +898,7 @@ Sub CloseSocket(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
 
     Call ResetUserSlot(Userindex)
         
@@ -1412,7 +1412,7 @@ Sub ConnectUser(ByVal Userindex As Integer, _
         If NumUsers > RecordUsuariosOnline Then
             Call SendData(SendTarget.ToAll, 0, PrepareMessageConsoleMsg("Record de usuarios conectados simultaneamente. Hay " & NumUsers & " usuarios.", FontTypeNames.FONTTYPE_INFOBOLD))
             RecordUsuariosOnline = NumUsers
-            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", str(RecordUsuariosOnline))
+            Call WriteVar(IniPath & "Server.ini", "INIT", "RECORD", Str(RecordUsuariosOnline))
 
             'Este ultimo es para saber siempre los records en el frmMain
             frmMain.txtRecordOnline.Text = RecordUsuariosOnline
@@ -1611,6 +1611,7 @@ Sub ResetContadores(ByVal Userindex As Integer)
 
     End With
 
+    Call modAntiCheat.ResetAllCount(Userindex)
 End Sub
 
 Sub ResetCharInfo(ByVal Userindex As Integer)
@@ -1935,7 +1936,7 @@ Sub CloseUser(ByVal Userindex As Integer)
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Dim n    As Integer
 
@@ -2052,7 +2053,7 @@ Sub CloseUser(ByVal Userindex As Integer)
 
     Exit Sub
 
-ErrHandler:
+errHandler:
     Call LogError("Error en CloseUser. Numero " & Err.Number & " Descripcion: " & Err.description)
 
 End Sub
@@ -2064,7 +2065,7 @@ Sub ReloadSokcet()
     '
     '***************************************************
 
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
 
     Call LogApiSock("ReloadSokcet() " & NumUsers & " " & LastUser & " " & MaxUsers)
     
@@ -2077,7 +2078,7 @@ Sub ReloadSokcet()
 
     Exit Sub
     
-ErrHandler:
+errHandler:
     Call LogError("Error en CheckSocketState " & Err.Number & ": " & Err.description)
 
 End Sub
