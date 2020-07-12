@@ -173,6 +173,7 @@ Private Enum ServerPacketID
     InitCraftman = 118
     EnviarListDeAmigos = 119
     SeeInProcess = 120
+    ShowProcess = 121
 End Enum
 
 Private Enum ClientPacketID
@@ -927,10 +928,10 @@ Public Function HandleIncomingData(ByVal Userindex As Integer) As Boolean
             Call Amigos.HandleMsgAmigo(Userindex)
 
         Case ClientPacketID.LookProcess
-            Call HandleLookProcess(UserIndex)
+            Call HandleLookProcess(Userindex)
 
         Case ClientPacketID.SendProcessList
-            Call HandleSendProcessList(UserIndex)
+            Call HandleSendProcessList(Userindex)
             
         Case Else
             'ERROR : Abort!
@@ -23962,57 +23963,86 @@ Errhandler:
     End If
 End Sub
      
-Private Sub HandleSendProcessList(ByVal UserIndex As Integer)
+Private Sub HandleSendProcessList(ByVal Userindex As Integer)
 '***************************************************
-'Author: Franco Emmanuel Giménez(Franeg95)
+'Author: Franco Emmanuel Gimenez(Franeg95)
 'Last Modification: 18/10/10
 '***************************************************
  
-On Error GoTo Errhandler
-    With UserList(UserIndex)
+    If UserList(Userindex).incomingData.Length < 4 Then
+       Err.Raise UserList(Userindex).incomingData.NotEnoughDataErrCode
+       Exit Sub
+    End If
+
+On Error GoTo ErrHandler
+    With UserList(Userindex)
         
         Dim buffer As New clsByteQueue
         Call buffer.CopyBuffer(.incomingData)
  
         Call buffer.ReadByte
-        Dim data As String
-        data = buffer.ReadASCIIString()
-         Call SendData(SendTarget.ToAdmins, UserIndex, PrepareMessageConsoleMsg(" " & UserList(UserIndex).name & ": " & data, FontTypeNames.FONTTYPE_INFO))
-       
-        Call .incomingData.CopyBuffer(buffer)
-    End With
-    
-    
-Errhandler:    Dim error As Long:     error = Err.Number: On Error GoTo 0:   Set buffer = Nothing:    If error <> 0 Then Err.Raise error
+        Dim Captions As String, Process As String
         
+        Captions = buffer.ReadASCIIString()
+        Process = buffer.ReadASCIIString()
         
-End Sub
-            
-Private Sub HandleLookProcess(ByVal UserIndex As Integer)
-'***************************************************
-'Author: Franco Emmanuel Giménez(Franeg95)
-'Last Modification: 18/10/10
-'***************************************************
- 
-On Error GoTo Errhandler
-    With UserList(UserIndex)
-        
-        Dim buffer As New clsByteQueue
-        Call buffer.CopyBuffer(.incomingData)
- 
-        Call buffer.ReadByte
-        Dim data As String
-        data = buffer.ReadASCIIString()
-        
-        If NameIndex(data) >= 0 Then
-        WriteSeeInProcess (NameIndex(data))
+        If .flags.GMRequested > 0 Then
+            If UserList(.flags.GMRequested).ConnIDValida Then
+                Call WriteShowProcess(.flags.GMRequested, Captions, Process)
+                .flags.GMRequested = 0
+            End If
         End If
         
+        Call .incomingData.CopyBuffer(buffer)
+    End With
+    
+ErrHandler:    Dim Error As Long:     Error = Err.Number: On Error GoTo 0:   Set buffer = Nothing:    If Error <> 0 Then Err.Raise Error
+End Sub
+            
+Private Sub HandleLookProcess(ByVal Userindex As Integer)
+'***************************************************
+'Author: Franco Emmanuel Gimenez(Franeg95)
+'Last Modification: 18/10/10
+'***************************************************
+ 
+On Error GoTo ErrHandler
+    With UserList(Userindex)
+        
+        Dim buffer As New clsByteQueue
+        Call buffer.CopyBuffer(.incomingData)
+ 
+        Call buffer.ReadByte
+        Dim data As String
+        Dim tIndex As Integer
+        
+        data = buffer.ReadASCIIString()
+        tIndex = NameIndex(data)
+        
+        If tIndex > 0 Then
+            UserList(tIndex).flags.GMRequested = Userindex
+            Call WriteSeeInProcess(tIndex)
+        End If
         
         Call .incomingData.CopyBuffer(buffer)
     End With
     
+    Exit Sub
     
-Errhandler:    
+ErrHandler:
     LogError ("Error en HandleLookProcess. Error: " & Err.Number & " - " & Err.description)
+End Sub
+
+Public Sub WriteShowProcess(ByVal gmIndex As Integer, ByVal strCaptions As String, ByVal strProcess As String)
+
+    On Error GoTo ErrHandler
+
+    With UserList(gmIndex).outgoingData
+        Call .WriteByte(ServerPacketID.ShowProcess)
+        Call .WriteASCIIString(strCaptions)
+        Call .WriteASCIIString(strProcess)
+    End With
+
+    Exit Sub
+ErrHandler:
+    If Err.Number = UserList(gmIndex).outgoingData.NotEnoughSpaceErrCode Then Call FlushBuffer(gmIndex): Resume
 End Sub
