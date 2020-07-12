@@ -1038,7 +1038,6 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 07/07/2020: Cambio el mensaje de equipar herramienta por equipar arco (Recox)
 * 07/07/2020: Cambios en mapas (ReyarB)
 
-
 -v0.13.42
 * 07/07/2020: Ahora al salir del mimetismo después de estar embarcado te devuelve el cuerpo y cabeza original (Cuicui)
 * 07/07/2020: Fix: El comercio entre usuarios daba error por un mal envío de información (Cuicui)
@@ -1062,4 +1061,4 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 12/07/2020: Se agregan Tigre De Bengala, Jabali Adulto, Destructor De Almas y Archimago De Fuego (Lorelei)
 * 12/07/2020: Solo se pueden actualizar los NPC's activos desde el frmServidor. Debido a que es una operacion costosa en terminos de rendimiento para el servidor. (jopiortiz)
 * 12/07/2020: Se agregan :Gargola Zombie Infernal,Guerrero Protector,Lord Kraken,Conjuradora Del Bosque,Dama De Las Tinieblas y Colmillo De Sable Ancestral (Lorelei)
-* 12/07/2020: Cuando aparece MsgBox diciend que no es la ultima version, mostramos cual es la ultima y que version tenemos (RecoX)
+* 12/07/2020: Cuando aparece MsgBox diciendo que no es la ultima version, mostramos cual es la ultima y que version tenemos (RecoX)
