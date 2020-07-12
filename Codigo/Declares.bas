@@ -484,8 +484,6 @@ Public Const RED_PESCA                      As Integer = 543
 
 Public Const CANA_PESCA                     As Integer = 138
 
-Public Const AMULETO_DEL_SILENCIO           As Integer = 1126
-
 Public Enum eNPCType
 
     Comun = 0

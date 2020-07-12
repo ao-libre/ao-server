@@ -452,10 +452,7 @@ Sub DecirPalabrasMagicas(ByVal SpellIndex As Integer, ByVal Userindex As Integer
     '21/02/2019: Jopi - Amuleto del Silencio
     '***************************************************
     On Error GoTo ErrHandler
-    
-    ' Amuleto del Silencio
-    If TieneObjetos(AMULETO_DEL_SILENCIO, 1, Userindex) Then Exit Sub
-              
+
     With UserList(Userindex)
 
         If .flags.AdminInvisible <> 1 Then
