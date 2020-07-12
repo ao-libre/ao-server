@@ -1972,9 +1972,6 @@ Private Sub HandleTalk(ByVal Userindex As Integer)
 
         End If
 
-        'Sacamos el ... indicando que esta chateando del personaje
-        Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterIsInChatMode(.Char.CharIndex))
-        
         'If we got here then packet is complete, copy data back to original queue
         Call .incomingData.CopyBuffer(buffer)
 
@@ -24055,24 +24052,37 @@ ErrHandler:
 
 End Sub
 
-Public Sub HandleSendIfCharIsInChatMode(ByVal Userindex As Integer)
+Private Sub HandleSendIfCharIsInChatMode(ByVal UserIndex As Integer)
 
-    On Error GoTo ErrHandler
+1   On Error GoTo HandleSendIfCharIsInChatMode_Error
 
-    With UserList(Userindex)
-        'Remove packet ID
-        Call .incomingData.ReadByte
-        
-        Call SendData(SendTarget.ToPCAreaButIndex, Userindex, PrepareMessageCharacterIsInChatMode(.Char.CharIndex))
-    End With
+2   With UserList(UserIndex)
 
-    Exit Sub
+3       Call .incomingData.ReadByte
 
-ErrHandler:
+8       .Char.Escribiendo = IIf(.Char.Escribiendo = 1, 2, 1)
+9       Call SendData(SendTarget.ToPCAreaButIndex, UserIndex, PrepareMessageSetTypingFlagToCharIndex(.Char.CharIndex, .Char.Escribiendo))
 
-    If Err.Number = UserList(Userindex).outgoingData.NotEnoughSpaceErrCode Then
-        Call FlushBuffer(Userindex)
-        Resume
-    End If
+10  End With
+
+11  Exit Sub
+
+HandleSendIfCharIsInChatMode_Error:
+
+12  Call LogError("Error " & Err.Number & " (" & Err.description & ") in procedure HandleSendIfCharIsInChatMode of M�dulo Protocol " & Erl & ".")
 
 End Sub
+
+Private Function PrepareMessageSetTypingFlagToCharIndex(ByVal CharIndex As Integer, ByVal Escribiendo As Byte) As String
+
+    With auxiliarBuffer
+
+        Call .WriteByte(ServerPacketID.PlayIsInChatMode)
+        Call .WriteInteger(CharIndex)
+        Call .WriteByte(Escribiendo)
+
+        PrepareMessageSetTypingFlagToCharIndex = .ReadASCIIStringFixed(.Length)
+
+    End With
+
+End Function

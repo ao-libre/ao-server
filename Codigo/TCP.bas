@@ -2053,6 +2053,7 @@ Sub ResetCharInfo(ByVal Userindex As Integer)
     '03/15/2006 Maraxus - Uso de With para mayor performance y claridad.
     '*************************************************
     With UserList(Userindex).Char
+        .Escribiendo = 0
         .body = 0
         .CascoAnim = 0
         .CharIndex = 0

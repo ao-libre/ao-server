@@ -973,7 +973,9 @@ End Type
 
 'Datos de user o npc
 Public Type Char
-
+    
+    Escribiendo As Byte
+    
     CharIndex As Integer
     Head As Integer
     body As Integer
