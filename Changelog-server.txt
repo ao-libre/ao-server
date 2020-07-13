@@ -1062,3 +1062,9 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 12/07/2020: Solo se pueden actualizar los NPC's activos desde el frmServidor. Debido a que es una operacion costosa en terminos de rendimiento para el servidor. (jopiortiz)
 * 12/07/2020: Se agregan :Gargola Zombie Infernal,Guerrero Protector,Lord Kraken,Conjuradora Del Bosque,Dama De Las Tinieblas y Colmillo De Sable Ancestral (Lorelei)
 * 12/07/2020: Cuando aparece MsgBox diciendo que no es la ultima version, mostramos cual es la ultima y que version tenemos (RecoX)
+
+-v0.13.43
+* 13/07/2020: AntiCheat vía server, al superar los intervalos, avisa por consola a los GM's y también deja un .log en la carpeta AntiCheats (Gexur)
+* 13/07/2020: Terminado sistemas flechas viajeras (Lorwik)
+* 13/07/2020: Se mejora un poco el /verprocesos (CuiCui)
+* 13/07/2020: Ahora el comando /SEGUIR funciona tambien siendo gm invisible (waltersit0)
