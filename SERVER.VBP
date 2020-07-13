@@ -79,6 +79,7 @@ Module=Retos; Codigo\Retos.bas
 Module=Cuentas; Codigo\Cuentas.bas
 Module=Logs; Codigo\Logs.bas
 Module=Amigos; Codigo\Amigos.bas
+Module=modAntiCheat; Codigo\modAntiCheat.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
