@@ -1066,3 +1066,4 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 -v0.13.43
 * 13/07/2020: AntiCheat vía server, al superar los intervalos, avisa por consola a los GM's y también deja un .log en la carpeta AntiCheats, hay que crearla en la carpeta del servidor. (Gexur)
 * 13/07/2020: Terminado sistemas flechas viajeras (Lorwik)
+* 13/07/2020: Se mejora un poco el /verprocesos (CuiCui)
