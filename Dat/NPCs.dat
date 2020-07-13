@@ -5177,8 +5177,8 @@ Domable=0
 Alineacion=2
 Comercia=0
 GiveEXP=495
-MinHP=1000
-MaxHP=1000
+MinHP=5000
+MaxHP=5000
 MaxHIT=45
 MinHIT=10
 DEF=0
@@ -5189,10 +5189,10 @@ SND2=103
 BackUp=0
 NROITEMS=5
 Drop1=12-300 'Oro
-Drop2=697-3 'Anillo Magico
-Drop3=698-2 'Anillo de Resistencia Magica
+Drop2=697-1 'Anillo Magico
+Drop3=698-1 'Anillo de Resistencia Magica
 Drop4=699-1 'Anillo de Disolucion Magica
-Drop5=503-2 'Trampa Visual
+Drop5=503-1 'Trampa Visual
 
 ############################################
 
