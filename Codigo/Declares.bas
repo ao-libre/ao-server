@@ -1344,6 +1344,7 @@ End Type
 
 'Flags
 Public Type UserFlags
+    GMRequested As Integer
     ' Retos
     SlotReto As Byte
     SlotRetoUser As Byte
