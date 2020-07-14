@@ -206,9 +206,12 @@ Public Function UserImpactoNpc(ByVal UserIndex As Integer, _
             
             MunicionObjIndex = UserList(UserIndex).Invent.MunicionEqpObjIndex
             
-            'Tiene munición?
+            'Tiene municiï¿½n?
             If MunicionObjIndex <> 0 Then
-                Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageProyectil(UserIndex, UserList(UserIndex).Char.CharIndex, Npclist(NpcIndex).Char.CharIndex, ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+                'si es un caza oculto no manda la animacion de flecha
+                If Not (UserList(Userindex).Clase = eClass.Hunter And UserList(Userindex).flags.Oculto = 1) Then
+                    Call SendData(SendTarget.ToPCArea, UserIndex, PrepareMessageProyectil(UserIndex, UserList(UserIndex).Char.CharIndex, Npclist(NpcIndex).Char.CharIndex, ObjData(UserList(UserIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+                End If
             End If
         Else
             PoderAtaque = PoderAtaqueArma(UserIndex)
@@ -1279,8 +1282,12 @@ Public Function UsuarioImpacto(ByVal AtacanteIndex As Integer, _
         If .Invent.EscudoEqpObjIndex > 0 Then
             UserPoderEvasionEscudo = PoderEvasionEscudo(VictimaIndex)
             UserPoderEvasion = UserPoderEvasion + UserPoderEvasionEscudo
-            If UserList(AtacanteIndex).Invent.MunicionEqpObjIndex > 0 Then _
-                Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessageProyectil(AtacanteIndex, UserList(AtacanteIndex).Char.CharIndex, .Char.CharIndex, ObjData(UserList(AtacanteIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+            If UserList(AtacanteIndex).Invent.MunicionEqpObjIndex > 0 Then
+                'si es un caza oculto no manda la animacion de flecha
+                If Not (UserList(AtacanteIndex).Clase = eClass.Hunter And UserList(AtacanteIndex).flags.Oculto = 1) Then
+                    Call SendData(SendTarget.ToPCArea, AtacanteIndex, PrepareMessageProyectil(AtacanteIndex, UserList(AtacanteIndex).Char.CharIndex, .Char.CharIndex, ObjData(UserList(AtacanteIndex).Invent.MunicionEqpObjIndex).GrhIndex))
+                End if
+            End if
         Else
             UserPoderEvasionEscudo = 0
 
