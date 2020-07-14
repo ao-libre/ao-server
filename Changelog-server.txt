@@ -1069,3 +1069,4 @@ Mapa 31, Mapa 32, Mapa 34, Mapa 35, Mapa 45, Mapa 78, Mapa 79, Mapa 87, Mapa 292
 * 13/07/2020: Se mejora un poco el /verprocesos (CuiCui)
 * 13/07/2020: Ahora el comando /SEGUIR funciona tambien siendo gm invisible (waltersit0)
 * 14/07/2020: Serpiente de anthares Rebalanceada al manual (Lorelei)
+* 14/07/2020: Los items que no te puedas equipar aparecen con una X roja" (waltersit0)
