@@ -6054,14 +6054,14 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
                 ' Agregamos el nombre al final del string.
                 Call SB.Append(UserList(i).Name)
                 
-                ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
-                CountTrabajadores = CountTrabajadores + 1
-                
                 ' Si es trabajador...
                 If UserList(i).Clase = eClass.Worker Then
                     
                     ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
                     If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
+                        ' Incrementamos en 1 el contador de jugadores online que son trabajadores.
+                        CountTrabajadores = CountTrabajadores + 1
+
                         ' Agregamos un sufijo que indique que es un trabajador.
                         Call SB.Append(" [T]")
                     End If
@@ -6081,7 +6081,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
         Next i
         
         Call WriteConsoleMsg(UserIndex, SB.toString, FontTypeNames.FONTTYPE_INFO)
-        Call WriteConsoleMsg(UserIndex, "Usuarios en linea: " & CStr(Count) & " (" & CStr(CountTrabajadores) & " trabajando)", FontTypeNames.FONTTYPE_INFOBOLD)
+        Call WriteConsoleMsg(UserIndex, "Usuarios en linea: " & CStr(Count) & " (" & CStr(CountTrabajadores) & " trabajadores)", FontTypeNames.FONTTYPE_INFOBOLD)
         
         ' Liberamos los recursos del generador de strings
         Set SB = Nothing
@@ -19355,7 +19355,6 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As By
         Call .WriteInteger(obData.MaxDef)
         Call .WriteInteger(obData.MinDef)
         Call .WriteSingle(SalePrice(ObjIndex))
-        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
 
     End With
 
@@ -19429,8 +19428,7 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Call .WriteInteger(obData.MaxDef)
         Call .WriteInteger(obData.MinDef)
         Call .WriteLong(obData.Valor)
-        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
-        
+
     End With
 
     Exit Sub
@@ -19957,7 +19955,6 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, _
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.MaxDef)
         Call .WriteInteger(ObjInfo.MinDef)
-        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, obj.objIndex))
 
     End With
 
@@ -21127,7 +21124,6 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, _
             Call .WriteInteger(ObjData(ObjIndex).MinDef)
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
-            Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
         Else ' Borra el item
             Call .WriteLong(0)
             Call .WriteByte(0)
@@ -21137,7 +21133,6 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, _
             Call .WriteInteger(0)
             Call .WriteLong(0)
             Call .WriteASCIIString("")
-            Call .WriteBoolean(False)
 
         End If
 
