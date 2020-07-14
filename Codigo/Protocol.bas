@@ -19355,6 +19355,7 @@ Public Sub WriteChangeInventorySlot(ByVal UserIndex As Integer, ByVal Slot As By
         Call .WriteInteger(obData.MaxDef)
         Call .WriteInteger(obData.MinDef)
         Call .WriteSingle(SalePrice(ObjIndex))
+        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
 
     End With
 
@@ -19428,7 +19429,8 @@ Public Sub WriteChangeBankSlot(ByVal UserIndex As Integer, ByVal Slot As Byte)
         Call .WriteInteger(obData.MaxDef)
         Call .WriteInteger(obData.MinDef)
         Call .WriteLong(obData.Valor)
-
+        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
+        
     End With
 
     Exit Sub
@@ -19955,6 +19957,7 @@ Public Sub WriteChangeNPCInventorySlot(ByVal UserIndex As Integer, _
         Call .WriteInteger(ObjInfo.MinHIT)
         Call .WriteInteger(ObjInfo.MaxDef)
         Call .WriteInteger(ObjInfo.MinDef)
+        Call .WriteBoolean(ItemIncompatibleConUser(Userindex, obj.objIndex))
 
     End With
 
@@ -21124,6 +21127,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, _
             Call .WriteInteger(ObjData(ObjIndex).MinDef)
             Call .WriteLong(SalePrice(ObjIndex))
             Call .WriteASCIIString(ObjData(ObjIndex).Name)
+            Call .WriteBoolean(ItemIncompatibleConUser(Userindex, ObjIndex))
         Else ' Borra el item
             Call .WriteLong(0)
             Call .WriteByte(0)
@@ -21133,6 +21137,7 @@ Public Sub WriteChangeUserTradeSlot(ByVal UserIndex As Integer, _
             Call .WriteInteger(0)
             Call .WriteLong(0)
             Call .WriteASCIIString("")
+            Call .WriteBoolean(False)
 
         End If
 
