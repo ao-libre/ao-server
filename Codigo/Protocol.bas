@@ -6058,7 +6058,7 @@ Private Sub HandleOnline(ByVal UserIndex As Integer)
                 CountTrabajadores = CountTrabajadores + 1
                 
                 ' Si es trabajador...
-                If UserList(i).Clase = eClass.Worker Then
+                if UserList(i).Counters.Trabajando > 10 Then
                     
                     ' Si es Cazador y tiene 100 en supervivencia o es Game Master.
                     If EsGm(UserIndex) Or (.Clase = eClass.Hunter And .Stats.UserSkills(eSkill.Supervivencia) = 100) Then
